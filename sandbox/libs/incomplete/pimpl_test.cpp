@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// boost libs/incomplete/incomplete_test.cpp source file
+// boost libs/incomplete/pimpl_test.cpp header file
 // See http://www.boost.org for updates, documentation, and revision history.
 //-----------------------------------------------------------------------------
 //
@@ -16,18 +16,26 @@
 
 #include "pimpl_test.h"
 
-#define BOOST_INCLUDE_MAIN
-#include "boost/test/test_tools.hpp"
-#include "boost/cstdlib.hpp"
-
-//////////////////////////////////////////////////////////////////////////
-// function test_main
-//
-int test_main( int, char *[] )
+struct pimpl_test::Impl
 {
-    static const int value = 42;
-	pimpl_test test(value);
-    BOOST_TEST(test.value() == value);
+    int i;
+};
 
-	return boost::exit_success;
+pimpl_test::pimpl_test(int value)
+{
+    pimpl_.get().i = value;
+}
+
+pimpl_test::~pimpl_test()
+{
+}
+
+void pimpl_test::swap(pimpl_test& operand)
+{
+    pimpl_.swap(operand.pimpl_);
+}
+
+int pimpl_test::value() const
+{
+    return pimpl_.get().i;
 }

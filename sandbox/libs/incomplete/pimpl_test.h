@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// boost libs/incomplete/incomplete_test.cpp source file
+// boost libs/incomplete/pimpl_test.h header file
 // See http://www.boost.org for updates, documentation, and revision history.
 //-----------------------------------------------------------------------------
 //
@@ -14,20 +14,23 @@
 // suitability of this software for any purpose. It is provided "as is" 
 // without express or implied warranty.
 
-#include "pimpl_test.h"
+#ifndef BOOST_LIBS_INCOMPLETE_PIMPL_TEST_H
+#define BOOST_LIBS_INCOMPLETE_PIMPL_TEST_H
 
-#define BOOST_INCLUDE_MAIN
-#include "boost/test/test_tools.hpp"
-#include "boost/cstdlib.hpp"
+#include <cstddef> // for std::size_t
+#include <boost/incomplete.hpp>
 
-//////////////////////////////////////////////////////////////////////////
-// function test_main
-//
-int test_main( int, char *[] )
+class pimpl_test
 {
-    static const int value = 42;
-	pimpl_test test(value);
-    BOOST_TEST(test.value() == value);
+    struct Impl;
+    boost::incomplete<Impl> pimpl_;
 
-	return boost::exit_success;
-}
+public:
+    explicit pimpl_test(int value);
+    ~pimpl_test();
+    void swap(pimpl_test&);
+
+    int value() const;
+};
+
+#endif // BOOST_LIBS_INCOMPLETE_PIMPL_TEST_H
