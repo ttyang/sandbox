@@ -1,0 +1,8 @@
+SubDir TOP ;
+
+exe foo : foo.cpp ;
+lib top : top.cpp ;
+
+SubInclude TOP x ;
+SubInclude TOP y ;
+
