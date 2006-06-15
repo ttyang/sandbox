@@ -1,4 +1,4 @@
-// #define BOOST_SPIRIT_DEBUG
+#define BOOST_SPIRIT_DEBUG
 #include "generator.h"
 #include "decl_grammar.h"
 
