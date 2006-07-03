@@ -25,7 +25,7 @@ test -n "${BOOST_BUILD_PATH}" || \
 test -f ${BOOST_BUILD_PATH}/boost-build.jam || \
     err "BOOST_BUILD_PATH does not point to a Boost.Build v2 directory"
 
-action=${1:-lib}
+action=${1:-test}
 case ${action} in
     clean)
         rm -rf libs/process/doc/bin libs/process/doc/html
@@ -34,8 +34,9 @@ case ${action} in
         cd libs/process/doc
         bjam --v2
         ;;
-    lib)
-        err "Not yet!"
+    test)
+        cd libs/process/test
+        bjam --v2
         ;;
     *)
         err "Unknown action ${action}"
