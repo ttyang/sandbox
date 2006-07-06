@@ -9,14 +9,13 @@
 // at http://www.boost.org/LICENSE_1_0.txt.)
 //
  
-#if !defined(BOOST_PROCESS_BASIC_LAUNCHER_HPP)
-#define BOOST_PROCESS_BASIC_LAUNCHER_HPP
+#if !defined(BOOST_PROCESS_LAUNCHER_HPP)
+#define BOOST_PROCESS_LAUNCHER_HPP
 
 namespace boost {
     namespace process {
 
-        template< class Attributes >
-        class basic_launcher
+        class launcher
         {
 
         public:
@@ -25,4 +24,4 @@ namespace boost {
     } // namespace process
 } // namespace boost
 
-#endif // !defined(BOOST_PROCESS_BASIC_LAUNCHER_HPP)
+#endif // !defined(BOOST_PROCESS_LAUNCHER_HPP)
