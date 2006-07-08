@@ -9,8 +9,8 @@
 // at http://www.boost.org/LICENSE_1_0.txt.)
 //
  
-#if !defined(BOOST_PROCESS_WIN32_TYPES_HPP)
-#define BOOST_PROCESS_WIN32_TYPES_HPP
+#if !defined(BOOST_PROCESS_TYPES_WIN32_HPP)
+#define BOOST_PROCESS_TYPES_WIN32_HPP
 
 #include <windows.h>
 
@@ -22,4 +22,4 @@ namespace boost {
     } // namespace process
 } // namespace boost
 
-#endif // !defined(BOOST_PROCESS_WIN32_TYPES_HPP)
+#endif // !defined(BOOST_PROCESS_TYPES_WIN32_HPP)
