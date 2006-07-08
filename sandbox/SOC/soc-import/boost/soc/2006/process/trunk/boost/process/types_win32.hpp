@@ -15,11 +15,15 @@
 #include <windows.h>
 
 namespace boost {
-    namespace process {
+namespace process {
 
-        typedef DWORD id_t;
+// ------------------------------------------------------------------------
 
-    } // namespace process
+typedef DWORD id_t;
+
+// ------------------------------------------------------------------------
+
+} // namespace process
 } // namespace boost
 
 #endif // !defined(BOOST_PROCESS_TYPES_WIN32_HPP)

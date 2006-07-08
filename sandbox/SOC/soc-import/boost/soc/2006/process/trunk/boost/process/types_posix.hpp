@@ -15,11 +15,15 @@
 #include <sys/types.h>
 
 namespace boost {
-    namespace process {
+namespace process {
 
-        typedef pid_t id_t;
+// ------------------------------------------------------------------------
 
-    } // namespace process
+typedef pid_t id_t;
+
+// ------------------------------------------------------------------------
+
+} // namespace process
 } // namespace boost
 
 #endif // !defined(BOOST_PROCESS_TYPES_POSIX_HPP)
