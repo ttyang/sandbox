@@ -16,6 +16,7 @@
 
 #include <cerrno>
 
+#include <boost/assert.hpp>
 #include <boost/process/exceptions.hpp>
 #include <boost/process/types.hpp>
 #include <boost/throw_exception.hpp>
@@ -28,15 +29,20 @@ namespace detail {
 
 class pipe
 {
+    bool m_read_open;
     desc_t m_read_end;
+    bool m_write_open;
     desc_t m_write_end;
 
 public:
     pipe(void);
     ~pipe(void);
 
-    desc_t read_end(void) const;
-    desc_t write_end(void) const;
+    void close_read_end(void);
+    void close_write_end(void);
+
+    desc_t get_read_end(void) const;
+    desc_t get_write_end(void) const;
 };
 
 // ------------------------------------------------------------------------
@@ -51,7 +57,9 @@ pipe::pipe(void)
             (system_error("boost::process::detail::pipe::pipe",
                           "pipe(2) failed", errno));
 
+    m_read_open = true;
     m_read_end = pfd[0];
+    m_write_open = true;
     m_write_end = pfd[1];
 }
 
@@ -60,17 +68,42 @@ pipe::pipe(void)
 inline
 pipe::~pipe(void)
 {
+    if (m_read_open)
+        ::close(m_read_end);
+    if (m_write_open)
+        ::close(m_write_end);
+}
+
+// ------------------------------------------------------------------------
+
+inline
+void
+pipe::close_read_end(void)
+{
+    BOOST_ASSERT(m_read_open);
     ::close(m_read_end);
+    m_read_open = false;
+}
+
+// ------------------------------------------------------------------------
+
+inline
+void
+pipe::close_write_end(void)
+{
+    BOOST_ASSERT(m_write_open);
     ::close(m_write_end);
+    m_write_open = false;
 }
 
 // ------------------------------------------------------------------------
 
 inline
 desc_t
-pipe::read_end(void)
+pipe::get_read_end(void)
     const
 {
+    BOOST_ASSERT(m_read_open);
     return m_read_end;
 }
 
@@ -78,9 +111,10 @@ pipe::read_end(void)
 
 inline
 desc_t
-pipe::write_end(void)
+pipe::get_write_end(void)
     const
 {
+    BOOST_ASSERT(m_write_open);
     return m_write_end;
 }
 

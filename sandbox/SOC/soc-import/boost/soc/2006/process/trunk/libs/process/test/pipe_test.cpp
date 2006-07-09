@@ -27,8 +27,8 @@ test_read_and_write(void)
 {
     try {
         bpd::pipe p;
-        bpd::systembuf rbuf(p.read_end());
-        bpd::systembuf wbuf(p.write_end());
+        bpd::systembuf rbuf(p.get_read_end());
+        bpd::systembuf wbuf(p.get_write_end());
         std::istream rend(&rbuf);
         std::ostream wend(&wbuf);
 
