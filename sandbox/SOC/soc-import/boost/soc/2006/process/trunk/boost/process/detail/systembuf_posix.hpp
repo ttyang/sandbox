@@ -17,6 +17,7 @@
 #include <streambuf>
 
 #include <boost/assert.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/process/types.hpp>
 #include <boost/scoped_array.hpp>
 
@@ -26,7 +27,8 @@ namespace detail {
 
 // ------------------------------------------------------------------------
 
-class systembuf : public std::streambuf
+class systembuf :
+    public std::streambuf, boost::noncopyable
 {
     desc_t m_desc;
     size_t m_bufsize;
