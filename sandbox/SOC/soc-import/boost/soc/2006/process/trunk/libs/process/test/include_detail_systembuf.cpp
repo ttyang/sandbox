@@ -1,6 +1,6 @@
 //
 // Boost.Process
-// Checks that forward declarations can be included without errors.
+// Checks that detail/systembuf.hpp can be included without errors.
 //
 // Copyright (c) 2006 Julio M. Merino Vidal.
 //
@@ -9,4 +9,4 @@
 // at http://www.boost.org/LICENSE_1_0.txt.)
 //
 
-#include <boost/process/forward_decls.hpp>
+#include <boost/process/detail/systembuf.hpp>
