@@ -14,6 +14,11 @@
 
 #include <unistd.h>
 
+#include <cerrno>
+
+#include <boost/process/exceptions.hpp>
+#include <boost/throw_exception.hpp>
+
 namespace boost {
 namespace process {
 
@@ -42,7 +47,9 @@ basic_attributes< Command_Line >::setup(void)
 {
     if (m_work_directory.length() > 0) {
         if (chdir(m_work_directory.c_str()) == -1)
-            ; // XXX Handle this.
+            boost::throw_exception
+                (system_error("boost::process::basic_attributes::setup",
+                              "chdir(2) failed", errno));
     }
 }
 
