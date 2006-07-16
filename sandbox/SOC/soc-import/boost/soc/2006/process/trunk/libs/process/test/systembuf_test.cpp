@@ -68,7 +68,7 @@ static void
 remove_file(const std::string& name)
 {
 #if defined(BOOST_PROCESS_WIN32_API)
-#   error "Unimplemented."
+    ::DeleteFile(TEXT(name.c_str()));
 #else
     ::unlink(name.c_str());
 #endif
@@ -84,15 +84,23 @@ test_read(size_t length, size_t bufsize)
     f.close();
 
 #if defined(BOOST_PROCESS_WIN32_API)
-#   error "Unimplemented."
+    HANDLE hfile = ::CreateFile(TEXT("test_read.txt"),
+                                GENERIC_READ, 0, NULL,
+                                OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+                                NULL);
+    BOOST_REQUIRE(hfile != INVALID_HANDLE_VALUE);
+    bpd::systembuf sb(hfile, bufsize);
+    std::istream is(&sb);
+    check_data(is, length);
+    ::CloseHandle(hfile);
 #else
     int fd = ::open("test_read.txt", O_RDONLY);
     BOOST_CHECK(fd != -1);
     bpd::systembuf sb(fd, bufsize);
-#endif
     std::istream is(&sb);
     check_data(is, length);
     ::close(fd);
+#endif
     remove_file("test_read.txt");
 }
 
@@ -118,19 +126,27 @@ static void
 test_write(size_t length, size_t bufsize)
 {
 #if defined(BOOST_PROCESS_WIN32_API)
-#   error "Unimplemented."
+    HANDLE hfile = ::CreateFile(TEXT("test_write.txt"),
+                                GENERIC_WRITE, 0, NULL, CREATE_NEW,
+                                FILE_ATTRIBUTE_NORMAL, NULL);
+    BOOST_REQUIRE(hfile != INVALID_HANDLE_VALUE);
+    bpd::systembuf sb(hfile, bufsize);
+    std::ostream os(&sb);
+    write_data(os, length);
+    ::CloseHandle(hfile);
 #else
     int fd = ::open("test_write.txt", O_WRONLY | O_CREAT | O_TRUNC,
                     S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     BOOST_CHECK(fd != -1);
     bpd::systembuf sb(fd, bufsize);
-#endif
     std::ostream os(&sb);
     write_data(os, length);
     ::close(fd);
+#endif
 
     std::ifstream is("test_write.txt");
     check_data(is, length);
+    is.close();
     remove_file("test_write.txt");
 }
 
