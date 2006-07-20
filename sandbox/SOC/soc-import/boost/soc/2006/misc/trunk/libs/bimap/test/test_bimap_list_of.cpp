@@ -9,12 +9,12 @@
 // Boost.Test
 #include <boost/test/minimal.hpp>
 
-#include <boost/bimap/set_of.hpp>
+#include <boost/bimap/list_of.hpp>
 
 int test_main( int, char* [] )
 {
-    typedef boost::bimap::set_of<int>       set_type;
-    typedef boost::bimap::set_of_relation<> set_type_of_relation;
+    typedef boost::bimap::list_of<int>     set_type;
+    typedef boost::bimap::list_of_relation set_type_of_relation;
 
     return 0;
 }
