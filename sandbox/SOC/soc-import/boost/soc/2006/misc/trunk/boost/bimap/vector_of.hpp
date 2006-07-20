@@ -7,19 +7,17 @@
 //
 // See http://www.boost.org/libs/bimap for library home page.
 
-/// \file collection/vector_of.hpp
+/// \file vector_of.hpp
 /// \brief Include support for vector constrains for the bimap container
 
-#ifndef BOOST_BIMAP_COLLECTION_VECTOR_OF_HPP
-#define BOOST_BIMAP_COLLECTION_VECTOR_OF_HPP
+#ifndef BOOST_BIMAP_VECTOR_OF_HPP
+#define BOOST_BIMAP_VECTOR_OF_HPP
 
-#include <functional>
+#include <boost/bimap/detail/concept_tags.hpp>
 
-#include <boost/bimap/collection/detail/is_key_type_of_builder.hpp>
-#include <boost/bimap/collection/detail/register_key_type.hpp>
-#include <boost/bimap/collection/detail/view_binder.hpp>
-#include <boost/bimap/collection/detail/generate_relation_binder.hpp>
-#include <boost/bimap/collection/key_type_of_tag.hpp>
+#include <boost/bimap/detail/generate_index_binder.hpp>
+#include <boost/bimap/detail/generate_view_binder.hpp>
+#include <boost/bimap/detail/generate_relation_binder.hpp>
 
 #include <boost/multi_index/random_access_index.hpp>
 
@@ -28,7 +26,7 @@
 
 namespace boost {
 namespace bimap {
-namespace collection {
+
 
 /// \brief Set Type Specification
 /**
@@ -49,20 +47,19 @@ the following way:
 \code
 using namespace support;
 
-BOOST_STATIC_ASSERT( is_key_type_of< vector_of<Type> >::value );
+BOOST_STATIC_ASSERT( is_set_type_of< vector_of<Type> >::value );
 
 BOOST_STATIC_ASSERT
 (
      is_same
      <
-        compute_index_type
+        vector_of<Type>::index_bind
         <
-            vector_of<Type>,
             KeyExtractor,
             Tag
 
-        >::type
-        ,
+        >::type,
+
         random_access< tag<Tag>, KeyExtractor >
 
     >::value
@@ -78,12 +75,13 @@ BOOST_STATIC_ASSERT
 (
     is_same
     <
-        compute_map_view_type
+        vector_of<Type>::map_view_bind
         <
             member_at::left,
             bimap_with_left_type_as_vector
 
         >::type,
+
         vector_map_view< member_at::left, bimap_with_left_type_as_vector >
 
     >::value
@@ -91,39 +89,35 @@ BOOST_STATIC_ASSERT
 
 \endcode
 
-See also vector_of_relation, is_vector_of, compute_index_type,
-compute_map_view_type, compute_set_type_view.
+See also vector_of_relation.
                                                                         **/
 
 template< class Type >
-struct vector_of : public key_type_of_tag
+struct vector_of : public bimap::detail::set_type_of_tag
 {
     /// Type of the object that will be stored in the set
     typedef Type value_type;
+
+    BOOST_BIMAP_GENERATE_INDEX_BINDER_0CP_NO_EXTRACTOR(
+
+        // binds to
+        multi_index::random_access
+    );
+
+    BOOST_BIMAP_GENERATE_MAP_VIEW_BINDER(
+
+        // binds to
+        views::vector_map_view
+    );
+
+    BOOST_BIMAP_GENERATE_SET_VIEW_BINDER(
+
+        // binds to
+        views::vector_set_view
+    );
+
 };
 
-BOOST_BIMAP_IS_KEY_TYPE_OF_BUILDER_0CP
-(
-    // template< class Type > class
-    is_vector_of,
-    // evaluates to true if type is a
-    vector_of
-);
-
-BOOST_BIMAP_REGISTER_KEY_TYPE_0CP_NO_EXTRACTOR
-(
-    is_vector_of,  /* --------> */ multi_index::random_access
-);
-
-BOOST_BIMAP_COLLECTION_TO_MAP_VIEW_TYPE
-(
-    is_vector_of, /* binds to */ views::vector_map_view
-);
-
-BOOST_BIMAP_COLLECTION_TO_SET_VIEW_TYPE
-(
-    is_vector_of, /* binds to */ views::vector_set_view
-);
 
 /// \brief Set Of Relation Specification
 /**
@@ -144,24 +138,19 @@ struct bind_to
 See also vector_of, is_set_type_of_relation.
                                                                 **/
 
-struct vector_of_relation : public set_type_of_relation_tag
+struct vector_of_relation : public bimap::detail::set_type_of_relation_tag
 {
-    /*
-        template<class Relation>
-        struct bind_to
-        {
-            typedef -UNDEFINED- type;
-        }
-    */
+    BOOST_BIMAP_GENERATE_RELATION_BINDER_0CP(
 
-    BOOST_BIMAP_GENERATE_RELATION_BINDER_0CP(vector_of);
+        // binds to
+        vector_of
+    );
 };
 
 
-} // namespace collection
 } // namespace bimap
 } // namespace boost
 
 
-#endif // BOOST_BIMAP_COLLECTION_SET_OF_HPP
+#endif // BOOST_BIMAP_VECTOR_OF_HPP
 

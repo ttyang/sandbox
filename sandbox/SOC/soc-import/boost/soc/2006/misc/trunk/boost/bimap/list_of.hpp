@@ -7,19 +7,17 @@
 //
 // See http://www.boost.org/libs/bimap for library home page.
 
-/// \file collection/list_of.hpp
+/// \file list_of.hpp
 /// \brief Include support for list constrains for the bimap container
 
-#ifndef BOOST_BIMAP_COLLECTION_LIST_OF_HPP
-#define BOOST_BIMAP_COLLECTION_LIST_OF_HPP
+#ifndef BOOST_BIMAP_LIST_OF_HPP
+#define BOOST_BIMAP_LIST_OF_HPP
 
-#include <functional>
+#include <boost/bimap/detail/concept_tags.hpp>
 
-#include <boost/bimap/collection/detail/is_key_type_of_builder.hpp>
-#include <boost/bimap/collection/detail/register_key_type.hpp>
-#include <boost/bimap/collection/detail/view_binder.hpp>
-#include <boost/bimap/collection/detail/generate_relation_binder.hpp>
-#include <boost/bimap/collection/key_type_of_tag.hpp>
+#include <boost/bimap/detail/generate_index_binder.hpp>
+#include <boost/bimap/detail/generate_view_binder.hpp>
+#include <boost/bimap/detail/generate_relation_binder.hpp>
 
 #include <boost/multi_index/sequenced_index.hpp>
 
@@ -28,7 +26,7 @@
 
 namespace boost {
 namespace bimap {
-namespace collection {
+
 
 /// \brief Set Type Specification
 /**
@@ -45,20 +43,19 @@ parameter.
 \code
 using namespace support;
 
-BOOST_STATIC_ASSERT( is_key_type_of< list_of<Type> >::value );
+BOOST_STATIC_ASSERT( is_set_type_of< list_of<Type> >::value );
 
 BOOST_STATIC_ASSERT
 (
      is_same
      <
-        compute_index_type
+        list_of<Type>::index_bind
         <
-            list_of<Type>,
             KeyExtractor,
             Tag
 
-        >::type
-        ,
+        >::type,
+
         sequenced< tag<Tag>, KeyExtractor >
 
     >::value
@@ -74,7 +71,7 @@ BOOST_STATIC_ASSERT
 (
     is_same
     <
-        compute_map_view_type
+        list_of<Type>::map_view_bind
         <
             member_at::left,
             bimap_with_left_type_as_list
@@ -87,39 +84,35 @@ BOOST_STATIC_ASSERT
 
 \endcode
 
-See also list_of_relation, is_list_of, compute_index_type,
-compute_map_view_type, compute_set_type_view.
+See also list_of_relation.
                                                                         **/
 
 template< class Type >
-struct list_of : public key_type_of_tag
+struct list_of : public bimap::detail::set_type_of_tag
 {
     /// Type of the object that will be stored in the list
     typedef Type value_type;
+
+    BOOST_BIMAP_GENERATE_INDEX_BINDER_0CP_NO_EXTRACTOR(
+
+        // binds to
+        multi_index::sequenced
+    );
+
+    BOOST_BIMAP_GENERATE_MAP_VIEW_BINDER(
+
+        // binds to
+        views::list_map_view
+    );
+
+    BOOST_BIMAP_GENERATE_SET_VIEW_BINDER(
+
+        // binds to
+        views::list_set_view
+    );
+
 };
 
-BOOST_BIMAP_IS_KEY_TYPE_OF_BUILDER_0CP
-(
-    // template< class Type > class
-    is_list_of,
-    // evaluates to true if type is a
-    list_of
-);
-
-BOOST_BIMAP_REGISTER_KEY_TYPE_0CP_NO_EXTRACTOR
-(
-    is_list_of,  /* --------> */ multi_index::sequenced
-);
-
-BOOST_BIMAP_COLLECTION_TO_MAP_VIEW_TYPE
-(
-    is_list_of, /* binds to */ views::list_map_view
-);
-
-BOOST_BIMAP_COLLECTION_TO_SET_VIEW_TYPE
-(
-    is_list_of, /* binds to */ views::list_set_view
-);
 
 /// \brief List Of Relation Specification
 /**
@@ -140,24 +133,19 @@ struct bind_to
 See also list_of, is_set_type_of_relation.
                                                                 **/
 
-struct list_of_relation : public set_type_of_relation_tag
+struct list_of_relation : public bimap::detail::set_type_of_relation_tag
 {
-    /*
-        template<class Relation>
-        struct bind_to
-        {
-            typedef -UNDEFINED- type;
-        }
-    */
+    BOOST_BIMAP_GENERATE_RELATION_BINDER_0CP(
 
-    BOOST_BIMAP_GENERATE_RELATION_BINDER_0CP(list_of);
+        // binds to
+        list_of
+    );
 };
 
 
-} // namespace collection
 } // namespace bimap
 } // namespace boost
 
 
-#endif // BOOST_BIMAP_COLLECTION_SET_OF_HPP
+#endif // BOOST_BIMAP_LIST_OF_HPP
 
