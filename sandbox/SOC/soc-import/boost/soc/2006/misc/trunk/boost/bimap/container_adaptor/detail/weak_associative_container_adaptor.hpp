@@ -16,7 +16,8 @@
 #include <utility>
 
 #include <boost/type_traits/is_same.hpp>
-#include <boost/mpl/if.hpp>
+#include <boost/mpl/push_front.hpp>
+#include <boost/mpl/list.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/bimap/container_adaptor/detail/identity_converters.hpp>
 #include <boost/bimap/container_adaptor/detail/container_adaptor.hpp>
@@ -58,25 +59,23 @@ class weak_associative_container_adaptor :
         IteratorToBaseConverter, IteratorFromBaseConverter,
         ValueToBaseConverter   , ValueFromBaseConverter,
 
-        typename mpl::copy<
+        typename mpl::push_front<
 
-            mpl::list
-            <
-                typename mpl::if_< is_same< KeyToBaseConverter, use_default >,
-                // {
-                        key_to_base_identity
-                        <
-                            typename Base::key_type, KeyType
-                        >,
-                // }
-                // else
-                // {
-                        KeyToBaseConverter
-                // }
+            FunctorsFromDerivedClasses,
 
-                >::type
-            >,
-            mpl::front_inserter< FunctorsFromDerivedClasses >
+            typename mpl::if_< is_same< KeyToBaseConverter, use_default >,
+            // {
+                    key_to_base_identity
+                    <
+                        typename Base::key_type, KeyType
+                    >,
+            // }
+            // else
+            // {
+                    KeyToBaseConverter
+            // }
+
+            >::type
 
         >::type
     >
