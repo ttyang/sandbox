@@ -43,7 +43,8 @@ void test_container(Container & c, const Data & d)
     BOOST_CHECK( c.empty() );
 
     c.insert( value_type(*d.begin()) );
-    c.insert(++d.begin(),d.end());
+
+    c.insert( ++d.begin(),d.end() );
 
     BOOST_CHECK( c.size() == d.size() );
 
@@ -377,6 +378,7 @@ void test_basic_bimap(Bimap & b,
 {
     using namespace boost::bimap;
 
+
     test_container(b,d);
 
     BOOST_CHECK( &b.left  == &map_by<member_at::left >(b) );
@@ -416,6 +418,7 @@ void test_set_set_bimap(Bimap & b,
     using namespace boost::bimap;
 
     test_basic_bimap(b,d,ld,rd);
+
     test_associative_container(b,d);
     test_simple_ordered_associative_container(b,d);
 
@@ -426,6 +429,7 @@ void test_set_set_bimap(Bimap & b,
     test_pair_associative_container(b.right, rd);
     test_pair_ordered_associative_container(b.right, rd);
     test_unique_container(b.right, rd);
+
 }
 
 
@@ -637,6 +641,7 @@ void test_bimap()
 
         > b;
     }
+
 
 }
 

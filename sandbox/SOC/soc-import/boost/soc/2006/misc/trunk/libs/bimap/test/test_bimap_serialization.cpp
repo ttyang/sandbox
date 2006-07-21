@@ -28,10 +28,33 @@
 // Boost.Bimap
 #include <boost/bimap/bimap.hpp>
 
-typedef boost::bimap::bimap<int,double> bm;
+
+template< class Bimap, class Archive >
+void save_bimap(const Bimap & b, Archive & ar)
+{
+    using namespace boost::bimap;
+
+    ar << b;
+
+    typedef typename const_iterator_type_by< member_at::left, Bimap >::type
+        left_const_iterator;
+
+    left_const_iterator left_iter = b.left.begin();
+    ar << const_cast< const left_const_iterator& >(left_iter);
+
+    typename Bimap::const_iterator iter = ++b.begin();
+    ar << const_cast< const typename Bimap::const_iterator& >(iter);
+}
+
+
+
 
 void test_bimap_serialization()
 {
+    using namespace boost::bimap;
+
+    typedef bimap<int,double> bm;
+
     std::set< bm::relation > data;
     data.insert( bm::relation(1,0.1) );
     data.insert( bm::relation(2,0.2) );
@@ -47,7 +70,8 @@ void test_bimap_serialization()
         b.insert(data.begin(),data.end());
 
         boost::archive::text_oarchive oa(oss);
-        oa << const_cast<const bm&>(b);
+
+        save_bimap(b,oa);
     }
 
     // Reload it
@@ -60,7 +84,20 @@ void test_bimap_serialization()
         ia >> b;
 
         BOOST_CHECK( std::equal( b.begin(), b.end(), data.begin() ) );
+
+        const_iterator_type_by< member_at::left, bm >::type left_iter;
+
+        ia >> left_iter;
+
+        BOOST_CHECK( left_iter == b.left.begin() );
+
+        bm::const_iterator iter;
+
+        ia >> iter;
+
+        BOOST_CHECK( iter == ++b.begin() );
     }
+
 }
 
 
