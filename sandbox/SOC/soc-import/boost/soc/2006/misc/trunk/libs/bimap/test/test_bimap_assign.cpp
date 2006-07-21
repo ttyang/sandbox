@@ -58,7 +58,6 @@ void test_bimap_assign()
         (0.9,9);
 
     BOOST_CHECK( b.size() == 9 );
-
 }
 
 
