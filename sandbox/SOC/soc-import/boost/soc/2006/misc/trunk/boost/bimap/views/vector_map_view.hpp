@@ -13,7 +13,7 @@
 #ifndef BOOST_BIMAP_VIEWS_VECTOR_MAP_VIEW_HPP
 #define BOOST_BIMAP_VIEWS_VECTOR_MAP_VIEW_HPP
 
-#include <boost/bimap/views/detail/to_pair_from_relation.hpp>
+#include <boost/bimap/relation/support/get_pair_functor.hpp>
 #include <boost/bimap/container_adaptor/support/iterator_facade_converters.hpp>
 #include <boost/bimap/container_adaptor/vector_map_adaptor.hpp>
 #include <boost/bimap/support/iterator_type_by.hpp>
@@ -51,7 +51,7 @@ class vector_map_view
         container_adaptor::use_default, // reverse iterator from base converter
         container_adaptor::use_default, // value to base converter
 
-        detail::to_pair_view_from_relation<Tag, typename BimapType::relation >
+        relation::support::GetPairFunctor<Tag, typename BimapType::relation >
     >
 {
     typedef vector_map_view this_type;
@@ -93,7 +93,7 @@ class const_vector_map_view
         container_adaptor::use_default, // reverse iterator from base converter
         container_adaptor::use_default, // value to base converter
 
-        detail::to_pair_view_from_relation<Tag, typename BimapType::relation >
+        relation::support::GetPairFunctor<Tag, typename BimapType::relation >
     >
 {
     public:

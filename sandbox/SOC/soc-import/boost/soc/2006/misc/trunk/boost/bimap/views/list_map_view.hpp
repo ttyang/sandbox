@@ -13,8 +13,7 @@
 #ifndef BOOST_BIMAP_VIEWS_LIST_MAP_VIEW_HPP
 #define BOOST_BIMAP_VIEWS_LIST_MAP_VIEW_HPP
 
-#include <boost/bimap/views/detail/map_view_iterator.hpp>
-#include <boost/bimap/views/detail/to_pair_from_relation.hpp>
+#include <boost/bimap/relation/support/get_pair_functor.hpp>
 #include <boost/bimap/container_adaptor/support/iterator_facade_converters.hpp>
 #include <boost/bimap/container_adaptor/list_map_adaptor.hpp>
 #include <boost/bimap/relation/support/pair_by.hpp>
@@ -53,7 +52,7 @@ class list_map_view
         container_adaptor::use_default, // reverse iterator from base converter
         container_adaptor::use_default, // value to base converter
 
-        detail::to_pair_view_from_relation<Tag, typename BimapType::relation >
+        relation::support::GetPairFunctor<Tag, typename BimapType::relation >
     >
 {
     typedef list_map_view this_type;
@@ -94,7 +93,7 @@ class const_list_map_view
         container_adaptor::use_default, // reverse iterator from base converter
         container_adaptor::use_default, // value to base converter
 
-        detail::to_pair_view_from_relation<Tag, typename BimapType::relation >
+        relation::support::GetPairFunctor<Tag, typename BimapType::relation >
     >
 {
     public:
