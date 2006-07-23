@@ -14,6 +14,7 @@
 #define BOOST_BIMAP_VIEWS_LIST_SET_VIEW_HPP
 
 #include <boost/bimap/container_adaptor/list_adaptor.hpp>
+#include <boost/bimap/detail/set_view_base.hpp>
 
 namespace boost {
 namespace bimap {
@@ -38,8 +39,12 @@ class list_set_view
         typename IndexType::const_iterator,
         typename IndexType::reverse_iterator,
         typename IndexType::const_reverse_iterator
-    >
+    >,
+
+    public bimap::detail::set_view_base< list_set_view< IndexType >, IndexType >
 {
+    friend class bimap::detail::set_view_base< list_set_view< IndexType >, IndexType >;
+
     public:
 
     list_set_view() {}

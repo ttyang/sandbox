@@ -103,67 +103,6 @@ class map_view_base
 };
 
 
-
-template< class Derived, class Index >
-class set_view_base
-{
-    public:
-
-    bool replace(typename Index::iterator position,
-                 typename Index::value_type const & x)
-    {
-        return derived().base().replace(position,x);
-    }
-
-    template<typename Modifier>
-    bool modify(typename Index::iterator position,Modifier mod)
-    {
-        return derived().base().modify(
-
-            position,
-
-            bimap::detail::relation_modifier_adaptor
-            <
-                Modifier,
-                typename Index::value_type,
-                typename relation::support::data_extractor
-                <
-                    relation::member_at::left,
-                    typename Index::value_type
-
-                >::type,
-                typename relation::support::data_extractor
-                <
-                    relation::member_at::right,
-                    typename Index::value_type
-
-                >::type
-
-            >(mod)
-        );
-    }
-
-    protected:
-
-    typedef set_view_base set_view_base_;
-
-    private:
-
-    // Curiously Recurring Template interface.
-
-    Derived& derived()
-    {
-        return *static_cast<Derived*>(this);
-    }
-
-    Derived const& derived() const
-    {
-        return *static_cast<Derived const*>(this);
-    }
-};
-
-
-
 } // namespace detail
 } // namespace bimap
 } // namespace boost
