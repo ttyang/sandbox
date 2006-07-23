@@ -18,6 +18,8 @@
 #include <boost/bimap/support/data_type_of.hpp>
 #include <boost/bimap/support/key_type_of.hpp>
 
+#ifndef BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
+
 namespace boost {
 
 template< class Tag, class Bimap >
@@ -38,6 +40,8 @@ const typename bimap::support::data_type_of<Tag,Bimap>::type &
     return m.find(key)->second;
 }
 
-};
+} // namespace boost
+
+#endif // BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
 
 #endif // BOOST_BIMAP_PROPERTY_MAP_SET_SUPPORT_HPP

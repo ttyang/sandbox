@@ -17,6 +17,8 @@ namespace boost {
 namespace bimap {
 namespace detail {
 
+/// \brief Return type of operator[] for the unique map views.
+
 template< class View >
 struct operator_bracket_proxy
 {

@@ -22,6 +22,8 @@
 \ingroup relation_group
                                                                     **/
 
+#ifndef BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
+
 namespace boost {
 namespace bimap {
 namespace relation {
@@ -76,6 +78,7 @@ struct data_extractor
 } // namespace bimap
 } // namespace boost
 
+#endif // BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
 
 #endif // BOOST_BIMAP_RELATION_SUPPORT_DATA_EXTRACTOR_HPP
 

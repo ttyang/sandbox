@@ -25,6 +25,8 @@ boost::lambda::placeholder2_type _second;
 boost::lambda::placeholder1_type _left  ;
 boost::lambda::placeholder2_type _right ;
 
+boost::lambda::placeholder1_type _key   ;
+
 } // namespace support
 } // namespace bimap
 } // namespace boost

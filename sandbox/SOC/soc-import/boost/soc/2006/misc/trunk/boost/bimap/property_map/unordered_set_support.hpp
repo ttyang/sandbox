@@ -7,7 +7,7 @@
 //
 // See http://www.boost.org/libs/misc for library home page.
 
-/// \file property_map/set_support.hpp
+/// \file property_map/unordered_set_support.hpp
 /// \brief Support for the property map concept.
 
 #ifndef BOOST_BIMAP_PROPERTY_MAP_UNORDERED_SET_SUPPORT_HPP
@@ -17,6 +17,8 @@
 #include <boost/bimap/unordered_set_of.hpp>
 #include <boost/bimap/support/data_type_of.hpp>
 #include <boost/bimap/support/key_type_of.hpp>
+
+#ifndef BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
 
 namespace boost {
 
@@ -38,6 +40,8 @@ const typename bimap::support::data_type_of<Tag,Bimap>::type &
     return m.find(key)->second;
 }
 
-};
+} // namespace boost
+
+#endif // BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
 
 #endif // BOOST_BIMAP_PROPERTY_MAP_UNORDERED_SET_SUPPORT_HPP

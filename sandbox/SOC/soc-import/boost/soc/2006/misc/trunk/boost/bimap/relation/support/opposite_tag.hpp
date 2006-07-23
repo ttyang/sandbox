@@ -7,8 +7,8 @@
 //
 // See http://www.boost.org/libs/bimap for library home page.
 
-/// \file relation/support/pair_type_by.hpp
-/// \brief pair_type_by<tag,relation> metafunction
+/// \file relation/support/opposite_tag.hpp
+/// \brief Metafunction to obtain the opposite tag in a relation.
 
 #ifndef BOOST_BIMAP_RELATION_SUPPORT_OPPOSITE_TAG_HPP
 #define BOOST_BIMAP_RELATION_SUPPORT_OPPOSITE_TAG_HPP

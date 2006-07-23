@@ -15,6 +15,7 @@
 
 // Boost
 #include <boost/serialization/nvp.hpp>
+#include <boost/type_traits/remove_reference.hpp>
 #include <boost/iterator/detail/enable_if.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/bimap/relation/support/get_pair_functor.hpp>
@@ -28,13 +29,15 @@ namespace detail {
 This is class is based on transform iterator from Boost.Iterator that is
 modified to allow serialization. It has been specialized for this
 library, and EBO optimization was applied to the functor.
+
                                                                       **/
 
 template
 <
     class Tag, class Relation,
     class CoreIterator,
-    class Reference, class ValueType
+    class Reference,
+    class ValueType
 >
 struct map_view_iterator :
 
@@ -42,7 +45,7 @@ struct map_view_iterator :
     <
         map_view_iterator< Tag, Relation, CoreIterator, Reference, ValueType >,
         CoreIterator,
-        ValueType,
+        typename remove_reference<Reference>::type,
         boost::use_default,
         Reference
 
@@ -55,6 +58,12 @@ struct map_view_iterator :
     typedef relation::support::GetPairFunctor<Tag,Relation> get_pair_functor;
 
     public:
+
+    // The best way will be to pass the correct "value_type" to iterator_adaptor and
+    // to set the "pointer" to Reference*, but iterator_adaptor and iterator_facade
+    // defines "pointer" as value_type* and do not allow this to be changed.
+
+    typedef ValueType value_type;
 
     map_view_iterator() {}
 

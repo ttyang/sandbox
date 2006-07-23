@@ -21,6 +21,7 @@ namespace boost {
 namespace bimap {
 namespace detail {
 
+/// \brief Common base for set views.
 
 template< class Derived, class Index >
 class set_view_base

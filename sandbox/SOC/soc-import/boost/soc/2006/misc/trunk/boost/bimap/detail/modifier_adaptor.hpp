@@ -8,7 +8,7 @@
 // See http://www.boost.org/libs/bimap for library home page.
 
 /// \file detail/modifier_adaptor.hpp
-/// \brief A unary functor modifier adaptor.
+/// \brief A binary to unary functor relation modifier adaptor.
 
 #ifndef BOOST_BIMAP_DETAIL_MODIFIER_ADAPTOR_HPP
 #define BOOST_BIMAP_DETAIL_MODIFIER_ADAPTOR_HPP
@@ -19,44 +19,24 @@ namespace boost {
 namespace bimap {
 namespace detail {
 
+/// \brief A binary to unary functor relation modifier adaptor.
+
 template< class Modifier, class NewArgument, class FirstExtractor, class SecondExtractor >
 struct relation_modifier_adaptor :
-    public std::unary_function<NewArgument,bool>
-{
-    relation_modifier_adaptor( Modifier m ) : mod(m) {}
-    relation_modifier_adaptor( Modifier m, FirstExtractor fea, SecondExtractor sea ) :
-        mod(m), fe(fea), se(sea) {}
-
-    void operator()( NewArgument & x ) const
-    {
-        mod( fe( x ), se( x ) );
-    }
-
-    private:
-    Modifier mod;
-    FirstExtractor fe;
-    SecondExtractor se;
-};
-
-/*
-template< class Modifier, class NewArgument, class Extractor >
-struct modifier_adaptor :
     public std::unary_function<NewArgument,bool>,
-    protected Extractor
+    Modifier,
+    FirstExtractor,
+    SecondExtractor
 {
-
-    modifier_adaptor( Modifier m ) : Modifier(m) {}
-    modifier_adaptor( Modifier m, Extractor e ) : Modifier(m), Extractor(e) {}
+    relation_modifier_adaptor( Modifier m ) : Modifier(m) {}
+    relation_modifier_adaptor( Modifier m, FirstExtractor fe, SecondExtractor se ) :
+        Modifier(m), FirstExtractor(fe), SecondExtractor(se) {}
 
     void operator()( NewArgument & x ) const
     {
-        mod( Extractor::operator()( x ) );
+        Modifier::operator()( FirstExtractor::operator()( x ), SecondExtractor::operator()( x ) );
     }
-
-    private:
-    Modifier mod;
 };
-*/
 
 } // namespace detail
 } // namespace bimap
