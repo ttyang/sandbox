@@ -19,13 +19,13 @@
 
 // Boost.Bimap
 
-#include <boost/bimap/bimap.hpp>
-
 #include <boost/bimap/set_of.hpp>
 #include <boost/bimap/property_map/set_support.hpp>
 
 #include <boost/bimap/unordered_set_of.hpp>
 #include <boost/bimap/property_map/unordered_set_support.hpp>
+
+#include <boost/bimap/bimap.hpp>
 
 
 template <class Map>

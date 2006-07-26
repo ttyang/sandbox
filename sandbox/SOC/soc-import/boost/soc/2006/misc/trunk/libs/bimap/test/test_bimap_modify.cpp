@@ -10,8 +10,8 @@
 #include <boost/test/minimal.hpp>
 
 // Boost.Bimap
-#include <boost/bimap/bimap.hpp>
 #include <boost/bimap/support/lambda.hpp>
+#include <boost/bimap/bimap.hpp>
 
 void test_bimap_modify()
 {
