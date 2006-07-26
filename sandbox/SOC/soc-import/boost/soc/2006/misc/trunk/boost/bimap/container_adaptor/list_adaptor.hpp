@@ -41,29 +41,31 @@ template
 >
 class list_adaptor :
 
-    public detail::sequence_container_adaptor
+    public ::boost::bimap::container_adaptor::detail::sequence_container_adaptor
     <
-        Base,
-
-        Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
-
+        Base, Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
         IteratorToBaseConverter, IteratorFromBaseConverter,
         ReverseIteratorFromBaseConverter,
         ValueToBaseConverter, ValueFromBaseConverter,
-
         FunctorsFromDerivedClasses
     >
 {
-    typedef list_adaptor this_type;
+    typedef ::boost::bimap::container_adaptor::detail::sequence_container_adaptor
+    <
+        Base, Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
+        IteratorToBaseConverter, IteratorFromBaseConverter,
+        ReverseIteratorFromBaseConverter,
+        ValueToBaseConverter, ValueFromBaseConverter,
+        FunctorsFromDerivedClasses
+
+    > base_;
 
     // Access -----------------------------------------------------------------
 
     public:
 
-    list_adaptor() {}
-
     explicit list_adaptor(Base & c) :
-        list_adaptor::sequence_container_adaptor_(c) {}
+        base_(c) {}
 
     protected:
 
@@ -106,43 +108,43 @@ class list_adaptor :
 
     */
 
-    void remove(const typename this_type::value_type& value)
+    void remove(const typename base_::value_type& value)
     {
-        this_type::base().remove(
-            this_type::template functor<typename this_type::value_to_base>()(value)
+        this->base().remove(
+            this->template functor<typename base_::value_to_base>()(value)
         );
     }
 
     template<typename Predicate>
     void remove_if(Predicate pred)
     {
-        this_type::base().remove_if(
-            detail::comparison_adaptor
+        this->base().remove_if(
+            ::boost::bimap::container_adaptor::detail::comparison_adaptor
             <
                 Predicate,
                 typename Base::value_type,
-                typename this_type::value_to_base
+                typename base_::value_to_base
 
-            >( pred, this_type::template functor<typename this_type::value_to_base>() )
+            >( pred, this->template functor<typename base_::value_to_base>() )
         );
     }
 
     void unique()
     {
-        this_type::base().unique();
+        this->base().unique();
     }
 
     template <class BinaryPredicate>
     void unique(BinaryPredicate binary_pred)
     {
-        this_type::base().unique(
-            detail::comparison_adaptor
+        this->base().unique(
+            ::boost::bimap::container_adaptor::detail::comparison_adaptor
             <
                 BinaryPredicate,
                 typename Base::value_type,
-                typename this_type::value_to_base
+                typename base_::value_to_base
 
-            >( binary_pred, this_type::template functor<typename this_type::value_to_base>() )
+            >( binary_pred, this->template functor<typename base_::value_to_base>() )
         );
     }
 
@@ -164,26 +166,26 @@ class list_adaptor :
 
     void sort()
     {
-        this_type::base().sort();
+        this->base().sort();
     }
 
     template <typename Compare>
     void sort(Compare comp)
     {
-        this_type::base().sort(
-            detail::comparison_adaptor
+        this->base().sort(
+            ::boost::bimap::container_adaptor::detail::comparison_adaptor
             <
                 Compare,
                 typename Base::value_type,
-                typename this_type::value_to_base
+                typename base_::value_to_base
 
-            >( comp, this_type::template functor<typename this_type::value_to_base>() )
+            >( comp, this->template functor<typename base_::value_to_base>() )
         );
     }
 
     void reverse()
     {
-        this_type::base().reverse();
+        this->base().reverse();
     }
 
 };

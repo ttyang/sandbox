@@ -47,16 +47,24 @@ class vector_map_adaptor :
     public vector_adaptor
     <
         Base,
-
         Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
-
         IteratorToBaseConverter, IteratorFromBaseConverter,
         ReverseIteratorFromBaseConverter,
         ValueToBaseConverter, ValueFromBaseConverter,
-
         FunctorsFromDerivedClasses
     >
 {
+    typedef vector_adaptor
+    <
+        Base,
+        Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
+        IteratorToBaseConverter, IteratorFromBaseConverter,
+        ReverseIteratorFromBaseConverter,
+        ValueToBaseConverter, ValueFromBaseConverter,
+        FunctorsFromDerivedClasses
+
+    > base_;
+
     // MetaData -------------------------------------------------------------
 
     public:
@@ -71,7 +79,7 @@ class vector_map_adaptor :
     vector_map_adaptor() {}
 
     explicit vector_map_adaptor(Base & c) :
-        vector_map_adaptor::vector_adaptor_(c) {}
+        base_(c) {}
 
     protected:
 

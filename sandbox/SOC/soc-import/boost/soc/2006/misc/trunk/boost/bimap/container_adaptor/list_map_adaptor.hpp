@@ -46,17 +46,23 @@ class list_map_adaptor :
 
     public list_adaptor
     <
-        Base,
-
-        Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
-
+        Base, Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
         IteratorToBaseConverter, IteratorFromBaseConverter,
         ReverseIteratorFromBaseConverter,
         ValueToBaseConverter, ValueFromBaseConverter,
-
         FunctorsFromDerivedClasses
     >
 {
+    typedef list_adaptor
+    <
+        Base, Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
+        IteratorToBaseConverter, IteratorFromBaseConverter,
+        ReverseIteratorFromBaseConverter,
+        ValueToBaseConverter, ValueFromBaseConverter,
+        FunctorsFromDerivedClasses
+
+    > base_;
+
     // MetaData -------------------------------------------------------------
 
     public:
@@ -69,10 +75,8 @@ class list_map_adaptor :
 
     public:
 
-    list_map_adaptor() {}
-
     explicit list_map_adaptor(Base & c) :
-        list_map_adaptor::list_adaptor_(c) {}
+        base_(c) {}
 
     protected:
 
