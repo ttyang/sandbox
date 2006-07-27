@@ -72,21 +72,14 @@ BOOST_BIMAP_SYMMETRIC_ACCESS_IMPLEMENTATION_BUILDER
 
 /// \brief Gets a map view of a bidirectional map
 /**
-\return Convertible to \c map_type_by<Tag,Bimap>::type
+Convertible to \c map_type_by<Tag,Bimap>::type
 Instead of using \c map_type_by<Tag,Bimap>::type this functions use
 \b Boost.call_traits to find the best way to return this value. To help
 the user of this function the following metafunction is provided
 \code
 
-namespace result_of {
-
 template< class Tag, class Bimap >
-struct map_by<Tag,Bimap>;
-{
-    typedef -UNDEFINED- type;
-};
-
-} // namespace result_of
+struct map_by( Bimap & b );
 
 \endcode
 
@@ -94,9 +87,6 @@ See also member_at, value_type_of.
 \ingroup bimap_group
                                                                         **/
 
-template< class Tag, class Bimap >
-typename result_of::map_by<Tag,Bimap>::type
-map_by( Bimap & b );
 
 BOOST_BIMAP_SYMMETRIC_ACCESS_INTERFACE_BUILDER
 (
