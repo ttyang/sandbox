@@ -6,19 +6,18 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 // See http://www.boost.org/libs/test for the library home page.
 
-// std
-#include <set>
-#include <map>
-#include <string>
 
 // Boost.Test
 #include <boost/test/minimal.hpp>
 
+// std
+#include <set>
+#include <map>
+#include <string>
+#include <functional>
+
 // Boost
 #include <boost/assign/list_of.hpp>
-
-// std
-#include <functional>
 
 // Set type specifications
 #include <boost/bimap/set_of.hpp>
@@ -35,7 +34,6 @@ struct right_tag {};
 void test_bimap()
 {
     using namespace boost::bimap;
-    using namespace boost::mpl;
 
     typedef std::pair<int,double> std_pair;
     std::set< std_pair > data =
@@ -73,7 +71,7 @@ void test_bimap()
         <
             tagged< multiset_of<int>   , left_tag  >,
             tagged< multiset_of<double>, right_tag >,
-            multiset_of_relation< std::less<_> >
+            multiset_of_relation< std::less< _relation > >
 
         > b;
 
@@ -97,7 +95,7 @@ void test_bimap()
         bimap
         <
             multiset_of< int, std::greater<int> >, set_of<std::string> ,
-            multiset_of_relation< std::greater<_> >
+            multiset_of_relation< std::greater< _relation > >
 
         > b;
     }
