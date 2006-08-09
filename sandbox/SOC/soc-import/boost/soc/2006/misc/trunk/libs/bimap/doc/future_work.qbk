@@ -1,0 +1,54 @@
+[/license
+
+    Boost.Bimap
+    Matias Capeletto 2006
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+]
+
+[/ QuickBook Document version 1.3 ]
+
+[section Future work]
+
+These features will be implemented soon:
+
+[h2 Projection of iterators]
+
+This is very useful, and the B.MI core allows to implement it very easily.
+
+[h2 CompatibleKey functions]
+
+Enhance some of the views functions to be able to get compatible key_types as
+a parameter instead of forcing the conversion. This will improve the
+performance and allow better inlining for these operations.
+
+[h2 Hooking Data]
+
+In general, programmers use maps to access information quickly.
+Boost.Bimap will allow the user to hook data inside the bimap so it is not
+necessary to maintain another map. This a possible code example:
+
+
+    typedef bimap< int, string, hook_data< string > > bm_type;
+    bm_type bm;
+
+    //...
+
+    bm.left_map.data(28928546) = "carpintero";
+    bm.right_map.data("John Wayne") = "actor";
+
+    bm_type::left_iterator iter = bm.left_map.find(23345647);
+    iter->data = "programador";
+
+    bm_type::iterator iter = bm.find( bm_type::pair_by<member_at::left>(23345647,"Green Dert") );
+    iter->data = "estudiante";
+
+    bm.insert( bm_type::value_type_by<member_at::left>(1456783342,"Fred Bypass","retirado") );
+
+
+[h2 More...]
+
+With the current informal review, more features will be evaluated.
+
+[endsect]
