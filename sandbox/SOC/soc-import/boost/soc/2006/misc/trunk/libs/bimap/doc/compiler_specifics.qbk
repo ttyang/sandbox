@@ -15,7 +15,7 @@
 [[Compiler  ][OS Tested ][State                               ]]
 [[GCC 3.4   ][Linux     ][Supported                           ]]
 [[GCC 4.0   ][Linux, Mac][Supported                           ]]
-[[VS 7.1    ][Windows   ][Supported                           ]]
+[[VS 7.1    ][Windows   ][Supported (Only in Release Mode)    ]]
 [[VS 8.0    ][Windows   ][Supported                           ]]
 [[ICC 7.1   ][Windows   ][Supported                           ]]
 [[ICC 8.0   ][Windows   ][Supported                           ]]

@@ -156,6 +156,11 @@ Tags are just conventional types used as mnemonics for the types stored in a
     template<class Tag, class Relation>
     result_of::pair_by< Tag, Relation>::type pair_by(Relation &);
 
+    // exceptions
+
+    class duplicate_value;
+    class value_not_found;
+
     // bimap template class
 
     template
