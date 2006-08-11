@@ -82,7 +82,7 @@ but::test_suite *
 init_unit_test_suite(int argc, char* argv[])
 {
     but::test_suite* test =
-        BOOST_TEST_SUITE("detail::command_line test suite");
+        BOOST_TEST_SUITE("detail::command_line_ops test suite");
 
 #if defined(BOOST_PROCESS_POSIX_API)
     test->add(BOOST_TEST_CASE(&test_command_line_to_posix_argv));
