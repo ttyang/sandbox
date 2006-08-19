@@ -364,13 +364,17 @@ constructors or destructors. Assignment, on the other hand, is provided.
 ]
 \n
 
+    template<typename Modifier> bool modify(iterator position,Modifier mod);
 
-
-    template<typename Modifier> bool modify(iterator position, Modifier mod);
-
-[:  [*Requires:] `Modifier` is a model of __SGI_UNARY_FUNCTION__ accepting arguments of
-    type `value_type&`. position is a valid dereferenceable iterator of the view.\n
-    [*Effects:] Calls `mod(e)` where `e` is the element pointed to by `position` and
+[:  [*Requires:] `Modifier` is a model of __SGI_BINARY_FUNCTION__ accepting arguments of
+    type:\n
+    ['Map View:] `first_type&` and `second_type&`\n
+    ['Set View:] `left_type&` and `right_type&`\n
+    `position` is a valid dereferenceable iterator of the view.\n
+    [*Effects:]\n
+    ['Map View:] Calls `mod(e.first,e.second)`\n
+    ['Set View:] Calls `mod(e.left,e.right)`\n
+    where `e` is the element pointed to by `position` and
     rearranges `*position` into all the views of the `bimap`.
     Rearrangement on `list_of` views does not change the position of the element
     with respect to the view; rearrangement on other views may or might not suceed.

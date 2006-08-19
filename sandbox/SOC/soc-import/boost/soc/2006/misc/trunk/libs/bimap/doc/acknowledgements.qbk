@@ -1,10 +1,35 @@
 [/license
 
-    Boost.Bimap
-    Matias Capeletto 2006
-    Distributed under the Boost Software License, Version 1.0.
-    (See accompanying file LICENSE_1_0.txt or copy at
-    http://www.boost.org/LICENSE_1_0.txt)
+Boost.Bimap
+
+Copyright (c) 2006 Matias Capeletto
+
+This code may be used under either of the following two licences:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE. OF SUCH DAMAGE.
+
+Or:
+
+Distributed under the Boost Software License, Version 1.0.
+(See accompanying file LICENSE_1_0.txt or copy at
+http://www.boost.org/LICENSE_1_0.txt)
+
 ]
 
 [/ QuickBook Document version 1.3 ]
@@ -37,6 +62,10 @@ The icons in the TOC of the main page are from
 [@http://www.kde-look.org/kde-look.org kde-look.org]. I want to thank they effort to
 make the open source world a beautiful place. When I found some time I will look for
 each name of the authors, please forgive me to omit them for the moment.
+
+Thanks to Paul Giaccone for proof-read this documentation. (He has not finished yet,
+the remaining typos and spelling errors are mine and will be corrected as soon as
+possible.)
 
 Finally, thanks to my family that have to see me all day in home during the SoC. Special
 thanks to my brother Agustin, future famous novelist (at this time he is 19 years),

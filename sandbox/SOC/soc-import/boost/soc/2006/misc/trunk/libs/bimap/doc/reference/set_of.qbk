@@ -235,7 +235,7 @@ In the right map view:
 [section Complexity signature]
 
 Here and in the descriptions of operations of this view, we adopt the
-scheme outlined in the complexity signature section.
+scheme outlined in the [link complexity_signature_explanation complexity signature section].
 The complexity signature of \[multi\]set_of view is:
 
 * copying: `c(n) = n * log(n)`,
@@ -376,10 +376,16 @@ Assignment, on the other hand, is provided.
 
     template<typename Modifier> bool modify(iterator position,Modifier mod);
 
-[:  [*Requires:] `Modifier` is a model of __SGI_UNARY_FUNCTION__ accepting arguments of
-    type `value_type&`. position is a valid dereferenceable iterator of the view.\n
-    [*Effects:] Calls `mod(e)` where e is the element pointed to by position and
-    rearranges `*position` into all the views of the `bimap`.
+[:  [*Requires:] `Modifier` is a model of __SGI_BINARY_FUNCTION__ accepting arguments of
+    type:\n
+    ['Map View:] `first_type&` and `second_type&`\n
+    ['Set View:] `left_type&` and `right_type&`\n
+    `position` is a valid dereferenceable iterator of the view.\n
+    [*Effects:]\n
+    ['Map View:] Calls `mod(e.first,e.second)`\n
+    ['Set View:] Calls `mod(e.left,e.right)`\n
+    where e is the element pointed to by position and rearranges `*position` into all
+    the views of the `bimap`.\n
     Rearrangement is successful if
     * the view is non-unique OR no other element exists with equivalent key,\n
     * AND rearrangement is allowed by all other views of the `bimap`.\n
