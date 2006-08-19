@@ -28,50 +28,29 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file relation/support/opposite_tag.hpp
-/// \brief Metafunction to obtain the opposite tag in a relation.
+/// \file views/unconstrained_map_view.hpp
+/// \brief Unconstrained view of a side of a bimap.
 
-#ifndef BOOST_BIMAP_RELATION_SUPPORT_OPPOSITE_TAG_HPP
-#define BOOST_BIMAP_RELATION_SUPPORT_OPPOSITE_TAG_HPP
-
-#include <boost/bimap/relation/detail/metadata_access_builder.hpp>
-
-/** \struct boost::bimap::relation::support::opposite_tag
-
-\brief Metafunction to obtain the opposite tag in a relation.
-
-\code
-
-template< class Tag, class Relation >
-struct opposite_tag
-{
-        typedef {OppositeTag} type;
-};
-
-\endcode
-
-\ingroup relation_group
-                                                                    **/
+#ifndef BOOST_BIMAP_VIEWS_UNCONSTRAINED_MAP_VIEW_HPP
+#define BOOST_BIMAP_VIEWS_UNCONSTRAINED_MAP_VIEW_HPP
 
 namespace boost {
 namespace bimap {
-namespace relation {
-namespace support {
+namespace views {
 
-// Implementation of const pair reference type by metafunction
+/// \brief Unconstrained view of a side of a bimap.
 
-BOOST_BIMAP_SYMMETRIC_METADATA_ACCESS_BUILDER
-(
-    opossite_tag,
-    right_tag,
-    left_tag
-);
+template< class Tag, class BimapType>
+class unconstrained_map_view
+{
+    public:
+    template< class T >
+    unconstrained_map_view(const T & t) {}
+};
 
-} // namespace support
-} // namespace relation
+} // namespace views
 } // namespace bimap
 } // namespace boost
 
-
-#endif // BOOST_BIMAP_RELATION_SUPPORT_OPPOSITE_TAG_HPP
+#endif // BOOST_BIMAP_VIEWS_UNCONSTRAINED_MAP_VIEW_HPP
 
