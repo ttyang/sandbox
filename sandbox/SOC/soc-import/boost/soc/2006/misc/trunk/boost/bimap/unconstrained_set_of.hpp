@@ -28,7 +28,7 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file set_of.hpp
+/// \file unconstrained_set_of.hpp
 /// \brief Include support for set constrains for the bimap container
 
 #ifndef BOOST_BIMAP_UNCONSTRAINED_SET_OF_HPP
@@ -116,6 +116,8 @@ struct unconstrained_set_of_relation : public ::boost::bimap::detail::set_type_o
 
 };
 
+#ifndef BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
+
 namespace detail {
 
 template<class T>
@@ -132,8 +134,19 @@ struct is_unconstrained_set_of< unconstrained_set_of<T> >
 
 } // namespace detail
 
+#endif // BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
+
 } // namespace bimap
 } // namespace boost
+
+
+/** \struct boost::bimap::detail::is_unconstrained_set_of
+\brief Trait to check if a type is unconstrained_set_of.
+\code
+template< class T >
+struct is_unconstrained_set_of;
+\endcode
+                                                                            **/
 
 
 #endif // BOOST_BIMAP_UNCONSTRAINED_SET_OF_HPP
