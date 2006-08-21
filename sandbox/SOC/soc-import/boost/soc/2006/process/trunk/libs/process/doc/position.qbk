@@ -1,6 +1,6 @@
 [/
  / Boost.Process
- / Pending work chapter.
+ / Project position chapter.
  /
  / Copyright (c) 2006 Julio M. Merino Vidal.
  /
@@ -36,9 +36,23 @@
 
 [/ ---------------------------------------------------------------------- ]
 
+[section Project position]
+
+[section History of changes]
+
+[section Version 0.1 (August 21st, 2006)]
+
+* Initial public release.  This is what was presented at the end of the
+  program under which Boost.Process was developed: [@http://www.google.com/
+  Google]'s [@http://code.google.com/soc/ Summer of Code 2006].
+
+[endsect]
+
+[endsect]
+
 [section Pending work]
 
-This chapter contains a list of pending items in the library that should be
+This section contains a list of pending items in the library that should be
 addressed before it can be sent for a serious/formal review.  Some of these
 are a simple matter of programming but others will require more
 consideration to decide the best way to solve them.
@@ -107,6 +121,6 @@ consideration to decide the best way to solve them.
 
 [endsect]
 
-[/ ---------------------------------------------------------------------- ]
+[endsect]
 
 [endsect]
