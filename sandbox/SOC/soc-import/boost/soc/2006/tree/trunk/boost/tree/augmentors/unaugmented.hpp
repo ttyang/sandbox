@@ -27,26 +27,39 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 /**
- * @file trivial.hpp
+ * @file unaugmented.hpp
  * Trivial augmentor (does nothing)
  */
 
-#ifndef BOOST_TREE_AUGMENTORS_TRIVIAL_HPP
-#define BOOST_TREE_AUGMENTORS_TRIVIAL_HPP
+#ifndef BOOST_TREE_AUGMENTORS_UNAUGMENTED_HPP
+#define BOOST_TREE_AUGMENTORS_UNAUGMENTED_HPP
 
 namespace boost {
 namespace tree {
-
-struct trivial_augment_tree {};
+namespace augmentors {
 
 /**
  * Trivial augmentor (does nothing)
  */
-struct trivial_augment {};
+class unaugmented {
+ protected:
+	template <class Cursor>
+ 	void pre_rotate(Cursor&)
+ 	{ }
+ 	
+ 	template <class Cursor>
+ 	void pre_detach(Cursor&)
+ 	{ }
+ 	
+ 	template <class Cursor>
+ 	void pre_detach(Cursor&, Cursor&)
+ 	{ }
+};
 
+} // namespace augmentors
 } // namespace tree
 } // namespace boost
 
-#endif // BOOST_TREE_AUGMENTORS_TRIVIAL_HPP
+#endif // BOOST_TREE_AUGMENTORS_UNAUGMENTED_HPP
 
 
