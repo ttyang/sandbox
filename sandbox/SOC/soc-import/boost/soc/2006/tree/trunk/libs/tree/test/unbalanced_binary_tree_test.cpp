@@ -92,7 +92,16 @@ void test_unbalance_binary_tree()
 	BOOST_CHECK(*c == 2);
 	BOOST_CHECK(c4.empty());
 
+	BOOST_CHECK(*c1 == 14);
+	
+	BOOST_CHECK(c1.begin().empty() || c1.end().empty());
+	
+	//c1 = mytree.erase(c1);
+	//BOOST_CHECK(*c1 == 2);
+
 	mytree.clear();	
+	BOOST_CHECK(mytree.empty());
+	
 }
 
 

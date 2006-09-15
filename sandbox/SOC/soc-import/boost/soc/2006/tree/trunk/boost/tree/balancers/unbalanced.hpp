@@ -30,6 +30,7 @@
 #define BOOST_TREE_BALANCERS_UNBALANCED_HPP
 
 #include <boost/tree/detail/cursor/binary.hpp>
+#include <boost/tree/inorder.hpp>
 
 using boost::tree::detail::access_rotate;
 
@@ -46,15 +47,21 @@ struct unbalance : public access_rotate {
 	metadata_type metadata;
 	
 	template <class Cursor>
-	void add(Cursor, Cursor)
+	void add(Cursor&, Cursor const&)
 	{ }
 	  
 	template <class Cursor>
-	void remove(Cursor)
-	{ }
+	void remove(Cursor& x, Cursor& y)
+	{
+		y = x;
+		if (x.begin().empty() || x.end().empty())
+ 			return;
+ 		inorder::forward(x);
+ 		return;
+	}
 	
 	template <class Cursor>
-	void read(Cursor)
+	void touch(Cursor)
 	{ }
 		
 	template <class Cursor>
