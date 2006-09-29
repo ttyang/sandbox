@@ -13,16 +13,18 @@
 
 #if defined(BOOST_PROCESS_POSIX_API)
 #   include <cstdlib>
+#   include <boost/process/detail/posix_ops.hpp>
 #elif defined(BOOST_PROCESS_WIN32_API)
 extern "C" {
 #   include <tchar.h>
 }
 #   include <cstring>
+#   include <boost/process/detail/win32_ops.hpp>
 #else
 #   error "Unsupported platform."
 #endif
 
-#include <boost/process/detail/environment.hpp>
+#include <boost/process/environment.hpp>
 #include <boost/test/unit_test.hpp>
 
 namespace bp = ::boost::process;
@@ -33,9 +35,9 @@ namespace but = ::boost::unit_test;
 
 static
 void
-test_init(void)
+test_current(void)
 {
-    bpd::environment env1;
+    bp::environment env1 = bp::current_environment();
     BOOST_CHECK(env1.find("THIS_SHOULD_NOT_BE_DEFINED") == env1.end());
 
 #if defined(BOOST_PROCESS_POSIX_API)
@@ -45,8 +47,8 @@ test_init(void)
                                            TEXT("some-value")) != 0);
 #endif
 
-    bpd::environment env2;
-    bpd::environment::const_iterator iter =
+    bp::environment env2 = bp::current_environment();
+    bp::environment::const_iterator iter =
         env2.find("THIS_SHOULD_BE_DEFINED");
     BOOST_CHECK(iter != env2.end());
     BOOST_CHECK_EQUAL((*iter).second, "some-value");
@@ -54,48 +56,17 @@ test_init(void)
 
 // ------------------------------------------------------------------------
 
-static
-void
-test_set(void)
-{
-    bpd::environment env;
-    bpd::environment::size_type initialsize = env.size();
-    env.set("SOME_VARIABLE", "content");
-    BOOST_REQUIRE_EQUAL(env.size(), initialsize + 1);
-    bpd::environment::const_iterator iter = env.find("SOME_VARIABLE");
-    BOOST_REQUIRE(iter != env.end());
-    BOOST_REQUIRE_EQUAL((*iter).first, "SOME_VARIABLE");
-    BOOST_REQUIRE_EQUAL((*iter).second, "content");
-}
-
-// ------------------------------------------------------------------------
-
-static
-void
-test_unset(void)
-{
-    bpd::environment env;
-    env.set("SOME_VARIABLE", "content");
-    bpd::environment::size_type initialsize = env.size();
-    env.unset("SOME_VARIABLE");
-    BOOST_REQUIRE_EQUAL(env.size(), initialsize - 1);
-    bpd::environment::const_iterator iter = env.find("SOME_VARIABLE");
-    BOOST_REQUIRE(iter == env.end());
-}
-
-// ------------------------------------------------------------------------
-
+#if defined(BOOST_PROCESS_POSIX_API)
 static
 void
 test_envp(void)
 {
-    bpd::environment env;
-    env.clear();
-    env.set("VAR1", "value1");
-    env.set("VAR2", "value2");
-    env.set("VAR3", "value3");
+    bp::environment env;
+    env.insert(bp::environment::value_type("VAR1", "value1"));
+    env.insert(bp::environment::value_type("VAR2", "value2"));
+    env.insert(bp::environment::value_type("VAR3", "value3"));
 
-    char** ep = env.envp();
+    char** ep = bpd::environment_to_envp(env);
 
     BOOST_REQUIRE(ep[0] != NULL);
     BOOST_REQUIRE_EQUAL(std::string(ep[0]), "VAR1=value1");
@@ -112,19 +83,20 @@ test_envp(void)
     BOOST_REQUIRE(ep[3] == NULL);
     delete [] ep;
 }
+#endif
 
 // ------------------------------------------------------------------------
 
+#if defined(BOOST_PROCESS_POSIX_API)
 static
 void
 test_envp_unsorted(void)
 {
-    bpd::environment env;
-    env.clear();
-    env.set("VAR2", "value2");
-    env.set("VAR1", "value1");
+    bp::environment env;
+    env.insert(bp::environment::value_type("VAR2", "value2"));
+    env.insert(bp::environment::value_type("VAR1", "value1"));
 
-    char** ep = env.envp();
+    char** ep = bpd::environment_to_envp(env);
 
     BOOST_REQUIRE(ep[0] != NULL);
     BOOST_REQUIRE_EQUAL(std::string(ep[0]), "VAR1=value1");
@@ -137,6 +109,7 @@ test_envp_unsorted(void)
     BOOST_REQUIRE(ep[2] == NULL);
     delete [] ep;
 }
+#endif
 
 // ------------------------------------------------------------------------
 
@@ -145,13 +118,13 @@ static
 void
 test_strings(void)
 {
-    bpd::environment env;
-    env.clear();
-    env.set("VAR1", "value1");
-    env.set("VAR2", "value2");
-    env.set("VAR3", "value3");
+    bp::environment env;
+    env.insert(bp::environment::value_type("VAR1", "value1"));
+    env.insert(bp::environment::value_type("VAR2", "value2"));
+    env.insert(bp::environment::value_type("VAR3", "value3"));
 
-    boost::shared_array< TCHAR > strs = env.win32_strings();
+    boost::shared_array< TCHAR > strs =
+        bpd::environment_to_win32_strings(env);
     BOOST_REQUIRE(strs.get() != NULL);
 
     TCHAR* expected = TEXT("VAR1=value1\0VAR2=value2\0VAR3=value3\0\0");
@@ -167,12 +140,12 @@ static
 void
 test_strings_unsorted(void)
 {
-    bpd::environment env;
-    env.clear();
-    env.set("VAR2", "value2");
-    env.set("VAR1", "value1");
+    bp::environment env;
+    env.insert(bp::environment::value_type("VAR2", "value2"));
+    env.insert(bp::environment::value_type("VAR1", "value1"));
 
-    boost::shared_array< TCHAR > strs = env.win32_strings();
+    boost::shared_array< TCHAR > strs =
+        bpd::environment_to_win32_strings(env);
     BOOST_REQUIRE(strs.get() != NULL);
 
     TCHAR* expected = TEXT("VAR1=value1\0VAR2=value2\0\0");
@@ -188,12 +161,11 @@ init_unit_test_suite(int argc, char* argv[])
 {
     but::test_suite* test = BOOST_TEST_SUITE("environment test suite");
 
-    test->add(BOOST_TEST_CASE(&test_init));
-    test->add(BOOST_TEST_CASE(&test_set));
-    test->add(BOOST_TEST_CASE(&test_unset));
+    test->add(BOOST_TEST_CASE(&test_current));
+#if defined(BOOST_PROCESS_POSIX_API)
     test->add(BOOST_TEST_CASE(&test_envp));
     test->add(BOOST_TEST_CASE(&test_envp_unsorted));
-#if defined(BOOST_PROCESS_WIN32_API)
+#elif defined(BOOST_PROCESS_WIN32_API)
     test->add(BOOST_TEST_CASE(&test_strings));
     test->add(BOOST_TEST_CASE(&test_strings_unsorted));
 #endif

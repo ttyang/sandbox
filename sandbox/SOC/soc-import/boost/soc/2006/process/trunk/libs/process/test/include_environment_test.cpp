@@ -1,6 +1,6 @@
 //
 // Boost.Process
-// Checks that detail/environment.hpp can be included without errors.
+// Checks that environment.hpp can be included without errors.
 //
 // Copyright (c) 2006 Julio M. Merino Vidal.
 //
@@ -9,14 +9,14 @@
 // http://www.boost.org/LICENSE_1_0.txt.)
 //
 
-#include <boost/process/detail/environment.hpp>
+#include <boost/process/environment.hpp>
 
-namespace bpd = ::boost::process::detail;
+namespace bp = ::boost::process;
 
 // ------------------------------------------------------------------------
 
 void*
 test_it(void)
 {
-    return new bpd::environment();
+    return new bp::environment();
 }

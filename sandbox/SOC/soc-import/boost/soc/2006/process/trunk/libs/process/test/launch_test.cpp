@@ -11,10 +11,11 @@
 
 #include <boost/filesystem/operations.hpp>
 #include <boost/process/child.hpp>
-#include <boost/process/launcher.hpp>
+#include <boost/process/context.hpp>
+#include <boost/process/operations.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include "launcher_base_test.hpp"
+#include "launch_base_test.hpp"
 
 namespace bfs = ::boost::filesystem;
 namespace bp = ::boost::process;
@@ -22,15 +23,16 @@ namespace but = ::boost::unit_test;
 
 // ------------------------------------------------------------------------
 
-class start
+class launcher
 {
 public:
     bp::child
-    operator()(bp::launcher& l, const std::vector< std::string > args,
+    operator()(const std::vector< std::string > args,
+               const bp::context& ctx,
                bool usein = false)
         const
     {
-        return l.start(get_helpers_path(), args);
+        return bp::launch(get_helpers_path(), args, ctx);
     }
 };
 
@@ -43,7 +45,7 @@ init_unit_test_suite(int argc, char* argv[])
 
     but::test_suite* test = BOOST_TEST_SUITE("launcher test suite");
 
-    add_tests_launcher_base< bp::launcher, bp::child, start >(test);
+    add_tests_launch_base< launcher, bp::context, bp::child >(test);
 
     return test;
 }

@@ -1,6 +1,6 @@
 //
 // Boost.Process
-// Checks that launcher.hpp can be included without errors.
+// Checks that context.hpp can be included without errors.
 //
 // Copyright (c) 2006 Julio M. Merino Vidal.
 //
@@ -9,7 +9,7 @@
 // http://www.boost.org/LICENSE_1_0.txt.)
 //
 
-#include <boost/process/launcher.hpp>
+#include <boost/process/context.hpp>
 
 namespace bp = ::boost::process;
 
@@ -18,5 +18,5 @@ namespace bp = ::boost::process;
 void*
 test_it(void)
 {
-    return new bp::launcher();
+    return new bp::context();
 }
