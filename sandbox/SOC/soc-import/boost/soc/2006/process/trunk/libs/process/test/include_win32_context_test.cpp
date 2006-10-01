@@ -1,6 +1,6 @@
 //
 // Boost.Process
-// Checks that win32_launcher.hpp can be included without errors.
+// Checks that win32_context.hpp can be included without errors.
 //
 // Copyright (c) 2006 Julio M. Merino Vidal.
 //
@@ -13,7 +13,7 @@
 
 #if defined(BOOST_PROCESS_WIN32_API)
 
-#   include <boost/process/win32_launcher.hpp>
+#   include <boost/process/win32_context.hpp>
 
 namespace bp = ::boost::process;
 
@@ -22,7 +22,7 @@ namespace bp = ::boost::process;
 void*
 test_it(void)
 {
-    return new bp::win32_launcher(NULL);
+    return new bp::win32_context();
 }
 
 // ------------------------------------------------------------------------
