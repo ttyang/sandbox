@@ -59,7 +59,7 @@ typedef std::set< std::pair< int, int > > merge_set;
 // with the launchers... but it'd be rather ugly.  Think about this some
 // more.
 template< class String >
-class basic_posix_context
+class posix_basic_context
 {
 public:
     //!
@@ -150,13 +150,13 @@ public:
     String m_chroot;
 };
 
-typedef basic_posix_context< std::string > posix_context;
+typedef posix_basic_context< std::string > posix_context;
 
 // ------------------------------------------------------------------------
 
 template< class String >
 inline
-basic_posix_context< String >::basic_posix_context(void) :
+posix_basic_context< String >::posix_basic_context(void) :
     m_uid(::getuid()),
     m_euid(::geteuid()),
     m_gid(::getgid()),

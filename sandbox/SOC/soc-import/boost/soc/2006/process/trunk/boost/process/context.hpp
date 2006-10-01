@@ -131,7 +131,6 @@ basic_context< String >::basic_context(void) :
               "GetCurrentDirectory failed", ::GetLastError()));
     }
     m_work_directory = buf;
-    m_environment.set("", m_work_directory);
     delete buf;
 #endif
     BOOST_ASSERT(!m_work_directory.empty());

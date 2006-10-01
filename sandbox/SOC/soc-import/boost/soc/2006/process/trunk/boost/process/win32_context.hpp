@@ -47,8 +47,11 @@ namespace process {
 //!
 template< class String >
 class win32_basic_context :
-    public basic_context
+    public basic_context< String >
 {
+public:
+    win32_basic_context(void);
+
     //!
     //! \brief Win32-specific process startup information.
     //!
@@ -56,6 +59,14 @@ class win32_basic_context :
 };
 
 typedef win32_basic_context< std::string > win32_context;
+
+// ------------------------------------------------------------------------
+
+template< class String >
+win32_basic_context< String >::win32_basic_context(void) :
+    m_startupinfo(NULL)
+{
+}
 
 // ------------------------------------------------------------------------
 
