@@ -1,6 +1,6 @@
 //
 // Boost.Process
-// Checks that posix_launcher.hpp can be included without errors.
+// Checks that posix_context.hpp can be included without errors.
 //
 // Copyright (c) 2006 Julio M. Merino Vidal.
 //
@@ -13,7 +13,7 @@
 
 #if defined(BOOST_PROCESS_POSIX_API)
 
-#   include <boost/process/posix_launcher.hpp>
+#   include <boost/process/posix_context.hpp>
 
 namespace bp = ::boost::process;
 
@@ -22,7 +22,7 @@ namespace bp = ::boost::process;
 void*
 test_it(void)
 {
-    return new bp::posix_launcher();
+    return new bp::posix_context();
 }
 
 // ------------------------------------------------------------------------

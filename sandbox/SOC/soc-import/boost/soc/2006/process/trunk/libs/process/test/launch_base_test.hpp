@@ -41,11 +41,14 @@ namespace launch_base_test {
 //
 // The functions in this file all rely on a Launcher concept.  This concept
 // provides a class whose () operator starts a new process given an
-// executable, its arguments and an execution context, and returns a new
-// Child object.  The operator also receives a boolean, defaulting to
-// false, that indicates if the child process focuses on testing stdin
-// input.  This is needed when testing pipelines to properly place a dummy
-// process in the flow.
+// executable, its arguments, an execution context and the redirections for
+// the standard streams, and returns a new Child object.  The operator also
+// receives a boolean, defaulting to false, that indicates if the child
+// process focuses on testing stdin input.  This is needed when testing
+// pipelines to properly place a dummy process in the flow.
+//
+// I know this is ugly but allows reusing all tests to check various
+// different launchers.  A nicer approach might be attempted later on.
 //
 
 // ------------------------------------------------------------------------
@@ -59,13 +62,14 @@ test_close_stdin(void)
     args.push_back("helpers");
     args.push_back("is-closed-stdin");
 
-    bp::status s1 = Launcher()(args, Context(), true).wait();
+    bp::status s1 = Launcher()(args, Context(), bp::close_stream,
+                               bp::close_stream, bp::close_stream, false,
+                               true).wait();
     BOOST_REQUIRE(s1.exited());
     BOOST_CHECK_EQUAL(s1.exit_status(), EXIT_SUCCESS);
 
-    Context ctx2;
-    ctx2.m_stdin_behavior = bp::redirect_stream;
-    Child c2 = Launcher()(args, ctx2, true);
+    Child c2 = Launcher()(args, Context(), bp::redirect_stream,
+                          bp::close_stream, bp::close_stream, false, true);
     c2.get_stdin() << "foo" << std::endl;
     c2.get_stdin().close();
     bp::status s2 = c2.wait();
@@ -88,9 +92,8 @@ test_close_stdout(void)
     BOOST_REQUIRE(s1.exited());
     BOOST_CHECK_EQUAL(s1.exit_status(), EXIT_SUCCESS);
 
-    Context ctx2;
-    ctx2.m_stdout_behavior = bp::redirect_stream;
-    bp::status s2 = Launcher()(args, ctx2).wait();
+    bp::status s2 = Launcher()(args, Context(), bp::close_stream,
+                               bp::redirect_stream).wait();
     BOOST_REQUIRE(s2.exited());
     BOOST_CHECK_EQUAL(s2.exit_status(), EXIT_FAILURE);
 }
@@ -110,9 +113,8 @@ test_close_stderr(void)
     BOOST_REQUIRE(s1.exited());
     BOOST_CHECK_EQUAL(s1.exit_status(), EXIT_SUCCESS);
 
-    Context ctx2;
-    ctx2.m_stderr_behavior = bp::redirect_stream;
-    bp::status s2 = Launcher()(args, ctx2).wait();
+    bp::status s2 = Launcher()(args, Context(), bp::close_stream,
+                               bp::close_stream, bp::redirect_stream).wait();
     BOOST_REQUIRE(s2.exited());
     BOOST_CHECK_EQUAL(s2.exit_status(), EXIT_FAILURE);
 }
@@ -128,10 +130,8 @@ test_input(void)
     args.push_back("helpers");
     args.push_back("stdin-to-stdout");
 
-    Context ctx;
-    ctx.m_stdin_behavior = bp::redirect_stream;
-    ctx.m_stdout_behavior = bp::redirect_stream;
-    Child c = Launcher()(args, ctx);
+    Child c = Launcher()(args, Context(), bp::redirect_stream,
+                         bp::redirect_stream);
 
     bp::postream& os = c.get_stdin();
     bp::pistream& is = c.get_stdout();
@@ -160,12 +160,9 @@ test_output(bool out, const std::string& msg)
     args.push_back(out ? "echo-stdout" : "echo-stderr");
     args.push_back(msg);
 
-    Context ctx;
-    if (out)
-       ctx.m_stdout_behavior = bp::redirect_stream;
-    else
-       ctx.m_stderr_behavior = bp::redirect_stream;
-    Child c = Launcher()(args, ctx);
+    Child c = Launcher()(args, Context(), bp::close_stream,
+                         out ? bp::redirect_stream : bp::close_stream,
+                         out ? bp::close_stream : bp::redirect_stream);
 
     std::string word;
     if (out) {
@@ -216,10 +213,8 @@ test_merge_out_err(void)
     args.push_back("echo-stdout-stderr");
     args.push_back("message-to-two-streams");
 
-    Context ctx;
-    ctx.m_stdout_behavior = bp::redirect_stream;
-    ctx.m_merge_stderr_with_stdout = true;
-    Child c = Launcher()(args, ctx);
+    Child c = Launcher()(args, Context(), bp::close_stream,
+                         bp::redirect_stream, bp::close_stream, true);
 
     bp::pistream& is = c.get_stdout();
     std::string word;
@@ -249,13 +244,12 @@ check_work_directory(const std::string& wdir)
     args.push_back("pwd");
 
     Context ctx;
-    ctx.m_stdout_behavior = bp::redirect_stream;
     if (wdir.empty())
         BOOST_CHECK(bfs::equivalent(ctx.m_work_directory,
                                     bfs::current_path().string()));
     else
         ctx.m_work_directory = wdir;
-    Child c = Launcher()(args, ctx);
+    Child c = Launcher()(args, ctx, bp::close_stream, bp::redirect_stream);
 
     bp::pistream& is = c.get_stdout();
     std::string dir;
@@ -300,8 +294,7 @@ get_var_value(Context& ctx, const std::string& var)
     args.push_back("query-env");
     args.push_back("TO_BE_SET");
 
-    ctx.m_stdout_behavior = bp::redirect_stream;
-    Child c = Launcher()(args, ctx);
+    Child c = Launcher()(args, ctx, bp::close_stream, bp::redirect_stream);
 
     bp::pistream& is = c.get_stdout();
     std::string status;

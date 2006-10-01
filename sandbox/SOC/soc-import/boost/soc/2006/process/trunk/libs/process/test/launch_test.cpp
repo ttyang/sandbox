@@ -28,10 +28,18 @@ class launcher
 public:
     bp::child
     operator()(const std::vector< std::string > args,
-               const bp::context& ctx,
+               bp::context ctx,
+               bp::stream_behavior bstdin = bp::close_stream,
+               bp::stream_behavior bstdout = bp::close_stream,
+               bp::stream_behavior bstderr = bp::close_stream,
+               bool merge_stderr_with_stdout = false,
                bool usein = false)
         const
     {
+        ctx.m_stdin_behavior = bstdin;
+        ctx.m_stdout_behavior = bstdout;
+        ctx.m_stderr_behavior = bstderr;
+        ctx.m_merge_stderr_with_stdout = merge_stderr_with_stdout;
         return bp::launch(get_helpers_path(), args, ctx);
     }
 };
@@ -43,7 +51,7 @@ init_unit_test_suite(int argc, char* argv[])
 {
     bfs::initial_path();
 
-    but::test_suite* test = BOOST_TEST_SUITE("launcher test suite");
+    but::test_suite* test = BOOST_TEST_SUITE("launch test suite");
 
     add_tests_launch_base< launcher, bp::context, bp::child >(test);
 
