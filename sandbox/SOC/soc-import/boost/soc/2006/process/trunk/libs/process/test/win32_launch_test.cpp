@@ -45,17 +45,15 @@ public:
     bp::win32_child
     operator()(const std::vector< std::string > args,
                bp::win32_context ctx,
-               bp::stream_behavior bstdin = bp::close_stream,
-               bp::stream_behavior bstdout = bp::close_stream,
-               bp::stream_behavior bstderr = bp::close_stream,
-               bool merge_stderr_with_stdout = false,
+               bp::stream_behavior bstdin = bp::close_stream(),
+               bp::stream_behavior bstdout = bp::close_stream(),
+               bp::stream_behavior bstderr = bp::close_stream(),
                bool usein = false)
         const
     {
         ctx.m_stdin_behavior = bstdin;
         ctx.m_stdout_behavior = bstdout;
         ctx.m_stderr_behavior = bstderr;
-        ctx.m_merge_stderr_with_stdout = merge_stderr_with_stdout;
         return bp::win32_launch(get_helpers_path(), args, ctx);
     }
 };
@@ -77,7 +75,7 @@ test_startupinfo(void)
     std::ostringstream flags;
 
     bp::win32_context ctx1;
-    ctx1.m_stdout_behavior = bp::redirect_stream;
+    ctx1.m_stdout_behavior = bp::capture_stream();
     flags << STARTF_USESTDHANDLES;
     Child c1 = bp::win32_launch(get_helpers_path(), args, ctx1);
     portable_getline(c1.get_stdout(), line);
@@ -105,7 +103,7 @@ test_startupinfo(void)
     si.dwYSize = 400;
     bp::win32_context ctx2;
     ctx2.m_startupinfo = &si;
-    ctx2.m_stdout_behavior = bp::redirect_stream;
+    ctx2.m_stdout_behavior = bp::capture_stream();
     flags << (STARTF_USESTDHANDLES | STARTF_USEPOSITION | STARTF_USESIZE);
     Child c2 = bp::win32_launch(get_helpers_path(), args, ctx2);
     portable_getline(c2.get_stdout(), line);

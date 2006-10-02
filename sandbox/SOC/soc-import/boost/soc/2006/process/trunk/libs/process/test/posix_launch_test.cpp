@@ -41,28 +41,23 @@ public:
     bp::posix_child
     operator()(const std::vector< std::string > args,
                bp::posix_context ctx,
-               bp::stream_behavior bstdin = bp::close_stream,
-               bp::stream_behavior bstdout = bp::close_stream,
-               bp::stream_behavior bstderr = bp::close_stream,
-               bool merge_stderr_with_stdout = false,
+               bp::stream_behavior bstdin = bp::close_stream(),
+               bp::stream_behavior bstdout = bp::close_stream(),
+               bp::stream_behavior bstderr = bp::close_stream(),
                bool usein = false)
         const
     {
-        if (bstdin != bp::close_stream)
+        if (bstdin.get_type() != bp::stream_behavior::close)
             ctx.m_input_behavior.insert
                 (bp::behavior_map::value_type(STDIN_FILENO, bstdin));
 
-        if (bstdout != bp::close_stream)
+        if (bstdout.get_type() != bp::stream_behavior::close)
             ctx.m_output_behavior.insert
                 (bp::behavior_map::value_type(STDOUT_FILENO, bstdout));
 
-        if (bstderr != bp::close_stream)
+        if (bstderr.get_type() != bp::stream_behavior::close)
             ctx.m_output_behavior.insert
                 (bp::behavior_map::value_type(STDERR_FILENO, bstderr));
-
-        if (merge_stderr_with_stdout)
-            ctx.m_merge_set.insert
-                (std::pair< int, int >(STDERR_FILENO, STDOUT_FILENO));
 
         return bp::posix_launch(get_helpers_path(), args, ctx);
     }
@@ -81,9 +76,9 @@ test_input(void)
 
     bp::posix_context ctx;
     ctx.m_input_behavior.insert
-        (bp::behavior_map::value_type(STDIN_FILENO, bp::redirect_stream));
+        (bp::behavior_map::value_type(STDIN_FILENO, bp::capture_stream()));
     ctx.m_output_behavior.insert
-        (bp::behavior_map::value_type(STDOUT_FILENO, bp::redirect_stream));
+        (bp::behavior_map::value_type(STDOUT_FILENO, bp::capture_stream()));
     bp::posix_child c = bp::posix_launch(get_helpers_path(), args, ctx);
 
     bp::postream& os = c.get_input(STDIN_FILENO);
@@ -116,7 +111,7 @@ check_output(int desc, const std::string& msg)
 
     bp::posix_context ctx;
     ctx.m_output_behavior.insert
-        (bp::behavior_map::value_type(desc, bp::redirect_stream));
+        (bp::behavior_map::value_type(desc, bp::capture_stream()));
     bp::posix_child c = posix_launch(get_helpers_path(), args, ctx);
 
     bp::pistream& is = c.get_output(desc);
@@ -150,7 +145,7 @@ test_output(void)
 
 #if defined(BOOST_PROCESS_POSIX_API)
 void
-check_merge(int desc1, int desc2, const std::string& msg)
+check_redirect(int desc1, int desc2, const std::string& msg)
 {
     std::vector< std::string > args;
     args.push_back("helpers");
@@ -161,8 +156,10 @@ check_merge(int desc1, int desc2, const std::string& msg)
 
     bp::posix_context ctx;
     ctx.m_output_behavior.insert
-        (bp::behavior_map::value_type(desc1, bp::redirect_stream));
-    ctx.m_merge_set.insert(std::pair< int, int >(desc2, desc1));
+        (bp::behavior_map::value_type(desc1, bp::capture_stream()));
+    ctx.m_output_behavior.insert
+        (bp::behavior_map::value_type(desc2,
+                                      bp::posix_redirect_stream(desc1)));
     bp::posix_child c = posix_launch(get_helpers_path(), args, ctx);
 
     bp::pistream& is = c.get_output(desc1);
@@ -188,12 +185,12 @@ check_merge(int desc1, int desc2, const std::string& msg)
 #if defined(BOOST_PROCESS_POSIX_API)
 static
 void
-test_merge(void)
+test_redirect(void)
 {
-    check_merge(STDOUT_FILENO, STDERR_FILENO, "message");
-    check_merge(STDERR_FILENO, STDOUT_FILENO, "message");
-    check_merge(4, 5, "message");
-    check_merge(10, 20, "message");
+    check_redirect(STDOUT_FILENO, STDERR_FILENO, "message");
+    check_redirect(STDERR_FILENO, STDOUT_FILENO, "message");
+    check_redirect(4, 5, "message");
+    check_redirect(10, 20, "message");
 }
 #endif
 
@@ -237,7 +234,7 @@ init_unit_test_suite(int argc, char* argv[])
         (test);
 
     test->add(BOOST_TEST_CASE(&test_output), 0, 10);
-    test->add(BOOST_TEST_CASE(&test_merge), 0, 10);
+    test->add(BOOST_TEST_CASE(&test_redirect), 0, 10);
     test->add(BOOST_TEST_CASE(&test_input), 0, 10);
     test->add(BOOST_TEST_CASE(&test_default_ids));
 #else
