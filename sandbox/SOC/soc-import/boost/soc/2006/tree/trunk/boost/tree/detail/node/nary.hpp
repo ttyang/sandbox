@@ -49,6 +49,8 @@ namespace detail {
 
 using boost::array;
 
+template <class T> struct binary_array : public array<T, 2> { };
+
 //struct node_base;
 /*
  * node_with_parent_base
@@ -81,14 +83,17 @@ class node_with_parent_base {
 		return m_parent;
 	}
 };
- 
-template <std::size_t N>
-class node_base : public node_with_parent_base, public array<node_base<N>*, N> {
-	typedef node_base<N> self_type;
+
+template <template <typename> class Container>
+class node_base;
+
+template <template <typename> class Container>
+class node_base : public node_with_parent_base, public Container<node_base<Container>*> {
+	typedef node_base<Container> self_type;
 	
  public:
  
- 	typedef array<node_base<N>*, N> base_type;
+ 	typedef Container<node_base*> base_type;
 	typedef self_type* base_pointer;
 	typedef self_type const* const_base_pointer;
 	
@@ -117,12 +122,13 @@ class node_base : public node_with_parent_base, public array<node_base<N>*, N> {
 };
 
 template <>
-class node_base<2> : public node_with_parent_base, public array<node_base<2>*, 2> {
-	typedef node_base<2> self_type;
+class node_base<binary_array>
+: public node_with_parent_base, public binary_array<node_base<binary_array>*> {
+	typedef node_base<binary_array> self_type;
 	
  public:
  
- 	typedef array<node_base<2>*, 2> base_type;
+ 	typedef binary_array<node_base*> base_type;
 	typedef self_type* base_pointer;
 	typedef self_type const* const_base_pointer;
 	
@@ -210,18 +216,20 @@ class node_base<2> : public node_with_parent_base, public array<node_base<2>*, 2
 	
 };
 
-template <std::size_t N, typename T, class Augment, class BalanceData>
-class node : public node_base<N> {
+template <typename T, template <typename> class Container, class Augment, class BalanceData>
+class node : public node_base<Container> {
  public:
  	typedef T value_type;
 	typedef Augment augmentor;
 	typedef BalanceData balancer_data;
+	
+	typedef Container<node_base<Container>*> container_type;
 
-	typedef node<N, value_type, augmentor, balancer_data> node_type;
+	typedef node<value_type, Container, augmentor, balancer_data> node_type;
 	typedef node_type* node_pointer;
 	typedef node_type& node_reference;
 	//typedef node_pointer position_type;
-	typedef node_base<N> base_type;
+	typedef node_base<Container> base_type;
 	typedef base_type* base_pointer;
 	typedef base_type const* const_base_pointer;
 	
