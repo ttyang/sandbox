@@ -141,7 +141,11 @@ template&lt;class T, class Alloc = std::allocator&lt;T&gt; &gt; using rank_tree 
   to handle both client data access (by dereference) and subtree access while
   hiding the normally underlying node structure, providing a uniform
   interface to algorithms that are thus enabled to deal with a number of
-  different kinds of trees.</p>
+  different kinds of trees. On the other hand, this abstraction achieves
+  independence of implementation details (such as nodes for storage in many 
+  cases), allowing the underlying concepts to be applicable to other
+  possible implementations as well.
+  </p>
 
   <h3>What alternatives did you consider, and what are the tradeoffs?</h3>
 

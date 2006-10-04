@@ -27,16 +27,16 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 /** 
- * @file binary.hpp
- * Binary node implementation
+ * @file nary.hpp
+ * Nary node implementation (with N=2, i.e. binary specialization)
  */
  
 //TODO: use Boost(TR1).Array (?)
 //		and maybe Boost.Optional (for the "empty" stuff?)
 //Templatize with arity (so we can use this for multiway trees, too?)
 
-#ifndef BOOST_TREE_DETAIL_NODE_BINARY_HPP
-#define BOOST_TREE_DETAIL_NODE_BINARY_HPP
+#ifndef BOOST_TREE_DETAIL_NODE_NARY_HPP
+#define BOOST_TREE_DETAIL_NODE_NARY_HPP
 
 #include <boost/array.hpp>
 
@@ -50,9 +50,40 @@ namespace detail {
 using boost::array;
 
 //struct node_base;
+/*
+ * node_with_parent_base
+ * node_base<N> leitet v. node_with_parent_base ab
+ * node_base<2> auch.
+ * 
+ * we might want nodes that are based on other types of containers, right?
+ */
+ 
+class node_with_parent_base {
+	typedef node_with_parent_base self_type;
+	typedef self_type* base_pointer;
+	typedef self_type const* const_base_pointer;
 
+ public:
+	base_pointer m_parent; // TODO: protect?
+	
+	node_with_parent_base()
+	{
+		m_parent = this;
+	}
+	
+	base_pointer parent()
+	{
+		return m_parent;
+	}
+	
+	base_pointer const parent() const
+	{
+		return m_parent;
+	}
+};
+ 
 template <std::size_t N>
-class node_base : public array<node_base<N>*, N> {
+class node_base : public node_with_parent_base, public array<node_base<N>*, N> {
 	typedef node_base<N> self_type;
 	
  public:
@@ -60,13 +91,9 @@ class node_base : public array<node_base<N>*, N> {
  	typedef array<node_base<N>*, N> base_type;
 	typedef self_type* base_pointer;
 	typedef self_type const* const_base_pointer;
-
-	base_pointer m_parent;
 	
-	node_base()
-	{
-		m_parent = this;
-	}
+	node_base() : node_with_parent_base()
+	{ }
 	
 	static base_pointer nil()
 	{
@@ -80,24 +107,50 @@ class node_base : public array<node_base<N>*, N> {
 		for (typename base_type::size_type i=0; i<base_type::max_size(); ++i)
 			operator[](i) = nil();
 	}
-	
-	base_pointer parent()
-	{
-		return m_parent;
-	}
-	
-	base_pointer const parent() const
-	{
-		return m_parent;
-	}
-	
+
 	// This injures Meyers' Item 36. OTOH, iterator adaptors do that, too, right?
 	bool const empty() const
 	{
 		return (this == nil());
 	}
 	
-	typename base_type::size_type rotate(typename base_type::size_type const& c)
+};
+
+template <>
+class node_base<2> : public node_with_parent_base, public array<node_base<2>*, 2> {
+	typedef node_base<2> self_type;
+	
+ public:
+ 
+ 	typedef array<node_base<2>*, 2> base_type;
+	typedef self_type* base_pointer;
+	typedef self_type const* const_base_pointer;
+	
+	node_base() : node_with_parent_base()
+	{ }
+	
+	static base_pointer nil()
+	{
+		static self_type m_nil_obj;
+		static base_pointer m_nil = &m_nil_obj;
+		return m_nil;
+	}
+	
+	void init()
+	{
+		for (base_type::size_type i=0; i<base_type::max_size(); ++i)
+			operator[](i) = nil();
+	}
+
+	// This injures Meyers' Item 36. OTOH, iterator adaptors do that, too, right?
+	bool const empty() const
+	{
+		return (this == nil());
+	}
+	
+	// Binary specific
+	
+	base_type::size_type rotate(base_type::size_type const& c)
 	{
 		//TODO: Optimise.
 		//split up into even more atomic parts? probably not
@@ -112,14 +165,14 @@ class node_base : public array<node_base<N>*, N> {
 		B->m_parent = this;
 		q->m_parent = this->m_parent;
 
-		typename base_type::size_type qp = get_parity();
-		q->m_parent->base_type::operator[](qp) = q;
+		base_type::size_type qp = get_parity();
+		static_cast<base_pointer>(q->m_parent)->base_type::operator[](qp) = q;
 		this->m_parent = q;
 		q->base_type::operator[](c ? 0 : 1) = this;
 		return qp;
 	}
 	
-	base_pointer detach(typename base_type::size_type m_pos)
+	base_pointer detach(base_type::size_type m_pos)
 	{
 		base_pointer q = base_type::operator[](m_pos);
 		base_type::operator[](m_pos) = 
@@ -131,8 +184,8 @@ class node_base : public array<node_base<N>*, N> {
 	}
 	
 	// TODO: actually implement this.
-	base_pointer detach(typename base_type::size_type parity, 
-						typename base_type::size_type other_parity, 
+	base_pointer detach(base_type::size_type parity, 
+						base_type::size_type other_parity, 
 						base_pointer other)
 	{
 		//Node::pre_splice(q, r);
@@ -140,20 +193,21 @@ class node_base : public array<node_base<N>*, N> {
 		base_pointer x = detach(parity);
 
 		// q has been spliced out, now relink it in place of r.				
-		other->m_parent->base_type::operator[](other_parity) = this;
+		static_cast<base_pointer>(other->m_parent)->base_type::operator[](other_parity) = this;
 		m_parent = other->m_parent;
 
-		for (typename base_type::size_type i=0; i<base_type::max_size(); ++i) {
+		for (base_type::size_type i=0; i<base_type::max_size(); ++i) {
 			base_type::operator[](i) = other->base_type::operator[](i);
 			base_type::operator[](i)->m_parent = this;
 		}
 		return x;
 	}
 	
-	typename base_type::size_type const get_parity() const
+	base_type::size_type const get_parity() const
 	{
-		return (this->m_parent->base_type::operator[](0) == this ? 0 : 1);
+		return (static_cast<base_pointer>(this->m_parent)->base_type::operator[](0) == this ? 0 : 1);
 	}
+	
 };
 
 template <std::size_t N, typename T, class Augment, class BalanceData>
@@ -204,4 +258,4 @@ class node : public node_base<N> {
 } // namespace tree
 } // namespace boost
 
-#endif // BOOST_TREE_DETAIL_NODE_BINARY_HPP
+#endif // BOOST_TREE_DETAIL_NODE_NARY_HPP
