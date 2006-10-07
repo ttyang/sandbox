@@ -31,10 +31,6 @@
  * Nary cursor implementation
  */
 
-// TODO: Use TR1 type_traits (integral_constant)
-// can we abstract the cursor stuff any further, 
-// eventually producing cursor_adaptor?
-
 #ifndef BOOST_TREE_DETAIL_CURSOR_NARY_HPP
 #define BOOST_TREE_DETAIL_CURSOR_NARY_HPP
 
@@ -58,7 +54,6 @@ class helper {
  public:
 	static typename Node::reference deref(BasePtr par, SizeType pos)
 	{
-		//return **static_cast<Node*>(par);
 		return **static_cast<Node*>(par->operator[](pos));
 	}
 };
@@ -71,7 +66,6 @@ class helper<node<Value, detail::binary_array, Augment, Balance> const, BasePtr,
 	static typename node_type::reference deref(BasePtr par, SizeType pos)
 	{
 		return **static_cast<node_type*>(par);
-		//return **static_cast<Node*>(par->operator[](pos));
 	}
 };
 
@@ -82,16 +76,8 @@ class helper<node<Value, detail::binary_array, Augment, Balance>, BasePtr, SizeT
 	static typename node_type::reference deref(BasePtr par, SizeType pos)
 	{
 		return **static_cast<node_type*>(par);
-		//return **static_cast<Node*>(par->operator[](pos));
 	}
 };
-
-//typename Node::reference deref(BasePtr par, SizeType pos)
-//{
-//	return **static_cast<Node*>(par);
-//}
-
-//node<Value, detail::binary_array, Augment, Balance>
 
 template<class Node>
 class const_nary_tree_cursor
@@ -117,12 +103,9 @@ class const_nary_tree_cursor
 	typedef typename cursor_facade_::size_type size_type;
 
 	// Cursor-specific
-	//typedef integral_constant<size_type, 2> arity; // binary cursor
 	
  	typedef nary_tree_cursor<Node> cursor;
  	typedef const_nary_tree_cursor<Node> const_cursor;
-
-	//typedef bidirectional_traversal_tag vertical_traversal_type;
 	
 	typedef typename Node::metadata_type metadata_type;
 	
@@ -134,9 +117,7 @@ class const_nary_tree_cursor
     const_nary_tree_cursor()
      : m_parent(0), m_pos(0) {}
 
-    explicit const_nary_tree_cursor(
-		const_base_pointer p, 
-		size_type pos /*= 1*/)
+    explicit const_nary_tree_cursor(const_base_pointer p, size_type pos)
      : m_parent(p), m_pos(pos) {}
       
     template <class OtherNode>
@@ -258,13 +239,10 @@ class nary_tree_cursor
 	typedef typename node_type::size_type size_type;
 
 	// Cursor-specific
-	//typedef integral_constant<size_type, 2> arity; // binary cursor
 		
  	typedef nary_tree_cursor<node_type> cursor;
  	typedef const_nary_tree_cursor<node_type> const_cursor;
 
-	typedef bidirectional_traversal_tag vertical_traversal_type;
- 
  	typedef typename node_type::metadata_type metadata_type;
  	
 	// Container-specific:
@@ -279,8 +257,8 @@ class nary_tree_cursor
     nary_tree_cursor()
       : m_parent(0), m_pos(0) {}
 
-    explicit nary_tree_cursor(base_pointer p, size_type pos /*= 1*/)
-      : m_parent(p), m_pos(pos) {}
+    explicit nary_tree_cursor(base_pointer p, size_type pos)
+    : m_parent(p), m_pos(pos) {}
 
     template <class OtherNode> //revisit
     nary_tree_cursor(
