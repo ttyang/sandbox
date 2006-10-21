@@ -6,11 +6,11 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file detail/map_view_iterator.hpp
+/// \file detail/set_view_iterator.hpp
 /// \brief Iterator adaptors from multi-index to bimap.
 
-#ifndef BOOST_BIMAP_DETAIL_MAP_VIEW_ITERATOR_HPP
-#define BOOST_BIMAP_DETAIL_MAP_VIEW_ITERATOR_HPP
+#ifndef BOOST_BIMAP_DETAIL_SET_VIEW_ITERATOR_HPP
+#define BOOST_BIMAP_DETAIL_SET_VIEW_ITERATOR_HPP
 
 // Boost
 #include <boost/serialization/nvp.hpp>
@@ -32,36 +32,30 @@ library, and EBO optimization was applied to the functor.
 
                                                                       **/
 
-template< class Tag, class Relation, class CoreIterator > struct map_view_iterator;
+template< class CoreIterator > struct set_view_iterator;
 
-template< class Tag, class Relation, class CoreIterator >
-struct map_view_iterator_base
+template< class CoreIterator >
+struct set_view_iterator_base
 {
     typedef iterator_adaptor
     <
-        map_view_iterator< Tag, Relation, CoreIterator >,
+        set_view_iterator< CoreIterator >,
         CoreIterator,
         typename remove_reference
         <
-            typename ::boost::bimap::relation::support::pair_reference_type_by<Tag,Relation>::type
+            typename CoreIterator::value_type::above_view_reference
 
         >::type,
         ::boost::use_default,
-        typename ::boost::bimap::relation::support::pair_reference_type_by<Tag,Relation>::type
+        typename CoreIterator::value_type::above_view_reference
 
     > type;
 };
 
-template< class Tag, class Relation, class CoreIterator >
-struct map_view_iterator :
-
-    public map_view_iterator_base<Tag,Relation,CoreIterator>::type,
-    protected ::boost::bimap::relation::support::GetPairFunctor<Tag,Relation>
-
+template< class CoreIterator >
+struct set_view_iterator : public set_view_iterator_base<CoreIterator>::type
 {
-    typedef typename map_view_iterator_base<Tag,Relation,CoreIterator>::type base_;
-
-    typedef ::boost::bimap::relation::support::GetPairFunctor<Tag,Relation> get_pair_functor;
+    typedef typename set_view_iterator_base<CoreIterator>::type base_;
 
     public:
 
@@ -69,18 +63,14 @@ struct map_view_iterator :
     // to set the "pointer" to Reference*, but iterator_adaptor and iterator_facade
     // defines "pointer" as value_type* and do not allow this to be changed.
 
-    typedef typename ::boost::bimap::relation::support::pair_type_by
-    <
-        Tag, Relation
+    typedef typename CoreIterator::value_type::above_view value_type;
 
-    >::type value_type;
+    set_view_iterator() {}
 
-    map_view_iterator() {}
-
-    map_view_iterator(CoreIterator const& iter)
+    set_view_iterator(CoreIterator const& iter)
       : base_(iter) {}
 
-    map_view_iterator(map_view_iterator const & iter)
+    set_view_iterator(set_view_iterator const & iter)
       : base_(iter.base()) {}
 
     private:
@@ -89,7 +79,7 @@ struct map_view_iterator :
 
     typename base_::reference dereference() const
     {
-        return get_pair_functor::operator()( *const_cast<typename base_::base_type::value_type*>(&(*this->base())) );
+        return const_cast<typename base_::base_type::value_type*>(&(*this->base()))->get_view();
     }
 
     #ifndef BOOST_BIMAP_DISABLE_SERIALIZATION
@@ -118,35 +108,30 @@ struct map_view_iterator :
 };
 
 
-template< class Tag, class Relation, class CoreIterator > struct const_map_view_iterator;
+template< class CoreIterator > struct const_set_view_iterator;
 
-template< class Tag, class Relation, class CoreIterator >
-struct const_map_view_iterator_base
+template< class CoreIterator >
+struct const_set_view_iterator_base
 {
     typedef iterator_adaptor
     <
-        const_map_view_iterator< Tag, Relation, CoreIterator >,
+        set_view_iterator< CoreIterator >,
         CoreIterator,
         typename remove_reference
         <
-            typename ::boost::bimap::relation::support::const_pair_reference_type_by<Tag,Relation>::type
+            typename CoreIterator::value_type::above_view_reference
 
         >::type,
         ::boost::use_default,
-        typename ::boost::bimap::relation::support::const_pair_reference_type_by<Tag,Relation>::type
+        typename CoreIterator::value_type::above_view_reference
 
     > type;
 };
 
-template< class Tag, class Relation, class CoreIterator >
-struct const_map_view_iterator :
-
-    public const_map_view_iterator_base<Tag,Relation,CoreIterator>::type,
-    protected ::boost::bimap::relation::support::GetPairFunctor<Tag,Relation>
+template< class CoreIterator >
+struct const_set_view_iterator : public const_set_view_iterator_base<CoreIterator>::type
 {
-    typedef typename const_map_view_iterator_base<Tag,Relation,CoreIterator>::type base_;
-
-    typedef ::boost::bimap::relation::support::GetPairFunctor<Tag,Relation> get_pair_functor;
+    typedef typename const_set_view_iterator_base<CoreIterator>::type base_;
 
     public:
 
@@ -154,21 +139,17 @@ struct const_map_view_iterator :
     // to set the "pointer" to Reference*, but iterator_adaptor and iterator_facade
     // defines "pointer" as value_type* and do not allow this to be changed.
 
-    typedef typename ::boost::bimap::relation::support::pair_type_by
-    <
-        Tag, Relation
+    typedef typename CoreIterator::value_type::above_view value_type;
 
-    >::type value_type;
+    const_set_view_iterator() {}
 
-    const_map_view_iterator() {}
-
-    const_map_view_iterator(CoreIterator const& iter)
+    const_set_view_iterator(CoreIterator const& iter)
       : base_(iter) {}
 
-    const_map_view_iterator(const_map_view_iterator const & iter)
+    const_set_view_iterator(const_set_view_iterator const & iter)
       : base_(iter.base()) {}
 
-    const_map_view_iterator(map_view_iterator<Tag,Relation,CoreIterator> i)
+    const_set_view_iterator(set_view_iterator<CoreIterator> i)
       : base_(i.base()) {}
 
     private:
@@ -177,7 +158,7 @@ struct const_map_view_iterator :
 
     typename base_::reference dereference() const
     {
-        return get_pair_functor::operator()(*this->base());
+        return this->base()->get_view();
     }
 
     #ifndef BOOST_BIMAP_DISABLE_SERIALIZATION

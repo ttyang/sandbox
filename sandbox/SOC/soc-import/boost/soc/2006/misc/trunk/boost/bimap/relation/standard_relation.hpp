@@ -2,28 +2,6 @@
 //
 // Copyright (c) 2006 Matias Capeletto
 //
-// This code may be used under either of the following two licences:
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE. OF SUCH DAMAGE.
-//
-// Or:
-//
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -34,7 +12,11 @@
 #ifndef BOOST_BIMAP_RELATION_STANDARD_RELATION_HPP
 #define BOOST_BIMAP_RELATION_STANDARD_RELATION_HPP
 
-// Boost
+#include <boost/bimap/relation/standard_relation_fwd.hpp>
+
+#include <boost/mpl/if.hpp>
+#include <boost/type_traits/remove_const.hpp>
+
 #include <boost/serialization/nvp.hpp>
 
 // Boost.Bimap
@@ -46,10 +28,13 @@
 #include <boost/bimap/relation/member_at.hpp>
 #include <boost/bimap/relation/symmetrical_base.hpp>
 #include <boost/bimap/relation/standard_pair_view.hpp>
+#include <boost/bimap/relation/standard_relation_view.hpp>
 #include <boost/bimap/relation/const_standard_pair_view.hpp>
 #include <boost/bimap/relation/structured_pair.hpp>
 
 #include <boost/bimap/relation/detail/totally_ordered_pair.hpp>
+
+
 
 namespace boost {
 namespace bimap {
@@ -62,15 +47,62 @@ This is a standard compliant suboptimal relation class.
 
 See also standard_relation, mutant_relation.
 \ingroup relation_group
-                                                           **/
+                                                                           **/
 
-template< class TA, class TB >
-class standard_relation :
-
-    public symmetrical_base<TA,TB>
-
+template< class TA, class TB, bool force_mutable >
+class standard_relation
 {
-    typedef symmetrical_base<TA,TB> base_;
+    public:
+
+    typedef typename tags::support::default_tagged
+    <
+        TA,
+        member_at::left
+
+    >::type tagged_left_type;
+
+    typedef typename tags::support::default_tagged
+    <
+        TB,
+        member_at::right
+
+    >::type tagged_right_type;
+
+    public:
+
+    typedef       standard_relation<TA,TB>            above_view;
+    typedef const standard_relation<TA,TB>      const_above_view;
+
+    typedef       standard_relation_view<TA,TB>       above_view_reference;
+    typedef const_standard_relation_view<TA,TB> const_above_view_reference;
+
+    //@{
+
+        /// The type stored in the relation
+
+        typedef typename ::boost::mpl::if_c< force_mutable,
+
+            typename ::boost::remove_const< typename tagged_left_type::value_type >::type,
+            typename tagged_left_type::value_type
+
+        >::type left_value_type;
+
+        typedef typename ::boost::mpl::if_c< force_mutable,
+
+            typename ::boost::remove_const< typename tagged_right_type::value_type >::type,
+            typename tagged_right_type::value_type
+
+        >::type right_value_type;
+
+    //@}
+
+    //@{
+
+        /// The tag of the member. By default it is \c member_at::{side}
+        typedef typename  tagged_left_type::tag  left_tag;
+        typedef typename tagged_right_type::tag right_tag;
+
+    //@}
 
     public:
 
@@ -92,22 +124,35 @@ class standard_relation :
     //@{
 
         /// data, exposed for easy manipulation
-        typename base_:: left_value_type  left;
-        typename base_::right_value_type right;
+         left_value_type  left;
+        right_value_type right;
 
     //@}
+
+    private:
+
+    typedef standard_relation<TA,TB,true > relation_force_mutable;
+    typedef standard_relation<TA,TB,false> relation_not_force_mutable;
+
+    public:
 
     standard_relation() {}
 
     standard_relation(typename ::boost::call_traits<
-                          typename base_:: left_value_type>::param_type l,
+                           left_value_type>::param_type l,
                       typename ::boost::call_traits<
-                          typename base_::right_value_type>::param_type r) :
+                          right_value_type>::param_type r) :
         left (l),
         right(r)
     {}
 
-    standard_relation(const standard_relation & rel) :
+    standard_relation(const relation_force_mutable & rel) :
+
+        left (rel.left),
+        right(rel.right)
+    {}
+
+    standard_relation(const relation_not_force_mutable & rel) :
 
         left (rel.left),
         right(rel.right)
@@ -132,8 +177,8 @@ class standard_relation :
 
     typedef std::pair
     <
-        typename base_::left_value_type,
-        typename base_::right_value_type
+         left_value_type,
+        right_value_type
 
     > std_pair;
 
@@ -166,10 +211,33 @@ class standard_relation :
         return *this;
     }
 
+    public:
+
     BOOST_BIMAP_TOTALLY_ORDERED_PAIR_IMPLEMENTATION(
         left,right,
 
-        standard_relation,
+        relation_force_mutable,
+        left,right
+    );
+
+    BOOST_BIMAP_TOTALLY_ORDERED_PAIR_IMPLEMENTATION(
+        left,right,
+
+        relation_not_force_mutable,
+        left,right
+    );
+
+    BOOST_BIMAP_TOTALLY_ORDERED_PAIR_IMPLEMENTATION(
+        left,right,
+
+        above_view_reference,
+        left,right
+    );
+
+    BOOST_BIMAP_TOTALLY_ORDERED_PAIR_IMPLEMENTATION(
+        left,right,
+
+        const_above_view_reference,
         left,right
     );
 
@@ -220,22 +288,22 @@ class standard_relation :
     // pair_by metafunction. Remember that not all compiler supports the mutant
     // idiom.
 
-    typename base_::left_value_type & get_left()
+    left_value_type & get_left()
     {
         return left;
     }
 
-    const typename base_::left_value_type & get_left() const
+    const left_value_type & get_left() const
     {
         return left;
     }
 
-    typename base_::right_value_type & get_right()
+    right_value_type & get_right()
     {
         return right;
     }
 
-    const typename base_::right_value_type & get_right() const
+    const right_value_type & get_right() const
     {
         return right;
     }
@@ -258,6 +326,17 @@ class standard_relation :
     {
         return const_right_pair_reference(*this);
     }
+
+    above_view_reference get_view()
+    {
+        return above_view_reference(*this);
+    }
+
+    const_above_view_reference get_view() const
+    {
+        return const_above_view_reference(*this);
+    }
+
 
     #ifndef BOOST_BIMAP_DISABLE_SERIALIZATION
 
