@@ -6,18 +6,17 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file container_adaptor/detail/container_adaptor.hpp
+/// \file container_adaptor/container_adaptor.hpp
 /// \brief Container adaptor to build a type that is compliant to the concept of a container.
 
-#ifndef BOOST_BIMAP_CONTAINER_ADAPTOR_DETAIL_CONTAINER_ADAPTOR_HPP
-#define BOOST_BIMAP_CONTAINER_ADAPTOR_DETAIL_CONTAINER_ADAPTOR_HPP
+#ifndef BOOST_BIMAP_CONTAINER_ADAPTOR_CONTAINER_ADAPTOR_HPP
+#define BOOST_BIMAP_CONTAINER_ADAPTOR_CONTAINER_ADAPTOR_HPP
 
 #include <utility>
 
-#include <boost/type_traits/is_same.hpp>
 #include <boost/mpl/if.hpp>
+#include <boost/mpl/aux_/na.hpp>
 #include <boost/bimap/container_adaptor/detail/identity_converters.hpp>
-#include <boost/bimap/container_adaptor/use_default.hpp>
 #include <boost/iterator/iterator_traits.hpp>
 
 #include <boost/bimap/container_adaptor/detail/functor_bag.hpp>
@@ -32,10 +31,6 @@ namespace bimap {
 
 namespace container_adaptor {
 
-/// \brief Container adaptors for concepts
-
-namespace detail {
-
 /// \brief Container adaptor to build a type that is compliant to the concept of a container.
 
 template
@@ -45,10 +40,10 @@ template
     class Iterator,
     class ConstIterator,
 
-    class IteratorToBaseConverter   = use_default,
-    class IteratorFromBaseConverter = use_default,
-    class ValueToBaseConverter      = use_default,
-    class ValueFromBaseConverter    = use_default,
+    class IteratorToBaseConverter   = ::boost::mpl::na,
+    class IteratorFromBaseConverter = ::boost::mpl::na,
+    class ValueToBaseConverter      = ::boost::mpl::na,
+    class ValueFromBaseConverter    = ::boost::mpl::na,
 
     class FunctorsFromDerivedClasses = mpl::list<>
 >
@@ -69,7 +64,7 @@ class container_adaptor
     typedef typename Base::size_type size_type;
     typedef typename Base::difference_type difference_type;
 
-    typedef typename mpl::if_< is_same< IteratorToBaseConverter, use_default >,
+    typedef typename mpl::if_< ::boost::mpl::is_na<IteratorToBaseConverter>,
         // {
                 ::boost::bimap::container_adaptor::detail::iterator_to_base_identity
                 <
@@ -84,7 +79,7 @@ class container_adaptor
 
         >::type iterator_to_base;
 
-    typedef typename mpl::if_< is_same< IteratorFromBaseConverter, use_default >,
+    typedef typename mpl::if_< ::boost::mpl::is_na<IteratorFromBaseConverter>,
         // {
                 ::boost::bimap::container_adaptor::detail::iterator_from_base_identity
                 <
@@ -99,7 +94,7 @@ class container_adaptor
 
         >::type iterator_from_base;
 
-    typedef typename mpl::if_< is_same< ValueToBaseConverter, use_default >,
+    typedef typename mpl::if_< ::boost::mpl::is_na<ValueToBaseConverter>,
         // {
                 ::boost::bimap::container_adaptor::detail::value_to_base_identity
                 <
@@ -114,7 +109,7 @@ class container_adaptor
 
         >::type value_to_base;
 
-    typedef typename mpl::if_< is_same< ValueFromBaseConverter, use_default >,
+    typedef typename mpl::if_< ::boost::mpl::is_na<ValueFromBaseConverter>,
         // {
                 ::boost::bimap::container_adaptor::detail::value_from_base_identity
                 <
@@ -139,18 +134,7 @@ class container_adaptor
 
     typedef Base base_type;
 
-    typedef container_adaptor
-    <
-        Base,
-
-        Iterator, ConstIterator,
-
-        IteratorToBaseConverter, IteratorFromBaseConverter,
-        ValueToBaseConverter   , ValueFromBaseConverter,
-
-        FunctorsFromDerivedClasses
-
-    > container_adaptor_;
+    typedef container_adaptor container_adaptor_;
 
     const Base & base() const { return dwfb.data; }
           Base & base()       { return dwfb.data; }
@@ -276,7 +260,7 @@ class container_adaptor
 
     private:
 
-    DataWithFunctorBag
+    ::boost::bimap::container_adaptor::detail::data_with_functor_bag
     <
         Base &,
 
@@ -298,28 +282,9 @@ class container_adaptor
 };
 
 
-
-
-
-
-/* TODO
-// Tests two maps for equality.
-template<class BimapType, class Tag>
-bool operator==(const map_view<BimapType,Tag>&, const map_view<BimapType,Tag>&)
-{
-}
-
-// Lexicographical comparison.
-template<class BimapType, class Tag>
-bool operator<(const map_view<BimapType,Tag>&, const map_view<BimapType,Tag>&)
-{
-}
-*/
-
-} // namespace detail
 } // namespace container_adaptor
 } // namespace bimap
 } // namespace boost
 
 
-#endif // BOOST_BIMAP_CONTAINER_ADAPTOR_DETAIL_CONTAINER_ADAPTOR_HPP
+#endif // BOOST_BIMAP_CONTAINER_ADAPTOR_CONTAINER_ADAPTOR_HPP

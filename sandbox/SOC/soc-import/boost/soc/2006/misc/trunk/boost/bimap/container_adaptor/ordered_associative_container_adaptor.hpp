@@ -6,24 +6,24 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file container_adaptor/detail/ordered_associative_container_adaptor.hpp
+/// \file container_adaptor/ordered_associative_container_adaptor.hpp
 /// \brief Container adaptor to build a type that is compliant to the concept of an ordered associative container.
 
-#ifndef BOOST_BIMAP_CONTAINER_ADAPTOR_DETAIL_ORDERED_ASSOCIATIVE_CONTAINER_ADAPTOR_HPP
-#define BOOST_BIMAP_CONTAINER_ADAPTOR_DETAIL_ORDERED_ASSOCIATIVE_CONTAINER_ADAPTOR_HPP
+#ifndef BOOST_BIMAP_CONTAINER_ADAPTOR_ORDERED_ASSOCIATIVE_CONTAINER_ADAPTOR_HPP
+#define BOOST_BIMAP_CONTAINER_ADAPTOR_ORDERED_ASSOCIATIVE_CONTAINER_ADAPTOR_HPP
 
-#include <boost/bimap/container_adaptor/detail/associative_container_adaptor.hpp>
+#include <boost/bimap/container_adaptor/associative_container_adaptor.hpp>
 #include <boost/bimap/container_adaptor/detail/value_comparison_adaptor.hpp>
 #include <boost/bimap/container_adaptor/detail/comparison_adaptor.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/push_front.hpp>
+#include <boost/mpl/aux_/na.hpp>
 #include <boost/operators.hpp>
 
 namespace boost {
 namespace bimap {
 namespace container_adaptor {
-namespace detail {
 
 #ifndef BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
 
@@ -47,9 +47,9 @@ struct ordered_associative_container_adaptor_base
 
             FunctorsFromDerivedClasses,
 
-            typename mpl::if_< is_same< ReverseIteratorFromBaseConverter, use_default >,
+            typename mpl::if_< ::boost::mpl::is_na<ReverseIteratorFromBaseConverter>,
             // {
-                    iterator_from_base_identity
+                    detail::iterator_from_base_identity
                     <
                         typename Base::reverse_iterator                , ReverseIterator,
                         typename Base::const_reverse_iterator          , ConstReverseIterator
@@ -82,12 +82,12 @@ template
 
     class KeyType,
 
-    class IteratorToBaseConverter          = use_default,
-    class IteratorFromBaseConverter        = use_default,
-    class ReverseIteratorFromBaseConverter = use_default,
-    class ValueToBaseConverter             = use_default,
-    class ValueFromBaseConverter           = use_default,
-    class KeyToBaseConverter               = use_default,
+    class IteratorToBaseConverter          = ::boost::mpl::na,
+    class IteratorFromBaseConverter        = ::boost::mpl::na,
+    class ReverseIteratorFromBaseConverter = ::boost::mpl::na,
+    class ValueToBaseConverter             = ::boost::mpl::na,
+    class ValueFromBaseConverter           = ::boost::mpl::na,
+    class KeyToBaseConverter               = ::boost::mpl::na,
 
     class FunctorsFromDerivedClasses = mpl::list<>
 >
@@ -130,7 +130,7 @@ class ordered_associative_container_adaptor :
 
     public:
 
-    typedef comparison_adaptor
+    typedef detail::comparison_adaptor
     <
         typename Base::key_compare,
         typename base_::key_type,
@@ -138,7 +138,7 @@ class ordered_associative_container_adaptor :
 
     > key_compare;
 
-    typedef value_comparison_adaptor
+    typedef detail::value_comparison_adaptor
     <
         typename Base::value_compare,
         typename base_::value_type
@@ -150,9 +150,9 @@ class ordered_associative_container_adaptor :
 
     protected:
 
-    typedef typename mpl::if_< is_same< ReverseIteratorFromBaseConverter, use_default >,
+    typedef typename mpl::if_< ::boost::mpl::is_na<ReverseIteratorFromBaseConverter>,
         // {
-                iterator_from_base_identity
+                detail::iterator_from_base_identity
                 <
                     typename Base::reverse_iterator                , reverse_iterator,
                     typename Base::const_reverse_iterator          , const_reverse_iterator
@@ -174,23 +174,7 @@ class ordered_associative_container_adaptor :
 
     protected:
 
-    typedef ordered_associative_container_adaptor
-    <
-        Base,
-
-        Iterator, ConstIterator, ReverseIterator, ConstReverseIterator,
-
-        KeyType,
-
-        IteratorToBaseConverter, IteratorFromBaseConverter,
-        ReverseIteratorFromBaseConverter,
-        ValueToBaseConverter, ValueFromBaseConverter,
-
-        KeyToBaseConverter,
-
-        FunctorsFromDerivedClasses
-
-    > ordered_associative_container_adaptor_;
+    typedef ordered_associative_container_adaptor ordered_associative_container_adaptor_;
 
     // Interface --------------------------------------------------------------
 
@@ -292,10 +276,9 @@ class ordered_associative_container_adaptor :
 };
 
 
-} // namespace detail
 } // namespace container_adaptor
 } // namespace bimap
 } // namespace boost
 
 
-#endif // BOOST_BIMAP_CONTAINER_ADAPTOR_DETAIL_ORDERED_ASSOCIATIVE_CONTAINER_ADAPTOR_HPP
+#endif // BOOST_BIMAP_CONTAINER_ADAPTOR_ORDERED_ASSOCIATIVE_CONTAINER_ADAPTOR_HPP
