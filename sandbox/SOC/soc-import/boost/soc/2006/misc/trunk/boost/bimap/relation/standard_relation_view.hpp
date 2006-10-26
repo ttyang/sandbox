@@ -14,6 +14,7 @@
 
 #include <boost/bimap/relation/standard_relation_fwd.hpp>
 
+#include <boost/mpl/bool.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/type_traits/remove_const.hpp>
 
@@ -33,7 +34,6 @@
 
 #include <boost/bimap/relation/detail/totally_ordered_pair.hpp>
 
-#include <boost/bimap/detail/mpl/bool_result.hpp>
 
 namespace boost {
 namespace bimap {
@@ -373,16 +373,12 @@ namespace support
 {
 
 template< class Type >
-struct is_standard_relation_view
-{
-    BOOST_BIMAP_MPL_BOOL_RESULT(false)
-};
+struct is_standard_relation_view :
+    ::boost::mpl::false_ {};
 
 template< class TA, class TB >
-struct is_standard_relation_view< standard_relation_view<TA,TB> >
-{
-    BOOST_BIMAP_MPL_BOOL_RESULT(true)
-};
+struct is_standard_relation_view< standard_relation_view<TA,TB> > :
+    ::boost::mpl::true_ {};
 
 } // namespace support
 
