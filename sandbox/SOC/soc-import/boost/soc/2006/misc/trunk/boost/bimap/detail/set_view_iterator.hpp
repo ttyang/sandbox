@@ -73,14 +73,14 @@ struct set_view_iterator : public set_view_iterator_base<CoreIterator>::type
     set_view_iterator(set_view_iterator const & iter)
       : base_(iter.base()) {}
 
-    private:
-
-    friend class iterator_core_access;
-
     typename base_::reference dereference() const
     {
         return const_cast<typename base_::base_type::value_type*>(&(*this->base()))->get_view();
     }
+
+    private:
+
+    friend class iterator_core_access;
 
     #ifndef BOOST_BIMAP_DISABLE_SERIALIZATION
 
@@ -152,14 +152,14 @@ struct const_set_view_iterator : public const_set_view_iterator_base<CoreIterato
     const_set_view_iterator(set_view_iterator<CoreIterator> i)
       : base_(i.base()) {}
 
-    private:
-
-    friend class iterator_core_access;
-
     typename base_::reference dereference() const
     {
         return this->base()->get_view();
     }
+
+    private:
+
+    friend class iterator_core_access;
 
     #ifndef BOOST_BIMAP_DISABLE_SERIALIZATION
 
