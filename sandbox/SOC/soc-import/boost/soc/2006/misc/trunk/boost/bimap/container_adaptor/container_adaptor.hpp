@@ -23,6 +23,7 @@
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/copy.hpp>
 #include <boost/mpl/front_inserter.hpp>
+#include <boost/call_traits.hpp>
 
 namespace boost {
 namespace bimap {
@@ -212,16 +213,16 @@ class container_adaptor
             );
         */
 
-        // Go simpler for now
+        // Go simpler for now, this can be optimized
 
         for( ; iterBegin != iterEnd ; ++iterBegin )
         {
-            base().insert( functor<value_to_base>()(value_type(*iterBegin)) );
+            base().insert( functor<value_to_base>()( value_type(*iterBegin)) );
         }
 
     }
 
-    std::pair<iterator, bool> insert(const value_type& x)
+    std::pair<iterator, bool> insert(typename ::boost::call_traits< value_type >::param_type x)
     {
         std::pair< typename Base::iterator, bool > r(
             base().insert( functor<value_to_base>()(x) )
@@ -233,7 +234,7 @@ class container_adaptor
 
     }
 
-    iterator insert(iterator pos, const value_type& x)
+    iterator insert(iterator pos, typename ::boost::call_traits< value_type >::param_type x)
     {
         return functor<iterator_from_base>()(
             base().insert(functor<iterator_to_base>()(pos),functor<value_to_base>()(x))

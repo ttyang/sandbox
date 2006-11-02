@@ -20,6 +20,7 @@
 #include <boost/mpl/push_front.hpp>
 #include <boost/mpl/aux_/na.hpp>
 #include <boost/operators.hpp>
+#include <boost/call_traits.hpp>
 
 namespace boost {
 namespace bimap {
@@ -222,7 +223,8 @@ class ordered_associative_container_adaptor :
         return value_compare( this->base().value_comp() );
     }
 
-    typename base_::iterator lower_bound(const typename base_::key_type& k)
+    typename base_::iterator lower_bound(
+        typename ::boost::call_traits< typename base_::key_type >::param_type k)
     {
        return this->template functor<
             typename base_::iterator_from_base>()(
@@ -232,7 +234,8 @@ class ordered_associative_container_adaptor :
             );
     }
 
-    typename base_::const_iterator lower_bound(const typename base_::key_type& k) const
+    typename base_::const_iterator lower_bound(
+        typename ::boost::call_traits< typename base_::key_type >::param_type k) const
     {
        return this->template functor<
             typename base_::iterator_from_base>()(
@@ -242,7 +245,8 @@ class ordered_associative_container_adaptor :
             );
     }
 
-    typename base_::iterator upper_bound(const typename base_::key_type& k)
+    typename base_::iterator upper_bound(
+        typename ::boost::call_traits< typename base_::key_type >::param_type k)
     {
        return this->template functor<
             typename base_::iterator_from_base>()(
@@ -252,7 +256,8 @@ class ordered_associative_container_adaptor :
             );
     }
 
-    typename base_::const_iterator upper_bound(const typename base_::key_type& k) const
+    typename base_::const_iterator upper_bound(
+        typename ::boost::call_traits< typename base_::key_type >::param_type k) const
     {
         return this->template functor<
             typename base_::iterator_from_base>()(

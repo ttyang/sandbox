@@ -18,6 +18,7 @@
 #include <boost/mpl/aux_/na.hpp>
 #include <boost/bimap/container_adaptor/detail/identity_converters.hpp>
 #include <boost/bimap/container_adaptor/container_adaptor.hpp>
+#include <boost/call_traits.hpp>
 
 namespace boost {
 namespace bimap {
@@ -146,7 +147,7 @@ class associative_container_adaptor :
     public:
 
     typename base_::size_type
-        erase(const key_type& k)
+        erase(typename ::boost::call_traits< key_type >::param_type k)
     {
         return this->base().erase
         (
@@ -170,7 +171,7 @@ class associative_container_adaptor :
     }
 
     typename base_::size_type
-        count(const key_type& k)
+        count(typename ::boost::call_traits< key_type >::param_type k)
     {
         return this->base().count(
             this->template functor<key_to_base>()(k)
@@ -178,7 +179,7 @@ class associative_container_adaptor :
     }
 
     typename base_::iterator
-        find(const key_type& k)
+        find(typename ::boost::call_traits< key_type >::param_type k)
     {
         return this->template functor<typename base_::iterator_from_base>()
         (
@@ -189,7 +190,7 @@ class associative_container_adaptor :
     }
 
     typename base_::const_iterator
-        find(const key_type& k) const
+        find(typename ::boost::call_traits< key_type >::param_type k) const
     {
         return this->template functor<
             typename base_::iterator_from_base>()
@@ -205,7 +206,7 @@ class associative_container_adaptor :
         typename base_::iterator,
         typename base_::iterator
     >
-        equal_range(const key_type& k)
+        equal_range(typename ::boost::call_traits< key_type >::param_type k)
     {
         std::pair<
 
@@ -236,7 +237,7 @@ class associative_container_adaptor :
         typename base_::const_iterator,
         typename base_::const_iterator
     >
-        equal_range(const key_type& k) const
+        equal_range(typename ::boost::call_traits< key_type >::param_type k) const
     {
         std::pair<
 

@@ -18,7 +18,7 @@
 #include <boost/mpl/aux_/na.hpp>
 #include <boost/bimap/container_adaptor/detail/identity_converters.hpp>
 #include <boost/bimap/container_adaptor/container_adaptor.hpp>
-
+#include <boost/call_traits.hpp>
 
 namespace boost {
 namespace bimap {
@@ -195,7 +195,8 @@ class sequence_container_adaptor :
     }
 
     void resize(typename base_::size_type n,
-                const typename base_::value_type& x = typename base_::value_type())
+                typename ::boost::call_traits< typename base_::value_type >::param_type x =
+                    typename base_::value_type())
     {
         this->base().resize(n,
             this->template functor<typename base_::value_to_base>()(x)
@@ -238,7 +239,7 @@ class sequence_container_adaptor :
         );
     }
 
-    void push_front(const typename base_::value_type& x)
+    void push_front(typename ::boost::call_traits< typename base_::value_type >::param_type x)
     {
         this->base().push_front(
             this->template functor<typename base_::value_to_base>()(x));
@@ -249,7 +250,7 @@ class sequence_container_adaptor :
         this->base().pop_front();
     }
 
-    void push_back(const typename base_::value_type& x)
+    void push_back(typename ::boost::call_traits< typename base_::value_type >::param_type x)
     {
         this->base().push_back(
             this->template functor<typename base_::value_to_base>()(x));
@@ -261,7 +262,8 @@ class sequence_container_adaptor :
     }
 
     std::pair<typename base_::iterator,bool>
-    insert(typename base_::iterator position,const typename base_::value_type& x)
+    insert(typename base_::iterator position,
+           typename ::boost::call_traits< typename base_::value_type >::param_type x)
     {
         std::pair< typename Base::iterator, bool > r(
             this->base().insert(
@@ -278,7 +280,7 @@ class sequence_container_adaptor :
 
     void insert(typename base_::iterator position,
                 typename base_::size_type m,
-                const typename base_::value_type& x)
+                typename ::boost::call_traits< typename base_::value_type >::param_type x)
     {
         this->base().insert(
             this->template functor<typename base_::iterator_to_base>()(position),
@@ -289,17 +291,16 @@ class sequence_container_adaptor :
 
     template<typename InputIterator>
     void insert(typename base_::iterator position,
-                InputIterator first,InputIterator last)
+                InputIterator first, InputIterator last)
     {
-        // TODO
         // This is the same problem found in the insert function of container_adaptor
-        // For now, do the simple thing
+        // For now, do the simple thing. This can be optimized
 
         for( ; first != last ; ++first )
         {
             this->base().insert(
-                this->template functor<typename base_::iterator_to_base>()(position),
-                this->template functor<typename base_::value_to_base   >()(*first)
+                this->template functor<typename base_::iterator_to_base>()( position ),
+                this->template functor<typename base_::value_to_base   >()( typename base_::value_type(*first) )
             );
         }
     }
