@@ -34,10 +34,11 @@ A simple comparison adaptor.
 template < class CompareFunctor, class NewType, class Converter >
 struct comparison_adaptor : std::binary_function<NewType,NewType,bool>
 {
-    comparison_adaptor( CompareFunctor c, Converter conv ) : comp(c), converter(conv) {}
+    comparison_adaptor( const CompareFunctor & c, const Converter & conv ) :
+        comp(c), converter(conv) {}
 
     bool operator()( typename call_traits<NewType>::param_type x,
-                     typename call_traits<NewType>::param_type y)
+                     typename call_traits<NewType>::param_type y) const
     {
         return comp(
             converter(x),
@@ -47,8 +48,26 @@ struct comparison_adaptor : std::binary_function<NewType,NewType,bool>
 
     private:
 
-    // TODO
-    // Apply EBO optimization
+    // EBO optimization can be applyed here
+
+    CompareFunctor  comp;
+    Converter       converter;
+};
+
+template < class CompareFunctor, class NewType, class Converter >
+struct unary_check_adaptor : std::unary_function<NewType,bool>
+{
+    unary_check_adaptor( const CompareFunctor & c, const Converter & conv ) :
+        comp(c), converter(conv) {}
+
+    bool operator()( typename call_traits<NewType>::param_type x) const
+    {
+        return comp( converter(x) );
+    }
+
+    private:
+
+    // EBO optimization can be applyed here
 
     CompareFunctor  comp;
     Converter       converter;
