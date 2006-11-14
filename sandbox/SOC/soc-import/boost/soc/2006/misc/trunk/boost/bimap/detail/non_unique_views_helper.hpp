@@ -1,0 +1,50 @@
+// Boost.Bimap
+//
+// Copyright (c) 2006 Matias Capeletto
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+/// \file detail/non_unique_views_helper.hpp
+/// \brief Details for non unique views
+
+#ifndef BOOST_BIMAP_DETAIL_NON_UNIQUE_VIEWS_HELPER_HPP
+#define BOOST_BIMAP_DETAIL_NON_UNIQUE_VIEWS_HELPER_HPP
+
+/***********************************************************************************************/
+#define BOOST_BIMAP_NON_UNIQUE_VIEW_INSERT_FUNCTIONS                                            \
+                                                                                                \
+template <class InputIterator>                                                                  \
+void insert(InputIterator iterBegin, InputIterator iterEnd)                                     \
+{                                                                                               \
+    for( ; iterBegin != iterEnd ; ++iterBegin )                                                 \
+    {                                                                                           \
+        this->base().insert( this->template functor<typename base_::value_to_base>()(           \
+            typename base_::value_type(*iterBegin)) );                                          \
+    }                                                                                           \
+}                                                                                               \
+                                                                                                \
+std::pair<typename base_::iterator, bool> insert(                                               \
+    typename ::boost::call_traits< typename base_::value_type >::param_type x)                  \
+{                                                                                               \
+    std::pair< typename base_::base_type::iterator, bool > r(                                   \
+        this->base().insert( this->template functor<typename base_::value_to_base>()(x) )       \
+    );                                                                                          \
+                                                                                                \
+    return std::pair<typename base_::iterator, bool>(                                           \
+        this->template functor<typename base_::iterator_from_base>()(r.first),r.second          \
+    );                                                                                          \
+}                                                                                               \
+                                                                                                \
+typename base_::iterator insert(typename base_::iterator pos,                                   \
+    typename ::boost::call_traits< typename base_::value_type >::param_type x)                  \
+{                                                                                               \
+    return this->template functor<typename base_::iterator_from_base>()(                        \
+        this->base().insert(this->template functor<typename base_::iterator_to_base>()(pos),    \
+        this->template functor<typename base_::value_to_base>()(x))                             \
+    );                                                                                          \
+}
+/***********************************************************************************************/
+
+#endif // BOOST_BIMAP_DETAIL_NON_UNIQUE_VIEWS_HELPER_HPP
