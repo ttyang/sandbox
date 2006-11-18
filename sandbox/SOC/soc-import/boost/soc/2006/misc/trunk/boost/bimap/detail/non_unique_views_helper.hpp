@@ -28,7 +28,9 @@ void insert(InputIterator iterBegin, InputIterator iterEnd)                     
 std::pair<typename base_::iterator, bool> insert(                                               \
     typename ::boost::call_traits< typename base_::value_type >::param_type x)                  \
 {                                                                                               \
-    std::pair< typename base_::base_type::iterator, bool > r(                                   \
+    typedef typename base_::base_type::iterator base_iterator;                                  \
+                                                                                                \
+    std::pair< base_iterator, bool > r(                                                         \
         this->base().insert( this->template functor<typename base_::value_to_base>()(x) )       \
     );                                                                                          \
                                                                                                 \
