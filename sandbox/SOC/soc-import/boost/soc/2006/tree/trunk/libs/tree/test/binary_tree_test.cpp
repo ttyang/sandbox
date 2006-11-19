@@ -119,6 +119,14 @@ int test_main(int, char* [])
 	create_binary_tree(tree1);
 	validate_binary_tree(tree1);
 
+	test_swap_binary_trees(tree1, tree2);
+	validate_binary_tree(tree2);
+	BOOST_CHECK(tree1.empty());
+
+	test_swap_binary_trees(tree1, tree2);
+	validate_binary_tree(tree1);
+	BOOST_CHECK(tree2.empty());
+	
 	create_test_data_tree(tree2);
 	validate_test_data_tree(tree2);
 	
