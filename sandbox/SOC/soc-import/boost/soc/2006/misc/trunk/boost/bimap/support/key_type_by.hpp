@@ -6,15 +6,15 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file support/key_type_of.hpp
+/// \file support/key_type_by.hpp
 /// \brief Metafunction to access the set types of a bimap
 
-#ifndef BOOST_BIMAP_SUPPORT_KEY_TYPE_OF_HPP
-#define BOOST_BIMAP_SUPPORT_KEY_TYPE_OF_HPP
+#ifndef BOOST_BIMAP_SUPPORT_KEY_TYPE_BY_HPP
+#define BOOST_BIMAP_SUPPORT_KEY_TYPE_BY_HPP
 
 #include <boost/bimap/relation/detail/metadata_access_builder.hpp>
 
-/** \struct boost::bimap::support::key_type_of
+/** \struct boost::bimap::support::key_type_by
 
 \brief Metafunction to obtain the key type of one of the sides in a bimap
 
@@ -24,7 +24,7 @@ The returned type is one of the {SetType}_of definition classes.
 \code
 
 template< class Tag, class Bimap >
-struct value_type_by
+struct key_type_by
 {
     typedef typename Bimap::{side}_key_type type;
 };
@@ -44,7 +44,7 @@ namespace support {
 
 BOOST_BIMAP_SYMMETRIC_METADATA_ACCESS_BUILDER
 (
-    key_type_of,
+    key_type_by,
     left_key_type,
     right_key_type
 );
@@ -54,5 +54,5 @@ BOOST_BIMAP_SYMMETRIC_METADATA_ACCESS_BUILDER
 } // namespace bimap
 } // namespace boost
 
-#endif // BOOST_BIMAP_SUPPORT_KEY_TYPE_OFF
+#endif // BOOST_BIMAP_SUPPORT_KEY_TYPE_BY_HPP
 

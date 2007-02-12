@@ -6,15 +6,15 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-/// \file support/data_type_of.hpp
+/// \file support/data_type_by.hpp
 /// \brief Metafunction to access the data types of a bimap
 
-#ifndef BOOST_BIMAP_SUPPORT_DATA_TYPE_OF_HPP
-#define BOOST_BIMAP_SUPPORT_DATA_TYPE_OF_HPP
+#ifndef BOOST_BIMAP_SUPPORT_DATA_TYPE_BY_HPP
+#define BOOST_BIMAP_SUPPORT_DATA_TYPE_BY_HPP
 
 #include <boost/bimap/relation/detail/metadata_access_builder.hpp>
 
-/** \struct boost::bimap::support::data_type_of
+/** \struct boost::bimap::support::data_type_by
 
 \brief Metafunction to obtain the data type of one of the sides in a bimap
 
@@ -23,7 +23,7 @@ This is the actual data type stored in the bimap.
 \code
 
 template< class Tag, class Bimap >
-struct data_type_of
+struct data_type_by
 {
     typedef typename Bimap::{side}_data_type type;
 };
@@ -36,7 +36,7 @@ The following holds:
 
 BOOST_STATIC_ASSERT
 (
-    is_same< data_type_of< member_at::left, bimap<A,B> >::type, A >::value
+    is_same< data_type_by< member_at::left, bimap<A,B> >::type, A >::value
 );
 
 \endcode
@@ -53,7 +53,7 @@ namespace support {
 
 BOOST_BIMAP_SYMMETRIC_METADATA_ACCESS_BUILDER
 (
-    data_type_of,
+    data_type_by,
     left_data_type,
     right_data_type
 );
@@ -63,5 +63,5 @@ BOOST_BIMAP_SYMMETRIC_METADATA_ACCESS_BUILDER
 } // namespace boost
 
 
-#endif // BOOST_BIMAP_SUPPORT_DATA_TYPE_OF_HPP
+#endif // BOOST_BIMAP_SUPPORT_DATA_TYPE_BY_HPP
 
