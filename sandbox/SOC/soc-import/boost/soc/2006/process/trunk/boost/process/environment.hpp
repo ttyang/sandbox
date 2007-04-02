@@ -82,6 +82,9 @@ typedef std::map< std::string, std::string > environment;
 //! it to the caller.  The returned object can be modified later on but
 //! changes to it do \b not modify the current environment.
 //!
+//! XXX self.environment() does the same as this.  One of the two has to
+//! go away, most likely this one.
+//!
 inline
 environment
 current_environment(void)
