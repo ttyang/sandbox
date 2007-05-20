@@ -1,18 +1,18 @@
-[section Interlocked Arithmetic Object]
+[section Interlocked Arithmetic Type]
 
-An [concept Interlocked Arithmetic Object] is an __interlocked_object__ which
+An [concept Interlocked Arithmetic Type] is an __interlocked_type__ which
 supports common arithmetic operations.
 
-In order to be considered a valid [concept Interlocked Arithmetic Object], given
+In order to be considered a valid [concept Interlocked Arithmetic Type], given
 the variable definitions below, the following expressions must be well-formed
 and have the indicated effects, in addition to those requirements of
-__interlocked_object__. [concept Interlocked Arithmetic Objects] also support
+__interlocked_type__. [concept Interlocked Arithmetic Types] also support
 all operations specified in the C++ standard for arithmetic types. Such
 operations do not imply memory barriers of any kind.
 
-[table Interlocked Arithmetic Object Descriptive Variable Definitions
+[table Interlocked Arithmetic Type Descriptive Variable Definitions
 [[Variable]       [Definition]                                                 ]
-[[`I`]            [An [concept Interlocked Arithmetic Object] type.]           ]
+[[`I`]            [An [concept Interlocked Arithmetic Type] type.]           ]
 [[`IV`]           [`I volatile`.]                                              ]
 [[`C1`]           [A type which is convertible to `IV`.]                       ]
 [[`iv`]           [Value of type `I volatile&`.]                               ]
@@ -21,7 +21,7 @@ operations do not imply memory barriers of any kind.
 
 [heading Expression Requirements]
 
-[table Interlocked Arithmetic Object Requirements
+[table Interlocked Arithmetic Type Requirements
 [[Expression]                         [Return Type][Pre/Post-Condition]        ]
 [[`interlocked::increment( iv )`]     [`I`]        [Increments `iv` with a
                                                     /full memory barrier/.
