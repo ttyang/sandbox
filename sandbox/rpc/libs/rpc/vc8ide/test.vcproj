@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="test_rpc"
+	Name="test"
 	ProjectGUID="{DC0901FF-C80A-4C97-8D50-7D1C66B5AB95}"
 	RootNamespace="test_rpc"
 	Keyword="MakeFileProj"
