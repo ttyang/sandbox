@@ -12,9 +12,8 @@ In order to be considered a valid [concept Interlocked Type], given the
 variable definitions below, the following expressions must be well-formed and
 have the indicated effects.
 
-[table Interlocked Type Descriptive Variable Definitions
-[[Variable]       [Definition]                                                 ]
-[[`I`]            [An [concept Interlocked Type] type.]                      ]
+[variablelist Interlocked Type Descriptive Variable Definitions
+[[`I`]            [An [concept Interlocked Type].]                             ]
 [[`IV`]           [`I volatile`.]                                              ]
 [[`C1`]           [A type which is convertible to `IV`.]                       ]
 [[`C2`]           [A type which is convertible to `IV`.]                       ]
