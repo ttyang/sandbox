@@ -4,6 +4,8 @@
 // http://www.boost.org/LICENSE_1_0.txt)_cpp_copyright_
 
 $template_start$
+$template_cpp_copyright$
+
 namespace boost {
 
 /** \mainpage
