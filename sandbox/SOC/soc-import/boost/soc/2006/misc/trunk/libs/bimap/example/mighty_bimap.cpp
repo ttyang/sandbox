@@ -1,11 +1,19 @@
 // Boost.Bimap
 //
-// Copyright (c) 2006 Matias Capeletto
+// Copyright (c) 2006-2007 Matias Capeletto
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+//  VC++ 8.0 warns on usage of certain Standard Library and API functions that
+//  can be cause buffer overruns or other possible security issues if misused.
+//  See http://msdn.microsoft.com/msdnmag/issues/05/05/SafeCandC/default.aspx
+//  But the wording of the warning is misleading and unsettling, there are no
+//  portable alternative functions, and VC++ 8.0's own libraries use the
+//  functions in question. So turn off the warnings.
+#define _CRT_SECURE_NO_DEPRECATE
+#define _SCL_SECURE_NO_DEPRECATE
 
 // Boost.Bimap Example
 //-----------------------------------------------------------------------------
@@ -13,6 +21,9 @@
 // In this example the set type of relation is changed to allow the iteration
 // of the container.
 
+#include <boost/config.hpp>
+
+//[ code_mighty_bimap
 
 #include <iostream>
 #include <string>
@@ -25,7 +36,7 @@ struct spanish {};
 
 int main()
 {
-    using namespace boost::bimap;
+    using namespace boost::bimaps;
 
     typedef bimap
     <
@@ -33,48 +44,66 @@ int main()
         tagged< unordered_set_of< std::string >, english >,
         list_of_relation
 
-    > translator_bimap;
+    > translator;
 
-    typedef translator_bimap::relation translation;
-    translator_bimap translator;
-    translator.insert( translation("hola"  ,"hello"   ) );
-    translator.insert( translation("adios" ,"goodbye" ) );
-    translator.insert( translation("rosa"  ,"rose"    ) );
-    translator.insert( translation("mesa"  ,"table"   ) );
+    translator trans;
+
+    // We have to use `push_back` because the collection of relations is
+    // a `list_of_relation`
+
+    trans.push_back( translator::value_type("hola"  ,"hello"   ) );
+    trans.push_back( translator::value_type("adios" ,"goodbye" ) );
+    trans.push_back( translator::value_type("rosa"  ,"rose"    ) );
+    trans.push_back( translator::value_type("mesa"  ,"table"   ) );
 
     std::cout << "enter a word" << std::endl;
     std::string word;
     std::getline(std::cin,word);
 
-    // Search the queried word on the from index (Spanish) */
+    // Search the queried word on the from index (Spanish)
 
-    iterator_type_by<spanish,translator_bimap>::type is = map_by<spanish>(d).find(word);
+    translator::map_by<spanish>::const_iterator is
+        = trans.by<spanish>().find(word);
 
-    if( is != map_by<spanish>(d).end() )
+    if( is != trans.by<spanish>().end() )
     {
-        std::cout << word << " is said " << get<english>(*is) << " in English" << std::endl;
+        std::cout << word << " is said "
+                  << is->get<english>()
+                  << " in English" << std::endl;
     }
     else
     {
         // Word not found in Spanish, try our luck in English
 
-        iterator_type_by<english,translator_bimap>::type ie = map_by<english>(d).find(word);
-        if( ie != map_by<english>(d).end() )
+        translator::map_by<english>::const_iterator ie
+            = trans.by<english>().find(word);
+
+        if( ie != trans.by<english>().end() )
         {
-            std::cout << word << " is said " << get<spanish>(*ie) << " in Spanish" << std::endl;
+            std::cout << word << " is said "
+                      << ie->get<spanish>()
+                      << " in Spanish" << std::endl;
         }
         else
         {
             // Word not found, show the possible translations
 
-            std::cout << "No such word in the dictionary" << std::endl;
+            std::cout << "No such word in the dictionary"      << std::endl;
             std::cout << "These are the possible translations" << std::endl;
-            for( translator_bimap::iterator i = translator.begin(), i_end = translator.end();
+
+            for( translator::const_iterator
+                    i = trans.begin(),
+                    i_end = trans.end();
+
                     i != i_end ; ++i )
             {
-                std::cout << get<spanish>(*i) << " <---> " << get<english>(*i) << std::endl;
+                std::cout << i->get<spanish>()
+                          << " <---> "
+                          << i->get<english>()
+                          << std::endl;
             }
         }
     }
     return 0;
 }
+//]
