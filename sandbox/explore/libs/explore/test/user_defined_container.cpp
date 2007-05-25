@@ -24,12 +24,12 @@ public:
         m_vec.push_back(3);
     }
 
-    std::vector<int>::const_iterator begin() const
+    std::vector<int>::const_iterator start() const
     {
         return m_vec.begin();
     }
 
-    std::vector<int>::const_iterator end() const
+    std::vector<int>::const_iterator finish() const
     {
         return m_vec.end();
     }
@@ -38,9 +38,9 @@ private:
     std::vector<int> m_vec;
 };
 
-std::ostream& operator<<(std::ostream& ostr, user_vector& u)
+std::ostream& operator<<(std::ostream& ostr, const user_vector& u)
 {
-    return boost::stream_container(ostr, u.begin(), u.end());
+    return boost::stream_container(ostr, u.start(), u.finish());
 }
 
 BOOST_AUTO_TEST_CASE( user_defined_print_test )
