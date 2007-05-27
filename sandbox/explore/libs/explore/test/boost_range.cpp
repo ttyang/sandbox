@@ -41,7 +41,6 @@ BOOST_AUTO_TEST_CASE( boost_range_print_test )
 
 BOOST_AUTO_TEST_CASE( boost_range_stream_test )
 {
-    using namespace boost;
     std::stringstream str_out;
 
     typedef std::vector<int> Cont;
