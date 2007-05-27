@@ -35,6 +35,16 @@ BOOST_AUTO_TEST_CASE( basic_deque_print_test )
     di.push_back(3);
     explore::print(di, str_out);
     BOOST_CHECK_EQUAL(str_out.str(), "[1, 2, 3]");
+	
+    str_out.str("");
+	
+    explore::print(di.begin(), ++(++di.begin()), str_out);
+    BOOST_CHECK_EQUAL(str_out.str(), "[1, 2]");
+	
+    str_out.str("");
+	
+    explore::print(boost::make_iterator_range(di.begin(), ++(++di.begin())), str_out);
+    BOOST_CHECK_EQUAL(str_out.str(), "[1, 2]");
 }
 
 BOOST_AUTO_TEST_CASE( basic_deque_stream_test )
@@ -58,6 +68,16 @@ BOOST_AUTO_TEST_CASE( basic_deque_stream_test )
     di.push_back(3);
     str_out << di;
     BOOST_CHECK_EQUAL(str_out.str(), "[1, 2, 3]");
+	
+    //str_out.str("");
+	
+    //explore::print(di.begin(), ++(++di.begin()), str_out);
+    //BOOST_CHECK_EQUAL(str_out.str(), "[1, 2]");
+	
+    //str_out.str("");
+	
+    //explore::print(boost::make_iterator_range(di.begin(), ++(++di.begin())), str_out);
+    //BOOST_CHECK_EQUAL(str_out.str(), "[1, 2]");
 }
 
 BOOST_AUTO_TEST_CASE( deque_in_deque_print_test )
@@ -85,6 +105,16 @@ BOOST_AUTO_TEST_CASE( deque_in_deque_print_test )
     ddi.push_back(di);
     explore::print(ddi, str_out);
     BOOST_CHECK_EQUAL(str_out.str(), "[[1, 2, 3], [1, 2, 3], [1, 2, 3]]");
+	
+    str_out.str("");
+	
+    explore::print(ddi.begin(), ++(++ddi.begin()), str_out);
+    BOOST_CHECK_EQUAL(str_out.str(), "[[1, 2, 3], [1, 2, 3]]");
+	
+    str_out.str("");
+	
+    explore::print(boost::make_iterator_range(ddi.begin(), ++(++ddi.begin())), str_out);
+    BOOST_CHECK_EQUAL(str_out.str(), "[[1, 2, 3], [1, 2, 3]]");
 }
 
 BOOST_AUTO_TEST_CASE( deque_in_deque_stream_test )
@@ -113,4 +143,14 @@ BOOST_AUTO_TEST_CASE( deque_in_deque_stream_test )
     ddi.push_back(di);
     str_out << ddi;
     BOOST_CHECK_EQUAL(str_out.str(), "[[1, 2, 3], [1, 2, 3], [1, 2, 3]]");
+	
+    //str_out.str("");
+	
+    //explore::print(ddi.begin(), ++(++ddi.begin()), str_out);
+    //BOOST_CHECK_EQUAL(str_out.str(), "[[1, 2, 3], [1, 2, 3]]");
+	
+    //str_out.str("");
+	
+    //explore::print(boost::make_iterator_range(ddi.begin(), ++(++ddi.begin())), str_out);
+    //BOOST_CHECK_EQUAL(str_out.str(), "[[1, 2, 3], [1, 2, 3]]");
 }
