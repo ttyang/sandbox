@@ -8,40 +8,26 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_UNITS_STATIC_RATIONAL_HPP 
-#define BOOST_UNITS_STATIC_RATIONAL_HPP
+#ifndef BOOST_STATIC_RATIONAL_HPP 
+#define BOOST_STATIC_RATIONAL_HPP
 
 #include <cmath>
 #include <complex>
 
 #include <boost/math/common_factor_ct.hpp>
 #include <boost/mpl/arithmetic.hpp>
-#include <boost/mpl/less.hpp>
 #include <boost/type_traits/is_same.hpp>
-
-#include <boost/units/operators.hpp>
 
 /// \file 
 /// \brief Compile-time rational numbers and operators.
 
 namespace boost {
 
-namespace units { 
-
 namespace detail {
 
 struct static_rational_tag {};
 
-}
-
-typedef long   integer_type;
-
-/// Compile time absolute value.
-template<integer_type Value>
-struct static_abs
-{
-    BOOST_STATIC_CONSTANT(integer_type,value) = Value < 0 ? -Value : Value;
-};
+} // namespace detail
 
 /// Compile time rational number.
 /** 
@@ -62,32 +48,34 @@ Neither @c static_power nor @c static_root are defined for @c static_rational. T
 may not be floating point values, while powers and roots of rational numbers can produce floating point 
 values. 
 */
-template<integer_type N,integer_type D = 1>
+template<I N,I D = 1,typename I = long>
 class static_rational
 {
     private:
-        static const integer_type   nabs = static_abs<N>::value,
-                                    dabs = static_abs<D>::value;
+        template<int_type Value>
+        struct static_abs
+        {
+            BOOST_STATIC_CONSTANT(int_type,value) = Value < 0 ? -Value : Value;
+        };
         
         /// greatest common divisor of N and D
         // need cast to signed because static_gcd returns unsigned long
-        static const integer_type   den = 
-            static_cast<integer_type>(boost::math::static_gcd<nabs,dabs>::value) * ((D < 0) ? -1 : 1);
+        static const int_type   nabs = static_abs<N>::value,
+                                dabs = static_abs<D>::value,
+                                den = static_cast<int_type>(boost::math::static_gcd<nabs,dabs>::value),
+                                Numerator = N/den,
+                                Denominator = D/den;
         
     public: 
         // for mpl arithmetic support
         typedef detail::static_rational_tag tag;
         
-        static const integer_type   Numerator = N/den,
-                                    Denominator = D/den;
-        
-        typedef static_rational<N,D>    this_type;
-        
-        /// static_rational<N,D> reduced by GCD
-        typedef static_rational<Numerator,Denominator>  type;
+        typedef static_rational<N,D,I>                      this_type;
+        typedef I                                           int_type;
+        typedef static_rational<Numerator,Denominator,I>    type;
                                  
-        static integer_type numerator()      { return Numerator; }
-        static integer_type denominator()    { return Denominator; }
+        static int_type numerator()      { return Numerator; }
+        static int_type denominator()    { return Denominator; }
         
         static_rational() { }
         //~static_rational() { }
@@ -102,24 +90,8 @@ class static_rational
 //        }
 };
 
-}
-
-}
-
-#if BOOST_UNITS_HAS_BOOST_TYPEOF
-
-#include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
-
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::units::static_rational, (long)(long))
-
-#endif
-
-namespace boost {
-
-namespace units {
-
 // prohibit zero denominator
-template<integer_type N> class static_rational<N,0>;
+template<integer_type N,typename I> class static_rational<N,0,I>;
 
 /// get decimal value of @c static_rational
 template<class T,integer_type N,integer_type D>
@@ -303,8 +275,6 @@ root(const Y& x)
     return root_typeof_helper<Y,static_rational<N> >::value(x);
 }
 
-} // namespace units
-
 namespace mpl {
 
 template<>
@@ -364,19 +334,8 @@ struct negate_impl<boost::units::detail::static_rational_tag>
     };
 };
 
-template<>
-struct less_impl<boost::units::detail::static_rational_tag, boost::units::detail::static_rational_tag>
-{
-    template<class T0, class T1>
-    struct apply
-    {
-        typedef mpl::bool_<((mpl::minus<T0, T1>::type::Numerator) < 0)> type;
-    };
-};
-
-
-}
+} // namespace mpl
 
 } // namespace boost
 
-#endif // BOOST_UNITS_STATIC_RATIONAL_HPP
+#endif // BOOST_STATIC_RATIONAL_HPP
