@@ -1,4 +1,0 @@
-exe build_order
-	: build_order.cpp
-	: <include>../../../../
-	;
