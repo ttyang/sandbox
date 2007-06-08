@@ -125,6 +125,9 @@ endmacro(boost_library_project)
 macro(boost_library_variant_target_name)
   set(VARIANT_TARGET_NAME "")
 
+  # The versioned name starts with the full Boost toolset
+  set(VARIANT_VERSIONED_NAME "-${BOOST_TOOLSET}")
+
   # Add -mt for multi-threaded libraries
   list_contains(VARIANT_IS_MT MULTI_THREADED ${ARGN})
   if (VARIANT_IS_MT)
@@ -141,9 +144,6 @@ macro(boost_library_variant_target_name)
   else (VARIANT_IS_STATIC)
     set(VARIANT_TARGET_NAME "${VARIANT_TARGET_NAME}-shared")
   endif (VARIANT_IS_STATIC)
-
-  # The versioned name starts with the full Boost toolset
-  set(VARIANT_VERSIONED_NAME "-${BOOST_TOOLSET}")
 
   # Compute the ABI tag, which depends on various kinds of options
   set(VARIANT_ABI_TAG "")
