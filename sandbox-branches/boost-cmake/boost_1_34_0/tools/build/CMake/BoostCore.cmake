@@ -13,8 +13,8 @@
 #   boost_library_project: Defines a Boost library project (e.g.,        #
 #   Boost.Python).                                                       #
 #                                                                        #
-#   boost_library: Builds library binaries for Boost libraries with      #
-#   compiled sources (e.g., boost_filesystem).                           #
+#   boost_add_library: Builds library binaries for Boost libraries       #
+#   with compiled sources (e.g., boost_filesystem).                      #
 ##########################################################################
 
 # Defines a Boost library project (e.g., for Boost.Python). Use as:
@@ -392,18 +392,18 @@ endmacro(boost_add_default_variant)
 # different compilation options, as determined by the set of "default"
 # library variants.
 #
-#   boost_library(libname
-#                 source1 source2 ...
-#                 [COMPILE_FLAGS compileflags]
-#                 [feature_COMPILE_FLAGS compileflags]
-#                 [LINK_FLAGS linkflags]
-#                 [feature_LINK_FLAGS linkflags]
-#                 [LINK_LIBS linklibs]
-#                 [feature_LINK_LIBS linklibs]
-#                 [DEPENDS libdepend1 libdepend2 ...]
-#                 [STATIC_TAG]
-#                 [MODULE]
-#                 [NOT_feature])
+#   boost_add_library(libname
+#                     source1 source2 ...
+#                     [COMPILE_FLAGS compileflags]
+#                     [feature_COMPILE_FLAGS compileflags]
+#                     [LINK_FLAGS linkflags]
+#                     [feature_LINK_FLAGS linkflags]
+#                     [LINK_LIBS linklibs]
+#                     [feature_LINK_LIBS linklibs]
+#                     [DEPENDS libdepend1 libdepend2 ...]
+#                     [STATIC_TAG]
+#                     [MODULE]
+#                     [NOT_feature])
 #
 # where libname is the name of Boost library binary (e.g.,
 # "boost_regex") and source1, source2, etc. are the source files used
@@ -490,7 +490,7 @@ endmacro(boost_add_default_variant)
 #
 #
 # Example:
-#   boost_library(
+#   boost_add_library(
 #     boost_thread
 #     barrier.cpp condition.cpp exceptions.cpp mutex.cpp once.cpp 
 #     recursive_mutex.cpp thread.cpp tss_hooks.cpp tss_dll.cpp tss_pe.cpp 
@@ -499,10 +499,7 @@ endmacro(boost_add_default_variant)
 #     STATIC_COMPILE_FLAGS "-DBOOST_THREAD_BUILD_LIB=1"
 #     NO_SINGLE_THREADED
 #   )
-#
-# TODO: 
-#   - Rename this to boost_add_library.
-macro(boost_library LIBNAME)
+macro(boost_add_library LIBNAME)
   parse_arguments(THIS_LIB
     "DEPENDS;COMPILE_FLAGS;LINK_FLAGS;LINK_LIBS;${BOOST_ADDLIB_ARG_NAMES}"
     "STATIC_TAG;MODULE;${BOOST_ADDLIB_OPTION_NAMES}"
@@ -520,6 +517,6 @@ macro(boost_library LIBNAME)
     separate_arguments(VARIANT)
     boost_library_variant(${LIBNAME} ${VARIANT})
   endforeach(VARIANT_STR ${BOOST_DEFAULT_VARIANTS})
-endmacro(boost_library)
+endmacro(boost_add_library)
 
 # TODO: Create boost_add_executable, which deals with variants well
