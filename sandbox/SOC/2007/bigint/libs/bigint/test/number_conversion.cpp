@@ -15,8 +15,6 @@
 
 #include <sstream>
 
-#include <iostream>
-
 #pragma comment(lib, "libgmp-3.lib")
 
 // This macro is not quite good, but - it's ok for our needs
