@@ -1,3 +1,0 @@
-Lib: desired_file1.h desired_file1.cpp
-Lib["blah"]: desired_file2.h desired_file2.cpp
-
