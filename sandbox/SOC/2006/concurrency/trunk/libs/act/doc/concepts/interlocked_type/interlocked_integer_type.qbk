@@ -1,0 +1,205 @@
+[section Interlocked Integer Type]
+
+An [concept Interlocked Integer Type] is an __interlocked_arithmetic_type__
+which supports common integer operations.
+
+In order to be considered a valid [concept Interlocked Integer Type], given
+the variable definitions below, the following expressions must be well-formed
+and have the indicated effects, in addition to those requirements of
+__interlocked_arithmetic_type__. [concept Interlocked Integer Types] also
+support all operations specified in the C++ standard for integer types. Such
+operations do not imply memory barriers of any kind.
+
+[variablelist Interlocked Arithmetic Type Descriptive Variable Definitions
+[[`I`]            [An [concept Interlocked Integral Type].]                    ]
+[[`IV`]           [`I volatile`.]                                              ]
+[[`C1`]           [A type which is convertible to `IV`.]                       ]
+[[`iv`]           [Value of type `I volatile&`.]                               ]
+[[`c1`]           [Value of type `C1 const&`.]                                 ]
+[[`S`]            [An integral or [concept Interlocked Integer Type].]         ]
+[[`s`]            [A value of type `S const&`.]                                ]
+]
+
+[heading Expression Requirements]
+
+[table Interlocked Arithmetic Type Requirements
+[[Expression]                         [Return Type][Pre/Post-Condition]        ]
+[[`mod_assign( iv, c1 )`][`mod_assign_result<IV>::type`]
+                                                   [Mods `iv` by `c1` and
+                                                    stores the result in `iv`
+                                                    with a
+                                                    /full memory barrier/.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`mod_assign_acquire( iv, c1 )`]
+                                      [`mod_assign_result<IV>::type`]
+                                                   [Mods `iv` by `c1` and
+                                                    stores the result in `iv`
+                                                    with /acquire/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`mod_assign_release( iv, c1 )`]
+                                      [`mod_assign_result<IV>::type`]
+                                                   [Mods `iv` by `c1` and
+                                                    stores the result in `iv`
+                                                    with /release/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`and_assign( iv, c1 )`][`and_assign_result<IV>::type`]
+                                                   [Ands `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with a
+                                                    /full memory barrier/.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`and_assign_acquire( iv, c1 )`]
+                                      [`and_assign_result<IV>::type`]
+                                                   [Ands `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with /acquire/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`and_assign_release( iv, c1 )`]
+                                      [`and_assign_result<IV>::type`]
+                                                   [Ands `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with /release/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`or_assign( iv, c1 )`] [`or_assign_result<IV>::type`]
+                                                   [Ors `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with a
+                                                    /full memory barrier/.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`or_assign_acquire( iv, c1 )`]
+                                      [`or_assign_result<IV>::type`]
+                                                   [Ors `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with /acquire/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`or_assign_release( iv, c1 )`]
+                                      [`or_assign_result<IV>::type`]
+                                                   [Ors `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with /release/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`xor_assign( iv, c1 )`][`xor_assign_result<IV>::type`]
+                                                   [Xors `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with a
+                                                    /full memory barrier/.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`xor_assign_acquire( iv, c1 )`]
+                                      [`xor_assign_result<IV>::type`]
+                                                   [Xors `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with /acquire/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`xor_assign_release( iv, c1 )`]
+                                      [`xor_assign_result<IV>::type`]
+                                                   [Xors `iv` with `c1` and
+                                                    stores the result in `iv`
+                                                    with /release/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`lshift_assign( iv, s )`]
+                                      [`lshift_assign_result<IV>::type`]
+                                                   [Left shifts `iv` by `s` and
+                                                    stores the result in `iv`
+                                                    with a
+                                                    /full memory barrier/.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`lshift_assign_acquire( iv, s )`]
+                                      [`lshift_assign_result<IV>::type`]
+                                                   [Left shifts `iv` by `s` and
+                                                    stores the result in `iv`
+                                                    with /acquire/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`lshift_assign_release( iv, s )`]
+                                      [`lshift_assign_result<IV>::type`]
+                                                   [Left shifts `iv` by `s` and
+                                                    stores the result in `iv`
+                                                    with /release/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`rshift_assign( iv, s )`]
+                                      [`rshift_assign_result<IV>::type`]
+                                                   [Right shifts `iv` by `s`
+                                                    and stores the result in
+                                                    `iv` with a
+                                                    /full memory barrier/.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`rshift_assign_acquire( iv, s )`]
+                                      [`rshift_assign_result<IV>::type`]
+                                                   [Right shifts `iv` by `s`
+                                                    and stores the result in
+                                                    `iv` with /acquire/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+[[`rshift_assign_release( iv, s )`]
+                                      [`rshift_assign_result<IV>::type`]
+                                                   [Right shifts `iv` by `s`
+                                                    and stores the result in
+                                                    `iv` with /release/ memory
+                                                    semantics.
+                                                    Returns the value of `iv`
+                                                    before the operation is
+                                                    performed.
+                                                   ]                           ]
+]
+
+[endsect]

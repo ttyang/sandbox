@@ -1,0 +1,33 @@
+[section Consumer]
+
+A [concept Consumer] is an object which takes in data of a single type one
+instance at a time and processes it in an implementation defined-manner either
+sychnronously or asynchronously with respect to the thread it is interfaced
+with. In Boost.Act, models of this concept may be found as members of models of
+the __consumer_policy__ concept.
+
+In order to be considered a valid [concept Consumer], given the variable
+definitions below, the following expressions must be well-formed and have the
+indicated effects.
+
+[variablelist Consumer Descriptive Variable Definitions
+[[`C`]            [A [concept Consumer] type.]                                 ]
+[[`c`]            [Value of type `C&`.]                                        ]
+[[`d`]            [Value of type `C::value_type const&`.]                      ]
+]
+
+[heading Expression Requirements]
+
+[table Consumer Requirements
+[[Expression]     [Return Type][Pre/Post-Condition]                            ]
+[[`C()`]          []           [Creates an instance using a default policy. A
+                                destructor is assumed.
+                               ]                                               ]
+[[`C::value_type`][]           [The type of data which is processed.]          ]
+[[`c(d)`] [(unused)]           [Processes a copy of `d`. [tablenote Processing
+                                takes place in an implementation-defined thread
+                                of execution.]
+                               ]                                               ]
+]
+
+[endsect]
