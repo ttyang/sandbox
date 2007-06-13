@@ -545,11 +545,4 @@ You now have a completely unbeatable implementation of the "Six Degrees of Kevin
 Bacon" game - provided of course that you add a lot more movie data to the simple
 data set provided with this example.
 
-[h4 Closing Thoughts]
-Notice that this problem can be trivially adapted to the Erd\&ouml;s Numbering problem
-by simply redefining the semantics of the graph. Instead of actors, each vertex
-can represent an author, and each edge connects two authors if and only if both
-authors collaborated on the same publication. It is easy to see that the two graphs
-are equivalent, and the same algorithms will work on both.
-
 [endsect]

@@ -31,6 +31,8 @@ algorithms.
 
 [include guide_directed.qbk]
 
+[include guide_details.qbk]
+
 [include guide_adjacency_list.qbk]
 
 [h2 Optimizing for Performance]
