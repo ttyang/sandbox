@@ -144,8 +144,8 @@ namespace boost
     // BidirectionalGraph concepts
     template <class VP, class EP, class GP>
     inline typename directed_graph<VP,EP,GP>::degree_size_type
-    in_degree(const directed_graph<VP,EP,GP> &g,
-	      typename directed_graph<VP,EP,GP>::vertex_descriptor v)
+    in_degree(typename directed_graph<VP,EP,GP>::vertex_descriptor v,
+	      const directed_graph<VP,EP,GP> &g)
     {
 	return in_degree(v, g.impl());
     }

@@ -33,7 +33,7 @@ namespace boost
 	typename adjacency_list<OEL,VL,directedS,VP,EP,GP,EL>::edge_descriptor,
 	bool
 	>
-    edges(typename adjacency_list<OEL,VL,directedS,VP,EP,GP,EL>::vertex_descriptor u,
+    edge(typename adjacency_list<OEL,VL,directedS,VP,EP,GP,EL>::vertex_descriptor u,
 	  typename adjacency_list<OEL,VL,directedS,VP,EP,GP,EL>::vertex_descriptor v,
 	  const adjacency_list<OEL,VL,directedS,VP,EP,GP,EL>& g)
     {
@@ -60,7 +60,7 @@ namespace boost
 	typename adjacency_list<OEL,VL,bidirectionalS,VP,EP,GP,EL>::edge_descriptor,
 	bool
 	>
-    edges(typename adjacency_list<OEL,VL,bidirectionalS,VP,EP,GP,EL>::vertex_descriptor u,
+    edge(typename adjacency_list<OEL,VL,bidirectionalS,VP,EP,GP,EL>::vertex_descriptor u,
 	  typename adjacency_list<OEL,VL,bidirectionalS,VP,EP,GP,EL>::vertex_descriptor v,
 	  const adjacency_list<OEL,VL,bidirectionalS,VP,EP,GP,EL>& g)
     {
@@ -71,7 +71,7 @@ namespace boost
 
 	// iterate over either the out_edges or in_edges depending on the minimum
 	// degreer (this should save some time if done repeatedly).
-	if(out_degree(u) < in_degree(v)) {
+	if(out_degree(u, g) < in_degree(v, g)) {
 	    typename Graph::out_edge_iterator i, j;
 	    for(tie(i, j) = out_edges(u, g); i != j; ++i) {
 		if(target(*i, g) == v) {
@@ -100,7 +100,7 @@ namespace boost
 	typename adjacency_list<OEL,VL,undirectedS,VP,EP,GP,EL>::edge_descriptor,
 	bool
 	>
-    edges(typename adjacency_list<OEL,VL,undirectedS,VP,EP,GP,EL>::vertex_descriptor u,
+    edge(typename adjacency_list<OEL,VL,undirectedS,VP,EP,GP,EL>::vertex_descriptor u,
 	  typename adjacency_list<OEL,VL,undirectedS,VP,EP,GP,EL>::vertex_descriptor v,
 	  const adjacency_list<OEL,VL,undirectedS,VP,EP,GP,EL>& g)
     {
@@ -109,7 +109,7 @@ namespace boost
 	bool found = false;
 	typename Graph::edge_descriptor edge;
 
-	typename Graph::vertex_descriptor p = out_degree(u) < out_degree(v) ? u : v;
+	typename Graph::vertex_descriptor p = out_degree(u, g) < out_degree(v, g) ? u : v;
 
 	// iterate over the out_edges of u, looking for v
 	typename Graph::out_edge_iterator i, j;
@@ -124,21 +124,21 @@ namespace boost
     }
 
     template <typename VP, typename EP, typename GP>
-    std::pair<undirected_graph<VP,EP,GP>, bool>
-    edges(typename undirected_graph<VP,EP,GP>::vertex_descriptor u,
+    std::pair<typename undirected_graph<VP,EP,GP>::edge_descriptor, bool>
+    edge(typename undirected_graph<VP,EP,GP>::vertex_descriptor u,
 	  typename undirected_graph<VP,EP,GP>::vertex_descriptor v,
 	  const undirected_graph<VP,EP,GP>& g)
     {
-	edges(g.impl());
+	return edge(u, v, g.impl());
     }
 
     template <typename VP, typename EP, typename GP>
-    std::pair<directed_graph<VP,EP,GP>, bool>
-    edges(typename directed_graph<VP,EP,GP>::vertex_descriptor u,
+    std::pair<typename directed_graph<VP,EP,GP>::edge_descriptor, bool>
+    edge(typename directed_graph<VP,EP,GP>::vertex_descriptor u,
 	  typename directed_graph<VP,EP,GP>::vertex_descriptor v,
 	  const directed_graph<VP,EP,GP>& g)
     {
-	edges(g.impl());
+	return edge(u, v, g.impl());
     }
 }
 
