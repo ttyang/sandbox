@@ -93,12 +93,12 @@
 //   }
 //..
 
-#include <boost/concepts.h>
-
 #ifdef BOOST_HDSTL_CONCEPTS_HDSCONCEPT_HPP
 #define BOOST_HDSTL_CONCEPTS_HDSCONCEPT_HPP 1
 
-namespace hdstl{
+#include <boost/concepts.h>
+
+namespace hdstl {
 namespace concepts {
 
     template <class HDS> 
@@ -143,10 +143,10 @@ namespace concepts {
             h = opposite(hds,h);
         }
 
-      private:
-	// DATA
-        HDS hds;                 // a halfedge data structure object
-        halfedge_descriptor h;   // a halfedge descriptor
+        private:
+	    // DATA
+            HDS hds;                 // a halfedge data structure object
+            halfedge_descriptor h;   // a halfedge descriptor
     };
 
 }  // close namespace concepts

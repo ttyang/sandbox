@@ -69,13 +69,13 @@
 ///--------------------
 // In addition to the expression semantics of the 'HDS' concept:
 //   - 'next_in_facet(hds,h)' returns a halfedge descriptor to the halfedge 
-//      preceding 'h' in the adjacent facet cycle, when facet cycles are
+//      succeeding 'h' in the adjacent facet cycle, when facet cycles are
 //      oriented in counter-clockwise order.
 //   - 'next_at_source(hds,h)' returns a halfedge descriptor to the halfedge 
-//      preceding 'h' around the source vertex of 'h', when halfedges are
+//      succeeding 'h' around the source vertex of 'h', when halfedges are
 //      ordered around a given vertex in clockwise order.
 //   - 'next_at_target(hds,h)' returns a halfedge descriptor to the halfedge 
-//      preceding 'h' around the target vertex of 'h', when halfedges are
+//      succeeding 'h' around the target vertex of 'h', when halfedges are
 //      ordered around a given vertex in clockwise order.
 //
 ///Complexity guarantees
@@ -134,8 +134,8 @@ namespace concepts{
 
     template <class HDS> 
     struct ForwardHDSConcept {
-        // This class provides a concept checking class for the ForwardHDSConcept,
-        // i.e., using the statement
+        // This class provides a concept checking class for the 
+        // 'ForwardHDSConcept', i.e., using the statement
         //..
         //  boost::function_requires<ForwardHDSConcept<HDS>()
         //..
