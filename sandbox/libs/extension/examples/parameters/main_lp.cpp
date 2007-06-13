@@ -33,7 +33,6 @@ int main(void)
 	std::list< factory<lots_of_parameters_interface, int, bool, unsigned int, char, std::string, A, boost::shared_ptr<A> > >::iterator par = factory_list.begin();
 	std::auto_ptr< lots_of_parameters_interface > par_ptr(par->create(true, 4, 'c', "test", A(2), boost::shared_ptr<A>(new A(15))));
 
-	// TODO: use it
 
 	return 0;
 }
