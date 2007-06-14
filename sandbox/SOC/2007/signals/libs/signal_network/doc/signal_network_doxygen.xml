@@ -37,13 +37,13 @@
           <template-type-parameter name="Group"/>
           <template-type-parameter name="GroupCompare"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="signal"><paramtype>boost::signal&lt; Signature &gt; &amp;</paramtype></parameter><parameter name="link"><paramtype>T &amp;</paramtype></parameter></function><function name="operator&gt;="><type>boost::signal&lt; Signature &gt; &amp;</type><template>
+        </template><parameter name="signal"><paramtype>boost::signal&lt; Signature, Combiner, Group, GroupCompare &gt; &amp;</paramtype></parameter><parameter name="link"><paramtype>T &amp;</paramtype></parameter></function><function name="operator|"><type>boost::signal&lt; Signature &gt; &amp;</type><template>
           <template-type-parameter name="Signature"/>
           <template-type-parameter name="Combiner"/>
           <template-type-parameter name="Group"/>
           <template-type-parameter name="GroupCompare"/>
           <template-type-parameter name="T"/>
-        </template><parameter name="signal"><paramtype>boost::signal&lt; Signature &gt; &amp;</paramtype></parameter><parameter name="link"><paramtype>T &amp;</paramtype></parameter></function></namespace></namespace><macro name="SIGNAL_NETWORK_TRACKABLE"/><macro name="SIGNAL_NETWORK_OPEN_SIGNAL_NETWORK_NAMESPACE"/><macro name="SIGNAL_NETWORK_CLOSE_SIGNAL_NETWORK_NAMESPACE"/><macro name="SIGNAL_NETWORK_OPEN_SIGNET_NAMESPACE"/><macro name="SIGNAL_NETWORK_CLOSE_SIGNET_NAMESPACE"/></header><header name="boost/signal_network/chain.hpp"><namespace name="boost"><namespace name="signal_network"><namespace name="signet"><class name="chain"><template>
+        </template><parameter name="signal"><paramtype>boost::signal&lt; Signature, Combiner, Group, GroupCompare &gt; &amp;</paramtype></parameter><parameter name="link"><paramtype>T &amp;</paramtype></parameter></function></namespace></namespace><macro name="SIGNAL_NETWORK_TRACKABLE"/><macro name="SIGNAL_NETWORK_OPEN_SIGNAL_NETWORK_NAMESPACE"/><macro name="SIGNAL_NETWORK_CLOSE_SIGNAL_NETWORK_NAMESPACE"/><macro name="SIGNAL_NETWORK_OPEN_SIGNET_NAMESPACE"/><macro name="SIGNAL_NETWORK_CLOSE_SIGNET_NAMESPACE"/></header><header name="boost/signal_network/chain.hpp"><namespace name="boost"><namespace name="signal_network"><namespace name="signet"><class name="chain"><template>
       <template-type-parameter name="T"/>
       <template-type-parameter name="Signature"/>
     </template><purpose>Connects a number of components of the same type in a chain. </purpose><description><para>
