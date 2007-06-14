@@ -57,8 +57,8 @@ static const unsigned SHOW = 0x08;
 struct VertexProperty;
 struct EdgeProperty;
 
-// typedef undirected_graph<VertexProperty, EdgeProperty> Graph;
-typedef adjacency_list<vecS, vecS, undirectedS, VertexProperty, EdgeProperty> Graph;
+typedef undirected_graph<VertexProperty, EdgeProperty> Graph;
+// typedef adjacency_list<vecS, vecS, undirectedS, VertexProperty, EdgeProperty> Graph;
 typedef Graph::vertex_descriptor Vertex;
 typedef Graph::edge_descriptor Edge;
 
@@ -107,10 +107,11 @@ struct EdgeProperty
 };
 
 // property maps
-typedef property_map<Graph, int VertexProperty::*>::type VertexIndexMap;
-typedef property_map<Graph, int VertexProperty::*>::type VertexDistanceMap;
-typedef property_map<Graph, Vertex VertexProperty::*>::type VertexParentMap;
-typedef property_map<Graph, int EdgeProperty::*>::type EdgeWeightMap;
+typedef property_map<Graph::graph_type, vertex_index_t>::type VertexIndexMap;
+
+typedef property_map<Graph::graph_type, int VertexProperty::*>::type VertexDistanceMap;
+typedef property_map<Graph::graph_type, Vertex VertexProperty::*>::type VertexParentMap;
+typedef property_map<Graph::graph_type, int EdgeProperty::*>::type EdgeWeightMap;
 
 RolePtr
 parse_movie(const string& str)
@@ -383,7 +384,7 @@ main(int argc, char* argv[])
 
     // start accumulating property maps for dijkstra's algorithm.
     // these references never change even though the contents of them might.
-    VertexIndexMap indices = get(&VertexProperty::index, g);
+    VertexIndexMap indices = get(vertex_index, g);
     VertexDistanceMap distances = get(&VertexProperty::distance, g);
     VertexParentMap parents = get(&VertexProperty::parent, g);
     EdgeWeightMap weights = get(&EdgeProperty::weight, g);

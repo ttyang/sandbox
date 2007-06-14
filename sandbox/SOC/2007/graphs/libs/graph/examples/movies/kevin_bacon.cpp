@@ -68,7 +68,6 @@ main(int argc, char *argv[])
     build_movie_graph(cin, g, actors);
 
     // get the bacon number map associated with the graph
-    ActorIndexMap indices = get(&Actor::index, g);
     ActorDistanceMap dists = get(&Actor::distance, g);
 
     // pick a starting vertex (kevin bacon, obviously) and set his
@@ -78,11 +77,7 @@ main(int argc, char *argv[])
 
     // run a breadth-first search on the graph and record
     // the kevin bacon numbers for each actor
-    breadth_first_search(g, kevin,
-			 // named parameters
-			 vertex_index_map(indices)
-			 .visitor(record_actor_distances(dists))
-	);
+    breadth_first_search(g, kevin, visitor(record_actor_distances(dists)));
 
     // just run over the vertices and print the back numbers
     Graph::vertex_iterator i, j;

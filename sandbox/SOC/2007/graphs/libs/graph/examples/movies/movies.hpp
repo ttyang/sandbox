@@ -51,20 +51,17 @@ struct Movie
 // These property maps index information in the Actor and Movie
 // structures, respectively. They are used to access specific pieces
 // of information inside the graph.
-typedef boost::property_map<Graph::type, int Actor::*>::type ActorIndexMap;
-typedef boost::property_map<Graph::type, int Actor::*>::type ActorDistanceMap;
-typedef boost::property_map<Graph::type, Vertex Actor::*>::type ActorParentMap;
-typedef boost::property_map<Graph::type, std::string Actor::*>::type ActorNameMap;
+typedef boost::property_map<Graph::graph_type, int Actor::*>::type ActorDistanceMap;
+typedef boost::property_map<Graph::graph_type, Vertex Actor::*>::type ActorParentMap;
+typedef boost::property_map<Graph::graph_type, std::string Actor::*>::type ActorNameMap;
 
-typedef boost::property_map<Graph::type, unsigned Movie::*>::type MovieWeightMap;
-typedef boost::property_map<Graph::type, std::string Movie::*>::type MovieNameMap;
+typedef boost::property_map<Graph::graph_type, std::string Movie::*>::type MovieNameMap;
 
 // we use an extra map to help dynamically populate the graph.
 // this maps actor names to the vertices that they're inserted as
 typedef std::map<std::string, Vertex> ActorMap;
 
 void build_movie_graph(std::istream &, Graph&, ActorMap&);
-void build_vertex_index_map(Graph&, ActorIndexMap &);
 Vertex find_actor_vertex(const Graph&, const ActorMap&, const std::string&);
 
 #endif

@@ -90,21 +90,12 @@ main(int argc, char *argv[])
 	return -1;
     }
 
-    // Get the index map
-    // WARNING: The current method for implementing this is highly unstable
-    // if any of the vertices are removed - basically, you'd have to reassign
-    // the indices after a sequence of removals.
-    ActorIndexMap indices = get(&Actor::index, g);
-
     // The predeceessor map records, for the vertex at each index, the
     // predecessor (or parent) in the shortest-path tree. By iterating
     // from predecessor to predecessor, we can find the shortest path
     ActorParentMap parents = get(&Actor::parent, g);
 
-    breadth_first_search(g, u,
-			 vertex_index_map(indices)
-			 .visitor(record_actor_parents(parents))
-	);
+    breadth_first_search(g, u, visitor(record_actor_parents(parents)));
 
     // print the movies in which the actors appear by iterating over
     // the elements in the predecessor map
