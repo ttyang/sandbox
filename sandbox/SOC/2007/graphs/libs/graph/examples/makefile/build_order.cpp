@@ -6,6 +6,7 @@
 
 // std includes
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <map>
 
@@ -20,15 +21,14 @@ using namespace boost;
 
 struct Target
 {
-    int index;
     string name;
 };
 
 typedef directed_graph<Target> Graph;
 typedef Graph::vertex_descriptor Vertex;
 typedef Graph::edge_descriptor Edge;
-typedef property_map<Graph::type, int Target::*>::type TargetIndexMap;
-typedef property_map<Graph::type, string Target::*>::type TargetNameMap;
+
+typedef property_map<Graph, string Target::*>::type TargetNameMap;
 
 typedef map<string, Vertex> TargetMap;
 
@@ -48,7 +48,6 @@ add_target(Graph& g, TargetMap& targets, const string& name)
 	it->second = v;
 
 	// configure the vertex properties
-	g[v].index = num_vertices(g) - 1;
 	g[v].name = name;
     }
     else {
@@ -117,29 +116,33 @@ main(int argc, char* argv[])
 	}
     }
 
-    // we need to create a vertex index map for the graph before
-    // we can generate the build order
-    TargetIndexMap indices = get(&Target::index, g);
 
     // the build order is just a 
     BuildOrder order;
-    topological_sort(g, front_inserter(order),
-		     // named parameters
-		     vertex_index_map(indices)
-	);
+    topological_sort(g, front_inserter(order));
 
     // write out the build order and compute time slots at the
     // same time...
     vector<int> time(num_vertices(g), 0);
-    BuildOrder::iterator i = order.begin(), j = order.end();
-    for( ; i != j; ++i) {
+    BuildOrder::iterator i = order.begin(), i_end = order.end();
+    for( ; i != i_end; ++i) {
 	int slot = -1;
-	Graph::in_edge_iterator j, k;
-	for(tie(j, k) = in_edges(*i, g); j != k; ++j) {
-	    slot = std::max(time[g[source(*j, g)].index], slot);
-	}
-	time[g[*i].index] = slot + 1;
+	Graph::in_edge_iterator j, j_end;
+	for(tie(j, j_end) = in_edges(*i, g); j != j_end; ++j) {
+	    Vertex v = source(*j, g);
+	    int x = get(vertex_index, g, v);
 
-	cout << g[*i].name << " [" << time[g[*i].index] << "]\n";
+	    // find the maximum time slot
+	    slot = std::max(time[x], slot);
+	}
+
+	// store the max depth
+	int x = get(vertex_index, g, *i);
+	time[x] = slot + 1;
+
+	// and print some stuff to the screen
+	cout << setw(25) << g[*i].name << " [" << time[x] << "]\n";
     }
+
+    return 0;
 }
