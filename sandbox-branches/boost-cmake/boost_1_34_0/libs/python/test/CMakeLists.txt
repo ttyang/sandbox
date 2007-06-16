@@ -6,32 +6,34 @@ macro(bpl_test TESTNAME)
 
   # Determine the Python and C++ source files for this test
   if (BPL_TEST_DEFAULT_ARGS)
+    # First argument is the Python source we will run, the rest are
+    # either extra Python sources we're dependent on or C++ files from
+    # which we will build extension modules.
     car(BPL_TEST_PYSOURCE ${BPL_TEST_DEFAULT_ARGS})
-    set(BPL_TEST_SOURCES)
-    set(BPL_TEST_DEPENDS)
     cdr(BPL_TEST_DEFAULT_ARGS ${BPL_TEST_DEFAULT_ARGS})
+
+    get_filename_component(BPL_TEST_PYBASE ${BPL_TEST_PYSOURCE} NAME_WE)
     foreach(SRC ${BPL_TEST_DEFAULT_ARGS})
       get_filename_component(BPL_SRC_EXT ${SRC} EXT)
-      if (BPL_SRC_EXT STREQUAL "py")
-        set (BPL_TEST_DEPENDS ${BPL_TEST_DEPENDS} "${SRC}")
-      else (BPL_SRC_EXT STREQUAL "py")
-        set(BPL_TEST_SOURCES ${BPL_TEST_SOURCES} "${SRC}")
-      endif (BPL_SRC_EXT STREQUAL "py")
+      if (BPL_SRC_EXT STREQUAL ".cpp")
+        # Build a Python extension module from this source file
+        get_filename_component(BPL_SRC_NAME ${SRC} NAME_WE)
+        if(BPL_TEST_PYBASE STREQUAL "${BPL_SRC_NAME}")
+          boost_python_extension(${BPL_SRC_NAME}_ext ${SRC})
+        else(BPL_TEST_PYBASE STREQUAL "${BPL_SRC_NAME}")
+          boost_python_extension(${BPL_SRC_NAME} ${SRC})
+        endif(BPL_TEST_PYBASE STREQUAL "${BPL_SRC_NAME}")
+      endif (BPL_SRC_EXT STREQUAL ".cpp")
     endforeach(SRC ${BPL_TEST_DEFAULT_ARGS})
   else (BPL_TEST_DEFAULT_ARGS)
     set(BPL_TEST_PYSOURCE "${TESTNAME}.py")
-    set(BPL_TEST_DEPENDS)
-    set(BPL_TEST_SOURCES "${TESTNAME}.cpp")
+
+    # Build a Python extension module from this source file
+    boost_python_extension(${TESTNAME}_ext "${TESTNAME}.cpp")
   endif(BPL_TEST_DEFAULT_ARGS)
+
+  # We'll need the full patch to run the Python test
   set(BPL_TEST_PYSOURCE ${CMAKE_CURRENT_SOURCE_DIR}/${BPL_TEST_PYSOURCE})
-
-  # Build the Python extension module we need
-  boost_python_extension(${TESTNAME}_ext ${BPL_TEST_SOURCES})
-
-  # Add any extra dependencies
-  if (BPL_TEST_DEPENDS)
-    add_dependencies(${TESTNAME}_ext ${BPL_TEST_DEPENDS})
-  endif (BPL_TEST_DEPENDS)
     
   # Run the test itself
   file(TO_NATIVE_PATH ${LIBRARY_OUTPUT_PATH} PYTHONPATH)
@@ -87,7 +89,8 @@ bpl_test(try newtest.py m1.cpp m2.cpp)
 bpl_test(const_argument)
 bpl_test(keywords keywords_test.py keywords.cpp)
    
-bpl_test(builtin_converters test_builtin_converters.py test_builtin_converters.cpp)
+boost_python_extension(builtin_converters_ext test_builtin_converters.cpp)
+bpl_test(builtin_converters test_builtin_converters.py builtin_converters_ext)
 
 bpl_test(test_pointer_adoption)
 bpl_test(operators)
@@ -149,8 +152,11 @@ bpl_test(pointer_vector)
 # and fixed, this should be retested.
 #    <toolset>hp_cxx:<build>no
       
+boost_python_extension(map_indexing_suite_ext 
+  map_indexing_suite.cpp int_map_indexing_suite.cpp)
+
 bpl_test(map_indexing_suite 
-  map_indexing_suite.py map_indexing_suite.cpp int_map_indexing_suite.cpp)
+  map_indexing_suite.py map_indexing_suite_ext)
 
 
 # --- unit tests of library components ---
