@@ -10,7 +10,7 @@ macro(regex_test TESTNAME)
 
   boost_test_run(${TESTNAME} ${REGEX_TEST_SOURCES} 
     COMPILE_FLAGS "-DBOOST_REGEX_DYN_LINK=1"
-    DEPENDS boost_regex-shared)
+    DEPENDS boost_regex SHARED)
 endmacro(regex_test)
 
 set(R_SOURCES
@@ -38,15 +38,14 @@ set(R_SOURCES
   regress/test_operators.cpp
   )
 
-boost_test_run(regex_regress ${R_SOURCES} DEPENDS boost_regex-static)
+boost_test_run(regex_regress ${R_SOURCES} DEPENDS boost_regex STATIC)
 boost_test_run(regex_regress_dll ${R_SOURCES} 
   COMPILE_FLAGS "-DBOOST_REGEX_DYN_LINK=1"
-  DEPENDS boost_regex-shared)
+  DEPENDS boost_regex SHARED)
 boost_test_run(regex_regress_threaded ${R_SOURCES} 
-  COMPILE_FLAGS "-DTEST_THREADS -DBOOST_REGEX_DYN_LINK=1 ${MULTI_THREADED_COMPILE_FLAGS}"
-  LINK_FLAGS "${MULTI_THREADED_LINK_FLAGS}"
-  LINK_LIBS "${MULTI_THREADED_LINK_LIBS}"
-  DEPENDS boost_regex-mt-shared boost_thread-mt-shared)
+  COMPILE_FLAGS "-DTEST_THREADS -DBOOST_REGEX_DYN_LINK=1"
+  MULTI_THREADED SHARED
+  DEPENDS boost_regex boost_thread)
 
 regex_test(posix_api_check c_compiler_checks/posix_api_check.c)
 boost_test_compile(wide_posix_api_check_c c_compiler_checks/wide_posix_api_check.c)
@@ -56,18 +55,17 @@ regex_test(recursion_test pathology/recursion_test.cpp)
 regex_test(unicode_iterator_test unicode/unicode_iterator_test.cpp)
 
 boost_test_run(static_mutex_test static_mutex/static_mutex_test.cpp
-  COMPILE_FLAGS "-DBOOST_REGEX_DYN_LINK=1 ${MULTI_THREADED_COMPILE_FLAGS}"
-  LINK_FLAGS "${MULTI_THREADED_LINK_FLAGS}"
-  LINK_LIBS "${MULTI_THREADED_LINK_LIBS}"
-  DEPENDS boost_regex-mt-shared boost_thread-mt-shared)
+  COMPILE_FLAGS "-DBOOST_REGEX_DYN_LINK=1"
+  MULTI_THREADED SHARED
+  DEPENDS boost_regex boost_thread)
 
 regex_test(object_cache_test object_cache/object_cache_test.cpp)
 boost_test_run(regex_config_info config_info/regex_config_info.cpp
-  DEPENDS boost_regex-static)
+  DEPENDS boost_regex STATIC)
 
 boost_test_run(regex_dll_config_info config_info/regex_config_info.cpp
   COMPILE_FLAGS "-DBOOST_REGEX_DYN_LINK=1"
-  DEPENDS boost_regex-shared)
+  DEPENDS boost_regex SHARED)
 
 regex_test(test_collate_info collate_info/collate_info.cpp)
 

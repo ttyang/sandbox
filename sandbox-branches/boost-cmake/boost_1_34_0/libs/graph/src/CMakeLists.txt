@@ -11,9 +11,9 @@ set(BOOST_GRAPH_OPTIONAL_LIBRARIES "")
 # Try to find the Expat library 
 include(FindEXPAT)
 if (EXPAT_FOUND)
-  # We have Expat, so build the GraphML parser
+  # We have Expat, so build the GraphML parser - TODO: Boost 1.34.x only
 #  set(BOOST_GRAPH_OPTIONAL_SOURCES 
-#      ${BOOST_GRAPH_OPTIONAL_SOURCES} "graphml.cpp")
+#    ${BOOST_GRAPH_OPTIONAL_SOURCES} "graphml.cpp")
   include_directories(${EXPAT_INCLUDE_DIRS})
   set(BOOST_GRAPH_OPTIONAL_LIBRARIES 
       "${BOOST_GRAPH_OPTIONAL_LIBRARIES} ${EXPAT_LIBRARIES}")

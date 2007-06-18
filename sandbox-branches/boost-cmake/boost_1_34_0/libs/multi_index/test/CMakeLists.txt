@@ -18,7 +18,7 @@ boost_test_run(test_safe_mode test_safe_mode.cpp        test_safe_mode_main.cpp)
 boost_test_run(test_serialization
   test_serialization.cpp    test_serialization1.cpp
   test_serialization2.cpp   test_serialization_main.cpp
-  DEPENDS boost_serialization-static)
+  DEPENDS boost_serialization)
 boost_test_run(test_set_ops test_set_ops.cpp          test_set_ops_main.cpp)
 boost_test_run(test_special_set_ops test_special_set_ops.cpp  test_special_set_ops_main.cpp)
 boost_test_run(test_update test_update.cpp           test_update_main.cpp)

@@ -47,7 +47,7 @@ boost_test_run(math_info)
 #endforeach(test ${tests_need_threadlibs})
 
 
-boost_test_run(limits_test DEPENDS boost_test_exec_monitor-static)
+boost_test_run(limits_test DEPENDS boost_test_exec_monitor)
 boost_test_run(abi_test abi/abi_test.cpp abi/main.cpp)
 
 boost_test_run(has_2arg_use_facet_pass)

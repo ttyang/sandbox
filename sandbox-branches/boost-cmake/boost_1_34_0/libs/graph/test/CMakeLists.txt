@@ -5,24 +5,24 @@ boost_test_compile(adj_matrix_cc)
 boost_test_run(bfs)
 boost_test_compile(bfs_cc)
 boost_test_run(bellman-test)
-boost_test_run(betweenness_centrality_test) # Note: Should only build as release
+boost_test_run(betweenness_centrality_test RELEASE)
 boost_test_run(csr_graph_test)
 boost_test_run(dag_longest_paths)
 boost_test_run(dfs)
 boost_test_compile(dfs_cc)
 boost_test_compile(dijkstra_cc)
-# boost_test_run(dijkstra_heap_performance) NOTE: 10000
+boost_test_run(dijkstra_heap_performance ARGS 10000 RELEASE)
 boost_test_run(dominator_tree_test)
-# boost_test_run(relaxed_heap_text) NOTE: 5000 15000
+boost_test_run(relaxed_heap_test ARGS 5000 15000)
 boost_test_compile(edge_list_cc)
 boost_test_compile(filtered_graph_cc)
 boost_test_run(graph)
 boost_test_compile(graph_concepts)
 boost_test_run(graphviz_test 
-  DEPENDS boost_test_exec_monitor-static boost_graph-static)
+  DEPENDS boost_test_exec_monitor boost_graph STATIC)
 boost_test_run(gursoy_atun_layout_test)
 boost_test_run(layout_test)
-# boost_test_run(serialize) NOTE: needs boost_serialization
+boost_test_run(serialize DEPENDS boost_serialization)
 boost_test_compile(reverse_graph_cc)
 boost_test_run(sequential_vertex_coloring)
 boost_test_run(subgraph)
@@ -39,12 +39,13 @@ boost_test_run(cuthill_mckee_ordering)
 boost_test_run(king_ordering)
 boost_test_run(matching_test)
 # boost_test_run(max_flow_test)
-# boost_test_run(kolmogorov_max_flow_test)
+# boost_test_run(kolmogorov_max_flow_test) TODO: Boost 1.34.x only
 
-# GraphML Tests
+# GraphML Tests - not for Boost 1.34.x
 #include(FindEXPAT)
 #if (EXPAT_FOUND)
-#  boost_test_run(graphml_test LIBRARIES boost_graph-static)
+#  include_directories(${EXPAT_INCLUDE_DIRS})
+#  boost_test_run(graphml_test LIBRARIES boost_graph)
 #endif (EXPAT_FOUND)
 
 # Stanford GraphBase Tests

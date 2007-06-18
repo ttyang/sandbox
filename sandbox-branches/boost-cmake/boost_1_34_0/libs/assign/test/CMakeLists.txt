@@ -14,6 +14,6 @@ SET(TESTS
  multi_index_container)
 
 FOREACH(test ${TESTS})
-  boost_test_run(${test} DEPENDS boost_unit_test_framework-static)
+  boost_test_run(${test} DEPENDS boost_unit_test_framework)
 ENDFOREACH(test ${TESTS})
 

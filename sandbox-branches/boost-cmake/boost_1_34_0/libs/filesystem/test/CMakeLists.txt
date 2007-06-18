@@ -7,11 +7,11 @@ SET(TESTS path_test operations_test
 FOREACH(test ${TESTS})
   boost_test_run(${test}_static
     ${test}.cpp
-    DEPENDS boost_filesystem-static 
+    DEPENDS boost_filesystem STATIC
     COMPILE_FLAGS -DBOOST_FILESYSTEM_STATIC_LINK)
   boost_test_run(${test}_dynamic
     ${test}.cpp
-    DEPENDS boost_filesystem-shared
+    DEPENDS boost_filesystem SHARED
     COMPILE_FLAGS -DBOOST_FILESYSTEM_DYN_LINK)
 ENDFOREACH(test ${TESTS})
 

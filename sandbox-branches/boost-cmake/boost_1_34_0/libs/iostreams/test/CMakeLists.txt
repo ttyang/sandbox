@@ -2,7 +2,7 @@
 macro(iostreams_test TESTNAME)
   boost_test_run(${TESTNAME} 
     ${ARGN}
-    DEPENDS boost_unit_test_framework-static
+    DEPENDS boost_unit_test_framework
     COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
 endmacro(iostreams_test)
 
@@ -19,7 +19,7 @@ iostreams_test(direct_adapter_test)
 iostreams_test(example_test)
 iostreams_test(file_test)
 boost_test_run(file_descriptor_test
-  DEPENDS boost_unit_test_framework-static boost_iostreams-static
+  DEPENDS boost_unit_test_framework boost_iostreams
   COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
 iostreams_test(filtering_stream_test)
 iostreams_test(finite_state_filter_test)
@@ -27,14 +27,14 @@ iostreams_test(flush_test)
 iostreams_test(invert_test)
 iostreams_test(line_filter_test)
 boost_test_run(mapped_file_test
-  DEPENDS boost_unit_test_framework-static boost_iostreams-static
+  DEPENDS boost_unit_test_framework boost_iostreams
   COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
 iostreams_test(newline_test)
 iostreams_test(null_test)
 iostreams_test(pipeline_test)
 iostreams_test(positioning_test)
 boost_test_run(regex_filter_test
-  DEPENDS boost_unit_test_framework-static boost_regex-static
+  DEPENDS boost_unit_test_framework boost_regex
   COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
 iostreams_test(restrict_test)
 iostreams_test(seekable_file_test)
@@ -49,10 +49,10 @@ set(ZLIB_FIND_QUIETLY TRUE)
 include(FindZLIB)
 if (ZLIB_FOUND)
   boost_test_run(gzip_test
-    DEPENDS boost_unit_test_framework-static boost_iostreams-static
+    DEPENDS boost_unit_test_framework boost_iostreams
     COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
   boost_test_run(zlib_test
-    DEPENDS boost_unit_test_framework-static boost_iostreams-static
+    DEPENDS boost_unit_test_framework boost_iostreams
     COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
 endif(ZLIB_FOUND)
 
@@ -61,6 +61,6 @@ set(BZip2_FIND_QUIETLY TRUE)
 include(FindBZip2)
 if (BZIP2_FOUND)
   boost_test_run(bzip2_test
-    DEPENDS boost_unit_test_framework-static boost_iostreams-static
+    DEPENDS boost_unit_test_framework boost_iostreams
     COMPILE_FLAGS "-DBOOST_IOSTREAMS_NO_LIB")
 endif(BZIP2_FOUND)

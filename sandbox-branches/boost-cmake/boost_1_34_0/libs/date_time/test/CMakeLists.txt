@@ -16,7 +16,7 @@ set(DATE_TIME_SHARED_COMPILE_FLAGS
 macro(date_time_static_test SUBDIR TESTNAME)
   boost_test_run(${TESTNAME}
     "${SUBDIR}/${TESTNAME}.cpp"
-    DEPENDS boost_date_time-static
+    DEPENDS boost_date_time STATIC
     COMPILE_FLAGS ${DATE_TIME_COMPILE_FLAGS})
 endmacro(date_time_static_test)
 
@@ -25,7 +25,7 @@ endmacro(date_time_static_test)
 macro(date_time_shared_test SUBDIR TESTNAME)
   boost_test_run("${TESTNAME}_dll"
     "${SUBDIR}/${TESTNAME}.cpp"
-    DEPENDS boost_date_time-shared
+    DEPENDS boost_date_time SHARED
     COMPILE_FLAGS ${DATE_TIME_SHARED_COMPILE_FLAGS})
 endmacro(date_time_shared_test)
 
@@ -84,35 +84,35 @@ date_time_static_test(posix_time testtime_input_facet)
 # Wide streaming
 boost_test_run(testgreg_wstream
   "gregorian/testgreg_wstream.cpp"
-  DEPENDS boost_date_time-static
+  DEPENDS boost_date_time STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 boost_test_run(testtime_wstream
   "posix_time/testtime_wstream.cpp"
-  DEPENDS boost_date_time-static
+  DEPENDS boost_date_time STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 
 # Pre-1.33 facets
 boost_test_run(testfacet_dll
   "gregorian/testfacet.cpp"
-  DEPENDS boost_date_time-shared
+  DEPENDS boost_date_time SHARED
   COMPILE_FLAGS "${DATE_TIME_SHARED_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 # Note: This next test was commented out in the Jamfile.v2 because "it
 # crashes on VC6 (cause unknown)"
 boost_test_run(testparse_date_dll
   "gregorian/testparse_date.cpp"
-  DEPENDS boost_date_time-shared
+  DEPENDS boost_date_time SHARED
   COMPILE_FLAGS "${DATE_TIME_SHARED_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 boost_test_run(testfacet
   "gregorian/testfacet.cpp"
-  DEPENDS boost_date_time-static
+  DEPENDS boost_date_time STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 boost_test_run(testparse_date
   "gregorian/testparse_date.cpp"
-  DEPENDS boost_date_time-static
+  DEPENDS boost_date_time STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 boost_test_run(teststreams
   "posix_time/teststreams.cpp"
-  DEPENDS boost_date_time-static
+  DEPENDS boost_date_time STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DUSE_DATE_TIME_PRE_1_33_FACET_IO")
 
 # Local time
@@ -149,33 +149,33 @@ set(DATE_TIME_COMPILE_FLAGS
  # xml archive tests
 boost_test_run(testgreg_serialize_xml
   "gregorian/testgreg_serialize.cpp"
-  DEPENDS boost_date_time-static boost_serialization-static
+  DEPENDS boost_date_time boost_serialization STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DDATE_TIME_XML_SERIALIZE")
 boost_test_run(testtime_serialize_xml_std_config
   "posix_time/testtime_serialize.cpp"
-  DEPENDS boost_date_time-static boost_serialization-static
+  DEPENDS boost_date_time boost_serialization STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DBOOST_DATE_TIME_POSIX_TIME_STD_CONFIG -DDATE_TIME_XML_SERIALIZE")
 boost_test_run(testtime_serialize_xml
   "posix_time/testtime_serialize.cpp"
-  DEPENDS boost_date_time-static boost_serialization-static
+  DEPENDS boost_date_time boost_serialization STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DDATE_TIME_XML_SERIALIZE")
 
  # text archive tests
 boost_test_run(testgreg_serialize
   "gregorian/testgreg_serialize.cpp"
-  DEPENDS boost_date_time-static boost_serialization-static
+  DEPENDS boost_date_time boost_serialization STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS}")
 boost_test_run(testgreg_serialize_dll
   "gregorian/testgreg_serialize.cpp"
-  DEPENDS boost_date_time-shared boost_serialization-shared
+  DEPENDS boost_date_time SHARED boost_serialization SHARED
   COMPILE_FLAGS "${DATE_TIME_SHARED_COMPILE_FLAGS}")
 boost_test_run(testtime_serialize_std_config
   "posix_time/testtime_serialize.cpp"
-  DEPENDS boost_date_time-static boost_serialization-static
+  DEPENDS boost_date_time boost_serialization STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS} -DBOOST_DATE_TIME_POSIX_TIME_STD_CONFIG")
 boost_test_run(testtime_serialize
   "posix_time/testtime_serialize.cpp"
-  DEPENDS boost_date_time-static boost_serialization-static
+  DEPENDS boost_date_time boost_serialization STATIC
   COMPILE_FLAGS "${DATE_TIME_COMPILE_FLAGS}")
 
 # Copyright (c) 2000-2005

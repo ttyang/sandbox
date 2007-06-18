@@ -28,29 +28,26 @@ macro(serialization_test testname)
   endif(BSL_TEST_POLYMORPHIC)
   
   foreach(ARCHIVE ${BOOST_ARCHIVE_LIST})
-    set(BSL_TEST_STATIC_LIBRARIES) 
-    set(BSL_TEST_SHARED_LIBRARIES)
+    set(BSL_TEST_LIBRARIES) 
     if(NOT BSL_NO_LIBS)
-      set(BSL_TEST_STATIC_LIBRARIES "boost_serialization-static")
-      set(BSL_TEST_SHARED_LIBRARIES "boost_serialization-shared")
+      set(BSL_TEST_LIBRARIES "boost_serialization")
       if(ARCHIVE MATCHES ".*warchive")
-        set(BSL_TEST_STATIC_LIBRARIES 
-          "boost_wserialization-static" ${BSL_TEST_STATIC_LIBRARIES})
-        set(BSL_TEST_SHARED_LIBRARIES 
-          "boost_wserialization-shared" ${BSL_TEST_SHARED_LIBRARIES})
+        set(BSL_TEST_LIBRARIES "boost_wserialization" ${BSL_TEST_LIBRARIES})
       endif(ARCHIVE MATCHES ".*warchive")
     endif(NOT BSL_NO_LIBS)
 
     # Tests linking against the static serialization library
     boost_test_run("${testname}_${ARCHIVE}"
       ${BSL_TEST_SOURCES}
-      DEPENDS boost_test_exec_monitor-static ${BSL_TEST_STATIC_LIBRARIES}
+      STATIC
+      DEPENDS boost_test_exec_monitor-static ${BSL_TEST_LIBRARIES}
       COMPILE_FLAGS "-DBOOST_ARCHIVE_TEST=${BSL_TEST_POLY}${ARCHIVE}.hpp -DBOOST_LIB_DIAGNOSTIC=1")
     
     # Tests linking against the shared serialization library
     boost_test_run("${testname}_${ARCHIVE}_dll"
       ${BSL_TEST_SOURCES}
-      DEPENDS boost_test_exec_monitor-static ${BSL_TEST_SHARED_LIBRARIES}
+      SHARED
+      DEPENDS boost_test_exec_monitor-static ${BSL_TEST_LIBRARIES}
       COMPILE_FLAGS "-DBOOST_ARCHIVE_TEST=${BSL_TEST_POLY}${ARCHIVE}.hpp -DBOOST_LIB_DIAGNOSTIC=1 -DBOOST_ALL_DYN_LINK=1")
   endforeach(ARCHIVE ${BOOST_ARCHIVE_LIST})
 endmacro(serialization_test)
