@@ -16,7 +16,6 @@
 #include <iostream>
 #include <fstream>
 
-#include "svg_instruction.hpp"
 #include "svg_tag.hpp"
 #include "svg_style.hpp"
 
@@ -42,35 +41,28 @@ protected:
     
     g_element document;
 
-    void _size(unsigned int, unsigned int);
-
-    void _write();
-
-    void _point(double, double);
-    void _point(double, double, g_element&);
-    
-    void _line(double, double, double, double);
-    void _line(double, double, double, double, g_element&); 
-    
-    void _text(double, double, std::string);
-    void _line_color(svg_color);
-
-
 public:
     svg(const std::string&);
     
     virtual ~svg();
+
     svg(const svg&);
     svg& operator=(const svg&);
 
-    svg& operator<<(const svg_instruction&);
+    svg& image_size(unsigned int, unsigned int);
+    svg& write();
 
-    svg& operator<<(const svg_point&);
+    svg& point(double, double);
+    svg& point(double, double, g_element&);
+    
+    svg& line(double, double, double, double);
+    svg& line(double, double, double, double, g_element&); 
+    
+    svg& text(double, double, std::string);
+    svg& line_color(svg_color);
 
-    svg& operator<<(const svg_line&);
-    svg& operator<<(const svg_text&);
-
-    svg& operator<<(const svg_stroke_color&);
+    svg& rect(double, double, double, double);
+    svg& rect(double, double, double, double, g_element&); 
 
     friend std::ostream& operator<<(std::ostream&, const svg&);
 };
@@ -102,66 +94,8 @@ svg::svg(const svg& rhs)
 }
 
 // -----------------------------------------------------------------
-// Processes the svg_instructions
-// This allows the user to easily enter information than ordinary
-// method calls, and is more clear that the method supports chaining
 // -----------------------------------------------------------------
-svg& svg::operator<<(const svg_instruction& rhs)
-{
-    switch(rhs.i_type)
-    {
-    case SVG_WRITE:
-        _write();
-        break;
-    }
-    return *this;
-}
-
-// -----------------------------------------------------------------
-// Chained stream operators. Each operator overload below will
-// represent a different instruction type, after I rewrite svg's
-// instructions to be more generic.
-// -----------------------------------------------------------------
-svg& svg::operator<<(const svg_point &rhs)
-{
-    switch(rhs.i_type)
-    {
-    case SVG_SIZE:
-        _size((unsigned int)rhs.x, (unsigned int)rhs.y);
-        break;
-    case SVG_POINT:
-        _point(rhs.x, rhs.y, document);
-    }
-
-    return *this;
-}
-
-svg& svg::operator<<(const svg_line &rhs)
-{
-    _line(rhs.x1, rhs.y1, rhs.x2, rhs.y2);
-
-    return *this;
-}
-
-svg& svg::operator<<(const svg_text &rhs)
-{
-    _text(rhs.x, rhs.y, rhs.text);
-
-    return *this;
-}
-
-svg& svg::operator<<(const svg_stroke_color &rhs)
-{
-    _line_color(rhs.col);
-
-    return *this;
-}
-
-// -----------------------------------------------------------------
-// Internal function to write the data to a specified stream
-// TODO: allow other streams than a file stream
-// -----------------------------------------------------------------
-void svg::_write()
+svg& svg::write()
 {
     _write_header();
 
@@ -174,6 +108,8 @@ void svg::_write()
 
     //close off svg tag
     *s_out<<"</svg>";
+
+    return *this;
 }
 
 // -----------------------------------------------------------------
@@ -206,10 +142,12 @@ void svg::_write_header()
 // Writes the information about the size of the file to the document
 // TODO: allow other unit identifiers
 // -----------------------------------------------------------------
-void svg::_size(unsigned int x, unsigned int y)
+svg& svg::image_size(unsigned int x, unsigned int y)
 {
     x_size = x;
     y_size = y;
+
+    return *this;
 }
 
 // -----------------------------------------------------------------
@@ -220,14 +158,18 @@ void svg::_size(unsigned int x, unsigned int y)
 // -----------------------------------------------------------------
 
 // this overload has a pointer to a node in the document tree
-void svg::_point(double x, double y, g_element& location)
+svg& svg::point(double x, double y, g_element& location)
 {
     location.children.push_back(new point_element(x, y));
+
+    return *this;
 }
 
-void svg::_point(double x, double y)
+svg& svg::point(double x, double y)
 {
     document.children.push_back(new point_element(x, y));
+
+    return *this;
 }
 
 // -----------------------------------------------------------------
@@ -235,32 +177,53 @@ void svg::_point(double x, double y)
 // TODO: Allow other line thicknesses
 // TODO: Allow other line colors
 // -----------------------------------------------------------------
-void svg::_line(double x1, double y1, double x2, double y2)
+svg& svg::line(double x1, double y1, double x2, double y2)
 {
     document.children.push_back(new line_element(x1, y1, x2, y2));
+
+    return *this;
 }
 
-void svg::_line(double x1, double y1, double x2, double y2, 
+svg& svg::line(double x1, double y1, double x2, double y2, 
                 g_element& location)
 {
     location.children.push_back(new line_element(x1, y1, x2, y2));
+
+    return *this;
 }
 
 // -----------------------------------------------------------------
 // Writes the information about text to the document
 // TODO: allow different fonts and font sizes
 // -----------------------------------------------------------------
-void svg::_text(double x, double y, std::string text)
+svg& svg::text(double x, double y, std::string text)
 {
     document.children.push_back(new text_element(x, y, text));
+
+    return *this;
 }
 
 // -----------------------------------------------------------------
 // Hopefully this one will be filld out next week
 // -----------------------------------------------------------------
-void svg::_line_color(svg_color col)
+svg& svg::line_color(svg_color col)
 {
+    return *this;
+}
 
+svg& svg::rect(double x1, double y1, double x2, double y2)
+{
+    document.children.push_back(new rect_element(x1, y1, x2, y2));
+
+    return *this;
+}
+
+svg& svg::rect(double x1, double y1, double x2, double y2, 
+                g_element& location)
+{
+    location.children.push_back(new rect_element(x1, y1, x2, y2));
+
+    return *this;
 }
 
 
