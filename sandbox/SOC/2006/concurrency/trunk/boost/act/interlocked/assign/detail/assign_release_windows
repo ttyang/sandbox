@@ -6,19 +6,19 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_ACQUIRE_VISTA_HPP
-#define BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_ACQUIRE_VISTA_HPP
+#ifndef BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_RELEASE_VISTA_HPP
+#define BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_RELEASE_VISTA_HPP
 
 #include <boost/config.hpp>
 
 #ifndef BOOST_WINDOWS
-#error Windows interlocked assign acquire included on non-Windows OS.
+#error Windows interlocked assign release included on non-Windows OS.
 #else
 
 #include <windows.h>
 
 #if WINVER < 0x0600
-#error Windows interlocked assign acquire included on pre-vista Windows OS.
+#error Windows interlocked assign release included on pre-vista Windows OS.
 #else
 
 #include <boost/utility/enable_if.hpp>
@@ -27,7 +27,7 @@
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
 template< typename ResultType, typename UnqualifiedType >
-struct assign_acquire_impl
+struct assign_release_impl
 {
   template< typename LeftType, typename RightType >
   static
@@ -43,7 +43,7 @@ struct assign_acquire_impl
 
     return static_cast< unqualified_type >
            (
-             InterlockedExchangeAcquire
+             InterlockedExchange
              ( reinterpret_cast< LONG volatile* >( &left )
              , reinterpret_cast< LONG const& >( right )
              )
@@ -64,7 +64,7 @@ struct assign_acquire_impl
 
     return static_cast< unqualified_type >
            (
-             InterlockedExchange64Acquire
+             InterlockedExchange64
              ( reinterpret_cast< LONGLONG volatile* >( &left )
              , reinterpret_cast< LONGLONG const& >( right )
              )
@@ -79,7 +79,7 @@ struct assign_acquire_impl
 
     return static_cast< unqualified_type >
            (
-             InterlockedExchangePointerAcquire
+             InterlockedExchangePointer
              ( const_cast< void* volatile* >
                (
                  reinterpret_cast< void const volatile* volatile* >( &left )
