@@ -27,17 +27,17 @@ namespace boost { namespace act { namespace interlocked { namespace detail {
 
 struct assign_impl
 {
-  template< typename LeftType, typename RightType >
+  template< typename Type >
   static
   typename lazy_enable_if_c
   <
-    ( sizeof( LeftType ) == 4 )
-  , remove_cv< LeftType >
+    ( sizeof( Type ) == 4 )
+  , remove_cv< Type >
   >
   ::type
-  execute( LeftType& left, RightType right )
+  execute( Type& left, typename remove_cv< Type >::type right )
   {
-    typedef typename remove_cv< LeftType >::type unqualified_type;
+    typedef typename remove_cv< Type >::type unqualified_type;
 
     return static_cast< unqualified_type >
            (
@@ -48,11 +48,11 @@ struct assign_impl
            );
   }
 
-  template< typename LeftType, typename RightType >
-  static typename remove_cv< LeftType* >::type
-  execute( LeftType*& left, RightType right )
+  template< typename Type >
+  static typename remove_cv< Type* >::type
+  execute( Type*& left, typename remove_cv< Type >::type right )
   {
-    typedef typename remove_cv< LeftType* >::type unqualified_type;
+    typedef typename remove_cv< Type* >::type unqualified_type;
 
     return static_cast< unqualified_type >
            (
@@ -69,17 +69,17 @@ struct assign_impl
 
 #if WINVER >= 0x0600
 
-  template< typename LeftType, typename RightType >
+  template< typename Type >
   static
   typename lazy_enable_if_c
   <
-    ( sizeof( LeftType ) == 8 )
-  , remove_cv< LeftType >
+    ( sizeof( Type ) == 8 )
+  , remove_cv< Type >
   >
   ::type
-  execute( LeftType& left, RightType right )
+  execute( Type& left, typename remove_cv< Type >::type right )
   {
-    typedef typename remove_cv< LeftType >::type unqualified_type;
+    typedef typename remove_cv< Type >::type unqualified_type;
 
     return static_cast< unqualified_type >
            (
