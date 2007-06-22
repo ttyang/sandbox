@@ -6,28 +6,28 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_RETRIEVE_HPP
-#define BOOST_ACT_INTERLOCKED_RETRIEVE_HPP
+#ifndef BOOST_ACT_INTERLOCKED_LOAD_HPP
+#define BOOST_ACT_INTERLOCKED_LOAD_HPP
 
 #include <boost/utility/enable_if.hpp>
 #include <boost/type_traits/remove_volatile.hpp>
 
 #include <boost/act/interlocked/detail/cas_support.hpp>
 
-#if BOOST_ACT_INTERLOCKED_DETAIL_HAS_VOLATILE_RETRIEVE
+#if BOOST_ACT_INTERLOCKED_DETAIL_HAS_VOLATILE_LOAD
 
-#include <boost/act/interlocked/retrieve/detail/retrieve_default.hpp>
+#include <boost/act/interlocked/load/detail/load_default.hpp>
 
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
 template< typename ResultType, typename UnqualifiedType >
-struct retrieve_impl : retrieve_default_impl< ResultType, UnqualifiedType > {};
+struct load_impl : load_default_impl< ResultType, UnqualifiedType > {};
 
 } } } }
 
 #else
 
-#error Custom retrieve functionality is not yet implemented
+#error Custom load functionality is not yet implemented
 
 #endif
 
@@ -40,11 +40,11 @@ typename lazy_enable_if
 , remove_volatile< TargetType >
 >
 ::type
-retrieve( TargetType const& target )
+load( TargetType const& target )
 {
   typedef typename remove_volatile< TargetType >::type unqualified_type;
 
-  return detail::retrieve_impl< unqualified_type, unqualified_type >
+  return detail::load_impl< unqualified_type, unqualified_type >
          ::execute( target );
 }
 

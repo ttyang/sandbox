@@ -6,11 +6,11 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_TEST_INTERLOCKED_ASSIGN_RETRIEVE_HELPER_HPP
-#define BOOST_ACT_TEST_INTERLOCKED_ASSIGN_RETRIEVE_HELPER_HPP
+#ifndef BOOST_ACT_TEST_INTERLOCKED_ASSIGN_LOAD_HELPER_HPP
+#define BOOST_ACT_TEST_INTERLOCKED_ASSIGN_LOAD_HELPER_HPP
 
 #include <boost/test/minimal.hpp>
-#include <boost/act/interlocked/retrieve.hpp>
+#include <boost/act/interlocked/load.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/barrier.hpp>
 #include <boost/act/interlocked/assign.hpp>
@@ -36,7 +36,7 @@
 //       particularly in a multicore environment.
 
 template< typename GetType, typename SetType >
-void test_assign_retrieve_no_threads( GetType get, SetType set )
+void test_assign_load_no_threads( GetType get, SetType set )
 {
   ::boost::act::interlocked::uint_least8_t test_var = 0;
 
@@ -76,13 +76,13 @@ struct interlocked_assign_set
   }
 };
 
-struct interlocked_retrieve_get
+struct interlocked_load_get
 {
   template< typename VariableType >
   typename boost::remove_cv< VariableType >::type
   operator ()( VariableType& var ) const
   {
-    return boost::act::interlocked::retrieve( var );
+    return boost::act::interlocked::load( var );
   }
 };
 
@@ -138,7 +138,7 @@ void assign_in_new_thread( VariableType& var, SourceType new_val
 }
 
 template< typename BarrierType, typename GetType, typename SetType >
-void test_assign_retrieve_with_threads( BarrierType& barrier
+void test_assign_load_with_threads( BarrierType& barrier
                                       , GetType get, SetType set
                                       )
 {

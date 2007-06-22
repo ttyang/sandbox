@@ -6,19 +6,19 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_RETRIEVE_DETAIL_RETRIEVE_DEFAULT_IMPL_HPP
-#define BOOST_ACT_INTERLOCKED_RETRIEVE_DETAIL_RETRIEVE_DEFAULT_IMPL_HPP
+#ifndef BOOST_ACT_INTERLOCKED_LOAD_DETAIL_LOAD_DEFAULT_IMPL_HPP
+#define BOOST_ACT_INTERLOCKED_LOAD_DETAIL_LOAD_DEFAULT_IMPL_HPP
 
 #include <boost/act/interlocked/detail/cas_support.hpp>
 
 #ifdef BOOST_ACT_INTERLOCKED_DETAIL_OPERATION_SUPPORT
 
-#if BOOST_ACT_INTERLOCKED_DETAIL_HAS_VOLATILE_RETRIEVE // If: volatile impl
+#if BOOST_ACT_INTERLOCKED_DETAIL_HAS_VOLATILE_LOAD // If: volatile impl
 
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
 template< typename ResultType, typename UnqualifiedType >
-struct retrieve_default_impl
+struct load_default_impl
 {
   template< typename TargetType >
   static ResultType execute( TargetType volatile& target )
@@ -29,7 +29,7 @@ struct retrieve_default_impl
 
 } } } }
 
-#else // Else: Custom interlocked retrieve for this system (no default)
+#else // Else: Custom interlocked load for this system (no default)
 
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/always.hpp>
@@ -39,7 +39,7 @@ struct retrieve_default_impl
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
 template< typename ResultType, typename UnqualifiedType >
-struct retrieve_default_impl
+struct load_default_impl
 {
   template< typename TargetType >
   static ResultType execute( TargetType& target )
@@ -47,7 +47,7 @@ struct retrieve_default_impl
     BOOST_MPL_ASSERT_MSG
     (
       ( mpl::apply< mpl::always< mpl::false_ >, TargetType >::type::value )
-    , NO_DEFAULT_INTERLOCKED_RETRIEVE_IMPLEMENTATION_FOR_THIS_SYSTEM
+    , NO_DEFAULT_INTERLOCKED_LOAD_IMPLEMENTATION_FOR_THIS_SYSTEM
     , ()
     );
   }
@@ -67,7 +67,7 @@ struct retrieve_default_impl
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
 template< typename ResultType, typename UnqualifiedType >
-struct retrieve_default_impl
+struct load_default_impl
 {
   template< typename TargetType >
   static ResultType execute( TargetType& target )
