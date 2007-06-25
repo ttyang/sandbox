@@ -1,8 +1,13 @@
-/* (C) Copyright Jeremy Pack 2007
-* Distributed under the Boost Software License, Version 1.0. (See
-* accompanying file LICENSE_1_0.txt or copy at
-* http://www.boost.org/LICENSE_1_0.txt)
-*/
+/*
+ * Boost.Extension / counted factory:
+ * 	factory to register the implementations and create them (with a reference count)
+ *
+ * (C) Copyright Jeremy Pack 2007
+ * Distributed under the Boost Software License, Version 1.0. (See
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
+ */
+
 #ifndef BOOST_EXTENSION_COUNTED_FACTORY_HPP
 #define BOOST_EXTENSION_COUNTED_FACTORY_HPP
 #include <string>
