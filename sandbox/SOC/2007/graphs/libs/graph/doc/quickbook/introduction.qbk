@@ -155,7 +155,60 @@ The adjacency_matrix class stores edges in a |V| x |V| matrix (where |V| is the 
 The elements of this matrix represent edges in the graph. Adjacency matrix representations are
 especially suitable for very dense graphs, i.e., those where the number of edges approaches |V|2.
 
-The edge_list class is an adaptor that takes any kind of edge iterator and implements an
-Edge List Graph. 
+The `edge_list` class is an adaptor that takes any kind of edge iterator and implements an
+Edge List Graph.
+
+[h2 Projects Using This Library]
+This section should probably be merged into the global "Who's using me now page". But, for completeness
+here's the list (with links, too):
+
+* [@http://www.cs.rpi.edu/~musser/gsd/ Generic Software Design Course at RPI]
+* [@http://alps.comp-phys.org/ The ALPS quantum mechanics project]
+* [@http://bioinformatics.icmb.utexas.edu/lgl/ Large Graph Layout at University of Texas]
+* [@http://www.cs.concordia.ca/~gregb/home/c691R-w2004.html Bioinformatics Algorithms at Concordia University]
+* [@http://photon.poly.edu/~hbr/cs903/ Algorithm Course at Polytechnic University in Brooklyn]
+* [@http://www.bioconductor.org/repository/devel/vignette/RBGL.pdf BGL interface for language R]
+* [@http://www.cuj.com/documents/s=8470/cuj0307tan/ CUJ Article about Electronic Design Automation]
+* [@http://rubyforge.org/projects/rgl/ A BGL-inspired Ruby Graph Library]
+* [@http://www.codeproject.com/cs/miscctrl/quickgraph.asp A BGL-inspired C# Graph Library]
+* [@http://map1.squeakfoundation.org/sm/package/5729d80a-822b-4bc2-9420-ef7ecaea8553 A BGL-inspired Squeak (Smalltalk) Graph Library]
+* [@http://www.datasim.nl/education/coursedetails.asp?coursecategory=CPP&coursecode=ADCPP BGL course at DataSim]
+* [@http://www.vrjuggler.org/ VR Juggler: Virtual Reality Tools]
+* [@http://hyperworx.org Hyperworx Platform Project]
+
+[h2 Publications about this Library]
+* Dr. Dobb's Sept. 2000 Article
+* OOPSLA'99 GGCL Paper
+* Lie-Quan Lee's Master's Thesis about GGCL(ps) (pdf)
+* Dietmar Kuhl's Master's Thesis: Design Pattern for the Implementation of Graph Algorithms
+* ISCOPE'99 Sparse Matrix Ordering (pdf)
+* C++ Template Workshop 2000, Concept Checking
+
+[h2 Acknowledgements]
+We owe many debts of thanks to a number of individuals who both inspired and encouraged us in
+developing the Boost Graph Library. 
+
+A most profound thanks goes to Alexander Stepanov for his pioneering work in generic programming,
+for his encouragement, and for his algorithm contributions to the BGL. We thank Matthew Austern for
+his work on documenting the concepts of STL which provided a foundation for creating the concepts in
+the BGL. We thank Dietmar Kuhl for his work on generic graph algorithms and design patterns;
+especially for the property map abstraction.
+
+Dave Abrahams, Jens Maurer, Beman Dawes, Gary Powell, Greg Colvin, Valentin Bonnard, and the rest
+of the group at Boost provided valuable input to the BGL interface, numerous suggestions for improvement,
+proof reads of the documentation, and help with polishing the code. A special thanks to Dave Abrahams
+for managing the formal review. 
+
+We also thank the following BGL users whose questions helped to improve the BGL: Gordon Woodhull,
+Dave Longhorn, Joel Phillips, and Edward Luke.
+
+A special thanks to Jeffrey Squyres for editing and proof reading of the documentation. 
+
+Our original work on the Boost Graph Library was supported in part by NSF grant ACI-9982205 and by
+the Director, Office of Science, Division of Mathematical, Information, and Computational Sciences of
+the U.S. Department of Energy under contract number DE-AC03-76SF00098. 
+
+In our work we also used resources of the National Energy Research Scientific Computing Center, which
+is supported by the Office of Science of the U.S. Department of Energy. 
 
 [endsect]

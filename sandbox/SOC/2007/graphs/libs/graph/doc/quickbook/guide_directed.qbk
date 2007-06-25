@@ -34,16 +34,16 @@ For this example, we're actually going to use some of the files that actually
 implement the examples described in this user's guide. Their dependencies are
 shown in figure 1. Path names have been omitted for readability.
 
-[$../images/files.png]
+[$images/guide/files.png]
 
 From this graph, it should be relatively easy to see that the build should
 start at the bottom and proceed "upwards" with the executable programs being
 built last - maybe. There are actually two different approaches to bulding
 these programs:
 
-# One at a time. This is probably what you're used to seeing. The compiler
+* One at a time. This is probably what you're used to seeing. The compiler
 builds file A, followed by file B, and finally file C.
-# In parallel. If you're lucky enough to have a multi-processor computer
+* In parallel. If you're lucky enough to have a multi-processor computer
 available to you we might be able to process (compile) a number of different
 files at the same time by distributing the tasks to different processors.
 
@@ -196,7 +196,7 @@ the method is called to indicate that vertex `u` dependes on vertex `v`, the add
 actually indicates that vertex `v` satisfies the dependency of vertex `u`. In fact, this
 is the reverse of the original graph and is shown in Figure 2.
 
-[$../images/reverse.png]
+[$images/guide/reverse.png]
 
 [h4 Obtaining the Make Order]
 We are now ready to compute the make order by running a topological sort. Thanks to a
