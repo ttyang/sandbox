@@ -1,3 +1,10 @@
+[/ Boost.Extension - intro ]
+[/ Copyright 2007 Jeremy Pack ]
+[/ Distributed under the Boost Software License, Version 1.0. (See]
+[/ accompanying file LICENSE_1_0.txt or copy at ]
+[/ http://www.boost.org/LICENSE_1_0.txt) ]
+[/ See http://www.boost.org/ for latest version. ]
+
 [section:introduction Introduction]
 Wrappers for loading classes from linked libraries to extend the functionality 
 of a program. Created to ease the creation of plugins.

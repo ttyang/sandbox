@@ -1,3 +1,11 @@
+[/ Boost.Extension - first tutorial ]
+[/ Copyright 2007 Jeremy Pack ]
+[/ Distributed under the Boost Software License, Version 1.0. (See]
+[/ accompanying file LICENSE_1_0.txt or copy at ]
+[/ http://www.boost.org/LICENSE_1_0.txt) ]
+[/ See http://www.boost.org/ for latest version. ]
+
+
 [section:tutorial01 Tutorial 1]
 
 Create a class that we will later subclass and put it into a header file called word.hpp.
