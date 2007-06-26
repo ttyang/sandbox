@@ -1,7 +1,12 @@
-/* (C) Copyright Mariano G. Consoni 2007
- * Distributed under the Boost Software License, Version 1.0. (See
+/*
+ * Boost.Extension / multiple inheritance unit test
+ *
+ * (C) Copyright Mariano G. Consoni 2007
+ * Distributed under the Boost Software License, Version 1.0. (See             
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * See http://www.boost.org/ for latest version.
  */
 
 #include <boost/extension/factory_map.hpp>
@@ -32,17 +37,22 @@ BOOST_AUTO_TEST_CASE(multiple_inheritance_example)
   //  constructors. Multiple zones can be constructed.
   factory_map twilight;
 
-  // check if each library loads correct. It could be done with a helper function but I think that
-  // it is clear this way because we are in a unit test, and the output for the helper function version
-  // will be less descriptive
+  // check if each library loads correct. It could be done with a helper 
+  // function but I think that it is clear this way because we are in a 
+  // unit test, and the output for the helper function version will be 
+  // less descriptive
 
   // check if the libraries can be loaded
-  shared_library libVehicle((std::string("libVehicle") + ".extension").c_str());
+  shared_library libVehicle((std::string("libVehicle") 
+			     + ".extension").c_str());
   shared_library libCar((std::string("libCar") + ".extension").c_str());
-  shared_library libComputer((std::string("libComputer") + ".extension").c_str());
+  shared_library libComputer((std::string("libComputer") 
+			      + ".extension").c_str());
   shared_library libBoat((std::string("libBoat") + ".extension").c_str());
-  shared_library libFlyingCar((std::string("libFlyingCar") + ".extension").c_str());
-  shared_library libCarOfTheFuture((std::string("libCarOfTheFuture") + ".extension").c_str());
+  shared_library libFlyingCar((std::string("libFlyingCar") 
+			       + ".extension").c_str());
+  shared_library libCarOfTheFuture((std::string("libCarOfTheFuture") 
+				    + ".extension").c_str());
   shared_library libPlane((std::string("libPlane") + ".extension").c_str());
   BOOST_CHECK_EQUAL( libVehicle.open(), true );
   BOOST_CHECK_EQUAL( libCar.open(), true );
@@ -53,13 +63,20 @@ BOOST_AUTO_TEST_CASE(multiple_inheritance_example)
   BOOST_CHECK_EQUAL( libPlane.open(), true );
 
   // check if the factory can return the functor for each library
-  functor<void, factory_map &> load_func_vehicle = libVehicle.get_functor<void, factory_map &>("extension_export");
-  functor<void, factory_map &> load_func_car = libCar.get_functor<void, factory_map &>("extension_export");
-  functor<void, factory_map &> load_func_computer = libComputer.get_functor<void, factory_map &>("extension_export");
-  functor<void, factory_map &> load_func_boat = libBoat.get_functor<void, factory_map &>("extension_export");
-  functor<void, factory_map &> load_func_flyingcar = libFlyingCar.get_functor<void, factory_map &>("extension_export");
-  functor<void, factory_map &> load_func_carofthefuture = libCarOfTheFuture.get_functor<void, factory_map &>("extension_export");
-  functor<void, factory_map &> load_func_plane = libPlane.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_vehicle = 
+    libVehicle.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_car = 
+    libCar.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_computer = 
+    libComputer.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_boat = 
+    libBoat.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_flyingcar = 
+    libFlyingCar.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_carofthefuture = 
+    libCarOfTheFuture.get_functor<void, factory_map &>("extension_export");
+  functor<void, factory_map &> load_func_plane = 
+    libPlane.get_functor<void, factory_map &>("extension_export");
   BOOST_CHECK_EQUAL( load_func_vehicle.is_valid(), true );
   BOOST_CHECK_EQUAL( load_func_car.is_valid(), true );
   BOOST_CHECK_EQUAL( load_func_computer.is_valid(), true );
@@ -77,10 +94,12 @@ BOOST_AUTO_TEST_CASE(multiple_inheritance_example)
 
 
   // Computer test: we test if we obtain the computer implementation
-  std::list<factory<computer, std::string> > & factory_list = twilight.get<computer, std::string>();  
-  BOOST_CHECK_EQUAL( factory_list.size(), 2 );
+  std::list<factory<computer, std::string> > & factory_list = 
+    twilight.get<computer, std::string>();  
+  BOOST_CHECK_EQUAL( factory_list.size(), 2U );
 
-  std::list<factory<computer, std::string> >::iterator comp = factory_list.begin();
+  std::list<factory<computer, std::string> >::iterator comp = 
+    factory_list.begin();
 
   std::auto_ptr<computer> computer_ptr(comp->create());
   BOOST_CHECK_EQUAL( !computer_ptr.get(), 0 );
@@ -89,15 +108,18 @@ BOOST_AUTO_TEST_CASE(multiple_inheritance_example)
   BOOST_CHECK_EQUAL( computer_ptr->list_capabilities(), "\nIt computes.");
 
   // Vehicles test: we test if we obtain the different vehicles implementation
-  std::list<factory<vehicle, std::string> > & factory_list2 = twilight.get<vehicle, std::string>();
-  BOOST_CHECK_EQUAL( factory_list2.size(), 6 );
+  std::list<factory<vehicle, std::string> > & factory_list2 = 
+    twilight.get<vehicle, std::string>();
+  BOOST_CHECK_EQUAL( factory_list2.size(), 6U );
 
-  std::list<factory<vehicle, std::string> >::iterator v = factory_list2.begin();
+  std::list<factory<vehicle, std::string> >::iterator v = 
+    factory_list2.begin();
 
   // vehicle as a vehicle
   std::auto_ptr<vehicle> v1_ptr(v->create());
   BOOST_CHECK_EQUAL( v->get_info(),  "A vehicle exported as a vehicle" );
-  BOOST_CHECK_EQUAL( v1_ptr->list_capabilities(), "\nIt is some sort of vehicle." );
+  BOOST_CHECK_EQUAL( v1_ptr->list_capabilities(), 
+		     "\nIt is some sort of vehicle." );
 
   ++v;
 
@@ -118,15 +140,20 @@ BOOST_AUTO_TEST_CASE(multiple_inheritance_example)
   // flying car as a vehicle
   std::auto_ptr<vehicle> v4_ptr(v->create());
   BOOST_CHECK_EQUAL( v->get_info(),  "A flying car exported as a vehicle");
-  BOOST_CHECK_EQUAL( v4_ptr->list_capabilities(), "\nIt travels on roads.\nIt flies in the air.\nIt takes off from your driveway" );
+  BOOST_CHECK_EQUAL( v4_ptr->list_capabilities(), 
+		     "\nIt travels on roads.\nIt flies in the air.\n"
+		     "It takes off from your driveway" );
 
   ++v;
 
   // a car of the future as a vehicle
   std::auto_ptr<vehicle> v5_ptr(v->create());
-  BOOST_CHECK_EQUAL( v->get_info(),  "A car of the future exported as a vehicle" );
-  BOOST_CHECK_EQUAL( v5_ptr->list_capabilities(), "\nIt floats on water.\nIt travels on roads.\nIt flies in the air.\n"
-		     "It takes off from your driveway\nIt computes.\nCosts an arm and a leg" );
+  BOOST_CHECK_EQUAL( v->get_info(),  "A car of the future exported as "
+		     "a vehicle" );
+  BOOST_CHECK_EQUAL( v5_ptr->list_capabilities(), "\nIt floats on water.\n"
+		     "It travels on roads.\nIt flies in the air.\n"
+		     "It takes off from your driveway\nIt computes.\n"
+		     "Costs an arm and a leg" );
 
   ++v;
 

@@ -1,8 +1,14 @@
-/* (C) Copyright Jeremy Pack 2007
-* Distributed under the Boost Software License, Version 1.0. (See
-* accompanying file LICENSE_1_0.txt or copy at
-* http://www.boost.org/LICENSE_1_0.txt)
-*/
+/*
+ * Boost.Extension / registry unit test
+ *
+ * (C) Copyright Jeremy Pack 2007
+ * Distributed under the Boost Software License, Version 1.0. (See             
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * See http://www.boost.org/ for latest version.
+ */
+
 #include <string>
 #include <boost/extension/registry.hpp>
 
@@ -28,7 +34,8 @@ BOOST_AUTO_TEST_CASE(library_closing)
   registry reg;
   BOOST_ASSERT(reg.open("../bin/libRegistryLibrary.extension"));
   {
-    std::list<counted_factory<word, int> > & factory_list = reg.get<word, int>(); 
+    std::list<counted_factory<word, int> > & factory_list = 
+      reg.get<word, int>(); 
     BOOST_CHECK_EQUAL(factory_list.size(), size_t(1));
     {
       std::auto_ptr<word> w(factory_list.begin()->create());
@@ -39,7 +46,8 @@ BOOST_AUTO_TEST_CASE(library_closing)
   BOOST_CHECK(reg.clear());
   BOOST_ASSERT(reg.open("../bin/libRegistryLibrary.extension"));
   {
-    std::list<counted_factory<word, int> > & factory_list = reg.get<word, int>(); 
+    std::list<counted_factory<word, int> > & factory_list = 
+      reg.get<word, int>(); 
     BOOST_CHECK_EQUAL(factory_list.size(), size_t(1));
     {
       std::auto_ptr<word> w(factory_list.begin()->create());

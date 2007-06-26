@@ -1,7 +1,12 @@
-/* (C) Copyright Mariano G. Consoni 2007
- * Distributed under the Boost Software License, Version 1.0. (See
+/*
+ * Boost.Extension / hello world unit test
+ *
+ * (C) Copyright Mariano G. Consoni 2007
+ * Distributed under the Boost Software License, Version 1.0. (See             
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * See http://www.boost.org/ for latest version.
  */
 
 #include <boost/extension/factory_map.hpp>
@@ -24,16 +29,18 @@ BOOST_AUTO_TEST_CASE(hello_world_example)
 
   // check if the factory can return the functor
   factory_map fm;
-  functor<void, factory_map &> load_func = l.get_functor<void, factory_map &>("extension_export_word");
+  functor<void, factory_map &> load_func = 
+	  l.get_functor<void, factory_map &>("extension_export_word");
   BOOST_CHECK_EQUAL( load_func.is_valid(), true );
 
   load_func(fm);
 
   // check if we can get the word list
   std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
-  BOOST_CHECK_EQUAL( factory_list.size(), 2 );
+  BOOST_CHECK_EQUAL( factory_list.size(), 2U );
 
-  // iterate trough the classes and execute get_val method to obtain the correct words
+  // iterate trough the classes and execute get_val method 
+  // to obtain the correct words
   std::list<factory<word, int> >::iterator current_word = factory_list.begin();
 
   std::auto_ptr<word> hello_word_ptr(current_word->create());
