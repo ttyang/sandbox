@@ -10,11 +10,16 @@
 
 #include <boost/graph/undirected_graph.hpp>
 #include <boost/graph/degree_distribution.hpp>
+#include <boost/graph/connectivity.hpp>
 
 #include "movies.hpp"
 
 using namespace std;
 using namespace boost;
+
+typedef vector<graph_traits<Graph>::degree_size_type> Distribution;
+typedef list<Vertex> VectorList;
+typedef vector<VectorList> Histogram;
 
 int
 main(int argc, char *argv[])
@@ -25,12 +30,18 @@ main(int argc, char *argv[])
     // build the movie graph from std input
     build_movie_graph(cin, g, actors);
 
-    // compute the degree distribution
-    vector<size_t> dist;
+    Distribution dist;
+    Histogram hist;
     degree_distribution(g, dist);
-    copy(dist.begin(), dist.end(),
-	 ostream_iterator<size_t>(cout, " "));
+    degree_histogram(g, hist);
+
+    cout << "vertices: " << num_vertices(g) << "\n";
+    cout << "edges: " << num_edges(g) << "\n";
+    cout << "degree distribution: ";
+    copy(dist.begin(), dist.end(), ostream_iterator<size_t>(cout, " "));
     cout << "\n";
+    cout << "max degree: " << (dist.size() - 1) << "\n";
+    cout << "most-connected actor: " << g[hist.back().back()].name << "\n";
 
     return 0;
 }

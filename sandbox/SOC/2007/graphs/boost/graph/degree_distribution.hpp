@@ -9,38 +9,55 @@
 
 namespace boost
 {
-    template <
-	typename BidirectionalGraph,
-	typename Container
-	>
-    typename graph_traits<BidirectionalGraph>::degree_size_type
-    degree_distribution(BidirectionalGraph &g, Container &dist)
+    template <typename Graph, typename Distribution>
+    void
+    degree_distribution(const Graph &g, Distribution &dist)
     {
-	typedef BidirectionalGraph Graph;
-	typedef typename graph_traits<Graph>::degree_size_type Degree;
+        typedef typename graph_traits<Graph>::degree_size_type Degree;
 
-	// stash the degree of each vertex into its bucket - degree 1
-	// goes into index 1, degree 90 goes into index 90, etc.
-	Degree max = 0;
-	typename Graph::vertex_iterator i, j;
-	for(tie(i, j) = vertices(g); i != j; ++i) {
-	    Degree d = degree(*i, g);
+            // stash the degree of each vertex into its bucket - degree 1
+            // goes into index 1, degree 90 goes into index 90, etc.
+        typename Graph::vertex_iterator i, j;
+        for(tie(i, j) = vertices(g); i != j; ++i) {
+            Degree d = degree(*i, g);
 
-	    // we may need to resize the array to accomodate the
-	    // incrementation of this degrees bucket.
-	    if(d >= dist.size()) {
-		dist.resize(d + 1);
-	    }
+                // we may need to resize the array to accomodate the
+                // incrementation of this degrees bucket. this only looks
+                // like its an inefficient resize, but its just fine with
+                // a vector for the distribution.
+            if(d >= dist.size()) {
+                dist.resize(d + 1);
+            }
 
-	    // remember the max degree that we've seen
-	    if(d > max) {
-		max = d;
-	    }
+                // increment the count in that bucket
+            dist[d] += 1;
+        }
+    }
 
-	    // increment the count in that bucket
-	    dist[d] += 1;
-	}
-	return max;
+
+    template <typename Graph, typename Histogram>
+    void
+    degree_histogram(const Graph &g, Histogram &hist)
+    {
+        typedef typename graph_traits<Graph>::degree_size_type Degree;
+
+        // stash the degree of each vertex into its bucket - degree 1
+        // goes into index 1, degree 90 goes into index 90, etc.
+        typename Graph::vertex_iterator i, j;
+        for(tie(i, j) = vertices(g); i != j; ++i) {
+            Degree d = degree(*i, g);
+
+            // we may need to resize the array to accomodate the
+            // incrementation of this degrees bucket. this only looks
+            // like its an inefficient resize, but its just fine with
+            // a vector for the distribution.
+            if(d >= hist.size()) {
+                hist.resize(d + 1);
+            }
+
+            // increment the count in that bucket
+            hist[d].push_back(*i);
+        }
     }
 }
 
