@@ -1,5 +1,10 @@
+# Boost.Extension - GenerateHeaders script
+#       Use for generation of factory.h and shared_library.h
+#
 # Copyright 2007 Jeremy Pack
-# Use for generation of factory.h and shared_library.h
+#
+# See http://www.boost.org/ for latest version.
+#
 
 import sys
 
