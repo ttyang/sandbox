@@ -1,7 +1,12 @@
-/* (C) Copyright Mariano G. Consoni 2007
- * Distributed under the Boost Software License, Version 1.0. (See
+/*
+ * Boost.Extension / salute implementations
+ *
+ * (C) Copyright Mariano G. Consoni 2007
+ * Distributed under the Boost Software License, Version 1.0. (See             
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * See http://www.boost.org/ for latest version.
  */
 
 #include "salute.hpp"
@@ -10,18 +15,19 @@
 class hello : public salute
 {
 public:
-	virtual const char *say(void) {return "hello";}
+  virtual const char *say(void) {return "hello";}
 };
 
 class bye : public salute
 {
 public:
-	virtual const char *say(void) {return "bye!";}
+  virtual const char *say(void) {return "bye!";}
 };
 
 
-extern "C" void BOOST_EXTENSION_EXPORT_DECL extension_export_salute(boost::extensions::factory_map & fm)
+extern "C" void BOOST_EXTENSION_EXPORT_DECL 
+extension_export_salute(boost::extensions::factory_map & fm)
 {
-	fm.add<hello, salute, int>(1);
-	fm.add<bye, salute, int>(2);
+  fm.add<hello, salute, int>(1);
+  fm.add<bye, salute, int>(2);
 }

@@ -1,8 +1,13 @@
-/* (C) Copyright Jeremy Pack 2007
-* Distributed under the Boost Software License, Version 1.0. (See
-* accompanying file LICENSE_1_0.txt or copy at
-* http://www.boost.org/LICENSE_1_0.txt)
-*/
+/*
+ * Boost.Extension / registry class use example (library)
+ *
+ * (C) Copyright Jeremy Pack 2007
+ * Distributed under the Boost Software License, Version 1.0. (See             
+ * accompanying file LICENSE_1_0.txt or copy at
+ * http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * See http://www.boost.org/ for latest version.
+ */
 
 #include <boost/extension/counted_factory_map.hpp>
 #include <boost/extension/extension.hpp>
@@ -34,7 +39,8 @@ public:
   }
 };
 // Using the default function name for loading registries:
-extern "C" void BOOST_EXTENSION_EXPORT_DECL boost_extension_registry_function(counted_factory_map & fm)
+extern "C" void BOOST_EXTENSION_EXPORT_DECL 
+boost_extension_registry_function(counted_factory_map & fm)
 {
   // 5 is just an identifier - not used in this example.
   // Arbitrary information (not just an int) can be stored

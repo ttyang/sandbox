@@ -1,7 +1,12 @@
-/* (C) Copyright Jeremy Pack 2007
- * Distributed under the Boost Software License, Version 1.0. (See
+/*
+ * Boost.Extension / hello world example main
+ *
+ * (C) Copyright Jeremy Pack 2007
+ * Distributed under the Boost Software License, Version 1.0. (See             
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
+ *
+ * See http://www.boost.org/ for latest version.
  */
 
 #include <boost/extension/factory_map.hpp>
@@ -9,6 +14,7 @@
 #include <iostream>
 #include <boost/extension/convenience.hpp>
 #include "word.hpp"
+
 int main()
 {
   using namespace boost::extensions;
@@ -16,15 +22,18 @@ int main()
   //  constructors. Multiple factory_maps can be constructed.
   factory_map fm;
   // load the shared library with 
-  load_single_library(fm, "libHelloWorldLib.extension", "extension_export_word");
+  load_single_library(fm, "libHelloWorldLib.extension", 
+		      "extension_export_word");
   //  Get a reference to the list of constructors for words.
   std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
   if (factory_list.size() < 2)
     std::cout << "Error - the classes were not found.";
-  for (std::list<factory<word, int> >::iterator current_word = factory_list.begin();
-       current_word != factory_list.end(); ++current_word)
+  for (std::list<factory<word, int> >::iterator current_word = 
+	 factory_list.begin(); current_word != factory_list.end(); 
+       ++current_word)
   {
-    //  Using auto_ptr to avoid needing delete. Using smart_ptrs is recommended.
+    //  Using auto_ptr to avoid needing delete. Using smart_ptrs is 
+    // recommended.
     //  Note that this has a zero argument constructor - currently constructors
     //  with up to six arguments can be used.
     std::auto_ptr<word> word_ptr(current_word->create());
