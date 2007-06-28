@@ -6,8 +6,8 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_IF_WAS_DEFAULT_IMPL_HPP
-#define BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_IF_WAS_DEFAULT_IMPL_HPP
+#ifndef BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_IF_WAS_ACQ_REL_DEF_IMPL_HPP
+#define BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_IF_WAS_ACQ_REL_DEF_IMPL_HPP
 
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/always.hpp>
@@ -18,7 +18,7 @@ namespace boost { namespace act { namespace interlocked { namespace detail {
 
 // ToDo: Make better stub impl
 
-struct assign_if_was_default_impl
+struct assign_if_was_acq_rel_default_impl
 {
   template< typename LeftType, typename RightType, typename ConditionType >
   static void execute( LeftType&, RightType&, ConditionType& )

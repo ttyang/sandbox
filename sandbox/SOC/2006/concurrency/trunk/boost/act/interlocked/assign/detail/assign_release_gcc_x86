@@ -6,33 +6,30 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_ASSIGN_IF_WAS_DETAIL_ASSIGN_IF_WAS_GCC_X86_HPP
-#define BOOST_ACT_INTERLOCKED_ASSIGN_IF_WAS_DETAIL_ASSIGN_IF_WAS_GCC_X86_HPP
+#ifndef BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_RELEASE_GCC_X86_HPP
+#define BOOST_ACT_INTERLOCKED_ASSIGN_DETAIL_ASSIGN_RELEASE_GCC_X86_HPP
 
 #include <boost/type_traits/remove_cv.hpp>
 
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
-struct assign_if_was_impl
+struct assign_release_impl
 {
   template< typename Type >
   static typename remove_cv< Type >::type
-  execute( Type& left
-         , typename remove_cv< Type >::type right
-         , typename remove_cv< Type >::type old
-         )
+  execute( Type& left, typename remove_cv< Type >::type right )
   {
-    // ToDo: Verify semantics
+    // Note: SSE is assumed otherwise the file wouldn't be included
     __asm__ __volatile__
     (
-        "lock\n\t"
-        "cmpxchgl %1, %2":
-        "=a" (old):
-        "q" (right), "m" (left), "0" (old):
-        "memory", "cc"
+      "sfence\n\t"
+      "xchg %0, (%1)":
+      "+r"( right ):
+      "r"( &left ):
+      "memory", "cc"
     );
 
-    return old;
+    return right;
   }
 };
 

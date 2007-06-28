@@ -26,20 +26,21 @@
 
 namespace boost { namespace act { namespace interlocked { namespace detail {
 
-template< typename ResultType, typename UnqualifiedType >
 struct assign_if_was_acquire_impl
 {
-  template< typename LeftType, typename RightType, typename OldType >
+  template< typename Type >
   static
   typename lazy_enable_if_c
   <
-    ( sizeof( LeftType ) == 4 )
-  , remove_cv< LeftType >
+    ( sizeof( Type ) == 4 )
+  , remove_cv< Type >
   >
   ::type
-  execute( LeftType& left, RightType right, OldType old )
+  execute( Type& left, typename remove_cv< Type >::type right
+         , typename remove_cv< Type >::type old
+         )
   {
-    typedef typename remove_cv< LeftType >::type unqualified_type;
+    typedef typename remove_cv< Type >::type unqualified_type;
 
     return static_cast< unqualified_type >
            (
@@ -50,33 +51,13 @@ struct assign_if_was_acquire_impl
            );
   }
 
-  template< typename LeftType, typename RightType, typename OldType >
-  static
-  typename lazy_enable_if_c
-  <
-    ( sizeof( LeftType ) == 8 )
-  , remove_cv< LeftType >
-  >
-  ::type
-  execute( LeftType& left, RightType right, OldType old )
+  template< typename Type >
+  static typename remove_cv< Type* >::type
+  execute( Type*& left, typename remove_cv< Type >::type right
+         , typename remove_cv< Type >::type old
+         )
   {
-    typedef typename remove_cv< LeftType >::type unqualified_type;
-
-    return static_cast< unqualified_type >
-           (
-             InterlockedCompareExchange64Acquire
-             ( reinterpret_cast< LONGLONG volatile* >( &left )
-             , reinterpret_cast< LONGLONG const& >( right )
-             , reinterpret_cast< LONGLONG const& >( old )
-             )
-           );
-  }
-
-  template< typename LeftType, typename RightType, typename OldType >
-  static typename remove_cv< LeftType* >::type
-  execute( LeftType*& left, RightType right, OldType old )
-  {
-    typedef typename remove_cv< LeftType* >::type unqualified_type;
+    typedef typename remove_cv< Type* >::type unqualified_type;
 
     return static_cast< unqualified_type >
            (
@@ -90,6 +71,35 @@ struct assign_if_was_acquire_impl
              )
            );
   }
+
+#ifdef _M_IA64
+
+  template< typename Type >
+  static
+  typename lazy_enable_if_c
+  <
+    ( sizeof( Type ) == 8 )
+  , remove_cv< Type >
+  >
+  ::type
+  execute( Type& left, typename remove_cv< Type >::type right
+         , typename remove_cv< Type >::type old
+         )
+  {
+    typedef typename remove_cv< Type >::type unqualified_type;
+
+    return static_cast< unqualified_type >
+           (
+             InterlockedCompareExchange64Acquire
+             ( reinterpret_cast< LONGLONG volatile* >( &left )
+             , reinterpret_cast< LONGLONG const& >( right )
+             , reinterpret_cast< LONGLONG const& >( old )
+             )
+           );
+  }
+
+#endif
+
 };
 
 } } } }

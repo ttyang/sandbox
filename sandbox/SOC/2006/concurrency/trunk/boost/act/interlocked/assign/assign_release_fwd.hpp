@@ -9,6 +9,10 @@
 #ifndef BOOST_ACT_INTERLOCKED_ASSIGN_ASSIGN_RELEASE_FWD_HPP
 #define BOOST_ACT_INTERLOCKED_ASSIGN_ASSIGN_RELEASE_FWD_HPP
 
+#include <boost/act/config/interlocked/has.hpp>
+
+#if BOOST_ACT_CONFIG_INTERLOCKED_HAS( assign, release )
+
 #include <boost/utility/enable_if.hpp>
 
 #include <boost/act/interlocked/detail/cas_support.hpp>
@@ -25,7 +29,7 @@ typename lazy_enable_if
 <
   mpl::and_
   <
-    detail::are_valid_assign_style_params< TargetType, SourceType const >
+    detail::are_valid_store_style_params< TargetType, SourceType const >
   , mpl::not_< detail::is_interlocked_bool< TargetType > >
   >
 , remove_cv< TargetType >
@@ -38,7 +42,7 @@ typename lazy_enable_if
 <
   mpl::and_
   <
-    detail::are_valid_assign_style_params< TargetType, SourceType const >
+    detail::are_valid_store_style_params< TargetType, SourceType const >
   , detail::is_interlocked_bool< TargetType >
   >
 , remove_cv< TargetType >
@@ -47,5 +51,7 @@ typename lazy_enable_if
 assign_release( TargetType& destination, SourceType const& new_value );
 
 } } }
+
+#endif
 
 #endif
