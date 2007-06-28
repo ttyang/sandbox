@@ -82,7 +82,7 @@ struct interlocked_load_get
   typename boost::remove_cv< VariableType >::type
   operator ()( VariableType& var ) const
   {
-    return boost::act::interlocked::load_unordered( var );
+    return boost::act::interlocked::load( var );
   }
 };
 
