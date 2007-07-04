@@ -72,11 +72,14 @@ or if `default_` semantics are specified, then the operation is performed with
   #include <boost/act/interlocked/load/load_fwd.hpp>
   /* etc. */
   
-  
   // store headers.
   #include <boost/act/interlocked/store.hpp>
   #include <boost/act/interlocked/store/store.hpp>
   /* etc. */
 ``
+
+[heading Example]
+
+ToDo: Put a code example here.
 
 [endsect]
