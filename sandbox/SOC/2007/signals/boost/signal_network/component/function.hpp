@@ -1,5 +1,3 @@
-// function.hpp
-
 // Copyright Stjepan Rajko 2007. Use, modification and
 // distribution is subject to the Boost Software License, Version
 // 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -8,10 +6,11 @@
 #ifndef SIGNAL_NETWORK_FUNCTION_HPP
 #define SIGNAL_NETWORK_FUNCTION_HPP
 
-#include <boost/signal_network/modifier.hpp>
+#include <boost/signal_network/component/modifier.hpp>
+#include <boost/signal_network/component/storage.hpp>
 #include <boost/function.hpp>
-#include <boost/signal_network/storage.hpp>
-SIGNAL_NETWORK_OPEN_SIGNET_NAMESPACE
+
+namespace boost { namespace signals {
 
 namespace detail
 {
@@ -40,25 +39,24 @@ namespace detail
 /** \brief Converts a function into a Signal Network filter.
 \param Signature Signature of the function to be converted.
 
-The signet::function object will receive signals of signature void(<i>function arguments</i>),
+The signals::function object will receive signals of signature void(<i>function arguments</i>),
 and send signals of signature void(<i>function return type</i>).
 */
 template<typename Signature,
     typename FunctionSignature,
-    typename OutSignal=default_out_signal,
+    typename OutSignal=SIGNAL_NETWORK_DEFAULT_OUT,
     typename Combiner = boost::last_value<void>,
     typename Group = int,
-    typename GroupCompare = std::less<Group>,
-    typename Base = modifier<detail::function_adapter<FunctionSignature, Signature>, Signature, OutSignal, Combiner, Group, GroupCompare>
->
-class function : public Base
+    typename GroupCompare = std::less<Group>
+> 
+class function : public modifier<detail::function_adapter<FunctionSignature, Signature>, Signature, OutSignal, Combiner, Group, GroupCompare>
 {
 public:
-    typedef function<Signature, FunctionSignature, OutSignal, Combiner, Group, GroupCompare, typename Base::unfused > unfused;
+    typedef modifier<detail::function_adapter<FunctionSignature, Signature>, Signature, OutSignal, Combiner, Group, GroupCompare> base_type;
 
-    function(const boost::function<FunctionSignature> &f) : Base(f) {}
+    function(const boost::function<FunctionSignature> &f) : base_type(f) {}
 };
 
-SIGNAL_NETWORK_CLOSE_SIGNET_NAMESPACE
+} } // namespace boost::signals
 
 #endif // SIGNAL_NETWORK_FUNCTION_HPP

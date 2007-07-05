@@ -6,9 +6,9 @@
 #ifndef SIGNAL_NETWORK_JUNCTION_HPP
 #define SIGNAL_NETWORK_JUNCTION_HPP
 
-#include <boost/signal_network/conditional.hpp>
+#include <boost/signal_network/component/conditional.hpp>
 
-SIGNAL_NETWORK_OPEN_SIGNET_NAMESPACE
+namespace boost { namespace signals {
 
 namespace detail
 {
@@ -27,16 +27,16 @@ also be disabled to stop the flow of signals.
     junction is a conditional with Condition identity and Member volatile bool
 */
 template<typename Signature,
-    typename OutSignal=default_out_signal,
+    typename OutSignal=SIGNAL_NETWORK_DEFAULT_OUT,
     typename Combiner = boost::last_value<typename boost::function_types::result_type<Signature>::type>,
     typename Group = int,
-    typename GroupCompare = std::less<Group>,
-    typename Base = conditional<detail::identity<bool>, volatile bool, Signature, OutSignal, Combiner, Group, GroupCompare>
+    typename GroupCompare = std::less<Group>
 >
-class junction : public Base
+class junction : public conditional<volatile bool, detail::identity<bool>, Signature, OutSignal, Combiner, Group, GroupCompare>
 {
+protected:
+    typedef conditional<volatile bool, detail::identity<bool>, Signature, OutSignal, Combiner, Group, GroupCompare> base_type;
 public:
-    typedef junction<Signature, OutSignal, Combiner, Group, GroupCompare, typename Base::unfused > unfused;
     
     /** Initializes the junction to be enabled.
     */
@@ -46,12 +46,12 @@ public:
     }
     /** Enables the junction (signals will be forwarded).
     */
-    void enable() {Base::member = true;}
+    void enable() {base_type::member = true;}
     /**	Disables the junction (signals will not be forwarded).
     */
-    void disable() {Base::member = false;}
+    void disable() {base_type::member = false;}
 };
 
-SIGNAL_NETWORK_CLOSE_SIGNET_NAMESPACE
+} } // namespace boost::signals
 
 #endif

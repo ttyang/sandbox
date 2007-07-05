@@ -1,24 +1,27 @@
 #ifndef SIGNAL_NETWORK_TIMED_GENERATOR_HPP
 #define SIGNAL_NETWORK_TIMED_GENERATOR_HPP
 
-#include <boost/signal_network/storage.hpp>
+#include <boost/signal_network/component/storage.hpp>
+
 #include <boost/thread/thread.hpp>
 #include <boost/thread/condition.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/xtime.hpp>
 
-SIGNAL_NETWORK_OPEN_SIGNET_NAMESPACE
+namespace boost { namespace signals {
 
 /** \brief Creates its own thread and periodically sends a signal with the stored value.
 	\param Signature signature of the sent signal.
 */
-template<class Signature,
-typename Base=storage<Signature> >
-class timed_generator : public storage<Signature>
+template<typename Signature,
+    typename OutSignal=SIGNAL_NETWORK_DEFAULT_OUT,
+    typename Combiner = boost::last_value<typename boost::function_traits<Signature>::result_type>,
+    typename Group = int,
+    typename GroupCompare = std::less<Group>
+    >
+class timed_generator : public storage<Signature, OutSignal, Combiner, Group, GroupCompare>
 {
-public:
-    typedef timed_generator<Signature, typename Base::unfused> unfused;
-    
+public:    
 	/// Default constructor.  Starts the thread, but signals won't be sent until the enable() function is called.
 	timed_generator() : terminating(false), enabled(false)
 	{
@@ -102,7 +105,7 @@ private:
 	volatile bool enabled;
 };
 
-SIGNAL_NETWORK_CLOSE_SIGNET_NAMESPACE
+} } // namespace boost::signals
 
 
 #endif // SIGNAL_NETWORK_TIMED_GENERATOR_HPP

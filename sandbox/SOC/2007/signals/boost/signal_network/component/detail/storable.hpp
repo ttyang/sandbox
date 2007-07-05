@@ -9,9 +9,8 @@
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/type_traits/remove_const.hpp>
 #include <boost/mpl/transform.hpp>
-#include <boost/signal_network/base.hpp>
 
-SIGNAL_NETWORK_OPEN_SIGNET_NAMESPACE
+namespace boost { namespace signals {
 
 namespace detail
 {
@@ -27,9 +26,8 @@ namespace detail
             boost::remove_reference<boost::mpl::_> >::type,
             boost::remove_const<boost::mpl::_> >::type type;
     };
-    
-}
+} // namespace detail
 
-SIGNAL_NETWORK_CLOSE_SIGNET_NAMESPACE
+} } // namespace boost::signals
 
 #endif // SIGNAL_NETWORK_STORABLE_HPP
