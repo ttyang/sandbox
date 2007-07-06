@@ -91,6 +91,7 @@ public:
                           const charT* arg_last,
                           flag_type f)
    {
+      p_capture_names.reset(new std::map<const charT*, int>());
       regex_data<charT, traits>* pdat = this;
       basic_regex_parser<charT, traits> parser(pdat);
       parser.parse(arg_first, arg_last, f);
@@ -166,6 +167,8 @@ public:
       basic_regex_implementation<charT, traits> const* p = this;
       return *static_cast<const regex_data<charT, traits>*>(p);
    }
+private:
+   shared_ptr<std::map<const charT*, int> > p_capture_names;
 };
 
 } // namespace re_detail
@@ -495,6 +498,11 @@ public:
    {
       BOOST_ASSERT(0 != m_pimpl.get());
       return m_pimpl->get_data();
+   }
+   const shared_ptr<std::map<const charT*, int> > get_capture_names_ptr()const
+   {
+      BOOST_ASSERT(0 != m_pimpl.get());
+      return m_pimpl->p_capture_names;
    }
 
 private:

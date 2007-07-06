@@ -292,6 +292,7 @@ private:
    vector_type            m_subs; // subexpressions
    BidiIterator   m_base; // where the search started from
    sub_match<BidiIterator> m_null; // a null match
+   shared_ptr<std::map<const char_type*, int> > p_capture_names;
 };
 
 template <class BidiIterator, class Allocator>
