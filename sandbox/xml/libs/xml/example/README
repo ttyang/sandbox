@@ -12,7 +12,7 @@ traverse: Read in xml file and traverse the tree using the traverse interface.
 
 validate_dtd: Test simple DTD-based validation.
 
-xinclude: Demonstrate simple XInclude processing (use './xinclude book.xml)
+xinclude: Demonstrate simple XInclude processing (use './xinclude xi-book.xml xi-book-out.xml)
 
 
 reader
