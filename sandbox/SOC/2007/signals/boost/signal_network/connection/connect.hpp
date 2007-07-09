@@ -8,27 +8,54 @@
 
 namespace boost { namespace signals {
 
+/** \brief A functor which connects two components. It must be specialized to support each component to be used with the library.
+*/
 template<typename Input, typename Output, typename Enable=void>
-struct connect_impl;
-    
+struct connect_impl
+#ifdef DOXYGEN_DOCS_ONLY
+{
+    /** Connects input to output.
+    */
+    void operator()(Input &input, Output &output);
+    /** Connects input to output.
+    */
+    void operator()(Input &input, const Output &output);
+    /** Connects input to output.
+    */
+    void operator()(const Input &input, Output &output);
+    /** Connects input to output.
+    */
+    void operator()(const Input &input, const Output &output);
+}
+#endif
+    ;
+
+/** Connects two components using boost::signals::connect_impl.
+*/
 template<typename Input, typename Output>
 void connect(Input &input, Output &output)
 {
     connect_impl<Input, Output>()(input, output);
 };
-             
+
+/** Connects two components using boost::signals::connect_impl.
+*/
 template<typename Input, typename Output>
 void connect(Input &input, const Output &output)
 {
     connect_impl<Input, Output>()(input, output);
 };
 
+/** Connects two components using boost::signals::connect_impl.
+*/
 template<typename Input, typename Output>
 void connect(const Input &input, Output &output)
 {
     connect_impl<Input, Output>()(input, output);
 };
 
+/** Connects two components using boost::signals::connect_impl.
+*/
 template<typename Input, typename Output>
 void connect(const Input &input, const Output &output)
 {

@@ -85,7 +85,6 @@ template<typename Signature,
 >
 class storage : public conditional_modifier<detail::storage_modifier<Signature>, Signature, OutSignal, Combiner, Group, GroupCompare>
 {
-#ifndef DOXYGEN_DOCS_ONLY
 protected:
     typedef conditional_modifier<detail::storage_modifier<Signature>, Signature, OutSignal, Combiner, Group, GroupCompare> base_type;
 public:
@@ -93,8 +92,6 @@ public:
 
     typedef typename detail::storage_modifier<Signature>::storable_types storable_types;
     typedef typename detail::storage_modifier<Signature>::storable_vector storable_vector;
-
-#endif
 
     /**	Initializes the stored parameter values using the provided sequence.
         \param[in] seq Sequence from which the stored parameter sequence is initialized from.

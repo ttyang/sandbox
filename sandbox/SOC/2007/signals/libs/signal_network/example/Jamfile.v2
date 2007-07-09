@@ -12,4 +12,4 @@ project
     ;
 
 exe example : example.cpp ;
-exe timing_example : timing_example.cpp ;
+# exe timing_example : timing_example.cpp ;
