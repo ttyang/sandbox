@@ -98,11 +98,11 @@ namespace boost { namespace fusion
             : Function(t1, t2)
         { }
 
-        template<typename F, typename Enable=void>
-        struct result;
+/*        template<typename F, typename Enable=void>
+        struct result;*/
         
         template<typename F>
-        struct result<F>
+        struct result//<F>
             : public Function::template result<F> {};
         
         template<typename F>
