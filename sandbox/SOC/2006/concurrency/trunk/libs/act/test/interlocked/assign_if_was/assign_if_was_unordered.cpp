@@ -6,19 +6,12 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_FENCE_DETAIL_FENCE_VISTA_HPP
-#define BOOST_ACT_INTERLOCKED_FENCE_DETAIL_FENCE_VISTA_HPP
+// Note: These tests could be a little bit better. Currently testing is done by
+//       forcing compound CAS operations to use their default implementation
+//       (which is to internally use assign_if_was).
 
-// ToDo: Don't include windows.h
-#include <windows.h>
+#include <boost/test/minimal.hpp>
 
-namespace boost { namespace act { namespace interlocked { namespace detail {
+#define BOOST_ACT_INTERLOCKED_FORCE_DEFAULTS
 
-inline void fence_impl()
-{
-  MemoryBarrier();
-}
-
-} } } }
-
-#endif
+#include "../add_assign/add_assign_unordered.cpp"

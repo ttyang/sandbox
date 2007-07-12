@@ -6,13 +6,12 @@
     http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
-#ifndef BOOST_ACT_INTERLOCKED_FENCE_DETAIL_FENCE_WRITE_VC_X86_HPP
-#define BOOST_ACT_INTERLOCKED_FENCE_DETAIL_FENCE_WRITE_VC_X86_HPP
+// Note: These tests could be a little bit better. Currently testing is done by
+//       forcing compound CAS operations to use their default implementation
+//       (which is to internally use assign_if_was).
 
-namespace boost { namespace act { namespace interlocked { namespace detail {
+#include <boost/test/minimal.hpp>
 
-inline void fence_write_impl() { __asm sfence }
+#define BOOST_ACT_INTERLOCKED_FORCE_DEFAULTS
 
-} } } }
-
-#endif
+#include "../add_assign/add_assign_acq_rel.cpp"
