@@ -64,6 +64,7 @@ void perl_matcher<BidiIterator, Allocator, traits>::construct_init(const basic_r
    }
    else
       m_presult = &m_result;
+   m_presult->set_name_map(e.get_name_map());
 #ifdef BOOST_REGEX_NON_RECURSIVE
    m_stack_base = 0;
    m_backup_state = 0;

@@ -1611,9 +1611,8 @@ bool basic_regex_parser<charT, traits>::parse_perl_extension()
       return false;
    }
    //
-   // treat comments as a special case, as these
-   // are the only ones that don't start with a leading
-   // startmark state:
+   // treat comments and named back references as special cases, as these
+   // are the only ones that don't start with a leading startmark state:
    //
    if(this->m_traits.syntax_type(*m_position) == regex_constants::syntax_hash)
    {
@@ -1622,6 +1621,37 @@ bool basic_regex_parser<charT, traits>::parse_perl_extension()
       {}      
       return true;
    }
+   if(this->m_traits.syntax_type(*m_position) == regex_constants::escape_type_not_property &&
+      this->m_traits.syntax_type(*(m_position+1)) == regex_constants::syntax_equal)
+   {
+      ++m_position;
+      // parse named backreference (?P=name)
+      BOOST_ASSERT(m_position != m_end);
+      const charT* name_start = ++m_position;
+      while (m_position != m_end && this->m_traits.syntax_type(*m_position) != regex_constants::syntax_close_mark)
+         ++m_position;
+      if(m_position == m_end)
+      {
+         this->fail(regex_constants::error_paren, m_position - m_base);
+         return false;
+      }
+      std::basic_string<charT> group_name(name_start, m_position);
+
+      std::map<std::basic_string<charT>, int>::iterator name_ref = this->m_pdata->p_name_map->find(group_name);
+      if (name_ref != this->m_pdata->p_name_map->end() && (this->m_backrefs & (1u << (name_ref->second-1))))
+      {
+         re_brace* pb = static_cast<re_brace*>(this->append_state(syntax_element_backref, sizeof(re_brace)));
+         pb->index = name_ref->second;
+      }
+      else
+      {
+         fail(regex_constants::error_backref, m_position - m_end);
+         return false;
+      }
+      ++m_position;
+      return true;
+   }
+
    //
    // backup some state, and prepare the way:
    //
@@ -1768,6 +1798,50 @@ bool basic_regex_parser<charT, traits>::parse_perl_extension()
    case regex_constants::syntax_close_mark:
       fail(regex_constants::error_badrepeat, m_position - m_base);
       return false;
+   case regex_constants::escape_type_not_property: //why is this a "P"?
+      // check for named capture syntax
+      if (*m_position == charT('P'))
+      {
+         ++m_position;
+         if (this->m_traits.syntax_type(*m_position) == regex_constants::escape_type_left_word)
+         {
+            // parse (?P<name>pattern)
+            // find end bracket ">", any character until then is part of the name
+            const charT* name_start = ++m_position;
+            while (m_position != m_end && 
+               this->m_traits.syntax_type(*m_position) != regex_constants::escape_type_right_word)
+               ++m_position;
+            if(m_position == m_end)
+            {
+               this->fail(regex_constants::error_paren, m_position - m_base);
+               return false;
+            }
+            std::basic_string<charT> group_name(name_start, m_position);
+
+            if (this->m_pdata->p_name_map->count(group_name) > 0)
+            {
+               // the capture name has already been used
+               fail(regex_constants::error_bad_pattern, m_position - m_base);
+               return false;
+            }
+            pb->index = markid = ++m_mark_count;
+            // add the name and markid to the name map
+            this->m_pdata->p_name_map->insert(std::pair<std::basic_string<charT>, int>(group_name, markid));
+
+            // allow backrefs to this mark:
+            if((markid > 0) && (markid < sizeof(unsigned) * CHAR_BIT))
+               this->m_backrefs |= 1u << (markid - 1);
+
+            ++m_position;
+         }
+         else
+         {
+            fail(regex_constants::error_bad_pattern, m_position - m_base);
+            return false;
+         }
+         break;
+      }
+      //otherwise, fall through
    default:
       //
       // lets assume that we have a (?imsx) group and try and parse it:
