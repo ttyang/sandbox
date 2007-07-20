@@ -1,0 +1,25 @@
+[/
+ / Copyright (c) 2007 Andrew Sutton
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[section Default Constructible]
+A type `T` is said to be /default constructible/ if it can be instantiated
+without initializing it to any particular value.
+
+Some types modeling this concept may choose to define a default value or
+state, but this required.
+
+[heading Requirements]
+[table
+	[[Expression] [Return Type] [Requirements]]
+	[
+		[`Type `x]
+		[]
+		[`x` is an instance of T.]
+	]
+]
+
+[endsect]
