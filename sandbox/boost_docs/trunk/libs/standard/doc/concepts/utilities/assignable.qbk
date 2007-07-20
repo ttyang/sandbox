@@ -1,0 +1,26 @@
+[/
+ / Copyright (c) 2007 Andrew Sutton
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[section Assignable]
+A type `T` is said to be /assignable/ if the value of one instance, `u`, can be copied
+to the value of another, `t`. Note that the type of `u` may be `T` or `const T`.
+
+This concept sets no requirements nor makes provision for assignment when the type
+of `u` is not `T` or `const T`. This simply states that instances of a type, that models
+this concept, may be assigned to one another.
+
+[heading Requirements] 
+[table
+    [[Expression] [Return Type] [Post-condition]]
+    [
+        [`t = u`]
+        [`T&`]
+        [`t` is equivalent to `u`]
+    ]
+]
+
+[endsect]
