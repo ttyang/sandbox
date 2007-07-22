@@ -13,6 +13,11 @@
 
 #include <boost/bigint/bigint.hpp>
 
+#include <boost/bigint/bigint_gmp.hpp>
+#include <boost/bigint/bigint_default.hpp>
+#include <boost/bigint/bigint_storage_vector.hpp>
+#include <boost/bigint/bigint_storage_fixed.hpp>
+
 #pragma comment(lib, "libgmp-3.lib")
 
 // This macro is not quite good, but - it's ok for our needs
@@ -295,6 +300,8 @@ template <typename I> void test()
 int test_main(int argc, char* argv[])
 {
   test<boost::detail::bigint_gmp_implementation>();
+  test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_vector> >();
+  test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_fixed<1024>::type> >();
 
   return 0;
 }
