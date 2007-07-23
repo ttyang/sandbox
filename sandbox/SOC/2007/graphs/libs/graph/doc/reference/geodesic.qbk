@@ -33,7 +33,7 @@ an unweighted, undirected graph, shortest paths can be recorded using
 vertex for which the shortest distances are being computed. The output of
 each of these algorithms is a `DistanceMap`, which is (in turn) used as the
 input of these functions. Note then, that these functions compute measures
-of the vertex for which the `DistanceMap` was computed.
+of the vertex for which `dist` was computed.
 
 The `geodesic_distance(g,dist)` function returns the length of the shortest path
 between two vertices. The source vertex is that for which the `DistanceMap`
@@ -45,12 +45,11 @@ function is an alias for:
 The `mean_geodesic_distance(g,dist,T())` functions return the (arithmatic) mean
 of the geodesic distances between a vertex and all others in the graph. The
 vertex for which this is computed is that for which the `DistanceMap` was
-originally computed. The mean geodesic distance is often given as:
+originally computed. The mean geodesic distance is implemeted as:
 
 [$images/eq/mean_geodesic.png]
 
-where ['d[sub G](u, v)] is the geodesic distance (shortest path) from vertices
-/u/ to /v/.
+where ['d[sub G](u, v)] is the geodesic distance (shortest path) from /u/ to /v/.
 
 The default (first) variant of this function computes and returns the
 average as a `double`. The second variant allows the average and return
@@ -134,8 +133,79 @@ The `geodesic_distance(g,v,dist)` has O(1) time complexity.
 The `mean_geodesic_distance(g,dist)` has O(n) time complexity.
 
 [h5 Examples]
-[note
-Write some examples...
+This example computes shows the construction of a simple undirected graph and
+illustrates the computation of shortest distances and the use of the `geodesic_distance()`
+and `mean_geodesic_distance()` functions. Consider the following graph:
+
+[figure
+    images/reference/geodesic.png
+    [*Figure 1.] A simple undirected, unweighted graph.
+]
+
+This graph can be constructed programmatically as:
+
+    typedef undirected_graph<> Graph;
+    typedef graph_traits<Graph>::vertex_descriptor Vertex;
+
+    // Instantiate the graph and vector of vertices.
+    Graph g;
+    vector<Vertex> v(10);
+
+    // Add vertices to the graph, recording their descriptors into
+    // the vertex vector.
+    for(size_t i = 0; i < 10; ++i) {
+        v[i] = add_vertex(g);
+    }
+
+    // Connect the vertices by adding edges to the graph. This builds
+    // the graph shown in Figure 1.
+    add_edge(v[0], v[1], g);  add_edge(v[1], v[2], g);
+    add_edge(v[1], v[3], g);  add_edge(v[2], v[4], g);
+    add_edge(v[3], v[5], g);  add_edge(v[4], v[6], g);
+    add_edge(v[4], v[7], g);  add_edge(v[4], v[8], g);
+    add_edge(v[5], v[8], g);  add_edge(v[6], v[9], g);
+    add_edge(v[7], v[9], g);  add_edge(v[8], v[9], g);
+
+    // Initialize an exterior property for recording the distances
+    // to every vertex in the graph.
+    typedef exterior_property<Graph, int> DistanceProperty;
+    typedef DistanceProperty::container_type DistanceContainer;
+    typedef DistanceProperty::map_type DistanceMap;
+    DistanceContainer distances(10);
+    DistanceMap dist(make_property_map(dists));
+
+    // Initialize the distance to-self of vertex 0 and run a breadth-first
+    // search on the graph to compute the distance of the shortest path
+    // from vertex 0 to all others.
+    dist[v[0]] = 0;
+    breadth_first_search(g, v[0],
+            visitor(make_bfs_visitor(record_distances(dist, on_tree_edge())))
+        );
+
+We can print the geodesic distance from vertex 0 to each of the other vertices, and
+its mean geodesic distance.
+
+    Graph::vertex_iterator i, end;
+    for(tie(i, end) = vertices(g); i != end; ++i) {
+        cout << "geodesic distance to v[" << get(vertex_index, g, *i) << "] == "
+             <<  geodesic_distance(g, *i, dist) << endl;
+    }
+    cout << "mean geodesic distance == " << mean_geodesic_distance(g, dist) << end;
+
+The output of this program is:
+
+[pre
+geodesic distance to v\[0\] == 0
+geodesic distance to v\[1\] == 1
+geodesic distance to v\[2\] == 2
+geodesic distance to v\[3\] == 2
+geodesic distance to v\[4\] == 3
+geodesic distance to v\[5\] == 3
+geodesic distance to v\[6\] == 4
+geodesic distance to v\[7\] == 4
+geodesic distance to v\[8\] == 4
+geodesic distance to v\[9\] == 5
+mean geodesic distance == 2.8
 ]
 
 [endsect]
