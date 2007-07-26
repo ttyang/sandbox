@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: gamma_distribution.hpp,v 1.9 2004/07/27 03:43:32 dgregor Exp $
+ * $Id$
  *
  */
 

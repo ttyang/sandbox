@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: shuffle_output.hpp,v 1.10 2005/08/25 16:27:22 johnmaddock Exp $
+ * $Id$
  *
  * Revision history
  *  2001-02-18  moved to individual header files

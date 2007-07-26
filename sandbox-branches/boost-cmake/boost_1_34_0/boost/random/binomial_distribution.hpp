@@ -7,7 +7,7 @@
  *
  * See http://www.boost.org for most recent version including documentation.
  *
- * $Id: binomial_distribution.hpp,v 1.10 2005/06/24 22:13:43 jmaurer Exp $
+ * $Id$
  *
  */
 

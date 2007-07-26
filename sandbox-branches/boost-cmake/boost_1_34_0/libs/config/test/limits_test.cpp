@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: limits_test.cpp,v 1.13 2005/07/19 17:14:00 johnmaddock Exp $
+ * $Id$
  */
 
 #include <boost/limits.hpp>

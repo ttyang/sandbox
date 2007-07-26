@@ -5,7 +5,7 @@
  * accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  *
- * $Id: integer_traits_test.cpp,v 1.15 2005/05/25 13:43:12 joaquintides Exp $
+ * $Id$
  *
  * Revision history
  *  2000-02-22  Small improvements by Beman Dawes
