@@ -6,7 +6,7 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.67.2">
 <link rel="start" href="../index.html" title="SVG_Plot">
 <link rel="up" href="../index.html" title="SVG_Plot">
-<link rel="prev" href="tutorial.html" title=" Tutorial">
+<link rel="prev" href="plot_defaults.html" title=" Defaults">
 <link rel="next" href="svg_1d_plot_interface.html" title=" svg_1d_plot Public Interface">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -20,14 +20,14 @@
 </table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tutorial.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="svg_1d_plot_interface.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="plot_defaults.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="svg_1d_plot_interface.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="svg_plot.svg_interface"></a> SVG Public Interface</h2></div></div></div>
 <div class="informaltable">
 <h4>
-<a name="id334891"></a>
+<a name="id338379"></a>
         <span class="table-title">class svg</span>
       </h4>
 <table class="table">
@@ -49,21 +49,83 @@
             default image size is (400, 400)</td>
 </tr>
 <tr>
+<td><code class="computeroutput"><span class="identifier">g_element</span><span class="special">&amp;</span> <span class="identifier">add_g_element</span><span class="special">()</span></code></td>
+<td>Adds
+            a g_element at the root of the document tree. Acts as a <code class="computeroutput"><span class="identifier">push_back</span><span class="special">()</span></code>
+</td>
+<td>Returns
+            the <code class="computeroutput"><span class="identifier">g_element</span></code> that is
+            pushed back. This allows you to do something like the following: <code class="computeroutput"><span class="identifier">image</span><span class="special">.</span><span class="identifier">add_g_element</span><span class="special">().</span><span class="identifier">line</span><span class="special">(/**/).</span><span class="identifier">line</span><span class="special">(/**/).</span><span class="identifier">rect</span><span class="special">(/**/);</span> </code>
+            Which adds two lines and a rectangle to the g_element that was just created.</td>
+</tr>
+<tr>
+<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">circle</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">radius</span> <span class="special">=</span> <span class="number">5</span><span class="special">)</span></code></td>
+<td>Adds
+            a point at (x,y) in the root level of the document</td>
+<td>If the
+            user is calling the circle method, odds are they would prefer a real
+            circle instead of a degenerate circle (a point). 5 is as good a default
+            as any other, and the user does not likely want a point if they are making
+            this call.</td>
+</tr>
+<tr>
+<td><code class="computeroutput"><span class="identifier">g_element</span><span class="special">&amp;</span> <span class="identifier">get_g_element</span><span class="special">(</span><span class="keyword">int</span><span class="special">)</span></code></td>
+<td>Gets
+            the g_element at the index specified</td>
+<td>Gives a runtime error
+            if you specify an index that does not contain a <code class="computeroutput"><span class="identifier">g_element</span></code>.
+            I am considering providing an iterator interface to access these elements.</td>
+</tr>
+<tr>
+<td><code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">get_x_size</span><span class="special">()</span></code></td>
+<td>Returns
+            the width of the image</td>
+<td> </td>
+</tr>
+<tr>
+<td><code class="computeroutput"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">get_y_size</span><span class="special">()</span></code></td>
+<td>Returns
+            the height of the image</td>
+<td> </td>
+</tr>
+<tr>
 <td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">image_size</span><span class="special">(</span><span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">)</span></code></td>
 <td>Sets
             the size of the image produced, in pixels</td>
 <td> </td>
 </tr>
 <tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">get_x_size</span><span class="special">()</span></code></td>
-<td>Returns
-            the width of the image</td>
+<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">line</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x2</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y2</span><span class="special">)</span></code></td>
+<td>Adds
+            a line from (x1,y1) to (x2,y2) in the root level of the document</td>
 <td> </td>
 </tr>
 <tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">get_y_size</span><span class="special">()</span></code></td>
-<td>Returns
-            the height of the image</td>
+<td><code class="computeroutput"><span class="identifier">path_element</span><span class="special">&amp;</span> <span class="identifier">path</span><span class="special">()</span></code></td>
+<td>Pushes
+            a <code class="computeroutput"><span class="identifier">path_element</span></code> to the
+            back of the tree and returns a reference to it. This allows you to do
+            the following: 
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">
+<span class="identifier">path_element</span><span class="special">&amp;</span> <span class="identifier">my_path</span> <span class="special">=</span> <span class="identifier">image</span><span class="special">.</span><span class="identifier">path</span><span class="special">();</span>
+
+<span class="identifier">my_path</span><span class="special">.</span><span class="identifier">M</span><span class="special">(</span><span class="number">3</span><span class="special">,</span> <span class="number">3</span><span class="special">).</span><span class="identifier">l</span><span class="special">(</span><span class="number">150</span><span class="special">,</span> <span class="number">150</span><span class="special">);</span>
+</pre>
+            I'm open to suggestions for how to improve this process. </td>
+<td class="auto-generated"> </td>
+</tr>
+<tr>
+<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">rect</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">width</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">height</span><span class="special">)</span></code></td>
+<td>Adds
+            a rectangle at point (x1, y1) that has width <code class="computeroutput"><span class="identifier">width</span></code>
+            and height <code class="computeroutput"><span class="identifier">height</span></code>
+</td>
+<td> </td>
+</tr>
+<tr>
+<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">text</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">text</span><span class="special">)</span></code></td>
+<td>Adds text <code class="computeroutput"><span class="identifier">text</span></code> at (x,y) in the root level of
+            the document</td>
 <td> </td>
 </tr>
 <tr>
@@ -80,61 +142,6 @@
             the document to the stream represented by the argument</td>
 <td> </td>
 </tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">circle</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">radius</span> <span class="special">=</span> <span class="number">5</span><span class="special">)</span></code></td>
-<td>Adds
-            a point at (x,y) in the root level of the document</td>
-<td>If the
-            user is calling the circle method, odds are they would prefer a real
-            circle instead of a degenerate circle (a point). 5 is as good a defaul
-            as any other.</td>
-</tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">line</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">x2</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y2</span><span class="special">)</span></code></td>
-<td>Adds
-            a line from (x1,y1) to (x2,y2) in the root level of the document</td>
-<td> </td>
-</tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">text</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">text</span><span class="special">)</span></code></td>
-<td>Adds text <code class="computeroutput"><span class="identifier">text</span></code> at (x,y) in the root level of
-            the document</td>
-<td> </td>
-</tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">rect</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">y1</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">width</span><span class="special">,</span> <span class="keyword">double</span> <span class="identifier">height</span><span class="special">)</span></code></td>
-<td>Adds
-            a rectangle at point (x1, y1) that has width <code class="computeroutput"><span class="identifier">width</span></code>
-            and height <code class="computeroutput"><span class="identifier">height</span></code>
-</td>
-<td> </td>
-</tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">svg</span><span class="special">&amp;</span> <span class="identifier">clip_path</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">rect_element</span><span class="special">&amp;,</span> <span class="identifier">g_element</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">id</span><span class="special">)</span></code></td>
-<td>Prevents
-            the g_element in the argument from drawing outside of the rectangle in
-            the argument. The string is provided to identify the clip.</td>
-<td>Currently
-            unsupported</td>
-</tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">g_element</span><span class="special">&amp;</span> <span class="identifier">add_g_element</span><span class="special">()</span></code></td>
-<td>Adds
-            a g_element at the root of the document tree. Acts as a <code class="computeroutput"><span class="identifier">push_back</span><span class="special">()</span></code>
-</td>
-<td>Returns
-            the <code class="computeroutput"><span class="identifier">g_element</span></code> that is
-            pushed back. This allows you to do something like the following: <code class="computeroutput"><span class="identifier">image</span><span class="special">.</span><span class="identifier">add_g_element</span><span class="special">().</span><span class="identifier">line</span><span class="special">(/**/).</span><span class="identifier">line</span><span class="special">(/**/).</span><span class="identifier">rect</span><span class="special">(/**/);</span> </code>
-            Which adds two lines and a rectangle to the g_element that was just created.</td>
-</tr>
-<tr>
-<td><code class="computeroutput"><span class="identifier">g_element</span><span class="special">&amp;</span> <span class="identifier">get_g_element</span><span class="special">(</span><span class="keyword">int</span><span class="special">)</span></code></td>
-<td>Gets
-            the g_element at the index specified</td>
-<td>Gives a runtime error
-            if you specify an index that does not contain a <code class="computeroutput"><span class="identifier">g_element</span></code>.
-            This will be addressed</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -145,7 +152,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="tutorial.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="svg_1d_plot_interface.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="plot_defaults.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="svg_1d_plot_interface.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>
