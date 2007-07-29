@@ -13,6 +13,11 @@
 
 #include <boost/bigint/bigint.hpp>
 
+#include <boost/bigint/bigint_gmp.hpp>
+#include <boost/bigint/bigint_default.hpp>
+#include <boost/bigint/bigint_storage_vector.hpp>
+#include <boost/bigint/bigint_storage_fixed.hpp>
+
 #pragma comment(lib, "libgmp-3.lib")
 
 #define ARRAY_SIZE(array) sizeof(array) / sizeof(array[0])
@@ -108,7 +113,7 @@ template <typename I> void test()
 			BOOST_CHECK_EQUAL(rem, number(e.rem));
 		}
 	}
-	
+
 	// sqrt
 	{
 		// zero
@@ -132,7 +137,13 @@ template <typename I> void test()
 
 int test_main(int argc, char* argv[])
 {
-  test<boost::detail::bigint_gmp_implementation>();
+	test<boost::detail::bigint_gmp_implementation>();
+	test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_vector, 8> >();
+	test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_vector, 16> >();
+	test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_vector, 32> >();
+	test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_fixed<1024>::type, 8> >();
+	test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_fixed<1024>::type, 16> >();
+	test<boost::detail::bigint_default_implementation<boost::detail::bigint_storage_fixed<1024>::type, 32> >();
 
-  return 0;
+	return 0;
 }
