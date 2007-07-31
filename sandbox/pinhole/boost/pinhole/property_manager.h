@@ -12,12 +12,16 @@
 #include <set>
 #include <string>
 
-#pragma warning(push)
-#pragma warning( disable: 4561 4793 )
+#if defined(BOOST_MSVC)
+    #pragma warning(push)
+    #pragma warning( disable: 4561 4793 )
+#endif
 #include <boost/shared_ptr.hpp>
 #include <boost/signals.hpp>
 #include <boost/algorithm/string.hpp>
-#pragma warning(pop)
+#if defined(BOOST_MSVC)
+    #pragma warning(pop)
+#endif
 
 namespace boost { namespace pinhole
 {
@@ -39,11 +43,15 @@ namespace boost { namespace pinhole
             return m_instance; // address of sole instance
         }
         
-        #pragma warning(push)
-        #pragma warning( disable: 4251 )
+        #if defined(BOOST_MSVC)
+            #pragma warning(push)
+            #pragma warning( disable: 4251 )
+        #endif
             boost::signal<void(property_group*)> add_event;
             boost::signal<void(property_group*)> remove_event;
-        #pragma warning(pop)
+        #if defined(BOOST_MSVC)
+            #pragma warning(pop)
+        #endif
         void raise_on_add_event( property_group *group )
         {
             add_event( group );
@@ -103,7 +111,7 @@ namespace boost { namespace pinhole
     // checked_delete can't be made a friend in gcc, so I can't shared_ptr
     // to work.
     public:
-        ~property_manager()
+        virtual ~property_manager()
         {
             category_to_property_group_map::iterator itr    = m_property_group_collection.begin();
             category_to_property_group_map::iterator itr_end = m_property_group_collection.end();
@@ -256,12 +264,16 @@ namespace boost { namespace pinhole
         }
         
     protected:
-        #pragma warning(push)
-        #pragma warning( disable: 4251 )
+        #if defined(BOOST_MSVC)
+            #pragma warning(push)
+            #pragma warning( disable: 4251 )
+        #endif
             static boost::shared_ptr<property_manager> m_instance;
             category_to_property_group_map m_property_group_collection;
             category_collection m_category_collection;
-        #pragma warning(pop)
+        #if defined(BOOST_MSVC)
+            #pragma warning(pop)
+        #endif
             
         friend class property_group;
     };

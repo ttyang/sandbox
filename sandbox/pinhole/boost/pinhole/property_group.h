@@ -17,14 +17,18 @@
 #include <list>
 #include <sstream>
 
-#pragma warning(push)
-#pragma warning( disable: 4561)
+#if defined(BOOST_MSVC)
+    #pragma warning(push)
+    #pragma warning( disable: 4561)
+#endif
 #include <boost/bind.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/function.hpp>
 #include <boost/any.hpp>
-#pragma warning(pop)
+#if defined(BOOST_MSVC)
+    #pragma warning(pop)
+#endif
 
 #define BOOST_SETTER(c) boost::bind(c, this, _1)
 #define BOOST_GETTER(c) boost::bind(c, this)
@@ -462,7 +466,21 @@ namespace boost { namespace pinhole
             * @retval false The property is writeable.
             * @throw std::out_of_range The property requested does not exist.
             */
-            bool is_read_only(const std::string &property) const;
+            bool is_read_only(const std::string &property) const
+            {
+                property_collection::const_iterator itemItr = m_properties.find(property);
+            
+                if( itemItr != m_properties.end() )
+                {
+                    return (*itemItr).second->is_read_only();
+                }
+                else
+                {
+                    stringstream err;
+                    err << "The requested property \"" << property << "\" does not exist.";
+                    throw std::out_of_range(err.str().c_str());
+                }
+            }
         //@}
 
         /** @name Actions */
@@ -628,13 +646,17 @@ namespace boost { namespace pinhole
             }
         }
 
-        #pragma warning(push)
-        #pragma warning( disable: 4251 )
+        #if defined(BOOST_MSVC)
+            #pragma warning(push)
+            #pragma warning( disable: 4251 )
+        #endif
             category_collection m_category_collection;
             children_collection m_children_collection;
             property_collection m_properties;
             action_collection m_actions;
-        #pragma warning(pop)
+        #if defined(BOOST_MSVC)
+            #pragma warning(pop)
+        #endif
 
     private:
         property_group();

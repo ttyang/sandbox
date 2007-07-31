@@ -107,10 +107,14 @@ namespace boost { namespace pinhole
 
         protected:
             EditorControlType m_UItype;
-#pragma warning(push)
-#pragma warning( disable: 4251 )
+            #if defined(BOOST_MSVC)
+                #pragma warning(push)
+                #pragma warning( disable: 4251 )
+            #endif
             property_collection m_properties;
-#pragma warning(pop)
+            #if defined(BOOST_MSVC)
+                #pragma warning(pop)
+            #endif
     };
 }}
 

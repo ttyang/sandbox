@@ -8,17 +8,25 @@
 #ifndef BOOST_DETAILS_ACTION_INFO
 #define BOOST_DETAILS_ACTION_INFO
 
-#pragma warning(push)
-#pragma warning( disable: 4272 4394 )
+#if defined(BOOST_MSVC)
+    #pragma warning(push)
+    #pragma warning( disable: 4272 4394 )
+#endif
 #include "Editor.h"
-#pragma warning(pop)
+#if defined(BOOST_MSVC)
+    #pragma warning(pop)
+#endif
 
-#pragma warning(push)
-#pragma warning( disable: 4561 4793 )
+#if defined(BOOST_MSVC)
+    #pragma warning(push)
+    #pragma warning( disable: 4561 4793 )
+#endif
 #include <boost/type_traits.hpp>
 #include <boost/function.hpp>
 #include <boost/lexical_cast.hpp>
-#pragma warning(pop)
+#if defined(BOOST_MSVC)
+    #pragma warning(pop)
+#endif
 
 namespace boost { namespace pinhole { namespace detail
 {
@@ -29,6 +37,8 @@ namespace boost { namespace pinhole { namespace detail
 
     public:
         typedef boost::function<void ()> action_type;
+        
+        virtual ~action_info(){;}
 
         action_type m_action;
         std::string m_name;
