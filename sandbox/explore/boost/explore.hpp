@@ -8,6 +8,6 @@
 //
 
 
-#include <explore/explore.hpp>
-#include <explore/stream_container.hpp>
-#include <explore/iterator_range.hpp>
+#include <boost/explore/explore.hpp>
+#include <boost/explore/stream_container.hpp>
+#include <boost/explore/iterator_range.hpp>
