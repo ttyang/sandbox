@@ -20,8 +20,9 @@ iterations.
 [heading Notation]
 [table
     [[Expression] [Description]]
-    [[`C`] [An object or type [StdContainer] - a container]]
-    [[`T`] [An object stored by `C`]]
+    [[`C`] [A type that models the [StdContainer] concept.]]
+    [[`c`] [An object of type `C`.]]
+    [[`T`] [An object stored by `C`.]]
 ]
 
 [heading Associated Types]
@@ -32,7 +33,7 @@ iterations.
         [`C::value_type`]
         [`T`]
         [
-            *Semantics:* The type of the stored object or value.
+            The type of the stored object or value.
             
             *Requirements:* `T` must model the [StdAssignable] concept.
         ]
@@ -42,7 +43,7 @@ iterations.
         [`C::reference`]
         [lvalue of `T`]
         [
-            *Semantics:* A reference type to the stored value type.
+            A reference type to the stored value type.
         ]
     ]
     [
@@ -50,7 +51,7 @@ iterations.
         [`C::connst_reference`]
         [`const` lvalue of `T`]
         [
-            *Semantics:* A `const` reference type to the stored value type.
+            A `const` reference type to the stored value type.
         ]
     ]
     [
@@ -58,7 +59,7 @@ iterations.
         [`C::iterator`]
         [iterator type pointing to `T`]
         [
-            *Semantics:* The type of object used to iterate over elements of `C`.
+            The type of object used to iterate over elements of `C`.
             The iterator type is convertible to the const iterator type. 
             
             *Requirements:* The iterator type may not be a model of the 
@@ -70,10 +71,58 @@ iterations.
         [`C::const_iterator`]
         [iterator type pointing to `const T`]
         [
-            *Semantics:* The type of object used to iterate over elements of `C`. 
+            The type of object used to iterate over elements of `C`.
             
             *Requirements:* The iterator type may not be a model of the 
             [StdOutputIterator] concept.
+        ]
+    ]
+]
+
+[heading Requirements]
+[table
+    [[Name] [Expression] [Result Type] [Description]]
+    [
+        [Default Constructor]
+        [
+            C c;
+            
+            C()
+        ]
+        []
+        [
+            Construct a new contaiiner of type `C`.
+            
+            *Postcondition:* The created container has `size() == 0`.
+        ]
+    ]
+    [
+        [Beginning of Range]
+        [`c.begin()`]
+        [
+            `iterator` if `c` is mutable.
+            
+            `const_iterator if `c` is `const`.
+        ]
+        [
+            Returns an iterator pointing to the first element in the container.
+            
+            *Postcondition:* If `c` is not empty, `c.begin()` is dereferenceable.
+            Otherwise, it is past the end.
+        ]
+    ]
+    [
+        [Beginning of Range]
+        [`c.end()`]
+        [
+            `iterator` if `c` is mutable.
+            
+            `const_iterator if `c` is `const`.
+        ]
+        [
+            Returns an iterator pointing past the end of the container..
+            
+            *Postcondition:* `c.end()` is past the edn of the array.
         ]
     ]
 ]
