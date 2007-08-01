@@ -97,13 +97,13 @@ degree centrality for a directed graph to return /prestige/ instead of /influenc
     ]
 ]
 
-[h5 Return Value]
+[heading Return Value]
 The `vertex_degree_centrality()` function returns the centrality of a vertex.
 If no `measure` parameter is given, the return type is the same as the
 `degree_size_type` of the `Graph`. Otherwise, it is the `degree_type` of
 the `Measure`.
 
-[h5 Complexity]
+[heading Complexity]
 The default measure is a constant-time function. Replacing the default measure
 with a non-constant-time function will affect the complexity of the computations.
 
