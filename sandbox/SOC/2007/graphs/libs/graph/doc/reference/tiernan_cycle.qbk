@@ -5,14 +5,14 @@
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  /]
 
-[section Clique]
+[section Tiernan Cycles]
 
     template <typename Graph, typename Visitor>
     void
-    tiernan_visit_cycles(const Graph& g, Visitor vis)
+    tiernan_find_cycles(const Graph& g, Visitor vis)
 
 These functions find all /cycles/ within of the given graph, invoking a visitor
-when each clique is found.
+when each cycle is found.
 
 The `tiernan_visit_cycles()` function is designed to work on directed graph, but
 works for undirected graphs as well. When running on undirected graphs, however,
@@ -21,7 +21,7 @@ two edges /(u,v)/ and /(v,u)/. As result the algorithm will report cycles in
 both directions.
 
 [heading Where Defined]
-`boost/graph/clique.hpp`
+`boost/graph/tiernan_find_cycles.hpp`
 
 [heading Parameters]
 

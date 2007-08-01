@@ -5,11 +5,11 @@
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  /]
 
-[section Clique]
+[section Bron Kerbosch Cliques]
 
     template <typename Graph, typename Visitor>
     void
-    bron_kerbosch_visit_cliques(const Graph& g, Visitor vis)
+    bron_kerbosch_find_cliques(const Graph& g, Visitor vis)
 
 These functions find all /cliques/ (maximal fully connected subgraphs) of the
 given graph, invoking a visitor when each clique is found.
