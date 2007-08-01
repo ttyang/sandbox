@@ -1,0 +1,119 @@
+[/
+ / Copyright (c) 2007 Andrew Sutton
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[section Degree Centrality]
+
+    template <typename Graph, typename CentralityMap>
+    void degree_centrality(const Graph& g, CentralityMap cent)
+
+    template <typename Graph, typename CentralityMap, typename Measure>
+    void degree_centrality(const Graph& g, CentralityMap cent, Measure measure)
+
+    template <typename Graph>
+    typename graph_traits<Graph>::degree_size_type
+    vertex_degree_centrality(const Graph& g,
+                             typename graph_traits<Graph>::vertex_descriptor v)
+
+    template <typename Graph, typename Measure>
+    typename Measure::degree_type
+    vertex_degree_centrality(const Graph& g,
+                             typename graph_traits<Graph>::vertex_descriptor v,
+                             Measure measure)
+
+The /degree centrality/ measure is used in social network analysis to help
+determine which vertices (or more specifically actors) are the most central
+or important to the network. Degree centrality is computed over the number of
+connections that a vertex has. For undirected graphs, the degree centrality of
+a vertex is typically equivalent to its degree. For directed graphs the out-degree
+is measured for its degree centrality.
+
+There are related two interpretations of degree centrality for directed graphs.
+When this measure is computed over the out-degree of a vertex, the measure is
+sometimes called /influence/. When the in-degree is considered, the measure is
+called /prestige/.
+
+This module provides two generic functions for measuring degree centrality.
+The first function, `degree_centrality()` computes this measure for each vertex
+in the graph, assigning the values to an output property map.
+
+The second funtion, `vertex_degree_centrality()` computes this measure for
+a single vertex, returning the value to the caller.
+
+These functions can be specialized throught the use of alternate /measure/
+functors. These funtors are called to actually compute the degree centraltiy
+of a vertex. For exmaple, it is possible to redefine the detault notion of
+degree centrality for a directed graph to return /prestige/ instead of /influence/.
+
+[heading Where Defined]
+`boost/graph/degree_centrality.hpp`
+
+[heading Parameters]
+[table
+    [[Type] [Parameter] [Description]]
+    [
+        [required, in] [`const Graph& graph`]
+        [
+            The graph object for which the degree centralities will be computed.
+
+            *Requirements:* The `Graph` type must be a model of the
+            [BoostIncidenceGraph] concept.
+        ]
+    ]
+    [
+        [required, in] [`vertex_descriptor v`]
+        [
+            The vertex descriptor for which the degree centrality is computed.
+        ]
+    ]
+    [
+        [required, out] [`CentralityMap cent`]
+        [
+            The property map that contains the degree centralities of all vertices
+            in a graph after calling the `degree_centrality()` function.
+
+            *Requirements:* The `CentralityMap` type must be a model of the
+            [BoostWritablePropertyMap] concept. The `key_type` of the map must
+            be the same as the `vertex_descriptor` of the `Graph` type. If the
+            `measure` parameter is given in the call, then the `value_type`
+            of `CentralityMap` must be the same as `Measure::degree_type`.
+            Otherwise, the `value_type` must be the same as the `degree_size_type`
+            of the graph.
+        ]
+    ]
+    [
+        [optional, in] [`Measure measure`]
+        [
+            The `measure` parameter allows the caller to override the default
+            computation of degree centrality for a vertex.
+
+            *Requirements:* The `Measure` type must be a model of the
+            [BoostDegreeMeasure] concept. The `degree_type` of `Measure` must
+            be the same as the `value_type` of the `CentralityMap` type.
+        ]
+    ]
+]
+
+[h5 Return Value]
+The `vertex_degree_centrality()` function returns the centrality of a vertex.
+If no `measure` parameter is given, the return type is the same as the
+`degree_size_type` of the `Graph`. Otherwise, it is the `degree_type` of
+the `Measure`.
+
+[h5 Complexity]
+The default measure is a constant-time function. Replacing the default measure
+with a non-constant-time function will affect the complexity of the computations.
+
+The `degree_centrality()` function is ['O(n * O(measure))]. This is linear by
+default.
+
+The `vertex_degree_centrality()` is ['O(O(measure))]. This is constant by
+default.
+
+[heading Example]
+Write an example.
+
+[endsect]
