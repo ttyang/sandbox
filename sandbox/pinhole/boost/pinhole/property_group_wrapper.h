@@ -25,7 +25,7 @@ namespace boost { namespace pinhole
          * @param name The name of this property group (like an xml node name)
          * @param parent The parent of the this object.
          */
-        property_group_wrapper(std::string name, property_group *parent) :
+        property_group_wrapper(std::string name, property_group *parent)
             : property_group(name, parent){;}
         
         ~property_group_wrapper(void){;}
