@@ -1,0 +1,212 @@
+[article Dataflow
+    [quickbook 1.4]
+    [version 0.1]
+    [authors [Rajko, Stjepan]]
+    [copyright 2007 Stjepan Rajko]
+    [purpose Operators and Components for signal-based networks.]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[template ProducerConcept[] [link dataflow.concepts.producer [^Producer]]]
+[template ConsumerConcept[] [link dataflow.concepts.consumer [^Consumer]]]
+[template InvocableConcept[] [link dataflow.concepts.invocable [^Invocable]]]
+[template ConnectableConcept[] [link dataflow.concepts.connectable [^Connectable]]]
+[template SignalProducerConcept[] [link dataflow.signals.concepts.signalproducer [^SignalProducer]]]
+[template SignalConsumerConcept[] [link dataflow.signals.concepts.signalconsumer [^SignalConsumer]]]
+[template PhoenixProducerConcept[] [link dataflow.concepts.phoenix.phoenixproducer [^PhoenixProducer]]]
+[template PhoenixConsumerConcept[] [link dataflow.concepts.phoenix.phoenixproducer [^PhoenixConsumer]]]
+
+[template organization[] [link dataflow.introduction.organization organization]]
+[template DataflowSignals[] [link dataflow.introduction.mechanisms.signals Dataflow.Signals]]
+[template DataflowPhoenix[] [link dataflow.introduction.mechanisms.phoenix Dataflow.Phoenix]]
+
+[template signals_quickstart[] [link dataflow.signals.introduction.quick_start quick start]]
+[template connect[] [link dataflow.signals.connections.connect connect]]
+[template components[] [link dataflow.signals.components components]]
+[template operators[] [link dataflow.signals.connections.operators operators]]
+
+[template slot_selector[] [link dataflow.signals.connections.classes.slot_selector slot_selector]]
+
+[template filter[] [link dataflow.signals.components.generic.filter filter]]
+[template applicator[] [link dataflow.signals.components.generic.applicator applicator]]
+[template conditional[] [link dataflow.signals.components.generic.conditional conditional]]
+[template instantiator[] [link dataflow.signals.components.generic.instantiator instantiator]]
+[template modifier[] [link dataflow.signals.components.generic.modifier modifier]]
+[template storage[] [link dataflow.signals.components.properties.storage storage]]
+[template counter[] [link dataflow.signals.components.properties.counter counter]]
+[template junction[] [link dataflow.signals.components.flow.junction junction]]
+[template mutex[] [link dataflow.signals.components.flow.mutex mutex]]
+[template function[] [link dataflow.signals.components.adapters.function function]]
+[template socket_sender[] [link dataflow.signals.components.network.socket_sender socket_sender]]
+[template socket_receiver[] [link dataflow.signals.components.network.socket_receiver socket_receiver]]
+[template chain[] [link dataflow.signals.components.topologies.chain chain]]
+
+[template fusion[] [@http://spirit.sourceforge.net/dl_more/fusion_v2/libs/fusion/doc/html/index.html Boost.Fusion]]
+[template BoostFusion[] [@http://spirit.sourceforge.net/dl_more/fusion_v2/libs/fusion/doc/html/index.html Boost.Fusion]]
+[template BoostSignals[] [@http://www.boost.org/doc/html/signals.html Boost.Signals]]
+[template BoostPhoenix2[] [@http://spirit.sourceforge.net/ Boost.Phoenix2]]
+[template BoostPhoenix[] [@http://spirit.sourceforge.net/ Boost.Phoenix]]
+[template WikiDataflow[] [@http://en.wikipedia.org/wiki/Dataflow_language dataflow]]
+
+[import ../test/test_connect.cpp]
+[import ../test/test_branching.cpp]
+[import ../test/test_pull.cpp]
+[import ../test/test_disconnect.cpp]
+[import ../test/test_multi_type.cpp]
+[import ../test/test_multi_args.cpp]
+[import ../test/test_same_type.cpp]
+[import ../test/test_multi_out.cpp]
+
+[import ../test/test_filter.cpp]
+[import ../test/test_storage.cpp]
+[import ../test/test_function.cpp]
+[import ../test/test_chain.cpp]
+[import ../test/test_socket.cpp]
+
+[import ../example/fibonacci.cpp]
+[import ../example/simple_example.cpp]
+
+Dataflow is a generic library for [WikiDataflow] programming using various data
+transport mechanisms.  The Dataflow library
+comes with support for two data transport mechanisms - one is based on
+[BoostSignals], and the other (experimental) is based connections made through
+simple object pointers, with support for using [BoostPhoenix2]
+actors for data processing.
+
+The two data transport mechanisms are implemented in the [DataflowSignals]
+and [DataflowPhoenix] modules.  The idea behind providing a generic dataflow
+library is that other data transport mechanisms can be easily adapted for
+use with the library.
+
+[warning Dataflow is not a part of the Boost libraries.  It is being developed
+as a part of the Google Summer of Code program.  The original proposal (for
+the Signal Network library, which became the Dataflow library)
+as well as some status updates can be found on the
+[@http://svn.boost.org/trac/boost/wiki/soc/2007/SignalNetwork GSoC page].]
+
+* If you would like some more information about why one would want to connect
+  objects into a signal-based network, read about
+  [link dataflow.introduction.dataflow Dataflow programming in C++].
+* If you'd like to try out the library
+    * keep in mind that the interface is highly unstable at this point
+    * see the [link dataflow.introduction.start Quick Start] section.
+* If you are interested in the progress of the implementation, see
+    * News section of the
+      [@http://svn.boost.org/trac/boost/wiki/soc/2007/SignalNetwork Dataflow GSoC page]
+    * [link dataflow.discussion Discussion on Boost Community Feedback]
+    * [link dataflow.download Download and Changelog]
+
+[include introduction.qbk]
+
+[include concepts.qbk]
+
+[include signals.qbk]
+
+[include phoenix.qbk]
+
+[section Development]
+
+[include rationale.qbk]
+
+[section:discussion Discussion on Boost Community Feedback]
+
+The following summarizes some of the suggestions / comments given by the Boost community, and
+what has been done to incorporate this feedback.
+
+[* Tobias Schwinger indicated that the library could be used for pulling rather than pushing data.]
+
+* [link dataflow.connections.pull An example] which illustrates this has been addded.
+
+[* James Jones suggested that a ||-like operator could be used for branching, and >> for chaining.]
+
+* `operator >=` which was orignally used for branching has been replaced with `operator |`.
+* Since the most straightforward way for me to implement chaining/branching is using a left-to-right
+operator for one and a right-to-left operator for the other, I decided to stay with >>= as the chaining
+operator.
+
+[* Paolo Coletta suggested a "video_generator >>= ( effect1 && effect2 ) >>= image_sum" - like syntax that
+  would allow parallel processing of signals (identified as the "join" pattern by Yigong Liu)]
+
+* I have started to implement thread-related components in [timed_generator] and [mutex].
+More sophisticated threading components, control and syntax to follow.
+
+[* Yigong Liu suggested enhanced support for common network topologies, such as mesh. ]
+
+* I have implemented a prototype
+[chain] topology
+to get a start on this concept.
+
+[* Braddock Gaskill pointed out the relationship with the "pipes and filters" pattern, and suggested
+   the possibility of using functions as filters.  He also suggested the library would me more useful
+   if different functions executed in parallel threads, or were queued to specific worker threads,
+   if the library would provide functionality to control and schedule the execution of the invoked functions,
+   or traverse the call graph.]
+
+* In light of the possible connection with the "pipes and filters" pattern, the base
+  object for signal network components which receive a signal and send a signal has
+  been changed to [filter].
+  I was not successful in finding a formal definition
+  of what "pipes and filters" semantics should be, so I am not sure whether this is appropriate.
+* [function]
+  now offers the proposed functionality of converting functions into filters.
+* Threading and scheduling of the invoked functions is something I plan to address.
+* Providing a call graph would be a great feature, but I am not sure what the best
+  way to address that is, since each component might be of a different type.  Perhaps a graph
+  in which only the edges are labeled (with connection objects) would be doable and useful.
+
+[endsect]
+
+[section:download Download and Changelog]
+
+Please keep in mind that this code is a prototype and far from the finished product.  I am learning
+as I go, and any feedback on improving the implementation is very welcome.
+
+GSoC Development version (*latest*) \[located in the Boost sandbox /SOC/2007/signals\]
+
+* converting documentation to boostbook, using Boost.Build
+
+Proposal for Boost / Google SoC version  \[[@signal_network.zip download]\]
+
+* finished the signals::socket_sender and signals::socket_receiver components
+
+Draft proposal for Boost / Google SoC version
+
+* changed the file and namespace structure
+* implemented a file-iteration based mechanism for arity-dependent classes
+* changed the operators used
+* signal_link is now signals::filter and does not need to know it's descendant's type
+* implemented signals::junction, signals::selector, signals::storage, signals::timed_generator,
+  signals::mutex, signals::chain, signals::function classes
+
+Original request for interest version available as attachment to
+[@http://lists.boost.org/Archives/boost/2007/02/116869.php]
+
+[endsect]
+
+[endsect]
+
+[xinclude dataflow_doxygen.xml]
+
+[section:acknowledgements Acknowledgements]
+
+* Thanks to Douglas Gregor for making himself available as a mentor for this project, and for his support, suggestions and feedback.
+* Thanks to all the members of the Boost community who have expressed an interest in this library
+  and contributed [link dataflow.discussion valuable feedback].
+* Thanks to Tobias Schwinger for a most valuable discussion on various
+  dataflow-oriented approaches and ideas.
+
+[endsect]
+
+[section:license License]
+
+Copyright 2007 Stjepan Rajko.
+Distributed under the Boost Software License, Version 1.0. (See
+accompanying file LICENSE_1_0.txt or copy at
+[@http://www.boost.org/LICENSE_1_0.txt])
+
+
+[endsect]
