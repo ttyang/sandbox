@@ -1,4 +1,4 @@
-// Boost.Print library
+// Boost.Explore library
 
 // Copyright Jeffrey Faust 2007. Use, modification and
 // distribution is subject to the Boost Software License, Version
@@ -12,8 +12,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include "../../../boost/explore/explore.hpp"
-#include "../../../boost/explore/stream_container.hpp"
+#include <boost/explore.hpp>
 
 BOOST_AUTO_TEST_CASE( two_dimension_print_test )
 {

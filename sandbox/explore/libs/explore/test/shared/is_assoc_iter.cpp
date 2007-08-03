@@ -13,9 +13,8 @@
 #include <vector>
 #include <map>
 #include <list>
-#include "../../../boost/explore/explore.hpp"
-#include "../../../boost/explore/stream_container.hpp"
-#include "../../../boost/explore/is_assoc_iter.hpp"
+#include <boost/explore.hpp>
+#include <boost/explore/is_assoc_iter.hpp>
 
 BOOST_AUTO_TEST_CASE( is_assoc_iter_test )
 {
