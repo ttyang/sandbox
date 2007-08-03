@@ -10,18 +10,15 @@
 
 #include <boost/mpl/and.hpp>
 #include <boost/type_traits/is_base_of.hpp>
+#include <boost/type_traits/is_pod.hpp>
 
 namespace boost { namespace dataflow {
-    
-namespace mechanism
-{
-    struct phoenix;
-}
 
 struct phoenix_producer {};
 struct phoenix_consumer {};
 
 struct ptr_consumer : public phoenix_consumer {};
+struct pod_producer : public phoenix_producer {};
 
 template <typename T>
 struct consumer_category_of<T *>
@@ -33,6 +30,18 @@ template <typename T>
 struct consumer_category_of<T * const>
 {
     typedef ptr_consumer type;
+};
+
+template<typename T>
+struct producer_category_of<T, typename boost::enable_if<is_pod<T> >::type>
+{
+    typedef pod_producer type;
+};
+
+template<typename T>
+struct produced_type_of<T, typename boost::enable_if<is_pod<T> >::type>
+{
+    typedef T type;
 };
 
 namespace extension
@@ -78,6 +87,34 @@ namespace extension
                 call(const Producer &producer)
                 {
                     return &producer.value;
+                }
+            };
+        };
+        
+        template<typename ProducerTag>
+        struct get_value
+        {
+            template<typename Producer>
+            struct apply
+            {
+                static const typename produced_type_of<Producer>::type &
+                call(const Producer &producer)
+                {
+                    return producer.value;
+                }
+            };
+        };
+        
+        template<>
+        struct get_value<boost::dataflow::pod_producer>
+        {
+            template<typename Producer>
+            struct apply
+            {
+                static const typename produced_type_of<Producer>::type &
+                call(const Producer &producer)
+                {
+                    return producer;
                 }
             };
         };

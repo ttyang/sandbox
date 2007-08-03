@@ -9,5 +9,6 @@
 #include <boost/dataflow/phoenix/component/producer.hpp>
 #include <boost/dataflow/phoenix/component/consumer.hpp>
 #include <boost/dataflow/phoenix/component/producer_accumulator.hpp>
+#include <boost/dataflow/phoenix/component/producer_wrapper.hpp>
 
 #endif // BOOST_DATAFLOW_PHOENIX_COMPONENTS_HPP

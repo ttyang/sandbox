@@ -14,7 +14,7 @@
 #include <boost/function_types/result_type.hpp>
 #include <boost/mpl/push_front.hpp>
 
-namespace boost { namespace signals {
+namespace boost {  namespace signals {
 
 namespace detail {
         

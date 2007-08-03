@@ -31,7 +31,10 @@ struct static_value
 };
 
 template<int N>
-struct int_ : static_value<boost::mpl::int_<N> > {};
+actor<static_value<boost::mpl::int_<N> > > int_()
+{
+    return actor<static_value<boost::mpl::int_<N> > >();
+}
 
 } } // namespace boost::phoenix
 

@@ -37,8 +37,8 @@ namespace boost { namespace phoenix
             return compose<detail::function_eval<2> >(actor<static_value<F> >(), _0, _1);
         }
 
-//        //  Bring in the rest of the function call operators - not implemented
-//        #include <boost/spirit/phoenix/function/detail/static_function_call.hpp>
+        //  Bring in the rest of the function call operators
+        #include <boost/dataflow/phoenix/detail/static_function_call.hpp>
     };
 }}
 

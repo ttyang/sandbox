@@ -47,6 +47,8 @@ template<typename AccumulateOp, typename Operations>
 class producer_accumulator : public Operations // should be a fusion sequence
 {
 public:
+//    typedef boost::dataflow::fusion_group_consumer consumer_category;
+    
     producer_accumulator(const Operations &op) : Operations(op) {}
     producer_accumulator() {}
     

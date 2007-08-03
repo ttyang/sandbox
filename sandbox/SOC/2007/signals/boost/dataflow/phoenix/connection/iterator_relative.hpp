@@ -25,13 +25,15 @@ namespace iterator_relative
             template<class T>
             struct result
             {
-                typedef const typename T::value_type & type;
+                typedef const typename boost::dataflow::produced_type_of<T>::type & type;
             };
 
             template<class T>
             typename result<T>::type operator()(const T &t) const
-            {        
-                return t.value;
+            {
+                return boost::dataflow::extension::phoenix::template get_value<
+                    typename boost::dataflow::producer_category_of<T>::type>
+                    ::template apply<T>::call(t);
             }
         };
 
@@ -39,8 +41,15 @@ namespace iterator_relative
 
     static_function<impl::get_value> const get_value = static_function<impl::get_value>();
 
-    BOOST_TYPEOF(get_value(*(boost::phoenix::arg_names::arg1-actor<int_<2> >()))) const prev2;
-    BOOST_TYPEOF(get_value(*(boost::phoenix::arg_names::arg1-actor<int_<1> >()))) const prev1;
+    BOOST_TYPEOF(get_value(*(boost::phoenix::arg_names::arg1-int_<2>()))) const prev2;
+    BOOST_TYPEOF(get_value(*(boost::phoenix::arg_names::arg1-int_<1>()))) const prev1;
+    
+    template<int N, typename Arg>
+    BOOST_TYPEOF(get_value(*(Arg()-int_<N>()))) prev(Arg arg)
+    {
+        BOOST_TYPEOF(get_value(*(Arg()-int_<N>()))) t;
+        return t;
+    }
 }
 
 } } // namespace boost::phoenix

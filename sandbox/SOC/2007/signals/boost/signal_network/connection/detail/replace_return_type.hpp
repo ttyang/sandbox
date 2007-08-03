@@ -7,7 +7,7 @@
 #define SIGNAL_NETWORK_REPLACE_RETURN_TYPE_HPP
 
 namespace boost { namespace signals {
-    
+        
 namespace detail {        
 
     template<typename Signature, typename T>

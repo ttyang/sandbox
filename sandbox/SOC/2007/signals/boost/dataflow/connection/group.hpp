@@ -10,10 +10,13 @@
 
 #include <boost/fusion/algorithm/iteration/for_each.hpp>
 #include <boost/fusion/sequence/container/vector.hpp>
+#include <boost/fusion/sequence/intrinsic/at_key.hpp>
+#include <boost/fusion/sequence/intrinsic/front.hpp>
 #include <boost/fusion/sequence/generation/vector_tie.hpp>
 #include <boost/fusion/sequence/view/zip_view.hpp>
 #include <boost/fusion/support/is_sequence.hpp>
 #include <boost/utility/result_of.hpp>
+#include <boost/mpl/not.hpp>
 
 namespace boost { namespace dataflow {
 
@@ -22,6 +25,7 @@ struct fusion_group_producer;
 template<class T>
 struct producer_group : public T
 {
+    producer_group() {}
     producer_group(const T& t) : T(t) {}
     typedef fusion_group_producer producer_category;
 };
@@ -46,13 +50,21 @@ group(T1 &t1, T2 &t2)
     
 struct fusion_group_consumer;
 
-template <typename Sequence>
+template<class T>
+struct consumer_group : public T
+{
+    consumer_group() {}
+    consumer_group(const T& t) : T(t) {}
+    typedef fusion_group_consumer consumer_category;
+};
+
+/*template <typename Sequence>
 struct consumer_category_of<Sequence,
             typename boost::enable_if<
                 boost::fusion::traits::is_sequence<Sequence> >::type >
 {
     typedef fusion_group_consumer type;
-};
+};*/
 
 
 namespace extension
@@ -76,6 +88,7 @@ namespace extension
         };
     }
     
+    // group >>= group
     template<typename ProducerTag, typename ConsumerTag>
     struct connect_impl<ProducerTag, ConsumerTag,
             typename boost::enable_if<boost::mpl::and_<
@@ -102,9 +115,24 @@ namespace extension
                     zip(zip_type(producer, consumer));
                 boost::fusion::for_each(zip, detail::zip_connect());
             }
+            static void call(Producer &producer, const Consumer &consumer)
+            {
+                typedef boost::fusion::vector<Producer&, const Consumer&>
+                    zip_type;
+                boost::fusion::zip_view<zip_type>
+                    zip(zip_type(producer, consumer));
+                boost::fusion::for_each(zip, detail::zip_connect());
+            }
+            static void call(Producer &producer, Consumer &consumer)
+            {
+                typedef boost::fusion::vector<Producer&, Consumer&>
+                    zip_type;
+                boost::fusion::zip_view<zip_type>
+                    zip(zip_type(producer, consumer));
+                boost::fusion::for_each(zip, detail::zip_connect());
+            } 
         };
     };
-    
 }
     
 } } // namespace boost::dataflow
