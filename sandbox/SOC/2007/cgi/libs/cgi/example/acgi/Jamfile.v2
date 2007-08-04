@@ -25,6 +25,3 @@ exe acgi
     <define>BOOST_ALL_NO_LIB=1
     <toolset>gcc:<linkflags>-lpthread
   ;
-
-#install
-#  :
