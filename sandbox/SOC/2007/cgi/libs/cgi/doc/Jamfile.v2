@@ -3,17 +3,19 @@
 # subject to the Boost Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-project cgi/doc ;
+project cgi/doc
+  : build-dir ../../bin.v2
+  ;
 
 import boostbook : boostbook ;
 import quickbook ;
 import doxygen ;
 
 # compile the doxygen sources here
-doxygen autodoc
+doxygen cgi_dox
   :
-#    [ glob-tree ../../../boost/cgi/*.hpp : .svn ]
-#    [ glob-tree ../../../boost/libs/cgi/src/*.cpp : .svn ]
+#   [ glob-tree ../../../boost/cgi/*.hpp : .svn ]
+#   [ glob-tree ../../../boost/libs/cgi/src/*.cpp : .svn ]
 
     [ glob ../../../boost/cgi/*.hpp ]
     [ glob ../../../boost/cgi/gateway_impl/*.hpp ]
@@ -30,22 +32,19 @@ doxygen autodoc
     <doxygen:param>INCLUDE_PATH=$(BOOST_ROOT)
   ;
 
-xml cgi_xml : cgi.qbk ;
+xml cgi_xml : src/cgi.qbk ;
 
 boostbook standalone
   :
     cgi_xml
-    autodoc
-#   cgi_dox
+    cgi_dox
   :
     <xsl:param>boost.root=/usr/local/src/boost
     <xsl:param>boost.libraries=/usr/local/src/boost/libs/libraries.htm
-    <xsl:param>boost.images=http://boost.org/images
-    <xsl:param>toc.max.depth=10
-    <xsl:param>toc.section.depth=10
-    <xsl:param>chunk.section.depth=10
-
-#    <dependency>autodoc
+    <xsl:param>boost.images=http://beta.boost.org/images
+#    <xsl:param>toc.max.depth=10
+#    <xsl:param>toc.section.depth=10
+    <xsl:param>chunk.section.depth=4
 	;
 
 #install html
