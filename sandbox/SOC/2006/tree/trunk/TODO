@@ -46,6 +46,9 @@ General:
   inorder::lower_bound (and upper_bound, of course) performs binary tree search and just
   *can't* be simulated via std::lower_bound (which just performs ordinary binary search)
   in an equally efficient way.
+* Add (inorder-)threaded binary trees?? Are they useful? Can they be balanced?
+* Start an RFC: what subtree algorithms should there be? In particular, of which of
+  the STL's linear algorithms should there be a hierarchical version?
 
 Proposal:
 

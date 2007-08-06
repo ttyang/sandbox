@@ -21,7 +21,7 @@ namespace boost {
 namespace tree {
 
 namespace preorder {
-	
+
 /** \addtogroup traversal */
 /*\@{*/
 

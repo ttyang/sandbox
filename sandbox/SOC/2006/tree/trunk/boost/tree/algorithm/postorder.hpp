@@ -22,6 +22,45 @@ namespace tree {
 namespace postorder {
 
 /**
+ * @if maint
+ * Helper function for for_each, using a reference parameter in order to
+ * require fewer copy and assignment operations.
+ * @endif
+ */
+template <class Cursor, class Op>
+void for_each_recursive(Cursor s, Op& f)
+{
+	if (!s.empty())
+		for_each_recursive(s.begin(), f);
+	Cursor subtree = s;
+	if (!(++s).empty())
+		for_each_recursive(s.begin(), f);
+	f(*subtree);
+}
+
+/**
+ * @brief	Apply a function to every element of a subtree, in postorder.
+ * @param s	A cursor.
+ * @param f	A unary function object.
+ * @return	@p f
+ *
+ * Applies the function object @p f to each element in the subtree @p s, using 
+ * postorder. @p f must not modify the order of the sequence.
+ * If @p f has a return value it is ignored.
+ */
+template <class Cursor, class Op>
+Op for_each(Cursor s, Op f)
+{
+	if (!s.empty())
+		for_each_recursive(s.begin(), f);
+	Cursor subtree = s;
+	if (!(++s).empty())
+		for_each_recursive(s.begin(), f);
+	f(*subtree);
+	return f;
+}
+
+/**
  * @brief	First element of a MultiwayTree in postorder traversal
  * 			(equivalent to inorder::begin())
  * @param t	A MultiwayTree

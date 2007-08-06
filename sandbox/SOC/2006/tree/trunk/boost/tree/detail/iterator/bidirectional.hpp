@@ -17,7 +17,7 @@
 //#define BOOST_TREE_DETAIL_ITERATOR_BIDIRECTIONAL_HPP
 
 
-#include <boost/tree/inorder.hpp>
+//#include <boost/tree/inorder.hpp>
 #include <boost/tree/cursor.hpp>
 
 #include <boost/iterator/iterator_adaptor.hpp>

@@ -22,6 +22,43 @@ namespace tree {
 namespace preorder {
 
 /**
+ * @if maint
+ * Helper function for for_each, using a reference parameter in order to
+ * require fewer copy and assignment operations.
+ * @endif
+ */
+template <class Cursor, class Op>
+void for_each_recursive(Cursor s, Op& f)
+{
+	f(*s);
+	if (!s.empty())
+		for_each_recursive(s.begin(), f);
+	if (!(++s).empty())
+		for_each_recursive(s.begin(), f);
+}
+
+/**
+ * @brief	Apply a function to every element of a subtree, in preorder.
+ * @param s	A cursor.
+ * @param f	A unary function object.
+ * @return	@p f
+ *
+ * Applies the function object @p f to each element in the @p subtree, using  
+ * preorder. @p f must not modify the order of the sequence.
+ * If @p f has a return value it is ignored.
+ */
+template <class Cursor, class Op>
+Op for_each(Cursor s, Op f)
+{
+	f(*s);
+	if (!s.empty())
+		for_each_recursive(s.begin(), f);
+	if (!(++s).empty())
+		for_each_recursive(s.begin(), f);
+	return f;
+}
+
+/**
  * @brief	First element of a MultiwayTree in preorder traversal
  * @param t	A MultiwayTree
  * @return	Mutable preorder iterator to the first element of @a t

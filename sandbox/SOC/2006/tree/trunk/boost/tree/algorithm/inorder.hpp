@@ -21,6 +21,44 @@ namespace tree {
 
 namespace inorder {
 
+/**
+ * @if maint
+ * Helper function for for_each, using a reference parameter in order to
+ * require fewer copy and assignment operations.
+ * @endif
+ */
+template <class MultiwayCursor, class Op>
+void for_each_recursive(MultiwayCursor s, Op& f)
+{
+	if (!s.empty())
+		for_each_recursive(s.begin(), f);
+	f(*s);
+	if (!(++s).empty())
+		for_each_recursive(s.begin(), f);
+}
+
+/**
+ * @brief	Apply a function to every element of a multiway subtree,
+ *			in inorder.
+ * @param s	A MultiwayTree cursor.
+ * @param f	A unary function object.
+ * @return	@p f
+ *
+ * Applies the function object @p f to each element in the @p subtree, using
+ * inorder. @p f must not modify the order of the sequence.
+ * If @p f has a return value it is ignored.
+ */
+template <class MultiwayCursor, class Op>
+Op for_each(MultiwayCursor s, Op f)
+{
+	if (!s.empty())
+		for_each_recursive(s.begin(), f);
+	f(*s);
+	if (!(++s).empty())
+		for_each_recursive(s.begin(), f);
+	return f;
+}
+
 template <class MultiwayTree>
 iterator<typename MultiwayTree::cursor, forward_traversal_tag> 
 begin(MultiwayTree& t, forward_traversal_tag)
