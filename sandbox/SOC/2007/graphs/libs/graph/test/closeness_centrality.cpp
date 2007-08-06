@@ -103,8 +103,8 @@ void test()
     build_graph(g);
 
     CentralityContainer centralities(num_vertices(g));
-    CentralityMap cent(centralities);
-    DistanceMatrix dist(num_vertices(g));
+    CentralityMap cent(centralities, g);
+    DistanceMatrix dist(num_vertices(g), g);
     WeightMap weights(get(&EdgeProp::weight, g));
 
     floyd_warshall_all_pairs_shortest_paths(g, dist, weight_map(weights));
