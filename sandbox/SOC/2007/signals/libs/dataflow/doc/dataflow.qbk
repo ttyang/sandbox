@@ -24,6 +24,10 @@
 [template DataflowSignals[] [link dataflow.introduction.mechanisms.signals Dataflow.Signals]]
 [template DataflowPhoenix[] [link dataflow.introduction.mechanisms.phoenix Dataflow.Phoenix]]
 
+[template producer_group[] [link dataflow.components.producer_group producer_group]]
+[template consumer_group[] [link dataflow.components.consumer_group consumer_group]]
+[template consumer_map[] [link dataflow.components.consumer_map consumer_map]]
+
 [template signals_quickstart[] [link dataflow.signals.introduction.quick_start quick start]]
 [template connect[] [link dataflow.signals.connections.connect connect]]
 [template components[] [link dataflow.signals.components components]]
@@ -63,6 +67,7 @@
 
 [import ../test/test_filter.cpp]
 [import ../test/test_storage.cpp]
+[import ../test/test_counter.cpp]
 [import ../test/test_function.cpp]
 [import ../test/test_chain.cpp]
 [import ../test/test_socket.cpp]
@@ -93,16 +98,13 @@ as well as some status updates can be found on the
   [link dataflow.introduction.dataflow Dataflow programming in C++].
 * If you'd like to try out the library
     * keep in mind that the interface is highly unstable at this point
-    * see the [link dataflow.introduction.start Quick Start] section.
-* If you are interested in the progress of the implementation, see
-    * News section of the
-      [@http://svn.boost.org/trac/boost/wiki/soc/2007/SignalNetwork Dataflow GSoC page]
-    * [link dataflow.discussion Discussion on Boost Community Feedback]
-    * [link dataflow.download Download and Changelog]
+    * see the [signals_quickstart] section of [DataflowSignals].
 
 [include introduction.qbk]
 
 [include concepts.qbk]
+
+[include components.qbk]
 
 [include signals.qbk]
 

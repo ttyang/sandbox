@@ -130,8 +130,8 @@ Examples of modifiers:
   
 [heading Description]
 
-The [storage] class can store the parameters it receives from a signal,
-as well as transmit the stored parameter values through its own signal.
+The [storage] class can store the arguments it receives from a signal,
+as well as transmit the stored argument values through its own signal.
 
 [table storage class use example
     [[fused][unfused]]
