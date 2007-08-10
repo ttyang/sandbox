@@ -23,13 +23,13 @@
 namespace cgi {
 
   //template<typename ProtocolService>
-  class acgi_service_impl
+  class acgi_request_service
   //: public boost::asio::io_service::service
     : public cgi_service_impl_base<acgi_request_impl>
-    , public detail::service_base<acgi_service_impl>
+    , public detail::service_base<acgi_request_service>
   {
   public:
-    typedef acgi_service_impl           type;
+    typedef acgi_request_service        type;
     typedef acgi_request_impl           impl_type;
     typedef cgi::map                    map_type;
     typedef tags::acgi                  protocol_type;
@@ -38,15 +38,8 @@ namespace cgi {
     /// The unique service identifier
     //    static boost::asio::io_service::id id;
 
-    acgi_service_impl(cgi::io_service& ios)
+    acgi_request_service(cgi::io_service& ios)
       : detail::service_base<acgi_service_impl>(ios)
-    {
-    }
-
-    acgi_service_impl(protocol_service_type& protocol_service)
-    //: boost::asio::io_service::service(protocol_service.io_service())
-      : detail::service_base<acgi_service_impl>(protocol_service.io_service())
-    //  , cgi_service_impl_base<acgi_request_impl>()
     {
     }
 

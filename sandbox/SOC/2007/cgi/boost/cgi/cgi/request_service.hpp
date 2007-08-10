@@ -18,7 +18,7 @@
 //#include "../http/status_code.hpp"
 //#include "../map.hpp"
 //#include "../request_impl/cgi_request_impl.hpp"
-#include "cgi_service_impl_base.hpp"
+#include "../service_impl/cgi_service_impl_base.hpp"
 #include "../detail/extract_params.hpp"
 #include "../request_impl/cgi_request_impl.hpp"
 #include "../connections/stdio.hpp"
@@ -28,28 +28,29 @@ namespace cgi {
   //class cgi_request_impl;
 
   //template<typename RequestImplType>
-  class cgi_service_impl
+  class cgi_request_service
    : public cgi_service_impl_base<cgi_request_impl>
   {
     typedef ::cgi::map         map_type;
   public:
     typedef cgi_request_impl   impl_type;
+    typedef tags::cgi          protocol_type;
     //typedef cgi_service_impl_base<cgi_request_impl> base;
 
-    cgi_service_impl()
+    cgi_request_service()
       : cgi_service_impl_base<cgi_request_impl>()
     {
     }
 
     template<typename T>
-    cgi_service_impl(T&)
+    cgi_request_service(T&)
       : cgi_service_impl_base<cgi_request_impl>()
     {
     }
 
     void construct(implementation_type& impl)
     {
-      impl.connection_ = stdio_connection::create();
+      impl.connection() = stdio_connection::create();
     }
 
     void destroy(implementation_type& impl)
