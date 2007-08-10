@@ -10,6 +10,7 @@
 #define CGI_THROW_ERROR_HPP_INCLUDED__
 
 #include <boost/system/error_code.hpp>
+//#include <boost/system/system_error.hpp>
 
 namespace cgi {
  namespace detail {
@@ -18,6 +19,7 @@ namespace cgi {
    {
      if(ec)
        throw ec;
+//     throw boost::system::system_error(ec);
    }
 
  } // namespace detail

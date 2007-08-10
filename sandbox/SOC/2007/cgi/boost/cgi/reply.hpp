@@ -9,58 +9,136 @@
 #ifndef CGI_REPLY_HPP_INCLUDED__
 #define CGI_REPLY_HPP_INCLUDED__
 
+#include <string>
+
 #include "detail/push_options.hpp"
-
-#include <ostream>
-
 #include "request_ostream.hpp"
+#include "buffer.hpp"
 
 namespace cgi {
 
   /// The reply class: a helper for replying to requests
-  /**
-   * This simply initialises a cgi::ostream to write replies to a request.
-   *
-   * The logger class is analogous to this except this works on the request's
-   * standard output rather than the error output.
-   */
+
+  // The request_ostream is destined to become a basic_request_ostream
+//typedef request_ostream<> reply_;
+
+
   class reply
-    : public request_ostream
+    : public cgi::request_ostream
   {
   public:
-    /// Default constructor
-    explicit reply()
+    reply(http::status_code sc = http::ok)
+      : cgi::request_ostream(sc)
     {
     }
-
-    /// Construct with a particular buffer
-    /**
-     * Takes a buffer and uses it internally, does nothing with it on
-     * destruction.
-     */
-    reply(std::streambuf* buf)
-      : request_ostream(buf)
+ 
+    reply(cgi::streambuf* buf, http::status_code sc = http::ok)
+      : cgi::request_ostream(buf, sc)
     {
     }
-
-    /// Construct, taking a buffer from an external source
-    /**
-     * Gets a buffer from the request/protocol service held by the request.
-     *
-     * <strike>
-     * Takes a buffer from T (can be a model of ProtocolService or
-     * CommonGatewayRequest) to use internally.
-     * </strike>
-     */
-    template<typename CommonGatewayRequest>
-    reply(CommonGatewayRequest& req)
-      : request_ostream(req)
-    {
-    }
-
+ 
     ~reply()
     {
+    } 
+
+    /// Some helper functions for the basic CGI 1.1 meta-variables
+    void auth_type(const std::string& value)
+    {
+      std::string str("Auth-type: ");
+      str += value;
+      this->headers_.push_back(cgi::buffer(str.c_str(), str.size()));
     }
+
+    void content_length(const std::string& value)
+    {
+      std::string str("Content-length: ");
+      str += value;
+      this->headers_.push_back(cgi::buffer(str.c_str(), str.size()));
+    }
+
+    /*        void auth_type(const std::string& value)
+    {
+      std::string str("Auth-type: " + value);
+      headers_.push_back(cgi::buffer(str.c_str(), str.size()));
+    }
+ 
+    void auth_type(const std::string& value)
+    {
+      std::string str("Auth-type: " + value);
+      headers_.push_back(cgi::buffer(str.c_str(), str.size()));
+    }
+ 
+    void auth_type(const std::string& value)
+    {
+      std::string str("Auth-type: " + value);
+      headers_.push_back(cgi::buffer(str.c_str(), str.size()));
+    }
+ 
+    void auth_type(const std::string& value)
+    {
+      std::string str("Auth-type: " + value);
+      headers_.push_back(cgi::buffer(str.c_str(), str.size()));
+    }
+ 
+    void auth_type(const std::string& value)
+    {
+      std::string str("Auth-type: " + value);
+      headers_.push_back(cgi::buffer(str.c_str(), str.size()));
+    }
+    void content_length(const std::string& value)
+    { return this->service.meta_env(this->impl, "CONTENT_LENGTH"); }
+
+    void content_type(const std::string& value)
+    { return this->service.meta_env(this->impl, "CONTENT_TYPE"); }
+
+    void gateway_interface(const std::string& value)
+    { return this->service.meta_env(this->impl, "GATEWAY_INTERFACE"); }
+
+    void path_info(const std::string& value)
+    { return this->service.meta_env(this->impl, "PATH_INFO"); }
+
+    void path_translated(const std::string& value)
+    { return this->service.meta_env(this->impl, "PATH_TRANSLATED"); }
+
+    void query_string(const std::string& value)
+    { return this->service.meta_env(this->impl, "QUERY_STRING"); }
+ 
+    void remote_addr(const std::string& value)
+    { return this->service.meta_env(this->impl, "REMOTE_ADDR"); }
+
+    void remote_host(const std::string& value)
+    { return this->service.meta_env(this->impl, "REMOTE_HOST"); }
+ 
+    void remote_ident(const std::string& value)
+    { return this->service.meta_env(this->impl, "REMOTE_IDENT"); }
+ 
+    void remote_user(const std::string& value)
+    { return this->service.meta_env(this->impl, "REMOTE_USER"); }
+ 
+    void request_method(const std::string& value)
+    { return this->service.meta_env(this->impl, "REQUEST_METHOD"); }
+
+    void script_name(const std::string& value)
+    { return this->service.meta_env(this->impl, "SCRIPT_NAME"); }
+
+    void server_name(const std::string& value)
+    { return this->service.meta_env(this->impl, "SERVER_NAME"); }
+ 
+    void server_port(const std::string& value)
+    { return this->service.meta_env(this->impl, "SERVER_PORT"); }
+ 
+    void server_protocol(const std::string& value)
+    { return this->service.meta_env(this->impl, "SERVER_PROTOCOL"); }
+ 
+    void server_software(const std::string& value)
+    { return this->service.meta_env(this->impl, "SERVER_SOFTWARE"); }
+
+  private:
+    char c_;
+ 
+  };
+
+*/
   };
 
 } // namespace cgi

@@ -18,7 +18,7 @@
 #include "../streambuf.hpp"
 #include "../basic_request.hpp"
 //#include "../basic_request_acceptor.hpp"
-//#include "../reply.hpp"
+#include "../reply.hpp"
 //#include "../logger.hpp"
 #include "../read.hpp"
 #include "../write.hpp"

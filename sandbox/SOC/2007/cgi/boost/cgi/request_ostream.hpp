@@ -33,11 +33,14 @@ that.
 #include "detail/push_options.hpp"
 
 #include <ostream>
+#include <sstream>
+#include <vector>
 //#include <streambuf>
 #include <boost/assert.hpp>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/system/error_code.hpp>
+#include <boost/asio.hpp>
 
 #include "streambuf.hpp"
 #include "buffer.hpp"
@@ -51,12 +54,14 @@ that.
 
 namespace cgi {
 
-  class request_ostream;
-
- namespace detail {
-
-
- } // namespace detail
+  /* Notes
+   * -----
+   *
+   * The constructor could take an additional bool which determines
+   * if any default headers are prepended to the message on sending
+   * eg. 'Content-type: text/plain' could by default be added, making
+   * the entry barrier lower and testing simpler.
+   */
 
 
   /// The ostream class: a stream interface for writing to requests
@@ -72,11 +77,9 @@ namespace cgi {
   public:
     /// Default constructor
     request_ostream(http::status_code sc = http::ok)
-      : /*request_(NULL)
-      , */buffer_(new cgi::streambuf())
+      : buffer_(new cgi::streambuf())
       , ostream_(buffer_.get())
       , http_status_(sc)
-//    , destination_(destination)
     {
     }
 
@@ -85,11 +88,10 @@ namespace cgi {
      * Takes the buffer and uses it internally, does nothing with it on
      * destruction.
      */
-    request_ostream(std::streambuf* buf, http::status_code sc = http::ok)
+    request_ostream(cgi::streambuf* buf, http::status_code sc = http::ok)
       : /*request_(NULL)
-      , */ostream_(buf)
+          , */ostream_(buf)
       , http_status_(sc)
-//    , destination_(destination)
     {
     }
 
@@ -119,6 +121,7 @@ namespace cgi {
     void clear()
     {
       ostream_.clear();
+      headers_.clear();
     }
 
     // provide this too?
@@ -133,10 +136,10 @@ namespace cgi {
       return write(str.c_str(), str.size());
     }
 
-    template<typename MutableBufferSequence>
-    std::size_t write(MutableBufferSequence& buf)
+    template<typename ConstBufferSequence>
+    std::size_t write(const ConstBufferSequence& buf)
     {
-      ostream_.write(buf.data(), buf.size());
+      //ostream_.write(buf.data(), buf.size());
       return buf.size();
     }
 
@@ -159,7 +162,8 @@ namespace cgi {
     template<typename CommonGatewayRequest>
     void flush(CommonGatewayRequest& req)
     {
-      cgi::write(req, cgi::buffer(*ostream_.rdbuf()));
+      cgi::write(req, headers_);
+      cgi::write(req, rdbuf()->data());
       // the above function will throw on an error
       clear();
     }
@@ -173,11 +177,12 @@ namespace cgi {
     boost::system::error_code& flush(CommonGatewayRequest& req
                                     , boost::system::error_code& ec)
     {
-      if(!cgi::write(req, *ostream_.rdbuf(), ec))
+      if(!cgi::write(req, rdbuf()->data(), ec))
         clear();
       return ec;
     }
 
+    // Class for doing post-flush housekeeping (ie. clearing the stream data)
     template<typename Handler>
     class flush_handler
     {
@@ -190,8 +195,7 @@ namespace cgi {
 
       void operator()(boost::system::error_code& ec)
       {
-        if(!ec)
-          ostream_.clear();
+        if(!ec) ostream_.clear();
         handler_(ec);
       }
     private:
@@ -207,11 +211,10 @@ namespace cgi {
     template<typename CommonGatewayRequest, typename Handler>
     void async_flush(CommonGatewayRequest& req, Handler handler)
     {
-      cgi::async_write(req, cgi::buffer(*ostream_.rdbuf())
-                       , cgi::request_ostream::flush_handler<Handler>(*this, handler
-                                             , boost::arg<1>)));
+      cgi::async_write(req, rdbuf()->data()
+                      , flush_handler<Handler>
+                          (*this, handler, boost::arg<1>()));
     }
-
 
 
     /// Synchronously send the reply to the default request
@@ -243,6 +246,7 @@ namespace cgi {
     //  return ec;
     //}
 
+
     /// Synchronously send the data via the supplied request
     /**
      * This call uses throwing semantics. ie. an exception will be thrown on
@@ -252,7 +256,7 @@ namespace cgi {
     template<typename CommonGatewayRequest>
     void send(CommonGatewayRequest& req)
     {
-      cgi::write(req, *ostream_.rdbuf(), stdout_);
+      cgi::write(req, rdbuf()->data());
       req.set_status(http_status_);
     }
 
@@ -265,7 +269,7 @@ namespace cgi {
     boost::system::error_code& send(CommonGatewayRequest& req
                                    , boost::system::error_code& ec)
     {
-      cgi::write(req, *ostream_.rdbuf(), ec, data_sink::stdout());
+      cgi::write(req, rdbuf()->data(), ec);
       req.set_status(http_status_);
       return ec;
     }
@@ -278,39 +282,29 @@ namespace cgi {
     void async_send(CommonGatewayRequest& req, Handler handler)
     {
       req.set_status(http_status_);
-      cgi::async_write(req, *ostream_.rdbuf(), handler, data_sink::stdout()));
+      cgi::async_write(req, rdbuf()->data(), handler);
     }
 
     /// Get the buffer associated with the stream
-    cgi::streambuf* rdbuf() const
+    cgi::streambuf* rdbuf()
     {
       return static_cast<cgi::streambuf*>(ostream_.rdbuf());
     }
 
-    void set_status(http::status_code& num) { http_status_ = num; }
+    void set_status(http::status_code& num)
+    {
+      http_status_ = num;
+    }
 
     http::status_code& get_status()
     {
       return http_status_;
     }
 
-    //request_base* request() const
-    //{
-    //  return request_;
-    //}
-
-//    int destination() const
-//    {
-//      return destination_;
-//    }
-
-  private:
-    /// The request associated with the ostream; can be NULL
-    //request_base* request_;
-
+  protected:
+    std::vector<boost::asio::const_buffer> headers_;
     boost::shared_ptr<cgi::streambuf> buffer_;
     std::ostream ostream_;
-//  std::type_info destination_;//data_sink destination_;
     http::status_code http_status_;
 
     template<typename T>
@@ -323,7 +317,7 @@ namespace cgi {
   template<typename T>
   request_ostream& operator<<(request_ostream& os, const T& t)
   {
-    os<< t;
+    os.ostream_<< t;
     return os;
   }
 

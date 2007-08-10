@@ -53,8 +53,9 @@ namespace cgi {
     {
     }
 
-  protected:
     conn_ptr connection() { return connection_; }
+
+  protected:
 
     friend class cgi_service_impl_base<RequestImpl>;
 

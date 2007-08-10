@@ -17,10 +17,9 @@
 
 namespace cgi {
 
-  template<typename Protocol
-          , typename Service = request_service<Protocol>
+  template<typename RequestService
+          , typename ProtocolService
           , enum role_type Role = responder
-          , typename ProtocolService = basic_protocol_service<Protocol>
           , typename Allocator = std::allocator<char> >
   class basic_request;
 

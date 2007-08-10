@@ -25,9 +25,10 @@ namespace cgi {
   typedef basic_protocol_service<tags::acgi> cgi_service;
 
   /// A service 'owned' by a single user-supplied io_service
-  typedef basic_protocol_service<tags::acgi, 0> cgi_sub_service;
+  //typedef basic_protocol_service<tags::acgi> cgi_sub_service;
 
   /// A service with a pool of io_services underneath
+  /*
   template<int IoServiceCount, typename PoolingPolicy = tags::round_robin>
   struct cgi_service_pool
     : public basic_protocol_service<tags::acgi, IoServiceCount, PoolingPolicy>
@@ -38,6 +39,7 @@ namespace cgi {
     {
     }
   };
+  */
 
 } // namespace cgi
 

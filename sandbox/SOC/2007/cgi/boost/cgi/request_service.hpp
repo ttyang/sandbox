@@ -32,13 +32,7 @@ namespace cgi {
    */
   template<typename Protocol>
   class request_service
-  //: public service_selector<Protocol>
     : public detail::service_base<request_service<Protocol> >
-    //boost::enable_if<is_async<protocol_traits<Protocol
-    //                                                 >::service_impl_type
-    //                                  >::value
-    //                         , detail::service_base<request_service>
-    //                         >::type
   {
     // The platform-specific implementation (only one for now)
     typedef typename detail::protocol_traits<Protocol>::service_impl_type
@@ -46,7 +40,8 @@ namespace cgi {
 
   public:
     typedef typename service_impl_type::impl_type     impl_type;
-
+    typedef typename service_impl_type::implementation_type 
+                                                      implementation_type;
     typedef Protocol                                  protocol_type;
     typedef basic_protocol_service<Protocol>  protocol_service_type;
 
@@ -58,14 +53,12 @@ namespace cgi {
 
     request_service(cgi::io_service& ios)
       : detail::service_base<request_service<Protocol> >(ios)
-      //: boost::asio::io_service::service(ps.io_service())
       , service_impl_(boost::asio::use_service<service_impl_type>(ios))
     {
     }
 
     request_service(protocol_service_type& ps)
       : detail::service_base<request_service<Protocol> >(ps.io_service())
-      //: boost::asio::io_service::service(ps.io_service())
       , service_impl_(boost::asio::use_service<service_impl_type>(ps.io_service()))
     {
     }
@@ -111,13 +104,13 @@ namespace cgi {
       return service_impl_.is_open(impl);
     }
 
-    template<typename ConstBufferSequence>
-    std::size_t write_some(impl_type& impl, const ConstBufferSequence& buf)
+    boost::system::error_code&
+    set_header(impl_type& impl, const std::string& name
+              , const std::string& value, boost::system::error_code& ec)
     {
-      boost::system::error_code ec;
-      return service_impl_.write_some(impl, buf, ec);
-      detail::throw_error(ec);
+      return service_impl_.set_header(impl, name, value, ec);
     }
+      
 
     template<typename ConstBufferSequence>
     std::size_t write_some(impl_type& impl, const ConstBufferSequence& buf
@@ -127,23 +120,31 @@ namespace cgi {
     }
 
     template<typename MutableBufferSequence>
-    std::size_t read_some(impl_type& impl, MutableBufferSequence buf)
-    {
-      boost::system::error_code ec;
-      return service_impl_.read_some(impl, buf, ec);
-      detail::throw_error(ec);
-    }
-
-    template<typename MutableBufferSequence>
     std::size_t read_some(impl_type& impl, MutableBufferSequence buf
                           , boost::system::error_code& ec)
     {
       return service_impl_.read_some(impl, buf, ec);
     }
+
+    std::string meta_get(impl_type& impl, const std::string& name
+                        , boost::system::error_code& ec)
+    {
+      return service_impl_.meta_get(impl, name, ec);
+    }
+
+    std::string meta_post(impl_type& impl, const std::string& name
+                         , boost::system::error_code& ec)
+    {
+      return service_impl_.meta_post(impl, name, ec);
+    }
+
+    std::string cookie(impl_type& impl, const std::string& name
+                      , boost::system::error_code& ec)
+    {
+      return service_impl_.cookie(impl, name, ec);
+    }
+
   private:
-    //typename boost::mpl::if_<typename is_async<protocol_type>::value
-    //                , boost::add_reference<service_impl_type>
-    //                , service_impl_type>::type
     service_impl_type& service_impl_;
   };
 

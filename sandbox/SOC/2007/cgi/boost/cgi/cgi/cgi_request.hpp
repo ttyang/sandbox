@@ -9,17 +9,22 @@
 #ifndef CGI_CGI_REQUEST_HPP_INCLUDED__
 #define CGI_CGI_REQUEST_HPP_INCLUDED__
 
+#include "request_service.hpp"
 #include "../tags.hpp"
 #include "../basic_request_fwd.hpp"
-#include "../service_impl/cgi_service_impl.hpp"
-#include "../request_impl/cgi_request_impl.hpp"
+#include "../basic_protocol_service_fwd.hpp"
+//#include "../service_impl/cgi_service_impl.hpp"
+//#include "../request_impl/cgi_request_impl.hpp"
 #include "../basic_request.hpp"
 
 namespace cgi {
 
-  class cgi_service_impl;
+  class cgi_request_service;
 
-  typedef basic_request<tags::cgi, cgi_service_impl> cgi_request;
+  typedef basic_request<
+    cgi_request_service,
+    basic_protocol_service<tags::cgi>
+  > cgi_request;
 
 } // namespace cgi
 

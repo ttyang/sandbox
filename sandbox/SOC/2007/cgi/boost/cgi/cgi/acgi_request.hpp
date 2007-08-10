@@ -16,7 +16,7 @@
 
 namespace cgi {
 
-  typedef basic_request<tags::acgi> acgi_request;
+  typedef basic_request<acgi_request_service> acgi_request;
 
 } // namespace cgi
 

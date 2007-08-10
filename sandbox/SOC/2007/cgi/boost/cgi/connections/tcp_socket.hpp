@@ -1,4 +1,4 @@
-//                -- tcp_connection.hpp --
+//            -- connections/tcp_socket.hpp --
 //
 //            Copyright (c) Darren Garvey 2007.
 // Distributed under the Boost Software License, Version 1.0.
@@ -6,15 +6,16 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 ////////////////////////////////////////////////////////////////
-#ifndef CGI_TCP_CONNECTION_HPP_INCLUDED__
-#define CGI_TCP_CONNECTION_HPP_INCLUDED__
+#ifndef CGI_CONNECTIONS_TCP_SOCKET_HPP_INCLUDED__
+#define CGI_CONNECTIONS_TCP_SOCKET_HPP_INCLUDED__
 
-#include "../detail/push_options.hpp"
+#include <boost/shared_ptr.hpp>
 
-#include "../basic_connection.hpp"
-#include "../connection_base.hpp"
 #include "../tags.hpp"
 #include "../io_service.hpp"
+#include "../connection_base.hpp"
+#include "../basic_connection.hpp"
+#include "../detail/push_options.hpp"
 
 namespace cgi {
 
@@ -23,10 +24,18 @@ namespace cgi {
     : public connection_base
   {
   public:
+    typedef boost::shared_ptr<basic_connection<tags::tcp_socket> >
+      pointer;
+
     basic_connection(io_service& ios)
       : sock_(ios)
     {
     }
+
+    static pointer create(io_service& ios)
+    {
+      return static_cast<pointer>(new basic_connection<tags::tcp_socket>(ios));
+    }      
 
     template<typename MutableBufferSequence>
     std::size_t read_some(MutableBufferSequence& buf)
@@ -66,6 +75,11 @@ namespace cgi {
       sock_.async_write_some(buf, handler);
     }
 
+    void stop()
+    {
+      sock_.close();
+    }
+
   private:
     boost::asio::ip::tcp::socket sock_;
   };
@@ -83,4 +97,4 @@ namespace cgi {
 
 #include "../detail/pop_options.hpp"
 
-#endif // CGI_TCP_CONNECTION_HPP_INCLUDED__
+#endif // CGI_CONNECTIONS_TCP_SOCKET_HPP_INCLUDED__

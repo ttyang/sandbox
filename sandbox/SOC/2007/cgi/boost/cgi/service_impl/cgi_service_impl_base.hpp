@@ -64,7 +64,8 @@ namespace cgi {
     }
 
     template<typename MutableBufferSequence>
-    std::size_t read_some(implementation_type& impl, const MutableBufferSequence& buf
+    std::size_t read_some(implementation_type& impl
+                         , const MutableBufferSequence& buf
                          , boost::system::error_code& ec)
     {
       std::size_t s = impl.connection()->read_some(buf, ec);
@@ -72,7 +73,8 @@ namespace cgi {
     }
 
     template<typename ConstBufferSequence>
-    std::size_t write_some(implementation_type& impl, const ConstBufferSequence& buf
+    std::size_t write_some(implementation_type& impl
+                          , const ConstBufferSequence& buf
                           , boost::system::error_code& ec)
     {
       return impl.connection()->write_some(buf, ec);
@@ -87,9 +89,18 @@ namespace cgi {
       if ((typename map_type::iterator pos = meta_data.find(name))
              != meta_data.end())
       {
-        return *pos;
+        return pos->second;
       }
       return std::string();
+      *********
+      for(typename map_type::iterator iter = meta_data.begin()
+         ; iter != meta_data.end()
+         ; ++iter)
+      {
+        if( iter->first == name )
+          return iter->second;
+      }
+      return "";
       **/
 
       if( meta_data.find(name) != meta_data.end() )
@@ -140,8 +151,8 @@ namespace cgi {
 
 
     /// Find the cookie meta-variable matching name
-    std::string meta_cookie(implementation_type& impl, const std::string& name
-                           , boost::system::error_code& ec)
+    std::string cookie(implementation_type& impl, const std::string& name
+                      , boost::system::error_code& ec)
     {
       return var(impl.cookie_vars_, name, ec);
     }
