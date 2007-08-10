@@ -1,5 +1,32 @@
 [section:weak_ptr weak_ptr class template]
 
+[def __const_pointer_cast__ [link smart_ptr.reference.weak_ptr.members.const_pointer_cast const_pointer_cast]]
+[def __dynamic_pointer_cast__ [link smart_ptr.reference.weak_ptr.members.dynamic_pointer_cast dynamic_pointer_cast]]
+[def __ctor__ [link smart_ptr.reference.weak_ptr.members.constructors weak_ptr]]
+[def __destructor__ [link smart_ptr.reference.weak_ptr.members.destructor ~weak_ptr]]
+[def __element_type__ [link smart_ptr.reference.weak_ptr.members.element_type element_type]]
+[def __free_swap__ [link smart_ptr.reference.weak_ptr.free_functions.swap swap]]
+[def __get__ [link smart_ptr.reference.weak_ptr.members.get get]]
+[def __get_deleter__ [link smart_ptr.reference.weak_ptr.members.get_deleter get_deleter]]
+[def __get_pointer__ [link smart_ptr.reference.weak_ptr.members.get_pointer get_pointer]]
+[def __operatorstar__ [link smart_ptr.reference.weak_ptr.members.indirection operator*]]
+[def __operatorarrow__ [link smart_ptr.reference.weak_ptr.members.indirection operator->]]
+[def __operatorconv__ [link smart_ptr.reference.weak_ptr.members.conversions operator ['unspecified-bool-type]]]
+[def __operator_indexing__ [link smart_ptr.reference.weak_ptr.members.indexing operator\[\]]]
+[def __operator_assign__ [link smart_ptr.reference.weak_ptr.members.assignment operator=]] 
+[def __operator_insertion__ [link smart_ptr.reference.weak_ptr.members.operator_insertion operator<<]]
+[def __operator_eq__ [link smart_ptr.reference.weak_ptr.members.comparison operator==]]
+[def __operator_ne__ [link smart_ptr.reference.weak_ptr.members.comparison operator!=]]
+[def __operator_lt__ [link smart_ptr.reference.weak_ptr.members.comparison operator<]]
+[def __reset__ [link smart_ptr.reference.weak_ptr.members.reset reset]]
+[def __unique__ [link smart_ptr.reference.weak_ptr.members.unique unique]]
+[def __use_count__ [link smart_ptr.reference.weak_ptr.members.use_count use_count]]
+[def __static_pointer_cast__ [link smart_ptr.reference.weak_ptr.members.static_pointer_cast static_pointer_cast]]
+[def __swap__ [link smart_ptr.reference.weak_ptr.members.swap swap]]
+
+[def __expired__ [link smart_ptr.reference.weak_ptr.members.expired expired]]
+[def __lock__ [link smart_ptr.reference.weak_ptr.members.lock lock]]
+
 [section Introduction]
 
 The [*weak_ptr] class template stores a "weak reference" to an object that's already managed by a __shared_ptr__. To access the object, a weak_ptr can be converted to a shared_ptr using [@shared_ptr.htm#constructors the shared_ptr constructor] or the member function [@#lock lock]. When the last __shared_ptr__ to the object goes away and the object is deleted, the attempt to obtain a shared_ptr from the [*weak_ptr] instances that refer to the deleted object will fail: the constructor will throw an exception of type boost::bad_weak_ptr, and weak_ptr::lock will return an empty shared_ptr.
@@ -47,33 +74,33 @@ Now r holds a reference to the object that was pointed by q. Even if [^p.reset()
       template<class T> class weak_ptr {
 
         public:
-          typedef T [@#element_type element_type];
+          typedef T __element_type__;
 
-          [@#default-constructor weak_ptr]();
+          __ctor__();
 
-          template<class Y> [@#constructors weak_ptr](shared_ptr<Y> const & r);
-          [@#constructors weak_ptr](weak_ptr const & r);
-          template<class Y> [@#constructors weak_ptr](weak_ptr<Y> const & r);
+          template<class Y> __ctor__(shared_ptr<Y> const & r);
+          __ctor__(weak_ptr const & r);
+          template<class Y> __ctor__(weak_ptr<Y> const & r);
 
-          [@#destructor ~weak_ptr]();
+          __destructor__();
 
-          weak_ptr & [@#assignment operator=](weak_ptr const & r);
-          template<class Y> weak_ptr & [@#assignment operator=](weak_ptr<Y> const & r);
-          template<class Y> weak_ptr & [@#assignment operator=](shared_ptr<Y> const & r);
+          weak_ptr & __operator_assign__(weak_ptr const & r);
+          template<class Y> weak_ptr & __operator_assign__(weak_ptr<Y> const & r);
+          template<class Y> weak_ptr & __operator_assign__(shared_ptr<Y> const & r);
 
-          long [@#use_count use_count]() const;
-          bool [@#expired expired]() const;
-          shared_ptr<T> [@#lock lock]() const;
+          long __use_count__() const;
+          bool __expired__() const;
+          shared_ptr<T> __lock__() const;
 
           void __reset__();
-          void [@#swap swap](weak_ptr<T> & b);
+          void __swap__(weak_ptr<T> & b);
       };
 
       template<class T, class U>
-        bool [@#comparison operator<](weak_ptr<T> const & a, weak_ptr<U> const & b);
+        bool __operator_lt__(weak_ptr<T> const & a, weak_ptr<U> const & b);
 
       template<class T>
-        void [@#free-swap swap](weak_ptr<T> & a, weak_ptr<T> & b);
+        void __free_swap__(weak_ptr<T> & a, weak_ptr<T> & b);
     }
 
 [endsect]

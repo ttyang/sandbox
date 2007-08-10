@@ -1,5 +1,29 @@
 [section:intrusive_ptr intrusive_ptr class template]
 
+[def __const_pointer_cast__ [link smart_ptr.reference.intrusive_ptr.members.const_pointer_cast const_pointer_cast]]
+[def __dynamic_pointer_cast__ [link smart_ptr.reference.intrusive_ptr.members.dynamic_pointer_cast dynamic_pointer_cast]]
+[def __ctor__ [link smart_ptr.reference.intrusive_ptr.members.constructors intrusive_ptr]]
+[def __destructor__ [link smart_ptr.reference.intrusive_ptr.members.destructor ~intrusive_ptr]]
+[def __element_type__ [link smart_ptr.reference.intrusive_ptr.members.element_type element_type]]
+[def __free_swap__ [link smart_ptr.reference.intrusive_ptr.free_functions.swap swap]]
+[def __get__ [link smart_ptr.reference.intrusive_ptr.members.get get]]
+[def __get_deleter__ [link smart_ptr.reference.intrusive_ptr.members.get_deleter get_deleter]]
+[def __get_pointer__ [link smart_ptr.reference.intrusive_ptr.members.get_pointer get_pointer]]
+[def __operatorstar__ [link smart_ptr.reference.intrusive_ptr.members.indirection operator*]]
+[def __operatorarrow__ [link smart_ptr.reference.intrusive_ptr.members.indirection operator->]]
+[def __operatorconv__ [link smart_ptr.reference.intrusive_ptr.members.conversions operator ['unspecified-bool-type]]]
+[def __operator_indexing__ [link smart_ptr.reference.intrusive_ptr.members.indexing operator\[\]]]
+[def __operator_assign__ [link smart_ptr.reference.intrusive_ptr.members.assignment operator=]] 
+[def __operator_insertion__ [link smart_ptr.reference.intrusive_ptr.members.operator_insertion operator<<]]
+[def __operator_eq__ [link smart_ptr.reference.intrusive_ptr.members.comparison operator==]]
+[def __operator_ne__ [link smart_ptr.reference.intrusive_ptr.members.comparison operator!=]]
+[def __operator_lt__ [link smart_ptr.reference.intrusive_ptr.members.comparison operator<]]
+[def __reset__ [link smart_ptr.reference.intrusive_ptr.members.reset reset]]
+[def __unique__ [link smart_ptr.reference.intrusive_ptr.members.unique unique]]
+[def __use_count__ [link smart_ptr.reference.intrusive_ptr.members.use_count use_count]]
+[def __static_pointer_cast__ [link smart_ptr.reference.intrusive_ptr.members.static_pointer_cast static_pointer_cast]]
+[def __swap__ [link smart_ptr.reference.intrusive_ptr.members.swap swap]]
+
 [section Introduction]
 
 The [*intrusive_ptr] class template stores a pointer to an object with an embedded reference count. Every new [*intrusive_ptr] instance increments the reference count by using an unqualified call to the function intrusive_ptr_add_ref, passing it the pointer as an argument. Similarly, when an intrusive_ptr is destroyed, it calls intrusive_ptr_release; this function is responsible for destroying the object when its reference count drops to zero. The user is expected to provide suitable definitions of these two functions. On compilers that support argument-dependent lookup, intrusive_ptr_add_ref and intrusive_ptr_release should be defined in the namespace that corresponds to their parameter; otherwise, the definitions need to go in namespace boost.
@@ -23,66 +47,66 @@ As a general rule, if it isn't obvious whether intrusive_ptr better fits your ne
 
         public:
 
-          typedef T [@#element_type element_type];
+          typedef T __element_type__;
 
-          [@#constructors intrusive_ptr](); // never throws
-          [@#constructors intrusive_ptr](T * p, bool add_ref = true);
+          __ctor__(); // never throws
+          __ctor__(T * p, bool add_ref = true);
 
-          [@#constructors intrusive_ptr](intrusive_ptr const & r);
-          template<class Y> [@#constructors intrusive_ptr](intrusive_ptr<Y> const & r);
+          __ctor__(intrusive_ptr const & r);
+          template<class Y> __ctor__(intrusive_ptr<Y> const & r);
 
-          [@#destructor ~intrusive_ptr]();
+          __destructor__();
 
-          intrusive_ptr & [@#assignment operator=](intrusive_ptr const & r);
-          template<class Y> intrusive_ptr & [@#assignment operator=](intrusive_ptr<Y> const & r);
-          intrusive_ptr & [@#assignment operator=](T * r);
+          intrusive_ptr & __operator_assign__(intrusive_ptr const & r);
+          template<class Y> intrusive_ptr & __operator_assign__(intrusive_ptr<Y> const & r);
+          intrusive_ptr & __operator_assign__(T * r);
           void __reset__(T * r);
 
-          T & [@#indirection operator*]() const; // never throws
-          T * [@#indirection operator->]() const; // never throws
-          T * [@#get get]() const; // never throws
+          T & __operatorstar__() const; // never throws
+          T * __operatorarrow__() const; // never throws
+          T * __get__() const; // never throws
 
-          operator [@#conversions ['unspecified-bool-type]]() const; // never throws
+          __operatorconv__() const; // never throws
 
-          void [@#swap swap](intrusive_ptr & b); // never throws
+          void __swap__(intrusive_ptr & b); // never throws
       };
 
       template<class T, class U>
-        bool [@#comparison operator==](intrusive_ptr<T> const & a, intrusive_ptr<U> const & b); // never throws
+        bool __operator_eq__(intrusive_ptr<T> const & a, intrusive_ptr<U> const & b); // never throws
 
       template<class T, class U>
-        bool [@#comparison operator!=](intrusive_ptr<T> const & a, intrusive_ptr<U> const & b); // never throws
+        bool __operator_ne__(intrusive_ptr<T> const & a, intrusive_ptr<U> const & b); // never throws
 
       template<class T>
-        bool [@#comparison operator==](intrusive_ptr<T> const & a, T * b); // never throws
+        bool __operator_eq__(intrusive_ptr<T> const & a, T * b); // never throws
 
       template<class T>
-        bool [@#comparison operator!=](intrusive_ptr<T> const & a, T * b); // never throws
+        bool __operator_ne__(intrusive_ptr<T> const & a, T * b); // never throws
 
       template<class T>
-        bool [@#comparison operator==](T * a, intrusive_ptr<T> const & b); // never throws
+        bool __operator_eq__(T * a, intrusive_ptr<T> const & b); // never throws
 
       template<class T>
-        bool [@#comparison operator!=](T * a, intrusive_ptr<T> const & b); // never throws
+        bool __operator_ne__(T * a, intrusive_ptr<T> const & b); // never throws
 
       template<class T, class U>
-        bool [@#comparison operator<](intrusive_ptr<T> const & a, intrusive_ptr<U> const & b); // never throws
+        bool __operator_lt__(intrusive_ptr<T> const & a, intrusive_ptr<U> const & b); // never throws
 
-      template<class T> void [@#free-swap swap](intrusive_ptr<T> & a, intrusive_ptr<T> & b); // never throws
+      template<class T> void __free_swap__(intrusive_ptr<T> & a, intrusive_ptr<T> & b); // never throws
 
-      template<class T> T * [@#get_pointer get_pointer](intrusive_ptr<T> const & p); // never throws
-
-      template<class T, class U>
-        intrusive_ptr<T> [@#static_pointer_cast static_pointer_cast](intrusive_ptr<U> const & r); // never throws
+      template<class T> T * __get_pointer__(intrusive_ptr<T> const & p); // never throws
 
       template<class T, class U>
-        intrusive_ptr<T> [@#const_pointer_cast const_pointer_cast](intrusive_ptr<U> const & r); // never throws
+        intrusive_ptr<T> __static_pointer_cast__(intrusive_ptr<U> const & r); // never throws
 
       template<class T, class U>
-        intrusive_ptr<T> [@#dynamic_pointer_cast dynamic_pointer_cast](intrusive_ptr<U> const & r); // never throws
+        intrusive_ptr<T> __const_pointer_cast__(intrusive_ptr<U> const & r); // never throws
+
+      template<class T, class U>
+        intrusive_ptr<T> __dynamic_pointer_cast__(intrusive_ptr<U> const & r); // never throws
 
       template<class E, class T, class Y>
-        std::basic_ostream<E, T> & [@#insertion-operator operator<<] (std::basic_ostream<E, T> & os, intrusive_ptr<Y> const & p);
+        std::basic_ostream<E, T> & __operator_insertion__ (std::basic_ostream<E, T> & os, intrusive_ptr<Y> const & p);
 
     }
 

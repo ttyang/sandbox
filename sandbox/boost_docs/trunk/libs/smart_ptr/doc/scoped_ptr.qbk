@@ -3,7 +3,9 @@
 [def __ctor__ [link smart_ptr.reference.scoped_ptr.members.constructors scoped_ptr]]
 [def __destructor__ [link smart_ptr.reference.scoped_ptr.members.destructor ~scoped_ptr]]
 [def __operatorlbrb__ [link smart_ptr.reference.scoped_ptr.members.subscripting operator\[\]]]
-[def __get__ [link smart_ptr.reference.scoped_ptr.members.get]]
+[def __operatorstar__ [link smart_ptr.reference.scoped_ptr.members.indirection operator*]]
+[def __operatorarrow__ [link smart_ptr.reference.scoped_ptr.members.indirection operator->]]
+[def __get__ [link smart_ptr.reference.scoped_ptr.members.get get]]
 [def __operatorconv__ [link smart_ptr.reference.scoped_ptr.members.conversions operator ['unspecified-bool-type]]]
 [def __swap__ [link smart_ptr.reference.scoped_ptr.members.swap swap]]
 [def __free_swap__ [link smart_ptr.reference.scoped_ptr.free_functions.swap swap]]
@@ -35,23 +37,23 @@ The class template is parameterized on [*T], the type of the object pointed to. 
       template<class T> class scoped_ptr : __noncopyable__ {
 
        public:
-         typedef T [@#element_type element_type];
+         typedef T __element_type__;
 
-         explicit [@#constructors scoped_ptr](T * p = 0); // never throws
-         [@#destructor ~scoped_ptr](); // never throws
+         explicit __ctor__(T * p = 0); // never throws
+         __destructor__(); // never throws
 
          void __reset__(T * p = 0); // never throws
 
-         T & [@#indirection operator*]() const; // never throws
-         T * [@#indirection operator->]() const; // never throws
-         T * [@#get get]() const; // never throws
+         T & __operatorstar__() const; // never throws
+         T * __operatorarrow__() const; // never throws
+         T * __get__() const; // never throws
          
-         operator [@#conversions ['unspecified-bool-type]]() const; // never throws
+         __operatorconv__() const; // never throws
 
-         void [@#swap swap](scoped_ptr & b); // never throws
+         void __swap__(scoped_ptr & b); // never throws
       };
 
-      template<class T> void [@#free-swap swap](scoped_ptr<T> & a, scoped_ptr<T> & b); // never throws
+      template<class T> void __free_swap__(scoped_ptr<T> & a, scoped_ptr<T> & b); // never throws
 
     }
 
@@ -103,7 +105,7 @@ Returns the stored pointer. [*T] need not be a complete type. See the smart poin
 
 [heading conversions]
 
-    operator ['unspecified-bool-type] () const; // never throws
+    operator ``['unspecified-bool-type]`` () const; // never throws
 
 Returns an unspecified value that, when used in boolean contexts, is equivalent to [^get() != 0].
 
@@ -127,7 +129,7 @@ Equivalent to [*a.swap(b)]. Matches the interface of [*std::swap]. Provided as a
 
 [section Example]
 
-    Here's an example that uses __scoped_ptr__.
+Here's an example that uses __scoped_ptr__.
 
     #include <boost/scoped_ptr.hpp>
     #include <iostream>
@@ -151,13 +153,12 @@ Equivalent to [*a.swap(b)]. Matches the interface of [*std::swap]. Provided as a
 
 The example program produces the beginning of a child's nursery rhyme:
 
-[: 
 [pre 
-1
-2
-Buckle my shoe
+    1
+    2
+    Buckle my shoe
 ]
-]
+
 [endsect]
 
 [section Rationale]

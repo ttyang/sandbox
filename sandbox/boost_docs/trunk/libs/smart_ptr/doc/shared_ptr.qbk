@@ -1,5 +1,28 @@
 [section:shared_ptr shared_ptr class template]
 
+[def __const_pointer_cast__ [link smart_ptr.reference.shared_ptr.members.const_pointer_cast const_pointer_cast]]
+[def __dynamic_pointer_cast__ [link smart_ptr.reference.shared_ptr.members.dynamic_pointer_cast [def __ctor__ [link smart_ptr.reference.shared_ptr.members.constructors shared_ptr]]
+[def __destructor__ [link smart_ptr.reference.shared_ptr.members.destructor ~shared_ptr]]
+[def __element_type__ [link smart_ptr.reference.shared_ptr.members.element_type element_type]]
+[def __free_swap__ [link smart_ptr.reference.shared_ptr.free_functions.swap swap]]
+[def __get__ [link smart_ptr.reference.shared_ptr.members.get get]]
+[def __get_deleter__ [link smart_ptr.reference.shared_ptr.members.get_deleter get_deleter]]
+[def __get_pointer__ [link smart_ptr.reference.shared_ptr.members.get_pointer get_pointer]]
+[def __operatorstar__ [link smart_ptr.reference.shared_ptr.members.indirection operator*]]
+[def __operatorarrow__ [link smart_ptr.reference.shared_ptr.members.indirection operator->]]
+[def __operatorconv__ [link smart_ptr.reference.shared_ptr.members.conversions operator ['unspecified-bool-type]]]
+dynamic_pointer_cast]]
+[def __operator_assign__ [link smart_ptr.reference.shared_ptr.members.assignment operator=]] 
+[def __operator_insertion__ [link smart_ptr.reference.shared_ptr.members.operator_insertion operator<<]]
+[def __operator_eq__ [link smart_ptr.reference.shared_ptr.members.comparison operator==]]
+[def __operator_ne__ [link smart_ptr.reference.shared_ptr.members.comparison operator!=]]
+[def __operator_lt__ [link smart_ptr.reference.shared_ptr.members.comparison operator<]]
+[def __reset__ [link smart_ptr.reference.shared_ptr.members.reset reset]]
+[def __unique__ [link smart_ptr.reference.shared_ptr.members.unique unique]]
+[def __use_count__ [link smart_ptr.reference.shared_ptr.members.use_count use_count]]
+[def __static_pointer_cast__ [link smart_ptr.reference.shared_ptr.members.static_pointer_cast static_pointer_cast]]
+[def __swap__ [link smart_ptr.reference.shared_ptr.members.swap swap]]
+
 [section Introduction]
 
 The __shared_ptr__ class template stores a pointer to a dynamically allocated object, typically with a C++ new-expression. The object pointed to is guaranteed to be deleted when the last __shared_ptr__ pointing to it is destroyed or reset. See the __example__.
@@ -63,23 +86,23 @@ The function ok follows the guideline to the letter, whereas bad constructs the 
 
         public:
 
-          typedef T [@#element_type element_type];
+          typedef T __element_type__;
 
-          [@#constructors shared_ptr](); // never throws
-          template<class Y> explicit [@#constructors shared_ptr](Y * p);
-          template<class Y, class D> [@#constructors shared_ptr](Y * p, D d);
+          __ctor__(); // never throws
+          template<class Y> explicit __ctor__(Y * p);
+          template<class Y, class D> __ctor__(Y * p, D d);
           template<class Y, class D, class A> [@#allocator_constructor shared_ptr](Y * p, D d, A a);
-          [@#destructor ~shared_ptr](); // never throws
+          __destructor__(); // never throws
 
-          [@#constructors shared_ptr](shared_ptr const & r); // never throws
-          template<class Y> [@#constructors shared_ptr](shared_ptr<Y> const & r); // never throws
-          template<class Y> [@#constructors shared_ptr](shared_ptr<Y> const & r, T * p); // never throws
-          template<class Y> explicit [@#constructors shared_ptr](__weak_ptr__<Y> const & r);
-          template<class Y> explicit [@#constructors shared_ptr](std::auto_ptr<Y> & r);
+          __ctor__(shared_ptr const & r); // never throws
+          template<class Y> __ctor__(shared_ptr<Y> const & r); // never throws
+          template<class Y> __ctor__(shared_ptr<Y> const & r, T * p); // never throws
+          template<class Y> explicit __ctor__(__weak_ptr__<Y> const & r);
+          template<class Y> explicit __ctor__(std::auto_ptr<Y> & r);
 
-          shared_ptr & [@#assignment operator=](shared_ptr const & r); // never throws  
-          template<class Y> shared_ptr & [@#assignment operator=](shared_ptr<Y> const & r); // never throws
-          template<class Y> shared_ptr & [@#assignment operator=](std::auto_ptr<Y> & r);
+          shared_ptr & __operator_assign__(shared_ptr const & r); // never throws  
+          template<class Y> shared_ptr & __operator_assign__(shared_ptr<Y> const & r); // never throws
+          template<class Y> shared_ptr & __operator_assign__(std::auto_ptr<Y> & r);
 
           void __reset__(); // never throws
           template<class Y> void __reset__(Y * p);
@@ -87,45 +110,45 @@ The function ok follows the guideline to the letter, whereas bad constructs the 
           template<class Y, class D, class A> void __reset__(Y * p, D d, A a);
           template<class Y> void __reset__(shared_ptr<Y> const & r, T * p); // never throws
 
-          T & [@#indirection operator*]() const; // never throws
-          T * [@#indirection operator->]() const; // never throws
-          T * [@#get get]() const; // never throws
+          T & __operatorstar__() const; // never throws
+          T * __operatorarrow__() const; // never throws
+          T * __get__() const; // never throws
 
-          bool [@#unique unique]() const; // never throws
-          long [@#use_count use_count]() const; // never throws
+          bool __unique__() const; // never throws
+          long __use_count__() const; // never throws
 
-          operator [@#conversions ['unspecified-bool-type]]() const; // never throws
+          __operatorconv__() const; // never throws
 
-          void [@#swap swap](shared_ptr & b); // never throws
+          void __swap__(shared_ptr & b); // never throws
       };
 
       template<class T, class U>
-        bool [@#comparison operator==](shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
+        bool __operator_eq__(shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
 
       template<class T, class U>
-        bool [@#comparison operator!=](shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
+        bool __operator_ne__(shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
 
       template<class T, class U>
-        bool [@#comparison operator<](shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
+        bool __operator_lt__(shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
 
-      template<class T> void [@#free-swap swap](shared_ptr<T> & a, shared_ptr<T> & b); // never throws
+      template<class T> void __free_swap__(shared_ptr<T> & a, shared_ptr<T> & b); // never throws
 
-      template<class T> T * [@#get_pointer get_pointer](shared_ptr<T> const & p); // never throws
-
-      template<class T, class U>
-        shared_ptr<T> [@#static_pointer_cast static_pointer_cast](shared_ptr<U> const & r); // never throws
+      template<class T> T * __get_pointer__(shared_ptr<T> const & p); // never throws
 
       template<class T, class U>
-        shared_ptr<T> [@#const_pointer_cast const_pointer_cast](shared_ptr<U> const & r); // never throws
+        shared_ptr<T> __static_pointer_cast__(shared_ptr<U> const & r); // never throws
 
       template<class T, class U>
-        shared_ptr<T> [@#dynamic_pointer_cast dynamic_pointer_cast](shared_ptr<U> const & r); // never throws
+        shared_ptr<T> __const_pointer_cast__(shared_ptr<U> const & r); // never throws
+
+      template<class T, class U>
+        shared_ptr<T> __dynamic_pointer_cast__(shared_ptr<U> const & r); // never throws
 
       template<class E, class T, class Y>
-        std::basic_ostream<E, T> & [@#insertion-operator operator<<] (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p);
+        std::basic_ostream<E, T> & __operator_insertion__ (std::basic_ostream<E, T> & os, shared_ptr<Y> const & p);
 
       template<class D, class T>
-        D * [@#get_deleter get_deleter](shared_ptr<T> const & p);
+        D * __get_deleter__(shared_ptr<T> const & p);
     }
 
 [endsect]
@@ -392,7 +415,7 @@ operator ['unspecified-bool-type] () const; // never throws
 [*Notes:] This conversion operator allows __shared_ptr__ objects to be used in boolean contexts, like [^if (p && p->valid()) {}]. The actual target type is typically a pointer to a member function, avoiding many of the implicit conversion pitfalls.
 ]
 
-[The conversion to bool is not merely syntactic sugar. It allows shared_ptrs to be declared in conditions when using [@#dynamic_pointer_cast dynamic_pointer_cast] or [@weak_ptr.htm#lock weak_ptr::lock].]
+[The conversion to bool is not merely syntactic sugar. It allows shared_ptrs to be declared in conditions when using __dynamic_pointer_cast__ or [@weak_ptr.htm#lock weak_ptr::lock].]
 
 [heading swap]
 

@@ -1,4 +1,4 @@
-[library smart_ptr
+[article smart_ptr
     [quickbook 1.4]
     [copyright 1999 Greg Colvin and Beman Dawes, 2002 Darin Adler, 2002 Peter Dimov]
     [purpose Five smart pointer class templates, from Greg Colvin, Beman Dawes, Peter Dimov, and Darin Adler.]

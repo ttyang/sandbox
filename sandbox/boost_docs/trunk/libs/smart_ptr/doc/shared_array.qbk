@@ -1,5 +1,29 @@
 [section:shared_array shared_array class template]
 
+[def __const_pointer_cast__ [link smart_ptr.reference.shared_array.members.const_pointer_cast const_pointer_cast]]
+[def __dynamic_pointer_cast__ [link smart_ptr.reference.shared_array.members.dynamic_pointer_cast dynamic_pointer_cast]]
+[def __ctor__ [link smart_ptr.reference.shared_array.members.constructors shared_array]]
+[def __destructor__ [link smart_ptr.reference.shared_array.members.destructor ~shared_array]]
+[def __element_type__ [link smart_ptr.reference.shared_array.members.element_type element_type]]
+[def __free_swap__ [link smart_ptr.reference.shared_array.free_functions.swap swap]]
+[def __get__ [link smart_ptr.reference.shared_array.members.get get]]
+[def __get_deleter__ [link smart_ptr.reference.shared_array.members.get_deleter get_deleter]]
+[def __get_pointer__ [link smart_ptr.reference.shared_array.members.get_pointer get_pointer]]
+[def __operatorstar__ [link smart_ptr.reference.shared_array.members.indirection operator*]]
+[def __operatorarrow__ [link smart_ptr.reference.shared_array.members.indirection operator->]]
+[def __operatorconv__ [link smart_ptr.reference.shared_array.members.conversions operator ['unspecified-bool-type]]]
+[def __operator_indexing__ [link smart_ptr.reference.shared_array.members.indexing operator\[\]]]
+[def __operator_assign__ [link smart_ptr.reference.shared_array.members.assignment operator=]] 
+[def __operator_insertion__ [link smart_ptr.reference.shared_array.members.operator_insertion operator<<]]
+[def __operator_eq__ [link smart_ptr.reference.shared_array.members.comparison operator==]]
+[def __operator_ne__ [link smart_ptr.reference.shared_array.members.comparison operator!=]]
+[def __operator_lt__ [link smart_ptr.reference.shared_array.members.comparison operator<]]
+[def __reset__ [link smart_ptr.reference.shared_array.members.reset reset]]
+[def __unique__ [link smart_ptr.reference.shared_array.members.unique unique]]
+[def __use_count__ [link smart_ptr.reference.shared_array.members.use_count use_count]]
+[def __static_pointer_cast__ [link smart_ptr.reference.shared_array.members.static_pointer_cast static_pointer_cast]]
+[def __swap__ [link smart_ptr.reference.shared_array.members.swap swap]]
+
 [section Introduction]
 
 The __shared_array__ class template stores a pointer to a dynamically allocated array. (Dynamically allocated array are allocated with the C++ [*new[]] expression.) The object pointed to is guaranteed to be deleted when the last __shared_array__ pointing to it is destroyed or reset.
@@ -23,38 +47,38 @@ The class template is parameterized on [*T], the type of the object pointed to. 
       template<class T> class shared_array {
 
         public:
-          typedef T [@#element_type element_type];
+          typedef T __element_type__;
 
-          explicit [@#constructors shared_array](T * p = 0);
-          template<class D> [@#constructors shared_array](T * p, D d);
-          [@#destructor ~shared_array](); // never throws
+          explicit __ctor__(T * p = 0);
+          template<class D> __ctor__(T * p, D d);
+          __destructor__(); // never throws
 
-          [@#constructors shared_array](shared_array const & r); // never throws
+          __ctor__(shared_array const & r); // never throws
 
-          shared_array & [@#assignment operator=](shared_array const & r); // never throws
+          shared_array & __operator_assign__(shared_array const & r); // never throws
 
           void __reset__(T * p = 0);
           template<class D> void __reset__(T * p, D d);
 
-          T & [@#indexing operator[]](std::ptrdiff_t i) const() const; // never throws
-          T * [@#get get]() const; // never throws
+          T & __operator_indexing__(std::ptrdiff_t i) const() const; // never throws
+          T * __get__() const; // never throws
 
-          bool [@#unique unique]() const; // never throws
-          long [@#use_count use_count]() const; // never throws
+          bool __unique__() const; // never throws
+          long __use_count__() const; // never throws
 
-          operator [@#conversions ['unspecified-bool-type]]() const; // never throws
+          __operatorconv__() const; // never throws
 
-          void [@#swap swap](shared_array<T> & b); // never throws
+          void __swap__(shared_array<T> & b); // never throws
       };
 
       template<class T>
-        bool [@#comparison operator==](shared_array<T> const & a, shared_array<T> const & b); // never throws
+        bool __operator_eq__(shared_array<T> const & a, shared_array<T> const & b); // never throws
       template<class T>
-        bool [@#comparison operator!=](shared_array<T> const & a, shared_array<T> const & b); // never throws
+        bool __operator_ne__(shared_array<T> const & a, shared_array<T> const & b); // never throws
       template<class T>
-        bool [@#comparison operator<](shared_array<T> const & a, shared_array<T> const & b); // never throws
+        bool __operator_lt__(shared_array<T> const & a, shared_array<T> const & b); // never throws
 
-      template<class T> void [@#free-swap swap](shared_array<T> & a, shared_array<T> & b); // never throws
+      template<class T> void __free_swap__(shared_array<T> & a, shared_array<T> & b); // never throws
 
     }
 

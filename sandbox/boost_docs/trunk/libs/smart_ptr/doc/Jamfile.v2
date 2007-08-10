@@ -10,6 +10,13 @@ boostbook standalone
     :
         smart_ptr
     :
+        # pull in the online .css and images
+        <xsl:param>project.root=http://beta.boost.org/development
+        # without the next line, build complains
+        <xsl:param>annotation.support=1
+        # pulled this from the doc_test Jamfile
+        <xsl:param>quickbook.source.style.show="'true'"
+
         # HTML options first:
         # Use graphics not text for navigation:
         <xsl:param>navig.graphics=1
@@ -24,9 +31,9 @@ boostbook standalone
         # How far down we go with TOC's
         <xsl:param>generate.section.toc.level=10
         # Logo location:
-        <xsl:param>boost.logo=../boost.png
+#        <xsl:param>boost.logo=../boost.png
         
-        <xsl:param>boost.root=http://www.boost.org
+#        <xsl:param>boost.root=http://www.boost.org
 
         # The page style
         <xsl:param>page.style="'website'"
