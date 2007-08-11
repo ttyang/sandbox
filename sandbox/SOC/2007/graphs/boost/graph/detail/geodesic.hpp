@@ -8,6 +8,7 @@
 #define BOOST_GRAPH_DETAIL_GEODESIC_HPP
 
 #include <functional>
+#include <boost/graph/new_graph_concepts.hpp>
 #include <boost/graph/numeric_values.hpp>
 
 namespace boost
@@ -23,7 +24,6 @@ namespace boost
     //         citeulike-article-id = {1144245},
     //         doi = {10.1016/j.socnet.2005.11.005},
     //         journal = {Social Networks},
-    //         keywords = {2006 centrality complex_network graph-theory social sociality social_network},
     //         month = {October},
     //         number = {4},
     //         pages = {466--484},
@@ -43,20 +43,28 @@ namespace boost
         template <typename Graph,
                   typename DistanceMap,
                   typename Combinator,
-                  typename DistanceNumbers>
-        inline typename DistanceNumbers::value_type
+                  typename Distance>
+        inline Distance
         combine_distances(const Graph& g,
                           DistanceMap dist,
                           Combinator combine,
-                          DistanceNumbers distnum)
+                          Distance init)
         {
+            function_requires< VertexListGraphConcept<Graph> >();
+            typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
+            typedef typename graph_traits<Graph>::vertex_iterator VertexIterator;
+            function_requires< ReadablePropertyMapConcept<DistanceMap,Vertex> >();
+            function_requires< NumericValueConcept<Distance> >();
+            typedef numeric_values<Distance> DistanceNumbers;
+            function_requires< AdaptableBinaryFunction<Combinator,Distance,Distance,Distance> >();
+
             // If there's ever an infinite distance, then we simply
             // return infinity.
-            typename DistanceNumbers::value_type ret(DistanceNumbers::zero());
-            typename graph_traits<Graph>::vertex_iterator i, end;
+            Distance ret = init;
+            VertexIterator i, end;
             for(tie(i, end) = vertices(g); i != end; ++i) {
-                if(dist[*i] != DistanceNumbers::infinity()) {
-                    ret = combine(ret, dist[*i]);
+                if(get(dist, *i) != DistanceNumbers::infinity()) {
+                    ret = combine(ret, get(dist, *i));
                 }
                 else {
                     ret = DistanceNumbers::infinity();
@@ -81,8 +89,11 @@ namespace boost
         // types, but should be specialized for those types that have
         // discrete notions of reciprocals.
         template <typename T>
-                struct reciprocal : public std::unary_function<T, T>
+        struct reciprocal : public std::unary_function<T, T>
         {
+            typedef std::unary_function<T, T> function_type;
+            typedef typename function_type::result_type result_type;
+            typedef typename function_type::argument_type argument_type;
             T operator ()(T t)
             { return T(1) / t; }
         };
