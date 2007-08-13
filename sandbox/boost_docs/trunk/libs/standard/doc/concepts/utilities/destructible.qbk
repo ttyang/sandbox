@@ -25,8 +25,7 @@ The following expressions are used within this document:
         [`t.~T()`]
         []
         [
-                *Semantics:* The destructor of `t` is called, destroying
-                the object.
+                The destructor of `t` is called, destroying the object.
 
                 *Exceptions:* Destructors must not throw exceptions.
         ]
@@ -38,51 +37,18 @@ A class that provides a user-defined, `private` or `protected` destructor
 is not [StdDestructible].
 
 [heading Examples]
-In practice, there are very few types that are not destructible. The
-destructors of these types (whether implicitly or user-defined) are
-invoked when the lifetime of the [StdDestructible] object ends. For
-local (automatic) objects, this is when they go out of scope. For
-dynamically allocated (via `new`), this is when they are deleted. For
-static objects, this is when the program ends (maybe).
+In practice, there are non-[StdDestructible] types are infrequent. Any type
+whose objects are statically or locally declared is required to be model the
+[StdDestructible] concept. Any type whose objects are `delete`d are also required
+to be [StdDestructible].
 
-        int main()
-        {
-            std::string s;
-        } // s goes out of scope, calling s.~std::string()
-
-A user-defined types are [StdDestructible] if they have an implicitly
-or user-defined destructor. In the following example, both types are
-[StdDestructible].
-
-        // This type is destructible since it explicitly provides
-        // a public destructor.
-        struct foo
-        {
-                ~foo()
-                { }
-        };
-
-        // This type is destructible since the destructor is
-        // provided by the compiler.
-        struct bar
-        { };
-
-        // This class is not destructible since the destructor
-        // is declared with private visibility.
-        class do_not_destroy
-        {
-                ~do_not_destroy()
-                { }
-        };
-
-[heading C++0x]
-The [StdDestructible] concept will be defined as:
-
-    // The Destructible concept requires a public desctructor,
-    // either compiler-generated or user-defined.
-    auto concept Destructible<typename T>
+    // This function requires T to be ``[StdDestructible]`` because it
+    // explicitly invokes the destructor. If T is not destructible,
+    // calling this function will result in a compiler error.
+    template <typename T>
+    void destruct(T& t)
     {
-        T::~T();
-    };
+        t.~T();
+    }
 
 [endsect]

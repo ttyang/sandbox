@@ -6,14 +6,16 @@
  /]
 
 [section Copy Constructible]
-A type `T` is /copy constructible/ if it is possible to create copies
-of that type. `T` is only copy constructible if it has either a
-compiler-generated or user-defined copy constructor that accepts a single
-argument: a `const` reference to `T`. After construction, a constructed
-object is equivalent to the object passed as an argument.
+A type `T` is /copy constructible/ if it is possible to create copies of an
+object that type using a copy constructor. `T` is only copy constructible 
+if it has either a compiler-generated or user-defined copy constructor that 
+accepts a single argument: a `const` reference to `T`. After construction, 
+a constructed object is equivalent to the object passed as an argument.
 
+[note
 Two objects `t` and `u` are equivalent if the expression `t == u` returns
-`true`.
+`true`. See [StdEqualityComparable] for more information.
+]
 
 [heading Refinement of]
 [StdDestructible]
@@ -33,12 +35,13 @@ The following expressions are used within this document:
     [
         [Copy Constructor]
         [
-                `T t(u);`
+                `T t(u);` [br/]
                 `T t = u;`
         ]
         []
         [
-                *Semantics:* `t` is declared as an object of type `T`.
+                The object `t` is declared as an object of type `T` whose
+                value or state is equivalent to `u`
 
                 *Postcondition:* `t` is equivalent to `u`.
         ]
@@ -48,7 +51,8 @@ The following expressions are used within this document:
         [`T(u)`]
         [`T`]
         [
-                *Semantics:* Creates an object of type `T`.
+                Construct an object of type `T` whose value or state is
+                equivalent to `u`.
 
                 *Postcondition:* `t` is equivalent to `u`.
         ]
@@ -57,27 +61,21 @@ The following expressions are used within this document:
 
 [heading Notes]
 A type that explicitly defines a private copy constructor is not
-[StdCopyConstructible]. These types are also called non-copyable types.
+[StdCopyConstructible]. These types are called non-copyable types.
 
 [heading Examples]
+A type `T` is required to be [StdCopyConstructible] when an object of type `T` 
+is when the copy constructor of `T` is invoked passing another object of
+type `T` as an argument.
 
-
-[heading C++0x]
-In the next version of the C++ language, the destructible and addressable
-requirements are removed from this concept and made explicit elsewhere. The
-`CopyConstructible` concept is refined from the concepts for `Destructible`
-and `MoveConstructible` as follows:
-
-    auto concept MoveConstructible<typename T>
-        :``[StdDestructible]``<T>
+    // This function requires `T` to be copy constructible because it declares
+    // an object of type T constructed with the value of u. If T is not
+    // ``[StdCopyConstructible]``, calling this function will result in a
+    // compiler error.
+    template <typename T>
+    void copy_declare(const T& u)
     {
-        T::T(T&&);
-    };
-
-    auto concept CopyConstructible<typename T>
-        : MoveConstructible<T>
-    {
-        T::T(const T&);
-    };
+        T t(u);
+    }
 
 [endsect]
