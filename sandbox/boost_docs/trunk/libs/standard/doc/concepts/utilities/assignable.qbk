@@ -6,9 +6,17 @@
  /]
 
 [section Assignable]
-A type `T` is said to be /assignable/ if the value of one instance, `u`, can be copied
-to the value of another, `t` through an assignment expression. The type of `u` must
-be `T` or `const T`.
+A type `T` is /assignable/ if an object of type `T` can be assigned
+the value of another object `u` using the assignment operator. The type
+of `u` is either `T` or `const T`. A type `T` is assignable if it has 
+a compiler-generated or user-defined assignment operator. After the 
+assignment the object `t` is equivalent to `u`.
+
+[note
+This type of assignment is properly referred to as /copy assignment/
+since, after the copy operation since both assignment operators and
+constructors can be provided for types that are not `T` or `const T`.
+]
 
 [heading Notation]
 [table
@@ -24,22 +32,28 @@ be `T` or `const T`.
     [
         [`t = u`]
         [`T&`]
-        [`t` is equivalent to `u`.]
+        [
+            Assigns the object `u` to the object `t`.
+
+            *Requirements:* The type of `u` is either `T` or `const T`.
+
+            *Postconditions:* `t` is equivalent to `u`.
+        ]
     ]
 ]
 
-[heading C++0x]
-In the next version of the C++ standards, the [StdAssignable] concept has been refined
-into a set of two distinct concepts: `CopyAssignable` and `MoveAssignable`. The
-`CopyAssignable` concept is defined as:
+[heading Examples]
+A type `T` is required to be [StdAssignable] when an object of type `T` is
+assigned to an object of type `T` or `const T`.
 
-    auto concept CopyAssignable<typename T, typename U = T>
+    // This function requires T to be ``[StdAssignable]`` because it assigns
+    // an object of type `T` to the value of another object of the same type.
+    // If T is not assignable, calling this function will result in a compiler
+    // error.
+    template <typename T>
+    void assign(T& t, const T& u)
     {
-        typename result_type;
-        result_type operator =(T&, const U&);
+        t = u;
     }
-
-The `result_type` associated type is used to indicate that the return type is not
-required (as above) to be `T&` and could be any type.
 
 [endsect]
