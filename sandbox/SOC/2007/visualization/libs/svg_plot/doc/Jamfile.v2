@@ -7,5 +7,14 @@
 project boost/doc ;
 import boostbook : boostbook ;
 
-boostbook function-doc : svg_plot.xml ;
+boostbook function-doc : svg_plot.xml 
+ : <xsl:param>project.root=http://beta.boost.org/development
+   <xsl:param>annotation.support=1
+   <xsl:param>quickbook.source.style.show="'true'"
+   <xsl:param>chunk.first.sections=2
+   <xsl:param>chunk.section.depth=10
+   <xsl:param>toc.section.depth=3
+   <xsl:param>toc.max.depth=3
+   <xsl:param>generate.section.toc.level=4
+ ;
 
