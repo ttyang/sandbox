@@ -47,10 +47,9 @@ namespace cgi {
     {
     public:
       read_handler(ConnectionPtr cptr, MutableBufferSequence& buf
-                  , boost::system::error_code& ec, Handler handler)
+                  , Handler handler)
         : cptr_(cptr)
         , buf_(buf)
-        , ec_(ec)
         , handler_(handler)
       {
       }
@@ -58,22 +57,20 @@ namespace cgi {
       void operator()()
       {
         std::size_t bytes_read = cptr_->read_some(buf_, ec_);
-        handler_(ec_, bytes_read);
+        handler_(boost::system::error_code(), bytes_read);
       }
 
     private:
       ConnectionPtr cptr_;
       MutableBufferSequence& buf_;
-      boost::system::error_code& ec_;
       Handler handler_;
     };
 
     template<typename MutableBufferSequence, typename Handler>
-    void async_read_some(MutableBufferSequence buf, boost::system::error_code& ec
-                        , Handler handler)
+    void async_read_some(MutableBufferSequence buf, Handler handler)
     {
       io_service_.post(read_handler<pointer, MutableBufferSequence, Handler>
-                         (shared_from_this(), buf, ec, handler));
+                         (shared_from_this(), buf, handler));
     }
 
     template<typename ConnectionPtr, typename ConstBufferSequence
@@ -82,10 +79,9 @@ namespace cgi {
     {
     public:
       write_handler(ConnectionPtr cptr, ConstBufferSequence& buf
-                   , boost::system::error_code& ec, Handler handler)
+                   , Handler handler)
         : cptr_(cptr)
         , buf_(buf)
-        , ec_(ec)
         , handler_(handler)
       {
       }
@@ -93,22 +89,20 @@ namespace cgi {
       void operator()()
       {
         std::size_t bytes_written = cptr_->write_some(buf_, ec_);
-        handler_(ec_, bytes_written);
+        handler_(boost::system::error_code(), bytes_written);
       }
 
     private:
       ConnectionPtr cptr_;
       ConstBufferSequence& buf_;
-      boost::system::error_code& ec_;
       Handler handler_;
     };
 
     template<typename ConstBufferSequence, typename Handler>
-    void async_write_some(ConstBufferSequence& buf, boost::system::error_code& ec
-                         , Handler handler)
+    void async_write_some(ConstBufferSequence& buf, Handler handler)
     {
       io_service_.post(write_handler<pointer, ConstBufferSequence, Handler>
-                         (shared_from_this(), buf, ec, handler));
+                         (shared_from_this(), buf, handler));
     }
 
   private:
