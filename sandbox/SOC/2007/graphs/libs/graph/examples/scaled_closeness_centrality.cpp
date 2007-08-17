@@ -4,7 +4,7 @@
 // Boost Software License, Version 1.0 (See accompanying file
 // LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
 
-//[closeness_centrality_example
+//[scaled_closeness_centrality_example
 #include <iostream>
 #include <iomanip>
 
@@ -17,6 +17,33 @@
 
 using namespace std;
 using namespace boost;
+
+// This template struct provides a generic version of a "scaling"
+// closeness measure. Specifically, this implementation divides
+// the number of vertices in the graph by the sum of geodesic
+// distances of each vertex. This measure allows customization
+// of the distance type, result type, and even the underlying
+// divide operation.
+template <typename Graph,
+          typename Distance,
+          typename Result,
+          typename Divide = divides<Result> >
+struct scaled_closeness_measure
+{
+    typedef Distance distance_type;
+    typedef Result result_type;
+
+    Result operator ()(Distance d, const Graph& g)
+    {
+        if(d == numeric_values<Distance>::infinity()) {
+            return numeric_values<Result>::zero();
+        }
+        else {
+            return div(Result(num_vertices(g)), Result(d));
+        }
+    }
+    Divide div;
+};
 
 // The Actor type stores the name of each vertex in the graph.
 struct Actor
@@ -60,12 +87,15 @@ main(int argc, char *argv[])
     WeightMap wm(1);
     floyd_warshall_all_pairs_shortest_paths(g, dm, weight_map(wm));
 
+    // Create the scaled closeness measure.
+    scaled_closeness_measure<Graph, int, float> m;
+
     // Compute the degree centrality for graph
     ClosenessContainer cents(num_vertices(g));
     ClosenessMap cm(cents, g);
-    closeness_centrality(g, dm, cm);
+    closeness_centrality(g, dm, cm, m);
 
-    // Print the closeness centrality of each vertex.
+    // Print the scaled closeness centrality of each vertex.
     graph_traits<Graph>::vertex_iterator i, end;
     for(tie(i, end) = vertices(g); i != end; ++i) {
         cout << setw(12) << setiosflags(ios::left)
