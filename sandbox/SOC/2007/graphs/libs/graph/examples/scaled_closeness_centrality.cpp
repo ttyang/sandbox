@@ -93,7 +93,7 @@ main(int argc, char *argv[])
     // Compute the degree centrality for graph
     ClosenessContainer cents(num_vertices(g));
     ClosenessMap cm(cents, g);
-    closeness_centrality(g, dm, cm, m);
+    all_closeness_centralities(g, dm, cm, m);
 
     // Print the scaled closeness centrality of each vertex.
     graph_traits<Graph>::vertex_iterator i, end;
