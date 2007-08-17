@@ -6,10 +6,11 @@
  /]
 
 [section Equality Comparable]
-A type `T` is said to be /equality comparable/ if it defines an /equivalence relation/
-and can be compared using the equality comparison operator (`==`). An equivalence
-relation is a binary relation between any two instances of `T` that denotes them as
-being "equivalent". Note that the meaning of equivalent depends on the type.
+A type `T` is /equality comparable/ if it defines an /equivalence relation/ and
+can be compared using the equality comparison operator (`==`). An equivalence
+relation is a binary relation between any two objects of type `T` that denotes
+them as being "equivalent". Note that the meaning of equivalent depends on the type.
+
 Equivalence relations are required to be /reflexive/, /symmetric/, and /transitive/.
 Equality comparability also introduces the notion of /identity/ for instances of a
 type. This states that an instance of a [StdEqualityComparable] is equivalent
