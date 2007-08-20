@@ -142,17 +142,25 @@ namespace extension
     };
 }
 
+/*
 template<typename T>
 struct produced_type_of<
-T,
-typename boost::enable_if<
-boost::is_base_of<
-signal_producer,
-typename producer_category_of<T>::type
->
->::type >
+    T,
+    typename boost::enable_if<
+        boost::is_base_of<
+            signal_producer,
+            typename producer_category_of<T>::type
+        >
+    >::type >
 {
     typedef typename boost::signals::detail::get_signature<typename extension::signals::get_signal_type<T>::type>::type type;
+};*/
+
+template<typename Signature, typename Combiner, typename Group, typename GroupCompare>
+struct produced_type_of<
+    boost::signal<Signature, Combiner, Group, GroupCompare> >
+{
+    typedef Signature type;
 };
 
 } } // namespace boost::dataflow

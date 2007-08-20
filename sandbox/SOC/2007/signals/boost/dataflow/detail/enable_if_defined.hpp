@@ -18,6 +18,14 @@ namespace detail
     {
         typedef Result type;
     };
+    
+    struct void_;
+    
+    template<typename T0=void_, typename T1=void_, typename T2=void_,
+        typename T3=void_, typename T4=void_, typename T5=void_>
+    struct all_of
+    {
+    };
 }
 
 } } // namespace boost::dataflow
