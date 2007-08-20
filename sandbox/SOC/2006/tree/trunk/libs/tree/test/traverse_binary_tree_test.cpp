@@ -18,12 +18,9 @@
 
 #include <boost/test/minimal.hpp>
 
-#include <list>
-
 #include "helpers.hpp"
 
 using namespace boost::tree;
-using std::list;
 
 //std::vector<int> preorder_data()
 //{
@@ -141,15 +138,6 @@ void test_reverse_postorder_traversal(Iterator a, Iterator b)
 	BOOST_CHECK(a == b);
 }
 
-template <class T> class list_push_back {
-	std::list<T> l;
-public:
-	list_push_back() { }
-	void operator() (T x) { l.push_back(x); }
-	std::list<T> const& result() const { return l; }
-	void reset() { l.clear(); }
-};
-
 int test_main(int, char* [])
 {
 	using boost::forward_traversal_tag;
@@ -178,24 +166,17 @@ int test_main(int, char* [])
 	test_reverse_inorder_traversal(inorder::end(test_tree, forward_traversal_tag()), 
 								   inorder::begin(test_tree, forward_traversal_tag()));
 
-	list_push_back<int> lpb;
-	//list<int> res;
+	binary_tree<int>::cursor c = test_tree.root();
+	ascending::iterator<binary_tree<int>::cursor> ai_root(c);
+	c = c.begin().end().begin().begin();
+	BOOST_CHECK(*c == 4);
 
-	// Each of the following blocks should be a 
-	// "recursive_*order_algorithm_test" of its own
-	lpb = inorder::for_each(test_tree.root().begin(), lpb);
-	//res = lpb.result();
-	test_inorder_traversal(lpb.result().begin(), lpb.result().end());
-	lpb.reset();
-
-	lpb = preorder::for_each(test_tree.root().begin(), lpb);
-	//res = lpb.result();
-	test_preorder_traversal(lpb.result().begin(), lpb.result().end());
-
-	lpb.reset();
-	lpb = postorder::for_each(test_tree.root().begin(), lpb);
-	//res = lpb.result();
-	test_postorder_traversal(lpb.result().begin(), lpb.result().end());
+	ascending::iterator<binary_tree<int>::cursor> ais(c);
+	BOOST_CHECK(*ais == 4);
+	BOOST_CHECK(*++ais == 6);
+	BOOST_CHECK(*++ais == 3);
+	BOOST_CHECK(*++ais == 8);
+	BOOST_CHECK(++ais == ai_root);
 
 	return 0;
 }

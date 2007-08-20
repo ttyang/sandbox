@@ -6,13 +6,16 @@
 
 /**
  * @file iterators.hpp
- * In-, pre- and postorder iterator wrappers around cursors using the provided
- * traversal methods.
+ * Iterator wrappers around cursors using the provided
+ * traversal methods for:
+ * In-, pre- and postorder; ascending traversal.
  */
 
 
 #ifndef BOOST_TREE_ITERATORS_HPP
 #define BOOST_TREE_ITERATORS_HPP
+
+#include <boost/tree/ascending_iterator.hpp>
 
 #include <boost/tree/inorder_iterator.hpp>
 #include <boost/tree/preorder_iterator.hpp>

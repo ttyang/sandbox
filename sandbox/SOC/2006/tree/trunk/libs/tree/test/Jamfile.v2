@@ -22,7 +22,7 @@ test-suite tree :
 	[ run binary_tree_test.cpp ]
 	[ run key_search_binary_tree_test.cpp ]	
 	[ run rank_search_binary_tree_test.cpp ]	
-	[ run traverse_search_binary_tree_test.cpp ]
+	[ run traverse_binary_tree_test.cpp ]
 	[ run rotate_binary_tree_test.cpp ]
 	[ run string_search_binary_tree_test.cpp ]
 
@@ -42,5 +42,5 @@ test-suite tree :
 	[ run multiway_tree_test.cpp ]
 	[ run unbalanced_binary_tree_test.cpp ]
 	
-	[ run bind_return_test.cpp ]
+#	[ run bind_return_test.cpp ]
 	;
