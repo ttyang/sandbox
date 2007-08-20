@@ -10,10 +10,10 @@ int main()
   std::string buf("Content-type: text/html\r\n\r\nHello there, universe!");
   boost::system::error_code ec;
 
-  req.write_some(cgi::buffer(buf.c_str(), buf.size()), ec);
+  cgi::write(req, cgi::buffer(buf.c_str(), buf.size()));
 
   buf = req.meta_get("blah");
-  req.write_some(cgi::buffer(buf.c_str(), buf.size()), ec);
+  cgi::write(req, cgi::buffer(buf.c_str(), buf.size()));
 
   } catch( boost::system::error_code& ec ) {
     std::cerr<< "error: " << ec.message() << std::endl;

@@ -10,12 +10,12 @@
 #define CGI_CGI_HPP_INCLUDED__
 
 // Include all cgi-related headers only.
-#include "cgi/cgi_request.hpp"
-#include "cgi/cgi_service.hpp"
-#include "service_impl/cgi_service_impl.hpp"
-#include "request_impl/cgi_request_impl.hpp"
-#include "gateway_impl/cgi_gateway_impl.hpp"
-#include "gateway_service/cgi_gateway_service.hpp"
+#include "cgi/request.hpp"
+#include "cgi/service.hpp"
+//#include "cgi/service_impl.hpp"
+//#include "cgi/request_impl.hpp"
+//#include "cgi/gateway_impl.hpp"
+//#include "cgi/gateway_service.hpp"
 
 // Include headers common to all protocols
 #include "detail/common_headers.hpp"

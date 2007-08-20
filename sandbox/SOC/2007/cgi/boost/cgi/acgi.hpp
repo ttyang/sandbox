@@ -10,14 +10,20 @@
 #define CGI_ACGI_HPP_INCLUDED__
 
 // #include all acgi-related headers only
-#include "cgi/acgi_request.hpp"
-#include "cgi/cgi_service.hpp"
-#include "service_impl/acgi_service_impl.hpp"
-#include "request_impl/acgi_request_impl.hpp"
+#include "boost/cgi/acgi/request.hpp"
+#include "boost/cgi/acgi/service.hpp"
+#include "boost/cgi/acgi/request_service.hpp"
+#include "boost/cgi/acgi/request_impl.hpp"
 #include "gateway_impl/acgi_gateway_impl.hpp"
 #include "gateway_service/acgi_gateway_service.hpp"
 
 // Include headers common to all protocols
 #include "detail/common_headers.hpp"
+
+namespace cgi {
+#ifndef CGI_NO_IMPLICIT_TYPEDEFS
+  typedef acgi_request request;
+#endif
+} // namespace cgi
 
 #endif // CGI_ACGI_HPP_INCLUDED__

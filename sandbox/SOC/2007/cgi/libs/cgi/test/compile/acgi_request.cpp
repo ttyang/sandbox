@@ -4,7 +4,7 @@
 
 int main()
 {
-  cgi::cgi_service service;
+  cgi::acgi_service service;
   cgi::acgi_request req(service);
 
   return 0;
