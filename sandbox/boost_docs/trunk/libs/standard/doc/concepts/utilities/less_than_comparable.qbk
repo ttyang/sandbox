@@ -6,92 +6,125 @@
  /]
 
 [section Less Than Comparable]
-A type `T` is said to be /less than comparable/ if two instances of `T` can be
-compared with the less than operator (`<`) and that operator defines a
-/strict weak ordering/ of values `T`. A strict weak ordering is a binary relation
-between any two instances, `t` and `u` of `T` that denotes their ordering. The
-meaning of `t < u` is that `t` occurs before `u`. Strict weak orderings are
-required to be be /irreflixive/, /antisymmetric/, and /transitive/.
+A type `T` is /less than comparable/ if objects of type `T` can be compared using
+the less-than comparison operator (`<`) and that ccmparison defines a /strict
+weak ordering/. A strict weak ordering over a type `T` is a binary relation between
+objects of type `T` that denotes their /order/, or which objects preceed others
+when enumerating.
+
+Strict weak orderings have the following properties:
+
+* [*Irreflexivity] `t < t` is always `false`.
+* [*Antisymmetry] If `t < u` is `true`, then `u < t` is `false`.
+* [*Transitivity] If `t < u` and `u < v` are `true`, then `t < v` is `true`.
 
 [heading Notation]
 [table
     [[Expression] [Description]]
     [[T] [An [StdLessThanComparable] type.]]
-    [[`t`, `u`, `v`] [Instances of `T`.]]
+    [[`t`, `u`, `v`] [Objects of type `T`.]]
 ]
 
 [heading Requirements]
 [table
-    [[Expression] [Return Type] [Requirements]]
+    [[Name] [Expression] [Result Type] [Description]]
     [
+        [Less-Than Comparision]
         [`t < u`]
-        [Convertible to `bool`.]
-        [If `t` is ordered before `u`, the return value is convertible to `true`.]
+        [Convertible to `bool`]
+        [
+            Returns `true` or a value covertible to `true` if the object
+            `t` is strictly less than `u`.
+        ]
     ]
     [
-        [`t > u`]
-        [Convertible to `bool`.]
-        [If `t` is ordered after `u`, the return value is convertible to `true`.]
-    ]
-    [
+        [Less-Than or Equal-To Comparision]
         [`t <= u`]
-        [Convertible to `bool`.]
-        [If `t` is equivalent to ordered before `u`, the return value is convertible to `true`.]
+        [Convertible to `bool`]
+        [
+            Returns `true` or a value covertible to `true` if the object
+            `t` is less than or equivalent to `u`.
+        ]
     ]
     [
-        [`t >= u`]
-        [Convertible to `bool`.]
-        [If `t` is equivalent to ordered after `u`, the return value is convertible to `true`.]
+        [Greater-Than Comparision]
+        [`t > u`]
+        [Convertible to `bool`]
+        [
+            Returns `true` or a value covertible to `true` if the object
+            `t` is strictly greater than `u`.
+        ]
     ]
-]
-
-The `>`, `<=` and `>=` operator can all be trivially implemented if the `<` operator is defined
-for type `T` as:
-
-    bool operator >(const T& t, const T& u) { return u < v; }
-    bool operator <=(const T& t, const T& v) { return !(u < v); }
-    bool operator >=(const T& t, const T& v) { return !(v < u); }
-
-[heading Invariants]
-The following properties must hold for all models of [StdLessThanComparable].
-
-[table
-    [[Property] [Semantics]]
-    [[Irreflexivity] [`t < t` is false.]]
-    [[Antisymmetry] [`t < u` implies `!(u < t)`.]]
-    [[Transitivity] [`t < u` and `u < v` implies `t < v`.]]
+    [
+        [Greater-Than or Equal-To Comparision]
+        [`t >= u`]
+        [Convertible to `bool`]
+        [
+            Returns `true` or a value covertible to `true` if the object
+            `t` is greater than or equivalent to `u`.
+        ]
+    ]
 ]
 
 [heading Notes]
-From a mathematical perspective, values of `T` can be incomparable. For example,
-to state that `t` and `u` are incomparable means that the `t < u` has no meaning.
-This is generally infeasible from a programming perspective since the less than
-operator (`<`) typically only has two values: `true` and `false`. If `t` and
-`u` were incomparable, then the return type could be neither `true` nor `false`
-since that would effectively compare the elements. In this sense, most strict
-weak orderings of `T` are also total orderings of `T`.
+If a type `T` provides a less-than comparison operator (`<`), then the
+greater-than (`>`), less-than or equal-to comparison (`<=`), and the
+greater-than or equal-to (`>=`) operators can be implemented as:
 
-The original Standard Template Library requires that the less than operator (`<`)
-implement a /partial ordering/ over instances `T`. A partial order is required to
-be /reflexive/, /antisymmetric/, and /transitive/. Since incomparability is rarely
-(if ever) a factor in most programs, the transitivity of `<`  implies that this is
-a strict ordering.
-
-As a result, providing the less than operator (`<`) for a type `T` will almost always
-guarantee a total ordering and a strict weak ordering over `T`.
-
-[heading C++0x]
-In the next version of C++ the `LessThanComparable` concept requires that the less
-than operator (`<`) implement a strict weak ordering over instances of `T` rather
-than just a partial ordering, and it provides default implementations of the other
-relative comparison operators (`>`, `<=`, and `>=`). It is given as:
-
-    auto concept LessThanComparable<typename T, typename U = T>
+    bool operator >(const T& t, const T& u)
     {
-        bool operator <(const T&, const U&);
-        bool operator >(const T& t, const U& u) { return u < v; }
-        bool operator <=(const T& t, const U& u) { return !(u < v); }
-        bool operator >=(const T& t, const U& u) { return !(v < u); }
-    };
+        return u < t;
+    }
+    
+    bool operator <=(const T& t, const T& u)
+    {
+        return !(u < t);
+    }
+    
+    bool operator >=(const T& t, const T& u)
+    {
+        return !(t < u);
+    }
+    
+[heading Examples]
+A type `T` is required to be [StdLessthanComparable] when an object of type `T` is
+compared to another object of type `T` using the less-than comparison (`<`), the
+greater-than comparison (`>`), the less-than or equal-to comparison (`<=`), or
+the greater-than or equal-to (`>=`) operators.
+
+    // Using the less-than comparison operator to compare two objects of
+    // type T requires T to be LessThanComparable.
+    template <typename T>
+    bool less_than_compare(cont T& t, const T& u)
+    {
+        return t < u;
+    }
+
+    // Using the greater-than comparison operator to compare two objects of
+    // type T requires T to be LessThanComparable since that comparison can be 
+    // derived from the less-than comparison.
+    template <typename T>
+    bool greater_than_compare(cont T& t, const T& u)
+    {
+        return t > u;
+    }
+
+    // Using the less-than or equal-to comparison operator to compare two objects 
+    // of type T requires T to be LessThanComparable since that comparison can be 
+    // derived from the less-than comparison.
+    template <typename T>
+    bool less_than_or_equal_to_compare(cont T& t, const T& u)
+    {
+        return t <= u;
+    }
+
+    // Using the greater-than or equal-to comparison operator to compare two 
+    // objects of type T requires T to be LessThanComparable since that comparison 
+    // can be derived from the less-than comparison.
+    template <typename T>
+    bool greater_than_or_equal_to_compare(cont T& t, const T& u)
+    {
+        return t >= u;
+    }
 
 [endsect]
