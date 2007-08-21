@@ -22,7 +22,9 @@ namespace cgi {
    struct fcgi {};
    struct scgi {};
 
-   // IoServiceProvider Policy types
+   // IoServiceProvider PoolingPolicy types
+   struct single_service {};
+   struct service_pool {};
    struct round_robin {};
 
    // Connection types
