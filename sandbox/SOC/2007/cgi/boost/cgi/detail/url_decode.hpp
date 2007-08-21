@@ -15,19 +15,26 @@ namespace cgi {
  namespace detail {
 
    /// Take two characters (a hex sequence) and return a char
-   char url_decode( const char c1, const char c2 )
+   char url_decode( const char& c1, const char& c2 )
    {
-	 int ret = ( (c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')
-                 ? ((c1 & 0xdf) - 'A') + 10
-                 : (c1 - '0')
-               ) << 4;
+     int ret = ( (c1 >= 'A' && c1 <= 'Z') || (c1 >= 'a' && c1 <= 'z')
+                   ? ((c1 & 0xdf) - 'A') + 10
+                   : (c1 - '0')
+                 ) << 4;
 
-	 ret += ( (c2 >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z')
-              ? ((c2 & 0xdf) - 'A') + 10
-              : (c2 - '0')
+     ret += ( (c2 >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z')
+                ? ((c2 & 0xdf) - 'A') + 10
+                : (c2 - '0')
             );
 
-	 return static_cast<char>(ret);
+     return static_cast<char>(ret);
+   }
+
+   /// Workaround for istreams, since the above can't be used directly
+   char url_decode(std::istream& is)
+   {
+     const char c1 = is.get();
+     return url_decode(c1, is.get());
    }
 
    /// URL-decode a string
@@ -37,7 +44,7 @@ namespace cgi {
 
      for( unsigned int i=0; i < str.size(); i++ )
      {
-	   switch( str[i] )
+       switch( str[i] )
        {
          case ' ':
            break;
@@ -52,7 +59,7 @@ namespace cgi {
            ret += str[i];
        }
      }
-    
+
      return ret;
    }
 

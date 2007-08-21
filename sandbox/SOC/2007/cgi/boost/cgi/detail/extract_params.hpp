@@ -18,6 +18,7 @@
 namespace cgi {
  namespace detail {
 
+   /// Extract name/value pairs from a supplied string buffer
    template<typename Map, typename Separator>
    boost::system::error_code& extract_params(const std::string& input
                                             , Map& destination
@@ -26,9 +27,9 @@ namespace cgi {
    {
      if( input.empty() )
        return ec;// = boost::system::error_code(34, boost::system::errno_ecat);
-     
-	 typedef typename boost::tokenizer<Separator>    tokenizer;
-     
+
+     typedef typename boost::tokenizer<Separator>    tokenizer;
+
      tokenizer toker(input, separator);
 
      std::string name, current_token;

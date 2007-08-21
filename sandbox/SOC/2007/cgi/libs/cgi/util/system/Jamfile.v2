@@ -2,5 +2,5 @@
 
 lib boost_system
   :
-  : <file>/usr/local/lib/libboost_system-gcc41.a
+  : <file>/usr/local/lib/libboost_system.a
   ;
