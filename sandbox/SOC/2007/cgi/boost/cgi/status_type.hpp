@@ -17,7 +17,7 @@ namespace cgi {
     , loaded
     , ok
     , aborted
-    , ended
+    , closed
     };
 
 } // namespace cgi
