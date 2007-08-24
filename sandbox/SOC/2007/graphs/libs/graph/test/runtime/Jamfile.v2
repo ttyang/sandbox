@@ -3,11 +3,9 @@ import testing ;
 
 project
     : requirements
-        <include>../../../
+        <include>../../../../
         <include>$BOOST_ROOT
     ;
-
-build-project concept ;
 
 test-suite graph_test :
     [ run constant_property_map.cpp ]
