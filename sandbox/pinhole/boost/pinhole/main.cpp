@@ -24,7 +24,7 @@ class SubGroup : public property_group
 public:
     SubGroup(property_group* pParentproperty_group) : property_group("SubGroup", pParentproperty_group)
     {
-            add_property<string>("Name", "name", BOOST_SETTER_NONE, BOOST_GETTER(&SubGroup::GetName));
+            add_property("Name", "name", BOOST_SETTER_NONE, BOOST_GETTER(&SubGroup::GetName));
     }
 
     string GetName()
@@ -65,16 +65,16 @@ public:
         fFloat = 0.0f;
         
         // Simple hooking up of getter/setters as properties
-        add_property<string>("Name", "name", BOOST_SETTER(&test_group::SetName), BOOST_GETTER(&test_group::GetName));
-        add_property<int>("iVal", "name", BOOST_SETTER(&test_group::SetIVal), BOOST_GETTER(&test_group::GetIVal));
+        add_property("Name", "name", BOOST_SETTER(&test_group::SetName), BOOST_GETTER(&test_group::GetName));
+        add_property("iVal", "name", BOOST_SETTER(&test_group::SetIVal), BOOST_GETTER(&test_group::GetIVal));
         
         // Slightly more advanced. Converts a function that takes two parameters into multiple valid getters
         // for the property system by hard-coding one of the values passed in.
-        add_property<int>("example1", "name", BOOST_SETTER_NONE, boost::bind(&test_group::GetExample, this, Example1));
-        add_property<int>("example2", "name", BOOST_SETTER_NONE, boost::bind(&test_group::GetExample, this, Example2));
+        add_property("example1", "name", BOOST_SETTER_NONE, boost::bind(&test_group::GetExample, this, Example1));
+        add_property("example2", "name", BOOST_SETTER_NONE, boost::bind(&test_group::GetExample, this, Example2));
         
         // Here is an example of how to expose a variable without associated getter/setter functions
-        add_property<float>("variable", "name", BOOST_SETTER_VAR(fFloat), BOOST_GETTER_VAR(fFloat));
+        add_property("variable", "name", BOOST_SETTER_VAR(fFloat), BOOST_GETTER_VAR(fFloat));
     }
     
     string GetName()
@@ -196,9 +196,6 @@ int main (int argc, char * const argv[])
     this metadata is hardcoded to the types it wants. This needs to be made generic. Perhaps use boost::any or maybe
     an additional key/value pair component would work. Either way, it would be nice to try to keep the auto-selection of
     metadata that already exists in the system.
-     
-    2) Extra Type Specification: There has to be a way to derive the type from the functions when you call add_property.
-    It is really ugly to have to specify it every time.
 
     2) Algorithms: We currently only have one path based search algorithm. This expects a single matching value and
     throws otherwise. This is a useful search algorithm as is, but we need more. We need one that returns iterators
@@ -229,15 +226,12 @@ int main (int argc, char * const argv[])
 
     6) Documentation: We currently have doxygen documented objects for this code. If we are going to submit to boost, we
     would need quickbook docs on top of that that show how to use everything.
-
-    7) Unit Tests: We currently have an entire set of unit tests for this code, but it uses UnitTest++. We'd need to
-    convert this to Boost::Test to submit it. This shouldn't be too hard.
     
     Discussion Points:
      
     1) Header Files: I'm distributing this as header only. I did this since it simplified initial distribution (I didn't have
     to get bjam working right away). In house, we build a library. There a lot of things that can be hidden from the user,
-    including defineing the static instances of the singeltons, if we use a library.
+    including defining the static instances of the singeltons, if we use a library.
      
     2) Right now we have several different begin/end function pairs in property_group for accessing the different data in
     the system. Is that really the best way to do it? Whould we be passing back const references to the collections instead?
