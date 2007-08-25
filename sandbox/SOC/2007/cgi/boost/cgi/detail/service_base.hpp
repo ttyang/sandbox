@@ -12,10 +12,6 @@
 #ifndef CGI_DETAIL_SERVICE_ID_HPP_INCLUDED__
 #define CGI_DETAIL_SERVICE_ID_HPP_INCLUDED__
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-# pragma once
-#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
-
 #include <boost/asio/detail/push_options.hpp>
 
 #include <boost/asio/io_service.hpp>
