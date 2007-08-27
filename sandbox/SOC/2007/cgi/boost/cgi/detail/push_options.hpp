@@ -7,10 +7,10 @@
 //
 ////////////////////////////////////////////////////////////////
 
-#ifdef _MSC_VER
+//#ifdef _MSC_VER
 
 //#pragma warning (disable:)
-#define _CRT_SECURE_NO_DEPRECATE 1
-#pragma warning (disable:4996)
+//#define _CRT_SECURE_NO_DEPRECATE 1
+//#pragma warning (disable:4996)
 
-#endif
+//#endif

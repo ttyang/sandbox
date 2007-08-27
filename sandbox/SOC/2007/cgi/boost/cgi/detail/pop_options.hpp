@@ -7,9 +7,9 @@
 //
 ////////////////////////////////////////////////////////////////
 
-#ifdef _MSC_VER
+//#ifdef _MSC_VER
 
 //#pragma warning (disable:)
 //#undef _CRT_SECURE_NO_DEPRECATE
 
-#endif
+//#endif
