@@ -56,6 +56,7 @@ This includes, but is not limited to
 
 [endsect] [/ Scope]
 
+[section Some Introductory Examples]
 
 [section (Multiway) Tree Search]
 Due to their implicit-only nature within the Standard Library (as used by `map`or `set` internally), 
@@ -185,6 +186,55 @@ ones. Implement them for non-cursor iterators so that `empty(iter)` always retur
 
 [endsect] [/ (Multiway) Tree Search]
 
+[section Tree Traversal]
+An interesting aspect of trees is that there are many ways to traverse a tree in a meaningful order.
+Among others, ['preorder], ['postorder] and ['inorder] are frequently encountered. For an overview, 
+consult your favorite Computer Science textbook or [@http://en.wikipedia.org/wiki/Tree_traversal 
+Wikipedia on Tree Traversal]. 
+Given only the essential minimum of information (i.e. child "pointers" from a parent "node", but
+no parent "pointers" from a child "node"), you will be told there, you have basically the choice between
+
+# a recursion (which implicitly uses the stack for storing the current "position" within the tree), or
+# an explicit stack representation, which has the advantage of also working iteratively.
+# With any amount of extra information, such as parent "pointers", using a stack can become obsolete
+altogether.
+
+[/import ../../../boost/tree/algorithm/postorder.hpp]
+
+Boost.Tree offers you each of the options listed above, each found in a namepace indicating the respective
+traversal order. For option number 1, pass the (root cursor of the) subtree to be traversed to either of
+
+[/postorder_for_each]
+[/warning TODO: Use up-to-date Boostbook to embed current code snip form header files directly!]
+
+[funcref boost::tree::preorder::for_each preorder::for_each]
+
+[funcref boost::tree::postorder::for_each postorder::for_each]
+
+[funcref boost::tree::inorder::for_each inorder::for_each]
+
+The other two options are both invoked by constructing an `iterator` with a cursor as argument:
+
+[/warning FIXME: Invalid class reference]
+
+[classref boost::tree::preorder::iterator preorder::iterator]
+
+[classref boost::tree::postorder::iterator postorder::iterator]
+
+[classref boost::tree::inorder::iterator inorder::iterator]
+
+If the argument cursor is descending, the iterator that will be constructed will internally use a `std::stack`
+of cursors. If on the other hand the cursor is ascending (has a `parent` member function), the iterator 
+does not need such an explicit stack representation. Looking at textbook examples, 
+you will however notice that it does need one piece of extra information: normally in these examples, 
+there is a check if a given node's parent pointer is zero. There is no equivalent check possible with
+Boost.Tree, and in fact, it wouldn't even be desirable, as we also might want to traverse a subtree that
+is not equivalent to a "complete" tree object. Therefore, we need a second parameter beside the ascending
+cursor: an `int` indicating the "vertical" distance (or "generations") between the given cursor and the 
+root of the subtree it belongs to.
+
+[endsect] [/ Tree Traversal]
+
 [section Insertion and erasure semantics]
 Given the cursor semantics developed in the above section, the logically next step is to ask how 
 modifications of trees, i.e. in particular insertion and erasure operations are to be performed.
@@ -258,6 +308,8 @@ introduced; only for nodes that do not contain a parent pointer, the index is re
 required. 
 
 [endsect] [/ Insertion and erasure semantics]
+
+[endsect] [/Some Introductory Examples]
 
 [section Components]
 [section Searcher]

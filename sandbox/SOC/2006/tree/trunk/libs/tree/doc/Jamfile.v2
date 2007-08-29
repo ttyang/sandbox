@@ -15,6 +15,7 @@ if ! $(BOOST_ROOT)
 doxygen autodoc
 	:
 		[ glob ../../../boost/tree/*.hpp ]
+		[ glob ../../../boost/tree/algorithm/*.hpp ]
 		[ glob ../../../boost/tree/augmentors/*.hpp ]
 		[ glob ../../../boost/tree/balancers/*.hpp ]
 		[ glob ../../../boost/tree/comparators/*.hpp ]
