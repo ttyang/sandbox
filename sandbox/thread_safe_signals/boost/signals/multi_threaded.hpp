@@ -1,3 +1,3 @@
 
-#include <thread_safe_signals/multi_threaded.hpp>
+#include <boost/thread_safe_signals/multi_threaded.hpp>
 

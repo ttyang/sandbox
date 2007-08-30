@@ -1,3 +1,3 @@
 
-#include <thread_safe_signals/shared_connection_block.hpp>
+#include <boost/thread_safe_signals/shared_connection_block.hpp>
 
