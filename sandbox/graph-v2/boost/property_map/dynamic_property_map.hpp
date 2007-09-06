@@ -111,12 +111,16 @@ namespace boost { namespace property_map {
     };
 
 
-
     // This interface supports polymorphic manipulation of property maps.
+    //
+    // ANS: Implemented virtual constructor idiom for these types so that we
+    // can cleanly implement a copy constructor for dynamic_properties.
     class dynamic_property_map
     {
     public:
         virtual ~dynamic_property_map() { }
+
+        virtual dynamic_property_map* clone() const = 0;
 
         virtual any get(const any& key) = 0;
         virtual std::string get_string(const any& key) = 0;
@@ -129,8 +133,9 @@ namespace boost { namespace property_map {
     namespace detail {
         // Property-map adaptor to support runtime polymorphism.
         //
-        // ANS: This class had some #ifdefs to explicitly qualify the put()
-        // function for GCC 2.95. I removed them.
+        // ANS: This class had some #ifdefs to explicitly quality the put()
+        // and get() function for GCC 2.95. I don't think it should be such
+        // an issue these days, so I removed them.
         template<typename PropertyMap>
         class dynamic_property_map_adaptor : public dynamic_property_map
         {
@@ -172,6 +177,17 @@ namespace boost { namespace property_map {
                 : property_map(property_map)
             { }
 
+            dynamic_property_map_adaptor(const dynamic_property_map_adaptor& dp)
+                : property_map(dp.property_map)
+            { }
+
+            // NOTE: This uses covariant return types that may or may not be
+            // supported by other compilers.
+            virtual dynamic_property_map_adaptor* clone() const
+            {
+                return new dynamic_property_map_adaptor(*this);
+            }
+
             virtual boost::any get(const any& key)
             {
                 return boost::property_map::get(property_map, any_cast<key_type>(key));
@@ -212,6 +228,9 @@ namespace boost { namespace property_map {
     struct dynamic_properties
     {
         typedef std::multimap<std::string, dynamic_property_map*> property_maps_type;
+
+        // This function type is called to generate maps when a put() is
+        // invoked on a named property map that isn't in the collection.
         typedef boost::function3<
                 std::auto_ptr<dynamic_property_map>,
                 const std::string&,
@@ -230,6 +249,15 @@ namespace boost { namespace property_map {
         dynamic_properties(const generate_fn_type& g)
             : generate_fn(g)
         { }
+
+        dynamic_properties(const dynamic_properties& dp)
+            : generate_fn(dp.generate_fn)
+        {
+            property_maps_type::const_iterator i, end = dp.property_maps.end();
+            for(i = dp.property_maps.begin(); i != end; ++i) {
+                property_maps.insert(make_pair(i->first, i->second->clone()));
+            }
+        }
 
         ~dynamic_properties()
         {
