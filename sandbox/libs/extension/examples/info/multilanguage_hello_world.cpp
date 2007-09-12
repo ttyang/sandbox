@@ -8,7 +8,7 @@
  *
  * See http://www.boost.org/ for latest version.
  */
-
+#include <boost/extension/extension.hpp>
 #include "word_description.hpp"
 #include <boost/extension/factory_map.hpp>
 
@@ -66,16 +66,21 @@ public:
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export_multilanguage_word(boost::extensions::factory_map & fm)
 {
-  fm.add<hola, word, word_description>(word_description("spanish", "hello"));
-  fm.add<mundo, word, word_description>(word_description("spanish", "world!"));
+  fm.get<word, word_description>()[word_description("spanish", "hello")]
+    .set<hola>();
+  fm.get<word, word_description>()[word_description("spanish", "world!")]
+    .set<mundo>();
 
-  fm.add<bonjour, word, word_description>(word_description("french", "hello"));
-  fm.add<monde, word, word_description>(word_description("french", "world!"));
-
-  fm.add<buonasera, word, word_description>(word_description("italian", 
-                                                             "hello"));
-  fm.add<mondo, word, word_description>(word_description("italian", "world!"));
-
-  fm.add<hello, word, word_description>(word_description("english", "hello"));
-  fm.add<world, word, word_description>(word_description("english", "world!"));
+  fm.get<word, word_description>()[word_description("french", "hello")]
+    .set<bonjour>();
+  fm.get<word, word_description>()[word_description("french", "world!")]
+    .set<monde>();
+  fm.get<word, word_description>()[word_description("italian", "hello")]
+    .set<buonasera>();
+  fm.get<word, word_description>()[word_description("italian", "world!")]
+    .set<mondo>();
+  fm.get<word, word_description>()[word_description("english", "hello")]
+    .set<hello>();
+  fm.get<word, word_description>()[word_description("english", "world!")]
+    .set<world>();
 }

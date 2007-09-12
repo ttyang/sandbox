@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(versions_test)
   load_single_library(fm, "libSaluteLib.extension", "extension_export_salute");
 
   //  Get a reference to the list of constructors for words.
-  std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
+  std::map<int, factory<word> > & factory_list = fm.get<word, int>();  
 
   // the point here is to check if six classes were loaded 
   // (two for each one of the first three libraries)
@@ -64,20 +64,20 @@ BOOST_AUTO_TEST_CASE(versions_test)
   words.push_back("world! v2");
 
   std::vector<std::string>::const_iterator expected_word = words.begin();
-  for (std::list<factory<word, int> >::iterator current_word = 
+  for (std::map<int, factory<word> >::iterator current_word = 
          factory_list.begin(); current_word != factory_list.end(); 
        ++current_word)
     {
       /// check that the pointer is OK and the word is the one that 
       /// we're expecting
-      std::auto_ptr<word> word_ptr(current_word->create());
+      std::auto_ptr<word> word_ptr(current_word->second.create());
       BOOST_CHECK_EQUAL( !word_ptr.get(), 0 );
       BOOST_CHECK_EQUAL( word_ptr->get_val(), *expected_word);
       ++expected_word;
     }
 
   //  Get a reference to the list of constructors for salutes.
-  std::list<factory<salute, int> > & salute_factory_list = fm.get<salute, 
+  std::map<int, factory<salute> > & salute_factory_list = fm.get<salute, 
     int>();  
 
   // the point here is to check if only two classes were loaded
@@ -90,13 +90,13 @@ BOOST_AUTO_TEST_CASE(versions_test)
 
   std::vector<std::string>::const_iterator expected_salute = salutes.begin();
 
-  for (std::list<factory<salute, int> >::iterator current_salute = 
+  for (std::map<int, factory<salute> >::iterator current_salute = 
          salute_factory_list.begin();
        current_salute != salute_factory_list.end(); ++current_salute)
     {
       /// check that the pointer is OK and the salute is the one that 
       /// we're expecting
-      std::auto_ptr<salute> salute_ptr(current_salute->create());
+      std::auto_ptr<salute> salute_ptr(current_salute->second.create());
       BOOST_CHECK_EQUAL( !salute_ptr.get(), 0 );
       BOOST_CHECK_EQUAL( salute_ptr->say(), *expected_salute);
       ++expected_salute;

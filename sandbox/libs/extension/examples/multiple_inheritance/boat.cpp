@@ -33,6 +33,6 @@ std::string boat::list_capabilities()
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & z)
 {
-  z.add<boat, vehicle, std::string>("A boat exported as a vehicle");
-  z.add<boat, boat, std::string>("A boat exported as a boat");
+  z.get<vehicle, std::string>()["A boat exported as a vehicle"].set<boat>();
+  z.get<boat, std::string>()["A boat exported as a boat"].set<boat>();
 }

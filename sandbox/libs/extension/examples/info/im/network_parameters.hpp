@@ -16,9 +16,9 @@
 class network_parameters
 {
  public:
-  virtual std::string hostname(void) = 0;
-  virtual std::string port(void) = 0;
-  virtual void set_http_mode(void)= 0;
+  virtual const char * hostname(void) const = 0;
+  virtual const char * port(void) const = 0;
+  virtual void set_http_mode(void) = 0;
 
   virtual ~network_parameters(void) {};
 };
@@ -28,8 +28,8 @@ class network_parameters
 class MSN_network_parameters : public network_parameters
 {
  public:
-  virtual std::string hostname(void) { return "msn.messenger.com"; }
-  virtual std::string port(void) { return "1863"; }
+  virtual const char * hostname(void) const { return "msn.messenger.com"; }
+  virtual const char * port(void) const { return "1863"; }
 
   virtual void set_http_mode(void) { 
     std::cout << "http mode set" << std::endl; 
@@ -44,8 +44,8 @@ class MSN_network_parameters : public network_parameters
 class Jabber_network_parameters : public network_parameters
 {
  public:
-  virtual std::string hostname(void) { return "jabber.org"; }
-  virtual std::string port(void) { return "7063"; }
+  virtual const char * hostname(void) const { return "jabber.org"; }
+  virtual const char * port(void) const { return "7063"; }
 
   virtual void set_http_mode(void) { 
     std::cout << "http mode not supported" << std::endl; 

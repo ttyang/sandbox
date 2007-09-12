@@ -10,6 +10,7 @@
  */
 
 #include "lots_of_parameters_iface.hpp"
+#include <boost/extension/extension.hpp>
 #include <boost/extension/factory_map.hpp>
 
 #include <iostream>
@@ -39,6 +40,7 @@ public:
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & fm)
 {
-  fm.add< six_parameters, lots_of_parameters_interface, int, bool, 
-    unsigned int, char, std::string, A, boost::shared_ptr<A> >(6);
+  fm.get< lots_of_parameters_interface, int, bool, 
+    unsigned int, char, std::string, A, boost::shared_ptr<A> >()[6]
+    .set<six_parameters>();
 }

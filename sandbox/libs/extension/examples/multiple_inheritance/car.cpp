@@ -34,6 +34,6 @@ std::string car::list_capabilities()
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & z)
 {
-  z.add<car, vehicle, std::string>("A car exported as a vehicle");
-  z.add<car, car, std::string>("A car exported as a car");
+  z.get<vehicle, std::string>()["A car exported as a vehicle"].set<car>();
+  z.get<car, std::string>()["A car exported as a car"].set<car>();
 }

@@ -13,12 +13,5 @@
 #ifndef BOOST_EXTENSION_EXTENSION_HPP
 #define BOOST_EXTENSION_EXTENSION_HPP
 
-#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-#  define BOOST_EXTENSION_EXPORT_DECL __declspec(dllexport) 
-#  define BOOST_EXTENSION_IMPORT_DECL __declspec(dllimport)
-#else
-#  define BOOST_EXTENSION_EXPORT_DECL
-#  define BOOST_EXTENSION_IMPORT_DECL
-#endif
-
+#include <boost/extension/impl/decl.hpp>
 #endif

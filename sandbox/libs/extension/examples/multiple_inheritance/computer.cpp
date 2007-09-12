@@ -33,6 +33,7 @@ std::string computer::list_capabilities()
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & z)
 {
-  z.add<computer, computer, 
-    std::string>("\nA computer exported as a computer");
+  z.get<computer,
+    std::string>()["\nA computer exported as a computer"]
+    .set<computer>();
 }

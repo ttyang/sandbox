@@ -28,7 +28,7 @@ int main()
   load_single_library(fm, "libMultilanguageHelloWorld.extension", 
                       "extension_export_multilanguage_word");
   //  Get a reference to the list of constructors for words.
-  std::list<factory<word, word_description> > & factory_list = 
+  std::map<word_description, factory<word> > & factory_list = 
     fm.get<word, word_description>();  
   
   if (factory_list.size() < 4+4) {
@@ -37,17 +37,17 @@ int main()
     return 1;
   }
 
-  for (std::list<factory<word, word_description> >::iterator current_word = 
+  for (std::map<word_description, factory<word> >::iterator current_word = 
          factory_list.begin(); current_word != factory_list.end(); 
        ++current_word) {
       // Using auto_ptr to avoid needing delete. Using smart_ptrs 
       // is recommended.
       // Note that this has a zero argument constructor - currently 
       // constructors with up to six arguments can be used.
-      std::auto_ptr<word> word_ptr(current_word->create());
+      std::auto_ptr<word> word_ptr(current_word->second.create());
       std::cout << word_ptr->get_val() << " is " 
-                << current_word->get_info().english_translation 
-                << " in " << current_word->get_info().language 
+                << current_word->first.english_translation 
+                << " in " << current_word->first.language 
                 << std::endl;
   }
   std::cout << std::endl;

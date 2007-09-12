@@ -34,18 +34,18 @@ std::string car_of_the_future::list_capabilities()
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & z)
 {
-  z.add<car_of_the_future, vehicle, std::string>
-    ("A car of the future exported as a vehicle");
-  z.add<car_of_the_future, car, std::string>
-    ("A car of the future exported as a car");
-  z.add<car_of_the_future, plane, std::string>
-    ("A car of the future exported as a plane");
-  z.add<car_of_the_future, flying_car, std::string>
-    ("A car of the future exported as a flying car");
-  z.add<car_of_the_future, boat, std::string>
-    ("A car of the future exported as a boat");
-  z.add<car_of_the_future, computer, std::string>
-    ("A car of the future exported as a computer");
-  z.add<car_of_the_future, car_of_the_future, std::string>
-    ("A car of the future exported as a car of the future");
+  z.get<vehicle, std::string>()
+    ["A car of the future exported as a vehicle"].set<car_of_the_future>();
+  z.get<car, std::string>()
+    ["A car of the future exported as a car"].set<car_of_the_future>();
+  z.get<plane, std::string>()
+    ["A car of the future exported as a plane"].set<car_of_the_future>();
+  z.get<flying_car, std::string>()
+    ["A car of the future exported as a flying car"].set<car_of_the_future>();
+  z.get<boat, std::string>()
+    ["A car of the future exported as a boat"].set<car_of_the_future>();
+  z.get<computer, std::string>()
+    ["A car of the future exported as a computer"].set<car_of_the_future>();
+  z.get<car_of_the_future, std::string>()
+    ["A car of the future exported as a car of the future"].set<car_of_the_future>();
 }

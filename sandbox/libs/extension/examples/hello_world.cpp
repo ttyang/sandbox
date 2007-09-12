@@ -10,6 +10,7 @@
  */
 
 #include "word.hpp"
+#include <boost/extension/extension.hpp>
 #include <boost/extension/factory_map.hpp>
 
 class world : public word
@@ -26,6 +27,6 @@ extern "C"
 void BOOST_EXTENSION_EXPORT_DECL 
 extension_export_word(boost::extensions::factory_map & fm)
 {
-  fm.add<hello, word, int>(1);
-  fm.add<world, word, int>(2);
+  fm.get<word, int>()[1].set<hello>();
+  fm.get<word, int>()[2].set<world>();
 }

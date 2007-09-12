@@ -20,56 +20,53 @@
 using namespace boost::extensions;
 void setup_zone(factory_map & z)
 {
-  z.add<apple, fruit, std::string, int, int>("round fruit");
-  z.add<banana, fruit, std::string, int, int>("long fruit");
-  z.add<nectarine, fruit, std::string, int, int>("small fruit");
+  z.get<fruit, std::string, int, int>()["round fruit"].set<apple>();
+  z.get<fruit, std::string, int, int>()["long fruit"].set<banana>();
+  z.get<fruit, std::string, int, int>()["small fruit"].set<nectarine>();
   
 }
 BOOST_AUTO_TEST_CASE(construct_from_zone)
 {
   factory_map z;
   setup_zone(z);
-  std::vector<factory<fruit, std::string, int, int> > 
+  std::vector<std::pair<std::string, factory<fruit, int, int> > >
           f1(z.get<fruit, std::string, int, int>().begin(), 
              z.get<fruit, std::string, int, int>().end());
 
-  std::list<factory<fruit, std::string, int, int> > 
+  std::vector<std::pair<std::string, factory<fruit, int, int> > >
           f2(z.get<fruit, std::string, int, int>().begin(), 
              z.get<fruit, std::string, int, int>().end());
-  std::list<factory<fruit, std::string, int, int> > f3(z);
-  std::list<factory<fruit, std::string, int, int> > f4 = z;
+  std::map<std::string, factory<fruit, int, int> > m1(z);
+  //std::vector<std::pair<std::string, factory<fruit, int, int> > > f3(m1);
+  //std::vector<std::pair<std::string, factory<fruit, int, int> > > f4 = m1;
   BOOST_CHECK_EQUAL(f1.size(), f2.size());
-  BOOST_CHECK_EQUAL(f1.size(), f3.size());
-  BOOST_CHECK_EQUAL(f2.size(), f4.size());
+  // BOOST_CHECK_EQUAL(f1.size(), f3.size());
+  // BOOST_CHECK_EQUAL(f2.size(), f4.size());
   BOOST_CHECK_EQUAL(f1.size(), size_t(3));
 }
 BOOST_AUTO_TEST_CASE(factory_construction)
 {
   factory_map z;
   setup_zone(z);
-  std::vector<factory<fruit, std::string, int, int> > 
+  std::vector<std::pair<std::string, factory<fruit, int, int> > > 
           f1(z.get<fruit, std::string, int, int>().begin(), 
              z.get<fruit, std::string, int, int>().end());
-  std::vector<factory<fruit, std::string, int, int> >::iterator 
+  std::vector<std::pair<std::string, factory<fruit, int, int> > >::iterator 
           it = f1.begin();
-
-  std::auto_ptr<fruit> first(it->create(0, 1));
-  std::auto_ptr<fruit> second((++it)->create(0, 1));
-  std::auto_ptr<fruit> third((++it)->create(0, 1));
-  BOOST_CHECK_EQUAL((first->get_cost()), 21);
-  BOOST_CHECK_EQUAL((second->get_cost()), 7);
+  // Since our TypeInfo is string, they will be created
+  // in alphabetical order by TypeInfo ("round fruit" etc.), yielding
+  // banana, apple, nectarine
+  std::auto_ptr<fruit> first(it->second.create(0, 1));
+  std::auto_ptr<fruit> second((++it)->second.create(0, 1));
+  std::auto_ptr<fruit> third((++it)->second.create(0, 1));
+  BOOST_CHECK_EQUAL((first->get_cost()), 7);
+  BOOST_CHECK_EQUAL((second->get_cost()), 21);
   BOOST_CHECK_EQUAL((third->get_cost()), 18);
   BOOST_CHECK_EQUAL(typeid(*first.get()).name(), 
-                    typeid(apple).name());
-  BOOST_CHECK_EQUAL(typeid(*second.get()).name(), typeid(banana).name());
+                    typeid(banana).name());
+  BOOST_CHECK_EQUAL(typeid(*second.get()).name(), typeid(apple).name());
   BOOST_CHECK_EQUAL(typeid(*third.get()).name(), typeid(nectarine).name());
   BOOST_CHECK(typeid(*third.get()).name() != typeid(banana).name());
   BOOST_CHECK(typeid(*third.get()).name() != typeid(banana).name());
-  //factory<fruit> f;
-  
 }
-BOOST_AUTO_TEST_CASE(extension_construction)
-{
-  //extension e;
-  
-}
+

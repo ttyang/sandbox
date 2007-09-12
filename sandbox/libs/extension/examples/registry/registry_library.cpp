@@ -45,5 +45,5 @@ boost_extension_registry_function(counted_factory_map & fm)
   // 5 is just an identifier - not used in this example.
   // Arbitrary information (not just an int) can be stored
   // with the factory.
-  fm.add<counting_word, word, int>(5);
+  fm.get<word, int>[5].set<counting_word>();
 }

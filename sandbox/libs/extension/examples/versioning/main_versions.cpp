@@ -9,7 +9,7 @@
  * See http://www.boost.org/ for latest version.
  */
 
-
+#include <boost/extension/extension.hpp>
 #include <boost/extension/factory_map.hpp>
 #include <boost/extension/shared_library.hpp>
 #include <boost/extension/convenience.hpp>
@@ -44,7 +44,7 @@ int main(void)
   load_single_library(fm, "libSaluteLib.extension", "extension_export_salute");
 
   //  Get a reference to the list of constructors for words.
-  std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
+  std::map<int, factory<word> > & factory_list = fm.get<word, int>();  
 
   if (factory_list.size() < 6) {
     std::cout << "Error - the classes were not found (" 
@@ -53,7 +53,7 @@ int main(void)
   }
 
   std::cout << "words: " << std::endl;
-  for (std::list<factory<word, int> >::iterator current_word = 
+  for (std::map<int, factory<word> >::iterator current_word = 
          factory_list.begin();
        current_word != factory_list.end(); ++current_word)
     {
@@ -62,13 +62,13 @@ int main(void)
       //  Note that this has a zero argument constructor - currently 
       //  constructors
       //  with up to six arguments can be used.
-      std::auto_ptr<word> word_ptr(current_word->create());
+      std::auto_ptr<word> word_ptr(current_word->second.create());
       std::cout << word_ptr->get_val() << " ";
     }
   std::cout << std::endl << std::endl;
 
   //  Get a reference to the list of constructors for salutes.
-  std::list<factory<salute, int> > & salute_factory_list = 
+  std::map<int, factory<salute> > & salute_factory_list = 
     fm.get<salute, int>();  
 
   if (salute_factory_list.size() < 2) {
@@ -78,7 +78,7 @@ int main(void)
   }
 
   std::cout << "salutes: " << std::endl;
-  for (std::list<factory<salute, int> >::iterator current_salute = 
+  for (std::map<int, factory<salute> >::iterator current_salute = 
          salute_factory_list.begin();
        current_salute != salute_factory_list.end(); ++current_salute)
     {
@@ -87,7 +87,7 @@ int main(void)
       //  Note that this has a zero argument constructor - currently 
       //  constructors
       //  with up to six arguments can be used.
-      std::auto_ptr<salute> salute_ptr(current_salute->create());
+      std::auto_ptr<salute> salute_ptr(current_salute->second.create());
       std::cout << salute_ptr->say() << " ";
     }
   std::cout << std::endl;

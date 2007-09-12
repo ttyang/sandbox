@@ -34,7 +34,7 @@ int main(void)
                       "extension_export_plugins");
 
   //  get a reference to the list of constructors for protocols
-  std::list< factory<protocol, boost::shared_ptr<network_parameters> > > & 
+   std::map<boost::shared_ptr<network_parameters>, factory<protocol> > & 
     factory_list = fm.get<protocol, boost::shared_ptr<network_parameters> >();
 
   if (factory_list.size() < 2) {
@@ -42,20 +42,19 @@ int main(void)
     return 1;
   }
 
-  std::list<factory< protocol, 
-    boost::shared_ptr<network_parameters> > >::iterator current_plugin = 
-    factory_list.begin();
+  std::map<boost::shared_ptr<network_parameters>, factory<protocol> >
+    ::iterator current_plugin = factory_list.begin();
 
   // MSN plugin
-  std::auto_ptr<protocol> MSN_ptr(current_plugin->create());
+  std::auto_ptr<protocol> MSN_ptr(current_plugin->second.create());
   boost::shared_ptr<network_parameters> msn_parameters = 
-    current_plugin->get_info();
+    current_plugin->first;
   current_plugin++;
 
   // Jabber plugin
-  std::auto_ptr<protocol> Jabber_ptr(current_plugin->create());
+  std::auto_ptr<protocol> Jabber_ptr(current_plugin->second.create());
   boost::shared_ptr<network_parameters> jabber_parameters = 
-    current_plugin->get_info();
+    current_plugin->first;
 
   // server
   std::cout << "MSN hostname: " << msn_parameters->hostname() << std::endl;

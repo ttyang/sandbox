@@ -33,6 +33,8 @@ std::string plane::list_capabilities()
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & z)
 {
-  z.add<plane, vehicle, std::string>("A plane exported as a vehicle");
-  z.add<plane, plane, std::string>("A plane exported as a plane");
+  z.get<vehicle, std::string>()["A plane exported as a vehicle"]
+    .set<plane>();
+  z.get<plane, std::string>()["A plane exported as a plane"]
+    .set<plane>();
 }

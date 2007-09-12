@@ -70,8 +70,15 @@ private:
 public:
   vegetable_info(const char * name, int calories)
     :name_(name), num_calories_(calories){}
-  int get_calories(){return num_calories_;}
-  const char * get_name(){return name_.c_str();}
+  int get_calories() const {return num_calories_;}
+  const char * get_name() const {return name_.c_str();}
+  friend inline bool 
+    operator<(const vegetable_info & first,
+              const vegetable_info & second) {
+    return first.name_ < second.name_ ||
+           (first.name_ == second.name_ &&
+            first.num_calories_ < second.num_calories_);
+  }
   
 };
 #endif

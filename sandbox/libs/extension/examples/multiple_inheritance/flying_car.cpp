@@ -35,10 +35,11 @@ std::string flying_car::list_capabilities()
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export(boost::extensions::factory_map & z)
 {
-  z.add<flying_car, vehicle, 
-    std::string>("A flying car exported as a vehicle");
-  z.add<flying_car, plane, std::string>("A flying car exported as a plane");
-  z.add<flying_car, car, std::string>("A flying car exported as a car");
-  z.add<flying_car, flying_car, 
-    std::string>("A flying car exported as a flying car");
+  z.get<vehicle, 
+    std::string>()["A flying car exported as a vehicle"].set<flying_car>();
+  z.get<plane, std::string>()["A flying car exported as a plane"]
+    .set<flying_car>();
+  z.get<car, std::string>()["A flying car exported as a car"].set<flying_car>();
+  z.get<flying_car, 
+    std::string>()["A flying car exported as a flying car"].set<flying_car>();
 }

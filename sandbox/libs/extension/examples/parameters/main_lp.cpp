@@ -27,20 +27,20 @@ int main(void)
   // load the shared library with 
   load_single_library(fm, "libParametersLib.extension", "extension_export");
 
-  std::list<factory<lots_of_parameters_interface, int, bool, unsigned int, 
+  std::map<int, factory<lots_of_parameters_interface, bool, unsigned int, 
     char, std::string, A, boost::shared_ptr<A> > > & factory_list = 
-    fm.get<lots_of_parameters_interface, int, bool, unsigned int, char, 
-    std::string, A, boost::shared_ptr<A>  >();
+      fm.get<lots_of_parameters_interface, int, bool, unsigned int, char, 
+      std::string, A, boost::shared_ptr<A>  >();
   if (factory_list.size() != 1) {
     std::cout << "Error - the class was not found.";
     return 1;
   }
 
-  std::list< factory<lots_of_parameters_interface, int, bool, unsigned int, 
+  std::map<int, factory<lots_of_parameters_interface, bool, unsigned int, 
     char, std::string, A, boost::shared_ptr<A> > >::iterator par = 
     factory_list.begin();
   std::auto_ptr< lots_of_parameters_interface > 
-    par_ptr(par->create(true, 4, 'c', "test", A(2), 
+    par_ptr(par->second.create(true, 4, 'c', "test", A(2), 
                         boost::shared_ptr<A>(new A(15))));
 
   return 0;

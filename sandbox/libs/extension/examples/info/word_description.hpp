@@ -21,3 +21,9 @@ struct word_description
   word_description(std::string language, std::string english_translation)
     : language(language), english_translation(english_translation) {}
 };
+inline bool operator<(const word_description & first,
+                      const word_description & second) {
+  return first.language < second.language ||
+        (first.language == second.language &&
+         first.english_translation < second.english_translation);
+}

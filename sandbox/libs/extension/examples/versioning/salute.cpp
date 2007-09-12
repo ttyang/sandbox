@@ -10,6 +10,7 @@
  */
 
 #include "salute.hpp"
+#include <boost/extension/extension.hpp>
 #include <boost/extension/factory_map.hpp>
 
 class hello : public salute
@@ -28,6 +29,6 @@ public:
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export_salute(boost::extensions::factory_map & fm)
 {
-  fm.add<hello, salute, int>(1);
-  fm.add<bye, salute, int>(2);
+  fm.get<salute, int>()[1].set<hello>();
+  fm.get<salute, int>()[2].set<bye>();
 }

@@ -9,7 +9,7 @@
  * See http://www.boost.org/ for latest version.
  */
 
-
+#include <boost/extension/extension.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/extension/factory_map.hpp>
 
@@ -60,13 +60,21 @@ public:
         virtual ~Jabber(void) {}
 };
 
-
+inline bool operator<(const boost::shared_ptr<network_parameters> & first,
+                      const boost::shared_ptr<network_parameters> & second) {
+  int comp = strcmp(first->hostname(), second->hostname());
+  if (!comp) {
+    return strcmp(first->port(), second->port()) < 0;
+  }
+  else return comp < 0;
+}
 
 extern "C" void BOOST_EXTENSION_EXPORT_DECL 
 extension_export_plugins(boost::extensions::factory_map & fm)
 {
-  fm.add< MSN, protocol, boost::shared_ptr<network_parameters> >
-    (boost::shared_ptr<network_parameters>(new MSN_network_parameters));
-  fm.add< Jabber, protocol, boost::shared_ptr<network_parameters> >
-    (boost::shared_ptr<network_parameters>(new Jabber_network_parameters));
+  fm.get<protocol, boost::shared_ptr<network_parameters> >()
+    [boost::shared_ptr<network_parameters>(new MSN_network_parameters)].set<MSN>();
+  fm.get<protocol, boost::shared_ptr<network_parameters> >()
+    [boost::shared_ptr<network_parameters>(new Jabber_network_parameters)]
+    .set<Jabber>();
 }

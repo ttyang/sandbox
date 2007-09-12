@@ -25,10 +25,10 @@ int main()
   load_single_library(fm, "libHelloWorldLib.extension", 
                       "extension_export_word");
   //  Get a reference to the list of constructors for words.
-  std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
+  std::map<int, factory<word> > & factory_list = fm.get<word, int>();  
   if (factory_list.size() < 2)
     std::cout << "Error - the classes were not found.";
-  for (std::list<factory<word, int> >::iterator current_word = 
+  for (std::map<int, factory<word> >::iterator current_word = 
          factory_list.begin(); current_word != factory_list.end(); 
        ++current_word)
   {
@@ -36,7 +36,7 @@ int main()
     // recommended.
     //  Note that this has a zero argument constructor - currently constructors
     //  with up to six arguments can be used.
-    std::auto_ptr<word> word_ptr(current_word->create());
+    std::auto_ptr<word> word_ptr(current_word->second.create());
     std::cout << word_ptr->get_val() << " ";
   }
   std::cout << "\n";
