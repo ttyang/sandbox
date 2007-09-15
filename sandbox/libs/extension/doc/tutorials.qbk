@@ -17,16 +17,17 @@ There are currently five tutorials (the sixth is a placeholder).
 
 The first tutorial is a basic hello world example. 
 
-The second tutorial is a more complex example involving multiple inheritance, virtual inheritance, and inheritance 
-across shared libraries.
+The second tutorial is a more complex example involving multiple inheritance, 
+virtual inheritance, and inheritance across shared libraries.
 
-The third tutorial shows how to register classes with multi parameter constructors.
+The third tutorial shows how to register classes with multi parameter 
+constructors.
 
 The fourth tutorial is a about multiple library loading, with some strange cases
 like loading the same library many times and loading very similar classes.
 
-The fifth tutorial is an advanced example of using the Info template parameter. There is a simpler
-usage of this parameter in the examples/info folder as well.
+The fifth tutorial is an advanced example of using the Info template parameter. 
+There is a simpler usage of this parameter in the examples/info folder as well.
 
 The tutorial code can be found in the examples folder. They all share the same
 Jamfile, but the Jamfile contents are separated out for each tutorial.

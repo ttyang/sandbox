@@ -23,5 +23,5 @@ boostbook standalone
 
     ;
 
-install html : ../../../doc/html/boostbook.css ;
-install ../ : ../../../boost.png ;
+install html : $(BOOST_ROOT)/doc/html/boostbook.css ;
+install ../ : $(BOOST_ROOT)/boost.png ;

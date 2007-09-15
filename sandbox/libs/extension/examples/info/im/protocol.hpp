@@ -10,7 +10,6 @@
  */
 
 #include <string>
-
 // protocol for instant message communication
 class protocol
 {
@@ -23,3 +22,4 @@ class protocol
 
   virtual ~protocol(void) {}
 };
+

@@ -9,18 +9,23 @@
 
 In this section we explain how to use Info classes in Boost.Extension. 
 
-Info classes is a mechanism that allows you to store important information of each implementation. The 
-type and utility of this information is arbitrary as the Info class is a template argument of the factories where 
-the user registers its own implementations, and for that reason any kind of information could be stored.
+Info classes is a mechanism that allows you to store important information of 
+each implementation. The type and utility of this information is arbitrary as 
+the Info class is a template argument of the factories where the user registers 
+its own implementations, and for that reason any kind of information could be 
+stored.
 
-Let's see how can we use it with an example first and then we will be able to summarize the concepts. 
+Let's see how can we use it with an example first and then we will be able to 
+summarize the concepts. 
 
 Surely you remember our very first example, that of course it's called 
-HelloWorld. Well, let's imagine that we now want a multi-language Hello World. Of course there are better ways of
-designing it, but as we want to picture how the Info class could be used we'll take this approach.
+HelloWorld. Well, let's imagine that we now want a multi-language Hello World. 
+Of course there are better ways of designing it, but as we want to picture how 
+the Info class could be used we'll take this approach.
 
-First, we define an implementation of the =word= interface for each combination of word and language. Then we
-have for example the class =monde= that implements the =word= interface for the french language in this case. 
+First, we define an implementation of the =word= interface for each combination 
+of word and language. Then we have for example the class =monde= that implements 
+the `word` interface for the french language in this case. 
 
 Let's see the code:
 
@@ -95,42 +100,59 @@ struct word_description
 		: language(language), english_translation(english_translation) {}
 };
 ``
+We also need a less-than operator for this class, so it can be used as a map key.
+``
+inline bool operator<(const word_description & first,
+                      const word_description & second) {
+  return first.language < second.language ||
+        (first.language == second.language &&
+         first.english_translation < second.english_translation);
+}
+``
 
 Finally, just store a =word_description= instance when adding the words to the factory map, describing the original
 word and the language:
 
 ``
-extern "C" void BOOST_EXTENSION_EXPORT_DECL extension_export_multilanguage_word(boost::extensions::factory_map & fm)
+extern "C" void BOOST_EXTENSION_EXPORT_DECL 
+extension_export_multilanguage_word(boost::extensions::factory_map & fm)
 {
-	fm.add<hola, word, word_description>(word_description("spanish", "hello"));
-	fm.add<mundo, word, word_description>(word_description("spanish", "world!"));
+  fm.get<word, word_description>()[word_description("spanish", "hello")]
+    .set<hola>();
+  fm.get<word, word_description>()[word_description("spanish", "world!")]
+    .set<mundo>();
 
-	fm.add<bonjour, word, word_description>(word_description("french", "hello"));
-	fm.add<monde, word, word_description>(word_description("french", "world!"));
-
-	fm.add<buonasera, word, word_description>(word_description("italian", "hello"));
-	fm.add<mondo, word, word_description>(word_description("italian", "world!"));
-
-	fm.add<hello, word, word_description>(word_description("english", "hello"));
-	fm.add<world, word, word_description>(word_description("english", "world!"));
+  fm.get<word, word_description>()[word_description("french", "hello")]
+    .set<bonjour>();
+  fm.get<word, word_description>()[word_description("french", "world!")]
+    .set<monde>();
+  fm.get<word, word_description>()[word_description("italian", "hello")]
+    .set<buonasera>();
+  fm.get<word, word_description>()[word_description("italian", "world!")]
+    .set<mondo>();
+  fm.get<word, word_description>()[word_description("english", "hello")]
+    .set<hello>();
+  fm.get<word, word_description>()[word_description("english", "world!")]
+    .set<world>();
 }
+
 ``
 
-In the code we could see that add argument is a Info class instance. In this case is =word_description=
-which receives the language and word as arguments.
-
-Now we could start using that information in the main code. Retrieving Info class is easy, you should just call
-=get_info()= method of the factory. 
+Now we could start using that information in the main code. Retrieving the `Info`
+instance for a factory is simple, since it is part of the `std::pair` in the
+map of factories.
 
 Let's see some code using the multilanguage hello world words:
 
 ``
-  for (std::list<factory<word, word_description> >::iterator current_word = factory_list.begin();
-       current_word != factory_list.end(); ++current_word)
-  {
-    std::auto_ptr<word> word_ptr(current_word->create());
-    std::cout << word_ptr->get_val() << " is " << current_word->get_info().english_translation 
-           << " in " << current_word->get_info().language << std::endl;
+  for (std::map<word_description, factory<word> >::iterator current_word = 
+       factory_list.begin(); current_word != factory_list.end(); 
+     ++current_word) {
+    std::auto_ptr<word> word_ptr(current_word->second.create());
+    std::cout << word_ptr->get_val() << " is " 
+              << current_word->first.english_translation 
+              << " in " << current_word->first.language 
+              << std::endl;
   }
   std::cout << std::endl;
 ``

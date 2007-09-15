@@ -8,4 +8,5 @@
 [section:appendices Appendices]
 [include appendix_a.qbk]
 [include appendix_b.qbk]
+[include appendix_c.qbk]
 [endsect]

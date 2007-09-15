@@ -8,8 +8,9 @@
 [section:tutorial02 Tutorial 2]
 
 This tutorial shows more advanced class loading. The example described here is
-contrived, and such a convoluted design is not used as an example of good object-oriented
-program, but as a way to illustrate some of the possibilities with this library.
+contrived, and such a convoluted design is not used as an example of good 
+object-oriented program, but as a way to illustrate some of the possibilities 
+with this library.
 
 Let's design a class hierarchy based on the following:
 
@@ -23,15 +24,16 @@ Let's design a class hierarchy based on the following:
 * A car_of_the_future is a flying_car, a boat, and a computer.
 
 
-In addition, we are not going to have any of these classes be interfaces. They will each
-have an implementation in a .cpp file. This will require multiple inheritance, as well
-as virtual inheritance (because otherwise a car_of_the_future would consist of three
-separate vehicle base classes!).
+In addition, we are not going to have any of these classes be interfaces. They 
+will each have an implementation in a .cpp file. This will require multiple 
+inheritance, as well as virtual inheritance (because otherwise a 
+car_of_the_future would consist of three separate vehicle base classes!).
 
 
-In addition, each class will be compiled into a separate shared library. This is not 
-necessary, certainly, but will serve to illustrate some of the more advanced capabilities
-of the library, as well as some of the techniques necessary in this situation.
+In addition, each class will be compiled into a separate shared library. This 
+is not necessary, certainly, but will serve to illustrate some of the more 
+advanced capabilities of the library, as well as some of the techniques 
+necessary in this situation.
 
 
 To begin with, let's look at the Jamfile:
@@ -45,8 +47,8 @@ type.change-generated-target-prefix SHARED_LIB : : lib ;
 ``
 
 
-First we must rename the generated libraries (this is required for cross-platform use - 
-but the prefix and suffix are arbitrary).
+First we must rename the generated libraries (this is required for 
+cross-platform use - but the prefix and suffix are arbitrary).
 
 
 ``
@@ -55,17 +57,19 @@ lib Car : multiple_inheritance/car.cpp Vehicle : <link>shared ;
 ``
 
 
-Notice here that the Car library is linked to the Vehicle library - this is necessary
-because the Car class needs the implementation of the Vehicle class. This is unrelated
-to the Boost.Extension library, but just a standard requirement when inheriting from
-shared library classes. The same will be done with the other shared libraries.
+Notice here that the Car library is linked to the Vehicle library - this is 
+necessary because the Car class needs the implementation of the Vehicle class. 
+This is unrelated to the Boost.Extension library, but just a standard 
+requirement when inheriting from shared library classes. The same will be done 
+with the other shared libraries.
 
 
 ``
 lib Plane : multiple_inheritance/plane.cpp Vehicle : <link>shared ;
 lib Boat : multiple_inheritance/boat.cpp Vehicle : <link>shared ;
 lib Computer : multiple_inheritance/computer.cpp : <link>shared ;
-lib FlyingCar : multiple_inheritance/flying_car.cpp Plane Car Vehicle : <link>shared ;
+lib FlyingCar : multiple_inheritance/flying_car.cpp Plane Car Vehicle
+              : <link>shared ;
 lib CarOfTheFuture : 
   multiple_inheritance/car_of_the_future.cpp 
   Plane Car Vehicle 
@@ -82,13 +86,14 @@ install ../bin :
 ``
 
 
-Refer to the examples/multiple_inheritance folder for the source code of these classes. Only
-the most complex will be described here - the rest are similar.
+Refer to the examples/multiple_inheritance folder for the source code of these
+classes. Only the most complex will be described here - the rest are similar.
 
 
-On the Windows platform, there are special declarations that are required when a dll must use a class
-that is defined in another dll. For interface only classes this is unnecessary, and is not needed on
-other platforms. The macros BOOST_EXTENSION_IMPORT_DECL and BOOST_EXTENSION_EXPORT_DECL can be used
+On the Windows platform, there are special declarations that are required when 
+a dll must use a class that is defined in another dll. For interface only 
+classes this is unnecessary, and is not needed on other platforms. The macros 
+BOOST_EXTENSION_IMPORT_DECL and BOOST_EXTENSION_EXPORT_DECL can be used
 to insert the proper declaration. This is detailed in the appendix.
 
 

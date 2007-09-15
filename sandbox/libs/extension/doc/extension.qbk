@@ -16,7 +16,7 @@
         [@http://www.boost.org/LICENSE_1_0.txt http://www.boost.org/LICENSE_1_0.txt])
     ]
     [category Programming Interfaces]
-    [last-revision $Date: 2007/4/30 12:00:00 $]
+    [last-revision $Date: 2007/9/15 9:05:00 $]
 ]
 
 
@@ -31,4 +31,3 @@
 [include info.qbk]
 [include performance_analysis.qbk]
 [include appendices.qbk]
-
