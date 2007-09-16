@@ -8,6 +8,6 @@ use-project boost
    : $(BOOST_ROOT)
    ;
    
-project boost/signal_network
+project dataflow
    : build-dir bin.v2
    ;
