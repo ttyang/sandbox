@@ -59,26 +59,26 @@
 namespace boost
 {
 #ifndef signals
-	// for backward compatibility
-    namespace signals = signalslib;
+  // for backward compatibility
+  namespace signals = signalslib;
 #endif
-	template<typename Signature,
-		typename Combiner = last_value<typename boost::function_traits<Signature>::result_type>,
-		typename Group = int,
-		typename GroupCompare = std::less<Group>,
-		typename SlotFunction = function<Signature>,
-		typename ThreadingModel = signalslib::auto_threaded >
-	class signal: public signalslib::detail::signalN<function_traits<Signature>::arity,
-		Signature, Combiner, Group, GroupCompare, SlotFunction, ThreadingModel>::type
-	{
-	private:
-		typedef typename signalslib::detail::signalN<boost::function_traits<Signature>::arity,
-			Signature, Combiner, Group, GroupCompare, SlotFunction, ThreadingModel>::type base_type;
-	public:
-		signal(const Combiner &combiner = Combiner(), const GroupCompare &group_compare = GroupCompare()):
-			base_type(combiner, group_compare)
-		{}
-	};
+  template<typename Signature,
+    typename Combiner = last_value<typename boost::function_traits<Signature>::result_type>,
+    typename Group = int,
+    typename GroupCompare = std::less<Group>,
+    typename SlotFunction = function<Signature>,
+    typename ThreadingModel = signalslib::auto_threaded >
+  class signal: public signalslib::detail::signalN<function_traits<Signature>::arity,
+    Signature, Combiner, Group, GroupCompare, SlotFunction, ThreadingModel>::type
+  {
+  private:
+    typedef typename signalslib::detail::signalN<boost::function_traits<Signature>::arity,
+      Signature, Combiner, Group, GroupCompare, SlotFunction, ThreadingModel>::type base_type;
+  public:
+    signal(const Combiner &combiner = Combiner(), const GroupCompare &group_compare = GroupCompare()):
+      base_type(combiner, group_compare)
+    {}
+  };
 }
 
 #ifdef BOOST_HAS_ABI_HEADERS

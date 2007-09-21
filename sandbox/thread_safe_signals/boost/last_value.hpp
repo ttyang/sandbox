@@ -22,7 +22,7 @@ namespace boost {
   class no_slots_error: public std::exception
   {
   public:
-	  virtual const char* what() {return "boost::no_slots_error";}
+    virtual const char* what() {return "boost::no_slots_error";}
   };
   namespace last_value_detail {
     template<typename T>
