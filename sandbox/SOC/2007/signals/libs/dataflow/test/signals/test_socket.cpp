@@ -19,10 +19,6 @@
 //[ test_socket
 
 using namespace boost;
-namespace boost { namespace signals {
-    using boost::dataflow::operators::operator|;
-    using boost::dataflow::operators::operator>>=;
-} }
 
 mutex mutex_;
 condition cond;

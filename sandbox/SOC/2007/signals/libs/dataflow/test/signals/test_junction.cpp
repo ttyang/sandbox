@@ -11,7 +11,6 @@
 #include <boost/test/included/test_exec_monitor.hpp>
 
 using namespace boost;
-using namespace boost::dataflow::operators;
 
 int test_main(int, char* [])
 {

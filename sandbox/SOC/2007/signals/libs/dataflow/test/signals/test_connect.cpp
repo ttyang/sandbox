@@ -9,10 +9,11 @@
 
 //[ test_connect
 
-struct receiver
+struct receiver : public boost::dataflow::consumer<
+    boost::dataflow::signals_mechanism,
+    boost::dataflow::signal_consumer>    
 {
     typedef void result_type;
-    typedef boost::dataflow::signal_consumer consumer_category;
     
     receiver() : stored(0) {}
     
@@ -30,7 +31,7 @@ int test_main(int, char* [])
     boost::signal<void(int)> p;
     receiver r;
     
-    boost::dataflow::connect(p, r);
+    boost::dataflow::connect<boost::dataflow::signals_mechanism>(p, r);
     
     p(3);
     
