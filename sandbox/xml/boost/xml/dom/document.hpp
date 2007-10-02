@@ -3,6 +3,7 @@
 
 #include <boost/xml/dom/element.hpp>
 #include <boost/xml/dom/dtd.hpp>
+#include <boost/xml/dom/io.hpp>
 #include <string>
 #include <memory>
 #include <stdexcept>
@@ -37,10 +38,6 @@ public:
   node_ptr<element<S> > create_root(std::string const &name,
 				    std::string const &ns = std::string(),
 				    std::string const &ns_prefix = std::string());
-
-  void write_to_file(const std::string &filename,
-		     const std::string &encoding = std::string())
-    throw(std::runtime_error);
 private:
   document(xmlDoc *doc) : detail::wrapper<xmlDoc*>(doc) {}
 };
@@ -104,22 +101,6 @@ document<S>::create_root(std::string const &name,
   xmlDocSetRootElement(this->impl(), node);
 
   return root();
-}
-
-template <typename S>
-inline void document<S>::write_to_file(const std::string &filename,
-				       const std::string &encoding)
-  throw(std::runtime_error)
-{
-  int result = 0;
-  if(!encoding.empty())
-    result = xmlSaveFormatFileEnc(filename.c_str(),
-				  this->impl(), encoding.c_str(), 1);
-  else
-    result = xmlSaveFormatFile(filename.c_str(), this->impl(), 1);
-
-  if(result == -1)
-    throw std::runtime_error("Failed to write document.");
 }
 
 } // namespace boost::xml::dom

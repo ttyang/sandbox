@@ -11,9 +11,9 @@ namespace dom = boost::xml::dom;
 
 int main(int argc, char **argv)
 {
-  if (argc != 2)
+  if (argc != 3)
   {
-    std::cerr << "Usage: example <xml-file>" << std::endl;
+    std::cerr << "Usage: example <xml-input> <xml-output>" << std::endl;
     return -1;
   }
   try
@@ -96,8 +96,7 @@ int main(int argc, char **argv)
 	}
       }
     }
-    std::cout << "writing modified document to 'article2.xml'..." << std::endl;
-    document->write_to_file("article2.xml");
+    write_to_file(*document, argv[2]);
   }
   catch (std::exception const &e)
   {

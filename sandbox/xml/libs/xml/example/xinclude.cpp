@@ -43,7 +43,7 @@ int main(int argc, char **argv)
       }
     }
     std::cout << "writing modified document to 'xi-book2.xml'..." << std::endl;
-    document->write_to_file(argv[2]);
+    write_to_file(*document, argv[2]);
   }
   catch (const std::exception &e)
   {

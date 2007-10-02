@@ -13,31 +13,13 @@ namespace dom
 template <typename S> class element;
 
 template <typename S>
-class cdata : public node<S>
+class cdata : public text<S> 
 {
-friend class element<S>;
+  friend class element<S>;
 public:
-  S content() const;
-  void set_content(S const &);
-
 // private:
-  cdata(xmlNode *a) : node<S>(a) {}
+  cdata(xmlNode *a) : text<S>(a) {}
 };
-
-template <typename S>
-S cdata<S>::content() const
-{
-  xmlChar *content = xmlNodeGetContent(this->impl());
-  S retn = converter<S>::out(content);
-  xmlFree(content);
-  return retn;
-}
-
-template <typename S>
-void cdata<S>::set_content(S const &content)
-{
-  xmlSetContent(this->impl(), converter<S>::in(content));
-}
 
 } // namespace boost::xml::dom
 } // namespace boost::xml

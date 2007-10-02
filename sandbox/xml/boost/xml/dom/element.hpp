@@ -84,7 +84,9 @@ public:
   node_ptr<node<S> > insert(child_iterator, node_ptr<node<S> > node);
   void remove(child_iterator);
 
-  bool has_content() const { return this->impl()->content;}
+  // FIXME: the implementation of has_content needs a full traversal
+  //        of the subtree. 
+  // bool has_content() const;
   S content() const;
   void set_content(S const &content);
   void append_content(S const &content);

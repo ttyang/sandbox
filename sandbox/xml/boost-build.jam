@@ -7,5 +7,5 @@
 # Set the BOOST_ROOT environment variable on your command-line or in the 
 # environment to point at the root of your regular Boost installation.
 
-JAMFILE = [Jj]amfile ;
+#JAMFILE = [Jj]amfile ;
 boost-build $(BOOST_ROOT)/tools/build/v2 ;

@@ -50,6 +50,8 @@ template <typename N>
 struct pointee<node_ptr<N> > { typedef N type;};
 
 template <typename T> class wrapper;
+template <typename T> T impl_cast(wrapper<T> *);
+template <typename T> T impl_cast(wrapper<T> const *);
 
 //. 
 class accessor
@@ -68,6 +70,8 @@ template <typename T>
 class wrapper : public accessor
 {
   friend class accessor;
+  template <typename T1> friend T1 impl_cast(wrapper<T1> *);
+  template <typename T1> friend T1 impl_cast(wrapper<T1> const *);
 public:
   wrapper(T t) : impl_(t) {}
 
@@ -78,6 +82,11 @@ protected:
 private:
   T impl_;
 };
+
+template <typename T>
+T impl_cast(wrapper<T> *w) { return w->impl();}
+template <typename T>
+T impl_cast(wrapper<T> const *w) { return w->impl();}
 
 template <typename N>
 node_ptr<N> ptr_factory(xmlNode *n) { return N(n);}
