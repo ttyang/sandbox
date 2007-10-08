@@ -90,6 +90,43 @@ struct ascending_bidirectional_cursor_tag
 struct ascending_random_access_cursor_tag
 	: public descending_random_access_cursor_tag {};
 
+// TODO: Complete this.
+template<class OutputIterator>
+class output_cursor_iterator_wrapper {
+protected:
+	OutputIterator& iter;
+public:
+	explicit output_cursor_iterator_wrapper(OutputIterator& i) : iter(i) {}
+
+	output_cursor_iterator_wrapper& operator=(output_cursor_iterator_wrapper const& x)
+	{
+		iter = x.iter;
+		return *this;
+	}
+
+	// Unfortunately, Output Iterators do not necessarily expose their
+	// value_type (they just give void), so the following member 
+	// function has to be a template.
+	// TODO: Consult C++0x if this has been changed
+	template <class ValueType>
+	output_cursor_iterator_wrapper& operator=(ValueType const& value)
+	{ 
+		*(iter++) = value;
+		return *this; 
+	}
+
+	output_cursor_iterator_wrapper& operator*() { return *this; }
+	output_cursor_iterator_wrapper& operator++() { return *this; }
+	output_cursor_iterator_wrapper operator++(int) { return *this; }
+	output_cursor_iterator_wrapper& begin() { return *this; }
+};
+
+template<class OutputIterator>
+inline output_cursor_iterator_wrapper<OutputIterator>
+outputter_cursor_iterator_wrapper(OutputIterator o)
+{
+	return output_cursor_iterator_wrapper<OutputIterator>(o);
+}
 
 //define freestanding begin, end, size, empty using node's member fns?
 
