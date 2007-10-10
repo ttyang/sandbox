@@ -52,43 +52,7 @@ struct test_searcher
 		return this->c;
 	}
 };
-// Test data from http://en.wikipedia.org/wiki/Image:Binary_search_tree.svg
-// (with root modified to carry 8 instead of 7, and with two additional nodes:
-// 11 inserted left of 13; 12 right of 11)
-// and in combination with http://en.wikipedia.org/wiki/Tree_traversal#Examples
-// (as tree shapes are equal [apart from the extra nodes])
-template <class Tree>
-void create_test_data_tree(Tree& ret)
-{
-	typename Tree::cursor cur = ret.insert(ret.shoot(), 8);
-	cur = ret.insert(cur, 3);
-	ret.insert(cur, 1);
-	cur = ret.insert(++cur, 6);
-	ret.insert(cur, 4);
-	ret.insert(++cur, 7);	
-	cur = ret.insert(ret.root().end(), 10);
-	cur = ret.insert(ret.root().end().end(), 14);	
-	cur = ret.insert(cur, 13);
-	cur = ret.insert(cur, 11);
-	cur = ret.insert(++cur, 12);
-}
 
-template <class Tree>
-void validate_test_data_tree(Tree const& ret)
-{
-	BOOST_CHECK(*ret.root().begin() == 8);
-	BOOST_CHECK(*ret.root().begin().begin() == 3);	
-	BOOST_CHECK(*ret.root().begin().begin().begin() == 1);
-	BOOST_CHECK(*ret.root().begin().end().begin() == 6);		
-	BOOST_CHECK(*ret.root().begin().end().begin().begin() == 4);	
-	BOOST_CHECK(*ret.root().begin().end().end().begin() == 7);	
-
-	BOOST_CHECK(*ret.root().end().begin() == 10);
-	BOOST_CHECK(*ret.root().end().end().begin() == 14);
-	BOOST_CHECK(*ret.root().end().end().begin().begin() == 13);
-	BOOST_CHECK(*ret.root().end().end().begin().begin().begin() == 11);
-	BOOST_CHECK(*ret.root().end().end().begin().begin().end().begin() == 12);
-}
 
 template <class Searcher>
 void create_test_data_searcher(Searcher& my_tree)

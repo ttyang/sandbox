@@ -11,6 +11,7 @@
 #include <boost/test/minimal.hpp>
 
 #include "helpers.hpp"
+#include "test_tree_traversal_data.hpp"
 
 //TODO: Make this a test suite.
 

@@ -9,6 +9,7 @@
 #include <boost/tree/searcher.hpp>
 
 #include "helpers.hpp"
+#include "test_tree_traversal_data.hpp"
 
 #include <boost/test/minimal.hpp>
 
