@@ -19,6 +19,9 @@ int test_main(int, char* [])
         signals::storage<void (float), signals::unfused> floater(2.5f);
         signals::storage<void (float), signals::unfused> collector(0.0f);
         
+        signals::slot_selector<void(), signals::storage<void (float), signals::unfused> >
+        ::dataflow<dataflow::signals_mechanism>::get_proxied_producer(fusion::front(floater.send_slot()).second);
+        
         // create the network (banger to floater.send, floater to collector)
         banger >>= floater.send_slot() >>= collector;
 
