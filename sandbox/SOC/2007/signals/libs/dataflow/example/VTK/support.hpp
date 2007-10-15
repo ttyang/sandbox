@@ -12,7 +12,7 @@
 #include "vtkRenderWindow.h"
 
 #include <boost/dataflow/support.hpp>
-#include <boost/dataflow/connection/producer_map.hpp>
+#include <boost/dataflow/connection/port_map.hpp>
 
 #include <boost/assert.hpp>
 #include <boost/mpl/and.hpp>
@@ -39,11 +39,11 @@ struct mechanism;
 namespace vtk {
 
 struct vtk_algorithm_output_producer
-    : public producer_category<concepts::producer, connections::none> {};
+    : public port_traits<mechanism, ports::producer, concepts::producer> {};
     
 } // namespace boost::dataflow::vtk
 
-DATAFLOW_PRODUCER_CATEGORY(vtk::mechanism, vtkAlgorithmOutput, vtk::vtk_algorithm_output_producer)
+DATAFLOW_PORT_CATEGORY(vtkAlgorithmOutput, vtk::vtk_algorithm_output_producer)
 
 //]
 
@@ -52,11 +52,12 @@ DATAFLOW_PRODUCER_CATEGORY(vtk::mechanism, vtkAlgorithmOutput, vtk::vtk_algorith
 namespace vtk {
 
 struct vtk_algorithm_consumer
-    : public consumer_category<concepts::consumer> {};
+    : public port_traits<mechanism, ports::consumer, concepts::consumer> {};
     
 } // namespace boost::dataflow::vtk
 
-DATAFLOW_CONSUMER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
+DATAFLOW_PORT_CATEGORY_ENABLE_IF(
+    T,
     boost::is_base_of<vtkAlgorithm BOOST_PP_COMMA() T>,
     vtk::vtk_algorithm_consumer)
 
@@ -66,7 +67,7 @@ DATAFLOW_CONSUMER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
 namespace extension {
 
     template<>
-    struct connect_impl<vtk::mechanism, vtk::vtk_algorithm_output_producer, vtk::vtk_algorithm_consumer>
+    struct binary_impl<vtk::mechanism, operations::connect, vtk::vtk_algorithm_output_producer, vtk::vtk_algorithm_consumer>
     {
         template<typename Producer, typename Consumer>
         struct apply
@@ -79,7 +80,7 @@ namespace extension {
     };
     
     template<>
-    struct connect_only_impl<vtk::mechanism, vtk::vtk_algorithm_output_producer, vtk::vtk_algorithm_consumer>
+    struct binary_impl<vtk::mechanism, operations::connect_only, vtk::vtk_algorithm_output_producer, vtk::vtk_algorithm_consumer>
     {
         template<typename Producer, typename Consumer>
         struct apply
@@ -101,11 +102,12 @@ namespace extension {
 namespace vtk {
 
 struct vtk_algorithm_proxy_producer
-    : public proxy_producer_category<vtkAlgorithmOutput> {};
+    : public proxy_port_traits<vtkAlgorithmOutput> {};
 
 } // namespace boost::dataflow::vtk
 
-DATAFLOW_PROXY_PRODUCER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
+DATAFLOW_PROXY_PORT_CATEGORY_ENABLE_IF(vtk::mechanism, ports::producer,
+    T,
     mpl::and_<
         typename boost::is_base_of<vtkAlgorithm BOOST_PP_COMMA() T> BOOST_PP_COMMA()
         mpl::not_<boost::is_base_of<vtkMapper BOOST_PP_COMMA() T> >
@@ -115,7 +117,7 @@ DATAFLOW_PROXY_PRODUCER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
 namespace extension {
 
     template<>
-    struct get_proxied_producer_impl<vtk::mechanism, vtk::vtk_algorithm_proxy_producer>
+    struct get_proxied_port_impl<vtk::mechanism, ports::producer, vtk::vtk_algorithm_proxy_producer>
     {
         template<typename ProxyProducer>
         struct apply
@@ -136,16 +138,25 @@ namespace extension {
 
 namespace vtk {
 
-struct vtk_actor_filter
-    : public producer_category<concepts::producer>
-    , public consumer_category<concepts::consumer>
+struct vtk_actor_producer
+    : public port_traits<mechanism, ports::producer, concepts::producer>
+{};
+
+struct vtk_actor_consumer
+    : public port_traits<mechanism, ports::consumer, concepts::consumer>
 {};
 
 }
 
-DATAFLOW_FILTER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
+DATAFLOW_PORT_CATEGORY_ENABLE_IF(
+    T,
     boost::is_base_of<vtkActor BOOST_PP_COMMA() T>,
-    vtk::vtk_actor_filter)
+    vtk::vtk_actor_producer)
+
+DATAFLOW_PORT_CATEGORY_ENABLE_IF(
+    T,
+    boost::is_base_of<vtkActor BOOST_PP_COMMA() T>,
+    vtk::vtk_actor_consumer)
     
 //]
 
@@ -154,9 +165,9 @@ DATAFLOW_FILTER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
 namespace vtk {
 
 struct vtk_mapper_producer
-    : public producer_category<concepts::producer> {};
+    : public port_traits<mechanism, ports::producer, concepts::producer> {};
 
-struct vtk_mapper_proxy : public producer<mechanism, vtk_mapper_producer>
+struct vtk_mapper_proxy : public port<vtk_mapper_producer>
 {
     vtkMapper *ptr;
     vtk_mapper_proxy(vtkMapper *mapper) : ptr(mapper) {}
@@ -165,29 +176,31 @@ struct vtk_mapper_proxy : public producer<mechanism, vtk_mapper_producer>
 
 typedef boost::fusion::map<
             boost::fusion::pair<vtk::vtk_algorithm_consumer, vtkAlgorithmOutput &>,
-            boost::fusion::pair<vtk::vtk_actor_filter, vtk_mapper_proxy>
+            boost::fusion::pair<vtk::vtk_actor_consumer, vtk_mapper_proxy>
         > vtk_mapper_map;
 
 struct vtk_mapper_proxy_producer
-    : public proxy_producer_category<
-        producer_map<vtk_mapper_map>
+    : public proxy_port_traits<
+        //ports::producer,
+        port_map<mechanism, ports::producer, vtk_mapper_map>
     > {};
     
 }
 
-DATAFLOW_PROXY_PRODUCER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
+DATAFLOW_PROXY_PORT_CATEGORY_ENABLE_IF(vtk::mechanism, ports::producer,
+    T,
     boost::is_base_of<vtkMapper BOOST_PP_COMMA() T>,
     vtk::vtk_mapper_proxy_producer)
 
 namespace extension {
 
     template<>
-    struct get_proxied_producer_impl<vtk::mechanism, vtk::vtk_mapper_proxy_producer>
+    struct get_proxied_port_impl<vtk::mechanism, ports::producer, vtk::vtk_mapper_proxy_producer>
     {
         template<typename ProxyProducer>
         struct apply
         {
-            typedef const producer_map<vtk::vtk_mapper_map> type;
+            typedef const port_map<vtk::mechanism, ports::producer, vtk::vtk_mapper_map> type;
             
             static type call(ProxyProducer &t)
             {
@@ -199,7 +212,7 @@ namespace extension {
     };
     
     template<>
-    struct connect_only_impl<vtk::mechanism, vtk::vtk_mapper_producer, vtk::vtk_actor_filter>
+    struct binary_impl<vtk::mechanism, operations::connect_only, vtk::vtk_mapper_producer, vtk::vtk_actor_consumer>
     {
         template<typename Producer, typename Consumer>
         struct apply
@@ -212,7 +225,7 @@ namespace extension {
     };
     
     template<>
-    struct connect_impl<vtk::mechanism, vtk::vtk_mapper_producer, vtk::vtk_actor_filter>
+    struct binary_impl<vtk::mechanism, operations::connect, vtk::vtk_mapper_producer, vtk::vtk_actor_consumer>
     {
         template<typename Producer, typename Consumer>
         struct apply
@@ -233,22 +246,33 @@ namespace extension {
 
 namespace vtk {
 
-struct vtk_renderer_filter
-    : public producer_category<concepts::producer>
-    , public consumer_category<concepts::consumer>
+struct vtk_renderer_producer
+    : public port_traits<mechanism, ports::producer, concepts::producer>
 {};
 
+struct vtk_renderer_consumer
+    : public port_traits<mechanism, ports::consumer, concepts::consumer>
+{};
+
+
 struct vtk_rendererwindow_consumer
-    : public consumer_category<concepts::consumer>
+    : public port_traits<mechanism, ports::consumer, concepts::consumer>
 {};
 
 }
 
-DATAFLOW_FILTER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
+DATAFLOW_PORT_CATEGORY_ENABLE_IF(
+    T,
     boost::is_base_of<vtkRenderer BOOST_PP_COMMA() T>,
-    vtk::vtk_renderer_filter)
+    vtk::vtk_renderer_producer)
 
-DATAFLOW_CONSUMER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
+DATAFLOW_PORT_CATEGORY_ENABLE_IF(
+    T,
+    boost::is_base_of<vtkRenderer BOOST_PP_COMMA() T>,
+    vtk::vtk_renderer_consumer)
+
+DATAFLOW_PORT_CATEGORY_ENABLE_IF(
+    T,
     boost::is_base_of<vtkRenderWindow BOOST_PP_COMMA() T>,
     vtk::vtk_rendererwindow_consumer)
 
@@ -257,7 +281,7 @@ DATAFLOW_CONSUMER_CATEGORY_ENABLE_IF(vtk::mechanism, T,
 namespace extension {
 
     template<>
-    struct connect_impl<vtk::mechanism, vtk::vtk_actor_filter, vtk::vtk_renderer_filter>
+    struct binary_impl<vtk::mechanism, operations::connect, vtk::vtk_actor_producer, vtk::vtk_renderer_consumer>
     {
         template<typename Producer, typename Consumer>
         struct apply
@@ -270,7 +294,7 @@ namespace extension {
     };
 
     template<>
-    struct connect_impl<vtk::mechanism, vtk::vtk_renderer_filter, vtk::vtk_rendererwindow_consumer>
+    struct binary_impl<vtk::mechanism, operations::connect, vtk::vtk_renderer_producer, vtk::vtk_rendererwindow_consumer>
     {
         template<typename Producer, typename Consumer>
         struct apply
@@ -290,29 +314,29 @@ namespace extension {
 namespace vtk {
 
 template<typename T>
-struct pointer_proxy_producer : public proxy_producer_category<T> {};
+struct pointer_proxy_port : public proxy_port_traits<T> {};
 
-template<typename T>
-struct pointer_proxy_consumer : public proxy_consumer_category<T> {};
+//template<typename T>
+//struct pointer_proxy_port : public proxy_port_traits<T> {};
 
 }
 
 template<typename T>
-struct proxy_producer_category_of<vtk::mechanism, T *>
+struct proxy_port_traits_of<vtk::mechanism, ports::producer, T *>
 {
-    typedef vtk::pointer_proxy_producer<T> type;
+    typedef vtk::pointer_proxy_port<T> type;
 };
 
 template<typename T>
-struct proxy_consumer_category_of<vtk::mechanism, T *>
+struct proxy_port_traits_of<vtk::mechanism, ports::consumer, T *>
 {
-    typedef vtk::pointer_proxy_consumer<T> type;
+    typedef vtk::pointer_proxy_port<T> type;
 };
 
 namespace extension {
 
     template<typename T>
-    struct get_proxied_producer_impl<vtk::mechanism, vtk::pointer_proxy_producer<T> >
+    struct get_proxied_port_impl<vtk::mechanism, ports::producer, vtk::pointer_proxy_port<T> >
     {
         template<typename ProxyProducer>
         struct apply
@@ -327,7 +351,7 @@ namespace extension {
     };
 
     template<typename T>
-    struct get_proxied_consumer_impl<vtk::mechanism, vtk::pointer_proxy_consumer<T> >
+    struct get_proxied_port_impl<vtk::mechanism, ports::consumer, vtk::pointer_proxy_port<T> >
     {
         template<typename ProxyConsumer>
         struct apply

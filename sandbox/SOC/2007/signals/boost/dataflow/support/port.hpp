@@ -3,18 +3,50 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_DATAFLOW_SUPPORT_PRODUCER_HPP
-#define BOOST_DATAFLOW_SUPPORT_PRODUCER_HPP
+#ifndef BOOST_DATAFLOW_SUPPORT_PORT_HPP
+#define BOOST_DATAFLOW_SUPPORT_PORT_HPP
 
 #include <boost/dataflow/detail/enable_if_defined.hpp>
-#include <boost/dataflow/support/common.hpp>
+//#include <boost/dataflow/support/common.hpp>
 
+#include <boost/mpl/and.hpp>
 #include <boost/mpl/assert.hpp>
-#include <boost/type_traits/integral_constant.hpp>
+#include <boost/mpl/bool.hpp>
 #include <boost/type_traits/is_same.hpp>
-
+#include <boost/type_traits/remove_cv.hpp>
 
 namespace boost { namespace dataflow {
+
+/// PortCategory types.
+namespace ports
+{
+    struct producer;
+    struct consumer;
+
+    struct producer
+    {
+        typedef consumer complement;
+    };
+
+    struct consumer
+    {
+        typedef producer complement;
+    };
+}
+
+/// Boolean metafunction determining whether a type is a PortCategory.
+template<typename T, typename Enable=void>
+struct is_port_category : public mpl::false_
+{};
+
+template<typename PortCategory>
+struct is_port_category<
+    PortCategory,
+    typename detail::enable_if_defined<
+        typename PortCategory::complement
+    >::type>
+ : public mpl::true_
+{};
 
 namespace concepts
 {
@@ -23,107 +55,194 @@ namespace concepts
     struct consumer;
 }
 
-namespace port
+/// Convenience class for PortTraits types.
+template<typename Mechanism, typename PortCategory, typename PortConcept>
+struct port_traits
 {
-    struct producer;
-    struct consumer;
-}
+    typedef Mechanism mechanism;
+    typedef PortCategory category; 
+    typedef PortConcept concept;
+};
 
-/*/// Convenience class for ProducerCategory types.
-template<typename ProducerConcept, typename OutConnectionsStored=connections::none>
-struct producer_category
-{
-    typedef ProducerConcept producer_concept;
-    typedef OutConnectionsStored out_connections_stored;
-};*/
-
-/// Trait determining adherence to the ProducerCategory concept.
-template<typename PortCategory, typename Enable=void>
-struct is_port_category : public boost::false_type
+/// Boolean metafunction determining whether a type is a PortTraits.
+template<typename PortTraits, typename Enable=void>
+struct is_port_traits : public mpl::false_
 {};
 
-template<typename PortCategory>
-struct is_port_category<PortCategory,
+template<typename PortTraits>
+struct is_port_traits<PortTraits,
     typename detail::enable_if_defined<
-        typename ProducerCategory::port_concept
+        detail::all_of<
+            typename PortTraits::mechanism,
+            typename PortTraits::category,
+            typename PortTraits::concept
+        >
     >::type>
- : public boost::mpl::true_
+ : public mpl::true_
+{
+    BOOST_MPL_ASSERT(( is_port_category<typename PortTraits::category> ));
+};
+
+/// Metafunction returning the PortTraits of a type.
+template<typename Mechanism, typename PortCategory, typename T, typename Enable=void>
+struct port_traits_of
 {};
 
-/// Trait returning the producer category of a type.
-template<typename Mechanism, typename Port, typename T, typename Enable=void>
-struct port_category_of
-{};
-
-/// Allows intrusive specification of the producer category.
-template<typename Mechanism, typename Port, typename T>
-struct port_category_of<Mechanism, T,
+/// Specialization allowing intrusive specification of the PortTraits.
+template<typename Mechanism, typename PortCategory, typename T>
+struct port_traits_of<Mechanism, PortCategory, T,
     typename detail::enable_if_defined<
-        typename T::template dataflow<Mechanism>::port<Port>::category >::type
+        typename T::template dataflow<Mechanism, PortCategory>::traits >::type
     >
 {
-    typedef typename T::template dataflow<Mechanism>::port<Port>::category type;
-    BOOST_MPL_ASSERT(( is_port_category<type> ));
+    typedef typename T::template dataflow<Mechanism, PortCategory>::traits type;
+    BOOST_MPL_ASSERT(( is_port_traits<type> ));
 };
 
-/// Trait determining adherence to the Producer concept.
-template<typename Mechanism, typename Port, typename T, typename Enable=void>
+/// Boolean metafunction determining whether a type is a Port.
+template<typename Mechanism, typename PortCategory, typename T, typename Enable=void>
 struct is_port
-    : public boost::false_type {};
+    : public mpl::false_ {};
 
-template<typename Mechanism, typename Port, typename T>
-struct is_producer<Mechanism, Port, T,
+template<typename Mechanism, typename PortCategory, typename T>
+struct is_port<Mechanism, PortCategory, T,
         typename detail::enable_if_defined<
-            typename port_category_of<Mechanism, Port, T>::type
+            typename port_traits_of<
+                Mechanism,
+                PortCategory,
+                typename remove_cv<T>::type
+            >::type
         >::type >
-    : public boost::true_type {};
+    : public mpl::true_ {};
 
-/// Convenience class for Producer types for a specific Mechanism. 
-template<typename Mechanism, typename ProducerTag>
-struct producer
+/// Convenience base class for Port types. 
+template<typename PortTraits>
+struct port
 {
-    template<typename M, typename Enable=void>
-    struct dataflow
-    {
-    };
+    template<typename Mechanism, typename PortCategory, typename Enable=void>
+    struct dataflow;
     
-    template<typename M>
-    struct dataflow<M, typename boost::enable_if<is_same<M, Mechanism> >::type>
+    template<typename Mechanism, typename PortCategory>
+    struct dataflow<
+        Mechanism,
+        PortCategory,
+        typename boost::enable_if<
+            mpl::and_<
+                is_same<Mechanism, typename PortTraits::mechanism>,
+                is_same<PortCategory, typename PortTraits::category>
+            >
+        >::type>
     {
-        typedef ProducerTag producer_category;
+        typedef PortTraits traits;
     };
 };
+
+// trait determining whether a type is a port proxy.
+template<typename Mechanism, typename PortCategory, typename T, typename Enable=void>
+struct is_proxy_port
+    : public mpl::false_ {};
+
+namespace extension
+{
+    template<typename Traits>
+    struct get_port_impl
+    {
+        template<typename T>
+        struct apply
+        {
+            typedef T & type;
+
+            static type call(T &p)
+            {
+                BOOST_MPL_ASSERT(( is_port<typename Traits::mechanism, typename Traits::category, T> ));
+                return p;
+            }
+        };
+    };
+}
+
+template<typename Mechanism, typename PortCategory, typename T, typename Enable=void>
+struct get_port_result_type;
+/*{
+    typedef T & type;
+};*/
+
+template<typename Mechanism, typename PortCategory, typename T>
+struct get_port_result_type<
+    Mechanism,
+    PortCategory,
+    T,
+    typename disable_if<is_proxy_port<Mechanism, PortCategory, T> >::type>
+{
+    typedef
+        typename
+            extension::get_port_impl<
+                typename port_traits_of<
+                    Mechanism,
+                    PortCategory,
+                    typename remove_cv<T>::type
+                >::type
+            >::template apply<T>::type type;
+};
+
+template<typename Mechanism, typename PortCategory, typename T>
+typename disable_if<
+    is_proxy_port<Mechanism, PortCategory, T>,
+    typename get_port_result_type<Mechanism, PortCategory, T>::type
+>::type
+get_port(T &p)
+{
+    return extension::get_port_impl<
+            typename port_traits_of<Mechanism, PortCategory, T>::type
+            >::template apply<T>::call(p);
+}
 
 /// Convenience class for Producer types for all Mechanisms. 
-template<typename ProducerTag>
-struct producer<all_mechanisms, ProducerTag>
+/*template<typename PortCategory, typename PortTag>
+struct port<all_mechanisms, PortCategory, PortTag>
 {
     template<typename M>
     struct dataflow
     {
-        typedef ProducerTag producer_category;
+        template<typename P, typename Enable=void>
+        struct port
+        {
+        };
+        
+        template<typename P>
+        struct port<P, typename boost::enable_if<is_same<P, PortCategory> >::type>
+        {
+            typedef PortTag category;
+        };
     };
-};
+};*/
 
 } } // namespace boost::dataflow
 
-/// Macro simplifying non-intrusive specification of a type's producer category.
-#define DATAFLOW_PRODUCER_CATEGORY(m,p,pc) \
+/// Macro simplifying non-intrusive specification of a type's PortTraits.
+#define DATAFLOW_PORT_CATEGORY(Type,PortTraits) \
 template<> \
-struct producer_category_of<m, p> \
+struct port_traits_of< \
+    PortTraits::mechanism, \
+    PortTraits::category, \
+    Type> \
 { \
-    typedef pc type; \
-    BOOST_MPL_ASSERT(( is_producer_category<type> )); \
+    typedef PortTraits type; \
+    BOOST_MPL_ASSERT(( is_port_traits<type> )); \
 };
 
 /// Macro simplifying non-intrusive specification of multiple types'
-/// producer category, using a boost::enable_if condition.
-#define DATAFLOW_PRODUCER_CATEGORY_ENABLE_IF(m,P,Cond,pc) \
-template<typename P> \
-struct producer_category_of<m, P, typename boost::enable_if< Cond >::type> \
+/// PortTraits, using a boost::enable_if condition.
+#define DATAFLOW_PORT_CATEGORY_ENABLE_IF(Type,Cond,PortTraits) \
+template<typename Type> \
+struct port_traits_of< \
+    typename PortTraits::mechanism, \
+    typename PortTraits::category, \
+    Type, \
+    typename boost::enable_if< Cond >::type> \
 { \
-    typedef pc type; \
-    BOOST_MPL_ASSERT(( is_producer_category<type> )); \
+    typedef PortTraits type; \
+    BOOST_MPL_ASSERT(( is_port_traits<type> )); \
 };
 
-#endif // BOOST_DATAFLOW_SUPPORT_PRODUCER_HPP
+#endif // BOOST_DATAFLOW_SUPPORT_PORT_HPP
