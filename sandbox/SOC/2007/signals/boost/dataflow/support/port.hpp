@@ -7,11 +7,12 @@
 #define BOOST_DATAFLOW_SUPPORT_PORT_HPP
 
 #include <boost/dataflow/detail/enable_if_defined.hpp>
-//#include <boost/dataflow/support/common.hpp>
 
 #include <boost/mpl/and.hpp>
+#include <boost/mpl/at.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/is_sequence.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 
@@ -91,13 +92,25 @@ struct port_traits_of
 /// Specialization allowing intrusive specification of the PortTraits.
 template<typename Mechanism, typename PortCategory, typename T>
 struct port_traits_of<Mechanism, PortCategory, T,
-    typename detail::enable_if_defined<
-        typename T::template dataflow<Mechanism, PortCategory>::traits >::type
-    >
+    typename enable_if<
+        mpl::and_<
+            mpl::not_<mpl::is_sequence<typename T::port_traits> >,
+            is_same<Mechanism, typename T::port_traits::mechanism>,
+            is_same<PortCategory, typename T::port_traits::category>
+        >
+    >::type
+>
 {
-    typedef typename T::template dataflow<Mechanism, PortCategory>::traits type;
+    typedef typename T::port_traits type;
     BOOST_MPL_ASSERT(( is_port_traits<type> ));
 };
+
+} }
+
+/// Specialization allowing intrusive specification of a sequence of PortTraits.
+#include <boost/dataflow/support/port/detail/port_traits_sequence.hpp>
+
+namespace boost { namespace dataflow {
 
 /// Boolean metafunction determining whether a type is a Port.
 template<typename Mechanism, typename PortCategory, typename T, typename Enable=void>
@@ -119,22 +132,7 @@ struct is_port<Mechanism, PortCategory, T,
 template<typename PortTraits>
 struct port
 {
-    template<typename Mechanism, typename PortCategory, typename Enable=void>
-    struct dataflow;
-    
-    template<typename Mechanism, typename PortCategory>
-    struct dataflow<
-        Mechanism,
-        PortCategory,
-        typename boost::enable_if<
-            mpl::and_<
-                is_same<Mechanism, typename PortTraits::mechanism>,
-                is_same<PortCategory, typename PortTraits::category>
-            >
-        >::type>
-    {
-        typedef PortTraits traits;
-    };
+    typedef PortTraits port_traits;  
 };
 
 // trait determining whether a type is a port proxy.
@@ -196,26 +194,6 @@ get_port(T &p)
             typename port_traits_of<Mechanism, PortCategory, T>::type
             >::template apply<T>::call(p);
 }
-
-/// Convenience class for Producer types for all Mechanisms. 
-/*template<typename PortCategory, typename PortTag>
-struct port<all_mechanisms, PortCategory, PortTag>
-{
-    template<typename M>
-    struct dataflow
-    {
-        template<typename P, typename Enable=void>
-        struct port
-        {
-        };
-        
-        template<typename P>
-        struct port<P, typename boost::enable_if<is_same<P, PortCategory> >::type>
-        {
-            typedef PortTag category;
-        };
-    };
-};*/
 
 } } // namespace boost::dataflow
 

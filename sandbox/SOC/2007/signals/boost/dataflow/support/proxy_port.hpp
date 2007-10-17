@@ -37,7 +37,7 @@ struct is_proxy_port_traits<T,
     : public mpl::true_
 {};
 
-template<typename Mechanism, typename PortCategory, typename T>
+template<typename Mechanism, typename PortCategory, typename T, typename GetProxiedObject>
 struct default_proxy_port : public proxy_port_traits<Mechanism, PortCategory>
 {};
 
@@ -56,6 +56,29 @@ struct proxy_port_traits_of<Mechanism, PortCategory, T,
 {
     typedef typename T::template dataflow<Mechanism, PortCategory>::proxy_port_traits type;
 };
+
+/// Specialization allowing intrusive specification of the PortTraits.
+template<typename Mechanism, typename PortCategory, typename T>
+struct proxy_port_traits_of<Mechanism, PortCategory, T,
+    typename enable_if<
+        mpl::and_<
+            mpl::not_<mpl::is_sequence<typename T::proxy_port_traits> >,
+            is_same<Mechanism, typename T::proxy_port_traits::mechanism>,
+            is_same<PortCategory, typename T::proxy_port_traits::category>
+        >
+    >::type
+>
+{
+    typedef typename T::proxy_port_traits type;
+    BOOST_MPL_ASSERT(( is_proxy_port_traits<type> ));
+};
+
+} }
+
+/// Specialization allowing intrusive specification of a sequence of PortTraits.
+#include <boost/dataflow/support/port/detail/proxy_port_traits_sequence.hpp>
+
+namespace boost { namespace dataflow {
 
 template<typename Mechanism, typename PortCategory, typename T>
 struct is_proxy_port<Mechanism, PortCategory, T,
@@ -83,8 +106,8 @@ get_port(T &t)
 
 namespace extension
 {
-    template<typename Mechanism, typename PortCategory, typename ProxiedPort>
-    struct get_port_impl<default_proxy_port<Mechanism, PortCategory, ProxiedPort> >
+    template<typename Mechanism, typename PortCategory, typename ProxiedPort, typename GetProxiedObject>
+    struct get_port_impl<default_proxy_port<Mechanism, PortCategory, ProxiedPort, GetProxiedObject> >
     {
         template<typename ProxyPort>
         struct apply
@@ -98,9 +121,7 @@ namespace extension
             
             static type call(ProxyPort &t)
             {
-                return get_port<Mechanism, PortCategory>(
-                    ProxyPort::template dataflow<Mechanism, PortCategory>
-                        ::get_proxied_port(t));
+                return  get_port<Mechanism, PortCategory>(GetProxiedObject()(t));
             }
         };
     };
