@@ -22,7 +22,7 @@ namespace concepts
 
 namespace extension
 {
-    template<typename Mechanism, typename KeyedPortTag, typename KeyPortTag>
+    template<typename KeyedPortTag, typename KeyPortTag>
     struct get_keyed_port_impl
     {        
         template<typename KeyedPort, typename Key>
@@ -41,7 +41,6 @@ namespace extension
     
 template<typename Mechanism, typename PortCategory, typename T1, typename T2>
 typename extension::get_keyed_port_impl<
-    Mechanism,
     typename port_traits_of<
         Mechanism, PortCategory, typename boost::remove_cv<T1>::type
     >::type,
@@ -52,14 +51,13 @@ typename extension::get_keyed_port_impl<
 get_keyed_port(T1 &t1, T2 &t2)
 {
     return extension::get_keyed_port_impl<
-        Mechanism,
         typename port_traits_of<
             Mechanism, PortCategory, typename boost::remove_cv<T1>::type
         >::type,
         typename port_traits_of<
             Mechanism, typename PortCategory::complement, typename boost::remove_cv<T2>::type
         >::type
-    >::template apply<const T1, const T2>::call(t1, t2);
+    >::template apply<T1, T2>::call(t1, t2);
 }
 
 namespace extension

@@ -21,10 +21,14 @@ int test_main(int, char* [])
             signals::storage<void (float), signals::unfused> floater;
             floater(2.5f);
             signals::storage<void (float), signals::unfused> collector(0.0f);
-            
+
+            banger | counter;
+            floater >>= collector;
+            connect(banger, floater.send_slot());
+/*            
             banger
                 | counter
-                | (floater >>= collector).send_slot();
+                | (floater >>= collector).send_slot();*/
             
             banger();
             BOOST_CHECK_EQUAL(counter.count(), 1);

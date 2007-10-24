@@ -24,46 +24,47 @@ struct fusion_map_port
 
 template<typename Mechanism, typename PortCategory, typename T>
 class port_map
-    : public port<fusion_map_port<Mechanism, PortCategory> >
 {
+    struct get_proxied_object
+    {
+        typename port_map::proxy_port_for & operator()(const port_map &map)
+        {
+            return boost::fusion::front(map.t).second;
+        }
+    };
+//                typedef typename boost::fusion::result_of::value_at_c<T, 0>::type::second_type
+//        proxy_consumer_for;
+    typedef
+        typename boost::remove_reference<
+            typename boost::remove_const<
+                typename boost::remove_reference<
+                    typename boost::fusion::result_of::front<T>::type
+                >::type
+            >::type::second_type
+        >::type proxy_port_for;
 public:
     typedef Mechanism mechanism_type;
     typedef PortCategory port_category_type;
     typedef T map_type;
     
     port_map(const T& t) : t(t) {}
-    const map_type &map() const {return t;}
+    map_type &map() const {return t;}
     
+    typedef fusion_map_port<Mechanism, PortCategory> port_traits;
+    typedef mutable_proxy_port<
+        Mechanism,
+        typename PortCategory::complement,
+        proxy_port_for,
+        get_proxied_object> proxy_port_traits;
+
 private:
-    map_type t;
-
-public:
-
-/*    template<typename PT>
-    struct dataflow<Mechanism, PT, typename enable_if<is_same<PT, typename PortCategory::complement> >::type >
-    {
-//                typedef typename boost::fusion::result_of::value_at_c<T, 0>::type::second_type
-//        proxy_consumer_for;
-        typedef
-            typename boost::remove_const<
-                typename boost::remove_reference<
-                    typename boost::fusion::result_of::front<T>::type
-                >::type
-            >::type::second_type proxy_consumer_for;
-
-        typedef mutable_proxy_port<Mechanism, typename PortCategory::complement, proxy_consumer_for> proxy_port_traits;
-        static typename get_port_result_type<Mechanism, typename PortCategory::complement, proxy_consumer_for>::type
-        get_proxied_port(const port_map &map)
-        {
-            return get_port<typename PortCategory::complement>(boost::fusion::front(map.t).second);
-        }
-    };*/
+    mutable map_type t;
 };
 
 namespace extension
 {
     template<typename Mechanism, typename PortCategory, typename KeyTag>
-    struct get_keyed_port_impl<Mechanism, fusion_map_port<Mechanism, PortCategory>, KeyTag>
+    struct get_keyed_port_impl<fusion_map_port<Mechanism, PortCategory>, KeyTag>
     {
         template<typename KeyedPort, typename Key>
         struct apply

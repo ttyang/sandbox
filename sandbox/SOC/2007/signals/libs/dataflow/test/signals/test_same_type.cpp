@@ -19,8 +19,8 @@ public:
 	signals::counter<void (), signals::unfused> other;
 }; // end class Signal2VoidCounter
 
-class Signal2VoidInputs : public boost::dataflow::consumer<
-    boost::dataflow::signals_mechanism, boost::dataflow::signal_consumer>
+class Signal2VoidInputs
+    : public boost::dataflow::port<boost::dataflow::signals::keyed_consumer>
 {
 	int result;
 public:
