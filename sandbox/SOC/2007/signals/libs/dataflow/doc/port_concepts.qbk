@@ -3,14 +3,16 @@
 A [PortCategoryConcept] designates a category of port in the Dataflow library.
 The library currently defines two [PortCategoryConcept]s:
 
- * `boost::dataflow::ports::producer`, and
- * `boost::dataflow::ports::consumer`
+* `boost::dataflow::ports::producer`, and
+* `boost::dataflow::ports::consumer`.
+
+For a higher-level overview of the concepts, see the [concepts] introduction.
 
 [heading Notation]
 The following expressions are used in this document:
 
 [variablelist
-    [[PT] [A [PortCategoryConcept] type.]]
+    [[PC] [A [PortCategoryConcept] type.]]
 ]
 
 [heading Requirements]
@@ -19,17 +21,21 @@ The following expressions are used in this document:
     [[Name] [Expression] [Result Type] [Description]]
     [
         [Opposite PortCategory]
-        [`PT::complement`]
+        [`PC::complement`]
         [[PortCategoryConcept] type]
         [
-            The complementing [PortCategoryConcept] of `PT`, meaning that connections
-            can be made between [PortCategoryConcept]s of [PortCategoryConcept] `PT` and
-            [PortConcept]s of [PortCategoryConcept] `PT::complement`.
+            The complementing [PortCategoryConcept] of `PC`, meaning that it
+            is possible to make connections between [PortConcept]s of
+            [PortCategoryConcept] `PC` and [PortConcept]s of
+            [PortCategoryConcept] `PC::complement`.
         ]
     ]
 ]
 
 [heading Header]
+
+The types, templates, and functions shown here are declared in the following
+files:
 
 ```
     #include <boost/dataflow/support/port.hpp> // or
@@ -45,7 +51,7 @@ A ['[PortTraitsConcept]] specifies the traits of a [PortConcept].
 [heading Notation]
 [variablelist
     [[PC] [A PortTraits type.]]
-    [[P] [A [PortConcept] type of producer category `PC`.]]
+    [[P] [A [PortConcept] type with port traits `PC`.]]
 ]
 
 [heading Requirements]
@@ -72,6 +78,8 @@ A ['[PortTraitsConcept]] specifies the traits of a [PortConcept].
 ]
 
 [heading Header]
+The types, templates, and functions shown here are declared in the following
+files:
 
 ```
     #include <boost/dataflow/support/port.hpp> // or
@@ -82,7 +90,13 @@ A ['[PortTraitsConcept]] specifies the traits of a [PortConcept].
 
 [heading Examples]
 
-[endsect][/producertraits]
+The following code defines a port traits type for vtk_algorithm_output,
+and associates it with this type. It is a part of
+the [vtk_example example showing how to provide a VTK support layer].
+
+[vtk_algorithm_output_producer]
+
+[endsect][/porttraits]
 
 
 [section:port Port (ProducerPort, ConsumerPort)]
@@ -92,12 +106,11 @@ if it specifies a [PortTraitsConcept] for that mechanism and port category.
 
 In that case,
 
-* If `PC` is `ports::producer`, then `P` is a `ProducerPort`
-* If `PC` If `ports::consumer`, then `P` is a `ConsumerPort`
+* If `PC` is `ports::producer`, then `P` is a [ProducerPortConcept]
+* If `PC` If `ports::consumer`, then `P` is a [ConsumerPortConcept]
 
 [heading Refinements]
-* [SingleTypePort]
-* [PhoenixPortConcept]
+
 
 [heading Notation]
 The following expressions are used in this document:
@@ -113,8 +126,7 @@ The following expressions are used in this document:
     [[Name] [Expression] [Result Type] [Semantics]]
     [
         [Port Traits]
-        [`port_traits_of<M, PC, P>::type`
-         [footnote `namespace boost::dataflow`]]
+        [`port_traits_of<M, PC, P>::type`]
         [Any [PortTraitsConcept] type]
         [
             The [PortTraitsConcept] of the port.
@@ -122,8 +134,7 @@ The following expressions are used in this document:
     ]
     [
         [IsPort Trait]
-        [`is_port<M, PC, P>::type`
-         [footnote `namespace boost::dataflow`]]
+        [`is_port<M, PC, P>::type`]
         [Boolean metafunction that evaluates to true]
         [
             A trait encapsulating adherence to the Port
@@ -133,6 +144,8 @@ The following expressions are used in this document:
 ]
 
 [heading Header]
+The types, templates, and functions shown here are declared in the following
+files:
 
 ```
     #include <boost/dataflow/support/port.hpp> // or
@@ -207,6 +220,8 @@ The following expressions are used in this document:
 ]
 
 [heading Header]
+The types, templates, and functions shown here are declared in the following
+files:
 
 ```
     #include <boost/dataflow/support/proxy_port.hpp> // or
