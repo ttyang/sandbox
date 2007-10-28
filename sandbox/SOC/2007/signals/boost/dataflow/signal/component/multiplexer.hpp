@@ -10,7 +10,7 @@
 #include <boost/dataflow/signal/component/conditional_templated.hpp>
 #include <boost/dataflow/signal/connection/slot_selector.hpp>
 
-#include <boost/fusion/sequence/container/map.hpp>
+#include <boost/fusion/container/map.hpp>
 
 #include <functional>
 

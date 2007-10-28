@@ -7,7 +7,7 @@
 #define BOOST_DATAFLOW_PHOENIX_COMPONENT_CONSUMER_HPP
 
 #include <boost/utility/result_of.hpp>
-#include <boost/fusion/sequence/container/vector.hpp>
+#include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/sequence/intrinsic/at.hpp>
 #include <boost/spirit/phoenix/core/actor.hpp>
 

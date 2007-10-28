@@ -8,7 +8,7 @@
 
 #include <boost/dataflow/detail/make_ref.hpp>
 
-#include <boost/fusion/sequence/view/transform_view.hpp>
+#include <boost/fusion/view/transform_view.hpp>
 
 namespace boost { namespace phoenix {
 
