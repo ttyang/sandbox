@@ -3,10 +3,11 @@
 // 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-// DO NOT INCLUDE THIS FILE DIRECTLY
 
 #ifndef DATAFLOW_TEMPLATE_MECHANISM
 #error DATAFLOW_TEMPLATE_MECHANISM undefined.
+#endif
+#ifndef DATAFLOW_TEMPLATE_BINARY_OPERATION
 #error DATAFLOW_TEMPLATE_BINARY_OPERATION undefined.
 #endif
 
