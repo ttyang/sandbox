@@ -27,21 +27,17 @@ namespace extension
     template<typename Operation, typename PortTraits, typename Enable=void>
     struct unary_operation_impl
     {
-        template<typename Producer>
-        struct apply
+        struct detail
         {
-            struct detail
-            {
-                typedef void not_specialized;
-            };
-
-            static void call(Producer &)
-            {
-                // Error: unary_operation_impl Operation has not been
-                // implemented for PortTraits.
-                BOOST_STATIC_ASSERT(sizeof(Producer)==0);
-            }
+            typedef void not_specialized;
         };
+        template<typename Producer>
+        void operator()(Producer &)
+        {
+            // Error: unary_operation_impl Operation has not been
+            // implemented for PortTraits.
+            BOOST_STATIC_ASSERT(sizeof(Producer)==0);
+        }
     };
 }
 
@@ -59,7 +55,7 @@ struct implements_unary_operation<
         typename extension::unary_operation_impl<
             Operation,
             typename port_traits_of<Mechanism, PortCategory, Producer>::type
-        >::template apply<Producer>::detail::not_specialized
+        >::detail::not_specialized
     >::type
 >
     : public mpl::false_ {};
@@ -70,7 +66,7 @@ void unary_operation(Port &producer)
     extension::unary_operation_impl<
         Operation,
         typename port_traits_of<Mechanism, PortCategory, Port>::type
-    >::template apply<Port>::call(producer);
+    >()(producer);
 }
 
 } } // namespace boost::dataflow
