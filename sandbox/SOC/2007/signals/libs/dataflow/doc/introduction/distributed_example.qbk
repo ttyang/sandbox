@@ -1,0 +1,43 @@
+[section:distributed Implementing distributed dataflow applications using
+    Dataflow.Signals and Boost.Asio]
+
+This example shows how you can take advantage of dataflow programming
+to create distributed applications.  It works as long as the data
+passed in the signal is serializable using [BoostSerialization].
+
+[DataflowSignals] provides two components
+which can be used to create a producer-consumer connection between two
+computers: [socket_sender] and [socket_receiver].  As long as we have
+a network socket set up between two computers, we can do the following to
+set up a connection between a [SignalProducerConcept] on one computer with a
+[SignalConsumerConcept] on another:
+
+* On the [SignalProducerConcept]'s computer, construct a [socket_sender] of
+the appropriate `Signature` with the given socket.
+[connect] the [SignalProducerConcept] to the [socket_sender].
+* On the [SignalConsumerConcept]'s computer, construct a [socket_receiver] of
+the appropriate `Signature` with the given socket.
+[connect] the [socket_receiver] to the [SignalConsumerConcept].
+
+That's it.  Now, every signal sent out of the [SignalProducerConcept] should
+be received by the [SignalConsumerConcept].
+
+The following is a modification of the example from the
+[link dataflow.introduction.dataflow motivation section] to a dataflow
+network that straddles a network socket:
+
+[simple_distributed_example]
+
+A sample run produces:
+
+[pre
+0.213436
+-0.49558
+1.57538
+-1.0592
+1.83927
+1.88577
+...
+]
+
+[endsect][/distributed]

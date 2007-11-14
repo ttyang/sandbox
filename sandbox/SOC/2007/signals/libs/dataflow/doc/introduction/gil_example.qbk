@@ -1,0 +1,202 @@
+[section:gil An image processing network using Dataflow.Signals and Boost.GIL]
+
+The [link dataflow.introduction.motivation motivation] section introduced a
+hypothetical video processing example.  Here, we will present an actual
+image processing example using Boost.GIL (as much as we can using only
+Boost libraries).
+
+Our final network will look like this:
+[pre
+    .
+                      ,---------.
+                      | control | -----------------------+
+                      \`---------'                        |
+                           |                             |
+                           v                             v
+       ,-------.     ,-----------.                   ,-------.
+       | timer | --> | generator | -+--------------> 0       |    ,---------.  
+       \`-------'     \`-----------'  |                |  mux  | -> | display |
+                                    |  ,--------.    |       |    \`---------'
+                                    +->| filter |--> 1       |
+                                       \`--------'    \`-------'
+    
+]
+
+The role of the `timer` is to drive the network at a set frame rate.
+The `generator` will produce an image each time it receives a signal
+from the `timer`.
+The `mux` will receive two signals - one directly from the `generator` and one
+from the `filter` (which will add some noise to the generated image).
+The output of the `mux` will go to the `display`.
+
+To control the network, we will also implement a `control` component, which
+will in this case control the `generator` (setting the greyscale value of
+the generated image), and the `mux` (choosing either the filtered or the
+unfiltered image to go to the display).
+
+Before we begin, here is some preliminary code:
+
+[gil_example_preliminary]
+
+Our first task will be to implement an image generator.  For simplicity,
+our image generator will generate a grayscale image of a specified shade:
+
+[gil_example_image_generator]
+
+Next, let's implement a filter which adds noise to the image:
+
+[gil_example_noise_adder]
+
+And then an image display component.  In the absence of a GUI library, we will
+approximate the image display using ASCII characters.
+
+[gil_example_image_display]
+
+To add some interactivity to the network, we will also implement a simple
+controller.  The controller will respond to characters on `cin`, and based
+on the input output two control signals (a greyscale value for the
+`image_generator`, and an input selector signal for the multiplexer).
+
+[gil_example_controller]
+
+Finally, we put together the network:
+
+[gil_example_main]
+
+Here is some sample output (with input characters marked):
+
+[pre
+
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+
+. <-- input (increase grayscale value)
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+;;;;;;;;;;
+
+. <-- input (increase grayscale value)
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+
+. <-- input (increase grayscale value)
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+
+. <-- input (increase grayscale value)
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+
+, <-- input (decrease grayscale value)
+
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+
+1 <-- input (switch multiplexer to output of noise adder)
+\*\*\*\*#\*\*#\*#
+###\*\*\*\*\*\*\*
+\*\*\*\*\*\*\*\*\*\*
+#\*\*######\*
+\*#\*#\*\*\*\*\*\*
+\*\*#\*#\*####
+\*\*##\*\*\*\*#\*
+\*\*\*#\*\*\*\*\*\*
+\*###\*\*\*##\*
+\*\*\*#\*\*\*\*\*#
+
+\*\*\*#\*\*\*\*\*#
+#\*\*#\*#\*#\*\*
+#\*\*##\*\*#\*\*
+\*#\*\*\*\*\*#\*#
+#;#\*\*#\*\*\*#
+\*\*\*\*###\*#\*
+\*\*#\*\*\*####
+\*#\*\*\*\*\*\*\*#
+\*\*######\*\*
+\*\*##\*\*\*##\*
+
+#\*\*\*\*\*\*\*\*\*
+\*\*#\*#\*\*\*#\*
+\*\*#\*\*\*\*\*#\*
+\*#\*\*#\*\*\*#\*
+\*\*\*\*\*#\*\*##
+\*\*\*\*\*\*#\*#\*
+\*\*\*\*#\*\*\*#\*
+\*\*#\*\*\*\*\*\*#
+\*\*\*\*#\*\*\*\*\*
+#\*\*\*######
+
+. <-- input (increase grayscale value)
+\*#########
+######\*###
+#######\*$#
+##########
+####$#####
+#####\*####
+#\*##\*#####
+##########
+##\*######\*
+########$#
+
+0 <-- input (switch mutiplexer back to the generated image)
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+##########
+
+]
+
+[endsect]
