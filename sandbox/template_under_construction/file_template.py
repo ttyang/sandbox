@@ -282,7 +282,7 @@ class Template(object):
                     continue
                 fignored=False
                 for item in fignore_list:
-                    if name.endswith(item):
+                    if name.endswith(item) or name.endswith(item+'.py'):
                         fignored=True
                         break
                 if fignored:
