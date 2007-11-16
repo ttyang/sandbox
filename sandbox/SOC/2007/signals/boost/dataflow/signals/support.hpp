@@ -15,7 +15,11 @@ namespace boost { namespace dataflow {
 
 namespace signals {
 
-struct mechanism;
+struct mechanism
+{
+    template<typename PortTraits, typename Enable=void>
+    struct runtime_connection;
+};
 
 template<typename T>
 struct producer
@@ -24,16 +28,16 @@ struct producer
     typedef T signature_type;
 };
 
-struct call_consumer
-    : public port_traits<mechanism, ports::consumer, concepts::keyed_port>
-{};
-
 template<typename T>
 struct consumer
     : public port_traits<mechanism, ports::consumer, concepts::port>
 {
     typedef T signature_type;
 };
+
+struct call_consumer
+    : public port_traits<mechanism, ports::consumer, concepts::keyed_port>
+{};
 
 } // namespace signals
 
