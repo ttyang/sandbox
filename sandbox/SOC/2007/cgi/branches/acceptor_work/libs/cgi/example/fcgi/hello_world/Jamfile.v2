@@ -1,10 +1,10 @@
 
-project cgi.examples.hello_world
+project cgi.examples.fcgi.hello_world
   : build-dir
     $(PROJECT_ROOT)/bin.v2
   ;
 
-exe hw
+exe fast_hw
   :
     main.cpp
   :
@@ -16,9 +16,10 @@ exe hw
     <define>_SCL_SECURE_NO_WARNINGS
   ;
 
-install hw_i
-  : hw
+install fast_hw_install
+  : fast_hw
   : #<location>$(BOOST_CGI_BIN_DIR)
-    <location>.
+    #<location>.
+    <location>C:/Apache/Apache2.2/fcgi-bin
   ;
 
