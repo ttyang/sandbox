@@ -61,7 +61,7 @@
      context_impl_base must have conform to the ContextImplBase concept:
        
      - DefaultConstructible. A default constructed ContextImplBase is in
-       an unitialized state. 
+       an initialized state. 
        A ContextImpl is an initialized ContextImplBase.
 
      - ContextImplBase is Copyable. A copy of a ContextImplBase holds
@@ -81,25 +81,38 @@
        Postconditions:
        The current context is saved in the 'from' context, and the
        'to' context is restored. 
-       It is undefined behaviour if the 'to' argument is an invalid 
-       (uninitialized) swapcontext.
+       It is undefined behavior if the 'to' argument is an invalid 
+       (uninitialized) swap context.
 	   
      A ContextImplBase is meant to be used when an empty temporary
      context is needed to store the current context before
      restoring a ContextImpl and no current context is
      available. It could be possible to simply have ContextImpl
-     default constructible, but on destruciton it would need to
+     default constructible, but on destruction it would need to
      check if a stack has been allocated and would slow down the
-     fast invcation path. Also a stackful context could not be
-     make copiable.
+     fast invocation path. Also a stack-full context could not be
+     make copyable.
 */
 
 #if defined(__linux) || defined(linux) || defined(__linux__)
+
+#if defined(__x86_64__)
+// 64 bit systems, use appropriate context switching
+
+#include <boost/coroutine/detail/context_linux64.hpp>
+namespace boost { namespace coroutines { namespace detail {
+  typedef oslinux64::context_impl default_context_impl;
+} } }
+
+#else
+// use 32 bit context switching
 
 #include <boost/coroutine/detail/context_linux.hpp>
 namespace boost { namespace coroutines { namespace detail {
   typedef oslinux::context_impl default_context_impl;
 } } }
+
+#endif
 
 #elif defined(_POSIX_VERSION)
 
@@ -107,7 +120,9 @@ namespace boost { namespace coroutines { namespace detail {
 namespace boost { namespace coroutines { namespace detail {
   typedef posix::context_impl default_context_impl;
 } } }
+
 #elif defined(BOOST_WINDOWS)
+
 #include <boost/coroutine/detail/context_windows.hpp>
 namespace boost { namespace coroutines { namespace detail {
   typedef windows::context_impl default_context_impl;

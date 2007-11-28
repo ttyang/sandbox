@@ -42,17 +42,17 @@ namespace boost {namespace coroutines {namespace detail{
 
     /*
      * This number (0x1E00) has been sighted in the wild (at least on windows XP systems)
-     * as return value from GetCurrentFiber() on non fibrous threads. This is sowehow related
+     * as return value from GetCurrentFiber() on non fibrous threads. This is somehow related
      * to OS/2 where the current fiber pointer is overloaded as a version field.
      * On non-NT systems, 0 is returned. 
      */
-    fiber_ptr fiber_magic = reinterpret_cast<fiber_ptr>(0x1E00);
-		
+    fiber_ptr const fiber_magic = reinterpret_cast<fiber_ptr>(0x1E00);
+                
     /*
      * Return true if current thread is a fiber.
-     * FIXME: on longhorn shoud use IsThreadAFiber
+     * FIXME: on longhorn should use IsThreadAFiber
      */
-    bool is_fiber() {
+    inline bool is_fiber() {
       fiber_ptr current = GetCurrentFiber();
       return current != 0 && current != fiber_magic;
     }
@@ -71,8 +71,8 @@ namespace boost {namespace coroutines {namespace detail{
        * but can be saved in.
        */
       fibers_context_impl_base() :
-	m_ctx(0) {}
-	
+        m_ctx(0) {}
+        
       /*
        * Free function. Saves the current context in @p from
        * and restores the context in @p to. On windows the from
@@ -89,34 +89,34 @@ namespace boost {namespace coroutines {namespace detail{
       friend 
       void 
       swap_context(fibers_context_impl_base& from, 
-		   const fibers_context_impl_base& to,
-		   default_hint) {
-	if(!is_fiber()) {
-	  BOOST_ASSERT(from.m_ctx == 0);
-	  from.m_ctx = ConvertThreadToFiber(0);
-	  BOOST_ASSERT(from.m_ctx != 0);
-	  
-	  SwitchToFiber(to.m_ctx); 
-	  
-	  BOOL result = ConvertFiberToThread();
-	  BOOST_ASSERT(result);
-	  (void)result;
-	  from.m_ctx = 0;
-	} else {
-	  bool call_from_main = from.m_ctx == 0;
-	  if(call_from_main)
-	    from.m_ctx = GetCurrentFiber();
-	  SwitchToFiber(to.m_ctx); 
-	  if(call_from_main)
-	    from.m_ctx = 0;
-	}
+                   const fibers_context_impl_base& to,
+                   default_hint) {
+        if(!is_fiber()) {
+          BOOST_ASSERT(from.m_ctx == 0);
+          from.m_ctx = ConvertThreadToFiber(0);
+          BOOST_ASSERT(from.m_ctx != 0);
+          
+          SwitchToFiber(to.m_ctx); 
+          
+          BOOL result = ConvertFiberToThread();
+          BOOST_ASSERT(result);
+          (void)result;
+          from.m_ctx = 0;
+        } else {
+          bool call_from_main = from.m_ctx == 0;
+          if(call_from_main)
+            from.m_ctx = GetCurrentFiber();
+          SwitchToFiber(to.m_ctx); 
+          if(call_from_main)
+            from.m_ctx = 0;
+        }
       }
 
       ~fibers_context_impl_base() {}
     protected:
       explicit
       fibers_context_impl_base(fiber_ptr ctx) :
-	m_ctx(ctx) {}
+        m_ctx(ctx) {}
 
       fiber_ptr m_ctx;
     };
@@ -139,24 +139,24 @@ namespace boost {namespace coroutines {namespace detail{
       enum {default_stack_size = 8192};
 
       /**
-       * Create a context that on restore inovkes Functor on
+       * Create a context that on restore invokes Functor on
        *  a new stack. The stack size can be optionally specified.
        */
       template<typename Functor>
       explicit
       fibers_context_impl(Functor& cb, std::ptrdiff_t stack_size) :
-	fibers_context_impl_base
-      (CreateFiber(stack_size== -1? 0 : stack_size,
-		   static_cast<LPFIBER_START_ROUTINE>(&trampoline<Functor>),
-		   static_cast<LPVOID>(&cb)))
+        fibers_context_impl_base
+      (CreateFiber(stack_size== -1? default_stack_size : stack_size,
+                   static_cast<LPFIBER_START_ROUTINE>(&trampoline<Functor>),
+                   static_cast<LPVOID>(&cb)))
       {
-	BOOST_ASSERT(m_ctx);
+        BOOST_ASSERT(m_ctx);
       }
-		  
+                  
       ~fibers_context_impl() {
-	DeleteFiber(m_ctx);
+        DeleteFiber(m_ctx);
       }
-		  
+                  
     private:
     };
 

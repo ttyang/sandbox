@@ -37,7 +37,7 @@
 
 /*
  * Defining BOOST_COROUTINE_INLINE_ASM will enable the inlin3
- * assembler verwsion of swapcontext_stack.
+ * assembler version of swapcontext_stack.
  * The inline asm, with all required clobber flags, is usually no faster
  * than the out-of-line function, and it is not yet clear if
  * it is always reliable (i.e. if the compiler always saves the correct
@@ -109,26 +109,26 @@ inline
 fun_type get_swapper(){
   fun_type ptr;
   asm volatile("mov $0f, %[result]"
-	       "\n\t jmp 1f"
-	       "\n0:"
-	       //"\n\t movl 16(%%edx), %%ecx"
-	       "\n\t pushl %%ebp"
-	       "\n\t pushl %%ebx"
-	       "\n\t pushl %%esi"
-	       "\n\t pushl %%edi"
-	       "\n\t movl %%esp, (%%eax)"
-	       "\n\t movl %%edx, %%esp"
-	       "\n\t popl %%edi"
-	       "\n\t popl %%esi"
-	       "\n\t popl %%ebx"
-	       "\n\t popl %%ebp"
-	       "\n\t popl %%ecx"
-	       "\n\t jmp *%%ecx"
-	       "\n1:"
-	       :
-	       [result] "=g" (ptr) 
-	       :       
-	       );
+               "\n\t jmp 1f"
+               "\n0:"
+               //"\n\t movl 16(%%edx), %%ecx"
+               "\n\t pushl %%ebp"
+               "\n\t pushl %%ebx"
+               "\n\t pushl %%esi"
+               "\n\t pushl %%edi"
+               "\n\t movl %%esp, (%%eax)"
+               "\n\t movl %%edx, %%esp"
+               "\n\t popl %%edi"
+               "\n\t popl %%esi"
+               "\n\t popl %%ebx"
+               "\n\t popl %%ebp"
+               "\n\t popl %%ecx"
+               "\n\t jmp *%%ecx"
+               "\n1:"
+               :
+               [result] "=g" (ptr) 
+               :       
+               );
   return ptr;
 };
 
@@ -167,16 +167,16 @@ namespace boost { namespace coroutines { namespace detail {
       ia32_gcc_context_impl_base() {};
 
       void prefetch() const {
-	__builtin_prefetch (m_sp, 1, 3);
-	__builtin_prefetch (m_sp, 0, 3);
-	__builtin_prefetch ((void**)m_sp+64/4, 1, 3);
-	__builtin_prefetch ((void**)m_sp+64/4, 0, 3);
-	__builtin_prefetch ((void**)m_sp+32/4, 1, 3);
-	__builtin_prefetch ((void**)m_sp+32/4, 0, 3);
-	__builtin_prefetch ((void**)m_sp-32/4, 1, 3);
-	__builtin_prefetch ((void**)m_sp-32/4, 0, 3);
-	__builtin_prefetch ((void**)m_sp-64/4, 1, 3);
-	__builtin_prefetch ((void**)m_sp-64/4, 0, 3);
+        __builtin_prefetch (m_sp, 1, 3);
+        __builtin_prefetch (m_sp, 0, 3);
+        __builtin_prefetch ((void**)m_sp+64/4, 1, 3);
+        __builtin_prefetch ((void**)m_sp+64/4, 0, 3);
+        __builtin_prefetch ((void**)m_sp+32/4, 1, 3);
+        __builtin_prefetch ((void**)m_sp+32/4, 0, 3);
+        __builtin_prefetch ((void**)m_sp-32/4, 1, 3);
+        __builtin_prefetch ((void**)m_sp-32/4, 0, 3);
+        __builtin_prefetch ((void**)m_sp-64/4, 1, 3);
+        __builtin_prefetch ((void**)m_sp-64/4, 0, 3);
       }
 
       /**
@@ -187,29 +187,29 @@ namespace boost { namespace coroutines { namespace detail {
       friend 
       void 
       swap_context(ia32_gcc_context_impl_base& from, 
-		   ia32_gcc_context_impl_base const& to, 
-		   default_hint) {
-	to.prefetch();
-	swapcontext_stack(&from.m_sp, to.m_sp);
+                   ia32_gcc_context_impl_base const& to, 
+                   default_hint) {
+        to.prefetch();
+        swapcontext_stack(&from.m_sp, to.m_sp);
       }
 
 #ifndef BOOST_COROUTINE_NO_SEPARATE_CALL_SITES
       friend 
       void 
       swap_context(ia32_gcc_context_impl_base& from, 
-		   ia32_gcc_context_impl_base const& to,
-		   yield_hint) {
-	to.prefetch();
-	swapcontext_stack2(&from.m_sp, to.m_sp);
+                   ia32_gcc_context_impl_base const& to,
+                   yield_hint) {
+        to.prefetch();
+        swapcontext_stack2(&from.m_sp, to.m_sp);
       }
 
       friend 
       void 
       swap_context(ia32_gcc_context_impl_base& from, 
-		   ia32_gcc_context_impl_base const& to,
-		   yield_to_hint) {
-	to.prefetch();
-	swapcontext_stack2(&from.m_sp, to.m_sp);
+                   ia32_gcc_context_impl_base const& to,
+                   yield_to_hint) {
+        to.prefetch();
+        swapcontext_stack2(&from.m_sp, to.m_sp);
       }
 
 #endif
@@ -226,41 +226,42 @@ namespace boost { namespace coroutines { namespace detail {
       typedef ia32_gcc_context_impl_base context_impl_base;
 
       ia32_gcc_context_impl() :
-	m_stack(0) {}
+        m_stack(0) {}
       /**
        * Create a context that on restore invokes Functor on
        *  a new stack. The stack size can be optionally specified.
        */
       template<typename Functor>
-	  ia32_gcc_context_impl(Functor& cb, std::ptrdiff_t stack_size = -1) :
-	m_stack_size(stack_size == -1? default_stack_size: stack_size),
-	m_stack(posix::alloc_stack(m_stack_size)) {
-	m_sp = ((void**)m_stack + (m_stack_size/sizeof(void*))),
-	BOOST_ASSERT(m_stack);
-	typedef void fun(Functor*);
-	fun * funp = trampoline;
+          ia32_gcc_context_impl(Functor& cb, std::ptrdiff_t stack_size = -1) :
+        m_stack_size(stack_size == -1? default_stack_size: stack_size),
+        m_stack(posix::alloc_stack(m_stack_size)) 
+      {
+        m_sp = ((void**)m_stack + (m_stack_size/sizeof(void*)));
+        BOOST_ASSERT(m_stack);
+        typedef void fun(Functor*);
+        fun * funp = trampoline;
 #ifndef BOOST_COROUTINE_INLINE_ASM
-	*--m_sp = &cb;     // parm 0 of trampoline;
-	*--m_sp = 0;        // dummy return address for trampoline
-	*--m_sp = (void*) funp ;// return addr (here: start addr)  NOTE: the unsafe cast is safe on IA32
-	*--m_sp = 0;       // ebp                                  
-	*--m_sp = 0;       // ebx                                  
-	*--m_sp = 0;       // esi                                  
-	*--m_sp = 0;       // edi        
+        *--m_sp = &cb;     // parm 0 of trampoline;
+        *--m_sp = 0;        // dummy return address for trampoline
+        *--m_sp = (void*) funp ;// return addr (here: start addr)  NOTE: the unsafe cast is safe on IA32
+        *--m_sp = 0;       // ebp                                  
+        *--m_sp = 0;       // ebx                                  
+        *--m_sp = 0;       // esi                                  
+        *--m_sp = 0;       // edi        
 #else
-	*--m_sp = &cb;     // parm 0 of trampoline;
-	*--m_sp = 0;        // dummy return address for trampoline
-	*--m_sp = (void*) funp ;// return addr (here: start addr)  NOTE: the unsafe cast is safe on IA32
+        *--m_sp = &cb;     // parm 0 of trampoline;
+        *--m_sp = 0;        // dummy return address for trampoline
+        *--m_sp = (void*) funp ;// return addr (here: start addr)  NOTE: the unsafe cast is safe on IA32
 #endif
       }
       
       ~ia32_gcc_context_impl() {
-	if(m_stack)
-	  posix::free_stack(m_stack, m_stack_size);
+        if(m_stack)
+          posix::free_stack(m_stack, m_stack_size);
       }
 
     private:
-	  std::ptrdiff_t m_stack_size;
+          std::ptrdiff_t m_stack_size;
       void * m_stack;
     };
     
@@ -269,6 +270,7 @@ namespace boost { namespace coroutines { namespace detail {
 } } }
 
 #elif defined(__linux)
+
 /**
  * For all other linux systems use the standard posix implementation.
  */
@@ -276,6 +278,7 @@ namespace boost { namespace coroutines { namespace detail {
 namespace boost { namespace coroutines { namespace detail { namespace oslinux {
     typedef posix::context_impl context_impl;
 } } } }
+
 #else
 #error This header can only be included when compiling for linux systems.
 #endif

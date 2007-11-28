@@ -54,8 +54,8 @@ namespace boost { namespace coroutines {
     template<typename T>
     struct optional_result_type : 
       boost::mpl::if_<boost::is_same<T, void>,
-		      void,
-		      boost::optional<T> > { };
+                      void,
+                      boost::optional<T> > { };
 
     template<typename T>
     BOOST_DEDUCED_TYPENAME
@@ -65,12 +65,12 @@ namespace boost { namespace coroutines {
     template<typename T>
     BOOST_DEDUCED_TYPENAME
     boost::disable_if<boost::is_same<T, void>,
-		      BOOST_DEDUCED_TYPENAME
-		      optional_result_type<T>::type
-		      >::type
+                      BOOST_DEDUCED_TYPENAME
+                      optional_result_type<T>::type
+                      >::type
     optional_result() {
       return BOOST_DEDUCED_TYPENAME
-	optional_result_type<T>::type();
+        optional_result_type<T>::type();
     }
   }
 
@@ -84,7 +84,7 @@ namespace boost { namespace coroutines {
   struct is_coroutine<coroutine<Sig, Con> > : boost::mpl::true_{};
 
   template<typename Signature, 
-	   typename ContextImpl = detail::default_context_impl>
+           typename ContextImpl = detail::default_context_impl>
   class coroutine : public movable<coroutine<Signature, ContextImpl> > {
   public:
     typedef coroutine<Signature, ContextImpl> type;
@@ -124,14 +124,14 @@ namespace boost { namespace coroutines {
 
     template<typename Functor>
     coroutine (Functor f, 
-	       std::ptrdiff_t stack_size = detail::default_stack_size,
-	       BOOST_DEDUCED_TYPENAME boost::enable_if<
-	       boost::mpl::and_<
-	       detail::is_callable<Functor>, 
-	       boost::mpl::not_<is_coroutine<Functor> >
-	       > >
-	       ::type * = 0
-	       ) :
+               std::ptrdiff_t stack_size = detail::default_stack_size,
+               BOOST_DEDUCED_TYPENAME boost::enable_if<
+               boost::mpl::and_<
+               detail::is_callable<Functor>, 
+               boost::mpl::not_<is_coroutine<Functor> >
+               > >
+               ::type * = 0
+               ) :
       m_pimpl(impl_type::create(f, stack_size)) {}
  
     coroutine(move_from<coroutine> src) 
@@ -160,15 +160,15 @@ namespace boost { namespace coroutines {
     /**/
 
     BOOST_PP_REPEAT(BOOST_COROUTINE_ARG_MAX,
-		    BOOST_COROUTINE_generate_argument_n_type,
-		    arg_slot_traits);
+                    BOOST_COROUTINE_generate_argument_n_type,
+                    arg_slot_traits);
 
     static const int arity = arg_slot_traits::length;
 
     struct yield_traits {
       BOOST_PP_REPEAT(BOOST_COROUTINE_ARG_MAX,
-		      BOOST_COROUTINE_generate_argument_n_type,
-		      result_slot_traits);
+                      BOOST_COROUTINE_generate_argument_n_type,
+                      result_slot_traits);
       static const int arity = result_slot_traits::length;
     };
 
@@ -184,12 +184,12 @@ namespace boost { namespace coroutines {
     result_type operator()
       (BOOST_PP_ENUM
        (BOOST_COROUTINE_ARG_MAX,
-	BOOST_COROUTINE_param_with_default,
-	arg)) {
+        BOOST_COROUTINE_param_with_default,
+        arg)) {
       return call_impl
-	(arg_slot_type(BOOST_PP_ENUM_PARAMS
-	  (BOOST_COROUTINE_ARG_MAX, 
-	   arg)));
+        (arg_slot_type(BOOST_PP_ENUM_PARAMS
+          (BOOST_COROUTINE_ARG_MAX, 
+           arg)));
     }
 
     BOOST_DEDUCED_TYPENAME
@@ -198,12 +198,12 @@ namespace boost { namespace coroutines {
       (const std::nothrow_t&
        BOOST_PP_ENUM_TRAILING
        (BOOST_COROUTINE_ARG_MAX,
-	BOOST_COROUTINE_param_with_default,
-	arg)) {
+        BOOST_COROUTINE_param_with_default,
+        arg)) {
       return call_impl_nothrow
-	(arg_slot_type(BOOST_PP_ENUM_PARAMS
-	  (BOOST_COROUTINE_ARG_MAX, 
-	   arg)));
+        (arg_slot_type(BOOST_PP_ENUM_PARAMS
+          (BOOST_COROUTINE_ARG_MAX, 
+           arg)));
     }
 
 #   undef BOOST_COROUTINE_param_typedef
@@ -244,7 +244,7 @@ namespace boost { namespace coroutines {
   protected:
 
     // The second parameter is used to avoid calling this constructor
-    // by mistake from other member funcitons (specifically operator=).
+    // by mistake from other member functions (specifically operator=).
     coroutine(impl_type * pimpl, detail::init_from_impl_tag) :
       m_pimpl(pimpl) {}
 
@@ -272,7 +272,7 @@ namespace boost { namespace coroutines {
       result_slot_type * ptr;
       m_pimpl->bind_result_pointer(&ptr);
       if(!m_pimpl->wake_up())
-	return detail::optional_result<result_type>();
+        return detail::optional_result<result_type>();
 
       return detail::fix_result<result_slot_traits>(*m_pimpl->result());
     }

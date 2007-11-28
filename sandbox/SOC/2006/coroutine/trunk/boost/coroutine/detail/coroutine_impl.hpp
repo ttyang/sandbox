@@ -40,7 +40,7 @@
 #include <boost/coroutine/detail/context_base.hpp>
 
 namespace boost { namespace coroutines { namespace detail {
-	
+        
   // This class augment the contest_base class with
   // the coroutine signature type.
   // This is mostly just a place to put
@@ -64,10 +64,10 @@ namespace boost { namespace coroutines { namespace detail {
     typedef boost::intrusive_ptr<type> pointer;
   
     template<typename DerivedType>
-	coroutine_impl(DerivedType * this_, std::ptrdiff_t stack_size) :
+        coroutine_impl(DerivedType * this_, std::ptrdiff_t stack_size) :
       context_base(*this_, stack_size),
-	m_arg(0),
-	m_result(0){}
+        m_arg(0),
+        m_result(0){}
                 
     arg_slot_type * args() {
       BOOST_ASSERT(m_arg);
@@ -81,8 +81,8 @@ namespace boost { namespace coroutines { namespace detail {
     } 
 
     template<typename Functor>
-	static inline	
-	pointer create(Functor, std::ptrdiff_t);
+        static inline	
+        pointer create(Functor, std::ptrdiff_t);
 
     void bind_args(arg_slot_type* arg) {
       m_arg = arg;
@@ -92,7 +92,7 @@ namespace boost { namespace coroutines { namespace detail {
       *m_result = res;
     }
 
-    // Another level of indirecition is needed to handle
+    // Another level of indirection is needed to handle
     // yield_to correctly.
     void bind_result_pointer(result_slot_type** resp) {
       m_result = resp;
@@ -141,26 +141,25 @@ namespace boost { namespace coroutines { namespace detail {
     typedef coroutine_impl<CoroutineType, ContextImpl> super_type;
 
     typedef FunctorType functor_type;
-	coroutine_impl_wrapper(functor_type f, std::ptrdiff_t stack_size) :
-
-		super_type(this, stack_size),
+        coroutine_impl_wrapper(functor_type f, std::ptrdiff_t stack_size) :
+                super_type(this, stack_size),
       m_fun(f){}
 
     void operator()() {
       typedef typename super_type::context_exit_status
-	context_exit_status;
+        context_exit_status;
       context_exit_status status = super_type::ctx_exited_return;
       std::type_info const* tinfo = 0;
       try {
-	this->check_exit_state();
-	do_call<result_type>();
+        this->check_exit_state();
+        do_call<result_type>();
       } catch (const exit_exception&) {
-	status = super_type::ctx_exited_exit;
+        status = super_type::ctx_exited_exit;
       } catch (std::exception const& e) {
-	status = super_type::ctx_exited_abnormally;
-	tinfo = &typeid(e);
+        status = super_type::ctx_exited_abnormally;
+        tinfo = &typeid(e);
       } catch (...) {
-	status = super_type::ctx_exited_abnormally;
+        status = super_type::ctx_exited_abnormally;
       }
       this->do_return(status, tinfo);	  
     }
@@ -178,16 +177,16 @@ namespace boost { namespace coroutines { namespace detail {
     do_call(dummy<0> = 0) {
       BOOST_ASSERT(this->count() > 0);
       typedef BOOST_DEDUCED_TYPENAME
-	coroutine_type::self self_type;
+        coroutine_type::self self_type;
       boost::optional<self_type> self (coroutine_accessor::in_place(this));
       detail::unpack_ex
-	(m_fun, 
-	 *self, 
-	 *this->args(), 
-	 detail::trait_tag<typename coroutine_type::arg_slot_traits>());
+        (m_fun, 
+         *self, 
+         *this->args(), 
+         detail::trait_tag<typename coroutine_type::arg_slot_traits>());
 
       typedef BOOST_DEDUCED_TYPENAME coroutine_type::result_slot_type 
-	result_slot_type;
+        result_slot_type;
 
       // In this particulare case result_slot_type is guaranteed to be
       // default constructible.
@@ -207,13 +206,13 @@ namespace boost { namespace coroutines { namespace detail {
 
       typedef BOOST_DEDUCED_TYPENAME coroutine_type::arg_slot_traits traits;
       typedef BOOST_DEDUCED_TYPENAME coroutine_type::result_slot_type 
-	result_slot_type;
-	  
+        result_slot_type;
+          
       this->m_result_last = boost::in_place(result_slot_type(detail::unpack_ex
-			   (m_fun, 
-			    *self, 
-			    *this->args(), 
-			    detail::trait_tag<traits>())));      
+                           (m_fun, 
+                            *self, 
+                            *this->args(), 
+                            detail::trait_tag<traits>())));      
       
       this->bind_result(&*this->m_result_last);
     }

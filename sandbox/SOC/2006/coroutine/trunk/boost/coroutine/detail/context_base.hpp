@@ -205,7 +205,7 @@ namespace boost { namespace coroutines { namespace detail {
     void invoke() {
       BOOST_ASSERT(ready());
       do_invoke();
-      // TODO: could use a bynary or here to eliminate
+      // TODO: could use a binary or here to eliminate
       // shortcut evaluation (and a branch), but maybe the compiler is
       // smart enough to do it anyway as there are no side effects.
       if(m_exit_status || m_state == ctx_waiting) {
@@ -220,7 +220,7 @@ namespace boost { namespace coroutines { namespace detail {
 	} else if(m_exit_status == ctx_exited_exit)
 	  throw coroutine_exited();
       	else {
-	  BOOST_ASSERT(0 && "unkonw exit status");
+	  BOOST_ASSERT(0 && "unknown exit status");
 	}
       }
     }
@@ -263,7 +263,7 @@ namespace boost { namespace coroutines { namespace detail {
     // The exit_exception would cause the future to be destroyed and
     // an assertion to be generated. Removing an assertion is not a 
     // solution because we would leak the coroutine impl. The callback
-    // bound to the future in fact hold a refrence to it. If the coroutine
+    // bound to the future in fact hold a reference to it. If the coroutine
     // is exited the callback cannot be called.
     void wait(int n) {
       BOOST_ASSERT(!(n<0));
@@ -300,7 +300,7 @@ namespace boost { namespace coroutines { namespace detail {
     // Cause this coroutine to exit.
     // Can only be called on a ready coroutine.
     // Cannot be called if there are pending operations.
-    // It follws that cannot be called from 'this'.
+    // It follows that cannot be called from 'this'.
     // Nothrow.
     void exit() throw(){
       BOOST_ASSERT(!pending());

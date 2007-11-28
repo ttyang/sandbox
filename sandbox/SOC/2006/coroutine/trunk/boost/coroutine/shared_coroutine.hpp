@@ -31,7 +31,7 @@
 #include <boost/coroutine/coroutine.hpp>
 namespace boost { namespace coroutines {
   // This class is a workaround for the widespread lack of move
-  // semantics support. It is a refrence counted wrapper around 
+  // semantics support. It is a reference counted wrapper around 
   // the coroutine object.
   // FIXME: ATM a shared_coroutine is-a coroutine. This is to avoid
   // inheriting privately and cluttering the code with lots of using

@@ -62,11 +62,11 @@ namespace boost { namespace coroutines { namespace detail {
     struct in_place_assign : boost::in_place_factory_base {
 
       in_place_assign(Ctx * ctx) :
-	m_ctx(ctx) {}
+        m_ctx(ctx) {}
 
       template<typename Coroutine>
       void apply(void * memory) const {
-	construct<Coroutine>(m_ctx, memory);
+        construct<Coroutine>(m_ctx, memory);
       }
       Ctx * m_ctx;
     };
