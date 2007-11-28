@@ -1,8 +1,8 @@
-[section:gil An image processing network using Dataflow.Signals and Boost.GIL]
+[section:gil An image processing network using Dataflow.Signals and [BoostGIL]]
 
 The [link dataflow.introduction.motivation motivation] section introduced a
 hypothetical video processing example.  Here, we will present an actual
-image processing example using Boost.GIL (as much as we can using only
+image processing example using [BoostGIL] (as much as we can using only
 Boost libraries).
 
 Our final network will look like this:
@@ -67,136 +67,137 @@ Here is some sample output (with input characters marked):
 
 [pre
 
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
+Use keys ',' and '.' to control the image intensity, 
+and '0' and '1' to switch the display between the unfiltered
+and filtered image. 'q' will exit.
+
+Since we are using cin for the input, REMEMBER TO PRESS ENTER
+after each command.
+
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
 
 . <-- input (increase grayscale value)
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
-;;;;;;;;;;
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 
 . <-- input (increase grayscale value)
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-
 . <-- input (increase grayscale value)
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-
 . <-- input (increase grayscale value)
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-
-, <-- input (decrease grayscale value)
-
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
+xxxxxxxxxx
 
 1 <-- input (switch multiplexer to output of noise adder)
-\*\*\*\*#\*\*#\*#
-###\*\*\*\*\*\*\*
-\*\*\*\*\*\*\*\*\*\*
-#\*\*######\*
-\*#\*#\*\*\*\*\*\*
-\*\*#\*#\*####
-\*\*##\*\*\*\*#\*
-\*\*\*#\*\*\*\*\*\*
-\*###\*\*\*##\*
-\*\*\*#\*\*\*\*\*#
-
-\*\*\*#\*\*\*\*\*#
-#\*\*#\*#\*#\*\*
-#\*\*##\*\*#\*\*
-\*#\*\*\*\*\*#\*#
-#;#\*\*#\*\*\*#
-\*\*\*\*###\*#\*
-\*\*#\*\*\*####
-\*#\*\*\*\*\*\*\*#
-\*\*######\*\*
-\*\*##\*\*\*##\*
-
-#\*\*\*\*\*\*\*\*\*
-\*\*#\*#\*\*\*#\*
-\*\*#\*\*\*\*\*#\*
-\*#\*\*#\*\*\*#\*
-\*\*\*\*\*#\*\*##
-\*\*\*\*\*\*#\*#\*
-\*\*\*\*#\*\*\*#\*
-\*\*#\*\*\*\*\*\*#
-\*\*\*\*#\*\*\*\*\*
-#\*\*\*######
+x+++++xx+x
++++++x+xx+
+xxx+x+x+xx
++x+x++xx++
+xx+++xx+++
+x+x++x++xx
+xx+++++xx+
+++++x+x+++
+xxxxx+xx+x
+xxx++++++x
 
 . <-- input (increase grayscale value)
-\*#########
-######\*###
-#######\*$#
-##########
-####$#####
-#####\*####
-#\*##\*#####
-##########
-##\*######\*
-########$#
+XXxxXXXXxx
+XXXxXxxxXX
+xxxxXxxxXx
+xXxXXxXXXX
+XXxXXxXxXX
+xXxxxXxxxx
+xXxXXXXxXX
+XXxXXXxXxX
+XxXxXXxxxX
+xXxxXxxXXx
+
+, <-- input (decrease grayscale value)
+++++x++x+x
+xxx++++x++
+++++++++++
+x+xxxxxxxx
++x+x+xx+++
+x+x+x+xxxx
+++xx++++x+
++x+x++++++
++xxx+++xxx
+x+xx+x+++x
+
+, <-- input (decrease grayscale value)
+, <-- input (decrease grayscale value)
+, <-- input (decrease grayscale value)
+,...,.....
+,.,.,.,,,.
+..,....,,.
+,,.,,...,.
+....,,..,,
+......,.,.
+,...,...,,
+,,,..,,.,,
+....,,...,
+,,.,,,,,,,
 
 0 <-- input (switch mutiplexer back to the generated image)
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
-##########
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
 
+, <-- input (decrease grayscale value)
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+..........
+
+1 <-- input (switch multiplexer to output of noise adder)
+. ... ..  
+.   . .   
+..........
+  .  . .. 
+.   . .  .
+  .. .    
+ .  .     
+    ..  . 
+ ..  ..  .
+ ..... .  
+
+q <-- input (exit)
 ]
 
 [endsect]

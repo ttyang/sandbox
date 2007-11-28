@@ -127,7 +127,7 @@ The following expressions are used in this document:
     [
         [Port Concept]
         [`PT::port_concept`]
-        [`concepts::port`, `concepts::keyed_port`]
+        [`concepts::port`, `concepts::keyed_port`, `concepts::complemented_port`]
         [The most refined producer concept that `P` satisfies.]
     ]
 
@@ -207,7 +207,7 @@ With the above registrations, the following tests pass:
 [endsect][/port]
 
 
-[section ComplementedPort]
+[section:complementedport ComplementedPort, ComplementedPortTraits]
 
 A ComplementedPort `P` is a [PortConcept] s.t. whenever it is
 [BinaryOperableConcept] with another [PortConcept] `P2`, `P2` is
@@ -263,23 +263,21 @@ The following expressions are used in this document:
         [`PT::complement_port_type`]
         [Any [PortConcept] type]
         [
-            The complement port type of the port type `P`.  `P` can only be
-            [BinaryOperableConcept] with the complement port type.
+            The complement port type of the port type `P`.  If `P` is 
+            [BinaryOperableConcept] with another port type `P2`, then
+            `get_port<PT::mechanism, PT::category::complement>(p2)` must
+            return an object of type `PT::complement_port_type` or reference
+            to such.
         ]
     ]
 ]
 
-
-
 [endsect]
 
+[section KeyedPort]
+[endsect][/keyed_port]
 
-[section ProxyPortTraits]
-
-
-[endsect][/proxyporttraits]
-
-[section ProxyPort]
+[section ProxyPort, ProxyPortTraits]
 
 A type `PP` is a ['[ProxyPortConcept]] for a mechanism `M` and port category `PC`
 if it specifies a [ProxyPortTraitsConcept] for that mechanism and port category.
@@ -324,5 +322,3 @@ files:
 
 [endsect][/proxyport]
 
-[section KeyedPort]
-[endsect][/keyed_port]

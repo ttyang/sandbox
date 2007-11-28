@@ -1,0 +1,70 @@
+[section:binaryoperable BinaryOperable (Connectable, OnlyConnectable, Disconnectable, Extractable) ]
+
+A [ProducerPortConcept] `P` and [ConsumerPortConcept] `C` are /BinaryOperable/
+for a binary operation `O`, and mechanism `M`, if the implementation of
+the binary operation `O` has been specialized for `M`, `P`, and `C`.
+
+In this case,
+
+* If `O` is operations::connect, `P` and `C` are [ConnectableConcept]
+* If `O` is operations::connect_only, `P` and `C` are [OnlyConnectableConcept]
+* If `O` is operations::disconnect, `P` and `C` are [DisconnectableConcept]
+* If `O` is operations::extract, `P` and `C` are [ExtractableConcept]
+
+[heading Notation]
+The following expressions are used in this document:
+
+[variablelist
+    [[P] [A [ProducerPortConcept] type.]]
+    [[C_C] [A [ConsumerPortConcept] [ConnectableConcept] with `P`]]
+    [[C_O] [A [ConsumerPortConcept] [OnlyConnectableConcept] with `P`]]
+    [[C_D] [A [ConsumerPortConcept] [DisconnectableConcept] with `P`]]
+    [[C_E] [A [ConsumerPortConcept] [ExtractableConcept] with `P`]]
+    [[p] [An object of type P.]]
+    [[c_c] [An object of type C_C.]]
+    [[c_o] [An object of type C_O.]]
+    [[c_d] [An object of type C_D.]]
+    [[c_e] [An object of type C_E.]]
+]
+
+[heading Requirements]
+[table
+    [[Name] [Expression] [Result Type] [Description]]
+    [
+        [Connect]
+        [`binary_operation<operations::connect, M>(p,c_c)`]
+        [void]
+        [
+            Creates a lasting connection between the `p` and `c`.
+        ]
+    ]
+    [
+        [OnlyConnect]
+        [`binary_operation<operations::connect_only, M>(p,c_o)`]
+        [void]
+        [
+            Discards any lasting connections stored by `p` or `c`,
+            and creates a lasting connection between `p` and `c`.
+            Note that `p` or `c` could still be connected to other ports,
+            as long as these connections are not stored in `p` or `c`.
+        ]
+    ]
+    [
+        [Disconnect]
+        [`binary_operation<operations::disconnect, M>(p,c_d)`]
+        [void]
+        [
+            Discards any existing connection between `p` and `c`.
+        ]
+    ]
+    [
+        [Extract]
+        [`binary_operation<operations::extract, M>(p,c_e)`]
+        [void]
+        [
+            Perfoms a one time transfer of data from `p` to `c`.
+        ]
+    ]
+]
+
+[endsect][/binaryoperable]

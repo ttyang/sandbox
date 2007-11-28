@@ -1,0 +1,33 @@
+
+[section:unaryoperable UnnaryOperable (AllDisconnectable) ]
+
+A [PortConcept] `P` is /UnnaryOperable/
+for a unary operation `O`, and mechanism `M`, if the implementation of
+the unnary operation `O` has been specialized for `M` and `P`
+
+In this case,
+
+* If `O` is operations::disconnect_all, `P` is [AllDisconnectable]
+
+[heading Notation]
+The following expressions are used in this document:
+
+[variablelist
+    [[P] [A [PortConcept] type.]]
+    [[p] [An object of type P.]]
+]
+
+[heading Requirements]
+[table
+    [[Name] [Expression] [Result Type] [Description]]
+    [
+        [Disconnect All]
+        [`unnary_operation<operations::disconnect_all, M>(p)`]
+        [void]
+        [
+            Destroys any connections stored by `p`.  
+        ]
+    ]
+]
+
+[endsect][/unaryoperable]
