@@ -377,9 +377,10 @@ latest version is located in the
 The Dataflow library uses the trunk version of Boost - it might not work
 perfectly with release versions of boost.
 
-Version 0.8.1 (under construction)
+Version 0.8.1
+ \[[@http://www.boost-consulting.com/vault/index.php?direction=&order=&directory=Dataflow& available in the Boost vault]\]
 
-* Started the [DataflowBlueprint] layer (simple runtime reflection and network modeling).
+* Started the [DataflowBlueprint] layer (runtime reflection and network modeling).
 * Expanding the [ComponentConcept] concept (compile-time reflection of ports).
 * VTK example Jamfile now works work with Windows (not just Darwin+X11 VTK).
 * Provided an example using [BoostGIL].
