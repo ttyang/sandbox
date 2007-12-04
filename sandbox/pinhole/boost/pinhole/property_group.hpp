@@ -1,4 +1,4 @@
-// MscProperty system property_group.h file
+// Pinhole property_group.hpp file
 //
 // Copyright Jared McIntyre 2007.
 // Distributed under the Boost Software License, Version 1.0.

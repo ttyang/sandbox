@@ -1,4 +1,4 @@
-// MscProperty system Find.h file
+// Pinhole Find.hpp file
 //
 // Copyright Jared McIntyre 2007.
 // Distributed under the Boost Software License, Version 1.0.
