@@ -1,63 +1,61 @@
-// MscProperty system IntegerEditor.h file
+// MscProperty system FloatEditor.h file
 //
 // Copyright Jared McIntyre 2007.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_INTEGEREDITOR
-#define BOOST_INTEGEREDITOR
+#ifndef BOOST_FLOATEDITOR
+#define BOOST_FLOATEDITOR
 
-#include "Editor.h"
+#include "Editor.hpp"
 
 namespace boost { namespace pinhole
 {
-    class IntegerEditor : public Editor
+    class FloatEditor : public Editor
     {
     public:
-        IntegerEditor()
+        FloatEditor()
         {
             m_UItype = EditBox;
-            m_bHasRange = false;
-        }
-        
-        IntegerEditor( int iLowRange, 
-                       int iHighRange, 
-                       int iIncrement=0,
-                       EditorControlType controlType=EditBox ) :
-            m_iLowRange( iLowRange ), 
-            m_iHighRange( iHighRange ),
-            m_iIncrement( iIncrement )
+        };
+
+        FloatEditor( float fLowRange, 
+                     float fHighRange, 
+                     float fIncrement=0.5,
+                     EditorControlType controlType=EditBox ) :
+            m_fLowRange( fLowRange ), 
+            m_fHighRange( fHighRange ),
+            m_fIncrement( fIncrement )
         {
                 m_UItype = controlType;
                 m_bHasRange = true;
         }
-        
-        virtual ~IntegerEditor() {;}
-        
+
+        ~FloatEditor() {;}
 
         /**
         * Retrieves the low range of the property for the editor.
         */
-        int getLowRange() const
+        float getLowRange() const
         {
-            return( m_iLowRange );
+            return( m_fLowRange );
         }
 
         /**
         * Retrieves the high range of the property for the editor.
         */
-        int getHighRange() const
+        float getHighRange() const
         {
-            return( m_iHighRange );
+            return( m_fHighRange );
         }
 
         /**
         * Retrieves the increment of the property for the editor.
         */
-        int getIncrement() const
+        float getIncrement() const
         {
-            return( m_iIncrement );
+            return( m_fIncrement );
         }
 
         /**
@@ -73,11 +71,11 @@ namespace boost { namespace pinhole
         */
         EditorPropertyType getEditorPropertyType() const
         {
-            return( IntegerType );
+            return( FloatType );
         }
 
     private:
-        int m_iLowRange, m_iHighRange, m_iIncrement;
+        float m_fLowRange, m_fHighRange, m_fIncrement;
         bool m_bHasRange;
     };
 }}

@@ -8,7 +8,7 @@
 #ifndef BOOST_PROPERTY_GROUP_WRAPPER
 #define BOOST_PROPERTY_GROUP_WRAPPER
 
-#include "property_group.h"
+#include "property_group.hpp"
 
 namespace boost { namespace pinhole
 {

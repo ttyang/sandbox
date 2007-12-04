@@ -8,7 +8,7 @@
 #ifndef BOOST_DOUBLEEDITOR
 #define BOOST_DOUBLEEDITOR
 
-#include "Editor.h"
+#include "Editor.hpp"
 
 namespace boost { namespace pinhole
 {

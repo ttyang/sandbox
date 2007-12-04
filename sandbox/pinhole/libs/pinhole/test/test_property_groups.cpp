@@ -9,8 +9,8 @@
 
 #define BOOST_TEST_MODULE PinholeLib
 #include <boost/test/unit_test.hpp>
-#include "TestClassesAndConstants.h"
-#include <boost/pinhole/find.h>
+#include "TestClassesAndConstants.hpp"
+#include <boost/pinhole/find.hpp>
 
 // I can hide these two line if I don't do everything in headers
 boost::shared_ptr<property_manager> property_manager::m_instance(new property_manager);

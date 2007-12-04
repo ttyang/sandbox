@@ -12,7 +12,7 @@
     #pragma warning(push)
     #pragma warning( disable: 4272 4394 )
 #endif
-#include "Editor.h"
+#include "Editor.hpp"
 #if defined(BOOST_MSVC)
     #pragma warning(pop)
 #endif

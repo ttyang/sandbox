@@ -8,8 +8,8 @@
 #ifndef BOOST_PROPERTY_MANAGER
 #define BOOST_PROPERTY_MANAGER
 
-#include "exceptions.h"
-#include "map_key_value_iterators.h"
+#include "exceptions.hpp"
+#include "map_key_value_iterators.hpp"
 #include <set>
 #include <string>
 

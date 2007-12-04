@@ -19,6 +19,7 @@ namespace boost { namespace pinhole
     enum EditorPropertyType
     {
         StringType,
+        WStringType,
         IntegerType,
         BooleanType,
         FloatType,

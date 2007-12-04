@@ -8,7 +8,7 @@
 #ifndef BOOST_FIND
 #define BOOST_FIND
 
-#include "property_manager.h"
+#include "property_manager.hpp"
 
 namespace boost { namespace pinhole
 {

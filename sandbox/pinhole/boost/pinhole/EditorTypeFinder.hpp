@@ -9,11 +9,11 @@
 #define BOOST_DETAIL_EDITORTYPEFINDER
 
 #include <boost/mpl/void.hpp>
-#include "BoolEditor.h"
-#include "DoubleEditor.h"
-#include "FloatEditor.h"
-#include "IntegerEditor.h"
-#include "StringEditor.h"
+#include "BoolEditor.hpp"
+#include "DoubleEditor.hpp"
+#include "FloatEditor.hpp"
+#include "IntegerEditor.hpp"
+#include "StringEditor.hpp"
 
 namespace boost { namespace pinhole { namespace detail
 {
@@ -58,6 +58,12 @@ namespace boost { namespace pinhole { namespace detail
     struct EditorTypeFinder<std::string>
     {
         typedef StringEditor type;
+    };
+
+    template<>
+    struct EditorTypeFinder<std::wstring>
+    {
+        typedef WStringEditor type;
     };
 }}}
 
