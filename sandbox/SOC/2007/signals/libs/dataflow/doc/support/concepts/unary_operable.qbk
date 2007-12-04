@@ -1,7 +1,7 @@
 
 [section:unaryoperable UnnaryOperable (AllDisconnectable) ]
 
-A [PortConcept] `P` is /UnnaryOperable/
+A [Port] `P` is /UnnaryOperable/
 for a unary operation `O`, and mechanism `M`, if the implementation of
 the unnary operation `O` has been specialized for `M` and `P`
 
@@ -13,7 +13,7 @@ In this case,
 The following expressions are used in this document:
 
 [variablelist
-    [[P] [A [PortConcept] type.]]
+    [[P] [A [Port] type.]]
     [[p] [An object of type P.]]
 ]
 

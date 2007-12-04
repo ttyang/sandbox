@@ -376,9 +376,9 @@ namespace extension {
 //]
 
 //[ vtk_specialize_connect
-// the include templates expect DATAFLOW_TEMPLATE_MECHANISM to have
+// the include templates expect DATAFLOW_TEMPLATE_TAG to have
 // the mechanism type
-#define DATAFLOW_TEMPLATE_MECHANISM boost::dataflow::vtk::mechanism
+#define DATAFLOW_TEMPLATE_TAG boost::dataflow::vtk::mechanism
 
 // the binary_operation.hpp template expects DATAFLOW_TEMPLATE_BINARY_OPERATION
 #   define DATAFLOW_TEMPLATE_BINARY_OPERATION connect
@@ -400,7 +400,7 @@ namespace extension {
 
 #   undef DATAFLOW_TEMPLATE_BINARY_OPERATION
 
-#undef DATAFLOW_TEMPLATE_MECHANISM
+#undef DATAFLOW_TEMPLATE_TAG
 
 // We now have connect and connect_only functions that each take a
 // vtk ProducerPort and vtk ConsumerPort as arguments, and try to connect them.

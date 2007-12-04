@@ -38,7 +38,7 @@ Dataflow library support layer might use one or more mechanisms in its
 implementation.
 
 In the Dataflow library, most port related class templates are keyed through
-a [MechanismConcept] type tag.  For example, the [DataflowSignals] layer
+a [Mechanism] type tag.  For example, the [DataflowSignals] layer
 uses two mechanisms for its ports and related operations - one mechanism
 is used for lasting connections between a `signal` and a `function`, while
 another is used for one-time extractions of data.
@@ -55,7 +55,7 @@ that produces / provides data:  a POD variable, an object of a class type, or
 a function that returns a value.  Similarly, a consumer port could be anything
 that consumes data - a function that takes an argument, a functor, etc.
 
-Ports are captured more formally by the [PortConcept] concept.
+Ports are captured more formally by the [Port] concept.
 
 [heading Components]
 
@@ -64,20 +64,20 @@ network.  It can have multiple ports, for example a video filter component
 might have one consumer port (consuming video to be processed) and one
 producer port (producing filtered video).
 
-Typically, a component is embedded in a class, and the different [PortConcept]s
+Typically, a component is embedded in a class, and the different [Port]s
 are accessible either through the class directly, or through its member
 functions and variables.
 
-The Dataflow library also offers a [ComponentConcept] concept, which is
+The Dataflow library also offers a [Component] concept, which is
 intented to provide compile-time introspection and other operations.
 
 [heading Proxies]
 
-It is often the case that a port delegates its [PortConcept]
+It is often the case that a port delegates its [Port]
 functionality to some other element.  For example, a
 class that is a [DataflowSignals] component might delegate its
-[ProducerPortConcept] functionality to a member boost::signal.  It can
-do so by declaring itself a [ProxyProducerPortConcept] for the boost::signal.
+[ProducerPort] functionality to a member boost::signal.  It can
+do so by declaring itself a [ProxyProducerPort] for the boost::signal.
 
 [heading Port Operations]
 
@@ -89,8 +89,8 @@ connected to the signal. Or, a consumer class might have a pointer to a variable
 which it collects data from.
 
 Operations between two ports such as /connect/, /connect_only/, /disconnect/,
-and /extract/ are captured by the [BinaryOperableConcept] concept.  Operations
-on a single port such as /disconnect_all/ are covered by the [UnaryOperableConcept]
+and /extract/ are captured by the [BinaryOperable] concept.  Operations
+on a single port such as /disconnect_all/ are covered by the [UnaryOperable]
 concept.
 
 [/
@@ -132,7 +132,7 @@ We will call /invoking/ a component (producer or consumer) the action of
 causing it to consume data from connected producers, and producing data
 for connected consumers.
 
-Invocation is captured more formally by the [InvocableConcept] concept.
+Invocation is captured more formally by the [Invocable] concept.
 
 [section Port related]
 

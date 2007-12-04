@@ -9,18 +9,18 @@ passed in the signal is serializable using [BoostSerialization].
 which can be used to create a producer-consumer connection between two
 computers: [socket_sender] and [socket_receiver].  As long as we have
 a network socket set up between two computers, we can do the following to
-set up a connection between a [SignalProducerConcept] on one computer with a
-[SignalConsumerConcept] on another:
+set up a connection between a [SignalProducer] on one computer with a
+[SignalConsumer] on another:
 
-* On the [SignalProducerConcept]'s computer, construct a [socket_sender] of
+* On the [SignalProducer]'s computer, construct a [socket_sender] of
 the appropriate `Signature` with the given socket.
-[connect] the [SignalProducerConcept] to the [socket_sender].
-* On the [SignalConsumerConcept]'s computer, construct a [socket_receiver] of
+[connect] the [SignalProducer] to the [socket_sender].
+* On the [SignalConsumer]'s computer, construct a [socket_receiver] of
 the appropriate `Signature` with the given socket.
-[connect] the [socket_receiver] to the [SignalConsumerConcept].
+[connect] the [socket_receiver] to the [SignalConsumer].
 
-That's it.  Now, every signal sent out of the [SignalProducerConcept] should
-be received by the [SignalConsumerConcept].
+That's it.  Now, every signal sent out of the [SignalProducer] should
+be received by the [SignalConsumer].
 
 The following is a modification of the example from the
 [link dataflow.introduction.dataflow motivation section] to a dataflow
