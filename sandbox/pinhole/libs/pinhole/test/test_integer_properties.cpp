@@ -53,10 +53,10 @@ BOOST_AUTO_TEST_CASE( TestIntegerSetGet_Func )
     TestGroup testGroup;
 
 	testGroup.set( "Int_Func", 1 );
-	BOOST_CHECK( 1 == testGroup.get<int>( "Int_Func") );
+	BOOST_CHECK_EQUAL( 1, testGroup.get<int>( "Int_Func") );
     
 	testGroup.set_as_string( "Int_Func", "2" );
-	BOOST_CHECK( "2" == testGroup.get_as_string( "Int_Func") );
+	BOOST_CHECK_EQUAL( "2", testGroup.get_as_string( "Int_Func") );
 }
 
 BOOST_AUTO_TEST_CASE( TestIntegerSetGet_Var )
@@ -64,10 +64,10 @@ BOOST_AUTO_TEST_CASE( TestIntegerSetGet_Var )
     TestGroup testGroup;
 
 	testGroup.set( "Int_Var", 1 );
-	BOOST_CHECK( 1 == testGroup.get<int>( "Int_Var") );
+	BOOST_CHECK_EQUAL( 1, testGroup.get<int>( "Int_Var") );
     
 	testGroup.set_as_string( "Int_Var", "2" );
-	BOOST_CHECK( "2" == testGroup.get_as_string( "Int_Var") );
+	BOOST_CHECK_EQUAL( "2", testGroup.get_as_string( "Int_Var") );
 }
 
 BOOST_AUTO_TEST_CASE( TestIntegerEditorType )

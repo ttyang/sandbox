@@ -24,7 +24,7 @@
 #include <boost/type_traits.hpp>
 #include <boost/function.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string/compare.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #if defined(BOOST_MSVC)
     #pragma warning(pop)
 #endif

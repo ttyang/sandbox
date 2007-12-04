@@ -50,10 +50,10 @@ BOOST_AUTO_TEST_CASE( TestGetSetString_Func )
     TestGroup testGroup;
 
 	testGroup.set( "String_Func", string("first") );
-	BOOST_CHECK( testGroup.get<string>("String_Func") == "first" );
+	BOOST_CHECK_EQUAL( testGroup.get<string>("String_Func"), "first" );
     
 	testGroup.set_as_string( "String_Func", "second" );
-	BOOST_CHECK( testGroup.get_as_string("String_Func") == "second" );
+	BOOST_CHECK_EQUAL( testGroup.get_as_string("String_Func"), "second" );
 }
 
 BOOST_AUTO_TEST_CASE( TestGetSetString_Var )
@@ -61,10 +61,10 @@ BOOST_AUTO_TEST_CASE( TestGetSetString_Var )
     TestGroup testGroup;
 
 	testGroup.set( "String_Var", string("first") );
-	BOOST_CHECK( testGroup.get<string>("String_Var") == "first" );
+	BOOST_CHECK_EQUAL( testGroup.get<string>("String_Var"), "first" );
     
 	testGroup.set_as_string( "String_Var", "second" );
-	BOOST_CHECK( testGroup.get_as_string("String_Var") == "second" );
+	BOOST_CHECK_EQUAL( testGroup.get_as_string("String_Var"), "second" );
 }
 
 BOOST_AUTO_TEST_CASE( TestStringPropertyType )

@@ -53,10 +53,11 @@ BOOST_AUTO_TEST_CASE( TestSetGetDouble_Func )
     TestGroup testGroup;
 
 	testGroup.set( "Double_Func", 2.2 );
-	BOOST_CHECK( 2.2 == testGroup.get<double>( "Double_Func") );
+	BOOST_CHECK_EQUAL( 2.2, testGroup.get<double>( "Double_Func") );
     
 	testGroup.set_as_string( "Double_Func", "3.3" );
-	BOOST_CHECK( "3.3" == testGroup.get_as_string( "Double_Func") );
+	//BOOST_CHECK_EQUAL( "3.3", testGroup.get_as_string( "Double_Func") );
+	BOOST_CHECK_EQUAL( 3.3, testGroup.get<double>( "Double_Func") );
 }
 
 BOOST_AUTO_TEST_CASE( TestSetGetDouble_Var )
@@ -64,10 +65,11 @@ BOOST_AUTO_TEST_CASE( TestSetGetDouble_Var )
     TestGroup testGroup;
 
 	testGroup.set( "Double_Var", 2.2 );
-	BOOST_CHECK( 2.2 == testGroup.get<double>( "Double_Var") );
+	BOOST_CHECK_EQUAL( 2.2, testGroup.get<double>( "Double_Var") );
     
 	testGroup.set_as_string( "Double_Var", "3.3" );
-	BOOST_CHECK( "3.3" == testGroup.get_as_string( "Double_Var") );
+	//BOOST_CHECK_EQUAL( "3.3", testGroup.get_as_string( "Double_Var") );
+	BOOST_CHECK_EQUAL( 3.3, testGroup.get<double>( "Double_Var") );
 }
 
 BOOST_AUTO_TEST_CASE( TestDoublePropertyType )

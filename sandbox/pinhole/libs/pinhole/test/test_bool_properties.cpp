@@ -31,8 +31,8 @@ public:
 #endif
 	TestGroup() : property_group( "PropertyGroupName", NULL )
 	{
-        m_bool_Func = true;
-	    m_bool_Var  = true;
+        m_bool_Func = false;
+	    m_bool_Var  = false;
 
 		add_property("Bool_Func", "Bool1 description", BOOST_SETTER(&TestGroup::SetBool), BOOST_GETTER(&TestGroup::GetBool), NULL );
 		add_property("Bool_Var",  "Bool2 description", BOOST_SETTER_VAR(m_bool_Var),      BOOST_GETTER_VAR(m_bool_Var),     NULL );
@@ -52,83 +52,83 @@ private:
 BOOST_AUTO_TEST_CASE( TestSetGetBool_Func )
 {
     TestGroup testGroup;
+    
+	testGroup.set( "Bool_Func", true );
+	BOOST_CHECK_EQUAL( true, testGroup.get<bool>( "Bool_Func") );
 
 	testGroup.set( "Bool_Func", false );
-	BOOST_CHECK( false == testGroup.get<bool>( "Bool_Func") );
+	BOOST_CHECK_EQUAL( false, testGroup.get<bool>( "Bool_Func") );
     
 	testGroup.set_as_string( "Bool_Func", "true" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Func") );
 
 	testGroup.set_as_string( "Bool_Func", "false" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Func") );
     
 	testGroup.set_as_string( "Bool_Func", "True" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Func") );
 
 	testGroup.set_as_string( "Bool_Func", "False" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Func") );
     
-    testGroup.set( "Bool_Func", false );
 	testGroup.set_as_string( "Bool_Func", "TrUe" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Func") );
 
 	testGroup.set_as_string( "Bool_Func", "FalSe" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Func") );
     
-    testGroup.set( "Bool_Func", false );
 	testGroup.set_as_string( "Bool_Func", "TRUE" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Func") );
 
 	testGroup.set_as_string( "Bool_Func", "FALSE" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Func") );
     
-    testGroup.set( "Bool_Func", false );
 	testGroup.set_as_string( "Bool_Func", "1" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Func") );
 
 	testGroup.set_as_string( "Bool_Func", "0" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Func") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Func") );
 }
 
 BOOST_AUTO_TEST_CASE( TestSetGetBool_Var )
 {
     TestGroup testGroup;
+    
+	testGroup.set( "Bool_Func", true );
+	BOOST_CHECK_EQUAL( true, testGroup.get<bool>( "Bool_Func") );
 
 	testGroup.set( "Bool_Var", false );
-	BOOST_CHECK( false == testGroup.get<bool>( "Bool_Var") );
+	BOOST_CHECK_EQUAL( false, testGroup.get<bool>( "Bool_Var") );
     
 	testGroup.set_as_string( "Bool_Var", "true" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Var") );
 
 	testGroup.set_as_string( "Bool_Var", "false" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Var") );
     
 	testGroup.set_as_string( "Bool_Var", "True" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Var") );
 
 	testGroup.set_as_string( "Bool_Var", "False" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Var") );
     
-    testGroup.set( "Bool_Var", false );
 	testGroup.set_as_string( "Bool_Var", "TrUe" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Var") );
 
 	testGroup.set_as_string( "Bool_Var", "FalSe" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Var") );
     
-    testGroup.set( "Bool_Var", false );
 	testGroup.set_as_string( "Bool_Var", "TRUE" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Var") );
 
 	testGroup.set_as_string( "Bool_Var", "FALSE" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Var") );
     
-    testGroup.set( "Bool_Var", false );
 	testGroup.set_as_string( "Bool_Var", "1" );
-	BOOST_CHECK( "True" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "True", testGroup.get_as_string( "Bool_Var") );
 
 	testGroup.set_as_string( "Bool_Var", "0" );
-	BOOST_CHECK( "False" == testGroup.get_as_string( "Bool_Var") );
+	BOOST_CHECK_EQUAL( "False", testGroup.get_as_string( "Bool_Var") );
 }
 
 BOOST_AUTO_TEST_CASE( TestBoolPropertyType )

@@ -53,10 +53,11 @@ BOOST_AUTO_TEST_CASE( TestSetGetFloat_Func )
     TestGroup testGroup;
 
 	testGroup.set( "Float_Func", 2.2f );
-	BOOST_CHECK( 2.2f == testGroup.get<float>( "Float_Func") );
+	BOOST_CHECK_EQUAL( 2.2f, testGroup.get<float>( "Float_Func") );
     
 	testGroup.set_as_string( "Float_Func", "3.3" );
-	BOOST_CHECK( "3.3" == testGroup.get_as_string( "Float_Func") );
+	//BOOST_CHECK_EQUAL( "3.3", testGroup.get_as_string( "Float_Func") );
+	BOOST_CHECK_EQUAL( 3.3f, testGroup.get<float>( "Float_Func") );
 }
 
 BOOST_AUTO_TEST_CASE( TestSetGetFloat_Var )
@@ -64,10 +65,11 @@ BOOST_AUTO_TEST_CASE( TestSetGetFloat_Var )
     TestGroup testGroup;
 
 	testGroup.set( "Float_Var", 2.2f );
-	BOOST_CHECK( 2.2f == testGroup.get<float>( "Float_Var") );
+	BOOST_CHECK_EQUAL( 2.2f, testGroup.get<float>( "Float_Var") );
     
 	testGroup.set_as_string( "Float_Var", "3.3" );
-	BOOST_CHECK( "3.3" == testGroup.get_as_string( "Float_Var") );
+	//BOOST_CHECK_EQUAL( "3.3", testGroup.get_as_string( "Float_Var") );
+	BOOST_CHECK_EQUAL( 3.3f, testGroup.get<float>( "Float_Var") );
 }
 
 BOOST_AUTO_TEST_CASE( TestFloatPropertyType )
