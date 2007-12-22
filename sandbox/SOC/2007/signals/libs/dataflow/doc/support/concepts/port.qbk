@@ -85,7 +85,7 @@ The following expressions are used in this document:
     [[Name] [Expression] [Result Type] [Semantics]]
     [
         [Port Traits]
-        [[^[port_traits_of]<P, T>::type]]
+        [[^[traits_of]<P, T>::type]]
         [`PT`]
         [
             The [PortTraits] of the port.
@@ -126,10 +126,10 @@ The following expressions are used in this document:
         [The most refined producer concept that `P` satisfies.]
     ]
     [
-        [Mechanism]
+        [Tag]
         [`PT::tag`]
         [any type]
-        [[Mechanism] type tag.]
+        [[Tag] type tag.]
     ]
 ]
 
@@ -152,11 +152,11 @@ There is an intrusive as well as a non-intrusive way to register the
 [PortTraits] of a type `P`, thereby making it a [Port].
 
 Non-intrusive registration is typically done by providing a specialization of
-the [register_port_traits] template (either directly, or through the provided
-macros [DATAFLOW_PORT_TRAITS] and [DATAFLOW_PORT_TRAITS_ENABLE_IF]).  This will
-specialize [port_traits_of] for all cv-qualified versions of type `P`.
+the [register_traits] template (either directly, or through the provided
+macros [DATAFLOW_TRAITS] and [DATAFLOW_TRAITS_ENABLE_IF]).  This will
+specialize [traits_of] for all cv-qualified versions of type `P`.
 If cv-qualified versions of type `P` should have different [PortTraits]s,
-[port_traits_of] should be specialized directly.
+[traits_of] should be specialized directly.
 
 Intrusive registration can be done by providing
 a `P::port_traits` member type, which can be either a [PortTraits]
@@ -170,7 +170,7 @@ The below examples illustrate the avaliable registration methods.
 
 [heading Examples]
 
-All of the below examples use the following [Mechanism] and
+All of the below examples use the following [Tag] and
 [PortTraits] types:
 
 [port_registration_example_prep]
@@ -184,8 +184,8 @@ Intrusive registration is the easiest, but assumes you can modify the
 
 [heading Non-intrusive registration]
 
-Non-intrusive registration is done by specializing the `register_port_traits`
-template.  Since the `register_port_traits` template is keyed by [Mechanism]
+Non-intrusive registration is done by specializing the `register_traits`
+template.  Since the `register_traits` template is keyed by [Tag]
 and [PortCategory], this is rather verbose:
 
 [port_registration_example_non_intrusive]
@@ -198,7 +198,7 @@ registration (the macro also performs a static check on the
 
 [heading Non-intrusive mass registration]
 
-The [register_port_traits] template has an Enable template parameter for use with
+The [register_traits] template has an Enable template parameter for use with
 `boost::enable_if`.  Hence, we can register a number of types at the same time:
 
 [port_registration_example_non_intrusive_enable_if]
@@ -256,7 +256,7 @@ The following expressions are used in this document:
     [[Name] [Expression] [Result Type] [Semantics]]
     [
         [Port Traits]
-        [`port_traits_of<M, PC, P>::type`]
+        [`traits_of<M, PC, P>::type`]
         [`PT`]
         [
             The [ComplementedPortTraits] of the port.
@@ -285,7 +285,35 @@ The following expressions are used in this document:
 
 [endsect]
 
-[section KeyedPort]
+[section:vectorport VectorPort, VectorPortTraits]
+
+A [VectorPort] type `VP` is a [Port] that is composed of a number of
+sub-[Port]s.
+
+[heading VectorPort Refines]
+* [Port]
+* [PortVector]
+
+[heading VectorPortTraits Refines]
+* [PortTraits]
+* [PortVectorTraits]
+
+
+[endsect][/vectorport]
+
+[section:keyedport KeyedPort, KeyedPortTraits]
+
+A [KeyedPort] type `KP` is a [VectorPort] whose sub-[Port]s are accessible
+by key.  Whenever a binary operation is performed between a [Port] of type `P`
+and `KP`, it is forwarded to the binary operation between `P` and the 
+sub-[Port] in `KP` keyed by the [PortTraits] of `P`.
+
+[heading KeyedPort Refines]
+* [VectorPort]
+
+[heading VectorPortTraits Refines]
+* [VectorPortTraits]
+
 [endsect][/keyed_port]
 
 [section ProxyPort, ProxyPortTraits]
@@ -310,7 +338,7 @@ The following expressions are used in this document:
     [[Name] [Expression] [Result Type] [Semantics]]
     [
         [Proxy Port Traits]
-        [`proxy_port_traits_of<PP>::type`]
+        [`proxy_traits_of<PP>::type`]
         [[ProxyPortTraits] type.]
         [
             The traits of the proxy port.

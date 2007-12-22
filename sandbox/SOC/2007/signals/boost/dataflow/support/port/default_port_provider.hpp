@@ -16,11 +16,6 @@
 
 namespace boost { namespace dataflow {
 
-template<typename T, typename Tag>
-struct traits_of<T, Tag, typename enable_if<is_port<T, Tag> >::type>
-    : public port_traits_of<T, Tag>
-{};
-
 namespace extension {
 
     template<typename PortTraits, typename Direction, typename Mechanism>

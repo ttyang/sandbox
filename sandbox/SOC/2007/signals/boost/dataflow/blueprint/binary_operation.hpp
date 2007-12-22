@@ -8,7 +8,6 @@
 
 #include <boost/dataflow/blueprint/port.hpp>
 
-
 namespace boost { namespace dataflow { namespace blueprint {
 
 template<typename Operation>
@@ -21,26 +20,20 @@ public:
 };
 
 template<typename Operation>
-bool are_binary_operable(port &producer, port &consumer)
-{
-    if ((producer.traits().category().uuid() != 0)
-            || (consumer.traits().category().uuid() != 1))
-        return false;
-    
-    if (producer.is_complemented_port())
+bool are_binary_operable(port &outgoing, port &incoming)
+{    
+    if (outgoing.is_complemented_port())
     {
-        complemented_port &cproducer = static_cast<complemented_port &>(producer);
-        return cproducer.is_operable_with_complement<Operation>()
-            && (cproducer.complement_type_info()
-                == consumer.port_type_info());
+        return outgoing.as<complemented_port>().template is_operable_port_to_complement<Operation>()
+            && (outgoing.as<complemented_port>().complement_type_info()
+                == incoming.port_type_info());
     }
 
-    if (consumer.is_complemented_port())
+    if (incoming.is_complemented_port())
     {
-        complemented_port &cconsumer = static_cast<complemented_port &>(consumer);
-        return cconsumer.is_operable_with_complement<Operation>()
-            && (cconsumer.complement_type_info()
-            == producer.port_type_info());
+        return incoming.as<complemented_port>().template is_operable_complement_to_port<Operation>()
+            && (incoming.as<complemented_port>().complement_type_info()
+            == outgoing.port_type_info());
     }
 
     return false;
@@ -52,9 +45,9 @@ shared_ptr<binary_operation<Operation> > get_binary_operation(port & producer, p
     if(!are_binary_operable<Operation>(producer, consumer))
         throw std::exception();
     if (producer.is_complemented_port())
-        return static_cast<complemented_port &>(producer).operation<Operation>();
+        return static_cast<complemented_port &>(producer).port_to_complement_operation<Operation>();
     if (consumer.is_complemented_port())
-        return static_cast<complemented_port &>(consumer).operation<Operation>();
+        return static_cast<complemented_port &>(consumer).complement_to_port_operation<Operation>();
     return shared_ptr<binary_operation<Operation> >();
 }
 

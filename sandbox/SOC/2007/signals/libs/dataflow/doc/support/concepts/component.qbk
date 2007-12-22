@@ -21,7 +21,7 @@ for a [Component] (see examples below).
     [[Name] [Expression] [Result Type] [Semantics]]
     [
         [Component Traits]
-        [`component_traits_of<M, C>::type`]
+        [`traits_of<M, C>::type`]
         [`CT`]
         [
             The [ComponentTraits] of the component.

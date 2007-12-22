@@ -6,7 +6,7 @@
 #ifndef BOOST_DATAFLOW_SUPPORT_PORT_PORT_HPP
 #define BOOST_DATAFLOW_SUPPORT_PORT_PORT_HPP
 
-#include <boost/dataflow/detail/enable_if_defined.hpp>
+#include <boost/dataflow/utility/enable_if_type.hpp>
 #include <boost/dataflow/support/port/traits.hpp>
 #include <boost/dataflow/support/tags.hpp>
 
@@ -38,8 +38,8 @@ template<typename T, typename Tag>
 struct is_port<
     T,
     Tag,
-    typename detail::enable_if_defined<
-        typename port_traits_of<T, Tag>::type
+    typename enable_if<
+        is_port_traits<typename traits_of<T, Tag>::type>
     >::type >
     : public mpl::true_ {};
 
@@ -48,7 +48,9 @@ template<typename PortTraits>
 struct port
 {
     /// PortTraits for the Port.
-    typedef PortTraits port_traits;  
+    typedef PortTraits dataflow_traits;
+    /// INTERNAL ONLY
+    BOOST_MPL_ASSERT(( is_port_traits<PortTraits> ));
 };
 
 } } // namespace boost::dataflow

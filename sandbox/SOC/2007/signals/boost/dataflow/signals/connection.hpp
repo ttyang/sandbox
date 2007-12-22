@@ -8,6 +8,6 @@
 
 #include <boost/dataflow/signals/support.hpp>
 #include <boost/dataflow/signals/connection/operators.hpp>
-#include <boost/dataflow/signals/connection/slot_selector.hpp>
+//#include <boost/dataflow/signals/connection/slot_selector.hpp>
 
 #endif

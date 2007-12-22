@@ -1,6 +1,6 @@
 [section:binaryoperable BinaryOperable (Connectable, OnlyConnectable, Disconnectable, Extractable) ]
 
-A [ProducerPort] `P` and [ConsumerPort] `C` are /BinaryOperable/
+A producer [Port] `P` and consumer [Port] `C` are /BinaryOperable/
 for a binary operation `O`, and mechanism `M`, if the implementation of
 the binary operation `O` has been specialized for `M`, `P`, and `C`.
 
@@ -15,11 +15,11 @@ In this case,
 The following expressions are used in this document:
 
 [variablelist
-    [[P] [A [ProducerPort] type.]]
-    [[C_C] [A [ConsumerPort] [Connectable] with `P`]]
-    [[C_O] [A [ConsumerPort] [OnlyConnectable] with `P`]]
-    [[C_D] [A [ConsumerPort] [Disconnectable] with `P`]]
-    [[C_E] [A [ConsumerPort] [Extractable] with `P`]]
+    [[P] [A producer [Port] type.]]
+    [[C_C] [A consumer [Port] [Connectable] with `P`]]
+    [[C_O] [A consumer [Port] [OnlyConnectable] with `P`]]
+    [[C_D] [A consumer [Port] [Disconnectable] with `P`]]
+    [[C_E] [A consumer [Port] [Extractable] with `P`]]
     [[p] [An object of type P.]]
     [[c_c] [An object of type C_C.]]
     [[c_o] [An object of type C_O.]]

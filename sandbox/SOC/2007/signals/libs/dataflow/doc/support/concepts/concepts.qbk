@@ -38,7 +38,7 @@ Dataflow library support layer might use one or more mechanisms in its
 implementation.
 
 In the Dataflow library, most port related class templates are keyed through
-a [Mechanism] type tag.  For example, the [DataflowSignals] layer
+a [Tag] type tag.  For example, the [DataflowSignals] layer
 uses two mechanisms for its ports and related operations - one mechanism
 is used for lasting connections between a `signal` and a `function`, while
 another is used for one-time extractions of data.
@@ -76,7 +76,7 @@ intented to provide compile-time introspection and other operations.
 It is often the case that a port delegates its [Port]
 functionality to some other element.  For example, a
 class that is a [DataflowSignals] component might delegate its
-[ProducerPort] functionality to a member boost::signal.  It can
+producer [Port] functionality to a member boost::signal.  It can
 do so by declaring itself a [ProxyProducerPort] for the boost::signal.
 
 [heading Port Operations]
@@ -134,6 +134,8 @@ for connected consumers.
 
 Invocation is captured more formally by the [Invocable] concept.
 
+[include general.qbk]
+
 [section Port related]
 
 [section Mechanism]
@@ -149,9 +151,10 @@ type tag.
 The following code declares the [VTK] mechanism tag - it is a part of
 the [vtk_example example showing how to provide a VTK support layer].
 
-[vtk_mechanism]
+[vtk_tag]
 
 [endsect][/mechanism]
+
 
 [include port.qbk]
 

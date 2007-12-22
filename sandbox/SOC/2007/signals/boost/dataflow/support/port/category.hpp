@@ -6,7 +6,7 @@
 #ifndef BOOST_DATAFLOW_SUPPORT_PORT_CATEGORY_HPP
 #define BOOST_DATAFLOW_SUPPORT_PORT_CATEGORY_HPP
 
-#include <boost/dataflow/detail/enable_if_defined.hpp>
+#include <boost/dataflow/utility/enable_if_type.hpp>
 #include <boost/mpl/bool.hpp>
 
 namespace boost { namespace dataflow {
@@ -32,7 +32,7 @@ struct is_port_category : public mpl::false_
 template<typename PortCategory>
 struct is_port_category<
     PortCategory,
-    typename detail::enable_if_defined<
+    typename utility::enable_if_type<
         typename PortCategory::complement
     >::type>
  : public mpl::true_

@@ -17,7 +17,7 @@ using namespace boost;
 // This will be our data processor.  The signature void(double) designates
 // the output signal (we will be sending out a double).  The signals
 // we can receive depend on how we overload operator().
-class processor : public signals::filter<void (double)>
+class processor : public signals::filter<processor, void (double)>
 {
 public:
     // Initialize the Gaussian noise generator.
@@ -40,7 +40,7 @@ private:
 class output
 {
 public:
-    typedef dataflow::signals::call_consumer port_traits;
+    typedef dataflow::signals::call_consumer<>  dataflow_traits;
     
     void operator()(double x)
     {

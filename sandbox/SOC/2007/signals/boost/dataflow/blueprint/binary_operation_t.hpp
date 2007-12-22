@@ -39,8 +39,8 @@ namespace detail
     call_binary_operation(port &producer, port &consumer)
     {
             dataflow::binary_operation<Operation, Mechanism>(
-            *(ProducerPort *) producer.get(),
-            *(ConsumerPort *) consumer.get());
+            any_cast<ProducerPort &>(producer.get()),
+            any_cast<ConsumerPort &>(consumer.get()));
     }
 }
 

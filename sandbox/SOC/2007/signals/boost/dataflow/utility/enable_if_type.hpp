@@ -3,18 +3,16 @@
 // 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef DATAFLOW_DETAIL_ENABLE_IF_DEFINED_HPP
-#define DATAFLOW_DETAIL_ENABLE_IF_DEFINED_HPP
+#ifndef DATAFLOW_UTILITY_ENABLE_IF_TYPE_HPP
+#define DATAFLOW_UTILITY_ENABLE_IF_TYPE_HPP
 
-#include <boost/type_traits/integral_constant.hpp>
-#include <boost/utility/enable_if.hpp>
 
 namespace boost { namespace dataflow {
     
-namespace detail
+namespace utility
 {
     template<typename T, typename Result=void>
-    struct enable_if_defined
+    struct enable_if_type
     {
         typedef Result type;
     };
@@ -30,4 +28,4 @@ namespace detail
 
 } } // namespace boost::dataflow
 
-#endif // DATAFLOW_DETAIL_ENABLE_IF_DEFINED_HPP
+#endif // DATAFLOW_UTILITY_ENABLE_IF_TYPE_HPP
