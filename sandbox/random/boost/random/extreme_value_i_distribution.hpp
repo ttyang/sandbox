@@ -4,8 +4,8 @@
 // Boost Software License, Version 1.0. (See accompanying file
 // LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_RANDOM_EXTREME_VALUE_DISTRIBUTION_HPP
-#define BOOST_RANDOM_EXTREME_VALUE_DISTRIBUTION_HPP
+#ifndef BOOST_RANDOM_EXTREME_VALUE_I_DISTRIBUTION_HPP
+#define BOOST_RANDOM_EXTREME_VALUE_I_DISTRIBUTION_HPP
 
 #include <iostream>
 #include <cmath>
@@ -29,14 +29,14 @@ namespace boost {
     // Note that the type II and III are closely related to the minimum and
     // maximum cases of the type I.
     template<class RealType = double>
-    class extreme_value_distribution
+    class extreme_value_i_distribution
     {
     public:
         typedef RealType result_type;
 
-        explicit extreme_value_distribution(const result_type& mu = result_type(0),
-                                            const result_type& beta = result_type(1),
-                                            const result_type& sign = result_type(1))
+        explicit extreme_value_i_distribution(const result_type& mu = result_type(0),
+                                              const result_type& beta = result_type(1),
+                                              const result_type& sign = result_type(1))
             : m_mu(mu)
             , m_beta(beta)
             , m_sign(sign)
@@ -68,7 +68,7 @@ namespace boost {
 #if !defined(BOOST_NO_OPERATORS_IN_NAMESPACE) && !defined(BOOST_NO_MEMBER_TEMPLATE_FRIENDS)
         template<class CharT, class Traits>
         friend std::basic_ostream<CharT, Traits>&
-        operator <<(std::basic_ostream<CharT, Traits>& os, const extreme_value_distribution& dist)
+        operator <<(std::basic_ostream<CharT, Traits>& os, const extreme_value_i_distribution& dist)
         {
             os << dist.m_mu << " " << dist.m_beta << " " << dist.m_sign;
             return os;
@@ -76,7 +76,7 @@ namespace boost {
 
         template<class CharT, class Traits>
         friend std::basic_istream<CharT,Traits>&
-        operator >>(std::basic_istream<CharT,Traits>& is, extreme_value_distribution& dist)
+        operator >>(std::basic_istream<CharT,Traits>& is, extreme_value_i_distribution& dist)
         {
             is >> std::ws >> dist.m_mu >> std::ws >> dist.m_beta >> std::ws >> dist.m_sign;
             return is;
