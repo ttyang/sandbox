@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="test_named_spacer"
-	ProjectGUID="{C5897099-5FA2-4E12-AFFC-2015364347FA}"
+	Name="test_tags"
+	ProjectGUID="{6CC1FA5A-5E85-4420-BCD8-2D731E65EA18}"
 	RootNamespace="test"
 	Keyword="Win32Proj"
 	>
@@ -172,7 +172,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\test.cpp"
+			RelativePath=".\test_tags.cpp"
 			>
 		</File>
 	</Files>
