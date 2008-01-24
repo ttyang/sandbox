@@ -1,4 +1,4 @@
-// log.cpp
+// my_app_log.cpp
 #include "log.h"
 #include <boost/logging/format.hpp>
 #include <boost/logging/writer/ts_write.hpp>
