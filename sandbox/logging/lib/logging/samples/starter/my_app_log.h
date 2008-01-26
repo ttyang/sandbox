@@ -3,8 +3,6 @@
 #define my_app_LOG_H_header
 
 #include <boost/logging/format_fwd.hpp>
-// If you want to use tags...
-#include <boost/logging/tags.hpp>
 
 // Step 1: Specify the class to hold the message
 namespace bl = boost::logging;
