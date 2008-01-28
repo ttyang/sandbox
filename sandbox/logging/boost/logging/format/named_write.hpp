@@ -1,4 +1,4 @@
-// named_writer.hpp
+// named_write.hpp
 
 // Boost Logging library
 //
@@ -21,7 +21,7 @@
 # pragma once
 #endif
 
-#include <boost/logging/writer/named.hpp>
+#include <boost/logging/writer/named_write.hpp>
 
 
 #endif
