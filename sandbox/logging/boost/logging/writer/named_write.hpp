@@ -153,6 +153,18 @@ template<class format_write_ /* = default_ */ > struct named_write {
         init();
     }
 
+    /** @brief Constructs the named_write, and specifies the formats and destinations 
+    */
+    named_write(const string_type & format_str, const string_type & destination_str) {
+        m_writer.add_formatter( m_format_before);
+        m_writer.add_formatter( m_format_after);
+        m_writer.add_destination( m_destination);
+
+        init();
+        write(format_str, destination_str);
+    }
+
+
     /** @brief sets the format string: what should be before, and what after the original message, separated by "|"
 
     Example: \n
