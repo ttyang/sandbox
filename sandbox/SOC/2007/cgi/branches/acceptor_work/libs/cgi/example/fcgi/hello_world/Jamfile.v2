@@ -1,25 +1,14 @@
 
-project cgi.examples.fcgi.hello_world
-  : build-dir
-    $(PROJECT_ROOT)/bin.v2
+project cgi.examples.fcgi.hello_world ;
+
+exe fast_hw : main.cpp ;
+
+install install
+  :
+    fast_hw
+  :
+    <location>$(fcgi-bin)
   ;
 
-exe fast_hw
-  :
-    main.cpp
-  :
-    <include>$(BOOST_ROOT)
-    <include>$(PROJECT_ROOT)
-    #<library>../../util/system//boost_system
-    #<define>BOOST_ALL_NO_LIB=1
-    <define>_CRT_SECURE_NO_WARNINGS
-    <define>_SCL_SECURE_NO_WARNINGS
-  ;
-
-install fast_hw_install
-  : fast_hw
-  : #<location>$(BOOST_CGI_BIN_DIR)
-    #<location>.
-    <location>C:/Apache/Apache2.2/fcgi-bin
-  ;
+explicit install ;
 

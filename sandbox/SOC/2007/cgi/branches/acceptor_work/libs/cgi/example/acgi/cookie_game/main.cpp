@@ -33,7 +33,7 @@
 // };
 
 /**
- * The following example has a few simple stages.
+ * The following example has a few stages.
  * It is best understood by compiling and testing it, and then looking at
  * the source code.
  */

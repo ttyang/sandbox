@@ -5,33 +5,17 @@
 #        at http://www.boost.org/LICENSE_1_0.txt)
 
 project boost.cgi.examples.acgi.cookie_game
-  : build-dir
-    $(PROJECT_ROOT)/bin.v2
   ;
 
-SOURCES = main ;
+exe acgi : main.cpp ;
 
-exe acgi
-  :
-    $(SOURCES).cpp
+# Our install rule (builds binaries and copies them to <location>)
+install install 
   : 
-      <include>$(BOOST_ROOT)
-      <include>$(PROJECT_ROOT)
-      #<library>../../util/system//boost_system
-      #<library>libboost_system
-      #<define>BOOST_ALL_NO_LIB=1
-      #<toolset>gcc:<linkflags>-lpthread
-      <define>_CRT_SECURE_NO_WARNINGS
-      <define>_SCL_SECURE_NO_WARNINGS
-  :
+    acgi
+  : 
+    <location>$(cgi-bin)
   ;
 
-# uncomment this if you want to test the example with your HTTP server
-install _
-  : acgi
-  : # this is where the compiled executable is copied to
-    # ie. change this to your server's /cgi-bin/
-    <location>.
-  ;
-
+# Only install example if you use `bjam install' or equivalent
 explicit install ;

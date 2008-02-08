@@ -4,6 +4,24 @@
 #include <boost/lexical_cast.hpp>
 
 using namespace boost::acgi;
+using std::string;
+
+void show_passed_variables(request& req, response& resp)
+{
+  resp<< "<hr />"
+         "<div>"
+           "You provided the following data:"
+           "<p>"
+           "<h3>Form data:</h3>";
+  for (boost::acgi::map::iterator i = req.form().begin();
+       i != req.form().end();
+       ++i)
+  {
+    resp<< "<b>" << i->first << "</b> = <i>" << i->second << "</i>";
+  }
+  resp<<   "</p>"
+         "</div>";
+}
 
 int show_default_page(request& req, response& resp)
 {
@@ -15,19 +33,22 @@ int show_default_page(request& req, response& resp)
      "</head>"
      "<body>"
        "<center>"
-         "<form action='POST'>"
+         "<form method='POST'>"
           "<input type='text' name='name' />"
-          "<input type='button' name='cmd' value='login' />"
+          "<input type='hidden' name='cmd' value='login' />"
+          "<input type='submit' value='login' />"
          "</form>"
-       "</center>"
-     "</body>"
+       "</center>";
+  show_passed_variables(req, resp);
+  resp
+  << "</body>"
      "</html>";
 
   resp.send(req.client());
   return req.close(http::ok);
 }
 
-void show_already_logged_in_page(request& req, response resp)
+int show_already_logged_in_page(request& req, response& resp)
 {
   resp
   << content_type("text/html")
@@ -40,8 +61,10 @@ void show_already_logged_in_page(request& req, response resp)
      "You are already logged in. You should be redirected "
      "<a href='"<< req.POST("fwd") <<"'>here</a>"
      " in five seconds."
-     "</center>"
-     "</body>"
+     "</center>";
+     show_passed_variables(req, resp);
+  resp
+  << "</body>"
      "</html>";
   
   resp.send(req.client());
@@ -65,8 +88,10 @@ int show_name_error_page(request& req, response& resp)
           "<input type='text' name='name' value='"<< req.POST("name") <<"' />"
           "<input type='button' name='cmd' value='login' />"
          "</form>"
-       "</center>"
-     "</body>"
+       "</center>";
+     show_passed_variables(req, resp);
+  resp
+  << "</body>"
      "</html>";
 
   resp.send(req.client());
@@ -78,7 +103,7 @@ int verify_name(std::string& name)
   using namespace boost;
 
   regex re("\\s*([_a-zA-Z0-9]{5,})\\s*");
-  cmatch what;
+  smatch what;
 
   if (!regex_match(name, what, re))
   {
@@ -92,7 +117,7 @@ int verify_name(std::string& name)
 
 string make_uuid()
 {
-  return boost::lexical_cast<string>(time());
+  return boost::lexical_cast<string>(time(NULL));
   // better, for when Boost.Uuid is finished:
   //return boost::uuid::create().to_string();
 }
