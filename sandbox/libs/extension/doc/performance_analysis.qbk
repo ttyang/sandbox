@@ -15,6 +15,8 @@ and their results.
 Finally we will discuss a small benchmark comparing two ways of using the 
 library, using the optional boost::function.
 
+Note that only minor optimization has been done of the code thus far. Once the API is finalized (ie after the library is reviewed for acceptance into Boost) more optimization will be performed.
+
 [h1 First comparison]
 
 The first benchmarks show how much overhead is incurred by using Boost.Extension
