@@ -17,7 +17,7 @@ using namespace boost::extensions;
 int main(int argc, char * argv[])
 {
   registry reg;
-  reg.open("../bin/libRegistryLibrary.extension");
+  reg.open("libRegistryLibrary.extension");
   {
     std::list<counted_factory<word, int> > & factory_list = 
       reg.get<word, int>(); 
@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
   reg.clear();
   // Now we can repeat the above - with the same results.
   {
-    reg.open("../bin/libRegistryLibrary.extension");
+    reg.open("libRegistryLibrary.extension");
     std::list<counted_factory<word, int> > & factory_list = 
       reg.get<word, int>(); 
     if (factory_list.size() != 1) 

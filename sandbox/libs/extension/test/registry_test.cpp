@@ -23,16 +23,16 @@ BOOST_AUTO_TEST_CASE(registry_construction)
 {
   registry reg;
   BOOST_CHECK_EQUAL(reg.num_libraries(), size_t(0));
-  BOOST_CHECK(reg.open("../bin/libRegistryLibrary.extension"));
+  BOOST_CHECK(reg.open("libRegistryLibrary.extension"));
   BOOST_CHECK_EQUAL(reg.num_libraries(), size_t(1));
-  BOOST_CHECK(reg.close("../bin/libRegistryLibrary.extension"));
+  BOOST_CHECK(reg.close("libRegistryLibrary.extension"));
   BOOST_CHECK_EQUAL(reg.num_libraries(), size_t(0));
 }
 
 BOOST_AUTO_TEST_CASE(library_closing)
 {  // this tests the requirements of the registry example
   registry reg;
-  BOOST_ASSERT(reg.open("../bin/libRegistryLibrary.extension"));
+  BOOST_ASSERT(reg.open("libRegistryLibrary.extension"));
   {
     std::list<counted_factory<word, int> > & factory_list = 
       reg.get<word, int>(); 
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(library_closing)
     }
   }
   BOOST_CHECK(reg.clear());
-  BOOST_ASSERT(reg.open("../bin/libRegistryLibrary.extension"));
+  BOOST_ASSERT(reg.open("libRegistryLibrary.extension"));
   {
     std::list<counted_factory<word, int> > & factory_list = 
       reg.get<word, int>(); 
