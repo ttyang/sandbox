@@ -20,7 +20,7 @@ public:
 
   ~node_set() { xmlXPathFreeNodeSet(this->impl());}
 
-  size_t size() const { return this->impl()->nodeNr;}
+  size_t size() const { return this->impl() ? this->impl()->nodeNr : 0;}
   node_ptr<node<S> > operator[] (size_t i) 
   {
     return detail::ptr_factory<node<S> >(this->impl()->nodeTab[i]);
