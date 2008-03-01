@@ -15,9 +15,9 @@ namespace boost {  namespace dataflow {
 
 namespace utility {
 
-// Constructs a type corresponding to pointer to member of T with signature Signature.
-// e.g. slot_type<some_class, void(float)>::type is void (some_class::*) (float)
-
+/// Constructs a type corresponding to pointer to member of T with signature Signature.
+/** e.g. slot_type<some_class, void(float)>::type is void (some_class::*) (float)
+*/
     template <typename Signature, typename T>
     struct slot_type
     {
