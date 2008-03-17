@@ -14,6 +14,8 @@
 #include <boost/extension/extension.hpp>
 #include <iostream>
 #include <typeinfo>
+#include <string>
+
 class BOOST_EXTENSION_VEHICLE_DECL vehicle
 {
 public:

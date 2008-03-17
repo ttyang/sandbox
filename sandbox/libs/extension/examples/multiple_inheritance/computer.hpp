@@ -13,6 +13,7 @@
 #define BOOST_EXTENSION_COMPUTER_HPP
 #include <boost/extension/extension.hpp>
 #include <iostream>
+#include <string>
 #include <typeinfo>
 class BOOST_EXTENSION_COMPUTER_DECL computer
 {

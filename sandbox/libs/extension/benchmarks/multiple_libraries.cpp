@@ -94,22 +94,23 @@ int main(void)
     l.open();
     {
       factory_map fm;
-      functor<void, factory_map &> load_func = 
-        l.get_functor<void, factory_map &>("extension_export_word");
+      void (*load_func)(factory_map &) = 
+        l.get<void, factory_map &>("extension_export_word");
 
       load_func(fm);
 
-      std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
-      for (std::list<factory<word, int> >::iterator current_word = 
-             factory_list.begin(); current_word != factory_list.end(); 
-           ++current_word) {
-
-        std::auto_ptr<word> word_ptr(current_word->create());
-
-        // do something with the word
-        std::string s(word_ptr->get_val());
-        s += "\n";
-      }
+      std::map<int, factory<word> > & factory_list = fm.get<word, int>();
+      for (std::map<int, factory<word> >::iterator current_word = 
+				     factory_list.begin(); current_word != factory_list.end(); 
+			     ++current_word)
+	    {
+		    //  Using auto_ptr to avoid needing delete. Using smart_ptrs is 
+		    // recommended.
+		    //  Note that this has a zero argument constructor - currently constructors
+		    //  with up to six arguments can be used.
+		    std::auto_ptr<word> word_ptr(current_word->second.create());
+        std::string cheese = word_ptr->get_val();
+	    }
     }
     l.close();
   }
