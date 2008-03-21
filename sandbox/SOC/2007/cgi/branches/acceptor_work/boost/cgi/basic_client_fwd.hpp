@@ -1,4 +1,4 @@
-//                   -- io_service.hpp --
+//               -- basic_client_fwd.hpp --
 //
 //            Copyright (c) Darren Garvey 2007.
 // Distributed under the Boost Software License, Version 1.0.
@@ -6,25 +6,17 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 ////////////////////////////////////////////////////////////////
-#ifndef CGI_IO_SERVICE_HPP_INCLUDED__
-#define CGI_IO_SERVICE_HPP_INCLUDED__
-
-//#if _MSC_VER > 1020
-//#pragma once
-//#endif
-
-#include <boost/asio/io_service.hpp>
+#ifndef CGI_BASIC_CLIENT_FWD_HPP_INCLUDED__
+#define CGI_BASIC_CLIENT_FWD_HPP_INCLUDED__
 
 namespace cgi {
  namespace common {
 
-  using boost::asio::io_service;
+  template<typename Connection, typename Protocol>
+  class basic_client;
 
  } // namespace common
-
-  // This should go?
-  using boost::asio::io_service;
-
 } // namespace cgi
 
-#endif // CGI_IO_SERVICE_HPP_INCLUDED__
+#endif // CGI_BASIC_CLIENT_FWD_HPP_INCLUDED__
+

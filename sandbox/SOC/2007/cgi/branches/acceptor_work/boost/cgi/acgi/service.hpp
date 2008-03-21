@@ -10,8 +10,8 @@
 #define CGI_CGI_SERVICE_HPP_INCLUDED__
 
 #include "boost/cgi/tags.hpp"
-#include "boost/cgi/connections/stdio.hpp"
-#include "boost/cgi/connections/async_stdio.hpp"
+//#include "boost/cgi/gateway_impl/acgi_gateway_impl.hpp"
+//#include "boost/cgi/gateway_service/acgi_gateway_service.hpp"
 #include "boost/cgi/basic_protocol_service_fwd.hpp"
 
 namespace cgi {
@@ -20,7 +20,11 @@ namespace cgi {
   /**
    * Works with both cgi_request and acgi_request.
    */
-  typedef common::basic_protocol_service<tags::acgi> cgi_service;
+  typedef common::basic_protocol_service<tags::acgi> acgi_service;
+
+  namespace acgi {
+    typedef common::basic_protocol_service<tags::acgi> service;
+  }
 
   /// A service 'owned' by a single user-supplied io_service
   //typedef basic_protocol_service<tags::acgi> cgi_sub_service;
@@ -39,6 +43,9 @@ namespace cgi {
   };
   */
 
+
 } // namespace cgi
+
+#include "boost/cgi/basic_protocol_service.hpp"
 
 #endif // CGI_CGI_SERVICE_HPP_INCLUDED__
