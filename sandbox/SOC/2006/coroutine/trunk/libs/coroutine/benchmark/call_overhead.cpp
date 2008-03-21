@@ -98,7 +98,7 @@ struct foo_struct_coro {
 
 
 template<typename F>
-double test(F f, int n) {
+double test(F &f, int n) {
   int accum = 5;
   timer t;
   while(n--)
@@ -109,13 +109,14 @@ double test(F f, int n) {
 
 int main() {
 
-  int iterations = 1000*10*10*10*10;
-#if 0
+  int iterations = 1000*10*10*10*10*5;
+#if 1
   function_type function_foo(foo);
   function_type function_foo_struct = foo_struct();
   function_type function_ol_foo(ol_foo);
   coroutine_type coro_foo(foo_coro);
   foo_struct_coro t;
+  foo_struct foo_struct_;
   coroutine_type coro_foo_struct  (t);
   coroutine_type coro_ol_foo(ol_foo_coro);
   cout.setf(ios_base::floatfield);
@@ -125,7 +126,7 @@ int main() {
   cout << setw(50) << "Call to out-of-line function: " 
        << setw(16) << right << test(ol_foo, iterations) << endl;
   cout << setw(50) << "Call to function object: " 
-       << setw(16) << right << test(foo_struct(), iterations) << endl;
+       << setw(16) << right << test(foo_struct_, iterations) << endl;
   cout << setw(50) << "Call to boost::function of function: " 
        << setw(16) << right << test(function_foo, iterations) << endl;
   cout << setw(50) << "Call to boost::function of function object: " 
