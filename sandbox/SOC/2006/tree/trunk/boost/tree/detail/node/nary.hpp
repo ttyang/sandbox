@@ -219,6 +219,7 @@ class node : public node_base<Container> {
 	typedef base_type const* const_base_pointer;
 	
 	typedef value_type& reference;
+	typedef value_type const& const_reference;
 	typedef value_type* pointer;
 
 	//enum size_t { first = 0, second = 1 };
@@ -227,6 +228,8 @@ class node : public node_base<Container> {
 	// TODO: add observers.
 
 	reference operator*() { return *m_data; } 
+
+	const_reference operator*() const { return *m_data; } 
 	
 	node(pointer data) : base_type(), m_data(data) {}
 	

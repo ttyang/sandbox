@@ -40,7 +40,7 @@ template <class BasePtr, class SizeType, class Value>
 class helper<node<Value, detail::binary_array> const, BasePtr, SizeType > {
 	typedef node<Value, detail::binary_array> const node_type;
  public:
-	static typename node_type::reference deref(BasePtr par, SizeType pos)
+	static typename node_type::const_reference deref(BasePtr par, SizeType pos)
 	{
 		return **static_cast<node_type*>(par);
 	}
@@ -106,17 +106,14 @@ class const_nary_tree_cursor
     )
       : m_node(other.m_node), m_pos(other.m_pos) {}
 
-	
-
 	const_base_pointer m_node;
  	size_type m_pos;
 
  private:
     friend class iterator_core_access;
     friend class cursor_core_access;
-        
-    //const
-    typename node_type::reference dereference() const
+
+    typename node_type::const_reference dereference() const
 	{
 		return helper<node_type, const_base_pointer, size_type>::deref(m_node, m_pos);
 	}
