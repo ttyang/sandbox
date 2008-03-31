@@ -4,13 +4,19 @@
 #     (See accompanying file LICENSE_1_0.txt or copy 
 #        at http://www.boost.org/LICENSE_1_0.txt)
 
-project boost/cgi/example/acgi ;
+project boost/cgi/example/cgi
+  ;
 
 # By default, just build the examples
 build-project hello_world ;
 build-project echo ;
-build-project cookie_game ;
-build-project amortization ;
+#install stage
+#  :
+#    hello_world
+#    echo
+#  :
+#    <location>$(bin-dir)
+#  ;
 
 # If the user explicitly passes "install" on the command line, build the
 # CGI examples and copy them to $(cgi-bin)
@@ -18,11 +24,8 @@ install install
   :
     hello_world
     echo
-    cookie_game
-    amortization
   :
     <location>$(cgi-bin)
   ;
 
 explicit install ;
-

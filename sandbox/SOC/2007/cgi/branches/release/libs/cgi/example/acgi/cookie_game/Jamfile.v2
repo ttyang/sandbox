@@ -4,15 +4,17 @@
 #     (See accompanying file LICENSE_1_0.txt or copy 
 #        at http://www.boost.org/LICENSE_1_0.txt)
 
-project boost/cgi/example/cgi/hello_world ;
+project boost/cgi/example/acgi/cookie_game ;
 
-exe cgi_hello_world : main.cpp /boost/regex/ ;
+exe acgi_cookie_game : main.cpp /boost/regex/ ;
 
 # Our install rule (builds binaries and copies them to <location>)
-install install
- : cgi_hello_world
- : <location>$(cgi-bin)
- ;
+install install 
+  : 
+    acgi_cookie_game
+  : 
+    <location>$(cgi-bin)
+  ;
 
 # Only install example if you use `bjam install' or equivalent
 explicit install ;
