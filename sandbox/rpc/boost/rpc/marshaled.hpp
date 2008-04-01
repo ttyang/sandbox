@@ -7,6 +7,7 @@
 #include <boost/rpc/function.hpp>
 #include <boost/utility/enable_if.hpp>
 #include <boost/rpc/detail/archive_out_param.hpp>
+#include <boost/detail/storable_arity.hpp>
 
 namespace boost {
 namespace rpc {

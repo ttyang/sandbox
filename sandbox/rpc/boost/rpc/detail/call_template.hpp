@@ -23,8 +23,8 @@ protected:
     virtual void result_string(const std::string &str, const call_options &options);
 };
 #else
-    BOOST_ARITY_STORABLE_TYPES(Signature)
-    BOOST_ARITY_TYPES(Signature)
+    BOOST_ARITY_TYPEDEF(BOOST_ARITY_storable_TYPENAME, BOOST_ARITY_argN_storable_type_NAME)
+    BOOST_ARITY_CMAMC(typedef, BOOST_ARITY_function_traits_argN_type_TYPENAME, Signature, BOOST_ARITY_argN_type_NAME, ;)
 
     BOOST_PP_REPEAT_FROM_TO(1,BOOST_ARITY_NUM_ARGS_INC,BOOST_RPC_ARGUMENT,_)
 
@@ -34,7 +34,7 @@ public:
     BOOST_PP_IF(BOOST_ARITY_NUM_ARGS,:,BOOST_PP_EMPTY())
     BOOST_PP_ENUM_SHIFTED(BOOST_ARITY_NUM_ARGS_INC,BOOST_RPC_INIT_ARGUMENT,_)
     {
-        params = detail::serialize<Id, ArchivePair,Signature>
+        params = detail::serialize<Id, ArchivePair,Signature>()
             (id BOOST_ARITY_COMMA BOOST_PP_ENUM_SHIFTED_PARAMS(BOOST_ARITY_NUM_ARGS_INC,a));
     }
     std::auto_ptr<handler_base> spawn_handler()

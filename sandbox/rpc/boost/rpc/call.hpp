@@ -11,6 +11,7 @@
 #include <boost/call_traits.hpp>
 #include <boost/rpc/detail/archive_out_param.hpp>
 #include <boost/rpc/call_options.hpp>
+#include <boost/detail/storable_arity.hpp>
 
 namespace boost {
 namespace rpc {

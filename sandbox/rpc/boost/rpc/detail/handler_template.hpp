@@ -35,8 +35,8 @@ public:
     typedef async_returning_handler<typename boost::function_traits<Signature>::result_type> base_type;
     typedef typename base_type::ptr ptr;
     
-    BOOST_ARITY_STORABLE_TYPES(Signature)
-    BOOST_ARITY_TYPES(Signature)
+    BOOST_ARITY_TYPEDEF(BOOST_ARITY_storable_TYPENAME, BOOST_ARITY_argN_storable_type_NAME)
+    BOOST_ARITY_CMAMC(typedef, BOOST_ARITY_function_traits_argN_type_TYPENAME, Signature, BOOST_ARITY_argN_type_NAME, ;)
 
     BOOST_ARITY_REPEAT(BOOST_RPC_TYPE_PARGUMENT_VAR,BOOST_RPC_VAR_arg_storableN_NAME)
 public:

@@ -3,8 +3,8 @@ class marshaled_impl<Signature, ArchivePair,
     BOOST_ARITY_NUM_ARGS, BOOST_ARITY_ENABLE_DISABLE_VOID>
     : public function<ArchivePair>
 {
-    BOOST_ARITY_STORABLE_TYPES(Signature)
-    BOOST_ARITY_TYPES(Signature)
+    BOOST_ARITY_TYPEDEF(BOOST_ARITY_storable_TYPENAME, BOOST_ARITY_argN_storable_type_NAME)
+    BOOST_ARITY_CMAMC(typedef, BOOST_ARITY_function_traits_argN_type_TYPENAME, Signature, BOOST_ARITY_argN_type_NAME, ;)
 public:
     marshaled_impl(const boost::function<Signature> &f) : func(f)
     {}
@@ -12,8 +12,8 @@ public:
         typename ArchivePair::iarchive_type &params,
         typename ArchivePair::oarchive_type *results = 0)
     {
-        BOOST_ARITY_STORABLES(BOOST_ARITY_NUM_ARGS)
-        BOOST_ARITY_ON_STORABLES(BOOST_ARITY_NUM_ARGS,params & )
+        BOOST_ARITY_MREPEAT(MMC, (BOOST_ARITY_argN_storable_type_NAME, BOOST_ARITY_arg_storableN_NAME, ;))
+        BOOST_ARITY_MREPEAT(CMC, (params &, BOOST_ARITY_arg_storableN_NAME, ;))
         
 #ifdef BOOST_ARITY_NON_VOID_RETURN_TYPE
         if (options.marshal_option >= boost::rpc::call_options::return_only)

@@ -4,6 +4,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 //[ rpc_example
+
 #include <boost/test/unit_test.hpp>
 using boost::unit_test::test_suite;
 
@@ -13,6 +14,7 @@ using boost::unit_test::test_suite;
 #include <boost/rpc/call.hpp>
 #include <boost/rpc/simple_acceptor.hpp>
 #include <boost/rpc/simple_connector.hpp>
+
 
 void nothing()
 {
