@@ -1,11 +1,7 @@
 boost_library_project(
-  Filesystem 
+  Graph 
   SRCDIRS src 
   TESTDIRS test
-  DEPENDS system
   MODULAR
   )
-
-
-
 
