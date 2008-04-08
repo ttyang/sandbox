@@ -101,8 +101,9 @@ void print_v (V const& v, char const* ch = 0) {
 template <typename M>
 struct matr_access_traits {
   typedef typename 
-  boost::numeric::bindings::traits::matrix_traits<M>::value_type val_t;
-  typedef val_t& ref_t; 
+  M::reference ref_t;
+  //boost::numeric::bindings::traits::matrix_traits<M>::value_type val_t;
+  //typedef val_t& ref_t; 
   static ref_t elem (M& m, size_t i, size_t j) { return m (i, j); }
 };
 

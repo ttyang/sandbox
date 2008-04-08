@@ -74,7 +74,7 @@ int check_residual(H const& h, E const& e, Z const& z) {
    assert( norm_frobenius( error - herm( error ) ) == 0.0 ) ;
 
    for (int i=0; i<n; ++i) {
-      error .minus_assign( outer_prod( z.column(i), e(i) * conj( z.column(i) ) ) ) ;
+      error .minus_assign( outer_prod( column(z, i), e(i) * conj( column(z, i) ) ) ) ;
    }
    return (norm_frobenius( error )
            >= n* norm_2( e ) * std::numeric_limits< real_type >::epsilon() ) ;
@@ -121,7 +121,9 @@ int do_memory_uplo(int n, W& workspace ) {
 
    lapack::hbev( h_r, e_r, z_r, workspace );
 
-   if (check_residual( h2(r,r), e_r, z_r )) return 255 ;
+   banded_range a2_r( a2, r, r );
+   ublas::hermitian_adaptor< banded_range, UPLO> h2_r( a2_r );
+   if (check_residual( h2_r, e_r, z_r )) return 255 ;
 
    return 0 ;
 } // do_memory_uplo()

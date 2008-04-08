@@ -10,6 +10,8 @@
 #include <boost/numeric/bindings/lapack/heev.hpp>
 #include <boost/numeric/bindings/traits/ublas_matrix.hpp>
 #include <boost/numeric/bindings/traits/ublas_vector.hpp>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
 #include <iostream>
@@ -54,7 +56,7 @@ int check_residual(H const& h, E const& e, Z const& z) {
    assert( norm_frobenius( error - herm( error ) ) == 0.0 ) ;
 
    for (int i=0; i<n; ++i) {
-      error .minus_assign( outer_prod( z.column(i), e(i) * conj( z.column(i) ) ) ) ;
+      error .minus_assign( outer_prod( column(z, i), e(i) * conj( column(z, i) ) ) ) ;
    }
    return (norm_frobenius( error )
            >= n* norm_2( e ) * std::numeric_limits< real_type >::epsilon() ) ;
@@ -95,7 +97,8 @@ int do_memory_uplo(int n, W& workspace ) {
 
    lapack::heev( 'V', UPLO, a_r, e_r, workspace );
 
-   if (check_residual( a2(r,r), e_r, a_r )) return 255 ;
+   matrix_range a2_r( a2, r, r );
+   if (check_residual( a2_r, e_r, a_r )) return 255 ;
 
    return 0 ;
 } // do_memory_uplo()
