@@ -18,15 +18,16 @@ project libs/numeric/bindings/blas/test : requirements
 import testing ;
 
 
-#exe blas2 : blas2.cpp ;
 
 #exe scal  : scal.cpp ;
 #exe blas1 : blas1.cpp ;
+exe blas2 : blas2.cpp ;
 #exe blas3 : blas3.cpp ;
 
 test-suite bindings-blas :
     [ run scal.cpp ]
     [ run blas1.cpp ]
+#    [ run blas2.cpp ]
     [ run blas3.cpp ]
 ;
 
