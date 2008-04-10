@@ -19,8 +19,8 @@
 #define _WIN32_WINNT 0x0501
 #endif
 
-#ifndef WINDOWS_LEAN_AND_MEAN
-#define WINDOWS_LEAN_AND_MEAN
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #endif
 #include <Windows.h>
 namespace
@@ -34,14 +34,14 @@ namespace
             && file_name[len-2] == 'l' && file_name[len-1] == 'l');
   }
   inline library_handle load_shared_library(const char * libraryName) {
-    return LoadLibrary(libraryName);
+    return LoadLibraryA(libraryName);
   }
   inline generic_function_ptr get_function(library_handle handle, 
                                            const char * function_name) {
     return GetProcAddress(handle, function_name);
   }
   inline bool close_shared_library(library_handle handle) {
-    return FreeLibrary(handle)!=0;
+    return FreeLibrary(handle) != 0;
   }
 }
 #   pragma comment(lib, "kernel32.lib")
