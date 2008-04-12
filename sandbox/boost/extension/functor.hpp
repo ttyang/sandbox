@@ -14,7 +14,7 @@
 #ifndef BOOST_EXTENSION_FUNCTOR_HPP
 #define BOOST_EXTENSION_FUNCTOR_HPP
 
-#include <boost/extension/impl/linked_library.hpp>
+#include <boost/extension/impl/library_impl.hpp>
 
 #ifdef BOOST_EXTENSIONS_USE_PP
 
@@ -50,7 +50,7 @@
 
 namespace boost { namespace extensions {
 
-using boost::extensions::impl::generic_function_ptr;
+//using boost::extensions::impl::generic_function_ptr;
 
 #ifdef BOOST_EXTENSIONS_USE_PP
 

@@ -9,12 +9,14 @@
  * See http://www.boost.org/ for latest version.
  */
 
+#include <boost/extension/functor.hpp>
 #include <boost/extension/factory_map.hpp>
 #include <boost/extension/shared_library.hpp>
 #include <boost/extension/convenience.hpp>
 #include <boost/timer.hpp>
 
 #include <iostream>
+#include <memory>
 
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
 
@@ -50,15 +52,15 @@ int main(void)
     l.open();
     {
       factory_map fm;
-      functor<void, factory_map &> load_func = 
-        l.get_functor<void, factory_map &>("extension_export_word");
+      functor<void, factory_map &> load_func =
+        l.get<void, factory_map &>("extension_export_word");
       load_func(fm);
 
-      std::list<factory<word, int> > & factory_list = fm.get<word, int>();  
-      for (std::list<factory<word, int> >::iterator current_word = 
-             factory_list.begin(); current_word != factory_list.end(); 
+      std::map<int, factory<word> > & factory_list = fm.get<word, int>();
+      for (std::map<int, factory<word> >::iterator current_word =
+             factory_list.begin(); current_word != factory_list.end();
            ++current_word) {
-        std::auto_ptr<word> word_ptr(current_word->create());
+        std::auto_ptr<word> word_ptr(current_word->second.create());
 
         // do something with the word
         std::string s(word_ptr->get_val());
@@ -67,7 +69,7 @@ int main(void)
     }
     l.close();
   }
-  std::cout << "Boost.extensions style: " << extensions_style.elapsed() 
+  std::cout << "Boost.extensions style: " << extensions_style.elapsed()
             << std::endl;
 
 
@@ -89,7 +91,7 @@ int main(void)
     export_words_function_type export_words;
 
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-    export_words = (export_words_function_type) GetProcAddress(library, 
+    export_words = (export_words_function_type) GetProcAddress(library,
                                                "extension_export_words");
 #else
     *(void **) (&export_words) = dlsym(library, "extension_export_words");
@@ -99,7 +101,7 @@ int main(void)
       std::cerr << "Cannot get exported symbol." << std::endl;
       return 1;
     }
-                
+
     // retrieve the words
     word *first_word, *second_word;
     (*export_words)(&first_word, &second_word);
