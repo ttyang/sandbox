@@ -15,7 +15,7 @@
 // without express or implied warranty.
 
 #include <boost/move.hpp>
-#include <boost/assert.hpp>
+#include <boost/test/minimal.hpp>
 #include <boost/utility.hpp> // for boost::noncopyable
 
 #include <cstdlib> // for size_t
@@ -63,8 +63,7 @@ public: // structors
         if (str_ != 0)
             std::strncpy(str_, x.str_, len_);
         
-        // We should never copy the string in these tests.
-        BOOST_ASSERT(false);
+        BOOST_ERROR("The moveable_string should not be copied in this test.");
     }
     
     moveable_string(boost::move_from<moveable_string> x)
@@ -169,10 +168,10 @@ moveable_string source()
 //////////////////////////////////////////////////////////////////////////
 // function test_main
 //
-int main( int, char *[] )
+int test_main( int, char *[] )
 {
     moveable_string sink(source());
-    BOOST_ASSERT( sink == "abcdefg" );
+    BOOST_CHECK( sink == "abcdefg" );
 
     return 0;
 }
