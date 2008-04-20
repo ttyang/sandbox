@@ -37,8 +37,10 @@ int main()
   test_getrf_getrs_matrix< double, numerics::column_major, size >() ;
   test_getrf_getrs_matrix< std::complex< double >, numerics::column_major, size >() ;
 
+/*
   test_getrf_getrs_matrix< double, numerics::row_major, size >() ;
   test_getrf_getrs_matrix< std::complex< double >, numerics::row_major, size >() ;
+*/
 
   return 0 ;
 }
