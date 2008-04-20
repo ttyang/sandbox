@@ -3,21 +3,10 @@
 # Boost Software License, Version 1.0. (See accompanying file
 # LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-LAPACK_PATH ?= /usr/lib ;
-LAPACK_LIB  ?= lapack ;
-
-BLAS_PATH ?= /usr/lib ;
-BLAS_LIB  ?= blas ;
-
-lib g2c ;
-lib blas_lib   : g2c : <name>$(BLAS_LIB)   <search>$(BLAS_PATH) ; 
-lib lapack_lib : g2c : <name>$(LAPACK_LIB) <search>$(LAPACK_PATH) <use>blas_lib : : <library>blas_lib ; 
-
-
 project libs/numeric/bindings/lapack/test : requirements
         <include>$(BOOST_ROOT)
         <include>$(B_ROOT)
-        <library>lapack_lib ;
+        <library>/numeric-bindings//lapack_lib ;
 
 import testing ;
 

@@ -3,22 +3,12 @@
 # Boost Software License, Version 1.0. (See accompanying file
 # LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-ATLAS_INCLUDE = /usr/local/lib/ATLAS/include ;
-ATLAS_PATH = /usr/lib ;
-#ATLAS_LIB = lapack_atlas cblas atlas g2c ;
-
-lib g2c ;
-lib atlas_lib : : <name>atlas <search>$(ATLAS_PATH) ;
-lib cblas_lib : : <name>cblas <search>$(ATLAS_PATH) ;
-lib lapack_atlas_lib : g2c : <name>lapack <search>$(ATLAS_PATH) ;
-
 project libs/numeric/bindings/atlas : requirements
         <include>$(BOOST_ROOT)
         <include>$(B_ROOT)
-        <include>$(ATLAS_INCLUDE)
-        <library>lapack_atlas_lib
-        <library>cblas_lib
-        <library>atlas_lib ;
+        <library>/numeric-bindings//lapack_atlas_lib
+        <library>/numeric-bindings//cblas_lib
+        <library>/numeric-bindings//atlas_lib ;
 
 import testing ;
 
