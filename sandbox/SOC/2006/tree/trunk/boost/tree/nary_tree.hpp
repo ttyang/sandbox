@@ -27,7 +27,7 @@ namespace boost {
 namespace tree {
 
 using detail::node;
-using detail::const_nary_tree_cursor;
+//using detail::const_nary_tree_cursor;
 using detail::nary_tree_cursor;
 
 /** 
@@ -72,7 +72,7 @@ class nary_tree {
 	typedef typename node_traits<node_type>::node_pointer node_pointer;
 	
 	typedef nary_tree_cursor<node_type> cursor;
-	typedef const_nary_tree_cursor<node_type> const_cursor;
+	typedef nary_tree_cursor<node_type const> const_cursor;
 
 //	typedef inorder::iterator<cursor> iterator;
 //	typedef inorder::iterator<const_cursor> const_iterator;

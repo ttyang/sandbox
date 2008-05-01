@@ -27,7 +27,6 @@ namespace boost {
 namespace tree {
 
 using detail::node;
-using detail::const_nary_tree_cursor;
 using detail::nary_tree_cursor;
 
 /** 
@@ -45,6 +44,8 @@ class binary_tree {
 
  private:		
 	typedef node<value_type, detail::binary_array> node_type;
+	//typedef node<value_type, detail::binary_array> const_node_type;
+	
 	typedef typename Alloc::template rebind<node_type>::other 
 		node_allocator_type;
 	typedef typename node_traits<node_type>::node_base_type node_base_type;
@@ -53,7 +54,7 @@ class binary_tree {
 	
  public:
 	typedef nary_tree_cursor<node_type> cursor;
-	typedef const_nary_tree_cursor<node_type> const_cursor;
+	typedef /*const_*/ nary_tree_cursor<node_type const> const_cursor;
 
 	typedef typename allocator_type::pointer pointer;
 	typedef typename allocator_type::reference reference;
@@ -94,6 +95,7 @@ class binary_tree {
 	 * The newly-created %binary_tree uses a copy of the allocation object used
 	 * by @a x.
 	 */
+
 	binary_tree (self_type const& x)
 	: m_header(), m_value_alloc(x.m_value_alloc)
 	{
@@ -159,7 +161,7 @@ class binary_tree {
 	 */ 	
 	const_cursor croot() const
 	{
-		return const_cursor(&m_header, 0);
+		return const_cursor(/*cursor(*/&m_header, 0/*)*/);
 	}
 	
 	/**
