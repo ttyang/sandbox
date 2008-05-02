@@ -19,11 +19,11 @@
 #include <boost/extension/factory_map.hpp>
 #include <boost/extension/convenience.hpp>
 
-namespace boost{namespace extensions{
+namespace boost {namespace extensions {
 
-inline void load_all_libraries(factory_map & current_zone, 
-                               const char * directory, 
-                               const char * external_function_name, 
+inline void load_all_libraries(factory_map & current_zone,
+                               const char * directory,
+                               const char * external_function_name,
                                int max_depth = 0)
 {
   if (max_depth < 0) return; //  Recursion base case
@@ -34,12 +34,12 @@ inline void load_all_libraries(factory_map & current_zone,
   {
     if (is_directory(*file_iter))
     {
-      load_all_libraries(current_zone, directory, file_iter->string().c_str(), 
+      load_all_libraries(current_zone, directory, file_iter->string().c_str(),
                          max_depth - 1);
     }
     else if (is_library(filesystem::extension(*file_iter).c_str()))
     {
-      load_single_library(current_zone, file_iter->string().c_str(), 
+      load_single_library(current_zone, file_iter->string().c_str(),
                           external_function_name);
     }
   }
