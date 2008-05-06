@@ -21,4 +21,5 @@ boostbook standalone
         <xsl:param>toc.section.depth=4
         <xsl:param>toc.max.depth=4
         <xsl:param>generate.section.toc.level=2
+        <xsl:param>annotation.support=1
     ;

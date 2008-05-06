@@ -8,6 +8,7 @@
 docs = template.options.get('docs')
 doxygen = docs != 'qb'
 htmlfiles = template.options.get('htmlfiles', None, 'local')
+htmlstyle = template.options.get('htmlstyle', re.compile(r'(ibd)$'), 'ibd')
 
 template.append_content("""$template_start$
 $template_copyright$
@@ -81,12 +82,16 @@ template.append_content("""
         <xsl:param>toc.section.depth=3
         <xsl:param>toc.max.depth=3
         <xsl:param>generate.section.toc.level=3
+        <xsl:param>annotation.support=1
 """)
 
 if htmlfiles=='global':
     template.append_content('<xsl:param>boost.root=http://www.boost.org\n')
 elif htmlfiles!='local':
     template.append_content('<xsl:param>boost.root=' + htmlfiles + '\n')
+
+if htmlfile!='local' || htmlstyle!='ibd':
+    template.ignore_subdirectory('style')
 
 template.append_content(
 """    ;
