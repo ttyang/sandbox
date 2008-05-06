@@ -128,10 +128,6 @@ class cursor_facade
 
 	typedef bidirectional_traversal_tag cursor_category;
 
-//	typedef typename Derived::template rebind<value_type>::other cursor;
-//	typedef typename Derived::template rebind<add_const<value_type> >::other
-//			const_cursor;
-
 	bool const empty() const
 	{
 		return cursor_core_access::empty_(this->derived());
@@ -152,8 +148,6 @@ class cursor_facade
 		return cursor_core_access::par(this->derived());
 	}
 			 
- 	// if Value is const: Derived == const_cursor: only Derived
- 	// otherwise: also Derived const. Really? implicit conversion to const_cursor?
  	Derived begin()
  	{
 		return cursor_core_access::left(this->derived()); 		
@@ -168,7 +162,6 @@ class cursor_facade
  	{
 		return cursor_core_access::up(this->derived()); 		
  	}
- 	//if Value isn't const: also cursor.
 };
 
 template <
