@@ -1,5 +1,6 @@
 [Include]
 ../../../..
+../../../../../boost
 
 [Config Release]
 Product		Exe LRelease/test
