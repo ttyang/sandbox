@@ -10,6 +10,7 @@
 // =======
 // 2003-09-10   rmg     File creation
 // 2008-05-18   rmg     Rename indexing subdirectory to indexing_v2
+// 2008-05-18   rmg     Rename iv2slice.cpp to avoid object-file nameclash
 //
 // $Id$
 //
