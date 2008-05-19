@@ -1,0 +1,63 @@
+[/
+ / Copyright (c) 2007 Darren Garvey
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[section:ref Reference]
+
+[xinclude:doxygen cgi_dox.xml]
+
+[section:quick Quick Reference]
+
+Reference coming...
+
+Requests
+  - Request Data
+      - environment
+        - operator[""]
+        - operator[env][""]
+        - member functions
+          - script_name()
+          - request_method()
+          - content_length()
+          - content_encoding()
+          - etc...
+      - GET
+      - POST
+      - form (transparent GET/POST)
+      - cookie
+  - constructors
+  - load()
+  - async_load()
+  - close()
+  - clear()
+  - id()
+  - client()
+
+Acceptor
+  - constructors
+  - accept()
+  - async_accept()
+  - cancel()
+
+
+Service
+  - run()
+  - stop()
+  - reset()
+  - get_io_service()
+
+Responses
+  - operator<<
+  - send()
+  - clear()
+  - data()
+  - content_length()
+
+
+[endsect] [/ quick]
+
+[endsect] [/ ref]
+
