@@ -1,4 +1,4 @@
-//                   -- io_service.hpp --
+//              -- detail/push_options.hpp --
 //
 //            Copyright (c) Darren Garvey 2007.
 // Distributed under the Boost Software License, Version 1.0.
@@ -6,9 +6,18 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 ////////////////////////////////////////////////////////////////
-#ifndef CGI_IO_SERVICE_HPP_INCLUDED__
-#define CGI_IO_SERVICE_HPP_INCLUDED__
 
-#include "boost/cgi/common/io_service.hpp"
+//#ifdef _MSC_VER
 
-#endif // CGI_IO_SERVICE_HPP_INCLUDED__
+//#pragma warning (disable:)
+//#define _CRT_SECURE_NO_DEPRECATE 1
+//#pragma warning (disable:4996)
+
+//#endif
+
+#if defined(BOOST_CGI_BUILD_LIB)
+#   define BOOST_CGI_INLINE
+#else
+#   define BOOST_CGI_INLINE inline
+#endif
+
