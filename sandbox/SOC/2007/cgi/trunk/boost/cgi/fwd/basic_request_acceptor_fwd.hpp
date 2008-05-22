@@ -1,4 +1,4 @@
-//               -- basic_client_fwd.hpp --
+//              -- basic_acceptor_fwd.hpp --
 //
 //            Copyright (c) Darren Garvey 2007.
 // Distributed under the Boost Software License, Version 1.0.
@@ -6,17 +6,14 @@
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 ////////////////////////////////////////////////////////////////
-#ifndef CGI_BASIC_CLIENT_FWD_HPP_INCLUDED__
-#define CGI_BASIC_CLIENT_FWD_HPP_INCLUDED__
+#ifndef CGI_BASIC_ACCEPTOR_FWD_HPP_INCLUDED__
+#define CGI_BASIC_ACCEPTOR_FWD_HPP_INCLUDED__
 
 namespace cgi {
- namespace common {
 
-  template<typename Connection, typename Protocol>
-  class basic_client;
+  template<typename>
+  class basic_acceptor;
 
- } // namespace common
 } // namespace cgi
 
-#endif // CGI_BASIC_CLIENT_FWD_HPP_INCLUDED__
-
+#endif // CGI_BASIC_ACCEPTOR_FWD_HPP_INCLUDED__
