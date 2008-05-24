@@ -1,5 +1,5 @@
-#ifndef BOOST_ALGORITHM_CLUSTER_DIST_FUNC_HPP
-#define BOOST_ALGORITHM_CLUSTER_DIST_FUNC_HPP
+#ifndef BOOST_ALGORITHM_CLUSTER_DIST_FUN_HPP
+#define BOOST_ALGORITHM_CLUSTER_DIST_FUN_HPP
 
 //  (C) Copyright Anders Sundman 2008.
 //  Use, modification and distribution are subject to the
