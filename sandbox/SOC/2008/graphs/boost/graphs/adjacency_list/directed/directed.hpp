@@ -1,19 +1,12 @@
 
-#ifndef BOOST_GRAPHS_ADJACENCY_LIST_UNDIRECTED_HPP
-#define BOOST_GRAPHS_ADJACENCY_LIST_UNDIRECTED_HPP
+#ifndef BOOST_GRAPHS_ADJACENCY_LIST_DIRECTED_HPP
+#define BOOST_GRAPHS_ADJACENCY_LIST_DIRECTED_HPP
 
-#include <list>
-
-#include <boost/graphs/utility/ordered.hpp>
-#include <boost/graphs/adjacency_list/vertex.hpp>
-#include <boost/graphs/adjacency_list/edge.hpp>
 #include <boost/graphs/adjacency_list/storage_traits.hpp>
 
 namespace boost {
 namespace graphs {
 namespace adj_list {
-
-// Implementation of directed adjacency lists.
 
 // Forward declarations
 template <typename VP, typename EP, typename V, typename E, template <typename> class VES> struct directed_vertex;
