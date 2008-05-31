@@ -79,8 +79,7 @@ void test_optimized_string_search_binary_tree()
 
 int test_main(int, char* [])
 {
-	//FIXME
-	//test_normal_string_search_binary_tree();
-	//test_optimized_string_search_binary_tree();
+	test_normal_string_search_binary_tree();
+	test_optimized_string_search_binary_tree();
 	return 0;
 }

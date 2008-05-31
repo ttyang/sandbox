@@ -150,6 +150,6 @@ void test_red_black_tree()
 
 int test_main(int, char* [])
 {
-	//test_red_black_tree(); //FIXME
+	test_red_black_tree();
 	return 0;
 }
