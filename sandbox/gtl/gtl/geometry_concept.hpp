@@ -5,7 +5,9 @@
   Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).
 */
-
+#ifndef GTL_GEOMETRY_CONCEPT_HPP
+#define GTL_GEOMETRY_CONCEPT_HPP
+namespace gtl {
 template <typename T>
 struct geometry_concept { 
   typedef no_type type;
@@ -73,3 +75,6 @@ struct geometry_concept<polygon_with_holes_data<coordinate_type> > {\
 
 GTL_REGISTER_GEOMETRY_TRAITS(int)
 GTL_REGISTER_GEOMETRY_TRAITS(long long)
+
+}
+#endif
