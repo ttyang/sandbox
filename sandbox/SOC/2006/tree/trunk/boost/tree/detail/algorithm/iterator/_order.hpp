@@ -4,21 +4,20 @@
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-/**
- * @file inorder_iterator.hpp
- * Inorder iterator wrapper around cursor.
- */
-
-// TODO: concept checks.
-
-// NO guards, as this is context-included!
-
-/** @file	bidirectional.hpp
+/** @file	_order.hpp
  * 
  * Some definitions that are identical for all *order cursors (as we are just
  * calling the appropriate traversal function that are defined in the 
  * respective *order.hpp files).
  */
+
+// NO guards, as this is context-included!
+
+#include <boost/iterator/iterator_adaptor.hpp>
+#include <boost/type_traits/is_convertible.hpp>
+#include <boost/utility/enable_if.hpp>
+
+// TODO: concept checks.
 
 /**
  * @brief	First element of a subtree in traversal
