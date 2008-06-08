@@ -11,10 +11,11 @@
 
 // TODO: concept checks.
 
-#ifndef BOOST_TREE_DETAIL_ALGORITHM_POSTORDER_HPP
-#define BOOST_TREE_DETAIL_ALGORITHM_POSTORDER_HPP
+#ifndef BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_POSTORDER_HPP
+#define BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_POSTORDER_HPP
 
 #include <boost/tree/detail/iterator/postorder.hpp>
+#include <boost/tree/detail/algorithm/cursor/postorder.hpp>
 
 namespace boost {
 namespace tree {
@@ -56,4 +57,4 @@ end(Cursor c, forward_traversal_tag)
 } // namespace tree
 } // namespace boost
 
-#endif // BOOST_TREE_DETAIL_ALGORITHM_POSTORDER_HPP
+#endif // BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_POSTORDER_HPP

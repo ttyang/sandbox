@@ -11,10 +11,11 @@
 
 // TODO: concept checks.
 
-#ifndef BOOST_TREE_DETAIL_ALGORITHM_INORDER_HPP
-#define BOOST_TREE_DETAIL_ALGORITHM_INORDER_HPP
+#ifndef BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_INORDER_HPP
+#define BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_INORDER_HPP
 
 #include <boost/tree/detail/iterator/inorder.hpp>
+#include <boost/tree/detail/algorithm/cursor/inorder.hpp>
 
 namespace boost {
 namespace tree {
@@ -50,4 +51,4 @@ end(MultiwayCursor c, forward_traversal_tag)
 } // namespace tree
 } // namespace boost
 
-#endif // BOOST_TREE_DETAIL_ALGORITHM_INORDER_HPP
+#endif // BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_INORDER_HPP

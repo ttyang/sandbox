@@ -11,10 +11,11 @@
 
 // TODO: concept checks.
 
-#ifndef BOOST_TREE_DETAIL_ALGORITHM_PREORDER_HPP
-#define BOOST_TREE_DETAIL_ALGORITHM_PREORDER_HPP
+#ifndef BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_PREORDER_HPP
+#define BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_PREORDER_HPP
 
 #include <boost/tree/detail/iterator/preorder.hpp>
+#include <boost/tree/detail/algorithm/cursor/preorder.hpp>
 
 namespace boost {
 namespace tree {
@@ -49,4 +50,4 @@ end(Cursor c, forward_traversal_tag)
 } // namespace tree
 } // namespace boost
 
-#endif // BOOST_TREE_DETAIL_ALGORITHM_PREORDER_HPP
+#endif // BOOST_TREE_DETAIL_ALGORITHM_ITERATOR_PREORDER_HPP
