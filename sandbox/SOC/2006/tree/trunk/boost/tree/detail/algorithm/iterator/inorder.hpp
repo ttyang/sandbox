@@ -22,28 +22,6 @@ namespace tree {
 
 namespace inorder {
 
-template <class MultiwayCursor>
-iterator<MultiwayCursor, forward_traversal_tag> 
-begin(MultiwayCursor c, forward_traversal_tag)
-{
-	std::stack<MultiwayCursor> s;
-
-	s.push(c);
-	while (!s.top().empty())
-		s.push(s.top().begin());
-	return iterator<MultiwayCursor, forward_traversal_tag>(s);
-}
-
-template <class MultiwayCursor>
-iterator<MultiwayCursor, forward_traversal_tag> 
-end(MultiwayCursor c, forward_traversal_tag)
-{
-	std::stack<MultiwayCursor> s;
-
-	s.push(c);
-	return iterator<MultiwayCursor, forward_traversal_tag>(s);
-}
-
 #include <boost/tree/detail/algorithm/iterator/bidirectional.hpp>
 
 } // namespace inorder

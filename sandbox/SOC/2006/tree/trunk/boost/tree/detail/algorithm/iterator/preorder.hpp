@@ -22,27 +22,6 @@ namespace tree {
 	
 namespace preorder {
 
-template <class Cursor>
-iterator<Cursor, forward_traversal_tag> 
-begin(Cursor c, forward_traversal_tag)
-{
-	std::stack<Cursor> s;
-
-	s.push(c);
-	s.push(c.begin());
-	return iterator<Cursor, forward_traversal_tag>(s);	
-}
-
-template <class Cursor>
-iterator<Cursor, forward_traversal_tag> 
-end(Cursor c, forward_traversal_tag)
-{
-	std::stack<Cursor> s;
-
-	s.push(c);
-	return iterator<Cursor, forward_traversal_tag>(s);
-}
-
 #include <boost/tree/detail/algorithm/iterator/bidirectional.hpp>
 
 } // namespace preorder
