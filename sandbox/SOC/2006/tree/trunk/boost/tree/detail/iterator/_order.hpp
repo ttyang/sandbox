@@ -22,7 +22,7 @@
  * 
  *			Only works with ascending cursors.
  */
-template <class Cursor>
+template <class Cursor, class RootTracker = typename Cursor::root_tracker>
 class iterator
  : public boost::iterator_adaptor<iterator<Cursor>
       , Cursor
