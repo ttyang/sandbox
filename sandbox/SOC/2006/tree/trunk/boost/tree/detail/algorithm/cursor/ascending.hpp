@@ -15,10 +15,6 @@
 #ifndef BOOST_TREE_DETAIL_ALGORITHM_CURSOR_ASCENDING_HPP
 #define BOOST_TREE_DETAIL_ALGORITHM_CURSOR_ASCENDING_HPP
 
-#include <boost/tree/cursor.hpp>
-
-#include <boost/iterator/iterator_categories.hpp>
-
 
 namespace boost {
 namespace tree {
