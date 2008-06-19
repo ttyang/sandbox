@@ -4,7 +4,6 @@
 
 #include "incidence_iterator.hpp"
 
-
 /**
  * A vertex, at least for an undirected graph, is simply an repository
  * for the vertex' properties and an interface for the its incidence
@@ -58,12 +57,12 @@ public:
 
     inline size_type degree() const
     { return _edges.size(); }
-    
+
     inline bool operator==(undirected_vertex const& x) const
     { return _props == x._props; }
 
     inline bool operator!=(undirected_vertex const& x) const
-    { return !this->operator==(x); }    
+    { return !this->operator==(x); }
 
     inline bool operator<(undirected_vertex const& x) const
     { return _props < x._props; }
