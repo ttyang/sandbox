@@ -48,6 +48,11 @@ private:
     size_type   _size;
 };
 
+// TODO: This eventually needs to be specialized for empty edges. Basically, if
+// you don't want edges, then we can just hand out integers that for each
+// edge - probably.
+#if 0
+
 /**
  * Partially specialize the property list for the case where the user does
  * not want properties. This will completely remove the property list from
@@ -59,6 +64,8 @@ class property_list<none, Alloc>
 public:
     typedef std::size_t property_descriptor;
 };
+
+#endif
 
 
 template <typename P, typename A>
