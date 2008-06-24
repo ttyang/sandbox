@@ -2,6 +2,8 @@
 #ifndef UNDIRECTED_EDGE_HPP
 #define UNDIRECTED_EDGE_HPP
 
+#include <iosfwd>
+
 #include "unordered_pair.hpp"
 
 /**
@@ -32,6 +34,13 @@ public:
 
     inline vertex_descriptor second() const
     { return _edge.second(); }
+
+    /** Return true if the edge connects the two vertices. */
+    inline bool connects(vertex_descriptor u, vertex_descriptor v) const
+    {
+        reorder(u, v);
+        return first() == u && second() == v;
+    }
 
     inline vertex_descriptor opposite(vertex_descriptor v)
     { return v == first() ? second() : first(); }
@@ -80,6 +89,10 @@ undirected_edge<VD,PD>::operator<(undirected_edge const& x)
 {
     return _edge < x._edge || (!(x._edge < _edge) && _prop < x._prop);
 }
+
+template <typename VD, typename PD>
+std::ostream& operator<<(std::ostream& os, undirected_edge<VD,PD> const& e)
+{ return os << "{" << e.first() << " " << e.second() << "}"; }
 
 
 #endif
