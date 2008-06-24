@@ -2,6 +2,8 @@
 #ifndef VERTEX_DESCRIPTOR_HPP
 #define VERTEX_DESCRIPTOR_HPP
 
+#include <iosfwd>
+
 // Important notes about descriptors
 //
 // A descriptor is basically an opaque reference to an object. It's kind of
@@ -102,7 +104,9 @@ inline bool
 operator!=(basic_vertex_descriptor<D> const& a, basic_vertex_descriptor<D> const& b)
 { return a.get() != b.get(); }
 
-
+template <typename D>
+std::ostream& operator<<(std::ostream& os, const basic_vertex_descriptor<D>& v)
+{ return os << v.get(); }
 
 #endif
 
