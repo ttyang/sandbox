@@ -72,7 +72,7 @@ public:
 
     // Iterators are equivalent if they reference the same edge.
     inline bool operator==(incidence_iterator const& x) const
-    { return **this == *x; }
+    { return operator*() == *x; }
 
     inline bool operator!=(incidence_iterator const& x) const
     { return !this->operator==(x); }
