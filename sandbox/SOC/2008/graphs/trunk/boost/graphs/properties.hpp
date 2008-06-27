@@ -68,13 +68,9 @@ struct exterior_vertex_property
 
 template <typename Graph, typename Property>
 struct exterior_edge_property
-    : choose_container<
-            typename Graph::edge_store_selector, typename Graph::edge_descriptor, Property
-        >::type
+    : hashed_property_container<typename Graph::edge_descriptor, Property>
 {
-    typedef typename choose_container<
-            typename Graph::edge_store_selector, typename Graph::edge_descriptor, Property
-        >::type base_type;
+    typedef hashed_property_container<typename Graph::edge_descriptor, Property> base_type;
 
     exterior_edge_property(const Graph& g)
         : base_type(g.num_edges())
