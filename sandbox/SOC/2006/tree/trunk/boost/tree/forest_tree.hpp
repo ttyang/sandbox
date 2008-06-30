@@ -19,7 +19,6 @@
 
 #include <boost/test/minimal.hpp>
 
-//#include <memory>
 
 namespace boost {
 namespace tree {
