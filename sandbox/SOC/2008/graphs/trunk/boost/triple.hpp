@@ -22,6 +22,19 @@ struct triple
         : first(f), second(s), third(t)
     { }
 
+    template <typename T, typename U, typename V>
+    triple(triple<T, U, V> const& x)
+        : first(x.first), second(x.second), third(x.third)
+    { }
+
+    void swap(triple& x)
+    {
+        using std::swap;
+        swap(first, x.first);
+        swap(second, x.second);
+        swap(third, x.third);
+    }
+
     first_type first;
     second_type second;
     third_type third;
