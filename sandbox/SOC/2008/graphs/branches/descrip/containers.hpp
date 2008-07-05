@@ -4,8 +4,8 @@
 //  accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef CONTAINER_HPP
-#define CONTAINER_HPP
+#ifndef CONTAINERS_HPP
+#define CONTAINERS_HPP
 
 #include <boost/type_traits.hpp>
 
