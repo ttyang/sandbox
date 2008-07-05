@@ -1,4 +1,4 @@
-//  (C) Copyright 2004 Jeremy Siek 
+(C) Copyright 2004 Jeremy Siek
 //  (C) Copyright 2008 Andrew Sutton
 //  Distributed under the Boost Software License, Version 1.0. (See
 //  accompanying file LICENSE_1_0.txt or copy at
@@ -214,7 +214,7 @@ namespace dispatch
 {
     template <typename Container, typename Value>
     inline typename Container::iterator
-    insert(Container& c, Value const& x, back_insertion_sequence_tag)
+    insert(Container& c, Value const& x, sequence_tag)
     { return c.insert(c.end(), x); }
 
     template <typename Container, typename Value>
@@ -232,6 +232,8 @@ template <typename Container, typename T>
 inline typename Container::iterator
 insert(Container& c, T const& x)
 { return dispatch::insert(c, x, container_category(c)); }
+
+template <typename 
 
 #if 0
 
