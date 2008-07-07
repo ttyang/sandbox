@@ -1,9 +1,6 @@
 
 #include <iostream>
-#include <string>
-#include <list>
 
-#include <boost/none.hpp>
 #include <boost/graphs/vertex_vector.hpp>
 #include <boost/graphs/vertex_list.hpp>
 #include <boost/graphs/vertex_set.hpp>
