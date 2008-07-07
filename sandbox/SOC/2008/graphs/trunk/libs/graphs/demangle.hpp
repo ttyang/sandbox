@@ -9,7 +9,10 @@
 inline std::string
 demangle(std::string const& name)
 {
-    return std::string(abi::__cxa_demangle(name.c_str(), 0, 0, 0));
+    std::size_t n = 2048;
+    char buf[2048];
+    abi::__cxa_demangle(name.c_str(), buf, &n, 0);
+    return std::string(buf, ::strnlen(buf, n));
 }
 
 template <typename T>
