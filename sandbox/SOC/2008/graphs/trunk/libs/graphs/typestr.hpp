@@ -13,7 +13,7 @@ typestr()
     std::size_t n = 2048;
     char buf[2048];
     abi::__cxa_demangle(typeid(T).name(), buf, &n, 0);
-    return std::string(buf, ::strnlen(buf, n));
+    return std::string(buf, ::strlen(buf));
 }
 
 template <typename T>
