@@ -1,5 +1,5 @@
 [/ Boost.Extension - faq ]
-[/ Copyright 2007 Jeremy Pack ]
+[/ Copyright 2008 Jeremy Pack ]
 [/ Distributed under the Boost Software License, Version 1.0. (See]
 [/ accompanying file LICENSE_1_0.txt or copy at ]
 [/ http://www.boost.org/LICENSE_1_0.txt) ]
@@ -14,7 +14,7 @@ version is implemented by different plugins?
 Answer: The simplest way is to change the name of your interface (or the 
 namespace it is in) each time its contents change. This is actually what I would
 recommend. However, it is also possible to include such information as part 
-of the `factory`. A `factory` can contain arbitrary information about the plugin
+of the _factory_. A _factory_ can contain arbitrary information about the plugin
 that it loads through the Info type. In the `hello_world` sample, the `Info` 
 type is an `int`, and the `hello` class has a number (it could be a version) of
 1, and the `world` class has a version of 2. In the multiple_inheritance sample,
@@ -24,9 +24,9 @@ documentation.
 Question: What if I want to have a library close automatically when I've
 destroyed all of the plugins in it?
 
-Answer: Wait for the `registry` class - which is almost done. It will take care
-of it. It is possible to do this with a `factory_map` currently, but the 
-`registry` class will automate the process.
+Answer: I have not yet found a general enough way to do this that doesn't introduce too
+many constraints for programmers. I recommend developing a specific solution for your
+use case for now if you really need this.
 
 Question: 
 
