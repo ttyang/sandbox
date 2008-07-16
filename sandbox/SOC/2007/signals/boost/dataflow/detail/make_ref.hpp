@@ -22,6 +22,11 @@ namespace detail
         struct result<make_ref(T&)>
             : boost::add_reference<T>
         {};
+
+        template<typename T>
+        struct result<make_ref(T)>
+            : boost::add_reference<T>
+        {};
         
         template<typename T>
         typename boost::add_reference<T>::type operator()(T& t) const
