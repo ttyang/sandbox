@@ -22,14 +22,8 @@ struct key_value_iterator
     typedef value_type reference;
     typedef value_type pointer;
 
-    key_value_iterator(Iter i)
-        : iter(i)
-        , value()
-    { }
-
     key_value_iterator(Iter i, Prop const& p)
-        : iter(i)
-        , value(p)
+        : iter(i), value(p)
     { }
 
     key_value_iterator& operator++()
@@ -69,9 +63,7 @@ class hashed_property_container
 public:
     typedef Property value_type;
     typedef Descriptor key_type;
-    typedef std::tr1::unordered_map<
-            key_type, value_type, boost::hash<key_type>
-        > container_type;
+    typedef std::tr1::unordered_map<key_type, value_type, boost::hash<key_type>> container_type;
 
     /**
      * Construct the hashtable over n buckets. This may not actually allocate
@@ -89,38 +81,16 @@ public:
      */
     template <typename Iter>
     hashed_property_container(Iter f, Iter l, value_type const& x)
-        : data(detail::make_key_value_iterator(f, x),
-               detail::make_key_value_iterator(l, value_type()))
+        : data(detail::make_key_value_iterator(f, x), detail::make_key_value_iterator(l, value_type()))
     { }
 
-    // Get the property associated with the key k.
     inline value_type& operator[](key_type const& k)
     { return data[k]; }
 
+    inline value_type const& operator[](key_type const& k) const
+    { return data[k]; }
+
     container_type data;
-};
-
-/**
- * The corresponding property map implements a lightweight, regular accessor
- * to a hashed property container.
- */
-template <typename Iterator, typename Property>
-class hashed_property_map
-{
-    typedef hashed_property_container<Iterator, Property> container_type;
-public:
-    typedef typename container_type::value_type property_type;
-    typedef typename container_type::key_type key_type;
-
-    hashed_property_map(container_type& cont)
-        : data(cont)
-    { }
-
-    hashed_property_map(hashed_property_map const& x)
-        : data(x.data)
-    { }
-
-    container_type& data;
 };
 
 #endif

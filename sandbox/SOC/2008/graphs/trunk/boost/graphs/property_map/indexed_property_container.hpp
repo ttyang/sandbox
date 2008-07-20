@@ -21,14 +21,8 @@ struct default_value_iterator
     typedef value_type const& reference;
     typedef value_type const* pointer;
 
-    default_value_iterator(Iter i)
-        : iter(i)
-        , value()
-    { }
-
     default_value_iterator(Iter i, Prop const& p)
-        : iter(i)
-        , value(p)
+        : iter(i), value(p)
     { }
 
     default_value_iterator& operator++()
@@ -49,8 +43,8 @@ struct default_value_iterator
 
 template <typename Iter, typename Prop>
 inline default_value_iterator<Iter, Prop>
-make_default_value_iterator(Iter i, Prop const&)
-{ return default_value_iterator<Iter, Prop>(i); }
+make_default_value_iterator(Iter i, Prop const& p)
+{ return default_value_iterator<Iter, Prop>(i, p); }
 
 } // namespace detail
 
@@ -79,38 +73,16 @@ struct indexed_property_container
      */
     template <typename Iter>
     inline indexed_property_container(Iter f, Iter l, value_type const& x)
-        : data(detail::make_default_value_iterator(f, x),
-               detail::make_default_value_iterator(l, value_type()))
+        : data(detail::make_default_value_iterator(f, x), detail::make_default_value_iterator(l, value_type()))
     { }
 
     inline value_type& operator[](key_type const& k)
-    { return data[k.get()]; }
+    { return data[k.value]; }
+
+    inline value_type const& operator[](key_type const& k) const
+    { return data[k.value]; }
 
     container_type data;
-};
-
-
-/**
- * The corresponding property map implements a lightweight, regular accessor
- * to a indexed property container.
- */
-template <typename Iterator, typename Property>
-struct indexed_property_map
-{
-    typedef indexed_property_container<Iterator, Property> container_type;
-
-    typedef typename container_type::value_type property_type;
-    typedef typename container_type::key_type key_type;
-
-    indexed_property_map(container_type& cont)
-        : data(cont)
-    { }
-
-    indexed_property_map(indexed_property_map const& x)
-        : data(x.data)
-    { }
-
-    container_type& data;
 };
 
 
