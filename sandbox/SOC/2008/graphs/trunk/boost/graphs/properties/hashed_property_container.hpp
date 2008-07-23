@@ -81,7 +81,14 @@ public:
      */
     template <typename Iter>
     hashed_property_container(Iter f, Iter l, value_type const& x)
-        : data(detail::make_key_value_iterator(f, x), detail::make_key_value_iterator(l, value_type()))
+        : data(detail::make_key_value_iterator(f, x),
+               detail::make_key_value_iterator(l, value_type()))
+    { }
+
+    template <typename Range>
+    hashed_property_container(Range rng, value_type const& x)
+        : data(detail::make_key_value_iterator(rng.first, x),
+               detail::make_key_value_iterator(rng.second, value_type()))
     { }
 
     inline value_type& operator[](key_type const& k)
