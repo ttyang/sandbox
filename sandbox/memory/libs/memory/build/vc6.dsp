@@ -141,7 +141,7 @@ SOURCE=..\build.def
 # End Source File
 # Begin Source File
 
-SOURCE=..\StdAfx.cpp
+SOURCE=..\stdafx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
 # End Group
