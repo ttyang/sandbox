@@ -18,7 +18,7 @@
 
 #include <boost/coding_fwd.hpp>
 
-#include <boost/integer.hpp>     // for boost::sized_integral, etc.
+#include <boost/integer.hpp>     // for boost::sized_integral
 #include <boost/mpl/int.hpp>     // for boost::mpl::int_
 #include <boost/mpl/size_t.hpp>  // for boost::mpl::size_t
 

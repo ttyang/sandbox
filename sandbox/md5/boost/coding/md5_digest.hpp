@@ -88,8 +88,7 @@ struct md5_constants
         static  char const  digits16_uc[] = "0123456789ABCDEF";
 
         BOOST_MPL_ASSERT_RELATION( sizeof digits16_lc, ==, sizeof digits16_uc );
-        BOOST_MPL_ASSERT_RELATION( sizeof digits16_lc, ==,
-         number_of_digit16_digits::value + 1u );
+        BOOST_MPL_ASSERT_RELATION(sizeof digits16_lc, ==, sizeof(digits16_str));
 
         return use_uppercase ? digits16_uc : digits16_lc;
     }
@@ -227,8 +226,6 @@ operator <<( std::basic_ostream<Ch, Tr> &o, md5_digest const &n )
     // Each nybble will be printed as a hexadecimal digit.
     detail::md5_constants::digits16_str const &  digits =
      detail::md5_constants::digit16_list(o.flags() & std::ios_base::uppercase);
-    //char const  (&digits)[] = detail::md5_constants::digit16_list( o.flags() &
-    // std::ios_base::uppercase );
 
     // Print each nybble.  Since the nybble progression within an octet is the
     // reverse of the octet and word progressions, stick in a reversal flag
