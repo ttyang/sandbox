@@ -84,6 +84,7 @@
 		080DD7560C13908400EEB53D = {
 			isa = PBXGroup;
 			children = (
+				08A77ACC0E4F941C00B8793E /* dataflow */,
 				08A77AB30E4F91AA00B8793E /* Jamroot */,
 				08A77AB40E4F91AB00B8793E /* LICENSE_1_0.txt */,
 				08A439340E295B35009845FD /* build */,
@@ -108,6 +109,22 @@
 			name = build;
 			path = ..;
 			sourceTree = SOURCE_ROOT;
+		};
+		08A77ACC0E4F941C00B8793E /* dataflow */ = {
+			isa = PBXGroup;
+			children = (
+				08A77ACD0E4F941C00B8793E /* generic */,
+			);
+			name = dataflow;
+			path = ../../../../boost/dataflow;
+			sourceTree = SOURCE_ROOT;
+		};
+		08A77ACD0E4F941C00B8793E /* generic */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = generic;
+			sourceTree = "<group>";
 		};
 		08C675960C13A03E00D85379 /* test */ = {
 			isa = PBXGroup;
