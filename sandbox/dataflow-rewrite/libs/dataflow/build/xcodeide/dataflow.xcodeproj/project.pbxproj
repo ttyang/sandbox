@@ -1,0 +1,447 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		080DD7670C1390D400EEB53D /* test */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 080DD7680C1390F300EEB53D /* Build configuration list for PBXAggregateTarget "test" */;
+			buildPhases = (
+				080DD7660C1390D400EEB53D /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = test;
+			productName = test;
+		};
+		08668C500C19A16F00ACB19A /* example */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 08668C520C19A16F00ACB19A /* Build configuration list for PBXAggregateTarget "example" */;
+			buildPhases = (
+				08668C510C19A16F00ACB19A /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = example;
+			productName = test;
+		};
+		08C675740C139E1300D85379 /* test clean */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 08C675750C139E3100D85379 /* Build configuration list for PBXAggregateTarget "test clean" */;
+			buildPhases = (
+				08C675730C139E1300D85379 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "test clean";
+			productName = "clean test";
+		};
+		08F0836C0C1DF6DE00687E1B /* example clean */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 08F0836E0C1DF6DE00687E1B /* Build configuration list for PBXAggregateTarget "example clean" */;
+			buildPhases = (
+				08F0836D0C1DF6DE00687E1B /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "example clean";
+			productName = test;
+		};
+		08F0FB080C19826400D0865B /* doc */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 08F0FB090C19828200D0865B /* Build configuration list for PBXAggregateTarget "doc" */;
+			buildPhases = (
+				08F0FB070C19826400D0865B /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = doc;
+			productName = doc;
+		};
+		08FD5E6D0C1BA8BC00F00877 /* doc clean */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 08FD5E6F0C1BA8BC00F00877 /* Build configuration list for PBXAggregateTarget "doc clean" */;
+			buildPhases = (
+				08FD5E6E0C1BA8BC00F00877 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "doc clean";
+			productName = doc;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXFileReference section */
+		08A77AB30E4F91AA00B8793E /* Jamroot */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Jamroot; path = ../../../../Jamroot; sourceTree = SOURCE_ROOT; };
+		08A77AB40E4F91AB00B8793E /* LICENSE_1_0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE_1_0.txt; path = ../../../../LICENSE_1_0.txt; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		080DD7560C13908400EEB53D = {
+			isa = PBXGroup;
+			children = (
+				08A77AB30E4F91AA00B8793E /* Jamroot */,
+				08A77AB40E4F91AB00B8793E /* LICENSE_1_0.txt */,
+				08A439340E295B35009845FD /* build */,
+				08FD5DE40C1BA60700F00877 /* doc */,
+				08668C4D0C19A16300ACB19A /* example */,
+				08C675960C13A03E00D85379 /* test */,
+			);
+			sourceTree = "<group>";
+		};
+		08668C4D0C19A16300ACB19A /* example */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = example;
+			path = ../../example;
+			sourceTree = SOURCE_ROOT;
+		};
+		08A439340E295B35009845FD /* build */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = build;
+			path = ..;
+			sourceTree = SOURCE_ROOT;
+		};
+		08C675960C13A03E00D85379 /* test */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = test;
+			path = ../../test;
+			sourceTree = SOURCE_ROOT;
+		};
+		08FD5DE40C1BA60700F00877 /* doc */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = doc;
+			path = ../../doc;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		080DD7580C13908400EEB53D /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 080DD7590C13908400EEB53D /* Build configuration list for PBXProject "dataflow" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 0;
+			mainGroup = 080DD7560C13908400EEB53D;
+			projectDirPath = "";
+			projectRoot = ../../../..;
+			targets = (
+				080DD7670C1390D400EEB53D /* test */,
+				08C675740C139E1300D85379 /* test clean */,
+				08F0FB080C19826400D0865B /* doc */,
+				08FD5E6D0C1BA8BC00F00877 /* doc clean */,
+				08668C500C19A16F00ACB19A /* example */,
+				08F0836C0C1DF6DE00687E1B /* example clean */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		080DD7660C1390D400EEB53D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\nstyle=`echo $BUILD_STYLE | sed 'y/DR/dr/'`  \nbjam ../../test $style";
+		};
+		08668C510C19A16F00ACB19A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\nstyle=`echo $BUILD_STYLE | sed 'y/DR/dr/'`  \nbjam --v2 ../../example $style";
+		};
+		08C675730C139E1300D85379 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\nstyle=`echo $BUILD_STYLE | sed 'y/DR/dr/'`  \nbjam --v2 --clean ../../test $style";
+		};
+		08F0836D0C1DF6DE00687E1B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here\nstyle=`echo $BUILD_STYLE | sed 'y/DR/dr/'`  \nbjam --v2 --toolset=darwin ../../example clean $style";
+		};
+		08F0FB070C19826400D0865B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "style=`echo $BUILD_STYLE | sed 'y/DR/dr/'`  \ncd ../../doc\nbjam --v2 --toolset=darwin $style";
+		};
+		08FD5E6E0C1BA8BC00F00877 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ../../doc\nbjam --v2 --clean --toolset=darwin release";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		080DD75A0C13908400EEB53D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		080DD75B0C13908400EEB53D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		080DD7690C1390F300EEB53D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = test;
+			};
+			name = Debug;
+		};
+		080DD76A0C1390F300EEB53D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = test;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		08668C530C19A16F00ACB19A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = test;
+			};
+			name = Debug;
+		};
+		08668C540C19A16F00ACB19A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = test;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		08C675760C139E3100D85379 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "clean test";
+			};
+			name = Debug;
+		};
+		08C675770C139E3100D85379 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = "clean test";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		08F0836F0C1DF6DE00687E1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = test;
+			};
+			name = Debug;
+		};
+		08F083700C1DF6DE00687E1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = test;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		08F0FB0A0C19828200D0865B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = doc;
+			};
+			name = Debug;
+		};
+		08F0FB0B0C19828200D0865B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = doc;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		08FD5E700C1BA8BC00F00877 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = doc;
+			};
+			name = Debug;
+		};
+		08FD5E710C1BA8BC00F00877 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = doc;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		080DD7590C13908400EEB53D /* Build configuration list for PBXProject "dataflow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				080DD75A0C13908400EEB53D /* Debug */,
+				080DD75B0C13908400EEB53D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		080DD7680C1390F300EEB53D /* Build configuration list for PBXAggregateTarget "test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				080DD7690C1390F300EEB53D /* Debug */,
+				080DD76A0C1390F300EEB53D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08668C520C19A16F00ACB19A /* Build configuration list for PBXAggregateTarget "example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08668C530C19A16F00ACB19A /* Debug */,
+				08668C540C19A16F00ACB19A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08C675750C139E3100D85379 /* Build configuration list for PBXAggregateTarget "test clean" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08C675760C139E3100D85379 /* Debug */,
+				08C675770C139E3100D85379 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08F0836E0C1DF6DE00687E1B /* Build configuration list for PBXAggregateTarget "example clean" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08F0836F0C1DF6DE00687E1B /* Debug */,
+				08F083700C1DF6DE00687E1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08F0FB090C19828200D0865B /* Build configuration list for PBXAggregateTarget "doc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08F0FB0A0C19828200D0865B /* Debug */,
+				08F0FB0B0C19828200D0865B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08FD5E6F0C1BA8BC00F00877 /* Build configuration list for PBXAggregateTarget "doc clean" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08FD5E700C1BA8BC00F00877 /* Debug */,
+				08FD5E710C1BA8BC00F00877 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 080DD7580C13908400EEB53D /* Project object */;
+}
