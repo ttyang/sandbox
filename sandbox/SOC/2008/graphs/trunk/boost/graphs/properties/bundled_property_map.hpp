@@ -16,11 +16,11 @@ struct bundled_property_map
         : graph(g), bundle(b)
     { }
 
-    inline value_type& operator()(key_type const& k)
-    { return graph[k].*bundle; }
+    inline value_type& operator()(key_type const& key)
+    { return graph[key].*bundle; }
 
-    inline value_type const& operator()(key_type const& k) const
-    { return graph[k].*bundle; }
+    inline void operator()(key_type const& key, value_type const& value) const
+    { graph[key].*bundle = value; }
 
     Graph& graph;
     Property Bundle::* bundle;

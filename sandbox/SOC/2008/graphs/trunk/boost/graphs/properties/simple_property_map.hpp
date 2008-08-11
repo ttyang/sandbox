@@ -27,8 +27,8 @@ struct simple_property_map
     inline value_type& operator()(key_type const& key)
     { return graph[key]; }
 
-    inline value_type const& operator()(key_type const& key) const
-    { return graph[key]; }
+    inline void operator()(key_type const& key, value_type const& value) const
+    { graph[key] = value; }
 
     Graph& graph;
 };
