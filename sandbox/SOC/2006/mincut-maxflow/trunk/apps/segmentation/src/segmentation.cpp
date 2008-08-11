@@ -26,33 +26,46 @@
 #include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
-#include <qfiledialog.h>
-#include <qtextedit.h>
+#include <q3filedialog.h>
+#include <q3textedit.h>
 #include <qtabwidget.h>
 #include <qmenubar.h>
 #include <qcombobox.h>
 #include <qdatetime.h> 
 #include <qevent.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include "ui_segmentationbase.h"
 using namespace std;
 // using namespace boost;
 
-Segmentation::Segmentation(QWidget* parent, const char* name, WFlags fl)
-  : SegmentationBase(parent,name,fl),m_huePenalty(15),m_similarityWeight(5),m_neighborhoodWeight(500),m_backgroundDrawingEnabled(false),m_foregroundDrawingEnabled(false)
+Segmentation::Segmentation(QWidget* parent, const char* name, Qt::WFlags fl)
+  : Q3MainWindow(), mp_ui(new Ui::SegmentationBase), m_huePenalty(15),m_similarityWeight(5),m_neighborhoodWeight(500),m_backgroundDrawingEnabled(false),m_foregroundDrawingEnabled(false)
 {
-	connect(mp_buttonSegment,SIGNAL(clicked()),this,SLOT(segment()));
+	mp_ui->setupUi(this);
 
-	mp_spinHuePenalty->setValue(m_huePenalty);
-	connect(mp_spinHuePenalty,SIGNAL(valueChanged(int)),this,SLOT(hueSpinBoxChanged(int)));
+	//connect the menubar
+	connect(mp_ui->fileOpenImageAction,SIGNAL(activated()),this,SLOT(fileOpenImage()));
+	connect(mp_ui->fileOpenMaskAction,SIGNAL(activated()),this,SLOT(fileOpenMask()));
+	connect(mp_ui->fileNewMaskAction,SIGNAL(activated()),this,SLOT(fileNewMask()));
+	connect(mp_ui->fileSaveAsActionss,SIGNAL(activated()),this,SLOT(fileSaveAs()));
+	connect(mp_ui->optionsStore_problem_as_DIMACSAction,SIGNAL(toggled(bool)),this,SLOT(storeProblemAsDimacsFile(bool)));
+
 	
-	mp_spinNeighborhoodWeight->setValue((int)m_neighborhoodWeight);
-	connect(mp_spinNeighborhoodWeight,SIGNAL(valueChanged(int)),this,SLOT(neighborhoodWeightSpinBoxChanged(int)));
+	connect(mp_ui->mp_buttonSegment,SIGNAL(clicked()),this,SLOT(segment()));
+	mp_ui->mp_spinHuePenalty->setValue(m_huePenalty);
+	connect(mp_ui->mp_spinHuePenalty,SIGNAL(valueChanged(int)),this,SLOT(hueSpinBoxChanged(int)));
 	
-	mp_spinSimilarityWeight->setValue((int)m_similarityWeight);
-	connect(mp_spinSimilarityWeight,SIGNAL(valueChanged(int)),this,SLOT(similarityWeightSpinBoxChanged(int)));
+	mp_ui->mp_spinNeighborhoodWeight->setValue((int)m_neighborhoodWeight);
+	connect(mp_ui->mp_spinNeighborhoodWeight,SIGNAL(valueChanged(int)),this,SLOT(neighborhoodWeightSpinBoxChanged(int)));
+	
+	mp_ui->mp_spinSimilarityWeight->setValue((int)m_similarityWeight);
+	connect(mp_ui->mp_spinSimilarityWeight,SIGNAL(valueChanged(int)),this,SLOT(similarityWeightSpinBoxChanged(int)));
 	
 	//init the 2 image-showing qlabes with empty pixmaps
-	mp_labelOrig->setPixmap(m_origPixmap);
-	mp_labelSegmented->setPixmap(m_segmentedPixmap);
+	mp_ui->mp_labelOrig->setPixmap(m_origPixmap);
+	mp_ui->mp_labelSegmented->setPixmap(m_segmentedPixmap);
 	
 	update();
 }
@@ -64,7 +77,7 @@ Segmentation::~Segmentation()
 
 void Segmentation::fileOpenImage()
 {
-    QString s = QFileDialog::getOpenFileName(
+    QString s = Q3FileDialog::getOpenFileName(
 		    "data/images",
                     "Images (*.png)",
                     this,
@@ -76,14 +89,14 @@ void Segmentation::fileOpenImage()
 	{
 		m_origImage.load(s);
 		m_origPixmap.convertFromImage(m_origImage);
-		mp_labelOrig->setPixmap(m_origPixmap);
+		mp_ui->mp_labelOrig->setPixmap(m_origPixmap);
 		m_shownOrigPixmap=OrigPixmap;
 	}
 }
 
 void Segmentation::fileOpenMask()
 {
-    QString s = QFileDialog::getOpenFileName(
+    QString s = Q3FileDialog::getOpenFileName(
 		    "data/trimaps",
                     "Images (*.png)",
                     this,
@@ -94,7 +107,7 @@ void Segmentation::fileOpenMask()
 	else{
 		m_trimapImage.load(s);
 		m_trimapPixmap.convertFromImage(m_trimapImage);
-		mp_labelOrig->setPixmap(m_trimapPixmap);
+		mp_ui->mp_labelOrig->setPixmap(m_trimapPixmap);
 		m_shownOrigPixmap=TrimapPixmap;
 	}
 }
@@ -102,7 +115,7 @@ void Segmentation::fileOpenMask()
 void Segmentation::fileSaveAs()
 {
   if(!m_segmentedImage.isNull()){  
-    QString s = QFileDialog::getSaveFileName (
+    QString s = Q3FileDialog::getSaveFileName (
         "data/segmented",
     "Images (*.png)",
     this,
@@ -116,47 +129,47 @@ void Segmentation::fileSaveAs()
         s.append(".png");
       }
       if(!m_segmentedImage.save(s,"PNG")){
-        mp_logEdit->append(QString("ERROR saving segmented image to ")+s);		
+        mp_ui->mp_logEdit->append(QString("ERROR saving segmented image to ")+s);		
       }
       else{
-        mp_logEdit->append(QString("Saved segmented image to ")+s);		
+        mp_ui->mp_logEdit->append(QString("Saved segmented image to ")+s);		
       }
     }
   }
   else
-    mp_logEdit->append(QString("ERROR. No segmented image to save yet!"));
+    mp_ui->mp_logEdit->append(QString("ERROR. No segmented image to save yet!"));
 }
 
 void Segmentation::loadImages( std::string fcr_imageFileName, std::string fcr_maskFileName )
 {
-	mp_logEdit->append("Loading images...");
+	mp_ui->mp_logEdit->append("Loading images...");
 	
-	if(!m_origImage.load(fcr_imageFileName))
+	if(!m_origImage.load(QString::fromStdString(fcr_imageFileName)))
 		cout << "Could not load image from " << fcr_imageFileName <<endl;
 	m_origPixmap.convertFromImage(m_origImage);
 	
-	if(!m_trimapImage.load(fcr_maskFileName))
+	if(!m_trimapImage.load(QString::fromStdString(fcr_maskFileName)))
 		cout << "Could not load trimap from " << fcr_imageFileName <<endl;
 	m_trimapPixmap.convertFromImage(m_trimapImage); 	
 	
-	mp_labelOrig->setPixmap(m_origPixmap);
+	mp_ui->mp_labelOrig->setPixmap(m_origPixmap);
 	m_shownOrigPixmap=OrigPixmap;
 	
 	update();
-	mp_logEdit->append("...done");
+	mp_ui->mp_logEdit->append("...done");
 }
 
 
 void Segmentation::wheelEvent( QWheelEvent *  )
 {
-	if(mp_labelOrig->hasMouse())
+	if(mp_ui->mp_labelOrig->hasMouse())
 	{
 		if(m_shownOrigPixmap==OrigPixmap){
-			mp_labelOrig->setPixmap(m_trimapPixmap);
+			mp_ui->mp_labelOrig->setPixmap(m_trimapPixmap);
 			m_shownOrigPixmap=TrimapPixmap;
 		}
 		else{
-			mp_labelOrig->setPixmap(m_origPixmap);
+			mp_ui->mp_labelOrig->setPixmap(m_origPixmap);
 			m_shownOrigPixmap=OrigPixmap;
 		}
 	}	
@@ -171,14 +184,14 @@ void Segmentation::segment()
   	m_graphCut.setSimilarityWeight(m_similarityWeight);
 	m_graphCut.setNeighborhoodWeight(m_neighborhoodWeight);
 	m_graphCut.setNeighborhoodThreshold(m_huePenalty);
- 	mp_logEdit->append("Starting segmentation...");
+ 	mp_ui->mp_logEdit->append("Starting segmentation...");
 	QTime time;
 	time.start();
-	m_segmentedImage=m_graphCut.segment(m_origImage,m_trimapImage,static_cast<GraphCut::eMode>(mp_comboAlgo->currentItem()));
+	m_segmentedImage=m_graphCut.segment(m_origImage,m_trimapImage,static_cast<GraphCut::eMode>(mp_ui->mp_comboAlgo->currentItem()));
 	int neededTime=time.elapsed();
 	m_segmentedPixmap.convertFromImage(m_segmentedImage);
-	mp_labelSegmented->setPixmap(m_segmentedPixmap);
-	mp_logEdit->append(QString("Done! Segmentation lasted: %1 ms (maxflow:%2)").arg(neededTime).arg(m_graphCut.maxflowTime()));		
+	mp_ui->mp_labelSegmented->setPixmap(m_segmentedPixmap);
+	mp_ui->mp_logEdit->append(QString("Done! Segmentation lasted: %1 ms (maxflow:%2)").arg(neededTime).arg(m_graphCut.maxflowTime()));		
 
 // 	visualizeResults();
 }

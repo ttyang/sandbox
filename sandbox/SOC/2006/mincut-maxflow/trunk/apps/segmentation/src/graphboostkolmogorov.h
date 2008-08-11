@@ -71,8 +71,8 @@ public:
 		
 		virtual eSegment what_segment(int f_node) const {
         if(m_segment[f_node] == boost::white_color)
-          return GraphBase::SOURCE;
-        return GraphBase::SINK;
+          return GraphBase::SINK;
+        return GraphBase::SOURCE;
       }
         
 	private:

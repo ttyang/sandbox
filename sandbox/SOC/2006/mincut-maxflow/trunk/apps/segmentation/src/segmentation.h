@@ -19,33 +19,36 @@
 
 #include <qbitmap.h>
 #include <qimage.h>
-
-#include "segmentationbase.h"
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QWheelEvent>
+#include <QPixmap>
+#include <Q3MainWindow>
 #include <graphcut.h>
 
-class Segmentation: public SegmentationBase 
+namespace Ui { class SegmentationBase; };
+class Segmentation: public Q3MainWindow
 {
   Q_OBJECT
 
 public:
-	Segmentation(QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	Segmentation(QWidget* parent = 0, const char* name = 0, Qt::WFlags fl = 0 );
 	~Segmentation();
 	/*$PUBLIC_FUNCTIONS$*/
 	void loadImages(std::string fcr_filename,std::string fcr_maskFilename);
 		  
 public slots:
-	
-protected:
 	virtual void fileOpenImage();
 	virtual void fileOpenMask();
 	virtual void fileNewMask();
-   virtual void fileSaveAs();
+	virtual void fileSaveAs();
+	virtual void storeProblemAsDimacsFile(bool toggled);
+protected:
+
    
 	virtual void mousePressEvent(QMouseEvent* e);
 	virtual void mouseReleaseEvent(QMouseEvent* e);
 	virtual void mouseMoveEvent(QMouseEvent* e);
-   
-   virtual void storeProblemAsDimacsFile(bool toggled);
 	
 protected slots:
   /*$PROTECTED_SLOTS$*/
@@ -58,9 +61,9 @@ protected slots:
 private:
 	
 	virtual void wheelEvent ( QWheelEvent * e );
-	
 	void visualizeResults();
-	
+
+	Ui::SegmentationBase* mp_ui;
 	unsigned int m_huePenalty;
 	GraphCut::tPrecision m_similarityWeight;
 	GraphCut::tPrecision m_neighborhoodWeight;	
