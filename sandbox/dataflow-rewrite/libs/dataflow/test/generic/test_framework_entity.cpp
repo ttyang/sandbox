@@ -3,7 +3,7 @@
 // 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#include <boost/dataflow/generic/entity.hpp>
+#include <boost/dataflow/generic/framework_entity.hpp>
 
 #include <boost/test/included/test_exec_monitor.hpp>
 
@@ -11,7 +11,7 @@ namespace df = boost::dataflow;
 
 typedef df::traits<df::default_framework> my_traits;
 
-struct entity
+struct framework_entity
 {
     typedef my_traits dataflow_traits;
 };
@@ -19,7 +19,7 @@ struct entity
 int test_main(int, char* [])
 {
     BOOST_CHECK(df::is_traits<my_traits>::value);
-    BOOST_CHECK(df::is_entity<entity>::value);
+    BOOST_CHECK(df::is_framework_entity<framework_entity>::value);
 
     return 0;
 } // int test_main(int, char* [])

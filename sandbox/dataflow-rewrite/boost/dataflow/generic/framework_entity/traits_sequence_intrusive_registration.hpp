@@ -5,8 +5,8 @@
 
 #if !BOOST_PP_IS_ITERATING
 
-    #ifndef BOOST__DATAFLOW__GENERIC__ENTITY__TRAITS_SEQUENCE_INTRUSIVE_REGISTRATION_HPP
-    #define BOOST__DATAFLOW__GENERIC__ENTITY__TRAITS_SEQUENCE_INTRUSIVE_REGISTRATION_HPP
+    #ifndef BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY__TRAITS_SEQUENCE_INTRUSIVE_REGISTRATION_HPP
+    #define BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY__TRAITS_SEQUENCE_INTRUSIVE_REGISTRATION_HPP
 
     #include <boost/preprocessor/iteration/iterate.hpp>
 
@@ -30,10 +30,10 @@ namespace detail {
 
 } }
 
-    #define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 2, <boost/dataflow/generic/entity/traits_sequence_intrusive_registration.hpp>))
+    #define BOOST_PP_ITERATION_PARAMS_1 (3, (0, 2, <boost/dataflow/generic/framework_entity/traits_sequence_intrusive_registration.hpp>))
     #include BOOST_PP_ITERATE()
 
-    #endif // BOOST__DATAFLOW__GENERIC__ENTITY__TRAITS_SEQUENCE_INTRUSIVE_REGISTRATION_HPP
+    #endif // BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY__TRAITS_SEQUENCE_INTRUSIVE_REGISTRATION_HPP
 
 #else
 

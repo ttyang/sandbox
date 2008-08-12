@@ -86,7 +86,7 @@ struct traits_of<
 } }
 
 // Specialization allowing intrusive specification of a sequence of Traits.
-#include <boost/dataflow/generic/entity/traits_sequence_intrusive_registration.hpp>
+#include <boost/dataflow/generic/framework_entity/traits_sequence_intrusive_registration.hpp>
 
 namespace boost { namespace dataflow {
 

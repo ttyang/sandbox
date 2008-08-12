@@ -3,8 +3,8 @@
 // accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST__DATAFLOW__GENERIC__ENTITY_HPP
-#define BOOST__DATAFLOW__GENERIC__ENTITY_HPP
+#ifndef BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY_HPP
+#define BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY_HPP
 
 #include <boost/dataflow/generic/traits.hpp>
 #include <boost/dataflow/utility/enable_if_type.hpp>
@@ -19,7 +19,7 @@ namespace detail {
 
 /// Boolean Metafunction determining whether a type has traits.
 template<typename T, typename Framework=default_framework, typename Enable=detail::enable_guard>
-struct is_entity : public mpl::false_
+struct is_framework_entity : public mpl::false_
 {
 #ifdef DOXYGEN_DOCS_BUILD
     /// Integral Constant value type
@@ -35,7 +35,7 @@ struct is_entity : public mpl::false_
 
 /// INTERNAL ONLY
 template<typename T, typename Framework>
-struct is_entity<
+struct is_framework_entity<
     T,
     Framework,
     typename utility::enable_if_type<
@@ -47,4 +47,4 @@ struct is_entity<
 
 } } // namespace boost::dataflow
 
-#endif // BOOST__DATAFLOW__GENERIC__ENTITY_HPP
+#endif // BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY_HPP
