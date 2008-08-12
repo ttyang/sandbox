@@ -1,12 +1,16 @@
-// Copyright 2007,8 Stjepan Rajko.
-// Distributed under the Boost Software License, Version 1.0. (See
-// accompanying file LICENSE_1_0.txt or copy at
-// http://www.boost.org/LICENSE_1_0.txt)
+/*=================================---------------------------------------------
+    Copyright 2007,2008 Stjepan Rajko
+  
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+-----------------------------------------------===============================*/
 
 #ifndef BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY_HPP
 #define BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY_HPP
 
-#include <boost/dataflow/generic/traits.hpp>
+
+#include <boost/dataflow/generic/framework_entity/traits.hpp>
 #include <boost/dataflow/utility/enable_if_type.hpp>
 
 #include <boost/mpl/bool.hpp>
