@@ -27,9 +27,12 @@
 #include <boost/mpl/times.hpp>  // for boost::mpl::times
 #include <boost/mpl/int.hpp>    // for boost::mpl::int_
 
-#include <boost/serialization/access.hpp>  // for boost::serialization::access
+#include <boost/serialization/access.hpp>        // for boost::s11n::access
+#include <boost/serialization/nvp.hpp>           // for boost::s11n::make_nvp
+#include <boost/serialization/split_member.hpp>  // for boost:s11n:split_member
 
 #include <algorithm>  // for std::equal, copy
+#include <string>     // for std::string
 
 
 namespace boost
@@ -127,8 +130,18 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
+    std::string  queue_to_string() const;
+    void         string_to_queue( std::string const &s );
+
+    //! Write serialization
     template < class Archive >
-    void  serialize( Archive &ar, const unsigned int version );//@}  // not defined yet
+    void  save( Archive &ar, const unsigned int version ) const;
+    //! Read serialization
+    template < class Archive >
+    void  load( Archive &ar, const unsigned int version );
+    //! Enables persistence with Boost.Serialization-compatible archives
+    template < class Archive >
+    void  serialize( Archive &ar, const unsigned int version );//@}
 
 };  // md5_context
 
@@ -231,6 +244,92 @@ md5_context::consume_dword( length_ftype dword )
     for ( int  i = 0 ; i < 2 ; ++i, dword >>= 32 )
         this->consume_word( dword & 0xFFFFFFFFul );
 }
+
+/** Perserves a core computer to a serialization streamed to an archive using
+    the Boost.Serialization protocols.  This member function is meant to be
+    called only by the Boost.Serialization system, as needed.
+
+    \tparam  Archive  The type of \p ar.  It must conform to the requirements
+                      Boost.Serialization expects of archiving classes.
+
+    \param  ar       The archiving object that this object's representation will
+                     be streamed to.
+    \param  version  The version of the persistence format for this object.  (It
+                     should be zero, since this type just got created.)
+ */
+template < class Archive >
+void
+md5_context::save( Archive &ar, const unsigned int version ) const
+{
+    using boost::serialization::make_nvp;
+
+    std::string const  queue_string = this->queue_to_string();
+
+    switch ( version )
+    {
+    default:
+    case 0u:
+        ar << make_nvp( "length", this->length )
+           << make_nvp( "buffer-A", this->buffer[0] )
+           << make_nvp( "buffer-B", this->buffer[1] )
+           << make_nvp( "buffer-C", this->buffer[2] )
+           << make_nvp( "buffer-D", this->buffer[3] )
+           << make_nvp( "message-tail", queue_string );
+        break;
+    }
+}
+
+/** Resets a core computer to a serialization streamed from an archive using the
+    Boost.Serialization protocols.  This member function is meant to be called
+    only by the Boost.Serialization system, as needed.
+
+    \tparam  Archive  The type of \p ar.  It must conform to the requirements
+                      Boost.Serialization expects of archiving classes.
+
+    \param  ar       The archiving object that this object's representation will
+                     be streamed from.
+    \param  version  The version of the persistence format for this object.  (It
+                     should be zero, since this type just got created.)
+ */
+template < class Archive >
+void
+md5_context::load( Archive &ar, const unsigned int version )
+{
+    using boost::serialization::make_nvp;
+
+    std::string  queue_string;
+
+    switch ( version )
+    {
+    default:
+    case 0u:
+        ar >> make_nvp( "length", this->length )
+           >> make_nvp( "buffer-A", this->buffer[0] )
+           >> make_nvp( "buffer-B", this->buffer[1] )
+           >> make_nvp( "buffer-C", this->buffer[2] )
+           >> make_nvp( "buffer-D", this->buffer[3] )
+           >> make_nvp( "message-tail", queue_string );
+        this->string_to_queue( queue_string );
+        break;
+    }
+}
+
+/** Streams a core computer to/from an archive using the Boost.Serialization
+    protocols.  This member function is meant to be called only by the
+    Boost.Serialization system, as needed.
+
+    \tparam  Archive  The type of \p ar.  It must conform to the requirements
+                      Boost.Serialization expects of archiving classes.
+
+    \param  ar       The archiving object that this object's representation will
+                     be streamed to/from.
+    \param  version  The version of the persistence format for this object.  (It
+                     should be zero, since this type just got created.)
+ */
+template < class Archive >
+inline void
+md5_context::serialize( Archive &ar, const unsigned int version )
+{ boost::serialization::split_member( ar, *this, version ); }
 
 
 }  // namespace coding

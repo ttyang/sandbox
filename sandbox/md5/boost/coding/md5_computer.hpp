@@ -28,6 +28,7 @@
 #include <boost/cstdint.hpp>               // for boost::uint_least8_t
 #include <boost/integer/integer_mask.hpp>  // for boost::integer_lo_mask
 #include <boost/serialization/access.hpp>  // for boost::serialization::access
+#include <boost/serialization/nvp.hpp>     // for boost::serialization::make_nvp
 
 #include <algorithm>  // for std::copy, swap
 
@@ -141,8 +142,9 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
+    //! Enables persistence with Boost.Serialization-compatible archives
     template < class Archive >
-    void  serialize( Archive &ar, const unsigned int version );  // not defined yet
+    void  serialize( Archive &ar, const unsigned int version );
 
 };  // md5_computer
 
@@ -163,8 +165,8 @@ md5_computer::bits_read() const
 }
 
 /** Returns the checksum of all the bits that have been hashed so far.  Hashing
-    occurs only after every \c #bits_per_block::value bit entries, so check
-    \c #bits_unbuffered() for any queued stragglers.
+    occurs only after every <code>#bits_per_block :: value</code> bit entries,
+    so check \c #bits_unbuffered() for any queued stragglers.
 
     \return  The current state of the MD buffer, not counting any unhashed bits.
  */
@@ -172,9 +174,9 @@ inline md5_computer::buffer_type
 md5_computer::last_buffer() const  { return this->context().buffer; }
 
 /** Returns the number of bits that are still in the queue, unhashed.  Hashing
-    occurs only after every \c #bits_per_block::value bit submissions, so this
-    member function can confirm queued stragglers. (The identities of hashed
-    bits are not retrievable.)
+    occurs only after every <code>#bits_per_block :: value</code> bit
+    submissions, so this member function can confirm queued stragglers. (The
+    identities of hashed bits are not retrievable.)
 
     \return  How many bits are queued to be hashed.
 
@@ -187,8 +189,8 @@ md5_computer::bits_unbuffered() const
 
 /** Copies the last submitted bits that have not yet been hashed starting from
     the oldest submission.  Use \c #bits_unbuffered() for advance notice of how
-    many iterations are done.  (Always less than \c #bits_per_block::value
-    elements are copied.)
+    many iterations are done.  (Always less than <code>#bits_per_block ::
+    value</code> elements are copied.)
 
     \pre  At least \c #bits_unbuffered() more elements are free to be created
           and/or assigned through \p o.
@@ -225,8 +227,6 @@ md5_computer::copy_unbuffered( OutputIterator o ) const
     \post  <code>#last_buffer() == { 0x67452301, 0xEFCDAB89, 0x98BACDFE,
            0x10325476 }</code>.
     \post  <code>#copy_unbuffered(<var>o</var>)</code> leaves \p o unused.
-
-    \see  #md5_computer()
  */
 inline void  md5_computer::reset()  { *this = self_type(); }
 
@@ -244,8 +244,6 @@ inline void  md5_computer::reset()  { *this = self_type(); }
            available, <code>std::equal( o1, o1 + bits_unbuffered(), o2 ) ==
            true</code>.
     \post  \c #bits and \c #bytes \e still point to \c *this
-
-    \see  #md5_computer(md5_computer const&)
  */
 inline void  md5_computer::assign( self_type const &c )  { *this = c; }
 
@@ -315,7 +313,7 @@ md5_computer::process_octet( uint_least8_t octet )
            the <code><var>old_this</var>.bits_unbuffered() + 32 -
            bits_per_block</code> lowest-order bits of \p word.
 
-    \see  #process_octet(boost::uint_least8_t)
+    \see  #process_octet(uint_least8_t)
  */
 inline void
 md5_computer::process_word( md5_digest::word_type word )
@@ -348,6 +346,26 @@ md5_computer::process_word( md5_digest::word_type word )
 inline void
 md5_computer::process_double_word( length_type dword )
 { this->context().consume_dword( dword ); }
+
+
+//  MD5 message-digest computation serialization function definition  --------//
+
+/** Streams a computer to/from an archive using the Boost.Serialization
+    protocols.  This member function is meant to be called only by the
+    Boost.Serialization system, as needed.
+
+    \tparam  Archive  The type of \p ar.  It must conform to the requirements
+                      Boost.Serialization expects of archiving classes.
+
+    \param  ar       The archiving object that this object's representation will
+                     be streamed to/from.
+    \param  version  The version of the persistence format for this object.  (It
+                     should be zero, since this type just got created.)
+ */
+template < class Archive >
+inline void
+md5_computer::serialize( Archive &ar, const unsigned int version )
+{ ar & boost::serialization::make_nvp( "context", this->context() ); }
 
 
 //  MD5 message-digest computation miscellaneous function definitions  -------//
