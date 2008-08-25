@@ -17,6 +17,7 @@
 #include <boost/dataflow/support/port/port_adapter.hpp>
 #include <boost/dataflow/support/fusion_component.hpp>
 #include <boost/dataflow/support/fusion_keyed_port.hpp>
+#include <boost/dataflow/signals/support.hpp>
 
 #include <boost/assert.hpp>
 #include <boost/mpl/and.hpp>
