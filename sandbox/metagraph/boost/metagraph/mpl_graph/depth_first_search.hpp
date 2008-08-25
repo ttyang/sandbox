@@ -1,4 +1,4 @@
-#include <boost/metagraph/mpl_graph/mpl_graph.h>
+#include <boost/metagraph/mpl_graph/mpl_graph.hpp>
 
 #include <boost/mpl/has_key.hpp>
 

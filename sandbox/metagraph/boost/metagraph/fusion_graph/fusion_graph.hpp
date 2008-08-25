@@ -5,7 +5,7 @@
 // (See accompanying file LICENSEmpl::_1_0.txt or copy at
 // http://www.boost.org/LICENSEmpl::_1_0.txt)
 
-#include <boost/metagraph/mpl_graph/mpl_graph.h>
+#include <boost/metagraph/mpl_graph/mpl_graph.hpp>
 
 #include <boost/fusion/include/map.hpp>
 #include <boost/fusion/include/pair.hpp>
