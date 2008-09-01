@@ -209,8 +209,8 @@ default functionality:
     typedef T value_type;
     typedef typename detail::generate_const&lt;V,T&gt;::type* pointer;
     static pointer storage (V&amp; v) { return v.begin(); }
-    static int size (V&amp; v) { return v.size(); }
-    static int stride (V&amp; v) { return 1; }
+    static std::ptrdiff_t size (V&amp; v) { return v.size(); }
+    static std::ptrdiff_t stride (V&amp; v) { return 1; }
   };
 </pre> 
 
@@ -277,8 +277,8 @@ built-in C array (see <code>c_array.hpp</code>):
     typedef T value_type;
     typedef typename detail::generate_const&lt;VType,T&gt;::type* pointer; 
     static pointer storage (VType&amp; a) { return a; }
-    static int size (VType&amp;) { return N; }
-    static int stride (VType&amp;) { return 1; }
+    static std::ptrdiff_t size (VType&amp;) { return N; }
+    static std::ptrdiff_t stride (VType&amp;) { return 1; }
   };
 </pre>
 
@@ -378,8 +378,8 @@ full matrices it denotes part that is referenced.
 <tr><td>Beginning of storage<td><code>storage(m)</code><td>Returns a pointer to the
 beginning of the storage of matrix <code>m</code>
 <tr><td>Size of storage<td><code>storage_size(m)</code><td>Returns the size of the storage
-<tr><td>Number of rows<td><code>size1(m)</code><td>Returns the number of rows of matrix <code>m</code>
-<tr><td>Number of columns<td><code>size2(m)</code><td>Returns the number of
+<tr><td>Number of rows<td><code>num_rows(m)</code><td>Returns the number of rows of matrix <code>m</code>
+<tr><td>Number of columns<td><code>num_columns(m)</code><td>Returns the number of
 columns matrix <code>m</code>
 <tr><td>Leading
 dimension<td><code>leading_dimension(m)</code><td>Returns the distance
@@ -397,7 +397,7 @@ similar to the <code>vector_traits&lt;&gt;</code>'s implementation
 (<a href="#vt-impl">subsection 1.3.5</a>); only, first step is omitted because
 there is no reasonable default -- different matrix libraries provide 
 different interfaces (for example, functions that return number of
-rows and columns are named <code>size1()</code>, <code>size2()</code> 
+rows and columns are named <code>num_rows()</code>, <code>num_columns()</code> 
 in uBLAS, <code>dim1()</code>, <code>dim2()</code> in TNT, 
 and <code>nrows()</code>, <code>ncols()</code> in MTL).
 Definitions in <code>matrix_traits.hpp</code> are: 
@@ -427,17 +427,17 @@ for <code>ublas::matrix&lt;&gt;</code> (see <code>ublas_matrix.hpp</code>):
     typedef T value_type;
     typedef typename detail::generate_const&lt;MType,T&gt;::type* pointer; 
 
-    static pointer storage (MType& m) {
+    static pointer storage (MType&amp; m) {
       typedef typename detail::generate_const&lt;MType,ArrT&gt;::type array_type;
       return vector_traits&lt;array_type&gt;::storage (m.data());
     }
-    static int size1 (MType&amp; m) { return m.size1(); }
-    static int size2 (MType&amp; m) { return m.size2(); }
-    static int storage_size (MType&amp; m) { return size1 (m) * size2 (m); }
-    static int leading_dimension (MType&amp; m) { return F::size2 (m.size1(), m.size2()); }
+    static std::ptrdiff_t num_rows (MType&amp; m) { return m.size1(); }
+    static std::ptrdiff_t num_columns (MType&amp; m) { return m.size2(); }
+    static std::ptrdiff_t storage_size (MType&amp; m) { return num_rows (m) * size2 (m); }
+    static std::ptrdiff_t leading_dimension (MType&amp; m) { return F::size2 (m.size1(), m.size2()); }
 
-    static int stride1 (MType&amp; m) { return F::one1 (m.size1(), m.size2()); }
-    static int stride2 (MType&amp; m) { return F::one2 (m.size1(), m.size2()); }
+    static std::ptrdiff_t stride1 (MType&amp; m) { return F::one1 (m.size1(), m.size2()); }
+    static std::ptrdiff_t stride2 (MType&amp; m) { return F::one2 (m.size1(), m.size2()); }
   };
 </pre>
 
@@ -482,9 +482,9 @@ for <code>ublas::symmetric_matrix&lt;&gt;</code>
       typedef typename detail::generate_const&lt;MType,A&gt;::type array_type ;
       return vector_traits&lt;array_type&gt;::storage (sm.data());
     }
-    static int size1 (MType&amp; sm) { return sm.size1(); }
-    static int size2 (MType&amp; sm) { return sm.size2(); }
-    static int storage_size (MType&amp; sm) { return (size1 (sm) + 1) * size2 (sm) / 2; }
+    static std::ptrdiff_t num_rows (MType&amp; sm) { return sm.size1(); }
+    static std::ptrdiff_t num_columns (MType&amp; sm) { return sm.size2(); }
+    static std::ptrdiff_t storage_size (MType&amp; sm) { return (num_rows (sm) + 1) * num_columns (sm) / 2; }
   };
 </pre>
 
@@ -564,8 +564,8 @@ Depends on <code>storage_format</code> and <code>ordering_type</code> [1]
 Depends on <code>storage_format</code> and <code>ordering_type</code> [2]
 <tr><td>Element storage<td><code>storage(m)</code><td>Returns a pointer to the
 beginning of the storage of matrix entries [3]
-<tr><td>Number of rows<td><code>size1(m)</code><td>Returns the number of rows of matrix <code>m</code>
-<tr><td>Number of columns<td><code>size2(m)</code><td>Returns the number of
+<tr><td>Number of rows<td><code>num_rows(m)</code><td>Returns the number of rows of matrix <code>m</code>
+<tr><td>Number of columns<td><code>num_columns(m)</code><td>Returns the number of
 columns matrix <code>m</code>
 <tr><td>Number of entries<td><code>num_nonzeros(m)</code><td>Returns
 the number of matrix entries [3]
@@ -636,8 +636,8 @@ between pointers pointing to consecutive entries in <code>v</code>
 <tr><td><code>matrix_storage(m)</code><td>Returns a pointer to the
 beginning of the storage of matrix <code>m</code>
 <tr><td><code>matrix_storage_size(m)</code><td>Returns the size of the storage
-<tr><td><code>matrix_size1(m)</code><td>Returns the number of rows of matrix <code>m</code>
-<tr><td><code>matrix_size2(m)</code><td>Returns the number of
+<tr><td><code>matrix_num_rows(m)</code><td>Returns the number of rows of matrix <code>m</code>
+<tr><td><code>matrix_num_columns(m)</code><td>Returns the number of
 columns matrix <code>m</code>
 <tr><td><code>leading_dimension(m)</code><td>Returns the leading
 dimension of matrix <code>m</code>
