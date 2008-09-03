@@ -1,9 +1,9 @@
 
 [section:unaryoperable UnnaryOperable (AllDisconnectable) ]
 
-A [Port] `P` is /UnnaryOperable/
-for a unary operation `O`, and mechanism `M`, if the implementation of
-the unnary operation `O` has been specialized for `M` and `P`
+A [Port] `P` of [Tag] `T` is /UnaryOperable/
+for a unary operation `O`, if the implementation of
+the unnary operation `O` has been specialized for `P`
 
 In this case,
 
@@ -13,6 +13,7 @@ In this case,
 The following expressions are used in this document:
 
 [variablelist
+    [[`T`] [A [Tag] type. If omitted, `T` defaults to [default_tag].]]
     [[P] [A [Port] type.]]
     [[p] [An object of type P.]]
 ]
@@ -22,7 +23,7 @@ The following expressions are used in this document:
     [[Name] [Expression] [Result Type] [Description]]
     [
         [Disconnect All]
-        [`unnary_operation<operations::disconnect_all, M>(p)`]
+        [`unary_operation<operations::disconnect_all, T>(p)`]
         [void]
         [
             Destroys any connections stored by `p`.  
