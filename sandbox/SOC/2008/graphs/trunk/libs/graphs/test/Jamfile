@@ -1,4 +1,13 @@
 
+
+# Build all subrojects using g++-4.4
+project graphs
+    : requirements
+        <toolset>gcc-4.4
+        <include>$(boost-root)
+        <include>../..
+    ;
+
 # exe set : set.cpp : <include>../../ <include>/usr/local/include ;
 # exe map : map.cpp : <include>../../ <include>/usr/local/include ;
 # exe props : props.cpp : <include>../../ <include>/usr/local/include ;
