@@ -4,7 +4,7 @@
 #ifndef X_DWA2004410_HPP
 # define X_DWA2004410_HPP
 
-# include <boost/move.hpp>
+# include <boost/move/move.hpp>
 # include <boost/assert.hpp>
 # include "say.hpp"
 
