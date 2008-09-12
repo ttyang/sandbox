@@ -10,7 +10,14 @@
 #define BOOST__DATAFLOW__GENERIC__FRAMEWORK_ENTITY__DEFAULT_FRAMEWORK_HPP
 
 
-#include <boost/dataflow/generic/framework_entity/traits.hpp>
+#include <boost/dataflow/generic/framework.hpp>
+#include <boost/dataflow/utility/enable_if_type.hpp>
+
+#include <boost/mpl/assert.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/mpl/is_sequence.hpp>
+#include <boost/type_traits/remove_cv.hpp>
+#include <boost/utility/enable_if.hpp>
 
 
 namespace boost { namespace dataflow {
@@ -31,8 +38,6 @@ struct default_framework_of<Entity,
         mpl::not_<mpl::is_sequence<typename Entity::dataflow_traits> >
     >::type>
 {
-    /// INTERNAL ONLY
-    BOOST_MPL_ASSERT(( is_traits<typename Entity::dataflow_traits> ));
     /// INTERNAL ONLY
     typedef typename Entity::dataflow_traits::framework type;
 };

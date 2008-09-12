@@ -7,7 +7,8 @@
 -----------------------------------------------===============================*/
 
 
-#include <boost/dataflow/generic/framework_entity/default_framework.hpp>
+#include <boost/dataflow/generic/framework_entity/default_framework_of.hpp>
+#include <boost/dataflow/generic/framework_entity/traits.hpp>
 
 #include <boost/preprocessor/comma.hpp>
 
