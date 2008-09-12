@@ -128,12 +128,12 @@ struct traits_of<
 } } // namespace boost::dataflow
 
 /// Macro simplifying non-intrusive specification of a type's Traits.
-#define DATAFLOW_TRAITS(Type,Traits)            \
+#define BOOST_DATAFLOW_TRAITS(Type,Traits)      \
 namespace boost { namespace dataflow {          \
 template<>                                      \
 struct register_traits<                         \
     Type,                                       \
-    Traits::framework>                                \
+    Traits::framework>                          \
 {                                               \
     typedef Traits type;                        \
     BOOST_MPL_ASSERT(( is_traits<type> ));      \
@@ -142,12 +142,12 @@ struct register_traits<                         \
 
 /// Macro simplifying non-intrusive specification of multiple types'
 /// Traits, using a boost::enable_if condition.
-#define DATAFLOW_TRAITS_ENABLE_IF(Type,Cond,Traits)             \
+#define BOOST_DATAFLOW_TRAITS_ENABLE_IF(Type,Cond,Traits)       \
 namespace boost { namespace dataflow {                          \
 template<typename Type>                                         \
 struct register_traits<                                         \
     Type,                                                       \
-    typename Traits::framework,                                                \
+    typename Traits::framework,                                 \
     typename boost::enable_if< Cond >::type>                    \
 {                                                               \
     typedef Traits type;                                        \
