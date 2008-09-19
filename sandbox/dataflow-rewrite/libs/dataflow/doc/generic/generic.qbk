@@ -1,0 +1,11 @@
+[section:generic Dataflow.Generic]
+
+[include introduction.qbk]
+
+[include concepts/concepts.qbk]
+
+[/[include examples.qbk]]
+
+[xinclude ../dataflow_generic_doxygen.xml]
+
+[endsect]

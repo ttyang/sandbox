@@ -1,0 +1,102 @@
+[section:entity FrameworkEntity,FrameworkEntityTraits]
+
+[FrameworkEntity] is a base concept for dataflow entities (such as [Port]
+that belong to a framework. Every [FrameworkEntity]
+has an associated [FrameworkEntityTraits] type which describes it's dataflow properties.
+The examples below show how [FrameworkEntityTraits] can be registered for an [FrameworkEntity].
+
+The registration of an [FrameworkEntity] with a [FrameworkEntityTraits] is always for a specific [Framework].
+Hence, a type is an [FrameworkEntity] only relative to a [Framework], and can have different
+[FrameworkEntityTraits] for different [Framework]s.
+
+[/[heading Refinements]
+
+* [Port], [PortTraits]
+* [Component], [ComponentTraits]]
+
+[heading Notation]
+
+[variablelist
+    [[`DF`] [The default framework of `E`.]]
+    [[`F`] [A [Framework] type. If omitted, `F` defaults to `DF`.]]
+    [[`E`] [A [FrameworkEntity] type, for [Framework] `F`.]]
+    [[`ET`] [[FrameworkEntityTraits] of `E` for [Framework] `F`.]]
+    [[`e`] [An object of type `E`.]]
+]
+
+[heading Entity Requirements]
+[table
+    [[Name] [Expression] [Result Type] [Semantics]]
+    [
+        [Entity Traits]
+        [[^[traits_of]<E, F>::type]]
+        [`T`]
+        [
+            The [FrameworkEntityTraits] of [FrameworkEntity] `E` for [Framework] `F`.
+        ]
+    ]
+    [
+        [Default Framework]
+        [[^[default_framework_of]<E>::type]]
+        [`DF`]
+        [
+            The default [Framework] of `E`.
+        ]
+    ]
+    [
+        [Entity Concept Check]
+        [[^[is_entity]<E, T>::type]]
+        [[true]]
+        [
+            Concept check for the [FrameworkEntity] concept.
+        ]
+    ]
+]
+
+[heading Traits Requirements]
+[table
+    [[Name] [Expression] [Result Type] [Semantics]]
+    [
+        [Framework]
+        [`ET::framework`]
+        [`F`]
+        [
+            The [Framework] for `ET`.
+[/ Although this currently must be `F`,
+            in the future this might be permitted to be any [Framework] type
+            (and used only in some forms of registration of [FrameworkEntityTraits]
+            for [FrameworkEntity]s).]
+        ]
+    ]
+]
+
+[heading Header]
+
+The types, templates, and functions shown here are declared in the following
+files:
+
+```
+    #include <boost/dataflow/framework_entity.hpp>
+```
+
+[heading Notes]
+
+There is an intrusive as well as a non-intrusive way to register the
+[FrameworkEntityTraits] of a type `E`, thereby making it an [FrameworkEntity].
+
+Non-intrusive registration is typically done by providing a specialization of
+the [register_traits] template (either directly, or through the provided
+macros [BOOST_DATAFLOW_TRAITS] and [BOOST_DATAFLOW_TRAITS_ENABLE_IF]).  This will
+specialize [traits_of] for all cv-qualified versions of type `E`.
+If cv-qualified versions of type `E` should have different [FrameworkEntityTraits],
+[traits_of] should be specialized directly.
+
+Intrusive registration can be done by providing
+a `E::dataflow_traits` member type, which can be either a [FrameworkEntityTraits]
+type, or an MPL sequence of [FrameworkEntityTraits] types. Alternatively,
+the Dataflow library provides a convenience class
+[framework_entity] which you can inherit instead of declaring the member type.  This
+provides the additional benefit of being able to access free functions in the
+`boost::dataflow` namespace using ADL.
+
+[endsect][/entity]

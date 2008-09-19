@@ -18,7 +18,7 @@
 
 namespace df = boost::dataflow;
 
-struct my_framework : public df::framework
+struct my_framework : public df::framework_base
 {};
 
 struct no_traits

@@ -1,0 +1,55 @@
+[section Framework]
+
+A [Framework] type typically corresonds to a particular dataflow framework
+implemented to support the [DataflowGeneric] layer.  It is
+used as a template parameter tag in (most)
+[DataflowGeneric] templates to specify the particular dataflow framework.  This
+allows the same types ([FrameworkEntity]s) to be used with different dataflow
+frameworks without
+clashing.  Typicaly, each framework developed for [BoostDataflow] will have
+a unique [Framework] type.  [BoostDataflow] also provides a
+[default_framework] type which can be used when the user is not concerned with
+the possibility of clashing.
+
+[note In the future, the [Framework] concept is likely to be expanded to include
+further information about the framework.]
+
+[heading Notation]
+
+[variablelist
+    [[T] [A [Framework] type.]]
+]
+
+[heading Requirements]
+
+[table
+    [[Name] [Expression] [Result Type] [Semantics]]
+    [
+        [framework_base Inheritance]
+        [`is_base<framework_base, T>::type`]
+        [ [true] ]
+        [
+            To allow concept checking on [Framework] types, all [Framework] types
+            must be derived from [framework_base].
+        ]
+    ]
+    [
+        [Framework Concept Check]
+        [[^[is_framework]<T>::type]]
+        [ [true] ]
+        [
+            Concept check for the [Framework] concept.
+        ]
+    ]
+]
+
+[/
+[heading Examples]
+
+The following code declares the [VTK] framework [Framework] - it is a part of
+the [vtk_example example showing how to provide a VTK support layer].
+
+[vtk_tag]
+]
+
+[endsect]
