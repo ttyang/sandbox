@@ -26,18 +26,18 @@ typedef tls_object<gc_alloc> tls_gc_alloc_t;
 STDAPI_(tls_gc_alloc_t*) _boost_TlsGcAlloc();
 
 template <class Unused>
-class tls_gc_alloc_imp
+class tls_gc_alloc_
 {
 private:
 	static tls_gc_alloc_t* _tls_gcAlloc;
 
 public:
-	typedef gc_alloc allocator_type;
+	typedef gc_alloc alloc_type;
 
-	tls_gc_alloc_imp() {
+	tls_gc_alloc_() {
 		_tls_gcAlloc->init();
 	}
-	~tls_gc_alloc_imp() {
+	~tls_gc_alloc_() {
 		_tls_gcAlloc->term();
 	}
 
@@ -56,6 +56,7 @@ public:
 		return _tls_gcAlloc->get().allocate(cbData);
 	}
 
+#if defined(BOOST_MEMORY_NO_STRICT_EXCEPTION_SEMANTICS)
 	static void* BOOST_MEMORY_CALL allocate(const size_t cbData0, destructor_t fn)
 	{
 		return _tls_gcAlloc->get().allocate(cbData0, fn);
@@ -65,15 +66,16 @@ public:
 	{
 		return _tls_gcAlloc->get().allocate(cb);
 	}
+#endif
 
 	static void* BOOST_MEMORY_CALL unmanaged_alloc(size_t cbData0, destructor_t fn)
 	{
 		return _tls_gcAlloc->get().unmanaged_alloc(cbData0, fn);
 	}
 
-	static void* BOOST_MEMORY_CALL manage(void* p, destructor_t fn)
+	static void BOOST_MEMORY_CALL manage(void* p, destructor_t fn)
 	{
-		return _tls_gcAlloc->get().manage(p, fn);
+		_tls_gcAlloc->get().manage(p, fn);
 	}
 
 	static void* BOOST_MEMORY_CALL unmanaged_alloc(size_t cb, int fnZero)
@@ -81,9 +83,8 @@ public:
 		return _tls_gcAlloc->get().allocate(cb);
 	}
 
-	static void* BOOST_MEMORY_CALL manage(void* p, int fnZero)
+	static void BOOST_MEMORY_CALL manage(void* p, int fnZero)
 	{
-		return p;
 	}
 
 	static void BOOST_MEMORY_CALL deallocate(void* pData, const size_t cbData)
@@ -103,24 +104,16 @@ public:
 	}
 
 	template <class Type>
-	static Type* BOOST_MEMORY_CALL newArray(size_t count, Type* zero)
-	{
-		return _tls_gcAlloc->get().newArray(count, zero);
-	}
-
-	template <class Type>
 	static void BOOST_MEMORY_CALL destroyArray(Type* array, size_t count)
 	{
 		return _tls_gcAlloc->get().destroyArray(array, count);
 	}
-
-	BOOST_MEMORY_FAKE_DBG_ALLOCATE_();
 };
 
 template <class Unused>
-tls_gc_alloc_t* tls_gc_alloc_imp<Unused>::_tls_gcAlloc = _boost_TlsGcAlloc();
+tls_gc_alloc_t* tls_gc_alloc_<Unused>::_tls_gcAlloc = _boost_TlsGcAlloc();
 
-typedef tls_gc_alloc_imp<int> tls_gc_alloc;
+typedef tls_gc_alloc_<int> tls_gc_alloc;
 
 // -------------------------------------------------------------------------
 // $Log: tls_gc_alloc.hpp,v $
@@ -128,3 +121,4 @@ typedef tls_gc_alloc_imp<int> tls_gc_alloc;
 NS_BOOST_MEMORY_END
 
 #endif /* BOOST_MEMORY_TLS_GC_ALLOC_HPP */
+

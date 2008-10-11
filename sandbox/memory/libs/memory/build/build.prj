@@ -25,5 +25,5 @@ LibDir
 Libraries	pthread	
 
 [Source]
-../src/*.cpp
+../src/block_pool.cpp
 

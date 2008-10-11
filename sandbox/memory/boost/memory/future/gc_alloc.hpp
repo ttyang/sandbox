@@ -20,6 +20,10 @@
 #include "scoped_alloc.hpp"
 #endif
 
+#ifndef BOOST_MEMORY_SIMPLE_ALLOC_HPP
+#include "simple_alloc.hpp"
+#endif
+
 #ifndef BOOST_MEMORY_STL_QUEUE_HPP
 #include "stl/queue.hpp" // NS_BOOST_MEMORY::ext_priority_queue
 #endif
@@ -29,6 +33,27 @@
 #endif
 
 NS_BOOST_MEMORY_BEGIN
+
+// -------------------------------------------------------------------------
+// Configuration
+
+NS_BOOST_MEMORY_POLICY_BEGIN
+
+class pool2 : public pool
+{
+private:
+	enum { Default = 0 };
+
+public:
+	enum { RecycleSizeMin = 256 };
+	enum { AllocSizeBig = Default };
+	enum { AllocSizeHuge = 1024*1024 };
+	enum { GCLimitSizeDef = 1024*1024 };
+
+	typedef simple_alloc<system_alloc> huge_gc_alloc;
+};
+
+NS_BOOST_MEMORY_POLICY_END
 
 // -------------------------------------------------------------------------
 // class gen_alloc
@@ -48,18 +73,18 @@ NS_BOOST_MEMORY_BEGIN
 #ifndef MIN
 #define MIN(a, b)		((a) < (b) ? (a) : (b))
 #endif
-
+		
 template <class PolicyT>
 class gen_alloc
 {
 private:
-	typedef typename PolicyT::allocator_type AllocT;
-	typedef typename PolicyT::huge_gc_allocator HugeGCAllocT;
+	typedef typename PolicyT::alloc_type AllocT;
+	typedef typename PolicyT::huge_gc_alloc HugeGCAllocT;
 	typedef unsigned HeaderSizeT;
 
 public:
-	enum { MemBlockSize = PolicyT::MemBlockSize };
-	enum { IsGCAllocator = TRUE };
+	enum { MemBlockSize = PolicyT::MemBlockBytes - AllocT::Padding };
+	enum { IsGCAllocator = 1 };
 
 	typedef AllocT allocator_type;
 	typedef HugeGCAllocT huge_gc_allocator;
@@ -228,17 +253,17 @@ private:
 	template <class Type>
 	static bool BOOST_MEMORY_CALL _isValidArray(Type* array, size_t count)
 	{
-		void* buf = destructor_traits<Type>::getArrayBuffer(array);
-		size_t cb = destructor_traits<Type>::getArrayAllocSize(count);
+		void* buf = array_factory<Type>::buffer(array);
+		size_t cb = array_factory<Type>::alloc_size(count);
 		if (buf == array)
 		{
 			return _isValid(buf, cb, 0);
 		}
 		else
 		{
-			size_t count1 = destructor_traits<Type>::getArraySize(array);
+			size_t count1 = array_factory<Type>::size(array);
 			BOOST_MEMORY_ASSERT(count1 == count);
-			bool fValid = _isValid(buf, cb, destructor_traits<Type>::destructArray);
+			bool fValid = _isValid(buf, cb, array_factory<Type>::destruct);
 			return count1 == count && fValid;
 		}
 	}
@@ -432,9 +457,10 @@ private:
 		{
 			if (cb >= BlockSize)
 			{
-				if (cb >= AllocSizeHuge)
-					return m_hugeAlloc.allocate(cbData);
-
+				if (cb >= AllocSizeHuge) {
+					m_hugeAlloc.allocate(cb);
+				}
+				
 				MemHeader* pAlloc = (MemHeader*)_newBlock(cb + HeaderSize);
 				pAlloc->dataMemHeader |= nodeAlloced;
 				return pAlloc + 1;
@@ -475,6 +501,7 @@ public:
 		return _do_allocate(cb, cbData);
 	}
 
+#if defined(BOOST_MEMORY_NO_STRICT_EXCEPTION_SEMANTICS)
 	void* BOOST_MEMORY_CALL allocate(const size_t cbData0, destructor_t fn)
 	{
 		const size_t cbData = sizeof(DestroyInfo) + cbData0;
@@ -494,6 +521,7 @@ public:
 	{
 		return allocate(cb);
 	}
+#endif
 
 	void* BOOST_MEMORY_CALL unmanaged_alloc(size_t cbData0, destructor_t fn)
 	{
@@ -507,7 +535,7 @@ public:
 		return pInfo + 1;
 	}
 
-	void* BOOST_MEMORY_CALL manage(void* p, destructor_t fn)
+	void BOOST_MEMORY_CALL manage(void* p, destructor_t fn)
 	{
 		MemHeaderEx* pNode = (MemHeaderEx*)p - 1;
 		BOOST_MEMORY_ASSERT(pNode->fnDestroy == fn);
@@ -516,7 +544,6 @@ public:
 		pNode->pPrev = m_destroyChain;
 		pNode->dataMemHeader |= nodeAllocedWithDestructor;
 		m_destroyChain = pNode;
-		return p;
 	}
 
 	void* BOOST_MEMORY_CALL unmanaged_alloc(size_t cb, int fnZero)
@@ -524,9 +551,8 @@ public:
 		return allocate(cb);
 	}
 
-	void* BOOST_MEMORY_CALL manage(void* p, int fnZero)
+	void BOOST_MEMORY_CALL manage(void* p, int fnZero)
 	{
-		return p;
 	}
 
 	__forceinline void BOOST_MEMORY_CALL deallocate(void* pData, const size_t cbData)
@@ -586,12 +612,10 @@ private:
 	template <class Type>
 	void BOOST_MEMORY_CALL _destroyArray(Type* array, size_t count, destructor_t)
 	{
-		typedef destructor_traits<Type> Traits;
+		const size_t cb = array_factory<Type>::alloc_size(count) + sizeof(MemHeaderEx);
 
-		const size_t cb = Traits::getArrayAllocSize(count) + sizeof(MemHeaderEx);
-
-		Traits::destructArrayN(array, count);
-		void* pData = Traits::getArrayBuffer(array);
+		destructor_traits<Type>::destructArray(array, count);
+		void* pData = array_factory<Type>::buffer(array);
 		MemHeaderEx* p = (MemHeaderEx*)pData - 1;
 		
 		p->freeNode();
@@ -622,13 +646,13 @@ public:
 	Type* BOOST_MEMORY_CALL newArray(size_t count, Type* zero)
 	{
 		const size_t cb = sizeof(MemHeader) + 
-			destructor_traits<Type>::HasDestructor * sizeof(DestroyInfo) +
-			destructor_traits<Type>::getArrayAllocSize(count);
+			destructor_traits<Type>::hasDestructor * sizeof(DestroyInfo) +
+			array_factory<Type>::alloc_size(count);
 
 		if (BOOST_MEMORY_ALIGN(cb, AlignSize) >= AllocSizeHuge)
 			return m_hugeAlloc.newArray(count, zero);
 
-		Type* array = (Type*)destructor_traits<Type>::allocArray(*this, count);
+		Type* array = (Type*)array_factory<Type>::allocate(*this, count);
 		return constructor_traits<Type>::constructArray(array, count);
 	}
 
@@ -638,7 +662,7 @@ public:
 		BOOST_MEMORY_ASSERT( _isValidArray(array, count) );
 
 		const size_t cb = sizeof(MemHeader) + 
-			destructor_traits<Type>::HasDestructor * sizeof(DestroyInfo) +
+			destructor_traits<Type>::hasDestructor * sizeof(DestroyInfo) +
 			destructor_traits<Type>::getArrayAllocSize(count);
 
 		if (BOOST_MEMORY_ALIGN(cb, AlignSize) >= AllocSizeHuge)
@@ -650,8 +674,6 @@ public:
 			_destroyArray(array, count, destructor_traits<Type>::destruct);
 		}
 	}
-
-	BOOST_MEMORY_FAKE_DBG_ALLOCATE_();
 };
 
 template <class PolicyT>
@@ -660,7 +682,7 @@ typename gen_alloc<PolicyT>::FreeMemHeader gen_alloc<PolicyT>::_null;
 // -------------------------------------------------------------------------
 // class gc_alloc
 
-typedef gen_alloc<NS_BOOST_MEMORY_POLICY::pool> gc_alloc;
+typedef gen_alloc<NS_BOOST_MEMORY_POLICY::pool2> gc_alloc;
 
 // -------------------------------------------------------------------------
 // $Log: gc_alloc.hpp,v $

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="boost-memory"
-	ProjectGUID="{E936205C-025A-B3AF-F648-B8515ABF7672}"
+	ProjectGUID="{D8CD4A70-DA98-5617-A10A-1F2E662215FE}"
 	>
 	<Platforms>
 		<Platform
@@ -292,14 +292,6 @@
 	<Files>
 		<File
 			RelativePath="..\src\block_pool.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\src\gc_alloc.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\src\system_pool.cpp"
 			>
 		</File>
 	</Files>
