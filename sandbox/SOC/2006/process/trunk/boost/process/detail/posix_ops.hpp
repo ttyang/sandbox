@@ -1,7 +1,7 @@
 //
 // Boost.Process
 //
-// Copyright (c) 2006 Julio M. Merino Vidal.
+// Copyright (c) 2006, 2008 Julio M. Merino Vidal.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
@@ -80,8 +80,13 @@ collection_to_posix_argv(const Arguments& args)
     typename Arguments::size_type i = 0;
     for (typename Arguments::const_iterator iter = args.begin();
          iter != args.end(); iter++) {
-        argv[i] = ::strdup((*iter).c_str());
-        i++;
+        const std::string& arg = *iter;
+
+        char* cstr = new char[arg.length() + 1];
+        std::strncpy(cstr, arg.c_str(), arg.length());
+        cstr[arg.length()] = '\0';
+
+        argv[i++] = cstr;
     }
     argv[nargs] = NULL;
 
