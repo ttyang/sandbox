@@ -38,11 +38,11 @@ get_helpers_path(void)
     boost::filesystem::path hp = boost::filesystem::initial_path();
 
 #if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
-    hp /= "./bin/msvc/debug/link-static/runtime-link-static/helpers.exe";
+    hp /= "./bin/msvc-8.0/debug/link-static/runtime-link-static/helpers.exe";
 #elif defined(__APPLE__)
-    hp /= "./bin/darwin/debug/link-static/runtime-link-static/helpers";
+    hp /= "./bin/darwin-4.0.1/debug/link-static/runtime-link-static/helpers";
 #else
-    hp /= "./bin/gcc/debug/link-static/runtime-link-static/helpers";
+    hp /= "./bin/gcc-4.3.0/debug/link-static/runtime-link-static/helpers";
 #endif
 
     BOOST_REQUIRE(boost::filesystem::exists(hp));
