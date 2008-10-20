@@ -27,6 +27,7 @@ extern "C" {
 #   include <sys/wait.h>
 }
 #   include <cerrno>
+#   include <boost/process/detail/posix_sigchld.hpp>
 #   include <boost/process/exceptions.hpp>
 #   include <boost/throw_exception.hpp>
 #elif defined(BOOST_PROCESS_WIN32_API)
@@ -228,6 +229,7 @@ child::wait(void)
         boost::throw_exception
             (system_error("boost::process::child::wait",
                           "waitpid(2) failed", errno));
+    detail::the_posix_sigchld_programmer.child_awaited();
     return status(s);
 #elif defined(BOOST_PROCESS_WIN32_API)
     DWORD code;
