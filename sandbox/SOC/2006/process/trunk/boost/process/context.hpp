@@ -1,7 +1,7 @@
 //
 // Boost.Process
 //
-// Copyright (c) 2006 Julio M. Merino Vidal.
+// Copyright (c) 2006, 2008 Julio M. Merino Vidal.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
@@ -24,6 +24,8 @@
 
 #if defined(BOOST_PROCESS_POSIX_API)
 #   include <errno.h>
+#
+#   include <boost/process/detail/posix_ops.hpp>
 #elif defined(BOOST_PROCESS_WIN32_API)
 #   include <tchar.h>
 #   include <windows.h>
@@ -82,13 +84,7 @@ inline
 basic_work_directory_context< Path >::basic_work_directory_context(void)
 {
 #if defined(BOOST_PROCESS_POSIX_API)
-    const char* buf = ::getcwd(NULL, 0);
-    if (buf == NULL)
-        boost::throw_exception
-            (system_error
-             ("boost::process::context::context",
-              "getcwd(2) failed", errno));
-    m_work_directory = buf;
+    m_work_directory = detail::get_work_directory< Path >();
 #elif defined(BOOST_PROCESS_WIN32_API)
     DWORD length = ::GetCurrentDirectory(0, NULL);
     TCHAR* buf = new TCHAR[length * sizeof(TCHAR)];
