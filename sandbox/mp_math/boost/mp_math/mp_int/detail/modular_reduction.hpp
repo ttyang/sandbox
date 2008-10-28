@@ -3,6 +3,14 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+#ifndef BOOST_MP_MATH_MP_INT_DETAIL_MODULAR_REDUCTION_HPP
+#define BOOST_MP_MATH_MP_INT_DETAIL_MODULAR_REDUCTION_HPP
+
+#include <boost/mp_math/mp_int/mp_int_fwd.hpp>
+
+namespace boost {
+namespace mp_math {
+namespace detail {
 
 // reduces x mod m, assumes 0 < x < m**2, mu is precomputed.
 // From HAC pp.604 Algorithm 14.42
@@ -345,4 +353,10 @@ top:
   }
 }
 
+
+} // namespace detail
+} // namespace mp_math
+} // namespace boost
+
+#endif
 
