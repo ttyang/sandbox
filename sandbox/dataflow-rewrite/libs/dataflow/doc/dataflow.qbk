@@ -14,7 +14,7 @@
 
 [template concepts[] [link boost_dataflow.generic.concepts concepts]]
 
-[template Framework[] [link boost_dataflow.generic.concepts.general.tag [^Framework]]]
+[template Framework[] [link boost_dataflow.generic.concepts.general.framework [^Framework]]]
 [template FrameworkEntityTraits[] [link boost_dataflow.generic.concepts.general.entity [^FrameworkEntityTraits]]]
 [template FrameworkEntity[] [link boost_dataflow.generic.concepts.general.entity [^FrameworkEntity]]]
 
