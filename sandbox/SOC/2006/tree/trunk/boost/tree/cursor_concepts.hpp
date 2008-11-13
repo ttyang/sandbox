@@ -54,20 +54,6 @@ private:
     X a;
 };
 
-template <class X>
-struct OutputCursor
-{
-public:
-    BOOST_CONCEPT_USAGE(OutputCursor)
-    {
-        /// TODO
-    }
-    
-private:
-    X o;
-};
-
-
 } // namespace tree
 } // namespace boost
 
