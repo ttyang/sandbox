@@ -21,10 +21,14 @@ template <class X>
 struct DescendingCursor
 {
 public:
+    typedef typename cursor_value<X>::type value_type;
+
     BOOST_CONCEPT_USAGE(DescendingCursor)
     {
         d.to_begin();
+        d.begin();
         d.to_end();
+        d.end();
     }
     
 private:
@@ -48,10 +52,18 @@ public:
     BOOST_CONCEPT_USAGE(AscendingCursor)
     {
         a.to_parent();
+        a.parent();
     }
     
 private:
     X a;
+};
+
+template <class T>
+class ascending_cursor_archetype
+{
+public:
+    void to_parent() {}
 };
 
 } // namespace tree
