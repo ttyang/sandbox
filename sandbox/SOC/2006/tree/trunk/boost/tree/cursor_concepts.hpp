@@ -13,17 +13,22 @@
 #define BOOST_TREE_CURSOR_CONCEPTS_HPP
 
 #include <boost/concept_check.hpp>
+#include <boost/iterator/iterator_concepts.hpp>
 
-namespace boost {
-namespace tree {
+namespace boost_concepts {
 
+// TODO: Adapt concept requirements for algorithms according to archetypes!
+
+
+// Even split up into two types: one with only to_begin() and to_end(), and
+// one with also begin() and end() ?
+// I think we're lacking some requirements imposed on the return types of these
+// member functions, but that might overlap with iterator requirements. 
 template <class X>
-struct DescendingCursor
+struct Descendor
 {
 public:
-    typedef typename cursor_value<X>::type value_type;
-
-    BOOST_CONCEPT_USAGE(DescendingCursor)
+    BOOST_CONCEPT_USAGE(Descendor)
     {
         d.to_begin();
         d.begin();
@@ -36,12 +41,10 @@ private:
     
 };
 
-template <class T>
-class descending_cursor_archetype
+template <class X>
+struct DescendingCursor
+  : Descendor<X>, LvalueIterator<X>
 {
-public:
-    void to_begin() {}
-    void to_end() {}
 };
 
 // Derive from DescendingCursor or not?
@@ -59,14 +62,6 @@ private:
     X a;
 };
 
-template <class T>
-class ascending_cursor_archetype
-{
-public:
-    void to_parent() {}
-};
-
-} // namespace tree
-} // namespace boost
+} // namespace boost_concepts
 
 #endif // BOOST_TREE_CURSOR_CONCEPTS_HPP

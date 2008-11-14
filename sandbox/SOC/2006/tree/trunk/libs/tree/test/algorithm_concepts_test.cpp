@@ -1,0 +1,39 @@
+//  Copyright (c) 2006-2008, Bernhard Reiter
+//
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+
+#include <boost/tree/algorithm.hpp>
+
+#include <boost/iterator/iterator_categories.hpp>
+
+#include <boost/tree/cursor_archetypes.hpp>
+#include <boost/concept_archetype.hpp>
+
+#define BOOST_TEST_MODULE algorithm_concepts_algorithm test
+#include <boost/test/included/unit_test.hpp>
+#include <boost/test/test_case_template.hpp>
+
+#include "helpers.hpp"
+
+using namespace boost::tree;
+
+BOOST_AUTO_TEST_SUITE( algorithm_concepts_covering_test )
+
+// Each order probably requires different concepts (eg inorder: multiway)! 
+BOOST_AUTO_TEST_CASE_TEMPLATE( test_foreach, Order, orders )
+{
+    boost::detail::dummy_constructor dummy_cons;
+    cursor_archetype< boost::null_archetype<>
+                      , boost::iterator_archetypes::readable_lvalue_iterator_t // Really lvalue?
+                      , boost::forward_traversal_tag
+                      , boost::forward_traversal_tag
+                      > c;
+    boost::unary_function_archetype< boost::null_archetype<> , boost::null_archetype<> > 
+      f(dummy_cons);
+    
+    boost::tree::for_each(Order(), c, f);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
