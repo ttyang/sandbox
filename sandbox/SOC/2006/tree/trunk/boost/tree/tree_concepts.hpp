@@ -14,28 +14,28 @@
 
 #include <boost/concept_check.hpp>
 
-namespace boost {
-namespace tree {
+namespace boost_concepts {
 
 template <class X>
 struct Tree
 {
 public:
-    typedef typename Tree::cursor cursor;
-    typedef typename Tree::const_cursor const_cursor;
+    typedef typename X::cursor cursor;
+    typedef typename X::const_cursor const_cursor;
 
     BOOST_CONCEPT_USAGE(Tree)
     {
-        t.root();
+        c = t.root();
+        cc = t.root();
     }
     
 private:
     X t;
+    cursor c;
+    const_cursor cc;
     
 };
 
-
-} // namespace tree
-} // namespace boost
+} // namespace boost_concepts
 
 #endif // BOOST_TREE_TREE_CONCEPTS_HPP
