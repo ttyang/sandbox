@@ -4,9 +4,7 @@
 
 #include <set>
 
-#include <boost/none.hpp>
 #include <boost/graphs/label.hpp>
-#include <boost/graphs/adjacency_list/vertex_store.hpp>
 
 namespace boost { namespace graphs { namespace adjacency_list {
 
@@ -20,7 +18,7 @@ template <
     template <typename> class Alloc = std::allocator>
 struct vertex_set
 {
-    typedef unused key_type;
+    typedef void key_type;
 
     typedef typename descriptor_traits<
         std::set<int, Compare<int>, Alloc<int>>
