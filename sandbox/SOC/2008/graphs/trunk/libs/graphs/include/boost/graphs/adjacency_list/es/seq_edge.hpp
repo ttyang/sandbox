@@ -33,9 +33,30 @@ label(std::pair<std::pair<VertexDesc, VertexDesc>, EdgeLabel> const& edge)
 template <typename VertexDesc, typename EdgeLabel>
 struct edge_traits<std::pair<std::pair<VertexDesc, VertexDesc>, EdgeLabel>>
 {
-    typedef std::pair<VertexDesc, VertexDesc> end_pair;
+    typedef VertexDesc vertex_descriptor;
+    typedef std::pair<VertexDesc, VertexDesc> edge_ends;
 };
 
 } } /* namespace boost::graphs */
+
+template <typename VertexDesc, typename EdgeLabel>
+inline EdgeLabel const&
+ends(std::pair<std::pair<VertexDesc, VertexDesc>, EdgeLabel> const& edge)
+{ return edge.first; }
+
+template <typename VertexDesc, typename EdgeLabel>
+inline VertexDesc
+first(std::pair<std::pair<VertexDesc, VertexDesc> const, EdgeLabel> const& edge)
+{ return edge.first.first; }
+
+template <typename VertexDesc, typename EdgeLabel>
+inline VertexDesc
+second(std::pair<std::pair<VertexDesc, VertexDesc> const, EdgeLabel> const& edge)
+{ return edge.first.second; }
+
+template <typename VertexDesc, typename EdgeLabel>
+inline VertexDesc
+oppposite(std::pair<std::pair<VertexDesc, VertexDesc> const, EdgeLabel> const& edge, VertexDesc which)
+{ return which == first(edge) ? second(edge) : first(edge); }
 
 #endif
