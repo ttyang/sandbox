@@ -2,15 +2,15 @@
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 >
-	<xsl:param name="ontology_src" select="'../../ontology.xml'"/>
+	<xsl:param name="ontology_src" select="'../ontology.xml'"/>
 	<!-- the output method -->
 	<xsl:output method="html" encoding="utf-8"/>
 
 	<!-- include the root node template -->
-	<xsl:include href="../../xslt/document_root.xsl"/>
+	<xsl:include href="../xslt/document_root.xsl"/>
 
 	<!-- include the template that makes the concept graph -->
-	<xsl:include href="../../xslt/make_graph.xsl"/>
+	<xsl:include href="../xslt/make_graph.xsl"/>
 
 
 	<xsl:template name="make-list-of-already-done">
@@ -174,12 +174,5 @@
 		</xsl:call-template>
 
 	</xsl:template>
-
-	<!-- the template for the concept index node -->
-	<xsl:template match="/concept_index">
-		<div class="table">
-		</div>
-	</xsl:template>
-
 
 </xsl:stylesheet>
