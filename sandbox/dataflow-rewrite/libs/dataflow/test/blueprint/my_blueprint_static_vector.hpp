@@ -1,19 +1,12 @@
 /*=================================---------------------------------------------
-    Copyright 2007,2008 Stjepan Rajko
+    Copyright 2008 Stjepan Rajko
   
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt)
 -----------------------------------------------===============================*/
 
-#ifndef BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_OBJECT_FWD_HPP
-#define BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_OBJECT_FWD_HPP
 
-namespace boost { namespace dataflow { namespace blueprint {
+#include "my_blueprint_framework.hpp"
+#include "../generic/my_static_vector.hpp"
 
-template<typename BlueprintFramework, typename Enable=void>
-class framework_object;
-
-} } }
-
-#endif

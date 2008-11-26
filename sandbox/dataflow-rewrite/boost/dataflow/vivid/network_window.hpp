@@ -69,7 +69,7 @@ template<typename BlueprintFramework>
 class network_window
 {
     typedef blueprint::framework_entity<BlueprintFramework> framework_entity_type;
-    typedef blueprint::framework_object<BlueprintFramework> framework_object_type;
+    typedef blueprint::framework_context<BlueprintFramework> framework_context_type;
     typedef entity_widget<BlueprintFramework> entity_widget_type;
     typedef blueprint::port<BlueprintFramework> port_type;
 public:
@@ -101,8 +101,8 @@ public:
         widget->on_click.connect(boost::bind(&network_window::clicked, this, widget));
     }
     
-    framework_object_type &framework_object()
-    {   return m_framework_object; }
+    framework_context_type &framework_context()
+    {   return m_framework_context; }
     
     template<typename Operation>
     void add_operation(const Operation &operation)
@@ -135,7 +135,7 @@ private:
         }
     }
 
-    framework_object_type m_framework_object;
+    framework_context_type m_framework_context;
     guigl::window m_window;
     guigl::widget::label *m_status;
     network_widget<BlueprintFramework> *m_network_widget;

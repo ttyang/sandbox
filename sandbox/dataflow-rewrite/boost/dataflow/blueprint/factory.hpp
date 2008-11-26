@@ -52,7 +52,7 @@ class factory
 {
     typedef typename BlueprintFramework::framework_type framework_type;
     typedef framework_entity<BlueprintFramework> entity_type;
-    typedef boost::function<entity_type * (framework_object<BlueprintFramework> &)> function_type;
+    typedef boost::function<entity_type * (framework_context<BlueprintFramework> &)> function_type;
     typedef std::map<std::string, function_type> map_type;
 public:
     typedef key_iterator<map_type> iterator;

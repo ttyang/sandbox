@@ -64,7 +64,7 @@ private:
         if(m_network)
         {
             std::auto_ptr<framework_entity_type> entity(
-                m_factory[key](m_network->framework_object()));
+                m_factory[key](m_network->framework_context()));
             m_network->add_entity(entity);
         }
     }

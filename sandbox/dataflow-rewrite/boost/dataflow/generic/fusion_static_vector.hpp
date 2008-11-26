@@ -11,7 +11,7 @@
 #define BOOST__DATAFLOW__GENERIC__FUSION_STATIC_VECTOR_HPP
 
 #include <boost/dataflow/detail/transform_remove_reference.hpp>
-#include <boost/dataflow/support/port_vector.hpp>
+#include <boost/dataflow/generic/static_vector.hpp>
 
 #include <boost/fusion/container/vector.hpp>
 #include <boost/fusion/include/adapted.hpp>
@@ -22,17 +22,24 @@
 
 namespace boost { namespace dataflow {
 
+template<typename EntitySequence, typename Framework>
+struct fusion_static_vector_traits
+    : public traits<Framework>
+{
+    typedef EntitySequence entities;
+};
+
 template<typename T, typename Enable=void>
-struct is_fusion_port_vector_traits
+struct is_fusion_static_vector_traits
     : public mpl::false_ {};
 
 template<typename T>
-struct is_fusion_port_vector_traits<
+struct is_fusion_static_vector_traits<
     T,
     typename enable_if<
         mpl::and_<
             is_traits<T>,
-            fusion::traits::is_sequence<typename T::fusion_ports>
+            fusion::traits::is_sequence<typename T::entities>
         > >::type >
     : public mpl::true_
 {};
@@ -43,16 +50,16 @@ namespace extension {
     template<typename Traits>
     struct get_port_impl<
         Traits,
-        typename enable_if<is_fusion_port_vector_traits<Traits> >::type >
+        typename enable_if<is_fusion_static_vector_traits<Traits> >::type >
     {
         template<typename FArgs>
         struct result;
         
         template<typename F, typename Entity, typename N>
-        struct result<F(Entity &, N)>
+        struct result<F(Entity, N)>
         {
             typedef typename fusion::result_of::value_at<
-                typename Traits::fusion_ports,
+                typename Traits::entities,
                 N>::type type;
         };
         
