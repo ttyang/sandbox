@@ -7,10 +7,9 @@ namespace boost { namespace graphs {
 // Specializations to support labels for undirected edges for edge vectors,
 // and lists.
 
-// TODO: I'm a little worried about the possibility of type collisions with
-// directed graphs. It would be nice if I could specialize on an extra piece
-// of information here. Also, the difference between this and associative
-// specializations is the const-ness of the ends.
+// TODO: I'm a little worried about the possibility of type collisions. I may
+// be required to introduce a tagging system to label and edge traits to help
+// distinguish the intent of the specialization.
 
 template <typename VertexDesc, typename EdgeLabel>
 struct label_traits<std::pair<std::pair<VertexDesc, VertexDesc>, EdgeLabel>>
