@@ -19,9 +19,9 @@
 
 BOOST_AUTO_TEST_CASE( test )
 {
-    tuple x(0.5, 2);
+    my_static_vector x(0.5, 2);
     
-    typedef df::result_of::entities<tuple>::type result_of_entities;
+    typedef df::result_of::entities<my_static_vector>::type result_of_entities;
     
     BOOST_CHECK((boost::is_same<result_of_entities, ::boost::fusion::vector2<float,int> & >::value));
     
