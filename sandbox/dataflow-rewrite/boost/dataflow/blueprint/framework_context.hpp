@@ -6,8 +6,8 @@
     http://www.boost.org/LICENSE_1_0.txt)
 -----------------------------------------------===============================*/
 
-#ifndef BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_OBJECT_HPP
-#define BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_OBJECT_HPP
+#ifndef BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_CONTEXT_HPP
+#define BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_CONTEXT_HPP
 
 #include <map>
 #include <typeinfo>
@@ -136,4 +136,4 @@ private:
 } } } // namespace boost::dataflow::blueprint
 
 
-#endif // BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_OBJECT_HPP
+#endif // BOOST__DATAFLOW__BLUEPRINT__FRAMEWORK_CONTEXT_HPP
