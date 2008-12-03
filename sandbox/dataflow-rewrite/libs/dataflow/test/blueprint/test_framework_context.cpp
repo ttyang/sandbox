@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( test )
 
 BOOST_AUTO_TEST_CASE( test_framework_with_object ) 
 {
-    typedef df::blueprint::framework<my_framework_with_object> my_blueprint_framework_with_object;
+    typedef df::blueprint::framework<my_framework_with_context> my_blueprint_framework_with_object;
     
     df::blueprint::framework_context<my_blueprint_framework_with_object> object;
 
