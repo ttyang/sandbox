@@ -14,6 +14,7 @@
 #include <boost/dataflow/utility/forced_sequence.hpp>
 //#include <boost/fusion/container/lazy_sequence.hpp>
 #include <boost/fusion/include/as_vector.hpp>
+#include <boost/fusion/include/for_each.hpp>
 #include <boost/fusion/include/size.hpp>
 #include <boost/fusion/include/transform.hpp>
 #include <boost/mpl/map.hpp>
@@ -78,6 +79,19 @@ namespace detail {
         
         mutable result_type m_component;
     };
+    
+    struct set_port_context
+    {
+        set_port_context(component &c)
+            : c(&c)
+        {}
+        
+        void operator()(port_base &p) const
+        {
+            c->claim_port(p);
+        }
+        component *c;
+    };
 
 }
 
@@ -95,6 +109,12 @@ public:
         : component(n)
         , m_ports(fusion::transform(mpl::range_c<int,0,fusion::result_of::size<ports_type>::type::value>(), detail::component_f(*this)))
     {}
+    io_component(const io_component &other)
+        : component(static_cast<const component &>(other))
+        , m_ports(other.m_ports)
+    {
+        fusion::for_each(m_ports, set_port_context(*this)); 
+    }
     template<int Index>
     typename fusion::result_of::at_c<ports_type, Index>::type port()
     {   return fusion::at_c<Index>(m_ports); }
@@ -102,6 +122,7 @@ public:
     {   return m_ports; }
 protected:
     ports_type m_ports;
+    friend class detail::set_port_context;
 };
 
 }
