@@ -5,16 +5,10 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/tree/binary_tree.hpp>
-#include <boost/tree/iterator.hpp>
-#include <boost/tree/algorithm.hpp>
+//#include <boost/tree/iterator.hpp>
+//#include <boost/tree/algorithm.hpp>
 
 #include <boost/tree/insert_cursor.hpp>
-
-//#include <boost/lambda/bind.hpp>
-
-//#include <list>
-//#include <algorithm>
-//#include <iterator>
 
 #define BOOST_TEST_MODULE cursor_algorithm test
 #include <boost/test/included/unit_test.hpp>
@@ -29,6 +23,10 @@ using namespace boost::tree;
 
 BOOST_FIXTURE_TEST_SUITE(insert_cursor_test, test_binary_tree_fixture<int>)
 
+// Maybe suffix this by "_preorder", and add
+// emulated inorder and postorder versions, so
+// we can check whether insert_cursor works in all cases
+// without relying on algorithms. 
 template <class Cursor>
 void fill_subtree_with_data(Cursor cur)
 {
