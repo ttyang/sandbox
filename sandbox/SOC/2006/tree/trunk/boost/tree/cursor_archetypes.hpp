@@ -13,6 +13,7 @@
 #define BOOST_TREE_CURSOR_ARCHETYPES_HPP
 
 #include <boost/iterator/iterator_archetypes.hpp>
+#include <boost/tree/cursor.hpp>
 
 namespace boost {
 namespace tree {
@@ -20,7 +21,7 @@ namespace tree {
 class descendor_archetype
 {
 public:
-    typedef forward_traversal_tag vertical_traversal;
+    typedef descending_vertical_traversal_tag vertical_traversal;
     
     descendor_archetype& to_begin() { return *this; }
     descendor_archetype& to_end() { return *this; }
@@ -69,7 +70,7 @@ template <
 class cursor_archetype<Value
                      , AccessCategory
                      , HorizontalTraversal
-                     , forward_traversal_tag>
+                     , descending_vertical_traversal_tag>
 : public iterator_archetype<Value, AccessCategory, HorizontalTraversal>
 //, public descendor_archetype
 {
@@ -77,9 +78,9 @@ private:
     typedef class cursor_archetype<Value
                      , AccessCategory
                      , HorizontalTraversal
-                     , forward_traversal_tag> self_type;
+                     , descending_vertical_traversal_tag> self_type;
 public:
-    typedef forward_traversal_tag vertical_traversal;
+    typedef descending_vertical_traversal_tag vertical_traversal;
     
     self_type& to_begin() { return *this; }
     self_type& to_end() { return *this; }
@@ -98,7 +99,7 @@ template <
 class cursor_archetype<Value
                      , AccessCategory
                      , HorizontalTraversal
-                     , bidirectional_traversal_tag>
+                     , ascending_vertical_traversal_tag>
 : public iterator_archetype<Value, AccessCategory, HorizontalTraversal>
 //, public ascendor_archetype
 {
@@ -106,9 +107,9 @@ private:
     typedef class cursor_archetype<Value
                      , AccessCategory
                      , HorizontalTraversal
-                     , bidirectional_traversal_tag> self_type;
+                     , ascending_vertical_traversal_tag> self_type;
 public:
-    typedef bidirectional_traversal_tag vertical_traversal;
+    typedef ascending_vertical_traversal_tag vertical_traversal;
     
     self_type& to_parent() { return *this; }
 

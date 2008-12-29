@@ -21,7 +21,7 @@ template <
     class OutputIterator
 //  , class Value                         
 //  , class HorizontalTraversalOrCategory 
-//  , class VerticalTraversalOrCategory
+//  , class VerticalTraversal
 //  , class Reference                     
 //  , class Difference                
 //  , class Size                          
@@ -44,7 +44,7 @@ template <
     class OutputIterator
 //  , class Value                         = use_default
 //  , class HorizontalTraversalOrCategory = use_default
-//  , class VerticalTraversalOrCategory   = bidirectional_traversal_tag
+//  , class VerticalTraversal   = bidirectional_traversal_tag
 //  , class Reference                     = use_default
 //  , class Difference                    = use_default
 //  , class Size                          = use_default
@@ -68,7 +68,7 @@ public:
     typedef std::size_t size_type;
     typedef output_iterator_cursor<OutputIterator> const_cursor;
     typedef boost::forward_traversal_tag horizontal_traversal;
-    typedef boost::bidirectional_traversal_tag vertical_traversal;
+    typedef boost::tree::ascending_vertical_traversal_tag vertical_traversal;
     typedef boost::forward_traversal_tag iterator_category;
     typedef std::ptrdiff_t difference_type;
     typedef value_type* pointer;
