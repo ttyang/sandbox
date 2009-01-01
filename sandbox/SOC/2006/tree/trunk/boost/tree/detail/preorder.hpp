@@ -1,0 +1,125 @@
+//  Copyright (c) 2006-2009, Bernhard Reiter
+//
+//  Distributed under the Boost Software License, Version 1.0.
+//  (See accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+
+/**
+ * @file recursive_preorder_algorithms.hpp
+ * Recursive subtree preorder traversal algorithms
+ */
+
+#ifndef BOOST_TREE_DETAIL_RECURSIVE_PREORDER_ALGORITHMS_HPP
+#define BOOST_TREE_DETAIL_RECURSIVE_PREORDER_ALGORITHMS_HPP
+
+#include <boost/tree/cursor_concepts.hpp>
+
+#include <boost/concept/requires.hpp>
+
+namespace boost {
+namespace tree {
+namespace detail {
+
+using namespace boost_concepts;
+
+//#ifdef BOOST_RECURSIVE_ORDER_ALGORITHMS
+
+/**
+ * @if maint
+ * Helper function for for_each, using a reference parameter in order to
+ * require fewer copy and assignment operations.
+ * @endif
+ */
+template <class Cursor, class Op>
+BOOST_CONCEPT_REQUIRES(
+    ((Descendor<Cursor>)),
+    (void)) // return type
+for_each_recursive(preorder, Cursor s, Op& f)
+{
+    Cursor t = s.end();
+    for (s.to_begin(); s != t; ++s) {
+        f(*s);
+        if (!s.empty())
+            for_each_recursive(preorder(), s, f);
+    }
+    
+    // Multiway cursor
+    if (!s.empty())
+        for_each_recursive(preorder(), s, f);
+}
+
+/**
+ * @brief    Apply a function to every element of a subtree, in preorder.
+ * @param s    A cursor.
+ * @param f    A unary function object.
+ * @return    @p f
+ *
+ * Applies the function object @p f to each element in the @p subtree, using  
+ * preorder. @p f must not modify the order of the sequence.
+ * If @p f has a return value it is ignored.
+ */
+template <class Cursor, class Op>
+BOOST_CONCEPT_REQUIRES(
+    ((Descendor<Cursor>)),
+    (Op)) // return type
+for_each(preorder, Cursor s, Op f, descending_vertical_traversal_tag)
+{
+    Cursor t = s.end();
+    for (s.to_begin(); s != t; ++s) {
+        f(*s);
+        if (!s.empty())
+            for_each_recursive(preorder(), s, f);
+    }
+    
+    // Multiway cursor
+    if (!s.empty())
+        for_each_recursive(preorder(), s, f);
+    
+    return f;
+}
+
+//#endif //BOOST_RECURSIVE_ORDER_ALGORITHMS
+
+/**
+ * @brief     Performs an operation on a subtree, by traversing it in preorder.
+ * @param s  An input cursor.
+ * @param t  An output cursor.
+ * @param op A unary operation.
+ * @result     A cursor past t's preorder end, after the transforming has 
+ *              finished.
+ * 
+ * By traversing the input subtree s in preorder, apply the operation op 
+ * to each element and write the result to the output subtree t.
+ * 
+ * op must not change its argument.
+ */
+template <class InCursor, class OutCursor, class Op>
+BOOST_CONCEPT_REQUIRES(
+    ((Descendor<InCursor>))
+    ((Descendor<OutCursor>)),
+    (OutCursor)) // return type
+transform(preorder, InCursor s, OutCursor t, Op op, descending_vertical_traversal_tag)
+{
+    InCursor r = s.end();
+    s.to_begin();
+    t.to_begin();
+    for (; s != r; ++s, ++t) {
+        *t = op(*s);
+        if (!s.empty())
+            transform(preorder(), s, t, op, descending_vertical_traversal_tag());
+    }
+
+    // Multiway cursor
+    if (!s.empty())
+        transform(preorder(), s, t, op, descending_vertical_traversal_tag());
+        
+    return t;
+}
+
+//#endif //BOOST_RECURSIVE_ORDER_ALGORITHMS
+
+} // namespace detail
+} // namespace tree
+} // namespace boost
+
+#endif // BOOST_TREE_DETAIL_RECURSIVE_PREORDER_ALGORITHMS_HPP
