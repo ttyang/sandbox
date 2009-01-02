@@ -4,21 +4,21 @@
 //  (See accompanying file LICENSE_1_0.txt or copy at
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-/** @file   iterative.hpp
+/** @file   iterative_algorithms.hpp
  * 
  * Some iterative algorithm versions that are identical for all *order cursors 
  * (as we are just calling the appropriate traversal function that are 
  * defined in the respective *order.hpp files).
  */
 
-#ifndef BOOST_TREE_DETAIL_ITERATIVE_HPP
-#define BOOST_TREE_DETAIL_ITERATIVE_HPP
+#ifndef BOOST_TREE_DETAIL_ITERATIVE_ALGORITHMS_HPP
+#define BOOST_TREE_DETAIL_ITERATIVE_ALGORITHMS_HPP
 
 #include <boost/tree/coupling_cursor.hpp>
 
-#include <boost/tree/detail/algorithm/preorder.hpp>
-#include <boost/tree/detail/algorithm/inorder.hpp>
-#include <boost/tree/detail/algorithm/postorder.hpp>
+#include <boost/tree/preorder_algorithms.hpp>
+#include <boost/tree/inorder_algorithms.hpp>
+#include <boost/tree/postorder_algorithms.hpp>
 
 #include <boost/tree/cursor_concepts.hpp>
 
@@ -26,6 +26,7 @@
 
 namespace boost {
 namespace tree {
+namespace detail {
 
 template <class Order, class Cursor, class Op>
 BOOST_CONCEPT_REQUIRES(
@@ -70,7 +71,8 @@ transform (Order, InCursor is, OutCursor t, Op op
     return cc.out();
 }
 
+} // namespace detail
 } // namespace tree
 } // namespace boost
 
-#endif //BOOST_TREE_DETAIL_ITERATIVE_HPP
+#endif //BOOST_TREE_DETAIL_ITERATIVE_ALGORITHMS_HPP
