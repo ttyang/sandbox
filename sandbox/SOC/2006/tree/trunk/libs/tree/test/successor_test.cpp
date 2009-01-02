@@ -17,7 +17,9 @@
 
 using namespace boost::tree;
 
-BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_with_list_fixture<int>)
+BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_fixture<int>)
+
+// TODO: iterate over all elements.
 
 BOOST_AUTO_TEST_CASE( test_successor_preorder )
 {
@@ -38,6 +40,19 @@ BOOST_AUTO_TEST_CASE( test_successor_postorder )
     fake_binary_tree<int>::root_tracking_cursor c = fbt1.root_tracking_root().begin();
     boost::tree::successor(postorder(), c);
     BOOST_CHECK(c == fbt1.root_tracking_root());
+}
+
+BOOST_AUTO_TEST_CASE( test_successor_ascending )
+{
+    fake_binary_tree<int>::ascending_cursor c = fbt1.ascending_root();
+    c.to_begin().to_end().to_begin().to_begin();
+    BOOST_CHECK_EQUAL(*c, 4);
+    boost::tree::successor(ascending(), c);
+    BOOST_CHECK_EQUAL(*c, 6);
+    boost::tree::successor(ascending(), c);
+    BOOST_CHECK_EQUAL(*c, 3);
+    boost::tree::successor(ascending(), c);
+    BOOST_CHECK_EQUAL(*c, 8);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

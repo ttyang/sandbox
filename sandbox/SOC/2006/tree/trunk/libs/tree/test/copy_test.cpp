@@ -17,7 +17,8 @@
 
 using namespace boost::tree;
 
-BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_with_list_fixture<int>)
+BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test_with_fixture
+                       , fake_binary_tree_with_list_fixture<int>)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE( test_copy_descending, Order, orders)
 {
@@ -30,6 +31,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE( test_copy_ascending, Order, orders)
     boost::tree::copy(Order(), fbt1.ascending_root(), o);
     test_traversal(Order(), l.begin(), l.end());
 }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_fixture<int>)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE( test_copy_trees_descending, Order, orders)
 {
