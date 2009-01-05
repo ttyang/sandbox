@@ -32,7 +32,7 @@ using namespace boost_concepts;
  */
 template <class Cursor, class Op>
 BOOST_CONCEPT_REQUIRES(
-    ((Descendor<Cursor>)),
+    ((DescendingCursor<Cursor>)),
     (void)) // return type
 for_each_recursive(postorder, Cursor s, Op& f)
 {
@@ -60,7 +60,7 @@ for_each_recursive(postorder, Cursor s, Op& f)
  */
 template <class Cursor, class Op>
 BOOST_CONCEPT_REQUIRES(
-    ((Descendor<Cursor>)),
+    ((DescendingCursor<Cursor>)),
     (Op)) // return type
 for_each(postorder, Cursor s, Op f, descending_vertical_traversal_tag)
 {
@@ -93,8 +93,8 @@ for_each(postorder, Cursor s, Op f, descending_vertical_traversal_tag)
  */
 template <class InCursor, class OutCursor, class Op>
 BOOST_CONCEPT_REQUIRES(
-    ((Descendor<InCursor>))
-    ((Descendor<OutCursor>)),
+    ((DescendingCursor<InCursor>))
+    ((DescendingCursor<OutCursor>)),
     (OutCursor)) // return type
 transform(postorder, InCursor s, OutCursor t, Op op, descending_vertical_traversal_tag)
 {
