@@ -21,22 +21,80 @@ BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_with_list_fixt
 
 BOOST_AUTO_TEST_CASE( test_predecessor_preorder )
 {
-    fake_binary_tree<int>::root_tracking_cursor c = fbt1.root_tracking_root().begin().begin();
+    fake_binary_tree<int>::root_tracking_cursor c
+    = fbt1.root_tracking_root().end().end().begin().begin().end().begin();
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 11);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 13);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 14);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 10);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 7);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 4);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 6);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 1);
+    boost::tree::predecessor(preorder(), c);
+    BOOST_CHECK_EQUAL(*c, 3);
     boost::tree::predecessor(preorder(), c);
     BOOST_CHECK_EQUAL(*c, 8);
 }
 
 BOOST_AUTO_TEST_CASE( test_predecessor_inorder )
 {
-    fake_binary_tree<int>::root_tracking_cursor c = fbt1.root_tracking_root().begin().begin();
+    fake_binary_tree<int>::root_tracking_cursor c
+    = fbt1.root_tracking_root().end().end().begin();
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 13);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 12);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 11);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 10);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 8);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 7);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 6);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 4);
+    boost::tree::predecessor(inorder(), c);
+    BOOST_CHECK_EQUAL(*c, 3);
     boost::tree::predecessor(inorder(), c);
     BOOST_CHECK_EQUAL(*c, 1);
 }
 
 BOOST_AUTO_TEST_CASE( test_predecessor_postorder )
 {
-    fake_binary_tree<int>::root_tracking_cursor c = fbt1.root_tracking_root().begin().begin();
+    fake_binary_tree<int>::root_tracking_cursor c
+    = fbt1.root_tracking_root().begin();
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 10);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 14);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 13);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 11);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 12);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 3);
     boost::tree::predecessor(postorder(), c);
     BOOST_CHECK_EQUAL(*c, 6);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 7);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 4);
+    boost::tree::predecessor(postorder(), c);
+    BOOST_CHECK_EQUAL(*c, 1);
 }
+
 BOOST_AUTO_TEST_SUITE_END()
