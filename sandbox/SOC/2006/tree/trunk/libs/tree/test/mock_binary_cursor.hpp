@@ -10,6 +10,12 @@
 template <class Iter>
 class mock_binary_cursor;
 
+// Mock template class to check the correct value
+// to be assigned to a given position within a tree,
+// and if these assignments are done in a given order.
+//
+// The position checking logic is identical to that of fake_binary_tree,
+// so we might want to factor that part out to a position_tracking_nary_cursor.
 template <class Iter>
 class mock_binary_cursor
 : public boost::tree::cursor_facade<
@@ -20,21 +26,28 @@ class mock_binary_cursor
     >
 {
 private:
-    Iter& m_iter;
+    Iter& m_iter, m_end;
+    std::size_t m_pos;
 public:
     typedef mock_binary_cursor<Iter> cursor;
     typedef mock_binary_cursor<Iter/* const*/> const_cursor;
 
     typedef typename mock_binary_cursor<Iter>::cursor_facade_::size_type size_type;
     
-    mock_binary_cursor(Iter& iter)
-    : m_iter(iter)
-    {
-    }
+    mock_binary_cursor(Iter& iter, Iter& end, std::size_t pos = 0)
+    : m_iter(iter), m_end(end), m_pos(pos) {}
 
-    void operator=(typename Iter::value_type const& val)
+    mock_binary_cursor(mock_binary_cursor<Iter> const& other)
+    : m_iter(other.m_iter), m_end(other.m_end), m_pos(other.m_pos) {}
+
+    void operator=(typename Iter::value_type::second_type const& val)
     {
-        BOOST_CHECK_EQUAL(val, *m_iter++);
+        BOOST_CHECK(m_iter != m_end);
+        if (m_iter == m_end)
+            return;  
+        BOOST_CHECK_EQUAL((m_pos-1)/2, m_iter->first);
+        BOOST_CHECK_EQUAL(val, m_iter->second);
+        ++m_iter;
     }
     
 private:
@@ -54,18 +67,24 @@ private:
 
     void increment()
     {
+        ++m_pos;
     }
     
     void decrement()
     {
+        --m_pos;
     }  
 
     void left()
     {
+        m_pos *= 2;
+        ++m_pos;
     }
 
     void right()
     {
+        ++m_pos;
+        m_pos *= 2;
     }
     
     bool const empty_() const
@@ -75,7 +94,7 @@ private:
 
     size_type const idx() const
     {
-        return 0;
+        return (m_pos + 1) % 2;
     }
 };
 
