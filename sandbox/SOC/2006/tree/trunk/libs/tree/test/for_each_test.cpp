@@ -19,48 +19,58 @@
 
 using namespace boost::tree;
 
-BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_with_list_fixture<int>)
+BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_fixture<int>)
+
+template <class Iter>
+class mock_unary_functor {
+private:
+    Iter& m_iter, m_end;
+    
+public:
+    mock_unary_functor(Iter& iter, Iter& end)
+    : m_iter(iter), m_end(end) {}
+    
+    mock_unary_functor(mock_unary_functor<Iter> const& other)
+    : m_iter(other.m_iter), m_end(other.m_end) {}
+    
+    void operator()(typename Iter::value_type::second_type const& val)
+    {
+        BOOST_CHECK(m_iter != m_end);
+        if (m_iter == m_end)
+            return;
+        BOOST_CHECK_EQUAL(val, m_iter->second);
+        ++m_iter;
+    }
+};
 
 BOOST_AUTO_TEST_CASE_TEMPLATE( test_for_each_descending, Order, orders)
 {
+    typedef std::vector< std::pair<std::size_t, int> > container_type;
+    container_type po(11);
+    generate_mock_cursor_data(Order(), po);
+    container_type::const_iterator ci = po.begin();
+    container_type::const_iterator cie = po.end();
+    mock_unary_functor<container_type::const_iterator> muc(ci, cie);
     boost::tree::for_each(
         Order(),
         fbt1.descending_root(), 
-        boost::lambda::bind(&std::list<int>::push_back, &l, boost::lambda::_1)
+        muc
     );
-    test_traversal(Order(), l.begin(), l.end());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE( test_for_each_ascending, Order, orders)
 {
+    typedef std::vector< std::pair<std::size_t, int> > container_type;
+    container_type po(11);
+    generate_mock_cursor_data(Order(), po);
+    container_type::const_iterator ci = po.begin();
+    container_type::const_iterator cie = po.end();
+    mock_unary_functor<container_type::const_iterator> muc(ci, cie);
     boost::tree::for_each(
         Order(),
         fbt1.ascending_root(), 
-        boost::lambda::bind(&std::list<int>::push_back, &l, boost::lambda::_1)
+        muc
     );
-    test_traversal(Order(), l.begin(), l.end());
-}
-
-BOOST_AUTO_TEST_CASE( test_for_each_subtree3_descending )
-{
-    boost::tree::for_each(
-        preorder(),
-        fbt1.descending_root().begin(), 
-        boost::lambda::bind(&std::list<int>::push_back, &l, boost::lambda::_1)
-    );
-    test_subtree_traversal(preorder(), l.begin(), l.end(), 1);
-    BOOST_CHECK_EQUAL(l.size(), 5);
-}
-
-BOOST_AUTO_TEST_CASE( test_for_each_subtree3_ascending )
-{
-    boost::tree::for_each(
-        preorder(),
-        fbt1.ascending_root().begin(), 
-        boost::lambda::bind(&std::list<int>::push_back, &l, boost::lambda::_1)
-    );
-    test_subtree_traversal(preorder(), l.begin(), l.end(), 1);
-    BOOST_CHECK_EQUAL(l.size(), 5);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

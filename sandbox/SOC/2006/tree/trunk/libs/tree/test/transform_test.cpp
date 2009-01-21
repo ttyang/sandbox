@@ -12,47 +12,40 @@
 
 #include "helpers.hpp"
 #include "test_tree_traversal_data.hpp"
-
+#include "mock_binary_cursor.hpp"
 #include "fake_binary_tree.hpp"
 
 using namespace boost::tree;
 
-BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_with_list_fixture<int>)
+// TODO: Actually transform back and forth; eg, add 1 using STL transform, then subtract it
+// again using the subtree algorithm.
+
+BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_fixture<int>)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE( test_transform_descending, Order, orders)
 {
-    // First copy test_tree to test_tree2, by adding 1 to each element,
-    // then copy test_tree2 to test_list, by subtracting 1 - so 
-    // test_list should hold test_tree's original elements in ORDER.
-    boost::tree::transform(Order(), fbt1.descending_root(), fbt2.descending_root(), std::bind2nd(std::plus<int>(),1));
-    boost::tree::transform(Order(), fbt2.descending_root(), o, std::bind2nd(std::minus<int>(),1));
-    test_traversal(Order(), l.begin(), l.end());
+    typedef std::vector< std::pair<std::size_t, int> > container_type;
+    container_type po(11);
+    generate_mock_cursor_data(Order(), po);
+    //std::transform(po.begin(), po.end(), po.begin(), std::bind2nd(std::plus<int>(/*second member of pair*/),0))
+    container_type::const_iterator ci = po.begin();
+    container_type::const_iterator cie = po.end();
+    mock_binary_cursor< container_type::const_iterator > mc(ci, cie);
+    
+    boost::tree::transform(Order(), fbt1.descending_root(), mc, std::bind2nd(std::plus<int>(),0));
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE( test_transform_ascending, Order, orders)
 {
-    // First copy test_tree to test_tree2, by adding 1 to each element,
-    // then copy test_tree2 to test_list, by subtracting 1 - so 
-    // test_list should hold test_tree's original elements in ORDER.
-    boost::tree::transform(Order(), fbt1.ascending_root(), fbt2.ascending_root(), std::bind2nd(std::plus<int>(),1));
-    boost::tree::transform(Order(), fbt2.ascending_root(), o, std::bind2nd(std::minus<int>(),1));
-    test_traversal(Order(), l.begin(), l.end());
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE( test_transform_trees_descending, Order, orders)
-{
-    BOOST_CHECK(fbt1 != fbt2);
-    boost::tree::transform(Order(), fbt1.descending_root(), fbt2.descending_root()
-                         , std::bind2nd(std::minus<int>(),1));
-    validate_test_dataset1_minus_1_tree(fbt2.descending_root());
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE( test_transform_trees_ascending, Order, orders)
-{
-    BOOST_CHECK(fbt1 != fbt2);
-    boost::tree::transform(Order(), fbt1.ascending_root(), fbt2.ascending_root()
-                         , std::bind2nd(std::minus<int>(),1));
-    validate_test_dataset1_minus_1_tree(fbt2.ascending_root());
+    typedef std::vector< std::pair<std::size_t, int> > container_type;
+    container_type po(11);
+    generate_mock_cursor_data(Order(), po);
+    //std::transform(po.begin(), po.end(), po.begin(), std::bind2nd(std::plus<int>(/*second member of pair*/),0))
+    container_type::const_iterator ci = po.begin();
+    container_type::const_iterator cie = po.end();
+    mock_binary_cursor< container_type::const_iterator > mc(ci, cie);
+    
+    boost::tree::transform(Order(), fbt1.ascending_root(), mc, std::bind2nd(std::plus<int>(),0));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
