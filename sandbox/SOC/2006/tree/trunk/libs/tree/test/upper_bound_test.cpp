@@ -27,20 +27,20 @@ using namespace boost::tree;
 
 BOOST_FIXTURE_TEST_SUITE(binary_tree_search_test, fake_binary_tree_fixture<int>)
 
-BOOST_AUTO_TEST_CASE( lower_bound_test )
+BOOST_AUTO_TEST_CASE( upper_bound_test )
 {   
     fake_binary_tree<int>::cursor c(fbt1, 0), d(fbt1, 0);
 
-    c = lower_bound(fbt1.root(), 4); // (Left) Leaf
-    BOOST_CHECK_EQUAL(*c, 4);
-    c = lower_bound(fbt1.root(), 7); // (Right) Leaf
-    BOOST_CHECK_EQUAL(*c, 7);
-    c = lower_bound(fbt1.root(), 6); // Non-Leaf
+    c = upper_bound(fbt1.root(), 4); // (Left) Leaf
     BOOST_CHECK_EQUAL(*c, 6);
-    c = lower_bound(fbt1.root(), 8); // root().begin()
+    c = upper_bound(fbt1.root(), 7); // (Right) Leaf
     BOOST_CHECK_EQUAL(*c, 8);
+    c = upper_bound(fbt1.root(), 6); // Non-Leaf
+    BOOST_CHECK_EQUAL(*c, 7);
+    c = upper_bound(fbt1.root(), 8); // root().begin()
+    BOOST_CHECK_EQUAL(*c, 10);
 
-    c = lower_bound(fbt1.root(), 5); // Not in tree
+    c = upper_bound(fbt1.root(), 5); // Not in tree
     BOOST_CHECK_EQUAL(*c, 6);
 }
 
