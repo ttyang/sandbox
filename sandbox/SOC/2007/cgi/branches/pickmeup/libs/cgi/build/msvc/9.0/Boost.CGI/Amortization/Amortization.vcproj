@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="_SCL_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -86,7 +86,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; &quot;c:\code\c++\boost.cgi\cgi-bin\$(TargetName)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.css&quot; &quot;c:\code\c++\boost.cgi\htdocs\css\acgi_amort.css&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.js&quot; &quot;c:\code\c++\boost.cgi\htdocs\js\acgi_amort.js&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.tpl&quot; &quot;c:\code\c++\boost.cgi\templates\acgi_amort.html&quot;"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;c:\code\c++\boost.cgi\cgi-bin\$(TargetName)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.css&quot; &quot;c:\code\c++\boost.cgi\htdocs\css\acgi_amort.css&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.js&quot; &quot;c:\code\c++\boost.cgi\htdocs\js\acgi_amort.js&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.tpl&quot; &quot;c:\code\c++\boost.cgi\templates\acgi_amort.html&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_SCL_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="_SCL_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -162,7 +162,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; &quot;c:\code\c++\boost.cgi\cgi-bin\$(TargetName)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.css&quot; &quot;c:\code\c++\boost.cgi\htdocs\css\acgi_amort.css&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.js&quot; &quot;c:\code\c++\boost.cgi\htdocs\js\acgi_amort.js&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.html&quot; &quot;c:\code\c++\boost.cgi\templates\acgi_amort.html&quot;"
+				CommandLine="copy &quot;$(TargetPath)&quot; &quot;c:\code\c++\boost.cgi\cgi-bin\$(TargetName)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.css&quot; &quot;c:\code\c++\boost.cgi\htdocs\css\acgi_amort.css&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.js&quot; &quot;c:\code\c++\boost.cgi\htdocs\js\acgi_amort.js&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\..\..\..\example\acgi\amortization\acgi_amort.html&quot; &quot;c:\code\c++\boost.cgi\templates\acgi_amort.html&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
