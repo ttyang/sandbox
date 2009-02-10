@@ -20,7 +20,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <boost/itl/split_interval_set.hpp>
 #include <boost/itl/interval_map.hpp>
 #include <boost/itl/split_interval_map.hpp>
-#include <boost/validate/gentor/gentorprofile.h>
+#include <boost/validate/gentor/gentorprofile.hpp>
 
 
 namespace boost{namespace itl
