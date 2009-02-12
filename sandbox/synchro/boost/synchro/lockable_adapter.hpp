@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //
-// (C) Copyright Vicente J. Botet Escriba 2008. Distributed under the Boost
+// (C) Copyright Vicente J. Botet Escriba 2008-2009. Distributed under the Boost
 // Software License, Version 1.0. (See accompanying file
 // LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
@@ -8,18 +8,18 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef BOOST_SYNCHRO_MAKE_LOCKABLE__HPP
-#define BOOST_SYNCHRO_MAKE_LOCKABLE__HPP
+#ifndef BOOST_SYNCHRO_LOCKABLE_ADAPTER__HPP
+#define BOOST_SYNCHRO_LOCKABLE_ADAPTER__HPP
 
 #include <boost/synchro/lockable_traits.hpp>
-#include "boost/noncopyable.hpp"
-#include "boost/thread/thread_time.hpp"
+#include <boost/noncopyable.hpp>
+#include <boost/thread/thread_time.hpp>
 
 namespace boost { namespace synchro {
 
-//[make_exclusive_lockable
+//[exclusive_lockable_adapter
 template <typename Lockable>
-class make_exclusive_lockable : private boost::noncopyable
+class exclusive_lockable_adapter : private boost::noncopyable
 {
 public:
     typedef Lockable lockable_type;
@@ -41,10 +41,10 @@ protected:
 };
 //]
 
-//[make_timed_lockable
+//[timed_lockable_adapter
 template <typename TimedLock>
-class make_timed_lockable
-    : public make_exclusive_lockable<TimedLock>
+class timed_lockable_adapter
+    : public exclusive_lockable_adapter<TimedLock>
 {
 public:
     typedef TimedLock lockable_base_type;
@@ -59,10 +59,10 @@ protected:
 };
 //]
 
-//[make_share_lockable
+//[shared_lockable_adapter
 template <typename SharableLock>
-class make_share_lockable
-    : public make_timed_lockable<SharableLock>
+class shared_lockable_adapter
+    : public timed_lockable_adapter<SharableLock>
 {
 public:
     typedef SharableLock lockable_base_type;
@@ -81,10 +81,10 @@ protected:
 };
 //]
 
-//[make_upgrade_lockable
+//[upgrade_lockable_adapter
 template <typename UpgradableLock>
-class make_upgrade_lockable
-    : public make_share_lockable<UpgradableLock>
+class upgrade_lockable_adapter
+    : public shared_lockable_adapter<UpgradableLock>
 {
 public:
     typedef UpgradableLock lockable_base_type;
@@ -112,31 +112,31 @@ protected:
 //]
 
 
-//[make_lockable
+//[lockable_adapter
 template <
       typename Lockable
       , typename category=typename category_tag<Lockable>::type
       , typename timed_interface=typename timed_interface_tag<Lockable>::type
-> struct make_lockable;
+> struct lockable_adapter;
 
 template <typename Lockable>
-struct make_lockable<Lockable, exclusive_lock_tag, hasnt_timed_interface_tag>
-    : protected make_exclusive_lockable<Lockable>
+struct lockable_adapter<Lockable, exclusive_lock_tag, hasnt_timed_interface_tag>
+    : protected exclusive_lockable_adapter<Lockable>
 {};
 
 template <typename Lockable>
-struct make_lockable<Lockable, exclusive_lock_tag, has_timed_interface_tag>
-    : protected make_timed_lockable<Lockable>
+struct lockable_adapter<Lockable, exclusive_lock_tag, has_timed_interface_tag>
+    : protected timed_lockable_adapter<Lockable>
 {};
 
 template <typename Lockable, typename timed_interface>
-struct make_lockable<Lockable, sharable_lock_tag, timed_interface>
-    : protected make_share_lockable<Lockable>
+struct lockable_adapter<Lockable, sharable_lock_tag, timed_interface>
+    : protected shared_lockable_adapter<Lockable>
 {};
 
 template <typename Lockable, typename timed_interface>
-struct make_lockable<Lockable, upgradable_lock_tag, timed_interface>
-    : protected make_upgrade_lockable<Lockable>
+struct lockable_adapter<Lockable, upgradable_lock_tag, timed_interface>
+    : protected upgrade_lockable_adapter<Lockable>
 {};
 
 //]
