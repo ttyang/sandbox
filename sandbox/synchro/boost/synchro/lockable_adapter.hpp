@@ -30,13 +30,12 @@ public:
     typedef typename lifetime_tag<Lockable>::type lifetime;
     typedef typename naming_tag<Lockable>::type naming;
 
-
+    exclusive_lockable_adapter() {}
     void lock() {lock_.lock();}
     void unlock() {lock_.unlock();}
     bool try_lock() { return lock_.try_lock();}
-    lockable_type* mutex() const { return &lock_; }
-
 protected:
+    lockable_type* mutex() const { return &lock_; }
     mutable Lockable lock_;
 };
 //]
@@ -49,11 +48,13 @@ class timed_lockable_adapter
 public:
     typedef TimedLock lockable_base_type;
 
-    bool timed_lock(system_time const & abs_time)
-    {return the_lock().timed_lock(abs_time);}
+    timed_lockable_adapter() {}
+
+    bool try_lock_until(system_time const & abs_time)
+    {return the_lock().try_lock_until(abs_time);}
     template<typename TimeDuration>
-    bool timed_lock(TimeDuration const & relative_time)
-    {return the_lock().timed_lock(relative_time);}
+    bool try_lock_for(TimeDuration const & relative_time)
+    {return the_lock().try_lock_for(relative_time);}
 protected:
     TimedLock& the_lock() {return *static_cast<TimedLock*>(&this->lock_);}
 };
@@ -67,14 +68,16 @@ class shared_lockable_adapter
 public:
     typedef SharableLock lockable_base_type;
 
+    shared_lockable_adapter() {}
+
     void lock_shared()
     {the_lock().lock_shared();}
     bool try_lock_shared()
     {return the_lock().try_lock_shared();}
     void unlock_shared()
     {the_lock().unlock_shared();}
-    bool timed_lock_shared(system_time const& t)
-    {return the_lock().timed_lock_shared(t);}
+    bool try_lock_shared_until(system_time const& t)
+    {return the_lock().try_lock_shared_until(t);}
 
 protected:
     SharableLock& the_lock() {return *static_cast<SharableLock*>(&this->lock_);}
@@ -89,9 +92,16 @@ class upgrade_lockable_adapter
 public:
     typedef UpgradableLock lockable_base_type;
 
+    upgrade_lockable_adapter() {}
+
     void lock_upgrade()
     {the_lock().lock_upgrade();}
 
+   bool try_lock_upgrade()
+   {  return the_lock().try_lock_upgrade(); }
+
+    
+    
     void unlock_upgrade()
     {the_lock().unlock_upgrade();}
 
@@ -103,8 +113,8 @@ public:
     {the_lock().unlock_and_lock_shared();}
     void unlock_upgrade_and_lock_shared()
     {the_lock().unlock_upgrade_and_lock_shared();}
-    bool timed_lock_upgrade(system_time const&t)
-    {return the_lock().timed_lock_upgrade(t);}
+    bool try_lock_upgrade_until(system_time const&t)
+    {return the_lock().try_lock_upgrade_until(t);}
 
 protected:
     UpgradableLock& the_lock() {return *static_cast<UpgradableLock*>(&this->lock_);}
