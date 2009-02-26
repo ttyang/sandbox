@@ -493,7 +493,7 @@ class balance {
         // If yes, we could just insert at pos.
         
         cursor c = pos.base().base();
-        while (!c.empty())
+        while (!c.is_leaf())
             c = c.end();
         
         c = h.insert(c, data_type(val));
@@ -560,9 +560,9 @@ class balance {
      * Returns true if the %balance is empty.  (Thus begin() would
      * equal end().)
      */
-    bool empty() const
+    bool is_leaf() const
     {
-        return h.empty();
+        return h.is_leaf();
     }
     
     void rotate(iterator& i)

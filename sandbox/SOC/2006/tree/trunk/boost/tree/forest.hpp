@@ -75,7 +75,7 @@ BOOST_CONCEPT_ASSERT((DescendingCursor< typename binary_tree<T>::const_cursor >)
      */
     explicit forest(Hierarchy const& hier = Hierarchy()) : h(hier)
     {
-//        if (h.empty())
+//        if (h.is_leaf())
 //            h.insert(h.root(), value_type());
     }
 
@@ -125,7 +125,7 @@ BOOST_CONCEPT_ASSERT((DescendingCursor< typename binary_tree<T>::const_cursor >)
     cursor end()
     {
         base_cursor b(h.root());
-        while (!b.empty())
+        while (!b.is_leaf())
             b.to_end();
         return cursor(b);
     }
@@ -146,7 +146,7 @@ BOOST_CONCEPT_ASSERT((DescendingCursor< typename binary_tree<T>::const_cursor >)
     const_cursor cend() const
     {
         base_const_cursor b(h.croot());
-        while (!b.empty())
+        while (!b.is_leaf())
             b.to_end();
         return const_cursor(b);
     }
