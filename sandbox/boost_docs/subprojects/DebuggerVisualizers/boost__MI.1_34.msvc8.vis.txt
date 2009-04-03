@@ -1,19 +1,21 @@
 ;----------------------------------------------------
 ; BOOST_VISUALIZER_START boost::multi_index_container
 ;
-; Copyright Filip Konvièka 2007. Use, modification and distribution are subject to
-; the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt
+; Copyright Filip Konvièka 2007 - 2009. Use, modification and distribution are subject
+; to the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt
 ; or copy at http://www.boost.org/LICENSE_1_0.txt)
 ;
 ; @guid     CA3A7EDA-43F3-11DC-9D06-4B5856D89593
 ; @platform msvc-8, msvc-9
-; @version  1.0
+; @version  1.1
 ; @header   mic_visualizer.hpp
 ; @author   Filip Konvièka
 ; @email    filip dot konvicka at logis dot cz
 ;
 ; Usage
 ; =====
+;
+; NOTE: This version is known to work with Boost MultiIndex v. 1.34.1. For newer versions, use the other file.
 ;
 ; Visualization must be explicitly enabled in the code for each type.
 ; For each multi_index_container type, you need to call
