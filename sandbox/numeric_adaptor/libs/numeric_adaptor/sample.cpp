@@ -10,9 +10,9 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include "numeric_adaptor.hpp"
-#include "ieee_policy.hpp"
-#include "gmp_policy.hpp"
+#include <boost/numeric_adaptor/numeric_adaptor.hpp>
+#include <boost/numeric_adaptor/ieee_policy.hpp>
+#include <boost/numeric_adaptor/gmp_policy.hpp>
 
 
 template <typename T, typename NUM>
