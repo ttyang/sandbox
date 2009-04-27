@@ -45,18 +45,18 @@ protected:
 #pragma pack()
 
 protected:	
-	size_t BOOST_MEMORY_CALL is_allocated_(void*p )
+	__forceinline size_t BOOST_MEMORY_CALL is_allocated_(void*p )
 	{
 		return 1 & ((ChunkHeader*)p - 1)->tag;
 	}
 	
-	void BOOST_MEMORY_CALL mark_allocated_(void* p)
+	__forceinline void BOOST_MEMORY_CALL mark_allocated_(void* p)
 	{
 		BOOST_MEMORY_ASSERT(!is_allocated_(p));
 		++((ChunkHeader*)p - 1)->tag;
 	}
 
-	void BOOST_MEMORY_CALL mark_deallocated_(void* p)
+	__forceinline void BOOST_MEMORY_CALL mark_deallocated_(void* p)
 	{
 		BOOST_MEMORY_ASSERT(is_allocated_(p));
 		--((ChunkHeader*)p - 1)->tag;
