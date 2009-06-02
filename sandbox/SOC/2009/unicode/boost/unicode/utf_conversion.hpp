@@ -10,7 +10,7 @@
 #endif
 
 #include <boost/iterator/pipe_iterator.hpp>
-#include <boost/unicode/unicode_proprieties.hpp>
+#include <boost/unicode/unicode_properties.hpp>
 
 namespace boost
 {
