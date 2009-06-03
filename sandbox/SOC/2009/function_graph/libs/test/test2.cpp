@@ -1,5 +1,6 @@
 /**
- * Testing a function that returns a boolean
+ * Testing a function that returns a type that is always used. This means
+ * the graph is closed.
  */
 
 #include <iostream>
@@ -9,17 +10,22 @@
 #include <vector>
 #include <utility>
 #include "function_graph.hpp"
+#include <cmath>
 
-template <typename T>
-struct less_than {
-    bool operator()(T a, T b) { return a < b; }
+struct point {
+    double x, y;
+}
+
+struct distance_2 {
+    double operator()(point a, point b)
+    { return sqrt(pow(a.x - b.x,2) + pow(a.x - b.x,2)); }
 };
 
 int main()
 {
     ////////
     // Create a boost function and function graph.
-    typedef boost::function<bool(int,int)> function_type;
+    typedef boost::function<double(int,int)> function_type;
     typedef boost::function_graph<function_type> graph;
     typedef graph::edge_descriptor edge_descriptor;
     function_type f = less_than<int>();
