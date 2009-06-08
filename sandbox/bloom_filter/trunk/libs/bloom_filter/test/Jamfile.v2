@@ -1,0 +1,9 @@
+
+import testing ;
+
+{
+    test-suite "bloom_filter"
+    : [ run bloom_filter_test.cpp ]
+    ;
+}
+
