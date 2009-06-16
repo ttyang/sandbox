@@ -89,7 +89,10 @@ namespace boost
 				if (extra > 0)
 					extra = alignment - extra;
 				size_t required = num_bytes + extra;
-				BOOST_ASSERT(cursor + required <= N);
+				if (cursor + required > N)
+				{
+					return 0;
+				}
 #ifdef BOOST_MONOTONIC_USE_AUTOBUFFER
 				buffer.uninitialized_resize(buffer.size() + required);
 #endif
