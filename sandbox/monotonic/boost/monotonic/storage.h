@@ -24,7 +24,7 @@ namespace boost
 	{
 		/// storage for an allocator that is on the stack or heap
 		template <size_t N>
-		struct storage : storage_base
+		struct fixed_storage : storage_base
 		{
 
 #ifdef BOOST_MONOTONIC_USE_AUTOBUFFER
@@ -40,7 +40,7 @@ namespace boost
 			size_t num_allocations;
 #endif
 		public:
-			storage() 
+			fixed_storage() 
 				: cursor(0)
 #ifndef NDEBUG
 				, num_allocations(0)
