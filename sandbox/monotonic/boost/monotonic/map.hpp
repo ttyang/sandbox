@@ -7,7 +7,7 @@
 #define BOOST_MONOTONIC_MAP_H
 
 #include <map>
-#include <boost/monotonic/allocator.h>
+#include <boost/monotonic/allocator.hpp>
 
 namespace boost
 {

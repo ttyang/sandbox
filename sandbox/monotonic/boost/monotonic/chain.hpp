@@ -6,8 +6,8 @@
 #ifndef BOOST_MONOTONIC_CHAIN_H
 #define BOOST_MONOTONIC_CHAIN_H
 
-#include <boost/monotonic/allocator.h>
-#include <boost/utility/iter_range.h>
+#include <boost/monotonic/allocator.hpp>
+#include <boost/utility/iter_range.hpp>
 #include <boost/iterator.hpp>
 #include <boost/iterator/iterator_categories.hpp>
 

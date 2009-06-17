@@ -10,8 +10,8 @@
 #include <boost/type_traits/has_trivial_constructor.hpp>
 #include <boost/type_traits/has_trivial_destructor.hpp>
 
-#include <boost/monotonic/storage.h>
-#include <boost/monotonic/static_storage.h>
+#include <boost/monotonic/storage.hpp>
+#include <boost/monotonic/static_storage.hpp>
 
 namespace boost
 {

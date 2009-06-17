@@ -6,7 +6,7 @@
 #ifndef BOOST_MONOTONIC_STORAGE_H
 #define BOOST_MONOTONIC_STORAGE_H
 
-#include <boost/monotonic/fixed_storage.h>
+#include <boost/monotonic/fixed_storage.hpp>
 
 namespace boost
 {

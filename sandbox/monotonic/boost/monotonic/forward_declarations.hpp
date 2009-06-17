@@ -10,7 +10,7 @@
 #include <limits>
 #include <vector>
 #include <boost/foreach.hpp>
-#include <boost/monotonic/config.h>
+#include <boost/monotonic/config.hpp>
 
 namespace boost
 {

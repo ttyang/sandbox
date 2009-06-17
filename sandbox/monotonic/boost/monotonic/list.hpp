@@ -7,7 +7,7 @@
 #define BOOST_MONOTONIC_LIST_H
 
 #include <list>
-#include <boost/monotonic/allocator.h>
+#include <boost/monotonic/allocator.hpp>
 
 namespace boost
 {

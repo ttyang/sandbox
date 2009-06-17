@@ -7,7 +7,7 @@
 #define BOOST_MONOTONIC_VECTOR_H
 
 #include <vector>
-#include <boost/monotonic/allocator.h>
+#include <boost/monotonic/allocator.hpp>
 
 namespace boost
 {

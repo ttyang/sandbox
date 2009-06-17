@@ -8,8 +8,8 @@
 
 #include <boost/array.hpp>
 #include <boost/aligned_storage.hpp>
-#include <boost/monotonic/forward_declarations.h>
-#include <boost/monotonic/storage_base.h>
+#include <boost/monotonic/forward_declarations.hpp>
+#include <boost/monotonic/storage_base.hpp>
 
 namespace boost
 {
