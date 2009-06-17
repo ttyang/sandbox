@@ -57,6 +57,11 @@ namespace boost
 
 		/// 'static_storage' will be used by a default-constructed monotonic::allocator
 		extern static_storage_base<> static_storage;
+		
+		/// TODO: this will be specialised for 
+		/// static_storage_base<..., shared_storage>, but to avoid having to link against boost::thread
+		/// it is currently synonymous with unshared storage ATM
+		extern static_storage_base<> static_shared_storage;
 
 	} // namespace monotonic
 

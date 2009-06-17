@@ -14,7 +14,7 @@ namespace boost
 	{
 		/// storage that spans the stack/heap boundary.
 		///
-		/// allocation requests first use inline fixed_storage of N bytes.
+		/// allocation requests first use inline fixed_storage of InlineSize bytes.
 		/// once that is exhausted, later requests are serviced from the heap.
 		///
 		/// all allocations remain valid at all times.

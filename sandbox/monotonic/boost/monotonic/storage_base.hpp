@@ -32,6 +32,12 @@ namespace boost
 			/// return the number of bytes remaining
 			virtual size_t remaining() const = 0;
 		};
+
+		struct shared_storage_base : storage_base
+		{
+			//virtual void lock() const = 0;
+			//virtual void unlock() const = 0;
+		};
 	
 	} // namespace monotonic
 
