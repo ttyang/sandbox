@@ -145,7 +145,7 @@ struct pipe_iterator
 	{
 		return pos;
 	}
-	
+
 private:
 	typedef typename Pipe::output_type T;
 
