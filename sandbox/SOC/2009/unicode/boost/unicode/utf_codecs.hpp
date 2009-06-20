@@ -1,5 +1,5 @@
-#ifndef BOOST_UTF_CONVERSION_HPP
-#define BOOST_UTF_CONVERSION_HPP
+#ifndef BOOST_UTF_CODECS_HPP
+#define BOOST_UTF_CODECS_HPP
 
 #include <boost/assert.hpp>
 #include <boost/throw_exception.hpp>
@@ -9,8 +9,8 @@
 #include <ios>
 #endif
 
-#include <boost/iterator/pipe_iterator.hpp>
 #include <boost/unicode/surrogates.hpp>
+
 
 namespace boost
 {
@@ -48,7 +48,7 @@ inline void invalid_code_point(char32 val)
 {
 #ifndef BOOST_NO_STD_LOCALE
 	std::stringstream ss;
-	ss << "Invalid UTF-32 code point U+" << std::showbase << std::hex << (uint_least32_t)val << " encountered while trying to encode UTF-16 sequence";
+	ss << "Invalid UTF-32 code point U+" << std::showbase << std::hex << (uint_least32_t)val << " encountered";
 	std::out_of_range e(ss.str());
 #else
 	std::out_of_range e("Invalid UTF-32 code point encountered while trying to encode UTF-16 sequence");
@@ -74,7 +74,7 @@ inline void invalid_utf_sequence(Iterator begin, Iterator end)
 
 } // namespace detail
 
-struct u16_packer
+struct u16_encoder
 {
 	typedef char16 output_type;
     static const int max_output = 2;
@@ -113,7 +113,7 @@ struct u16_packer
 	}
 };
 
-struct u16_unpacker
+struct u16_decoder
 {
 	typedef char32 output_type;
     static const int max_output = 1;
@@ -186,7 +186,7 @@ private:
 	}
 };
 
-struct u8_packer
+struct u8_encoder
 {
 	typedef char output_type;
     static const int max_output = 4;
@@ -224,7 +224,7 @@ struct u8_packer
 	}
 };
 
-struct u8_unpacker
+struct u8_decoder
 {
 	typedef char32 output_type;
     static const int max_output = 1;
@@ -266,7 +266,7 @@ struct u8_unpacker
 		
 		// check the result:
 		if(value > static_cast<char32>(0x10FFFFu))
-			invalid_utf_sequence(begin, end);
+			detail::invalid_utf_sequence(begin, end);
 		
 		*out++ = value;
 				
@@ -287,7 +287,7 @@ struct u8_unpacker
 		while((*it & 0xC0u) == 0x80u)
 		{					
 			if(count >= 4 || it == begin)
-				invalid_utf_sequence(begin, end);
+				detail::invalid_utf_sequence(begin, end);
 				
 			--it;
 			++count;
@@ -295,7 +295,7 @@ struct u8_unpacker
 
 		// now check that the sequence was valid:
 		if(count != detail::utf8_trailing_byte_count(value))
-			invalid_utf_sequence(begin, end);
+			detail::invalid_utf_sequence(begin, end);
 		
 		out = ltr(it, end, out).second;
 		return std::make_pair(it, out);
@@ -303,63 +303,6 @@ struct u8_unpacker
 };
 
 } // namespace unicode
-
-/** \brief test
- * blabla
- * \param range a big ass range
- * \return something
- * \throw bla
- * \pre precondition
- * \post postcondition **/
-template<typename Range>
-std::pair<
-	pipe_iterator<typename range_iterator<const Range>::type, one_many_pipe<unicode::u16_packer> >,
-	pipe_iterator<typename range_iterator<const Range>::type, one_many_pipe<unicode::u16_packer> >
-> make_u32_to_u16_range(const Range& range)
-{
-	return make_pipe_range(range, make_one_many_pipe(unicode::u16_packer()));
-}
-
-template<typename Range>
-std::pair<
-	pipe_iterator<typename range_iterator<const Range>::type, unicode::u16_unpacker>,
-	pipe_iterator<typename range_iterator<const Range>::type, unicode::u16_unpacker>
-> make_u16_to_u32_range(const Range& range)
-{
-	return make_pipe_range(range, unicode::u16_unpacker());
-}
-
-template<typename Range>
-std::pair<
-	pipe_iterator<typename range_iterator<const Range>::type, one_many_pipe<unicode::u8_packer> >,
-	pipe_iterator<typename range_iterator<const Range>::type, one_many_pipe<unicode::u8_packer> >
-> make_u32_to_u8_range(const Range& range)
-{
-	return make_pipe_range(range, make_one_many_pipe(unicode::u8_packer()));
-}
-
-template<typename Range>
-std::pair<
-	pipe_iterator<typename range_iterator<const Range>::type, unicode::u8_unpacker>,
-	pipe_iterator<typename range_iterator<const Range>::type, unicode::u8_unpacker>
-> make_u8_to_u32_range(const Range& range)
-{
-	return make_pipe_range(range, unicode::u8_unpacker());
-}
-
-template<typename OutputIterator>
-pipe_output_iterator<OutputIterator, one_many_pipe<unicode::u8_packer> >
-make_u8_output_iterator(OutputIterator out)
-{
-	return make_pipe_output_iterator(out, make_one_many_pipe(unicode::u8_packer()));
-}
-
-template<typename OutputIterator>
-pipe_output_iterator<OutputIterator, one_many_pipe<unicode::u16_packer> >
-make_u16_output_iterator(OutputIterator out)
-{
-	return make_pipe_output_iterator(out, make_one_many_pipe(unicode::u16_packer()));
-}
 
 } // namespace boost
 
