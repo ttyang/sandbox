@@ -39,6 +39,19 @@ struct derived3 : base<derived3>
 	explicit derived3(float f, int n, std::string const &s) : real(f), num(n), str(s) { }
 };
 
+// naive way of allowing reuse in derived types: factor out the implementation
+struct derived4_impl
+{
+};
+
+struct derived4 : derived4_impl, base<derived4>
+{
+};
+
+struct derived5 : derived4_impl, base<derived5>
+{
+};
+
 int main()
 {
 	// there is a problem with static_move_ptr<>
