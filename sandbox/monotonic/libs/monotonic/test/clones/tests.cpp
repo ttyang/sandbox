@@ -29,7 +29,6 @@ struct derived2 : base<derived2>
 	explicit derived2(std::string const &n) : str(n) { }
 };
 
-
 struct derived3 : base<derived3>
 {
 	float real;
