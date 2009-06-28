@@ -21,18 +21,29 @@ namespace boost
 			{
 				typedef typename Alloc::template rebind<char>::other CharAlloc;
 
+				clone_allocator() { }
+				clone_allocator(Alloc &a) : Alloc(a) { }
+
 				abstract_allocator::pointer allocate_bytes(size_t num_bytes, size_t alignment)
 				{
 					CharAlloc alloc(*this);
-					// TODO: alignment; this is done already for monotonic, copy that here
-					return alloc.allocate(num_bytes);
+					size_t required = num_bytes;
+					if (num_bytes < alignment)
+						required = alignment;
+					else
+						required = num_bytes + alignment;	// TODO: don't really need this much
+					abstract_allocator::pointer ptr = alloc.allocate(required);
+					size_t extra = calc_padding(ptr, alignment);
+					return ptr + extra;
 				}
 
-				void deallocate_bytes(abstract_allocator::pointer ptr)
+				void deallocate_bytes(abstract_allocator::pointer ptr, size_t alignment)
 				{
 					CharAlloc alloc(*this);
-					alloc.deallocate(ptr, 1);
+					size_t extra = calc_padding(ptr, alignment);
+					alloc.deallocate(ptr - extra, 1);
 				}
+
 			};
 
 			template <class Alloc, bool>
@@ -44,7 +55,6 @@ namespace boost
 			template <class Alloc>
 			struct make_clone_allocator<Alloc, true>
 			{
-				BOOST_STATIC_ASSERT(0);
 				typedef Alloc type;
 			};
 		}
