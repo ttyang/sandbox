@@ -18,17 +18,12 @@ namespace boost
 			virtual ~default_base_type() { }
 		};
 
-		/// common base for all base types for hierachies
+		/// TODO: rename this to abstract_cloneable
 		template <class Base>
-		struct abstract_base : Base
+		struct abstract_cloneable : Base
 		{
 			typedef Base base_type;
-			typedef abstract_base<Base> this_type;
-
-			//virtual base_type *allocate(abstract_allocator &alloc) const /*= 0;*/ { return 0; }
-			//virtual void deallocate(base_type *, abstract_allocator &alloc) const /*= 0;*/ { }
-			//virtual base_type *create(abstract_allocator &alloc) const /*= 0;*/ { return 0; }
-			//virtual base_type *copy_construct(const base_type &original, abstract_allocator &alloc) const /*= 0;*/ { return 0; }
+			typedef abstract_cloneable<Base> this_type;
 
 			virtual this_type *allocate(abstract_allocator &alloc) const = 0;
 			virtual void deallocate(base_type &, abstract_allocator &alloc) const = 0;
@@ -38,6 +33,15 @@ namespace boost
 
 			/// optional means to make a clone that does not use copy-construction
 			virtual this_type *clone(const base_type &original, abstract_allocator &alloc) const { return 0; }
+
+			/// make a copy of the given instance. try the custom overload first, then default to using
+			/// the copy-constructor
+			this_type *make_copy(const base_type &original, abstract_allocator &alloc) const
+			{
+				if (this_type *copy = clone(original, alloc))
+					return copy;
+				return copy_construct(original, alloc);
+			}
 		};
 
 	} // namespace heterogenous
