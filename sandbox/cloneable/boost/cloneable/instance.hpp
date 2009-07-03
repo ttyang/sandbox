@@ -80,6 +80,10 @@ namespace boost
 				ptr = 0;
 			}
 
+			bool exists() const
+			{
+				return ptr != 0;
+			}
 			abstract_base_type *to_abstract() const
 			{
 				return ptr;
