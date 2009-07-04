@@ -20,18 +20,18 @@ namespace boost
 			// an interface to allow casting, cloning and creation of sub-objects
 			// of different types and default-constructableness
 			template <class Derived, class Base>
-			struct is_derived 
+			struct mixin 
 				: abstract_base<Base> 
 			{
 				typedef Derived derived_type;
 				typedef Base base_type;
 				typedef abstract_base<base_type> abstract_base_type;
-				typedef is_derived<derived_type, base_type> this_type;
+				typedef mixin<derived_type, base_type> this_type;
 
 				mutable Derived *self_ptr;		///< pointer to derived object in this
 				static const size_t alignment;		///< required alignment for allocation
 
-				is_derived()
+				mixin()
 				{
 					self_ptr = static_cast<derived_type *>(this); 
 				}
@@ -69,7 +69,7 @@ namespace boost
 				template <class Ty>
 				Ty *clone_as(abstract_allocator &alloc) const
 				{
-					const is_derived<Ty,Base> *ptr = dynamic_cast<const is_derived<Ty,Base> *>(this);
+					const mixin<Ty,Base> *ptr = dynamic_cast<const mixin<Ty,Base> *>(this);
 					if (ptr == 0)
 						throw std::bad_cast();
 					abstract_base_type *cloned = ptr->clone(alloc);
@@ -88,7 +88,7 @@ namespace boost
 				template <class Ty>
 				Ty *create_as(abstract_allocator &alloc) const
 				{
-					typedef is_derived<Ty, Base> Embedded;
+					typedef mixin<Ty, Base> Embedded;
 					const Embedded *cross_cast = dynamic_cast<const Embedded *>(this);
 					if (cross_cast == 0)
 						throw std::bad_cast();
@@ -106,7 +106,7 @@ namespace boost
 
 			/// ensure correct alignment when allocating derived instances
 			template <class Derived, class Base>
-			const size_t is_derived<Derived, Base>::alignment = aligned_storage<sizeof(Derived)>::alignment;
+			const size_t mixin<Derived, Base>::alignment = aligned_storage<sizeof(Derived)>::alignment;
 
 		} // namespace detail
 
