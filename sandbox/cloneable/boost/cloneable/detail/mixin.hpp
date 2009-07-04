@@ -41,6 +41,12 @@ namespace boost
 					return typeid(derived_type);
 				}
 
+				template <class T>
+				bool can_clone_as() const
+				{
+					return dynamic_cast<const mixin<T, Base> *>(this) != 0;
+				}
+
 				virtual this_type *allocate(abstract_allocator &alloc) const 
 				{
 					abstract_allocator::pointer bytes = alloc.allocate_bytes(sizeof(derived_type), alignment);
@@ -109,6 +115,52 @@ namespace boost
 			const size_t mixin<Derived, Base>::alignment = aligned_storage<sizeof(Derived)>::alignment;
 
 		} // namespace detail
+
+		/// now that we have the mixin<D,B> definition, define the abstract_base<B>::method<D>() implementations
+		template <class Base>
+		template <class Derived>
+		bool abstract_base<Base>::can_clone_as() const
+		{
+			typedef detail::mixin<Derived,Base> mixin_type;
+			return dynamic_cast<const mixin_type *>(this) != 0;
+		}
+
+		template <class Base>
+		template <class Derived>
+		bool abstract_base<Base>::can_create_as() const
+		{
+			typedef detail::mixin<Derived,Base> mixin_type;
+			return dynamic_cast<const mixin_type *>(this) != 0;
+		}
+
+		template <class Base>
+		template <class Derived>
+		bool abstract_base<Base>::can_default_create_as() const
+		{
+			return traits<Derived>::has_default_ctor && can_create_as<Derived>();
+		}
+
+		template <class Base>
+		template <class Derived>
+		Derived *abstract_base<Base>::clone_as(abstract_allocator &alloc) const
+		{
+			typedef detail::mixin<Derived,Base> mixin_type;
+			const mixin_type *mixin = dynamic_cast<const mixin_type *>(this);
+			if (mixin == 0)
+				throw std::bad_cast();
+			return mixin->clone_as<Derived>(alloc);
+		}
+
+		template <class Base>
+		template <class Derived>
+		Derived *abstract_base<Base>::clone_as() const
+		{
+			typedef detail::mixin<Derived,Base> mixin_type;
+			const mixin_type *mixin = dynamic_cast<const mixin_type *>(this);
+			if (mixin == 0)
+				throw std::bad_cast();
+			return mixin->clone_as<Derived>();
+		}
 
 	} // namespace cloneable
 
