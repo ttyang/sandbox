@@ -38,6 +38,10 @@ int main()
     typedef boost::function<long(long, long)> weighted_func;
     typedef boost::function_graph<boolean_func, iterator_range> boolean_graph;
     typedef boost::function_graph<weighted_func, iterator_range> weighted_graph;
+    typedef std::pair<
+                boolean_graph::in_edge_iterator,
+                boolean_graph::in_edge_iterator
+            > in_edge_range;
 
     ////////
     // Create function graphs
@@ -45,6 +49,11 @@ int main()
                                std::make_pair(numbers.begin(), numbers.end()));
     weighted_graph weightedGraph(std::minus<long>(),
                                 std::make_pair(numbers.begin(), numbers.end()));
+
+    ////////
+    // Check graph boolean operators
+    assert(booleanGraph == booleanGraph);
+    assert(weightedGraph == weightedGraph);
 
     ////////
     // Check vertices(g)
@@ -61,6 +70,16 @@ int main()
 
     ////////
     // Check in edges
+    std::vector<long>::iterator aVertex = ++numbers.begin(); // aVector = 572
+    in_edge_range in_edges_bool = in_edges(*aVertex, booleanGraph);
+    // print all in_edges
+    while(in_edges_bool.first != in_edges_bool.second)
+    {
+        ++in_edges_bool.first;
+    }
+    //iterator_range in_edges_wght = in_edges(*aVertex, weightedGraph);
+    
+    std::cerr << "\nCompiled - What? It worked?\n\n";
 
     return 0;
 }
