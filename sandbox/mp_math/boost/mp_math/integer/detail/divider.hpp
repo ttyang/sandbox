@@ -44,8 +44,6 @@ template<class ApInt>
 void divider<ApInt>::classic_divide(const ApInt& a, const ApInt& b,
                                     ApInt& q, ApInt* remainder)
 {
-  typedef typename traits_type::word_type word_type;
-
   if (!b)
     throw std::domain_error("unbounded::divide: division by zero");
 
@@ -145,11 +143,13 @@ void divider<ApInt>::classic_divide(const ApInt& a, const ApInt& b,
       q[offset] = traits_type::max_digit_value;
     else
     {
+      ops_type::div2by1(q[offset], x[i], x[i - 1], y[t]);
+      /*typedef unsigned long long word_type;
       word_type tmp  = static_cast<word_type>(x[i])
                     << static_cast<word_type>(traits_type::radix_bits);
       tmp |= x[i - 1];
       tmp /= y[t];
-      q[offset] = static_cast<digit_type>(tmp);
+      q[offset] = static_cast<digit_type>(tmp);*/
     }
 
     // now fixup quotient estimation

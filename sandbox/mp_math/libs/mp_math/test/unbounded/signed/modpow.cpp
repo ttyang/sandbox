@@ -101,3 +101,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(modpow9, int_type, IntTypes)
                        "8379f3024e4");
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(modpow10, int_type, IntTypes)
+{
+  const int_type x("85219208314462076924446303193527165430");
+  const int_type exp("99459745544104451690992478817018793139");
+  const int_type m("198919491088208903381984957634037586279");
+  const int_type z = boost::mp_math::modpow(x, exp, m);
+  BOOST_CHECK_EQUAL(z, "1");
+}
+

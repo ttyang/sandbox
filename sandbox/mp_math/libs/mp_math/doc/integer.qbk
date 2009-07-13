@@ -3,10 +3,10 @@
  / (See accompanying file LICENSE_1_0.txt or copy at
  / http://www.boost.org/LICENSE_1_0.txt)]
 
-[library mp_int
+[library integer
   [quickbook 1.4]
-  [id mp_int]
-  [dirname mp_int]
+  [id integer]
+  [dirname integer]
   [copyright 2008 - 2009 Kevin Sopp]
   [purpose multi precision integer arithmetic]
   [authors [Sopp, Kevin]]
@@ -20,10 +20,11 @@
 [include tutorial.qbk]
 [include performance.qbk]
 [include implementation_notes.qbk]
-[include mp_int_reference.qbk]
-[include mp_int_traits_reference.qbk]
-[include uniform_mp_int_reference.qbk]
-[include uniform_mp_int_bits_reference.qbk]
+[include integer_reference.qbk]
+[include unbounded_int_reference.qbk]
+[include unbounded_traits_reference.qbk]
+[include uniform_integer_reference.qbk]
+[include uniform_integer_bits_reference.qbk]
 [include primality_tests_reference.qbk]
 [include bibliography.qbk]
 

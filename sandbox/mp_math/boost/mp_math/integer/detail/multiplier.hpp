@@ -728,10 +728,14 @@ void multiplier<ApInt, true>::mul(ApInt& z, const ApInt& x, const ApInt& y)
       z.set_size(1);
       z.set_sign_bit(0);
     }
-    else if ((*b)[0] == 1U)
-      z = *a;
     else
-      ApInt::template integral_ops<digit_type>::multiply(z, *a, (*b)[0]);
+    {
+      if ((*b)[0] == 1U)
+        z = *a;
+      else
+        ApInt::template integral_ops<digit_type>::multiply(z, *a, (*b)[0]);
+      z.set_sign_bit(x.sign_bit() ^ y.sign_bit());
+    }
   }
   else
   {

@@ -1,28 +1,28 @@
-[/ Copyright Kevin Sopp 2008.
+[/ Copyright Kevin Sopp 2008 - 2009.
  / Distributed under the Boost Software License, Version 1.0.
  / (See accompanying file LICENSE_1_0.txt or copy at
  / http://www.boost.org/LICENSE_1_0.txt)]
 
-[section uniform_mp_int reference]
+[section uniform_integer_bits reference]
 
 [heading Synopsis]
 
-  // <boost/mp_math/mp_int.hpp>
-  template<class MpInt = mp_int<> >
-  struct uniform_mp_int
+  // <boost/mp_math/integer.hpp>
+  template<class MpInt = integer<> >
+  struct uniform_integer_bits
   {
     typedef MpInt input_type;
     typedef MpInt result_type;
 
     static const bool has_fixed_range = false;
 
-    uniform_mp_int(const MpInt& min, const MpInt& max);
+    uniform_integer_bits(typename MpInt::size_type bits);
 
     result_type min() const;
     result_type max() const;
 
     void reset();
-    
+
     template<class UniformRandomNumberGenerator>
     result_type operator()(UniformRandomNumberGenerator& urng);
   };
@@ -30,23 +30,22 @@
 
 [h3 Members]
 
-  uniform_mp_int(const MpInt& min, const MpInt& max);
+  uniform_integer_bits(typename MpInt::size_type x);
 
-* [*Requires: ] `min <= max`
-* [*Effects:] Constructs a `uniform_mp_int` object. `min` and `max` are the
-parameters of the distribution.
+* [*Effects:] Constructs a `uniform_integer_bits` object. All numbers generated
+by this object will be `x` bits in size.
 
 
   result_type min() const;
 
-* [*Returns:] The `min` parameter of the distribution.
+* [*Returns:] The least value of the distribution.
 
 
   result_type max() const;
 
-* [*Returns:] The `max` parameter of the distribution.
+* [*Returns:] The greatest value of the distribution.
 
-  
+
   void reset();
 
 * [*Effects:] Resets the state of the distribution function.
@@ -56,6 +55,6 @@ parameters of the distribution.
   result_type operator()(UniformRandomNumberGenerator& urng);
 
 * [*Returns:] A uniform random number `x` in the range `min <= x <= max`.
-  
 
-[endsect][/uniform_mp_int reference]
+
+[endsect][/uniform_integer_bits reference]

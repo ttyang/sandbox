@@ -12,3 +12,13 @@ project
     <define>BOOST_MP_MATH_MP_INT_USE_ASM
   ;
 
+alias boost_test
+: $(BOOST_ROOT)/libs/test/build//boost_unit_test_framework/<link>shared ;
+
+alias boost_serialization
+: $(BOOST_ROOT)/libs/serialization/build//boost_serialization/<link>shared ;
+
+lib gmp     : : <name>gmp     ;
+lib tommath : : <name>tommath ;
+
+unit-test type_conversion : type_conversion.cpp boost_test gmp ;

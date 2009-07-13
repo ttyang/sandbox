@@ -1,16 +1,16 @@
-[/ Copyright Kevin Sopp 2008.
+[/ Copyright Kevin Sopp 2008 - 2009.
  / Distributed under the Boost Software License, Version 1.0.
  / (See accompanying file LICENSE_1_0.txt or copy at
  / http://www.boost.org/LICENSE_1_0.txt)]
 
-[section mp_int_traits reference]
+[section unbounded_traits reference]
 
 The second template parameter to mp_int is a type which allows to customize some
 of mp_int's internal workings.
 
 [heading Synopsis]
 ``
-// <boost/mp_math/mp_int/traits.hpp>
+// <boost/mp_math/integer/unbounded_traits.hpp>
 namespace boost {
 namespace mp_math {
 
@@ -18,7 +18,7 @@ template<
   typename Digit = implementation defined,
   typename Word = implementation defined
 >
-struct mp_int_traits
+struct unbounded_traits
 {
   typedef std::size_t size_type;
   typedef Digit       digit_type;
@@ -33,5 +33,5 @@ struct mp_int_traits
 } // namespace mp_math
 } // namespace boost
 ``
-[endsect][/mp_int_traits reference]
+[endsect][/unbounded_traits reference]
 

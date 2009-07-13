@@ -35,7 +35,7 @@ unit-test shift           : shift.cpp           boost_test ;
 unit-test sqr             : sqr.cpp             boost_test ;
 unit-test sub             : sub.cpp             boost_test ;
 unit-test stream_io       : stream_io.cpp       boost_test ;
-unit-test string_ops      : string_ops.cpp      boost_test ;
 unit-test swap            : swap.cpp            boost_test ;
 unit-test to_integral     : to_integral.cpp     boost_test ;
+unit-test to_string       : to_string.cpp       boost_test ;
 

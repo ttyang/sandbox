@@ -17,7 +17,7 @@ typedef boost::mpl::vector<
       true,
       std::allocator<void>,
       boost::mp_math::unbounded_traits<
-        boost::uint8_t, boost::uint16_t, std::size_t, use_debug_mode
+        boost::uint8_t, std::size_t, use_debug_mode
       >
     >
   >,
@@ -26,7 +26,16 @@ typedef boost::mpl::vector<
       true,
       std::allocator<void>,
       boost::mp_math::unbounded_traits<
-        boost::uint16_t, boost::uint32_t, std::size_t, use_debug_mode
+        boost::uint16_t, std::size_t, use_debug_mode
+      >
+    >
+  >,
+  boost::mp_math::integer<
+    boost::mp_math::unbounded<
+      true,
+      std::allocator<void>,
+      boost::mp_math::unbounded_traits<
+        boost::uint32_t, std::size_t, use_debug_mode
       >
     >
   >,
@@ -36,7 +45,7 @@ typedef boost::mpl::vector<
       true,
       std::allocator<void>,
       boost::mp_math::unbounded_traits<
-        boost::uint32_t, boost::uint64_t, std::size_t, use_debug_mode
+        boost::uint64_t, std::size_t, use_debug_mode
       >
     >
   >,

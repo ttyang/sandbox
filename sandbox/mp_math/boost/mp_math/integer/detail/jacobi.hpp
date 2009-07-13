@@ -23,8 +23,6 @@ int jacobi(const ApInt& a, const ApInt& p)
   if (p <= digit_type(0))
     throw std::domain_error("jacobi: p must be greater than 0");
 
-  std::cout << "a = "; a.print();
-  std::cout << "p = "; p.print();
   if (!a)
     return 0;
 
@@ -60,7 +58,6 @@ int jacobi(const ApInt& a, const ApInt& p)
   if (((p[0] & 3) == 3) && ((a1[0] & 3) == 3))
     s = -s;
 
-  std::cout << "a1 = "; a1.print();
   if (a1 == digit_type(1))
     return s;
   else

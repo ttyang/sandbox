@@ -1,4 +1,4 @@
-// Copyright Kevin Sopp 2008.
+// Copyright Kevin Sopp 2008 - 2009.
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -225,7 +225,9 @@ struct tester
   template<class ApInt>
   bool operator()(const ApInt& p)
   {
-    return test1(p) && test2(rng, p);
+    const bool a = test1(p);
+    const bool b = test2(rng, p);
+    return a && b;
   }
 };
 
