@@ -1,19 +1,5 @@
 /**
- * Testing a function that has a range
- *
- * Functions checklist:
- *  [X] source(e, g)
- *  [X] target(e, g)
- *  [X] out_edges(u, g)
- *  [X] out_degree(u, g)
- *  [X] in_edges(v, g)
- *  [X] in_degree(v, g)
- *  [X] degree(v, g)
- *  [X] adjacent_vertices(v, g)
- *  [X] vertices(g)
- *  [X] num_vertives(g)
- *  [X] edegs(g)
- *  [X] num_edges(g)
+ * Testing BGL Algorithms
  */
 
 #include <iostream>
@@ -24,6 +10,7 @@
 #include <boost/range.hpp>
 #include <boost/assert.hpp>
 #include <boost/graph/graph_traits.hpp>
+#include <boost/graph/breadth_first_search.hpp>
 
 #define META_ASSERT(x) BOOST_ASSERT(x::value)
 
