@@ -35,8 +35,8 @@ private:
 
 public:
 
-    typedef typename smart_pointer_traits<T>::value_type element_type;
-    typedef typename smart_pointer_traits<T>::value_type value_type;
+    typedef typename generic_pointer_traits<T>::value_type element_type;
+    typedef typename generic_pointer_traits<T>::value_type value_type;
     typedef generic_shared<T> shared_type;
 
     generic_weak(): px(), pn() // never throws in 1.30+
