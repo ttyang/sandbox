@@ -48,14 +48,14 @@ public:
     generic_shared<T> shared_from_this()
     {
         generic_shared<T> p( weak_this_ );
-        BOOST_ASSERT( p.get() == this );
+        BOOST_ASSERT( get_plain_old_pointer(p) == this );
         return p;
     }
 //FIXME: yikes! we need to make it easier to add/remove const from a generic pointer's value_type
     typename generic_shared<T>::template rebind<typename generic_shared<T>::value_type const>::other shared_from_this() const
     {
         typename generic_shared<T>::template rebind<typename generic_shared<T>::value_type const>::other p( weak_this_ );
-        BOOST_ASSERT( p.get() == this );
+        BOOST_ASSERT( get_plain_old_pointer(p) == this );
         return p;
     }
 
