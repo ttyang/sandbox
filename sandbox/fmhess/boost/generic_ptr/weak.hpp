@@ -79,7 +79,7 @@ public:
     {
     }
 
-#if defined( BOOST_HAS_RVALUE_REFS )
+#ifndef BOOST_NO_RVALUE_REFERENCES
 
     template<class Y>
 #if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
@@ -93,13 +93,13 @@ public:
 #endif
     : px(r.lock().get()), pn(std::move(r.pn)) // never throws
     {
-        detail::set_plain_pointer_to_null(r.px);
+        detail::set_plain_old_pointer_to_null(r.px);
     }
 
     // for better efficiency in the T == Y case
     weak( weak && r ): px( r.px ), pn(std::move(r.pn)) // never throws
     {
-        detail::set_plain_pointer_to_null(r.px);
+        detail::set_plain_old_pointer_to_null(r.px);
     }
 
     // for better efficiency in the T == Y case
@@ -136,7 +136,7 @@ public:
         return *this;
     }
 
-#if defined( BOOST_HAS_RVALUE_REFS )
+#ifndef BOOST_NO_RVALUE_REFERENCES
 
     template<class Y>
     weak & operator=(weak<Y> && r)

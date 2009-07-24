@@ -38,7 +38,8 @@
 
 #include <boost/assert.hpp>
 #include <boost/checked_delete.hpp>
-#include <boost/get_pointer.hpp>
+#include <boost/generic_ptr/detail/util.hpp>
+#include <boost/generic_ptr/pointer_traits.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/pointer_cast.hpp>
 #include <boost/throw_exception.hpp>
@@ -78,93 +79,6 @@ namespace generic_ptr
 template<typename T> class shared;
 template<typename T> class weak;
 template<typename T> class enable_shared_from_this;
-
-template<typename T> struct pointer_traits
-{
-    typedef typename T::value_type value_type;
-    typedef typename T::pointer pointer;
-    typedef typename T::reference reference;
-};
-
-template<typename T> struct pointer_traits<T*>
-{
-    typedef T value_type;
-    typedef T * pointer;
-    typedef T & reference;
-};
-
-template<> struct pointer_traits<void*>
-{
-    typedef void value_type;
-    typedef void * pointer;
-    typedef void reference;
-};
-
-template<> struct pointer_traits<const void*>
-{
-    typedef void value_type;
-    typedef const void * pointer;
-    typedef void reference;
-};
-
-template<> struct pointer_traits<volatile void*>
-{
-    typedef void value_type;
-    typedef volatile void * pointer;
-    typedef void reference;
-};
-
-template<> struct pointer_traits<const volatile void*>
-{
-    typedef void value_type;
-    typedef const volatile void * pointer;
-    typedef void reference;
-};
-
-template<typename GenericPtr, typename ValueType>
-struct rebind
-{
-    typedef typename GenericPtr::template rebind<ValueType>::other other;
-};
-
-template<typename T, typename ValueType>
-struct rebind<T*, ValueType>
-{
-    typedef ValueType * other;
-};
-
-template<typename T>
-T * get_plain_old_pointer(T * p)
-{
-    return p;
-}
-
-template<typename GenericPtr>
-typename pointer_traits<GenericPtr>::value_type *
-    get_plain_old_pointer(GenericPtr gp)
-{
-    using boost::get_pointer;
-    return get_plain_old_pointer(get_pointer(gp));
-}
-
-// two-argument cast overloads for raw pointers (really belongs in boost/pointer_cast.hpp)
-template<typename T, typename U>
-T* static_pointer_cast(U *r, boost::mpl::identity<T>)
-{
-    return static_cast<T*>(r);
-}
-
-template<typename T, typename U>
-T* const_pointer_cast(U *r, boost::mpl::identity<T>)
-{
-    return const_cast<T*>(r);
-}
-
-template<typename T, typename U>
-T* dynamic_pointer_cast(U *r, boost::mpl::identity<T>)
-{
-    return dynamic_cast<T*>(r);
-}
 
 namespace detail
 {
@@ -226,15 +140,6 @@ class sp_enable_if_convertible: public
     boost::detail::sp_enable_if_convertible<typename pointer_traits<Y>::value_type, typename pointer_traits<T>::value_type>
 {};
 
-template<typename T>
-void set_plain_pointer_to_null(const T&)
-{}
-template<typename T>
-void set_plain_pointer_to_null(T * &p)
-{
-	p = 0;
-}
-
 } // namespace detail
 
 
@@ -253,8 +158,8 @@ private:
 
 public:
 
-    typedef typename pointer_traits<T>::value_type element_type;
     typedef typename pointer_traits<T>::value_type value_type;
+    typedef value_type element_type;
     typedef T pointer;
     typedef typename pointer_traits<T>::reference reference;
     typedef weak<T> weak_type;
@@ -270,7 +175,7 @@ public:
     }
 
     template<class Y>
-    explicit shared( Y p ): px( p ), pn( p ) // Y must be complete
+    explicit shared( Y p ): px( p ), pn( get_plain_old_pointer(p) ) // Y must be complete
     {
         detail::sp_enable_shared_from_this( this, &p, get_plain_old_pointer(p) );
     }
@@ -425,12 +330,12 @@ public:
 
 // Move support
 
-#if defined( BOOST_HAS_RVALUE_REFS )
+#ifndef BOOST_NO_RVALUE_REFERENCES
 
     shared( shared && r ): px( r.px ), pn() // never throws
     {
         pn.swap( r.pn );
-        detail::set_plain_pointer_to_null(r.px);
+        detail::set_plain_old_pointer_to_null(r.px);
     }
 
     template<class Y>
@@ -446,7 +351,7 @@ public:
     : px( r.px ), pn() // never throws
     {
         pn.swap( r.pn );
-        detail::set_plain_pointer_to_null(r.px);
+        detail::set_plain_old_pointer_to_null(r.px);
     }
 
     shared & operator=( shared && r ) // never throws
@@ -507,55 +412,7 @@ public:
     }
 
 // implicit conversion to "bool"
-
-#if ( defined(__SUNPRO_CC) && BOOST_WORKAROUND(__SUNPRO_CC, < 0x570) ) || defined(__CINT__)
-
-    operator bool () const
-    {
-        return get_plain_old_pointer(px) != 0;
-    }
-
-#elif defined( _MANAGED )
-
-    static void unspecified_bool( this_type*** )
-    {
-    }
-
-    typedef void (*unspecified_bool_type)( this_type*** );
-
-    operator unspecified_bool_type() const // never throws
-    {
-        return get_plain_old_pointer(px) == 0 ? 0: unspecified_bool;
-    }
-
-#elif \
-    ( defined(__MWERKS__) && BOOST_WORKAROUND(__MWERKS__, < 0x3200) ) || \
-    ( defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ < 304) ) || \
-    ( defined(__SUNPRO_CC) && BOOST_WORKAROUND(__SUNPRO_CC, <= 0x590) )
-
-    typedef T (this_type::*unspecified_bool_type)() const;
-
-    operator unspecified_bool_type() const // never throws
-    {
-        return get_plain_old_pointer(px) == 0 ? 0: &this_type::get;
-    }
-
-#else
-
-    typedef T this_type::*unspecified_bool_type;
-
-    operator unspecified_bool_type() const // never throws
-    {
-        return get_plain_old_pointer(px) == 0 ? 0: &this_type::px;
-    }
-
-#endif
-
-    // operator! is redundant, but some compilers need it
-    bool operator! () const // never throws
-    {
-        return get_plain_old_pointer(px) == 0;
-    }
+#include <boost/generic_ptr/detail/operator_bool.hpp>
 
     bool unique() const // never throws
     {
