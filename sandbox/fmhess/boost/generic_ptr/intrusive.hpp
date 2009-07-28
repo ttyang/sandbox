@@ -237,24 +237,36 @@ template<class T> void swap(intrusive<T> & lhs, intrusive<T> & rhs)
 
 // mem_fn support
 
-template<class T> T * get_pointer(intrusive<T> const & p)
+template<class T> T get_pointer(intrusive<T> const & p)
 {
     return p.get();
 }
 
-template<class T, class U> intrusive<T> static_pointer_cast(intrusive<U> const & p)
+template<class ToValueType, class U> intrusive<T> static_pointer_cast
+(
+  intrusive<U> const & p,
+  mpl::identity<ToValueType> to_type_iden = mpl::identity<ToValueType>()
+)
 {
-    return static_cast<T *>(p.get());
+    return static_pointer_cast(p.get(), to_type_iden);
 }
 
-template<class T, class U> intrusive<T> const_pointer_cast(intrusive<U> const & p)
+template<class ToValueType, class U> intrusive<T> const_pointer_cast
+(
+  intrusive<U> const & p,
+  mpl::identity<ToValueType> to_type_iden = mpl::identity<ToValueType>()
+)
 {
-    return const_cast<T *>(p.get());
+    return const_pointer_cast(p.get(), to_type_iden);
 }
 
-template<class T, class U> intrusive<T> dynamic_pointer_cast(intrusive<U> const & p)
+template<class ToValueType, class U> intrusive<T> dynamic_pointer_cast
+(
+  intrusive<U> const & p,
+  mpl::identity<ToValueType> to_type_iden = mpl::identity<ToValueType>()
+)
 {
-    return dynamic_cast<T *>(p.get());
+    return dynamic_pointer_cast(p.get(), to_type_iden);
 }
 
 // operator<<
