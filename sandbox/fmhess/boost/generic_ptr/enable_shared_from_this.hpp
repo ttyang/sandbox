@@ -53,7 +53,7 @@ public:
         BOOST_ASSERT( get_plain_old_pointer(p) == this );
         return p;
     }
-//FIXME: yikes! we need to make it easier to add/remove const from a generic pointer's value_type
+
     typename shared<T>::template rebind<typename shared<T>::value_type const>::other shared_from_this() const
     {
         typename shared<T>::template rebind<typename shared<T>::value_type const>::other p( weak_this_ );
