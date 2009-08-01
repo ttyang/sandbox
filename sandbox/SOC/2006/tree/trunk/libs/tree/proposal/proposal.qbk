@@ -1,5 +1,5 @@
 [/
- /  Copyright (c) 2006-2009, Bernhard Reiter
+ /  Copyright (c) 2006-2009, Bernhard Reiter and René Rivera
  /
  /  Distributed under the Boost Software License, Version 1.0.
  /  (See accompanying file LICENSE_1_0.txt or copy at
@@ -11,11 +11,30 @@
  / Proposal documentation file.
  /]
 
+[/ TODO: The generated docs should contain boostinspect:nolicense ]
+
+[library Hierarchical Data Structures and Related Concepts for the C++ Standard Library
+    [quickbook 1.4]
+    [authors [Reiter, Bernhard], [Rivera, René]]
+    [copyright 2006-2009 Bernhard Reiter and René Rivera]
+    [purpose Hierarchical Data Structures and Related Concepts for the C++ Standard Library]
+    [license
+    		
+		Distributed under the Boost Software License, Version 1.0.
+		(See accompanying file LICENSE_1_0.txt or copy at
+		[@http://www.boost.org/LICENSE_1_0.txt])
+
+    ]
+]
+
+[def (tm) '''&#8482;''']
+[def __code_rep__ [@https://svn.boost.org/svn/boost/sandbox/SOC/2006/tree]]
+[def __browse_rep__ [@http://svn.boost.org/trac/boost/browser/sandbox/SOC/2006/tree]]
 
 [section Hierarchical Data Structures and Related Concepts for the
 C++ Standard Library]
 
-[heading Bernhard Reiter and René Rivera]
+[*Bernhard Reiter and René Rivera]
 
 [variablelist
 [[Document No.] [WG21/N2101=J16/06-0171]]
@@ -62,7 +81,7 @@ field is likely to need such a structure at one point.
 No; this proposal originates in an effort to create a generic tree container component
 for [@http://www.boost.org Boost] in the course of 
 [@http://code.google.com/soc/2006/boost/appinfo.html?csaid=E17EA7C7C537C131
-Google Summer of CodeTM 2006], so at the time of this
+Google Summer of Code(tm) 2006], so at the time of this
 writing, implementation work is still unfinished and, however inspired by and striving to
 avoid past issues and such ones arising from current implementation efforts (see below)
 it is, it has not been used in practice yet.
@@ -70,9 +89,9 @@ it is, it has not been used in practice yet.
 
 [section Is there a reference implementation?]
 Yes; the current state is available from svn from 
-[@http://svn.boost.org/svn/boost/sandbox/SOC/2006/tree/trunk].
+__code_rep__.
 Alternatively, the source code can be viewed in a web browser at
-[@https://svn.boost.org/trac/boost/browser/sandbox/SOC/2006/tree/trunk].
+__browse_rep__.
 [endsect]
 
 [endsect]
@@ -211,3 +230,5 @@ or ternary search tries.
 [endsect]
 
 [endsect] [/Title]
+
+[xinclude autodoc.xml]
