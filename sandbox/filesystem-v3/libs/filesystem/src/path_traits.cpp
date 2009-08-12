@@ -1,4 +1,4 @@
-//  filesystem convert.cpp  ------------------------------------------------------------//
+//  filesystem path_traits.cpp  --------------------------------------------------------//
 
 //  Copyright Beman Dawes 2008, 2009
 
@@ -7,11 +7,18 @@
 
 //  Library home page: http://www.boost.org/libs/filesystem
 
-#include <boost/filesystem/detail/convert.hpp>
+// define BOOST_FILESYSTEM_SOURCE so that <boost/system/config.hpp> knows
+// the library is being built (possibly exporting rather than importing code)
+#define BOOST_FILESYSTEM_SOURCE 
+
+#include <boost/filesystem/path_traits.hpp>
 #include <boost/filesystem/config.hpp>
 #include <boost/scoped_array.hpp>
+#include <locale>   // for codecvt_base::result
 #include <cstring>  // for strlen
 #include <cwchar>   // for wcslen
+
+namespace pt = boost::filesystem::path_traits;
 
 //--------------------------------------------------------------------------------------//
 //                                  configuration                                       //
@@ -42,7 +49,7 @@ namespace {
                    const char * from_end,
                    wchar_t * to, wchar_t * to_end,
                    std::wstring & target,
-                   const boost::filesystem::codecvt_type & cvt )
+                   const pt::codecvt_type & cvt )
   {
     //std::cout << std::hex
     //          << " from=" << std::size_t(from)
@@ -76,7 +83,7 @@ namespace {
                    const wchar_t * from_end,
                    char * to, char * to_end,
                    std::string & target,
-                   const boost::filesystem::codecvt_type & cvt )
+                   const pt::codecvt_type & cvt )
   {
     //std::cout << std::hex
     //          << " from=" << std::size_t(from)
@@ -103,7 +110,11 @@ namespace {
   
 }  // unnamed namespace
 
-namespace boost { namespace filesystem { namespace detail {
+//--------------------------------------------------------------------------------------//
+//                                   path_traits                                        //
+//--------------------------------------------------------------------------------------//
+
+namespace boost { namespace filesystem { namespace path_traits {
 
 //--------------------------------------------------------------------------------------//
 //                          convert const char * to wstring                             //
@@ -177,4 +188,4 @@ namespace boost { namespace filesystem { namespace detail {
       convert_aux( from, from_end, buf, buf+default_codecvt_buf_size, to, cvt );
     }
   }
-}}} // namespace boost::filesystem::detail
+}}} // namespace boost::filesystem::path_traits
