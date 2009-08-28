@@ -1,0 +1,396 @@
+<html><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Function Graph</title>
+<link rel="stylesheet" href="data/boostbook.css" type="text/css">
+<meta name="generator" content="Bluefish 1.0.7">
+<link rel="home" href="http://www.boost.org/doc/libs/1_39_0/doc/html/index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook.html" title="Chapter&nbsp;29.&nbsp;Quickbook 1.4">
+<link rel="prev" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/change_log.html" title="Change Log">
+<link rel="next" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/install.html" title="Installation and configuration">
+<link rel="icon" href="http://www.boost.org/favicon.ico" type="image/ico">
+<link rel="stylesheet" type="text/css" href="data/section-basic.css">
+
+</head><body text="black" vlink="#840084" alink="#0000ff" bgcolor="white" link="#0000ff">  <div id="boost-common-heading-doc">
+
+      <div id="heading-placard"></div>
+
+  <h1 id="heading-title"><a href="http://www.boost.org/"><img src="data/space.png" alt="Boost C++ Libraries" id="heading-logo"><span id="boost">Boost</span>
+
+  <span id="cpplibraries">C++ Libraries</span></a></h1>
+
+  <p id="heading-quote"><span class="quote">&#8220;...one of the most highly
+  regarded and expertly designed C++ library projects in the
+  world.&#8221;</span> <span class="attribution">&#8212; <a href="http://www.gotw.ca/" class="external">Herb Sutter</a> and <a href="http://en.wikipedia.org/wiki/Andrei_Alexandrescu" class="external">Andrei
+  Alexandrescu</a>, <a href="http://safari.awprofessional.com/?XmlId=0321113586" class="external">C++
+  Coding Standards</a></span></p>
+
+ 
+
+  </div>
+
+  <div id="boost-common-heading-doc-spacer"></div>
+
+<table width="100%" cellpadding="2"><tbody><tr>
+<td valign="top"><img alt="Boost C++ Libraries" src="data/boost.png" width="277" height="86"></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_39_0/index.html">Home</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_39_0/libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="http://www.boost.org/doc/libs/1_39_0/more/index.htm">More</a></td>
+
+</tr></tbody></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/change_log.html"><img src="data/prev.png" alt="Prev"></a>
+<a accesskey="u" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook.html"><img src="data/up.png" alt="Up"></a>
+<a accesskey="h" href="http://www.boost.org/doc/libs/1_39_0/doc/html/index.html"><img src="data/home.png" alt="Home"></a>
+<a accesskey="n" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/install.html"><img src="data/next.png" alt="Next"></a>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both;">
+<a name="quickbook.syntax"></a><a class="link" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/syntax.html" title="Syntax Summary">Function Graph</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="fgraph2.htm#function_graph.intro">Introduction</a></span></dt>
+<dt><span class="section"><a href="fgraph2.htm#function_graph.basics">The basics</a></span></dt>
+<dt><span class="section"><a href="fgraph2.htm#function_graph.members">Members</a></span></dt>
+<dt><span class="section"><a href="fgraph2.htm#function_graph.edges">Dealing with edges</a></span></dt>
+<dt><span class="section"><a href="fgraph2.htm#function_graph.properties">Properties</a></span></dt>
+</dl></div>
+
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="function_graph.intro"></a>
+<a class="link" href="fgraph2.htm#function_graph.intro" title="Introduction">Introduction</a>
+</h3></div></div></div>
+<p>
+      Function graph is a graph built over a function.
+      It is a data structure that using a set of vertices and a binary function that stisfies most of the Boost Graph Library concepts and, therefore, may use most of the BGL algorithms.
+      Since function graph relies on a binary function to determine its structure (basically, its set of edges), it trades edge storage and look up costs with computation.
+      Note: Function graph takes functors only. Any mention of binary function in this text refers to functors modeling the STL concept binary function. Thanks you.
+</p>
+
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="function_graph.basics"></a>
+<a class="link" href="fgraph.htm#function_graph.basics" title="The basics">The basics</a>
+</h3></div></div></div>
+
+<p>
+    A function graph requires only one parameter: a functor that models binary function.
+</p>
+
+<pre class="programlisting">
+    function_graph&lt;Function&gt;
+</pre>
+
+<p>
+    The binary function passed to the function graph defines the graph's types.
+    The vertex_descriptor type is defined by the argument type of the binary function.
+    Bipartite function graphs are not yet supported, so the binary function must have arguments of the same type.
+    The edge_descriptor type uses the result type of the binary function(note1 but is not only the result_type Trust me, I made this data structure).
+    So the following statement
+</p>
+
+<pre class="programlisting">
+    function_graph&lt;std::less&lt;int&gt; &gt; simple_less_fg;
+</pre>
+
+<p>
+    defines a function graph simple_less_fg where the vertex_descriptor is int and the edge descriptor uses the type bool.
+</p>
+
+<p>
+    A function graph with a range implements enough of the Boost graph concepts to work with a wide variety of algorithms in the BGL.
+    The template parameter Range uses should be compatible with the Boost iterator range concept.
+</p>
+
+<p>
+    However, this graph isn't particularly useful.
+    As it satisfies the Graph and AdjacencyMatrix concepts it has access to a few BGL functions, but these functions, edge(u, v, g), source(edge, g) and target(edge, g), don't give you anything more than what you could do without having to use function graph.
+    The problem is that the set of vertices simple_less_fg is not bounded to a finite range (note2 char may be acceptable, but overflow/modular arithmetic makes it not working things), which means that we can't iterate over the edges of iterators.
+    I suppose we can, but iterating over an infinite number of potential edges with n^2 checks seems a bit ludicrous.
+</p>
+
+<p>
+    A function graph can have a range and the type is given as an optional second template paramter.
+</p>
+
+<pre class="programlisting">
+    function_graph&lt;Function, Range&gt;
+</pre>
+
+<p>
+    Range must adhere to the Boost IteratorRange concept.
+</p>
+
+<p>
+    Let us say that two friends, Mr. Darci and Mr. Bingley, decide to travel the country side one morning on horse back.
+    The horses can only travel distance of five miles at a time before they require rest and water.
+    The estates in the general area are all fond of Darci and Bingely's company, so they can rest at these estates.
+    We can construct a function graph for this situation, where an estate is a vertex, and the binary predicate is a function that determines if two estates are within five miles.
+    For this example, let 'estates' be a vector of estates, where estates hold double[2] (coordinates) and a string (name).
+</p>
+
+<pre class="programlisting">
+    // the distance predicate
+    struct dist_of_five {
+        bool operator()(Estate const& a, Estate const& b);   // returns false if dist(a, b) > 5.0f
+        typedef bool result_type;
+        typedef Estate first_argument_type;
+        typedef Estate second_argument_type;
+    };
+
+    typedef function_graph&lt;dist_of_five, iterator_range&lt;estates::iterator&gt; &gt; CountryGraph;
+    CountryGraph country_side('range');
+</pre>
+
+<p>
+    dist_of_five is the binary predicate that will determine the existance of each edge and is passed to function graph via the first template parameter.
+    The second template parameter is the iterator range type of range of vertices.
+    In this case, the range is the container of estates.
+    The actual range is passed to the function_graph country_side through a constructor.
+</p>
+
+<p>
+    Thats all well and good, but let us find some use for this graph. Let us find to which estates Mr. Darci and Mr. Bingley can reach from estate 2.
+    In graph terms, we will print all of the out edges relative to estate 2.
+</p>
+
+<pre class="programlisting">
+    typedef std::pair&lt;CountryGraph::out_edge_iterator, CountryGraph::out_edge_iterator&gt; OutEdges;
+    typedef CountryGraph::edge_descriptor edge_descriptor;
+
+    OutEdges from_estate_2 = out_edges(estates[2], country_side);
+    while(from_estate_2.first != from_estate_2.second)
+    {
+        //print edges
+        edge_descriptor the_edge(*from_estate_2.first);
+        std::cout &lt;&lt; target(the_edge, country_side).name &lt;&lt; "\n";
+
+        ++from_estate_2.first;
+    }
+</pre>
+
+<p>
+    Up until the opening comment in the while statement, this is a typical loop through all of the out edges relative to estate 2.
+    Dereferencing an out_edge_iterator returns the edge, stored in the_edge.
+    target(u, g) takes the vertex that the out edge iterator points to.
+    Since the vertex is of type estate, it has a name member and that is what gets printed.
+</p>
+
+<p>
+    So far we have covered binary predicates, one with an infinite range and one with a range.
+    Function graph is not limited to predicates, function graph takes any binary function.
+    Whereas a binary predicate is used to determine the existance of an edge, a (non-boolean) binary function is used to calculate the weight of an edge.
+    Since the function returns only weight, all edges in a function graph with a non-boolean function exist.
+    To illustrate this, let us map all of the distances between some moving particles at a certain frame of time.
+    The function `attract` will calculate the attraction between the particles.
+</p>
+
+<pre class="programlisting">
+    std::vector&lt;Particle&gt; particles;
+    // pushback x particles
+
+    // the attraction function
+    struct attract {
+        float operator()(Particle const& a, Particle const& b);   // returns attractive or repulsive force between particles
+        typedef float result_type;
+        typedef Particle first_argument_type;
+        typedef Particle second_argument_type;
+    };
+
+    typedef function_graph&lt;attract, iterator_range&lt;vector&lt;Particles&gt;::iterator&gt; &gt; ParticleGraph;
+    ParticleGraph particle_graph('range');
+</pre>
+
+<p>
+    The only real difference between this code and the code for the 'country_side' graph is that this functor, attract, returns the type 'float'.
+    The effects of this are revieled in the following code.
+</p>
+
+<pre class="programlisting">
+    typedef std::pair&lt;ParticleGraph::edge_iterator, ParticleGraph::out_edge_iterator&gt; Edges;
+    typedef ParticleGraph::edge_descriptor EdgeDescriptor;
+
+    Edges particle_edges = edges(particle_graph);
+    while(particle_edges.first != particle_edges.second)
+    {
+        //print particle x and particle y have a force of z
+        EdgeDescriptor the_edge(*particle_edges.first);
+        std::cout &lt;&lt; "The force between particles "
+                  &lt;&lt; target(the_edge, particle_graph).id
+                  &lt;&lt; " and "
+                  &lt;&lt; source(the_edge, particle_graph).id
+                  &lt;&lt; " is "
+                  &lt;&lt; the_edge.result
+                  &lt;&lt; ".\n";
+        ++particle_edges.first;
+    }
+</pre>
+
+<p>
+    Ignoring the id element that is assumed to be part of the particle data type, the only big difference is the expression 'the_edge.result'.
+    All function graph edges contain an element named result, which is determined by the binary function.
+</p>
+
+<p>
+    There is one property that the above graph has that limits its use.
+    Function graphs that use binary functions that don't return boolean results are always complete graphs.
+    Since a weight is always returned, it is assumed that the edge always exists.
+    Enter Fernando Luis Cacciola Carballal (author of the Boost.Optional library).
+</p>
+
+<p>
+    By creating binary functions with a result type of optional&lt;T&gt;, function graph can easily determine which edges exist and the weight of the edges the do exist.
+</p>
+
+<p>
+    Consider once again the situation involving Mr. Darci and Mr. Bingley.
+    An edge between vectors exists if and only if the edge is no more than five miles.
+    For those edges that do exist, let us use a binary function that returns the distance.
+</p>
+
+<pre class="programlisting">
+    // the distance function
+    struct dist_of_five_opt {
+        optional&lt;float&gt; operator()(Estate const& a, Estate const& b);
+        typedef bool result_type;
+        typedef Estate first_argument_type;
+        typedef Estate second_argument_type;
+    };
+
+    typedef function_graph&lt;dist_of_five_opt, iterator_range&lt;estates::iterator&gt; &gt; BetterCountryGraph;
+    BetterCountryGraph country_side_opt('range');
+</pre>
+
+<p>
+    The only startling change so far is that the result_type of function graph is optional&lt;float&gt;.
+    Let us print all of the estates around estate number 2.
+</p>
+
+<pre class="programlisting">
+    typedef std::pair&lt;BetterCountryGraph::out_edge_iterator, BetterCountryGraph::out_edge_iterator&gt; OutEdges;
+    typedef BetterCountryGraph::edge_descriptor EdgeDescriptor;
+
+    OutEdges from_estate_2 = out_edges(estates[2], country_side);
+    while(from_estate_2.first != from_estate_2.second)
+    {
+        //print edges
+        EdgeDescriptor the_edge(*from_estate_2.first);
+        std::cout &lt;&lt; "The distance to "
+                  &lt;&lt;  target(the_edge, country_side_opt).name
+                  &lt;&lt; " from here is "
+                  &lt;&lt; *the_edge.result
+                  &lt;&lt; "miles.\n";
+
+        ++from_estate_2.first;
+    }
+</pre>
+
+<p>
+    Nothing looks really different from the previous example.
+    Most of the magic happens behind the scenes.
+    The only worry you should have is to dereference the result, since it is an optional.
+</p>
+
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="function_graph.edges"></a><a class="link" href="fgraph.htm#function_graph.edges" title="Edges">Reference</a>
+</h3></div></div></div>
+
+<p>
+    function_graph_iterators.hpp reference
+</p>
+
+<pre class="programlisting">
+namespace boost {
+
+    template&lt;typename Graph&gt;
+    struct function_graph_in_edge_iterator {
+    private:
+        typedef function_graph_in_edge_iterator&lt;Graph> This;
+
+    public:
+        typedef Graph graph_type;
+        typedef typename graph_type::vertex_iterator vertex_iterator;
+        typedef typename graph_type::edge_descriptor edge_descriptor;
+        typedef typename graph_type::vertex_descriptor vertex_descriptor;
+        typedef typename graph_type::function_type function_type;
+
+        typedef std::input_iterator_tag iterator_category;
+        typedef edge_descriptor value_type;
+        typedef int different_type;
+        typedef value_type* pointer;
+        typedef value_type& reference;
+
+        function_graph_in_edge_iterator();
+
+        function_graph_in_edge_iterator(graph_type const& g,
+                                        vertex_descriptor const& vertex,
+                                        vertex_iterator const& i_at);
+
+        function_graph_in_edge_iterator(graph_type const& g,
+                                        vertex_descriptor const& vertex);
+
+        function_graph_in_edge_iterator(This const& cp);
+
+        This& operator++();
+
+        This operator++(int);
+
+        edge_descriptor operator*();
+
+        const graph_type* g_;
+        vertex_descriptor vertex_;
+        vertex_iterator i_at_;
+    };
+
+    template&lt;typename Graph>
+    bool operator==(function_graph_in_edge_iterator&lt;Graph> const& lhs,
+                    function_graph_in_edge_iterator&lt;Graph> const& rhs);
+
+    template&lt;typename Graph>
+    bool operator!=(function_graph_in_edge_iterator&lt;Graph> const& lhs,
+                    function_graph_in_edge_iterator&lt;Graph> const& rhs);
+
+} // boost namespace
+</pre>
+
+
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="function_graph.properties"></a><a class="link" href="fgraph.htm#function_graph.properties" title="Properties">Dealing with properties</a>
+</h3></div></div></div>
+
+<p>
+    Properties are left totally unto the user.
+    Since function graph does not store the vertices, there are no interior properties.
+    Example (insert example) shows how an associative property map can be used in an algorithm.
+</p>
+
+
+
+
+
+
+
+
+
+
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tbody><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 Michael Lopez
+<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></tbody></table>
+<hr>
+
+<div class="spirit-nav">
+<a accesskey="p" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/change_log.html"><img src="qbk%20syntax_files/prev.png" alt="Prev"></a><a accesskey="u" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook.html"><img src="qbk%20syntax_files/up.png" alt="Up"></a><a accesskey="h" href="http://www.boost.org/doc/libs/1_39_0/doc/html/index.html"><img src="qbk%20syntax_files/home.png" alt="Home"></a><a accesskey="n" href="http://www.boost.org/doc/libs/1_39_0/doc/html/quickbook/install.html"><img src="qbk%20syntax_files/next.png" alt="Next"></a>
+</div>
+</body></html>
