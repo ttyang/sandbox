@@ -1,0 +1,67 @@
+[/
+ / Copyright (c) 2007 Darren Garvey
+ /
+ / Distributed under the Boost Software License, Version 1.0. (See accompanying
+ / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+ /]
+
+[section:ref Reference]
+
+[xinclude ../autodoc.xml]
+
+[section Quick Reference]
+
+Reference coming...
+
+Requests
+
+  * Request Data
+      * environment
+        * member variables
+          * env (request meta-data)
+          * get (GET data)
+          * post (POST data)
+          * cookies (cookie data)
+          * form (GET, POST or env data, depending on the request method)
+        * member functions
+          * script_name()
+          * request_method()
+          * content_length()
+          * content_encoding()
+          * etc...
+  * constructors
+  * load()
+  * async_load()
+  * close()
+  * clear()
+  * id()
+  * client()
+
+Acceptor
+
+  * constructors
+  * accept()
+  * async_accept()
+  * cancel()
+
+
+Service
+
+  * run()
+  * stop()
+  * reset()
+  * get_io_service()
+
+Responses
+
+  * operator<<
+  * send()
+  * clear()
+  * data()
+  * charset() // get / set the charset of the request.
+  * content_length()
+
+[endsect] [/ quick_reference]
+
+[endsect] [/ ref]
+
