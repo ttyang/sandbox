@@ -1,16 +1,15 @@
-#ifndef BOOST_MPL_FOLDR_PKG_HPP_VARIADIC_TEMPLATES
-#define BOOST_MPL_FOLDR_PKG_HPP_VARIADIC_TEMPLATES
-#include <boost/mpl/apply.hpp>
+#ifndef BOOST_MPL_FOLDR_PACK_HPP_VARIADIC_TEMPLATES
+#define BOOST_MPL_FOLDR_PACK_HPP_VARIADIC_TEMPLATES
 
 namespace boost { namespace mpl {
 
   template
   < typename State0 //initial State
-  , typename OpValueState_State //Operator: (Value,State) -> State
+  , template<typename Value,typename State>class OpValueState_State //Operator: (Value,State) -> State
   , typename... Values
   >
   struct
-foldr_pkg
+foldr_pack
 /**@brief
  *  Apply OpValueState_State to each element in Values...
  *  starting with intial State, State0.  Associate the applications
@@ -40,38 +39,41 @@ foldr_pkg
 ;
   template
   < typename State0 //initial State
-  , typename OpValueState_State //Operator: (Value,State) -> State
+  , template<typename Value,typename State>class OpValueState_State
   , typename Head
   , typename... Tail
   >
   struct
-foldr_pkg
+foldr_pack
   < State0
   , OpValueState_State
   , Head
   , Tail...
   >
-: apply
-  < OpValueState_State
-  , Head
-  , typename foldr_pkg
+: OpValueState_State
+  < Head
+  , typename foldr_pack
     < State0
     , OpValueState_State
     , Tail...
     >::type
-  >::type
-{};
+  >
+{
+};
   template
-  < typename State0 //initial State
-  , typename OpValueState_State //Operator: (Value,State) -> State
+  < typename State0
+  , template<typename Value,typename State>class OpValueState_State
   >
   struct
-foldr_pkg
+foldr_pack
   < State0
   , OpValueState_State
   >
 {
-    typedef State0 type;
+        typedef 
+      State0 
+    type
+    ;
 };
 
 }}//exit boost::mpl namespace
