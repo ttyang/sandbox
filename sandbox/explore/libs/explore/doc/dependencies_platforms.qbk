@@ -23,6 +23,6 @@ The following platforms and compilers have been tested:
 
  * g++-4.0 Linux
  * vc7.1, 8.0 WinXp
-
+ * darwin-4.0.1 MacOS X 10.5 (PPC and Intel)
 
 [endsect]
