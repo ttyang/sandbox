@@ -267,7 +267,7 @@ void broadcast_seed( PRNG&amp; prng, boost::parallel::mpi::communicator const&am
 broadcasts the global seed <code>s</code> from the root rank given by the <code>root</code> argument and then
 calls the seed function with the same arguments.
 
-<h2><a name="lcg64"/>64-bit linear congruential generator <code>lcg64</code><h2>
+<h2><a name="lcg64"/>64-bit linear congruential generator <code>lcg64</code></h2>
 
 <h3>Header <code>&lt;boost/random/parallel/lcg64.hpp&gt;</code></h3>
 
@@ -309,7 +309,7 @@ is used. In this implementation, m=2<SUP>64</sup> and the multiplier <code>a</co
 which is given as template parameter is different for the three generators . The prime additive constant c is chosen depending
 on the stream number, thus giving independent sequences for each stream.
 
-<h2><a name="well"/>The WELL generators <h2>
+<h2><a name="well"/>The WELL generators </h2>
 
 <h3>Header <code>&lt;boost/random/parallel/well.hpp&gt;</code></h3>
 
