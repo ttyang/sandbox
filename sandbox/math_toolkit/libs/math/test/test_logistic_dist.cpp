@@ -11,7 +11,7 @@
 #include <boost/math/distributions/logistic.hpp>
     using boost::math::logistic_distribution;
 
-#include <boost/test/included/test_exec_monitor.hpp> // Boost.Test
+#include <boost/test/test_exec_monitor.hpp> // Boost.Test
 #include <boost/test/floating_point_comparison.hpp>
 
 
@@ -52,7 +52,7 @@ void test_spot(RealType location, RealType scale, RealType x, RealType p, RealTy
          complement(logistic_distribution<RealType>(location,scale),      
          q)),
          x,
-         tolerance); // %
+         2 * tolerance); // %
    }
 }
 
