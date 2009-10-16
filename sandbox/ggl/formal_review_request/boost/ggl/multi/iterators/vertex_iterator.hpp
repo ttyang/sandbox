@@ -7,14 +7,12 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 
-#ifndef GGL_MULTI_ITERATORS_POINT_CONST_ITERATOR_HPP
-#define GGL_MULTI_ITERATORS_POINT_CONST_ITERATOR_HPP
+#ifndef GGL_MULTI_ITERATORS_VERTEX_ITERATOR_HPP
+#define GGL_MULTI_ITERATORS_VERTEX_ITERATOR_HPP
 
 
-#include <boost/type_traits/remove_const.hpp>
 
-
-#include <ggl/iterators/point_const_iterator.hpp>
+#include <ggl/iterators/vertex_iterator.hpp>
 
 
 namespace ggl
@@ -27,12 +25,23 @@ namespace dispatch
 
 
 template <typename MultiPolygon>
-struct point_const_iterator<multi_polygon_tag, MultiPolygon>
+struct vertex_iterator<multi_polygon_tag, MultiPolygon, false>
+{
+    typedef typename boost::range_value<MultiPolygon>::type polygon_type;
+    typedef typename boost::range_iterator
+        <
+            typename ggl::ring_type<polygon_type>::type
+        >::type type;
+};
+
+
+template <typename MultiPolygon>
+struct vertex_iterator<multi_polygon_tag, MultiPolygon, true>
 {
     typedef typename boost::range_value<MultiPolygon>::type polygon_type;
     typedef typename boost::range_const_iterator
         <
-            typename ring_type<polygon_type>::type
+            typename ggl::ring_type<polygon_type>::type
         >::type type;
 };
 
@@ -47,4 +56,4 @@ struct point_const_iterator<multi_polygon_tag, MultiPolygon>
 }
 
 
-#endif // GGL_MULTI_ITERATORS_POINT_CONST_ITERATOR_HPP
+#endif // GGL_MULTI_ITERATORS_VERTEX_ITERATOR_HPP
