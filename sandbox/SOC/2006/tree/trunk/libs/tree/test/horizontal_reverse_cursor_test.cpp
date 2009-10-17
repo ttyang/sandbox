@@ -21,28 +21,28 @@ BOOST_AUTO_TEST_CASE( test_horizontal_reverse_cursor )
     
     // TODO: Also check ++ and -- operators!
     
-    BOOST_CHECK_EQUAL(*cur.end(), 8);
-    BOOST_CHECK_EQUAL(*cur.end().end(), 3);
-    BOOST_CHECK_EQUAL(*cur.end().end().end(), 1);
+    BOOST_CHECK_EQUAL(*cur, 8);
+    BOOST_CHECK_EQUAL(*cur.end(), 3);
+    BOOST_CHECK_EQUAL(*cur.end().end(), 1);
     BOOST_CHECK(cur.end().end().begin().is_leaf());
     BOOST_CHECK(cur.end().end().end().is_leaf()); //Leaf
     
-    BOOST_CHECK_EQUAL(*cur.end().begin().end(), 6);
-    BOOST_CHECK_EQUAL(*cur.end().begin().end().end(), 4);
+    BOOST_CHECK_EQUAL(*cur.end().begin(), 6);
+    BOOST_CHECK_EQUAL(*cur.end().begin().end(), 4);
     BOOST_CHECK(cur.end().begin().end().end().is_leaf()); //Leaf
 
-    BOOST_CHECK_EQUAL(*cur.end().begin().begin().end(), 7);
+    BOOST_CHECK_EQUAL(*cur.end().begin().begin(), 7);
     BOOST_CHECK(cur.end().begin().begin().end().is_leaf()); //Leaf
 
-    BOOST_CHECK_EQUAL(*cur.begin().end(), 10);
+    BOOST_CHECK_EQUAL(*cur.begin(), 10);
     BOOST_CHECK(cur.begin().end().is_leaf());
-    BOOST_CHECK_EQUAL(*cur.begin().begin().end(), 14);
+    BOOST_CHECK_EQUAL(*cur.begin().begin(), 14);
     BOOST_CHECK(cur.begin().begin().begin().is_leaf());
-    BOOST_CHECK_EQUAL(*cur.begin().begin().end().end(), 13);
+    BOOST_CHECK_EQUAL(*cur.begin().begin().end(), 13);
     BOOST_CHECK(cur.begin().begin().end().begin().is_leaf());
-    BOOST_CHECK_EQUAL(*cur.begin().begin().end().end().end(), 11);
+    BOOST_CHECK_EQUAL(*cur.begin().begin().end().end(), 11);
     BOOST_CHECK(cur.begin().begin().end().end().end().is_leaf()); 
-    BOOST_CHECK_EQUAL(*cur.begin().begin().end().end().begin().end(), 12);
+    BOOST_CHECK_EQUAL(*cur.begin().begin().end().end().begin(), 12);
     BOOST_CHECK(cur.begin().begin().end().end().begin().end().is_leaf()); //Leaf
 }
 

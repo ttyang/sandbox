@@ -21,7 +21,7 @@ struct test_binary_tree_fixture {
         // Just to make sure we won't be getting any false positives when 
         // copying test_tree1 to test_tree2, we'll change one of test_tree2's
         // values.
-        d = d.begin().end().begin().begin();
+        d = d.begin().end().begin();
         *d = T(29);
     }
     
