@@ -26,11 +26,14 @@ BOOST_FIXTURE_TEST_SUITE(cursor_algorithms_test, fake_binary_tree_fixture<int>)
 BOOST_AUTO_TEST_CASE( test_equal )
 {
     BOOST_CHECK(equal(fbt1.root(), fbt1.root()));
+    BOOST_CHECK(!equal(fbt1.root(), fbt2.root()));
+    // TODO: Also check with empty trees
 }
 
 BOOST_AUTO_TEST_CASE( test_equal_pred )
 {
     BOOST_CHECK(boost::tree::equal(fbt1.root(), fbt1.root(), std::equal_to<int>()));
+    BOOST_CHECK(!boost::tree::equal(fbt1.root(), fbt2.root(), std::equal_to<int>()));
 }
 
 BOOST_AUTO_TEST_CASE( test_size )
