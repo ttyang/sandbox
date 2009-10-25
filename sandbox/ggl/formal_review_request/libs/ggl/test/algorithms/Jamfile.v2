@@ -12,7 +12,7 @@ test-suite ggl-algorithms
     [ run area.cpp ]
 #    [ run assign.cpp ]
 #    [ run buffer.cpp ]
-#    [ run centroid.cpp ]
+    [ run centroid.cpp ]
 #    [ run combine.cpp ]
 #    [ run convert.cpp ]
     [ run convex_hull.cpp ]
