@@ -11,7 +11,6 @@
 
 
 #include <ggl/core/cs.hpp>
-#include <ggl/core/concepts/point_concept.hpp>
 #include <ggl/core/access.hpp>
 #include <ggl/core/radian_access.hpp>
 
