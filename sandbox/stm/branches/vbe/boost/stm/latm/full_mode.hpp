@@ -66,7 +66,7 @@ public:
     }
 
 //-----------------------------------------------------------------------------
-    void tm_lock_conflict(Mutex &lock)
+    void tm_lock_conflict(latm::mutex_type &lock)
     {
         tm_lock_conflict(&lock);
     }
