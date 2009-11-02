@@ -6,8 +6,8 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GGL_ALGORITHMS_INTERSECTION_LINESTRING_HPP
-#define GGL_ALGORITHMS_INTERSECTION_LINESTRING_HPP
+#ifndef GGL_ALGORITHMS_OVERLAY_CLIP_LINESTRING_HPP
+#define GGL_ALGORITHMS_OVERLAY_CLIP_LINESTRING_HPP
 
 #include <boost/range/functions.hpp>
 #include <boost/range/metafunctions.hpp>
@@ -31,15 +31,18 @@ namespace strategy { namespace intersection {
     \tparam B input box type of clipping box
     \tparam P input/output point-type of segments to be clipped
     \note The algorithm is currently only implemented for 2D Cartesian points
+    \note Though it is implemented in namespace strategy, and theoretically another
+        strategy could be used, it is not (yet) updated to the general strategy concepts,
+        and not (yet) splitted into a file in folder strategies
     \author Barend Gehrels, and the following recourses
     - A tutorial: http://www.skytopia.com/project/articles/compsci/clipping.html
     - a German applet (link broken): http://ls7-www.cs.uni-dortmund.de/students/projectgroups/acit/lineclip.shtml
 */
-template<typename B, typename P>
+template<typename Box, typename Point>
 class liang_barsky
 {
 private:
-    typedef ggl::segment<P> segment_type;
+    typedef ggl::segment<Point> segment_type;
 
     inline bool check_edge(double const& p, double const& q, double& t1, double& t2) const
     {
@@ -47,7 +50,6 @@ private:
 
         if(p < 0)
         {
-            // TODO: Move r definition one scope level up to reuse --mloskot
             double const r = q / p;
             if (r > t2)
                 visible = false;
@@ -73,9 +75,9 @@ private:
 
 public:
 
-    bool clip_segment(B const& b, segment_type& s, bool& sp1_clipped, bool& sp2_clipped) const
+    inline bool clip_segment(Box const& b, segment_type& s, bool& sp1_clipped, bool& sp2_clipped) const
     {
-        typedef typename select_coordinate_type<B, P>::type coordinate_type;
+        typedef typename select_coordinate_type<Box, Point>::type coordinate_type;
 
         double t1 = 0;
         double t2 = 1;
@@ -101,8 +103,6 @@ public:
             sp1_clipped = t1 > 0;
             sp2_clipped = t2 < 1;
 
-            // TODO: maybe round coordinates in case of integer? define some round_traits<> or so?
-            // Take boost-round of Fernando
             if (sp2_clipped)
             {
                 set<1, 0>(s, get<0, 0>(s) + t2 * dx);
@@ -121,8 +121,8 @@ public:
         return false;
     }
 
-    template<typename L, typename OutputIterator>
-    inline void add(L& line_out, OutputIterator out) const
+    template<typename Linestring, typename OutputIterator>
+    inline void apply(Linestring& line_out, OutputIterator out) const
     {
         if (!boost::empty(line_out))
         {
@@ -132,6 +132,8 @@ public:
         }
     }
 };
+
+
 }} // namespace strategy::intersection
 
 
@@ -147,7 +149,7 @@ namespace detail { namespace intersection {
     \tparam Linestring linestring-type, for example a vector of points, matching the output-iterator type,
          the points should also match the input-iterator type
     \tparam Box box type
-    \tparam Strategy strategy, a clipping strategy which should implement the methods "clip_segment" and "add"
+    \tparam Strategy strategy, a clipping strategy which should implement the methods "clip_segment" and "apply"
 */
 template
 <
@@ -197,14 +199,14 @@ OutputIterator clip_linestring_with_box(Box const& b, Linestring const& linestri
 
         if (!strategy.clip_segment(b, s, c1, c2))
         {
-            strategy.add(line_out, out);
+            strategy.apply(line_out, out);
         }
         else
         {
             // a. If necessary, finish the line and add a start a new one
             if (c1)
             {
-                strategy.add(line_out, out);
+                strategy.apply(line_out, out);
             }
 
             // b. Add p1 only if it is the first point, then add p2
@@ -217,14 +219,14 @@ OutputIterator clip_linestring_with_box(Box const& b, Linestring const& linestri
             // c. If c2 is clipped, finish the line
             if (c2)
             {
-                strategy.add(line_out, out);
+                strategy.apply(line_out, out);
             }
         }
 
     }
 
     // Add last part
-    strategy.add(line_out, out);
+    strategy.apply(line_out, out);
     return out;
 }
 
@@ -233,4 +235,4 @@ OutputIterator clip_linestring_with_box(Box const& b, Linestring const& linestri
 
 } // namespace ggl
 
-#endif // GGL_ALGORITHMS_INTERSECTION_LINESTRING_HPP
+#endif // GGL_ALGORITHMS_OVERLAY_CLIP_LINESTRING_HPP

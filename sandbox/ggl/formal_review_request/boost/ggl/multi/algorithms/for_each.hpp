@@ -37,13 +37,13 @@ template
 struct for_each_multi
 {
     static inline Functor apply(
-                    typename c_nc<MultiGeometry, IsConst>::type& multi,
+                    typename add_const_if_c<IsConst, MultiGeometry>::type& multi,
                     Functor f)
     {
-        typedef typename c_nc_range
+        typedef typename range_iterator_const_if_c
             <
-                MultiGeometry,
-                IsConst
+                IsConst,
+                MultiGeometry
             >::type iterator_type;
 
         for(iterator_type it = boost::begin(multi);

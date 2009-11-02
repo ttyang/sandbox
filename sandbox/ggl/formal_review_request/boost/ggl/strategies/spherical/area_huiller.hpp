@@ -89,7 +89,7 @@ public :
         if (! ggl::math::equals(get<0>(p1), get<0>(p2)))
         {
             // Distance p1 p2
-            double a = state.distance_over_unit_sphere(p1, p2);
+            double a = state.distance_over_unit_sphere.apply(p1, p2);
 
             // Sides on unit sphere to south pole
             double b = 0.5 * math::pi - ggl::get_as_radian<1>(p2);

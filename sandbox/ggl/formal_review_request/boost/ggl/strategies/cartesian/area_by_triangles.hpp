@@ -6,8 +6,8 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GGL_STRATEGY_CARTESIAN_AREA_BY_TRIANGLES_HPP
-#define GGL_STRATEGY_CARTESIAN_AREA_BY_TRIANGLES_HPP
+#ifndef GGL_STRATEGIES_CARTESIAN_AREA_BY_TRIANGLES_HPP
+#define GGL_STRATEGIES_CARTESIAN_AREA_BY_TRIANGLES_HPP
 
 
 #include <boost/mpl/if.hpp>
@@ -112,4 +112,4 @@ struct strategy_area<cartesian_tag, Point>
 } // namespace ggl
 
 
-#endif // GGL_STRATEGY_CARTESIAN_AREA_BY_TRIANGLES_HPP
+#endif // GGL_STRATEGIES_CARTESIAN_AREA_BY_TRIANGLES_HPP

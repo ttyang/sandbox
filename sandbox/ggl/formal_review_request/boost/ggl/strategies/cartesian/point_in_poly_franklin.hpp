@@ -6,8 +6,8 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef GGL_STRATEGY_CARTESIAN_POINT_IN_POLY_FRANKLIN_HPP
-#define GGL_STRATEGY_CARTESIAN_POINT_IN_POLY_FRANKLIN_HPP
+#ifndef GGL_STRATEGIES_CARTESIAN_POINT_IN_POLY_FRANKLIN_HPP
+#define GGL_STRATEGIES_CARTESIAN_POINT_IN_POLY_FRANKLIN_HPP
 
 
 #include <ggl/core/coordinate_type.hpp>
@@ -101,4 +101,4 @@ public :
 } // namespace ggl
 
 
-#endif // GGL_STRATEGY_CARTESIAN_POINT_IN_POLY_FRANKLIN_HPP
+#endif // GGL_STRATEGIES_CARTESIAN_POINT_IN_POLY_FRANKLIN_HPP

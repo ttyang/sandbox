@@ -13,7 +13,6 @@
 #include <boost/range/functions.hpp>
 
 #include <ggl/core/cs.hpp>
-#include <ggl/geometries/segment.hpp>
 #include <ggl/strategies/distance_result.hpp>
 #include <ggl/util/copy.hpp>
 
@@ -66,14 +65,14 @@ namespace detail
 /*!
     \brief Implements the simplify algorithm.
     \ingroup simplify
-    \details The douglas_peucker strategy simplifies a linestring, ring or 
-        vector of points using the well-known Douglas-Peucker algorithm. 
+    \details The douglas_peucker strategy simplifies a linestring, ring or
+        vector of points using the well-known Douglas-Peucker algorithm.
         For the algorithm, see for example:
     \see http://en.wikipedia.org/wiki/Ramer-Douglas-Peucker_algorithm
     \see http://www2.dcs.hull.ac.uk/CISRG/projects/Royal-Inst/demos/dp.html
     \tparam Point the point type
     \tparam PointDistanceStrategy point-segment distance strategy to be used
-    \note This strategy uses itself a point-segment-distance strategy which 
+    \note This strategy uses itself a point-segment-distance strategy which
         can be specified
     \author Barend and Maarten, 1995/1996
     \author Barend, revised for Generic Geometry Library, 2008
@@ -93,7 +92,7 @@ class douglas_peucker
     static inline void consider(iterator_type begin,
                 iterator_type end,
                 return_type const& max_dist, int& n,
-                PointDistanceStrategy const& ps_distance_strategy) 
+                PointDistanceStrategy const& ps_distance_strategy)
     {
         std::size_t size = end - begin;
 
@@ -123,17 +122,17 @@ class douglas_peucker
 
 
         // Find most distance point, compare to the current segment
-        ggl::segment<const Point> s(begin->p, last->p);
+        //ggl::segment<const Point> s(begin->p, last->p);
         return_type md(-1.0); // any value < 0
         iterator_type candidate;
         for(iterator_type it = begin + 1; it != last; ++it)
         {
-            return_type dist = ps_distance_strategy(it->p, s);
+            return_type dist = ps_distance_strategy.apply(it->p, begin->p, last->p);
 
 #ifdef GL_DEBUG_DOUGLAS_PEUCKER
             std::cout << "consider " << dsv(it->p)
                 << " at " << double(dist)
-                << ((dist > max_dist) ? " maybe" : " no") 
+                << ((dist > max_dist) ? " maybe" : " no")
                 << std::endl;
 
 #endif
@@ -144,7 +143,7 @@ class douglas_peucker
             }
         }
 
-        // If a point is found, set the include flag 
+        // If a point is found, set the include flag
         // and handle segments in between recursively
         if (md > max_dist)
         {
@@ -167,22 +166,22 @@ public :
 
 
     template <typename Range, typename OutputIterator>
-    static inline OutputIterator apply(Range const& range, 
-                    OutputIterator out, double max_distance) 
+    static inline OutputIterator apply(Range const& range,
+                    OutputIterator out, double max_distance)
     {
         PointDistanceStrategy strategy;
 
         // Copy coordinates, a vector of references to all points
-        std::vector<dp_point_type> ref_candidates(boost::begin(range), 
+        std::vector<dp_point_type> ref_candidates(boost::begin(range),
                         boost::end(range));
 
-        // Include first and last point of line, 
+        // Include first and last point of line,
         // they are always part of the line
         int n = 2;
         ref_candidates.front().included = true;
         ref_candidates.back().included = true;
 
-        // Get points, recursively, including them if they are further away 
+        // Get points, recursively, including them if they are further away
         // than the specified distance
         typedef typename PointDistanceStrategy::return_type return_type;
 
@@ -190,9 +189,9 @@ public :
             make_distance_result<return_type>(max_distance), n, strategy);
 
         // Copy included elements to the output
-        for(typename std::vector<dp_point_type>::const_iterator it 
+        for(typename std::vector<dp_point_type>::const_iterator it
                         = boost::begin(ref_candidates);
-            it != boost::end(ref_candidates); 
+            it != boost::end(ref_candidates);
             ++it)
         {
             if (it->included)

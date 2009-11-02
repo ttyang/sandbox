@@ -13,7 +13,7 @@
 
 #include <ggl/util/select_calculation_type.hpp>
 
-#include <ggl/strategies/strategy_traits.hpp>
+#include <ggl/strategies/point_in_poly.hpp>
 
 
 
@@ -49,9 +49,7 @@ class winding
 
     typedef typename strategy_side
         <
-            typename cs_tag<Point>::type,
-            Point,
-            PointOfSegment
+            typename cs_tag<Point>::type
         >::type strategy_side_type;
 
 
@@ -137,7 +135,7 @@ public :
         int count = check_segment<1>(point, s1, s2, state);
         if (count != 0)
         {
-            int side = strategy_side_type::side(s1, s2, point);
+            int side = strategy_side_type::apply(s1, s2, point);
             if (side == 0)
             {
                 // Point is lying on segment
