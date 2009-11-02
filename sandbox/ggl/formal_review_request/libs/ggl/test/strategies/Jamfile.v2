@@ -10,6 +10,7 @@ test-suite ggl-strategies
     :
     [ run cross_track.cpp ]
     [ run haversine.cpp ]
+    [ run projected_point.cpp ]
     [ run pythagoras.cpp ]
     [ run transformer.cpp ]
     ;
