@@ -8,12 +8,12 @@
 #include <boost/tree/detail/balancers/unbalanced.hpp>
 #include <boost/tree/binary_tree.hpp>
 
-#define BOOST_TEST_MODULE unbalanced_binary_tree test
+#define BOOST_TEST_MODULE balance test
 //#define BOOST_TEST_DYN_LINK
 #include <boost/test/included/unit_test.hpp>
 
 // TODO: Use a mock_binary_tree.
-BOOST_AUTO_TEST_CASE( unbalanced_binary_tree_constructors_test )
+BOOST_AUTO_TEST_CASE( balance_constructors_test )
 {
     using namespace boost::tree;
     typedef binary_tree<int> tree_t;
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE( unbalanced_binary_tree_constructors_test )
     balance_t t2(t1);
 }
 
-BOOST_AUTO_TEST_CASE( unbalanced_binary_tree_iterator_test )
+BOOST_AUTO_TEST_CASE( balance_iterator_test )
 {
     using namespace boost::tree;
     typedef binary_tree<int> tree_t;
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE( unbalanced_binary_tree_iterator_test )
     balance_t::iterator it2(it1);
 }
 
-BOOST_AUTO_TEST_CASE( unbalanced_binary_tree_test )
+BOOST_AUTO_TEST_CASE( balance_test )
 {
     using namespace boost::tree;
     
