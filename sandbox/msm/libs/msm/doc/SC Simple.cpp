@@ -5,8 +5,6 @@
 #include "boost/mpl/list.hpp"
 
 #include <vector>
-#include "boost/mpl/vector/vector50.hpp"
-#include <boost/msm/state_machine.hpp>
 
 #include <iostream>
 #ifdef WIN32
@@ -107,137 +105,6 @@ namespace test_sc
     };
 }
 
-//FSM
-
-using namespace boost::msm;
-
-namespace test_fsm // Concrete FSM implementation
-{
-    // events
-    struct play {};
-    struct end_pause {};
-    struct stop {};
-    struct pause {};
-    struct open_close {};
-    struct cd_detected{};
-
-    // Concrete FSM implementation 
-    struct player : public state_machine<player>
-    {
-        // no need for exception handling or message queue
-        typedef int no_exception_thrown;
-        typedef int no_message_queue;
-
-        // The list of FSM states
-        struct Empty : public state<> 
-        {
-            // optional entry/exit methods
-            template <class Event>
-            void on_entry(Event const& ) {/*std::cout << "entering: Empty" << std::endl;*/}
-            template <class Event>
-            void on_exit(Event const& ) {/*std::cout << "leaving: Empty" << std::endl;*/}
-        };
-        struct Open : public state<> 
-        {	 
-            template <class Event>
-            void on_entry(Event const& ) {/*std::cout << "entering: Open" << std::endl;*/}
-            template <class Event>
-            void on_exit(Event const& ) {/*std::cout << "leaving: Open" << std::endl;*/}
-        };
-
-        struct Stopped : public state<> 
-        {	 
-            // when stopped, the CD is loaded
-            template <class Event>
-            void on_entry(Event const& ) {/*std::cout << "entering: Stopped" << std::endl;*/}
-            template <class Event>
-            void on_exit(Event const& ) {/*std::cout << "leaving: Stopped" << std::endl;*/}
-        };
-
-        struct Playing : public state<>
-        {
-            template <class Event>
-            void on_entry(Event const& ) {/*std::cout << "entering: Playing" << std::endl;*/}
-            template <class Event>
-            void on_exit(Event const& ) {/*std::cout << "leaving: Playing" << std::endl;*/}
-        };
-
-        // state not defining any entry or exit
-        struct Paused : public state<>
-        {
-            template <class Event>
-            void on_entry(Event const& ) {/*std::cout << "entering: Paused" << std::endl;*/}
-            template <class Event>
-            void on_exit(Event const& ) {/*std::cout << "leaving: Paused" << std::endl;*/}
-        };
-
-        // the initial state of the player SM. Must be defined
-        typedef Empty initial_state;
-
-#ifdef __MWERKS__
-    public: // Codewarrior bug workaround.  Tested at 0x3202
-#endif 
-        // transition actions
-        void start_playback(play const&)       {  }
-        void open_drawer(open_close const&)    {  }
-        void close_drawer(open_close const&)   {  }
-        void store_cd_info(cd_detected const& cd) { }
-        void stop_playback(stop const&)        {  }
-        void pause_playback(pause const&)      { }
-        void resume_playback(end_pause const&)      {  }
-        void stop_and_open(open_close const&)  {  }
-        void stopped_again(stop const&)	{}
-        // guard conditions
-
-#ifdef __MWERKS__
-    private:
-#endif 
-        typedef player p; // makes transition table cleaner
-
-        // Transition table for player
-        struct transition_table : mpl::vector<
-            //    Start     Event         Next      Action				Guard
-            //    +---------+-------------+---------+---------------------+----------------------+
-            a_row < Stopped , play        , Playing , &p::start_playback                       >,
-            a_row < Stopped , open_close  , Open    , &p::open_drawer                          >,
-            a_row < Stopped , stop        , Stopped , &p::stopped_again                        >,
-            //    +---------+-------------+---------+---------------------+----------------------+
-            a_row < Open    , open_close  , Empty   , &p::close_drawer                         >,
-            //    +---------+-------------+---------+---------------------+----------------------+
-            a_row < Empty   , open_close  , Open    , &p::open_drawer                          >,
-            a_row < Empty   , cd_detected , Stopped , &p::store_cd_info                        >,
-            //    +---------+-------------+---------+---------------------+----------------------+
-            a_row < Playing , stop        , Stopped , &p::stop_playback                        >,
-            a_row < Playing , pause       , Paused  , &p::pause_playback                       >,
-            a_row < Playing , open_close  , Open    , &p::stop_and_open                        >,
-            //    +---------+-------------+---------+---------------------+----------------------+
-            a_row < Paused  , end_pause   , Playing , &p::resume_playback                      >,
-            a_row < Paused  , stop        , Stopped , &p::stop_playback                        >,
-            a_row < Paused  , open_close  , Open    , &p::stop_and_open                        >
-            //    +---------+-------------+---------+---------------------+----------------------+
-        > {};
-
-        // Replaces the default no-transition response.
-        template <class Event>
-        int no_transition(int state, Event const& e)
-        {
-            std::cout << "no transition from state " << state
-                << " on event " << typeid(e).name() << std::endl;
-            return state;
-        }
-    };
-
-    //
-    // Testing utilities.
-    //
-    static char const* const state_names[] = { "Stopped", "Open", "Empty", "Playing", "Paused" };
-
-    void pstate(player const& p)
-    {
-        std::cout << " -> " << state_names[p.current_state()[0]] << std::endl;
-    }
-
-}
 
 #ifndef WIN32
 long mtime(struct timeval& tv1,struct timeval& tv2)
@@ -286,41 +153,6 @@ int main()
     std::cout << "sc took in s:" << (double)(li2.QuadPart-li.QuadPart)/res.QuadPart <<"\n" <<std::endl;
 #else
     std::cout << "sc took in us:" << mtime(tv1,tv2) <<"\n" <<std::endl;
-#endif
-
-    test_fsm::player p2;
-    p2.start();
-    // for timing
-#ifdef WIN32
-    ::QueryPerformanceCounter(&li);
-#else
-    gettimeofday(&tv1,NULL);
-#endif
-    for (int i=0;i<100;++i)
-    {
-        p2.process_event(test_fsm::open_close());
-        p2.process_event(test_fsm::open_close()); 
-        p2.process_event(test_fsm::cd_detected());
-        p2.process_event(test_fsm::play());      
-        p2.process_event(test_fsm::pause()); 
-        // go back to Playing
-        p2.process_event(test_fsm::end_pause()); 
-        p2.process_event(test_fsm::pause()); 
-        p2.process_event(test_fsm::stop());  
-        // event leading to the same state
-        p2.process_event(test_fsm::stop());
-        p2.process_event(test_fsm::open_close());
-        p2.process_event(test_fsm::open_close());
-    }
-#ifdef WIN32
-    ::QueryPerformanceCounter(&li2);
-#else
-    gettimeofday(&tv2,NULL);
-#endif
-#ifdef WIN32
-    std::cout << "msm took in s:" << (double)(li2.QuadPart-li.QuadPart)/res.QuadPart <<"\n" <<std::endl;
-#else
-    std::cout << "msm took in us:" <<  mtime(tv1,tv2) <<"\n" <<std::endl;
 #endif
     return 0;
 }

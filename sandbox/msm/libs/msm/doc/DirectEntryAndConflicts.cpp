@@ -1,13 +1,12 @@
 #include <vector>
 #include <iostream>
-// back-end
+#include "boost/mpl/vector/vector50.hpp"
 #include <boost/msm/back/state_machine.hpp>
-//front-end
 #include <boost/msm/front/state_machine_def.hpp>
 
 namespace msm = boost::msm;
 
-namespace 
+namespace  // Concrete FSM implementation
 {
     // events
     struct event1 {};
@@ -15,13 +14,9 @@ namespace
     struct event3 {};
     struct event4 {};
     struct event5 {};
-    struct event6 
-    {
-        event6(){}
-        template <class Event>
-        event6(Event const&){}
-    };
-    // front-end: define the FSM structure 
+    struct event6 {};
+    struct event7 {};
+    // Concrete FSM implementation 
     struct Fsm_ : public msm::front::state_machine_def<Fsm_>
     {
         // The list of FSM states
@@ -43,8 +38,6 @@ namespace
         };
         struct SubFsm2_ : public msm::front::state_machine_def<SubFsm2_>
         {
-            typedef msm::back::state_machine<SubFsm2_> SubFsm2;
-
             template <class Event,class FSM>
             void on_entry(Event const&,FSM& ) {std::cout << "entering: SubFsm2" << std::endl;}
             template <class Event,class FSM>
@@ -100,7 +93,7 @@ namespace
                 template <class Event,class FSM>
                 void on_exit(Event const&,FSM& ) {std::cout << "leaving: SubFsm2::SubState3b" << std::endl;}
             };
-            struct PseudoExit1 : public msm::front::exit_pseudo_state<event6> 
+            struct PseudoExit1 : public msm::front::exit_pseudo_state<event5> 
             {
                 template <class Event,class FSM>
                 void on_entry(Event const&,FSM& ) {std::cout << "entering: SubFsm2::PseudoExit1" << std::endl;}
@@ -112,19 +105,29 @@ namespace
             {
                 std::cout << "calling entry_action" << std::endl;
             }
+            void fake_action(event4 const&)
+            {
+                std::cout << "calling fake_action" << std::endl;
+            }
+            bool some_guard(event4 const&)
+            {
+                bool res = false;
+                std::cout << "calling fsm::some_guard with:"<< std::boolalpha << res << std::endl;
+                return res;
+            }
             // the initial state. Must be defined
             typedef mpl::vector<SubState1,SubState1b> initial_state;
 
-            typedef mpl::vector<SubState2b> explicit_creation;
+            typedef mpl::vector<SubState2,SubState2b> explicit_creation;
 
             // Transition table for SubFsm2
             struct transition_table : mpl::vector<
-                //      Start          Event         Next         Action				   Guard
-                //    +--------------+-------------+------------+------------------------+----------------------+
-                a_row < PseudoEntry1 , event4      , SubState3  ,&SubFsm2_::entry_action                        >,
-                _row  < SubState2    , event6      , SubState1                                                  >,
-                _row  < SubState3    , event5      , PseudoExit1                                                >
-                //    +--------------+-------------+------------+------------------------+----------------------+
+                //    Start          Event         Next         Action				   Guard
+                //  +--------------+-------------+------------+------------------------+----------------------+
+              a_row < PseudoEntry1 , event4      , SubState3  ,&SubFsm2_::entry_action                         >,
+                row < PseudoEntry1 , event4      , SubState3  ,&SubFsm2_::fake_action   , &SubFsm2_::some_guard >,
+               _row < SubState3    , event5      , PseudoExit1                                                >
+                //  +--------------+-------------+------------+------------------------+----------------------+
             > {};
             // Replaces the default no-transition response.
             template <class FSM,class Event>
@@ -135,28 +138,42 @@ namespace
             }
         };
         typedef msm::back::state_machine<SubFsm2_> SubFsm2;
-
         // the initial state of the player SM. Must be defined
         typedef State1 initial_state;
-
+ 
         // transition actions
+        void fake_action(event5 const&)
+        {
+            std::cout << "calling fsm::fake_action" << std::endl;
+        }
         // guard conditions
+        bool some_guard(event5 const&)
+        {
+            bool res = false;
+            std::cout << "calling fsm::some_guard with:"<< std::boolalpha << res << std::endl;
+            return res;
+        }
+         bool guard_false(event6 const&)
+        {
+            std::cout << "calling fsm::guard_false"<< std::endl;
+            return false;
+        }
 
         // Transition table for Fsm
         struct transition_table : mpl::vector<
-            //    Start                 Event    Next                                 Action  Guard
-            //   +---------------------+--------+------------------------------------+-------+--------+
-            _row < State1              , event1 , SubFsm2                                             >,
-            _row < State1              , event2 , SubFsm2::direct<SubFsm2_::SubState2>                >,
-            _row < State1              , event3 , mpl::vector<SubFsm2::direct<SubFsm2_::SubState2>,
-                                                              SubFsm2::direct<SubFsm2_::SubState2b> > >,
-            _row < State1              , event4 , SubFsm2::entry_pt
-                                                        <SubFsm2_::PseudoEntry1>                      >,
-            //   +---------------------+--------+------------------------------------+-------+--------+
-            _row < SubFsm2             , event1 , State1                                              >,
-            _row < SubFsm2::exit_pt
-                <SubFsm2_::PseudoExit1>, event6 , State2                                              >
-            //   +---------------------+--------+------------------------------------+-------+--------+
+            //    Start     Event         Next      Action				Guard
+            //  +---------+-------------+---------+---------------------+----------------------+
+            _row < State1 , event1      , SubFsm2                                              >,
+            _row < State1 , event2      , SubFsm2::direct<SubFsm2_::SubState2>                 >,
+            _row < State1 , event3      , mpl::vector<SubFsm2::direct<SubFsm2_::SubState2>,
+                                                      SubFsm2::direct<SubFsm2_::SubState2b> >  >,
+            _row < State1 , event4      , SubFsm2::entry_pt<SubFsm2_::PseudoEntry1>            >,
+            //  +---------+-------------+---------+---------------------+----------------------+
+            _row < SubFsm2, event1      , State1                                               >,
+            _row < SubFsm2::exit_pt<SubFsm2_::PseudoExit1> , event5  , State2                  >,
+           g_row < State2 , event6      , State1                        , &Fsm_::guard_false   >,
+           g_row < State2 , event6      , State1                        , &Fsm_::guard_false   >
+            //  +---------+-------------+---------+---------------------+----------------------+
         > {};
 
         // Replaces the default no-transition response.
@@ -168,7 +185,6 @@ namespace
         }
     };
     typedef msm::back::state_machine<Fsm_> Fsm;
-
     //
     // Testing utilities.
     //
@@ -185,10 +201,12 @@ namespace
         p.start(); 
         std::cout << "Simply move in and out of the composite, activate init states" << std::endl;
         p.process_event(event1()); pstate(p);
+        // voluntary mistake to check that the transition is only taken if the exit state is active
+        std::cout << "Simulate error. event5 is only valid through an exit pseudo state" << std::endl;
+        p.process_event(event5()); pstate(p);
         p.process_event(event1()); pstate(p);
-        std::cout << "Direct entry into SubFsm2::SubState2, then transition to SubState1 and back to State1" << std::endl;
+        std::cout << "Direct entry into SubFsm2::SubState2 and back" << std::endl;
         p.process_event(event2()); pstate(p);
-        p.process_event(event6()); pstate(p);
         p.process_event(event1()); pstate(p);
         std::cout << "processing fork to SubFsm2::SubState2 and SubFsm2::SubState2b" << std::endl;
         p.process_event(event3()); pstate(p);
@@ -200,7 +218,11 @@ namespace
         p.process_event(event4()); pstate(p);
         std::cout << "using exit pseudo state" << std::endl;
         p.process_event(event5()); pstate(p);
-    }
+        std::cout << "Simulate error. event5 is not valid" << std::endl;
+        p.process_event(event5()); pstate(p);
+        std::cout << "2 false guards" << std::endl;
+        p.process_event(event6()); pstate(p);
+   }
 }
 
 int main()

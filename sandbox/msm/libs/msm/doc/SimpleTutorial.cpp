@@ -1,11 +1,12 @@
-#include <vector>
 #include <iostream>
-#include "boost/mpl/vector/vector50.hpp"
-#include <boost/msm/state_machine.hpp>
+// back-end
+#include <boost/msm/back/state_machine.hpp>
+//front-end
+#include <boost/msm/front/state_machine_def.hpp>
 
-using namespace boost::msm;
+namespace msm = boost::msm;
 
-namespace  // Concrete FSM implementation
+namespace
 {
     // events
     struct play {};
@@ -15,88 +16,77 @@ namespace  // Concrete FSM implementation
     struct open_close {};
 
     // A "complicated" event type that carries some data.
-    // forward
-    struct player;
-    enum DiskTypeEnum
+	enum DiskTypeEnum
     {
         DISK_CD=0,
         DISK_DVD=1
     };
     struct cd_detected
     {
-        cd_detected(std::string name, DiskTypeEnum diskType,player& p)
+        cd_detected(std::string name, DiskTypeEnum diskType)
             : name(name),
-            disc_type(diskType),
-            m_player(p)
+            disc_type(diskType)
         {}
 
         std::string name;
         DiskTypeEnum disc_type;
-        player& m_player;
     };
 
-    // Concrete FSM implementation 
-    struct player : public state_machine<player>
+    // front-end: define the FSM structure 
+    struct player_ : public msm::front::state_machine_def<player_>
     {
         // The list of FSM states
-        struct Empty : public state<> 
+        struct Empty : public msm::front::state<> 
         {
             // every (optional) entry/exit methods get the event passed.
-            template <class Event>
-            void on_entry(Event const& ) {std::cout << "entering: Empty" << std::endl;}
-            template <class Event>
-            void on_exit(Event const& ) {std::cout << "leaving: Empty" << std::endl;}
+            template <class Event,class FSM>
+            void on_entry(Event const&,FSM& ) {std::cout << "entering: Empty" << std::endl;}
+            template <class Event,class FSM>
+            void on_exit(Event const&,FSM& ) {std::cout << "leaving: Empty" << std::endl;}
         };
-        struct Open : public state<> 
+        struct Open : public msm::front::state<> 
         {	 
-            template <class Event>
-            void on_entry(Event const& ) {std::cout << "entering: Open" << std::endl;}
-            template <class Event>
-            void on_exit(Event const& ) {std::cout << "leaving: Open" << std::endl;}
+            template <class Event,class FSM>
+            void on_entry(Event const& ,FSM&) {std::cout << "entering: Open" << std::endl;}
+            template <class Event,class FSM>
+            void on_exit(Event const&,FSM& ) {std::cout << "leaving: Open" << std::endl;}
         };
 
-        struct Stopped : public state<> 
+        // sm_ptr still supported but deprecated as functors are a much better way to do the same thing
+        struct Stopped : public msm::front::state<msm::front::default_base_state,msm::front::sm_ptr> 
         {	 
-            // when stopped, the CD is loaded
-            template <class Event>
-            void on_entry(Event const& ) {std::cout << "entering: Stopped" << std::endl;}
-            template <class Event>
-            void on_exit(Event const& ) {std::cout << "leaving: Stopped" << std::endl;}
+            template <class Event,class FSM>
+            void on_entry(Event const& ,FSM&) {std::cout << "entering: Stopped" << std::endl;}
+            template <class Event,class FSM>
+            void on_exit(Event const&,FSM& ) {std::cout << "leaving: Stopped" << std::endl;}
+            void set_sm_ptr(player_* pl)
+            {
+                m_player=pl;
+            }
+            player_* m_player;
         };
 
-        struct Playing : public state<>
+        struct Playing : public msm::front::state<>
         {
-            template <class Event>
-            void on_entry(Event const& ) {std::cout << "entering: Playing" << std::endl;}
-            template <class Event>
-            void on_exit(Event const& ) {std::cout << "leaving: Playing" << std::endl;}
+            template <class Event,class FSM>
+            void on_entry(Event const&,FSM& ) {std::cout << "entering: Playing" << std::endl;}
+            template <class Event,class FSM>
+            void on_exit(Event const&,FSM& ) {std::cout << "leaving: Playing" << std::endl;}
         };
 
         // state not defining any entry or exit
-        struct Paused : public state<>
+        struct Paused : public msm::front::state<>
         {
-            ~Paused()
-            {
-                std::cout << "Paused: destruct" << std::endl;
-            }
         };
 
         // the initial state of the player SM. Must be defined
         typedef Empty initial_state;
 
-#ifdef __MWERKS__
-    public: // Codewarrior bug workaround.  Tested at 0x3202
-#endif 
         // transition actions
         void start_playback(play const&)       { std::cout << "player::start_playback\n"; }
         void open_drawer(open_close const&)    { std::cout << "player::open_drawer\n"; }
         void close_drawer(open_close const&)   { std::cout << "player::close_drawer\n"; }
-        void store_cd_info(cd_detected const& cd) 
-        { 
-            std::cout << "player::store_cd_info\n"; 
-            // generate another event to test the queue
-            cd.m_player.process_event(play());
-        }
+        void store_cd_info(cd_detected const&) { std::cout << "player::store_cd_info\n"; }
         void stop_playback(stop const&)        { std::cout << "player::stop_playback\n"; }
         void pause_playback(pause const&)      { std::cout << "player::pause_playback\n"; }
         void resume_playback(end_pause const&)      { std::cout << "player::resume_playback\n"; }
@@ -113,49 +103,48 @@ namespace  // Concrete FSM implementation
             }
             return true;
         }
-        bool auto_start(cd_detected const& evt)
+        // used to show a transition conflict. This guard will simply deactivate one transition and thus
+        // solve the conflict
+        bool auto_start(cd_detected const&)
         {
             return false;
         }
 
-#ifdef __MWERKS__
-    private:
-#endif 
-        typedef player p; // makes transition table cleaner
+        typedef player_ p; // makes transition table cleaner
 
         // Transition table for player
         struct transition_table : mpl::vector<
-            //    Start     Event         Next      Action				Guard
+            //    Start     Event         Next      Action				 Guard
             //  +---------+-------------+---------+---------------------+----------------------+
-            a_row < Stopped , play        , Playing , &p::start_playback                       >,
-            a_row < Stopped , open_close  , Open    , &p::open_drawer                          >,
-            _row < Stopped , stop        , Stopped                                            >,
+          a_row < Stopped , play        , Playing , &p::start_playback                         >,
+          a_row < Stopped , open_close  , Open    , &p::open_drawer                            >,
+           _row < Stopped , stop        , Stopped                                              >,
             //  +---------+-------------+---------+---------------------+----------------------+
-            a_row < Open    , open_close  , Empty   , &p::close_drawer                         >,
+          a_row < Open    , open_close  , Empty   , &p::close_drawer                           >,
             //  +---------+-------------+---------+---------------------+----------------------+
-            a_row < Empty   , open_close  , Open    , &p::open_drawer                          >,
-            row < Empty   , cd_detected , Stopped , &p::store_cd_info   ,&p::good_disk_format>,
-            row < Empty   , cd_detected , Playing , &p::store_cd_info   ,&p::auto_start      >,
+          a_row < Empty   , open_close  , Open    , &p::open_drawer                            >,
+            row < Empty   , cd_detected , Stopped , &p::store_cd_info   ,&p::good_disk_format  >,
+            row < Empty   , cd_detected , Playing , &p::store_cd_info   ,&p::auto_start        >,
             //  +---------+-------------+---------+---------------------+----------------------+
-            a_row < Playing , stop        , Stopped , &p::stop_playback                        >,
-            a_row < Playing , pause       , Paused  , &p::pause_playback                       >,
-            a_row < Playing , open_close  , Open    , &p::stop_and_open                        >,
+          a_row < Playing , stop        , Stopped , &p::stop_playback                          >,
+          a_row < Playing , pause       , Paused  , &p::pause_playback                         >,
+          a_row < Playing , open_close  , Open    , &p::stop_and_open                          >,
             //  +---------+-------------+---------+---------------------+----------------------+
-            a_row < Paused  , end_pause   , Playing , &p::resume_playback                      >,
-            a_row < Paused  , stop        , Stopped , &p::stop_playback                        >,
-            a_row < Paused  , open_close  , Open    , &p::stop_and_open                        >
+          a_row < Paused  , end_pause   , Playing , &p::resume_playback                        >,
+          a_row < Paused  , stop        , Stopped , &p::stop_playback                          >,
+          a_row < Paused  , open_close  , Open    , &p::stop_and_open                          >
             //  +---------+-------------+---------+---------------------+----------------------+
         > {};
-
         // Replaces the default no-transition response.
-        template <class Event>
-        int no_transition(int state, Event const& e)
+        template <class FSM,class Event>
+        void no_transition(Event const& e, FSM&,int state)
         {
             std::cout << "no transition from state " << state
                 << " on event " << typeid(e).name() << std::endl;
-            return state;
         }
     };
+    // Pick a back-end
+    typedef msm::back::state_machine<player_> player;
 
     //
     // Testing utilities.
@@ -167,8 +156,8 @@ namespace  // Concrete FSM implementation
     }
 
     void test()
-    {
-        player p;
+    {        
+		player p;
 
         // needed to start the highest-level SM. This will call on_entry and mark the start of the SM
         p.start(); 
@@ -177,10 +166,10 @@ namespace  // Concrete FSM implementation
         p.process_event(open_close()); pstate(p);
         // will be rejected, wrong disk type
         p.process_event(
-            cd_detected("louie, louie",DISK_DVD,p)); pstate(p);
+            cd_detected("louie, louie",DISK_DVD)); pstate(p);
         p.process_event(
-            cd_detected("louie, louie",DISK_CD,p)); pstate(p);
-        // no need to call play() as the previous event does it in its action method
+            cd_detected("louie, louie",DISK_CD)); pstate(p);
+		p.process_event(play());
 
         // at this point, Play is active      
         p.process_event(pause()); pstate(p);
