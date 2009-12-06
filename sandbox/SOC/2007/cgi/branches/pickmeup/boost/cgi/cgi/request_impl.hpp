@@ -1,6 +1,6 @@
-//              -- cgi_request_impl.hpp --
+//               -- cgi_request_impl.hpp --
 //
-//            Copyright (c) Darren Garvey 2007.
+//          Copyright (c) Darren Garvey 2007-2009.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -9,64 +9,64 @@
 #ifndef CGI_CGI_REQUEST_IMPL_HPP_INCLUDED__
 #define CGI_CGI_REQUEST_IMPL_HPP_INCLUDED__
 
-#include <map>
-#include <string>
-///////////////////////////////////////////////////////////
-#include <boost/shared_ptr.hpp>
-#include <boost/noncopyable.hpp>
-///////////////////////////////////////////////////////////
-#include "boost/cgi/common/map.hpp"
+#include "boost/cgi/detail/push_options.hpp"
+
+#include "boost/cgi/cgi/service.hpp"
 #include "boost/cgi/basic_client.hpp"
-#include "boost/cgi/common/role_type.hpp"
-#include "boost/cgi/http/status_code.hpp"
-#include "boost/cgi/connections/stdio.hpp"
-#include "boost/cgi/detail/cgi_request_impl_base.hpp"
+#include "boost/cgi/connections/async_stdio.hpp"
 
 // Make this ProtocolService-independent
 
 BOOST_CGI_NAMESPACE_BEGIN
 
-  // Forward declaration
-  //template<typename>
-  class cgi_service_impl;
-
-
-  /// Implementation for a standard CGI request
-  /**
-   * Note: This isn't noncopyable since there's no real reason it can't be
-   * copied around. Since basic_request is noncopyable, basic copying will be
-   * restricted but if someone really wants to copy the data, then they can.
-   */
   class cgi_request_impl
-    : public detail::cgi_request_impl_base<connections::stdio>
   {
   public:
-    typedef common::basic_client<
-                connections::stdio, common::tags::cgi
-            > client_type;
-    typedef common::tags::cgi protocol_type;
+    typedef ::BOOST_CGI_NAMESPACE::common::map              map_type;
+    typedef ::BOOST_CGI_NAMESPACE::cgi::service            protocol_service_type;
+    typedef protocol_service_type::protocol_type            protocol_type;
+    typedef connections::async_stdio                        connection_type;
+    typedef
+      ::BOOST_CGI_NAMESPACE::common::basic_client<
+        connection_type, common::tags::cgi
+      >
+    client_type;
+    typedef connection_type::pointer                        conn_ptr;
 
     /// Constructor
-    /**
-     * Since this request type is synchronous, there is no need for an
-     * io_service, so the passed ProtocolService is just ignored.
-     */
-    template<typename ProtocolService>
-    cgi_request_impl(ProtocolService& pserv)
-      : detail::cgi_request_impl_base<connection_type>(pserv)
-    {
-    }
-
     cgi_request_impl()
-      : detail::cgi_request_impl_base<connection_type>()
+      : stdin_parsed_(false)
+      , stdin_data_read_(false)
+      , stdin_bytes_left_(-1)
+      , http_status_(common::http::ok)
+      , request_status_(common::unloaded)
     {
     }
 
-  protected:
-    friend class cgi_service_impl;
+    protocol_service_type* service_;
+        
+    bool stdin_parsed()                      { return stdin_parsed_;   }
+    common::http::status_code& http_status() { return http_status_;    }
+    common::request_status& status()         { return request_status_; }
+
+    conn_ptr& connection()                   { return connection_;     }
+
+    bool stdin_parsed_;
+    bool stdin_data_read_;
+    std::size_t stdin_bytes_left_;
+    
+  private:
+
+    common::http::status_code http_status_;
+    common::request_status request_status_;
+
+    conn_ptr connection_;
+
   };
 
 BOOST_CGI_NAMESPACE_END
+
+#include "boost/cgi/detail/pop_options.hpp"
 
 #endif // CGI_CGI_REQUEST_IMPL_HPP_INCLUDED__
 
