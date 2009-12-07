@@ -13,7 +13,7 @@
 
 #include "boost/cgi/common/tags.hpp"
 #include "boost/cgi/common/map.hpp"
-#include "boost/cgi/acgi/request_impl.hpp"
+#include "boost/cgi/cgi/request_impl.hpp"
 #include "boost/cgi/import/io_service.hpp"
 #include "boost/cgi/detail/service_base.hpp"
 #include "boost/cgi/detail/extract_params.hpp"
@@ -132,6 +132,10 @@ BOOST_CGI_NAMESPACE_BEGIN
           && impl.status() <= common::aborted;
     }
 
+    void clear(implementation_type& impl) { }
+
+    int request_id(implementation_type& impl) { return 1; }
+
     /// Return the connection associated with the request
     implementation_type::client_type&
       client(implementation_type& impl)
@@ -139,14 +143,11 @@ BOOST_CGI_NAMESPACE_BEGIN
       return impl.client_;
     }
 
-    void clear(implementation_type& impl) { }
-
-    int request_id(implementation_type& impl) { return 1; }
-
     // **FIXME** should return error_code
     int close(implementation_type& impl, common::http::status_code& http_s
       , int status, boost::system::error_code& ec)
     {
+      std::cerr<< "In close." << std::endl;
       impl.status() = common::closed;
       impl.http_status() = http_s;
       return status;
@@ -203,13 +204,6 @@ BOOST_CGI_NAMESPACE_BEGIN
       return common::responder;
     }
 
-    /// Set the http status (this does nothing for aCGI)
-    void set_status(
-       implementation_type& impl, common::http::status_code&)
-    {
-      // **FIXME**
-    }
-
     /// Set the request status
     void set_status(
        implementation_type& impl, common::request_status status)
@@ -248,6 +242,13 @@ BOOST_CGI_NAMESPACE_BEGIN
          bytes_read = read_some(impl, ec);
          bytes_left -= bytes_read;
       } while (!ec && bytes_left);
+      
+      // Return an error, except ignore EOF, as this is expected.
+      if (ec)
+        if (ec == boost::cgi::common::error::eof)
+          ec = boost::system::error_code();
+        else
+          return ec;
 
       if (!impl.fp_)
         // Construct a form_parser instance.

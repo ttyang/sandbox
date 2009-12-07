@@ -19,6 +19,7 @@ BOOST_CGI_NAMESPACE_BEGIN
   namespace cgi {
     typedef cgi_service service;
   }
+  typedef cgi_service service;
 
 BOOST_CGI_NAMESPACE_END
 
