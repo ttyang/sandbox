@@ -70,6 +70,10 @@ body { padding: 0; margin: 3%; border-color: #efe; }
 {
     list-style-type: none;
 }
+.nvpair a
+{
+    float: right;
+}
 form
 {
 }

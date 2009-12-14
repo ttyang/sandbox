@@ -1,12 +1,12 @@
 //                     -- main.hpp --
 //
-//           Copyright (c) Darren Garvey 2007.
+//         Copyright (c) Darren Garvey 2007-2009.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 //
 //////////////////////////////////////////////////////////////////
-//[acgi_cookie_game2
+//[cgi_cookie_game2
 //
 // Cookie Test With cTemplate
 // --------------------------
@@ -19,7 +19,7 @@
 //
 // [1] - http://code.google.com/p/google-ctemplate/
 //
-#include <boost/cgi/acgi.hpp>
+#include <boost/cgi/cgi.hpp>
 #include <boost/cgi/utility.hpp>
 #include <ctemplate/template.h>
 #include <boost/throw_exception.hpp>
@@ -35,7 +35,7 @@
 
 //[main
 
-using namespace boost::acgi;
+using namespace boost::cgi;
 namespace fs = boost::filesystem;
 
 // The types we use. Only here because this is an example.
@@ -59,11 +59,11 @@ typedef request request_type;
 typedef response response_type;
 
 // These are some of the functions / types / enums used in this example.
-using boost::acgi::cookie;
-using boost::acgi::header;
-using boost::acgi::redirect;
-using boost::acgi::parse_all;
-using boost::acgi::content_type;
+using boost::cgi::cookie;
+using boost::cgi::header;
+using boost::cgi::redirect;
+using boost::cgi::parse_all;
+using boost::cgi::content_type;
 
 // This function just makes it easier to change the templating engine. It's
 // only here to keep the cTemplate code out of the core of this example...
