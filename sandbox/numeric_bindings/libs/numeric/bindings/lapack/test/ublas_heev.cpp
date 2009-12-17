@@ -8,10 +8,10 @@
 
 #include "ublas_heev.hpp"
 
-#include <boost/numeric/bindings/lapack/driver/syev.hpp>
+#include <boost/numeric/bindings/lapack/driver/heev.hpp>
 #include <boost/numeric/bindings/traits/ublas_matrix.hpp>
-#include <boost/numeric/bindings/traits/ublas_symmetric.hpp>
 #include <boost/numeric/bindings/traits/ublas_vector.hpp>
+#include <boost/numeric/bindings/traits/ublas_hermitian.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
 #include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/io.hpp>
@@ -22,26 +22,13 @@
 namespace ublas = boost::numeric::ublas;
 namespace lapack = boost::numeric::bindings::lapack;
 
-template <char UPLO>
-struct translate_uplo {
-} ;
-
-template <>
-struct translate_uplo<'U'> {
-  typedef ublas::upper_tag type ;
-} ;
-
-template <>
-struct translate_uplo<'L'> {
-  typedef ublas::lower_tag type ;
-} ;
 
 template <typename T, typename W, typename UPLO>
 int do_memory_uplo(int n, W& workspace ) {
    typedef typename boost::numeric::bindings::traits::type_traits<T>::real_type real_type ;
 
    typedef ublas::matrix<T, ublas::column_major>     matrix_type ;
-   typedef ublas::symmetric_adaptor<matrix_type, UPLO> symmetric_type ;
+   typedef ublas::hermitian_adaptor<matrix_type, UPLO> hermitian_type ;
    typedef ublas::vector<real_type>                  vector_type ;
 
    // Set matrix
@@ -52,37 +39,31 @@ int do_memory_uplo(int n, W& workspace ) {
    fill( a );
    matrix_type a2( a );
 
-   // Compute eigen decomposition.
-   symmetric_type s_a( a );
-   lapack::syev( 'V', s_a, e1, workspace ) ;
+   // Compute Schur decomposition.
+   hermitian_type h_a( a );
+   lapack::heev( 'V', h_a, e1, workspace ) ;
 
    if (check_residual( a2, e1, a )) return 255 ;
 
-   symmetric_type s_a2( a2 );
-   lapack::syev( 'N', s_a2, e2, workspace ) ;
+   hermitian_type h_a2( a2 );
+   lapack::heev( 'N', h_a2, e2, workspace ) ;
    if (norm_2( e1 - e2 ) > n * norm_2( e1 ) * std::numeric_limits< real_type >::epsilon()) return 255 ;
 
    // Test for a matrix range
    fill( a ); a2.assign( a );
 
    typedef ublas::matrix_range< matrix_type > matrix_range ;
-   typedef ublas::symmetric_adaptor<matrix_range, UPLO> symmetric_range_type;
+   typedef ublas::hermitian_adaptor<matrix_range, UPLO> hermitian_range_type ;
 
    ublas::range r(1,n-1) ;
    matrix_range a_r( a, r, r );
    ublas::vector_range< vector_type> e_r( e1, r );
 
-   symmetric_range_type s_a_r( a_r );
-   lapack::syev('V',  s_a_r, e_r, workspace );
+   hermitian_range_type h_a_r( a_r );
+   lapack::heev( 'V', h_a_r, e_r, workspace );
 
    matrix_range a2_r( a2, r, r );
    if (check_residual( a2_r, e_r, a_r )) return 255 ;
-
-   // Test for symmetric_adaptor
-   fill( a ); a2.assign( a );
-   ublas::symmetric_adaptor< matrix_type, UPLO> a_uplo( a ) ;
-   lapack::syev( 'V', a_uplo, e1, workspace ) ;
-   if (check_residual( a2, e1, a )) return 255 ;
 
    return 0 ;
 } // do_memory_uplo()
@@ -100,18 +81,22 @@ int do_memory_type(int n, W workspace) {
 
 template <typename T>
 struct Workspace {
-   typedef ublas::vector<T>                         array_type ;
-   typedef lapack::detail::workspace1< array_type > type ;
+   typedef typename ublas::type_traits<T>::real_type                        real_type ;
+   typedef ublas::vector< real_type >                                       real_array_type ;
+   typedef ublas::vector< T >                                               complex_array_type ;
+   typedef lapack::detail::workspace2< complex_array_type,real_array_type > type ;
 
    Workspace(size_t n)
-   : work_( 3*n-1 )
+   : work_( 2*n-1 )
+   , rwork_( 3*n-2 )
    {}
 
    type operator() () {
-      return lapack::workspace(work_) ;
+      return lapack::workspace(work_, rwork_) ;
    }
 
-   array_type work_ ;
+   complex_array_type work_ ;
+   real_array_type    rwork_ ;
 };
 
 
@@ -134,11 +119,11 @@ int do_value_type() {
 
 int main() {
    // Run tests for different value_types
-   std::cout << "float\n" ;
-   if (do_value_type<float>()) return 255;
+   std::cout << "complex<float>\n" ;
+   if (do_value_type< std::complex<float> >()) return 255;
 
-   std::cout << "double\n" ;
-   if (do_value_type<double>()) return 255;
+   std::cout << "complex<double>\n" ;
+   if (do_value_type< std::complex<double> >()) return 255;
 
    std::cout << "Regression test succeeded\n" ;
    return 0;
