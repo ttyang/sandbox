@@ -14,7 +14,6 @@
 #include "boost/cgi/detail/protocol_traits.hpp"
 #include "boost/cgi/common/tags.hpp"
 #include "boost/cgi/cgi/service.hpp"
-#include "boost/cgi/cgi/request_impl.hpp"
 #include "boost/cgi/cgi/request_service.hpp"
 #include "boost/cgi/fwd/basic_request_fwd.hpp"
 
@@ -22,8 +21,7 @@ BOOST_CGI_NAMESPACE_BEGIN
 
   typedef
     common::basic_request<
-        ::BOOST_CGI_NAMESPACE::cgi_request_service,
-        ::BOOST_CGI_NAMESPACE::cgi_service
+        common::tags::cgi
     >
   cgi_request;
   

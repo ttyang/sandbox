@@ -90,7 +90,7 @@ void print_formatted_data(MapT& data, Dict& dict)
     {
       Dict* row_dict = subd->AddSectionDictionary("ROW");
       row_dict->SetValue("NAME", iter->first.c_str());
-      row_dict->SetValue("VALUE", iter->second);
+      row_dict->SetValue("VALUE", iter->second.c_str());
       row_dict->ShowSection("ROW");
     }
 }
@@ -131,7 +131,7 @@ int main()
 
     // First, see if they have a cookie set
     if (req.cookies.count("name"))
-      dict.SetValueAndShowSection("USER_NAME", req.cookies["name"],
+      dict.SetValueAndShowSection("USER_NAME", req.cookies["name"].c_str(),
         "HAS_NAME_IN_COOKIE_true");
     else
       dict.ShowSection("HAS_NAME_IN_COOKIE_false");
@@ -139,10 +139,9 @@ int main()
     print_formatted_data(req.cookies, dict);
 
     dict.SetValue("SCRIPT_NAME", req.script_name());
-    // get_value is defined in boost/cgi/util/
-    // Looks up the key in the map, returns a default value if the key 
-    // isn't found.
-    dict.SetValue("COOKIE_NAME", req.form.get("name", ""));
+    // pick() looks up the key in the map, returns a default value
+    // (ie. anonymous) if the key isn't found.
+    dict.SetValue("COOKIE_NAME", req.form.pick("name", "anonymous"));
     dict.SetValue("COOKIE_VALUE", req.form["value"]);
 
     // Load the HTML stencil now from the index.html file.
