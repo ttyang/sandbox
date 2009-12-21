@@ -1,10 +1,8 @@
 
-// requires LAPACK v. 3.0
-
 #include <cstddef>
 #include <iostream>
 #include <algorithm> 
-#include <boost/numeric/bindings/lapack/driver/gesdd.hpp>
+#include <boost/numeric/bindings/lapack/driver/gesvd.hpp>
 #include <boost/numeric/bindings/traits/ublas_matrix.hpp>
 #include <boost/numeric/bindings/traits/ublas_vector.hpp>
 #include <boost/numeric/bindings/traits/std_vector.hpp>
@@ -42,8 +40,8 @@ int main() {
   m_t u (m, minmn);
   m_t vt (minmn, n);
 
-//  lapack::gesdd (a, s, u, vt);
-  lapack::gesdd ('S', a, s, u, vt);
+//  lapack::gesvd (a, s, u, vt);
+  lapack::gesvd ('S', 'S', a, s, u, vt);
 
   print_v (s, "s"); 
   cout << endl; 
@@ -53,7 +51,7 @@ int main() {
   cout << endl << endl;
 
   // part 2
-  
+
   // singular values and singular vectors satisfy  A v_i == s_i u_i
   for (int i = 0; i < minmn; ++i) {
     cout << "A v_" << i << " == s_" << i << " u_" << i << endl; 
@@ -78,8 +76,8 @@ int main() {
   
   // part 3 
   
-//  lapack::gesdd (a2, s);
-  lapack::gesdd ('N', a2, s, u, vt);
+//  lapack::gesvd (a2, s);
+  lapack::gesvd ('N', 'N', a2, s, u, vt);
   
   print_v (s, "singular values only"); 
   cout << endl; 
