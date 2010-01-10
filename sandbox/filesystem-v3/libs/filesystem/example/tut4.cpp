@@ -8,6 +8,8 @@
 //  Library home page: http://www.boost.org/libs/filesystem
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include <boost/filesystem.hpp>
 using namespace std;
 using namespace boost::filesystem;
@@ -32,9 +34,16 @@ int main(int argc, char* argv[])
     else if ( is_directory(p) )      // is p a directory?
     {
       cout << "is a directory containing:\n";
-      for ( directory_iterator it (p); it != directory_iterator (); ++it )
+      typedef vector<path> path_vec;
+      path_vec v;
+      for (directory_iterator it (p); it != directory_iterator(); ++it)
       {
-        cout << "   " << it->path().filename() << '\n';
+        v.push_back(it->path().filename());
+      }
+      sort(v.begin(), v.end());
+      for (path_vec::const_iterator it (v.begin()); it != v.end(); ++it)
+      {
+        cout << "   " << *it << '\n';
       }
     }
     else
