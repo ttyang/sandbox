@@ -1,4 +1,4 @@
-//  boost process_clocks.hpp  -----------------------------------------------------------//
+//  boost/chrono/process_clocks.hpp  -----------------------------------------------------------//
 
 //  Copyright Beman Dawes 1994, 2007, 2008
 //  Copyright 2009-2010 Vicente J. Botet Escriba
@@ -45,7 +45,7 @@ namespace boost
           process_clocks::time_point                       user;    // user cpu time
           process_clocks::time_point                       system;  // system cpu time
         };
-    
+
         static void now( durations & times,
                          system::error_code & ec = system::throws );
         static void now( time_points & times,

@@ -1,4 +1,4 @@
-//  boost process_times.hpp  -----------------------------------------------------------//
+//  boost/chrono/process_stopwatches.hpp  -----------------------------------------------------------//
 
 //  Copyright Beman Dawes 1994, 2007, 2008
 
@@ -13,9 +13,6 @@
 #include <boost/chrono/chrono.hpp>
 #include <boost/chrono/process_clocks.hpp>
 #include <boost/system/error_code.hpp>
-//#include <boost/cstdint.hpp>
-//#include <string>
-//#include <ostream>
 
 #include <boost/config/abi_prefix.hpp> // must be the last #include
 
