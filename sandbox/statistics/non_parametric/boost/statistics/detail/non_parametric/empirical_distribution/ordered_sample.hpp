@@ -27,17 +27,20 @@ namespace empirical_distribution{
 
 namespace impl{
 
-	template<typename Int>
+	// Associates sample values (type T) with their number of occurences in the sample
+	template<typename T>
 	class ordered_sample 
     		: public boost::accumulators::accumulator_base{
-		typedef std::less<Int> comp_;
+		typedef std::less<T> comp_;
 		typedef std::size_t size_;
         typedef boost::accumulators::dont_care dont_care_;
-        typedef std::map<Int,size_,comp_> map_;
+        typedef std::map<T,size_,comp_> map_;
 
         public:
-
-		typedef size_ size_type;
+		
+        // See accumulator_set for convention naming sample_type
+        typedef T 		sample_type; 
+		typedef size_ 	size_type;	 
 
 		// non-const because map::operator[](key) returns a non-const
 		typedef map_& result_type;
@@ -46,7 +49,12 @@ namespace impl{
 
 		template<typename Args>
 		void operator()(const Args& args){
-        	++(this->freq[args[boost::accumulators::sample]]);
+        	++(this->freq[
+            		static_cast<T>(
+            			args[boost::accumulators::sample]
+                	)
+                ]
+            );
         }
 		
 		// Returns the entire distribution, represented by a map
@@ -58,7 +66,7 @@ namespace impl{
         mutable map_ freq;
 	};
     
-}
+}// impl
 
 namespace tag
 {
@@ -68,25 +76,32 @@ namespace tag
       typedef statistics::detail::empirical_distribution::
       	impl::ordered_sample<boost::mpl::_1> impl;
     };
-}
+}// tag
+
+namespace result_of{
+
+    template<typename AccSet>
+    struct ordered_sample : boost::accumulators::detail::extractor_result<
+        AccSet,
+        boost::statistics::detail::empirical_distribution::tag::ordered_sample
+    >{};
+
+}// result_of
 
 namespace extract
 {
 
-  	template<typename AccumulatorSet>
-	typename boost::mpl::apply<
-		AccumulatorSet,
-        boost::statistics::detail::empirical_distribution
-        	::tag::ordered_sample
-    >::type::result_type
-  	ordered_sample(AccumulatorSet const& acc)
+  	template<typename AccSet>
+    typename boost::statistics::detail::empirical_distribution
+    	::result_of::template ordered_sample<AccSet>::type
+  	ordered_sample(AccSet const& acc)
     {
     	typedef boost::statistics::detail::empirical_distribution
     		::tag::ordered_sample the_tag;
         return boost::accumulators::extract_result<the_tag>(acc);
   	}
 
-}
+}// extract
 
 using extract::ordered_sample;
 
