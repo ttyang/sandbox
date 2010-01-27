@@ -7,7 +7,7 @@
 //
 ////////////////////////////////////////////////////////////////
 //
-//[fcgi_echo
+//[fcgi_async_echo
 //
 // This example simply echoes all variables back to the user. ie.
 // the environment and the parsed GET, POST and cookie variables.
@@ -18,13 +18,10 @@
 #include <iostream>
 ///////////////////////////////////////////////////////////
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/program_options/environment_iterator.hpp>
 ///////////////////////////////////////////////////////////
 #include "boost/cgi/fcgi.hpp"
 
 //using namespace std;
-using std::cerr;
-using std::endl;
 using namespace boost::fcgi;
 
 // The styling information for the page, just to make things look nicer.
@@ -85,7 +82,7 @@ std::size_t process_id()
 }
 
 
-int handle_request(request& req)
+int handle_request(acceptor& a, request& req)
 {
   boost::system::error_code ec;
   
@@ -152,9 +149,16 @@ int handle_request(request& req)
   resp<< "Response content-length == "
       << resp.content_length(); // the content-length (returns std::size_t)
 
-  // This function finishes up. The optional third argument
-  // is the program status (default: 0).
-  return commit(req, resp);
+  //
+  // Write the response. If the commit is successful, start up another
+  // asynchronous accept request.
+  //
+  int status = commit(req, resp);
+  if (!status)
+    a.async_accept(boost::bind(&handle_request, boost::ref(a), _1));
+
+  // The return value isn't used for anything.
+  return status;
 }
 
 int main()
@@ -167,17 +171,18 @@ try {
   
   // Make an `acceptor` for accepting requests through.
 #if defined (BOOST_WINDOWS)
-  acceptor a(s, 8009);    // Accept requests on port 8009.
+  // Accept requests on port 8009.
+  acceptor a(s, 8009);
 #else
-  acceptor a(s);
+  acceptor a;
 #endif // defined (BOOST_WINDOWS)
 
   //
   // After the initial setup, we can enter a loop to handle one request at a
   // time until there's an error of some sort.
   //
-  int ret(0);
-  for (;;)
+  int count(10);
+  while (--count)
   {
     //
     // An acceptor can take a request handler as an argument to `accept` and it
@@ -192,27 +197,29 @@ try {
     // The acceptor maintains an internal queue of requests and will reuse a
     // dead request if one is waiting.
     //
-    ret = a.accept(&handle_request);
-    if (ret)
-      break;
+    a.async_accept(boost::bind(&handle_request, boost::ref(a), _1));
   }
+  
+  std::cerr<< "Start running service..." << std::endl;
+  s.run();
+  std::cerr<< "Shutdown ." << std::endl;
   
   std::cerr<< "Processing finished. Press enter to continue..." << std::endl;
   std::cin.get();
   
-  return ret;
+  //return 0;
 
 }catch(boost::system::system_error const& se){
   // This is the type of error thrown by the library.
   std::cerr<< "[fcgi] System error: " << se.what() << std::endl;
-  return -1;
+  //return -1;
 }catch(std::exception const& e){
   // Catch any other exceptions
   std::cerr<< "[fcgi] Exception: " << e.what() << std::endl;
-  return -2;
+  //return -2;
 }catch(...){
   std::cerr<< "[fcgi] Uncaught exception!" << std::endl;
-  return -3;
+  //return -3;
 }
   std::cerr<< "Press enter to continue." << std::endl;
   std::cin.get();
