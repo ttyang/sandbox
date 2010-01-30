@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-// statistics::detail::fusion::joint_view::bind_iterator.hpp               //
+// statistics::detail::fusion::joint_view::bind_iterator.hpp               	 //
 //                                                                           //
 //  Copyright 2009 Erwann Rogard. Distributed under the Boost                //
 //  Software License, Version 1.0. (See accompanying file                    //
@@ -9,20 +9,24 @@
 #define BOOST_STATISTICS_DETAIL_FUSION_JOINT_VIEW_BINDER_ITERATOR_HPP_ER_2009
 #include <boost/utility/result_of.hpp>
 #include <boost/range.hpp>
+#include <boost/tuple/tuple.hpp>
 #include <boost/type_traits/add_const.hpp>
 #include <boost/type_traits/add_reference.hpp>
 #include <boost/iterator/iterator_traits.hpp>
 #include <boost/iterator/transform_iterator.hpp>
+#include <boost/statistics/detail/fusion/joint_view/binder.hpp>
 
 namespace boost{
 namespace statistics{
 namespace detail{
 namespace fusion{
 namespace joint_view{
+
 namespace result_of{
+
 namespace impl{
 
-	// e.g Binder = joint_view::binder<>
+	// Binder = joint_view::binder<>
 	template<typename Binder,typename It>
     struct bind_iterator
     {
@@ -35,11 +39,12 @@ namespace impl{
         
         static type call(const Binder& binder,It it)
         {
-            return type(it,binder);
+            return type(it,fun_(binder));
         }
     };
-}
-	// transforms *it to join_view(seq1,(*it))
+}// impl
+
+	// transforms *it to joint_view(seq1,(*it))
 	template<typename Seq1,typename It, bool is_left = true>
     struct bind_iterator
     {
@@ -50,7 +55,8 @@ namespace impl{
         typedef typename meta_::type type;
         static type call(const Seq1& seq1,It it)
         {
-            return meta_(binder_(seq1),it);
+        	binder_ binder(seq1);
+            return meta_::call(binder,it);
         }
     };
 
@@ -58,13 +64,13 @@ namespace impl{
     struct bind_range
     {
 
-        typedef typename boost::range_iterator<R>::type it_;
+        typedef typename boost::range_iterator<const R>::type it_;
 		typedef detail::fusion::joint_view::result_of::bind_iterator<
-        	Seq1,it_
+        	Seq1,it_,is_left
         > impl_;
-        typedef typename impl_::type type;
+        typedef typename boost::iterator_range<typename impl_::type> type;
             
-        static type call(const Seq1& seq1,R r)
+        static type call(const Seq1& seq1,const R& r)
         {
             return type(
                 impl_::call(seq1,boost::begin(r)),
@@ -72,7 +78,7 @@ namespace impl{
             );
         }
     };
-
+                                
 
 }// result_of
 
@@ -84,19 +90,21 @@ namespace impl{
         	Seq1,
             It
         > meta_;
-    	return meta_::call(binder,it);
+    	return meta_::call(seq1,it);
     }
     
-    template<typename Seq1,typename It>
-    typename detail::fusion::joint_view::result_of::bind_range<Seq1,It>::type
-    bind_range(const Seq1& seq1,It it)
+    template<typename Seq1,typename R>
+    typename detail::fusion::joint_view::result_of::bind_range<Seq1,R>::type
+    bind_range(const Seq1& seq1,const R& r)
     {
     	typedef detail::fusion::joint_view::result_of::bind_range<
         	Seq1,
-            It
+            R
         > meta_;
-    	return meta_::call(binder,it);
+    	return meta_::call(seq1,r);
     }
+
+    
 
 }// joint_view
 }// fusion
