@@ -1,4 +1,4 @@
-//  boost/chrono/digital_time.hpp  -----------------------------------------------------------//
+//  boost/chrono/t24_hours.hpp  -----------------------------------------------------------//
 
 //  Copyright 2010 Vicente J. Botet Escriba
 
@@ -7,8 +7,8 @@
 
 //  See http://www.boost.org/libs/system for documentation.
 
-#ifndef BOOST_CHRONO_DIGITAL_TIME_HPP
-#define BOOST_CHRONO_DIGITAL_TIME_HPP
+#ifndef BOOST_CHRONO_T24_HOURS_HPP
+#define BOOST_CHRONO_T24_HOURS_HPP
 
 #include <boost/chrono/chrono.hpp>
 
@@ -16,7 +16,7 @@
 
 namespace boost { namespace chrono {
 
-class digital_time {
+class t24_hours {
     typedef boost::chrono::duration<boost::int_least32_t, ratio<24*3600> > days;
     typedef boost::chrono::hours hours;
     typedef boost::chrono::minutes minutes;
@@ -55,7 +55,7 @@ public:
     };
 
     template <class Rep, class Period>
-        explicit digital_time(const boost::chrono::duration<Rep, Period>& d)
+        explicit t24_hours(const boost::chrono::duration<Rep, Period>& d)
         : days_  (get_days(d))
         , hours_  (get_hours(d))
         , minutes_ (get_minutes(d))
