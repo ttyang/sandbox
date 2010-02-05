@@ -17,6 +17,7 @@
 #include <boost/accumulators/framework/parameters/sample.hpp>
 #include <boost/accumulators/framework/parameters/accumulator.hpp>
 #include <boost/accumulators/framework/depends_on.hpp>
+#include <boost/accumulators/statistics/stats.hpp>
 
 namespace boost{
 namespace statistics{
@@ -38,14 +39,9 @@ namespace impl
         void operator ()(dont_care_)const
         {
         }
-        
-        if(args[boost::accumulators::sample]<this->t)
-        {
-            ++this->cnt;
-        }
 
         template<typename Args>
-        void operator ()(const Args& args)
+        result_type result(const Args& args)const{
         	typedef boost::accumulators::tag::accumulator tag_acc_;        
         	typedef boost::parameter::binding<Args,tag_acc_> bind1_;
         	typedef typename bind1_::type cref_acc_;
@@ -60,57 +56,53 @@ namespace impl
 
 }//impl
 
-    namespace tag
-    {
-        struct zscore
+namespace tag
+{
+    struct zscore
         : boost::accumulators::depends_on<
         	boost::accumulators::tag::mean,
-        	boost::accumulators::tag::variance,
+        	boost::accumulators::tag::variance
         >
-        {
-            struct impl{
-                template<typename T,typename W>
-                struct apply{
-                    typedef boost::statistics::detail::accumulator::impl
+    {
+        struct impl{
+            template<typename T,typename W>
+            struct apply{
+                typedef boost::statistics::detail::accumulator::impl
                     	::zscore<T> type;    	
-                };
             };
         };
-    }
+    };
+}
     
-    namespace result_of{
+namespace result_of{
         
-        template<typename AccSet>
-        struct zscore{
-            typedef boost::statistics::detail
-        		::accumulator::tag::zscore tag_;
-            typedef typename boost::accumulators::detail::extractor_result<
-        		AccSet,
-            	tag_
-            >::type type;
-        };
+    template<typename AccSet>
+    struct zscore{
+        typedef boost::statistics::detail::accumulator::tag::zscore tag_;
+        typedef typename boost::accumulators::detail::extractor_result<
+            AccSet,
+            tag_
+        >::type type;
+    };
         
-    }
+}
     
-    namespace extract
-    {
+namespace extract
+{
         
-        // Usage : zscore(acc,x)
-        template<typename AccSet,typename T1>
-        typename boost::statistics::detail::accumulator::zscore
+    // Usage : zscore(acc,x)
+    template<typename AccSet,typename T1>
+    typename boost::statistics::detail::accumulator
     		::result_of::template zscore<AccSet>::type
-        statistic(AccSet const& acc,const T1& x)
-        {
-            typedef boost::statistics::detail
-        		::accumulator::tag::zscore<T1> the_tag;
-            return boost::accumulators::extract_result<the_tag>(
-                acc,
-                (
-                    boost::accumulators::sample = x
-                )
-            );
-        }
+    zscore(AccSet const& acc,const T1& x)
+    {
+        typedef boost::statistics::detail::accumulator::tag::zscore the_tag;
+        return boost::accumulators::extract_result<the_tag>(
+            acc,
+            (boost::accumulators::sample = x)
+        );
     }
+}
     
     using extract::zscore;
 
