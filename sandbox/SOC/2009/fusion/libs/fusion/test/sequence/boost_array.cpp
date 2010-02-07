@@ -1,4 +1,6 @@
 /*=============================================================================
+    Copyright (c) 2001-2006 Joel de Guzman
+    Copyright (c) 2005-2006 Dan Marsden
     Copyright (c) 2010 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying 
@@ -7,23 +9,25 @@
 
 #include <boost/detail/lightweight_test.hpp>
 
-#include <boost/fusion/adapted/array.hpp>
+#include <boost/fusion/adapted/boost_array.hpp>
+#include <boost/array.hpp>
+
 #include <boost/fusion/sequence/intrinsic.hpp>
-#include <boost/fusion/iterator.hpp>
 #include <boost/fusion/support/is_sequence.hpp>
 #include <boost/fusion/support/is_view.hpp>
+#include <boost/fusion/iterator.hpp>
 
 #include <boost/mpl/assert.hpp>
 
 int main()
 {
     using namespace boost::fusion;
-    typedef int array_type[3];
+    typedef boost::array<int,3> array_type;
 
     BOOST_MPL_ASSERT((traits::is_sequence<array_type>));
     BOOST_MPL_ASSERT_NOT((traits::is_view<array_type>));
 
-    array_type arr = {1,2,3};
+    array_type arr = {{1,2,3}};
 
     BOOST_TEST(*begin(arr) == 1);
     BOOST_TEST(*next(begin(arr)) == 2);
@@ -36,4 +40,3 @@ int main()
 
     return boost::report_errors();
 }
-
