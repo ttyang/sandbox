@@ -75,7 +75,7 @@ namespace boost { namespace chrono  {
 
             t24_hours dt(d);
             for ( ; *format; ++format ) {
-                if ( *format != '%' || !*(format+1) || !std::strchr("dhmsn", *(format+1)) ) {
+                if ( (*format != '%') || (!*(format+1)) || (!std::strchr("dhmsn", *(format+1))) ) {
                     os << *format;
                 } else {
                     ++format;
