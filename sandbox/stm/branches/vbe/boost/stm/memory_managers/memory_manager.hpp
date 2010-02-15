@@ -39,7 +39,7 @@ namespace boost { namespace stm {
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 // memory_manager mixin
-// Functions new and delete 
+// Functions new and delete
 
 // The parameter Base allows to mix memory_manager and polymorphism
 // class B : memory_manager<B> {}
@@ -55,7 +55,7 @@ public:
     void* operator new(std::size_t size, const std::nothrow_t&) throw () {
         return base_memory_manager::retrieve_mem(size);
     }
-    
+
     void* operator new(std::size_t size) throw (std::bad_alloc) {
         void* ptr= base_memory_manager::retrieve_mem(size);
         if (ptr==0) throw std::bad_alloc();
