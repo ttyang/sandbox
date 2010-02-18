@@ -421,7 +421,7 @@ public:
     }
 
     const T* get() const {
-            if (ptr_==0) return 0;
+        if (ptr_==0) return 0;
         if (tx_->forced_to_abort()) {
             tx_->lock_and_abort();
             throw aborted_transaction_exception("aborting transaction");
