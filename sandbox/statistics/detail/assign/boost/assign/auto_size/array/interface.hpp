@@ -24,7 +24,7 @@ namespace auto_size{
         typedef boost::array<typename Ref<T>::type,N> type;
     };
 
-	// Requirements:
+    // Requirements:
     // D must implement:
     // 	const ref_array_& ref_array_impl()const
     // 	ref_array& ref_array_impl()

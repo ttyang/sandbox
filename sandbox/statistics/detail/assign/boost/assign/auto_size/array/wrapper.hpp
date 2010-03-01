@@ -17,7 +17,7 @@ namespace assign{
 namespace detail{
 namespace auto_size{
  
- 	// See csv.hpp
+    // Used by csv.hpp
     template<typename T,int N,template<typename> class Ref>
     class array_wrapper 
     	: public array_interface<T,N,Ref,array_wrapper<T,N,Ref> >
