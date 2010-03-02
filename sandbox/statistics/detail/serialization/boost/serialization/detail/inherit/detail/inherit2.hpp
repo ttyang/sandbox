@@ -22,7 +22,7 @@ namespace detail{
 
 	// inherit2<T1,T2> innherits from the elements of {T1,T2} that are not of
     // type mpl::empty_base, and for those, forwards an argument pack at
-    // construction, serialization.
+    // construction, and serialization.
     //
     // operator<<(ostream,) requires special formatting that is implemented in
     // detail/stream.hpp
