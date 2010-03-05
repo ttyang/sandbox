@@ -116,8 +116,13 @@ namespace
     else
     {
       std::getline(posix_infile, temp);
-      value += "<br>";
-      value += temp;
+      if (value != temp) // POSIX and Windows differ
+      {
+        value.insert(0, "<br>");
+        value.insert(0, temp);
+        value.insert(0, "<span style=\"background-color: #CCFFCC\">");
+        value += "</span>";
+      }
       outfile << value;
     }
     outfile << "</td>\n";
@@ -171,6 +176,8 @@ namespace
     string test_case;
     while ( std::getline( infile, test_case ) )
     {
+      if (!test_case.empty() && *--test_case.end() == '\r')
+        test_case.erase(test_case.size()-1);
       if (test_case.empty() || test_case[0] != '#')
         do_row( test_case );
     }
