@@ -11,8 +11,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef BOOST_STM_TX_MIXIN__HPP
-#define BOOST_STM_TX_MIXIN__HPP
+#ifndef BOOST_STM_TX_PROXY_CACHE__HPP
+#define BOOST_STM_TX_PROXY_CACHE__HPP
 
 //-----------------------------------------------------------------------------
 #include <boost/stm/transaction.hpp>
@@ -23,39 +23,39 @@
 namespace boost { namespace stm { namespace tx {
 
 //-----------------------------------------------------------------------------
-// mixin transactional object class that wraps a object type providing
-// a transparent transactional view on a transactional context
-// a non-transactional view on a non-transactional context
-// Note: the sizeof(object<T>)>>>>=sizeof(T)
-//-----------------------------------------------------------------------------
 template <typename Final, typename T, typename Base=base_transaction_object>
-class mixin : public transaction_object< Final, Base >
+class proxy_cache : public transaction_object< Final, Base >
 {
 protected:
 public:
     T val_;
 public:
-    typedef mixin<Final, T, Base> this_type;
+    typedef proxy_cache<Final, T, Base> this_type;
     typedef Final final_type;
     typedef T value_type;
     //-----------------------------------------------------------------------------
-    mixin() : val_() {}
+    proxy_cache() : val_() {}
 
-    mixin(mixin const& r) : val_(r.value()) {}
+    proxy_cache(proxy_cache const& r) : val_(r.value()) {}
     template<typename F, typename U>
-    mixin(mixin<F,U> const& r) : val_(r.value()) {}
-    mixin(T v) : val_(v) {}
-    mixin& operator=(mixin const& rhs) {
+    proxy_cache(proxy_cache<F,U> const& r) : val_(r.value()) {}
+    proxy_cache(T v) : val_(v) {}
+    // contructor from a convertible to T
+    template <typename U>
+    proxy_cache(U v) : val_(v) {}
+
+    proxy_cache& operator=(proxy_cache const& rhs) {
         if (this!=&rhs) {
             ref()=rhs.value();
         }
         return *this;
     }
-
-    // contructor from a convertible to T
-    template <typename U>
-    mixin(U v) : val_(v) {}
-
+    template<typename F, typename U>
+    proxy_cache& operator=(proxy_cache<F,U> const& rhs) {
+        ref()=rhs.value();
+        return *this;
+    }
+       
     operator T() const { return value(); }
     operator T&() { return ref(); }
 
@@ -90,26 +90,40 @@ public:
         return val_;
     }
     // shallow copy
-    mixin(mixin const& rhs, stm::shallow_t)
+    proxy_cache(proxy_cache const& rhs, stm::shallow_t)
     : val_(rhs.val_)
     {}
     // shallow assignment
-    mixin& shallow_assign(mixin const& rhs)
+    proxy_cache& shallow_assign(proxy_cache const& rhs)
     {
         val_=rhs.val_;
         return *this;
     }
+    // TODO add case has_shallow_copy_semansics<T> is true
 };
 
+//~ template <typename OSTREAM, typename F, typename T, typename B>
+//~ OSTREAM& operator<<(OSTREAM& os, proxy_cache<F, T, B> const& r) {
+    //~ os << r.value();
+    //~ return os;
+//~ }
+//~ template <typename ISTREAM, typename F, typename T, typename B>
+//~ ISTREAM& operator>>(ISTREAM& is, proxy_cache<F, T, B> & r) {
+    //~ T v;
+    //~ is >> v;
+    //~ r=v;
+    //~ return is;
+//~ }
 
 
 }
 // shallow trait
 template <typename F, typename T, typename B>
-struct has_shallow_copy_semantics<tx::mixin<F,T,B> > : boost::mpl::true_
+struct has_shallow_copy_semantics<tx::proxy_cache<F,T,B> > : boost::mpl::true_
 {};
 
+    
 }}
-#endif //BOOST_STM_TX_MIXIN__HPP
+#endif //BOOST_STM_TX_PROXY_CACHE__HPP
 
 

@@ -11,8 +11,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef BOOST_STM_NON_TX_MIXIN__HPP
-#define BOOST_STM_NON_TX_MIXIN__HPP
+#ifndef BOOST_STM_NON_TX_REFERENCE__HPP
+#define BOOST_STM_NON_TX_REFERENCE__HPP
 
 //-----------------------------------------------------------------------------
 #include <boost/stm/transaction.hpp>
@@ -30,20 +30,20 @@ namespace boost { namespace stm { namespace non_tx {
 //-----------------------------------------------------------------------------
 
 template <typename Final, typename T>
-class mixin {
+class reference {
 protected:
     T& val_;
 public:
     //-----------------------------------------------------------------------------
-    mixin() : val_() {}
+    reference() : val_() {}
 
     // constructors
     template<typename F, typename U>
-    mixin(mixin<F,U> const& r) : val_(r.value()) {}
+    reference(reference<F,U> const& r) : val_(r.value()) {}
 
     // contructor from a convertible to T
     template <typename U>
-    mixin(U v) : val_(v) {}
+    reference(U v) : val_(v) {}
 
     //-----------------------------------------------------------------------------
     // accessors        
