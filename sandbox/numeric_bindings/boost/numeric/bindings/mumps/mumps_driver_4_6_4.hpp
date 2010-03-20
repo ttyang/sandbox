@@ -1,18 +1,18 @@
 //
-// Copyright Karl Meerbergen 2008
+// Copyright Karl Meerbergen 2007
 //
 // Distributed under the Boost Software License, Version 1.0. 
 // (See accompanying file LICENSE_1_0.txt or copy at 
 // http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef BOOST_NUMERIC_BINDINGS_MUMPS_MUMPS_DRIVER_4_8_0_HPP
-#define BOOST_NUMERIC_BINDINGS_MUMPS_MUMPS_DRIVER_4_8_0_HPP
+#ifndef BOOST_NUMERIC_BINDINGS_MUMPS_MUMPS_DRIVER_4_6_4_HPP
+#define BOOST_NUMERIC_BINDINGS_MUMPS_MUMPS_DRIVER_4_6_4_HPP
 
-#include <smumps_c.h>
-#include <cmumps_c.h>
-#include <dmumps_c.h>
-#include <zmumps_c.h>
+#include <boost/numeric/bindings/mumps/4.6.4/smumps_c.hpp>
+#include <boost/numeric/bindings/mumps/4.6.4/cmumps_c.hpp>
+#include <boost/numeric/bindings/mumps/4.6.4/dmumps_c.hpp>
+#include <boost/numeric/bindings/mumps/4.6.4/zmumps_c.hpp>
 #include <boost/numeric/bindings/value_type.hpp>
 #include <boost/numeric/bindings/begin.hpp>
 #include <boost/numeric/bindings/size.hpp>
@@ -176,38 +176,31 @@ namespace boost { namespace numeric { namespace bindings { namespace mumps {
   // Generic MUMPS data for any value_type
   //
   template <typename M>
-  class mumps
-  : public detail::mumps_type< typename boost::numeric::bindings::value_type<M>::type >::type
+  struct mumps
+  : detail::mumps_type< typename boost::numeric::bindings::value_type<M>::type >::type
   {
-    public:
-      typedef typename boost::numeric::bindings::value_type<M>::type                                      value_type ;
-      typedef typename detail::mumps_type< typename boost::numeric::bindings::value_type<M>::type >::type c_struct_type ;
+    typedef typename boost::numeric::bindings::value_type<M>::type                                      value_type ;
+    typedef typename detail::mumps_type< typename boost::numeric::bindings::value_type<M>::type >::type c_struct_type ;
 
-      //
-      // Initialize MUMPS solver
-      // Pass a communicator (comm=-987654 means choose default)
-      // Pass 'par': default = 1: host is involved in factorization
-      //
-      mumps( int comm_fortran=-987654, int par=1 )
-      {
-        this->job = -1 ;
-        this->par = par ;
-        this->comm_fortran = comm_fortran ;
-        this->sym = detail::mumps_sym< typename boost::numeric::bindings::detail::property_at<M, tag::matrix_type >::type >::value ;
-        detail::mumps_call<value_type>() ( *this ) ;
-      }
+    //
+    // Initialize MUMPS solver
+    // Pass a communicator (comm=-987654 means choose default)
+    // Pass 'par': default = 1: host is involved in factorization
+    //
+    mumps( int comm_fortran=-987654, int par=1 )
+    {
+      this->job = -1 ;
+      this->par = par ;
+      this->comm_fortran = comm_fortran ;
+      this->sym = detail::mumps_sym< typename boost::numeric::bindings::detail::property_at<M, tag::matrix_type >::type >::value ;
+      detail::mumps_call<value_type>() ( *this ) ;
+    }
 
-      // Destroy the solver
-      ~mumps() {
-        this->job = -2 ;
-        detail::mumps_call<value_type>() ( *this ) ;
-      }
-
-    private:
-      // Disable assignment and Copy Constructor
-      mumps& operator=( mumps const& that ) { return *this ; }
-
-      mumps( mumps const& that ) {}
+    // Destroy the solver
+    ~mumps() {
+      this->job = -2 ;
+      detail::mumps_call<value_type>() ( *this ) ;
+    }
   } ;
 
 
@@ -258,7 +251,7 @@ namespace boost { namespace numeric { namespace bindings { namespace mumps {
     assert( data.job>=1 ? data.irn!=0 : true ) ;
     assert( data.job>=1 ? data.jcn!=0 : true ) ;
     assert( data.job>=2 ? data.a!=0 : true ) ;
-    assert( data.job==3 || data.job==5 ? data.rhs!=0 : true ) ;
+    assert( data.job>=3 ? data.rhs!=0 : true ) ;
     detail::mumps_call<typename M::value_type>() ( static_cast<typename mumps<M>::c_struct_type&>( data ) ) ;
     return data.info[0] ;
   } // driver()
