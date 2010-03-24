@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-// assign::detail::range::chain_convert_l.hpp                               //
+// assign::detail::range::chain_convert.hpp                                 //
 //                                                                          //
 //  (C) Copyright 2010 Erwann Rogard                                        //
 //  Use, modification and distribution are subject to the                   //
@@ -31,8 +31,6 @@
 //     boost::copy( input, boost::begin( chain_convert_l(r1)(r2)(r3) ) );
 // This function does not have the restriction of chain_l that none or all
 // of r1, r2, r3 must be reference wrappers.
-
-// TODO follow the model of chain_impl to allow rvalues.
 
 namespace boost{
 namespace assign{
