@@ -10,6 +10,5 @@
 #define BOOST_ASSIGN_CHAIN_ER_2010_HPP
 
 #include <boost/assign/auto_size/range/chain.hpp> 
-#include <boost/assign/auto_size/range/chain.hpp> 
 
 #endif
