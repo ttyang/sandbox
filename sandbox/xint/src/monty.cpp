@@ -12,8 +12,10 @@
     reduction. Used for an extra-fast powerMod.
 */
 
-#include "../xint.hpp"
-#include "../xint_data_t.hpp"
+#include "../boost/xint/xint.hpp"
+#include "../boost/xint/xint_data_t.hpp"
+
+#include <boost/scoped_array.hpp>
 
 #include <vector>
 
@@ -123,7 +125,7 @@ class TUTable {
 
     static const TUTable& get() {
         // Construct a singleton instance on demand
-        if (mPtr==0) mPtr=new TUTable;
+        if (mPtr.get()==0) mPtr.reset(new TUTable);
         return *mPtr;
     }
 
@@ -134,7 +136,6 @@ class TUTable {
         int i=1;
         while (p!=pe) *p++=calculateValues(i++);
     }
-    ~TUTable() { delete[] mTable; }
 
     std::pair<int, int> calculateValues(int x) {
         int r=0;
@@ -145,12 +146,12 @@ class TUTable {
         }
     }
 
-    static TUTable *mPtr;
+    static std::auto_ptr<TUTable> mPtr;
 
-    value_t *mTable;
+    boost::scoped_array<value_t> mTable;
 };
 
-TUTable *TUTable::mPtr=0;
+std::auto_ptr<TUTable> TUTable::mPtr;
 
 int mostEfficientK(const integer& e) {
     doubledigit_t k=cMaxK, kTarget=log2(e)-1;

@@ -11,7 +11,7 @@
     This file contains the Greatest Common Denominator function.
 */
 
-#include "../xint.hpp"
+#include "../boost/xint/xint.hpp"
 
 namespace xint {
 

@@ -11,9 +11,15 @@
     This file contains the random number functions.
 */
 
-#include "../xint.hpp"
-#include "../xint_data_t.hpp"
+#ifdef _WIN32
+    #define STRICT
+    #define WIN32_LEAN_AND_MEAN
+    #define NOMINMAX
+    #include <windows.h>
+#endif
 
+#include "../boost/xint/xint.hpp"
+#include "../boost/xint/xint_data_t.hpp"
 #include <vector>
 #include <sstream>
 #include <fstream>
@@ -22,14 +28,6 @@
 
 #ifdef XINT_THREADSAFE
     #include <boost/thread.hpp>
-#endif
-
-#ifdef _WIN32
-    #define STRICT
-    #define WIN32_LEAN_AND_MEAN
-    #define NOMINMAX
-    #include <windows.h>
-    #include <TCHAR.h>
 #endif
 
 namespace xint {
@@ -50,26 +48,21 @@ class generator_t {
         generator_t() { init(); }
     #endif
 
-    result_type operator()() { return mGeneratorFn(); }
+    result_type operator()() { return mGeneratorObj->operator()(); }
 
-    static void set_generator(random_t g, base_random_generator *p) {
-        mGeneratorObj.reset(p);
-        mGeneratorFn=g;
-    }
+    static void set_generator(base_random_generator *p) { mGeneratorObj.reset(p); }
 
     private:
     void init() {
-        if (!mGeneratorFn) {
+        if (mGeneratorObj.get() == 0) {
             typedef default_random_t T;
-            mDefaultGenerator.reset(new T(boost::uint32_t(time(0)+clock())));
-            random_generator<T> *obj=new random_generator<T>(*mDefaultGenerator);
-            set_generator(*obj, obj);
+            T *genobj(new T(boost::uint32_t(time(0)+clock())));
+            random_generator<T> *obj=new random_generator<T>(genobj);
+            set_generator(obj);
         }
     }
 
-    static random_t mGeneratorFn;
     static std::auto_ptr<base_random_generator> mGeneratorObj;
-    static std::auto_ptr<default_random_t> mDefaultGenerator;
 
     #ifdef XINT_THREADSAFE
         static boost::mutex mLock;
@@ -77,8 +70,6 @@ class generator_t {
 };
 
 std::auto_ptr<base_random_generator> generator_t::mGeneratorObj;
-std::auto_ptr<generator_t::default_random_t> generator_t::mDefaultGenerator;
-random_t generator_t::mGeneratorFn;
 
 #ifdef XINT_THREADSAFE
     boost::mutex generator_t::mLock;
@@ -88,8 +79,8 @@ random_t generator_t::mGeneratorFn;
 
 namespace detail {
 
-void set_random_generator(random_t fn, base_random_generator *obj) {
-    generator_t::set_generator(fn, obj);
+void set_random_generator(base_random_generator *obj) {
+    generator_t::set_generator(obj);
 }
 
 unsigned int get_random() {
@@ -114,7 +105,7 @@ unsigned int get_random() {
             // well-known (it would break too many programs). We could also use the
             // rand_s function in more recent versions of Visual C++, but that
             // causes compatibility problems with older versions of Windows.
-            dll=LoadLibrary(_T("Advapi32.dll"));
+            dll=LoadLibraryA("Advapi32.dll");
             if (dll != 0) fn=RtlGenRandomFn(GetProcAddress(dll, "SystemFunction036"));
             if (fn == 0) {
                 destroy();

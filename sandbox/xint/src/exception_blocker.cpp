@@ -11,7 +11,7 @@
     This file holds definitions for the exception blocker classes and functions.
 */
 
-#include "../xint.hpp"
+#include "../boost/xint/xint.hpp"
 
 #ifdef XINT_THREADSAFE
     #include <boost/thread.hpp>

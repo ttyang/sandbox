@@ -12,7 +12,7 @@
     of the other categories.
 */
 
-#include "../xint.hpp"
+#include "../boost/xint/xint.hpp"
 
 namespace xint {
 

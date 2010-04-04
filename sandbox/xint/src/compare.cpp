@@ -12,8 +12,8 @@
     comparison operators that use it.
 */
 
-#include "../xint.hpp"
-#include "../xint_data_t.hpp"
+#include "../boost/xint/xint.hpp"
+#include "../boost/xint/xint_data_t.hpp"
 
 namespace xint {
 

@@ -12,8 +12,8 @@
     is in gcd.cpp to share gcd_core.
 */
 
-#include "../xint.hpp"
-#include "../xint_monty.hpp"
+#include "../boost/xint/xint.hpp"
+#include "../boost/xint/xint_monty.hpp"
 
 namespace xint {
 

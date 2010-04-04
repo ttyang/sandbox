@@ -11,8 +11,8 @@
     This file contains the definitions for data_t member functions.
 */
 
-#include "../xint.hpp"
-#include "../xint_data_t.hpp"
+#include "../boost/xint/xint.hpp"
+#include "../boost/xint/xint_data_t.hpp"
 
 #include <cassert>
 

@@ -11,7 +11,7 @@
     This file contains the definitions for functions related to prime numbers.
 */
 
-#include "../xint.hpp"
+#include "../boost/xint/xint.hpp"
 
 #include <vector>
 

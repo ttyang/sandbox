@@ -11,8 +11,8 @@
     This file contains the definitions for the integer member functions.
 */
 
-#include "../xint.hpp"
-#include "../xint_data_t.hpp"
+#include "../boost/xint/xint.hpp"
+#include "../boost/xint/xint_data_t.hpp"
 
 #ifdef XINT_THREADSAFE
     #define XINT_DISABLE_COPY_ON_WRITE
@@ -20,7 +20,10 @@
 
 namespace xint {
 
-const integer *integer::cZero=0, *integer::cOne=0;
+namespace {
+	std::auto_ptr<integer> cZero, cOne;
+}
+
 const std::string detail::nan_text("#NaN#");
 
 integer::integer() {
@@ -202,16 +205,21 @@ integer& integer::operator>>=(size_t shift) {
 }
 
 const integer& integer::zero() {
-    if (cZero==0) cZero=new integer(0);
+    if (cZero.get()==0) cZero.reset(new integer(0));
     return *cZero;
 }
 
 const integer& integer::one() {
-    if (cOne==0) cOne=new integer(1);
+    if (cOne.get()==0) cOne.reset(new integer(1));
     return *cOne;
 }
 
 detail::digit_t integer::_get_digit(size_t index) const {
+    return data->digits[index];
+}
+
+detail::digit_t integer::_get_digit(size_t index, bool) const {
+    if (index >= data->mLength) return 0;
     return data->digits[index];
 }
 
