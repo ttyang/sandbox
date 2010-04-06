@@ -8,7 +8,11 @@
     See accompanying file LICENSE_1_0.txt or copy at
         http://www.boost.org/LICENSE_1_0.txt
 
-    This file contains the definitions for data_t member functions.
+    See http://www.boost.org/libs/xint for library home page.
+*/
+
+/*! \file
+    \brief Contains the definitions for xint::detail::data_t member functions.
 */
 
 #include "../boost/xint/xint.hpp"
@@ -30,6 +34,7 @@ data_t::data_t(digit_t initial1, digit_t initial2, digit_t initial3) {
     mIsNegative=false;
 }
 
+//! \overload
 data_t::data_t(data_t *c) {
     mLength=c->mLength;
     if (c->digits == c->mQuickDigits) {
@@ -64,6 +69,10 @@ data_t::~data_t() {
 }
 #endif
 
+/*!
+    Call this after every manipulation of a data_t object that could possibly
+    leave leading zeros in the integer.
+*/
 void data_t::skipLeadingZeros() {
     digit_t *d=digits+mLength-1;
     while (d>digits && *d==0) --d;

@@ -8,7 +8,11 @@
     See accompanying file LICENSE_1_0.txt or copy at
         http://www.boost.org/LICENSE_1_0.txt
 
-    This file contains the random number functions.
+    See http://www.boost.org/libs/xint for library home page.
+*/
+
+/*! \file
+    \brief Contains the definitions for the random number functions.
 */
 
 #ifdef _WIN32
@@ -93,6 +97,7 @@ unsigned int get_random() {
 ////////////////////////////////////////////////////////////////////////////////
 // The secure random generator
 
+//! @cond
 #ifdef _WIN32
     struct strong_random_generator::impl_t {
         typedef BOOLEAN (WINAPI *RtlGenRandomFn)(PVOID, ULONG);
@@ -151,6 +156,7 @@ unsigned int get_random() {
 
     double strong_random_generator::entropy() const { return 8; }
 #endif
+//! @endcond
 
 const bool strong_random_generator::has_fixed_range = true;
 const strong_random_generator::result_type strong_random_generator::min_value =
@@ -161,16 +167,40 @@ strong_random_generator::strong_random_generator(): impl(new impl_t) { }
 strong_random_generator::~strong_random_generator() { delete impl; }
 strong_random_generator::result_type strong_random_generator::operator()() {
     return (*impl)(); }
+
+//! @cond
 strong_random_generator::result_type strong_random_generator::min
     BOOST_PREVENT_MACRO_SUBSTITUTION () const { return min_value; }
 strong_random_generator::result_type strong_random_generator::max
     BOOST_PREVENT_MACRO_SUBSTITUTION () const { return max_value; }
+//! @endcond
 
 ////////////////////////////////////////////////////////////////////////////////
 // Returns a positive (unless told otherwise) integer between zero and
 // (1<<bits)-1, inclusive
-integer random_by_size(size_t bits, bool highBitOn, bool lowBitOn, bool
-    canBeNegative)
+
+/*! \brief Generates a random integer with specific attributes.
+
+\param[in] bits The maximum number of bits that you want the returned number to
+have.
+\param[in] high_bit_on If \c true, the returned number will have exactly the
+requested size. If \c false, the upper bits may be zero, resulting in a number
+that is slightly smaller than requested.
+\param[in] low_bit_on If \c true, the returned number will always be odd. If
+\c false, it has an equal chance of being odd or even.
+\param[in] can_be_negative If \c true, the returned value has an equal chance
+of being positive or negative. If \c false, it will always be positive.
+
+\returns A random integer with the requested attributes.
+
+\remarks
+This function uses the currently-defined random generator.
+
+\see \ref random
+\see xint::set_random_generator
+*/
+integer random_by_size(size_t bits, bool high_bit_on, bool low_bit_on, bool
+    can_be_negative)
 {
     if (bits<=0) return integer::zero();
 
@@ -194,9 +224,9 @@ integer random_by_size(size_t bits, bool highBitOn, bool lowBitOn, bool
         *ie=p._get_data()->digits+p._get_data()->mLength; i<ie; ++i) *i=0;
     p._get_data()->skipLeadingZeros();
 
-    if (highBitOn) setbit(p, bits-1);
-    if (lowBitOn) setbit(p, 0);
-    if (canBeNegative) p._set_negative(randomGenerator() & 0x01);
+    if (high_bit_on) setbit(p, bits-1);
+    if (low_bit_on) setbit(p, 0);
+    if (can_be_negative) p._set_negative(randomGenerator() & 0x01);
 
     return p;
 }

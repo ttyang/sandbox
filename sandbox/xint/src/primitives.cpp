@@ -8,7 +8,11 @@
     See accompanying file LICENSE_1_0.txt or copy at
         http://www.boost.org/LICENSE_1_0.txt
 
-    This file contains the definitions for math primitives.
+    See http://www.boost.org/libs/xint for library home page.
+*/
+
+/*! \file
+    \brief Contains the definitions for math primitives.
 */
 
 #include "../boost/xint/xint.hpp"
@@ -19,19 +23,37 @@ namespace xint {
 
 using namespace detail;
 
+/*! \brief Returns the absolute value of an integer.
+
+\param[in] n The integer to operate on.
+
+\returns If \c n is zero or positive, returns \c n. Otherwise returns \c -n.
+*/
 integer abs(const integer& n) {
     return (n < 0 ? -n : n);
 }
 
-integer negate(const integer& _n) {
-    _n._throw_if_nan();
+/*! \brief Return the additive inverse of an integer.
 
-    integer n(_n);
-    n._make_unique();
-    n._get_data()->negate();
-    return n;
+\param[in] n The integer to operate on.
+
+\returns \c -n.
+*/
+integer negate(const integer& n) {
+    n._throw_if_nan();
+
+    integer nn(n);
+    nn._make_unique();
+    nn._get_data()->negate();
+    return nn;
 }
 
+/*! \brief Calculate the sum of two integers.
+
+\param[in] n1, n2 The integers to add.
+
+\returns The sum of the parameters.
+*/
 integer add(const integer& n1, const integer& n2) {
     int sign1=n1.sign(), sign2=n2.sign();
     if (sign1 != sign2) {
@@ -50,6 +72,12 @@ integer add(const integer& n1, const integer& n2) {
     }
 }
 
+/*! \brief Calculate the difference between two integers.
+
+\param[in] n1, n2 The integers to operate on.
+
+\returns The difference between the parameters.
+*/
 integer subtract(const integer& n1, const integer& n2) {
     int sign1=n1.sign(), sign2=n2.sign();
     if (sign1 != sign2) {
@@ -69,6 +97,16 @@ integer subtract(const integer& n1, const integer& n2) {
     }
 }
 
+/*! \brief Calculate the product of two integers.
+
+\param[in] n, by The integers to operate on.
+
+\returns The product of the parameters.
+
+\remarks
+Automatically uses the more-efficient squaring algorithm if it can trivially
+detect that the two parameters are copies of the same number.
+*/
 integer multiply(const integer& n, const integer& by) {
     int nsign=n.sign(), bysign=by.sign();
     if (nsign==0 || bysign==0) return integer::zero();
@@ -178,7 +216,7 @@ std::pair<integer, integer> subDivide(integer d1, integer d2) {
             doubledigit_t r2a=ri - (q * byDigits[n-1]);
             integer r2=(integer(r2a) << bits_per_digit) + r._get_digit(i-2);
             if (byDigits[n-2] * q <= r2) break;
-                --q;
+            --q;
         }
 
         integer bq=d2*q;
@@ -209,10 +247,32 @@ std::pair<integer, integer> subDivide(integer d1, integer d2) {
 
 } // namespace
 
+/*! \brief Calculate how many \c dividends would fit into \c divisor.
+
+\param[in] dividend, divisor The integers to operate on.
+
+\returns The integer value of \c dividend divided by \c divisor.
+
+\exception xint::divide_by_zero if \c divisor is zero.
+*/
 integer divide(const integer& dividend, const integer& divisor) {
     return divide_r(dividend, divisor).first;
 }
 
+/*! \brief Calculate how many \c dividends would fit into \c divisor, with the
+           remainder.
+
+\param[in] d1 The dividend.
+\param[in] d2 The divisor.
+
+\returns An \c std::pair containing the quotient and remainder of \c d1 divided
+by \c d2.
+
+\exception xint::divide_by_zero if \c d2 is zero.
+
+\note If exceptions are blocked, it will return an std::pair with two
+Not-a-Number values instead of throwing.
+*/
 std::pair<integer, integer> divide_r(const integer& d1, const
     integer& d2)
 {

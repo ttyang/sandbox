@@ -8,7 +8,11 @@
     See accompanying file LICENSE_1_0.txt or copy at
         http://www.boost.org/LICENSE_1_0.txt
 
-    This file contains the definitions for the basic math operators.
+    See http://www.boost.org/libs/xint for library home page.
+*/
+
+/*! \file
+    \brief Contains the definitions for the basic math operators.
 */
 
 #include "../boost/xint/xint.hpp"
