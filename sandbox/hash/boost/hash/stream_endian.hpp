@@ -20,15 +20,15 @@ namespace stream_endian {
 
     // General versions; There should be no need to use these directly
 
-    template <unsigned UnitBits>
+    template <int UnitBits>
     struct big_unit_big_bit {};
-    template <unsigned UnitBits>
+    template <int UnitBits>
     struct little_unit_little_bit {};
-    template <unsigned UnitBits>
+    template <int UnitBits>
     struct big_unit_little_bit {};
-    template <unsigned UnitBits>
+    template <int UnitBits>
     struct little_unit_big_bit {};
-    template <unsigned UnitBits>
+    template <int UnitBits>
     struct host_unit { BOOST_STATIC_ASSERT(UnitBits % CHAR_BIT == 0); };
 
     // Typical, useful instantiations
