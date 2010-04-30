@@ -16,7 +16,7 @@
            nothrow_integer type.
 */
 
-#include "../boost/xint/xint.hpp"
+#include "../boost/xint/nothrow_integer.hpp"
 
 namespace boost {
 namespace xint {

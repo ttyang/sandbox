@@ -16,7 +16,7 @@
            other category.
 */
 
-#include "../boost/xint/xint.hpp"
+#include "../boost/xint/nothrow_integer.hpp"
 
 namespace boost {
 namespace xint {
@@ -27,7 +27,7 @@ namespace xint {
 */
 size_t log2(const nothrow_integer& n) {
     try {
-        return log2(xint::integer(n));
+        return (n._is_nan() ? 0 : n._log2());
     } catch (std::exception&) {
         return 0;
     }

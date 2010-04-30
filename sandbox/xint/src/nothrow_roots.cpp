@@ -16,7 +16,7 @@
            roots of a number.
 */
 
-#include "../boost/xint/xint.hpp"
+#include "../boost/xint/nothrow_integer.hpp"
 
 namespace boost {
 namespace xint {
@@ -24,7 +24,9 @@ namespace xint {
 //! \copydoc xint::sqrt(const integer&)
 nothrow_integer sqrt(const nothrow_integer& n) {
     try {
-        return nothrow_integer(sqrt(xint::integer(n)));
+        nothrow_integer r;
+        detail::sqrt(r, n);
+        return BOOST_XINT_MOVE(r);
     } catch (std::exception&) {
         return nothrow_integer::nan();
     }

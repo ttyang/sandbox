@@ -16,7 +16,7 @@
            nothrow_integer type.
 */
 
-#include "../boost/xint/xint.hpp"
+#include "../boost/xint/nothrow_integer.hpp"
 
 namespace boost {
 namespace xint {
@@ -26,31 +26,17 @@ namespace xint {
 \note Returns 0 instead of throwing.
 */
 int compare(const nothrow_integer &b1, const nothrow_integer &b2, bool ignoresign) {
-    try {
-        return compare(xint::integer(b1), xint::integer(b2));
-    } catch (std::exception&) {
-        return 0;
-    }
+    if (b1.is_nan() || b2.is_nan()) return 0;
+    return detail::compare(b1, b2);
 }
 
 namespace {
 template <typename T>
-bool cmp(const nothrow_integer &num1, const nothrow_integer &num2, const T& t) {
-    try {
-        return t(compare(xint::integer(num1), xint::integer(num2)), 0);
-    } catch (std::exception&) {
-        return false;
-    }
+bool cmp(const nothrow_integer &b1, const nothrow_integer &b2, const T& t) {
+    if (b1.is_nan() || b2.is_nan()) return false;
+    return t(detail::compare(b1, b2), 0);
 }
 } // namespace
-
-bool operator!(const nothrow_integer &num1) {
-    try {
-        return operator!(xint::integer(num1));
-    } catch (std::exception&) {
-        return false;
-    }
-}
 
 bool operator==(const nothrow_integer &num1, const nothrow_integer &num2) {
     return cmp(num1, num2, std::equal_to<int>()); }
