@@ -21,8 +21,10 @@
 #ifndef BOOST_INCLUDED_XINT_MONTY_HPP
 #define BOOST_INCLUDED_XINT_MONTY_HPP
 
+//! @cond detail
 namespace boost {
 namespace xint {
+namespace detail {
 
 //! \name Montgomery Reduction functions
 //!@{
@@ -35,7 +37,9 @@ integer montgomeryMultiplyMod(const integer& x, const integer& y, const integer&
 integer montgomeryPowerMod(const integer& x, const integer& e, const integer& m);
 //!@}
 
+} // namespace detail
 } // namespace xint
 } // namespace boost
+//! @endcond detail
 
 #endif // BOOST_INCLUDED_XINT_MONTY_HPP
