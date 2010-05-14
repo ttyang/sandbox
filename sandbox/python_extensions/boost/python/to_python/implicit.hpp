@@ -11,6 +11,12 @@
 namespace boost {
 namespace python {
 
+/**
+ *  @brief A to-python converter that converts an object of type Source to Python by first converting
+ *         it to an object of type Target (which must have a to-python converter registered).
+ *
+ *  Source must be explicitly convertible to Target in C++.
+ */
 template <typename Source, typename Target>
 struct implicit_to_python {
     typedef typename boost::python::copy_const_reference::apply<Target const &>::type Converter;
@@ -26,7 +32,7 @@ struct implicit_to_python {
         return converter.get_pytype();
     }
 
-    static void declare() {
+    implicit_to_python() {
         boost::python::to_python_converter<Source,implicit_to_python,true>();
     }
 
