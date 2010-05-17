@@ -16,26 +16,26 @@ using namespace boost;
 template <typename T>
 void test_function() {
 
-    // operator &(T, low_bits)
-    T bit_result = T(0) & low_bits<T, 1>();
+    // operator &(T, high_bits)
+    T bit_result = T(0) & high_bits<T, 1>();
 
-    // operator &(low_bits, T)
-    bit_result = low_bits<T, 1>() & T(0);
+    // operator &(high_bits, T)
+    bit_result = high_bits<T, 1>() & T(0);
     
-    // operator |(T, low_bits)
-    bit_result = T(0) | low_bits<T, 1>();
+    // operator |(T, high_bits)
+    bit_result = T(0) | high_bits<T, 1>();
     
-    // operator |(low_bits, T)
-    bit_result = T(0) | low_bits<T,1>();
+    // operator |(high_bits, T)
+    bit_result = T(0) | high_bits<T,1>();
 
-    // operator |(T, low_bits)
-    bit_result = low_bits<T,1>() | T(0);
+    // operator |(T, high_bits)
+    bit_result = high_bits<T,1>() | T(0);
 
-    // operator ^(low_bits, T)
-    bit_result = T(0) ^ low_bits<T,1>();
+    // operator ^(high_bits, T)
+    bit_result = T(0) ^ high_bits<T,1>();
 
-    // operator ^(T, low_bits)
-    bit_result = low_bits<T,1>() ^ T(0);
+    // operator ^(T, high_bits)
+    bit_result = high_bits<T,1>() ^ T(0);
 }
 
 
