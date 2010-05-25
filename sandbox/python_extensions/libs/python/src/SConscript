@@ -1,0 +1,5 @@
+Import("bp_extensions_env")
+
+lib = bp_extensions_env.SharedLibrary("boost_python_extensions", Glob("*.cpp"))
+
+Return("lib")
