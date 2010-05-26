@@ -51,6 +51,8 @@ public: // constructors
 
 public: // miscellaneous
 
+    proxy_class & const_proxy() { return m_proxy; }
+
     self& enable_shared_ptr() {
         register_ptr_to_python< boost::shared_ptr<wrapped> >();
         const_aware::const_shared_ptr_to_python<wrapped>();
@@ -60,14 +62,6 @@ public: // miscellaneous
     }
 
 public: // member functions
-
-    // Generic visitation
-    template <class Derived>
-    self& def(def_visitor<Derived> const& visitor)
-    {
-        visitor.visit(m_class);
-        return *this;
-    }
 
     // Wrap a member function or a non-member function which can take
     // a T, T cv&, or T cv* as its first parameter, a callable
@@ -187,7 +181,7 @@ private:
       , def_visitor<Visitor> const* v
     )
     {
-        v->visit(m_class, name, helper);
+        BOOST_STATIC_ASSERT(sizeof(LeafVisitor) < 0); // No support for visitors (yet).
     }
 
     template <class T, class Fn, class Helper>
