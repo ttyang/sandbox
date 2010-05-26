@@ -45,8 +45,18 @@ extern "C" {
     }
     
     static PyObject *
-    proxy_instance_new(PyTypeObject* type_, PyObject* /*args*/, PyObject* /*kw*/) {
+    proxy_instance_new(PyTypeObject* type_, PyObject* args, PyObject* kw) {
+        static char * kwds[] = {const_cast<char*>("target"), NULL};
+        PyObject * target_type = PyObject_GetAttrString((PyObject*)type_, "__proxy_target__");
+        if (target_type == 0) return 0;
+        PyObject * target = 0;
+        if (!PyArg_ParseTupleAndKeywords(args, kw, "O!", kwds, target_type, &target))
+            return 0;
         proxy_instance* result = (proxy_instance*)type_->tp_alloc(type_, 0);
+        if (result != 0) {
+            Py_INCREF(target);
+            result->target = target;
+        }
         return (PyObject*)result;
     }
     
