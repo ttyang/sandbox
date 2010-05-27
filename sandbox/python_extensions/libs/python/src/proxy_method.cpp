@@ -191,7 +191,17 @@ object make_proxy_property(object const & target) {
     object result(
         (python::detail::new_reference)
         PyObject_CallFunction((PyObject*)&PyProperty_Type, 
-                              const_cast<char*>("Osss"), new_fget.ptr(), 0, 0, doc.ptr())
+                              const_cast<char*>("OssO"), new_fget.ptr(), 0, 0, doc.ptr())
+    );
+    return result;
+}
+
+object make_new_proxy_property(object const & fget, char const * doc) {
+    object new_fget = make_proxy_method(fget);
+    object result(
+        (python::detail::new_reference)
+        PyObject_CallFunction((PyObject*)&PyProperty_Type, 
+                              const_cast<char*>("Osss"), new_fget.ptr(), 0, 0, doc)
     );
     return result;
 }

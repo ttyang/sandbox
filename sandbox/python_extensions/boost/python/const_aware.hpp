@@ -11,11 +11,9 @@ namespace boost { namespace python {
 
 template <typename W, typename X1, typename X2, typename X3>
 inline const_aware::exposer<W,X1,X2,X3> make_const_aware(
-    class_<W,X1,X2,X3> & class_ref,
-    char const * proxy_name,
-    char const * proxy_doc = 0
+    class_<W,X1,X2,X3> const & class_ref
 ) {
-    return const_aware::exposer<W,X1,X2,X3>(class_ref, proxy_name, proxy_doc);
+    return const_aware::exposer<W,X1,X2,X3>(class_ref);
 }
 
 }} // namespace boost::python
