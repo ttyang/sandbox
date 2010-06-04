@@ -11,6 +11,8 @@
 
 <P>On the implementation side, hash algorithms are build out of smaller components (see, for instance, the <A HREF="http://en.wikipedia.org/wiki/One-way_compression_function#Davies.E2.80.93Meyer">Davies-Meyer</A> and <A HREF="http://en.wikipedia.org/wiki/Merkle%E2%80%93Damg%C3%A5rd_construction">Merkle-Damg&aring;rd</A> constructions) in a way which provides for an elegant generic implementation.  Generic programming also allows them to accept a wide range of input sizes, instead of just allowing byte-oriented input like the vast majority of other implementations.
 
+<P>The namespace <tt>hashes</tt> is used because <tt>boost::hash</tt> is a class template provided by <tt>boost/functional/hash.hpp</tt> for use with unordered containers.
+
 <P><TABLE WIDTH="100%">
 <TR>
 <TD>Previous: <A HREF="validation.html">Validation</A></TD>
