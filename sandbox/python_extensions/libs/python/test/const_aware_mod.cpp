@@ -74,6 +74,6 @@ static void export_module() {
 
 }
 
-BOOST_PYTHON_MODULE(const_aware) {
+BOOST_PYTHON_MODULE(const_aware_mod) {
     export_module();
 }
