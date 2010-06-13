@@ -42,13 +42,13 @@ void pow(BOOST_XINT_RAWINT& target, const BOOST_XINT_RAWINT n, const
 
     bool neg = (!n.is_zero() && n.negative && e.is_odd());
 
-    size_t lastBitCount = 0;
+    std::size_t lastBitCount = 0;
     digit_t ee(e[e.length - 1]);
     while (ee != 0) { ee >>= 1; ++lastBitCount; }
 
     BOOST_XINT_RAWINT p(n.abs());
     target.set(1);
-    for (size_t eIndex = 0; eIndex < e.length; ++eIndex) {
+    for (std::size_t eIndex = 0; eIndex < e.length; ++eIndex) {
         digit_t eee(e[eIndex]);
 
         int bitCount(int(eIndex == e.length - 1 ? lastBitCount :
@@ -63,13 +63,14 @@ void pow(BOOST_XINT_RAWINT& target, const BOOST_XINT_RAWINT n, const
     target.trim();
 }
 
-BOOST_XINT_RAWINT_TPL void pow2(BOOST_XINT_RAWINT& target, size_t exponent) {
+BOOST_XINT_RAWINT_TPL void pow2(BOOST_XINT_RAWINT& target, std::size_t exponent)
+{
     target.set(0);
     setbit(target, exponent);
     target.trim();
 }
 
-BOOST_XINT_RAWINT_TPL void factorial(BOOST_XINT_RAWINT& target, size_t n) {
+BOOST_XINT_RAWINT_TPL void factorial(BOOST_XINT_RAWINT& target, std::size_t n) {
     target.set(1);
 
     BOOST_XINT_RAWINT one(1), nn(n);

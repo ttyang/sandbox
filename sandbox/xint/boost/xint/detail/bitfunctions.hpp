@@ -26,8 +26,8 @@ namespace xint {
 namespace detail {
 
 BOOST_XINT_RAWINT_TPL
-bool getbit(const BOOST_XINT_RAWINT n, size_t bit_index) {
-    size_t index = bit_index / bits_per_digit;
+bool getbit(const BOOST_XINT_RAWINT n, std::size_t bit_index) {
+    std::size_t index = bit_index / bits_per_digit;
     if (index < n.length) {
         digit_t mask = (digit_t(1) << (bit_index % bits_per_digit));
         return ((n[index] & mask) != 0);
@@ -35,9 +35,9 @@ bool getbit(const BOOST_XINT_RAWINT n, size_t bit_index) {
 }
 
 BOOST_XINT_RAWINT_TPL
-void setbit(BOOST_XINT_RAWINT& n, size_t bit_index) {
+void setbit(BOOST_XINT_RAWINT& n, std::size_t bit_index) {
     if (Bits != 0 && bit_index >= (n.max_length() * bits_per_digit)) return;
-    size_t index = (bit_index / bits_per_digit);
+    std::size_t index = (bit_index / bits_per_digit);
     digit_t mask = (digit_t(1) << (bit_index % bits_per_digit));
     n.digits(index + 1, realloc::extend)[index] |= mask;
     if (n.length < index + 1) n.length = index + 1;
@@ -45,8 +45,8 @@ void setbit(BOOST_XINT_RAWINT& n, size_t bit_index) {
 }
 
 BOOST_XINT_RAWINT_TPL
-void clearbit(BOOST_XINT_RAWINT& n, size_t bit_index) {
-    size_t index = (bit_index / bits_per_digit);
+void clearbit(BOOST_XINT_RAWINT& n, std::size_t bit_index) {
+    std::size_t index = (bit_index / bits_per_digit);
     if (index >= n.length) return; // Bit can't be set, no need to clear it.
     digit_t mask = (digit_t(1) << (bit_index % bits_per_digit));
     n.digits(0)[index] &= ~mask;
@@ -54,12 +54,12 @@ void clearbit(BOOST_XINT_RAWINT& n, size_t bit_index) {
 }
 
 BOOST_XINT_RAWINT_TPL
-size_t lowestbit(const BOOST_XINT_RAWINT n, size_t valueIfZero) {
+size_t lowestbit(const BOOST_XINT_RAWINT n, std::size_t valueIfZero) {
     if (n.is_zero()) return valueIfZero;
 
     const digit_t *d = n.digits(), *p = d, *pe = p + n.length;
     while (p != pe && *p == 0) ++p;
-    size_t r = (bits_per_digit * (p - d));
+    std::size_t r = (bits_per_digit * (p - d));
 
     digit_t digit = *p;
     while ((digit & 0x01)==0) { digit >>= 1; ++r; }
@@ -68,7 +68,7 @@ size_t lowestbit(const BOOST_XINT_RAWINT n, size_t valueIfZero) {
 }
 
 BOOST_XINT_RAWINT_TPL
-size_t highestbit(const BOOST_XINT_RAWINT n, size_t valueIfZero) {
+size_t highestbit(const BOOST_XINT_RAWINT n, std::size_t valueIfZero) {
     if (n.is_zero()) return valueIfZero;
     return ((n.length - 1) * bits_per_digit) + log2(n[n.length - 1]);
 }

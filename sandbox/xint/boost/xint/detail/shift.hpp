@@ -26,16 +26,18 @@ namespace xint {
 namespace detail {
 
 BOOST_XINT_RAWINT_TPL
-BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator<<=(size_t byBits) {
+BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator<<=(std::size_t byBits) {
     if (byBits == 0) return *this;
 
     // bits/dchunks is distance to move
-    size_t dchunks = byBits / bits_per_digit, bits = byBits % bits_per_digit;
-    size_t anslen = length + dchunks + (bits != 0 ? 1 : 0);
+    std::size_t dchunks = byBits / bits_per_digit, bits = byBits %
+        bits_per_digit;
+    std::size_t anslen = length + dchunks + (bits != 0 ? 1 : 0);
     digit_t *dstart = digits(anslen);
 
     // nlen is one greater than top source byte to move
-    size_t nlen = (std::min)(length, anslen - dchunks - (bits != 0 ? 1 : 0));
+    std::size_t nlen = (std::min)(length, anslen - dchunks - (bits != 0 ? 1 :
+        0));
 
     if (bits != 0 && dchunks + 1 < anslen) {
         // Handle both bits and dchunks in one pass
@@ -65,11 +67,11 @@ BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator<<=(size_t byBits) {
 }
 
 BOOST_XINT_RAWINT_TPL
-BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator>>=(size_t byBits) {
+BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator>>=(std::size_t byBits) {
     if (byBits == 0) return *this;
 
-    size_t dchunks = byBits / bits_per_digit, bits = byBits % bits_per_digit,
-        bits2 = bits_per_digit - bits;
+    std::size_t dchunks = byBits / bits_per_digit, bits = byBits %
+        bits_per_digit, bits2 = bits_per_digit - bits;
 
     digit_t *tgt = digits(0);
     if (dchunks < length) {
@@ -93,12 +95,12 @@ BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator>>=(size_t byBits) {
 }
 
 BOOST_XINT_RAWINT_TPL
-BOOST_XINT_RAWINT operator<<(BOOST_XINT_RAWINT n, size_t bits) {
+BOOST_XINT_RAWINT operator<<(BOOST_XINT_RAWINT n, std::size_t bits) {
     return (n <<= bits);
 }
 
 BOOST_XINT_RAWINT_TPL
-BOOST_XINT_RAWINT operator>>(BOOST_XINT_RAWINT n, size_t bits) {
+BOOST_XINT_RAWINT operator>>(BOOST_XINT_RAWINT n, std::size_t bits) {
     return (n >>= bits);
 }
 

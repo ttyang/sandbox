@@ -26,7 +26,7 @@ namespace xint {
 namespace detail {
 
 //! Compares equal-length sets of digits.
-inline int compare(const digit_t *b1, const digit_t *b2, size_t len, bool
+inline int compare(const digit_t *b1, const digit_t *b2, std::size_t len, bool
     equal_only)
 {
     const detail::digit_t *b1i = b1 + len, *b2i = b2 + len;

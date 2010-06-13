@@ -28,14 +28,14 @@ namespace detail {
 BOOST_XINT_RAWINT_TPL
 BOOST_XINT_RAWINT square(const BOOST_XINT_RAWINT n) {
     const digit_t *ndigits = n.digits();
-    size_t nlen = n.length;
+    std::size_t nlen = n.length;
 
     BOOST_XINT_RAWINT target;
     digit_t *rdigits = target.digits(n.length * 2 + 1, realloc::zero), *rmax =
         rdigits + target.length;
 
     // Calculate the product of digits of unequal index
-    size_t i = 0;
+    std::size_t i = 0;
     doubledigit_t c;
     do {
         const doubledigit_t ii = ndigits[i];
@@ -106,7 +106,8 @@ BOOST_XINT_RAWINT multiply(const BOOST_XINT_RAWINT n, const BOOST_XINT_RAWINT
     BOOST_XINT_RAWINT target;
     digit_t *adigits = target.digits(n.length + by.length, realloc::zero),
         *ae = adigits + target.max_length();
-    size_t maxdigit = target.max_length(), nlen = n.length, bylen = by.length;
+    std::size_t maxdigit = target.max_length(), nlen = n.length, bylen =
+        by.length;
 
     // Now multiply the digits, starting at the least-significant digit.
     const digit_t *d1 = n.digits(), *d1e = d1 + (std::min)(nlen, maxdigit);

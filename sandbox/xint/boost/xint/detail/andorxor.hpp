@@ -27,7 +27,7 @@ namespace detail {
 
 BOOST_XINT_RAWINT_TPL
 BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator&=(const BOOST_XINT_RAWINT n) {
-    size_t len = (std::min)(length, n.length);
+    std::size_t len = (std::min)(length, n.length);
     const digit_t *ns = n.digits(), *nse = ns + len;
     digit_t *t = digits(len, realloc::extend);
     while (ns != nse) *t++ &= *ns++;
@@ -38,7 +38,7 @@ BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator&=(const BOOST_XINT_RAWINT n) {
 
 BOOST_XINT_RAWINT_TPL
 BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator|=(const BOOST_XINT_RAWINT n) {
-    size_t len = (std::max)(length, n.length);
+    std::size_t len = (std::max)(length, n.length);
     if (length > n.length) {
         const digit_t *ns = n.digits(), *nse = ns + n.length;
         digit_t *t = digits(len, realloc::extend);
@@ -56,7 +56,7 @@ BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator|=(const BOOST_XINT_RAWINT n) {
 
 BOOST_XINT_RAWINT_TPL
 BOOST_XINT_RAWINT& BOOST_XINT_RAWINT::operator^=(const BOOST_XINT_RAWINT n) {
-    size_t len = (std::max)(length, n.length);
+    std::size_t len = (std::max)(length, n.length);
     if (length > n.length) {
         const digit_t *ns = n.digits(), *nse = ns + n.length;
         digit_t *t = digits(len, realloc::extend);

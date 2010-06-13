@@ -114,7 +114,7 @@ int is_prime(const BOOST_XINT_RAWINT n, callback_t callback) {
 
 BOOST_XINT_RAWINT_TPL
 template <typename GenType>
-BOOST_XINT_RAWINT BOOST_XINT_RAWINT::random_prime(GenType& gen, size_t
+BOOST_XINT_RAWINT BOOST_XINT_RAWINT::random_prime(GenType& gen, std::size_t
     size_in_bits, callback_t callback)
 {
     if (size_in_bits < 2) throw exceptions::invalid_argument("cannot create "

@@ -36,7 +36,7 @@ BOOST_XINT_RAWINT square_root(BOOST_XINT_RAWINT n) {
     // cycling between two numbers that are approximately correct (try
     // sqrt(23)). To deal with that, we multiply everything by an even power of
     // two.
-    const size_t extra_bits = 1;
+    const std::size_t extra_bits = 1;
     n <<= (extra_bits * 2);
 
     // Initial guess is half the length of n, in bits

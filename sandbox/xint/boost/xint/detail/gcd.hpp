@@ -74,7 +74,7 @@ void gcd(BOOST_XINT_RAWINT& target, const BOOST_XINT_RAWINT num1, const
     } else {
         BOOST_XINT_RAWINT n(num1, false), m(num2, false);
 
-        size_t k = 0;
+        std::size_t k = 0;
         if (!getbit(n, k) && !getbit(m, k)) ++k;
         if (k != 0) { n >>= k; m >>= k; }
 

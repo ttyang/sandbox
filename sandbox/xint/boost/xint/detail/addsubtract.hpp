@@ -55,7 +55,7 @@ void sub_add(BOOST_XINT_RAWINT& n, const BOOST_XINT_RAWINT n2) {
         }
     }
 
-    n.length = (std::max)(n.length, size_t(t - ndig));
+    n.length = (std::max)(n.length, std::size_t(t - ndig));
     n.trim();
 }
 
@@ -82,7 +82,7 @@ void sub_subtract(BOOST_XINT_RAWINT& n, const BOOST_XINT_RAWINT n2) {
             }
         }
 
-        n.length = size_t(t - ndig);
+        n.length = std::size_t(t - ndig);
         n.negative = !n.negative;
     } else {
         while (p != pe) {
@@ -102,7 +102,7 @@ void sub_subtract(BOOST_XINT_RAWINT& n, const BOOST_XINT_RAWINT n2) {
                 else { *t++ -= 1; borrow = 0; break; }
             }
         }
-        n.length = (std::max)(n.length, size_t(t - ndig));
+        n.length = (std::max)(n.length, std::size_t(t - ndig));
     }
 
     assert(borrow == 0);
@@ -116,7 +116,7 @@ void sub_increment(BOOST_XINT_RAWINT& n, bool absolute_value) {
     } else if (!absolute_value && n.negative) {
         sub_decrement(n, true);
     } else {
-        size_t overflow = (n.digits()[n.length - 1] == digit_mask ? 1 : 0);
+        std::size_t overflow = (n.digits()[n.length - 1] == digit_mask ? 1 : 0);
         digit_t *d = n.digits(n.length + overflow, realloc::extend), *p = d, *pe
             = p + n.length;
         while (p < pe) {

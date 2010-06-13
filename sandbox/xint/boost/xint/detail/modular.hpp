@@ -55,11 +55,11 @@ BOOST_XINT_RAWINT powmod(const BOOST_XINT_RAWINT n, const BOOST_XINT_RAWINT e,
     } else {
         BOOST_XINT_RAWINT answer(1), p(n.abs());
 
-        size_t lastBitCount = 0;
+        std::size_t lastBitCount = 0;
         detail::digit_t ee(e[e.length - 1]);
         while (ee != 0) { ee >>= 1; ++lastBitCount; }
 
-        for (size_t eIndex = 0; eIndex < e.length; ++eIndex) {
+        for (std::size_t eIndex = 0; eIndex < e.length; ++eIndex) {
             detail::digit_t ee(e[eIndex]);
 
             int bitCount(int(eIndex == e.length - 1 ? lastBitCount :
