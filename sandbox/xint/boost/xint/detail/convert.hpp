@@ -31,14 +31,18 @@ inline char nToChar(int n, bool upperCase) {
     else return char((n - 10) + 'a');
 }
 
-BOOST_XINT_RAWINT_TPL
-std::string to_string(const BOOST_XINT_RAWINT n, size_t base = 10, bool
-    uppercase = false)
+template <typename charT, bitsize_t Bits, bool Secure, class Alloc>
+std::basic_string<charT> to_string(const BOOST_XINT_RAWINT n, size_t base = 10,
+    bool uppercase = false)
 {
     if (base < 2 || base > 36) throw exceptions::invalid_base();
-    if (n.is_zero()) return "0";
 
-    std::ostringstream out;
+    std::basic_ostringstream<charT> out;
+    if (n.is_zero()) {
+        out << "0";
+        return out.str();
+    }
+
     if (base == 2 || base == 4 || base == 16) {
         // Fast no-division version, useful for debugging division and for cases
         // where maximum speed is necessary.
@@ -63,7 +67,7 @@ std::string to_string(const BOOST_XINT_RAWINT n, size_t base = 10, bool
                 digitShift -= bits_per_base_b_digit;
             }
 
-            digitShift=(bits_per_digit - bits_per_base_b_digit);
+            digitShift = (bits_per_digit - bits_per_base_b_digit);
         } while (d-- != firstDigit);
 
         return out.str();
@@ -88,17 +92,19 @@ std::string to_string(const BOOST_XINT_RAWINT n, size_t base = 10, bool
 
         if (n.negative) out << '-';
 
-        std::string rval = out.str();
+        std::basic_string<charT> rval = out.str();
         std::reverse(rval.begin(), rval.end());
         return rval;
     }
 }
 
 BOOST_XINT_RAWINT_TPL
-void BOOST_XINT_RAWINT::from_string(const char *str, char **endptr, size_t base)
+template <typename charT>
+void BOOST_XINT_RAWINT::from_string(const charT *str, char **endptr, size_t
+    base)
 {
     bool negate = false;
-    const char *c = str;
+    const charT *c = str;
     while (isspace(*c)) ++c;
 
     if (*c == '+') ++c;
@@ -117,28 +123,30 @@ void BOOST_XINT_RAWINT::from_string(const char *str, char **endptr, size_t base)
     if (base < 2 || base > 36) throw exceptions::invalid_base();
     if (*c == 0) throw exceptions::invalid_digit("No valid digits");
 
-    std::string tstr;
+    std::basic_string<charT> tstr;
     if (negate) tstr.push_back('-');
     if (base <= 10) {
-        const char p = char('0' + base);
+        const charT p = charT('0' + base);
         while (*c >= '0' && *c < p)
             tstr.push_back(*c++);
     } else {
-        const char lower = char('a' + base - 10), upper = char('A' + base - 10);
+        const charT lower = charT('a' + base - 10), upper = charT('A' + base -
+            10);
         while ((*c >= '0' && *c <= '9')
             || (*c >= 'a' && *c < lower)
             || (*c >= 'A' && *c < upper))
                 tstr.push_back(*c++);
     }
-    *endptr = const_cast<char*>(c);
+    *endptr = const_cast<charT*>(c);
 
     from_string(tstr, base);
 }
 
 BOOST_XINT_RAWINT_TPL
-void BOOST_XINT_RAWINT::from_string(const char *str, size_t base) {
+template <typename charT>
+void BOOST_XINT_RAWINT::from_string(const charT *str, size_t base) {
     bool negate = false;
-    const char *c = str;
+    const charT *c = str;
     if (*c == '+') ++c;
     else if (*c == '-') { negate = true; ++c; }
 
@@ -185,7 +193,10 @@ void BOOST_XINT_RAWINT::from_string(const char *str, size_t base) {
 }
 
 BOOST_XINT_RAWINT_TPL
-void BOOST_XINT_RAWINT::from_string(const std::string& str, size_t base) {
+template <typename charT>
+void BOOST_XINT_RAWINT::from_string(const std::basic_string<charT>& str, size_t
+    base)
+{
     from_string(str.c_str(), base);
 }
 
