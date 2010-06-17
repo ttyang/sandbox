@@ -7,4 +7,5 @@
 #define BOOST_BITFIELD_FUSION_EXT_INCLUDES_HPP
 #include <boost/fusion/iterator/value_of.hpp>
 #include <boost/fusion/iterator/deref.hpp>
+#include <boost/fusion/iterator/next.hpp>
 #endif
