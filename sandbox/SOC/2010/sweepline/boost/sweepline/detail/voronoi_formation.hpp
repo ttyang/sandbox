@@ -196,10 +196,18 @@ namespace detail {
 
         bool equals(const circle_event &c_event) const {
             return center_.x() == c_event.x() && center_.y() == c_event.y() &&
-                   sqr_radius_ == c_event.get_sqr_radius();
+                   sqr_radius_ == c_event.get_sqr_radius() &&
+                   sites_[0] == c_event.sites_[0] &&
+                   sites_[1] == c_event.sites_[1] &&
+                   sites_[2] == c_event.sites_[2];
         }
 
         bool operator==(const circle_event &c_event) const {
+            if (sites_[0] != c_event.sites_[0] ||
+                sites_[1] != c_event.sites_[1] ||
+                sites_[2] != c_event.sites_[2])
+                return false;
+
             if (center_.y() != c_event.y())
                 return false;
 
@@ -234,30 +242,58 @@ namespace detail {
                 if (sqr_r2 <= sqr_r1)
                     return false;
                 
-                if (sqr_dif_x >= sum_r_sqr)
+                if (sqr_dif_x > sum_r_sqr)
                     return false;
 
-                if (value_left == value_right)
-                    return y1 < y2;
-                else
+                if (value_left != value_right)
                     return value_left > value_right;
+                
+                if (y1 != y2)
+                    return y1 < y2;
+
+                if (sites_[0] != c_event.sites_[0])
+                    return sites_[0] < c_event.sites_[0];
+
+                if (sites_[1] != c_event.sites_[1])
+                    return sites_[1] < c_event.sites_[1];
+
+                return sites_[2] < c_event.sites_[2];
             }
             else if (x1 < x2) {
                 if (sqr_r1 <= sqr_r2)
                     return true;
 
-                if (sqr_dif_x >= sum_r_sqr)
+                if (sqr_dif_x > sum_r_sqr)
                     return true;
 
-                if (value_left == value_right)
-                    return y1 < y2;
-                else
+                if (value_left != value_right)
                     return value_left < value_right;
+
+                if (y1 != y2)
+                    return y1 < y2;
+                
+                if (sites_[0] != c_event.sites_[0])
+                    return sites_[0] < c_event.sites_[0];
+
+                if (sites_[1] != c_event.sites_[1])
+                    return sites_[1] < c_event.sites_[1];
+
+                return sites_[2] < c_event.sites_[2];
             }
             else {
                 if (sqr_r1 != sqr_r2)
                     return sqr_r1 < sqr_r2;
-                return y1 < y2;
+
+                if (y1 != y2)
+                    return y1 < y2;
+
+                if (sites_[0] != c_event.sites_[0])
+                    return sites_[0] < c_event.sites_[0];
+
+                if (sites_[1] != c_event.sites_[1])
+                    return sites_[1] < c_event.sites_[1];
+
+                return sites_[2] < c_event.sites_[2];
             }
         }
 
@@ -309,13 +345,27 @@ namespace detail {
             bisector_node_ = iterator;
         }
 
+        void set_sites(const site_event<T> site1,
+                       const site_event<T> site2,
+                       const site_event<T> site3) {
+            sites_[0] = site1;
+            sites_[1] = site2;
+            sites_[2] = site3;
+        }
+
         const beach_line_iterator &get_bisector() const {
             return bisector_node_;
         }
+
+        const site_event<T>* get_sites() {
+            return sites;
+        }
+
     private:
         point_2d<T> center_;
         T sqr_radius_;
         beach_line_iterator bisector_node_;
+        site_event<T> sites_[3];
     };
 
     template <typename T>
@@ -538,22 +588,21 @@ namespace detail {
             return true;
         }
 
-        circle_event_type &top() {
+        circle_event_type top() {
             remove_not_active_events();
             return circle_events_.top();
         }
 
         void pop() {
-            remove_not_active_events();
             circle_events_.pop();
         }
 
-        void push(const circle_event_type &circle_event) {
-            circle_events_.push(circle_event);
+        void push(const circle_event_type &c_event) {
+            circle_events_.push(c_event);
         }
 
-        void deactivate_event(const circle_event_type &circle_event) {
-            deactivated_events_.push(circle_event);
+        void deactivate_event(const circle_event_type &c_event) {
+            deactivated_events_.push(c_event);
         }
 
     private:
