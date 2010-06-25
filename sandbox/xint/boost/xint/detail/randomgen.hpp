@@ -49,7 +49,8 @@ namespace detail {
                 "SystemFunction036"));
             if (fn == 0) {
                 destroy();
-                throw exceptions::no_strong_random();
+                exception_handler<>::call(__FILE__, __LINE__,
+                    exceptions::no_strong_random());
             }
         }
 
@@ -58,7 +59,8 @@ namespace detail {
         result_type operator()() {
             result_type r=0;
             if (!fn(&r, sizeof(result_type)))
-                throw exceptions::no_strong_random("RtlGenRandom failed");
+                exception_handler<>::call(__FILE__, __LINE__,
+                exceptions::no_strong_random("RtlGenRandom failed"));
             return r;
         }
 
@@ -80,13 +82,14 @@ namespace detail {
             // This should be supported under most non-Windows systems. Note
             // that we're using /dev/urandom, not /dev/random -- /dev/random is
             // more secure, but it can be VERY slow.
-            if (!rng) throw exceptions::no_strong_random();
+            if (!rng) exception_handler<>::call(__FILE__, __LINE__,
+                exceptions::no_strong_random());
         }
 
         result_type operator()() {
             int r=rng.get();
-            if (r==EOF) throw exceptions::no_strong_random("/dev/urandom "
-                "returned EOF");
+            if (r==EOF) exception_handler<>::call(__FILE__, __LINE__,
+                exceptions::no_strong_random("/dev/urandom returned EOF"));
             return static_cast<result_type>(r);
         }
 
