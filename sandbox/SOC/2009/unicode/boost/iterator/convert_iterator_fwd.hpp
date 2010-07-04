@@ -1,91 +1,13 @@
 #ifndef BOOST_ITERATOR_PIPE_ITERATOR_FWD_HPP
 #define BOOST_ITERATOR_PIPE_ITERATOR_FWD_HPP
 
-#include <boost/utility/enable_if.hpp>
-#include <boost/mpl/has_xxx.hpp>
-
 #include <boost/iterator/iterator_facade.hpp>
-#include <vector>
+#include <boost/iterator/detail/convert_output_storage.hpp>
 
-#include <boost/iterator/converter_concept.hpp>
+#include <boost/compressed_pair.hpp>
 
 namespace boost
 {
-
-namespace detail
-{
-    BOOST_MPL_HAS_XXX_TRAIT_DEF(max_output)
-
-    template<typename P, typename Enable = void>
-    struct convert_output_storage;
-
-    template<typename P>
-    struct convert_output_storage<P, typename ::boost::disable_if< has_max_output<P> >::type>
-    {
-        BOOST_CONCEPT_ASSERT((ConverterConcept<P>));
-private:
-        typedef std::vector<typename P::output_type> Values;
-public:
-        typedef std::back_insert_iterator<Values> output_iterator;
-        
-        const typename P::output_type& operator[](size_t i) const
-        {
-            return values[i];
-        }
-        
-        size_t last_index() const
-        {
-            return values.size() - 1;
-        }
-        
-        output_iterator out()
-        {
-            values.clear();
-            return std::back_inserter(values);
-        }
-        
-        void update(output_iterator)
-        {
-        }
-        
-    private:
-        Values values;
-    };
-    
-    template<typename P>
-    struct convert_output_storage<P, typename boost::enable_if< has_max_output<P> >::type>
-    {
-        BOOST_CONCEPT_ASSERT((ConverterConcept<P>));
-private:
-        typedef typename P::output_type Value;
-public:
-        typedef Value* output_iterator;
-        
-        const Value& operator[](size_t i) const
-        {
-            return values[i];
-        }
-        
-        size_t last_index() const
-        {
-            return last;
-        }
-        
-        output_iterator out()
-        {
-            return values;
-        }
-        
-        void update(output_iterator u)
-        {
-            last = u - values - 1;
-        }
-        
-    private:
-        Value values[P::max_output::value];
-        size_t last;
-    };
-}
 
 /** Iterator adapter that wraps a range to make it appear like a converted
  * one, by converting it step-by-step as it is advanced. */ 
@@ -193,7 +115,7 @@ private:
 /** Output Iterator adapter that wraps an output iterator to make one
  * that will convert its output before pushing it to the wrapped iterator. */
 template<typename OutputIterator, typename OneManyConverter>
-struct convert_output_iterator
+struct convert_output_iterator : private boost::compressed_pair<OutputIterator, OneManyConverter>
 {
     BOOST_CONCEPT_ASSERT((OutputIteratorConcept<OutputIterator, typename OneManyConverter::output_type>));
     BOOST_CONCEPT_ASSERT((OneManyConverterConcept<OneManyConverter>));
@@ -206,13 +128,14 @@ struct convert_output_iterator
 
     convert_output_iterator() {} // singular
     
-	convert_output_iterator(OutputIterator pos_, OneManyConverter p_) : pos(pos_), p(p_)
+	convert_output_iterator(OutputIterator pos_, OneManyConverter p_)
+        : boost::compressed_pair<OutputIterator, OneManyConverter>(pos_, p_)
 	{
 	}
 	
 	OutputIterator base() const
 	{
-		return pos;
+		return get_out();
 	}
 	
 	const convert_output_iterator& operator*() const
@@ -230,25 +153,31 @@ struct convert_output_iterator
 		return *this;
 	}
 	
-    template<typename T>
-	void operator=(T val) const
+	void operator=(const typename OneManyConverter::input_type& val) const
 	{
-		pos = p(val, pos);
+		get_out() = get_conv()(val, get_out());
 	}
     
     bool operator==(const convert_output_iterator& other) const
     {
-        return pos == other.pos;
+        return get_out() == other.get_out();
     }
     
     bool operator!=(const convert_output_iterator& other) const
     {
-        return pos != other.pos;
+        return get_out() != other.get_out();
     }
 	
-private:	
-	mutable OutputIterator pos;
-	mutable OneManyConverter p;
+private:
+    OutputIterator& get_out() const
+    {
+        return const_cast<convert_output_iterator&>(*this).first();
+    }
+    
+    OneManyConverter& get_conv() const
+    {
+        return const_cast<convert_output_iterator&>(*this).second();
+    }
 };
 
 } // namespace boost
