@@ -223,37 +223,113 @@ BOOST_CONCEPT_REQUIRES(
 }
 
 template<typename Range, typename Segmenter>
-BOOST_CONCEPT_REQUIRES(
-    ((SinglePassRangeConcept<Range>))
-    ((SegmenterConcept<Segmenter>))
-    ((Convertible<typename range_value<const Range>::type, typename Segmenter::input_type>)),
-    (iterator_range<
-	    segment_iterator<typename range_iterator<const Range>::type, Segmenter>
-    >)
-) segmented(const Range& range, Segmenter c)
+struct segmented_range : boost::iterator_range<
+    boost::segment_iterator<
+        typename boost::range_iterator<Range>::type,
+        Segmenter
+    >
+>
 {
-	return boost::make_iterator_range(
-		make_segment_iterator(boost::begin(range), boost::end(range), boost::begin(range), c),
-		make_segment_iterator(boost::begin(range), boost::end(range), boost::end(range), c)
-	);
-}
+    typedef boost::segment_iterator<
+        typename boost::range_iterator<Range>::type,
+        Segmenter
+    > Iterator;
+    
+    segmented_range(Iterator begin, Iterator end) : boost::iterator_range<Iterator>(begin, end)
+    {
+    }
+};
 
-template<typename Range, typename Segmenter>
-BOOST_CONCEPT_REQUIRES(
-    ((SinglePassRangeConcept<Range>))
-    ((SegmenterConcept<Segmenter>))
-    ((Convertible<typename range_value<Range>::type, typename Segmenter::input_type>)),
-    (iterator_range<
-	    segment_iterator<typename range_iterator<Range>::type, Segmenter>
-    >)
-) segmented(Range& range, Segmenter c)
+namespace adaptors
 {
-	return boost::make_iterator_range(
-		make_segment_iterator(boost::begin(range), boost::end(range), boost::begin(range), c),
-		make_segment_iterator(boost::begin(range), boost::end(range), boost::end(range), c)
-	);
-}
+    template<typename Range, typename Segmenter>
+    BOOST_CONCEPT_REQUIRES(
+        ((SinglePassRangeConcept<Range>))
+        ((SegmenterConcept<Segmenter>))
+        ((Convertible<typename range_value<const Range>::type, typename Segmenter::input_type>)),
+        (segmented_range<const Range, Segmenter>)
+    ) segment(const Range& range, Segmenter c)
+    {
+        return boost::segmented_range<const Range, Segmenter>(
+            make_segment_iterator(boost::begin(range), boost::end(range), boost::begin(range), c),
+            make_segment_iterator(boost::begin(range), boost::end(range), boost::end(range), c)
+        );
+    }
+    
+    template<typename Range, typename Segmenter>
+    BOOST_CONCEPT_REQUIRES(
+        ((SinglePassRangeConcept<Range>))
+        ((SegmenterConcept<Segmenter>))
+        ((Convertible<typename range_value<Range>::type, typename Segmenter::input_type>)),
+        (segmented_range<Range, Segmenter>)
+    ) segment(Range& range, Segmenter c)
+    {
+        return boost::segmented_range<Range, Segmenter>(
+            make_segment_iterator(boost::begin(range), boost::end(range), boost::begin(range), c),
+            make_segment_iterator(boost::begin(range), boost::end(range), boost::end(range), c)
+        );
+    }
+} // namespace adaptors
     
 } // namespace boost
+
+#ifdef BOOST_UNICODE_DOXYGEN_INVOKED
+#define BOOST_SEGMENTER_DEF(segmenter_name, segment_name)              \
+namespace adaptors                                                     \
+{                                                                      \
+    /** Adapts the range \c range into a range of ranges segmented by
+     \c segmenter_name, each subrange being a segment. */              \
+    template<typename Range, typename... T>                            \
+    boost::segmented_range<                                            \
+        Range,                                                         \
+        segmenter_name                                                 \
+    >                                                                  \
+    segment_name(Range&& range, const T&...);                          \
+}
+#else
+#define BOOST_SEGMENTER_DEF(segmenter_name, segment_name)              \
+namespace adaptors                                                     \
+{                                                                      \
+    template<typename Range>                                           \
+    boost::segmented_range<                                            \
+        const Range,                                                   \
+        segmenter_name                                                 \
+    >                                                                  \
+    segment_name(const Range& range)                                   \
+    {                                                                  \
+        return boost::adaptors::segment(range, segmenter_name());      \
+    }                                                                  \
+                                                                       \
+    template<typename Range>                                           \
+    boost::segmented_range<                                            \
+        Range,                                                         \
+        segmenter_name                                                 \
+    >                                                                  \
+    segment_name(Range& range)                                         \
+    {                                                                  \
+        return boost::adaptors::segment(range, segmenter_name());      \
+    }                                                                  \
+                                                                       \
+    template<typename Range, typename T0>                              \
+    boost::segmented_range<                                            \
+        const Range,                                                   \
+        segmenter_name                                                 \
+    >                                                                  \
+    segment_name(const Range& range, const T0& t0)                     \
+    {                                                                  \
+        return boost::adaptors::segment(range, segmenter_name(t0));    \
+    }                                                                  \
+                                                                       \
+    template<typename Range, typename T0>                              \
+    boost::segmented_range<                                            \
+        Range,                                                         \
+        segmenter_name                                                 \
+    >                                                                  \
+    segment_name(Range& range, const T0& t0)                           \
+    {                                                                  \
+        return boost::adaptors::segment(range, segmenter_name(t0));    \
+    }                                                                  \
+}
+#endif
 
 #endif

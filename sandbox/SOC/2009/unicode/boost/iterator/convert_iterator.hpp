@@ -305,36 +305,22 @@ BOOST_CONCEPT_REQUIRES(
 }
 
 template<typename Range, typename Converter>
-BOOST_CONCEPT_REQUIRES(
-    ((SinglePassRangeConcept<Range>))
-    ((ConverterConcept<Converter>))
-    ((Convertible<typename range_value<Range>::type, typename Converter::input_type>)),
-    (iterator_range<
-	    convert_iterator<typename range_iterator<const Range>::type, Converter>
-    >)
-) converted(const Range& range, Converter p)
+struct converted_range : boost::iterator_range<
+    boost::convert_iterator<
+        typename boost::range_iterator<Range>::type,
+        Converter
+    >
+>
 {
-	return boost::make_iterator_range(
-		make_convert_iterator(boost::begin(range), boost::end(range), boost::begin(range), p),
-		make_convert_iterator(boost::begin(range), boost::end(range), boost::end(range), p)
-	);
-}
-
-template<typename Range, typename Converter>
-BOOST_CONCEPT_REQUIRES(
-    ((SinglePassRangeConcept<Range>))
-    ((ConverterConcept<Converter>))
-    ((Convertible<typename range_value<Range>::type, typename Converter::input_type>)),
-    (iterator_range<
-	    convert_iterator<typename range_iterator<Range>::type, Converter>
-    >)
-) converted(Range& range, Converter p)
-{
-	return boost::make_iterator_range(
-		make_convert_iterator(boost::begin(range), boost::end(range), boost::begin(range), p),
-		make_convert_iterator(boost::begin(range), boost::end(range), boost::end(range), p)
-	);
-}
+    typedef boost::convert_iterator<
+        typename boost::range_iterator<Range>::type,
+        Converter
+    > Iterator;
+    
+    converted_range(Iterator begin, Iterator end) : boost::iterator_range<Iterator>(begin, end)
+    {
+    }
+};
 
 template<typename Range, typename Converter, typename OutputIterator>
 BOOST_CONCEPT_REQUIRES(
@@ -360,16 +346,179 @@ BOOST_CONCEPT_REQUIRES(
     return out;
 }
 
-template<typename OutputIterator, typename OneManyConverter>
-BOOST_CONCEPT_REQUIRES(
-    ((OneManyConverterConcept<OneManyConverter>))
-    ((OutputIteratorConcept<OutputIterator, typename OneManyConverter::output_type>)),
-    (convert_output_iterator<OutputIterator, OneManyConverter>)
-) converted_output(OutputIterator out, OneManyConverter p)
+namespace adaptors
 {
-	return convert_output_iterator<OutputIterator, OneManyConverter>(out, p);
-}
+    template<typename Range, typename Converter>
+    BOOST_CONCEPT_REQUIRES(
+        ((SinglePassRangeConcept<Range>))
+        ((ConverterConcept<Converter>))
+        ((Convertible<typename range_value<Range>::type, typename Converter::input_type>)),
+        (converted_range<const Range, Converter>)
+    ) convert(const Range& range, Converter p)
+    {
+        return boost::converted_range<const Range, Converter>(
+            make_convert_iterator(boost::begin(range), boost::end(range), boost::begin(range), p),
+            make_convert_iterator(boost::begin(range), boost::end(range), boost::end(range), p)
+        );
+    }
+    
+    template<typename Range, typename Converter>
+    BOOST_CONCEPT_REQUIRES(
+        ((SinglePassRangeConcept<Range>))
+        ((ConverterConcept<Converter>))
+        ((Convertible<typename range_value<Range>::type, typename Converter::input_type>)),
+        (converted_range<Range, Converter>)
+    ) convert(Range& range, Converter p)
+    {
+        return boost::converted_range<Range, Converter>(
+            make_convert_iterator(boost::begin(range), boost::end(range), boost::begin(range), p),
+            make_convert_iterator(boost::begin(range), boost::end(range), boost::end(range), p)
+        );
+    }
+    
+    template<typename OutputIterator, typename OneManyConverter>
+    BOOST_CONCEPT_REQUIRES(
+        ((OneManyConverterConcept<OneManyConverter>))
+        ((OutputIteratorConcept<OutputIterator, typename OneManyConverter::output_type>)),
+        (convert_output_iterator<OutputIterator, OneManyConverter>)
+    ) convert_output(OutputIterator out, OneManyConverter p)
+    {
+        return convert_output_iterator<OutputIterator, OneManyConverter>(out, p);
+    }
+} // namespace adaptors
 
 } // namespace boost
 
+#ifdef BOOST_UNICODE_DOXYGEN_INVOKED
+/** Defines helper functions for usage of a \c \xmlonly<conceptname>Converter</conceptname>\endxmlonly.
+ * Helper functions provide a pseudo-variadic interface where they forward all the extra arguments to
+ * the constructor of the \c \xmlonly<conceptname>Converter</conceptname>\endxmlonly.
+ * \arg \c name Name of the type modelling the \c \xmlonly<conceptname>Converter</conceptname>\endxmlonly.
+ * \arg \c n Maximum number of optional arguments. */
+#define BOOST_CONVERTER_DEF(converter_name, convert_name)              \
+/** Eagerly evaluates \c converter_name until the whole input
+   range \c range has been treated, copying the result to \c out and
+   returning the past-the-end output iterator. */                      \
+template<typename Range, typename OutputIterator, typename... T>       \
+OutputIterator                                                         \
+convert_name(const Range& range, OutputIterator out, const T&... );    \
+namespace adaptors                                                     \
+{                                                                      \
+   /** Lazily evalutes \c converter_name by returning a range
+      adapter that wraps the range \c range and converts it
+      step-by-step as the range is advanced. */                        \
+    template<typename Range, typename... T>                            \
+    boost::segmented_range<                                            \
+        Range,                                                         \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name(Range&& range, const T&...);                          \
+}
+#else
+#define BOOST_CONVERTER_DEF(converter_name, convert_name)              \
+template<typename Range, typename OutputIterator>                      \
+OutputIterator convert_name(const Range& range, OutputIterator out)    \
+{                                                                      \
+    return boost::convert(range, converter_name(), out);               \
+}                                                                      \
+template<typename Range, typename OutputIterator, typename T0>         \
+OutputIterator                                                         \
+convert_name(const Range& range, OutputIterator out, const T0& t0)     \
+{                                                                      \
+    return boost::convert(range, converter_name(t0), out);             \
+}                                                                      \
+namespace adaptors                                                     \
+{                                                                      \
+    template<typename Range>                                           \
+    boost::converted_range<                                            \
+        const Range,                                                   \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name(const Range& range)                                   \
+    {                                                                  \
+        return boost::adaptors::convert(range, converter_name());      \
+    }                                                                  \
+                                                                       \
+    template<typename Range>                                           \
+    boost::converted_range<                                            \
+        Range,                                                         \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name(Range& range)                                         \
+    {                                                                  \
+        return boost::adaptors::convert(range, converter_name());      \
+    }                                                                  \
+                                                                       \
+    template<typename Range, typename T0>                              \
+    boost::converted_range<                                            \
+        const Range,                                                   \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name(const Range& range, const T0& t0)                     \
+    {                                                                  \
+        return boost::adaptors::convert(range, converter_name(t0));    \
+    }                                                                  \
+                                                                       \
+    template<typename Range, typename T0>                              \
+    boost::converted_range<                                            \
+        Range,                                                         \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name(Range& range, const T0& t0)                           \
+    {                                                                  \
+        return boost::adaptors::convert(range, converter_name(t0));    \
+    }                                                                  \
+}
 #endif
+
+#ifdef BOOST_UNICODE_DOXYGEN_INVOKED
+/** Defines helper functions for usage of a \c \xmlonly<conceptname>OneManyConverter</conceptname>\endxmlonly.
+ * Helper functions provide a pseudo-variadic interface where they forward all the extra arguments to
+ * the constructor of the \c \xmlonly<conceptname>OneManyConverter</conceptname>\endxmlonly.
+ * \arg \c name Name of the type modelling the \c \xmlonly<conceptname>OneManyConverter</conceptname>\endxmlonly.
+ * \arg \c n Maximum number of optional arguments. */
+#define BOOST_ONEMANYCONVERTER_DEF(converter_name, convert_name)       \
+BOOST_CONVERTER_DEF(converter_name, convert_name)                      \
+namespace adaptors                                                     \
+{                                                                      \
+    /** Lazily evalutes \c converter_name by returning an output
+      iterator that wraps \c out and converts every pushed element. */ \
+    template<typename OutputIterator, typename... T>                   \
+    boost::convert_output_iterator<                                    \
+        OutputIterator,                                                \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name##_output(OutputIterator out, const T&...);            \
+}
+#else
+#define BOOST_ONEMANYCONVERTER_DEF(converter_name, convert_name)       \
+BOOST_CONVERTER_DEF(converter_name, convert_name)                      \
+namespace adaptors                                                     \
+{                                                                      \
+    template<typename OutputIterator>                                  \
+    boost::convert_output_iterator<                                    \
+        OutputIterator,                                                \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name##_output(OutputIterator out)                          \
+    {                                                                  \
+        return boost::adaptors::convert_output(out, converter_name()); \
+    }                                                                  \
+                                                                       \
+    template<typename OutputIterator, typename T0>                     \
+    boost::convert_output_iterator<                                    \
+        OutputIterator,                                                \
+        converter_name                                                 \
+    >                                                                  \
+    convert_name##_output(OutputIterator out, const T0& t0)            \
+    {                                                                  \
+        return boost::adaptors::convert_output(                        \
+            out,                                                       \
+            converter_name(t0)                                         \
+        );                                                             \
+    }                                                                  \
+}                                                                      
+#endif
+
+#endif
+

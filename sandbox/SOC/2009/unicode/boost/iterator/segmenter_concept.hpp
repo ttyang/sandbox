@@ -7,7 +7,7 @@
 namespace boost
 {
 
-/** Concept checking class for the \c Segmenter concept */    
+/** Concept checking class for the \c \xmlonly<conceptname>Segmenter</conceptname>\endxmlonly concept */    
 template<typename X>
 struct SegmenterConcept : DefaultConstructible<X>, CopyConstructible<X>
 {
@@ -27,7 +27,7 @@ private:
     in_type end;
 };
 
-/** Concept checking class for the \c BoundaryChecker concept */
+/** Concept checking class for the \c \xmlonly<conceptname>BoundaryChecker</conceptname>\endxmlonly concept */
 template<typename X>
 struct BoundaryCheckerConcept : DefaultConstructible<X>, CopyConstructible<X>
 {

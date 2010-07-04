@@ -9,7 +9,7 @@
 namespace boost
 {
 
-/** Concept checking class for the \c Converter concept */    
+/** Concept checking class for the \c \xmlonly<conceptname>Converter</conceptname>\endxmlonly concept */    
 template<typename X>
 struct ConverterConcept : DefaultConstructible<X>, CopyConstructible<X>
 {
@@ -33,7 +33,7 @@ private:
     std::pair<in_type, out_type> p;
 };
 
-/** Concept checking class for the \c OneManyConverter concept */
+/** Concept checking class for the \c \xmlonly<conceptname>OneManyConverter</conceptname>\endxmlonly concept */
 template<typename X>
 struct OneManyConverterConcept : ConverterConcept<X>
 {
