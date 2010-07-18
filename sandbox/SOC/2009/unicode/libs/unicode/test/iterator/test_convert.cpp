@@ -22,7 +22,7 @@ struct increasing_convert
     }
     
     template<typename In, typename Out>
-    std::pair<In, Out> ltr(In begin, In end, Out out)
+    Out ltr(In& begin, In end, Out out)
     {
         for(int i=0; i<count; i++)
             *out++ = *begin + i;
@@ -30,11 +30,11 @@ struct increasing_convert
         if(++begin != end)
             ++count;
             
-        return std::make_pair(begin, out);
+        return out;
     }
     
     template<typename In, typename Out>
-    std::pair<In, Out> rtl(In begin, In end, Out out)
+    Out rtl(In begin, In& end, Out out)
     {
         --end;
         for(int i=0; i<count; i++)
@@ -43,7 +43,7 @@ struct increasing_convert
         if(end != begin)
             --count;
             
-        return std::make_pair(end, out);
+        return out;
     }
     
     int count;

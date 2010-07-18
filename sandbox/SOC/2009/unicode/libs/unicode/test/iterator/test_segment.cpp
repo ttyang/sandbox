@@ -21,7 +21,7 @@ struct increasing_segmenter
     }
     
     template<typename In>
-    In ltr(In begin, In end)
+    void ltr(In& begin, In end)
     {
         BOOST_ASSERT(std::distance(begin, end) >= count);
         
@@ -30,11 +30,10 @@ struct increasing_segmenter
             
         if(begin != end)
             ++count;
-        return begin;
     }
     
     template<typename In>
-    In rtl(In begin, In end)
+    void rtl(In begin, In& end)
     {
         BOOST_ASSERT(std::distance(begin, end) >= count);
         
@@ -43,7 +42,6 @@ struct increasing_segmenter
 
         if(end != begin)
             --count;
-        return end;
     }
     
     int count;

@@ -29,7 +29,10 @@ struct segment_iterator
 	segment_iterator(It begin_, It end_, It pos_, Segmenter c_) : pos(pos_), begin(begin_), end(end_), p(c_)
 	{
 		if(pos != end)
-            next_pos = p.ltr(pos, end);
+        {
+            next_pos = pos;
+            p.ltr(next_pos, end);
+        }
 	}
 	
 	It base() const
@@ -51,7 +54,7 @@ private:
 	{
         pos = next_pos;	
 		if(pos != end)
-            next_pos = p.ltr(pos, end);
+            p.ltr(next_pos, end);
 	}
 	
 	void decrement()
@@ -59,8 +62,7 @@ private:
         BOOST_CONCEPT_ASSERT((BidirectionalIterator<It>));
         
         next_pos = pos;	
-            
-        pos = p.rtl(begin, pos);
+        p.rtl(begin, pos);
 	}
 	
 	bool equal(const segment_iterator& other) const
