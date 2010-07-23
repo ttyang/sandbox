@@ -25,16 +25,7 @@ namespace boost { namespace algorithm {
                 RandomAccessRange1T,RandomAccessRange2T,ComparatorT,AllocatorT>
         {
         public:
-            /*typedef RandomAccessIterator1T substring_iterator_type;
-	        typedef RandomAccessIterator2T string_iterator_type;
-            typedef typename
-                std::iterator_traits<substring_iterator_type>::value_type substring_char_type;
-            typedef typename std::iterator_traits<string_iterator_type>::value_type string_char_type;
-            typedef typename boost::iterator_range<substring_iterator_type> substring_range_type;
-            typedef typename boost::iterator_range<string_iterator_type> string_range_type;
-            typedef Comparator comparator_type;
-            typedef Allocator allocator_type;*/
-            std::string get_algorithm_name () const { return "Suffix array"; }
+            std::string get_algorithm_name () const { return "Suffix array II"; }
         protected:
             algorithm () : found_matches_(false), pos_(), matches_() { }
             
