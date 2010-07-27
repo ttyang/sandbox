@@ -3,9 +3,10 @@
 //  (See accompanying file LICENSE_1_0.txt or copy at 
 //  http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_BITFIELD_TUPLE_FUSION_EXT_AT_IMPL_HPP
-#define BOOST_BITFIELD_TUPLE_FUSION_EXT_AT_IMPL_HPP
-#include <boost/mpl/at.hpp>
+#ifndef BOOST_BITFELD_TUPLE_FUSION_EXT_END_HPP
+#define BOOST_BITFELD_TUPLE_FUSION_EXT_END_HPP
+#include <boost/mpl/size.hpp>
+
 
 namespace boost {
     
@@ -14,28 +15,26 @@ struct bitfield_tuple_tag;
 namespace fusion { namespace extension {
 
    
-template <typename> struct at_impl;
+template <typename> struct end_impl;
 
 template <>
-struct at_impl< bitfield_tuple_tag > {
+struct end_impl< bitfield_tuple_tag > {
 
-    template <typename BitfieldTuple, typename N>
+    template <typename BitfieldTuple>
     struct apply {
-        typedef typename ::boost::bitfields::get_proxy_reference_type_by_index<
+        typedef bitfields::bitfield_tuple_iterator<
             BitfieldTuple,
-            N::value
-        >::type                            type;
+            mpl::size<
+                typename BitfieldTuple::members
+            >::value
+        >                                   type;
 
         // non-const at function.
         static type call(BitfieldTuple& bft) {
-            return type( bft.template get<N::value>() );
+            return type( bft );
         }
     };
 };
 
 }}} // end boost::fusion::extension
-
-
-
-
 #endif
