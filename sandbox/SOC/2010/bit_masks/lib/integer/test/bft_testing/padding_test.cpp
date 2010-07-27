@@ -5,7 +5,7 @@
 
 
 #include <boost/integer/bitfield_tuple.hpp>
-#include <boost/assert.hpp>
+#include <boost/detail/lightweight_test.hpp>
 
 
 using namespace boost;
@@ -34,8 +34,8 @@ int main() {
           +
         mpl::at_c<test_tuple::members, 1>::type::field_width::value);
     
-    BOOST_ASSERT(( temp == 3 ));
-    return 0;
+    BOOST_TEST(( temp == 3 ));
+    return boost::report_errors();
 }
 
 
