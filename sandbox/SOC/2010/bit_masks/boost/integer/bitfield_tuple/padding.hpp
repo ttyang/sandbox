@@ -4,8 +4,8 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 
-#ifndef BOOST_BITFIELD_TUPLE_FILLER_HPP
-#define BOOST_BITFIELD_TUPLE_FILLER_HPP
+#ifndef BOOST_BITFIELD_TUPLE_PADDING_HPP
+#define BOOST_BITFIELD_TUPLE_PADDING_HPP
 #include <cstddef>
 
 namespace boost {
@@ -14,7 +14,7 @@ namespace bitfields {
  *  not to be used but instead to be filled with padding or unused bits.
  */
 template < std::size_t N>
-struct filler;
+struct padding;
 
 }} // end boost::bitfields
 
