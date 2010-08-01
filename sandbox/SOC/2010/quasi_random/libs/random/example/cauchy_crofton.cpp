@@ -23,6 +23,10 @@
 #include "box_intersection.hpp"
 
 
+// In this example uniformly distributed chord entry and exit points on a S^2 ball
+// are push_back'ed into a std::vector. This is not optimal for this particular example,
+// but if you use a special device to do the sampling as, for instance, is possible
+// with nVidia CUDA, you will need to store your points in heap anyway.
 template<typename Engine, typename Vector, typename T>
 void uniform_chords(Engine& gen, const Vector& center, T radius, std::size_t n_chords,
     std::vector<Vector>& points)
@@ -54,6 +58,8 @@ void uniform_chords(Engine& gen, const Vector& center, T radius, std::size_t n_c
 }
 
 
+// Computes a bounding sphere for a given box and then counts a number of
+// chord entry and exit points on the box.
 template<typename Engine>
 void cauchy_crofton(Engine& gen, const example::box& model, std::size_t n_chords)
 {
@@ -78,8 +84,8 @@ void cauchy_crofton(Engine& gen, const example::box& model, std::size_t n_chords
   {
     example::ray r(points[i], points[i+1] - points[i]);
     if( model.intersect(r, 0, 1) ) {
-      points_on_model += 2; // this is an approximation,
-    }                       // but sufficient enough for this particular example
+      points_on_model += 2; // here we do not account for those cases when there is
+    }                       // only 1 entry/exit point.
   }
 
   value_t sampled_area =
