@@ -22,7 +22,7 @@ namespace boost
  * When writing to a file, \c P1 is applied for segments of data on which \c B1 is true at the beginning and at the end.
  * When reading a file, \c P2 is applied for segments of data on which \c B2 is true at the beginning and at the end. */
 template<typename InternT, typename B1, typename P1, typename B2, typename P2>
-struct converter_codecvt_facet : std::codecvt<InternT, typename P1::output_type, std::mbstate_t>  
+struct converter_codecvt : std::codecvt<InternT, typename P1::output_type, std::mbstate_t>  
 {
     typedef InternT intern_type;
     typedef typename P1::output_type extern_type;
@@ -36,7 +36,7 @@ struct converter_codecvt_facet : std::codecvt<InternT, typename P1::output_type,
     BOOST_CONCEPT_ASSERT((Convertible<InternT, typename P1::input_type>));
     BOOST_CONCEPT_ASSERT((Convertible<typename P2::output_type, InternT>));
     
-    explicit converter_codecvt_facet(const B1& b1_ = B1(), const P1& p1_ = P1(), const B2& b2_ = B2(), const P2& p2_ = P2(), std::size_t refs = 0)
+    explicit converter_codecvt(const B1& b1_ = B1(), const P1& p1_ = P1(), const B2& b2_ = B2(), const P2& p2_ = P2(), std::size_t refs = 0)
         : std::codecvt<intern_type, extern_type, state_type>(refs), b1(b1_), p1(p1_), b2(b2_), p2(p2_)
     {
     }
@@ -80,6 +80,9 @@ protected:
             return std::codecvt_base::ok;
         }
         
+        if(from_next == from_end)
+            return std::codecvt_base::ok;
+            
         try
         {
             st.pending_size = p2.ltr(from_next, from_end, st.pending_data) - st.pending_data;
