@@ -27,7 +27,7 @@ template<typename Engine, typename Vector, typename T>
 void uniform_chords(Engine& gen, const Vector& center, T radius, std::size_t n_chords,
     std::vector<Vector>& points)
 {
-  const T angle = 2 * boost::math::constants::pi<T>();
+  const T two_pi = 2 * boost::math::constants::pi<T>();
 
   const std::size_t n_points = n_chords * 2;
 
@@ -41,7 +41,7 @@ void uniform_chords(Engine& gen, const Vector& center, T radius, std::size_t n_c
   {
     T cos_theta = 1 - 2 * rnd(gen);
     T sin_theta = std::sqrt(1 - (cos_theta * cos_theta));
-    T phi = angle * rnd(gen);
+    T phi = two_pi * rnd(gen);
     T sin_phi = std::sin(phi), cos_phi = std::cos(phi); // consider using sincos function
 
     point_on_sphere = sin_theta*sin_phi, cos_theta, sin_theta*cos_phi;
