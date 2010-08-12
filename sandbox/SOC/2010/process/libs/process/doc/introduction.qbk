@@ -1,4 +1,4 @@
-[section:preface Preface]
+[section:introduction Introduction]
 
 Boost.Process is a library to manage system processes. It can be used to: 
 
@@ -17,6 +17,6 @@ Here's an example of how easy it is to start a program with Boost.Process.
 [import ../example/create_child.cpp]
 [create_child]
 
-The example searches for an executable hostname in the directories of the enviroment variable PATH and starts it. As the standard output stream is inherited the hostname is printed when you run the example. 
+The example searches for an executable hostname in the directories of the environment variable PATH and starts the program. As the standard output stream is inherited the hostname is printed when you run the example. 
 
 [endsect]

@@ -47,7 +47,7 @@ namespace detail {
  *         the environment's content. This string is of the form
  *         var1=value1\\0var2=value2\\0\\0.
  */
-inline boost::shared_array<char> environment_to_windows_strings(environment_t &env)
+inline boost::shared_array<char> environment_to_windows_strings(environment &env)
 {
     boost::shared_array<char> envp;
 
@@ -59,7 +59,7 @@ inline boost::shared_array<char> environment_to_windows_strings(environment_t &e
     else
     {
         std::string s;
-        for (environment_t::const_iterator it = env.begin(); it != env.end(); ++it)
+        for (environment::const_iterator it = env.begin(); it != env.end(); ++it)
         {
             s += it->first + "=" + it->second;
             s.push_back(0);
