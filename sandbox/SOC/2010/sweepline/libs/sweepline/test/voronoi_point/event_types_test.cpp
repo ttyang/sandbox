@@ -7,7 +7,7 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include "test_type_list.hpp"
+#include "../test_type_list.hpp"
 #include "boost/sweepline/voronoi_sweepline.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
@@ -67,19 +67,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(site_event_test1, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_test1, T, test_types) {
     circle_event<T> circle1 = make_circle_event<T>(static_cast<T>(1),
                                                    static_cast<T>(2),
-                                                   static_cast<T>(4));
+                                                   static_cast<T>(3));
     site_event<T> temp_site = make_site_event<T>(static_cast<T>(0), static_cast<T>(0),0);
     circle_event<T> circle2;
     
     BOOST_CHECK_EQUAL(circle1.x(), static_cast<T>(1));
     BOOST_CHECK_EQUAL(circle1.y(), static_cast<T>(2));
-    BOOST_CHECK_EQUAL(circle1.get_sqr_radius(), static_cast<T>(4));
+    BOOST_CHECK_EQUAL(circle1.get_lower_x(), static_cast<T>(3));
 
-    circle2 = make_circle_event<T>(static_cast<T>(1), static_cast<T>(2), static_cast<T>(4));
+    circle2 = make_circle_event<T>(static_cast<T>(1), static_cast<T>(2), static_cast<T>(3));
     bool arr1[] = { false, false, true, true, true, false };
     EVENT_TYPES_CHECK_COMPARISON(circle1, circle2, arr1);
 
-    circle2 = make_circle_event<T>(static_cast<T>(1), static_cast<T>(3), static_cast<T>(4));
+    circle2 = make_circle_event<T>(static_cast<T>(1), static_cast<T>(3), static_cast<T>(3));
     bool arr2[] = { true, false, true, false, false, true };
     EVENT_TYPES_CHECK_COMPARISON(circle1, circle2, arr2);
 
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_test1, T, test_types) {
     bool arr3[] = { true, false, true, false, false, true };
     EVENT_TYPES_CHECK_COMPARISON(circle1, circle2, arr3);
 
-    circle2 = make_circle_event<T>(static_cast<T>(0), static_cast<T>(2), static_cast<T>(4));
+    circle2 = make_circle_event<T>(static_cast<T>(0), static_cast<T>(2), static_cast<T>(2));
     bool arr4[] = { false, true, false, true, false, true };
     EVENT_TYPES_CHECK_COMPARISON(circle1, circle2, arr4);
 
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_test1, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_test2, T, test_types) {
     circle_event<T> circle = make_circle_event<T>(static_cast<T>(1),
                                                   static_cast<T>(2),
-                                                  static_cast<T>(4));
+                                                  static_cast<T>(3));
     site_event<T> site;
 
     site = make_site_event<T>(static_cast<T>(0), static_cast<T>(100), 0);

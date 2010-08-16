@@ -1,4 +1,4 @@
-// Boost sweepline library segment_voronoi_builder_test.cpp file 
+// Boost sweepline library voronoi_builder_test.cpp file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -10,8 +10,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_segment_sweepline.hpp"
+#include "../test_type_list.hpp"
+#include "../voronoi_output_verification.hpp"
+#include "boost/sweepline/voronoi_sweepline.hpp"
 using namespace boost::sweepline;
 
 #define BOOST_TEST_MODULE voronoi_builder_test
@@ -20,6 +21,8 @@ using namespace boost::sweepline;
 #define CHECK_EQUAL_POINTS(p1, p2) \
         BOOST_CHECK_EQUAL(p1.x() == static_cast<coordinate_type>(p2.x()) && \
                           p1.y() == static_cast<coordinate_type>(p2.y()), true)
+
+#define VERIFY_VORONOI_OUTPUT(output, mask) BOOST_CHECK_EQUAL(verify_output(output, mask), true)
 
 // Sites: (0, 0).
 BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
@@ -36,7 +39,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
     test_voronoi_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
     test_voronoi_builder.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BRect<coordinate_type> bounding_rectangle = test_voronoi_builder.get_bounding_rectangle();
     BOOST_CHECK_EQUAL(bounding_rectangle.x_min == static_cast<coordinate_type>(0) &&
@@ -75,7 +78,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
     test_voronoi_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
     test_voronoi_builder.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BRect<coordinate_type> bounding_rectangle = test_voronoi_builder.get_bounding_rectangle();
     BOOST_CHECK_EQUAL(bounding_rectangle.x_min == static_cast<coordinate_type>(0) &&
@@ -133,7 +136,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
     test_voronoi_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
     test_voronoi_builder.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BRect<coordinate_type> bounding_rectangle = test_voronoi_builder.get_bounding_rectangle();
     BOOST_CHECK_EQUAL(bounding_rectangle.x_min == static_cast<coordinate_type>(0) &&
@@ -181,7 +184,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
     typedef typename voronoi_output_clipped<coordinate_type>::voronoi_const_iterator_type
         voronoi_const_iterator_type;
 
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     point_2d<coordinate_type> point1 = make_point_2d<coordinate_type>(
         static_cast<coordinate_type>(0), static_cast<coordinate_type>(0));
     point_2d<coordinate_type> point2 = make_point_2d<coordinate_type>(
@@ -194,13 +197,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
     points.push_back(point2);
     points.push_back(point3);
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
-    BRect<coordinate_type> bounding_rectangle = test_beach_line.get_bounding_rectangle();
+    BRect<coordinate_type> bounding_rectangle = test_builder.get_bounding_rectangle();
     BOOST_CHECK_EQUAL(bounding_rectangle.x_min == static_cast<coordinate_type>(0) &&
                       bounding_rectangle.y_min == static_cast<coordinate_type>(0) &&
                       bounding_rectangle.x_max == static_cast<coordinate_type>(2) &&
@@ -253,7 +256,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
     typedef typename voronoi_output_clipped<coordinate_type>::voronoi_const_iterator_type
         voronoi_const_iterator_type;
 
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     point_2d<coordinate_type> point1 = make_point_2d<coordinate_type>(
         static_cast<coordinate_type>(0), static_cast<coordinate_type>(1));
     point_2d<coordinate_type> point2 = make_point_2d<coordinate_type>(
@@ -266,11 +269,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
     points.push_back(point2);
     points.push_back(point3);
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(static_cast<int>(test_output.get_voronoi_cells().size()), 3);
     BOOST_CHECK_EQUAL(static_cast<int>(test_output.get_voronoi_vertices().size()), 4);
@@ -319,7 +322,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test3, T, test_types) {
     typedef typename voronoi_output_clipped<coordinate_type>::voronoi_const_iterator_type
         voronoi_const_iterator_type;
 
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     std::vector< point_2d<coordinate_type> > points;
     points.push_back(make_point_2d<coordinate_type>(static_cast<coordinate_type>(0),
                                                     static_cast<coordinate_type>(0)));
@@ -330,11 +333,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test3, T, test_types) {
     points.push_back(make_point_2d<coordinate_type>(static_cast<coordinate_type>(1),
                                                     static_cast<coordinate_type>(1)));
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(static_cast<coordinate_type>(test_output.get_voronoi_cells().size()), 4);
     BOOST_CHECK_EQUAL(static_cast<coordinate_type>(test_output.get_voronoi_vertices().size()), 5);
@@ -393,18 +396,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test3, T, test_types) {
 // Sites: {(x, y) | x = 0 .. 3, y = 0 .. 3}.
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test1, T, test_types) {
     typedef T coordinate_type;
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
             points.push_back(make_point_2d<coordinate_type>(
                 static_cast<coordinate_type>(i), static_cast<coordinate_type>(j)));
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_cells(), 9);
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_vertices(), 4);
@@ -414,18 +417,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test1, T, test_types) {
 // Sites: {(x, y) | x = 0 .. 9, y = 0 .. 9}.
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test2, T, test_types) {
     typedef T coordinate_type;
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 10; i++)
         for (int j = 0; j < 10; j++)
             points.push_back(make_point_2d<coordinate_type>(
                 static_cast<coordinate_type>(i), static_cast<coordinate_type>(j)));
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_cells(), 100);
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_vertices(), 81);
@@ -435,18 +438,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test2, T, test_types) {
 // Sites: {(x, y) | x = 0 .. 33, y = 0 .. 33}.
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test3, T, test_types) {
     typedef T coordinate_type;
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 33; i++)
         for (int j = 0; j < 33; j++)
             points.push_back(make_point_2d<coordinate_type>(
                 static_cast<coordinate_type>(i), static_cast<coordinate_type>(j)));
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_cells(), 1089);
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_vertices(), 1024);
@@ -456,18 +459,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test3, T, test_types) {
 // Sites: {(x, y) | x = 0 .. 100, y = 0 .. 100}.
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test4, T, test_types) {
     typedef T coordinate_type;
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 100; i++)
         for (int j = 0; j < 100; j++)
             points.push_back(make_point_2d<coordinate_type>(
                 static_cast<coordinate_type>(i), static_cast<coordinate_type>(j)));
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_cells(), 10000);
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_vertices(), 9801);
@@ -477,18 +480,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test4, T, test_types) {
 // Sites: {(x, y) | x = 0 .. 333, y = 0 .. 333}.
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test5, T, test_types) {
     typedef T coordinate_type;
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 333; i++)
         for (int j = 0; j < 333; j++)
             points.push_back(make_point_2d<coordinate_type>(
                 static_cast<coordinate_type>(i), static_cast<coordinate_type>(j)));
     
-    test_beach_line.init(points);
-    test_beach_line.run_sweepline();
+    test_builder.init(points);
+    test_builder.run_sweepline();
     voronoi_output_clipped<coordinate_type> test_output;
-    test_beach_line.clip(test_output);
-    BOOST_CHECK_EQUAL(test_output.check(), true);
+    test_builder.clip(test_output);
+    VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
 
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_cells(), 110889);
     BOOST_CHECK_EQUAL(test_output.get_num_voronoi_vertices(), 110224);
@@ -499,20 +502,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test5, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test1, T, test_types) {
     typedef T coordinate_type;
     srand(static_cast<unsigned int>(time(NULL)));
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     voronoi_output_clipped<coordinate_type> test_output;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 10000; i++) {
         points.clear();
         for (int j = 0; j < 10; j++)
             points.push_back(make_point_2d<coordinate_type>(
-                static_cast<coordinate_type>(rand() % 5 - 5),
-                static_cast<coordinate_type>(rand() % 5 - 5)));
-        test_beach_line.init(points);
-        test_beach_line.run_sweepline();
-        test_beach_line.clip(test_output);
-        BOOST_CHECK_EQUAL(test_output.check(), true);
-        test_beach_line.reset();
+                static_cast<coordinate_type>(rand() % 5 - 10),
+                static_cast<coordinate_type>(rand() % 5 - 10)));
+        test_builder.init(points);
+        test_builder.run_sweepline();
+        test_builder.clip(test_output);
+        VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
+        test_builder.reset();
     }
 }
 
@@ -520,20 +523,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test1, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test2, T, test_types) {
     typedef T coordinate_type;
     srand(static_cast<unsigned int>(time(NULL)));
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     voronoi_output_clipped<coordinate_type> test_output;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 1000; i++) {
         points.clear();
         for (int j = 0; j < 100; j++)
             points.push_back(make_point_2d<coordinate_type>(
-                static_cast<coordinate_type>(rand() % 50 - 50),
-                static_cast<coordinate_type>(rand() % 50 - 50)));
-        test_beach_line.init(points);
-        test_beach_line.run_sweepline();
-        test_beach_line.clip(test_output);
-        BOOST_CHECK_EQUAL(test_output.check(), true);
-        test_beach_line.reset();
+                static_cast<coordinate_type>(rand() % 50 - 100),
+                static_cast<coordinate_type>(rand() % 50 - 100)));
+        test_builder.init(points);
+        test_builder.run_sweepline();
+        test_builder.clip(test_output);
+        VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
+        test_builder.reset();
     }
 }
 
@@ -541,20 +544,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test2, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test3, T, test_types) {
     typedef T coordinate_type;
     srand(static_cast<unsigned int>(time(NULL)));
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     voronoi_output_clipped<coordinate_type> test_output;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 100; i++) {
         points.clear();
         for (int j = 0; j < 1000; j++)
         points.push_back(make_point_2d<coordinate_type>(
-            static_cast<coordinate_type>(rand() % 50 - 50),
-            static_cast<coordinate_type>(rand() % 50 - 50)));
-        test_beach_line.init(points);
-        test_beach_line.run_sweepline();
-        test_beach_line.clip(test_output);
-        BOOST_CHECK_EQUAL(test_output.check(), true);
-        test_beach_line.reset();
+            static_cast<coordinate_type>(rand() % 50 - 100),
+            static_cast<coordinate_type>(rand() % 50 - 100)));
+        test_builder.init(points);
+        test_builder.run_sweepline();
+        test_builder.clip(test_output);
+        VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
+        test_builder.reset();
     }
 }
 
@@ -562,20 +565,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test3, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test4, T, test_types) {
     typedef T coordinate_type;
     srand(static_cast<unsigned int>(time(NULL)));
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     voronoi_output_clipped<coordinate_type> test_output;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 10; i++) {
         points.clear();
         for (int j = 0; j < 10000; j++)
-        points.push_back(make_point_2d<coordinate_type>(
-            static_cast<coordinate_type>(rand() % 500 - 500),
-            static_cast<coordinate_type>(rand() % 500 - 500)));
-        test_beach_line.init(points);
-        test_beach_line.run_sweepline();
-        test_beach_line.clip(test_output);
-        BOOST_CHECK_EQUAL(test_output.check(), true);
-        test_beach_line.reset();
+        points.push_back(make_point_2d<coordinate_type>(\
+            static_cast<coordinate_type>(rand() % 500 - 1000),
+            static_cast<coordinate_type>(rand() % 500 - 1000)));
+        test_builder.init(points);
+        test_builder.run_sweepline();
+        test_builder.clip(test_output);
+        VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
+        test_builder.reset();
     }
 }
 
@@ -583,20 +586,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test4, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test5, T, test_types) {
     typedef T coordinate_type;
     srand(static_cast<unsigned int>(time(NULL)));
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     voronoi_output_clipped<coordinate_type> test_output;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 1; i++) {
         points.clear();
         for (int j = 0; j < 100000; j++)
         points.push_back(make_point_2d<coordinate_type>(
-            static_cast<coordinate_type>(rand() % 500 - 500),
-            static_cast<coordinate_type>(rand() % 500 - 500)));
-        test_beach_line.init(points);
-        test_beach_line.run_sweepline();
-        test_beach_line.clip(test_output);
-        BOOST_CHECK_EQUAL(test_output.check(), true);
-        test_beach_line.reset();
+            static_cast<coordinate_type>(rand() % 500 - 1000),
+            static_cast<coordinate_type>(rand() % 500 - 1000)));
+        test_builder.init(points);
+        test_builder.run_sweepline();
+        test_builder.clip(test_output);
+        VERIFY_VORONOI_OUTPUT(test_output, COMPLETE_VERIFICATION);
+        test_builder.reset();
     }
 }
 
@@ -604,19 +607,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test5, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test6, T, test_types) {
     typedef T coordinate_type;
     srand(static_cast<unsigned int>(time(NULL)));
-    voronoi_builder<coordinate_type> test_beach_line;
+    voronoi_builder<coordinate_type> test_builder;
     voronoi_output_clipped<coordinate_type> test_output;
     std::vector< point_2d<coordinate_type> > points;
     for (int i = 0; i < 1; i++) {
         points.clear();
         for (int j = 0; j < 1000000; j++)
         points.push_back(make_point_2d<coordinate_type>(
-            static_cast<coordinate_type>(rand() % 5000 - 5000),
-            static_cast<coordinate_type>(rand() % 5000 - 5000)));
-        test_beach_line.init(points);
-        test_beach_line.run_sweepline();
-        test_beach_line.clip(test_output);
-        //BOOST_CHECK_EQUAL(test_output.check(), true);
-        test_beach_line.reset();
+            static_cast<coordinate_type>(rand() % 5000 - 10000),
+            static_cast<coordinate_type>(rand() % 5000 - 10000)));
+        test_builder.init(points);
+        test_builder.run_sweepline();
+        test_builder.clip(test_output);
+        VERIFY_VORONOI_OUTPUT(test_output, FAST_VERIFICATION);
+        test_builder.reset();
     }
 }

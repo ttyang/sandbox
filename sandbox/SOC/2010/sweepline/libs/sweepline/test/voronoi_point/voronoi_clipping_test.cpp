@@ -1,4 +1,4 @@
-// Boost sweepline library segment_voronoi_clipping_test.cpp file 
+// Boost sweepline library voronoi_clipping_test.cpp file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -10,8 +10,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_segment_sweepline.hpp"
+#include "../test_type_list.hpp"
+#include "boost/sweepline/voronoi_sweepline.hpp"
 using namespace boost::sweepline;
 
 #define BOOST_TEST_MODULE voronoi_clipping_test

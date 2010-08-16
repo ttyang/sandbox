@@ -1,4 +1,4 @@
-// Boost sweepline library node_comparer_test.cpp file 
+// Boost sweepline library segment_node_comparer_test.cpp file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,8 +7,8 @@
 
 //  See http://www.boost.org for updates, documentation, and revision history.
 
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_sweepline.hpp"
+#include "../test_type_list.hpp"
+#include "boost/sweepline/voronoi_segment_sweepline.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
 
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test8, T, test_types) {
         make_site_event<T>(static_cast<T>(0), static_cast<T>(0), 0));
     
     BOOST_CHECK_EQUAL(node_comparer_test(initial_node, new_node1), false);
-    BOOST_CHECK_EQUAL(node_comparer_test(initial_node, new_node2), false);
+    BOOST_CHECK_EQUAL(node_comparer_test(initial_node, new_node2), true);
     BOOST_CHECK_EQUAL(node_comparer_test(initial_node, new_node3), true);
     BOOST_CHECK_EQUAL(node_comparer_test(initial_node, new_node4), true);
 

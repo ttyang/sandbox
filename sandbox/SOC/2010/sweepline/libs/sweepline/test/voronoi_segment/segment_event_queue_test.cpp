@@ -1,4 +1,4 @@
-// Boost sweepline library event_queue_test.cpp file 
+// Boost sweepline library segment_event_queue_test.cpp file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -9,16 +9,15 @@
 
 #include <cmath>
 
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_sweepline.hpp"
+#include "../test_type_list.hpp"
+#include "boost/sweepline/voronoi_segment_sweepline.hpp"
 using namespace boost::sweepline;
 
 #define BOOST_TEST_MODULE event_queue_test
 #include <boost/test/test_case_template.hpp>
 
 #define CHECK_TOP_ELEMENT_EQUALITY(TOP, X, Y) \
-    BOOST_CHECK_EQUAL(TOP.x() + sqrt(static_cast<T>(TOP.get_sqr_radius())) \
-                      == static_cast<T>(X) && \
+    BOOST_CHECK_EQUAL(TOP.get_lower_x() == static_cast<T>(X) && \
                       TOP.y() == static_cast<T>(Y), true)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(event_queue_test1, T, test_types) {
@@ -30,7 +29,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(event_queue_test1, T, test_types) {
     for (int i = 0; i < 10; i++) {
         T x = static_cast<T>(-i);
         T y = static_cast<T>(10-i);
-        event_q.push(detail::make_circle_event<T>(x, y, static_cast<T>(100)));
+        event_q.push(detail::make_circle_event<T>(x, y, x + static_cast<T>(10)));
     }
 
     for (int i = 0; i < 10; i++) {
@@ -51,7 +50,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(event_queue_test2, T, test_types) {
     for (int i = 0; i < 10; i++) {
         T x = static_cast<T>(10-i);
         T y = static_cast<T>(10-i);
-        circle_event_type c = detail::make_circle_event<T>(x, y, static_cast<T>(0));
+        circle_event_type c = detail::make_circle_event<T>(x, y, x);
         if (i&1)
             event_q.push(c)->deactivate();
         else
