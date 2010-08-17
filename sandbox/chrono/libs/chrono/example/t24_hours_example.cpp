@@ -1,6 +1,7 @@
 //  t24_hours_example.cpp  ---------------------------------------------------//
 
 //  Copyright Beman Dawes 2006, 2008
+//  Copyright 2009 Vicente J. Botet Escriba
 
 //  Distributed under the Boost Software License, Version 1.0.
 //  See http://www.boost.org/LICENSE_1_0.txt
@@ -28,8 +29,8 @@ int main()
 {
   stopwatch_reporter<stopwatch<process_real_cpu_clock>, t24_hours_formatter> hhmmss(BOOST_CHRONO_24_HOURS_FUNCTION_FORMAT);
 
-  f1(100000);
-  f1(200000);
-  f1(300000);
+  f1(1000);
+  f1(2000);
+  f1(3000);
   return 0;
 }
