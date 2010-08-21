@@ -18,9 +18,19 @@ as calling `align<8>` once. ]
 ``
 namespace boost { namespace bitfields {
 template <std::size_t AlignTo> struct align;
-}} // end boost::bitfields
+}}
 ``
-
+[h4 Template Parameters]
+[table
+    [
+        [template Parameter]
+        [Explanation]
+    ]
+    [
+        [`AlignTo`]
+        [The value that the next bitfield's first bit should be a multiple of.]
+    ]
+]
 
 [h4 Header file Locaton]
 This header file is included with the <boost/integer/bitfield_tuple.hpp> header
@@ -30,5 +40,25 @@ file.
 ``
 [h4 Example]
 ``
+#include <boost/integer/bitfield_tuple.hpp>
+using namespace boost::bitfields;
+struct i;
+struct red;
+struct green;
+struct blue;
+
+typedef bitfield_tuple<
+    storage<unsigned long long>,
+    member<unsigned int,red,5>,
+    member<unsigned int, green, 6>,
+    member<unsinged int, blue,5>,
+    align<32>,
+    member<int,i,32>
+>    color_plus_int;
 ``
+With in the above example the first 3 fields are the size of a short then the
+alignment is pushed up to the next boundary and a full sized integer is
+then stored at the end. This actually does make accessing slightly for the
+integer.
+
 [endsect]
