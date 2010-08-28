@@ -32,27 +32,27 @@ public:
     template <class Rep, class Period>
     static days get_days(const boost::chrono::duration<Rep, Period>& d) {
         return boost::chrono::duration_cast<days>(d);
-    };
+    }
 
     template <class Rep, class Period>
     static hours get_hours(const boost::chrono::duration<Rep, Period>& d) {
         return boost::chrono::duration_cast<hours>(d % days(1));
-    };
+    }
 
     template <class Rep, class Period>
     static minutes get_minutes(const boost::chrono::duration<Rep, Period>& d) {
         return boost::chrono::duration_cast<minutes>(d % hours(1));
-    };
+    }
 
     template <class Rep, class Period>
     static seconds get_seconds(const boost::chrono::duration<Rep, Period>& d) {
         return boost::chrono::duration_cast<seconds>(d % minutes(1));
-    };
+    }
 
     template <class Rep, class Period>
     static nanoseconds get_nanoseconds(const boost::chrono::duration<Rep, Period>& d) {
         return boost::chrono::duration_cast<nanoseconds>(d % seconds(1));
-    };
+    }
 
     template <class Rep, class Period>
         explicit t24_hours(const boost::chrono::duration<Rep, Period>& d)
