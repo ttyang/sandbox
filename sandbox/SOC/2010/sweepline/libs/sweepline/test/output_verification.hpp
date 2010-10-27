@@ -1,4 +1,4 @@
-// Boost sweepline library voronoi_output_verification.hpp file 
+// Boost sweepline library output_verification.hpp file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.

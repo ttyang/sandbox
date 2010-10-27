@@ -1,4 +1,4 @@
-// Boost sweepline/voronoi_segment_sweepline.hpp header file 
+// Boost sweepline/voronoi_sweepline.hpp header file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -23,10 +23,10 @@
     #include "gmpxx.h"
 #endif
 
-#include "voronoi_segment_output.hpp"
+#include "voronoi_output.hpp"
 
-#include "detail/voronoi_segment_formation.hpp"
+#include "detail/voronoi_formation.hpp"
 
-#include "voronoi_segment_builder.hpp"
+#include "voronoi_builder.hpp"
 
 #endif

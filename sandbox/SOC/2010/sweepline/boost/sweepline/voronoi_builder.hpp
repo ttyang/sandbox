@@ -1,4 +1,4 @@
-// Boost sweepline/voronoi_segment_builder.hpp header file 
+// Boost sweepline/voronoi_builder.hpp header file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -154,7 +154,7 @@ namespace sweepline {
         }
 
         // Clip using defined rectangle.
-		// TODO(asydorchuk): Define what exactly it means to clip some region of voronoi diagram.
+        // TODO(asydorchuk): Define what exactly it means to clip some region of voronoi diagram.
         //void clip(const BRect<coordinate_type> &brect, ClippedOutput &clipped_output) {
         //    output_.clip(brect, clipped_output);
         //}

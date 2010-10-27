@@ -1,4 +1,4 @@
-// Boost sweepline library segment_event_queue_test.cpp file
+// Boost sweepline library event_queue_test.cpp file
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -9,8 +9,8 @@
 
 #include <cmath>
 
-#include "../test_type_list.hpp"
-#include "boost/sweepline/voronoi_segment_sweepline.hpp"
+#include "test_type_list.hpp"
+#include "boost/sweepline/voronoi_sweepline.hpp"
 using namespace boost::sweepline;
 
 #define BOOST_TEST_MODULE event_queue_test

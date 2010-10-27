@@ -1,4 +1,4 @@
-// Boost sweepline library segment_voronoi_clipping_test.cpp file 
+// Boost sweepline library clipping_test.cpp file 
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -10,8 +10,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "../test_type_list.hpp"
-#include "boost/sweepline/voronoi_segment_sweepline.hpp"
+#include "test_type_list.hpp"
+#include "boost/sweepline/voronoi_sweepline.hpp"
 using namespace boost::sweepline;
 
 #define BOOST_TEST_MODULE voronoi_clipping_test
@@ -42,14 +42,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_clipping_test1, T, test_types) {
 
     intersections.clear();
     Helper<T>::find_intersections(test_origin, test_direction1_2,
-                                   Helper<T>::SEGMENT, test_rect, intersections);
+                                  Helper<T>::SEGMENT, test_rect, intersections);
     BOOST_CHECK_EQUAL(static_cast<int>(intersections.size()), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == static_cast<T>(0) &&
                       intersections[0].y() == static_cast<T>(2), true);
 
     intersections.clear();
     Helper<T>::find_intersections(test_origin, test_direction1_3,
-                                   Helper<T>::SEGMENT, test_rect, intersections);
+                                  Helper<T>::SEGMENT, test_rect, intersections);
     BOOST_CHECK_EQUAL(intersections.empty(), true);
 
     intersections.clear();
