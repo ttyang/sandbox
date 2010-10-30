@@ -10,6 +10,7 @@
 #ifndef BOOST_FUSION_ADAPTED_ADT_ADAPT_ADT_NAMED_HPP
 #define BOOST_FUSION_ADAPTED_ADT_ADAPT_ADT_NAMED_HPP
 
+#include <boost/fusion/support/internal/base.hpp>
 #include <boost/fusion/adapted/adt/adapt_adt.hpp>
 #include <boost/fusion/adapted/detail/struct/proxy_type.hpp>
 
