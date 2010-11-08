@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_test1, T, test_types) {
 
     BOOST_CHECK_EQUAL(circle1.x(), static_cast<T>(1));
     BOOST_CHECK_EQUAL(circle1.y(), static_cast<T>(2));
-    BOOST_CHECK_EQUAL(circle1.get_lower_x(), static_cast<T>(3));
+    BOOST_CHECK_EQUAL(circle1.lower_x(), static_cast<T>(3));
 
     circle2 = make_circle_event<T>(static_cast<T>(1), static_cast<T>(2), static_cast<T>(3));
     bool arr1[] = { false, false, true, true, true, false };

@@ -15,9 +15,9 @@ using namespace boost::sweepline;
 #include <boost/test/test_case_template.hpp>
 
 #define CHECK_CIRCLE_EVENT(c_e, c_x, c_y, l_x) \
-    BOOST_CHECK_EQUAL(detail::almost_equal(c_e.get_center().x(), static_cast<T>(c_x), 10), true); \
-    BOOST_CHECK_EQUAL(detail::almost_equal(c_e.get_center().y(), static_cast<T>(c_y), 10), true); \
-    BOOST_CHECK_EQUAL(detail::almost_equal(c_e.get_lower_x(), static_cast<T>(l_x), 10), true)
+    BOOST_CHECK_EQUAL(detail::almost_equal(c_e.x(), static_cast<T>(c_x), 10), true); \
+    BOOST_CHECK_EQUAL(detail::almost_equal(c_e.y(), static_cast<T>(c_y), 10), true); \
+    BOOST_CHECK_EQUAL(detail::almost_equal(c_e.lower_x(), static_cast<T>(l_x), 10), true)
 
 // Test for (point, point, point) case.
 BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_creation_ppp_test1, T, test_types) {

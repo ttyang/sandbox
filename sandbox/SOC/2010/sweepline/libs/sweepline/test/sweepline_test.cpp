@@ -651,14 +651,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test7, T, test_types) {
     voronoi_output_clipped<T> test_output_small, test_output_large;
     std::vector< point_2d<T> > points_small, points_large;
     int num_points = 27;
-    int half_num_points = num_points >> 1;
-    int koef = std::numeric_limits<int>::max() / half_num_points;
+    int md = 10;
+    int half_md = md >> 1;
+    int koef = std::numeric_limits<int>::max() / half_md;
     for (int i = 0; i < 10000; i++) {
         points_small.clear();
         points_large.clear();
         for (int j = 0; j < num_points; j++) {
-            T x_small = static_cast<T>(rand() % num_points - half_num_points);
-            T y_small = static_cast<T>(rand() % num_points - half_num_points);
+            T x_small = static_cast<T>(rand() % md - half_md);
+            T y_small = static_cast<T>(rand() % md - half_md);
             T x_large = x_small * koef;
             T y_large = y_small * koef;
             points_small.push_back(make_point_2d(x_small, y_small));

@@ -13,7 +13,7 @@
 namespace boost {
 namespace sweepline {
     template <typename T>
-    struct point_2d {
+    class point_2d {
     public:
         typedef T coordinate_type;
 
@@ -83,7 +83,7 @@ namespace sweepline {
     ///////////////////////////////////////////////////////////////////////////
     namespace detail {
         template <typename T>
-        struct site_event;
+        class site_event;
     }
 
     // Bounding rectangle data structure.

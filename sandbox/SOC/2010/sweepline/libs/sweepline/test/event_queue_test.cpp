@@ -17,7 +17,7 @@ using namespace boost::sweepline;
 #include <boost/test/test_case_template.hpp>
 
 #define CHECK_TOP_ELEMENT_EQUALITY(TOP, X, Y) \
-    BOOST_CHECK_EQUAL(TOP.get_lower_x() == static_cast<T>(X) && \
+    BOOST_CHECK_EQUAL(TOP.lower_x() == static_cast<T>(X) && \
                       TOP.y() == static_cast<T>(Y), true)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(event_queue_test1, T, test_types) {
