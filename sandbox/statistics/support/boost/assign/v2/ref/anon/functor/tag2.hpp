@@ -7,10 +7,20 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_REF_ANON_ANON_ER_2010_HPP
-#define BOOST_ASSIGN_V2_REF_ANON_ANON_ER_2010_HPP
+#ifndef BOOST_ASSIGN_V2_REF_ANON_FUNCTOR_TAG2_ER_2010_HPP
+#define BOOST_ASSIGN_V2_REF_ANON_FUNCTOR_TAG2_ER_2010_HPP
+#include <boost/assign/v2/ref/static_array/alloc/lazy_alloc_fwd.hpp>
 
-#include <boost/assign/v2/ref/anon/functor/unary.hpp>
-#include <boost/assign/v2/ref/anon/csv/csv.hpp>
+namespace boost{
+namespace assign{
+namespace v2{
+namespace ref{
+namespace anon_aux{
+	typedef ref::alloc_tag::lazy_alloc unary_tag2_;
+}// anon_aux
+}// ref
+}// v2
+}// assign
+}// boost
 
 #endif
