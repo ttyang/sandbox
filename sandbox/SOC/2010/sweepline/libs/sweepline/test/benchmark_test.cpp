@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test1, T, test_types) {
 #ifdef _DEBUG
     int max_points = 1000;
 #else
-    int max_points = 100000;
+    int max_points = 1000000;
 #endif
 
     for (int num_points = 10; num_points <= max_points; num_points *= 10) {

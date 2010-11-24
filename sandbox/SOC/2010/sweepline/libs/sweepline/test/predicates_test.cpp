@@ -283,3 +283,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicate_segment_segment_test2, T, test_type
     CHECK_LESS_PREDICATE_SS(segm_site3, segm_site1_2, new_site3, false);
     CHECK_LESS_PREDICATE_SS(segm_site3, segm_site1_2, new_site4, true);
 }
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicate_segment_segment_test3, T, test_types) {
+    typedef typename detail::site_event<T> site_event_type;
+
+    point_2d<T> segm_start1 = make_point_2d<T>(static_cast<T>(-5), static_cast<T>(3));
+    point_2d<T> segm_start2 = make_point_2d<T>(static_cast<T>(-5), static_cast<T>(5));
+    point_2d<T> segm_end = make_point_2d<T>(static_cast<T>(-2), static_cast<T>(2));
+    site_event_type segm_site1(segm_start1, segm_end, 0);
+    segm_site1.set_inverse();
+    site_event_type segm_site2(segm_start2, segm_end, 1);
+    point_2d<T> point(-4, 2);
+    CHECK_LESS_PREDICATE_SS(segm_site1, segm_site2, point, false);
+}
