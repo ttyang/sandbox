@@ -8,6 +8,7 @@
 #define BOOST_MATH_CONSTANTS_CONSTANTS_INCLUDED
 
 #include <boost/math/tools/config.hpp>
+#include <boost/math/policies/policy.hpp>
 #ifdef BOOST_MSVC
 #pragma warning(push)
 #pragma warning(disable: 4127 4701)
@@ -85,6 +86,8 @@ namespace boost{ namespace math
    { static const T result = BOOST_JOIN(calculate_, name)<T>(); return result; }\
    /* The actual forwarding function: */ \
    template <class T> inline T name(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
+   { return name<T, boost::math::policies::policy<> >(); }\
+   template <class T, class Policy> inline T name(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(T) BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(Policy))\
    { return BOOST_JOIN(get_, name)<T>(mpl::int_<construction_traits<T>::value>()); }\
    /* Now the namespace specific versions: */ \
    } namespace float_constants{ static const float name = BOOST_JOIN(BOOST_JOIN(x, BOOST_JOIN(e, exp)), F); }\
