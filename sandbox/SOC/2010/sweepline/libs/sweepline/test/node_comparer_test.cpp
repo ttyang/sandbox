@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-//  See http://www.boost.org for updates, documentation, and revision history.
+// See http://www.boost.org for updates, documentation, and revision history.
 
 #include "test_type_list.hpp"
 #include "boost/sweepline/voronoi_sweepline.hpp"
@@ -247,12 +247,4 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp8, T, test_types) {
     BOOST_CHECK_EQUAL(node_comparer_test(new_node2, initial_node), false);
     BOOST_CHECK_EQUAL(node_comparer_test(new_node3, initial_node), false);
     BOOST_CHECK_EQUAL(node_comparer_test(new_node4, initial_node), false);
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_ps1, T, test_types) {
-    // TODO(asydorchuk): add more tests there.
-}
-
-BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_ss1, T, test_types) {
-    // TODO(asydorchuk): add more tests there.
 }
