@@ -7,34 +7,35 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_CONVERT_HELPER_ER_2010_HPP
-#define BOOST_ASSIGN_V2_CONVERT_HELPER_ER_2010_HPP
-#include <boost/mpl/bool.hpp>
+#ifndef BOOST_ASSIGN_V2_CHAIN_RESULT_ER_2010_HPP
+#define BOOST_ASSIGN_V2_CHAIN_RESULT_ER_2010_HPP
+#include <boost/mpl/eval_if.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/assign/v2/utility/chain/use_lvalue.hpp>
+#include <boost/assign/v2/utility/chain/range.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace convert_aux{
-    
-    // This is in replacement of switch_aux::helper since here we need
-    // two arguments.
-    
-    template<typename T, typename U>
-    struct default_f : boost::mpl::true_{};
-    
-    template<typename Tag, 
-    	template<typename, typename> class F = convert_aux::default_f>
-    struct helper
-    {
-        typedef Tag tag;
-        template<typename T>  // T must derive from mpl::pair<>
-        struct apply 
-        	: F<typename T::first, typename T::second>
+namespace chain_aux{
+
+    template<typename R1,typename R2,typename Tag = use_default> 
+    struct result{
+    	typedef typename  boost::mpl::eval_if<
+        	chain_aux::use_lvalue<R1,R2,Tag>,
+        	boost::mpl::identity< chain_aux::range_l<R1, R2, Tag> >,
+        	boost::mpl::identity< chain_aux::range_r<R1, R2, Tag> >
+    	>::type caller_;
+        
+        typedef typename caller_::type type;
+        
+        static type call(R1& r1, R2& r2)
         {
-        };
+            return caller_::call( r1, r2 );
+        }
     };
 
-}// convert_aux
+}// chain_aux
 }// v2
 }// assign
 }// boost
