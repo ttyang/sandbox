@@ -7,18 +7,39 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <libs/assign/v2/test/utility/chain.h>
+#include <vector>
+#include <boost/assign/v2/detail/checking/container.hpp>
+#include <boost/assign/v2/utility/convert/check.hpp>
 #include <libs/assign/v2/test/utility/convert.h>
-#include <libs/assign/v2/test/utility.h>
 
 namespace test_assign_v2{
 namespace xxx_misc{
+namespace xxx_convert{
 
-    void test(){
-        xxx_chain::test();
-        xxx_convert::test();
+    void test()
+    {
+    	namespace as2 = boost::assign::v2;
+        namespace ns = as2::checking::convert;
+
+		std::vector<int> v;
+		{
+        	using namespace as2::checking::constants;
+            v.push_back( a );
+            v.push_back( b );
+            v.push_back( c ); 
+            v.push_back( d ); 
+            v.push_back( e ); 
+            v.push_back( f ); 
+            v.push_back( g );
+            v.push_back( h );
+        }
+
+		// Any range will do, so need to check, say, csv_deque
+        ns::do_check( v );
+    	
     }
-    
-}// xxx_type_traits
+        
+}// xxx_convert
+}// xxx_misc
 }// xxx_test_assign
 

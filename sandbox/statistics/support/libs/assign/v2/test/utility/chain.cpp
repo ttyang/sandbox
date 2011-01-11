@@ -7,18 +7,25 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
+#include <boost/assign/v2/utility/chain/checking/twin_values.hpp>
+#include <boost/assign/v2/utility/chain/checking/distinct_values.hpp>
 #include <libs/assign/v2/test/utility/chain.h>
-#include <libs/assign/v2/test/utility/convert.h>
-#include <libs/assign/v2/test/utility.h>
 
 namespace test_assign_v2{
 namespace xxx_misc{
+namespace xxx_chain{
 
-    void test(){
-        xxx_chain::test();
-        xxx_convert::test();
+    void test()
+    {
+    	namespace as2 = boost::assign::v2;
+        namespace ns = as2::checking::chain;
+        ns::twin_values::do_check<int>();
+      	ns::distinct_values::do_check<short>();
+      	ns::distinct_values::do_check<int>();
+      	ns::distinct_values::do_check<float>();
+      	ns::distinct_values::do_check<double>();
     }
-    
-}// xxx_type_traits
-}// xxx_test_assign
 
+}// xxx_chain
+}// xxx_misc
+}// test_assign_v2
