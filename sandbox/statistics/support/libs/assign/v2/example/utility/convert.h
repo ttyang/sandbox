@@ -7,22 +7,18 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <libs/assign/v2/example/utility/chain.h>
-#include <libs/assign/v2/example/utility/convert.h>
-#include <libs/assign/v2/example/utility/sub_range.h>
-#include <libs/assign/v2/example/utility.h>
+#ifndef BOOST_ASSIGN_V2_EXAMPLE_MISC_CONVERT_ER_2010_H
+#define BOOST_ASSIGN_V2_EXAMPLE_MISC_CONVERT_ER_2010_H
+#include <ostream>
 
 namespace example_assign_v2{
 namespace xxx_utility{
+namespace xxx_convert{
 
-    void run(std::ostream& os)
-    {
-    	os << "** xxx_utility" << std::endl;
-    	xxx_chain::run( os );
-    	xxx_convert::run( os );
-    	xxx_sub_range::run( os );
-    }
+    void run(std::ostream& os);
 
+}// xxx_convert
 }// xxx_utility
 }// example_assign_v2
 
+#endif
