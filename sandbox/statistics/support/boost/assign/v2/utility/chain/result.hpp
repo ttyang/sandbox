@@ -7,39 +7,37 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_TRAITS_TYPE_HAS_VALUE_TYPE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_TRAITS_TYPE_HAS_VALUE_TYPE_ER_2010_HPP
-#include <boost/config.hpp>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/detail/yes_no_type.hpp>
+#ifndef BOOST_ASSIGN_V2_CHAIN_RESULT_ER_2010_HPP
+#define BOOST_ASSIGN_V2_CHAIN_RESULT_ER_2010_HPP
+#include <boost/mpl/eval_if.hpp>
+#include <boost/mpl/identity.hpp>
+#include <boost/assign/v2/utility/chain/use_lvalue.hpp>
+#include <boost/assign/v2/utility/chain/range.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace type_traits{
+namespace chain_aux{
 
-    template<typename T>
-    struct has_value_type{
+    template<typename R1,typename R2,typename Tag = use_default> 
+    struct result{
+    	typedef typename  ::boost::mpl::eval_if<
+        	chain_aux::use_lvalue<R1,R2,Tag>,
+        	boost::mpl::identity< chain_aux::range_l<R1, R2, Tag> >,
+        	boost::mpl::identity< chain_aux::range_r<R1, R2, Tag> >
+    	>::type caller_;
         
-        typedef typename boost::type_traits::yes_type yes_;
-        typedef typename boost::type_traits::no_type no_;
-            
+        typedef typename caller_::type type;
         
-        template<typename U>
-        static yes_ test(U*, typename U::value_type* p = 0);
-        static no_ test(...);
-            
-        BOOST_STATIC_CONSTANT(
-            bool, 
-            value = sizeof( test((T*)0) ) == sizeof( yes_ )
-        );
-		typedef ::boost::mpl::bool_<value> type;
+        static type call(R1& r1, R2& r2)
+        {
+            return caller_::call( r1, r2 );
+        }
     };
 
-    
-}// type_traits
+}// chain_aux
 }// v2
 }// assign
-}// boost 
+}// boost
 
 #endif

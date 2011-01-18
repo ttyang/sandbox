@@ -7,39 +7,36 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_TRAITS_TYPE_HAS_VALUE_TYPE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_TRAITS_TYPE_HAS_VALUE_TYPE_ER_2010_HPP
-#include <boost/config.hpp>
+#ifndef BOOST_ASSIGN_V2_CONVERT_HELPER_ER_2010_HPP
+#define BOOST_ASSIGN_V2_CONVERT_HELPER_ER_2010_HPP
 #include <boost/mpl/bool.hpp>
-#include <boost/type_traits/detail/yes_no_type.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace type_traits{
-
-    template<typename T>
-    struct has_value_type{
-        
-        typedef typename boost::type_traits::yes_type yes_;
-        typedef typename boost::type_traits::no_type no_;
-            
-        
-        template<typename U>
-        static yes_ test(U*, typename U::value_type* p = 0);
-        static no_ test(...);
-            
-        BOOST_STATIC_CONSTANT(
-            bool, 
-            value = sizeof( test((T*)0) ) == sizeof( yes_ )
-        );
-		typedef ::boost::mpl::bool_<value> type;
+namespace convert_aux{
+    
+    // This is in replacement of switch_aux::helper since here we need
+    // two arguments.
+    
+    template<typename T, typename U>
+    struct default_f : ::boost::mpl::true_{};
+    
+    template<typename Tag, 
+    	template<typename, typename> class F = convert_aux::default_f>
+    struct helper
+    {
+        typedef Tag tag;
+        template<typename T>  // T must derive from mpl::pair<>
+        struct apply 
+        	: F<typename T::first, typename T::second>
+        {
+        };
     };
 
-    
-}// type_traits
+}// convert_aux
 }// v2
 }// assign
-}// boost 
+}// boost
 
 #endif

@@ -7,30 +7,26 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_TRAITS_TYPE_IS_STL_PAIR_ER_2010_HPP
-#define BOOST_ASSIGN_V2_TRAITS_TYPE_IS_STL_PAIR_ER_2010_HPP
-#include <utility>
-#include <boost/mpl/bool.hpp>
-#include <boost/type_traits/detail/yes_no_type.hpp>
+#ifndef BOOST_ASSIGN_V2_CONVERT_TRAITS_ER_2010_HPP
+#define BOOST_ASSIGN_V2_CONVERT_TRAITS_ER_2010_HPP
+#include <boost/mpl/or.hpp>
+#include <boost/assign/v2/detail/traits/container/is_array.hpp>
+#include <boost/assign/v2/detail/traits/container/has_push.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace type_traits{
+namespace convert_aux{
 
-//    template< class T, class U >
-//    boost::type_traits::yes_type is_pair( const std::pair<T,U>* );
-//    boost::type_traits::no_type is_pair( ... ); 
+	template<typename T, typename U>
+    struct use_put : ::boost::mpl::or_<
+    	v2::container_traits::is_array<T>,
+        v2::container_traits::has_push<T>
+    >{};
 
-    template<typename T>
-    struct is_stl_pair : ::boost::mpl::false_{};
-    
-    template<typename T,typename U>
-    struct is_stl_pair< std::pair<T, U> > : ::boost::mpl::true_{};
-
-}// type_traits
+}// convert_aux
 }// v2
 }// assign
-}// boost 
+}// boost
 
 #endif
