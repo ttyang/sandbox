@@ -7,29 +7,23 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_REF_FUSION_FWD_ER_2010_HPP
-#define BOOST_ASSIGN_V2_REF_FUSION_FWD_ER_2010_HPP
-#include <boost/assign/v2/ref/fusion/size_type.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_GENERIC_BASE_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_GENERIC_BASE_ER_2010_HPP
 
 namespace boost{
-namespace assign{ 
+namespace assign{
 namespace v2{
-namespace ref{
-namespace fusion_aux{
+namespace put_aux{
 
-    template<fusion_aux::size_type N, typename L, 
-    	typename Tag1, typename Tag2, typename T>
-    class container;
+	struct put_base{
     
-    template<typename A, fusion_aux::size_type N, typename L, 
-    	typename Tag1, typename Tag2, typename T>
-    void assign_array(
-    	A& a, 
-        fusion_aux::container<N, L, Tag1, Tag2, T> const & f
-    );
+    	// This base is needed to be able to distinguish objects that serves as
+        // parameter buffers for a later use, and those that actually need to
+        // be modified by a parameter. The latter must inherit publicly from
+        // put_base.
+	};
 
-}// fusion_aux
-}// ref
+}// put_aux
 }// v2
 }// assign
 }// boost

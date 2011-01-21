@@ -7,29 +7,37 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_REF_FUSION_FWD_ER_2010_HPP
-#define BOOST_ASSIGN_V2_REF_FUSION_FWD_ER_2010_HPP
-#include <boost/assign/v2/ref/fusion/size_type.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_PIPE_CSV_OPERATOR_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_PIPE_CSV_OPERATOR_ER_2010_HPP
+#include <boost/assign/v2/put/pipe/pars/forward.hpp>
+#include <boost/assign/v2/put/pipe/csv/container.hpp>
+#include <boost/assign/v2/put/pipe/csv/forward.hpp>
+#include <boost/assign/v2/put/sub/csv.hpp>
 
 namespace boost{
-namespace assign{ 
+namespace assign{
 namespace v2{
-namespace ref{
-namespace fusion_aux{
+namespace put_pipe_aux{
 
-    template<fusion_aux::size_type N, typename L, 
-    	typename Tag1, typename Tag2, typename T>
-    class container;
-    
-    template<typename A, fusion_aux::size_type N, typename L, 
-    	typename Tag1, typename Tag2, typename T>
-    void assign_array(
-    	A& a, 
-        fusion_aux::container<N, L, Tag1, Tag2, T> const & f
-    );
+    template<typename V, 
+    	typename Pars, put_pipe_aux::csv_size_type N, typename U>
+    V& operator|(
+        V& v,
+        put_pipe_aux::csv_container<Pars, N, U> const& c
+    ){
 
-}// fusion_aux
-}// ref
+        csv_forward(
+        	forward_pars<Pars>(
+                put( v ),
+                c.pars()
+            ),
+            c.seq_args()
+        );
+        return v;
+
+    }
+
+}// put_pipe_aux
 }// v2
 }// assign
 }// boost
