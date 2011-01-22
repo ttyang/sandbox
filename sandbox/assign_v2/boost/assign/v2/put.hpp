@@ -7,16 +7,13 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef LIBS_ASSIGN_V2_SPEED_PUT_REF_ER_2010_HPP
-#define LIBS_ASSIGN_V2_SPEED_PUT_REF_ER_2010_HPP
-#include <ostream>
+#ifndef BOOST_ASSIGN_V2_PUT_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_ER_2010_HPP
 
-namespace speed_assign_v2{
-namespace xxx_put_ref{
-
-void run(std::ostream&);
-
-}// xxx_put_ref
-}// speed_assign_v2
+#include <boost/assign/v2/put/deque.hpp>
+#include <boost/assign/v2/put/generic.hpp>
+#include <boost/assign/v2/put/modifier.hpp>
+#include <boost/assign/v2/put/pipe.hpp>
+#include <boost/assign/v2/put/sub.hpp>
 
 #endif
