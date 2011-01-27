@@ -7,18 +7,29 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#include <boost/assign/v2/ref/list/size_type.hpp>
-
+#ifndef BOOST_ASSIGN_V2_REF_ARRAY_IMPL_TRAITS_ER_2010_HPP
+#define BOOST_ASSIGN_V2_REF_ARRAY_IMPL_TRAITS_ER_2010_HPP
+#include <boost/array.hpp>
+#include <boost/assign/v2/ref/wrapper.hpp>
+#include <boost/assign/v2/ref/array/size_type.hpp> 
+ 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace put_pipe_aux{
+namespace ref{
+namespace array_aux{ 
 
-	typedef ref::list_aux::size_type csv_size_type;
-    
-}// put_pipe_aux
+    template<size_type N, typename T, typename Tag = ref::assign_tag::copy>
+    struct impl_traits
+    {
+        typedef T value_type;
+    	typedef Tag assign_tag;
+        typedef typename ref::wrapper<assign_tag, value_type> wrapper_type;
+        typedef boost::array<wrapper_type,N> array_type;
+    };
+
+}// array_aux
+}// ref
 }// v2
 }// assign
 }// boost

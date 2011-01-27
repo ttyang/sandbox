@@ -7,46 +7,11 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_PIPE_FUNCTOR_OPERATOR_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_PIPE_FUNCTOR_OPERATOR_ER_2010_HPP
-#include <boost/assign/v2/put/pipe/modulo/forward.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_PIPE_FUNCTOR_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_PIPE_FUNCTOR_ER_2010_HPP
+
 #include <boost/assign/v2/put/pipe/functor/rhs.hpp>
 #include <boost/assign/v2/put/pipe/functor/forward.hpp>
-#include <boost/assign/v2/put/container/functor.hpp>
+#include <boost/assign/v2/put/pipe/functor/operator.hpp>
 
-namespace boost{
-namespace assign{
-namespace v2{
-namespace put_pipe_aux{
-
-    template<
-        typename V,
-        typename Pars,
-        typename SeqArgs,
-        bool enable_pars
-    >
-    V& operator|(
-        V& v,
-        put_pipe_aux::rhs<Pars, SeqArgs, enable_pars> const& c
-    ){
-        forward(
-        	forward_pars<Pars>(
-                put( v ),
-                c.pars()
-            ),
-            c.seq_args()
-        );
-        return v;
-    }
-
-}// put_pipe_aux
-namespace{
-
-	put_pipe_aux::rhs<> const _put = put_pipe_aux::rhs<>();
-
-}
-}// v2
-}// assign
-}// boost
-
-#endif
+#endif // BOOST_ASSIGN_V2_PUT_PIPE_FUNCTOR_ER_2010_HPP

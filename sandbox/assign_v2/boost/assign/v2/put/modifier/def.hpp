@@ -7,18 +7,25 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#include <boost/assign/v2/ref/list/size_type.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_MODIFIER_DEF_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_MODIFIER_DEF_ER_2010_HPP
 
 namespace boost{
-namespace assign{
+namespace assign{ 
 namespace v2{
-namespace put_pipe_aux{
+namespace modifier_tag{
+	// add as necessary
+}
+namespace put_aux{
+// TODO
+//	template<typename Tag>
+//    struct modifier{
+     /* Specialize on Tag: 
+        template<typename V,typename T>
+        void impl(V& v,T& t)const; */
+//    };
 
-	typedef ref::list_aux::size_type csv_size_type;
-    
-}// put_pipe_aux
+}// put_aux
 }// v2
 }// assign
 }// boost

@@ -7,20 +7,43 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#include <boost/assign/v2/ref/list/size_type.hpp>
+#ifndef BOOST_ASSIGN_V2_CHECK 
+#include <boost/assert.hpp>
+#define BOOST_ASSIGN_V2_CHECK( p ) BOOST_ASSERT( p )
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace put_pipe_aux{
+namespace checking{
 
-	typedef ref::list_aux::size_type csv_size_type;
-    
-}// put_pipe_aux
+	struct val_pred{
+
+    	val_pred(){}
+		template<typename T, typename U>
+    	void operator()(T const& t, U const& u)const
+        {
+        	BOOST_ASSIGN_V2_CHECK( t == u );
+        }
+    };
+
+	struct ref_pred{
+
+    	ref_pred(){}
+		template<typename T, typename U>
+    	void operator()(T const& t, U const& u)const
+        {
+        	BOOST_ASSIGN_V2_CHECK( &t == &u );
+        }
+    };
+
+}// checking
 }// v2
 }// assign
 }// boost
 
 #endif
+
+// Override with this in the test suite:
+//	#include <boost/test/test_tools.hpp>
+//	#define BOOST_ASSIGN_V2_CHECK( p ) BOOST_CHECK( p )
+

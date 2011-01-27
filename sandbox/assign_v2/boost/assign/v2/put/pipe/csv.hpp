@@ -7,20 +7,12 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_PIPE_CSV_SIZE_TYPE_ER_2010_HPP
-#include <boost/assign/v2/ref/list/size_type.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_PIPE_CSV_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_PIPE_CSV_ER_2010_HPP
 
-namespace boost{
-namespace assign{
-namespace v2{
-namespace put_pipe_aux{
+#include <boost/assign/v2/put/pipe/csv/rhs.hpp>
+#include <boost/assign/v2/put/pipe/csv/generator.hpp>
+#include <boost/assign/v2/put/pipe/csv/keyword.hpp>
+#include <boost/assign/v2/put/pipe/csv/operator.hpp>
 
-	typedef ref::list_aux::size_type csv_size_type;
-    
-}// put_pipe_aux
-}// v2
-}// assign
-}// boost
-
-#endif
+#endif // BOOST_ASSIGN_V2_PUT_PIPE_CSV_ER_2010_HPP
