@@ -1,4 +1,4 @@
-//  (C) Copyright Frederic Bron 2010.
+//  (C) Copyright Frederic Bron 2009-2010.
 //  Use, modification and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -6,7 +6,6 @@
 #include <iostream>
 #include <typeinfo>
 #include <string>
-#include <vector>
 
 // test with one template parameter
 #define TEST_T(TYPE,RESULT) BOOST_CHECK_INTEGRAL_CONSTANT((::tt::BOOST_TT_TRAIT_NAME<TYPE>::value), RESULT)
@@ -55,7 +54,7 @@ struct tag { };
 
 void run() {
 	// test with only one template parameter
-	TEST_T(bool, BOOST_TT_TRAIT_BOOL_RESULT);
+	TEST_T(bool, false);
 	TEST_T(char, true);
 	TEST_T(signed char, true);
 	TEST_T(short int, true);
@@ -72,7 +71,7 @@ void run() {
 	TEST_T(void, false);
 
 // test with three template parameters
-	TEST_TR(bool, bool, BOOST_TT_TRAIT_BOOL_RESULT);
+	TEST_TR(bool, bool, false);
 	TEST_TR(char, bool, true);
 	TEST_TR(signed char, bool, true);
 	TEST_TR(short int, bool, true);
