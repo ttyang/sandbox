@@ -18,37 +18,37 @@ struct ret { };
 
 struct without { };
 
-struct internal { ret operator BOOST_TT_TRAIT_OP (int) const; };
+struct internal { ret operator BOOST_TT_TRAIT_OP () const; };
 
 struct external { };
-ret operator BOOST_TT_TRAIT_OP (const external&, int);
+ret operator BOOST_TT_TRAIT_OP (const external&);
 
-class internal_private { ret operator BOOST_TT_TRAIT_OP (int) const; };
+class internal_private { ret operator BOOST_TT_TRAIT_OP () const; };
 
-struct returns_int { int operator BOOST_TT_TRAIT_OP (int); };
+struct returns_int { int operator BOOST_TT_TRAIT_OP (); };
 
-struct returns_void { void operator BOOST_TT_TRAIT_OP (int); };
+struct returns_void { void operator BOOST_TT_TRAIT_OP (); };
 
-struct returns_void_star { void *operator BOOST_TT_TRAIT_OP (int); };
+struct returns_void_star { void *operator BOOST_TT_TRAIT_OP (); };
 
-struct returns_double { double operator BOOST_TT_TRAIT_OP (int); };
+struct returns_double { double operator BOOST_TT_TRAIT_OP (); };
 
-struct returns_string { std::string operator BOOST_TT_TRAIT_OP (int); };
+struct returns_string { std::string operator BOOST_TT_TRAIT_OP (); };
 
 //struct convertible_to_bool { operator bool () const; };
-//struct returns_convertible_to_bool { convertible_to_bool operator BOOST_TT_TRAIT_OP (int); };
+//struct returns_convertible_to_bool { convertible_to_bool operator BOOST_TT_TRAIT_OP (); };
 
 class Base1 { };
 class Derived1 : public Base1 { };
 
-bool operator BOOST_TT_TRAIT_OP (const Base1&, int) { return true; }
+bool operator BOOST_TT_TRAIT_OP (const Base1&) { return true; }
 
 class Base2 { };
 struct Derived2 : public Base2 {
 	Derived2(int); // to check if it works with a class that is not default constructible
 };
 
-bool operator BOOST_TT_TRAIT_OP (const Derived2&, int) { return true; }
+bool operator BOOST_TT_TRAIT_OP (const Derived2&) { return true; }
 
 struct tag { };
 
@@ -135,6 +135,15 @@ void run() {
 	TEST_TR(Derived1, bool, true);
 	TEST_TR(Base2, bool, false);
 	TEST_TR(Derived2, bool, true);
+	// pointers
+	TEST_T(void*, false);
+	TEST_T(bool*, true);
+	TEST_T(char*, true);
+	TEST_T(int*, true);
+	TEST_T(long*, true);
+	TEST_T(wchar_t*, true);
+	TEST_T(double*, true);
+	TEST_T(without*, true);
 }
 }
 

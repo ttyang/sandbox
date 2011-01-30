@@ -135,6 +135,15 @@ void run() {
 	TEST_TR(Derived1, bool, true);
 	TEST_TR(Base2, bool, false);
 	TEST_TR(Derived2, bool, true);
+	// pointers
+	TEST_T(void*, false);
+	TEST_T(bool*, false);
+	TEST_T(char*, false);
+	TEST_T(int*, false);
+	TEST_T(long*, false);
+	TEST_T(wchar_t*, false);
+	TEST_T(double*, false);
+	TEST_T(without*, false);
 }
 }
 

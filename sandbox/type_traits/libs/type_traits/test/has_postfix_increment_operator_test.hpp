@@ -54,7 +54,7 @@ struct tag { };
 
 void run() {
 	// test with only one template parameter
-	TEST_T(bool, false);
+	TEST_T(bool, true);
 	TEST_T(char, true);
 	TEST_T(signed char, true);
 	TEST_T(short int, true);
@@ -71,7 +71,7 @@ void run() {
 	TEST_T(void, false);
 
 // test with three template parameters
-	TEST_TR(bool, bool, false);
+	TEST_TR(bool, bool, true);
 	TEST_TR(char, bool, true);
 	TEST_TR(signed char, bool, true);
 	TEST_TR(short int, bool, true);
