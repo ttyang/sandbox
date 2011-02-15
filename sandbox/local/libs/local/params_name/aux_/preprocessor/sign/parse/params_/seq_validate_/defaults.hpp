@@ -2,8 +2,8 @@
 #ifndef BOOST_LOCAL_AUX_PP_PARSE_PARAMS_SEQ_VALIDATE_DEFAULTS_HPP_
 #define BOOST_LOCAL_AUX_PP_PARSE_PARAMS_SEQ_VALIDATE_DEFAULTS_HPP_
 
-#include "../../../keyword/const_bind.hpp"
-#include "../../../keyword/bind.hpp"
+#include "../../../../keyword/const_bind.hpp"
+#include "../../../../keyword/bind.hpp"
 #include <boost/detail/preprocessor/keyword/default.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/control/while.hpp>
@@ -14,7 +14,7 @@
 #include <boost/preprocessor/logical/bitand.hpp>
 #include <boost/preprocessor/logical/bitor.hpp>
 #include <boost/preprocessor/logical/not.hpp>
-#include <boost/preprocessor/arithmetic/less.hpp>
+#include <boost/preprocessor/comparison/less.hpp>
 #include <boost/preprocessor/arithmetic/inc.hpp>
 #include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/seq/size.hpp>
@@ -37,13 +37,12 @@
 #define BOOST_LOCAL_AUX_PP_SIGN_PARSE_PARAMS_SEQ_VALIDATE_DEFAULTS_PREV_( \
         params_seq, index, error) \
     BOOST_PP_IIF( \
-        BOOST_LOCAL_AUX_PP_SIGN_PARAMS_SEQ_VALIDATE_DEFAULTS_UNBIND_(\
+        BOOST_LOCAL_AUX_PP_SIGN_PARSE_PARAMS_SEQ_VALIDATE_DEFAULTS_UNBIND_(\
                 BOOST_PP_SEQ_ELEM(BOOST_PP_DEC(index), params_seq)), \
         error /* no err, fwd existing one if any */ \
     , \
-        BOOST_PP_CAT( \
-            ERROR_default_must_follow_an_unbound_parameter_at_element_number_, \
-            BOOST_PP_INC(index)) \
+        BOOST_PP_CAT(BOOST_PP_CAT(ERROR_default_value_at_element_, \
+                BOOST_PP_INC(index)), _must_follow_an_unbound_parameter) \
     )
 
 #define BOOST_LOCAL_AUX_PP_SIGN_PARSE_PARAMS_SEQ_VALIDATE_DEFAULTS_INDEX_( \

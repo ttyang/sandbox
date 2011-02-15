@@ -4,12 +4,13 @@
 
 #include "params_/is_void.hpp"
 #include "params_/seq.hpp"
+#include "../parsed_/params/nil.hpp"
 #include <boost/preprocessor/control/iif.hpp>
 
 // Private API.
 
-#define BOOST_LOCAL_AUX_PP_SIGN_PARSSE_PARAMS_NONE_(unused) \
-    BOOST_LOCAL_AUX_PP_SIGN_PARAMS_NIL
+#define BOOST_LOCAL_AUX_PP_SIGN_PARSE_PARAMS_NONE_(unused) \
+    BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_NIL
 
 // Public API.
 
