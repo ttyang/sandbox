@@ -7,24 +7,22 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <libs/assign/v2/test/put/pipe/functor.h>
-#include <libs/assign/v2/test/put/pipe/container.h>
-#include <libs/assign/v2/test/put/pipe/modulo.h>
-#include <libs/assign/v2/test/put/pipe/range.h>
-#include <libs/assign/v2/test/put/pipe.h>
+#ifndef LIBS_ASSIGN_V2_PUT_PIPE_FUNCTOR_FORWARD_ER_2010_H
+#define LIBS_ASSIGN_V2_PUT_PIPE_FUNCTOR_FORWARD_ER_2010_H
 
 namespace test_assign_v2{
 namespace xxx_put{
 namespace xxx_pipe{
+namespace xxx_functor{
+namespace xxx_forward{
 
-    void test(){
-        xxx_functor::test();
-        xxx_container::test();
-        xxx_modulo::test();
-        xxx_range::test();
-    }
+    void test();
 
+}// xxx_forward
+}// xxx_functor
 }// xxx_pipe
 }// xxx_put
 }// xxx_test_assign
 
+
+#endif // LIBS_ASSIGN_V2_PUT_FUNCTOR_FORWARD_H
