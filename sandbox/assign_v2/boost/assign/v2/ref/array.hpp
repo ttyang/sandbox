@@ -7,13 +7,11 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_DEQUE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_DEQUE_ER_2010_HPP
+#ifndef BOOST_ASSIGN_V2_REF_ARRAY_ER_2010_HPP
+#define BOOST_ASSIGN_V2_REF_ARRAY_ER_2010_HPP
 
-#include <boost/assign/v2/put/deque/cont.hpp>
-#include <boost/assign/v2/put/deque/converter.hpp>
-#include <boost/assign/v2/put/deque/csv.hpp>
-#include <boost/assign/v2/put/deque/functor.hpp>
-#include <boost/assign/v2/put/deque/replace.hpp>
+#include <boost/assign/v2/ref/array/csv.hpp>
+#include <boost/assign/v2/ref/array/functor.hpp>
+#include <boost/assign/v2/ref/array/converter.hpp>
 
 #endif
