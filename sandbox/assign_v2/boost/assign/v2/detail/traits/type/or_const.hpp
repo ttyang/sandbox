@@ -7,28 +7,35 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_CONTAINER_FUNCTOR_RESULT_OF_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_CONTAINER_FUNCTOR_RESULT_OF_ER_2010_HPP
-#include <boost/assign/v2/put/deduce/fun.hpp>
-#include <boost/assign/v2/put/deduce/modifier_tag.hpp>
-#include <boost/assign/v2/put/container/functor/fwd.hpp>
+#ifndef BOOST_ASSIGN_V2_DETAIL_TYPE_TRAITS_OR_CONST_ER_2010_HPP
+#define BOOST_ASSIGN_V2_DETAIL_TYPE_TRAITS_OR_CONST_ER_2010_HPP
+#include <boost/assign/v2/detail/config/enable_cpp0x.hpp>
+#if BOOST_ASSIGN_V2_ENABLE_CPP0X
+#include <boost/mpl/or.hpp>
+#include <boost/mpl/bool.hpp>
+#include <boost/type_traits/is_const.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace result_of{
+namespace type_traits{
 
-    template<typename C>
-    struct put
-    {
-        typedef typename put_aux::deduce_fun<C>::type f_;
-        typedef typename put_aux::deduce_modifier_tag<C>::type modifier_tag_;
-        typedef put_aux::adapter<C, f_, modifier_tag_> type;
-    };
+template<typename ...Args> struct or_const : ::boost::mpl::false_{};
 
-}// result_of
+template<typename T, typename ...Args>
+struct or_const<T, Args...> : ::boost::mpl::or_<
+    boost::is_const<T>,
+    or_const<Args...>
+>{};
+
+template<typename T, typename ...Args>
+struct or_const<T const, Args...> : ::boost::mpl::true_{};
+
+}// type_traits
 }// v2
 }// assign
 }// boost
 
-#endif // BOOST_ASSIGN_V2_PUT_CONTAINER_FUNCTOR_RESULT_OF_ER_2010_HPP
+#endif // BOOST_ASSIGN_V2_ENABLE_CPP0X
+
+#endif // BOOST_ASSIGN_V2_DETAIL_TYPE_TRAITS_OR_CONST_ER_2010_HPP
