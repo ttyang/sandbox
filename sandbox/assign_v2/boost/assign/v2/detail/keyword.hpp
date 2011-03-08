@@ -7,12 +7,10 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_MODULO_MODIFIER_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_MODULO_MODIFIER_ER_2010_HPP
+#ifndef BOOST_ASSIGN_V2_DETAIL_KEYWORD_ER_2010_HPP
+#define BOOST_ASSIGN_V2_DETAIL_KEYWORD_ER_2010_HPP
 
-#include <boost/assign/v2/put/modulo/modifier/keyword.hpp>
-#include <boost/assign/v2/put/modulo/modifier/meta.hpp>
-#include <boost/assign/v2/put/modulo/modifier/make.hpp>
-#include <boost/assign/v2/put/modulo/modifier/standard.hpp>
+#include <boost/assign/v2/detail/keyword/nil.hpp>
+#include <boost/assign/v2/detail/keyword/ignore.hpp>
 
 #endif

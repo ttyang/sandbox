@@ -7,20 +7,15 @@
 //  Boost Software License, Version 1.0. (See accompanying file           //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)      //
 ////////////////////////////////////////////////////////////////////////////
-#include <libs/assign/v2/test/put/deque/csv.h>
-#include <libs/assign/v2/test/put/deque/functor.h>
-#include <libs/assign/v2/test/put/deque.h>
-
-namespace test_assign_v2{
-namespace xxx_put{
-namespace xxx_deque{
-
-    void test()
-    {
-        xxx_csv::test();
-        xxx_functor::test();
-    }
-
-}// xxx_deque
-}// xxx_put
-}// test_assign_v2
+#ifndef BOOST_ASSIGN_V2_DETAIL_PP_FORWARD_ER_2010_HPP
+#define BOOST_ASSIGN_V2_DETAIL_PP_FORWARD_ER_2010_HPP
+#include <boost/assign/v2/detail/config/enable_cpp0x.hpp>
+#if BOOST_ASSIGN_V2_ENABLE_CPP0X
+#include <utility>
+#define BOOST_ASSIGN_V2_FORWARD_PARAM(T, t) T&& t
+#define BOOST_ASSIGN_V2_FORWARD_ARG(T, t) std::forward<T>( t )
+#else
+#define BOOST_ASSIGN_V2_FORWARD_PARAM(T, t) T& t
+#define BOOST_ASSIGN_V2_FORWARD_ARG(T, t) t
+#endif
+#endif
