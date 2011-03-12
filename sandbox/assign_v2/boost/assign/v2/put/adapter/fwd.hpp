@@ -7,11 +7,20 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_DEDUCE_MODIFIER_DEPENDEE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_DEDUCE_MODIFIER_DEPENDEE_ER_2010_HPP
-#include <boost/assign/v2/put/modifier/insert.hpp>
-#include <boost/assign/v2/put/modifier/iterate.hpp>
-#include <boost/assign/v2/put/modifier/push.hpp>
-#include <boost/assign/v2/put/modifier/push_back.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_ADAPTER_FWD_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_ADAPTER_FWD_ER_2010_HPP
 
-#endif // BOOST_ASSIGN_V2_PUT_DEDUCE_MODIFIER_DEPENDEE_ER_2010_HPP
+namespace boost{
+namespace assign{
+namespace v2{
+namespace put_aux{
+
+    template<typename C, typename F, typename Tag, typename D> class crtp;
+
+}// put_aux
+}// v2
+}// assign
+}// boost
+
+#endif // BOOST_ASSIGN_V2_PUT_ADAPTER_FWD_ER_2010_HPP
+
