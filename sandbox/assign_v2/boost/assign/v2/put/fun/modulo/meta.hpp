@@ -7,27 +7,41 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_FUN_IDENTITY_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_FUN_IDENTITY_ER_2010_HPP
-#include <boost/lambda/lambda.hpp>
-#include <boost/typeof/typeof.hpp>
-#include <boost/assign/v2/put/fun/modulo.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_FUN_MODULO_META_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_FUN_MODULO_META_ER_2010_HPP
+#include <boost/mpl/apply.hpp>
+#include <boost/assign/v2/put/frame/replace_parameter.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
 namespace put_aux{
+namespace result_of{
 
-	typedef BOOST_TYPEOF( ( _fun = ::boost::lambda::_1 ) ) result_of_identity;
-
+    template<typename D>
+    struct modulo_fun{
+            
+        typedef put_aux::replace_fun<D> meta_;
+            
+        template<typename F>
+        struct apply : ::boost::mpl::apply1<meta_, F>{};
+        
+    };
+            
+}// result_of
 }// put_aux
-namespace {
-	
-    put_aux::result_of_identity const _identity 
-    	= ( _fun = ::boost::lambda::_1 );
-}
+//[result_of_modulo_fun
+namespace result_of{
+
+    template<typename /*<<Inherits crtp\<\> >>*/ D>
+    struct /*<<Meta-function class>>*/ modulo_fun 
+        : put_aux::result_of::modulo_fun<D>
+    {};
+
+}// result_of
+//]
 }// v2
 }// assign
 }// boost
 
-#endif // BOOST_ASSIGN_V2_PUT_FUN_IDENTITY_ER_2010_HPP
+#endif // BOOST_ASSIGN_V2_PUT_FUN_MODULO_META_ER_2010_HPP

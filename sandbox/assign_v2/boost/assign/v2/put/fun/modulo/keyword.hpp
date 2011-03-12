@@ -7,19 +7,12 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_KEYWORD_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_KEYWORD_ER_2010_HPP
-#include <boost/assign/v2/put/modifier/modulo/make.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_FUN_MODULO_KEYWORD_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_FUN_MODULO_KEYWORD_ER_2010_HPP
+#include <boost/assign/v2/put/fun/modulo/make.hpp>
 #include <boost/preprocessor/cat.hpp>
 
-#ifndef BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_PARAM
-#define BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_PARAM(NAME)\
-    put_aux::modulo_modifier<put_aux::BOOST_PP_CAT(keyword_,NAME)>\
-/**/
-#endif
-
-#ifndef BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_KEYWORD
-#define BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_KEYWORD(NAME)\
+#define BOOST_ASSIGN_V2_MODULO_FUN_KEYWORD(NAME, FUN)\
 namespace boost{\
 namespace assign{\
 namespace v2{\
@@ -29,22 +22,25 @@ namespace put_aux{\
 \
         BOOST_PP_CAT(keyword_,NAME)(){}\
 \
+        template<typename T>\
+        struct result{\
+            typedef modulo_fun< FUN > type;\
+        };\
+\
+        template<typename T>\
+        typename result<T>::type\
+        operator()()const{ return ( v2::_fun = FUN() ); }\
+\
     };\
 \
 }\
 namespace {\
-    BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_PARAM(NAME) const BOOST_PP_CAT(_,NAME)\
-        = BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_PARAM(NAME)();\
+    put_aux::BOOST_PP_CAT(keyword_,NAME) const BOOST_PP_CAT(_,NAME)\
+        = put_aux::BOOST_PP_CAT(keyword_,NAME);\
 }\
 }\
 }\
 }\
 /**/
-#endif
 
-// The default
-BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_KEYWORD(modifier)    
-BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_META_MODIFIER_TAG(modifier, Arg)
-
-#endif // BOOST_ASSIGN_V2_PUT_MODIFIER_MODULO_KEYWORD_ER_2010_HPP
-
+#endif // BOOST_ASSIGN_V2_PUT_FUN_MODULO_KEYWORD_ER_2010_HPP
