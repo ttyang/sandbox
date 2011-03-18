@@ -7,10 +7,21 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_VALUE_DEQUE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_VALUE_DEQUE_ER_2010_HPP
-#include <boost/assign/v2/value/deque/conversion.hpp>
-#include <boost/assign/v2/value/deque/csv_deque.hpp>
-#include <boost/assign/v2/value/deque/deque.hpp>
+#ifndef BOOST_ASSIGN_V2_VALUE_ADAPTER_FWD_ER_2010_HPP
+#define BOOST_ASSIGN_V2_VALUE_ADAPTER_FWD_ER_2010_HPP
 
-#endif // BOOST_ASSIGN_V2_VALUE_DEQUE_ER_2010_HPP
+namespace boost{
+namespace assign{
+namespace v2{
+namespace value_aux{
+
+    template<typename C, typename F, typename Tag, typename D> 
+    class adapter_crtp;
+
+}// value_aux
+}// v2
+}// assign
+}// boost
+
+#endif // BOOST_ASSIGN_V2_VALUE_ADAPTER_FWD_ER_2010_HPP
+
