@@ -7,13 +7,12 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_PUT_ER_2010_HPP
-#define BOOST_ASSIGN_V2_PUT_ER_2010_HPP
-#include <boost/assign/v2/put/adapter.hpp>
-#include <boost/assign/v2/put/container.hpp>
-#include <boost/assign/v2/put/deque.hpp>
-#include <boost/assign/v2/put/fun.hpp>
-#include <boost/assign/v2/put/modifier.hpp>
-#include <boost/assign/v2/put/pipe.hpp>
+#ifndef BOOST_ASSIGN_V2_PUT_MODIFIER_ER_2010_HPP
+#define BOOST_ASSIGN_V2_PUT_MODIFIER_ER_2010_HPP
+#include <boost/assign/v2/value/modifier/iterate.hpp>
+#include <boost/assign/v2/value/modifier/lookup.hpp>
+#include <boost/assign/v2/value/modifier/modulo.hpp>
+#include <boost/assign/v2/value/modifier/repeat.hpp>
+#include <boost/assign/v2/value/modifier/standard.hpp>
 
-#endif // BOOST_ASSIGN_V2_PUT_ER_2010_HPP
+#endif // BOOST_ASSIGN_V2_PUT_MODIFIER_ER_2010_HPP
