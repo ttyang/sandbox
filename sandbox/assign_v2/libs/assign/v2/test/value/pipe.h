@@ -7,30 +7,18 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_REF_AUX_LIST_FWD_ER_2010_HPP
-#define BOOST_ASSIGN_V2_REF_AUX_LIST_FWD_ER_2010_HPP
+#ifndef LIBS_ASSIGN_V2_TEST_VALUE_PIPE_ER_2010_H
+#define LIBS_ASSIGN_V2_TEST_VALUE_PIPE_ER_2010_H
 
-namespace boost{
-namespace assign{
-namespace v2{
-namespace ref{
-namespace list_aux{
+namespace test_assign_v2{
+namespace xxx_value{
+namespace xxx_pipe{
 
-    typedef int size_type;
+    void test();
 
-    template<typename Tag> struct empty_list;
+}// xxx_pipe
+}// xxx_value
+}// xxx_test_assign
 
-    struct void_;
-    struct nil;
-
-    template<typename Tag, typename H = void_, typename T = nil>
-    class container;
-
-}// list_aux
-}// ref
-}// v2
-}// assign
-}// boost
-
-#endif // BOOST_ASSIGN_V2_REF_AUX_LIST_FWD_ER_2010_HPP
+#endif // LIBS_ASSIGN_V2_TEST_VALUE_PIPE_ER_2010_H
 
