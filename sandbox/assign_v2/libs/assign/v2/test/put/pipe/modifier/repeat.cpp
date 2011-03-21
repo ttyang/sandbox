@@ -7,23 +7,41 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <libs/assign/v2/test/put/pipe/csv_put.h>
-#include <libs/assign/v2/test/put/pipe/fun.h>
-#include <libs/assign/v2/test/put/pipe/modifier.h>
-#include <libs/assign/v2/test/put/pipe.h>
+#include <vector>
+#include <boost/assign/v2/detail/config/check.hpp>
+#include <boost/assign/v2/modifier/repeat.hpp>
+#include <boost/assign/v2/value/pipe/csv_put.hpp>
+#include <boost/assign/v2/deque.hpp>
+#include <boost/range/algorithm/equal.hpp>
+#include <libs/assign/v2/test/value/pipe/modifier/repeat.h>
 
 namespace test_assign_v2{
 namespace xxx_put{
 namespace xxx_pipe{
+namespace xxx_modifier{
+namespace xxx_repeat{
 
     void test()
     {
-        xxx_csv_put::test();
-        xxx_fun::test();
-        xxx_modifier::test();
+
+        using namespace boost;
+        namespace as2 = assign::v2;
+        {
+            //[pipe_repeat
+            std::vector<int> cont;
+            BOOST_ASSIGN_V2_CHECK(
+                range::equal(
+                    cont | ( as2::_csv_put % ( as2::_repeat = 2  ) )( 72, 31, 48 ),
+                    as2::csv_deque<int>( 72, 72, 31, 31, 48, 48 )
+                )
+            );
+            //]
+        }
     }
 
+
+}// xxx_repeat
+}// xxx_modifier
 }// xxx_pipe
 }// xxx_put
-}// xxx_test_assign
-
+}// test_assign_v2
