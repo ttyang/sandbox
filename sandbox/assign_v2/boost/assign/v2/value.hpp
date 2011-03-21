@@ -11,7 +11,7 @@
 #define BOOST_ASSIGN_V2_PUT_ER_2010_HPP
 #include <boost/assign/v2/value/adapter.hpp>
 #include <boost/assign/v2/value/container.hpp>
-#include <boost/assign/v2/value/deque.hpp>
+#include <boost/assign/v2/deque.hpp>
 #include <boost/assign/v2/value/fun.hpp>
 #include <boost/assign/v2/value/modifier.hpp>
 #include <boost/assign/v2/value/pipe.hpp>
