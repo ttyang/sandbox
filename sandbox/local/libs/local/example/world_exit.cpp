@@ -4,6 +4,7 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
+//[world_exit_cpp
 #include <boost/local/exit.hpp>
 #include <boost/foreach.hpp>
 #include <boost/typeof/std/vector.hpp> // Typeof emulation mode.
@@ -100,4 +101,4 @@ int main() {
     w.add_person(eva);
     std::cout << w << std::endl;
 }
-
+//]
