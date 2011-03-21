@@ -7,10 +7,19 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_MODIFIER_PUSH_ER_2010_HPP
-#define BOOST_ASSIGN_V2_MODIFIER_PUSH_ER_2010_HPP
-#include <boost/assign/v2/modifier/standard/modifier.hpp>
-BOOST_ASSIGN_V2_MODIFIER_MODULO_STANDARD_TAG(push)
-BOOST_ASSIGN_V2_MODIFIER_MODULO_STANDARD(push)
+#ifndef LIBS_ASSIGN_V2_TEST_PUT_PIPE_MODIFIER_ER_2010_H
+#define LIBS_ASSIGN_V2_TEST_PUT_PIPE_MODIFIER_ER_2010_H
 
-#endif // BOOST_ASSIGN_V2_MODIFIER_PUSH_ER_2010_HPP
+namespace test_assign_v2{
+namespace xxx_put{
+namespace xxx_pipe{
+namespace xxx_modifier{
+
+    void test();
+
+}// xxx_modifier
+}// xxx_pipe
+}// xxx_put
+}// test_assign_v2
+
+#endif // LIBS_ASSIGN_V2_TEST_PUT_PIPE_MODIFIER_ER_2010_H

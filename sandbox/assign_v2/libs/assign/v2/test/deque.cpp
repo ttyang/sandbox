@@ -19,7 +19,6 @@
 #include <libs/assign/v2/test/deque.h>
 
 namespace test_assign_v2{
-namespace xxx_value{
 namespace xxx_deque{
 
     void test()
@@ -87,5 +86,4 @@ namespace xxx_deque{
     }
 
 }// xxx_deque
-}// xxx_value
 }// test_assign_v2
