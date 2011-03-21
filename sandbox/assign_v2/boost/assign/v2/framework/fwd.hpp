@@ -7,10 +7,21 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_FRAMEWORK_ER_2010_HPP
-#define BOOST_ASSIGN_V2_FRAMEWORK_ER_2010_HPP
-#include <boost/assign/v2/framework/crtp.hpp>
-#include <boost/assign/v2/framework/modifier.hpp>
-#include <boost/assign/v2/framework/replace_parameter.hpp>
+#ifndef BOOST_ASSIGN_V2_FRAMEWORK_FWD_ER_2010_HPP
+#define BOOST_ASSIGN_V2_FRAMEWORK__FWD_ER_2010_HPP
 
-#endif // BOOST_ASSIGN_V2_FRAMEWORK_ADAPTER_ER_2010_HPP
+namespace boost{
+namespace assign{
+namespace v2{
+namespace value_aux{
+
+    template<typename C, typename F, typename Tag, typename D> 
+    class adapter_crtp;
+
+}// value_aux
+}// v2
+}// assign
+}// boost
+
+#endif // BOOST_ASSIGN_V2_FRAMEWORK__FWD_ER_2010_HPP
+
