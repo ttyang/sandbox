@@ -8,34 +8,41 @@
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
 #include <vector>
+#include <boost/typeof/typeof.hpp>
 #include <boost/assign/v2/detail/config/check.hpp>
-#include <boost/assign/v2/put/pipe/csv_put.hpp>
-#include <boost/assign/v2/deque.hpp>
+#include <boost/assign/v2/put/put.hpp>
 // Options come next
+#include <boost/assign/v2/optional/push_front.hpp>
 #include <boost/assign/v2/optional/repeat.hpp>
+#include <boost/assign/v2/deque.hpp>
 #include <boost/range/algorithm/equal.hpp>
-#include <libs/assign/v2/test/put/pipe/optional/repeat.h>
+#include <libs/assign/v2/test/optional/repeat.h>
 
 namespace test_assign_v2{
-namespace xxx_put{
-namespace xxx_pipe{
 namespace xxx_optional{
 namespace xxx_repeat{
 
     void test()
     {
-
         using namespace boost;
         namespace as2 = assign::v2;
         {
-			//[test_put_pipe_modifier_repeat
+            //[test_value_modifier_repeat_simple
             std::vector<int> cont;
-            BOOST_ASSIGN_V2_CHECK(
-                range::equal(
-                    cont | ( as2::_csv_put % ( as2::_repeat = 2  ) )( 72, 31, 48 ),
-                    as2::csv_deque<int>( 72, 72, 31, 31, 48, 48 )
-                )
+            ( as2::put( cont ) % ( as2::_repeat = 2  ) )( 72 )( 31 )( 48 );
+
+            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 72, 72, 31, 31, 48, 48 ) ) );
+            //]
+        }
+        {
+            //[test_value_modifier_repeat_compose
+            BOOST_AUTO(
+                cont, (
+                    as2::deque<int>( as2::_nil ) % as2::_push_front % ( as2::_repeat = 2 )
+                )( 72 )( 31 )( 48 )
             );
+            
+            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 48, 48, 31, 31, 72, 72 ) ) );
             //]
         }
     }
@@ -43,6 +50,4 @@ namespace xxx_repeat{
 
 }// xxx_repeat
 }// xxx_optional
-}// xxx_pipe
-}// xxx_put
 }// test_assign_v2
