@@ -7,12 +7,11 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_OPTIONAL_ER_2010_HPP
-#define BOOST_ASSIGN_V2_OPTIONAL_ER_2010_HPP
-#include <boost/assign/v2/optional/iterate.hpp>
-#include <boost/assign/v2/optional/lookup.hpp>
-#include <boost/assign/v2/optional/modulo.hpp>
-#include <boost/assign/v2/optional/repeat.hpp>
-#include <boost/assign/v2/optional/standard.hpp>
+#ifndef BOOST_ASSIGN_V2_OPTIONAL_STANDARD_INCLUDE_ER_2010_HPP
+#define BOOST_ASSIGN_V2_OPTIONAL_STANDARD_INCLUDE_ER_2010_HPP
+#include <boost/assign/v2/optional/insert.hpp>
+#include <boost/assign/v2/optional/push.hpp>
+#include <boost/assign/v2/optional/push_back.hpp>
+#include <boost/assign/v2/optional/push_front.hpp>
 
-#endif // BOOST_ASSIGN_V2_OPTIONAL_ER_2010_HPP
+#endif // BOOST_ASSIGN_V2_OPTIONAL_STANDARD_INCLUDE_ER_2010_HPP
