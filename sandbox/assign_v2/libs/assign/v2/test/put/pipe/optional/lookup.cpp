@@ -7,47 +7,49 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <cmath>
-#include <list>
-#include <vector>
+#include <map>
+#include <string>
+#include <boost/lambda/lambda.hpp>
+#include <boost/typeof/typeof.hpp>
 #include <boost/assign/v2/detail/config/check.hpp>
-#include <boost/assign/v2/deque/csv_deque.hpp>
 #include <boost/assign/v2/put/pipe/csv_put.hpp>
 // Options come next
 #include <boost/assign/v2/optional/fun.hpp>
-#include <boost/lambda/lambda.hpp>
-#include <boost/range/algorithm/equal.hpp>
-#include <libs/assign/v2/test/put/pipe/optional/fun.h>
+#include <boost/assign/v2/optional/lookup.hpp>
+#include <libs/assign/v2/test/put/pipe/optional/lookup.h>
 
 namespace test_assign_v2{
 namespace xxx_put{
 namespace xxx_pipe{
 namespace xxx_optional{
-namespace xxx_fun{
+namespace xxx_lookup{
 
     void test()
     {
         using namespace boost;
         namespace as2 = assign::v2;
         {
-            //[test_put_pipe_optional_fun_math
-            int k = 1; std::list<int> factorials;
+            //[test_put_pipe_modifier_lookup
         	using namespace lambda;
-            
+            typedef std::map<std::string, int> C; C cal;
+            BOOST_AUTO( _local, ( as2::_fun = _1 ) );
             BOOST_ASSIGN_V2_CHECK(
-                range::equal(
-                    factorials | ( 
-                        as2::_csv_put % ( as2::_fun = ( var(k) *= _1 ) ) 
-                    )/*Equivalent to calling `factorials.push_back( k *= ++i )`*/( 1, 2, 3, 4, 5 ),
-                    as2::csv_deque<int>( 1 )( 2 )( 6 )( 24 )( 120 )
-                )
+                (
+                    cal 
+                        | as2::_csv_put( C::value_type( "feb", 28 ) ) 
+                        | ( as2::_csv_put % _local % ( as2::_lookup = (_1 = 30) ) )( "apr", "jun", "sep", "nov" )
+                        | ( as2::_csv_put % _local % ( as2::_lookup = (_1 = 31) ) )( "jan", "mar", "may", "jul", "aug", "oct", "dec" )
+ 
+                )["feb"] == 28
             );
-            //]
-        }
+            BOOST_ASSIGN_V2_CHECK( cal["jun"] == 30 );
+            BOOST_ASSIGN_V2_CHECK( cal["mar"] == 31 );
+            //] 
+        }    
     }
 
-}// xxx_fun
+}// xxx_lookup
 }// xxx_optional
 }// xxx_pipe
-}// xxx_value
+}// xxx_put
 }// test_assign_v2
