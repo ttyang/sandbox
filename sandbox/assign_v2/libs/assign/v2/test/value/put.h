@@ -7,24 +7,17 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <libs/assign/v2/test/value/pipe/csv_put.h>
-#include <libs/assign/v2/test/value/pipe/fun.h>
-#include <libs/assign/v2/test/value/pipe/modifier.h>
-#include <libs/assign/v2/test/value/pipe.h>
+#ifndef LIBS_ASSIGN_V2_TEST_VALUE_PUT_ER_2010_H
+#define LIBS_ASSIGN_V2_TEST_VALUE_PUT_ER_2010_H
 
 namespace test_assign_v2{
 namespace xxx_value{
-namespace xxx_pipe{
+namespace xxx_csv_put{
 
-    void test()
-    {
-    	// TODO
-        //xxx_fun::test();
-        //xxx_modifier::test();
-        xxx_csv_put::test();
-    }
+    void test();
 
-}// xxx_pipe
+}// xxx_csv_put
 }// xxx_value
 }// xxx_test_assign
 
+#endif // LIBS_ASSIGN_V2_TEST_VALUE_PUT_ER_2010_H
