@@ -4,7 +4,7 @@
 [/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
 [/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
 
-[section:Advanced Advanced Topics]
+[section:Advanced_Topics Advanced Topics]
 
 This section illustrates advanced usage of this library.
 At the end of this section there is also a list of knwon limitations of this library.
