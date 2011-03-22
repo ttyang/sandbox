@@ -7,11 +7,21 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_OPTION_STANDARD_INCLUDE_ER_2010_HPP
-#define BOOST_ASSIGN_V2_OPTION_STANDARD_INCLUDE_ER_2010_HPP
-#include <boost/assign/v2/option/insert.hpp>
-#include <boost/assign/v2/option/push.hpp>
-#include <boost/assign/v2/option/push_back.hpp>
-#include <boost/assign/v2/option/push_front.hpp>
+#ifndef LIBS_ASSIGN_V2_TEST_PUT_PIPE_OPTION_STANDARD_ER_2010_H
+#define LIBS_ASSIGN_V2_TEST_PUT_PIPE_OPTION_STANDARD_ER_2010_H
 
-#endif // BOOST_ASSIGN_V2_OPTION_STANDARD_INCLUDE_ER_2010_HPP
+namespace test_assign_v2{
+namespace xxx_put{
+namespace xxx_pipe{
+namespace xxx_option{
+namespace xxx_standard{
+
+    void test();
+
+}// xxx_standard
+}// xxx_option
+}// xxx_pipe
+}// xxx_put
+}// xxx_test_assign
+
+#endif // LIBS_ASSIGN_V2_TEST_PUT_PIPE_OPTION_STANDARD_ER_2010_H
