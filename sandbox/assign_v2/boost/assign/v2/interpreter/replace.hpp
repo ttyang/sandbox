@@ -16,7 +16,7 @@ namespace boost{
 namespace assign{
 namespace v2{
 //[syntax_put_adapter_replace_parameter
-namespace aux{
+namespace interpreter_aux{
                 
     template<typename /*<<Inherits interpreter_crtp\<\> >>*/D> 
     struct /*<<Metafunction class to be specialized on D>>*/replace_data_generator{
@@ -30,7 +30,7 @@ namespace aux{
         struct /*<<Transforms D by replacing Tag D::modifier_tag with Tag>>*/ apply{};
     };
     
-}// aux
+}// interpreter_aux
 //]
 }// v2
 }// assign
