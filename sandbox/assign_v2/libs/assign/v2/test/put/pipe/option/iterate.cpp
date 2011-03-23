@@ -7,42 +7,46 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-//#include <map>
-#include <deque>
-#include <vector>
-#include <list>
-#include <string>
-#include <boost/array.hpp>
 #include <boost/assign/v2/detail/config/check.hpp>
-#include <boost/assign/v2/deque/csv_deque.hpp>
-#include <boost/assign/v2/pipe/csv_put.hpp> 
-#include <boost/range/algorithm/for_each.hpp>
 
-#include <libs/assign/v2/test/put/pipe/csv_put.h>
+#include <boost/assign/v2/pipe/csv_put.hpp>
+#include <boost/assign/v2/deque/csv_deque.hpp>
+// Options come next
+#include <boost/assign/v2/option/iterate.hpp>
+#include <boost/array.hpp>
+#include <boost/lambda/lambda.hpp>
+#include <boost/range/algorithm/equal.hpp>
+#include <libs/assign/v2/test/put/pipe/option/iterate.h>
 
 namespace test_assign_v2{
 namespace xxx_put{
 namespace xxx_pipe{
-namespace xxx_csv_put{ 
+namespace xxx_option{
+namespace xxx_iterate{
 
-    void test(){
+    void test()
+    {
         using namespace boost;
         namespace as2 = assign::v2;
+        
         {
-            //[test_put_pipe_csv_put_str_literal
-            typedef const char* T; typedef std::string str_; std::deque<T> cont;
+            //[test_put_pipe_modifier_iterate
+            typedef int T; boost::array<T, 4> powers; powers[0] = 1; powers[1] = 10;
 
-            BOOST_ASSIGN_V2_CHECK( 
+            int i = 2; 
+            using namespace lambda;
+            BOOST_ASSIGN_V2_CHECK(
                 boost::range::equal(
-                    cont | /*<<`"x"`, `"y"` and `"z"` are kept as `const char(&)[2]`>>*/as2::_csv_put( "x", "y", "z" ),
-                    as2::csv_deque<str_>( "x", "y", "z" )
+                    powers | ( as2::_csv_put % ( as2::_iterate = var( i )++ ) )( 100, 1000 ),
+                    as2::csv_deque<T>( 1, 10, 100, 1000 )    
                 )
             );
             //]
         }
-    }// test()
+    }
 
-}// xxx_csv_put
+}// xxx_iterate
+}// xxx_option
 }// xxx_pipe
-}// xxx_value
-}// xxx_test_assign
+}// xxx_put
+}// test_assign_v2

@@ -7,51 +7,47 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#include <deque>
+#include <vector>
+#include <boost/typeof/typeof.hpp>
 #include <boost/assign/v2/detail/config/check.hpp>
-#include <boost/assign/v2/utility/csv.hpp>
-#include <boost/assign/v2/deque.hpp>
 #include <boost/assign/v2/put.hpp>
+// Options come next
 #include <boost/assign/v2/option/push_front.hpp>
+#include <boost/assign/v2/option/repeat.hpp>
+#include <boost/assign/v2/deque.hpp>
 #include <boost/range/algorithm/equal.hpp>
-#include <libs/assign/v2/test/utility/csv.h>
+#include <libs/assign/v2/test/option/repeat.h>
 
 namespace test_assign_v2{
-namespace xxx_utility{
-namespace xxx_csv{
+namespace xxx_option{
+namespace xxx_repeat{
 
-    void test(){
-
+    void test()
+    {
         using namespace boost;
         namespace as2 = assign::v2;
         {
-            //[test_utility_csv_put
-            std::deque<int> cont;
-            as2::csv( as2::put( cont ), 72, 31, 48 );
+            //[test_option_repeat_simple
+            std::vector<int> cont;
+            ( as2::put( cont ) % ( as2::_repeat = 2  ) )( 72 )( 31 )( 48 );
 
-            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 72, 31, 48 ) ) );
+            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 72, 72, 31, 31, 48, 48 ) ) );
             //]
         }
         {
-            //[test_utility_csv_put_modulo
-            std::deque<int> cont;
-            as2::csv( as2::put( cont ) % as2::_push_front, 72, 31, 48 );
-
-            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 48, 31, 72 ) ) );
-            //]
-        }
-        {
-            //[test_utility_csv_deque_modulo
+            //[test_option_repeat_compose
             BOOST_AUTO(
-                cont,
-                as2::csv( as2::deque<int>( as2::_nil ) % as2::_push_front, 72, 31, 48 )
+                cont, (
+                    as2::deque<int>( as2::_nil ) % as2::_push_front % ( as2::_repeat = 2 )
+                )( 72 )( 31 )( 48 )
             );
-
-            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 48, 31, 72 ) ) );
+            
+            BOOST_ASSIGN_V2_CHECK( range::equal( cont, as2::csv_deque( 48, 48, 31, 31, 72, 72 ) ) );
             //]
         }
     }
 
-}// xxx_csv
-}// xxx_utility
-}// xxx_test_assign
+
+}// xxx_repeat
+}// xxx_option
+}// test_assign_v2
