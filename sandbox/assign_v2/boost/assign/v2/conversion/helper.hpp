@@ -7,27 +7,36 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_REF_ARRAY_CONVERSION_ER_2010_HPP
-#define BOOST_ASSIGN_V2_REF_ARRAY_CONVERSION_ER_2010_HPP
-#include <boost/assign/v2/ref/array/interface.hpp>
-#include <boost/assign/v2/conversion/converter.hpp>
+#ifndef BOOST_ASSIGN_V2_CONVERSION_HELPER_ER_2010_HPP
+#define BOOST_ASSIGN_V2_CONVERSION_HELPER_ER_2010_HPP
+#include <boost/mpl/bool.hpp>
 
 namespace boost{
 namespace assign{
 namespace v2{
-namespace ref{
-namespace array_aux{
+namespace conversion_aux{
 
-#define BOOST_ASSIGN_V2_SEQ (Impl)(D)
-#define BOOST_ASSIGN_V2_R interface<Impl, D>
-BOOST_ASSIGN_V2_CONVERSION_CONVERTER_NAME_LOOKUP(BOOST_ASSIGN_V2_SEQ, BOOST_ASSIGN_V2_R)
-#undef BOOST_ASSIGN_V2_SEQ
-#undef BOOST_ASSIGN_V2_R
+    // This is in replacement of switch_aux::helper since here we need
+    // two arguments.
 
-}// array_aux
-}// ref
+    template<typename T, typename U>
+    struct default_f : ::boost::mpl::true_{};
+
+    template<typename Tag,
+        template<typename, typename> class F = conversion_aux::default_f>
+    struct helper
+    {
+        typedef Tag tag;
+        template<typename T>  // T must derive from mpl::pair<>
+        struct apply
+            : F<typename T::first, typename T::second>
+        {
+        };
+    };
+
+}// conversion_aux
 }// v2
 }// assign
 }// boost
 
-#endif
+#endif // BOOST_ASSIGN_V2_CONVERSION_HELPER_ER_2010_HPP
