@@ -17,10 +17,9 @@
 #include <boost/assign/v2/ref/array.hpp>
 #include <boost/assign/v2/deque.hpp>
 #include <boost/range/algorithm/equal.hpp>
-#include <libs/assign/v2/test/utility/conversion.h>
+#include <libs/assign/v2/test/conversion.h>
 
 namespace test_assign_v2{
-namespace xxx_utility{
 namespace xxx_conversion{
 
     // suggested by JB:
@@ -116,6 +115,5 @@ namespace xxx_conversion{
     }
 
 }// xxx_conversion
-}// xxx_utility
 }// xxx_test_assign
 

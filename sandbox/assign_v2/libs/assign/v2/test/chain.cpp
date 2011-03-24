@@ -20,10 +20,9 @@
 #include <boost/assign/v2/chain/check.hpp>
 #include <boost/assign/v2/chain.hpp>
 #include <boost/assign/v2/chain/operator_and.hpp>
-#include <libs/assign/v2/test/utility/chain.h>
+#include <libs/assign/v2/test/chain.h>
 
 namespace test_assign_v2{
-namespace xxx_utility{
 namespace xxx_chain{
 
     // MSVC REMINDER : fully qualify boost::begin boost::end - error C2668
@@ -83,5 +82,4 @@ namespace xxx_chain{
     }// test
 
 }// xxx_chain
-}// xxx_utility
 }// test_assign_v2

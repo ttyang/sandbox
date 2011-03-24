@@ -14,10 +14,9 @@
 #include <boost/assign/v2/put.hpp>
 #include <boost/assign/v2/option/push_front.hpp>
 #include <boost/range/algorithm/equal.hpp>
-#include <libs/assign/v2/test/utility/csv.h>
+#include <libs/assign/v2/test/csv.h>
 
 namespace test_assign_v2{
-namespace xxx_utility{
 namespace xxx_csv{
 
     void test(){
@@ -53,5 +52,4 @@ namespace xxx_csv{
     }
 
 }// xxx_csv
-}// xxx_utility
 }// xxx_test_assign
