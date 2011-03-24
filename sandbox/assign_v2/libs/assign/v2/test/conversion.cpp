@@ -12,8 +12,8 @@
 #include <boost/array.hpp>
 #include <boost/assign/v2/detail/check/equal_container.hpp>
 #include <boost/assign/v2/detail/config/check.hpp>
-#include <boost/assign/v2/utility/conversion.hpp>
-#include <boost/assign/v2/utility/conversion/check.hpp>
+#include <boost/assign/v2/conversion.hpp>
+#include <boost/assign/v2/conversion/check.hpp>
 #include <boost/assign/v2/ref/array.hpp>
 #include <boost/assign/v2/deque.hpp>
 #include <boost/range/algorithm/equal.hpp>

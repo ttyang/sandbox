@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <deque>
 #include <boost/assign/v2/detail/config/check.hpp>
-#include <boost/assign/v2/utility/csv.hpp>
+#include <boost/assign/v2/csv.hpp>
 #include <boost/assign/v2/deque.hpp>
 #include <boost/assign/v2/put.hpp>
 #include <boost/assign/v2/option/push_front.hpp>

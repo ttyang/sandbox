@@ -17,9 +17,9 @@
 #include <boost/range/algorithm/equal.hpp>
 #include <boost/assign/v2/ref/array/csv_array.hpp>
 #include <boost/assign/v2/deque/csv_deque.hpp>
-#include <boost/assign/v2/utility/chain/check.hpp>
-#include <boost/assign/v2/utility/chain.hpp>
-#include <boost/assign/v2/utility/chain/operator_and.hpp>
+#include <boost/assign/v2/chain/check.hpp>
+#include <boost/assign/v2/chain.hpp>
+#include <boost/assign/v2/chain/operator_and.hpp>
 #include <libs/assign/v2/test/utility/chain.h>
 
 namespace test_assign_v2{
