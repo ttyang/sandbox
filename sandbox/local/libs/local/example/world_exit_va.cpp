@@ -4,6 +4,15 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
+#include <boost/config.hpp>
+#if defined(BOOST_NO_VARIADIC_MACROS) || defined(BOOST_LOCAL_CONFIG_COMPLIANT)
+#include <iostream>
+int main() {
+    std::cerr << "Error: This program requires variadic macros" << std::endl;
+    return 0;
+}
+#else
+
 //[world_exit_va_cpp
 #include <boost/local/exit.hpp>
 #include <boost/foreach.hpp>
@@ -102,4 +111,6 @@ int main() {
     std::cout << w << std::endl;
 }
 //]
+
+#endif
 

@@ -15,7 +15,7 @@ int main() {
     void BOOST_LOCAL_FUNCTION_PARAMS( (double num) (const bind factor)
             (bind& sum) ) {
         sum += factor * num;
-        std::clog << "Summed: " << sum << std::endl;
+        std::cout << "Summed: " << sum << std::endl;
     } BOOST_LOCAL_FUNCTION_NAME(add)
 
     add(100.0);
