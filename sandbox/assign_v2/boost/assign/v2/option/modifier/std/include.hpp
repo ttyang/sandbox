@@ -7,10 +7,11 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_OPTION_PUSH_FRONT_ER_2010_HPP
-#define BOOST_ASSIGN_V2_OPTION_PUSH_FRONT_ER_2010_HPP
-#include <boost/assign/v2/option/std/modifier/framework.hpp>
-BOOST_ASSIGN_V2_OPTION_STD_MODIFIER_TAG(push_front)
-BOOST_ASSIGN_V2_OPTION_STD_MODIFIER(push_front)
+#ifndef BOOST_ASSIGN_V2_OPTION_STD_MODIFIER_INCLUDE_ER_2010_HPP
+#define BOOST_ASSIGN_V2_OPTION_STD_MODIFIER_INCLUDE_ER_2010_HPP
+#include <boost/assign/v2/option/modifier/std/insert.hpp>
+#include <boost/assign/v2/option/modifier/std/push.hpp>
+#include <boost/assign/v2/option/modifier/std/push_back.hpp>
+#include <boost/assign/v2/option/modifier/std/push_front.hpp>
 
-#endif // BOOST_ASSIGN_V2_OPTION_PUSH_FRONT_ER_2010_HPP
+#endif // BOOST_ASSIGN_V2_OPTION_STD_MODIFIER_INCLUDE_ER_2010_HPP
