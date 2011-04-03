@@ -13,41 +13,31 @@ int main() {
 }
 #else
 
-//[ add_va_cpp
+//[ add_using_boost_local_va_cpp
 #include <boost/local/function.hpp>
-#include <boost/local/block.hpp>
-#include <boost/local/exit.hpp>
-
-#include <algorithm>
 #include <iostream>
-#include <cassert>
+#include <vector>
+#include <algorithm>
 
 int main() {
     double sum = 0.0;
     int factor = 10;
 
+    std::vector<double> v(3);
+    v[0] = 1.0; v[1] = 2.0; v[2] = 3.0;
+
+    // Unfortunately, cannot be defined at expression level.
     void BOOST_LOCAL_FUNCTION_PARAMS(double num,
-            const bind factor, bind& sum) {
+            // Bind `sum` as reference and `factor` as constant reference.
+            bind& sum, const bind& factor) {
+        // Body uses C++ statement syntax.
         sum += factor * num;
         std::cout << "Summed: " << sum << std::endl;
     } BOOST_LOCAL_FUNCTION_NAME(add)
-    add(100.0);
 
-    size_t size = 2;
-    double* nums = new double[size];
-    BOOST_LOCAL_EXIT(const bind& size, bind nums) {
-        if (size && nums) delete[] nums;
-        std::cout << "Freed array: " << nums << std::endl;
-    } BOOST_LOCAL_EXIT_END
+    std::for_each(v.begin(), v.end(), add); // Passed as template parameter.
 
-    nums[0] = 90.5; nums[1] = 7.0;
-    std::for_each(nums, nums + size, add); // `add` as template parameter
-
-    BOOST_LOCAL_BLOCK(const bind& sum) {
-        assert(sum == 1975.0); // so far `sum` is 10*100+10*90.5+10*7=1975
-        std::cout << "Asserted summation: " << sum << std::endl;
-    } BOOST_LOCAL_BLOCK_END
-    
+    std::cout << sum << std::endl;
     return 0;
 }
 //]
