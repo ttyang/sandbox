@@ -16,15 +16,15 @@ OBJECTS         := $(patsubst %.cpp,%.o,$(SOURCES))
 .PHONY : all depend clean
 
 
-all : mm_ptr_test1 mm_ptr_test2 mm_ptr_test3 local_pool_test1 local_pool_test2 t100_test1
+all : mutual_ptr_test1 mutual_ptr_test2 mutual_ptr_test3 local_pool_test1 local_pool_test2 t100_test1
 
-mm_ptr_test1: mm_ptr_test1.o
+mutual_ptr_test1: mutual_ptr_test1.o
 	$(LINK) $(LFLAGS) -o $@ $^
 
-mm_ptr_test2: mm_ptr_test2.o
+mutual_ptr_test2: mutual_ptr_test2.o
 	$(LINK) $(LFLAGS) -o $@ $^
 
-mm_ptr_test3: mm_ptr_test3.o
+mutual_ptr_test3: mutual_ptr_test3.o
 	$(LINK) $(LFLAGS) -o $@ $^ -lboost_unit_test_framework
 
 local_pool_test1: local_pool_test1.o
@@ -41,7 +41,7 @@ Makefile.dep: $(SOURCES)
 	$(CXX) ${INCPATH} -MM $^ > $@
 
 clean:
-	$(RM) mm_ptr_test1 mm_ptr_test2 mm_ptr_test3 local_pool_test1 local_pool_test2 t100_test1
+	$(RM) mutual_ptr_test1 mutual_ptr_test2 mutual_ptr_test3 local_pool_test1 local_pool_test2 t100_test1
 	$(RM) $(OBJECTS)
 	$(RM) *~ core
 
