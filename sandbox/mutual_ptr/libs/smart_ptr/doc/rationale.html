@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
   <link rel="stylesheet" type="text/css" href="http://www.boost.org/doc/libs/1_46_1/boost.css">
 
-  <title>Memory Managed Pointer - Rationale - Boost 1.46.1</title>
+  <title>Mutual Pointer - Rationale - Boost 1.46.1</title>
 <link rel="icon" href="http://www.boost.org/favicon.ico" type="image/ico"><link rel="stylesheet" type="text/css" href="http://www.boost.org/style-v2/section-basic.css"></head>
 
 <body link="#0000FF" vlink="#800080">  <div id="boost-common-heading-doc">
@@ -54,7 +54,7 @@
   <div id="boost-common-heading-doc-spacer"></div>
 
   
-        <h1 align="center">Memory Managed Pointer</h1>
+        <h1 align="center">Mutual Pointer</h1>
 
         <h2 align="center">Rationale</h2>
       <dl class="index">
@@ -71,7 +71,7 @@
 
   <h2><a name="introduction" id="introduction"></a>Introduction</h2>
 
-  <p>Memory Managed Pointer introduces the concept of <i>set</i> where it is defined to be a one or many memory blocks referencing each other allocated on the heap pointed 
+  <p>Mutual Pointer introduces the concept of <i>set</i> where it is defined to be a one or many memory blocks referencing each other allocated on the heap pointed 
   to by one or many <i>mutual_ptr&#60;T&#62;</i>s allocated on the stack or the data segment (non heap) of the application.  Each <i>set</i> is consequently composed of a 
   list of all memory blocks constituting it and a counter tracking the number of times the <i>set</i> is referenced by a <i>mutual_ptr&#60;T&#62;</i> from the stack or the data 
   segment.  For example:</p>
