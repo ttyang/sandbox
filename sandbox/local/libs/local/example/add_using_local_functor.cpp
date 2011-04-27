@@ -19,7 +19,7 @@ int main() {
     struct local_add { // Unfortunately, boilerplate code to program the class.
         local_add(double& _sum, int _factor): sum(_sum), factor(_factor) {}
 
-        void operator()(double num) { // Body uses C++ statement syntax.
+        inline void operator()(double num) { // Body uses C++ statement syntax.
             sum += factor * num;
             std::cout << "Summed: " << sum << std::endl;
         }
@@ -27,7 +27,7 @@ int main() {
     private:
         // Unfortunately, cannot bind so repeat variable types.
         double& sum; // Access `sum` by reference.
-        const int factor; // Make `factor` constant.
+        const int& factor; // Make `factor` constant.
     } add(sum, factor);
 
     // Unfortunately, cannot pass as template parameter to `std::for_each`.
