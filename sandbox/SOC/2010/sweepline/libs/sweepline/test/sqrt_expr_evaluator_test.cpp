@@ -1,4 +1,4 @@
-// Boost sweepline library mpz_arithmetic_test.cpp file
+// Boost sweepline library sqrt_expr_evaluator_test.cpp file
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -10,22 +10,18 @@
 #include <stdlib.h>
 #include <time.h>
 
-#pragma warning(disable:4800)
-#include <gmpxx.h>
-#include "test_type_list.hpp"
-
-#include "boost/sweepline/detail/mpz_arithmetic.hpp"
-using namespace boost::sweepline::detail;
-
-#define BOOST_TEST_MODULE mpz_arithmetic_test
+#define BOOST_TEST_MODULE sqrt_expr_evaluator_test
 #include <boost/test/test_case_template.hpp>
+
+#include "boost/sweepline/voronoi_sweepline.hpp"
+using namespace boost::sweepline::detail;
 
 template <int N>
 struct test_sqr_evaluator {
-    template <typename mpt>
+    template <typename mpz, typename mpf>
     static bool run() {
         bool ret_val = true;
-        static mpt A[N], B[N];
+        static mpz A[N], B[N];
         double a[N], b[N];
         for (int i = 0; i < N; ++i) {
             a[i] = rand() % 1000 - 500;
@@ -46,9 +42,8 @@ struct test_sqr_evaluator {
                     expected_val -= a[j] * sqrt(b[j]);
                 }
             }
-            double received_val = sqr_expr_evaluator<N>::eval(A, B);
-            // TODO(asydorchuk): Change to almost equal check.
-            ret_val &= (fabs(expected_val - received_val) <= 1E-9);
+            mpf received_val = (sqr_expr_evaluator<N>::template eval<mpz, mpf>(A, B));
+            ret_val &= almost_equal(expected_val, received_val.get_d(), 1);
         }
         return ret_val;
     }
@@ -56,16 +51,19 @@ struct test_sqr_evaluator {
 
 BOOST_AUTO_TEST_CASE(mpz_sqr_evaluator_test) {
     srand(static_cast<unsigned int>(time(0)));
-    typedef mpt_wrapper<mpz_class, 4> mpt_wrapper_type;
+    typedef mpt_wrapper<mpz_class, 4> mpz_wrapper_type;
+    typedef mpt_wrapper<mpf_class, 1> mpf_wrapper_type;
     for (int i = 0; i < 1000; i++) {
-        BOOST_CHECK(test_sqr_evaluator<2>::run<mpz_class>());
-        BOOST_CHECK(test_sqr_evaluator<3>::run<mpz_class>());
-        BOOST_CHECK(test_sqr_evaluator<4>::run<mpz_class>());
+        BOOST_CHECK((test_sqr_evaluator<1>::run<mpz_class, mpf_class>()));
+        BOOST_CHECK((test_sqr_evaluator<2>::run<mpz_class, mpf_class>()));
+        BOOST_CHECK((test_sqr_evaluator<3>::run<mpz_class, mpf_class>()));
+        BOOST_CHECK((test_sqr_evaluator<4>::run<mpz_class, mpf_class>()));
     }
     for (int i = 0; i < 1000; i++) {
-        BOOST_CHECK(test_sqr_evaluator<2>::run<mpt_wrapper_type>());
-        BOOST_CHECK(test_sqr_evaluator<3>::run<mpt_wrapper_type>());
-        BOOST_CHECK(test_sqr_evaluator<4>::run<mpt_wrapper_type>());
-    }	
+        BOOST_CHECK((test_sqr_evaluator<1>::run<mpz_wrapper_type, mpf_wrapper_type>()));
+        BOOST_CHECK((test_sqr_evaluator<2>::run<mpz_wrapper_type, mpf_wrapper_type>()));
+        BOOST_CHECK((test_sqr_evaluator<3>::run<mpz_wrapper_type, mpf_wrapper_type>()));
+        BOOST_CHECK((test_sqr_evaluator<4>::run<mpz_wrapper_type, mpf_wrapper_type>()));
+    }
 }
 
