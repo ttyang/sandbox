@@ -7,13 +7,9 @@
 //  Boost Software License, Version 1.0. (See accompanying file             //
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)        //
 //////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_ASSIGN_V2_REF_CONVERT_TRAITS_CONST_ER_2011_HPP
-#define BOOST_ASSIGN_V2_REF_CONVERT_TRAITS_CONST_ER_2011_HPP
-#include <boost/assign/v2/ref/aux_/convert_traits/value.hpp>
-#include <boost/mpl/or.hpp>
-#include <boost/type_traits/add_const.hpp>
-#include <boost/type_traits/is_const.hpp>
-#include <boost/type_traits/remove_cv.hpp>
+#ifndef BOOST_ASSIGN_V2_REF_CONVERT_TRAITS_VALUE_ER_2011_HPP
+#define BOOST_ASSIGN_V2_REF_CONVERT_TRAITS_VALUE_ER_2011_HPP
+#include <boost/type_traits/is_convertible.hpp>
 
 namespace boost{
 namespace assign{
@@ -22,25 +18,16 @@ namespace ref{
 namespace convert_traits{
 
     template<
-        typename T1, typename T2, bool is_c
-            = ::boost::mpl::or_<
-                boost::is_const<T1>,
-                boost::is_const<T2>
-            >::value
+        typename V1, typename V2,
+        bool is_c1 = boost::is_convertible<V1, V2>::value,
+        bool is_c2 = boost::is_convertible<V2, V1>::value
     >
-    struct const_
-    {
-        typedef typename convert_traits::value<
-            typename boost::remove_cv<T1>::type,
-            typename boost::remove_cv<T2>::type
-        >::type type;
+    struct value{ typedef V1 type; };
 
-    };
+    template<typename V1, typename V2>
+    struct value<V1, V2, false, true>{ typedef V2 type; };
 
-    template<typename T1, typename T2>
-    struct const_<T1, T2, true> : boost::add_const<
-        typename const_<T1, T2, false>::type
-    >{};
+    template<typename V1, typename V2> struct value<V1, V2, false, false>{};
 
 }// convert_traits
 }// ref
@@ -48,4 +35,4 @@ namespace convert_traits{
 }// assign
 }// boost
 
-#endif
+#endif // BOOST_ASSIGN_V2_REF_CONVERT_TRAITS_VALUE_ER_2011_HPP
