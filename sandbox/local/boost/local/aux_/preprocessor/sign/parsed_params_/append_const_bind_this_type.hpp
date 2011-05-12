@@ -4,27 +4,28 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_INC_CONST_BIND_THIS_COUNT_HPP_
-#define BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_INC_CONST_BIND_THIS_COUNT_HPP_
+#ifndef BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_APPEND_CONST_BIND_THIS_TYPE_HPP_
+#define BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_APPEND_CONST_BIND_THIS_TYPE_HPP_
 
 #include "../params_unbind.hpp"
 #include "../params_bind.hpp"
 #include "../params_const_bind.hpp"
-#include <boost/preprocessor/arithmetic/inc.hpp>
+#include <boost/preprocessor/list/append.hpp>
 
-#define BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_INC_CONST_BIND_THIS_COUNT( \
-        params) \
+#define BOOST_LOCAL_AUX_PP_SIGN_PARSED_PARAMS_APPEND_CONST_BIND_THIS_TYPE( \
+        params, this_type) \
     ( /* unbind params and defaults */ \
         BOOST_LOCAL_AUX_PP_SIGN_PARAMS_UNBIND(params) \
     , /* const-bind names */ \
         BOOST_LOCAL_AUX_PP_SIGN_PARAMS_CONST_BIND(params) \
-    , /* const-bind `this` count */ \
-        BOOST_PP_INC(BOOST_LOCAL_AUX_PP_SIGN_PARAMS_CONST_BIND_THIS_COUNT( \
-                params)) /* increment */ \
+    , /* const-bind `this` types */ \
+        BOOST_PP_LIST_APPEND( \
+                BOOST_LOCAL_AUX_PP_SIGN_PARAMS_CONST_BIND_THIS_TYPE(params), \
+                ((this_type), BOOST_PP_NIL)) \
     , /* bind names */ \
         BOOST_LOCAL_AUX_PP_SIGN_PARAMS_BIND(params) \
-    , /* bind `this` count */ \
-        BOOST_LOCAL_AUX_PP_SIGN_PARAMS_BIND_THIS_COUNT(params) \
+    , /* bind `this` types */ \
+        BOOST_LOCAL_AUX_PP_SIGN_PARAMS_BIND_THIS_TYPE(params) \
     , /* error message (if any) */ \
         BOOST_LOCAL_AUX_PP_SIGN_PARAMS_ERROR(params) \
     )
