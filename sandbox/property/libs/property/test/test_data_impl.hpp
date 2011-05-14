@@ -1,5 +1,5 @@
-#if !defined(TEST_DATA_HPP)
-#define TEST_DATA_HPP
+#if !defined(TEST_DATA_IMPL_HPP)
+#define TEST_DATA_IMPL_HPP
 
 #include "test_enum.hpp"
 #include "test_pod.hpp"
