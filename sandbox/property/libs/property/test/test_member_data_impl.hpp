@@ -17,7 +17,7 @@ class p_member_data_class
   bool p_data_bool;
   int * p_data_pointer;
   test_enum p_data_enum;
-  test_pod p_data_class;
+  test_pod p_data_pod;
   
   char p_char;
   int p_int;
@@ -25,7 +25,7 @@ class p_member_data_class
   bool p_bool;
   int * p_pointer;
   test_enum p_enum;
-  test_pod p_class;
+  test_pod p_pod;
   
   char p_char_2;
   int p_int_2;
@@ -33,7 +33,7 @@ class p_member_data_class
   bool p_bool_2;
   int * p_pointer_2;
   test_enum p_enum_2;
-  test_pod p_class_2;
+  test_pod p_pod_2;
   
   };
   
