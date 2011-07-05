@@ -11,4 +11,3 @@
 void example_frequency_int(std::ostream& os);
 
 #endif
-
