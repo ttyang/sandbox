@@ -559,8 +559,5 @@
     <None Include="..\..\..\doc\e_float_poster_courier.pdf">
       <Filter>doc</Filter>
     </None>
-    <None Include="vc_libraries.txt">
-      <Filter>libs\e_float\build</Filter>
-    </None>
   </ItemGroup>
 </Project>
