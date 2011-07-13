@@ -765,6 +765,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\example\example_001_basic_usage_real.cpp" />
+    <ClCompile Include="..\example\example_002_basic_usage_imag.cpp" />
+    <ClCompile Include="..\example\example_005_recursive_trapezoid_integral.cpp" />
+    <ClCompile Include="..\example\example_008_guass_laguerre.cpp" />
     <ClCompile Include="..\src\e_float\e_float.cpp" />
     <ClCompile Include="..\src\e_float\e_float_base.cpp" />
     <ClCompile Include="..\src\e_float\efx\e_float_efx.cpp">
@@ -1083,6 +1087,7 @@
     <ClInclude Include="..\..\..\boost\e_float\e_float_prime.hpp" />
     <ClInclude Include="..\..\..\boost\e_float\e_float_types.hpp" />
     <ClInclude Include="..\..\..\boost\e_float\e_float_zeta.hpp" />
+    <ClInclude Include="..\example\examples.h" />
     <ClInclude Include="..\src\functions\integer\prime_factors.h" />
     <ClInclude Include="..\test\imag\test_case_imag.h" />
     <ClInclude Include="..\test\imag\test_imag.h" />
@@ -1279,7 +1284,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-gmp|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="Makefile.gmk">
+    <None Include="Makefile">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-gmp|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|Win32'">true</ExcludedFromBuild>
@@ -1294,6 +1299,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="MakefileFiles.gmk">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-gmp|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-efx|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-gmp|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-gmp|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-efx|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-gmp|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|x64'">true</ExcludedFromBuild>
+    </None>
+    <None Include="ReadMe_VisualCLibraries.txt">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-gmp|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|Win32'">true</ExcludedFromBuild>

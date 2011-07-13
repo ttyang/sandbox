@@ -10,6 +10,9 @@
     <Filter Include="libs\e_float\build">
       <UniqueIdentifier>{82b321c5-a710-4378-b292-b4267b51cda3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libs\e_float\example">
+      <UniqueIdentifier>{b5648d3e-3c94-4e6d-82fc-a792a1ff820f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="libs\e_float\licence">
       <UniqueIdentifier>{e40684d3-e066-4eb2-9ab0-087f6548550c}</UniqueIdentifier>
     </Filter>
@@ -91,6 +94,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\example\example_008_guass_laguerre.cpp">
+      <Filter>libs\e_float\example</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\e_float\e_float.cpp">
       <Filter>libs\e_float\src\e_float</Filter>
     </ClCompile>
@@ -174,6 +180,15 @@
     </ClCompile>
     <ClCompile Include="..\src\utility\util_timer.cpp">
       <Filter>libs\e_float\src\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\example\example_001_basic_usage_real.cpp">
+      <Filter>libs\e_float\example</Filter>
+    </ClCompile>
+    <ClCompile Include="..\example\example_002_basic_usage_imag.cpp">
+      <Filter>libs\e_float\example</Filter>
+    </ClCompile>
+    <ClCompile Include="..\example\example_005_recursive_trapezoid_integral.cpp">
+      <Filter>libs\e_float\example</Filter>
     </ClCompile>
     <ClCompile Include="..\test\test.cpp">
       <Filter>libs\e_float\test</Filter>
@@ -429,6 +444,9 @@
     <ClInclude Include="..\src\generic_functions\constants\generic_functions_constants.h">
       <Filter>libs\e_float\src\generic_functions\constants</Filter>
     </ClInclude>
+    <ClInclude Include="..\example\examples.h">
+      <Filter>libs\e_float\example</Filter>
+    </ClInclude>
     <ClInclude Include="..\test\test_case_base.h">
       <Filter>libs\e_float\test</Filter>
     </ClInclude>
@@ -517,7 +535,13 @@
     </CustomBuildStep>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Makefile">
+      <Filter>libs\e_float\build</Filter>
+    </None>
     <None Include="MakefileFiles.gmk">
+      <Filter>libs\e_float\build</Filter>
+    </None>
+    <None Include="ReadMe_VisualCLibraries.txt">
       <Filter>libs\e_float\build</Filter>
     </None>
     <None Include="..\license\ACM_e_float_boost_license.pdf">
@@ -537,9 +561,6 @@
     </None>
     <None Include="..\..\..\doc\e_float_poster_courier.pdf">
       <Filter>doc</Filter>
-    </None>
-    <None Include="Makefile.gmk">
-      <Filter>libs\e_float\build</Filter>
     </None>
   </ItemGroup>
 </Project>
