@@ -541,9 +541,6 @@
     <None Include="MakefileFiles.gmk">
       <Filter>libs\e_float\build</Filter>
     </None>
-    <None Include="ReadMe_VisualCLibraries.txt">
-      <Filter>libs\e_float\build</Filter>
-    </None>
     <None Include="..\license\ACM_e_float_boost_license.pdf">
       <Filter>libs\e_float\licence</Filter>
     </None>
@@ -561,6 +558,9 @@
     </None>
     <None Include="..\..\..\doc\e_float_poster_courier.pdf">
       <Filter>doc</Filter>
+    </None>
+    <None Include="vc_libraries.txt">
+      <Filter>libs\e_float\build</Filter>
     </None>
   </ItemGroup>
 </Project>
