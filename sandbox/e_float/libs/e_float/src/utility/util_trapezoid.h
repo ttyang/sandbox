@@ -38,7 +38,7 @@
         static const T one  = T(1);
         static const T half = T(0.5);
 
-        T I = (function(a) + function(b)) * (h * half);
+        T I = (Function<T>::function(a) + Function<T>::function(b)) * (h * half);
 
         for(INT32 k = static_cast<INT32>(0); k < static_cast<INT32>(31); k++)
         {
