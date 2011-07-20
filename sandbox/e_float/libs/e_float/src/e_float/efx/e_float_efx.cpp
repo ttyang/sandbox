@@ -1452,13 +1452,13 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 
   // Add the digits after the decimal point.
 
-  for(std::size_t i = static_cast<std::size_t>(0u); i < static_cast<std::size_t>(ef_elem_number); i++)
+  for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
   {
     std::stringstream ss;
 
     ss << std::setw(static_cast<std::streamsize>(ef_elem_digits10))
        << std::setfill(static_cast<char>('0'))
-       << data[static_cast<std::size_t>(i + 1u)];
+       << data[i];
 
     str += ss.str();
   }
