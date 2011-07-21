@@ -46,14 +46,18 @@ struct derivation_value_traits
 
    static pointer to_value_ptr(node_ptr n) 
    {
-      using ::boost::static_pointer_cast;
-      return static_pointer_cast<value_type>(n));
+//      This still fails in gcc < 4.4 so forget about it
+//      using ::boost::static_pointer_cast;
+//      return static_pointer_cast<value_type>(n));
+      return pointer(&static_cast<value_type&>(*n));
    }
 
    static const_pointer to_value_ptr(const_node_ptr n)
    {
-      using ::boost::static_pointer_cast;
-      return static_pointer_cast<const value_type>(n));
+//      This still fails in gcc < 4.4 so forget about it
+//      using ::boost::static_pointer_cast;
+//      return static_pointer_cast<const value_type>(n));
+      return const_pointer(&static_cast<const value_type&>(*n));
    }
 };
 

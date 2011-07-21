@@ -78,8 +78,10 @@ struct unordered_node_traits
 
    static node_ptr get_next(const_node_ptr n)
    {
-      using ::boost::static_pointer_cast;
-      return static_pointer_cast<node>(n->next_);
+//      This still fails in gcc < 4.4 so forget about it
+//      using ::boost::static_pointer_cast;
+//      return static_pointer_cast<node>(n->next_);
+      return node_ptr(&static_cast<node&>(*n->next_));
    }
 
    static void set_next(node_ptr n, node_ptr next)

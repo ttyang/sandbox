@@ -37,6 +37,8 @@
 #include <boost/intrusive/unordered_set_hook.hpp>
 #include <boost/intrusive/slist.hpp>
 #include <boost/intrusive/detail/mpl.hpp>
+#include <boost/type_traits.hpp>
+#include <boost/move/move.hpp>
 
 namespace boost {
 namespace intrusive {
@@ -123,7 +125,7 @@ struct get_slist_impl
       < typename NodeTraits::node
       , boost::intrusive::value_traits<trivial_traits>
       , boost::intrusive::constant_time_size<false>
-      , boost::intrusive::size_type<std::size_t>
+	  , boost::intrusive::size_type<typename boost::make_unsigned<typename std::iterator_traits<typename NodeTraits::node_ptr>::difference_type>::type>
       >::type
    {};
 };
@@ -158,26 +160,22 @@ struct get_slist_impl_from_supposed_value_traits
 template<class SupposedValueTraits>
 struct unordered_bucket_impl
 {
-   /// @cond
    typedef typename 
       get_slist_impl_from_supposed_value_traits
          <SupposedValueTraits>::type            slist_impl;
    typedef detail::bucket_impl<slist_impl>      implementation_defined;
-   /// @endcond
    typedef implementation_defined               type;
 };
 
 template<class SupposedValueTraits>
 struct unordered_bucket_ptr_impl
 {
-   /// @cond
    typedef typename detail::get_node_traits
       <SupposedValueTraits>::type::node_ptr     node_ptr;
    typedef typename unordered_bucket_impl
       <SupposedValueTraits>::type               bucket_type;
    typedef typename boost::pointer_to_other
       <node_ptr, bucket_type>::type             implementation_defined;
-   /// @endcond
    typedef implementation_defined               type;
 };
 
@@ -215,7 +213,7 @@ struct optimize_multikey_is_true
 
 template<class Config>
 struct bucket_plus_size
-   : public detail::size_holder
+   : public detail::size_holder  //size_traits
       < 0 != (Config::bool_flags & hash_bool_flags::constant_time_size_pos)
       , typename Config::size_type>
 {
@@ -224,15 +222,23 @@ struct bucket_plus_size
       , typename Config::size_type>       size_traits;
    typedef typename Config::bucket_traits bucket_traits;
 
-   bucket_plus_size(const bucket_traits &b_traits)
-      :  bucket_traits_(b_traits)
+   template<class BucketTraits>
+   bucket_plus_size(BOOST_FWD_REF(BucketTraits) b_traits)
+      :  bucket_traits_(::boost::forward<BucketTraits>(b_traits))
    {}
+
+   bucket_plus_size & operator =(const bucket_plus_size &x)
+   {
+      this->size_traits::operator=(x);
+      bucket_traits_ = x.bucket_traits_;
+      return *this;
+   }
    bucket_traits bucket_traits_;
 };
 
 template<class Config>
 struct bucket_hash_t
-   : public detail::ebo_functor_holder<typename Config::hash>
+   : public detail::ebo_functor_holder<typename Config::hash> //hash
 {
    typedef typename Config::hash          hasher;
    typedef detail::size_holder
@@ -240,22 +246,26 @@ struct bucket_hash_t
       , typename Config::size_type>       size_traits;
    typedef typename Config::bucket_traits bucket_traits;
 
-   bucket_hash_t(const bucket_traits &b_traits, const hasher & h)
-      :  detail::ebo_functor_holder<hasher>(h), bucket_plus_size_(b_traits)
+   template<class BucketTraits>
+   bucket_hash_t(BOOST_FWD_REF(BucketTraits) b_traits, const hasher & h)
+      :  detail::ebo_functor_holder<hasher>(h), bucket_plus_size_(::boost::forward<BucketTraits>(b_traits))
    {}
 
    bucket_plus_size<Config> bucket_plus_size_;
 };
 
 template<class Config, bool>
-struct bucket_hash_equal_t : public detail::ebo_functor_holder<typename Config::equal>
+struct bucket_hash_equal_t
+   : public detail::ebo_functor_holder<typename Config::equal>
 {
    typedef typename Config::equal         equal;
    typedef typename Config::hash          hasher;
    typedef typename Config::bucket_traits bucket_traits;
 
-   bucket_hash_equal_t(const bucket_traits &b_traits, const hasher & h, const equal &e)
-      :  detail::ebo_functor_holder<typename Config::equal>(e), bucket_hash(b_traits, h)
+   template<class BucketTraits>
+   bucket_hash_equal_t(BOOST_FWD_REF(BucketTraits) b_traits, const hasher & h, const equal &e)
+      : detail::ebo_functor_holder<typename Config::equal>(e)//equal()
+      , bucket_hash(::boost::forward<BucketTraits>(b_traits), h)
    {}
    bucket_hash_t<Config> bucket_hash;
 };
@@ -270,8 +280,10 @@ struct bucket_hash_equal_t<Config, true>
    typedef typename unordered_bucket_ptr_impl
       <typename Config::value_traits>::type     bucket_ptr;
 
-   bucket_hash_equal_t(const bucket_traits &b_traits, const hasher & h, const equal &e)
-      :  detail::ebo_functor_holder<typename Config::equal>(e), bucket_hash(b_traits, h)
+   template<class BucketTraits>
+   bucket_hash_equal_t(BOOST_FWD_REF(BucketTraits) b_traits, const hasher & h, const equal &e)
+      : detail::ebo_functor_holder<typename Config::equal>(e) //equal()
+      , bucket_hash(::boost::forward<BucketTraits>(b_traits), h)
    {}
    bucket_hash_t<Config> bucket_hash;
    bucket_ptr cached_begin_;
@@ -286,22 +298,25 @@ struct hashtable_data_t : public Config::value_traits
    typedef typename Config::hash          hasher;
    typedef typename Config::bucket_traits bucket_traits;
 
-   hashtable_data_t( const bucket_traits &b_traits, const hasher & h
+   template<class BucketTraits>
+   hashtable_data_t( BOOST_FWD_REF(BucketTraits) b_traits, const hasher & h
                    , const equal &e, const value_traits &val_traits)
-      :  Config::value_traits(val_traits), internal_(b_traits, h, e)
+      :  Config::value_traits(val_traits) //value_traits
+      , internal_(::boost::forward<BucketTraits>(b_traits), h, e)
    {}
    typedef typename detail::usetopt_mask
       < Config
       , detail::hash_bool_flags::constant_time_size_pos
-      | detail::hash_bool_flags::incremental_pos
+         | detail::hash_bool_flags::incremental_pos
       >::type masked_config_t;
    struct internal
-      :  public detail::size_holder
+      :  public detail::size_holder //split_traits
          < 0 != (Config::bool_flags & hash_bool_flags::incremental_pos)
          , typename Config::size_type>
    {
-      internal(const bucket_traits &b_traits, const hasher & h, const equal &e)
-         :  bucket_hash_equal_(b_traits, h, e)
+      template<class BucketTraits>
+      internal(BOOST_FWD_REF(BucketTraits) b_traits, const hasher & h, const equal &e)
+         :  bucket_hash_equal_(::boost::forward<BucketTraits>(b_traits), h, e)
       {}
 
       bucket_hash_equal_t
@@ -331,8 +346,10 @@ struct group_functions
 
    static node_ptr dcast_bucket_ptr(slist_node_ptr p)
    {
-      using ::boost::static_pointer_cast;
-      return static_pointer_cast<node>(p);
+//      This still fails in gcc < 4.4 so forget about it
+//      using ::boost::static_pointer_cast;
+//      return static_pointer_cast<node>(p);
+      return node_ptr(&static_cast<node&>(*p));
    }
 
    static slist_node_ptr priv_get_bucket_before_begin
@@ -500,7 +517,6 @@ struct unordered_bucket_ptr
 template<class ValueTraitsOrHookOption>
 struct unordered_default_bucket_traits
 {
-   /// @cond
    typedef typename ValueTraitsOrHookOption::
       template pack<none>::value_traits         supposed_value_traits;
    typedef typename detail::
@@ -508,7 +524,6 @@ struct unordered_default_bucket_traits
          <supposed_value_traits>::type          slist_impl;
    typedef detail::bucket_traits_impl
       <slist_impl>                              implementation_defined;
-   /// @endcond
    typedef implementation_defined               type;
 };
 
@@ -710,9 +725,8 @@ class hashtable_impl
    };
 
    private:
-   //noncopyable
-   hashtable_impl (const hashtable_impl&);
-   hashtable_impl operator =(const hashtable_impl&);
+   //noncopyable, movable
+   BOOST_MOVABLE_BUT_NOT_COPYABLE(hashtable_impl)
 
    enum { safemode_or_autounlink  = 
             (int)real_value_traits::link_mode == (int)auto_unlink   ||
@@ -793,6 +807,33 @@ class hashtable_impl
          (!power_2_buckets || (0 == (bucket_size & (bucket_size-1))));
       priv_split_traits().set_size(bucket_size>>1);
    }
+
+   //! <b>Effects</b>: to-do
+   //!   
+   hashtable_impl(BOOST_RV_REF(hashtable_impl) x)
+      : data_( ::boost::move(x.priv_bucket_traits())
+             , ::boost::move(x.priv_hasher())
+             , ::boost::move(x.priv_equal())
+             , ::boost::move(x.priv_value_traits())
+             )
+   {
+      priv_swap_cache(cache_begin_t(), x);
+      x.priv_initialize_cache();
+      if(constant_time_size){
+         this->priv_size_traits().set_size(size_type(0));
+         this->priv_size_traits().set_size(x.priv_size_traits().get_size());
+         x.priv_size_traits().set_size(size_type(0));
+      }
+      if(incremental){
+         this->priv_split_traits().set_size(x.priv_split_traits().get_size());
+         x.priv_split_traits().set_size(size_type(0));
+      }
+   }
+
+   //! <b>Effects</b>: to-do
+   //!   
+   hashtable_impl& operator=(BOOST_RV_REF(hashtable_impl) x) 
+   {  this->swap(x); return *this;  }
 
    //! <b>Effects</b>: Detaches all elements from this. The objects in the unordered_set 
    //!   are not deleted (i.e. no destructors are called).
@@ -938,14 +979,15 @@ class hashtable_impl
       swap(this->priv_equal(), other.priv_equal());
       swap(this->priv_hasher(), other.priv_hasher());
       //These can't throw
-      swap(this->priv_real_bucket_traits(), other.priv_real_bucket_traits());
+      swap(this->priv_bucket_traits(), other.priv_bucket_traits());
+      swap(this->priv_value_traits(), other.priv_value_traits());
       priv_swap_cache(cache_begin_t(), other);
       if(constant_time_size){
          size_type backup = this->priv_size_traits().get_size();
          this->priv_size_traits().set_size(other.priv_size_traits().get_size());
          other.priv_size_traits().set_size(backup);
       }
-      else if(incremental){
+      if(incremental){
          size_type backup = this->priv_split_traits().get_size();
          this->priv_split_traits().set_size(other.priv_split_traits().get_size());
          other.priv_split_traits().set_size(backup);
@@ -1681,7 +1723,8 @@ class hashtable_impl
    //! <b>Throws</b>: If the internal hash function throws.
    const_iterator iterator_to(const_reference value) const
    {
-      return const_iterator(bucket_type::s_iterator_to(priv_value_to_node(const_cast<reference>(value))), this);
+      siterator sit = bucket_type::s_iterator_to(const_cast<node &>(this->priv_value_to_node(value)));
+      return const_iterator(sit, this);
    }
 
    //! <b>Requires</b>: value must be an lvalue and shall be in a unordered_set of
@@ -2151,7 +2194,7 @@ class hashtable_impl
    {
       const std::size_t *primes     = &detail::prime_list_holder<0>::prime_list[0];
       const std::size_t *primes_end = primes + detail::prime_list_holder<0>::prime_list_size;
-      size_type const* bound = std::lower_bound(primes, primes_end, n);
+      std::size_t const* bound = std::lower_bound(primes, primes_end, n);
       if(bound == primes_end)
          --bound;
       return size_type(*bound);
@@ -2203,6 +2246,12 @@ class hashtable_impl
    key_equal &priv_equal()
    {  return static_cast<key_equal&>(this->data_.internal_.bucket_hash_equal_.get());  }
 
+   const value_traits &priv_value_traits() const
+   {  return data_;  }
+
+   value_traits &priv_value_traits()
+   {  return data_;  }
+
    value_type &priv_value_from_slist_node(slist_node_ptr n)
    {  return *this->get_real_value_traits().to_value_ptr(dcast_bucket_ptr(n)); }
 
@@ -2226,6 +2275,12 @@ class hashtable_impl
 
    real_bucket_traits &priv_real_bucket_traits()
    {  return this->priv_real_bucket_traits(detail::bool_<external_bucket_traits>());  }
+
+   const bucket_traits &priv_bucket_traits() const
+   {  return this->data_.internal_.bucket_hash_equal_.bucket_hash.bucket_plus_size_.bucket_traits_;  }
+
+   bucket_traits &priv_bucket_traits()
+   {  return this->data_.internal_.bucket_hash_equal_.bucket_hash.bucket_plus_size_.bucket_traits_;  }
 
    const hasher &priv_hasher() const
    {  return static_cast<const hasher&>(this->data_.internal_.bucket_hash_equal_.bucket_hash.get());  }
@@ -2327,8 +2382,10 @@ class hashtable_impl
 
    static node_ptr dcast_bucket_ptr(typename slist_impl::node_ptr p)
    {
-      using ::boost::static_pointer_cast;
-      return static_pointer_cast<node>(p);
+//      This still fails in gcc < 4.4 so forget about it
+//      using ::boost::static_pointer_cast;
+//      return static_pointer_cast<node>(p);
+      return node_ptr(&static_cast<node&>(*p));
    }
 
    std::size_t priv_stored_or_compute_hash(const value_type &v, detail::true_) const
@@ -2896,7 +2953,6 @@ struct make_hashtable_opt
    //Real value traits must be calculated from options
    typedef typename detail::get_value_traits
       <T, typename packed_options::value_traits>::type   value_traits;
-   /// @cond
    static const bool external_value_traits =
       detail::external_value_traits_is_true<value_traits>::value;
    typedef typename detail::eval_if_c
@@ -2905,7 +2961,6 @@ struct make_hashtable_opt
       , detail::identity<value_traits>
       >::type                                            real_value_traits;
    typedef typename packed_options::bucket_traits        specified_bucket_traits;   
-   /// @endcond
 
    //Real bucket traits must be calculated from options and calculated value_traits
    typedef typename detail::get_slist_impl
@@ -2991,6 +3046,7 @@ class hashtable
       Options...
       #endif
       >::type   Base;
+   BOOST_MOVABLE_BUT_NOT_COPYABLE(hashtable)
 
    public:
    typedef typename Base::value_traits       value_traits;
@@ -3012,6 +3068,13 @@ class hashtable
              , const value_traits &v_traits = value_traits())
       :  Base(b_traits, hash_func, equal_func, v_traits)
    {}
+
+   hashtable(BOOST_RV_REF(hashtable) x)
+      :  Base(::boost::move(static_cast<Base&>(x)))
+   {}
+
+   hashtable& operator=(BOOST_RV_REF(hashtable) x)
+   {  this->Base::operator=(::boost::move(static_cast<Base&>(x))); return *this;  }
 };
 
 #endif

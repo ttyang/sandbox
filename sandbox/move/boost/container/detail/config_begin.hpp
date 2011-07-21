@@ -12,19 +12,6 @@
 #include <boost/config.hpp>
 
 //#define BOOST_CONTAINER_IN_INTERPROCESS
-//#define BOOST_MOVE_IN_INTERPROCESS
-
-#ifdef BOOST_MOVE_IN_INTERPROCESS
-
-#define INCLUDE_BOOST_CONTAINER_MOVE_HPP <boost/interprocess/detail/move.hpp >
-#define BOOST_CONTAINER_MOVE_NAMESPACE boost::interprocess
-
-#else
-
-#define INCLUDE_BOOST_CONTAINER_MOVE_HPP <boost/move/move.hpp >
-#define BOOST_CONTAINER_MOVE_NAMESPACE boost
-
-#endif
 
 #ifdef BOOST_CONTAINER_IN_INTERPROCESS
 
@@ -62,6 +49,7 @@
 #define INCLUDE_BOOST_CONTAINER_DETAIL_UTILITIES_HPP                <boost/interprocess/containers/container/detail/utilities.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_VALUE_INIT_HPP               <boost/interprocess/containers/container/detail/value_init.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_VARIADIC_TEMPLATES_TOOLS_HPP <boost/interprocess/containers/container/detail/variadic_templates_tools.hpp>
+#define INCLUDE_BOOST_CONTAINER_DETAIL_STORED_REF_HPP               <boost/interprocess/containers/container/detail/stored_ref.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_VERSION_TYPE_HPP             <boost/interprocess/containers/container/detail/version_type.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_WORKAROUND_HPP               <boost/interprocess/containers/container/detail/workaround.hpp>
 
@@ -102,6 +90,7 @@
 #define INCLUDE_BOOST_CONTAINER_DETAIL_UTILITIES_HPP                <boost/container/detail/utilities.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_VALUE_INIT_HPP               <boost/container/detail/value_init.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_VARIADIC_TEMPLATES_TOOLS_HPP <boost/container/detail/variadic_templates_tools.hpp>
+#define INCLUDE_BOOST_CONTAINER_DETAIL_STORED_REF_HPP               <boost/container/detail/stored_ref.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_VERSION_TYPE_HPP             <boost/container/detail/version_type.hpp>
 #define INCLUDE_BOOST_CONTAINER_DETAIL_WORKAROUND_HPP               <boost/container/detail/workaround.hpp>
 

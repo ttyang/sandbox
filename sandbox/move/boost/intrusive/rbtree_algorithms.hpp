@@ -57,7 +57,6 @@
 #include <boost/intrusive/detail/utilities.hpp>
 #include <boost/intrusive/detail/tree_algorithms.hpp>
 
-
 namespace boost {
 namespace intrusive {
 
