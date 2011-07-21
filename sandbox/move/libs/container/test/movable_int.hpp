@@ -19,6 +19,16 @@ namespace boost {
 namespace container {
 namespace test {
 
+template<class T>
+struct is_copyable;
+
+template<>
+struct is_copyable<int>
+{
+   static const bool value = true;
+};
+
+
 class movable_int
 {
    BOOST_MOVABLE_BUT_NOT_COPYABLE(movable_int)
@@ -75,6 +85,13 @@ std::basic_ostream<E, T> & operator<<
     os << p.get_int();
     return os;
 }
+
+
+template<>
+struct is_copyable<movable_int>
+{
+   static const bool value = false;
+};
 
 class movable_and_copyable_int
 {
@@ -140,6 +157,12 @@ std::basic_ostream<E, T> & operator<<
     return os;
 }
 
+template<>
+struct is_copyable<movable_and_copyable_int>
+{
+   static const bool value = true;
+};
+
 class copyable_int
 {
    public:
@@ -191,6 +214,12 @@ std::basic_ostream<E, T> & operator<<
     os << p.get_int();
     return os;
 }
+
+template<>
+struct is_copyable<copyable_int>
+{
+   static const bool value = true;
+};
 
 }  //namespace test {
 }  //namespace container {

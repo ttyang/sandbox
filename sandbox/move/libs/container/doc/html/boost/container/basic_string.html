@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template basic_string</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.67.0">
-<link rel="start" href="../../index.html" title="Chapter 1. Boost.Container">
+<link rel="start" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Container">
 <link rel="up" href="../../boost_container_reference.html#header.boost.container.string_hpp" title="Header &lt;boost/container/string.hpp&gt;">
 <link rel="prev" href="stable_vector.html" title="Class template stable_vector">
 <link rel="next" href="string.html" title="Type definition string">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="stable_vector.html"><img src="../../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.string_hpp"><img src="../../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="string.html"><img src="../../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="stable_vector.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.string_hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="string.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="boost.container.basic_string"></a><div class="titlepage"></div>
@@ -29,153 +29,150 @@
 <p>boost::container::basic_string &#8212; </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a href="../../boost_container_reference.html#header.boost.container.string_hpp" title="Header &lt;boost/container/string.hpp&gt;">boost/container/string.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a href="../../boost_container_reference.html#header.boost.container.string_hpp" title="Header &lt;boost/container/string.hpp&gt;">boost/container/string.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> CharT, <span class="bold"><strong>typename</strong></span> Traits, <span class="bold"><strong>typename</strong></span> A&gt; 
-<span class="bold"><strong>class</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// <a href="basic_string.html#boost.container.basic_stringtypes">types</a></em></span>
-  <span class="bold"><strong>typedef</strong></span> A <a href="basic_string.html#boost.container.basic_string.allocator_type">allocator_type</a>;
-  <span class="bold"><strong>typedef</strong></span> allocator_type                          <a name="boost.container.basic_string.stored_allocator_type"></a>stored_allocator_type;   <span class="emphasis"><em>// The stored allocator type. </em></span>
-  <span class="bold"><strong>typedef</strong></span> CharT                                   <a name="boost.container.basic_string.value_type"></a>value_type;              <span class="emphasis"><em>// The type of object, CharT, stored in the string. </em></span>
-  <span class="bold"><strong>typedef</strong></span> Traits                                  <a name="boost.container.basic_string.traits_type"></a>traits_type;             <span class="emphasis"><em>// The second template parameter Traits. </em></span>
-  <span class="bold"><strong>typedef</strong></span> A::pointer                              <a name="boost.container.basic_string.pointer"></a>pointer;                 <span class="emphasis"><em>// Pointer to CharT. </em></span>
-  <span class="bold"><strong>typedef</strong></span> A::const_pointer                        <a name="boost.container.basic_string.const_pointer"></a>const_pointer;           <span class="emphasis"><em>// Const pointer to CharT. </em></span>
-  <span class="bold"><strong>typedef</strong></span> A::reference                            <a name="boost.container.basic_string.reference"></a>reference;               <span class="emphasis"><em>// Reference to CharT. </em></span>
-  <span class="bold"><strong>typedef</strong></span> A::const_reference                      <a name="boost.container.basic_string.const_reference"></a>const_reference;         <span class="emphasis"><em>// Const reference to CharT. </em></span>
-  <span class="bold"><strong>typedef</strong></span> A::size_type                            <a name="boost.container.basic_string.size_type"></a>size_type;               <span class="emphasis"><em>// An unsigned integral type. </em></span>
-  <span class="bold"><strong>typedef</strong></span> A::difference_type                      <a name="boost.container.basic_string.difference_type"></a>difference_type;         <span class="emphasis"><em>// A signed integral type. </em></span>
-  <span class="bold"><strong>typedef</strong></span> pointer                                 <a name="boost.container.basic_string.iterator"></a>iterator;                <span class="emphasis"><em>// Iterator used to iterate through a string. It's a Random Access Iterator. </em></span>
-  <span class="bold"><strong>typedef</strong></span> const_pointer                           <a name="boost.container.basic_string.const_iterator"></a>const_iterator;          <span class="emphasis"><em>// Const iterator used to iterate through a string. It's a Random Access Iterator. </em></span>
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; iterator &gt;       <a name="boost.container.basic_string.reverse_iterator"></a>reverse_iterator;        <span class="emphasis"><em>// Iterator used to iterate backwards through a string. </em></span>
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; const_iterator &gt; <a name="boost.container.basic_string.const_reverse_iterator"></a>const_reverse_iterator;  <span class="emphasis"><em>// Const iterator used to iterate backwards through a string. </em></span>
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">,</span> <span class="keyword">typename</span> A<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a href="basic_string.html#boost.container.basic_stringtypes">types</a></span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span> <a href="basic_string.html#boost.container.basic_string.allocator_type"><span class="identifier">allocator_type</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">allocator_type</span>                          <a name="boost.container.basic_string.stored_allocator_type"></a><span class="identifier">stored_allocator_type</span><span class="special">;</span>   <span class="comment">// The stored allocator type. </span>
+  <span class="keyword">typedef</span> <span class="identifier">CharT</span>                                   <a name="boost.container.basic_string.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>              <span class="comment">// The type of object, CharT, stored in the string. </span>
+  <span class="keyword">typedef</span> <span class="identifier">Traits</span>                                  <a name="boost.container.basic_string.traits_type"></a><span class="identifier">traits_type</span><span class="special">;</span>             <span class="comment">// The second template parameter Traits. </span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span><span class="special">::</span><span class="identifier">pointer</span>                              <a name="boost.container.basic_string.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>                 <span class="comment">// Pointer to CharT. </span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span><span class="special">::</span><span class="identifier">const_pointer</span>                        <a name="boost.container.basic_string.const_pointer"></a><span class="identifier">const_pointer</span><span class="special">;</span>           <span class="comment">// Const pointer to CharT. </span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span><span class="special">::</span><span class="identifier">reference</span>                            <a name="boost.container.basic_string.reference"></a><span class="identifier">reference</span><span class="special">;</span>               <span class="comment">// Reference to CharT. </span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span><span class="special">::</span><span class="identifier">const_reference</span>                      <a name="boost.container.basic_string.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>         <span class="comment">// Const reference to CharT. </span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span><span class="special">::</span><span class="identifier">size_type</span>                            <a name="boost.container.basic_string.size_type"></a><span class="identifier">size_type</span><span class="special">;</span>               <span class="comment">// An unsigned integral type. </span>
+  <span class="keyword">typedef</span> <span class="identifier">A</span><span class="special">::</span><span class="identifier">difference_type</span>                      <a name="boost.container.basic_string.difference_type"></a><span class="identifier">difference_type</span><span class="special">;</span>         <span class="comment">// A signed integral type. </span>
+  <span class="keyword">typedef</span> <span class="identifier">pointer</span>                                 <a name="boost.container.basic_string.iterator"></a><span class="identifier">iterator</span><span class="special">;</span>                <span class="comment">// Iterator used to iterate through a string. It's a Random Access Iterator. </span>
+  <span class="keyword">typedef</span> <span class="identifier">const_pointer</span>                           <a name="boost.container.basic_string.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span>          <span class="comment">// Const iterator used to iterate through a string. It's a Random Access Iterator. </span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">iterator</span> <span class="special">&gt;</span>       <a name="boost.container.basic_string.reverse_iterator"></a><span class="identifier">reverse_iterator</span><span class="special">;</span>        <span class="comment">// Iterator used to iterate backwards through a string. </span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> <a name="boost.container.basic_string.const_reverse_iterator"></a><span class="identifier">const_reverse_iterator</span><span class="special">;</span>  <span class="comment">// Const iterator used to iterate backwards through a string. </span>
 
-  <span class="emphasis"><em>// <a href="basic_string.html#boost.container.basic_stringconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a href="basic_string.html#id326030-bb">basic_string</a>(reserve_t, std::size_t, 
-               <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="basic_string.html#id326048-bb">basic_string</a>(<span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="basic_string.html#id326071-bb">basic_string</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;);
-  <a href="basic_string.html#id326100-bb">basic_string</a>(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;&amp;);
-  <a href="basic_string.html#id326128-bb">basic_string</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type, size_type = npos, 
-               <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="basic_string.html#id326164-bb">basic_string</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, 
-               <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="basic_string.html#id326189-bb">basic_string</a>(<span class="bold"><strong>const</strong></span> CharT *, <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="basic_string.html#id326209-bb">basic_string</a>(size_type, CharT, <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-    <a href="basic_string.html#id326234-bb">basic_string</a>(InputIterator, InputIterator, 
-                 <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  basic_string&amp; <a href="basic_string.html#id326287-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;);
-  basic_string&amp; <a href="basic_string.html#id326316-bb"><span class="bold"><strong>operator</strong></span>=</a>(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;&amp;);
-  basic_string&amp; <a href="basic_string.html#id326344-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> CharT *);
-  basic_string&amp; <a href="basic_string.html#id326356-bb"><span class="bold"><strong>operator</strong></span>=</a>(CharT);
-  <a href="basic_string.html#id326266-bb">~basic_string</a>();
+  <span class="comment">// <a href="basic_string.html#boost.container.basic_stringconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a href="basic_string.html#id406498-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406521-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406550-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406578-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">,</span> 
+               <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406614-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> 
+               <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406639-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406659-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+    <a href="basic_string.html#id406684-bb"><span class="identifier">basic_string</span></a><span class="special">(</span><span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">,</span> 
+                 <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  basic_string&amp; <a href="basic_string.html#id406737-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  basic_string&amp; <a href="basic_string.html#id406766-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  basic_string&amp; <a href="basic_string.html#id406794-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  basic_string&amp; <a href="basic_string.html#id406806-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html#id406716-bb"><span class="special">~</span><span class="identifier">basic_string</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a href="basic_string.html#id321717-bb">public member functions</a></em></span>
-  <span class="type">iterator</span> <a href="basic_string.html#id321719-bb">begin</a>() ;
-  <span class="type">const_iterator</span> <a href="basic_string.html#id321744-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a href="basic_string.html#id321770-bb">end</a>() ;
-  <span class="type">const_iterator</span> <a href="basic_string.html#id321795-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a href="basic_string.html#id321820-bb">rbegin</a>() ;
-  <span class="type">const_reverse_iterator</span> <a href="basic_string.html#id321845-bb">rbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a href="basic_string.html#id321870-bb">rend</a>() ;
-  <span class="type">const_reverse_iterator</span> <a href="basic_string.html#id321896-bb">rend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">allocator_type</span> <a href="basic_string.html#id321921-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id321946-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id321972-bb">length</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id321999-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322024-bb">resize</a>(size_type, CharT) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322061-bb">resize</a>(size_type) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322094-bb">reserve</a>(size_type) ;
-  <span class="type">size_type</span> <a href="basic_string.html#id322118-bb">capacity</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322143-bb">clear</a>() ;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a href="basic_string.html#id322168-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="basic_string.html#id322193-bb"><span class="bold"><strong>operator</strong></span>[]</a>(size_type) ;
-  <span class="type">const_reference</span> <a href="basic_string.html#id322229-bb"><span class="bold"><strong>operator</strong></span>[]</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="basic_string.html#id322265-bb">at</a>(size_type) ;
-  <span class="type">const_reference</span> <a href="basic_string.html#id322301-bb">at</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322337-bb"><span class="bold"><strong>operator</strong></span>+=</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322360-bb"><span class="bold"><strong>operator</strong></span>+=</a>(<span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322379-bb"><span class="bold"><strong>operator</strong></span>+=</a>(CharT) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322398-bb">append</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322421-bb">append</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322455-bb">append</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322480-bb">append</a>(<span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322499-bb">append</a>(size_type, CharT) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322523-bb">append</a>(InputIter, InputIter) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322553-bb">push_back</a>(CharT) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322570-bb">pop_back</a>() ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322582-bb">assign</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322605-bb">assign</a>(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;&amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322626-bb">assign</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322659-bb">assign</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322683-bb">assign</a>(<span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322702-bb">assign</a>(size_type, CharT) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322726-bb">assign</a>(InputIter, InputIter) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322756-bb">assign</a>(<span class="bold"><strong>const</strong></span> CharT *, <span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322780-bb">insert</a>(size_type, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-  <a href="basic_string.html#id322808-bb">insert</a>(size_type, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322846-bb">insert</a>(size_type, <span class="bold"><strong>const</strong></span> CharT *, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322875-bb">insert</a>(size_type, <span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id322899-bb">insert</a>(size_type, size_type, CharT) ;
-  <span class="type">iterator</span> <a href="basic_string.html#id322928-bb">insert</a>(iterator, CharT) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322949-bb">insert</a>(iterator, std::size_t, CharT) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id322976-bb">insert</a>(iterator, InputIter, InputIter) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323008-bb">erase</a>(size_type = 0, size_type = npos) ;
-  <span class="type">iterator</span> <a href="basic_string.html#id323037-bb">erase</a>(iterator) ;
-  <span class="type">iterator</span> <a href="basic_string.html#id323054-bb">erase</a>(iterator, iterator) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323075-bb">replace</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-  <a href="basic_string.html#id323108-bb">replace</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323150-bb">replace</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> CharT *, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323183-bb">replace</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323212-bb">replace</a>(size_type, size_type, size_type, CharT) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323246-bb">replace</a>(iterator, iterator, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323278-bb">replace</a>(iterator, iterator, <span class="bold"><strong>const</strong></span> CharT *, size_type) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id323312-bb">replace</a>(iterator, iterator, <span class="bold"><strong>const</strong></span> CharT *) ;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id325070-bb">replace</a>(iterator, iterator, size_type, CharT) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; 
-    <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a href="basic_string.html#id325104-bb">replace</a>(iterator, iterator, InputIter, InputIter) ;
-  <span class="type">size_type</span> <a href="basic_string.html#id325144-bb">copy</a>(CharT *, size_type, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="basic_string.html#id325172-bb">swap</a>(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) ;
-  <span class="type"><span class="bold"><strong>const</strong></span> CharT *</span> <a href="basic_string.html#id325192-bb">c_str</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>const</strong></span> CharT *</span> <a href="basic_string.html#id325205-bb">data</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325218-bb">find</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325247-bb">find</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325272-bb">find</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325300-bb">find</a>(CharT, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325325-bb">rfind</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325354-bb">rfind</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325379-bb">rfind</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325406-bb">rfind</a>(CharT, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325432-bb">find_first_of</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325460-bb">find_first_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325486-bb">find_first_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325513-bb">find_first_of</a>(CharT, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325538-bb">find_last_of</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325567-bb">find_last_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325592-bb">find_last_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325620-bb">find_last_of</a>(CharT, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325645-bb">find_first_not_of</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325674-bb">find_first_not_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325699-bb">find_first_not_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325727-bb">find_first_not_of</a>(CharT, size_type = 0) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325752-bb">find_last_not_of</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325781-bb">find_last_not_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325806-bb">find_last_not_of</a>(<span class="bold"><strong>const</strong></span> CharT *, size_type, size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="basic_string.html#id325834-bb">find_last_not_of</a>(CharT, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a></span> <a href="basic_string.html#id325859-bb">substr</a>(size_type = 0, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>int</strong></span></span> <a href="basic_string.html#id325886-bb">compare</a>(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>int</strong></span></span> <a href="basic_string.html#id325907-bb">compare</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>int</strong></span></span> <a href="basic_string.html#id325938-bb">compare</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;, size_type, 
-              size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>int</strong></span></span> <a href="basic_string.html#id325979-bb">compare</a>(<span class="bold"><strong>const</strong></span> CharT *) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>int</strong></span></span> <a href="basic_string.html#id325996-bb">compare</a>(size_type, size_type, <span class="bold"><strong>const</strong></span> CharT *, size_type = npos) <span class="bold"><strong>const</strong></span>;
-  <span class="bold"><strong>static</strong></span> <span class="type"><span class="bold"><strong>const</strong></span> size_type</span> npos;  <span class="emphasis"><em>// The largest possible value of type size_type. That is, size_type(-1). </em></span>
-};</pre></div>
+  <span class="comment">// <a href="basic_string.html#id403550-bb">public member functions</a></span>
+  <span class="identifier">iterator</span> <a href="basic_string.html#id403553-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="basic_string.html#id403578-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="basic_string.html#id403603-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="basic_string.html#id403628-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a href="basic_string.html#id403653-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="basic_string.html#id403679-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a href="basic_string.html#id403704-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="basic_string.html#id403729-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">allocator_type</span> <a href="basic_string.html#id403754-bb"><span class="identifier">get_allocator</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id403779-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id403806-bb"><span class="identifier">length</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id403832-bb"><span class="identifier">max_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id403857-bb"><span class="identifier">resize</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id403895-bb"><span class="identifier">resize</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id403927-bb"><span class="identifier">reserve</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id403951-bb"><span class="identifier">capacity</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id403976-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a href="basic_string.html#id404001-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="basic_string.html#id404027-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="basic_string.html#id404063-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="basic_string.html#id404099-bb"><span class="identifier">at</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="basic_string.html#id404135-bb"><span class="identifier">at</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404171-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404193-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404213-bb"><span class="keyword">operator</span><span class="special">+=</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404232-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404255-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404288-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404313-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404333-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404357-bb"><span class="identifier">append</span></a><span class="special">(</span><span class="identifier">InputIter</span><span class="special">,</span> <span class="identifier">InputIter</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id404387-bb"><span class="identifier">push_back</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id404403-bb"><span class="identifier">pop_back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404415-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404438-bb"><span class="identifier">assign</span></a><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404460-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404492-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404516-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404535-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404559-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">InputIter</span><span class="special">,</span> <span class="identifier">InputIter</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404589-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404613-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404641-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404679-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404708-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404732-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="basic_string.html#id404761-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id404783-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> <span class="keyword">void</span> <a href="basic_string.html#id404809-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">InputIter</span><span class="special">,</span> <span class="identifier">InputIter</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404841-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="basic_string.html#id404870-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="basic_string.html#id404887-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404909-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> 
+  <a href="basic_string.html#id404941-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id404983-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405017-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405410-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405444-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405476-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405510-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405538-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">CharT</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> 
+    <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a href="basic_string.html#id405572-bb"><span class="identifier">replace</span></a><span class="special">(</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">InputIter</span><span class="special">,</span> <span class="identifier">InputIter</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405612-bb"><span class="identifier">copy</span></a><span class="special">(</span><span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="basic_string.html#id405640-bb"><span class="identifier">swap</span></a><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> <a href="basic_string.html#id405660-bb"><span class="identifier">c_str</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> <a href="basic_string.html#id405673-bb"><span class="identifier">data</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405686-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405715-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405740-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405768-bb"><span class="identifier">find</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405793-bb"><span class="identifier">rfind</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405822-bb"><span class="identifier">rfind</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405847-bb"><span class="identifier">rfind</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405874-bb"><span class="identifier">rfind</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405900-bb"><span class="identifier">find_first_of</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405928-bb"><span class="identifier">find_first_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405954-bb"><span class="identifier">find_first_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id405981-bb"><span class="identifier">find_first_of</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406006-bb"><span class="identifier">find_last_of</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406035-bb"><span class="identifier">find_last_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406060-bb"><span class="identifier">find_last_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406088-bb"><span class="identifier">find_last_of</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406113-bb"><span class="identifier">find_first_not_of</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406142-bb"><span class="identifier">find_first_not_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406167-bb"><span class="identifier">find_first_not_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406195-bb"><span class="identifier">find_first_not_of</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406220-bb"><span class="identifier">find_last_not_of</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406249-bb"><span class="identifier">find_last_not_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406274-bb"><span class="identifier">find_last_not_of</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="basic_string.html#id406302-bb"><span class="identifier">find_last_not_of</span></a><span class="special">(</span><span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <a href="basic_string.html#id406327-bb"><span class="identifier">substr</span></a><span class="special">(</span><span class="identifier">size_type</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">int</span> <a href="basic_string.html#id406354-bb"><span class="identifier">compare</span></a><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">int</span> <a href="basic_string.html#id406375-bb"><span class="identifier">compare</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">int</span> <a href="basic_string.html#id406406-bb"><span class="identifier">compare</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> 
+              <span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">int</span> <a href="basic_string.html#id406447-bb"><span class="identifier">compare</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">int</span> <a href="basic_string.html#id406464-bb"><span class="identifier">compare</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">size_type</span> npos<span class="special">;</span>  <span class="comment">// The largest possible value of type size_type. That is, size_type(-1). </span>
+<span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1" lang="en">
-<a name="id531627"></a><h2>Description</h2>
+<a name="id871628"></a><h2>Description</h2>
 <p>The basic_string class represents a Sequence of characters. It contains all the usual operations of a Sequence, and, additionally, it contains standard string operations such as search and concatenation.</p>
 <p>The basic_string class is parameterized by character type, and by that type's Character Traits.</p>
 <p>This class has performance characteristics very much like vector&lt;&gt;, meaning, for example, that it does not perform reference-count or copy-on-write, and that concatenation of two strings is an O(N) operation.</p>
@@ -183,86 +180,84 @@
 <p>Note that the C++ standard does not specify the complexity of basic_string operations. In this implementation, basic_string has performance characteristics very similar to those of vector: access to a single character is O(1), while copy and concatenation are O(N).</p>
 <p>In this implementation, begin(), end(), rbegin(), rend(), operator[], c_str(), and data() do not invalidate iterators. In this implementation, iterators are only invalidated by member functions that explicitly change the string's contents. </p>
 <div class="refsect2" lang="en">
-<a name="id531645"></a><h3>
+<a name="id871646"></a><h3>
 <a name="boost.container.basic_stringtypes"></a><code class="computeroutput">basic_string</code> 
         public
        types</h3>
 <div class="orderedlist"><ol type="1"><li>
 <p>
-<span class="bold"><strong>typedef</strong></span> A <a name="boost.container.basic_string.allocator_type"></a>allocator_type;</p>
+<span class="keyword">typedef</span> <span class="identifier">A</span> <a name="boost.container.basic_string.allocator_type"></a><span class="identifier">allocator_type</span><span class="special">;</span></p>
 <p>The allocator type </p>
 </li></ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id531673"></a><h3>
+<a name="id871684"></a><h3>
 <a name="boost.container.basic_stringconstruct-copy-destruct"></a><code class="computeroutput">basic_string</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><a name="id326030-bb"></a>basic_string(reserve_t, std::size_t n, 
-             <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre></li>
 <li>
-<pre class="literallayout"><a name="id326048-bb"></a>basic_string(<span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre>
+<pre class="literallayout"><a name="id406498-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs a basic_string taking the allocator as parameter.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id326071-bb"></a>basic_string(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s);</pre>
+<pre class="literallayout"><a name="id406521-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Copy constructs a basic_string.</p>
 <p><span class="bold"><strong>Postcondition</strong></span>: x == *this.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id326100-bb"></a>basic_string(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;&amp; s);</pre>
+<pre class="literallayout"><a name="id406550-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Move constructor. Moves mx's resources to *this.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id326128-bb"></a>basic_string(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos, size_type n = npos, 
-             <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre>
+<pre class="literallayout"><a name="id406578-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n <span class="special">=</span> <span class="identifier">npos</span><span class="special">,</span> 
+             <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs a basic_string taking the allocator as parameter, and is initialized by a specific number of characters of the s string. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id326164-bb"></a>basic_string(<span class="bold"><strong>const</strong></span> CharT * s, size_type n, 
-             <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre>
+<pre class="literallayout"><a name="id406614-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> 
+             <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs a basic_string taking the allocator as parameter, and is initialized by a specific number of characters of the s c-string. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id326189-bb"></a>basic_string(<span class="bold"><strong>const</strong></span> CharT * s, <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre>
+<pre class="literallayout"><a name="id406639-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs a basic_string taking the allocator as parameter, and is initialized by the null-terminated s c-string. </p>
 </li>
 <li>
-<pre class="literallayout"><a name="id326209-bb"></a>basic_string(size_type n, CharT c, 
-             <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre>
+<pre class="literallayout"><a name="id406659-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">,</span> 
+             <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs a basic_string taking the allocator as parameter, and is initialized by n copies of c. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-  <a name="id326234-bb"></a>basic_string(InputIterator f, InputIterator l, 
-               <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+  <a name="id406684-bb"></a><span class="identifier">basic_string</span><span class="special">(</span><span class="identifier">InputIterator</span> f<span class="special">,</span> <span class="identifier">InputIterator</span> l<span class="special">,</span> 
+               <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Constructs a basic_string taking the allocator as parameter, and a range of iterators. </p>
 </li>
 <li>
-<pre class="literallayout">basic_string&amp; <a name="id326287-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s);</pre>
+<pre class="literallayout">basic_string&amp; <a name="id406737-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Copy constructs a string.</p>
 <p><span class="bold"><strong>Postcondition</strong></span>: x == *this.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the elements x contains. </p>
 </li>
 <li>
-<pre class="literallayout">basic_string&amp; <a name="id326316-bb"></a><span class="bold"><strong>operator</strong></span>=(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;&amp; ms);</pre>
+<pre class="literallayout">basic_string&amp; <a name="id406766-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;&amp;</span> ms<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Move constructor. Moves mx's resources to *this.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout">basic_string&amp; <a name="id326344-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> CharT * s);</pre>
+<pre class="literallayout">basic_string&amp; <a name="id406794-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assignment from a null-terminated c-string. </li>
 <li>
-<pre class="literallayout">basic_string&amp; <a name="id326356-bb"></a><span class="bold"><strong>operator</strong></span>=(CharT c);</pre>
+<pre class="literallayout">basic_string&amp; <a name="id406806-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assignment from character. </li>
 <li>
-<pre class="literallayout"><a name="id326266-bb"></a>~basic_string();</pre>
+<pre class="literallayout"><a name="id406716-bb"></a><span class="special">~</span><span class="identifier">basic_string</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Destroys the basic_string. All used memory is deallocated.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
@@ -270,405 +265,405 @@
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id532081"></a><h3>
-<a name="id321717-bb"></a><code class="computeroutput">basic_string</code> public member functions</h3>
+<a name="id872558"></a><h3>
+<a name="id403550-bb"></a><code class="computeroutput">basic_string</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id321719-bb"></a>begin() ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id403553-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element contained in the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id321744-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id403578-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the first element contained in the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id321770-bb"></a>end() ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id403603-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the end of the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_iterator</span> <a name="id321795-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id403628-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the end of the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id321820-bb"></a>rbegin() ;</pre>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id403653-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the beginning of the reversed vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id321845-bb"></a>rbegin() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id403679-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id321870-bb"></a>rend() ;</pre>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id403704-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the end of the reversed vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id321896-bb"></a>rend() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id403729-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">allocator_type</span> <a name="id321921-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">allocator_type</span> <a name="id403754-bb"></a><span class="identifier">get_allocator</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a copy of the internal allocator.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If allocator's copy constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id321946-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id403779-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of the elements contained in the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id321972-bb"></a>length() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id403806-bb"></a><span class="identifier">length</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the number of the elements contained in the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id321999-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id403832-bb"></a><span class="identifier">max_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns the largest possible size of the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322024-bb"></a>resize(size_type n, CharT c) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id403857-bb"></a><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts or erases elements at the end such that the size becomes n. New elements are copy constructed from x.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, or T's copy constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the difference between size() and new_size. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322061-bb"></a>resize(size_type n) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id403895-bb"></a><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts or erases elements at the end such that the size becomes n. New elements are default constructed.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, or T's copy constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the difference between size() and new_size. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322094-bb"></a>reserve(size_type res_arg) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id403927-bb"></a><span class="identifier">reserve</span><span class="special">(</span><span class="identifier">size_type</span> res_arg<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: If n is less than or equal to capacity(), this call has no effect. Otherwise, it is a request for allocation of additional memory. If the request is successful, then capacity() is greater than or equal to n; otherwise, capacity() is unchanged. In either case, size() is unchanged.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If memory allocation allocation throws or T's copy constructor throws. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id322118-bb"></a>capacity() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id403951-bb"></a><span class="identifier">capacity</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Number of elements for which memory has been allocated. capacity() is always greater than or equal to size().</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322143-bb"></a>clear() ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id403976-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Erases all the elements of the vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements in the vector. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id322168-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id404001-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Returns true if the vector contains no elements.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">reference</span> <a name="id322193-bb"></a><span class="bold"><strong>operator</strong></span>[](size_type n) ;</pre>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id404027-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the nth element from the beginning of the container.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reference</span> <a name="id322229-bb"></a><span class="bold"><strong>operator</strong></span>[](size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id404063-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the nth element from the beginning of the container.</p>
 <p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">reference</span> <a name="id322265-bb"></a>at(size_type n) ;</pre>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id404099-bb"></a><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the nth element from the beginning of the container.</p>
 <p><span class="bold"><strong>Throws</strong></span>: std::range_error if n &gt;= size()</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">const_reference</span> <a name="id322301-bb"></a>at(size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id404135-bb"></a><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the nth element from the beginning of the container.</p>
 <p><span class="bold"><strong>Throws</strong></span>: std::range_error if n &gt;= size()</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322337-bb"></a><span class="bold"><strong>operator</strong></span>+=(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404171-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322360-bb"></a><span class="bold"><strong>operator</strong></span>+=(<span class="bold"><strong>const</strong></span> CharT * s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404193-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends c-string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322379-bb"></a><span class="bold"><strong>operator</strong></span>+=(CharT c) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404213-bb"></a><span class="keyword">operator</span><span class="special">+=</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends character c to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322398-bb"></a>append(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404232-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322421-bb"></a>append(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404255-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends the range [pos, pos + n) from string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322455-bb"></a>append(<span class="bold"><strong>const</strong></span> CharT * s, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404288-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends the range [s, s + n) from c-string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322480-bb"></a>append(<span class="bold"><strong>const</strong></span> CharT * s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404313-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends the c-string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322499-bb"></a>append(size_type n, CharT c) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404333-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends the n times the character c to *this. </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; 
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322523-bb"></a>append(InputIter first, InputIter last) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> 
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404357-bb"></a><span class="identifier">append</span><span class="special">(</span><span class="identifier">InputIter</span> first<span class="special">,</span> <span class="identifier">InputIter</span> last<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Appends the range [first, last) *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322553-bb"></a>push_back(CharT c) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id404387-bb"></a><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts a copy of c at the end of the vector. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322570-bb"></a>pop_back() ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id404403-bb"></a><span class="identifier">pop_back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Removes the last element from the vector. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322582-bb"></a>assign(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404415-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the value s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322605-bb"></a>assign(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;&amp; ms) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404438-bb"></a><span class="identifier">assign</span><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;&amp;</span> ms<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Moves the resources from ms *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322626-bb"></a>assign(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404460-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the range [pos, pos + n) from s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322659-bb"></a>assign(<span class="bold"><strong>const</strong></span> CharT * s, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404492-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the range [s, s + n) from s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322683-bb"></a>assign(<span class="bold"><strong>const</strong></span> CharT * s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404516-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the c-string s to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322702-bb"></a>assign(size_type n, CharT c) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404535-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the character c n-times to *this. </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; 
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322726-bb"></a>assign(InputIter first, InputIter last) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> 
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404559-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">InputIter</span> first<span class="special">,</span> <span class="identifier">InputIter</span> last<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the range [first, last) to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322756-bb"></a>assign(<span class="bold"><strong>const</strong></span> CharT * f, <span class="bold"><strong>const</strong></span> CharT * l) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404589-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> f<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> l<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Assigns the range [f, l) to *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322780-bb"></a>insert(size_type pos, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404613-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the string s before pos. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-<a name="id322808-bb"></a>insert(size_type pos, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type beg, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> 
+<a name="id404641-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> beg<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the range [pos, pos + n) from string s before pos. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322846-bb"></a>insert(size_type pos, <span class="bold"><strong>const</strong></span> CharT * s, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404679-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the range [s, s + n) before pos. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322875-bb"></a>insert(size_type pos, <span class="bold"><strong>const</strong></span> CharT * s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404708-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the c-string s before pos. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id322899-bb"></a>insert(size_type pos, size_type n, CharT c) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404732-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the character c n-times before pos. </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id322928-bb"></a>insert(iterator position, CharT c) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id404761-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> position<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the character c before position. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322949-bb"></a>insert(iterator position, std::size_t n, CharT c) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id404783-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> position<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the character c n-times before position. </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id322976-bb"></a>insert(iterator p, InputIter first, InputIter last) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id404809-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">iterator</span> p<span class="special">,</span> <span class="identifier">InputIter</span> first<span class="special">,</span> <span class="identifier">InputIter</span> last<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the range [first, last) before position. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id323008-bb"></a>erase(size_type pos = 0, size_type n = npos) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404841-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">size_type</span> n <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Inserts the range [pos, pos + n). </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id323037-bb"></a>erase(iterator position) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id404870-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">iterator</span> position<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Erases the character pointed by position. </li>
 <li>
-<pre class="literallayout"><span class="type">iterator</span> <a name="id323054-bb"></a>erase(iterator first, iterator last) ;</pre>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id404887-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">iterator</span> first<span class="special">,</span> <span class="identifier">iterator</span> last<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Erases the range [first, last). </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id323075-bb"></a>replace(size_type pos, size_type n, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id404909-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with the string s. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-<a name="id323108-bb"></a>replace(size_type pos1, size_type n1, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos2, 
-        size_type n2) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> 
+<a name="id404941-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">size_type</span> pos1<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos2<span class="special">,</span> 
+        <span class="identifier">size_type</span> n2<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with a substring of s. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-<a name="id323150-bb"></a>replace(size_type pos, size_type n1, <span class="bold"><strong>const</strong></span> CharT * s, size_type n2) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> 
+<a name="id404983-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n2<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with the first n1 characters of s. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id323183-bb"></a>replace(size_type pos, size_type n1, <span class="bold"><strong>const</strong></span> CharT * s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id405017-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with a null-terminated character array. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id323212-bb"></a>replace(size_type pos, size_type n1, size_type n2, CharT c) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id405410-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="identifier">size_type</span> n2<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with n1 copies of c. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id323246-bb"></a>replace(iterator first, iterator last, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id405444-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">iterator</span> first<span class="special">,</span> <span class="identifier">iterator</span> last<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with the string s. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-<a name="id323278-bb"></a>replace(iterator first, iterator last, <span class="bold"><strong>const</strong></span> CharT * s, size_type n) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> 
+<a name="id405476-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">iterator</span> first<span class="special">,</span> <span class="identifier">iterator</span> last<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with the first n characters of s. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id323312-bb"></a>replace(iterator first, iterator last, <span class="bold"><strong>const</strong></span> CharT * s) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id405510-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">iterator</span> first<span class="special">,</span> <span class="identifier">iterator</span> last<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with a null-terminated character array. </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> <a name="id325070-bb"></a>replace(iterator first, iterator last, size_type n, CharT c) ;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> <a name="id405538-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">iterator</span> first<span class="special">,</span> <span class="identifier">iterator</span> last<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">CharT</span> c<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with n copies of c. </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIter&gt; 
-  <span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp;</span> 
-  <a name="id325104-bb"></a>replace(iterator first, iterator last, InputIter f, InputIter l) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIter<span class="special">&gt;</span> 
+  <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> 
+  <a name="id405572-bb"></a><span class="identifier">replace</span><span class="special">(</span><span class="identifier">iterator</span> first<span class="special">,</span> <span class="identifier">iterator</span> last<span class="special">,</span> <span class="identifier">InputIter</span> f<span class="special">,</span> <span class="identifier">InputIter</span> l<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Replaces a substring of *this with the range [f, l) </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325144-bb"></a>copy(CharT * s, size_type n, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405612-bb"></a><span class="identifier">copy</span><span class="special">(</span><span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Copies a substring of *this to a buffer. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id325172-bb"></a>swap(<a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; x) ;</pre>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id405640-bb"></a><span class="identifier">swap</span><span class="special">(</span><a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Swaps the contents of two strings. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> CharT *</span> <a name="id325192-bb"></a>c_str() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> <a name="id405660-bb"></a><span class="identifier">c_str</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Returns</strong></span>: Returns a pointer to a null-terminated array of characters representing the string's contents. For any string s it is guaranteed that the first s.size() characters in the array pointed to by s.c_str() are equal to the character in s, and that s.c_str()[s.size()] is a null character. Note, however, that it not necessarily the first null character. Characters within a string are permitted to be null. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>const</strong></span> CharT *</span> <a name="id325205-bb"></a>data() <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> <a name="id405673-bb"></a><span class="identifier">data</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Returns</strong></span>: Returns a pointer to an array of characters, not necessarily null-terminated, representing the string's contents. data() is permitted, but not required, to be identical to c_str(). The first size() characters of that array are guaranteed to be identical to the characters in *this. The return value of data() is never a null pointer, even if size() is zero. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325218-bb"></a>find(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405686-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches for s as a substring of *this, beginning at character pos of *this. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325247-bb"></a>find(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405715-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches for a null-terminated character array as a substring of *this, beginning at character pos of *this. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325272-bb"></a>find(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos, size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405740-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches for the first n characters of s as a substring of *this, beginning at character pos of *this. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325300-bb"></a>find(CharT c, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405768-bb"></a><span class="identifier">find</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches for the character c, beginning at character position pos. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325325-bb"></a>rfind(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405793-bb"></a><span class="identifier">rfind</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward for s as a substring of *this, beginning at character position min(pos, size()) </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325354-bb"></a>rfind(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405822-bb"></a><span class="identifier">rfind</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward for a null-terminated character array as a substring of *this, beginning at character min(pos, size()) </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325379-bb"></a>rfind(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos, size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405847-bb"></a><span class="identifier">rfind</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward for the first n characters of s as a substring of *this, beginning at character position min(pos, size()). </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325406-bb"></a>rfind(CharT c, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405874-bb"></a><span class="identifier">rfind</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward for a null-terminated character array as a substring of *this, beginning at character min(pos, size()). </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325432-bb"></a>find_first_of(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405900-bb"></a><span class="identifier">find_first_of</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325460-bb"></a>find_first_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405928-bb"></a><span class="identifier">find_first_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325486-bb"></a>find_first_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos, size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405954-bb"></a><span class="identifier">find_first_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is equal to any character within the first n characters of s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325513-bb"></a>find_first_of(CharT c, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id405981-bb"></a><span class="identifier">find_first_of</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is equal to c. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325538-bb"></a>find_last_of(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406006-bb"></a><span class="identifier">find_last_of</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward within *this, beginning at min(pos, size()), for the first character that is equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325567-bb"></a>find_last_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406035-bb"></a><span class="identifier">find_last_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward *this, beginning at min(pos, size()), for the first character that is equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325592-bb"></a>find_last_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos, size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406060-bb"></a><span class="identifier">find_last_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward within *this, beginning at min(pos, size()), for the first character that is equal to any character within the first n characters of s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325620-bb"></a>find_last_of(CharT c, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406088-bb"></a><span class="identifier">find_last_of</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward *this, beginning at min(pos, size()), for the first character that is equal to c. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325645-bb"></a>find_first_not_of(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406113-bb"></a><span class="identifier">find_first_not_of</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is not equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325674-bb"></a>find_first_not_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406142-bb"></a><span class="identifier">find_first_not_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is not equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325699-bb"></a>find_first_not_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos, size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406167-bb"></a><span class="identifier">find_first_not_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is not equal to any character within the first n characters of s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325727-bb"></a>find_first_not_of(CharT c, size_type pos = 0) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406195-bb"></a><span class="identifier">find_first_not_of</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches within *this, beginning at pos, for the first character that is not equal to c. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325752-bb"></a>find_last_not_of(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406220-bb"></a><span class="identifier">find_last_not_of</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward within *this, beginning at min(pos, size()), for the first character that is not equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325781-bb"></a>find_last_not_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406249-bb"></a><span class="identifier">find_last_not_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward *this, beginning at min(pos, size()), for the first character that is not equal to any character within s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325806-bb"></a>find_last_not_of(<span class="bold"><strong>const</strong></span> CharT * s, size_type pos, size_type n) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406274-bb"></a><span class="identifier">find_last_not_of</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> <span class="identifier">size_type</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward within *this, beginning at min(pos, size()), for the first character that is not equal to any character within the first n characters of s. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type">size_type</span> <a name="id325834-bb"></a>find_last_not_of(CharT c, size_type pos = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id406302-bb"></a><span class="identifier">find_last_not_of</span><span class="special">(</span><span class="identifier">CharT</span> c<span class="special">,</span> <span class="identifier">size_type</span> pos <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Searches backward *this, beginning at min(pos, size()), for the first character that is not equal to c. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><a href="basic_string.html" title="Class template basic_string">basic_string</a></span> <a name="id325859-bb"></a>substr(size_type pos = 0, size_type n = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><a href="basic_string.html" title="Class template basic_string">basic_string</a> <a name="id406327-bb"></a><span class="identifier">substr</span><span class="special">(</span><span class="identifier">size_type</span> pos <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">size_type</span> n <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Returns a substring of *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>int</strong></span></span> <a name="id325886-bb"></a>compare(<span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">int</span> <a name="id406354-bb"></a><span class="identifier">compare</span><span class="special">(</span><span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Three-way lexicographical comparison of s and *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>int</strong></span></span> <a name="id325907-bb"></a>compare(size_type pos1, size_type n1, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">int</span> <a name="id406375-bb"></a><span class="identifier">compare</span><span class="special">(</span><span class="identifier">size_type</span> pos1<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Three-way lexicographical comparison of s and a substring of *this. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>int</strong></span></span> <a name="id325938-bb"></a>compare(size_type pos1, size_type n1, <span class="bold"><strong>const</strong></span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> &amp; s, 
-            size_type pos2, size_type n2) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">int</span> <a name="id406406-bb"></a><span class="identifier">compare</span><span class="special">(</span><span class="identifier">size_type</span> pos1<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="keyword">const</span> <a href="basic_string.html" title="Class template basic_string">basic_string</a> <span class="special">&amp;</span> s<span class="special">,</span> 
+            <span class="identifier">size_type</span> pos2<span class="special">,</span> <span class="identifier">size_type</span> n2<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Three-way lexicographical comparison of a substring of s and a substring of *this. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>int</strong></span></span> <a name="id325979-bb"></a>compare(<span class="bold"><strong>const</strong></span> CharT * s) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">int</span> <a name="id406447-bb"></a><span class="identifier">compare</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <span class="bold"><strong>Effects</strong></span>: Three-way lexicographical comparison of s and *this. </li>
 <li>
-<pre class="literallayout"><span class="type"><span class="bold"><strong>int</strong></span></span> <a name="id325996-bb"></a>compare(size_type pos1, size_type n1, <span class="bold"><strong>const</strong></span> CharT * s, 
-            size_type n2 = npos) <span class="bold"><strong>const</strong></span>;</pre>
+<pre class="literallayout"><span class="keyword">int</span> <a name="id406464-bb"></a><span class="identifier">compare</span><span class="special">(</span><span class="identifier">size_type</span> pos1<span class="special">,</span> <span class="identifier">size_type</span> n1<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">CharT</span> <span class="special">*</span> s<span class="special">,</span> 
+            <span class="identifier">size_type</span> n2 <span class="special">=</span> <span class="identifier">npos</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Effects</strong></span>: Three-way lexicographical comparison of the first min(len, traits::length(s) characters of s and a substring of *this. </p>
 </li>
 </ol></div>
@@ -677,7 +672,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2009 -2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -685,7 +680,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="stable_vector.html"><img src="../../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.string_hpp"><img src="../../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="string.html"><img src="../../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="stable_vector.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.string_hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="string.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

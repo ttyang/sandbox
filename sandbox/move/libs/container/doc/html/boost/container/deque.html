@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template deque</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.67.0">
-<link rel="start" href="../../index.html" title="Chapter 1. Boost.Container">
+<link rel="start" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Container">
 <link rel="up" href="../../boost_container_reference.html#header.boost.container.deque_hpp" title="Header &lt;boost/container/deque.hpp&gt;">
 <link rel="prev" href="ordered_unique_range.html" title="Global ordered_unique_range">
 <link rel="next" href="flat_map.html" title="Class template flat_map">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ordered_unique_range.html"><img src="../../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.deque_hpp"><img src="../../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="flat_map.html"><img src="../../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="ordered_unique_range.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.deque_hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="flat_map.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="boost.container.deque"></a><div class="titlepage"></div>
@@ -29,158 +29,397 @@
 <p>boost::container::deque &#8212; </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a href="../../boost_container_reference.html#header.boost.container.deque_hpp" title="Header &lt;boost/container/deque.hpp&gt;">boost/container/deque.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a href="../../boost_container_reference.html#header.boost.container.deque_hpp" title="Header &lt;boost/container/deque.hpp&gt;">boost/container/deque.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>typename</strong></span> Alloc&gt; 
-<span class="bold"><strong>class</strong></span> <a href="deque.html" title="Class template deque">deque</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> Base::iterator                          <a name="boost.container.deque.iterator"></a>iterator;              
-  <span class="bold"><strong>typedef</strong></span> Base::const_iterator                    <a name="boost.container.deque.const_iterator"></a>const_iterator;        
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; const_iterator &gt; <a name="boost.container.deque.const_reverse_iterator"></a>const_reverse_iterator;
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; iterator &gt;       <a name="boost.container.deque.reverse_iterator"></a>reverse_iterator;      
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Alloc<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a href="deque.html" title="Class template deque">deque</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">Base</span><span class="special">::</span><span class="identifier">iterator</span>                          <a name="boost.container.deque.iterator"></a><span class="identifier">iterator</span><span class="special">;</span>              
+  <span class="keyword">typedef</span> <span class="identifier">Base</span><span class="special">::</span><span class="identifier">const_iterator</span>                    <a name="boost.container.deque.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> <a name="boost.container.deque.const_reverse_iterator"></a><span class="identifier">const_reverse_iterator</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">iterator</span> <span class="special">&gt;</span>       <a name="boost.container.deque.reverse_iterator"></a><span class="identifier">reverse_iterator</span><span class="special">;</span>      
 
-  <span class="emphasis"><em>// <a href="deque.html#boost.container.dequeconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a href="deque.html#id294169-bb">deque</a>(<span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="deque.html#id294178-bb">deque</a>(<span class="bold"><strong>const</strong></span> <a href="deque.html" title="Class template deque">deque</a> &amp;);
-  <a href="deque.html#id294187-bb">deque</a>(<a href="deque.html" title="Class template deque">deque</a> &amp;&amp;);
-  <a href="deque.html#id294196-bb">deque</a>(size_type, <span class="bold"><strong>const</strong></span> value_type &amp;, 
-        <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  <a href="deque.html#id294214-bb">deque</a>(size_type);
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InpIt&gt; 
-    <a href="deque.html#id294220-bb">deque</a>(InpIt, InpIt, <span class="bold"><strong>const</strong></span> allocator_type &amp; = allocator_type());
-  deque&amp; <a href="deque.html#id294245-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a href="deque.html" title="Class template deque">deque</a> &amp;);
-  deque&amp; <a href="deque.html#id294254-bb"><span class="bold"><strong>operator</strong></span>=</a>(<a href="deque.html" title="Class template deque">deque</a> &amp;&amp;);
-  <a href="deque.html#id294244-bb">~deque</a>();
+  <span class="comment">// <a href="deque.html#boost.container.dequeconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a href="deque.html#id372806-bb"><span class="identifier">deque</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="deque.html#id372833-bb"><span class="identifier">deque</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="deque.html#id372858-bb"><span class="identifier">deque</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span><span class="special">,</span> 
+        <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="deque.html#id372896-bb"><span class="identifier">deque</span></a><span class="special">(</span><span class="keyword">const</span> <a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="deque.html#id372924-bb"><span class="identifier">deque</span></a><span class="special">(</span><a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InpIt<span class="special">&gt;</span> 
+    <a href="deque.html#id372952-bb"><span class="identifier">deque</span></a><span class="special">(</span><span class="identifier">InpIt</span><span class="special">,</span> <span class="identifier">InpIt</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  deque&amp; <a href="deque.html#id373016-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  deque&amp; <a href="deque.html#id373052-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="deque.html#id372995-bb"><span class="special">~</span><span class="identifier">deque</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a href="deque.html#id293688-bb">public member functions</a></em></span>
-  <span class="type">allocator_type</span> <a href="deque.html#id293690-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a href="deque.html#id293696-bb">begin</a>() ;
-  <span class="type">iterator</span> <a href="deque.html#id293702-bb">end</a>() ;
-  <span class="type">const_iterator</span> <a href="deque.html#id293708-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a href="deque.html#id293714-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a href="deque.html#id293720-bb">rbegin</a>() ;
-  <span class="type">reverse_iterator</span> <a href="deque.html#id293726-bb">rend</a>() ;
-  <span class="type">const_reverse_iterator</span> <a href="deque.html#id293732-bb">rbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a href="deque.html#id293738-bb">rend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a href="deque.html#id293744-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a href="deque.html#id293750-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a href="deque.html#id293756-bb">crbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a href="deque.html#id293762-bb">crend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="deque.html#id293768-bb"><span class="bold"><strong>operator</strong></span>[]</a>(size_type) ;
-  <span class="type">const_reference</span> <a href="deque.html#id293779-bb"><span class="bold"><strong>operator</strong></span>[]</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293790-bb">priv_range_check</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="deque.html#id293801-bb">at</a>(size_type) ;
-  <span class="type">const_reference</span> <a href="deque.html#id293812-bb">at</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="deque.html#id293822-bb">front</a>() ;
-  <span class="type">reference</span> <a href="deque.html#id293828-bb">back</a>() ;
-  <span class="type">const_reference</span> <a href="deque.html#id293834-bb">front</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reference</span> <a href="deque.html#id293840-bb">back</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="deque.html#id293846-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="deque.html#id293852-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a href="deque.html#id293858-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293864-bb">swap</a>(<a href="deque.html" title="Class template deque">deque</a> &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293878-bb">assign</a>(size_type, <span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InpIt&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293893-bb">assign</a>(InpIt, InpIt) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293915-bb">push_back</a>(<span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293926-bb">push_back</a>(value_type &amp;&amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293936-bb">push_front</a>(<span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293947-bb">push_front</a>(value_type &amp;&amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293958-bb">pop_back</a>() ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id293964-bb">pop_front</a>() ;
-  <span class="type">iterator</span> <a href="deque.html#id293970-bb">insert</a>(const_iterator, <span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type">iterator</span> <a href="deque.html#id293986-bb">insert</a>(const_iterator, value_type &amp;&amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294001-bb">insert</a>(const_iterator, size_type, <span class="bold"><strong>const</strong></span> value_type &amp;) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InpIt&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294022-bb">insert</a>(const_iterator, InpIt, InpIt) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294048-bb">emplace_back</a>(Args &amp;&amp;...) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294067-bb">emplace_front</a>(Args &amp;&amp;...) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type">iterator</span> <a href="deque.html#id294086-bb">emplace</a>(const_iterator, Args &amp;&amp;...) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294110-bb">resize</a>(size_type, <span class="bold"><strong>const</strong></span> value_type &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294126-bb">resize</a>(size_type) ;
-  <span class="type">iterator</span> <a href="deque.html#id294137-bb">erase</a>(const_iterator) ;
-  <span class="type">iterator</span> <a href="deque.html#id294148-bb">erase</a>(const_iterator, const_iterator) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="deque.html#id294163-bb">clear</a>() ;
-};</pre></div>
+  <span class="comment">// <a href="deque.html#id371436-bb">public member functions</a></span>
+  <span class="identifier">allocator_type</span> <a href="deque.html#id371439-bb"><span class="identifier">get_allocator</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="deque.html#id371464-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="deque.html#id371489-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="deque.html#id371514-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="deque.html#id371540-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a href="deque.html#id371565-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a href="deque.html#id371590-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="deque.html#id371615-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="deque.html#id371640-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="deque.html#id371666-bb"><span class="identifier">cbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="deque.html#id371691-bb"><span class="identifier">cend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="deque.html#id371716-bb"><span class="identifier">crbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="deque.html#id371741-bb"><span class="identifier">crend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="deque.html#id371766-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="deque.html#id371802-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="deque.html#id371838-bb"><span class="identifier">at</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="deque.html#id372022-bb"><span class="identifier">at</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="deque.html#id372058-bb"><span class="identifier">front</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="deque.html#id372090-bb"><span class="identifier">front</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="deque.html#id372122-bb"><span class="identifier">back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="deque.html#id372154-bb"><span class="identifier">back</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="deque.html#id372185-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="deque.html#id372212-bb"><span class="identifier">max_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a href="deque.html#id372237-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372262-bb"><span class="identifier">swap</span></a><span class="special">(</span><a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372294-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InpIt<span class="special">&gt;</span> <span class="keyword">void</span> <a href="deque.html#id372330-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">InpIt</span><span class="special">,</span> <span class="identifier">InpIt</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372371-bb"><span class="identifier">pop_back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372396-bb"><span class="identifier">pop_front</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372422-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InpIt<span class="special">&gt;</span> <span class="keyword">void</span> <a href="deque.html#id372468-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">InpIt</span><span class="special">,</span> <span class="identifier">InpIt</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a href="deque.html#id372520-bb"><span class="identifier">emplace_back</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a href="deque.html#id372558-bb"><span class="identifier">emplace_front</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">iterator</span> <a href="deque.html#id372597-bb"><span class="identifier">emplace</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372646-bb"><span class="identifier">resize</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372683-bb"><span class="identifier">resize</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="deque.html#id372716-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="deque.html#id372746-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="deque.html#id372780-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1" lang="en">
-<a name="id473130"></a><h2>Description</h2>
+<a name="id741801"></a><h2>Description</h2>
 <p>Deque class </p>
 <div class="refsect2" lang="en">
-<a name="id473136"></a><h3>
+<a name="id741807"></a><h3>
 <a name="boost.container.dequeconstruct-copy-destruct"></a><code class="computeroutput">deque</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><a name="id294169-bb"></a>deque(<span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre></li>
-<li><pre class="literallayout"><a name="id294178-bb"></a>deque(<span class="bold"><strong>const</strong></span> <a href="deque.html" title="Class template deque">deque</a> &amp; x);</pre></li>
-<li><pre class="literallayout"><a name="id294187-bb"></a>deque(<a href="deque.html" title="Class template deque">deque</a> &amp;&amp; mx);</pre></li>
-<li><pre class="literallayout"><a name="id294196-bb"></a>deque(size_type n, <span class="bold"><strong>const</strong></span> value_type &amp; value, 
-      <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre></li>
-<li><pre class="literallayout"><a name="id294214-bb"></a>deque(size_type n);</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InpIt&gt; 
-  <a name="id294220-bb"></a>deque(InpIt first, InpIt last, <span class="bold"><strong>const</strong></span> allocator_type &amp; a = allocator_type());</pre></li>
-<li><pre class="literallayout">deque&amp; <a name="id294245-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a href="deque.html" title="Class template deque">deque</a> &amp; x);</pre></li>
-<li><pre class="literallayout">deque&amp; <a name="id294254-bb"></a><span class="bold"><strong>operator</strong></span>=(<a href="deque.html" title="Class template deque">deque</a> &amp;&amp; x);</pre></li>
-<li><pre class="literallayout"><a name="id294244-bb"></a>~deque();</pre></li>
+<li>
+<pre class="literallayout"><a name="id372806-bb"></a><span class="identifier">deque</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a deque taking the allocator as parameter.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id372833-bb"></a><span class="identifier">deque</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a deque that will use a copy of allocator a and inserts n default contructed values.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws or T's default or copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id372858-bb"></a><span class="identifier">deque</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span> value<span class="special">,</span> 
+      <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a deque that will use a copy of allocator a and inserts n copies of value.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws or T's default or copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id372896-bb"></a><span class="identifier">deque</span><span class="special">(</span><span class="keyword">const</span> <a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Copy constructs a deque.</p>
+<p><span class="bold"><strong>Postcondition</strong></span>: x == *this.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the elements x contains. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id372924-bb"></a><span class="identifier">deque</span><span class="special">(</span><a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;&amp;</span> mx<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Move constructor. Moves mx's resources to *this.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InpIt<span class="special">&gt;</span> 
+  <a name="id372952-bb"></a><span class="identifier">deque</span><span class="special">(</span><span class="identifier">InpIt</span> first<span class="special">,</span> <span class="identifier">InpIt</span> last<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">allocator_type</span> <span class="special">&amp;</span> a <span class="special">=</span> <span class="identifier">allocator_type</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a deque that will use a copy of allocator a and inserts a copy of the range [first, last) in the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws or T's constructor taking an dereferenced InIt throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the range [first, last). </p>
+</li>
+<li>
+<pre class="literallayout">deque&amp; <a name="id373016-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Makes *this contain the same elements as x.</p>
+<p><span class="bold"><strong>Postcondition</strong></span>: this-&gt;size() == x.size(). *this contains a copy of each of x's elements.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements in x. </p>
+</li>
+<li>
+<pre class="literallayout">deque&amp; <a name="id373052-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Move assignment. All mx's values are transferred to *this.</p>
+<p><span class="bold"><strong>Postcondition</strong></span>: x.empty(). *this contains a the elements x had before the function.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id372995-bb"></a><span class="special">~</span><span class="identifier">deque</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Destroys the deque. All stored values are destroyed and used memory is deallocated.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements. </p>
+</li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id473303"></a><h3>
-<a name="id293688-bb"></a><code class="computeroutput">deque</code> public member functions</h3>
+<a name="id742423"></a><h3>
+<a name="id371436-bb"></a><code class="computeroutput">deque</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="type">allocator_type</span> <a name="id293690-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id293696-bb"></a>begin() ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id293702-bb"></a>end() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id293708-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id293714-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id293720-bb"></a>rbegin() ;</pre></li>
-<li><pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id293726-bb"></a>rend() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id293732-bb"></a>rbegin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id293738-bb"></a>rend() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id293744-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id293750-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id293756-bb"></a>crbegin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id293762-bb"></a>crend() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id293768-bb"></a><span class="bold"><strong>operator</strong></span>[](size_type n) ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id293779-bb"></a><span class="bold"><strong>operator</strong></span>[](size_type n) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293790-bb"></a>priv_range_check(size_type n) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id293801-bb"></a>at(size_type n) ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id293812-bb"></a>at(size_type n) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id293822-bb"></a>front() ;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id293828-bb"></a>back() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id293834-bb"></a>front() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id293840-bb"></a>back() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">size_type</span> <a name="id293846-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">size_type</span> <a name="id293852-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id293858-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293864-bb"></a>swap(<a href="deque.html" title="Class template deque">deque</a> &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293878-bb"></a>assign(size_type n, <span class="bold"><strong>const</strong></span> T &amp; val) ;</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InpIt&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293893-bb"></a>assign(InpIt first, InpIt last) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293915-bb"></a>push_back(<span class="bold"><strong>const</strong></span> T &amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293926-bb"></a>push_back(value_type &amp;&amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293936-bb"></a>push_front(<span class="bold"><strong>const</strong></span> T &amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293947-bb"></a>push_front(value_type &amp;&amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293958-bb"></a>pop_back() ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id293964-bb"></a>pop_front() ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id293970-bb"></a>insert(const_iterator position, <span class="bold"><strong>const</strong></span> T &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id293986-bb"></a>insert(const_iterator position, value_type &amp;&amp; mx) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294001-bb"></a>insert(const_iterator pos, size_type n, <span class="bold"><strong>const</strong></span> value_type &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InpIt&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294022-bb"></a>insert(const_iterator pos, InpIt first, InpIt last) ;</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294048-bb"></a>emplace_back(Args &amp;&amp;... args) ;</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294067-bb"></a>emplace_front(Args &amp;&amp;... args) ;</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type">iterator</span> <a name="id294086-bb"></a>emplace(const_iterator p, Args &amp;&amp;... args) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294110-bb"></a>resize(size_type new_size, <span class="bold"><strong>const</strong></span> value_type &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294126-bb"></a>resize(size_type new_size) ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id294137-bb"></a>erase(const_iterator pos) ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id294148-bb"></a>erase(const_iterator first, const_iterator last) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id294163-bb"></a>clear() ;</pre></li>
+<li>
+<pre class="literallayout"><span class="identifier">allocator_type</span> <a name="id371439-bb"></a><span class="identifier">get_allocator</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a copy of the internal allocator.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id371464-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element contained in the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id371489-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the end of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id371514-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the first element contained in the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id371540-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the end of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id371565-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the beginning of the reversed deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id371590-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the end of the reversed deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id371615-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id371640-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id371666-bb"></a><span class="identifier">cbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the first element contained in the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id371691-bb"></a><span class="identifier">cend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the end of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id371716-bb"></a><span class="identifier">crbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id371741-bb"></a><span class="identifier">crend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id371766-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id371802-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id371838-bb"></a><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: std::range_error if n &gt;= size()</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id372022-bb"></a><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: std::range_error if n &gt;= size()</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id372058-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the first element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id372090-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the first element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id372122-bb"></a><span class="identifier">back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the last element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id372154-bb"></a><span class="identifier">back</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the last element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id372185-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns the number of the elements contained in the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id372212-bb"></a><span class="identifier">max_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns the largest possible size of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id372237-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns true if the deque contains no elements.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372262-bb"></a><span class="identifier">swap</span><span class="special">(</span><a href="deque.html" title="Class template deque">deque</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Swaps the contents of *this and x. If this-&gt;allocator_type() != x.allocator_type() allocators are also swapped.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372294-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> val<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Assigns the n copies of val to *this.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InpIt<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id372330-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">InpIt</span> first<span class="special">,</span> <span class="identifier">InpIt</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Assigns the the range [first, last) to *this.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's constructor from dereferencing InpIt throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372371-bb"></a><span class="identifier">pop_back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Removes the last element from the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant time. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372396-bb"></a><span class="identifier">pop_front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Removes the first element from the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant time. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372422-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> pos<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: pos must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Insert n copies of x before pos.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InpIt<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id372468-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> pos<span class="special">,</span> <span class="identifier">InpIt</span> first<span class="special">,</span> <span class="identifier">InpIt</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: pos must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Insert a copy of the [first, last) range before pos.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, T's constructor from a dereferenced InpIt throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to std::distance [first, last). </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id372520-bb"></a><span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts an object of type T constructed with std::forward&lt;Args&gt;(args)... in the end of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or the in-place constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Amortized constant time </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id372558-bb"></a><span class="identifier">emplace_front</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts an object of type T constructed with std::forward&lt;Args&gt;(args)... in the beginning of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or the in-place constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Amortized constant time </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">iterator</span> <a name="id372597-bb"></a><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">const_iterator</span> p<span class="special">,</span> <span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: position must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts an object of type T constructed with std::forward&lt;Args&gt;(args)... before position</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or the in-place constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: If position is end(), amortized constant time Linear time otherwise. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372646-bb"></a><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> new_size<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts or erases elements at the end such that the size becomes n. New elements are copy constructed from x.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the difference between size() and new_size. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372683-bb"></a><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> new_size<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts or erases elements at the end such that the size becomes n. New elements are default constructed.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the difference between size() and new_size. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id372716-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> pos<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Erases the element at position pos.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the elements between pos and the last element (if pos is near the end) or the first element if(pos is near the beginning). Constant if pos is the first or the last element. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id372746-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> first<span class="special">,</span> <span class="identifier">const_iterator</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Erases the elements pointed by [first, last).</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the distance between first and last plus the elements between pos and the last element (if pos is near the end) or the first element if(pos is near the beginning). </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id372780-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Erases all the elements of the deque.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements in the deque. </p>
+</li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2009 -2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -188,7 +427,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="ordered_unique_range.html"><img src="../../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.deque_hpp"><img src="../../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="flat_map.html"><img src="../../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="ordered_unique_range.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.deque_hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="flat_map.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

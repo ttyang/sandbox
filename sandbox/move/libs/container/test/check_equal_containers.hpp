@@ -21,48 +21,48 @@ namespace container {
 namespace test{
 
 //Function to check if both containers are equal
-template<class MyShmCont
+template<class MyBoostCont
         ,class MyStdCont>
-bool CheckEqualContainers(MyShmCont *shmcont, MyStdCont *stdcont)
+bool CheckEqualContainers(MyBoostCont *boostcont, MyStdCont *stdcont)
 {
-   if(shmcont->size() != stdcont->size())
+   if(boostcont->size() != stdcont->size())
       return false;
 
-   typedef typename MyShmCont::value_type value_type;
+   typedef typename MyBoostCont::value_type value_type;
 
-   typename MyShmCont::iterator itshm(shmcont->begin()), itshmend(shmcont->end());
+   typename MyBoostCont::iterator itboost(boostcont->begin()), itboostend(boostcont->end());
    typename MyStdCont::iterator itstd(stdcont->begin());
-   typename MyStdCont::size_type dist = (typename MyStdCont::size_type)std::distance(itshm, itshmend);
-   if(dist != shmcont->size()){ 
+   typename MyStdCont::size_type dist = (typename MyStdCont::size_type)std::distance(itboost, itboostend);
+   if(dist != boostcont->size()){ 
       return false;
    }
    std::size_t i = 0;
-   for(; itshm != itshmend; ++itshm, ++itstd, ++i){
+   for(; itboost != itboostend; ++itboost, ++itstd, ++i){
       value_type val(*itstd);
-      const value_type &v = *itshm;
+      const value_type &v = *itboost;
       if(v != val)
          return false;
    }
    return true;
 }
 
-template<class MyShmCont
+template<class MyBoostCont
         ,class MyStdCont>
-bool CheckEqualPairContainers(MyShmCont *shmcont, MyStdCont *stdcont)
+bool CheckEqualPairContainers(MyBoostCont *boostcont, MyStdCont *stdcont)
 {
-   if(shmcont->size() != stdcont->size())
+   if(boostcont->size() != stdcont->size())
       return false;
 
-   typedef typename MyShmCont::key_type      key_type;
-   typedef typename MyShmCont::mapped_type   mapped_type;
+   typedef typename MyBoostCont::key_type      key_type;
+   typedef typename MyBoostCont::mapped_type   mapped_type;
 
-   typename MyShmCont::iterator itshm(shmcont->begin()), itshmend(shmcont->end());
+   typename MyBoostCont::iterator itboost(boostcont->begin()), itboostend(boostcont->end());
    typename MyStdCont::iterator itstd(stdcont->begin());
-   for(; itshm != itshmend; ++itshm, ++itstd){
-      if(itshm->first != key_type(itstd->first))
+   for(; itboost != itboostend; ++itboost, ++itstd){
+      if(itboost->first != key_type(itstd->first))
          return false;
 
-      if(itshm->second != mapped_type(itstd->second))
+      if(itboost->second != mapped_type(itstd->second))
          return false;
    }
    return true;

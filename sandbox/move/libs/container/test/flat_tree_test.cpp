@@ -45,43 +45,43 @@ typedef std::multiset<int>                                              MyStdMul
 typedef std::map<int, int>                                              MyStdMap;
 typedef std::multimap<int, int>                                         MyStdMultiMap;
 
-typedef flat_set<int, std::less<int>, allocator_t>                MyShmSet;
-typedef flat_multiset<int, std::less<int>, allocator_t>           MyShmMultiSet;
-typedef flat_map<int, int, std::less<int>, pair_allocator_t>      MyShmMap;
-typedef flat_multimap<int, int, std::less<int>, pair_allocator_t> MyShmMultiMap;
+typedef flat_set<int, std::less<int>, allocator_t>                MyBoostSet;
+typedef flat_multiset<int, std::less<int>, allocator_t>           MyBoostMultiSet;
+typedef flat_map<int, int, std::less<int>, pair_allocator_t>      MyBoostMap;
+typedef flat_multimap<int, int, std::less<int>, pair_allocator_t> MyBoostMultiMap;
 
 typedef flat_set<test::movable_int, std::less<test::movable_int>
-                ,movable_allocator_t>                             MyMovableShmSet;
+                ,movable_allocator_t>                             MyMovableBoostSet;
 typedef flat_multiset<test::movable_int,std::less<test::movable_int>
-                     ,movable_allocator_t>                        MyMovableShmMultiSet;
+                     ,movable_allocator_t>                        MyMovableBoostMultiSet;
 typedef flat_map<test::movable_int, test::movable_int
                 ,std::less<test::movable_int>
-                ,movable_pair_allocator_t>                        MyMovableShmMap;
+                ,movable_pair_allocator_t>                        MyMovableBoostMap;
 typedef flat_multimap<test::movable_int, test::movable_int
                 ,std::less<test::movable_int>
-                ,movable_pair_allocator_t>                        MyMovableShmMultiMap;
+                ,movable_pair_allocator_t>                        MyMovableBoostMultiMap;
 
 typedef flat_set<test::movable_and_copyable_int, std::less<test::movable_and_copyable_int>
-                ,move_copy_allocator_t>                             MyMoveCopyShmSet;
+                ,move_copy_allocator_t>                             MyMoveCopyBoostSet;
 typedef flat_multiset<test::movable_and_copyable_int,std::less<test::movable_and_copyable_int>
-                     ,move_copy_allocator_t>                        MyMoveCopyShmMultiSet;
+                     ,move_copy_allocator_t>                        MyMoveCopyBoostMultiSet;
 typedef flat_map<test::movable_and_copyable_int, test::movable_and_copyable_int
                 ,std::less<test::movable_and_copyable_int>
-                ,move_copy_pair_allocator_t>                        MyMoveCopyShmMap;
+                ,move_copy_pair_allocator_t>                        MyMoveCopyBoostMap;
 typedef flat_multimap<test::movable_and_copyable_int, test::movable_and_copyable_int
                 ,std::less<test::movable_and_copyable_int>
-                ,move_copy_pair_allocator_t>                        MyMoveCopyShmMultiMap;
+                ,move_copy_pair_allocator_t>                        MyMoveCopyBoostMultiMap;
 
 typedef flat_set<test::copyable_int, std::less<test::copyable_int>
-                ,copy_allocator_t>                             MyCopyShmSet;
+                ,copy_allocator_t>                             MyCopyBoostSet;
 typedef flat_multiset<test::copyable_int,std::less<test::copyable_int>
-                     ,copy_allocator_t>                        MyCopyShmMultiSet;
+                     ,copy_allocator_t>                        MyCopyBoostMultiSet;
 typedef flat_map<test::copyable_int, test::copyable_int
                 ,std::less<test::copyable_int>
-                ,copy_pair_allocator_t>                        MyCopyShmMap;
+                ,copy_pair_allocator_t>                        MyCopyBoostMap;
 typedef flat_multimap<test::copyable_int, test::copyable_int
                 ,std::less<test::copyable_int>
-                ,copy_pair_allocator_t>                        MyCopyShmMultiMap;
+                ,copy_pair_allocator_t>                        MyCopyBoostMultiMap;
 
 
 
@@ -192,127 +192,127 @@ int main()
 
 
    if (0 != set_test<
-                  MyShmSet
+                  MyBoostSet
                   ,MyStdSet
-                  ,MyShmMultiSet
+                  ,MyBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != set_test_copyable<
-                  MyShmSet
+                  MyBoostSet
                   ,MyStdSet
-                  ,MyShmMultiSet
+                  ,MyBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != set_test<
-                  MyMovableShmSet
+                  MyMovableBoostSet
                   ,MyStdSet
-                  ,MyMovableShmMultiSet
+                  ,MyMovableBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyMovableShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyMovableBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != set_test<
-                  MyMoveCopyShmSet
+                  MyMoveCopyBoostSet
                   ,MyStdSet
-                  ,MyMoveCopyShmMultiSet
+                  ,MyMoveCopyBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyMoveCopyShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyMoveCopyBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != set_test_copyable<
-                  MyMoveCopyShmSet
+                  MyMoveCopyBoostSet
                   ,MyStdSet
-                  ,MyMoveCopyShmMultiSet
+                  ,MyMoveCopyBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != set_test<
-                  MyCopyShmSet
+                  MyCopyBoostSet
                   ,MyStdSet
-                  ,MyCopyShmMultiSet
+                  ,MyCopyBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyCopyShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyCopyBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != set_test_copyable<
-                  MyCopyShmSet
+                  MyCopyBoostSet
                   ,MyStdSet
-                  ,MyCopyShmMultiSet
+                  ,MyCopyBoostMultiSet
                   ,MyStdMultiSet>()){
-      std::cout << "Error in set_test<MyShmSet>" << std::endl;
+      std::cout << "Error in set_test<MyBoostSet>" << std::endl;
       return 1;
    }
 
    if (0 != map_test<
-                  MyShmMap
+                  MyBoostMap
                   ,MyStdMap
-                  ,MyShmMultiMap
+                  ,MyBoostMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyShmMap>" << std::endl;
+      std::cout << "Error in set_test<MyBoostMap>" << std::endl;
       return 1;
    }
 
    if (0 != map_test_copyable<
-                  MyShmMap
+                  MyBoostMap
                   ,MyStdMap
-                  ,MyShmMultiMap
+                  ,MyBoostMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyShmMap>" << std::endl;
+      std::cout << "Error in set_test<MyBoostMap>" << std::endl;
       return 1;
    }
 
 //   if (0 != map_test<
-//                  MyMovableShmMap
+//                  MyMovableBoostMap
 //                  ,MyStdMap
-//                  ,MyMovableShmMultiMap
+//                  ,MyMovableBoostMultiMap
 //                  ,MyStdMultiMap>()){
 //      return 1;
 //   }
 
    if (0 != map_test<
-                  MyMoveCopyShmMap
+                  MyMoveCopyBoostMap
                   ,MyStdMap
-                  ,MyMoveCopyShmMultiMap
+                  ,MyMoveCopyBoostMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyMoveCopyShmMap>" << std::endl;
+      std::cout << "Error in set_test<MyMoveCopyBoostMap>" << std::endl;
       return 1;
    }
 
    if (0 != map_test_copyable<
-                  MyMoveCopyShmMap
+                  MyMoveCopyBoostMap
                   ,MyStdMap
-                  ,MyMoveCopyShmMultiMap
+                  ,MyMoveCopyBoostMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyShmMap>" << std::endl;
+      std::cout << "Error in set_test<MyBoostMap>" << std::endl;
       return 1;
    }
 
    if (0 != map_test<
-                  MyCopyShmMap
+                  MyCopyBoostMap
                   ,MyStdMap
-                  ,MyCopyShmMultiMap
+                  ,MyCopyBoostMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyCopyShmMap>" << std::endl;
+      std::cout << "Error in set_test<MyCopyBoostMap>" << std::endl;
       return 1;
    }
 
    if (0 != map_test_copyable<
-                  MyCopyShmMap
+                  MyCopyBoostMap
                   ,MyStdMap
-                  ,MyCopyShmMultiMap
+                  ,MyCopyBoostMultiMap
                   ,MyStdMultiMap>()){
-      std::cout << "Error in set_test<MyShmMap>" << std::endl;
+      std::cout << "Error in set_test<MyBoostMap>" << std::endl;
       return 1;
    }
 

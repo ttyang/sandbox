@@ -212,7 +212,7 @@ bool do_test()
       }
 
       if(!deque_copyable_only(cntdeque, stddeque
-                     ,containers_detail::bool_<!boost::is_movable<IntType>::value>())){
+                     ,containers_detail::bool_<boost::container::test::is_copyable<IntType>::value>())){
          return false;
       }
 
@@ -258,6 +258,7 @@ bool do_test()
    std::cout << std::endl << "Test OK!" << std::endl;
    return true;
 }
+
 
 int main ()
 {

@@ -27,28 +27,28 @@ typedef std::map<int, int>                                     MyStdMap;
 typedef std::multimap<int, int>                                MyStdMultiMap;
 
 //Alias non-movable types
-typedef set<int>           MyShmSet;
-typedef multiset<int>      MyShmMultiSet;
-typedef map<int, int>      MyShmMap;
-typedef multimap<int, int> MyShmMultiMap;
+typedef set<int>           MyBoostSet;
+typedef multiset<int>      MyBoostMultiSet;
+typedef map<int, int>      MyBoostMap;
+typedef multimap<int, int> MyBoostMultiMap;
 
 //Alias movable types
-typedef set<test::movable_int>                           MyMovableShmSet;
-typedef multiset<test::movable_int>                      MyMovableShmMultiSet;
-typedef map<test::movable_int, test::movable_int>        MyMovableShmMap;
-typedef multimap<test::movable_int, test::movable_int>   MyMovableShmMultiMap;
-typedef set<test::movable_and_copyable_int>              MyMoveCopyShmSet;
-typedef set<test::copyable_int>                          MyCopyShmSet;
-typedef multiset<test::movable_and_copyable_int>         MyMoveCopyShmMultiSet;
-typedef multiset<test::copyable_int>                     MyCopyShmMultiSet;
+typedef set<test::movable_int>                           MyMovableBoostSet;
+typedef multiset<test::movable_int>                      MyMovableBoostMultiSet;
+typedef map<test::movable_int, test::movable_int>        MyMovableBoostMap;
+typedef multimap<test::movable_int, test::movable_int>   MyMovableBoostMultiMap;
+typedef set<test::movable_and_copyable_int>              MyMoveCopyBoostSet;
+typedef set<test::copyable_int>                          MyCopyBoostSet;
+typedef multiset<test::movable_and_copyable_int>         MyMoveCopyBoostMultiSet;
+typedef multiset<test::copyable_int>                     MyCopyBoostMultiSet;
 typedef map<test::movable_and_copyable_int
-           ,test::movable_and_copyable_int>              MyMoveCopyShmMap;
+           ,test::movable_and_copyable_int>              MyMoveCopyBoostMap;
 typedef multimap<test::movable_and_copyable_int
-                ,test::movable_and_copyable_int>         MyMoveCopyShmMultiMap;
+                ,test::movable_and_copyable_int>         MyMoveCopyBoostMultiMap;
 typedef map<test::copyable_int
-           ,test::copyable_int>                          MyCopyShmMap;
+           ,test::copyable_int>                          MyCopyBoostMap;
 typedef multimap<test::copyable_int
-                ,test::copyable_int>                     MyCopyShmMultiMap;
+                ,test::copyable_int>                     MyCopyBoostMultiMap;
 //Test recursive structures
 class recursive_set
 {
@@ -117,101 +117,101 @@ int main ()
 
    //using namespace boost::container::detail;
 
-   if(0 != test::set_test<MyShmSet
+   if(0 != test::set_test<MyBoostSet
                         ,MyStdSet
-                        ,MyShmMultiSet
+                        ,MyBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if(0 != test::set_test_copyable<MyShmSet
+   if(0 != test::set_test_copyable<MyBoostSet
                         ,MyStdSet
-                        ,MyShmMultiSet
+                        ,MyBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if(0 != test::set_test<MyMovableShmSet
+   if(0 != test::set_test<MyMovableBoostSet
                         ,MyStdSet
-                        ,MyMovableShmMultiSet
+                        ,MyMovableBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if(0 != test::set_test<MyMoveCopyShmSet
+   if(0 != test::set_test<MyMoveCopyBoostSet
                         ,MyStdSet
-                        ,MyMoveCopyShmMultiSet
+                        ,MyMoveCopyBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if(0 != test::set_test_copyable<MyMoveCopyShmSet
+   if(0 != test::set_test_copyable<MyMoveCopyBoostSet
                         ,MyStdSet
-                        ,MyMoveCopyShmMultiSet
+                        ,MyMoveCopyBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if(0 != test::set_test<MyCopyShmSet
+   if(0 != test::set_test<MyCopyBoostSet
                         ,MyStdSet
-                        ,MyCopyShmMultiSet
+                        ,MyCopyBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if(0 != test::set_test_copyable<MyCopyShmSet
+   if(0 != test::set_test_copyable<MyCopyBoostSet
                         ,MyStdSet
-                        ,MyCopyShmMultiSet
+                        ,MyCopyBoostMultiSet
                         ,MyStdMultiSet>()){
       return 1;
    }
 
-   if (0 != test::map_test<MyShmMap
+   if (0 != test::map_test<MyBoostMap
                   ,MyStdMap
-                  ,MyShmMultiMap
+                  ,MyBoostMultiMap
                   ,MyStdMultiMap>()){
       return 1;
    }
 
-   if(0 != test::map_test_copyable<MyShmMap
+   if(0 != test::map_test_copyable<MyBoostMap
                         ,MyStdMap
-                        ,MyShmMultiMap
+                        ,MyBoostMultiMap
                         ,MyStdMultiMap>()){
       return 1;
    }
 
 //   if (0 != test::map_test<my_managed_shared_memory
-//                  ,MyMovableShmMap
+//                  ,MyMovableBoostMap
 //                  ,MyStdMap
-//                  ,MyMovableShmMultiMap
+//                  ,MyMovableBoostMultiMap
 //                  ,MyStdMultiMap>()){
 //      return 1;
 //   }
 
-   if (0 != test::map_test<MyMoveCopyShmMap
+   if (0 != test::map_test<MyMoveCopyBoostMap
                   ,MyStdMap
-                  ,MyMoveCopyShmMultiMap
+                  ,MyMoveCopyBoostMultiMap
                   ,MyStdMultiMap>()){
       return 1;
    }
 
-   if (0 != test::map_test_copyable<MyMoveCopyShmMap
+   if (0 != test::map_test_copyable<MyMoveCopyBoostMap
                   ,MyStdMap
-                  ,MyMoveCopyShmMultiMap
+                  ,MyMoveCopyBoostMultiMap
                   ,MyStdMultiMap>()){
       return 1;
    }
 
-   if (0 != test::map_test<MyCopyShmMap
+   if (0 != test::map_test<MyCopyBoostMap
                   ,MyStdMap
-                  ,MyCopyShmMultiMap
+                  ,MyCopyBoostMultiMap
                   ,MyStdMultiMap>()){
       return 1;
    }
 
-   if (0 != test::map_test_copyable<MyCopyShmMap
+   if (0 != test::map_test_copyable<MyCopyBoostMap
                   ,MyStdMap
-                  ,MyCopyShmMultiMap
+                  ,MyCopyBoostMultiMap
                   ,MyStdMultiMap>()){
       return 1;
    }

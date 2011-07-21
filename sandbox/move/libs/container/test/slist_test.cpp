@@ -10,8 +10,8 @@
 #include <boost/container/detail/config_begin.hpp>
 #include <boost/container/slist.hpp>
 #include "dummy_test_allocator.hpp"
-#include "list_test.hpp"
 #include "movable_int.hpp"
+#include "list_test.hpp"
 #include "emplace_test.hpp"
 
 using namespace boost::container;

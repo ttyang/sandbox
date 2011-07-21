@@ -37,16 +37,16 @@ void PrintContents(const Container &cont, const char *contName)
 }
 
 //Function to dump data
-template<class MyShmCont
+template<class MyBoostCont
         ,class MyStdCont>
-void PrintContainers(MyShmCont *shmcont, MyStdCont *stdcont)
+void PrintContainers(MyBoostCont *boostcont, MyStdCont *stdcont)
 {
-   typename MyShmCont::iterator itshm = shmcont->begin(), itshmend = shmcont->end();
+   typename MyBoostCont::iterator itboost = boostcont->begin(), itboostend = boostcont->end();
    typename MyStdCont::iterator itstd = stdcont->begin(), itstdend = stdcont->end();
 
-   std::cout << "MyShmCont" << std::endl;
-   for(; itshm != itshmend; ++itshm){
-      std::cout << *itshm << std::endl;
+   std::cout << "MyBoostCont" << std::endl;
+   for(; itboost != itboostend; ++itboost){
+      std::cout << *itboost << std::endl;
    }
    std::cout << "MyStdCont" << std::endl; 
   

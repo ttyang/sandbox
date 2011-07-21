@@ -1,10 +1,10 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Class template stable_vector</title>
-<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<link rel="stylesheet" href="../../../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.67.0">
-<link rel="start" href="../../index.html" title="Chapter 1. Boost.Container">
+<link rel="start" href="../../index.html" title="Chapter&#160;1.&#160;Boost.Container">
 <link rel="up" href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp" title="Header &lt;boost/container/stable_vector.hpp&gt;">
 <link rel="prev" href="slist.html" title="Class template slist">
 <link rel="next" href="basic_string.html" title="Class template basic_string">
@@ -20,7 +20,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="slist.html"><img src="../../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp"><img src="../../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="basic_string.html"><img src="../../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="slist.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_string.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 <div class="refentry" lang="en">
 <a name="boost.container.stable_vector"></a><div class="titlepage"></div>
@@ -29,179 +29,443 @@
 <p>boost::container::stable_vector &#8212; </p>
 </div>
 <h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
-<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="emphasis"><em>// In header: &lt;<a href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp" title="Header &lt;boost/container/stable_vector.hpp&gt;">boost/container/stable_vector.hpp</a>&gt;
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp" title="Header &lt;boost/container/stable_vector.hpp&gt;">boost/container/stable_vector.hpp</a>&gt;
 
-</em></span><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> T, <span class="bold"><strong>typename</strong></span> Allocator&gt; 
-<span class="bold"><strong>class</strong></span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> {
-<span class="bold"><strong>public</strong></span>:
-  <span class="emphasis"><em>// types</em></span>
-  <span class="bold"><strong>typedef</strong></span> Allocator::reference                    <a name="boost.container.stable_vector.reference"></a>reference;             
-  <span class="bold"><strong>typedef</strong></span> Allocator::const_reference              <a name="boost.container.stable_vector.const_reference"></a>const_reference;       
-  <span class="bold"><strong>typedef</strong></span> Allocator::pointer                      <a name="boost.container.stable_vector.pointer"></a>pointer;               
-  <span class="bold"><strong>typedef</strong></span> Allocator::const_pointer                <a name="boost.container.stable_vector.const_pointer"></a>const_pointer;         
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>unspecified</em></span>                             <a name="boost.container.stable_vector.iterator"></a>iterator;              
-  <span class="bold"><strong>typedef</strong></span> <span class="emphasis"><em>unspecified</em></span>                             <a name="boost.container.stable_vector.const_iterator"></a>const_iterator;        
-  <span class="bold"><strong>typedef</strong></span> impl_type::size_type                    <a name="boost.container.stable_vector.size_type"></a>size_type;             
-  <span class="bold"><strong>typedef</strong></span> iterator::difference_type               <a name="boost.container.stable_vector.difference_type"></a>difference_type;       
-  <span class="bold"><strong>typedef</strong></span> T                                       <a name="boost.container.stable_vector.value_type"></a>value_type;            
-  <span class="bold"><strong>typedef</strong></span> Allocator                               <a name="boost.container.stable_vector.allocator_type"></a>allocator_type;        
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; iterator &gt;       <a name="boost.container.stable_vector.reverse_iterator"></a>reverse_iterator;      
-  <span class="bold"><strong>typedef</strong></span> std::reverse_iterator&lt; const_iterator &gt; <a name="boost.container.stable_vector.const_reverse_iterator"></a>const_reverse_iterator;
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Allocator<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">Allocator</span><span class="special">::</span><span class="identifier">reference</span>                    <a name="boost.container.stable_vector.reference"></a><span class="identifier">reference</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="identifier">Allocator</span><span class="special">::</span><span class="identifier">const_reference</span>              <a name="boost.container.stable_vector.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="identifier">Allocator</span><span class="special">::</span><span class="identifier">pointer</span>                      <a name="boost.container.stable_vector.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>               
+  <span class="keyword">typedef</span> <span class="identifier">Allocator</span><span class="special">::</span><span class="identifier">const_pointer</span>                <a name="boost.container.stable_vector.const_pointer"></a><span class="identifier">const_pointer</span><span class="special">;</span>         
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span>                             <a name="boost.container.stable_vector.iterator"></a><span class="identifier">iterator</span><span class="special">;</span>              
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span>                             <a name="boost.container.stable_vector.const_iterator"></a><span class="identifier">const_iterator</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="identifier">impl_type</span><span class="special">::</span><span class="identifier">size_type</span>                    <a name="boost.container.stable_vector.size_type"></a><span class="identifier">size_type</span><span class="special">;</span>             
+  <span class="keyword">typedef</span> <span class="identifier">iterator</span><span class="special">::</span><span class="identifier">difference_type</span>               <a name="boost.container.stable_vector.difference_type"></a><span class="identifier">difference_type</span><span class="special">;</span>       
+  <span class="keyword">typedef</span> <span class="identifier">T</span>                                       <a name="boost.container.stable_vector.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>            
+  <span class="keyword">typedef</span> <span class="identifier">Allocator</span>                               <a name="boost.container.stable_vector.allocator_type"></a><span class="identifier">allocator_type</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">iterator</span> <span class="special">&gt;</span>       <a name="boost.container.stable_vector.reverse_iterator"></a><span class="identifier">reverse_iterator</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">reverse_iterator</span><span class="special">&lt;</span> <span class="identifier">const_iterator</span> <span class="special">&gt;</span> <a name="boost.container.stable_vector.const_reverse_iterator"></a><span class="identifier">const_reverse_iterator</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a href="stable_vector.html#boost.container.stable_vectorconstruct-copy-destruct">construct/copy/destruct</a></em></span>
-  <a href="stable_vector.html#id321257-bb">stable_vector</a>(<span class="bold"><strong>const</strong></span> Allocator &amp; = Allocator());
-  <a href="stable_vector.html#id321266-bb">stable_vector</a>(size_type);
-  <a href="stable_vector.html#id321272-bb">stable_vector</a>(size_type, <span class="bold"><strong>const</strong></span> T &amp;, <span class="bold"><strong>const</strong></span> Allocator &amp; = Allocator());
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-    <a href="stable_vector.html#id321290-bb">stable_vector</a>(InputIterator, InputIterator, 
-                  <span class="bold"><strong>const</strong></span> Allocator &amp; = Allocator());
-  <a href="stable_vector.html#id321314-bb">stable_vector</a>(<span class="bold"><strong>const</strong></span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;);
-  <a href="stable_vector.html#id321323-bb">stable_vector</a>(<a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;&amp;);
-  stable_vector&amp; <a href="stable_vector.html#id321333-bb"><span class="bold"><strong>operator</strong></span>=</a>(<span class="bold"><strong>const</strong></span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;);
-  stable_vector&amp; <a href="stable_vector.html#id321342-bb"><span class="bold"><strong>operator</strong></span>=</a>(<a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;&amp;);
-  <a href="stable_vector.html#id321332-bb">~stable_vector</a>();
+  <span class="comment">// <a href="stable_vector.html#boost.container.stable_vectorconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a href="stable_vector.html#id402902-bb"><span class="identifier">stable_vector</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Allocator</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">Allocator</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="stable_vector.html#id402931-bb"><span class="identifier">stable_vector</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <a href="stable_vector.html#id402956-bb"><span class="identifier">stable_vector</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Allocator</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">Allocator</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+    <a href="stable_vector.html#id402993-bb"><span class="identifier">stable_vector</span></a><span class="special">(</span><span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">,</span> 
+                  <span class="keyword">const</span> <span class="identifier">Allocator</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">Allocator</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <a href="stable_vector.html#id403037-bb"><span class="identifier">stable_vector</span></a><span class="special">(</span><span class="keyword">const</span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="stable_vector.html#id403065-bb"><span class="identifier">stable_vector</span></a><span class="special">(</span><a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  stable_vector&amp; <a href="stable_vector.html#id403113-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  stable_vector&amp; <a href="stable_vector.html#id403149-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a href="stable_vector.html#id403093-bb"><span class="special">~</span><span class="identifier">stable_vector</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
 
-  <span class="emphasis"><em>// <a href="stable_vector.html#id320259-bb">public member functions</a></em></span>
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320261-bb">assign</a>(InputIterator, InputIterator) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320283-bb">assign</a>(size_type, <span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type">allocator_type</span> <a href="stable_vector.html#id320298-bb">get_allocator</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a href="stable_vector.html#id320304-bb">begin</a>() ;
-  <span class="type">const_iterator</span> <a href="stable_vector.html#id320310-bb">begin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">iterator</span> <a href="stable_vector.html#id320316-bb">end</a>() ;
-  <span class="type">const_iterator</span> <a href="stable_vector.html#id320322-bb">end</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a href="stable_vector.html#id320328-bb">rbegin</a>() ;
-  <span class="type">const_reverse_iterator</span> <a href="stable_vector.html#id320334-bb">rbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reverse_iterator</span> <a href="stable_vector.html#id320340-bb">rend</a>() ;
-  <span class="type">const_reverse_iterator</span> <a href="stable_vector.html#id320346-bb">rend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a href="stable_vector.html#id320352-bb">cbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_iterator</span> <a href="stable_vector.html#id320358-bb">cend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a href="stable_vector.html#id320364-bb">crbegin</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reverse_iterator</span> <a href="stable_vector.html#id320370-bb">crend</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="stable_vector.html#id320376-bb">size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="stable_vector.html#id320382-bb">max_size</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">size_type</span> <a href="stable_vector.html#id320388-bb">capacity</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>bool</strong></span></span> <a href="stable_vector.html#id320394-bb">empty</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320400-bb">resize</a>(size_type, <span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320416-bb">resize</a>(size_type) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320427-bb">reserve</a>(size_type) ;
-  <span class="type">reference</span> <a href="stable_vector.html#id320438-bb"><span class="bold"><strong>operator</strong></span>[]</a>(size_type) ;
-  <span class="type">const_reference</span> <a href="stable_vector.html#id320448-bb"><span class="bold"><strong>operator</strong></span>[]</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">const_reference</span> <a href="stable_vector.html#id320459-bb">at</a>(size_type) <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="stable_vector.html#id320470-bb">at</a>(size_type) ;
-  <span class="type">reference</span> <a href="stable_vector.html#id320481-bb">front</a>() ;
-  <span class="type">const_reference</span> <a href="stable_vector.html#id320487-bb">front</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type">reference</span> <a href="stable_vector.html#id320493-bb">back</a>() ;
-  <span class="type">const_reference</span> <a href="stable_vector.html#id320499-bb">back</a>() <span class="bold"><strong>const</strong></span>;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320505-bb">push_back</a>(<span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320516-bb">push_back</a>(T &amp;&amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320526-bb">pop_back</a>() ;
-  <span class="type">iterator</span> <a href="stable_vector.html#id320532-bb">insert</a>(const_iterator, <span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="type">iterator</span> <a href="stable_vector.html#id320548-bb">insert</a>(const_iterator, T &amp;&amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320564-bb">insert</a>(const_iterator, size_type, <span class="bold"><strong>const</strong></span> T &amp;) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-    <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320584-bb">insert</a>(const_iterator, InputIterator, InputIterator) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id320610-bb">emplace_back</a>(Args &amp;&amp;...) ;
-  <span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type">iterator</span> <a href="stable_vector.html#id321162-bb">emplace</a>(const_iterator, Args &amp;&amp;...) ;
-  <span class="type">iterator</span> <a href="stable_vector.html#id321212-bb">erase</a>(const_iterator) ;
-  <span class="type">iterator</span> <a href="stable_vector.html#id321222-bb">erase</a>(const_iterator, const_iterator) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id321238-bb">swap</a>(<a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;) ;
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a href="stable_vector.html#id321251-bb">clear</a>() ;
-};</pre></div>
+  <span class="comment">// <a href="stable_vector.html#id400419-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> <span class="keyword">void</span> <a href="stable_vector.html#id400421-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id400462-bb"><span class="identifier">assign</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">allocator_type</span> <a href="stable_vector.html#id400498-bb"><span class="identifier">get_allocator</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="stable_vector.html#id400523-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="stable_vector.html#id400549-bb"><span class="identifier">begin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="stable_vector.html#id400574-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="stable_vector.html#id400599-bb"><span class="identifier">end</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a href="stable_vector.html#id400625-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="stable_vector.html#id400651-bb"><span class="identifier">rbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reverse_iterator</span> <a href="stable_vector.html#id400676-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="stable_vector.html#id400701-bb"><span class="identifier">rend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="stable_vector.html#id400726-bb"><span class="identifier">cbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_iterator</span> <a href="stable_vector.html#id400751-bb"><span class="identifier">cend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="stable_vector.html#id400778-bb"><span class="identifier">crbegin</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">const_reverse_iterator</span> <a href="stable_vector.html#id400803-bb"><span class="identifier">crend</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="stable_vector.html#id400828-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="stable_vector.html#id400853-bb"><span class="identifier">max_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a href="stable_vector.html#id400880-bb"><span class="identifier">capacity</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a href="stable_vector.html#id400905-bb"><span class="identifier">empty</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id400931-bb"><span class="identifier">resize</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id400969-bb"><span class="identifier">resize</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id401001-bb"><span class="identifier">reserve</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="stable_vector.html#id401025-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="stable_vector.html#id401061-bb"><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="stable_vector.html#id401097-bb"><span class="identifier">at</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="stable_vector.html#id401133-bb"><span class="identifier">at</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="stable_vector.html#id401169-bb"><span class="identifier">front</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="stable_vector.html#id401201-bb"><span class="identifier">front</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">reference</span> <a href="stable_vector.html#id401233-bb"><span class="identifier">back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_reference</span> <a href="stable_vector.html#id401265-bb"><span class="identifier">back</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id401296-bb"><span class="identifier">push_back</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id401327-bb"><span class="identifier">push_back</span></a><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id401357-bb"><span class="identifier">pop_back</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="stable_vector.html#id401383-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="stable_vector.html#id401425-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id401467-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+    <span class="keyword">void</span> <a href="stable_vector.html#id401513-bb"><span class="identifier">insert</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">,</span> <span class="identifier">InputIterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a href="stable_vector.html#id401565-bb"><span class="identifier">emplace_back</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="identifier">iterator</span> <a href="stable_vector.html#id401603-bb"><span class="identifier">emplace</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="stable_vector.html#id401653-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">iterator</span> <a href="stable_vector.html#id401683-bb"><span class="identifier">erase</span></a><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id402843-bb"><span class="identifier">swap</span></a><span class="special">(</span><a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a href="stable_vector.html#id402876-bb"><span class="identifier">clear</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1" lang="en">
-<a name="id525071"></a><h2>Description</h2>
-<p>Help taken from (Introducing stable_vector)</p>
+<a name="id848892"></a><h2>Description</h2>
+<p>Originally developed by Joaquin M. Lopez Munoz, stable_vector is std::vector drop-in replacement implemented as a node container, offering iterator and reference stability.</p>
+<p>More details taken the author's blog: (<a href="http://bannalia.blogspot.com/2008/09/introducing-stablevector.html" target="_top">Introducing stable_vector</a>)</p>
 <p>We present stable_vector, a fully STL-compliant stable container that provides most of the features of std::vector except element contiguity.</p>
 <p>General properties: stable_vector satisfies all the requirements of a container, a reversible container and a sequence and provides all the optional operations present in std::vector. Like std::vector, iterators are random access. stable_vector does not provide element contiguity; in exchange for this absence, the container is stable, i.e. references and iterators to an element of a stable_vector remain valid as long as the element is not erased, and an iterator that has been assigned the return value of end() always remain valid until the destruction of the associated stable_vector.</p>
 <p>Operation complexity: The big-O complexities of stable_vector operations match exactly those of std::vector. In general, insertion/deletion is constant time at the end of the sequence and linear elsewhere. Unlike std::vector, stable_vector does not internally perform any value_type destruction, copy or assignment operations other than those exactly corresponding to the insertion of new elements or deletion of stored elements, which can sometimes compensate in terms of performance for the extra burden of doing more pointer manipulation and an additional allocation per element.</p>
 <p>Exception safety: As stable_vector does not internally copy elements around, some operations provide stronger exception safety guarantees than in std::vector: </p>
 <div class="refsect2" lang="en">
-<a name="id525087"></a><h3>
+<a name="id848915"></a><h3>
 <a name="boost.container.stable_vectorconstruct-copy-destruct"></a><code class="computeroutput">stable_vector</code> 
         public
        construct/copy/destruct</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><a name="id321257-bb"></a>stable_vector(<span class="bold"><strong>const</strong></span> Allocator &amp; al = Allocator());</pre></li>
-<li><pre class="literallayout"><a name="id321266-bb"></a>stable_vector(size_type n);</pre></li>
-<li><pre class="literallayout"><a name="id321272-bb"></a>stable_vector(size_type n, <span class="bold"><strong>const</strong></span> T &amp; t, <span class="bold"><strong>const</strong></span> Allocator &amp; al = Allocator());</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-  <a name="id321290-bb"></a>stable_vector(InputIterator first, InputIterator last, 
-                <span class="bold"><strong>const</strong></span> Allocator &amp; al = Allocator());</pre></li>
-<li><pre class="literallayout"><a name="id321314-bb"></a>stable_vector(<span class="bold"><strong>const</strong></span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp; x);</pre></li>
-<li><pre class="literallayout"><a name="id321323-bb"></a>stable_vector(<a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;&amp; x);</pre></li>
-<li><pre class="literallayout">stable_vector&amp; <a name="id321333-bb"></a><span class="bold"><strong>operator</strong></span>=(<span class="bold"><strong>const</strong></span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp; x);</pre></li>
-<li><pre class="literallayout">stable_vector&amp; <a name="id321342-bb"></a><span class="bold"><strong>operator</strong></span>=(<a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp;&amp; x);</pre></li>
-<li><pre class="literallayout"><a name="id321332-bb"></a>~stable_vector();</pre></li>
+<li>
+<pre class="literallayout"><a name="id402902-bb"></a><span class="identifier">stable_vector</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Allocator</span> <span class="special">&amp;</span> al <span class="special">=</span> <span class="identifier">Allocator</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a stable_vector taking the allocator as parameter.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id402931-bb"></a><span class="identifier">stable_vector</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a stable_vector that will use a copy of allocator a and inserts n default contructed values.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws or T's default or copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id402956-bb"></a><span class="identifier">stable_vector</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Allocator</span> <span class="special">&amp;</span> al <span class="special">=</span> <span class="identifier">Allocator</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a stable_vector that will use a copy of allocator a and inserts n copies of value.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws or T's default or copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+  <a name="id402993-bb"></a><span class="identifier">stable_vector</span><span class="special">(</span><span class="identifier">InputIterator</span> first<span class="special">,</span> <span class="identifier">InputIterator</span> last<span class="special">,</span> 
+                <span class="keyword">const</span> <span class="identifier">Allocator</span> <span class="special">&amp;</span> al <span class="special">=</span> <span class="identifier">Allocator</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a stable_vector that will use a copy of allocator a and inserts a copy of the range [first, last) in the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's default constructor or copy constructor throws or T's constructor taking an dereferenced InIt throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the range [first, last). </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id403037-bb"></a><span class="identifier">stable_vector</span><span class="special">(</span><span class="keyword">const</span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Copy constructs a stable_vector.</p>
+<p><span class="bold"><strong>Postcondition</strong></span>: x == *this.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the elements x contains. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id403065-bb"></a><span class="identifier">stable_vector</span><span class="special">(</span><a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Move constructor. Moves mx's resources to *this.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout">stable_vector&amp; <a name="id403113-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Makes *this contain the same elements as x.</p>
+<p><span class="bold"><strong>Postcondition</strong></span>: this-&gt;size() == x.size(). *this contains a copy of each of x's elements.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements in x. </p>
+</li>
+<li>
+<pre class="literallayout">stable_vector&amp; <a name="id403149-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Move assignment. All mx's values are transferred to *this.</p>
+<p><span class="bold"><strong>Postcondition</strong></span>: x.empty(). *this contains a the elements x had before the function.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator_type's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear. </p>
+</li>
+<li>
+<pre class="literallayout"><a name="id403093-bb"></a><span class="special">~</span><span class="identifier">stable_vector</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Destroys the stable_vector. All stored values are destroyed and used memory is deallocated.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements. </p>
+</li>
 </ol></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id525254"></a><h3>
-<a name="id320259-bb"></a><code class="computeroutput">stable_vector</code> public member functions</h3>
+<a name="id849532"></a><h3>
+<a name="id400419-bb"></a><code class="computeroutput">stable_vector</code> public member functions</h3>
 <div class="orderedlist"><ol type="1">
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320261-bb"></a>assign(InputIterator first, InputIterator last) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320283-bb"></a>assign(size_type n, <span class="bold"><strong>const</strong></span> T &amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type">allocator_type</span> <a name="id320298-bb"></a>get_allocator() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id320304-bb"></a>begin() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id320310-bb"></a>begin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id320316-bb"></a>end() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id320322-bb"></a>end() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id320328-bb"></a>rbegin() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id320334-bb"></a>rbegin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reverse_iterator</span> <a name="id320340-bb"></a>rend() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id320346-bb"></a>rend() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id320352-bb"></a>cbegin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_iterator</span> <a name="id320358-bb"></a>cend() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id320364-bb"></a>crbegin() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reverse_iterator</span> <a name="id320370-bb"></a>crend() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">size_type</span> <a name="id320376-bb"></a>size() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">size_type</span> <a name="id320382-bb"></a>max_size() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">size_type</span> <a name="id320388-bb"></a>capacity() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>bool</strong></span></span> <a name="id320394-bb"></a>empty() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320400-bb"></a>resize(size_type n, <span class="bold"><strong>const</strong></span> T &amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320416-bb"></a>resize(size_type n) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320427-bb"></a>reserve(size_type n) ;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id320438-bb"></a><span class="bold"><strong>operator</strong></span>[](size_type n) ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id320448-bb"></a><span class="bold"><strong>operator</strong></span>[](size_type n) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id320459-bb"></a>at(size_type n) <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id320470-bb"></a>at(size_type n) ;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id320481-bb"></a>front() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id320487-bb"></a>front() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type">reference</span> <a name="id320493-bb"></a>back() ;</pre></li>
-<li><pre class="literallayout"><span class="type">const_reference</span> <a name="id320499-bb"></a>back() <span class="bold"><strong>const</strong></span>;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320505-bb"></a>push_back(<span class="bold"><strong>const</strong></span> T &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320516-bb"></a>push_back(T &amp;&amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320526-bb"></a>pop_back() ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id320532-bb"></a>insert(const_iterator position, <span class="bold"><strong>const</strong></span> T &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id320548-bb"></a>insert(const_iterator position, T &amp;&amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320564-bb"></a>insert(const_iterator position, size_type n, <span class="bold"><strong>const</strong></span> T &amp; t) ;</pre></li>
-<li><pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>typename</strong></span> InputIterator&gt; 
-  <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320584-bb"></a>insert(const_iterator position, InputIterator first, 
-              InputIterator last) ;</pre></li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; <span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id320610-bb"></a>emplace_back(Args &amp;&amp;... args) ;</pre>
-<p><span class="bold"><strong>Effects</strong></span>: Inserts an object of type T constructed with std::forward&lt;Args&gt;(args)... in the end of the vector.</p>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id400421-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">InputIterator</span> first<span class="special">,</span> <span class="identifier">InputIterator</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Assigns the the range [first, last) to *this.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's constructor from dereferencing InpIt throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id400462-bb"></a><span class="identifier">assign</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Assigns the n copies of val to *this.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">allocator_type</span> <a name="id400498-bb"></a><span class="identifier">get_allocator</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a copy of the internal allocator.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If allocator's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id400523-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the first element contained in the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id400549-bb"></a><span class="identifier">begin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the first element contained in the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id400574-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns an iterator to the end of the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id400599-bb"></a><span class="identifier">end</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the end of the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id400625-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the beginning of the reversed stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id400651-bb"></a><span class="identifier">rbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reverse_iterator</span> <a name="id400676-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reverse_iterator pointing to the end of the reversed stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id400701-bb"></a><span class="identifier">rend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id400726-bb"></a><span class="identifier">cbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the first element contained in the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_iterator</span> <a name="id400751-bb"></a><span class="identifier">cend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_iterator to the end of the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id400778-bb"></a><span class="identifier">crbegin</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the beginning of the reversed stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reverse_iterator</span> <a name="id400803-bb"></a><span class="identifier">crend</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const_reverse_iterator pointing to the end of the reversed stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id400828-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns the number of the elements contained in the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id400853-bb"></a><span class="identifier">max_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns the largest possible size of the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">size_type</span> <a name="id400880-bb"></a><span class="identifier">capacity</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Number of elements for which memory has been allocated. capacity() is always greater than or equal to size().</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id400905-bb"></a><span class="identifier">empty</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Returns true if the stable_vector contains no elements.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id400931-bb"></a><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts or erases elements at the end such that the size becomes n. New elements are copy constructed from x.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the difference between size() and new_size. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id400969-bb"></a><span class="identifier">resize</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts or erases elements at the end such that the size becomes n. New elements are default constructed.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the difference between size() and new_size. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id401001-bb"></a><span class="identifier">reserve</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: If n is less than or equal to capacity(), this call has no effect. Otherwise, it is a request for allocation of additional memory. If the request is successful, then capacity() is greater than or equal to n; otherwise, capacity() is unchanged. In either case, size() is unchanged.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation allocation throws. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id401025-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id401061-bb"></a><span class="keyword">operator</span><span class="special">[</span><span class="special">]</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id401097-bb"></a><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: std::range_error if n &gt;= size()</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id401133-bb"></a><span class="identifier">at</span><span class="special">(</span><span class="identifier">size_type</span> n<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: size() &lt; n.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the nth element from the beginning of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id401169-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the first element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id401201-bb"></a><span class="identifier">front</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the first element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">reference</span> <a name="id401233-bb"></a><span class="identifier">back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a reference to the last element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">const_reference</span> <a name="id401265-bb"></a><span class="identifier">back</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: !empty()</p>
+<p><span class="bold"><strong>Effects</strong></span>: Returns a const reference to the last element of the container.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id401296-bb"></a><span class="identifier">push_back</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts a copy of x at the end of the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Amortized constant time. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id401327-bb"></a><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Constructs a new element in the end of the stable_vector and moves the resources of mx to this new element.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Amortized constant time. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id401357-bb"></a><span class="identifier">pop_back</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Removes the last element from the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant time. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id401383-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: position must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Insert a copy of x before position.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or x's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: If position is end(), amortized constant time Linear time otherwise. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id401425-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">,</span> <span class="identifier">T</span> <span class="special">&amp;&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: position must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Insert a new element before position with mx's resources.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: If position is end(), amortized constant time Linear time otherwise. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id401467-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">,</span> <span class="identifier">size_type</span> n<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="special">&amp;</span> t<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: pos must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Insert n copies of x before pos.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to n. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> InputIterator<span class="special">&gt;</span> 
+  <span class="keyword">void</span> <a name="id401513-bb"></a><span class="identifier">insert</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">,</span> <span class="identifier">InputIterator</span> first<span class="special">,</span> 
+              <span class="identifier">InputIterator</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Requires</strong></span>: pos must be a valid iterator of *this.</p>
+<p><span class="bold"><strong>Effects</strong></span>: Insert a copy of the [first, last) range before pos.</p>
+<p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws, T's constructor from a dereferenced InpIt throws or T's copy constructor throws.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to std::distance [first, last). </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id401565-bb"></a><span class="identifier">emplace_back</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Inserts an object of type T constructed with std::forward&lt;Args&gt;(args)... in the end of the stable_vector.</p>
 <p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or the in-place constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: Amortized constant time. </p>
 </li>
 <li>
-<pre class="literallayout"><span class="bold"><strong>template</strong></span>&lt;<span class="bold"><strong>class</strong></span>... Args&gt; 
-  <span class="type">iterator</span> <a name="id321162-bb"></a>emplace(const_iterator position, Args &amp;&amp;... args) ;</pre>
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+  <span class="identifier">iterator</span> <a name="id401603-bb"></a><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">,</span> <span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span><span class="special">;</span></pre>
 <p><span class="bold"><strong>Requires</strong></span>: position must be a valid iterator of *this.</p>
 <p><span class="bold"><strong>Effects</strong></span>: Inserts an object of type T constructed with std::forward&lt;Args&gt;(args)... before position</p>
 <p><span class="bold"><strong>Throws</strong></span>: If memory allocation throws or the in-place constructor throws.</p>
 <p><span class="bold"><strong>Complexity</strong></span>: If position is end(), amortized constant time Linear time otherwise. </p>
 </li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id321212-bb"></a>erase(const_iterator position) ;</pre></li>
-<li><pre class="literallayout"><span class="type">iterator</span> <a name="id321222-bb"></a>erase(const_iterator first, const_iterator last) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id321238-bb"></a>swap(<a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> &amp; x) ;</pre></li>
-<li><pre class="literallayout"><span class="type"><span class="bold"><strong>void</strong></span></span> <a name="id321251-bb"></a>clear() ;</pre></li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id401653-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> position<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Erases the element at position pos.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the elements between pos and the last element. Constant if pos is the last element. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="identifier">iterator</span> <a name="id401683-bb"></a><span class="identifier">erase</span><span class="special">(</span><span class="identifier">const_iterator</span> first<span class="special">,</span> <span class="identifier">const_iterator</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Erases the elements pointed by [first, last).</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the distance between first and last plus linear to the elements between pos and the last element. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id402843-bb"></a><span class="identifier">swap</span><span class="special">(</span><a href="stable_vector.html" title="Class template stable_vector">stable_vector</a> <span class="special">&amp;</span> x<span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Swaps the contents of *this and x. If this-&gt;allocator_type() != x.allocator_type() allocators are also swapped.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Constant. </p>
+</li>
+<li>
+<pre class="literallayout"><span class="keyword">void</span> <a name="id402876-bb"></a><span class="identifier">clear</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p><span class="bold"><strong>Effects</strong></span>: Erases all the elements of the stable_vector.</p>
+<p><span class="bold"><strong>Throws</strong></span>: Nothing.</p>
+<p><span class="bold"><strong>Complexity</strong></span>: Linear to the number of elements in the stable_vector. </p>
+</li>
 </ol></div>
 </div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright © 2009 -2010 Ion Gaztanaga<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Ion Gaztanaga<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -209,7 +473,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="slist.html"><img src="../../../../../../doc/html/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp"><img src="../../../../../../doc/html/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/html/images/home.png" alt="Home"></a><a accesskey="n" href="basic_string.html"><img src="../../../../../../doc/html/images/next.png" alt="Next"></a>
+<a accesskey="p" href="slist.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_container_reference.html#header.boost.container.stable_vector_hpp"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="basic_string.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 [/
- / Copyright (c) 2009-2010 Ion Gaztanaga
+ / Copyright (c) 2009-2011 Ion Gaztanaga
  /
  / Distributed under the Boost Software License, Version 1.0. (See accompanying
  / file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -8,7 +8,7 @@
 [library Boost.Container
     [quickbook 1.4]
     [authors [Gaztanaga, Ion]]
-    [copyright 2009-2010 Ion Gaztanaga]
+    [copyright 2009-2011 Ion Gaztanaga]
     [id container]
     [dirname container]
     [purpose Containers library]
@@ -104,7 +104,7 @@ see an example:
 
 All containers offered by [*Boost.Container] can be used in recursive data
 structures, something that is not guaranteed by the standard. Programmers
-can write the following data structures:
+can write the following data structure:
 
 [import ../example/doc_recursive_containers.cpp]
 [doc_recursive_containers]

@@ -1,6 +1,6 @@
 #  Boost.Container library documentation Jamfile  ---------------------------------
 #
-#  Copyright Ion Gaztanaga 2009. Use, modification and
+#  Copyright Ion Gaztanaga 2009-2011. Use, modification and
 #  distribution is subject to the Boost Software License, Version
 #  1.0. (See accompanying file LICENSE_1_0.txt or copy at
 #  http://www.boost.org/LICENSE_1_0.txt)
@@ -22,7 +22,6 @@ doxygen autodoc
         <doxygen:param>MACRO_EXPANSION=YES
         <doxygen:param>"PREDEFINED=\"insert_const_ref_type= const T&\" \\
                                    \"BOOST_CONTAINER_DOXYGEN_INVOKED\" \\
-                                   \"BOOST_ENABLE_MOVE_EMULATION(a)= \" \\
                                    \"BOOST_RV_REF(T)=T &&\" \\
                                    \"BOOST_COPY_ASSIGN_REF(T)=const T &\" \\
                                    \"BOOST_RV_REF_2_TEMPL_ARGS(T,a,b)=T<a, b> &&\" \\

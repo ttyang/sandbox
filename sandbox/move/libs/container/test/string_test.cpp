@@ -65,177 +65,177 @@ int string_test()
 {
    typedef std::string        StdString;
    typedef vector<StdString>  StdStringVector;
-   typedef basic_string<CharType> ShmString;
-   typedef vector<ShmString> ShmStringVector;
+   typedef basic_string<CharType> BoostString;
+   typedef vector<BoostString> BoostStringVector;
 
    const int MaxSize = 100;
 
    //Create shared memory
    {
-      ShmStringVector *shmStringVect = new ShmStringVector;
+      BoostStringVector *boostStringVect = new BoostStringVector;
       StdStringVector *stdStringVect = new StdStringVector;
-      ShmString auxShmString;
-      StdString auxStdString(StdString(auxShmString.begin(), auxShmString.end() ));
+      BoostString auxBoostString;
+      StdString auxStdString(StdString(auxBoostString.begin(), auxBoostString.end() ));
 
       CharType buffer [20];
 
       //First, push back
       for(int i = 0; i < MaxSize; ++i){
-         auxShmString = "String";
+         auxBoostString = "String";
          auxStdString = "String";
          std::sprintf(buffer, "%i", i);
-         auxShmString += buffer;
+         auxBoostString += buffer;
          auxStdString += buffer;
-         shmStringVect->push_back(auxShmString);
+         boostStringVect->push_back(auxBoostString);
          stdStringVect->push_back(auxStdString);
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)){
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)){
          return 1;
       }
 
       //Now push back moving 
       for(int i = 0; i < MaxSize; ++i){
-         auxShmString = "String";
+         auxBoostString = "String";
          auxStdString = "String";
          std::sprintf(buffer, "%i", i);
-         auxShmString += buffer;
+         auxBoostString += buffer;
          auxStdString += buffer;
-         shmStringVect->push_back(boost::move(auxShmString));
+         boostStringVect->push_back(boost::move(auxBoostString));
          stdStringVect->push_back(auxStdString);
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)){
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)){
          return 1;
       }
 
       //push front
       for(int i = 0; i < MaxSize; ++i){
-         auxShmString = "String";
+         auxBoostString = "String";
          auxStdString = "String";
          std::sprintf(buffer, "%i", i);
-         auxShmString += buffer;
+         auxBoostString += buffer;
          auxStdString += buffer;
-         shmStringVect->insert(shmStringVect->begin(), auxShmString);
+         boostStringVect->insert(boostStringVect->begin(), auxBoostString);
          stdStringVect->insert(stdStringVect->begin(), auxStdString);
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)){
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)){
          return 1;
       }
 
       //Now push front moving 
       for(int i = 0; i < MaxSize; ++i){
-         auxShmString = "String";
+         auxBoostString = "String";
          auxStdString = "String";
          std::sprintf(buffer, "%i", i);
-         auxShmString += buffer;
+         auxBoostString += buffer;
          auxStdString += buffer;
-         shmStringVect->insert(shmStringVect->begin(), boost::move(auxShmString));
+         boostStringVect->insert(boostStringVect->begin(), boost::move(auxBoostString));
          stdStringVect->insert(stdStringVect->begin(), auxStdString);
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)){
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)){
          return 1;
       }
 
       //Now test long and short representation swapping
-      auxShmString = "String";
+      auxBoostString = "String";
       auxStdString = "String";
-      ShmString shm_swapper;
+      BoostString boost_swapper;
       StdString std_swapper;
-      shm_swapper.swap(auxShmString);
+      boost_swapper.swap(auxBoostString);
       std_swapper.swap(auxStdString);
-      if(!StringEqual()(auxShmString, auxStdString))
+      if(!StringEqual()(auxBoostString, auxStdString))
          return 1;   
-      if(!StringEqual()(shm_swapper, std_swapper))
+      if(!StringEqual()(boost_swapper, std_swapper))
          return 1;   
 
-      shm_swapper.swap(auxShmString);
+      boost_swapper.swap(auxBoostString);
       std_swapper.swap(auxStdString);
-      if(!StringEqual()(auxShmString, auxStdString))
+      if(!StringEqual()(auxBoostString, auxStdString))
          return 1;   
-      if(!StringEqual()(shm_swapper, std_swapper))
+      if(!StringEqual()(boost_swapper, std_swapper))
          return 1;   
 
-      auxShmString = "LongLongLongLongLongLongLongLongLongLongLongLongLongString";
+      auxBoostString = "LongLongLongLongLongLongLongLongLongLongLongLongLongString";
       auxStdString = "LongLongLongLongLongLongLongLongLongLongLongLongLongString";
-      shm_swapper = ShmString();
+      boost_swapper = BoostString();
       std_swapper = StdString();
-      shm_swapper.swap(auxShmString);
+      boost_swapper.swap(auxBoostString);
       std_swapper.swap(auxStdString);
-      if(!StringEqual()(auxShmString, auxStdString))
+      if(!StringEqual()(auxBoostString, auxStdString))
          return 1;   
-      if(!StringEqual()(shm_swapper, std_swapper))
+      if(!StringEqual()(boost_swapper, std_swapper))
          return 1;   
 
-      shm_swapper.swap(auxShmString);
+      boost_swapper.swap(auxBoostString);
       std_swapper.swap(auxStdString);
-      if(!StringEqual()(auxShmString, auxStdString))
+      if(!StringEqual()(auxBoostString, auxStdString))
          return 1;   
-      if(!StringEqual()(shm_swapper, std_swapper))
+      if(!StringEqual()(boost_swapper, std_swapper))
          return 1;   
 
       //No sort
-      std::sort(shmStringVect->begin(), shmStringVect->end());
+      std::sort(boostStringVect->begin(), boostStringVect->end());
       std::sort(stdStringVect->begin(), stdStringVect->end());
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
       const CharType prefix []    = "Prefix";
       const int  prefix_size  = sizeof(prefix)/sizeof(prefix[0])-1;
       const CharType sufix []     = "Suffix";
 
       for(int i = 0; i < MaxSize; ++i){
-         (*shmStringVect)[i].append(sufix);
+         (*boostStringVect)[i].append(sufix);
          (*stdStringVect)[i].append(sufix);
-         (*shmStringVect)[i].insert((*shmStringVect)[i].begin(), 
+         (*boostStringVect)[i].insert((*boostStringVect)[i].begin(), 
                                     prefix, prefix + prefix_size);
          (*stdStringVect)[i].insert((*stdStringVect)[i].begin(), 
                                     prefix, prefix + prefix_size);
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
       for(int i = 0; i < MaxSize; ++i){
-         std::reverse((*shmStringVect)[i].begin(), (*shmStringVect)[i].end());
+         std::reverse((*boostStringVect)[i].begin(), (*boostStringVect)[i].end());
          std::reverse((*stdStringVect)[i].begin(), (*stdStringVect)[i].end());
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
       for(int i = 0; i < MaxSize; ++i){
-         std::reverse((*shmStringVect)[i].begin(), (*shmStringVect)[i].end());
+         std::reverse((*boostStringVect)[i].begin(), (*boostStringVect)[i].end());
          std::reverse((*stdStringVect)[i].begin(), (*stdStringVect)[i].end());
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
       for(int i = 0; i < MaxSize; ++i){
-         std::sort(shmStringVect->begin(), shmStringVect->end());
+         std::sort(boostStringVect->begin(), boostStringVect->end());
          std::sort(stdStringVect->begin(), stdStringVect->end());
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
       for(int i = 0; i < MaxSize; ++i){
-         (*shmStringVect)[i].replace((*shmStringVect)[i].begin(), 
-                                    (*shmStringVect)[i].end(),
+         (*boostStringVect)[i].replace((*boostStringVect)[i].begin(), 
+                                    (*boostStringVect)[i].end(),
                                     "String");
          (*stdStringVect)[i].replace((*stdStringVect)[i].begin(), 
                                     (*stdStringVect)[i].end(),
                                     "String");
       }
 
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
-      shmStringVect->erase(std::unique(shmStringVect->begin(), shmStringVect->end()),
-                           shmStringVect->end());
+      boostStringVect->erase(std::unique(boostStringVect->begin(), boostStringVect->end()),
+                           boostStringVect->end());
       stdStringVect->erase(std::unique(stdStringVect->begin(), stdStringVect->end()),
                            stdStringVect->end());
-      if(!CheckEqualStringVector(shmStringVect, stdStringVect)) return 1;
+      if(!CheckEqualStringVector(boostStringVect, stdStringVect)) return 1;
 
       //When done, delete vector
-      delete shmStringVect;
+      delete boostStringVect;
       delete stdStringVect;
    }
    return 0;

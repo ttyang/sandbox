@@ -1,11 +1,11 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Chapter 1. Boost.Container</title>
-<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Chapter&#160;1.&#160;Boost.Container</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.67.0">
-<link rel="start" href="index.html" title="Chapter 1. Boost.Container">
-<link rel="next" href="container/intro.html" title=" Introduction">
+<link rel="start" href="index.html" title="Chapter&#160;1.&#160;Boost.Container">
+<link rel="next" href="container/intro.html" title="Introduction">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr>
@@ -17,17 +17,17 @@
 <td align="center"><a href="../../../../more/index.htm">More</a></td>
 </tr></table>
 <hr>
-<div class="spirit-nav"><a accesskey="n" href="container/intro.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a></div>
+<div class="spirit-nav"><a accesskey="n" href="container/intro.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a></div>
 <div class="chapter" lang="en">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="container"></a>Chapter 1. Boost.Container</h2></div>
+<a name="container"></a>Chapter&#160;1.&#160;Boost.Container</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Ion</span> <span class="surname">Gaztanaga</span>
 </h3></div></div>
-<div><p class="copyright">Copyright © 2009 -2010 Ion Gaztanaga</p></div>
+<div><p class="copyright">Copyright &#169; 2009 -2011 Ion Gaztanaga</p></div>
 <div><div class="legalnotice">
-<a name="id459684"></a><p>
+<a name="id731850"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -36,20 +36,20 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="container/intro.html"> Introduction</a></span></dt>
+<dt><span class="section"><a href="container/intro.html">Introduction</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="container/intro.html#container.intro.introduction_building_container"> Building
+<dt><span class="section"><a href="container/intro.html#container.intro.introduction_building_container">Building
       Boost.Container</a></span></dt>
-<dt><span class="section"><a href="container/intro.html#container.intro.tested_compilers"> Tested compilers</a></span></dt>
+<dt><span class="section"><a href="container/intro.html#container.intro.tested_compilers">Tested compilers</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="container/move_containers.html"> Move-aware containers</a></span></dt>
-<dt><span class="section"><a href="container/emplace.html"> Emplace: Placement insertion</a></span></dt>
-<dt><span class="section"><a href="container/recursive_containers.html"> Recursive containers</a></span></dt>
-<dt><span class="section"><a href="container/other_features.html"> Other features</a></span></dt>
-<dt><span class="section"><a href="container/acknowledgements_notes.html"> Acknowledgements, notes
+<dt><span class="section"><a href="container/move_containers.html">Move-aware containers</a></span></dt>
+<dt><span class="section"><a href="container/emplace.html">Emplace: Placement insertion</a></span></dt>
+<dt><span class="section"><a href="container/recursive_containers.html">Recursive containers</a></span></dt>
+<dt><span class="section"><a href="container/other_features.html">Other features</a></span></dt>
+<dt><span class="section"><a href="container/acknowledgements_notes.html">Acknowledgements, notes
     and links</a></span></dt>
-<dd><dl><dt><span class="section"><a href="container/acknowledgements_notes.html#container.acknowledgements_notes.thanks_to"> Thanks to...</a></span></dt></dl></dd>
-<dt><span class="section"><a href="container/release_notes.html"> Release Notes</a></span></dt>
+<dd><dl><dt><span class="section"><a href="container/acknowledgements_notes.html#container.acknowledgements_notes.thanks_to">Thanks to...</a></span></dt></dl></dd>
+<dt><span class="section"><a href="container/release_notes.html">Release Notes</a></span></dt>
 <dt><span class="section"><a href="boost_container_reference.html">Boost.Container Reference</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="boost_container_reference.html#header.boost.container.container_fwd_hpp">Header &lt;boost/container/container_fwd.hpp&gt;</a></span></dt>
@@ -68,7 +68,7 @@
 </div>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../doc/html/images/warning.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../doc/src/images/warning.png"></td>
 <th align="left">Warning</th>
 </tr>
 <tr><td colspan="2" align="left" valign="top"><p>
@@ -77,7 +77,7 @@
 </table></div>
 <div class="important"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../../doc/html/images/important.png"></td>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../../../doc/src/images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td colspan="2" align="left" valign="top"><p>
@@ -86,10 +86,10 @@
 </table></div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: May 27, 2010 at 17:00:45 GMT</small></p></td>
+<td align="left"><p><small>Last revised: July 03, 2011 at 19:18:54 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
-<div class="spirit-nav"><a accesskey="n" href="container/intro.html"><img src="../../../../doc/html/images/next.png" alt="Next"></a></div>
+<div class="spirit-nav"><a accesskey="n" href="container/intro.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a></div>
 </body>
 </html>

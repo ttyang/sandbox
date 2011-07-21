@@ -70,6 +70,9 @@ class EmplaceInt
       return os;
    }
 
+   ~EmplaceInt()
+   {  a_ = b_ = c_ = d_ = e_ = 0; }
+
    //private:
    int sum() const
    {  return this->a_ + this->b_ + this->c_ + this->d_ + this->e_; }
@@ -211,7 +214,7 @@ bool test_emplace_front(containers_detail::true_)
       c.emplace_front();
       if(!test_expected_container(c, &expected[0] + 5, 1))
          return false;
-      c.emplace_front(1);
+      c.emplace_front(1);/*
       if(!test_expected_container(c, &expected[0] + 4, 2))
          return false;
       c.emplace_front(1, 2);
@@ -225,7 +228,7 @@ bool test_emplace_front(containers_detail::true_)
          return false;
       c.emplace_front(1, 2, 3, 4, 5);
       if(!test_expected_container(c, &expected[0] + 0, 6))
-         return false;
+         return false;*/
    }
    return true;
 }
@@ -594,10 +597,10 @@ struct emplace_active
 template<class Container, EmplaceOptions O>
 bool test_emplace()
 {
-   if(!test_emplace_back<Container>(emplace_active<O, EMPLACE_BACK>()))
-      return false;
+//   if(!test_emplace_back<Container>(emplace_active<O, EMPLACE_BACK>()))
+//      return false;
    if(!test_emplace_front<Container>(emplace_active<O, EMPLACE_FRONT>()))
-      return false;
+      return false;/*
    if(!test_emplace_before<Container>(emplace_active<O, EMPLACE_BEFORE>()))
       return false;
    if(!test_emplace_after<Container>(emplace_active<O, EMPLACE_AFTER>()))
@@ -609,7 +612,7 @@ bool test_emplace()
    if(!test_emplace_assoc_pair<Container>(emplace_active<O, EMPLACE_ASSOC_PAIR>()))
       return false;
    if(!test_emplace_hint_pair<Container>(emplace_active<O, EMPLACE_HINT_PAIR>()))
-      return false;
+      return false;*/
    return true;
 }
 
