@@ -113,7 +113,20 @@ efx::e_float::e_float(const double d) : data     (),
     // Scale the UINT64 representation to the fractional part of
     // the double and multiply with the base-2 exponent.
     const int p2 = db.get_exponent() - (std::numeric_limits<double>::digits - 1);
-    operator*=(ef::pow2(static_cast<INT64>(p2)));
+
+    if(p2 == 0) { }
+    else if((p2 > 0) && (p2 < 27))
+    {
+      mul_by_int(static_cast<INT32>(1uL << p2));
+    }
+    else if((p2 < 0) && (p2 > -27))
+    {
+      div_by_int(static_cast<INT32>(1uL << p2));
+    }
+    else
+    {
+      operator*=(ef::pow2(static_cast<INT64>(p2)));
+    }
 
     neg = b_neg;
   }
@@ -1452,15 +1465,20 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 
   // Add the digits after the decimal point.
 
-  for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
   {
     std::stringstream ss;
+    ss.width(static_cast<std::streamsize>(ef_elem_digits10));
+    ss.fill(static_cast<char>('0'));
 
-    ss << std::setw(static_cast<std::streamsize>(ef_elem_digits10))
-       << std::setfill(static_cast<char>('0'))
-       << data[i];
+    for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
+    {
+      ss << data[i];
 
-    str += ss.str();
+      str += ss.str();
+
+      ss.str("");
+      ss.clear();
+    }
   }
 
   // Cut the output to the size of the precision.
