@@ -443,7 +443,7 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
 
       b_copy = true;
     }
-    
+
     // Addition algorithm
     UINT32 carry = static_cast<UINT32>(0u);
 
@@ -453,7 +453,7 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
       carry    = t / static_cast<UINT32>(ef_elem_mask);
       p_u[j]   = static_cast<UINT32>(t - static_cast<UINT32>(carry * static_cast<UINT32>(ef_elem_mask)));
     }
-    
+
     if(b_copy)
     {
       data = n_data;
@@ -1465,20 +1465,15 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 
   // Add the digits after the decimal point.
 
+  for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
   {
     std::stringstream ss;
-    ss.width(static_cast<std::streamsize>(ef_elem_digits10));
-    ss.fill(static_cast<char>('0'));
 
-    for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
-    {
-      ss << data[i];
+    ss << std::setw(static_cast<std::streamsize>(ef_elem_digits10))
+       << std::setfill(static_cast<char>('0'))
+       << data[i];
 
-      str += ss.str();
-
-      ss.str("");
-      ss.clear();
-    }
+    str += ss.str();
   }
 
   // Cut the output to the size of the precision.
@@ -1751,7 +1746,7 @@ bool efx::e_float::rd_string(const char* const s)
         std::size_t n_shift   = static_cast<std::size_t>(0u);
   const std::size_t n_exp_rem = static_cast<std::size_t>(exp % static_cast<INT64>(ef_elem_digits10));
 
-  if(exp % static_cast<INT64>(ef_elem_digits10))
+  if((exp % static_cast<INT64>(ef_elem_digits10)) != static_cast<INT64>(0))
   {
     n_shift = ((exp < static_cast<INT64>(0))
                 ? static_cast<std::size_t>(n_exp_rem + static_cast<std::size_t>(ef_elem_digits10))
@@ -1771,7 +1766,7 @@ bool efx::e_float::rd_string(const char* const s)
   }
 
   // Do the decimal point shift.
-  if(n_shift)
+  if(n_shift != static_cast<std::size_t>(0u))
   {
     str.insert(static_cast<std::size_t>(pos_plus_one + n_shift), ".");
 
