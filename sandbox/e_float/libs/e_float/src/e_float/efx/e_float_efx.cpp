@@ -121,7 +121,7 @@ efx::e_float::e_float(const double d) : data     (),
     }
     else if((p2 < 0) && (p2 > -27))
     {
-      div_by_int(static_cast<INT32>(1uL << p2));
+      div_by_int(static_cast<INT32>(1uL << -p2));
     }
     else
     {
