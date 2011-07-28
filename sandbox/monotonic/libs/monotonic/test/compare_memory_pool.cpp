@@ -143,12 +143,12 @@ std::pair<int, int> random_pair()
 }
 
 template <class Fun>
-PoolResults run_tests(size_t count, size_t max_length, size_t num_iterations, const char *title, Fun fun, Type types = Type::TBB | Type::Standard | Type::Monotonic)
+PoolResults run_tests(size_t count, size_t max_length, size_t num_iterations, const char *title, Fun fun, Type types = Type::TBB | Type::Standard | Type::Pool | Type::FastPool | Type::Monotonic)
 {
-    boost::timer timer;
-    cout << title << ": reps=" << count << ", len=" << max_length << ", steps=" << num_iterations;
+    cout << title << ": reps=" << count << ", len=" << max_length << ", steps=" << num_iterations << endl;
     PoolResults results;
     srand(42);
+    boost::timer timer;
     for (size_t length = 10; length < max_length; length += max_length/num_iterations)
     {
         size_t required = length + length*length;
@@ -210,10 +210,10 @@ void print_cumulative(std::vector<PoolResult> const &results)
     pair<PoolResult, PoolResult> dev_mean = standard_deviation_mean(results);
     size_t w = 10;
     cout << setw(w) << "scheme" << setw(w) << "mean" << setw(w) << "std-dev" << setw(w) << "min" << setw(w) << "max" << endl;
-    cout << setw(w) << "fast" << setprecision(3) << setw(w) << dev_mean.second.fast_pool_elapsed << setw(w) << dev_mean.first.fast_pool_elapsed << setw(w) << result_min.fast_pool_elapsed << setw(w) << result_max.fast_pool_elapsed << endl;
-    cout << setw(w) << "pool" << setprecision(3) << setw(w) << dev_mean.second.pool_elapsed << setw(w) << dev_mean.first.pool_elapsed << setw(w) << result_min.pool_elapsed << setw(w) << result_max.pool_elapsed << endl;
-    cout << setw(w) << "std" << setprecision(3) << setw(w) << dev_mean.second.std_elapsed << setw(w) << dev_mean.first.std_elapsed << setw(w) << result_min.std_elapsed << setw(w) << result_max.std_elapsed << endl;
-    cout << setw(w) << "tbb" << setprecision(3) << setw(w) << dev_mean.second.tbb_elapsed << setw(w) << dev_mean.first.tbb_elapsed << setw(w) << result_min.tbb_elapsed << setw(w) << result_max.tbb_elapsed << endl;
+    cout << setw(w) << "fast" << setprecision(6) << setw(w) << dev_mean.second.fast_pool_elapsed << setw(w) << dev_mean.first.fast_pool_elapsed << setw(w) << result_min.fast_pool_elapsed << setw(w) << result_max.fast_pool_elapsed << endl;
+    cout << setw(w) << "pool" << setprecision(6) << setw(w) << dev_mean.second.pool_elapsed << setw(w) << dev_mean.first.pool_elapsed << setw(w) << result_min.pool_elapsed << setw(w) << result_max.pool_elapsed << endl;
+    cout << setw(w) << "std" << setprecision(6) << setw(w) << dev_mean.second.std_elapsed << setw(w) << dev_mean.first.std_elapsed << setw(w) << result_min.std_elapsed << setw(w) << result_max.std_elapsed << endl;
+    cout << setw(w) << "tbb" << setprecision(6) << setw(w) << dev_mean.second.tbb_elapsed << setw(w) << dev_mean.first.tbb_elapsed << setw(w) << result_min.tbb_elapsed << setw(w) << result_max.tbb_elapsed << endl;
     cout << endl;
 }
 
@@ -448,29 +448,29 @@ int main()
         {
             heading("SMALL");
     #ifndef WIN32
-            print(run_tests(100000, 100, 10, "string_cat", test_string_cat()));
-            print(run_tests(100000, 100, 10, "list_string", test_list_string()));
-            print(run_tests(75000, 100, 10, "list_create<int>", test_list_create<int>()));
-            print(run_tests(75000, 100, 10, "list_sort<int>", test_list_sort<int>()));
-            print(run_tests(2000000, 100, 10, "vector_create<int>", test_vector_create()));
-            print(run_tests(200000, 100, 10, "vector_sort<int>", test_vector_sort<int>()));
-            print(run_tests(1000000, 100, 10, "vector_dupe", test_vector_dupe()));
-            print(run_tests(50000, 100, 10, "list_dupe", test_list_dupe()));
-            print(run_tests(500000, 100, 10, "vector_accumulate", test_vector_accumulate()));
-            print(run_tests(10000, 100, 10, "set_vector", test_set_vector()));
-            print(run_tests(2000, 100, 10, "map_vector<int>", test_map_vector<int>()));
-    #else
-            print(run_tests(50000, 100, 10, "string_cat", test_string_cat()));
-            print(run_tests(50000, 100, 10, "list_string", test_list_string()));
-            print(run_tests(50000, 100, 10, "list_create<int>", test_list_create<int>()));
-            print(run_tests(5000, 100, 10, "list_sort<int>", test_list_sort<int>()));
-            print(run_tests(2000000, 100, 10, "vector_create<int>", test_vector_create()));
+            print(run_tests(1000, 100, 10, "string_cat", test_string_cat()));
+            print(run_tests(1000, 100, 10, "list_string", test_list_string()));
+            print(run_tests(7500, 100, 10, "list_create<int>", test_list_create<int>()));
+            print(run_tests(7500, 100, 10, "list_sort<int>", test_list_sort<int>()));
+            print(run_tests(2000, 100, 10, "vector_create<int>", test_vector_create()));
             print(run_tests(20000, 100, 10, "vector_sort<int>", test_vector_sort<int>()));
-            print(run_tests(100000, 100, 10, "vector_dupe", test_vector_dupe()));
-            print(run_tests(20000, 100, 10, "list_dupe", test_list_dupe()));
-            print(run_tests(500000, 100, 10, "vector_accumulate", test_vector_accumulate()));
+            print(run_tests(10000, 100, 10, "vector_dupe", test_vector_dupe()));
+            print(run_tests(5000, 100, 10, "list_dupe", test_list_dupe()));
+            print(run_tests(5000, 100, 10, "vector_accumulate", test_vector_accumulate()));
+            print(run_tests(100, 100, 10, "set_vector", test_set_vector()));
+            print(run_tests(70, 100, 10, "map_vector<int>", test_map_vector<int>()));
+    #else
+            print(run_tests(500, 100, 10, "string_cat", test_string_cat()));
+            print(run_tests(500, 100, 10, "list_string", test_list_string()));
+            print(run_tests(500, 100, 10, "list_create<int>", test_list_create<int>()));
+            print(run_tests(50, 100, 10, "list_sort<int>", test_list_sort<int>()));
+            print(run_tests(2000, 100, 10, "vector_create<int>", test_vector_create()));
+            print(run_tests(200, 100, 10, "vector_sort<int>", test_vector_sort<int>()));
+            print(run_tests(100, 100, 10, "vector_dupe", test_vector_dupe()));
+            print(run_tests(200, 100, 10, "list_dupe", test_list_dupe()));
+            print(run_tests(500, 100, 10, "vector_accumulate", test_vector_accumulate()));
             print(run_tests(50, 100, 10, "set_vector", test_set_vector()));
-            print(run_tests(500, 100, 10, "map_vector<int>", test_map_vector<int>()));
+            print(run_tests(50, 100, 10, "map_vector<int>", test_map_vector<int>()));
     #endif
 
             heading("SUMMARY", '*');
@@ -481,25 +481,25 @@ int main()
         if (run_medium)
         {
             heading("MEDIUM");
-            print(run_tests(10000, 1000, 10, "list_create<int>", test_list_create<int>()));
-            print(run_tests(5000, 1000, 10, "list_sort<int>", test_list_sort<int>()));
+            print(run_tests(3000, 1000, 10, "list_create<int>", test_list_create<int>()));
+            print(run_tests(3000, 1000, 10, "list_sort<int>", test_list_sort<int>()));
 
     #ifndef WIN32
-            print(run_tests(1000000, 100000, 10, "vector_create<int>", test_vector_create()));
-            print(run_tests(300, 10000, 10, "vector_sort<int>", test_vector_sort<int>()));
-            print(run_tests(1000000, 10000, 10, "vector_dupe", test_vector_dupe()));
-            print(run_tests(2000, 1000, 10, "list_dupe", test_list_dupe()));
-            print(run_tests(5000000, 2000, 10, "vector_accumulate", test_vector_accumulate()));
-            print(run_tests(500, 1000, 10, "set_vector", test_set_vector()));
-            print(run_tests(500, 1000, 10, "map_vector<int>", test_map_vector<int>()));
+            print(run_tests(120, 10000, 10, "vector_create<int>", test_vector_create()));
+            print(run_tests(310, 1000, 10, "vector_sort<int>", test_vector_sort<int>()));
+            print(run_tests(300, 1000, 10, "vector_dupe", test_vector_dupe()));
+            print(run_tests(500, 1000, 10, "list_dupe", test_list_dupe()));
+            print(run_tests(3000, 2000, 10, "vector_accumulate", test_vector_accumulate()));
+            print(run_tests(20, 1000, 2, "set_vector", test_set_vector()));
+            print(run_tests(20, 1000, 2, "map_vector<int>", test_map_vector<int>()));
     #else
-            print(run_tests(1000, 100000, 10, "vector_create<int>", test_vector_create()));
-            print(run_tests(30000, 1000, 10, "vector_sort<int>", test_vector_sort<int>()));
+            print(run_tests(10000, 10000, 10, "vector_create<int>", test_vector_create()));
+            print(run_tests(3000, 1000, 10, "vector_sort<int>", test_vector_sort<int>()));
             print(run_tests(5000, 10000, 10, "vector_dupe", test_vector_dupe()));
             print(run_tests(500, 1000, 10, "list_dupe", test_list_dupe(), test_dupe_list_types));
-            print(run_tests(50000, 2000, 10, "vector_accumulate", test_vector_accumulate()));
-            print(run_tests(20, 500, 5, "set_vector", test_set_vector()));
-            print(run_tests(50, 1000, 10, "map_vector<int>", test_map_vector<int>()));
+            print(run_tests(5000, 2000, 10, "vector_accumulate", test_vector_accumulate()));
+            print(run_tests(200, 500, 5, "set_vector", test_set_vector()));
+            print(run_tests(500, 1000, 10, "map_vector<int>", test_map_vector<int>()));
     #endif
             heading("SUMMARY", '*');
             print_cumulative(cumulative);
@@ -510,24 +510,24 @@ int main()
         {
             heading("LARGE");
     #ifndef WIN32
-            print(run_tests(100, 25000, 10, "list_create<int>", test_list_create<int>()));
-            print(run_tests(10, 100000, 10, "list_sort<int>", test_list_sort<int>()));
-            print(run_tests(1000000, 10000000, 10, "vector_create<int>", test_vector_create()));
-            print(run_tests(100, 500000, 10, "vector_sort<int>", test_vector_sort<int>()));
+            print(run_tests(30, 25000, 3, "list_create<int>", test_list_create<int>()));
+            print(run_tests(10, 10000, 3, "list_sort<int>", test_list_sort<int>()));
+            print(run_tests(300, 10000, 3, "vector_create<int>", test_vector_create()));
+            print(run_tests(70, 50000, 3, "vector_sort<int>", test_vector_sort<int>()));
 
-            print(run_tests(1000000, 100000000, 10, "vector_dupe", test_vector_dupe()));
-            print(run_tests(100, 10000, 10, "list_dupe", test_list_dupe()));
-            print(run_tests(1000000, 20000000, 10, "vector_accumulate", test_vector_accumulate()));
-            print(run_tests(10, 50000, 10, "set_vector", test_set_vector()));
-            print(run_tests(10, 10000, 10, "map_vector<int>", test_map_vector<int>()));
+            print(run_tests(600, 10000, 3, "vector_dupe", test_vector_dupe()));
+            print(run_tests(100, 1000, 3, "list_dupe", test_list_dupe()));
+            print(run_tests(5000, 20000, 3, "vector_accumulate", test_vector_accumulate()));
+            print(run_tests(10, 50000, 3, "set_vector", test_set_vector()));
+            print(run_tests(10, 10000, 3, "map_vector<int>", test_map_vector<int>()));
     #else
             print(run_tests(10, 25000, 10, "list_create<int>", test_list_create<int>()));
             print(run_tests(10, 100000, 10, "list_sort<int>", test_list_sort<int>()));
-            print(run_tests(1000, 1000000, 10, "vector_create<int>", test_vector_create()));
-            print(run_tests(300, 500000, 10, "vector_sort<int>", test_vector_sort<int>()));
-            print(run_tests(200, 10000000, 10, "vector_dupe", test_vector_dupe()));
+            print(run_tests(1000, 100000, 10, "vector_create<int>", test_vector_create()));
+            print(run_tests(300, 50000, 10, "vector_sort<int>", test_vector_sort<int>()));
+            print(run_tests(200, 1000000, 10, "vector_dupe", test_vector_dupe()));
             print(run_tests(50, 10000, 10, "list_dupe", test_list_dupe(), test_dupe_list_types));
-            print(run_tests(500, 10000000, 10, "vector_accumulate", test_vector_accumulate()));
+            print(run_tests(500, 100000, 10, "vector_accumulate", test_vector_accumulate()));
             print(run_tests(5, 2000, 5, "set_vector", test_set_vector()));
             print(run_tests(10, 2000, 10, "map_vector<int>", test_map_vector<int>()));
     #endif

@@ -163,7 +163,7 @@ namespace boost
             }
 
         private:
-            friend detail::Pool;
+            friend class detail::Pool;
 
             void *from_pool(size_t bucket, size_t num_bytes, size_t alignment)
             {
