@@ -6,7 +6,7 @@
 
 // This work is based on an earlier work:
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
-// in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} © ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
+// in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
 #ifndef _UTIL_POWER_X_POW_N_2009_11_23_H_
   #define _UTIL_POWER_X_POW_N_2009_11_23_H_
