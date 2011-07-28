@@ -76,30 +76,24 @@
   bool operator==(const e_float& u, const ef_complex& v);
   bool operator!=(const e_float& u, const ef_complex& v);
 
-  bool operator==(const ef_complex& u, const INT32 n);
-  bool operator!=(const ef_complex& u, const INT32 n);
+  inline ef_complex operator+(const ef_complex& u, const ef_complex& v) { return ef_complex(u) += v; }
+  inline ef_complex operator-(const ef_complex& u, const ef_complex& v) { return ef_complex(u) -= v; }
+  inline ef_complex operator*(const ef_complex& u, const ef_complex& v) { return ef_complex(u) *= v; }
+  inline ef_complex operator/(const ef_complex& u, const ef_complex& v) { return ef_complex(u) /= v; }
 
-  bool operator==(const INT32 n, const ef_complex& u);
-  bool operator!=(const INT32 n, const ef_complex& u);
+  inline ef_complex operator+(const ef_complex& u, const e_float& v) { return ef_complex(u) += v; }
+  inline ef_complex operator-(const ef_complex& u, const e_float& v) { return ef_complex(u) -= v; }
+  inline ef_complex operator*(const ef_complex& u, const e_float& v) { return ef_complex(u) *= v; }
+  inline ef_complex operator/(const ef_complex& u, const e_float& v) { return ef_complex(u) /= v; }
 
-  inline ef_complex operator+ (const ef_complex& u, const ef_complex& v) { return ef_complex(u) += v; }
-  inline ef_complex operator- (const ef_complex& u, const ef_complex& v) { return ef_complex(u) -= v; }
-  inline ef_complex operator* (const ef_complex& u, const ef_complex& v) { return ef_complex(u) *= v; }
-  inline ef_complex operator/ (const ef_complex& u, const ef_complex& v) { return ef_complex(u) /= v; }
+  inline ef_complex operator+(const INT32 n, const ef_complex& v) { return ef_complex(e_float(n)) += v; }
+  inline ef_complex operator-(const INT32 n, const ef_complex& v) { return ef_complex(e_float(n)) -= v; }
+  inline ef_complex operator*(const INT32 n, const ef_complex& v) { return ef_complex(v)          *= n; }
+  inline ef_complex operator/(const INT32 n, const ef_complex& v) { return ef_complex(e_float(n)) /= v; }
 
-  inline ef_complex operator+ (const ef_complex& u, const e_float& v) { return ef_complex(u) += v; }
-  inline ef_complex operator- (const ef_complex& u, const e_float& v) { return ef_complex(u) -= v; }
-  inline ef_complex operator* (const ef_complex& u, const e_float& v) { return ef_complex(u) *= v; }
-  inline ef_complex operator/ (const ef_complex& u, const e_float& v) { return ef_complex(u) /= v; }
-
-  inline ef_complex operator+ (const INT32 n, const ef_complex& v) { return ef_complex(e_float(n)) += v; }
-  inline ef_complex operator- (const INT32 n, const ef_complex& v) { return ef_complex(e_float(n)) -= v; }
-  inline ef_complex operator* (const INT32 n, const ef_complex& v) { return ef_complex(v)          *= n; }
-  inline ef_complex operator/ (const INT32 n, const ef_complex& v) { return ef_complex(e_float(n)) /= v; }
-
-  inline ef_complex operator+ (const ef_complex& z, const INT32 n) { return ef_complex(z) += n; }
-  inline ef_complex operator- (const ef_complex& z, const INT32 n) { return ef_complex(z) -= n; }
-  inline ef_complex operator* (const ef_complex& z, const INT32 n) { return ef_complex(z) *= n; }
-  inline ef_complex operator/ (const ef_complex& z, const INT32 n) { return ef_complex(z) /= n; }
+  inline ef_complex operator+(const ef_complex& z, const INT32 n) { return ef_complex(z) += n; }
+  inline ef_complex operator-(const ef_complex& z, const INT32 n) { return ef_complex(z) -= n; }
+  inline ef_complex operator*(const ef_complex& z, const INT32 n) { return ef_complex(z) *= n; }
+  inline ef_complex operator/(const ef_complex& z, const INT32 n) { return ef_complex(z) /= n; }
 
 #endif // _E_FLOAT_ELEMENTARY_COMPLEX_HPP_

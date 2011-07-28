@@ -57,19 +57,4 @@
   inline bool operator>=(const e_float& u, const e_float& v) { return (u.cmp(v) >= static_cast<INT32>(0)); }
   inline bool operator> (const e_float& u, const e_float& v) { return (u.cmp(v) >  static_cast<INT32>(0)); }
 
-  // Specializations of global comparison of e_float reference with INT32
-  inline bool operator< (const e_float& u, const INT32 n) { return u <  e_float(n); }
-  inline bool operator<=(const e_float& u, const INT32 n) { return u <= e_float(n); }
-  inline bool operator==(const e_float& u, const INT32 n) { return u == e_float(n); }
-  inline bool operator!=(const e_float& u, const INT32 n) { return u != e_float(n); }
-  inline bool operator>=(const e_float& u, const INT32 n) { return u >= e_float(n); }
-  inline bool operator> (const e_float& u, const INT32 n) { return u >  e_float(n); }
-
-  inline bool operator< (const INT32 n, const e_float& u) { return e_float(n) <  u; }
-  inline bool operator<=(const INT32 n, const e_float& u) { return e_float(n) <= u; }
-  inline bool operator==(const INT32 n, const e_float& u) { return e_float(n) == u; }
-  inline bool operator!=(const INT32 n, const e_float& u) { return e_float(n) != u; }
-  inline bool operator>=(const INT32 n, const e_float& u) { return e_float(n) >= u; }
-  inline bool operator> (const INT32 n, const e_float& u) { return e_float(n) >  u; }
-
 #endif // _E_FLOAT_GLOBAL_MATH_HPP_

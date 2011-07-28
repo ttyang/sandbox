@@ -30,12 +30,6 @@ bool operator!=(const ef_complex& u, const e_float& v) { return ((u.real() != v)
 bool operator==(const e_float& u, const ef_complex& v) { return ((u == v.real()) &&  ef::iszero(v.imag())); }
 bool operator!=(const e_float& u, const ef_complex& v) { return ((u != v.real()) || !ef::iszero(v.imag())); }
 
-bool operator==(const ef_complex& u, const INT32 n) { return ((u.real() == n) &&  ef::iszero(u.imag())); }
-bool operator!=(const ef_complex& u, const INT32 n) { return ((u.real() != n) || !ef::iszero(u.imag())); }
-
-bool operator==(const INT32 n, const ef_complex& u) { return ((n == u.real()) &&  ef::iszero(u.imag())); }
-bool operator!=(const INT32 n, const ef_complex& u) { return ((n != u.real()) || !ef::iszero(u.imag())); }
-
 e_float efz::abs(const ef_complex& z) { return ef::sqrt(efz::norm(z)); }
 e_float efz::arg(const ef_complex& z) { return ef::atan2(z.imag(), z.real()); }
 

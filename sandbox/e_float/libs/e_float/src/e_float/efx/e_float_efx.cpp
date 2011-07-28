@@ -81,7 +81,7 @@ namespace
       }
 
       // Ensure that the value is normalized and adjust the exponent.
-      u |= static_cast<UINT64>(static_cast<UINT64>(1uLL) << (std::numeric_limits<native_float_type>::digits - 1));
+      u |= static_cast<UINT64>(1uLL << (std::numeric_limits<native_float_type>::digits - 1));
       e -= 1;
     }
   };

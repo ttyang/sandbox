@@ -158,8 +158,21 @@
     static e_float my_cyl_bessel_jn(const INT32, const e_float&);
     static e_float my_cyl_bessel_yn(const INT32, const e_float&);
 
+  private:
+
+    template<const INT32 digits10>
+    struct digits_match_lib_dll
+    {
+      static INT32 value(void);
+    };
+
+    static bool digits_match_lib_dll_is_ok;
+
   protected:
-    e_float_base() { }
+    e_float_base()
+    {
+      digits_match_lib_dll_is_ok = (digits_match_lib_dll<ef_digits10>::value() == ef_digits10);
+    }
   };
 
   std::ostream& operator<<(std::ostream& os, const e_float_base& f);
