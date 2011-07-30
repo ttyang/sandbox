@@ -32,6 +32,14 @@ class p_member_data_value_class
   
   p_member_data_value_class();
   
+  p_member_data_class pmd_char;
+  p_member_data_class pmd_int;
+  p_member_data_class pmd_double;
+  p_member_data_class pmd_bool;
+  p_member_data_class pmd_pointer;
+  p_member_data_class pmd_enum;
+  p_member_data_class pmd_pod;
+
   prop_member_data<char,p_member_data_class,&p_member_data_class::p_data_char> p_char;
   prop_member_data<int,p_member_data_class,&p_member_data_class::p_int_2> p_int;
   prop_member_data<double,p_member_data_class,&p_member_data_class::p_double,notification_boost_function> p_double_ntf;
@@ -39,6 +47,8 @@ class p_member_data_value_class
   prop_member_data<int *,p_member_data_class,&p_member_data_class::p_pointer> p_pointer;
   prop_member_data<test_enum,p_member_data_class,&p_member_data_class::p_enum_2,notification_boost_function> p_enum_ntf;
   prop_member_data<test_pod const,p_member_data_class,&p_member_data_class::p_pod_2> p_pod_const;
+  
+  int p_iarray[15];
   
   static prop_member_data<char,p_member_data_class,&p_member_data_class::p_char> p_st_char;
   static prop_member_data<int,p_member_data_class,&p_member_data_class::p_int> p_st_int;
@@ -48,16 +58,8 @@ class p_member_data_value_class
   static prop_member_data<test_enum,p_member_data_class,&p_member_data_class::p_enum,default_policy_tag,read_tag> p_st_enum_const;
   static prop_member_data<test_pod,p_member_data_class,&p_member_data_class::p_pod> p_st_pod;
   
-  private:
+  static int p_st_iarray[9];
   
-  p_member_data_class pmd_char;
-  p_member_data_class pmd_int;
-  p_member_data_class pmd_double;
-  p_member_data_class pmd_bool;
-  p_member_data_class pmd_pointer;
-  p_member_data_class pmd_enum;
-  p_member_data_class pmd_pod;
-
   static p_member_data_class pmd_st_char;
   static p_member_data_class pmd_st_int;
   static p_member_data_class pmd_st_double;

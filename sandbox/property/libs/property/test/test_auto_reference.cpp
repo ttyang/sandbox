@@ -6,7 +6,7 @@ void test_auto_reference_function()
   
   }
 
-boost::unit_test::test_suite* init_unit_test_suite( int argc, char* argv[] )
+boost::unit_test::test_suite* init_unit_test_suite( int , char* [] )
 {
     boost::unit_test::test_suite* test = BOOST_TEST_SUITE( "Property Test Auto Reference Suite" );
 

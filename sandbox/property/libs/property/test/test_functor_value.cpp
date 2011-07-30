@@ -34,31 +34,31 @@ prop_functor<test_enum,p_functor_class_enum,read_tag> p_functor_value_class::p_s
 prop_functor<test_pod,p_functor_class_pod,write_tag> p_functor_value_class::p_st_pod_write(pf_st_pod);
 int p_functor_value_class::pvalue(801);
 
-void TestCharacter(p_functor_value_class & tcl) 
+void TestCharacter(p_functor_value_class & ) 
   {
   }
   
-void TestInt(p_functor_value_class & tcl) 
+void TestInt(p_functor_value_class & ) 
   {
   }
   
-void TestDouble(p_functor_value_class & tcl) 
+void TestDouble(p_functor_value_class & ) 
   {
   }
   
-void TestBool(p_functor_value_class & tcl) 
+void TestBool(p_functor_value_class & ) 
   {
   }
   
-void TestPointer(p_functor_value_class & tcl) 
+void TestPointer(p_functor_value_class & ) 
   {
   }
   
-void TestEnum(p_functor_value_class & tcl) 
+void TestEnum(p_functor_value_class & ) 
   {
   }
   
-void TestPod(p_functor_value_class & tcl) 
+void TestPod(p_functor_value_class & ) 
   {
   }
 

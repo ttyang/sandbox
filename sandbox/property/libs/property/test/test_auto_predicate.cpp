@@ -22,19 +22,19 @@ prop_auto_predicate<int,notification_boost_function,predicate_failure_runtime_ex
 prop_auto_predicate<double,default_policy_tag,predicate_failure_runtime_exception> p_auto_predicate_class::p_st_double_pred_err(_1 >= 1000.0);
 prop_auto_predicate<test_enum,notification_boost_function> p_auto_predicate_class::p_st_enum_pred_ntf(_1 != e_test_first);
 
-void TestCharacter(p_auto_predicate_class & tcl) 
+void TestCharacter(p_auto_predicate_class & ) 
   {
   }
   
-void TestInt(p_auto_predicate_class & tcl) 
+void TestInt(p_auto_predicate_class & ) 
   {
   }
   
-void TestDouble(p_auto_predicate_class & tcl) 
+void TestDouble(p_auto_predicate_class & ) 
   {
   }
   
-void TestEnum(p_auto_predicate_class & tcl) 
+void TestEnum(p_auto_predicate_class & ) 
   {
   }
 
@@ -50,7 +50,7 @@ void test_auto_predicate_function()
   
   }
 
-boost::unit_test::test_suite* init_unit_test_suite( int argc, char* argv[] )
+boost::unit_test::test_suite* init_unit_test_suite( int , char* [] )
 {
     boost::unit_test::test_suite* test = BOOST_TEST_SUITE( "Property Test Auto Predicate Suite" );
 

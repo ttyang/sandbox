@@ -22,31 +22,31 @@ prop_function<int *,&p_function_class::p_pointer_read_2,&p_function_class::p_poi
 prop_read_function<test_enum,&p_function_enum_read> p_function_value_class::p_st_enum_const;
 prop_write_function<test_pod,&p_function_class::p_pod_write> p_function_value_class::p_st_pod_write;
 
-void TestCharacter(p_function_value_class & tcl) 
+void TestCharacter(p_function_value_class & ) 
   {
   }
   
-void TestInt(p_function_value_class & tcl) 
+void TestInt(p_function_value_class & ) 
   {
   }
   
-void TestDouble(p_function_value_class & tcl) 
+void TestDouble(p_function_value_class & ) 
   {
   }
   
-void TestBool(p_function_value_class & tcl) 
+void TestBool(p_function_value_class & ) 
   {
   }
   
-void TestPointer(p_function_value_class & tcl) 
+void TestPointer(p_function_value_class & ) 
   {
   }
   
-void TestEnum(p_function_value_class & tcl) 
+void TestEnum(p_function_value_class & ) 
   {
   }
   
-void TestPod(p_function_value_class & tcl) 
+void TestPod(p_function_value_class & ) 
   {
   }
   
@@ -65,7 +65,7 @@ void test_function_value_function()
   
   }
 
-boost::unit_test::test_suite* init_unit_test_suite( int argc, char* argv[] )
+boost::unit_test::test_suite* init_unit_test_suite( int, char* [] )
 {
     boost::unit_test::test_suite* test = BOOST_TEST_SUITE( "Property Test Function Value Suite" );
 
