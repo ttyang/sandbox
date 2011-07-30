@@ -1592,7 +1592,7 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
     }
     else if(use_fixed)
     {
-      wr_string_fixed(str, my_exp, os_precision, my_showpos, my_showpoint, false);
+      wr_string_fixed(str, my_exp, os_precision, my_showpos, my_showpoint, true);
     }
   }
 }
@@ -1641,7 +1641,7 @@ void efx::e_float::wr_string_scientific(std::string& str, const INT64 my_exp, co
   }
 }
 
-void efx::e_float::wr_string_fixed(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_showpoint, const bool use_pad_when_above_one) const
+void efx::e_float::wr_string_fixed(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_showpoint, const bool trim_trailing_zeros) const
 {
   const std::size_t str_len = str.length();
 
@@ -1663,28 +1663,31 @@ void efx::e_float::wr_string_fixed(std::string& str, const INT64 my_exp, const s
   }
   else
   {
-    // Insert the decimal point, but only if showpoint is set
-    // and the string does not represent a whole number.
+    // Insert the decimal point.
     const std::size_t my_exp_plus_one = static_cast<std::size_t>(my_exp + 1);
 
-    if((!my_showpoint) && (my_exp_plus_one == str.length()))
-    {
-    }
-    else
-    {
-      str.insert(static_cast<std::size_t>(my_exp + 1), ".");
+    str.insert(my_exp_plus_one, ".");
 
-      // Zero-extend the string to the given precision if necessary.
-      if(use_pad_when_above_one)
-      {
-        const INT64 n_pad = static_cast<INT64>(os_precision) - static_cast<INT64>(static_cast<INT64>(str_len) - (my_exp + 1));
+    // Zero-extend the string to the given precision if necessary.
+    const INT64 n_pad = static_cast<INT64>(os_precision) - static_cast<INT64>(static_cast<INT64>(str_len) - (my_exp + 1));
 
-        if(n_pad > static_cast<INT64>(0))
-        {
-          str.insert(str.end(), static_cast<std::size_t>(n_pad), static_cast<char>('0'));
-        }
-      }
+    if(n_pad > static_cast<INT64>(0))
+    {
+      str.insert(str.end(), static_cast<std::size_t>(n_pad), static_cast<char>('0'));
     }
+  }
+
+  if(trim_trailing_zeros)
+  {
+    while(str.back() == static_cast<char>('0'))
+    {
+      str.pop_back();
+    }
+  }
+
+  if((str.back() == static_cast<char>('.')) && (!my_showpoint))
+  {
+    str.pop_back();
   }
 
   // Append the sign.

@@ -181,7 +181,7 @@
     private:
       virtual void wr_string(std::string& str, std::ostream& os) const;
       void wr_string_scientific(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_uppercase) const;
-      void wr_string_fixed     (std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_showpoint, const bool use_pad_when_above_one = true) const;
+      void wr_string_fixed     (std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_showpoint, const bool trim_trailing_zeros = false) const;
       virtual bool rd_string(const char* const s);
     };
   }
