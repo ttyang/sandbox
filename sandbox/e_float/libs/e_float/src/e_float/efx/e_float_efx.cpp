@@ -1430,41 +1430,18 @@ const efx::e_float& efx::e_float::my_value_min(void) const
 
 void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 {
-  if(isnan())
-  {
-    str = "NaN";
-    return;
-  }
+  // Handle INF and NaN.
+  if(isnan()) { str = "NaN"; return; }
+  if(isinf()) { str = "INF"; return; }
 
-  if(isinf())
-  {
-    str = "INF";
-    return;
-  }
+  // Extract all of the digits from e_float, beginning with the first data element.
+  str = Util::lexical_cast(data[0]);
 
-  static const std::streamsize p_min = static_cast<std::streamsize>(10);
-  static const std::streamsize p_lim = static_cast<std::streamsize>(ef_digits10_tol);
-         const std::streamsize p     = (std::max)(os.precision(), p_min);
+  // Readjust the exponent based on the width of the leading data element.
+  INT64 my_exp = ((!iszero()) ? static_cast<INT64>((exp + static_cast<INT64>(str.length())) - static_cast<INT64>(1))
+                              : static_cast<INT64>(0));
 
-  const std::streamsize my_precision = (std::min)(p, p_lim);
-  const std::size_t     my_p         = static_cast<std::size_t>(my_precision);
-
-  const std::ios::fmtflags f = os.flags();
-
-  const bool my_uppercase  = ((f & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
-  const bool my_showpos    = ((f & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
-  const bool my_scientific = ((f & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u));
-
-  // Get first data element.
-  const std::string sn = Util::lexical_cast(data[0]);
-
-  INT64 n_exp = ((!iszero()) ? static_cast<INT64>((exp + static_cast<INT64>(sn.length())) - static_cast<INT64>(1))
-                             : static_cast<INT64>(0));
-
-  str = sn;
-
-  // Add the digits after the decimal point.
-
+  // Add the remaining digits after the decimal point.
   for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
   {
     std::stringstream ss;
@@ -1476,14 +1453,94 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
     str += ss.str();
   }
 
+  // Get the output stream's precision and limit it to max_digits10.
+  // Erroneous negative precision will be set to the zero.
+  const std::size_t os_precision  = ((os.precision() > std::streamsize(-1)) ? static_cast<std::size_t>(os.precision())
+                                                                            : static_cast<std::size_t>(0u));
+
+  // Assess the format flags.
+  const std::ios::fmtflags f = os.flags();
+
+  const bool my_uppercase  = ((f & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
+  const bool my_showpos    = ((f & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
+  const bool my_scientific = ((f & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u));
+  const bool my_fixed      = ((!my_scientific) && ((f & std::ios::fixed) != static_cast<std::ios::fmtflags>(0u)));
+  const bool my_showpoint  = ((f & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
+
+  bool use_scientific = false;
+  bool use_fixed = false;
+
+  if(my_scientific)
+  {
+    use_scientific = true;
+  }
+  else if(my_fixed)
+  {
+    use_fixed = true;
+  }
+  else // The float-field is not set.
+  {
+    if(my_exp < static_cast<INT64>(-4))
+    {
+      // The number is small in magnitude with a large, negative exponent.
+      // Use exponential notation.
+      use_scientific = true;
+    }
+    else if(my_exp >= (std::min)(static_cast<INT64>(std::numeric_limits<e_float>::digits10), static_cast<INT64>(os_precision)))
+    {
+      // The number is large in magnitude with a large, positive exponent.
+      // Use exponential notation.
+      use_scientific = true;
+    }
+    else
+    {
+      use_fixed = true;
+    }
+  }
+
+  // Ascertain the number of digits requested from e_float.
+  std::size_t the_number_of_digits_i_want_from_e_float = static_cast<std::size_t>(0u);
+  const std::size_t max10_plus_one = static_cast<std::size_t>(std::numeric_limits<e_float>::max_digits10 + 1);
+
+  if(use_scientific)
+  {
+    // The float-field is scientific. The number of digits is given by
+    // (1 + the ostream's precision), not to exceed (max_digits10 + 1).
+    const std::size_t prec_plus_one  = static_cast<std::size_t>(1u + os_precision);
+    the_number_of_digits_i_want_from_e_float = (std::min)(max10_plus_one, prec_plus_one);
+  }
+  else if(use_fixed)
+  {
+    // The float-field is scientific. The number of all-digits depends
+    // on the form of the number.
+
+    if(my_exp >= static_cast<INT64>(0))
+    {
+      // If the number is larger than 1 in absolute value, then the number of
+      // digits is given by the width of the integer part plus the ostream's
+      // precision, not to exceed (max_digits10 + 1).
+      const std::size_t exp_plus_one = static_cast<std::size_t>(my_exp + 1);
+      const std::size_t exp_plus_one_plus_my_precision = static_cast<std::size_t>(exp_plus_one + os_precision);
+
+      the_number_of_digits_i_want_from_e_float = (std::min)(exp_plus_one_plus_my_precision, max10_plus_one);
+    }
+    else
+    {
+      const INT64 exp_plus_one = static_cast<INT64>(my_exp + 1);
+      const INT64 exp_plus_one_plus_my_precision = static_cast<INT64>(exp_plus_one + static_cast<INT64>(os_precision));
+
+      the_number_of_digits_i_want_from_e_float = (std::min)(static_cast<std::size_t>((std::max)(exp_plus_one_plus_my_precision, static_cast<INT64>(0))), max10_plus_one);
+    }
+  }
+
   // Cut the output to the size of the precision.
-  if(str.length() > my_p)
+  if(str.length() > the_number_of_digits_i_want_from_e_float)
   {
     // Get the digit after the last needed digit for rounding
-    const UINT32 round = static_cast<UINT32>(static_cast<UINT32>(str.at(my_p)) - static_cast<UINT32>('0'));
+    const UINT32 round = static_cast<UINT32>(static_cast<UINT32>(str.at(the_number_of_digits_i_want_from_e_float)) - static_cast<UINT32>('0'));
 
     // Truncate the string
-    str = str.substr(static_cast<std::size_t>(0u), my_p);
+    str = str.substr(static_cast<std::size_t>(0u), the_number_of_digits_i_want_from_e_float);
 
     if(round >= static_cast<UINT32>(5u))
     {
@@ -1503,7 +1560,7 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
         {
           // Increment up to the next order and adjust exponent.
           str.at(ix) = static_cast<char>('1');
-          ++n_exp;
+          ++my_exp;
         }
         else
         {
@@ -1519,106 +1576,115 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
     }
   }
 
-  if(!my_scientific)
+  if(my_scientific)
   {
-    if(iszero())
+    wr_string_scientific(str, my_exp, os_precision, my_showpos, my_uppercase);
+  }
+  else if(my_fixed)
+  {
+    wr_string_fixed(str, my_exp, os_precision, my_showpos, my_showpoint);
+  }
+  else // The float-field is not set.
+  {
+    if(use_scientific)
     {
-      str = "0";
+      wr_string_scientific(str, my_exp, os_precision, my_showpos, my_uppercase);
     }
-    else if(n_exp < static_cast<INT64>(-4))
+    else if(use_fixed)
     {
-      // The number is small in magnitude with a large, negative exponent.
-      // Use exponential notation.
-      str.insert(static_cast<std::size_t>(1u), ".");
-
-      // Append the exponent in uppercase or lower case, including its sign.
-      str += (my_uppercase ? "E" : "e");
-      str += "-";
-      std::string str_exp = Util::lexical_cast(static_cast<INT64>(-n_exp));
-      str += std::string(width_of_exponent_field() - str_exp.length(), static_cast<char>('0'));
-      str += str_exp;
+      wr_string_fixed(str, my_exp, os_precision, my_showpos, my_showpoint, false);
     }
-    else if((n_exp < static_cast<INT64>(0)) && (n_exp >= static_cast<INT64>(-4)))
+  }
+}
+
+void efx::e_float::wr_string_scientific(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_uppercase) const
+{
+  if(os_precision > static_cast<std::size_t>(str.length() - 1u))
+  {
+    // Zero-extend the string to the given precision if necessary.
+    const std::size_t n_pad = static_cast<std::size_t>(os_precision - (str.length() - 1u));
+
+    str.insert(str.end(), n_pad, static_cast<char>('0'));
+  }
+
+  // Insert the decimal point.
+  str.insert(static_cast<std::size_t>(1u), ".");
+
+  // Append the exponent in uppercase or lower case, including its sign.
+  const bool   b_exp_is_neg = (my_exp < static_cast<INT64>(0));
+  const UINT64 u_exp        = static_cast<UINT64>(!b_exp_is_neg ? my_exp : static_cast<INT64>(-my_exp));
+
+  str += (my_uppercase ? "E" : "e");
+  str += (b_exp_is_neg ? "-" : "+");
+  std::string str_exp = Util::lexical_cast(static_cast<INT64>(u_exp));
+
+  // Format the exponent string to have a width that is an even multiple of three.
+  const std::size_t str_exp_len      = str_exp.length();
+  const std::size_t str_exp_len_mod3 = static_cast<std::size_t>(str_exp_len % 3u);
+  const std::size_t str_exp_len_pad  = ((str_exp_len_mod3 != static_cast<std::size_t>(0u)) ? static_cast<std::size_t>(3u - (str_exp_len % 3u))
+                                                                                           : static_cast<std::size_t>(0u));
+
+  str += std::string(str_exp_len_pad, static_cast<char>('0'));
+  str += str_exp;
+
+  // Append the sign.
+  if(isneg())
+  {
+    str.insert(static_cast<std::size_t>(0u), "-");
+  }
+  else
+  {
+    if(my_showpos)
     {
-      // The number is medium small in magnitude with a medium, negative exponent.
-      // Insert the decimal point using "0." as well as the leading zeros.
-      str.insert(0u, "0." + std::string(static_cast<std::string::size_type>(-n_exp) - 1u, '0'));
-
-      // Remove all trailing zeros.
-      const std::string::const_reverse_iterator rev_it_non_zero_elem =
-            std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
-
-      if(rev_it_non_zero_elem != str.rbegin())
-      {
-        const std::string::size_type ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rev_it_non_zero_elem);
-        str.erase(str.begin() + ofs, str.end());
-      }
+      str.insert(static_cast<std::size_t>(0u), "+");
     }
-    else if(n_exp >= static_cast<INT64>(my_precision))
+  }
+}
+
+void efx::e_float::wr_string_fixed(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_showpoint, const bool use_pad_when_above_one) const
+{
+  const std::size_t str_len = str.length();
+
+  if(my_exp < static_cast<INT64>(0))
+  {
+    // The number is less than one in magnitude. Insert the decimal
+    // point using "0" or "0." as well as the needed leading zeros.
+    const std::size_t minus_exp_minus_one = static_cast<std::size_t>(-my_exp - 1);
+    const std::string str_zero_insert((std::min)(minus_exp_minus_one, os_precision), static_cast<char>('0'));
+
+    str.insert(0u, "0." + str_zero_insert);
+
+    const INT64 n_pad = static_cast<INT64>(static_cast<INT64>(os_precision) - static_cast<INT64>(str_len + str_zero_insert.length()));
+
+    if(n_pad > static_cast<INT64>(0))
     {
-      // The number is large in magnitude with a large, positive exponent.
-      // Use exponential notation.
-
-      // Remove all trailing zeros.
-      const std::string::const_reverse_iterator rev_it_non_zero_elem =
-            std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
-
-      if(rev_it_non_zero_elem != str.rbegin())
-      {
-        const std::string::size_type ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rev_it_non_zero_elem);
-        str.erase(str.begin() + ofs, str.end());
-      }
-
-      // Insert the decimal point.
-      if(str.length() > 1u)
-      {
-        str.insert(1u, ".");
-      }
-
-      // Append the exponent in uppercase or lower case, including its sign.
-      str += (my_uppercase ? "E" : "e");
-      str += "+";
-      std::string str_exp = Util::lexical_cast(static_cast<INT64>(n_exp));
-      str += std::string(width_of_exponent_field() - str_exp.length(), static_cast<char>('0'));
-      str += str_exp;
-    }
-    else
-    {
-      // The number is medium in magnitude and can be expressed in its decimal form
-      // without using exponential notation.
-
-      // Insert the decimal point.
-      str.insert(static_cast<std::size_t>(n_exp + 1), ".");
-
-      // Remove all trailing zeros.
-      const std::string::const_reverse_iterator rev_it_non_zero_elem =
-            std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
-
-      if(rev_it_non_zero_elem != str.rbegin())
-      {
-        const std::string::size_type ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rev_it_non_zero_elem);
-        str.erase(str.begin() + ofs, str.end());
-      }
-    }
-
-    if(*(str.end() - 1u) == static_cast<char>('.'))
-    {
-      str.erase(str.end() - 1u);
+      str.insert(str.end(), static_cast<std::size_t>(n_pad), static_cast<char>('0'));
     }
   }
   else
   {
-    str.insert(static_cast<std::size_t>(1u), ".");
+    // Insert the decimal point, but only if showpoint is set
+    // and the string does not represent a whole number.
+    const std::size_t my_exp_plus_one = static_cast<std::size_t>(my_exp + 1);
 
-    // Append the exponent in uppercase or lower case, including its sign.
-    const bool   b_exp_is_neg = (n_exp < static_cast<INT64>(0));
-    const UINT64 u_exp        = static_cast<UINT64>(!b_exp_is_neg ? n_exp : static_cast<INT64>(-n_exp));
+    if((!my_showpoint) && (my_exp_plus_one == str.length()))
+    {
+    }
+    else
+    {
+      str.insert(static_cast<std::size_t>(my_exp + 1), ".");
 
-    str += (my_uppercase ? "E" : "e");
-    str += (b_exp_is_neg ? "-" : "+");
-    std::string str_exp = Util::lexical_cast(static_cast<INT64>(u_exp));
-    str += std::string(width_of_exponent_field() - str_exp.length(), static_cast<char>('0'));
-    str += str_exp;
+      // Zero-extend the string to the given precision if necessary.
+      if(use_pad_when_above_one)
+      {
+        const INT64 n_pad = static_cast<INT64>(os_precision) - static_cast<INT64>(static_cast<INT64>(str_len) - (my_exp + 1));
+
+        if(n_pad > static_cast<INT64>(0))
+        {
+          str.insert(str.end(), static_cast<std::size_t>(n_pad), static_cast<char>('0'));
+        }
+      }
+    }
   }
 
   // Append the sign.
