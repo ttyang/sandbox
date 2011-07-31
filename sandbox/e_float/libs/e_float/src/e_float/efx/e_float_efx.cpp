@@ -34,6 +34,14 @@
 
 namespace
 {
+  typedef enum enum_os_float_field_type
+  {
+    os_float_field_scientific,
+    os_float_field_fixed,
+    os_float_field_none
+  }
+  os_float_filed_type;
+
   // Emphasize: This template class can be used with native
   // floating-point types like float, double and long double.
   template<typename native_float_type>
@@ -1428,6 +1436,52 @@ const efx::e_float& efx::e_float::my_value_min(void) const
   return val;
 }
 
+void efx::e_float::round_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits)
+{
+  // Cut the output to the size of the precision.
+  if(str.length() > number_of_digits)
+  {
+    // Get the digit after the last needed digit for rounding
+    const UINT32 round = static_cast<UINT32>(static_cast<UINT32>(str.at(number_of_digits)) - static_cast<UINT32>('0'));
+
+    // Truncate the string
+    str = str.substr(static_cast<std::size_t>(0u), number_of_digits);
+
+    if(round >= static_cast<UINT32>(5u))
+    {
+      std::size_t ix = static_cast<std::size_t>(str.length() - 1u);
+
+      // Every trailing 9 must be rounded up
+      while(ix && (static_cast<INT32>(str.at(ix)) - static_cast<INT32>('0') == static_cast<INT32>(9)))
+      {
+        str.at(ix) = static_cast<char>('0');
+        --ix;
+      }
+
+      if(!ix)
+      {
+        // There were nothing but trailing nines.
+        if(static_cast<INT32>(static_cast<INT32>(str.at(ix)) - static_cast<INT32>(0x30)) == static_cast<INT32>(9))
+        {
+          // Increment up to the next order and adjust exponent.
+          str.at(ix) = static_cast<char>('1');
+          ++my_exp;
+        }
+        else
+        {
+          // Round up this digit
+          ++str.at(ix);
+        }
+      }
+      else
+      {
+        // Round up last digit.
+        ++str[ix];
+      }
+    }
+  }
+}
+
 void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 {
   // Handle INF and NaN.
@@ -1461,24 +1515,33 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
   // Assess the format flags.
   const std::ios::fmtflags f = os.flags();
 
-  const bool my_uppercase  = ((f & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
-  const bool my_showpos    = ((f & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
-  const bool my_scientific = ((f & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u));
-  const bool my_fixed      = ((!my_scientific) && ((f & std::ios::fixed) != static_cast<std::ios::fmtflags>(0u)));
-  const bool my_showpoint  = ((f & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
+  os_float_filed_type my_float_field;
+
+  if((f & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u))
+  {
+    my_float_field = os_float_field_scientific;
+  }
+  else if((f & std::ios::fixed) != static_cast<std::ios::fmtflags>(0u))
+  {
+    my_float_field = os_float_field_fixed;
+  }
+  else
+  {
+    my_float_field = os_float_field_none;
+  }
 
   bool use_scientific = false;
   bool use_fixed = false;
 
-  if(my_scientific)
+  if(my_float_field == os_float_field_scientific)
   {
     use_scientific = true;
   }
-  else if(my_fixed)
+  else if(my_float_field == os_float_field_fixed)
   {
     use_fixed = true;
   }
-  else // The float-field is not set.
+  else // os_float_field_none
   {
     if(my_exp < static_cast<INT64>(-4))
     {
@@ -1534,70 +1597,54 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
   }
 
   // Cut the output to the size of the precision.
-  if(str.length() > the_number_of_digits_i_want_from_e_float)
+  round_output_string(str, my_exp, the_number_of_digits_i_want_from_e_float);
+
+  // Obtain additional format information.
+  const bool my_uppercase  = ((f & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
+  const bool my_showpos    = ((f & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
+  const bool my_showpoint  = ((f & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
+
+  // Write the output string in the desired format.
+  if(my_float_field == os_float_field_scientific)
   {
-    // Get the digit after the last needed digit for rounding
-    const UINT32 round = static_cast<UINT32>(static_cast<UINT32>(str.at(the_number_of_digits_i_want_from_e_float)) - static_cast<UINT32>('0'));
-
-    // Truncate the string
-    str = str.substr(static_cast<std::size_t>(0u), the_number_of_digits_i_want_from_e_float);
-
-    if(round >= static_cast<UINT32>(5u))
-    {
-      std::size_t ix = static_cast<std::size_t>(str.length() - 1u);
-
-      // Every trailing 9 must be rounded up
-      while(ix && (static_cast<INT32>(str.at(ix)) - static_cast<INT32>('0') == static_cast<INT32>(9)))
-      {
-        str.at(ix) = static_cast<char>('0');
-        --ix;
-      }
-
-      if(!ix)
-      {
-        // There were nothing but trailing nines.
-        if(static_cast<INT32>(static_cast<INT32>(str.at(ix)) - static_cast<INT32>(0x30)) == static_cast<INT32>(9))
-        {
-          // Increment up to the next order and adjust exponent.
-          str.at(ix) = static_cast<char>('1');
-          ++my_exp;
-        }
-        else
-        {
-          // Round up this digit
-          ++str.at(ix);
-        }
-      }
-      else
-      {
-        // Round up last digit.
-        ++str[ix];
-      }
-    }
+    wr_string_scientific(str, my_exp, os_precision, my_showpoint, my_uppercase);
   }
-
-  if(my_scientific)
+  else if(my_float_field == os_float_field_fixed)
   {
-    wr_string_scientific(str, my_exp, os_precision, my_showpos, my_uppercase);
+    wr_string_fixed(str, my_exp, os_precision, my_showpoint);
   }
-  else if(my_fixed)
-  {
-    wr_string_fixed(str, my_exp, os_precision, my_showpos, my_showpoint);
-  }
-  else // The float-field is not set.
+  else // os_float_field_none
   {
     if(use_scientific)
     {
-      wr_string_scientific(str, my_exp, os_precision, my_showpos, my_uppercase);
+      wr_string_scientific(str, my_exp, os_precision, my_showpoint, my_uppercase, true);
     }
-    else if(use_fixed)
+    else // use_fixed
     {
-      wr_string_fixed(str, my_exp, os_precision, my_showpos, my_showpoint, true);
+      wr_string_fixed(str, my_exp, os_precision, my_showpoint, true);
+    }
+  }
+
+  // Append the sign.
+  if(isneg())
+  {
+    str.insert(static_cast<std::size_t>(0u), "-");
+  }
+  else
+  {
+    if(my_showpos)
+    {
+      str.insert(static_cast<std::size_t>(0u), "+");
     }
   }
 }
 
-void efx::e_float::wr_string_scientific(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_uppercase) const
+void efx::e_float::wr_string_scientific(std::string& str,
+                                        const INT64 my_exp,
+                                        const std::size_t os_precision,
+                                        const bool my_showpoint,
+                                        const bool my_uppercase,
+                                        const bool trim_trailing_zeros)
 {
   if(os_precision > static_cast<std::size_t>(str.length() - 1u))
   {
@@ -1609,6 +1656,24 @@ void efx::e_float::wr_string_scientific(std::string& str, const INT64 my_exp, co
 
   // Insert the decimal point.
   str.insert(static_cast<std::size_t>(1u), ".");
+
+  // Remove all trailing zeros if necessary.
+  if(trim_trailing_zeros)
+  {
+    const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
+
+    if(rit_non_zero != str.rbegin())
+    {
+      const std::size_t ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rit_non_zero);
+      str.erase(str.begin() + ofs, str.end());
+    }
+  }
+
+  // Remove the trailing decimal point if necessary.
+  if((str.back() == static_cast<char>('.')) && (!my_showpoint))
+  {
+    str.pop_back();
+  }
 
   // Append the exponent in uppercase or lower case, including its sign.
   const bool   b_exp_is_neg = (my_exp < static_cast<INT64>(0));
@@ -1626,22 +1691,13 @@ void efx::e_float::wr_string_scientific(std::string& str, const INT64 my_exp, co
 
   str += std::string(str_exp_len_pad, static_cast<char>('0'));
   str += str_exp;
-
-  // Append the sign.
-  if(isneg())
-  {
-    str.insert(static_cast<std::size_t>(0u), "-");
-  }
-  else
-  {
-    if(my_showpos)
-    {
-      str.insert(static_cast<std::size_t>(0u), "+");
-    }
-  }
 }
 
-void efx::e_float::wr_string_fixed(std::string& str, const INT64 my_exp, const std::size_t os_precision, const bool my_showpos, const bool my_showpoint, const bool trim_trailing_zeros) const
+void efx::e_float::wr_string_fixed(std::string& str,
+                                   const INT64 my_exp,
+                                   const std::size_t os_precision,
+                                   const bool my_showpoint,
+                                   const bool trim_trailing_zeros)
 {
   const std::size_t str_len = str.length();
 
@@ -1677,30 +1733,22 @@ void efx::e_float::wr_string_fixed(std::string& str, const INT64 my_exp, const s
     }
   }
 
+  // Remove all trailing zeros if necessary.
   if(trim_trailing_zeros)
   {
-    while(str.back() == static_cast<char>('0'))
+    const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
+
+    if(rit_non_zero != str.rbegin())
     {
-      str.pop_back();
+      const std::size_t ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rit_non_zero);
+      str.erase(str.begin() + ofs, str.end());
     }
   }
 
+  // Remove the trailing decimal point if necessary.
   if((str.back() == static_cast<char>('.')) && (!my_showpoint))
   {
     str.pop_back();
-  }
-
-  // Append the sign.
-  if(isneg())
-  {
-    str.insert(static_cast<std::size_t>(0u), "-");
-  }
-  else
-  {
-    if(my_showpos)
-    {
-      str.insert(static_cast<std::size_t>(0u), "+");
-    }
   }
 }
 
