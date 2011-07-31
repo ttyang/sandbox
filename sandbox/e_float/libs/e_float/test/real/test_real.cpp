@@ -20,6 +20,7 @@ namespace test
     bool test_case_00002_underflow_mul_x          (const bool b_write_output);
     bool test_case_00003_overflow_x_mul_by_n      (const bool b_write_output);
     bool test_case_00004_underflow_x_div_by_n     (const bool b_write_output);
+    bool test_case_00006_write_os_floatfield_fixed(const bool b_write_output);
     bool test_case_00011_various_elem_math        (const bool b_write_output);
     bool test_case_00021_bernoulli                (const bool b_write_output);
     bool test_case_00051_factorial                (const bool b_write_output);
@@ -62,6 +63,7 @@ bool test::real::test_real(const bool b_write_output)
   test_ok &= test::real::test_case_00002_underflow_mul_x          (b_write_output);
   test_ok &= test::real::test_case_00003_overflow_x_mul_by_n      (b_write_output);
   test_ok &= test::real::test_case_00004_underflow_x_div_by_n     (b_write_output);
+  test_ok &= test::real::test_case_00006_write_os_floatfield_fixed(b_write_output);
   test_ok &= test::real::test_case_00011_various_elem_math        (b_write_output);
   test_ok &= test::real::test_case_00021_bernoulli                (b_write_output);
   test_ok &= test::real::test_case_00051_factorial                (b_write_output);

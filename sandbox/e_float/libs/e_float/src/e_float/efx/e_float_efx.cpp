@@ -42,8 +42,10 @@ namespace
   }
   os_float_filed_type;
 
-  // Emphasize: This template class can be used with native
-  // floating-point types like float, double and long double.
+  // Emphasize: This template class can be used with native floating-point
+  // types like float, double and 10-byte long double. It will need to be
+  // extended for 16-byte long double because the mantissa will no longer
+  // fit in UINT64.
   template<typename native_float_type>
   class native_float_parts : private Util::noncopyable
   {

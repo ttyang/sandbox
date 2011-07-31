@@ -768,7 +768,7 @@
     <ClCompile Include="..\example\example_001_basic_usage_real.cpp" />
     <ClCompile Include="..\example\example_002_basic_usage_imag.cpp" />
     <ClCompile Include="..\example\example_005_recursive_trapezoid_integral.cpp" />
-    <ClCompile Include="..\example\example_008_guass_laguerre.cpp" />
+    <ClCompile Include="..\example\example_008_gauss_laguerre.cpp" />
     <ClCompile Include="..\src\e_float\e_float.cpp" />
     <ClCompile Include="..\src\e_float\e_float_base.cpp" />
     <ClCompile Include="..\src\e_float\efx\e_float_efx.cpp">
@@ -1033,6 +1033,7 @@
     <ClCompile Include="..\test\imag\cases\test_case_02911_z_zeta_crit_strip.cpp" />
     <ClCompile Include="..\test\imag\test_imag.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_0000x_overflow_underflow.cpp" />
+    <ClCompile Include="..\test\real\cases\test_case_0000y_write_to_ostream.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_00011_various_elem_math.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_00021_bernoulli.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_00051_factorial.cpp" />

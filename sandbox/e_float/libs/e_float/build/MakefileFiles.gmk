@@ -51,7 +51,7 @@ FILES_FUNCTIONS = ../src/functions/constants/constants \
 FILES_EXAMPLES  = ../example/example_001_basic_usage_real                       \
                   ../example/example_002_basic_usage_imag                       \
                   ../example/example_005_recursive_trapezoid_integral           \
-                  ../example/example_008_guass_laguerre
+                  ../example/example_008_gauss_laguerre
 
 #
 # Test files
@@ -69,6 +69,7 @@ FILES_TEST_SPOT = ../test/spot/test_spot
 #
 FILES_TEST_REAL = ../test/real/test_real                                       \
                   ../test/real/cases/test_case_0000x_overflow_underflow        \
+                  ../test/real/cases/test_case_0000y_write_to_ostream          \
                   ../test/real/cases/test_case_00011_various_elem_math         \
                   ../test/real/cases/test_case_00021_bernoulli                 \
                   ../test/real/cases/test_case_00051_factorial                 \

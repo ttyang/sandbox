@@ -94,9 +94,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\example\example_008_guass_laguerre.cpp">
-      <Filter>libs\e_float\example</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\e_float\e_float.cpp">
       <Filter>libs\e_float\src\e_float</Filter>
     </ClCompile>
@@ -372,6 +369,12 @@
     </ClCompile>
     <ClCompile Include="..\test\imag\cases\test_case_02911_z_zeta_crit_strip.cpp">
       <Filter>libs\e_float\test\imag\cases</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\real\cases\test_case_0000y_write_to_ostream.cpp">
+      <Filter>libs\e_float\test\real\cases</Filter>
+    </ClCompile>
+    <ClCompile Include="..\example\example_008_gauss_laguerre.cpp">
+      <Filter>libs\e_float\example</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
