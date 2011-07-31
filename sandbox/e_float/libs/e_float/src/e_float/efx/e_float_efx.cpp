@@ -1672,9 +1672,9 @@ void efx::e_float::wr_string_scientific(std::string& str,
   }
 
   // Remove the trailing decimal point if necessary.
-  if((str.back() == static_cast<char>('.')) && (!my_showpoint))
+  if((*(str.end() - 1u) == static_cast<char>('.')) && (!my_showpoint))
   {
-    str.pop_back();
+    str.erase(str.end() - 1u, str.end());
   }
 
   // Append the exponent in uppercase or lower case, including its sign.
@@ -1748,9 +1748,9 @@ void efx::e_float::wr_string_fixed(std::string& str,
   }
 
   // Remove the trailing decimal point if necessary.
-  if((str.back() == static_cast<char>('.')) && (!my_showpoint))
+  if((*(str.end() - 1u) == static_cast<char>('.')) && (!my_showpoint))
   {
-    str.pop_back();
+    str.erase(str.end() - 1u, str.end());
   }
 }
 

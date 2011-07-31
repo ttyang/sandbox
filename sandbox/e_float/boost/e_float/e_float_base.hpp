@@ -43,6 +43,10 @@
     #error The e_float type is undefined! Define the e_float type!
   #endif
 
+  // Create a loud link error if the e_float headers mismatch a Lib or DLL.
+  template<const INT32 digits10> INT32 digits_match_lib_dll(void);
+  template<> INT32 digits_match_lib_dll<E_FLOAT_DIGITS10>(void);
+
   class e_float_base
   {
   public:
@@ -158,21 +162,14 @@
     static e_float my_cyl_bessel_jn(const INT32, const e_float&);
     static e_float my_cyl_bessel_yn(const INT32, const e_float&);
 
-  private:
-
-    template<const INT32 digits10>
-    struct digits_match_lib_dll
-    {
-      static INT32 value(void);
-    };
-
-    static bool digits_match_lib_dll_is_ok;
-
   protected:
     e_float_base()
     {
-      digits_match_lib_dll_is_ok = (digits_match_lib_dll<ef_digits10>::value() == ef_digits10);
+      digits_match_lib_dll_is_ok = (::digits_match_lib_dll<E_FLOAT_DIGITS10>() == E_FLOAT_DIGITS10);
     }
+
+  private:
+    static bool digits_match_lib_dll_is_ok;
   };
 
   std::ostream& operator<<(std::ostream& os, const e_float_base& f);

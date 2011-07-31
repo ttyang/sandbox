@@ -13,14 +13,8 @@
 
 bool e_float_base::digits_match_lib_dll_is_ok;
 
-// The purpose of this template specialization is to create a loud
-// link error if the e_float headers are erroneously mismatched with
-// a library or DLL that has a different number of digits.
-template<>
-INT32 e_float_base::digits_match_lib_dll<e_float_base::ef_digits10>::value(void)
-{
-  return e_float_base::ef_digits10;
-}
+// Create a loud link error if the e_float headers mismatch a Lib or DLL.
+template<> INT32 digits_match_lib_dll<e_float_base::ef_digits10>(void) { return e_float_base::ef_digits10; }
 
 std::ostream& operator<<(std::ostream& os, const e_float_base& f)
 {

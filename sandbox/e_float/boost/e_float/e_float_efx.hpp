@@ -182,7 +182,7 @@
       virtual void wr_string(std::string& str, std::ostream& os) const;
       virtual bool rd_string(const char* const s);
 
-      static void e_float::round_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits);
+      static void round_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits);
 
       static void wr_string_scientific(std::string& str,
                                        const INT64 my_exp,

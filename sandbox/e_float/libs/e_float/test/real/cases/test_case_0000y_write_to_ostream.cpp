@@ -37,8 +37,8 @@ namespace
 
     std::string str_pi(str.begin(), str.begin() + (number_of_digits + 3u));
 
-    bool b_round_up = (str_pi.back() >= static_cast<char>('5'));
-    str_pi.pop_back();
+    const bool b_round_up = (*(str_pi.end() - 1u) >= static_cast<char>('5'));
+    str_pi.erase(str_pi.end() - 1u, str_pi.end());
 
     if(b_round_up)
     {
