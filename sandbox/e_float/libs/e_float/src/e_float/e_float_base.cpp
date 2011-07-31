@@ -13,7 +13,8 @@
 
 bool e_float_base::digits_match_lib_dll_is_ok;
 
-// Create a loud link error if the e_float headers mismatch a Lib or DLL.
+// Create a loud link error if the digits in the
+// e_float headers mismatch those in a Lib or DLL.
 template<> INT32 digits_match_lib_dll<e_float_base::ef_digits10>(void) { return e_float_base::ef_digits10; }
 
 std::ostream& operator<<(std::ostream& os, const e_float_base& f)
