@@ -197,20 +197,38 @@ namespace test
         ss << std::fixed << std::showpos << std::showpoint << std::setprecision(29) << ef::pi() / e_float("1e10");
         str = ss.str();
         data.push_back(e_float(str));
-        str_pi = ::make_pi_string(static_cast<std::size_t>(19));
+        str_pi = ::make_pi_string(static_cast<std::size_t>(19u));
         str_pi.erase(str_pi.begin() + 1u);
         my_test_result &= (str == (std::string("+0.") + (std::string(9u, static_cast<char>('0')) + str_pi)));
         ss.clear();
         ss.str("");
 
-        // Note negative sign.
+        // Note the negative sign.
         ss << std::fixed << std::showpos << std::showpoint << std::setprecision(19) << -ef::pi() * e_float("1e10");
         str = ss.str();
         data.push_back(e_float(str));
-        str_pi = ::make_pi_string(static_cast<std::size_t>(29));
+        str_pi = ::make_pi_string(static_cast<std::size_t>(29u));
         str_pi.erase(str_pi.begin() + 1u);
         str_pi.insert(str_pi.begin() + 11u, 1u, static_cast<char>('.'));
         my_test_result &= (str == (std::string("-") + str_pi));
+        ss.clear();
+        ss.str("");
+
+        // Test right-justify and fill.
+        ss << std::fixed << std::noshowpos << std::showpoint << std::setprecision(20) << std::setw(100) << std::setfill(static_cast<char>('$')) << ef::pi();
+        str = ss.str();
+        data.push_back(e_float(str));
+        static const std::string str_dollar(static_cast<std::size_t>(78u), static_cast<char>('$'));
+        my_test_result &= (str == (str_dollar + std::string("3.14159265358979323846")));
+        ss.clear();
+        ss.str("");
+
+        // Test left-justify and fill.
+        ss << std::fixed << std::noshowpos << std::showpoint << std::setprecision(20) << std::setw(100) << std::setfill(static_cast<char>('*')) << std::left << ef::pi();
+        str = ss.str();
+        data.push_back(e_float(str));
+        static const std::string str_star(static_cast<std::size_t>(78u), static_cast<char>('*'));
+        my_test_result &= (str == (std::string("3.14159265358979323846") + str_star));
         ss.clear();
         ss.str("");
       }
