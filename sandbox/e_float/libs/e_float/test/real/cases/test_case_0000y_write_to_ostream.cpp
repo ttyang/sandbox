@@ -82,7 +82,8 @@ namespace test
 
       virtual const std::vector<e_float>& control_data(void) const
       {
-        static const std::vector<e_float> dummy; return dummy;
+        static const std::vector<e_float> dummy(1u, ef::one());
+        return dummy;
       }
 
     public:
@@ -202,6 +203,7 @@ namespace test
         ss.clear();
         ss.str("");
 
+        // Note negative sign.
         ss << std::fixed << std::showpos << std::showpoint << std::setprecision(19) << -ef::pi() * e_float("1e10");
         str = ss.str();
         data.push_back(e_float(str));
@@ -279,6 +281,7 @@ namespace test
         ss.clear();
         ss.str("");
 
+        // Note negative sign.
         ss << std::scientific << std::showpos << std::showpoint << std::setprecision(20) << -ef::pi() * e_float("1e-43");
         str = ss.str();
         data.push_back(e_float(str));
@@ -286,6 +289,7 @@ namespace test
         ss.clear();
         ss.str("");
 
+        // Note uppercase.
         ss << std::scientific << std::showpos << std::showpoint << std::uppercase << std::setprecision(20) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));

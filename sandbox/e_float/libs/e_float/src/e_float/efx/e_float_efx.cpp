@@ -1396,7 +1396,6 @@ efx::e_float efx::e_float::extract_decimal_part(void) const
   return x;
 }
 
-// NOCOVER_BLK_BEG
 const efx::e_float& efx::e_float::my_value_nan(void) const
 {
   static e_float val = ef::zero();
@@ -1407,7 +1406,6 @@ const efx::e_float& efx::e_float::my_value_nan(void) const
 
   return qnan;
 }
-// NOCOVER_BLK_END
 
 const efx::e_float& efx::e_float::my_value_inf(void) const
 {
