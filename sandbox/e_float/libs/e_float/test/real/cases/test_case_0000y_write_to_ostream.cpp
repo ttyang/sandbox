@@ -317,6 +317,120 @@ namespace test
       }
     };
 
+    class TestCase_case_00008_write_os_floatfield_not_set : public TestCaseWriteToOstreamBase
+    {
+    public:
+      TestCase_case_00008_write_os_floatfield_not_set() { }
+      virtual ~TestCase_case_00008_write_os_floatfield_not_set() { }
+    private:
+      virtual const std::string& name(void) const
+      {
+        static const std::string str("TestCase_case_00008_write_os_floatfield_not_set");
+        return str;
+      }
+      virtual void e_float_test(std::vector<e_float>& data) const
+      {
+        data.clear();
+
+        my_test_result = true;
+
+        std::string str;
+        std::stringstream ss;
+
+        ss << ef::million();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("1000000"));
+        ss.clear();
+        ss.str("");
+
+        ss << e_float(100000000000uLL); // 10^11
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("1e+011"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpoint << ef::googol();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("1.e+100"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::noshowpoint << ef::googol();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("1e+100"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::noshowpoint << (static_cast<INT32>(1) / ef::googol());
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("1e-100"));
+        ss.clear();
+        ss.str("");
+
+        ss << e_float("1e1234");
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("1e+001234"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpoint << ef::eight();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("8."));
+        ss.clear();
+        ss.str("");
+
+        ss << std::noshowpoint << ef::eight();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("8"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::noshowpos << std::noshowpoint << std::setprecision(0) << ef::pi();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("3"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::noshowpos << std::noshowpoint << std::setprecision(0) << (ef::pi() * static_cast<INT32>(100));
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("314"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpos << std::showpoint << std::setprecision(1) << ef::pi();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("+3.1"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpos << std::showpoint << std::setprecision(20) << ef::pi();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("+3.14159265358979323846"));
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpos << std::showpoint << std::setprecision(1000) << ef::pi();
+        str = ss.str();
+        data.push_back(e_float(str));
+        std::string str_pi = ::make_pi_string(static_cast<std::size_t>(std::numeric_limits<e_float>::max_digits10));
+        my_test_result &= (str == (std::string("+") + str_pi));
+        ss.clear();
+        ss.str("");
+      }
+    };
+
     bool test_case_00006_write_os_floatfield_fixed(const bool b_write_output)
     {
       return TestCase_case_00006_write_os_floatfield_fixed().execute(b_write_output);
@@ -324,6 +438,10 @@ namespace test
     bool test_case_00007_write_os_floatfield_scientific(const bool b_write_output)
     {
       return TestCase_case_00007_write_os_floatfield_scientific().execute(b_write_output);
+    }
+    bool test_case_00008_write_os_floatfield_not_set(const bool b_write_output)
+    {
+      return TestCase_case_00008_write_os_floatfield_not_set().execute(b_write_output);
     }
   }
 }

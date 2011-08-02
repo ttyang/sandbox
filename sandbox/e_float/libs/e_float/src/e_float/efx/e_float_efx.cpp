@@ -1445,21 +1445,9 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
   // Extract all of the digits from e_float, beginning with the first data element.
   str = Util::lexical_cast(data[0]);
 
-  // Readjust the exponent based on the width of the leading data element.
+  // Readjust the exponent based on the width of the first data element.
   INT64 my_exp = ((!iszero()) ? static_cast<INT64>((exp + static_cast<INT64>(str.length())) - static_cast<INT64>(1))
                               : static_cast<INT64>(0));
-
-  // Add the remaining digits after the decimal point.
-  for(std::size_t i = static_cast<std::size_t>(1u); i < static_cast<std::size_t>(ef_elem_number); i++)
-  {
-    std::stringstream ss;
-
-    ss << std::setw(static_cast<std::streamsize>(ef_elem_digits10))
-       << std::setfill(static_cast<char>('0'))
-       << data[i];
-
-    str += ss.str();
-  }
 
   // Get the output stream's precision and limit it to max_digits10.
   // Erroneous negative precision will be set to the zero.
@@ -1488,7 +1476,7 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
       // Use exponential notation.
       use_scientific = true;
     }
-    else if(my_exp >= (std::min)(static_cast<INT64>(std::numeric_limits<e_float>::digits10), static_cast<INT64>(os_precision)))
+    else if(my_exp >= (std::min)(static_cast<INT64>(std::numeric_limits<e_float>::digits10), (std::max)(static_cast<INT64>(os_precision), static_cast<INT64>(7))))
     {
       // The number is large in magnitude with a large, positive exponent.
       // Use exponential notation.
@@ -1535,7 +1523,23 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
     }
   }
 
-  // Cut the output to the size of the precision.
+  // Determine the number of elements needed to provide the requested digits from e_float.
+  const std::size_t number_of_elements = (std::min)(static_cast<std::size_t>((the_number_of_digits_i_want_from_e_float / static_cast<std::size_t>(ef_elem_digits10)) + 2u),
+                                                    static_cast<std::size_t>(ef_elem_number));
+
+  // Extract the remaining digits from e_float after the decimal point.
+  for(std::size_t i = static_cast<std::size_t>(1u); i < number_of_elements; i++)
+  {
+    std::stringstream ss;
+
+    ss << std::setw(static_cast<std::streamsize>(ef_elem_digits10))
+       << std::setfill(static_cast<char>('0'))
+       << data[i];
+
+    str += ss.str();
+  }
+
+  // Trim (and round) the output string to the size of the precision.
   round_output_string(str, my_exp, the_number_of_digits_i_want_from_e_float);
 
   // Obtain additional format information.
