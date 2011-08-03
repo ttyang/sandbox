@@ -1236,7 +1236,7 @@ double efx::e_float::extract_double(void) const
 
   std::stringstream ss;
 
-  ss << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::max_digits10 + 1))
+  ss << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10 + (2 + 1)))
      << std::scientific
      << *this;
 

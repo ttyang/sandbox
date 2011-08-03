@@ -87,13 +87,13 @@
       // Constructors
       e_float(void);
 
-      explicit e_float(const  INT32 n);
-      explicit e_float(const  INT64 n);
-      explicit e_float(const UINT32 u);
-      explicit e_float(const UINT64 u);
-      explicit e_float(const double d);
-      explicit e_float(const char* const s);
-      explicit e_float(const std::string& str);
+      e_float(const  INT32 n);
+      e_float(const  INT64 n);
+      e_float(const UINT32 u);
+      e_float(const UINT64 u);
+      e_float(const double d);
+      e_float(const char* const s);
+      e_float(const std::string& str);
 
       e_float(const e_float& f);
 

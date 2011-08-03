@@ -65,45 +65,45 @@
                   fpclass  (ef_finite),
                   prec_elem(ef_elem_number) { }
 
-      explicit e_float(const INT32 n) : data     (),
-                                        exp      (static_cast<INT64>(0)),
-                                        neg      (n < static_cast<INT32>(0)),
-                                        fpclass  (ef_finite),
-                                        prec_elem(ef_elem_number)
+      e_float(const INT32 n) : data     (),
+                               exp      (static_cast<INT64>(0)),
+                               neg      (n < static_cast<INT32>(0)),
+                               fpclass  (ef_finite),
+                               prec_elem(ef_elem_number)
       {
-        from_uint32(static_cast<UINT32>(neg ? -n : n));
+        from_uint32((!neg) ? static_cast<UINT32>(n) : static_cast<UINT32>(-n));
       }
 
-      explicit e_float(const INT64 n) : data     (),
-                                        exp      (static_cast<INT64>(0)),
-                                        neg      (n < static_cast<INT64>(0)),
-                                        fpclass  (ef_finite),
-                                        prec_elem(ef_elem_number)
+      e_float(const INT64 n) : data     (),
+                               exp      (static_cast<INT64>(0)),
+                               neg      (n < static_cast<INT64>(0)),
+                               fpclass  (ef_finite),
+                               prec_elem(ef_elem_number)
       {
-        from_uint64(static_cast<UINT64>(neg ? -n : n));
+        from_uint64((!neg) ? static_cast<UINT64>(n) : static_cast<UINT64>(-n));
       }
 
-      explicit e_float(const UINT32 u) : data     (),
-                                         exp      (static_cast<INT64>(0)),
-                                         neg      (false),
-                                         fpclass  (ef_finite),
-                                         prec_elem(ef_elem_number)
+      e_float(const UINT32 u) : data     (),
+                                exp      (static_cast<INT64>(0)),
+                                neg      (false),
+                                fpclass  (ef_finite),
+                                prec_elem(ef_elem_number)
       {
         from_uint32(u);
       }
 
-      explicit e_float(const UINT64 u) : data     (),
-                                         exp      (static_cast<INT64>(0)),
-                                         neg      (false),
-                                         fpclass  (ef_finite),
-                                         prec_elem(ef_elem_number)
+      e_float(const UINT64 u) : data     (),
+                                exp      (static_cast<INT64>(0)),
+                                neg      (false),
+                                fpclass  (ef_finite),
+                                prec_elem(ef_elem_number)
       {
         from_uint64(u);
       }
 
-      explicit e_float(const double d);
-      explicit e_float(const char* const s);
-      explicit e_float(const std::string& str);
+      e_float(const double d);
+      e_float(const char* const s);
+      e_float(const std::string& str);
 
       e_float(const e_float& f) : data     (f.data),
                                   exp      (f.exp),

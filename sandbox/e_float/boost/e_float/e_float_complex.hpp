@@ -25,20 +25,17 @@
   class ef_complex
   {
   private:
-
     e_float Re;
     e_float Im;
 
   public:
+    ef_complex(const  INT32 n) : Re(n), Im(ef::zero()) { }
+    ef_complex(const  INT64 n) : Re(n), Im(ef::zero()) { }
+    ef_complex(const UINT32 u) : Re(u), Im(ef::zero()) { }
+    ef_complex(const UINT64 u) : Re(u), Im(ef::zero()) { }
+    ef_complex(const double d) : Re(d), Im(ef::zero()) { }
 
-    explicit ef_complex(const  INT32 n) : Re(n), Im(ef::zero()) { }
-    explicit ef_complex(const  INT64 n) : Re(n), Im(ef::zero()) { }
-    explicit ef_complex(const UINT32 u) : Re(u), Im(ef::zero()) { }
-    explicit ef_complex(const UINT64 u) : Re(u), Im(ef::zero()) { }
-    explicit ef_complex(const double d) : Re(d), Im(ef::zero()) { }
-
-    ef_complex(const e_float& re = ef::zero(), const e_float& im = ef::zero()) : Re(re), Im(im) { }
-
+    ef_complex(const e_float& re = e_float(), const e_float& im = e_float()) : Re(re), Im(im) { }
     ef_complex(const ef_complex& z) : Re(z.Re), Im(z.Im) { }
 
     e_float real(void) const { return Re; }
@@ -91,10 +88,6 @@
     // Operators pre-decrement and post-decrement
     const ef_complex& operator--(void) { --Re; return *this; }
           ef_complex  operator--(int)  { const ef_complex w(*this); --Re; return w; }
-
-    // Unary operators.
-    ef_complex  operator-(void) const { return ef_complex(-Re, -Im); }
-    ef_complex& operator+(void)       { return *this; }
 
     // Operators with integer.
     ef_complex& operator+=(const INT32 n) { Re += n; return *this; }

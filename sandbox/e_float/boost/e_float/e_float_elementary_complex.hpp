@@ -57,16 +57,12 @@
     ef_complex atanh   (const ef_complex& z);
   }
 
-  // Overwrite global template ef_complex operator functions, some of which are overloaded.
-  // These operator functions are:
-  //   operator!=
-  //   operator==
-  //   operator*
-  //   operator+
-  //   operator-
-  //   operator/
-  //   operator<<
-  //   TBD: operator>>
+
+  // Global unary operators of e_float reference.
+  inline       ef_complex  operator-(const ef_complex& u) { return ef_complex(-u.real(), -u.imag()); }
+  inline       ef_complex& operator+(      ef_complex& u) { return u; }
+  inline const ef_complex& operator+(const ef_complex& u) { return u; }
+
   inline bool operator==(const ef_complex& u, const ef_complex& v) { return (u.real() == v.real()) && (u.imag() == v.imag()); }
   inline bool operator!=(const ef_complex& u, const ef_complex& v) { return (u.real() != v.real()) || (u.imag() != v.imag()); }
 
