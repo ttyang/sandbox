@@ -376,6 +376,9 @@
     <ClCompile Include="..\example\example_008_gauss_laguerre.cpp">
       <Filter>libs\e_float\example</Filter>
     </ClCompile>
+    <ClCompile Include="..\test\real\cases\test_case_0000z_global_ops_pod.cpp">
+      <Filter>libs\e_float\test\real\cases</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\functions\gamma\gamma_util.h">

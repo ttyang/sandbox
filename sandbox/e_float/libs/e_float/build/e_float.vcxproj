@@ -1034,6 +1034,7 @@
     <ClCompile Include="..\test\imag\test_imag.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_0000x_overflow_underflow.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_0000y_write_to_ostream.cpp" />
+    <ClCompile Include="..\test\real\cases\test_case_0000z_global_ops_pod.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_00011_various_elem_math.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_00021_bernoulli.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_00051_factorial.cpp" />

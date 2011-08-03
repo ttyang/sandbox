@@ -65,43 +65,21 @@
                   fpclass  (ef_finite),
                   prec_elem(ef_elem_number) { }
 
-      e_float(const INT32 n) : data     (),
-                               exp      (static_cast<INT64>(0)),
-                               neg      (n < static_cast<INT32>(0)),
-                               fpclass  (ef_finite),
-                               prec_elem(ef_elem_number)
-      {
-        from_uint32((!neg) ? static_cast<UINT32>(n) : static_cast<UINT32>(-n));
-      }
-
-      e_float(const INT64 n) : data     (),
-                               exp      (static_cast<INT64>(0)),
-                               neg      (n < static_cast<INT64>(0)),
-                               fpclass  (ef_finite),
-                               prec_elem(ef_elem_number)
-      {
-        from_uint64((!neg) ? static_cast<UINT64>(n) : static_cast<UINT64>(-n));
-      }
-
-      e_float(const UINT32 u) : data     (),
-                                exp      (static_cast<INT64>(0)),
-                                neg      (false),
-                                fpclass  (ef_finite),
-                                prec_elem(ef_elem_number)
-      {
-        from_uint32(u);
-      }
-
-      e_float(const UINT64 u) : data     (),
-                                exp      (static_cast<INT64>(0)),
-                                neg      (false),
-                                fpclass  (ef_finite),
-                                prec_elem(ef_elem_number)
-      {
-        from_uint64(u);
-      }
-
+      e_float(const char n);
+      e_float(const signed char n);
+      e_float(const unsigned char n);
+      e_float(const wchar_t n);
+      e_float(const signed short n);
+      e_float(const unsigned short n);
+      e_float(const signed int n);
+      e_float(const unsigned int n);
+      e_float(const signed long n);
+      e_float(const unsigned long n);
+      e_float(const signed long long n);
+      e_float(const unsigned long long n);
+      e_float(const float f);
       e_float(const double d);
+      e_float(const long double ld);
       e_float(const char* const s);
       e_float(const std::string& str);
 
@@ -120,8 +98,8 @@
       static bool data_elem_is_nonzero_predicate(const UINT32& d) { return (d != static_cast<UINT32>(0u)); }
       static bool char_is_nonzero_predicate     (const char& c)   { return (c != static_cast<char>('0')); }
 
-      void from_uint64(const UINT64 u);
-      void from_uint32(const UINT32 u);
+      void from_unsigned_long_long(const unsigned long long u);
+      void from_unsigned_long(const unsigned long u);
 
       INT32 cmp_data(const array_type& vd) const;
 

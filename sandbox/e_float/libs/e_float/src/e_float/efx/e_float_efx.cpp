@@ -52,12 +52,12 @@ namespace
   public:
     native_float_parts(const native_float_type f) : u(0uLL), e(0) { make_parts(f); }
 
-    const UINT64& get_mantissa(void) const { return u; }
-    const int&    get_exponent(void) const { return e; }
+    const unsigned long long& get_mantissa(void) const { return u; }
+    const int& get_exponent(void) const { return e; }
 
   private:
-    UINT64 u;
-    int    e;
+    unsigned long long u;
+    int e;
 
     native_float_parts();
 
@@ -91,10 +91,165 @@ namespace
       }
 
       // Ensure that the value is normalized and adjust the exponent.
-      u |= static_cast<UINT64>(1uLL << (std::numeric_limits<native_float_type>::digits - 1));
+      u |= static_cast<unsigned long long>(1uLL << (std::numeric_limits<native_float_type>::digits - 1));
       e -= 1;
     }
   };
+}
+
+efx::e_float::e_float(const char n) : data     (),
+                                      exp      (static_cast<INT64>(0)),
+                                      neg      (std::numeric_limits<char>::is_signed ? (n < static_cast<char>(0)) : false),
+                                      fpclass  (ef_finite),
+                                      prec_elem(ef_elem_number)
+{
+  from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+}
+
+efx::e_float::e_float(const signed char n) : data     (),
+                                             exp      (static_cast<INT64>(0)),
+                                             neg      (n < static_cast<INT32>(0)),
+                                             fpclass  (ef_finite),
+                                             prec_elem(ef_elem_number)
+{
+  from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+}
+
+efx::e_float::e_float(const unsigned char n) : data     (),
+                                               exp      (static_cast<INT64>(0)),
+                                               neg      (false),
+                                               fpclass  (ef_finite),
+                                               prec_elem(ef_elem_number)
+{
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+efx::e_float::e_float(const wchar_t n) : data     (),
+                                         exp      (static_cast<INT64>(0)),
+                                         neg      (false),
+                                         fpclass  (ef_finite),
+                                         prec_elem(ef_elem_number)
+{
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+efx::e_float::e_float(const signed short n) : data     (),
+                                              exp      (static_cast<INT64>(0)),
+                                              neg      (n < static_cast<INT32>(0)),
+                                              fpclass  (ef_finite),
+                                              prec_elem(ef_elem_number)
+{
+  from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+}
+
+efx::e_float::e_float(const unsigned short n) : data     (),
+                                                exp      (static_cast<INT64>(0)),
+                                                neg      (false),
+                                                fpclass  (ef_finite),
+                                                prec_elem(ef_elem_number)
+{
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+efx::e_float::e_float(const signed int n) : data     (),
+                                            exp      (static_cast<INT64>(0)),
+                                            neg      (n < 0),
+                                            fpclass  (ef_finite),
+                                            prec_elem(ef_elem_number)
+{
+  from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+}
+
+efx::e_float::e_float(const unsigned int n) : data     (),
+                                              exp      (static_cast<INT64>(0)),
+                                              neg      (false),
+                                              fpclass  (ef_finite),
+                                              prec_elem(ef_elem_number)
+{
+  from_unsigned_long(n);
+}
+
+efx::e_float::e_float(const signed long n) : data     (),
+                                             exp      (static_cast<INT64>(0)),
+                                             neg      (n < static_cast<signed long>(0)),
+                                             fpclass  (ef_finite),
+                                             prec_elem(ef_elem_number)
+{
+  from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+}
+
+efx::e_float::e_float(const unsigned long n) : data     (),
+                                               exp      (static_cast<INT64>(0)),
+                                               neg      (false),
+                                               fpclass  (ef_finite),
+                                               prec_elem(ef_elem_number)
+{
+  from_unsigned_long(n);
+}
+
+efx::e_float::e_float(const signed long long n) : data     (),
+                                                  exp      (static_cast<INT64>(0)),
+                                                  neg      (n < static_cast<signed long long>(0)),
+                                                  fpclass  (ef_finite),
+                                                  prec_elem(ef_elem_number)
+{
+  from_unsigned_long_long((!neg) ? static_cast<unsigned long long>(n) : static_cast<UINT64>(-n));
+}
+
+efx::e_float::e_float(const unsigned long long n) : data     (),
+                                                    exp      (static_cast<INT64>(0)),
+                                                    neg      (false),
+                                                    fpclass  (ef_finite),
+                                                    prec_elem(ef_elem_number)
+{
+  from_unsigned_long_long(n);
+}
+
+efx::e_float::e_float(const float f) : data     (),
+                                       exp      (static_cast<INT64>(0)),
+                                       neg      (false),
+                                       fpclass  (ef_finite),
+                                       prec_elem(ef_elem_number)
+{
+  bool b_neg;
+
+  {
+    const double d = static_cast<double>(f);
+
+    b_neg = ef::isneg(d);
+
+    if(!ef::isfinite(d))
+    {
+      operator=(ef::isnan(d) ? my_value_nan() : ((!ef::isneg(d)) ? my_value_inf() : -my_value_inf()));
+      return;
+    }
+  }
+
+  const native_float_parts<float> fb((!b_neg) ? f : -f);
+
+  // Create an e_float from the fractional part of the
+  // mantissa expressed as an unsigned long long.
+  from_unsigned_long_long(fb.get_mantissa());
+
+  // Scale the UINT64 representation to the fractional part of
+  // the double and multiply with the base-2 exponent.
+  const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
+
+  if(p2 == 0) { }
+  else if((p2 > 0) && (p2 < 27))
+  {
+    mul_by_int(static_cast<INT32>(1uL << p2));
+  }
+  else if((p2 < 0) && (p2 > -27))
+  {
+    div_by_int(static_cast<INT32>(1uL << -p2));
+  }
+  else
+  {
+    operator*=(ef::pow2(static_cast<INT64>(p2)));
+  }
+
+  neg = b_neg;
 }
 
 efx::e_float::e_float(const double d) : data     (),
@@ -108,7 +263,7 @@ efx::e_float::e_float(const double d) : data     (),
 
   if(!ef::isfinite(d))
   {
-    operator=(ef::isnan(d) ? my_value_nan() : my_value_inf());
+    operator=(ef::isnan(d) ? my_value_nan() : ((!ef::isneg(d)) ? my_value_inf() : -my_value_inf()));
   }
   else
   {
@@ -117,8 +272,8 @@ efx::e_float::e_float(const double d) : data     (),
     const native_float_parts<double> db((!b_neg) ? d : -d);
 
     // Create an e_float from the fractional part of the
-    // mantissa expressed as a UINT64.
-    from_uint64(db.get_mantissa());
+    // mantissa expressed as an unsigned long long.
+    from_unsigned_long_long(db.get_mantissa());
 
     // Scale the UINT64 representation to the fractional part of
     // the double and multiply with the base-2 exponent.
@@ -140,6 +295,53 @@ efx::e_float::e_float(const double d) : data     (),
 
     neg = b_neg;
   }
+}
+
+efx::e_float::e_float(const long double ld) : data     (),
+                                              exp      (static_cast<INT64>(0)),
+                                              neg      (false),
+                                              fpclass  (ef_finite),
+                                              prec_elem(ef_elem_number)
+{
+  bool b_neg;
+
+  {
+    const double d = static_cast<double>(ld);
+
+    b_neg = ef::isneg(d);
+
+    if(!ef::isfinite(d))
+    {
+      operator=(ef::isnan(d) ? my_value_nan() : ((!ef::isneg(d)) ? my_value_inf() : -my_value_inf()));
+      return;
+    }
+  }
+
+  const native_float_parts<long double> ldb((!b_neg) ? ld : -ld);
+
+  // Create an e_float from the fractional part of the
+  // mantissa expressed as an unsigned long long.
+  from_unsigned_long_long(ldb.get_mantissa());
+
+  // Scale the UINT64 representation to the fractional part of
+  // the double and multiply with the base-2 exponent.
+  const int p2 = ldb.get_exponent() - (std::numeric_limits<long double>::digits - 1);
+
+  if(p2 == 0) { }
+  else if((p2 > 0) && (p2 < 27))
+  {
+    mul_by_int(static_cast<INT32>(1uL << p2));
+  }
+  else if((p2 < 0) && (p2 > -27))
+  {
+    div_by_int(static_cast<INT32>(1uL << -p2));
+  }
+  else
+  {
+    operator*=(ef::pow2(static_cast<INT64>(p2)));
+  }
+
+  neg = b_neg;
 }
 
 efx::e_float::e_float(const char* const s) : data     (),
@@ -242,7 +444,7 @@ efx::e_float::e_float(const double mantissa,
   }
 }
 
-void efx::e_float::from_uint32(const UINT32 u)
+void efx::e_float::from_unsigned_long(const unsigned long u)
 {
   std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
 
@@ -269,7 +471,7 @@ void efx::e_float::from_uint32(const UINT32 u)
   }
 }
 
-void efx::e_float::from_uint64(const UINT64 u)
+void efx::e_float::from_unsigned_long_long(const unsigned long long u)
 {
   std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
 

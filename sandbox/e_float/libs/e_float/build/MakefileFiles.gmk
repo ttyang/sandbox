@@ -70,6 +70,7 @@ FILES_TEST_SPOT = ../test/spot/test_spot
 FILES_TEST_REAL = ../test/real/test_real                                       \
                   ../test/real/cases/test_case_0000x_overflow_underflow        \
                   ../test/real/cases/test_case_0000y_write_to_ostream          \
+                  ../test/real/cases/test_case_0000z_global_ops_pod            \
                   ../test/real/cases/test_case_00011_various_elem_math         \
                   ../test/real/cases/test_case_00021_bernoulli                 \
                   ../test/real/cases/test_case_00051_factorial                 \

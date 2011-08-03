@@ -29,11 +29,24 @@
     e_float Im;
 
   public:
-    ef_complex(const  INT32 n) : Re(n), Im(ef::zero()) { }
-    ef_complex(const  INT64 n) : Re(n), Im(ef::zero()) { }
-    ef_complex(const UINT32 u) : Re(u), Im(ef::zero()) { }
-    ef_complex(const UINT64 u) : Re(u), Im(ef::zero()) { }
-    ef_complex(const double d) : Re(d), Im(ef::zero()) { }
+    ef_complex(const char n)               : Re(n), Im(ef::zero()) { }
+    ef_complex(const signed char n)        : Re(n), Im(ef::zero()) { }
+    ef_complex(const unsigned char n)      : Re(n), Im(ef::zero()) { }
+    ef_complex(const wchar_t n)            : Re(n), Im(ef::zero()) { }
+    ef_complex(const signed short n)       : Re(n), Im(ef::zero()) { }
+    ef_complex(const unsigned short n)     : Re(n), Im(ef::zero()) { }
+    ef_complex(const signed int n)         : Re(n), Im(ef::zero()) { }
+    ef_complex(const unsigned int n)       : Re(n), Im(ef::zero()) { }
+    ef_complex(const signed long n)        : Re(n), Im(ef::zero()) { }
+    ef_complex(const unsigned long n)      : Re(n), Im(ef::zero()) { }
+    ef_complex(const signed long long n)   : Re(n), Im(ef::zero()) { }
+    ef_complex(const unsigned long long n) : Re(n), Im(ef::zero()) { }
+    ef_complex(const float f)              : Re(f), Im(ef::zero()) { }
+    ef_complex(const double d)             : Re(d), Im(ef::zero()) { }
+    ef_complex(const long double ld)       : Re(ld), Im(ef::zero()) { }
+
+    explicit ef_complex(const char* const s)    : Re(s), Im(ef::zero()) { }
+    explicit ef_complex(const std::string& str) : Re(str), Im(ef::zero()) { }
 
     ef_complex(const e_float& re = e_float(), const e_float& im = e_float()) : Re(re), Im(im) { }
     ef_complex(const ef_complex& z) : Re(z.Re), Im(z.Im) { }
