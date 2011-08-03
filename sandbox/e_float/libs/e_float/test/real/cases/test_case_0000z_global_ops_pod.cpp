@@ -18,7 +18,7 @@
 
 namespace
 {
-  struct e_float_equal_to
+  struct e_float_equate_to
   {
     static e_float the_value_min;
     static e_float the_value_max;
@@ -57,8 +57,8 @@ namespace
     }
   };
 
-  e_float e_float_equal_to::the_value_min;
-  e_float e_float_equal_to::the_value_max;
+  e_float e_float_equate_to::the_value_min;
+  e_float e_float_equate_to::the_value_max;
 }
 
 namespace test
@@ -134,20 +134,20 @@ namespace test
 
         my_test_result = true;
 
-        my_test_result &= ::e_float_equal_to::check_utype<char>();
-        my_test_result &= ::e_float_equal_to::check_stype<signed char>();
-        my_test_result &= ::e_float_equal_to::check_utype<unsigned char>();
-        my_test_result &= ::e_float_equal_to::check_utype<wchar_t>();
-        my_test_result &= ::e_float_equal_to::check_stype<signed short>();
-        my_test_result &= ::e_float_equal_to::check_utype<unsigned short>();
-        my_test_result &= ::e_float_equal_to::check_stype<signed int>();
-        my_test_result &= ::e_float_equal_to::check_utype<unsigned int>();
-        my_test_result &= ::e_float_equal_to::check_stype<signed long>();
-        my_test_result &= ::e_float_equal_to::check_utype<unsigned long>();
-        my_test_result &= ::e_float_equal_to::check_stype<signed long long>();
-        my_test_result &= ::e_float_equal_to::check_utype<unsigned long long>();
+        my_test_result &= ::e_float_equate_to::check_utype<char>();
+        my_test_result &= ::e_float_equate_to::check_stype<signed char>();
+        my_test_result &= ::e_float_equate_to::check_utype<unsigned char>();
+        my_test_result &= ::e_float_equate_to::check_utype<wchar_t>();
+        my_test_result &= ::e_float_equate_to::check_stype<signed short>();
+        my_test_result &= ::e_float_equate_to::check_utype<unsigned short>();
+        my_test_result &= ::e_float_equate_to::check_stype<signed int>();
+        my_test_result &= ::e_float_equate_to::check_utype<unsigned int>();
+        my_test_result &= ::e_float_equate_to::check_stype<signed long>();
+        my_test_result &= ::e_float_equate_to::check_utype<unsigned long>();
+        my_test_result &= ::e_float_equate_to::check_stype<signed long long>();
+        my_test_result &= ::e_float_equate_to::check_utype<unsigned long long>();
 
-        e_float x;
+        e_float x(123u);
 
         x = static_cast<float>(4.0f);       my_test_result &= (x == e_float(4u));
         x = static_cast<double>(4.0);       my_test_result &= (x == e_float(4u));

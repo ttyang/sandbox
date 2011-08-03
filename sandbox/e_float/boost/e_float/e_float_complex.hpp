@@ -22,6 +22,18 @@
   // as well as creating a template specialization for e_float.
   // Therefore the separate class ef_complex is needed.
 
+  class ef_complex;
+
+  inline ef_complex& operator+=(ef_complex&, const INT32);
+  inline ef_complex& operator-=(ef_complex&, const INT32);
+  inline ef_complex& operator*=(ef_complex&, const INT32);
+  inline ef_complex& operator/=(ef_complex&, const INT32);
+
+  inline ef_complex& operator+=(ef_complex&, const e_float&);
+  inline ef_complex& operator-=(ef_complex&, const e_float&);
+  inline ef_complex& operator*=(ef_complex&, const e_float&);
+  inline ef_complex& operator/=(ef_complex&, const e_float&);
+
   class ef_complex
   {
   private:
@@ -60,8 +72,6 @@
     e_float norm(void) const { return (Re * Re) + (Im * Im); }
 
     ef_complex& operator=(const ef_complex& v) { Re  = v.Re; Im  = v.Im;       return *this; }
-    ef_complex& operator=(const e_float& v)    { Re  = v;    Im  = ef::zero(); return *this; }
-
     ef_complex& operator+=(const ef_complex& v) { Re += v.Re; Im += v.Im; return *this; }
     ef_complex& operator-=(const ef_complex& v) { Re -= v.Re; Im -= v.Im; return *this; }
 
@@ -89,24 +99,21 @@
       return *this;
     }
 
-    ef_complex& operator+=(const e_float& v) { Re += v;          return *this; }
-    ef_complex& operator-=(const e_float& v) { Re -= v;          return *this; }
-    ef_complex& operator*=(const e_float& v) { Re *= v; Im *= v; return *this; }
-    ef_complex& operator/=(const e_float& v) { Re /= v; Im /= v; return *this; }
-
-    // Operators pre-increment and post-increment
-    const ef_complex& operator++(void) { ++Re; return *this; }
-          ef_complex  operator++(int)  { const ef_complex w(*this); ++Re; return w; }
-
-    // Operators pre-decrement and post-decrement
-    const ef_complex& operator--(void) { --Re; return *this; }
-          ef_complex  operator--(int)  { const ef_complex w(*this); --Re; return w; }
-
     // Operators with integer.
-    ef_complex& operator+=(const INT32 n) { Re += n; return *this; }
-    ef_complex& operator-=(const INT32 n) { Re -= n; return *this; }
-    ef_complex& operator*=(const INT32 n) { Re *= n; Im *= n; return *this; }
-    ef_complex& operator/=(const INT32 n) { Re /= n; Im /= n; return *this; }
+    friend inline ef_complex& ::operator+=(ef_complex&, const INT32);
+    friend inline ef_complex& ::operator-=(ef_complex&, const INT32);
+    friend inline ef_complex& ::operator*=(ef_complex&, const INT32);
+    friend inline ef_complex& ::operator/=(ef_complex&, const INT32);
+
+    // Operators with e_float.
+    friend inline ef_complex& ::operator+=(ef_complex&, const e_float&);
+    friend inline ef_complex& ::operator-=(ef_complex&, const e_float&);
+    friend inline ef_complex& ::operator*=(ef_complex&, const e_float&);
+    friend inline ef_complex& ::operator/=(ef_complex&, const e_float&);
+
+    // Operators pre-increment and pre-decrement
+    const ef_complex& operator++(void) { ++Re; return *this; }
+    const ef_complex& operator--(void) { --Re; return *this; }
 
     bool isnan   (void) const { return Re.isnan()    || Im.isnan(); }
     bool isinf   (void) const { return Re.isinf()    || Im.isinf(); }
