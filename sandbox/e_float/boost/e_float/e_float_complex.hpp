@@ -24,10 +24,65 @@
 
   class ef_complex;
 
-  inline ef_complex& operator+=(ef_complex&, const INT32);
-  inline ef_complex& operator-=(ef_complex&, const INT32);
-  inline ef_complex& operator*=(ef_complex&, const INT32);
-  inline ef_complex& operator/=(ef_complex&, const INT32);
+  inline ef_complex& operator+=(ef_complex&, const signed char);
+  inline ef_complex& operator+=(ef_complex&, const signed short);
+  inline ef_complex& operator+=(ef_complex&, const signed int);
+  inline ef_complex& operator+=(ef_complex&, const signed long);
+  inline ef_complex& operator+=(ef_complex&, const signed long long);
+  inline ef_complex& operator+=(ef_complex&, const unsigned char);
+  inline ef_complex& operator+=(ef_complex&, const wchar_t);
+  inline ef_complex& operator+=(ef_complex&, const unsigned short);
+  inline ef_complex& operator+=(ef_complex&, const unsigned int);
+  inline ef_complex& operator+=(ef_complex&, const unsigned long);
+  inline ef_complex& operator+=(ef_complex&, const unsigned long long);
+  inline ef_complex& operator+=(ef_complex&, const float);
+  inline ef_complex& operator+=(ef_complex&, const double);
+  inline ef_complex& operator+=(ef_complex&, const long double);
+
+  inline ef_complex& operator-=(ef_complex&, const signed char);
+  inline ef_complex& operator-=(ef_complex&, const signed short);
+  inline ef_complex& operator-=(ef_complex&, const signed int);
+  inline ef_complex& operator-=(ef_complex&, const signed long);
+  inline ef_complex& operator-=(ef_complex&, const signed long long);
+  inline ef_complex& operator-=(ef_complex&, const unsigned char);
+  inline ef_complex& operator-=(ef_complex&, const wchar_t);
+  inline ef_complex& operator-=(ef_complex&, const unsigned short);
+  inline ef_complex& operator-=(ef_complex&, const unsigned int);
+  inline ef_complex& operator-=(ef_complex&, const unsigned long);
+  inline ef_complex& operator-=(ef_complex&, const unsigned long long);
+  inline ef_complex& operator-=(ef_complex&, const float);
+  inline ef_complex& operator-=(ef_complex&, const double);
+  inline ef_complex& operator-=(ef_complex&, const long double);
+
+  inline ef_complex& operator*=(ef_complex&, const signed char);
+  inline ef_complex& operator*=(ef_complex&, const signed short);
+  inline ef_complex& operator*=(ef_complex&, const signed int);
+  inline ef_complex& operator*=(ef_complex&, const signed long);
+  inline ef_complex& operator*=(ef_complex&, const signed long long);
+  inline ef_complex& operator*=(ef_complex&, const unsigned char);
+  inline ef_complex& operator*=(ef_complex&, const wchar_t);
+  inline ef_complex& operator*=(ef_complex&, const unsigned short);
+  inline ef_complex& operator*=(ef_complex&, const unsigned int);
+  inline ef_complex& operator*=(ef_complex&, const unsigned long);
+  inline ef_complex& operator*=(ef_complex&, const unsigned long long);
+  inline ef_complex& operator*=(ef_complex&, const float);
+  inline ef_complex& operator*=(ef_complex&, const double);
+  inline ef_complex& operator*=(ef_complex&, const long double);
+
+  inline ef_complex& operator/=(ef_complex&, const signed char);
+  inline ef_complex& operator/=(ef_complex&, const signed short);
+  inline ef_complex& operator/=(ef_complex&, const signed int);
+  inline ef_complex& operator/=(ef_complex&, const signed long);
+  inline ef_complex& operator/=(ef_complex&, const signed long long);
+  inline ef_complex& operator/=(ef_complex&, const unsigned char);
+  inline ef_complex& operator/=(ef_complex&, const wchar_t);
+  inline ef_complex& operator/=(ef_complex&, const unsigned short);
+  inline ef_complex& operator/=(ef_complex&, const unsigned int);
+  inline ef_complex& operator/=(ef_complex&, const unsigned long);
+  inline ef_complex& operator/=(ef_complex&, const unsigned long long);
+  inline ef_complex& operator/=(ef_complex&, const float);
+  inline ef_complex& operator/=(ef_complex&, const double);
+  inline ef_complex& operator/=(ef_complex&, const long double);
 
   inline ef_complex& operator+=(ef_complex&, const e_float&);
   inline ef_complex& operator-=(ef_complex&, const e_float&);
@@ -99,18 +154,6 @@
       return *this;
     }
 
-    // Operators with integer.
-    friend inline ef_complex& ::operator+=(ef_complex&, const INT32);
-    friend inline ef_complex& ::operator-=(ef_complex&, const INT32);
-    friend inline ef_complex& ::operator*=(ef_complex&, const INT32);
-    friend inline ef_complex& ::operator/=(ef_complex&, const INT32);
-
-    // Operators with e_float.
-    friend inline ef_complex& ::operator+=(ef_complex&, const e_float&);
-    friend inline ef_complex& ::operator-=(ef_complex&, const e_float&);
-    friend inline ef_complex& ::operator*=(ef_complex&, const e_float&);
-    friend inline ef_complex& ::operator/=(ef_complex&, const e_float&);
-
     // Operators pre-increment and pre-decrement
     const ef_complex& operator++(void) { ++Re; return *this; }
     const ef_complex& operator--(void) { --Re; return *this; }
@@ -123,6 +166,71 @@
     bool isint   (void) const { return Re.isint()  && Im.iszero(); }
     bool isone   (void) const { return Re.isone()  && Im.iszero(); }
     bool iszero  (void) const { return Re.iszero() && Im.iszero(); }
+
+    friend inline ef_complex& ::operator+=(ef_complex&, const signed char);
+    friend inline ef_complex& ::operator+=(ef_complex&, const signed short);
+    friend inline ef_complex& ::operator+=(ef_complex&, const signed int);
+    friend inline ef_complex& ::operator+=(ef_complex&, const signed long);
+    friend inline ef_complex& ::operator+=(ef_complex&, const signed long long);
+    friend inline ef_complex& ::operator+=(ef_complex&, const unsigned char);
+    friend inline ef_complex& ::operator+=(ef_complex&, const wchar_t);
+    friend inline ef_complex& ::operator+=(ef_complex&, const unsigned short);
+    friend inline ef_complex& ::operator+=(ef_complex&, const unsigned int);
+    friend inline ef_complex& ::operator+=(ef_complex&, const unsigned long);
+    friend inline ef_complex& ::operator+=(ef_complex&, const unsigned long long);
+    friend inline ef_complex& ::operator+=(ef_complex&, const float);
+    friend inline ef_complex& ::operator+=(ef_complex&, const double);
+    friend inline ef_complex& ::operator+=(ef_complex&, const long double);
+
+    friend inline ef_complex& ::operator-=(ef_complex&, const signed char);
+    friend inline ef_complex& ::operator-=(ef_complex&, const signed short);
+    friend inline ef_complex& ::operator-=(ef_complex&, const signed int);
+    friend inline ef_complex& ::operator-=(ef_complex&, const signed long);
+    friend inline ef_complex& ::operator-=(ef_complex&, const signed long long);
+    friend inline ef_complex& ::operator-=(ef_complex&, const unsigned char);
+    friend inline ef_complex& ::operator-=(ef_complex&, const wchar_t);
+    friend inline ef_complex& ::operator-=(ef_complex&, const unsigned short);
+    friend inline ef_complex& ::operator-=(ef_complex&, const unsigned int);
+    friend inline ef_complex& ::operator-=(ef_complex&, const unsigned long);
+    friend inline ef_complex& ::operator-=(ef_complex&, const unsigned long long);
+    friend inline ef_complex& ::operator-=(ef_complex&, const float);
+    friend inline ef_complex& ::operator-=(ef_complex&, const double);
+    friend inline ef_complex& ::operator-=(ef_complex&, const long double);
+
+    friend inline ef_complex& ::operator*=(ef_complex&, const signed char);
+    friend inline ef_complex& ::operator*=(ef_complex&, const signed short);
+    friend inline ef_complex& ::operator*=(ef_complex&, const signed int);
+    friend inline ef_complex& ::operator*=(ef_complex&, const signed long);
+    friend inline ef_complex& ::operator*=(ef_complex&, const signed long long);
+    friend inline ef_complex& ::operator*=(ef_complex&, const unsigned char);
+    friend inline ef_complex& ::operator*=(ef_complex&, const wchar_t);
+    friend inline ef_complex& ::operator*=(ef_complex&, const unsigned short);
+    friend inline ef_complex& ::operator*=(ef_complex&, const unsigned int);
+    friend inline ef_complex& ::operator*=(ef_complex&, const unsigned long);
+    friend inline ef_complex& ::operator*=(ef_complex&, const unsigned long long);
+    friend inline ef_complex& ::operator*=(ef_complex&, const float);
+    friend inline ef_complex& ::operator*=(ef_complex&, const double);
+    friend inline ef_complex& ::operator*=(ef_complex&, const long double);
+
+    friend inline ef_complex& ::operator/=(ef_complex&, const signed char);
+    friend inline ef_complex& ::operator/=(ef_complex&, const signed short);
+    friend inline ef_complex& ::operator/=(ef_complex&, const signed int);
+    friend inline ef_complex& ::operator/=(ef_complex&, const signed long);
+    friend inline ef_complex& ::operator/=(ef_complex&, const signed long long);
+    friend inline ef_complex& ::operator/=(ef_complex&, const unsigned char);
+    friend inline ef_complex& ::operator/=(ef_complex&, const wchar_t);
+    friend inline ef_complex& ::operator/=(ef_complex&, const unsigned short);
+    friend inline ef_complex& ::operator/=(ef_complex&, const unsigned int);
+    friend inline ef_complex& ::operator/=(ef_complex&, const unsigned long);
+    friend inline ef_complex& ::operator/=(ef_complex&, const unsigned long long);
+    friend inline ef_complex& ::operator/=(ef_complex&, const float);
+    friend inline ef_complex& ::operator/=(ef_complex&, const double);
+    friend inline ef_complex& ::operator/=(ef_complex&, const long double);
+
+    friend inline ef_complex& ::operator+=(ef_complex&, const e_float&);
+    friend inline ef_complex& ::operator-=(ef_complex&, const e_float&);
+    friend inline ef_complex& ::operator*=(ef_complex&, const e_float&);
+    friend inline ef_complex& ::operator/=(ef_complex&, const e_float&);
   };
 
   inline std::ostream& operator<<(std::ostream& os, const ef_complex& z) { return os << '(' << z.real() << ',' << z.imag() << ')'; }
