@@ -22,6 +22,9 @@
     e_float floor(const e_float& x);
     e_float ceil (const e_float& x);
     INT32   sgn  (const e_float& x);
+    e_float ldexp(const e_float& v, int e);
+    e_float frexp(const e_float& v, int* expon);
+    e_float fmod (const e_float& v1, const e_float& v2);
 
            bool isnan(const double x);
     inline bool isnan(const e_float& x)        { return x.isnan(); }

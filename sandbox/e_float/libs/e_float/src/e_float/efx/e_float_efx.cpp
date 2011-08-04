@@ -448,62 +448,56 @@ void efx::e_float::from_unsigned_long(const unsigned long u)
 {
   std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
 
-  if(u != static_cast<UINT32>(0u))
-  {
-    const UINT32 data_med = static_cast<UINT32>(u / static_cast<UINT32>(ef_elem_mask));
-    const UINT32 data_lo  = static_cast<UINT32>(u % static_cast<UINT32>(ef_elem_mask));
+  exp = static_cast<INT64>(0);
 
-    if(data_med != static_cast<UINT32>(0u))
-    {
-      data[0] = data_med;
-      data[1] = data_lo;
-      exp     = static_cast<INT64>(ef_elem_digits10);
-    }
-    else
-    {
-      data[0] = data_lo;
-      exp     = static_cast<INT64>(0);
-    }
-  }
-  else
+  std::size_t i = 0u;
+
+  unsigned long uu = u;
+
+  UINT32 temp[(std::numeric_limits<unsigned long>::digits10 / static_cast<int>(ef_elem_digits10)) + 3] = { static_cast<UINT32>(0u) };
+
+  while(uu != static_cast<unsigned long>(0u))
   {
-    exp = static_cast<INT64>(0);
+    temp[i] = static_cast<UINT32>(uu % static_cast<unsigned long>(ef_elem_mask));
+    uu = static_cast<unsigned long>(uu / static_cast<unsigned long>(ef_elem_mask));
+    ++i;
   }
+
+  if(i > static_cast<std::size_t>(1u))
+  {
+    exp += static_cast<INT64>((i - 1u) * static_cast<std::size_t>(ef_elem_digits10));
+  }
+
+  std::reverse(temp, temp + i);
+  std::copy(temp, temp + (std::min)(i, static_cast<std::size_t>(ef_elem_number)), data.begin());
 }
 
 void efx::e_float::from_unsigned_long_long(const unsigned long long u)
 {
   std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
 
-  if(u != static_cast<UINT64>(0u))
-  {
-    const UINT32 data_hi  = static_cast<UINT32>(static_cast<UINT64>(u / static_cast<UINT32>(ef_elem_mask)) / static_cast<UINT32>(ef_elem_mask));
-    const UINT32 data_med = static_cast<UINT32>(                   (u / static_cast<UINT32>(ef_elem_mask)) % static_cast<UINT32>(ef_elem_mask));
-    const UINT32 data_lo  = static_cast<UINT32>(                    u                                      % static_cast<UINT32>(ef_elem_mask));
+  exp = static_cast<INT64>(0);
 
-    if(data_hi != static_cast<UINT32>(0u))
-    {
-      data[0] = data_hi;
-      data[1] = data_med;
-      data[2] = data_lo;
-      exp     = static_cast<INT64>(2 * static_cast<INT32>(ef_elem_digits10));
-    }
-    else if(data_med != static_cast<UINT32>(0u))
-    {
-      data[0] = data_med;
-      data[1] = data_lo;
-      exp     = static_cast<INT64>(ef_elem_digits10);
-    }
-    else
-    {
-      data[0] = data_lo;
-      exp     = static_cast<INT64>(0);
-    }
-  }
-  else
+  std::size_t i = 0u;
+
+  unsigned long long uu = u;
+
+  UINT32 temp[(std::numeric_limits<unsigned long long>::digits10 / static_cast<int>(ef_elem_digits10)) + 3] = { static_cast<UINT32>(0u) };
+
+  while(uu != static_cast<unsigned long long>(0u))
   {
-    exp = static_cast<INT64>(0);
+    temp[i] = static_cast<UINT32>(uu % static_cast<unsigned long long>(ef_elem_mask));
+    uu = static_cast<unsigned long long>(uu / static_cast<unsigned long long>(ef_elem_mask));
+    ++i;
   }
+
+  if(i > static_cast<std::size_t>(1u))
+  {
+    exp += static_cast<INT64>((i - 1u) * static_cast<std::size_t>(ef_elem_digits10));
+  }
+
+  std::reverse(temp, temp + i);
+  std::copy(temp, temp + (std::min)(i, static_cast<std::size_t>(ef_elem_number)), data.begin());
 }
 
 void efx::e_float::mul_loop_uv(const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p)

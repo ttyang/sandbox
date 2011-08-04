@@ -20,16 +20,16 @@ e_float ef::floor(const e_float& x)
 {
   if(!ef::isfinite(x) || ef::isint(x)) { return x; }
 
-  return ef::isneg(x) ? ef::integer_part(x - ef::one())
-                      : ef::integer_part(x);
+  return (ef::isneg(x) ? ef::integer_part(x - ef::one())
+                       : ef::integer_part(x));
 }
 
 e_float ef::ceil(const e_float& x)
 {
   if(!ef::isfinite(x) || ef::isint(x)) { return x; }
 
-  return ef::isneg(x) ? ef::integer_part(x)
-                      : ef::integer_part(x + ef::one());
+  return (ef::isneg(x) ? ef::integer_part(x)
+                       : ef::integer_part(x + ef::one()));
 }
 
 INT32 ef::sgn(const e_float& x)
@@ -42,6 +42,30 @@ INT32 ef::sgn(const e_float& x)
   {
     return (ef::isneg(x) ? static_cast<INT32>(-1) : static_cast<INT32>(1));
   }
+}
+
+e_float ldexp(const e_float& v, int e)
+{
+  return v * ef::pow2(e);
+}
+
+e_float ef::frexp(const e_float& v, int* expon)
+{
+  double d;
+  INT64 i;
+
+  v.extract_parts(d, i);
+
+  *expon = static_cast<int>(i);
+
+  return v * ef::pow2(static_cast<INT64>(-i));
+}
+
+e_float ef::fmod(const e_float& v1, const e_float& v2)
+{
+  const e_float n = (ef::isneg(v1) ? ef::ceil(v1 / v2) : ef::floor(v1 / v2));
+
+  return v1 - (n * v2);
 }
 
 bool ef::isfinite(const double x) { return static_cast<INT32>(::_finite(x)) == static_cast<INT32>(1); }
@@ -134,7 +158,7 @@ bool ef::small_arg(const e_float& x)
   static const INT64  lim_n = static_cast<INT64>(lim_d);
   static const INT64  lim   = (lim_n < 6 ? 6 : lim_n);
 
-  return x.order() < -lim;
+  return (x.order() < static_cast<INT64>(-lim));
 }
 
 bool ef::small_arg(const ef_complex& z)
@@ -148,7 +172,7 @@ bool ef::large_arg(const double x)
   static const double small_tol = ::pow(std::numeric_limits<double>::epsilon(), one_sixth);
   static const double large_tol = 1.0 / small_tol;
 
-  return ::fabs(x) > large_tol;
+  return (::fabs(x) > large_tol);
 }
 
 bool ef::large_arg(const e_float& x)
@@ -157,7 +181,7 @@ bool ef::large_arg(const e_float& x)
   static const INT64  lim_n = static_cast<INT64>(lim_d);
   static const INT64  lim   = (lim_n < 6 ? 6 : lim_n);
 
-  return x.order() > lim;
+  return (x.order() > lim);
 }
 
 bool ef::large_arg(const ef_complex& z) { return ef::large_arg(z.real()); }
