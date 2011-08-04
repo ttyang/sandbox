@@ -33,6 +33,45 @@ std::istream& operator>>(std::istream& is, e_float_base& f)
   return is;
 }
 
+e_float& e_float_base::add_signed_long_long(const signed long long n)
+{
+  if(n < static_cast<signed long long>(0))
+  {
+    negate();
+    add_unsigned_long_long(static_cast<unsigned long long>(-n));
+    negate();
+  }
+  else
+  {
+    add_unsigned_long_long(static_cast<unsigned long long>(n));
+  }
+
+  return static_cast<e_float&>(*this);
+}
+
+e_float& e_float_base::sub_signed_long_long(const signed long long n)
+{
+  return add_signed_long_long(static_cast<signed long long>(-n));
+}
+
+e_float& e_float_base::mul_signed_long_long(const signed long long n)
+{
+  const bool b_neg = (n < static_cast<signed long long>(0));
+
+  mul_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+
+  if(b_neg) { negate(); } return static_cast<e_float&>(*this);
+}
+
+e_float& e_float_base::div_signed_long_long(const signed long long n)
+{
+  const bool b_neg = (n < static_cast<signed long long>(0));
+
+  div_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+
+  if(b_neg) { negate(); } return static_cast<e_float&>(*this);
+}
+
 const std::string::size_type& e_float_base::width_of_exponent_field(void)
 {
   static const std::string::size_type width_of_e_n64 =

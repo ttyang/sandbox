@@ -73,13 +73,20 @@
     virtual void precision(const INT32) = 0;
 
     // Basic operations.
-    virtual e_float_base& operator= (const e_float&) = 0;
-    virtual e_float_base& operator+=(const e_float&) = 0;
-    virtual e_float_base& operator-=(const e_float&) = 0;
-    virtual e_float_base& operator*=(const e_float&) = 0;
-    virtual e_float_base& operator/=(const e_float&) = 0;
-    virtual e_float_base& mul_by_int(const INT32) = 0;
-    virtual e_float_base& div_by_int(const INT32) = 0;
+    virtual e_float& operator= (const e_float&) = 0;
+    virtual e_float& operator+=(const e_float&) = 0;
+    virtual e_float& operator-=(const e_float&) = 0;
+    virtual e_float& operator*=(const e_float&) = 0;
+    virtual e_float& operator/=(const e_float&) = 0;
+    virtual e_float& add_unsigned_long_long(const unsigned long long) = 0;
+    virtual e_float& sub_unsigned_long_long(const unsigned long long) = 0;
+    virtual e_float& mul_unsigned_long_long(const unsigned long long) = 0;
+    virtual e_float& div_unsigned_long_long(const unsigned long long) = 0;
+
+    e_float& add_signed_long_long(const signed long long);
+    e_float& sub_signed_long_long(const signed long long);
+    e_float& mul_signed_long_long(const signed long long);
+    e_float& div_signed_long_long(const signed long long);
 
     virtual e_float_base& calculate_inv (void) = 0;
     virtual e_float_base& calculate_sqrt(void) = 0;

@@ -14,6 +14,7 @@
 #include <iomanip>
 
 #include <e_float/e_float.hpp>
+#include <e_float/e_float_functions.hpp>
 #include "../test_case_real.h"
 
 namespace
@@ -117,15 +118,15 @@ namespace test
       }
     };
 
-    class TestCase_case_00009_global_ops_pod_equal : public TestCaseGlobalOpsPodBase
+    class TestCase_case_00009_global_ops_pod_equate : public TestCaseGlobalOpsPodBase
     {
     public:
-      TestCase_case_00009_global_ops_pod_equal() { }
-      virtual ~TestCase_case_00009_global_ops_pod_equal() { }
+      TestCase_case_00009_global_ops_pod_equate() { }
+      virtual ~TestCase_case_00009_global_ops_pod_equate() { }
     private:
       virtual const std::string& name(void) const
       {
-        static const std::string str("TestCase_case_00009_global_ops_pod_equal");
+        static const std::string str("TestCase_case_00009_global_ops_pod_equate");
         return str;
       }
       virtual void e_float_test(std::vector<e_float>& data) const
@@ -155,9 +156,57 @@ namespace test
       }
     };
 
-    bool test_case_00009_global_ops_pod_equal(const bool b_write_output)
+    class TestCase_case_00010_global_ops_pod_operations : public TestCaseGlobalOpsPodBase
     {
-      return TestCase_case_00009_global_ops_pod_equal().execute(b_write_output);
+    public:
+      TestCase_case_00010_global_ops_pod_operations() { }
+      virtual ~TestCase_case_00010_global_ops_pod_operations() { }
+    private:
+      virtual const std::string& name(void) const
+      {
+        static const std::string str("TestCase_case_00010_global_ops_pod_operations");
+        return str;
+      }
+      virtual void e_float_test(std::vector<e_float>& data) const
+      {
+        data.clear();
+
+        my_test_result = true;
+
+        my_test_result &= (ef::four() == static_cast<float>(4.0f));
+        my_test_result &= (ef::four() == static_cast<double>(4.0));
+        my_test_result &= (ef::four() == static_cast<long double>(4.0));
+
+        my_test_result &= (ef::pi() > static_cast<float>(3.14f));
+        my_test_result &= (ef::pi() > static_cast<double>(3.14));
+        my_test_result &= (ef::pi() > static_cast<long double>(3.14));
+
+        my_test_result &= (static_cast<float>      (0.5f) < ef::euler_gamma());
+        my_test_result &= (static_cast<double>     (0.5)  < ef::euler_gamma());
+        my_test_result &= (static_cast<long double>(0.5)  < ef::euler_gamma());
+
+        my_test_result &= (e_float(static_cast<char>('1')) == static_cast<char>(0x31));
+        my_test_result &= (e_float(static_cast<char>('2')) >  static_cast<char>('1'));
+        my_test_result &= (e_float(static_cast<char>('1')) <  static_cast<char>('2'));
+        my_test_result &= (e_float(static_cast<char>('2')) <= static_cast<char>('2'));
+        my_test_result &= (e_float(static_cast<char>('2')) >= static_cast<char>('2'));
+
+        my_test_result &= (e_float("1e1000") > std::numeric_limits<unsigned long long>::max());
+        my_test_result &= (ef::zero() == 0);
+        my_test_result &= (std::numeric_limits<e_float>::epsilon() > 0);
+
+        my_test_result &= ((ef::one() * 4.0) == 4);
+        my_test_result &= ((4.0 * ef::one()) == 4);
+      }
+    };
+
+    bool test_case_00009_global_ops_pod_equate(const bool b_write_output)
+    {
+      return TestCase_case_00009_global_ops_pod_equate().execute(b_write_output);
+    }
+    bool test_case_00010_global_ops_pod_operations(const bool b_write_output)
+    {
+      return TestCase_case_00010_global_ops_pod_operations().execute(b_write_output);
     }
   }
 }

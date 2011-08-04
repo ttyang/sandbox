@@ -66,15 +66,9 @@
   inline ef_complex operator++(ef_complex& u, int) { const ef_complex v(u); ++u; return v; }
   inline ef_complex operator--(ef_complex& u, int) { const ef_complex v(u); --u; return v; }
 
+  // Global comparison operators
   inline bool operator==(const ef_complex& u, const ef_complex& v) { return (u.real() == v.real()) && (u.imag() == v.imag()); }
   inline bool operator!=(const ef_complex& u, const ef_complex& v) { return (u.real() != v.real()) || (u.imag() != v.imag()); }
-
-  // Global comparison operators
-  bool operator==(const ef_complex& u, const e_float& v);
-  bool operator!=(const ef_complex& u, const e_float& v);
-
-  bool operator==(const e_float& u, const ef_complex& v);
-  bool operator!=(const e_float& u, const ef_complex& v);
 
   // Global arithmetic operators with const ef_complex&, const e_float& and INT32
   inline ef_complex operator+(const ef_complex& u, const ef_complex& v) { return ef_complex(u) += v; }

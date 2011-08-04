@@ -123,8 +123,10 @@
       virtual e_float& operator-=(const e_float& v);
       virtual e_float& operator*=(const e_float& v);
       virtual e_float& operator/=(const e_float& v);
-      virtual e_float& mul_by_int(const INT32 n);
-      virtual e_float& div_by_int(const INT32 n);
+      virtual e_float& add_unsigned_long_long(const unsigned long long n);
+      virtual e_float& sub_unsigned_long_long(const unsigned long long n);
+      virtual e_float& mul_unsigned_long_long(const unsigned long long n);
+      virtual e_float& div_unsigned_long_long(const unsigned long long n);
 
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);

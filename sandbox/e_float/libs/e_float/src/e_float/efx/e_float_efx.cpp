@@ -238,11 +238,11 @@ efx::e_float::e_float(const float f) : data     (),
   if(p2 == 0) { }
   else if((p2 > 0) && (p2 < 27))
   {
-    mul_by_int(static_cast<INT32>(1uL << p2));
+    mul_unsigned_long_long(static_cast<unsigned long long>(1uL << p2));
   }
   else if((p2 < 0) && (p2 > -27))
   {
-    div_by_int(static_cast<INT32>(1uL << -p2));
+    div_unsigned_long_long(static_cast<unsigned long long>(1uL << -p2));
   }
   else
   {
@@ -282,11 +282,11 @@ efx::e_float::e_float(const double d) : data     (),
     if(p2 == 0) { }
     else if((p2 > 0) && (p2 < 27))
     {
-      mul_by_int(static_cast<INT32>(1uL << p2));
+      mul_unsigned_long_long(static_cast<unsigned long long>(1uL << p2));
     }
     else if((p2 < 0) && (p2 > -27))
     {
-      div_by_int(static_cast<INT32>(1uL << -p2));
+      div_unsigned_long_long(static_cast<unsigned long long>(1uL << -p2));
     }
     else
     {
@@ -330,11 +330,11 @@ efx::e_float::e_float(const long double ld) : data     (),
   if(p2 == 0) { }
   else if((p2 > 0) && (p2 < 27))
   {
-    mul_by_int(static_cast<INT32>(1uL << p2));
+    mul_unsigned_long_long(static_cast<unsigned long long>(1uL << p2));
   }
   else if((p2 < 0) && (p2 > -27))
   {
-    div_by_int(static_cast<INT32>(1uL << -p2));
+    div_unsigned_long_long(static_cast<unsigned long long>(1uL << -p2));
   }
   else
   {
@@ -923,18 +923,18 @@ efx::e_float& efx::e_float::operator/=(const e_float& v)
   }
 }
 
-efx::e_float& efx::e_float::mul_by_int(const INT32 n)
+efx::e_float& efx::e_float::add_unsigned_long_long(const unsigned long long n) { return operator+=(e_float(n)); }
+efx::e_float& efx::e_float::sub_unsigned_long_long(const unsigned long long n) { return operator-=(e_float(n)); }
+
+efx::e_float& efx::e_float::mul_unsigned_long_long(const unsigned long long n)
 {
-  // Multiply *this with a constant signed integer.
-  const bool b_n_is_neg = (n < static_cast<INT32>(0));
+  // Multiply *this with a constant unsigned long long.
 
   // Evaluate the sign of the result.
-  const bool b_result_is_neg = (neg != b_n_is_neg);
+  const bool b_neg = neg;
 
   // Artificially set the sign of the result to be positive.
   neg = false;
-
-  const UINT32 nn  = ((!b_n_is_neg) ? n : static_cast<UINT32>(-n));
 
   // Handle special cases like zero, inf and NaN.
   const bool b_u_is_inf  = isinf();
@@ -947,8 +947,8 @@ efx::e_float& efx::e_float::mul_by_int(const INT32 n)
 
   if(b_u_is_inf)
   {
-    *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
-                                : -std::numeric_limits<e_float>::infinity());
+    *this = ((!b_neg) ?  std::numeric_limits<e_float>::infinity()
+                      : -std::numeric_limits<e_float>::infinity());
 
     return *this;
   }
@@ -959,14 +959,14 @@ efx::e_float& efx::e_float::mul_by_int(const INT32 n)
     return (*this = ef::zero());
   }
 
-  if(nn >= static_cast<UINT32>(ef_elem_mask))
+  if(n >= static_cast<unsigned long long>(ef_elem_mask))
   {
     return operator*=(e_float(n));
   }
 
-  if(nn == static_cast<UINT32>(1u))
+  if(n == static_cast<unsigned long long>(1u))
   {
-    neg = b_result_is_neg;
+    neg = b_neg;
 
     return *this;
   }
@@ -980,6 +980,7 @@ efx::e_float& efx::e_float::mul_by_int(const INT32 n)
   const INT32 prec = static_cast<INT32>(prec_elem);
   const INT32 jm   = (std::min)(jm1, prec);
 
+  const UINT32 nn = static_cast<UINT32>(n);
   const UINT32 carry = mul_loop_n(data.data(), nn, jm);
 
   // Handle the carry and adjust the exponent.
@@ -999,31 +1000,27 @@ efx::e_float& efx::e_float::mul_by_int(const INT32 n)
      && (*this > (std::numeric_limits<e_float>::max)())
     )
   {
-    *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
-                                : -std::numeric_limits<e_float>::infinity());
+    *this = ((!b_neg) ?  std::numeric_limits<e_float>::infinity()
+                      : -std::numeric_limits<e_float>::infinity());
 
     return *this;
   }
 
   // Set the sign.
-  neg = b_result_is_neg;
+  neg = b_neg;
 
   return *this;
 }
 
-efx::e_float& efx::e_float::div_by_int(const INT32 n)
+efx::e_float& efx::e_float::div_unsigned_long_long(const unsigned long long n)
 {
-  // Divide *this by a constant signed integer.
-  const bool b_n_is_neg = (n < static_cast<INT32>(0));
+  // Divide *this by a constant unsigned long long.
 
   // Evaluate the sign of the result.
-  const bool b_neg = (neg != b_n_is_neg);
+  const bool b_neg = neg;
 
   // Artificially set the sign of the result to be positive.
   neg = false;
-
-  const UINT32 nn = ((!b_n_is_neg) ? static_cast<UINT32>( n)
-                                   : static_cast<UINT32>(-n));
 
   // Handle special cases like zero, inf and NaN.
   if(isnan())
@@ -1039,7 +1036,7 @@ efx::e_float& efx::e_float::div_by_int(const INT32 n)
     return *this;
   }
 
-  if(n == static_cast<INT32>(0))
+  if(n == static_cast<unsigned long long>(0u))
   {
     // Divide by 0.
     if(iszero())
@@ -1060,16 +1057,17 @@ efx::e_float& efx::e_float::div_by_int(const INT32 n)
     return *this;
   }
 
-  if(nn >= static_cast<UINT32>(ef_elem_mask))
+  if(n >= static_cast<unsigned long long>(ef_elem_mask))
   {
     return operator/=(e_float(n));
   }
   
-  if(nn > static_cast<UINT32>(1u))
+  if(n > static_cast<unsigned long long>(1u))
   {
     // Division loop.
     const INT32 jm  = static_cast<INT32>(prec_elem);
 
+    const UINT32 nn = static_cast<UINT32>(n);
     const UINT32 prev = div_loop_n(data.data(), nn, jm);
 
     // Determine if one leading zero is in the result data.

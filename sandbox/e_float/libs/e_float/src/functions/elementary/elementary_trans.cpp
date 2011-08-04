@@ -772,14 +772,14 @@ void ef::sinhcosh(const e_float& x, e_float* const p_sinh, e_float* const p_cosh
   {
     *p_sinh  = e_px;
     *p_sinh -= e_mx;
-    p_sinh->div_by_int(2);
+    p_sinh->div_unsigned_long_long(2u);
   }
 
   if(p_cosh)
   {
     *p_cosh  = e_px;
     *p_cosh += e_mx;
-    p_cosh->div_by_int(2);
+    p_cosh->div_unsigned_long_long(2u);
   }
 }
 
