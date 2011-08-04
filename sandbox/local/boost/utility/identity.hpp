@@ -21,8 +21,19 @@
 #ifndef BOOST_IDENTITY_HPP_
 #define BOOST_IDENTITY_HPP_
 
-#include "aux_/identity.hpp"
-#include <boost/type_tratis/function_traits.hpp>
+#include <boost/type_traits/function_traits.hpp>
+#include <boost/type_traits/add_reference.hpp>
+
+namespace boost { namespace aux {
+
+// Identity for values (compilers should be able to optimize call overhead).
+template<typename T>
+inline typename boost::add_reference<T>::type identity_value(
+        typename boost::add_reference<T>::type value) {
+    return value;
+}
+
+}} // namespace boost::aux
 
 /**
  * @brief This macro wraps the specified type expression within extra
@@ -56,7 +67,7 @@
  */
 #define BOOST_IDENTITY_TYPE(parenthesized_type) \
     /* must NOT prefix this with `::` to work with parenthesized syntax */ \
-    boost::function_tratis< void parenthesized_type >::arg1_type
+    boost::function_traits< void parenthesized_type >::arg1_type
 
 /**
  * @brief This macro wraps the specified value expression within extra
