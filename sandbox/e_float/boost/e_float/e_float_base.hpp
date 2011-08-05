@@ -174,6 +174,21 @@
   protected:
     inline e_float_base();
 
+    static bool char_is_nonzero_predicate(const char& c) { return (c != static_cast<char>('0')); }
+
+    static void wr_string_scientific(std::string& str,
+                                      const INT64 my_exp,
+                                      const std::size_t os_precision,
+                                      const bool my_showpoint,
+                                      const bool my_uppercase,
+                                      const bool trim_trailing_zeros = false);
+
+    static void wr_string_fixed(std::string& str,
+                                const INT64 my_exp,
+                                const std::size_t os_precision,
+                                const bool my_showpoint,
+                                const bool trim_trailing_zeros = false);
+
   private:
     static bool digits_match_lib_dll_is_ok;
   };

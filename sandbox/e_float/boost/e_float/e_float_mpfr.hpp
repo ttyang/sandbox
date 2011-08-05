@@ -78,8 +78,6 @@
 
       static const INT32 ef_digits2 = static_cast<INT32>(((static_cast<INT64>(ef_digits10_tol) * 3322LL) + 500LL) / 1000LL);
 
-    private:
-
       ::mpfr_t rop;
 
     public:
@@ -185,6 +183,7 @@
 
     private:
 
+      static void get_raw_digits_from_scientific_string(std::string& str);
       virtual void wr_string(std::string& str, std::ostream& os) const;
       virtual bool rd_string(const char* const s);
 

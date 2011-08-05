@@ -21,6 +21,14 @@
 
 namespace
 {
+  typedef enum enum_os_float_field_type
+  {
+    os_float_field_scientific,
+    os_float_field_fixed,
+    os_float_field_none
+  }
+  os_float_filed_type;
+
   const double& d_log2(void)
   {
     static const double value_log2 = 0.3010299956639811952137389;
@@ -460,56 +468,193 @@ INT64 mpfr::e_float::order(void) const
   }
 }
 
+void mpfr::e_float::get_raw_digits_from_scientific_string(std::string& str)
+{
+  // Get the raw digits from a string in scientific notation (lowercase, showpos).
+
+  // Erase the negative sign, if present.
+  if(str.at(0u) == static_cast<char>('-'))
+  {
+    str.erase(str.begin(), str.begin() + 1u);
+  }
+
+  // Erase the exponent.
+  const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
+
+  if(pos_letter_e != std::string::npos)
+  {
+    str.erase(str.begin() + pos_letter_e, str.end());
+  }
+
+  // Erase the decimal point.
+  const std::size_t pos_decimal_point = str.rfind(static_cast<char>('.'));
+
+  if(pos_decimal_point != std::string::npos)
+  {
+    str.erase(str.begin() + pos_decimal_point, str.begin() + (pos_decimal_point + 1u));
+  }
+}
+
 void mpfr::e_float::wr_string(std::string& str, std::ostream& os) const
 {
-  if(isnan())
-  {
-    str = "NaN";
-    return;
-  }
+  // Assess the format flags.
+  const std::ios::fmtflags my_flags = os.flags();
 
-  if(isinf())
-  {
-    str = "INF";
-    return;
-  }
+  // Obtain the showpos flag.
+  const bool my_showpos = ((my_flags & std::ios::showpos) != static_cast<std::ios::fmtflags>(0u));
 
-  static const std::streamsize p_min = static_cast<std::streamsize>(10);
-  static const std::streamsize p_lim = static_cast<std::streamsize>(ef_digits10_tol);
-         const std::streamsize p     = (std::max)(os.precision(), p_min);
+  // Handle INF and NaN.
+  if(isnan()) { str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF")); return; }
+  if(isinf()) { str = "INF"; return; }
 
-  const std::streamsize my_precision = (std::min)(p, p_lim);
 
-  const std::ios::fmtflags f = os.flags();
+  // Get the order-10 of the e_float. This is done using a partial string
+  // extraction with 10 decimal digits.
+  // Create a format string for 10-digits and scientific notation.
+  std::string str_fmt = std::string("%.10RNe");
 
-  const bool my_uppercase  = ((f & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
-  const bool my_showpos    = ((f & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
-  const bool my_scientific = ((f & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u));
-
-  // Create a format string such as "%+.99RNe"
-  const std::string str_sign(my_showpos ? "%+." : "%.");
-  const std::string str_prec(Util::lexical_cast(my_precision - (my_scientific ? 1 : 0)));
-  const std::string str_case(my_scientific ? (my_uppercase ? "RNE" : "RNe") : (my_uppercase ? "RNG" : "RNg"));
-
-  const std::string str_fmt =  str_sign + (str_prec + str_case);
-
+  // Get the ten digits.
   std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
-
   ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
-
   str = std::string(buf.data());
 
-  const std::size_t pos_E = (my_uppercase ? str.rfind('E') : str.rfind('e'));
+  // Extract the exponent.
+  INT64 my_exp;
 
-  if(pos_E != std::string::npos)
+  const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
+
+  if(pos_letter_e != std::string::npos)
   {
-    // Pad the exponent number field with additional zeros such that the width
-    // of the exponent number field is equal to the width of ef_max_exp10.
-    const std::size_t pos_exp = static_cast<std::string::size_type>(pos_E + 2u);
+    std::stringstream ss;
+    ss << (str.c_str() + (pos_letter_e + 1u));
+    ss >> my_exp;
+  }
+  else
+  {
+    my_exp = static_cast<INT64>(0);
+  }
 
-    const std::string::size_type width_of_exp = str.length() - pos_exp;
+  // Get the output stream's precision and limit it to max_digits10.
+  // Erroneous negative precision will be set to the zero.
+  const std::size_t os_precision  = ((os.precision() > std::streamsize(-1)) ? static_cast<std::size_t>(os.precision())
+                                                                            : static_cast<std::size_t>(0u));
 
-    str.insert(pos_exp, std::string(width_of_exponent_field() - width_of_exp, static_cast<char>('0')));
+  // Determine the kind of output format requested (scientific, fixed, none).
+  os_float_filed_type my_float_field;
+
+  if     ((my_flags & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u)) { my_float_field = os_float_field_scientific; }
+  else if((my_flags & std::ios::fixed) != static_cast<std::ios::fmtflags>(0u))      { my_float_field = os_float_field_fixed; }
+  else { my_float_field = os_float_field_none; }
+
+  bool use_scientific = false;
+  bool use_fixed = false;
+
+  if     (my_float_field == os_float_field_scientific) { use_scientific = true; }
+  else if(my_float_field == os_float_field_fixed)      { use_fixed = true; }
+  else // os_float_field_none
+  {
+    if(my_exp < static_cast<INT64>(-4))
+    {
+      // The number is small in magnitude with a large, negative exponent.
+      // Use exponential notation.
+      use_scientific = true;
+    }
+    else if(my_exp >= (std::min)(static_cast<INT64>(std::numeric_limits<e_float>::digits10), (std::max)(static_cast<INT64>(os_precision), static_cast<INT64>(7))))
+    {
+      // The number is large in magnitude with a large, positive exponent.
+      // Use exponential notation.
+      use_scientific = true;
+    }
+    else
+    {
+      use_fixed = true;
+    }
+  }
+
+  // Ascertain the number of digits requested from e_float.
+  std::size_t the_number_of_digits_i_want_from_e_float = static_cast<std::size_t>(0u);
+  const std::size_t max10_plus_one = static_cast<std::size_t>(std::numeric_limits<e_float>::max_digits10 + 1);
+
+  if(use_scientific)
+  {
+    // The float-field is scientific. The number of digits is given by
+    // (1 + the ostream's precision), not to exceed (max_digits10 + 1).
+    const std::size_t prec_plus_one  = static_cast<std::size_t>(1u + os_precision);
+    the_number_of_digits_i_want_from_e_float = (std::min)(max10_plus_one, prec_plus_one);
+  }
+  else if(use_fixed)
+  {
+    // The float-field is scientific. The number of all-digits depends
+    // on the form of the number.
+
+    if(my_exp >= static_cast<INT64>(0))
+    {
+      // If the number is larger than 1 in absolute value, then the number of
+      // digits is given by the width of the integer part plus the ostream's
+      // precision, not to exceed (max_digits10 + 1).
+      const std::size_t exp_plus_one = static_cast<std::size_t>(my_exp + 1);
+      const std::size_t exp_plus_one_plus_my_precision = static_cast<std::size_t>(exp_plus_one + os_precision);
+
+      the_number_of_digits_i_want_from_e_float = (std::min)(exp_plus_one_plus_my_precision, max10_plus_one);
+    }
+    else
+    {
+      const INT64 exp_plus_one = static_cast<INT64>(my_exp + 1);
+      const INT64 exp_plus_one_plus_my_precision = static_cast<INT64>(exp_plus_one + static_cast<INT64>(os_precision));
+
+      the_number_of_digits_i_want_from_e_float = (std::min)(static_cast<std::size_t>((std::max)(exp_plus_one_plus_my_precision, static_cast<INT64>(0))), max10_plus_one);
+    }
+  }
+
+  // Create a format string such as "%+.99RNe" for 100 digits
+  // in scientific notation with lowercase and noshowpos.
+  const std::size_t the_number_of_digits_scientific =
+    ((the_number_of_digits_i_want_from_e_float > static_cast<std::size_t>(1u)) ? static_cast<std::size_t>(the_number_of_digits_i_want_from_e_float - 1u)
+                                                                               : static_cast<std::size_t>(0u));
+  str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "RNe");
+
+  // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
+  std::fill(buf.begin(), buf.end(), static_cast<char>(0));
+  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
+  str = std::string(buf.data());
+
+  // Obtain the raw digits from the scientific notation string.
+  // TBD: Well, this is a bit silly. First get the string in
+  // scientific notation, then reduce it to raw digits.
+  // Perhaps this can be improved.
+  get_raw_digits_from_scientific_string(str);
+
+  // Obtain additional format information.
+  const bool my_uppercase  = ((my_flags & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
+  const bool my_showpoint  = ((my_flags & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
+
+  // Write the output string in the desired format.
+  if     (my_float_field == os_float_field_scientific) { wr_string_scientific(str, my_exp, os_precision, my_showpoint, my_uppercase); }
+  else if(my_float_field == os_float_field_fixed)      { wr_string_fixed(str, my_exp, os_precision, my_showpoint); }
+  else // os_float_field_none
+  {
+    (use_scientific ? wr_string_scientific(str, my_exp, os_precision, my_showpoint, my_uppercase, true)
+                    : wr_string_fixed(str, my_exp, os_precision, my_showpoint, true));
+  }
+
+  // Append the sign.
+  if     (isneg())    { str.insert(static_cast<std::size_t>(0u), "-"); }
+  else if(my_showpos) { str.insert(static_cast<std::size_t>(0u), "+"); }
+
+  // Handle std::setw(...), std::setfill(...), std::left, std::right, std::internal.
+  const std::size_t my_width = ((os.width() >= static_cast<std::streamsize>(0)) ? static_cast<std::size_t>(os.width())
+                                                                                : static_cast<std::size_t>(0u));
+
+  if(my_width > str.length())
+  {
+    // Get the number of fill characters.
+    const std::size_t n_fill = static_cast<std::size_t>(my_width - str.length());
+
+    // Left-justify is the exception, std::right and std::internal justify right.
+    const bool my_left = ((my_flags & std::ios::left)  != static_cast<std::ios::fmtflags>(0u));
+
+    // Justify left or right and insert the fill characters.
+    str.insert((my_left ? str.end() : str.begin()), n_fill, os.fill());
   }
 }
 

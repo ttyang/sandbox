@@ -1634,8 +1634,14 @@ const efx::e_float& efx::e_float::my_value_min(void) const
 
 void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 {
+  // Assess the format flags.
+  const std::ios::fmtflags my_flags = os.flags();
+
+  // Obtain the showpos flag.
+  const bool my_showpos = ((my_flags & std::ios::showpos) != static_cast<std::ios::fmtflags>(0u));
+
   // Handle INF and NaN.
-  if(isnan()) { str = "NaN"; return; }
+  if(isnan()) { str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF")); return; }
   if(isinf()) { str = "INF"; return; }
 
   // Extract all of the digits from e_float, beginning with the first data element.
@@ -1650,9 +1656,7 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
   const std::size_t os_precision  = ((os.precision() > std::streamsize(-1)) ? static_cast<std::size_t>(os.precision())
                                                                             : static_cast<std::size_t>(0u));
 
-  // Assess the format flags.
-  const std::ios::fmtflags my_flags = os.flags();
-
+  // Determine the kind of output format requested (scientific, fixed, none).
   os_float_filed_type my_float_field;
 
   if     ((my_flags & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u)) { my_float_field = os_float_field_scientific; }
@@ -1740,7 +1744,6 @@ void efx::e_float::wr_string(std::string& str, std::ostream& os) const
 
   // Obtain additional format information.
   const bool my_uppercase  = ((my_flags & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
-  const bool my_showpos    = ((my_flags & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
   const bool my_showpoint  = ((my_flags & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
 
   // Write the output string in the desired format.
@@ -1816,119 +1819,6 @@ void efx::e_float::round_output_string(std::string& str, INT64& my_exp, const st
         ++str[ix];
       }
     }
-  }
-}
-
-void efx::e_float::wr_string_scientific(std::string& str,
-                                        const INT64 my_exp,
-                                        const std::size_t os_precision,
-                                        const bool my_showpoint,
-                                        const bool my_uppercase,
-                                        const bool trim_trailing_zeros)
-{
-  if(os_precision > static_cast<std::size_t>(str.length() - 1u))
-  {
-    // Zero-extend the string to the given precision if necessary.
-    const std::size_t n_pad = static_cast<std::size_t>(os_precision - (str.length() - 1u));
-
-    str.insert(str.end(), n_pad, static_cast<char>('0'));
-  }
-
-  // Insert the decimal point.
-  str.insert(static_cast<std::size_t>(1u), ".");
-
-  // Remove all trailing zeros if necessary.
-  if(trim_trailing_zeros)
-  {
-    const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
-
-    if(rit_non_zero != str.rbegin())
-    {
-      const std::size_t ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rit_non_zero);
-      str.erase(str.begin() + ofs, str.end());
-    }
-  }
-
-  // Remove the trailing decimal point if necessary.
-  if((*(str.end() - 1u) == static_cast<char>('.')) && (!my_showpoint))
-  {
-    str.erase(str.end() - 1u, str.end());
-  }
-
-  // Append the exponent in uppercase or lower case, including its sign.
-  const bool   b_exp_is_neg = (my_exp < static_cast<INT64>(0));
-  const UINT64 u_exp        = static_cast<UINT64>(!b_exp_is_neg ? my_exp : static_cast<INT64>(-my_exp));
-
-  str += (my_uppercase ? "E" : "e");
-  str += (b_exp_is_neg ? "-" : "+");
-  std::string str_exp = Util::lexical_cast(static_cast<INT64>(u_exp));
-
-  // Format the exponent string to have a width that is an even multiple of three.
-  const std::size_t str_exp_len      = str_exp.length();
-  const std::size_t str_exp_len_mod3 = static_cast<std::size_t>(str_exp_len % 3u);
-  const std::size_t str_exp_len_pad  = ((str_exp_len_mod3 != static_cast<std::size_t>(0u)) ? static_cast<std::size_t>(3u - (str_exp_len % 3u))
-                                                                                           : static_cast<std::size_t>(0u));
-
-  str += std::string(str_exp_len_pad, static_cast<char>('0'));
-  str += str_exp;
-}
-
-void efx::e_float::wr_string_fixed(std::string& str,
-                                   const INT64 my_exp,
-                                   const std::size_t os_precision,
-                                   const bool my_showpoint,
-                                   const bool trim_trailing_zeros)
-{
-  const std::size_t str_len = str.length();
-
-  if(my_exp < static_cast<INT64>(0))
-  {
-    // The number is less than one in magnitude. Insert the decimal
-    // point using "0" or "0." as well as the needed leading zeros.
-    const std::size_t minus_exp_minus_one = static_cast<std::size_t>(-my_exp - 1);
-    const std::string str_zero_insert((std::min)(minus_exp_minus_one, os_precision), static_cast<char>('0'));
-
-    str.insert(0u, "0." + str_zero_insert);
-
-    const INT64 n_pad = static_cast<INT64>(static_cast<INT64>(os_precision) - static_cast<INT64>(str_len + str_zero_insert.length()));
-
-    if(n_pad > static_cast<INT64>(0))
-    {
-      str.insert(str.end(), static_cast<std::size_t>(n_pad), static_cast<char>('0'));
-    }
-  }
-  else
-  {
-    // Insert the decimal point.
-    const std::size_t my_exp_plus_one = static_cast<std::size_t>(my_exp + 1);
-
-    str.insert(my_exp_plus_one, ".");
-
-    // Zero-extend the string to the given precision if necessary.
-    const INT64 n_pad = static_cast<INT64>(os_precision) - static_cast<INT64>(static_cast<INT64>(str_len) - (my_exp + 1));
-
-    if(n_pad > static_cast<INT64>(0))
-    {
-      str.insert(str.end(), static_cast<std::size_t>(n_pad), static_cast<char>('0'));
-    }
-  }
-
-  // Remove all trailing zeros if necessary.
-  if(trim_trailing_zeros)
-  {
-    const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
-
-    if(rit_non_zero != str.rbegin())
-    {
-      const std::size_t ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rit_non_zero);
-      str.erase(str.begin() + ofs, str.end());
-    }
-  }
-
-  // Remove the trailing decimal point if necessary.
-  if((*(str.end() - 1u) == static_cast<char>('.')) && (!my_showpoint))
-  {
-    str.erase(str.end() - 1u, str.end());
   }
 }
 
