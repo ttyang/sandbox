@@ -72,20 +72,6 @@ e_float& e_float_base::div_signed_long_long(const signed long long n)
   if(b_neg) { negate(); } return static_cast<e_float&>(*this);
 }
 
-const std::string::size_type& e_float_base::width_of_exponent_field(void)
-{
-  static const std::string::size_type width_of_e_n64 =
-      Util::lexical_cast((std::numeric_limits<INT64>::max)()).length();
-
-  static const std::string::size_type width_of_e_long =
-      Util::lexical_cast((std::numeric_limits<long>::max)()).length();
-
-  static const std::string::size_type width_of_e =
-      (std::max)(width_of_e_n64, width_of_e_long);
-
-  return width_of_e;
-}
-
 void e_float_base::wr_string_scientific(std::string& str,
                                         const INT64 my_exp,
                                         const std::size_t os_precision,

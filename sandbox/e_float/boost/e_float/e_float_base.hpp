@@ -58,8 +58,6 @@
     static const INT32 ef_digits10_extra   = static_cast<INT32>(((static_cast<INT64>(ef_digits10) * 15LL) + 50LL) / 100LL);
     static const INT32 ef_digits10_tol     = static_cast<INT32>(ef_digits10 + ((ef_digits10_extra < 15) ? 15 : ((ef_digits10_extra > 150) ? 150 : ef_digits10_extra)));
 
-    static const std::string::size_type& width_of_exponent_field(void);
-
     virtual ~e_float_base() { }
 
     // Specific special values.

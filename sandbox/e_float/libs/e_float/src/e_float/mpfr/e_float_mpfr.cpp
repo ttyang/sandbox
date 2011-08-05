@@ -54,53 +54,19 @@ mpfr::e_float::e_float()
   ::mpfr_init(rop);
 }
 
-mpfr::e_float::e_float(const char n)
-{
-  const bool b_neg = (std::numeric_limits<char>::is_signed && (n < static_cast<char>(0)));
-  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
-}
+mpfr::e_float::e_float(const char n)    { const bool b_neg = (std::numeric_limits<char>::is_signed    ? (n < static_cast<char>   (0)) : false); from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
+mpfr::e_float::e_float(const wchar_t n) { const bool b_neg = (std::numeric_limits<wchar_t>::is_signed ? (n < static_cast<wchar_t>(0)) : false); from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
 
-mpfr::e_float::e_float(const signed char n)
-{
-  const bool b_neg = (n < static_cast<signed char>(0));
-  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
-}
+mpfr::e_float::e_float(const signed char n)      { const bool b_neg = (n < static_cast<signed char>(0));      from_unsigned_long     ((!b_neg) ? static_cast<unsigned long>     (n) : static_cast<unsigned long>     (-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
+mpfr::e_float::e_float(const signed short n)     { const bool b_neg = (n < static_cast<signed short>(0));     from_unsigned_long     ((!b_neg) ? static_cast<unsigned long>     (n) : static_cast<unsigned long>     (-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
+mpfr::e_float::e_float(const signed int n)       { const bool b_neg = (n < static_cast<signed int>(0));       from_unsigned_long     ((!b_neg) ? static_cast<unsigned long>     (n) : static_cast<unsigned long>     (-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
+mpfr::e_float::e_float(const signed long n)      { const bool b_neg = (n < static_cast<signed long>(0));      from_unsigned_long     ((!b_neg) ? static_cast<unsigned long>     (n) : static_cast<unsigned long>     (-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
+mpfr::e_float::e_float(const signed long long n) { const bool b_neg = (n < static_cast<signed long long>(0)); from_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n)); if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); } }
 
-mpfr::e_float::e_float(const signed short n)
-{
-  const bool b_neg = (n < static_cast<signed short>(0));
-  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
-}
-
-mpfr::e_float::e_float(const signed int n)
-{
-  const bool b_neg = (n < static_cast<signed int>(0));
-  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
-}
-
-mpfr::e_float::e_float(const signed long n)
-{
-  const bool b_neg = (n < static_cast<signed long>(0));
-  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
-}
-
-mpfr::e_float::e_float(const signed long long n)
-{
-  const bool b_neg = (n < static_cast<signed long long>(0));
-  from_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
-  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
-}
-
-mpfr::e_float::e_float(const unsigned char n)      { from_unsigned_long(static_cast<unsigned long>(n)); }
-mpfr::e_float::e_float(const wchar_t n)            { from_unsigned_long(static_cast<unsigned long>(n)); }
-mpfr::e_float::e_float(const unsigned short n)     { from_unsigned_long(static_cast<unsigned long>(n)); }
-mpfr::e_float::e_float(const unsigned int n)       { from_unsigned_long(static_cast<unsigned long>(n)); }
-mpfr::e_float::e_float(const unsigned long n)      { from_unsigned_long(static_cast<unsigned long>(n)); }
+mpfr::e_float::e_float(const unsigned char n)      { from_unsigned_long     (static_cast<unsigned long>     (n)); }
+mpfr::e_float::e_float(const unsigned short n)     { from_unsigned_long     (static_cast<unsigned long>     (n)); }
+mpfr::e_float::e_float(const unsigned int n)       { from_unsigned_long     (static_cast<unsigned long>     (n)); }
+mpfr::e_float::e_float(const unsigned long n)      { from_unsigned_long     (static_cast<unsigned long>     (n)); }
 mpfr::e_float::e_float(const unsigned long long n) { from_unsigned_long_long(static_cast<unsigned long long>(n)); }
 
 mpfr::e_float::e_float(const float f)
@@ -504,8 +470,8 @@ void mpfr::e_float::wr_string(std::string& str, std::ostream& os) const
   const bool my_showpos = ((my_flags & std::ios::showpos) != static_cast<std::ios::fmtflags>(0u));
 
   // Handle INF and NaN.
-  if(isnan()) { str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF")); return; }
-  if(isinf()) { str = "INF"; return; }
+  if(isnan()) { str = "NaN"; return; }
+  if(isinf()) { str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF")); return; }
 
 
   // Get the order-10 of the e_float. This is done using a partial string
@@ -606,11 +572,9 @@ void mpfr::e_float::wr_string(std::string& str, std::ostream& os) const
     }
   }
 
-  // Create a format string such as "%+.99RNe" for 100 digits
-  // in scientific notation with lowercase and noshowpos.
-  const std::size_t the_number_of_digits_scientific =
-    ((the_number_of_digits_i_want_from_e_float > static_cast<std::size_t>(1u)) ? static_cast<std::size_t>(the_number_of_digits_i_want_from_e_float - 1u)
-                                                                               : static_cast<std::size_t>(0u));
+  // Create a format string such as "%+.99RNe" in order to extract 100 digits
+  // in scientific notation with the lowercase and noshowpos flags.
+  const std::size_t the_number_of_digits_scientific = static_cast<std::size_t>((std::max)(the_number_of_digits_i_want_from_e_float, static_cast<std::size_t>(1u)) - static_cast<std::size_t>(1u));
   str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "RNe");
 
   // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).

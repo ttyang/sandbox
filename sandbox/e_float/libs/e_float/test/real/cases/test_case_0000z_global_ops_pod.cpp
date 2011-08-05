@@ -8,6 +8,10 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
+#if defined(_MSC_VER)
+#pragma warning(disable:4127)
+#endif
+
 #include <sstream>
 #include <string>
 #include <limits>
@@ -24,37 +28,38 @@ namespace
     static e_float the_value_min;
     static e_float the_value_max;
 
-    template<typename STYPE>
-    inline static bool check_stype(void)
+    template<typename T>
+    inline static bool check_type(void)
     {
-      the_value_min = std::numeric_limits<STYPE>::min();
-      the_value_max = std::numeric_limits<STYPE>::max();
+      the_value_min = std::numeric_limits<T>::min();
+      the_value_max = std::numeric_limits<T>::max();
 
       std::stringstream ss;
 
-      ss << static_cast<signed long long>(std::numeric_limits<STYPE>::min());
+      if(std::numeric_limits<T>::is_signed)
+      {
+        ss << static_cast<signed long long>(std::numeric_limits<T>::min());
+      }
+      else
+      {
+        ss << static_cast<unsigned long long>(std::numeric_limits<T>::min());
+      }
       std::string str_min = ss.str();
 
       ss.clear();
       ss.str("");
 
-      ss << static_cast<signed long long>(std::numeric_limits<STYPE>::max());
+      if(std::numeric_limits<T>::is_signed)
+      {
+        ss << static_cast<signed long long>(std::numeric_limits<T>::max());
+      }
+      else
+      {
+        ss << static_cast<unsigned long long>(std::numeric_limits<T>::max());
+      }
       std::string str_max = ss.str();
 
       return ((the_value_min == e_float(str_min)) && (the_value_max == e_float(str_max)));
-    }
-
-    template<typename UTYPE>
-    inline static bool check_utype(void)
-    {
-      the_value_max = std::numeric_limits<UTYPE>::max();
-
-      std::stringstream ss;
-
-      ss << static_cast<unsigned long long>(std::numeric_limits<UTYPE>::max());
-      std::string str_max = ss.str();
-
-      return (the_value_max == e_float(str_max));
     }
   };
 
@@ -135,18 +140,18 @@ namespace test
 
         my_test_result = true;
 
-        my_test_result &= ::e_float_equate_to::check_utype<char>();
-        my_test_result &= ::e_float_equate_to::check_stype<signed char>();
-        my_test_result &= ::e_float_equate_to::check_utype<unsigned char>();
-        my_test_result &= ::e_float_equate_to::check_utype<wchar_t>();
-        my_test_result &= ::e_float_equate_to::check_stype<signed short>();
-        my_test_result &= ::e_float_equate_to::check_utype<unsigned short>();
-        my_test_result &= ::e_float_equate_to::check_stype<signed int>();
-        my_test_result &= ::e_float_equate_to::check_utype<unsigned int>();
-        my_test_result &= ::e_float_equate_to::check_stype<signed long>();
-        my_test_result &= ::e_float_equate_to::check_utype<unsigned long>();
-        my_test_result &= ::e_float_equate_to::check_stype<signed long long>();
-        my_test_result &= ::e_float_equate_to::check_utype<unsigned long long>();
+        my_test_result &= ::e_float_equate_to::check_type<char>();
+        my_test_result &= ::e_float_equate_to::check_type<signed char>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned char>();
+        my_test_result &= ::e_float_equate_to::check_type<wchar_t>();
+        my_test_result &= ::e_float_equate_to::check_type<signed short>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned short>();
+        my_test_result &= ::e_float_equate_to::check_type<signed int>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned int>();
+        my_test_result &= ::e_float_equate_to::check_type<signed long>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned long>();
+        my_test_result &= ::e_float_equate_to::check_type<signed long long>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned long long>();
 
         e_float x(123u);
 
