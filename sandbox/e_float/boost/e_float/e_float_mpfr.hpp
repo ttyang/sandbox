@@ -85,16 +85,25 @@
     public:
 
       e_float();
-      e_float(const INT32 n);
-      e_float(const INT64 n);
-      e_float(const UINT32 u);
-      e_float(const UINT64 u);
+      e_float(const char n);
+      e_float(const signed char n);
+      e_float(const unsigned char n);
+      e_float(const wchar_t n);
+      e_float(const signed short n);
+      e_float(const unsigned short n);
+      e_float(const signed int n);
+      e_float(const unsigned int n);
+      e_float(const signed long n);
+      e_float(const unsigned long n);
+      e_float(const signed long long n);
+      e_float(const unsigned long long n);
+      e_float(const float f);
       e_float(const double d);
-      e_float(const char* s);
+      e_float(const long double ld);
+      e_float(const char* const s);
       e_float(const std::string& str);
 
       e_float(const e_float& f);
-
       e_float(const double mantissa, const INT64 exponent);
 
       virtual ~e_float();
@@ -104,8 +113,8 @@
 
       static void init(void);
 
-      void from_uint64(const UINT64 u);
-      void from_uint32(const UINT32 u);
+      void from_unsigned_long_long(const unsigned long long u);
+      void from_unsigned_long(const unsigned long u);
 
     public:
 
@@ -123,9 +132,10 @@
       virtual e_float& operator-=(const e_float& v);
       virtual e_float& operator*=(const e_float& v);
       virtual e_float& operator/=(const e_float& v);
-
-      virtual e_float& mul_by_int(const INT32 n);
-      virtual e_float& div_by_int(const INT32 n);
+      virtual e_float& add_unsigned_long_long(const unsigned long long n);
+      virtual e_float& sub_unsigned_long_long(const unsigned long long n);
+      virtual e_float& mul_unsigned_long_long(const unsigned long long n);
+      virtual e_float& div_unsigned_long_long(const unsigned long long n);
 
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);

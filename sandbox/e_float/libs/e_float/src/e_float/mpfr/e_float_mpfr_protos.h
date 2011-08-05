@@ -24,10 +24,12 @@
     #define mpfr_set(x, y, rnd) mpfr_set4((x), (y), (rnd), MPFR_SIGN(y))
     int mpfr_set_ui (mpfr_ptr, unsigned long, mp_rnd_t);
     int mpfr_set_d  (mpfr_ptr, double, mp_rnd_t);
+    int mpfr_set_ld (mpfr_ptr, long double, mp_rnd_t);
 
-    #define mpfr_init_set(x, y, rnd)    ( mpfr_init(x), static_cast<void>(mpfr_set   ((x), (y), (rnd))))
-    #define mpfr_init_set_ui(x, i, rnd) ( mpfr_init(x), static_cast<void>(mpfr_set_ui((x), (i), (rnd))))
-    #define mpfr_init_set_d(x, d, rnd)  ( mpfr_init(x), mpfr_set_d((x), (d), (rnd)))
+    #define mpfr_init_set(x, y, rnd)     ( mpfr_init(x), static_cast<void>(mpfr_set   ((x), (y), (rnd))))
+    #define mpfr_init_set_ui(x, i, rnd)  ( mpfr_init(x), static_cast<void>(mpfr_set_ui((x), (i), (rnd))))
+    #define mpfr_init_set_d(x, d, rnd)   ( mpfr_init(x), static_cast<void>(mpfr_set_d((x), (d), (rnd))))
+    #define mpfr_init_set_ld(x, ld, rnd) ( mpfr_init(x), static_cast<void>(mpfr_set_ld((x), (ld), (rnd))))
     int mpfr_init_set_str(mpfr_ptr, const char*, int, mp_rnd_t);
 
     int mpfr_add(mpfr_ptr, mpfr_srcptr, mpfr_srcptr, mp_rnd_t);

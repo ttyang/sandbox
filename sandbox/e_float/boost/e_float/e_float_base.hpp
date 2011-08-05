@@ -123,6 +123,9 @@
     virtual bool rd_string(const char* const) = 0;
 
     // Specific higher functions which might be present in the MP implementation.
+    virtual bool has_its_own_ldexp        (void) const { return false; }
+    virtual bool has_its_own_frexp        (void) const { return false; }
+    virtual bool has_its_own_fmod         (void) const { return false; }
     virtual bool has_its_own_cbrt         (void) const { return false; }
     virtual bool has_its_own_rootn        (void) const { return false; }
     virtual bool has_its_own_exp          (void) const { return false; }
@@ -144,6 +147,9 @@
     virtual bool has_its_own_cyl_bessel_jn(void) const { return false; }
     virtual bool has_its_own_cyl_bessel_yn(void) const { return false; }
 
+    static e_float my_ldexp        (const e_float&, int);
+    static e_float my_frexp        (const e_float&, int*);
+    static e_float my_fmod         (const e_float&, const e_float&);
     static e_float my_cbrt         (const e_float&);
     static e_float my_rootn        (const e_float&, const UINT32);
     static e_float my_exp          (const e_float&);

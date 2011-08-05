@@ -33,13 +33,14 @@
   inline e_float operator/(const e_float& u, const e_float& v) { return e_float(u) /= v; }
 
   // Global add/sub/mul/div of const e_float& with all built-in types.
-  inline e_float operator+(const e_float& u, const signed char n)        { return e_float(u).add_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator+(const e_float& u, const signed short n)       { return e_float(u).add_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator+(const e_float& u, const signed int n)         { return e_float(u).add_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator+(const e_float& u, const signed long n)        { return e_float(u).add_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator+(const e_float& u, const signed long long n)   { return e_float(u).add_signed_long_long  (static_cast<  signed long long>(n)); }
+  inline e_float operator+(const e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).add_signed_long_long(static_cast<signed long long>(n))); }
+  inline e_float operator+(const e_float& u, const signed char n)        { return e_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator+(const e_float& u, const signed short n)       { return e_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator+(const e_float& u, const signed int n)         { return e_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator+(const e_float& u, const signed long n)        { return e_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator+(const e_float& u, const signed long long n)   { return e_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
   inline e_float operator+(const e_float& u, const unsigned char n)      { return e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)); }
-  inline e_float operator+(const e_float& u, const wchar_t n)            { return e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)); }
+  inline e_float operator+(const e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).add_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float operator+(const e_float& u, const unsigned short n)     { return e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator+(const e_float& u, const unsigned int n)       { return e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator+(const e_float& u, const unsigned long n)      { return e_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -48,13 +49,14 @@
   inline e_float operator+(const e_float& u, const double d)             { return e_float(u) += e_float(d); }
   inline e_float operator+(const e_float& u, const long double ld)       { return e_float(u) += e_float(ld); }
 
-  inline e_float operator-(const e_float& u, const signed char n)        { return e_float(u).sub_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator-(const e_float& u, const signed short n)       { return e_float(u).sub_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator-(const e_float& u, const signed int n)         { return e_float(u).sub_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator-(const e_float& u, const signed long n)        { return e_float(u).sub_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator-(const e_float& u, const signed long long n)   { return e_float(u).sub_signed_long_long  (static_cast<  signed long long>(n)); }
+  inline e_float operator-(const e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).sub_signed_long_long(static_cast<signed long long>(n))); }
+  inline e_float operator-(const e_float& u, const signed char n)        { return e_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator-(const e_float& u, const signed short n)       { return e_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator-(const e_float& u, const signed int n)         { return e_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator-(const e_float& u, const signed long n)        { return e_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator-(const e_float& u, const signed long long n)   { return e_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
   inline e_float operator-(const e_float& u, const unsigned char n)      { return e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)); }
-  inline e_float operator-(const e_float& u, const wchar_t n)            { return e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)); }
+  inline e_float operator-(const e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).sub_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float operator-(const e_float& u, const unsigned short n)     { return e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator-(const e_float& u, const unsigned int n)       { return e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator-(const e_float& u, const unsigned long n)      { return e_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -63,13 +65,14 @@
   inline e_float operator-(const e_float& u, const double d)             { return e_float(u) -= e_float(d); }
   inline e_float operator-(const e_float& u, const long double ld)       { return e_float(u) -= e_float(ld); }
 
-  inline e_float operator*(const e_float& u, const signed char n)        { return e_float(u).mul_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator*(const e_float& u, const signed short n)       { return e_float(u).mul_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator*(const e_float& u, const signed int n)         { return e_float(u).mul_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator*(const e_float& u, const signed long n)        { return e_float(u).mul_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator*(const e_float& u, const signed long long n)   { return e_float(u).mul_signed_long_long  (static_cast<  signed long long>(n)); }
+  inline e_float operator*(const e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).mul_signed_long_long(static_cast<signed long long>(n))); }
+  inline e_float operator*(const e_float& u, const signed char n)        { return e_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator*(const e_float& u, const signed short n)       { return e_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator*(const e_float& u, const signed int n)         { return e_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator*(const e_float& u, const signed long n)        { return e_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator*(const e_float& u, const signed long long n)   { return e_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
   inline e_float operator*(const e_float& u, const unsigned char n)      { return e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)); }
-  inline e_float operator*(const e_float& u, const wchar_t n)            { return e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)); }
+  inline e_float operator*(const e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).mul_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float operator*(const e_float& u, const unsigned short n)     { return e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator*(const e_float& u, const unsigned int n)       { return e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator*(const e_float& u, const unsigned long n)      { return e_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -78,13 +81,14 @@
   inline e_float operator*(const e_float& u, const double d)             { return e_float(u) *= e_float(d); }
   inline e_float operator*(const e_float& u, const long double ld)       { return e_float(u) *= e_float(ld); }
 
-  inline e_float operator/(const e_float& u, const signed char n)        { return e_float(u).div_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator/(const e_float& u, const signed short n)       { return e_float(u).div_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator/(const e_float& u, const signed int n)         { return e_float(u).div_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator/(const e_float& u, const signed long n)        { return e_float(u).div_signed_long_long  (static_cast<  signed long long>(n)); }
-  inline e_float operator/(const e_float& u, const signed long long n)   { return e_float(u).div_signed_long_long  (static_cast<  signed long long>(n)); }
+  inline e_float operator/(const e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).div_signed_long_long(static_cast<signed long long>(n))); }
+  inline e_float operator/(const e_float& u, const signed char n)        { return e_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator/(const e_float& u, const signed short n)       { return e_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator/(const e_float& u, const signed int n)         { return e_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator/(const e_float& u, const signed long n)        { return e_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
+  inline e_float operator/(const e_float& u, const signed long long n)   { return e_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
   inline e_float operator/(const e_float& u, const unsigned char n)      { return e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)); }
-  inline e_float operator/(const e_float& u, const wchar_t n)            { return e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)); }
+  inline e_float operator/(const e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)) : e_float(u).div_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float operator/(const e_float& u, const unsigned short n)     { return e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator/(const e_float& u, const unsigned int n)       { return e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)); }
   inline e_float operator/(const e_float& u, const unsigned long n)      { return e_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -94,13 +98,14 @@
   inline e_float operator/(const e_float& u, const long double ld)       { return e_float(u) /= e_float(ld); }
 
   // Global add/sub/mul/div of all built-in types with const e_float&.
+  inline e_float operator+(const char n, const e_float& u)               { return ((!std::numeric_limits<char>::is_signed) ? e_float(u).add_unsigned_long_long(n) : e_float(u).add_signed_long_long(n)); }
   inline e_float operator+(const signed char n, const e_float& u)        { return e_float(u).add_signed_long_long(n); }
   inline e_float operator+(const signed short n, const e_float& u)       { return e_float(u).add_signed_long_long(n); }
   inline e_float operator+(const signed int n, const e_float& u)         { return e_float(u).add_signed_long_long(n); }
   inline e_float operator+(const signed long n, const e_float& u)        { return e_float(u).add_signed_long_long(n); }
   inline e_float operator+(const signed long long n, const e_float& u)   { return e_float(u).add_signed_long_long(n); }
   inline e_float operator+(const unsigned char n, const e_float& u)      { return e_float(u).add_unsigned_long_long(n); }
-  inline e_float operator+(const wchar_t n, const e_float& u)            { return e_float(u).add_unsigned_long_long(n); }
+  inline e_float operator+(const wchar_t n, const e_float& u)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? e_float(u).add_unsigned_long_long(n) : e_float(u).add_signed_long_long(n)); }
   inline e_float operator+(const unsigned short n, const e_float& u)     { return e_float(u).add_unsigned_long_long(n); }
   inline e_float operator+(const unsigned int n, const e_float& u)       { return e_float(u).add_unsigned_long_long(n); }
   inline e_float operator+(const unsigned long n, const e_float& u)      { return e_float(u).add_unsigned_long_long(n); }
@@ -109,6 +114,7 @@
   inline e_float operator+(const double d, const e_float& u)             { return e_float(d) += u; }
   inline e_float operator+(const long double ld, const e_float& u)       { return e_float(ld) += u; }
 
+  inline e_float operator-(const char n, const e_float& u)               { return e_float(n)  -= u; }
   inline e_float operator-(const signed char n, const e_float& u)        { return e_float(n)  -= u; }
   inline e_float operator-(const signed short n, const e_float& u)       { return e_float(n)  -= u; }
   inline e_float operator-(const signed int n, const e_float& u)         { return e_float(n)  -= u; }
@@ -124,13 +130,14 @@
   inline e_float operator-(const double d, const e_float& u)             { return e_float(d)  -= u; }
   inline e_float operator-(const long double ld, const e_float& u)       { return e_float(ld) -= u; }
 
+  inline e_float operator*(const char n, const e_float& u)               { return ((!std::numeric_limits<char>::is_signed) ? e_float(u).mul_unsigned_long_long(n) : e_float(u).mul_signed_long_long(n)); }
   inline e_float operator*(const signed char n, const e_float& u)        { return e_float(u).mul_signed_long_long(n); }
   inline e_float operator*(const signed short n, const e_float& u)       { return e_float(u).mul_signed_long_long(n); }
   inline e_float operator*(const signed int n, const e_float& u)         { return e_float(u).mul_signed_long_long(n); }
   inline e_float operator*(const signed long n, const e_float& u)        { return e_float(u).mul_signed_long_long(n); }
   inline e_float operator*(const signed long long n, const e_float& u)   { return e_float(u).mul_signed_long_long(n); }
   inline e_float operator*(const unsigned char n, const e_float& u)      { return e_float(u).mul_unsigned_long_long(n); }
-  inline e_float operator*(const wchar_t n, const e_float& u)            { return e_float(u).mul_unsigned_long_long(n); }
+  inline e_float operator*(const wchar_t n, const e_float& u)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? e_float(u).mul_unsigned_long_long(n) : e_float(u).mul_signed_long_long(n)); }
   inline e_float operator*(const unsigned short n, const e_float& u)     { return e_float(u).mul_unsigned_long_long(n); }
   inline e_float operator*(const unsigned int n, const e_float& u)       { return e_float(u).mul_unsigned_long_long(n); }
   inline e_float operator*(const unsigned long n, const e_float& u)      { return e_float(u).mul_unsigned_long_long(n); }
@@ -139,6 +146,7 @@
   inline e_float operator*(const double d, const e_float& u)             { return e_float(d) *= u; }
   inline e_float operator*(const long double ld, const e_float& u)       { return e_float(ld) *= u; }
 
+  inline e_float operator/(const char n, const e_float& u)               { return e_float(n)  /= u; }
   inline e_float operator/(const signed char n, const e_float& u)        { return e_float(n)  /= u; }
   inline e_float operator/(const signed short n, const e_float& u)       { return e_float(n)  /= u; }
   inline e_float operator/(const signed int n, const e_float& u)         { return e_float(n)  /= u; }
@@ -155,13 +163,14 @@
   inline e_float operator/(const long double ld, const e_float& u)       { return e_float(ld) /= u; }
 
   // Global self add/sub/mul/div of e_float& with all built-in types.
+  inline e_float& operator+=(e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? u.add_unsigned_long_long(static_cast<unsigned long long>(n)) : u.add_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator+=(e_float& u, const signed char n)        { return u.add_signed_long_long(n); }
   inline e_float& operator+=(e_float& u, const signed short n)       { return u.add_signed_long_long(n); }
   inline e_float& operator+=(e_float& u, const signed int n)         { return u.add_signed_long_long(n); }
   inline e_float& operator+=(e_float& u, const signed long n)        { return u.add_signed_long_long(n); }
   inline e_float& operator+=(e_float& u, const signed long long n)   { return u.add_signed_long_long(n); }
   inline e_float& operator+=(e_float& u, const unsigned char n)      { return u.add_unsigned_long_long(n); }
-  inline e_float& operator+=(e_float& u, const wchar_t n)            { return u.add_unsigned_long_long(n); }
+  inline e_float& operator+=(e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? u.add_unsigned_long_long(static_cast<unsigned long long>(n)) : u.add_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator+=(e_float& u, const unsigned short n)     { return u.add_unsigned_long_long(n); }
   inline e_float& operator+=(e_float& u, const unsigned int n)       { return u.add_unsigned_long_long(n); }
   inline e_float& operator+=(e_float& u, const unsigned long n)      { return u.add_unsigned_long_long(n); }
@@ -170,13 +179,13 @@
   inline e_float& operator+=(e_float& u, const double d)             { return u += e_float(d); }
   inline e_float& operator+=(e_float& u, const long double ld)       { return u += e_float(ld); }
 
-  inline e_float& operator-=(e_float& u, const signed char n)        { return u.sub_signed_long_long(n); }
+  inline e_float& operator-=(e_float& u, const signed char n)        { return ((!std::numeric_limits<char>::is_signed) ? u.sub_unsigned_long_long(static_cast<unsigned long long>(n)) : u.sub_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator-=(e_float& u, const signed short n)       { return u.sub_signed_long_long(n); }
   inline e_float& operator-=(e_float& u, const signed int n)         { return u.sub_signed_long_long(n); }
   inline e_float& operator-=(e_float& u, const signed long n)        { return u.sub_signed_long_long(n); }
   inline e_float& operator-=(e_float& u, const signed long long n)   { return u.sub_signed_long_long(n); }
   inline e_float& operator-=(e_float& u, const unsigned char n)      { return u.sub_unsigned_long_long(n); }
-  inline e_float& operator-=(e_float& u, const wchar_t n)            { return u.sub_unsigned_long_long(n); }
+  inline e_float& operator-=(e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? u.sub_unsigned_long_long(static_cast<unsigned long long>(n)) : u.sub_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator-=(e_float& u, const unsigned short n)     { return u.sub_unsigned_long_long(n); }
   inline e_float& operator-=(e_float& u, const unsigned int n)       { return u.sub_unsigned_long_long(n); }
   inline e_float& operator-=(e_float& u, const unsigned long n)      { return u.sub_unsigned_long_long(n); }
@@ -185,13 +194,14 @@
   inline e_float& operator-=(e_float& u, const double d)             { return u -= e_float(d); }
   inline e_float& operator-=(e_float& u, const long double ld)       { return u -= e_float(ld); }
 
+  inline e_float& operator*=(e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? u.mul_unsigned_long_long(static_cast<unsigned long long>(n)) : u.mul_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator*=(e_float& u, const signed char n)        { return u.mul_signed_long_long(n); }
   inline e_float& operator*=(e_float& u, const signed short n)       { return u.mul_signed_long_long(n); }
   inline e_float& operator*=(e_float& u, const signed int n)         { return u.mul_signed_long_long(n); }
   inline e_float& operator*=(e_float& u, const signed long n)        { return u.mul_signed_long_long(n); }
   inline e_float& operator*=(e_float& u, const signed long long n)   { return u.mul_signed_long_long(n); }
   inline e_float& operator*=(e_float& u, const unsigned char n)      { return u.mul_unsigned_long_long(n); }
-  inline e_float& operator*=(e_float& u, const wchar_t n)            { return u.mul_unsigned_long_long(n); }
+  inline e_float& operator*=(e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? u.mul_unsigned_long_long(static_cast<unsigned long long>(n)) : u.mul_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator*=(e_float& u, const unsigned short n)     { return u.mul_unsigned_long_long(n); }
   inline e_float& operator*=(e_float& u, const unsigned int n)       { return u.mul_unsigned_long_long(n); }
   inline e_float& operator*=(e_float& u, const unsigned long n)      { return u.mul_unsigned_long_long(n); }
@@ -200,13 +210,14 @@
   inline e_float& operator*=(e_float& u, const double d)             { return u *= e_float(d); }
   inline e_float& operator*=(e_float& u, const long double ld)       { return u *= e_float(ld); }
 
+  inline e_float& operator/=(e_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? u.div_unsigned_long_long(static_cast<unsigned long long>(n)) : u.div_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator/=(e_float& u, const signed char n)        { return u.div_signed_long_long(n); }
   inline e_float& operator/=(e_float& u, const signed short n)       { return u.div_signed_long_long(n); }
   inline e_float& operator/=(e_float& u, const signed int n)         { return u.div_signed_long_long(n); }
   inline e_float& operator/=(e_float& u, const signed long n)        { return u.div_signed_long_long(n); }
   inline e_float& operator/=(e_float& u, const signed long long n)   { return u.div_signed_long_long(n); }
   inline e_float& operator/=(e_float& u, const unsigned char n)      { return u.div_unsigned_long_long(n); }
-  inline e_float& operator/=(e_float& u, const wchar_t n)            { return u.div_unsigned_long_long(n); }
+  inline e_float& operator/=(e_float& u, const wchar_t n)            { return ((!std::numeric_limits<wchar_t>::is_signed) ? u.div_unsigned_long_long(static_cast<unsigned long long>(n)) : u.div_signed_long_long(static_cast<signed long long>(n))); }
   inline e_float& operator/=(e_float& u, const unsigned short n)     { return u.div_unsigned_long_long(n); }
   inline e_float& operator/=(e_float& u, const unsigned int n)       { return u.div_unsigned_long_long(n); }
   inline e_float& operator/=(e_float& u, const unsigned long n)      { return u.div_unsigned_long_long(n); }

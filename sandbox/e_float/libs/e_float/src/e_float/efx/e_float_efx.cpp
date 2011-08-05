@@ -103,7 +103,8 @@ efx::e_float::e_float(const char n) : data     (),
                                       fpclass  (ef_finite),
                                       prec_elem(ef_elem_number)
 {
-  from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  (std::numeric_limits<char>::is_signed ? from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n))
+                                        : from_unsigned_long(static_cast<unsigned long>(n)));
 }
 
 efx::e_float::e_float(const signed char n) : data     (),
@@ -126,11 +127,12 @@ efx::e_float::e_float(const unsigned char n) : data     (),
 
 efx::e_float::e_float(const wchar_t n) : data     (),
                                          exp      (static_cast<INT64>(0)),
-                                         neg      (false),
+                                         neg      (std::numeric_limits<wchar_t>::is_signed ? (n < static_cast<wchar_t>(0)) : false),
                                          fpclass  (ef_finite),
                                          prec_elem(ef_elem_number)
 {
-  from_unsigned_long(static_cast<unsigned long>(n));
+  (std::numeric_limits<wchar_t>::is_signed ? from_unsigned_long((!neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n))
+                                           : from_unsigned_long(static_cast<unsigned long>(n)));
 }
 
 efx::e_float::e_float(const signed short n) : data     (),

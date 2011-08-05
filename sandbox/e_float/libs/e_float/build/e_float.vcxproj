@@ -779,6 +779,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-gmp|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\src\e_float\gmp\e_float_gmp.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|Win32'">true</ExcludedFromBuild>

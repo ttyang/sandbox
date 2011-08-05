@@ -768,19 +768,8 @@ void ef::sinhcosh(const e_float& x, e_float* const p_sinh, e_float* const p_cosh
   const e_float e_px = ef::exp(x);
   const e_float e_mx = ef::one() / e_px;
 
-  if(p_sinh)
-  {
-    *p_sinh  = e_px;
-    *p_sinh -= e_mx;
-    p_sinh->div_unsigned_long_long(2u);
-  }
-
-  if(p_cosh)
-  {
-    *p_cosh  = e_px;
-    *p_cosh += e_mx;
-    p_cosh->div_unsigned_long_long(2u);
-  }
+  if(p_sinh != static_cast<e_float* const>(0u)) { *p_sinh  = (e_px - e_mx) / static_cast<INT32>(2); }
+  if(p_cosh != static_cast<e_float* const>(0u)) { *p_cosh  = (e_px + e_mx) / static_cast<INT32>(2); }
 }
 
 e_float ef::tanh(const e_float& x)

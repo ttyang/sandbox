@@ -86,23 +86,26 @@ const std::string::size_type& e_float_base::width_of_exponent_field(void)
   return width_of_e;
 }
 
-e_float e_float_base::my_cbrt         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_rootn        (const e_float&, const UINT32) { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_exp          (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_log          (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_sin          (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_cos          (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_tan          (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_asin         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_acos         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_atan         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_sinh         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_cosh         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_tanh         (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_asinh        (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_acosh        (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_atanh        (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_gamma        (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_riemann_zeta (const e_float&)               { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_cyl_bessel_jn(const INT32, const e_float&)  { return std::numeric_limits<e_float>::quiet_NaN(); }
-e_float e_float_base::my_cyl_bessel_yn(const INT32, const e_float&)  { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_ldexp        (const e_float&, int)            { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_frexp        (const e_float&, int*)           { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_fmod         (const e_float&, const e_float&) { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_cbrt         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_rootn        (const e_float&, const UINT32)   { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_exp          (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_log          (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_sin          (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_cos          (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_tan          (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_asin         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_acos         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_atan         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_sinh         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_cosh         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_tanh         (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_asinh        (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_acosh        (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_atanh        (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_gamma        (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_riemann_zeta (const e_float&)                 { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_cyl_bessel_jn(const INT32, const e_float&)    { return std::numeric_limits<e_float>::quiet_NaN(); }
+e_float e_float_base::my_cyl_bessel_yn(const INT32, const e_float&)    { return std::numeric_limits<e_float>::quiet_NaN(); }

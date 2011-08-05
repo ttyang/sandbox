@@ -46,50 +46,71 @@ mpfr::e_float::e_float()
   ::mpfr_init(rop);
 }
 
-mpfr::e_float::e_float(const INT32 n)
+mpfr::e_float::e_float(const char n)
 {
-  const bool b_neg = (n < static_cast<INT32>(0));
-
-  from_uint32(b_neg ? static_cast<UINT32>(-n) : static_cast<UINT32>(n));
-
+  const bool b_neg = (std::numeric_limits<char>::is_signed && (n < static_cast<char>(0)));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
   if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
 }
 
-mpfr::e_float::e_float(const INT64 n)
+mpfr::e_float::e_float(const signed char n)
 {
-  const bool b_neg = (n < static_cast<INT64>(0));
-
-  from_uint64(b_neg ? static_cast<UINT64>(-n) : static_cast<UINT64>(n));
-
+  const bool b_neg = (n < static_cast<signed char>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
   if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
 }
 
-mpfr::e_float::e_float(const UINT32 u)
+mpfr::e_float::e_float(const signed short n)
 {
-  from_uint32(u);
+  const bool b_neg = (n < static_cast<signed short>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
 }
 
-mpfr::e_float::e_float(const UINT64 u)
+mpfr::e_float::e_float(const signed int n)
 {
-  from_uint64(u);
+  const bool b_neg = (n < static_cast<signed int>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
 }
 
-void mpfr::e_float::from_uint64(const UINT64 u)
+mpfr::e_float::e_float(const signed long n)
+{
+  const bool b_neg = (n < static_cast<signed long>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
+}
+
+mpfr::e_float::e_float(const signed long long n)
+{
+  const bool b_neg = (n < static_cast<signed long long>(0));
+  from_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+  if(b_neg) { ::mpfr_neg(rop, rop, GMP_RNDN); }
+}
+
+mpfr::e_float::e_float(const unsigned char n)      { from_unsigned_long(static_cast<unsigned long>(n)); }
+mpfr::e_float::e_float(const wchar_t n)            { from_unsigned_long(static_cast<unsigned long>(n)); }
+mpfr::e_float::e_float(const unsigned short n)     { from_unsigned_long(static_cast<unsigned long>(n)); }
+mpfr::e_float::e_float(const unsigned int n)       { from_unsigned_long(static_cast<unsigned long>(n)); }
+mpfr::e_float::e_float(const unsigned long n)      { from_unsigned_long(static_cast<unsigned long>(n)); }
+mpfr::e_float::e_float(const unsigned long long n) { from_unsigned_long_long(static_cast<unsigned long long>(n)); }
+
+mpfr::e_float::e_float(const float f)
 {
   init();
-  static_cast<void>(::mpfr_init_set_str(rop, Util::lexical_cast(u).c_str(), 10, GMP_RNDN));
-}
-
-void mpfr::e_float::from_uint32(const UINT32 u)
-{
-  init();
-  mpfr_init_set_ui(rop, static_cast<unsigned long>(u), GMP_RNDN);
+  mpfr_init_set_d(rop, static_cast<double>(f), GMP_RNDN);
 }
 
 mpfr::e_float::e_float(const double d)
 {
   init();
   mpfr_init_set_d(rop, d, GMP_RNDN);
+}
+
+mpfr::e_float::e_float(const long double ld)
+{
+  init();
+  mpfr_init_set_ld(rop, ld, GMP_RNDN);
 }
 
 mpfr::e_float::e_float(const e_float& f)
@@ -136,6 +157,18 @@ mpfr::e_float::e_float(const double mantissa, const INT64 exponent)
 mpfr::e_float::~e_float()
 {
   ::mpfr_clear(rop);
+}
+
+void mpfr::e_float::from_unsigned_long_long(const unsigned long long u)
+{
+  init();
+  static_cast<void>(::mpfr_init_set_str(rop, Util::lexical_cast(u).c_str(), 10, GMP_RNDN));
+}
+
+void mpfr::e_float::from_unsigned_long(const unsigned long u)
+{
+  init();
+  mpfr_init_set_ui(rop, u, GMP_RNDN);
 }
 
 const mpfr::e_float& mpfr::e_float::my_value_nan(void) const
@@ -198,33 +231,57 @@ mpfr::e_float& mpfr::e_float::operator/=(const e_float& v)
   return *this;
 }
 
-mpfr::e_float& mpfr::e_float::mul_by_int(const INT32 n)
+mpfr::e_float& mpfr::e_float::add_unsigned_long_long(const unsigned long long n)
 {
-  const bool b_n_is_neg = (n < static_cast<INT32>(0));
-
-  const unsigned long int nn = ((!b_n_is_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-
-  static_cast<void>(::mpfr_mul_ui(rop, rop, nn, GMP_RNDN));
-
-  if(b_n_is_neg)
+  if(n > static_cast<unsigned long long>(std::numeric_limits<unsigned long>::max()))
   {
-    ::mpfr_neg(rop, rop, GMP_RNDN);
+    operator+=(e_float(n));
+  }
+  else
+  {
+    static_cast<void>(::mpfr_add_ui(rop, rop, static_cast<unsigned long>(n), GMP_RNDN));
   }
 
   return *this;
 }
 
-mpfr::e_float& mpfr::e_float::div_by_int(const INT32 n)
+mpfr::e_float& mpfr::e_float::sub_unsigned_long_long(const unsigned long long n)
 {
-  const bool b_neg = (n < static_cast<INT32>(0));
-
-  const unsigned long int nn = ((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
-
-  static_cast<void>(::mpfr_div_ui(rop, rop, nn, GMP_RNDN));
-
-  if(b_neg)
+  if(n > static_cast<unsigned long long>(std::numeric_limits<unsigned long>::max()))
   {
-    ::mpfr_neg(rop, rop, GMP_RNDN);
+    operator-=(e_float(n));
+  }
+  else
+  {
+    static_cast<void>(::mpfr_sub_ui(rop, rop, static_cast<unsigned long>(n), GMP_RNDN));
+  }
+
+  return *this;
+}
+
+mpfr::e_float& mpfr::e_float::mul_unsigned_long_long(const unsigned long long n)
+{
+  if(n > static_cast<unsigned long long>(std::numeric_limits<unsigned long>::max()))
+  {
+    operator*=(e_float(n));
+  }
+  else
+  {
+    static_cast<void>(::mpfr_mul_ui(rop, rop, static_cast<unsigned long>(n), GMP_RNDN));
+  }
+
+  return *this;
+}
+
+mpfr::e_float& mpfr::e_float::div_unsigned_long_long(const unsigned long long n)
+{
+  if(n > static_cast<unsigned long long>(std::numeric_limits<unsigned long>::max()))
+  {
+    operator/=(e_float(n));
+  }
+  else
+  {
+    static_cast<void>(::mpfr_div_ui(rop, rop, static_cast<unsigned long>(n), GMP_RNDN));
   }
 
   return *this;
