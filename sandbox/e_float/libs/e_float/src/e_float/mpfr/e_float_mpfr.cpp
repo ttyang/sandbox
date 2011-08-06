@@ -15,6 +15,7 @@
 
 #include <e_float/e_float.hpp>
 #include <e_float/e_float_constants.hpp>
+#include <e_float/e_float_elementary.hpp>
 
 #include "e_float_mpfr_protos.h"
 #include "../../utility/util_lexical_cast.h"
@@ -57,7 +58,42 @@ mpfr::e_float::e_float(const unsigned int n)       {  init(); from_unsigned_long
 mpfr::e_float::e_float(const unsigned long n)      {  init(); from_unsigned_long     (static_cast<unsigned long>     (n)); }
 mpfr::e_float::e_float(const unsigned long long n) {  init(); from_unsigned_long_long(static_cast<unsigned long long>(n)); }
 
-mpfr::e_float::e_float(const float f)        { init(); mpfr_init_set_d(rop, static_cast<double>(f), GMP_RNDN); }
+mpfr::e_float::e_float(const float f)
+{
+  init();
+
+  const bool b_neg = (f < 0.0f);
+
+  if(!ef::isfinite(static_cast<double>(f)))
+  {
+    operator=(ef::isnan(static_cast<double>(f)) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    return;
+  }
+
+  if(f == 0.0f)
+  {
+    mpfr_init_set_ui(rop, 0uL, GMP_RNDN);
+    return;
+  }
+
+  const native_float_parts<float> fb((!b_neg) ? f : -f);
+
+  // Create an e_float from the fractional part of the
+  // mantissa expressed as an unsigned long long.
+  from_unsigned_long_long(fb.get_mantissa());
+
+  // Scale the UINT64 representation to the fractional part of
+  // the double and multiply with the base-2 exponent.
+  const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
+
+  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
+
+  if(b_neg)
+  {
+    ::mpfr_neg(rop, rop, GMP_RNDN);
+  }
+}
+
 mpfr::e_float::e_float(const double d)       { init(); mpfr_init_set_d(rop, d, GMP_RNDN); }
 mpfr::e_float::e_float(const long double ld) { init(); mpfr_init_set_ld(rop, ld, GMP_RNDN); }
 mpfr::e_float::e_float(const e_float& f)     { init(); mpfr_init_set(rop, f.rop, GMP_RNDN); }

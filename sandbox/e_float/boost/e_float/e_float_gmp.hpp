@@ -136,9 +136,9 @@
       virtual e_float& calculate_sqrt(void);
 
       // Comparison functions
-      virtual bool isnan   (void) const { return fpclass == ef_NaN; }
-      virtual bool isinf   (void) const { return fpclass == ef_inf; }
-      virtual bool isfinite(void) const { return fpclass == ef_finite; }
+      virtual bool isnan   (void) const { return (fpclass == ef_NaN); }
+      virtual bool isinf   (void) const { return (fpclass == ef_inf); }
+      virtual bool isfinite(void) const { return (fpclass == ef_finite); }
 
       virtual bool iszero (void) const;
       virtual bool isone  (void) const;

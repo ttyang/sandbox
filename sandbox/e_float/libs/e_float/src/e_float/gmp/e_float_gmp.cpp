@@ -12,11 +12,19 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
+#include <cfloat>
 
 #include <e_float/e_float.hpp>
 #include <e_float/e_float_constants.hpp>
+#include <e_float/e_float_elementary.hpp>
+
 #include "e_float_gmp_protos.h"
 #include "../../utility/util_lexical_cast.h"
+
+#if defined(__GNUC__)
+  static inline INT32 _isnan (float x)       { return static_cast<INT32>(std::isnan   <float>(x)); }
+  static inline INT32 _finite(float x)       { return static_cast<INT32>(std::isfinite<float>(x)); }
+#endif
 
 namespace
 {
@@ -51,49 +59,7 @@ const INT64& gmp::e_float::min_exp2(void)
   return val_min_exp2;
 }
 
-gmp::e_float::e_float(const INT32 n) : fpclass  (ef_finite),
-                                       prec_elem(ef_digits10_tol)
-{
-  init();
 
-  const bool b_neg = (n < static_cast<INT32>(0));
-
-  from_uint32(b_neg ? static_cast<UINT32>(-n) : static_cast<UINT32>(n));
-
-  if(b_neg)
-  {
-    ::mpf_neg(rop, rop);
-  }
-}
-
-gmp::e_float::e_float(const INT64 n) : fpclass  (ef_finite),
-                                       prec_elem(ef_digits10_tol)
-{
-  init();
-
-  const bool b_neg = (n < static_cast<INT64>(0));
-
-  from_uint64(b_neg ? static_cast<UINT64>(-n) : static_cast<UINT64>(n));
-
-  if(b_neg)
-  {
-    ::mpf_neg(rop, rop);
-  }
-}
-
-gmp::e_float::e_float(const UINT32 u) : fpclass  (ef_finite),
-                                        prec_elem(ef_digits10_tol)
-{
-  init();
-  from_uint32(u);
-}
-
-gmp::e_float::e_float(const UINT64 u) : fpclass  (ef_finite),
-                                        prec_elem(ef_digits10_tol)
-{
-  init();
-  from_uint64(u);
-}
 
 gmp::e_float::e_float() : fpclass  (ef_finite),
                           prec_elem(ef_digits10_tol)
@@ -102,11 +68,158 @@ gmp::e_float::e_float() : fpclass  (ef_finite),
   ::mpf_init(rop);
 }
 
+/*
+gmp::e_float::e_float(const char n);
+gmp::e_float::e_float(const wchar_t n);
+*/
+
+gmp::e_float::e_float(const signed char n) : fpclass  (ef_finite),
+                                             prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (n < static_cast<signed char>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
+
+gmp::e_float::e_float(const signed short n) : fpclass  (ef_finite),
+                                              prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (n < static_cast<signed short>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
+
+gmp::e_float::e_float(const signed int n) : fpclass  (ef_finite),
+                                            prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (n < static_cast<signed int>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
+
+gmp::e_float::e_float(const signed long n) : fpclass  (ef_finite),
+                                             prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (n < static_cast<signed long>(0));
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
+
+gmp::e_float::e_float(const signed long long n) : fpclass  (ef_finite),
+                                                  prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (n < static_cast<signed long long>(0));
+  from_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
+
+gmp::e_float::e_float(const unsigned char n) : fpclass  (ef_finite),
+                                               prec_elem(ef_digits10_tol)
+{
+  init();
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+gmp::e_float::e_float(const unsigned short n) : fpclass  (ef_finite),
+                                                prec_elem(ef_digits10_tol)
+{
+  init();
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+gmp::e_float::e_float(const unsigned int n) : fpclass  (ef_finite),
+                                              prec_elem(ef_digits10_tol)
+{
+  init();
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+gmp::e_float::e_float(const unsigned long n) : fpclass  (ef_finite),
+                                               prec_elem(ef_digits10_tol)
+{
+  init();
+  from_unsigned_long(static_cast<unsigned long>(n));
+}
+
+gmp::e_float::e_float(const unsigned long long n) : fpclass  (ef_finite),
+                                                    prec_elem(ef_digits10_tol)
+{
+  init();
+  from_unsigned_long_long(static_cast<unsigned long long>(n));
+}
+
+gmp::e_float::e_float(const float f) : fpclass  (ef_finite),
+                                       prec_elem(ef_digits10_tol)
+{
+  init();
+
+  const bool b_neg = (f < 0.0f);
+
+  if(::_finite(f) == 0)
+  {
+    operator=(::_isnan(f) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    return;
+  }
+
+  const native_float_parts<float> fb((!b_neg) ? f : -f);
+
+  // Create an e_float from the fractional part of the
+  // mantissa expressed as an unsigned long long.
+  from_unsigned_long_long(fb.get_mantissa());
+
+  // Scale the UINT64 representation to the fractional part of
+  // the double and multiply with the base-2 exponent.
+  const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
+
+  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
+
+  if(b_neg)
+  {
+    ::mpf_neg(rop, rop);
+  }
+}
+
 gmp::e_float::e_float(const double d) : fpclass  (ef_finite),
                                         prec_elem(ef_digits10_tol)
 {
   init();
   ::mpf_init_set_d(rop, d);
+}
+
+gmp::e_float::e_float(const long double ld) : fpclass  (ef_finite),
+                                              prec_elem(ef_digits10_tol)
+{
+  init();
+
+  const bool b_neg = (ld < static_cast<long double>(0.0));
+
+  if(::_finite(static_cast<double>(ld)) == 0)
+  {
+    operator=(::_isnan(static_cast<double>(ld)) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    return;
+  }
+
+  const native_float_parts<long double> fb((!b_neg) ? ld : -ld);
+
+  // Create an e_float from the fractional part of the
+  // mantissa expressed as an unsigned long long.
+  from_unsigned_long_long(fb.get_mantissa());
+
+  // Scale the UINT64 representation to the fractional part of
+  // the double and multiply with the base-2 exponent.
+  const int p2 = fb.get_exponent() - (std::numeric_limits<long double>::digits - 1);
+
+  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
+
+  if(b_neg)
+  {
+    ::mpf_neg(rop, rop);
+  }
 }
 
 gmp::e_float::e_float(const char* const s) : fpclass  (ef_finite),
@@ -171,7 +284,7 @@ gmp::e_float::~e_float()
 
 void gmp::e_float::from_unsigned_long_long(const unsigned long long u)
 {
-  if(n <= static_cast<unsigned long long>((std::numeric_limits<unsigned long>::max)()))
+  if(u <= static_cast<unsigned long long>((std::numeric_limits<unsigned long>::max)()))
   {
     from_unsigned_long(static_cast<unsigned long>(u));
   }
@@ -321,7 +434,35 @@ gmp::e_float& gmp::e_float::operator/=(const e_float& v)
   return operator*=(e_float(v).calculate_inv());
 }
 
-gmp::e_float& gmp::e_float::mul_by_int(const INT32 n)
+// TBD: This needs an overflow and underflow check.
+gmp::e_float& gmp::e_float::add_unsigned_long_long(const unsigned long long n)
+{
+  if(n <= (std::numeric_limits<unsigned long>::max)())
+  {
+    ::mpf_add_ui(rop, rop, static_cast<unsigned long>(n));
+    return *this;
+  }
+  else
+  {
+    return operator+=(e_float(n));
+  }
+}
+
+// TBD: This needs an overflow and underflow check.
+gmp::e_float& gmp::e_float::sub_unsigned_long_long(const unsigned long long n)
+{
+  if(n <= (std::numeric_limits<unsigned long>::max)())
+  {
+    ::mpf_sub_ui(rop, rop, static_cast<unsigned long>(n));
+    return *this;
+  }
+  else
+  {
+    return operator+=(e_float(n));
+  }
+}
+
+gmp::e_float& gmp::e_float::mul_unsigned_long_long(const unsigned long long n)
 {
   // Multiply *this with a constant signed integer.
 
@@ -371,7 +512,7 @@ gmp::e_float& gmp::e_float::mul_by_int(const INT32 n)
   return *this;
 }
 
-gmp::e_float& gmp::e_float::div_by_int(const INT32 n)
+gmp::e_float& gmp::e_float::div_unsigned_long_long(const unsigned long long n)
 {
   const bool b_n_is_neg = (n < static_cast<INT32>(0));
 
@@ -547,48 +688,34 @@ bool gmp::e_float::isneg(void) const
 const gmp::e_float& gmp::e_float::my_value_nan(void) const
 {
   static e_float val(0u);
-
   val.fpclass = ef_NaN;
-
   static const e_float qnan(val);
-  
   return qnan;
 }
 
 const gmp::e_float& gmp::e_float::my_value_inf(void) const
 {
   static e_float val(0u);
-
   val.fpclass = ef_inf;
-
   static const e_float inf(val);
-
   return inf;
 }
 
 const gmp::e_float& gmp::e_float::my_value_max(void) const
 {
   static const INT64 exp10_max = std::numeric_limits<e_float>::max_exponent10;
-
   static const e_float val("1E" + Util::lexical_cast(exp10_max));
-
   return val;
 }
 
 const gmp::e_float& gmp::e_float::my_value_min(void) const
 {
   static const INT64 exp10_min = std::numeric_limits<e_float>::min_exponent10;
-
   static const e_float val("1E" + Util::lexical_cast(exp10_min));
-
   return val;
 }
 
-e_float& gmp::e_float::negate(void)
-{
-  ::mpf_neg(rop, rop);
-  return *this;
-}
+e_float& gmp::e_float::negate(void) { ::mpf_neg(rop, rop); return *this; }
 
 e_float& gmp::e_float::operator++(void) { ::mpf_add_ui(rop, rop, static_cast<unsigned long>(1u)); return *this; }
 e_float& gmp::e_float::operator--(void) { ::mpf_sub_ui(rop, rop, static_cast<unsigned long>(1u)); return *this; }
@@ -703,7 +830,7 @@ gmp::e_float gmp::e_float::extract_integer_part(void) const
   const bool b_neg = isneg();
 
   const e_float xx = ef::fabs(*this);
-    
+
   e_float nx(xx);
   ::mpf_floor(nx.rop, xx.rop);
 
@@ -721,7 +848,41 @@ gmp::e_float gmp::e_float::extract_decimal_part(void) const
   return ((!b_neg) ? dx : -dx);
 }
 
-INT64 gmp::e_float::order(void) const
+INT64 gmp::e_float::get_order_exact(void) const
+{
+  // Get the order-10 of the e_float. This is done using a partial
+  // string extraction with 10 decimal digits.
+
+  // Create a format string for 10-digits and scientific notation.
+  std::string str_fmt = std::string("%.10RNe");
+
+  // Get the ten digits.
+  std::tr1::array<char, 64u> buf = {{ static_cast<char>(0) }};
+
+  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
+
+  const std::string str = std::string(buf.data());
+
+  // Extract the base-10 exponent.
+  INT64 my_exp;
+
+  const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
+
+  if(pos_letter_e != std::string::npos)
+  {
+    std::stringstream ss;
+    ss << static_cast<const char*>(str.c_str() + (pos_letter_e + 1u));
+    ss >> my_exp;
+  }
+  else
+  {
+    my_exp = static_cast<INT64>(0);
+  }
+
+  return my_exp;
+}
+
+INT64 gmp::e_float::get_order_approximate(void) const
 {
   const e_float xx = ef::fabs(*this);
 
@@ -740,6 +901,7 @@ INT64 gmp::e_float::order(void) const
   }
 }
 
+/*
 void gmp::e_float::wr_string(std::string& str, std::ostream& os) const
 {
   if(isnan())
@@ -791,6 +953,7 @@ void gmp::e_float::wr_string(std::string& str, std::ostream& os) const
     str.insert(pos_exp, std::string(width_of_exponent_field() - width_of_exp, static_cast<char>('0')));
   }
 }
+*/
 
 namespace gmp
 {

@@ -18,7 +18,9 @@
   #endif
 
   #include <iostream>
+  #include <limits>
   #include <string>
+  #include <cmath>
 
   #include <e_float/e_float_types.hpp>
 
@@ -173,6 +175,61 @@
     inline e_float_base();
 
     static bool char_is_nonzero_predicate(const char& c) { return (c != static_cast<char>('0')); }
+
+    // Emphasize: This template class can be used with native floating-point
+    // types like float, double and long double. Note: For long double,
+    // you need to verify that the mantissa fits in unsigned long long.
+    template<typename native_float_type>
+    class native_float_parts
+    {
+    public:
+      native_float_parts(const native_float_type f) : u(0uLL), e(0) { make_parts(f); }
+
+      const unsigned long long& get_mantissa(void) const { return u; }
+      const int& get_exponent(void) const { return e; }
+
+    private:
+      native_float_parts(const native_float_parts&);
+      const native_float_parts& operator=(const native_float_parts&);
+
+      unsigned long long u;
+      int e;
+
+      native_float_parts();
+
+      void make_parts(const native_float_type f)
+      {
+        // Get the fraction and base-2 exponent.
+        native_float_type man = ::frexp(f, &e);
+
+        UINT32 n2 = 0u;
+
+        for(UINT32 i = static_cast<UINT32>(0u); i < static_cast<UINT32>(std::numeric_limits<native_float_type>::digits); i++)
+        {
+          // Extract the mantissa of the floating-point type in base-2
+          // (yes, one bit at a time) and store it in an unsigned long long.
+          // TBD: Is this really portable?
+          man *= 2;
+
+          n2   = static_cast<UINT32>(man);
+          man -= static_cast<native_float_type>(n2);
+
+          if(n2 != static_cast<UINT32>(0u))
+          {
+            u |= 1u;
+          }
+
+          if(i < static_cast<UINT32>(std::numeric_limits<native_float_type>::digits - 1))
+          {
+            u <<= 1u;
+          }
+        }
+
+        // Ensure that the value is normalized and adjust the exponent.
+        u |= static_cast<unsigned long long>(1uLL << (std::numeric_limits<native_float_type>::digits - 1));
+        e -= 1;
+      }
+    };
 
   private:
     static bool digits_match_lib_dll_is_ok;

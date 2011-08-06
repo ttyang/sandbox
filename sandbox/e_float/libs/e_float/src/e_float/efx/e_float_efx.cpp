@@ -32,63 +32,6 @@
 #include "../../utility/util_numeric_cast.h"
 #include "../../utility/util_noncopyable.h"
 
-namespace
-{
-  // Emphasize: This template class can be used with native floating-point
-  // types like float, double and 10-byte long double. Note: It would need
-  // to be extended for 16-byte long double because the mantissa would
-  // no longer fit in UINT64.
-  template<typename native_float_type>
-  class native_float_parts : private Util::noncopyable
-  {
-  public:
-    native_float_parts(const native_float_type f) : u(0uLL), e(0) { make_parts(f); }
-
-    const unsigned long long& get_mantissa(void) const { return u; }
-    const int& get_exponent(void) const { return e; }
-
-  private:
-    unsigned long long u;
-    int e;
-
-    native_float_parts();
-
-    void make_parts(const native_float_type f)
-    {
-      // Get the fraction and base-2 exponent.
-      native_float_type man = ::frexp(f, &e);
-
-      // Express the fractional part as a UINT64.
-      UINT32 n2 = 0u;
-
-      for(UINT32 i = static_cast<UINT32>(0u); i < static_cast<UINT32>(std::numeric_limits<native_float_type>::digits); i++)
-      {
-        // Extract the mantissa of the floating-point type in base-2
-        // (yes, one bit at a time) and store it in a UINT64.
-        // TBD: Is this really portable?
-        man *= 2;
-
-        n2   = static_cast<UINT32>(man);
-        man -= static_cast<native_float_type>(n2);
-
-        if(n2 != static_cast<UINT32>(0u))
-        {
-          u |= 1u;
-        }
-
-        if(i < static_cast<UINT32>(std::numeric_limits<native_float_type>::digits - 1))
-        {
-          u <<= 1u;
-        }
-      }
-
-      // Ensure that the value is normalized and adjust the exponent.
-      u |= static_cast<unsigned long long>(1uLL << (std::numeric_limits<native_float_type>::digits - 1));
-      e -= 1;
-    }
-  };
-}
-
 efx::e_float::e_float(const char n) : data     (),
                                       exp      (static_cast<INT64>(0)),
                                       neg      (std::numeric_limits<char>::is_signed ? (n < static_cast<char>(0)) : false),
@@ -203,18 +146,18 @@ efx::e_float::e_float(const float f) : data     (),
                                        fpclass  (ef_finite),
                                        prec_elem(ef_elem_number)
 {
-  bool b_neg;
+  const bool b_neg = (f < 0.0f);
 
+  if(!ef::isfinite(static_cast<double>(f)))
   {
-    const double d = static_cast<double>(f);
+    operator=(ef::isnan(static_cast<double>(f)) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    return;
+  }
 
-    b_neg = ef::isneg(d);
-
-    if(!ef::isfinite(d))
-    {
-      operator=(ef::isnan(d) ? my_value_nan() : ((!ef::isneg(d)) ? my_value_inf() : -my_value_inf()));
-      return;
-    }
+  if(f == 0.0f)
+  {
+    operator=(ef::zero());
+    return;
   }
 
   const native_float_parts<float> fb((!b_neg) ? f : -f);
@@ -227,19 +170,7 @@ efx::e_float::e_float(const float f) : data     (),
   // the double and multiply with the base-2 exponent.
   const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
 
-  if(p2 == 0) { }
-  else if((p2 > 0) && (p2 < 27))
-  {
-    mul_unsigned_long_long(static_cast<unsigned long long>(1uL << p2));
-  }
-  else if((p2 < 0) && (p2 > -27))
-  {
-    div_unsigned_long_long(static_cast<unsigned long long>(1uL << -p2));
-  }
-  else
-  {
-    operator*=(ef::pow2(static_cast<INT64>(p2)));
-  }
+  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
 
   neg = b_neg;
 }
@@ -250,43 +181,33 @@ efx::e_float::e_float(const double d) : data     (),
                                         fpclass  (ef_finite),
                                         prec_elem(ef_elem_number)
 {
-  // Create an e_float from a double. Yes, this ctor does
-  // maintain the full precision of double.
+  const bool b_neg = (d < 0.0);
 
   if(!ef::isfinite(d))
   {
-    operator=(ef::isnan(d) ? my_value_nan() : ((!ef::isneg(d)) ? my_value_inf() : -my_value_inf()));
+    operator=(ef::isnan(d) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    return;
   }
-  else
+
+  if(d == 0.0)
   {
-    const bool b_neg = ef::isneg(d);
-
-    const native_float_parts<double> db((!b_neg) ? d : -d);
-
-    // Create an e_float from the fractional part of the
-    // mantissa expressed as an unsigned long long.
-    from_unsigned_long_long(db.get_mantissa());
-
-    // Scale the UINT64 representation to the fractional part of
-    // the double and multiply with the base-2 exponent.
-    const int p2 = db.get_exponent() - (std::numeric_limits<double>::digits - 1);
-
-    if(p2 == 0) { }
-    else if((p2 > 0) && (p2 < 27))
-    {
-      mul_unsigned_long_long(static_cast<unsigned long long>(1uL << p2));
-    }
-    else if((p2 < 0) && (p2 > -27))
-    {
-      div_unsigned_long_long(static_cast<unsigned long long>(1uL << -p2));
-    }
-    else
-    {
-      operator*=(ef::pow2(static_cast<INT64>(p2)));
-    }
-
-    neg = b_neg;
+    operator=(ef::zero());
+    return;
   }
+
+  const native_float_parts<double> db((!b_neg) ? d : -d);
+
+  // Create an e_float from the fractional part of the
+  // mantissa expressed as an unsigned long long.
+  from_unsigned_long_long(db.get_mantissa());
+
+  // Scale the UINT64 representation to the fractional part of
+  // the double and multiply with the base-2 exponent.
+  const int p2 = db.get_exponent() - (std::numeric_limits<double>::digits - 1);
+
+  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
+
+  neg = b_neg;
 }
 
 efx::e_float::e_float(const long double ld) : data     (),
@@ -295,18 +216,18 @@ efx::e_float::e_float(const long double ld) : data     (),
                                               fpclass  (ef_finite),
                                               prec_elem(ef_elem_number)
 {
-  bool b_neg;
+  const bool b_neg = (ld < static_cast<long double>(0.0));
 
+  if(!ef::isfinite(static_cast<double>(ld)))
   {
-    const double d = static_cast<double>(ld);
+    operator=(ef::isnan(static_cast<double>(ld)) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    return;
+  }
 
-    b_neg = ef::isneg(d);
-
-    if(!ef::isfinite(d))
-    {
-      operator=(ef::isnan(d) ? my_value_nan() : ((!ef::isneg(d)) ? my_value_inf() : -my_value_inf()));
-      return;
-    }
+  if(ld == static_cast<long double>(0.0))
+  {
+    operator=(ef::zero());
+    return;
   }
 
   const native_float_parts<long double> ldb((!b_neg) ? ld : -ld);
@@ -319,19 +240,7 @@ efx::e_float::e_float(const long double ld) : data     (),
   // the double and multiply with the base-2 exponent.
   const int p2 = ldb.get_exponent() - (std::numeric_limits<long double>::digits - 1);
 
-  if(p2 == 0) { }
-  else if((p2 > 0) && (p2 < 27))
-  {
-    mul_unsigned_long_long(static_cast<unsigned long long>(1uL << p2));
-  }
-  else if((p2 < 0) && (p2 > -27))
-  {
-    div_unsigned_long_long(static_cast<unsigned long long>(1uL << -p2));
-  }
-  else
-  {
-    operator*=(ef::pow2(static_cast<INT64>(p2)));
-  }
+  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
 
   neg = b_neg;
 }
@@ -909,6 +818,7 @@ efx::e_float& efx::e_float::operator/=(const e_float& v)
   }
 }
 
+// TBD: These need overflow and underflow checks.
 efx::e_float& efx::e_float::add_unsigned_long_long(const unsigned long long n) { return operator+=(e_float(n)); }
 efx::e_float& efx::e_float::sub_unsigned_long_long(const unsigned long long n) { return operator-=(e_float(n)); }
 
@@ -947,13 +857,13 @@ efx::e_float& efx::e_float::mul_unsigned_long_long(const unsigned long long n)
 
   if(n >= static_cast<unsigned long long>(ef_elem_mask))
   {
+    neg = b_neg;
     return operator*=(e_float(n));
   }
 
   if(n == static_cast<unsigned long long>(1u))
   {
     neg = b_neg;
-
     return *this;
   }
 
@@ -1045,6 +955,7 @@ efx::e_float& efx::e_float::div_unsigned_long_long(const unsigned long long n)
 
   if(n >= static_cast<unsigned long long>(ef_elem_mask))
   {
+    neg = b_neg;
     return operator/=(e_float(n));
   }
   

@@ -137,11 +137,16 @@ namespace test
         my_test_result &= ::e_float_equate_to::check_type<unsigned long, unsigned long long>();
         my_test_result &= ::e_float_equate_to::check_type<unsigned long long, unsigned long long>();
 
-        e_float x(123u);
+        e_float x(123u); // Initialize x with something.
 
-        x = static_cast<float>(4.0f);       my_test_result &= (x == e_float(4u));
-        x = static_cast<double>(4.0);       my_test_result &= (x == e_float(4u));
-        x = static_cast<long double>(4.0f); my_test_result &= (x == e_float(4u));
+        // Reassign x to some floating-point POD values and check some equalities.
+        x = static_cast<float>(4.0f);      my_test_result &= (x == e_float(4u));
+        x = static_cast<double>(4.0);      my_test_result &= (x == e_float(4u));
+        x = static_cast<long double>(4.0); my_test_result &= (x == e_float(4u));
+
+        my_test_result &= (e_float(0.0f) == ef::zero());
+        my_test_result &= (e_float(0.0)  == ef::zero());
+        my_test_result &= (e_float(static_cast<long double>(0.0))  == ef::zero());
       }
     };
 
@@ -163,13 +168,21 @@ namespace test
 
         my_test_result = true;
 
-        my_test_result &= (ef::four() == static_cast<float>(4.0f));
-        my_test_result &= (ef::four() == static_cast<double>(4.0));
-        my_test_result &= (ef::four() == static_cast<long double>(4.0));
+        my_test_result &= (+ef::four() == static_cast<float>(+4.0f));
+        my_test_result &= (-ef::four() == static_cast<float>(-4.0f));
+        my_test_result &= (+ef::four() == static_cast<double>(+4.0));
+        my_test_result &= (-ef::four() == static_cast<double>(-4.0));
+        my_test_result &= (+ef::four() == static_cast<long double>(+4.0));
+        my_test_result &= (-ef::four() == static_cast<long double>(-4.0));
 
-        my_test_result &= (ef::pi() > static_cast<float>(3.14f));
-        my_test_result &= (ef::pi() > static_cast<double>(3.14));
-        my_test_result &= (ef::pi() > static_cast<long double>(3.14));
+        my_test_result &= (e_float(11.1f) == e_float("11.1000003814697265625"));
+
+        my_test_result &= (+ef::pi() > static_cast<float>(+3.14f));
+        my_test_result &= (-ef::pi() < static_cast<float>(-3.14f));
+        my_test_result &= (+ef::pi() > static_cast<double>(+3.14));
+        my_test_result &= (-ef::pi() < static_cast<double>(-3.14));
+        my_test_result &= (+ef::pi() > static_cast<long double>(+3.14));
+        my_test_result &= (-ef::pi() < static_cast<long double>(-3.14));
 
         my_test_result &= (static_cast<float>      (0.5f) < ef::euler_gamma());
         my_test_result &= (static_cast<double>     (0.5)  < ef::euler_gamma());
