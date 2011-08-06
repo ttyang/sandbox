@@ -415,7 +415,41 @@ mpfr::e_float mpfr::e_float::extract_decimal_part(void) const
   return ((!b_neg) ? dx : -dx);
 }
 
-INT64 mpfr::e_float::order(void) const
+INT64 mpfr::e_float::get_order_exact(void) const
+{
+  // Get the order-10 of the e_float. This is done using a partial
+  // string extraction with 10 decimal digits.
+
+  // Create a format string for 10-digits and scientific notation.
+  std::string str_fmt = std::string("%.10RNe");
+
+  // Get the ten digits.
+  std::tr1::array<char, 64u> buf = {{ static_cast<char>(0) }};
+
+  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
+
+  const std::string str = std::string(buf.data());
+
+  // Extract the base-10 exponent.
+  INT64 my_exp;
+
+  const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
+
+  if(pos_letter_e != std::string::npos)
+  {
+    std::stringstream ss;
+    ss << static_cast<const char*>(str.c_str() + (pos_letter_e + 1u));
+    ss >> my_exp;
+  }
+  else
+  {
+    my_exp = static_cast<INT64>(0);
+  }
+
+  return my_exp;
+}
+
+INT64 mpfr::e_float::get_order_approximate(void) const
 {
   const e_float xx = ef::fabs(*this);
 
@@ -434,8 +468,28 @@ INT64 mpfr::e_float::order(void) const
   }
 }
 
-void mpfr::e_float::get_raw_digits_from_scientific_string(std::string& str)
+void mpfr::e_float::get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const
 {
+  static_cast<void>(my_exp);
+
+  // Create a format string such as "%+.99RNe" in order to extract 100 digits
+  // in scientific notation with the lowercase and noshowpos flags.
+  const std::size_t the_number_of_digits_scientific = static_cast<std::size_t>((std::max)(number_of_digits, static_cast<std::size_t>(1u)) - static_cast<std::size_t>(1u));
+
+  const std::string str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "RNe");
+
+  // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
+  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
+
+  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
+
+  str = std::string(buf.data());
+
+  // Obtain the raw digits from the scientific notation string.
+
+  // TBD: Well, this is a bit silly. First get the string in
+  // scientific notation, then reduce it to raw digits.
+  // Perhaps this can be improved.
   // Get the raw digits from a string in scientific notation (lowercase, showpos).
 
   // Erase the negative sign, if present.
@@ -458,167 +512,6 @@ void mpfr::e_float::get_raw_digits_from_scientific_string(std::string& str)
   if(pos_decimal_point != std::string::npos)
   {
     str.erase(str.begin() + pos_decimal_point, str.begin() + (pos_decimal_point + 1u));
-  }
-}
-
-void mpfr::e_float::wr_string(std::string& str, std::ostream& os) const
-{
-  // Assess the format flags.
-  const std::ios::fmtflags my_flags = os.flags();
-
-  // Obtain the showpos flag.
-  const bool my_showpos = ((my_flags & std::ios::showpos) != static_cast<std::ios::fmtflags>(0u));
-
-  // Handle INF and NaN.
-  if(isnan()) { str = "NaN"; return; }
-  if(isinf()) { str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF")); return; }
-
-
-  // Get the order-10 of the e_float. This is done using a partial string
-  // extraction with 10 decimal digits.
-  // Create a format string for 10-digits and scientific notation.
-  std::string str_fmt = std::string("%.10RNe");
-
-  // Get the ten digits.
-  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
-  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
-  str = std::string(buf.data());
-
-  // Extract the exponent.
-  INT64 my_exp;
-
-  const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
-
-  if(pos_letter_e != std::string::npos)
-  {
-    std::stringstream ss;
-    ss << (str.c_str() + (pos_letter_e + 1u));
-    ss >> my_exp;
-  }
-  else
-  {
-    my_exp = static_cast<INT64>(0);
-  }
-
-  // Get the output stream's precision and limit it to max_digits10.
-  // Erroneous negative precision will be set to the zero.
-  const std::size_t os_precision  = ((os.precision() > std::streamsize(-1)) ? static_cast<std::size_t>(os.precision())
-                                                                            : static_cast<std::size_t>(0u));
-
-  // Determine the kind of output format requested (scientific, fixed, none).
-  os_float_filed_type my_float_field;
-
-  if     ((my_flags & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u)) { my_float_field = os_float_field_scientific; }
-  else if((my_flags & std::ios::fixed) != static_cast<std::ios::fmtflags>(0u))      { my_float_field = os_float_field_fixed; }
-  else { my_float_field = os_float_field_none; }
-
-  bool use_scientific = false;
-  bool use_fixed = false;
-
-  if     (my_float_field == os_float_field_scientific) { use_scientific = true; }
-  else if(my_float_field == os_float_field_fixed)      { use_fixed = true; }
-  else // os_float_field_none
-  {
-    if(my_exp < static_cast<INT64>(-4))
-    {
-      // The number is small in magnitude with a large, negative exponent.
-      // Use exponential notation.
-      use_scientific = true;
-    }
-    else if(my_exp >= (std::min)(static_cast<INT64>(std::numeric_limits<e_float>::digits10), (std::max)(static_cast<INT64>(os_precision), static_cast<INT64>(7))))
-    {
-      // The number is large in magnitude with a large, positive exponent.
-      // Use exponential notation.
-      use_scientific = true;
-    }
-    else
-    {
-      use_fixed = true;
-    }
-  }
-
-  // Ascertain the number of digits requested from e_float.
-  std::size_t the_number_of_digits_i_want_from_e_float = static_cast<std::size_t>(0u);
-  const std::size_t max10_plus_one = static_cast<std::size_t>(std::numeric_limits<e_float>::max_digits10 + 1);
-
-  if(use_scientific)
-  {
-    // The float-field is scientific. The number of digits is given by
-    // (1 + the ostream's precision), not to exceed (max_digits10 + 1).
-    const std::size_t prec_plus_one  = static_cast<std::size_t>(1u + os_precision);
-    the_number_of_digits_i_want_from_e_float = (std::min)(max10_plus_one, prec_plus_one);
-  }
-  else if(use_fixed)
-  {
-    // The float-field is scientific. The number of all-digits depends
-    // on the form of the number.
-
-    if(my_exp >= static_cast<INT64>(0))
-    {
-      // If the number is larger than 1 in absolute value, then the number of
-      // digits is given by the width of the integer part plus the ostream's
-      // precision, not to exceed (max_digits10 + 1).
-      const std::size_t exp_plus_one = static_cast<std::size_t>(my_exp + 1);
-      const std::size_t exp_plus_one_plus_my_precision = static_cast<std::size_t>(exp_plus_one + os_precision);
-
-      the_number_of_digits_i_want_from_e_float = (std::min)(exp_plus_one_plus_my_precision, max10_plus_one);
-    }
-    else
-    {
-      const INT64 exp_plus_one = static_cast<INT64>(my_exp + 1);
-      const INT64 exp_plus_one_plus_my_precision = static_cast<INT64>(exp_plus_one + static_cast<INT64>(os_precision));
-
-      the_number_of_digits_i_want_from_e_float = (std::min)(static_cast<std::size_t>((std::max)(exp_plus_one_plus_my_precision, static_cast<INT64>(0))), max10_plus_one);
-    }
-  }
-
-  // Create a format string such as "%+.99RNe" in order to extract 100 digits
-  // in scientific notation with the lowercase and noshowpos flags.
-  const std::size_t the_number_of_digits_scientific = static_cast<std::size_t>((std::max)(the_number_of_digits_i_want_from_e_float, static_cast<std::size_t>(1u)) - static_cast<std::size_t>(1u));
-  str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "RNe");
-
-  // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
-  std::fill(buf.begin(), buf.end(), static_cast<char>(0));
-  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
-  str = std::string(buf.data());
-
-  // Obtain the raw digits from the scientific notation string.
-  // TBD: Well, this is a bit silly. First get the string in
-  // scientific notation, then reduce it to raw digits.
-  // Perhaps this can be improved.
-  get_raw_digits_from_scientific_string(str);
-
-  // Obtain additional format information.
-  const bool my_uppercase  = ((my_flags & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
-  const bool my_showpoint  = ((my_flags & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
-
-  // Write the output string in the desired format.
-  if     (my_float_field == os_float_field_scientific) { wr_string_scientific(str, my_exp, os_precision, my_showpoint, my_uppercase); }
-  else if(my_float_field == os_float_field_fixed)      { wr_string_fixed(str, my_exp, os_precision, my_showpoint); }
-  else // os_float_field_none
-  {
-    (use_scientific ? wr_string_scientific(str, my_exp, os_precision, my_showpoint, my_uppercase, true)
-                    : wr_string_fixed(str, my_exp, os_precision, my_showpoint, true));
-  }
-
-  // Append the sign.
-  if     (isneg())    { str.insert(static_cast<std::size_t>(0u), "-"); }
-  else if(my_showpos) { str.insert(static_cast<std::size_t>(0u), "+"); }
-
-  // Handle std::setw(...), std::setfill(...), std::left, std::right, std::internal.
-  const std::size_t my_width = ((os.width() >= static_cast<std::streamsize>(0)) ? static_cast<std::size_t>(os.width())
-                                                                                : static_cast<std::size_t>(0u));
-
-  if(my_width > str.length())
-  {
-    // Get the number of fill characters.
-    const std::size_t n_fill = static_cast<std::size_t>(my_width - str.length());
-
-    // Left-justify is the exception, std::right and std::internal justify right.
-    const bool my_left = ((my_flags & std::ios::left)  != static_cast<std::ios::fmtflags>(0u));
-
-    // Justify left or right and insert the fill characters.
-    str.insert((my_left ? str.end() : str.begin()), n_fill, os.fill());
   }
 }
 

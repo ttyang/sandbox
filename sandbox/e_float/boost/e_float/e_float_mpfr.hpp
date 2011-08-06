@@ -65,7 +65,6 @@
     class e_float : public ::e_float_base
     {
     public:
-
       static const INT32 ef_digits    = static_cast<INT32>(((static_cast<INT64>(ef_digits10) * 3322LL) + 500LL) / 1000LL);
       static const INT32 ef_radix     = 2;
 
@@ -75,13 +74,10 @@
       static const INT64 ef_min_exp10 = static_cast<INT64>(-323228496LL);
 
     private:
-
       static const INT32 ef_digits2 = static_cast<INT32>(((static_cast<INT64>(ef_digits10_tol) * 3322LL) + 500LL) / 1000LL);
-
       ::mpfr_t rop;
 
     public:
-
       e_float();
       e_float(const char n);
       e_float(const signed char n);
@@ -105,16 +101,6 @@
       e_float(const double mantissa, const INT64 exponent);
 
       virtual ~e_float();
-
-
-    private:
-
-      static void init(void);
-
-      void from_unsigned_long_long(const unsigned long long u);
-      void from_unsigned_long(const unsigned long u);
-
-    public:
 
       virtual INT32 cmp(const e_float& v) const;
 
@@ -158,8 +144,6 @@
       virtual e_float extract_integer_part(void) const;
       virtual e_float extract_decimal_part(void) const;
 
-      virtual INT64 order(void) const;
-
       static e_float my_cbrt         (const e_float& x);
       static e_float my_rootn        (const e_float& x, const UINT32 p);
       static e_float my_exp          (const e_float& x);
@@ -181,14 +165,6 @@
       static e_float my_cyl_bessel_jn(const INT32 n, const e_float& x);
       static e_float my_cyl_bessel_yn(const INT32 n, const e_float& x);
 
-    private:
-
-      static void get_raw_digits_from_scientific_string(std::string& str);
-      virtual void wr_string(std::string& str, std::ostream& os) const;
-      virtual bool rd_string(const char* const s);
-
-    public:
-
       virtual bool has_its_own_cbrt         (void) const { return true; }
       virtual bool has_its_own_rootn        (void) const { return true; }
       virtual bool has_its_own_exp          (void) const { return true; }
@@ -209,6 +185,18 @@
       virtual bool has_its_own_riemann_zeta (void) const { return false; }
       virtual bool has_its_own_cyl_bessel_jn(void) const { return false; }
       virtual bool has_its_own_cyl_bessel_yn(void) const { return false; }
+
+    private:
+      static void init(void);
+
+      void from_unsigned_long_long(const unsigned long long u);
+      void from_unsigned_long(const unsigned long u);
+
+      virtual bool rd_string(const char* const s);
+
+      virtual INT64 get_order_exact(void) const;
+      virtual INT64 get_order_approximate(void) const;
+      virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const;
     };
   }
 

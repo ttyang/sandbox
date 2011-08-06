@@ -94,18 +94,6 @@
 
       virtual ~e_float() { }
 
-    private:
-      static bool data_elem_is_nonzero_predicate(const UINT32& d) { return (d != static_cast<UINT32>(0u)); }
-
-      void from_unsigned_long_long(const unsigned long long u);
-      void from_unsigned_long(const unsigned long u);
-
-      INT32 cmp_data(const array_type& vd) const;
-
-      static void   mul_loop_uv(const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p);
-      static UINT32 mul_loop_n (UINT32* const u, UINT32 n, const INT32 p);
-      static UINT32 div_loop_n (UINT32* const u, UINT32 n, const INT32 p);
-
     public:
       virtual INT32 cmp(const e_float& v) const;
 
@@ -153,15 +141,24 @@
       virtual e_float extract_integer_part(void) const;
       virtual e_float extract_decimal_part(void) const;
 
-      // Argument range and check functions
-      virtual INT64 order(void) const { return (iszero() ? static_cast<INT64>(0)
-                                                         : static_cast<INT64>(exp + static_cast<INT64>(::log10(static_cast<double>(data[0])) + 0.5))); }
-
     private:
-      virtual void wr_string(std::string& str, std::ostream& os) const;
+      static bool data_elem_is_nonzero_predicate(const UINT32& d) { return (d != static_cast<UINT32>(0u)); }
+
+      void from_unsigned_long_long(const unsigned long long u);
+      void from_unsigned_long(const unsigned long u);
+
+      INT32 cmp_data(const array_type& vd) const;
+
+      static void   mul_loop_uv(const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p);
+      static UINT32 mul_loop_n (UINT32* const u, UINT32 n, const INT32 p);
+      static UINT32 div_loop_n (UINT32* const u, UINT32 n, const INT32 p);
+
+      virtual INT64 get_order_exact(void) const;
+      virtual INT64 get_order_approximate(void) const;
+      virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const;
+
       virtual bool rd_string(const char* const s);
 
-      static void round_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits);
     };
   }
 

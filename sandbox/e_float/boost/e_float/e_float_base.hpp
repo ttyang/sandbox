@@ -107,7 +107,7 @@
     virtual e_float_base& operator--(void) = 0;
 
     // Argument range and check functions
-    virtual INT64 order(void) const = 0;
+    INT64 order(void) const { return get_order_approximate(); }
 
     // Conversion routines
     virtual void    extract_parts       (double&, INT64&) const = 0;
@@ -117,7 +117,7 @@
     virtual e_float extract_decimal_part(void) const = 0;
 
     // Formated Output routine.
-    virtual void wr_string(std::string&, std::ostream&) const = 0;
+    void wr_string(std::string& str, std::ostream& os) const;
     virtual bool rd_string(const char* const) = 0;
 
     // Specific higher functions which might be present in the MP implementation.
@@ -174,6 +174,13 @@
 
     static bool char_is_nonzero_predicate(const char& c) { return (c != static_cast<char>('0')); }
 
+  private:
+    static bool digits_match_lib_dll_is_ok;
+
+    virtual INT64 get_order_exact(void) const = 0;
+    virtual INT64 get_order_approximate(void) const = 0;
+    virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const = 0;
+
     static void wr_string_scientific(std::string& str,
                                       const INT64 my_exp,
                                       const std::size_t os_precision,
@@ -186,9 +193,6 @@
                                 const std::size_t os_precision,
                                 const bool my_showpoint,
                                 const bool trim_trailing_zeros = false);
-
-  private:
-    static bool digits_match_lib_dll_is_ok;
   };
 
   // Create a loud link error if the digits in the
