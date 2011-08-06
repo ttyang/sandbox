@@ -83,38 +83,32 @@
       ::mpf_t   rop;
 
     public:
-    
-      // Constructors
-      e_float(void);
-
-      e_float(const  INT32 n);
-      e_float(const  INT64 n);
-      e_float(const UINT32 u);
-      e_float(const UINT64 u);
+      e_float();
+      e_float(const char n);
+      e_float(const signed char n);
+      e_float(const unsigned char n);
+      e_float(const wchar_t n);
+      e_float(const signed short n);
+      e_float(const unsigned short n);
+      e_float(const signed int n);
+      e_float(const unsigned int n);
+      e_float(const signed long n);
+      e_float(const unsigned long n);
+      e_float(const signed long long n);
+      e_float(const unsigned long long n);
+      e_float(const float f);
       e_float(const double d);
+      e_float(const long double ld);
       e_float(const char* const s);
       e_float(const std::string& str);
 
       e_float(const e_float& f);
-
-      // Constructor from mantissa and exponent.
       e_float(const double mantissa, const INT64 exponent);
 
       virtual ~e_float();
 
     private:
-    
       explicit e_float(const ::mpf_t& op);
-
-      static const INT64& max_exp2(void);
-      static const INT64& min_exp2(void);
-
-      static void init(void);
-
-      void from_uint64(const UINT64 u);
-      void from_uint32(const UINT32 u);
-
-      INT32 cmp_data(const ::mpf_t& v) const;
 
     public:
 
@@ -133,8 +127,10 @@
       virtual e_float& operator-=(const e_float& v);
       virtual e_float& operator*=(const e_float& v);
       virtual e_float& operator/=(const e_float& v);
-      virtual e_float& mul_by_int(const INT32 n);
-      virtual e_float& div_by_int(const INT32 n);
+      virtual e_float& add_unsigned_long_long(const unsigned long long n);
+      virtual e_float& sub_unsigned_long_long(const unsigned long long n);
+      virtual e_float& mul_unsigned_long_long(const unsigned long long n);
+      virtual e_float& div_unsigned_long_long(const unsigned long long n);
 
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);
@@ -162,13 +158,22 @@
       virtual e_float extract_integer_part(void) const;
       virtual e_float extract_decimal_part(void) const;
 
-      // Argument range and check functions
-      virtual INT64 order(void) const;
-
     private:
+      static const INT64& max_exp2(void);
+      static const INT64& min_exp2(void);
 
-      virtual void wr_string(std::string& str, std::ostream& os) const;
+      static void init(void);
+
+      INT32 cmp_data(const ::mpf_t& v) const;
+
+      void from_unsigned_long_long(const unsigned long long u);
+      void from_unsigned_long(const unsigned long u);
+
       virtual bool rd_string(const char* const s);
+
+      virtual INT64 get_order_exact(void) const;
+      virtual INT64 get_order_approximate(void) const;
+      virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const;
     };
   }
 

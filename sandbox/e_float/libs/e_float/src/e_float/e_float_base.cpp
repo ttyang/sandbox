@@ -39,8 +39,7 @@ std::istream& operator>>(std::istream& is, e_float_base& f)
 {
   std::string str;
   static_cast<void>(is >> str);
-  const bool b_read = f.rd_string(str.c_str());
-  static_cast<void>(b_read);
+  static_cast<void>(f.rd_string(str.c_str()));
   return is;
 }
 

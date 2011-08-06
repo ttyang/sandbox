@@ -8,10 +8,6 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
-#if defined(_MSC_VER)
-#pragma warning(disable:4127)
-#endif
-
 #include <sstream>
 #include <string>
 #include <limits>
@@ -28,35 +24,21 @@ namespace
     static e_float the_value_min;
     static e_float the_value_max;
 
-    template<typename T>
+    template<typename TYPE, typename CAST_TYPE>
     inline static bool check_type(void)
     {
-      the_value_min = std::numeric_limits<T>::min();
-      the_value_max = std::numeric_limits<T>::max();
+      the_value_min = (std::numeric_limits<TYPE>::min)();
+      the_value_max = (std::numeric_limits<TYPE>::max)();
 
       std::stringstream ss;
 
-      if(std::numeric_limits<T>::is_signed)
-      {
-        ss << static_cast<signed long long>(std::numeric_limits<T>::min());
-      }
-      else
-      {
-        ss << static_cast<unsigned long long>(std::numeric_limits<T>::min());
-      }
+      ss << static_cast<CAST_TYPE>((std::numeric_limits<TYPE>::min)());
       std::string str_min = ss.str();
 
       ss.clear();
       ss.str("");
 
-      if(std::numeric_limits<T>::is_signed)
-      {
-        ss << static_cast<signed long long>(std::numeric_limits<T>::max());
-      }
-      else
-      {
-        ss << static_cast<unsigned long long>(std::numeric_limits<T>::max());
-      }
+      ss << static_cast<CAST_TYPE>((std::numeric_limits<TYPE>::max)());
       std::string str_max = ss.str();
 
       return ((the_value_min == e_float(str_min)) && (the_value_max == e_float(str_max)));
@@ -74,13 +56,11 @@ namespace test
     class TestCaseGlobalOpsPodBase : public TestCaseReal
     {
     protected:
-
       mutable bool my_test_result;
 
       TestCaseGlobalOpsPodBase() : my_test_result(false) { }
 
     private:
-
       virtual const std::vector<e_float>& control_data(void) const
       {
         static const std::vector<e_float> dummy(1u, ef::one());
@@ -88,7 +68,6 @@ namespace test
       }
 
     public:
-
       virtual ~TestCaseGlobalOpsPodBase() { }
 
       virtual bool execute(const bool b_write_output) const
@@ -128,6 +107,7 @@ namespace test
     public:
       TestCase_case_00009_global_ops_pod_equate() { }
       virtual ~TestCase_case_00009_global_ops_pod_equate() { }
+
     private:
       virtual const std::string& name(void) const
       {
@@ -140,18 +120,22 @@ namespace test
 
         my_test_result = true;
 
-        my_test_result &= ::e_float_equate_to::check_type<char>();
-        my_test_result &= ::e_float_equate_to::check_type<signed char>();
-        my_test_result &= ::e_float_equate_to::check_type<unsigned char>();
-        my_test_result &= ::e_float_equate_to::check_type<wchar_t>();
-        my_test_result &= ::e_float_equate_to::check_type<signed short>();
-        my_test_result &= ::e_float_equate_to::check_type<unsigned short>();
-        my_test_result &= ::e_float_equate_to::check_type<signed int>();
-        my_test_result &= ::e_float_equate_to::check_type<unsigned int>();
-        my_test_result &= ::e_float_equate_to::check_type<signed long>();
-        my_test_result &= ::e_float_equate_to::check_type<unsigned long>();
-        my_test_result &= ::e_float_equate_to::check_type<signed long long>();
-        my_test_result &= ::e_float_equate_to::check_type<unsigned long long>();
+        my_test_result &= (std::numeric_limits<char>::is_signed ? ::e_float_equate_to::check_type<char, signed long long>()
+                                                                : ::e_float_equate_to::check_type<char, unsigned long long>());
+        my_test_result &= (std::numeric_limits<wchar_t>::is_signed ? ::e_float_equate_to::check_type<wchar_t, signed long long>()
+                                                                   : ::e_float_equate_to::check_type<wchar_t, unsigned long long>());
+
+        my_test_result &= ::e_float_equate_to::check_type<signed char, signed long long>();
+        my_test_result &= ::e_float_equate_to::check_type<signed short, signed long long>();
+        my_test_result &= ::e_float_equate_to::check_type<signed int, signed long long>();
+        my_test_result &= ::e_float_equate_to::check_type<signed long, signed long long>();
+        my_test_result &= ::e_float_equate_to::check_type<signed long long, signed long long>();
+
+        my_test_result &= ::e_float_equate_to::check_type<unsigned char, unsigned long long>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned short, unsigned long long>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned int, unsigned long long>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned long, unsigned long long>();
+        my_test_result &= ::e_float_equate_to::check_type<unsigned long long, unsigned long long>();
 
         e_float x(123u);
 
@@ -166,6 +150,7 @@ namespace test
     public:
       TestCase_case_00010_global_ops_pod_operations() { }
       virtual ~TestCase_case_00010_global_ops_pod_operations() { }
+
     private:
       virtual const std::string& name(void) const
       {
@@ -195,8 +180,9 @@ namespace test
         my_test_result &= (e_float(static_cast<char>('1')) <  static_cast<char>('2'));
         my_test_result &= (e_float(static_cast<char>('2')) <= static_cast<char>('2'));
         my_test_result &= (e_float(static_cast<char>('2')) >= static_cast<char>('2'));
+        my_test_result &= (3.14 != ef::pi());
 
-        my_test_result &= (e_float("1e1000") > std::numeric_limits<unsigned long long>::max());
+        my_test_result &= (e_float("1e1000") > (std::numeric_limits<unsigned long long>::max)());
         my_test_result &= (ef::zero() == 0);
         my_test_result &= (std::numeric_limits<e_float>::epsilon() > 0);
 

@@ -95,16 +95,6 @@ gmp::e_float::e_float(const UINT64 u) : fpclass  (ef_finite),
   from_uint64(u);
 }
 
-void gmp::e_float::from_uint64(const UINT64 u)
-{
-  ::mpf_init_set_str(rop, Util::lexical_cast(u).c_str(), 10);
-}
-
-void gmp::e_float::from_uint32(const UINT32 u)
-{
-  ::mpf_init_set_ui(rop, static_cast<unsigned long int>(u));
-}
-
 gmp::e_float::e_float() : fpclass  (ef_finite),
                           prec_elem(ef_digits10_tol)
 {
@@ -177,6 +167,23 @@ gmp::e_float::~e_float()
 {
   ::mpf_set_prec_raw(rop, static_cast<unsigned long int>(ef_digits2));
   ::mpf_clear(rop);
+}
+
+void gmp::e_float::from_unsigned_long_long(const unsigned long long u)
+{
+  if(n <= static_cast<unsigned long long>((std::numeric_limits<unsigned long>::max)()))
+  {
+    from_unsigned_long(static_cast<unsigned long>(u));
+  }
+  else
+  {
+    ::mpf_init_set_str(rop, Util::lexical_cast(u).c_str(), 10);
+  }
+}
+
+void gmp::e_float::from_unsigned_long(const unsigned long u)
+{
+  ::mpf_init_set_ui(rop, u);
 }
 
 void gmp::e_float::precision(const INT32 prec_digits)
