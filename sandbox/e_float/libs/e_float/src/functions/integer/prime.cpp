@@ -31,13 +31,8 @@ namespace Primes
 
     void operator()(const bool& bo_is_not_prime) const
     {
-      const bool bo_is_prime = !bo_is_not_prime;
-
-      if(bo_is_prime)
-      {
-        *it = count;
-      }
-
+      const bool bo_is_prime = (!bo_is_not_prime);
+      if(bo_is_prime) { *it = count; }
       ++count;
     }
   };
@@ -70,7 +65,7 @@ namespace Primes
 
     while((i2 = static_cast<UINT32>(i * i)) < limit)
     {
-      if(!sieve[i])
+      if(sieve[i] == false)
       {
         for(UINT32 j = i2; j < limit; j = static_cast<UINT32>(j + i))
         {

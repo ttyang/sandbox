@@ -534,7 +534,7 @@ INT64 mpfr::e_float::get_order_exact(void) const
   return my_exp;
 }
 
-INT64 mpfr::e_float::get_order_approximate(void) const
+INT64 mpfr::e_float::get_order_fast(void) const
 {
   const e_float xx = ef::fabs(*this);
 

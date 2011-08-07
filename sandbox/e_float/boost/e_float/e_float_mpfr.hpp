@@ -197,7 +197,7 @@
       virtual bool rd_string(const char* const s);
 
       virtual INT64 get_order_exact(void) const;
-      virtual INT64 get_order_approximate(void) const;
+      virtual INT64 get_order_fast(void) const;
       virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const;
     };
   }

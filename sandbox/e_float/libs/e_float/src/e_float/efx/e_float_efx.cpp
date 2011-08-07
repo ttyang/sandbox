@@ -1634,7 +1634,7 @@ INT64 efx::e_float::get_order_exact(void) const
   }
 }
 
-INT64 efx::e_float::get_order_approximate(void) const
+INT64 efx::e_float::get_order_fast(void) const
 {
   if(iszero())
   {

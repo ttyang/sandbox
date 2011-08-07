@@ -33,6 +33,13 @@ namespace
     static const double value_log2 = 0.3010299956639811952137389;
     return value_log2;
   }
+
+  bool has_exp_or_has_dec_predicate(const char& c)
+  {
+    return (   (c == static_cast<char>('e'))
+            || (c == static_cast<char>('E'))
+            || (c == static_cast<char>('.')));
+  }
 }
 
 void gmp::e_float::init(void)
@@ -68,10 +75,23 @@ gmp::e_float::e_float() : fpclass  (ef_finite),
   ::mpf_init(rop);
 }
 
-/*
-gmp::e_float::e_float(const char n);
-gmp::e_float::e_float(const wchar_t n);
-*/
+gmp::e_float::e_float(const char n) : fpclass  (ef_finite),
+                                      prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (std::numeric_limits<char>::is_signed ? (n < static_cast<char>(0)) : false);
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
+
+gmp::e_float::e_float(const wchar_t n) : fpclass  (ef_finite),
+                                         prec_elem(ef_digits10_tol)
+{
+  init();
+  const bool b_neg = (std::numeric_limits<wchar_t>::is_signed ? (n < static_cast<wchar_t>(0)) : false);
+  from_unsigned_long((!b_neg) ? static_cast<unsigned long>(n) : static_cast<unsigned long>(-n));
+  if(b_neg) { ::mpf_neg(rop, rop); }
+}
 
 gmp::e_float::e_float(const signed char n) : fpclass  (ef_finite),
                                              prec_elem(ef_digits10_tol)
@@ -464,35 +484,30 @@ gmp::e_float& gmp::e_float::sub_unsigned_long_long(const unsigned long long n)
 
 gmp::e_float& gmp::e_float::mul_unsigned_long_long(const unsigned long long n)
 {
-  // Multiply *this with a constant signed integer.
-
-  const bool b_n_is_neg = (n < static_cast<INT32>(0));
+  // Multiply *this with a constant unsigned long long.
 
   const bool b_u_is_inf  = isinf();
   const bool b_n_is_zero = (n == static_cast<INT32>(0));
 
   if(isnan() || (b_u_is_inf && b_n_is_zero))
   {
-    return *this = std::numeric_limits<e_float>::quiet_NaN();
+    return (*this = std::numeric_limits<e_float>::quiet_NaN());
   }
 
   if(b_u_is_inf)
   {
-    const bool b_result_is_neg = (isneg() != b_n_is_neg);
-
-    *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
-                                : -std::numeric_limits<e_float>::infinity());
-
+    *this = ((!isneg()) ?  std::numeric_limits<e_float>::infinity()
+                        : -std::numeric_limits<e_float>::infinity());
     return *this;
   }
 
-  const unsigned long nn = static_cast<unsigned long>(!b_n_is_neg ? n : -n);
-
-  ::mpf_mul_ui(rop, rop, static_cast<unsigned long>(nn));
-
-  if(b_n_is_neg)
+  if(n > static_cast<unsigned long long>((std::numeric_limits<unsigned long>::max)()))
   {
-    negate();
+    operator*=(e_float(n));
+  }
+  else
+  {
+    ::mpf_mul_ui(rop, rop, static_cast<unsigned long>(n));
   }
 
   // Check for overflow.
@@ -503,10 +518,8 @@ gmp::e_float& gmp::e_float::mul_unsigned_long_long(const unsigned long long n)
      && (ef::fabs(*this) > (std::numeric_limits<e_float>::max)())
     )
   {
-    const bool b_result_is_neg = (isneg() != b_n_is_neg);
-
-    *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
-                                : -std::numeric_limits<e_float>::infinity());
+    *this = ((!isneg()) ?  std::numeric_limits<e_float>::infinity()
+                        : -std::numeric_limits<e_float>::infinity());
   }
 
   return *this;
@@ -514,8 +527,6 @@ gmp::e_float& gmp::e_float::mul_unsigned_long_long(const unsigned long long n)
 
 gmp::e_float& gmp::e_float::div_unsigned_long_long(const unsigned long long n)
 {
-  const bool b_n_is_neg = (n < static_cast<INT32>(0));
-
   if(isnan())
   {
     return *this;
@@ -523,11 +534,8 @@ gmp::e_float& gmp::e_float::div_unsigned_long_long(const unsigned long long n)
 
   if(isinf())
   {
-    const bool b_result_is_neg = (isneg() != b_n_is_neg);
-
-    *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
-                                : -std::numeric_limits<e_float>::infinity());
-
+    *this = ((!isneg()) ?  std::numeric_limits<e_float>::infinity()
+                        : -std::numeric_limits<e_float>::infinity());
     return *this;
   }
 
@@ -542,7 +550,6 @@ gmp::e_float& gmp::e_float::div_unsigned_long_long(const unsigned long long n)
     {
       *this = ((!isneg()) ?  std::numeric_limits<e_float>::infinity()
                           : -std::numeric_limits<e_float>::infinity());
-
       return *this;
     }
   }
@@ -552,13 +559,13 @@ gmp::e_float& gmp::e_float::div_unsigned_long_long(const unsigned long long n)
     return *this;
   }
 
-  const unsigned long un = static_cast<unsigned long>((!b_n_is_neg) ? n : -n);
-  
-  ::mpf_div_ui(rop, rop, un);
-
-  if(b_n_is_neg)
+  if(n > static_cast<unsigned long long>((std::numeric_limits<unsigned long>::max)()))
   {
-    negate();
+    operator/=(e_float(n));
+  }
+  else
+  {
+    ::mpf_div_ui(rop, rop, static_cast<unsigned long>(n));
   }
 
   // Check for underflow.
@@ -569,7 +576,7 @@ gmp::e_float& gmp::e_float::div_unsigned_long_long(const unsigned long long n)
      && (ef::fabs(*this) < (std::numeric_limits<e_float>::min)())
     )
   {
-    return *this = ef::zero();
+    return (*this = ef::zero());
   }
 
   return *this;
@@ -748,20 +755,33 @@ double gmp::e_float::extract_double(void) const
 {
   const bool b_neg = isneg();
 
-  const e_float xx = ef::fabs(*this);
-
-  static const e_float dbl_max((std::numeric_limits<double>::max)());
-  static const e_float dbl_min((std::numeric_limits<double>::min)());
-
-  if(xx > dbl_max)
+  // Check for non-normal e_float.
+  if(!isfinite())
   {
-    return ((!b_neg) ?  (std::numeric_limits<double>::max)()
-                     : -(std::numeric_limits<double>::max)());
+    if(isnan())
+    {
+      return std::numeric_limits<double>::quiet_NaN();
+    }
+    else
+    {
+      return ((!b_neg) ?  std::numeric_limits<double>::infinity()
+                       : -std::numeric_limits<double>::infinity());
+    }
   }
-  else if(xx < dbl_min)
+
+  const e_float xx(ef::fabs(*this));
+
+  // Check for zero e_float.
+  if(iszero() || (xx < ef::double_min()))
   {
-    return ((!b_neg) ?  (std::numeric_limits<double>::min)()
-                     : -(std::numeric_limits<double>::min)());
+    return 0.0;
+  }
+
+  // Check if e_float exceeds the maximum of double.
+  if(xx > ef::double_max())
+  {
+    return ((!b_neg) ?  std::numeric_limits<double>::infinity()
+                     : -std::numeric_limits<double>::infinity());
   }
 
   const double dx = ::mpf_get_d(xx.rop);
@@ -769,7 +789,54 @@ double gmp::e_float::extract_double(void) const
   return ((!b_neg) ? dx : -dx);
 }
 
-INT64 gmp::e_float::extract_signed_long_long(void) const
+long double gmp::e_float::extract_long_double(void) const
+{
+  // Returns the long double conversion of a e_float.
+
+  const bool b_neg = isneg();
+
+  // Check for non-normal e_float.
+  if(!isfinite())
+  {
+    if(isnan())
+    {
+      return std::numeric_limits<long double>::quiet_NaN();
+    }
+    else
+    {
+      return ((!b_neg) ?  std::numeric_limits<long double>::infinity()
+                       : -std::numeric_limits<long double>::infinity());
+    }
+  }
+
+  const e_float xx(ef::fabs(*this));
+
+  // Check for zero e_float.
+  if(iszero() || (xx < ef::long_double_min()))
+  {
+    return static_cast<long double>(0.0);
+  }
+
+  // Check if e_float exceeds the maximum of double.
+  if(xx > ef::long_double_max())
+  {
+    return ((!b_neg) ?  std::numeric_limits<long double>::infinity()
+                     : -std::numeric_limits<long double>::infinity());
+  }
+
+  std::stringstream ss;
+
+  ss << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<long double>::digits10 + (2 + 1)))
+     << std::scientific
+     << *this;
+
+  long double ld;
+  ss >> ld;
+
+  return ld;
+}
+
+signed long long gmp::e_float::extract_signed_long_long(void) const
 {
   const bool b_neg = isneg();
 
@@ -783,46 +850,92 @@ INT64 gmp::e_float::extract_signed_long_long(void) const
 
   const e_float nx = ef::fabs(xr.extract_integer_part());
 
-  static const e_float n64_max((std::numeric_limits<INT64>::max)());
-
-  if(nx > n64_max)
+  if(nx > ef::signed_long_long_max())
   {
-    return ((!b_neg) ?  (std::numeric_limits<INT64>::max)()
-                     : -(std::numeric_limits<INT64>::max)());
+    return ((!b_neg) ?  (std::numeric_limits<signed long long>::max)()
+                     : -(std::numeric_limits<signed long long>::max)());
   }
   
   if(nx < ef::one())
   {
-    return static_cast<INT64>(0);
+    return static_cast<signed long long>(0);
   }
 
   if(nx.isone())
   {
-    return ((!b_neg) ? static_cast<INT64>(1) : static_cast<INT64>(-1));
+    return ((!b_neg) ? static_cast<signed long long>(1) : static_cast<signed long long>(-1));
   }
 
   static const char c0 = static_cast<char>('\0');
 
-  std::vector<char> str(32u, c0);
+  std::vector<char> str(64u, c0);
 
   mp_exp_t p10;
 
   static_cast<void>(::mpf_get_str(&str[0], &p10, 10, str.size() - 1u, nx.rop));
 
-  std::string str_n64(static_cast<std::size_t>(p10), static_cast<char>('0'));
+  std::string str_sll(static_cast<std::size_t>(p10), static_cast<char>('0'));
 
-  std::copy(str.begin(),
-            std::find(str.begin(), str.end(), c0),
-            str_n64.begin());
+  std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_sll.begin());
 
   std::stringstream ss;
-
-  ss << str_n64;
-
-  INT64 n;
+  ss << str_sll;
+  signed long long n;
   ss >> n;
 
   return ((!b_neg) ? n : -n);
+}
+
+unsigned long long gmp::e_float::extract_unsigned_long_long(void) const
+{
+  if(isneg())
+  {
+    return static_cast<unsigned long long>(extract_signed_long_long());
+  }
+
+  // Make a rounded copy.
+  e_float xr = *this;
+
+  if(isint())
+  {
+    xr += ef::half();
+  }
+
+  const e_float nx = xr.extract_integer_part();
+
+  if(nx > ef::unsigned_long_long_max())
+  {
+    return (std::numeric_limits<unsigned long long>::max)();
+  }
+  
+  if(nx < ef::one())
+  {
+    return static_cast<unsigned long long>(0u);
+  }
+
+  if(nx.isone())
+  {
+    return static_cast<unsigned long long>(1u);
+  }
+
+  static const char c0 = static_cast<char>('\0');
+
+  std::vector<char> str(64u, c0);
+
+  mp_exp_t p10;
+
+  static_cast<void>(::mpf_get_str(&str[0], &p10, 10, str.size() - 1u, nx.rop));
+
+  std::string str_sll(static_cast<std::size_t>(p10), static_cast<char>('0'));
+
+  std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_sll.begin());
+
+  std::stringstream ss;
+  ss << str_sll;
+  unsigned long long n;
+  ss >> n;
+
+  return n;
 }
 
 gmp::e_float gmp::e_float::extract_integer_part(void) const
@@ -854,12 +967,12 @@ INT64 gmp::e_float::get_order_exact(void) const
   // string extraction with 10 decimal digits.
 
   // Create a format string for 10-digits and scientific notation.
-  std::string str_fmt = std::string("%.10RNe");
+  std::string str_fmt = std::string("%.10Fe");
 
   // Get the ten digits.
   std::tr1::array<char, 64u> buf = {{ static_cast<char>(0) }};
 
-  ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
+  static_cast<void>(gmp_sprintf(buf.data(), str_fmt.c_str(), rop));
 
   const std::string str = std::string(buf.data());
 
@@ -882,7 +995,7 @@ INT64 gmp::e_float::get_order_exact(void) const
   return my_exp;
 }
 
-INT64 gmp::e_float::get_order_approximate(void) const
+INT64 gmp::e_float::get_order_fast(void) const
 {
   const e_float xx = ef::fabs(*this);
 
@@ -955,13 +1068,50 @@ void gmp::e_float::wr_string(std::string& str, std::ostream& os) const
 }
 */
 
-namespace gmp
+void gmp::e_float::get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const
 {
-  static bool has_exp_or_has_dec_predicate(const char& c)
+  static_cast<void>(my_exp);
+
+  // Create a format string such as "%+.99Fe" in order to extract 100 digits
+  // in scientific notation with the lowercase and noshowpos flags.
+  const std::size_t the_number_of_digits_scientific = static_cast<std::size_t>((std::max)(number_of_digits, static_cast<std::size_t>(1u)) - static_cast<std::size_t>(1u));
+
+  const std::string str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "Fe");
+
+  // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
+  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
+
+  static_cast<void>(gmp_sprintf(buf.data(), str_fmt.c_str(), rop));
+
+  str = std::string(buf.data());
+
+  // Obtain the raw digits from the scientific notation string.
+
+  // TBD: Well, this is a bit silly. First get the string in
+  // scientific notation, then reduce it to raw digits.
+  // Perhaps this can be improved.
+  // Get the raw digits from a string in scientific notation (lowercase, showpos).
+
+  // Erase the negative sign, if present.
+  if(str.at(0u) == static_cast<char>('-'))
   {
-    return (   (c == static_cast<char>('e'))
-            || (c == static_cast<char>('E'))
-            || (c == static_cast<char>('.')));
+    str.erase(str.begin(), str.begin() + 1u);
+  }
+
+  // Erase the exponent.
+  const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
+
+  if(pos_letter_e != std::string::npos)
+  {
+    str.erase(str.begin() + pos_letter_e, str.end());
+  }
+
+  // Erase the decimal point.
+  const std::size_t pos_decimal_point = str.rfind(static_cast<char>('.'));
+
+  if(pos_decimal_point != std::string::npos)
+  {
+    str.erase(str.begin() + pos_decimal_point, str.begin() + (pos_decimal_point + 1u));
   }
 }
 
@@ -1004,16 +1154,13 @@ bool gmp::e_float::rd_string(const char* const s)
         &&   str.at(static_cast<std::size_t>(0u)) == static_cast<char>('0')
        )
   {
-    str.erase(static_cast<std::size_t>(0u),
-              static_cast<std::size_t>(1u));
+    str.erase(static_cast<std::size_t>(0u), static_cast<std::size_t>(1u));
   }
 
   // Scale very long pure integer input strings. Convert these into a string with
   // a decimal point and an exponent.
 
-  const std::string::const_iterator it = std::find_if(str.begin(),
-                                                      str.end(),
-                                                      gmp::has_exp_or_has_dec_predicate);
+  const std::string::const_iterator it = std::find_if(str.begin(), str.end(), ::has_exp_or_has_dec_predicate);
 
   const bool is_pure_integer = (it == str.end());
 

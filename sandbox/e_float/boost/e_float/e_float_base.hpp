@@ -63,12 +63,10 @@
     virtual ~e_float_base() { }
 
     // Specific special values.
-    virtual const e_float_base& my_value_nan(void) const = 0;
-    virtual const e_float_base& my_value_inf(void) const = 0;
-    virtual const e_float_base& my_value_max(void) const = 0;
-    virtual const e_float_base& my_value_min(void) const = 0;
-
-    virtual INT32 cmp(const e_float&) const = 0;
+    virtual const e_float& my_value_nan(void) const = 0;
+    virtual const e_float& my_value_inf(void) const = 0;
+    virtual const e_float& my_value_max(void) const = 0;
+    virtual const e_float& my_value_min(void) const = 0;
 
     virtual void precision(const INT32) = 0;
 
@@ -88,10 +86,14 @@
     e_float& mul_signed_long_long(const signed long long);
     e_float& div_signed_long_long(const signed long long);
 
-    virtual e_float_base& calculate_inv (void) = 0;
-    virtual e_float_base& calculate_sqrt(void) = 0;
+    // Elementary primitives.
+    virtual e_float& calculate_inv (void) = 0;
+    virtual e_float& calculate_sqrt(void) = 0;
+    virtual e_float& negate(void) = 0;
 
     // Comparison functions.
+    virtual INT32 cmp(const e_float&) const = 0;
+
     virtual bool isnan   (void) const = 0;
     virtual bool isinf   (void) const = 0;
     virtual bool isfinite(void) const = 0;
@@ -100,16 +102,14 @@
     virtual bool isone  (void) const = 0;
     virtual bool isint  (void) const = 0;
     virtual bool isneg  (void) const = 0;
-            bool ispos  (void) const { return !isneg(); }
-
-    virtual e_float_base& negate(void) = 0;
+            bool ispos  (void) const { return (!isneg()); }
 
     // Operators pre-increment and pre-decrement.
     virtual e_float_base& operator++(void) = 0;
     virtual e_float_base& operator--(void) = 0;
 
-    // Fast order-10 range and check.
-    INT64 order(void) const { return get_order_approximate(); }
+    // Fast order-10 range check.
+    INT64 order(void) const { return get_order_fast(); }
 
     // Conversion routines.
     virtual void               extract_parts             (double&, INT64&) const = 0;
@@ -125,7 +125,7 @@
     virtual bool rd_string(const char* const) = 0;
 
     // Cast operators with all built-in types.
-    operator char() const               { return (std::numeric_limits<char>::is_signed ? static_cast<char>(extract_signed_long_long()) : static_cast<char>(extract_unsigned_long_long())); }
+    operator char() const               { return (std::numeric_limits<char>::is_signed ? static_cast<char>   (extract_signed_long_long()) : static_cast<char>   (extract_unsigned_long_long())); }
     operator wchar_t() const            { return (std::numeric_limits<char>::is_signed ? static_cast<wchar_t>(extract_signed_long_long()) : static_cast<wchar_t>(extract_unsigned_long_long())); }
     operator signed char() const        { return static_cast<signed char>       (extract_signed_long_long()); }
     operator signed short() const       { return static_cast<signed short>      (extract_signed_long_long()); }
@@ -255,15 +255,15 @@
     static bool digits_match_lib_dll_is_ok;
 
     virtual INT64 get_order_exact(void) const = 0;
-    virtual INT64 get_order_approximate(void) const = 0;
+    virtual INT64 get_order_fast(void) const = 0;
     virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const = 0;
 
     static void wr_string_scientific(std::string& str,
-                                      const INT64 my_exp,
-                                      const std::size_t os_precision,
-                                      const bool my_showpoint,
-                                      const bool my_uppercase,
-                                      const bool trim_trailing_zeros = false);
+                                     const INT64 my_exp,
+                                     const std::size_t os_precision,
+                                     const bool my_showpoint,
+                                     const bool my_uppercase,
+                                     const bool trim_trailing_zeros = false);
 
     static void wr_string_fixed(std::string& str,
                                 const INT64 my_exp,
