@@ -60,6 +60,7 @@
     int mpfr_sprintf(char*, const char*, ...);
 
     double        mpfr_get_d     (mpfr_srcptr, mp_rnd_t);
+    long double   mpfr_get_ld    (mpfr_srcptr, mp_rnd_t);
     unsigned long mpfr_get_si    (mpfr_srcptr, mp_rnd_t);
     double        mpfr_get_d_2exp(signed long int*, mpfr_srcptr, mp_rnd_t);
     char*         mpfr_get_str   (char*, mp_exp_t*, int, size_t, mpfr_srcptr, mp_rnd_t);

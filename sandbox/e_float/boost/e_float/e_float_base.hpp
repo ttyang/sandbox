@@ -91,7 +91,7 @@
     virtual e_float_base& calculate_inv (void) = 0;
     virtual e_float_base& calculate_sqrt(void) = 0;
 
-    // Comparison functions
+    // Comparison functions.
     virtual bool isnan   (void) const = 0;
     virtual bool isinf   (void) const = 0;
     virtual bool isfinite(void) const = 0;
@@ -104,15 +104,15 @@
 
     virtual e_float_base& negate(void) = 0;
 
-    // Operators pre-increment and pre-decrement
+    // Operators pre-increment and pre-decrement.
     virtual e_float_base& operator++(void) = 0;
     virtual e_float_base& operator--(void) = 0;
 
-    // Argument range and check functions
+    // Fast order-10 range and check.
     INT64 order(void) const { return get_order_approximate(); }
 
-    // Conversion routines
-    virtual void               extract_parts(double&, INT64&) const = 0;
+    // Conversion routines.
+    virtual void               extract_parts             (double&, INT64&) const = 0;
     virtual double             extract_double            (void) const = 0;
     virtual long double        extract_long_double       (void) const = 0;
     virtual signed long long   extract_signed_long_long  (void) const = 0;
@@ -124,8 +124,8 @@
     void wr_string(std::string& str, std::ostream& os) const;
     virtual bool rd_string(const char* const) = 0;
 
-    // Cast operators
-    operator char() const              { return (std::numeric_limits<char>::is_signed ? static_cast<char>(extract_signed_long_long()) : static_cast<char>(extract_unsigned_long_long())); }
+    // Cast operators with all built-in types.
+    operator char() const               { return (std::numeric_limits<char>::is_signed ? static_cast<char>(extract_signed_long_long()) : static_cast<char>(extract_unsigned_long_long())); }
     operator wchar_t() const            { return (std::numeric_limits<char>::is_signed ? static_cast<wchar_t>(extract_signed_long_long()) : static_cast<wchar_t>(extract_unsigned_long_long())); }
     operator signed char() const        { return static_cast<signed char>       (extract_signed_long_long()); }
     operator signed short() const       { return static_cast<signed short>      (extract_signed_long_long()); }
@@ -208,16 +208,17 @@
       const int& get_exponent(void) const { return e; }
 
     private:
+      native_float_parts();
       native_float_parts(const native_float_parts&);
       const native_float_parts& operator=(const native_float_parts&);
 
       unsigned long long u;
       int e;
 
-      native_float_parts();
-
       void make_parts(const native_float_type f)
       {
+        if(f == static_cast<native_float_type>(0.0)) { return; }
+
         // Get the fraction and base-2 exponent.
         native_float_type man = ::frexp(f, &e);
 

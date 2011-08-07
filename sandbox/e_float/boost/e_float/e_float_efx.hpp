@@ -135,7 +135,7 @@
       virtual e_float& operator--(void);
 
       // Conversion routines
-      virtual void extract_parts (double& mantissa, INT64& exponent) const;
+      virtual void               extract_parts             (double& mantissa, INT64& exponent) const;
       virtual double             extract_double            (void) const;
       virtual long double        extract_long_double       (void) const;
       virtual signed long long   extract_signed_long_long  (void) const;

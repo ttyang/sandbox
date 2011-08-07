@@ -326,20 +326,33 @@ double mpfr::e_float::extract_double(void) const
 {
   const bool b_neg = isneg();
 
-  const e_float xx = ef::fabs(*this);
-
-  static const e_float dbl_max((std::numeric_limits<double>::max)());
-  static const e_float dbl_min((std::numeric_limits<double>::min)());
-
-  if(xx > dbl_max)
+  // Check for non-normal e_float.
+  if(!isfinite())
   {
-    return ((!b_neg) ?  (std::numeric_limits<double>::max)()
-                     : -(std::numeric_limits<double>::max)());
+    if(isnan())
+    {
+      return std::numeric_limits<double>::quiet_NaN();
+    }
+    else
+    {
+      return ((!b_neg) ?  std::numeric_limits<double>::infinity()
+                       : -std::numeric_limits<double>::infinity());
+    }
   }
-  else if(xx < dbl_min)
+
+  const e_float xx(ef::fabs(*this));
+
+  // Check for zero e_float.
+  if(iszero() || (xx < ef::double_min()))
   {
-    return ((!b_neg) ?  (std::numeric_limits<double>::min)()
-                     : -(std::numeric_limits<double>::min)());
+    return 0.0;
+  }
+
+  // Check if e_float exceeds the maximum of double.
+  if(xx > ef::double_max())
+  {
+    return ((!b_neg) ?  std::numeric_limits<double>::infinity()
+                     : -std::numeric_limits<double>::infinity());
   }
 
   const double dx = ::mpfr_get_d(xx.rop, GMP_RNDN);
@@ -347,46 +360,122 @@ double mpfr::e_float::extract_double(void) const
   return ((!b_neg) ? dx : -dx);
 }
 
-INT64 mpfr::e_float::extract_signed_long_long(void) const
+long double mpfr::e_float::extract_long_double(void) const
+{
+  const bool b_neg = isneg();
+
+  // Check for non-normal e_float.
+  if(!isfinite())
+  {
+    if(isnan())
+    {
+      return std::numeric_limits<long double>::quiet_NaN();
+    }
+    else
+    {
+      return ((!b_neg) ?  std::numeric_limits<long double>::infinity()
+                       : -std::numeric_limits<long double>::infinity());
+    }
+  }
+
+  const e_float xx(ef::fabs(*this));
+
+  // Check for zero e_float.
+  if(iszero() || (xx < ef::long_double_min()))
+  {
+    return static_cast<long double>(0.0);
+  }
+
+  // Check if e_float exceeds the maximum of double.
+  if(xx > ef::long_double_max())
+  {
+    return ((!b_neg) ?  std::numeric_limits<long double>::infinity()
+                     : -std::numeric_limits<long double>::infinity());
+  }
+
+  const long double ldx = ::mpfr_get_ld(xx.rop, GMP_RNDN);
+
+  return ((!b_neg) ? ldx : -ldx);
+}
+
+signed long long mpfr::e_float::extract_signed_long_long(void) const
 {
   const bool b_neg = isneg();
 
   const e_float nx = ef::fabs(*this);
 
-  static const e_float n64_max((std::numeric_limits<INT64>::max)());
-
-  if(nx > n64_max)
+  if(nx > ef::signed_long_long_max())
   {
-    return ((!b_neg) ?  (std::numeric_limits<INT64>::max)()
-                     : -(std::numeric_limits<INT64>::max)());
+    return ((!b_neg) ?  (std::numeric_limits<signed long long>::max)()
+                     : -(std::numeric_limits<signed long long>::max)());
   }
   
   if(nx < ef::one())
   {
-    return static_cast<INT64>(0);
+    return static_cast<signed long long>(0);
   }
 
   if(nx.isone())
   {
-    return static_cast<INT64>(!b_neg ? static_cast<INT64>(1) : static_cast<INT64>(-1));
+    return ((!b_neg) ? static_cast<signed long long>(1) : static_cast<signed long long>(-1));
   }
 
-  std::tr1::array<char, 32u> str = {{ static_cast<char>('0') }};
+  std::tr1::array<char, 64u> str = {{ static_cast<char>('0') }};
 
   mp_exp_t p10;
 
   static_cast<void>(::mpfr_get_str(str.data(), &p10, 10, str.size() - 1u, nx.rop, GMP_RNDN));
 
-  std::string str_n64(static_cast<std::size_t>(p10), static_cast<char>('0'));
+  std::string str_sll(static_cast<std::size_t>(p10), static_cast<char>('0'));
 
-  std::copy(str.begin(), str.begin() + str_n64.size(), str_n64.begin());
+  std::copy(str.begin(), str.begin() + str_sll.size(), str_sll.begin());
 
   std::stringstream ss;
-  ss << str_n64;
-  INT64 n;
+  ss << str_sll;
+  signed long long n;
   ss >> n;
 
   return ((!b_neg) ? n : -n);
+}
+
+unsigned long long mpfr::e_float::extract_unsigned_long_long(void) const
+{
+  if(isneg())
+  {
+    return static_cast<unsigned long long>(extract_signed_long_long());
+  }
+
+  if(*this > ef::unsigned_long_long_max())
+  {
+    return (std::numeric_limits<unsigned long long>::max)();
+  }
+
+  if(*this < ef::one())
+  {
+    return static_cast<unsigned long long>(0u);
+  }
+
+  if(isone())
+  {
+    return static_cast<unsigned long long>(1u);
+  }
+
+  std::tr1::array<char, 64u> str = {{ static_cast<char>('0') }};
+
+  mp_exp_t p10;
+
+  static_cast<void>(::mpfr_get_str(str.data(), &p10, 10, str.size() - 1u, rop, GMP_RNDN));
+
+  std::string str_ull(static_cast<std::size_t>(p10), static_cast<char>('0'));
+
+  std::copy(str.begin(), str.begin() + str_ull.size(), str_ull.begin());
+
+  std::stringstream ss;
+  ss << str_ull;
+  unsigned long long n;
+  ss >> n;
+
+  return n;
 }
 
 mpfr::e_float mpfr::e_float::extract_integer_part(void) const

@@ -1364,7 +1364,7 @@ long double efx::e_float::extract_long_double(void) const
   // Check for zero e_float.
   if(iszero() || (xx < ef::long_double_min()))
   {
-    return 0.0;
+    return static_cast<long double>(0.0);
   }
 
   // Check if e_float exceeds the maximum of double.
