@@ -57,7 +57,6 @@
       INT32      prec_elem;
 
     public:
-
       // Constructors
       e_float() : data     (),
                   exp      (static_cast<INT64>(0)),
@@ -97,6 +96,7 @@
     public:
       virtual INT32 cmp(const e_float& v) const;
 
+      // Specific special values.
       virtual const e_float& my_value_nan(void) const;
       virtual const e_float& my_value_inf(void) const;
       virtual const e_float& my_value_max(void) const;
@@ -115,8 +115,10 @@
       virtual e_float& mul_unsigned_long_long(const unsigned long long n);
       virtual e_float& div_unsigned_long_long(const unsigned long long n);
 
+      // Elementary primitives.
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);
+      virtual e_float& negate(void) { if(!iszero()) { neg = !neg; } return *this; }
 
       // Comparison functions
       virtual bool isnan   (void) const { return (fpclass == ef_NaN); }
@@ -127,8 +129,6 @@
       virtual bool isone  (void) const;
       virtual bool isint  (void) const;
       virtual bool isneg  (void) const { return neg; }
-
-      virtual e_float& negate(void) { if(!iszero()) { neg = !neg; } return *this; }
 
       // Operators pre-increment and pre-decrement
       virtual e_float& operator++(void);
@@ -160,7 +160,6 @@
       virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const;
 
       virtual bool rd_string(const char* const s);
-
     };
   }
 

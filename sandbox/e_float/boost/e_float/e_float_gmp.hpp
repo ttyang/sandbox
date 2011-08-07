@@ -57,9 +57,8 @@
     class e_float : public ::e_float_base
     {
     public:
-
       static const INT32 ef_digits    = static_cast<INT32>(((static_cast<INT64>(ef_digits10) * 3322LL) + 500LL) / 1000LL);
-      static const INT32 ef_radix     = 2;
+      static const INT32 ef_radix     = static_cast<INT32>(2);
 
       static const INT64 ef_max_exp   = static_cast<INT64>(+2147483640LL);
       static const INT64 ef_min_exp   = static_cast<INT64>(-2147483640LL);
@@ -67,7 +66,6 @@
       static const INT64 ef_min_exp10 = static_cast<INT64>(-646456990LL);
 
     private:
-
       static const INT32 ef_digits2 = static_cast<INT32>(((static_cast<INT64>(ef_digits10_tol) * 3322LL) + 500LL) / 1000LL);
 
       typedef enum enum_fpclass
@@ -83,6 +81,7 @@
       ::mpf_t   rop;
 
     public:
+      // Constructors
       e_float();
       e_float(const char n);
       e_float(const signed char n);
@@ -111,9 +110,9 @@
       explicit e_float(const ::mpf_t& op);
 
     public:
-
       virtual INT32 cmp(const e_float& v) const;
 
+      // Specific special values.
       virtual const e_float& my_value_nan(void) const;
       virtual const e_float& my_value_inf(void) const;
       virtual const e_float& my_value_max(void) const;
@@ -132,8 +131,10 @@
       virtual e_float& mul_unsigned_long_long(const unsigned long long n);
       virtual e_float& div_unsigned_long_long(const unsigned long long n);
 
+      // Elementary primitives.
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);
+      virtual e_float& negate(void);
 
       // Comparison functions
       virtual bool isnan   (void) const { return (fpclass == ef_NaN); }
@@ -144,8 +145,6 @@
       virtual bool isone  (void) const;
       virtual bool isint  (void) const;
       virtual bool isneg  (void) const;
-
-      virtual e_float& negate(void);
 
       // Operators pre-increment and pre-decrement
       virtual e_float& operator++(void);

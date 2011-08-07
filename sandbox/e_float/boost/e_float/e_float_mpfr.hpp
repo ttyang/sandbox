@@ -78,6 +78,7 @@
       ::mpfr_t rop;
 
     public:
+      // Constructors
       e_float();
       e_float(const char n);
       e_float(const signed char n);
@@ -104,6 +105,7 @@
 
       virtual INT32 cmp(const e_float& v) const;
 
+      // Specific special values.
       virtual const e_float& my_value_nan(void) const;
       virtual const e_float& my_value_inf(void) const;
       virtual const e_float& my_value_max(void) const;
@@ -111,6 +113,7 @@
 
       virtual void precision(const INT32) { }
 
+      // Basic operations.
       virtual e_float& operator= (const e_float& v);
       virtual e_float& operator+=(const e_float& v);
       virtual e_float& operator-=(const e_float& v);
@@ -121,9 +124,12 @@
       virtual e_float& mul_unsigned_long_long(const unsigned long long n);
       virtual e_float& div_unsigned_long_long(const unsigned long long n);
 
+      // Elementary primitives.
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);
+      virtual e_float& negate(void);
 
+      // Comparison functions
       virtual bool isnan   (void) const;
       virtual bool isinf   (void) const;
       virtual bool isfinite(void) const;
@@ -133,11 +139,11 @@
       virtual bool isint   (void) const;
       virtual bool isneg   (void) const;
 
-      virtual e_float& negate(void);
-
+      // Operators pre-increment and pre-decrement.
       virtual e_float& operator++(void);
       virtual e_float& operator--(void);
 
+      // Conversion routines.
       virtual void               extract_parts             (double& mantissa, INT64& exponent) const;
       virtual double             extract_double            (void) const;
       virtual long double        extract_long_double       (void) const;

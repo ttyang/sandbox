@@ -29,14 +29,5 @@
 
   typedef   signed int    INT32;
   typedef unsigned int   UINT32;
-  typedef   signed short  INT16;
-  typedef unsigned short UINT16;
-
-  #ifndef _WINDEF_
-
-    typedef signed char    INT8;
-    typedef unsigned char UINT8;
-
-  #endif
 
 #endif // _E_FLOAT_TYPES_HPP_

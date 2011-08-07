@@ -866,18 +866,17 @@ signed long long gmp::e_float::extract_signed_long_long(void) const
     return ((!b_neg) ? static_cast<signed long long>(1) : static_cast<signed long long>(-1));
   }
 
+  // Extract a signed long long-type string from e_float.
   static const char c0 = static_cast<char>('\0');
-
   std::vector<char> str(64u, c0);
-
   mp_exp_t p10;
 
   static_cast<void>(::mpf_get_str(&str[0], &p10, 10, str.size() - 1u, nx.rop));
 
   std::string str_sll(static_cast<std::size_t>(p10), static_cast<char>('0'));
-
   std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_sll.begin());
 
+  // Get the signed long long result.
   std::stringstream ss;
   ss << str_sll;
   signed long long n;
@@ -918,20 +917,19 @@ unsigned long long gmp::e_float::extract_unsigned_long_long(void) const
     return static_cast<unsigned long long>(1u);
   }
 
+  // Extract an unsigned long long-type string from e_float.
   static const char c0 = static_cast<char>('\0');
-
   std::vector<char> str(64u, c0);
-
   mp_exp_t p10;
 
   static_cast<void>(::mpf_get_str(&str[0], &p10, 10, str.size() - 1u, nx.rop));
 
-  std::string str_sll(static_cast<std::size_t>(p10), static_cast<char>('0'));
+  std::string str_ull(static_cast<std::size_t>(p10), static_cast<char>('0'));
+  std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_ull.begin());
 
-  std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_sll.begin());
-
+  // Get the unsigned long long result.
   std::stringstream ss;
-  ss << str_sll;
+  ss << str_ull;
   unsigned long long n;
   ss >> n;
 
@@ -970,7 +968,7 @@ INT64 gmp::e_float::get_order_exact(void) const
   std::string str_fmt = std::string("%.10Fe");
 
   // Get the ten digits.
-  std::tr1::array<char, 64u> buf = {{ static_cast<char>(0) }};
+  std::tr1::array<char, 64u> buf = {{ static_cast<char>('0') }};
 
   static_cast<void>(gmp_sprintf(buf.data(), str_fmt.c_str(), rop));
 
@@ -1014,60 +1012,6 @@ INT64 gmp::e_float::get_order_fast(void) const
   }
 }
 
-/*
-void gmp::e_float::wr_string(std::string& str, std::ostream& os) const
-{
-  if(isnan())
-  {
-    str = "NaN";
-    return;
-  }
-
-  if(isinf())
-  {
-    str = "INF";
-    return;
-  }
-
-  static const std::streamsize p_min = static_cast<std::streamsize>(10);
-  static const std::streamsize p_lim = static_cast<std::streamsize>(ef_digits10_tol);
-         const std::streamsize p     = (std::max)(os.precision(), p_min);
-
-  const std::streamsize my_precision = (std::min)(p, p_lim);
-
-  const std::ios::fmtflags f = os.flags();
-
-  const bool my_uppercase  = ((f & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
-  const bool my_showpos    = ((f & std::ios::showpos)    != static_cast<std::ios::fmtflags>(0u));
-  const bool my_scientific = ((f & std::ios::scientific) != static_cast<std::ios::fmtflags>(0u));
-
-  // Create a format string such as "%+.99Fe"
-  const std::string str_fmt =   (my_showpos ? "%+." : "%.")
-                              + Util::lexical_cast(my_precision - (my_scientific ? 1 : 0))
-                              + (my_scientific ? (my_uppercase ? "FE" : "Fe") : (my_uppercase ? "FG" : "Fg"));
-
-  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
-
-  static_cast<void>(gmp_sprintf(buf.data(), str_fmt.c_str(), rop));
-
-  // Set the result string and remove the '\0' padding by using the c_str() representation.
-  str = std::string(buf.data());
-
-  const std::size_t pos_E = (my_uppercase ? str.rfind('E') : str.rfind('e'));
-
-  if(pos_E != std::string::npos)
-  {
-    // Pad the exponent number field with additional zeros such that the width
-    // of the exponent number field is equal to the width of ef_max_exp10.
-    const std::size_t pos_exp = static_cast<std::string::size_type>(pos_E + 2u);
-
-    const std::string::size_type width_of_exp = str.length() - pos_exp;
-
-    str.insert(pos_exp, std::string(width_of_exponent_field() - width_of_exp, static_cast<char>('0')));
-  }
-}
-*/
-
 void gmp::e_float::get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const
 {
   static_cast<void>(my_exp);
@@ -1079,7 +1023,7 @@ void gmp::e_float::get_output_string(std::string& str, INT64& my_exp, const std:
   const std::string str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "Fe");
 
   // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
-  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
+  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>('0') }};
 
   static_cast<void>(gmp_sprintf(buf.data(), str_fmt.c_str(), rop));
 
@@ -1185,10 +1129,7 @@ bool gmp::e_float::rd_string(const char* const s)
   // Set the e_float value.
   const INT32 n_set_result = static_cast<INT32>(::mpf_init_set_str(rop, str.c_str(), 10));
 
-  if(b_negate)
-  {
-    negate();
-  }
+  if(b_negate) { negate(); }
 
   return (n_set_result == static_cast<INT32>(0));
 }

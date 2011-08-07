@@ -63,7 +63,7 @@
   inline void   mpf_floor           (mpf_ptr dst, mpf_srcptr x)                             {        ::__gmpf_floor              (dst, x); }
   inline void   mpf_sqrt            (mpf_ptr dst, mpf_srcptr x)                             {        ::__gmpf_sqrt               (dst, x); }
   inline int    mpf_cmp             (mpf_srcptr x, mpf_srcptr y)                            { return ::__gmpf_cmp                (x, y); }
-  inline int    mpf_sgn             (mpf_srcptr x)                                          { return x->_mp_size < 0 ? -1 : (x->_mp_size > 0); }
+  inline int    mpf_sgn             (mpf_srcptr x)                                          { return ((x->_mp_size < 0) ? -1 : ((x->_mp_size > 0) ? 1 : 0)); }
   inline int    mpf_integer_p       (mpf_srcptr src)                                        { return ::__gmpf_integer_p          (src); }
   inline double mpf_get_d           (mpf_srcptr x)                                          { return ::__gmpf_get_d              (x); }
   inline double mpf_get_d_2exp      (signed long int* e, mpf_srcptr x)                      { return ::__gmpf_get_d_2exp         (e, x); }
