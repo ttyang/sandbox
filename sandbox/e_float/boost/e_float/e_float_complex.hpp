@@ -119,7 +119,7 @@
     explicit ef_complex(const char* const s)    : Re(s), Im(ef::zero()) { }
     explicit ef_complex(const std::string& str) : Re(str), Im(ef::zero()) { }
 
-    ef_complex() { }
+    ef_complex() : Re(ef::zero()), Im(ef::zero()) { }
     ef_complex(const e_float& re) : Re(re), Im(ef::zero()) { }
     ef_complex(const e_float& re, const e_float& im) : Re(re), Im(im) { }
     ef_complex(const ef_complex& z) : Re(z.Re), Im(z.Im) { }

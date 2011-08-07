@@ -140,7 +140,7 @@
 
       virtual void    extract_parts       (double& mantissa, INT64& exponent) const;
       virtual double  extract_double      (void) const;
-      virtual INT64   extract_int64       (void) const;
+      virtual INT64   extract_signed_long_long       (void) const;
       virtual e_float extract_integer_part(void) const;
       virtual e_float extract_decimal_part(void) const;
 

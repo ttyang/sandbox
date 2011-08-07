@@ -66,7 +66,7 @@ mpfr::e_float::e_float(const float f)
 
   if(!ef::isfinite(static_cast<double>(f)))
   {
-    operator=(ef::isnan(static_cast<double>(f)) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    (ef::isnan(static_cast<double>(f)) ? mpfr_set_nan(rop) : ((!b_neg) ? ::mpfr_set_inf(rop, 1) : ::mpfr_set_inf(rop, -1)));
     return;
   }
 
@@ -86,7 +86,7 @@ mpfr::e_float::e_float(const float f)
   // the double and multiply with the base-2 exponent.
   const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
 
-  if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
+  if(p2 != 0) { mpfr_mul_2si(rop, rop, static_cast<signed long>(p2), GMP_RNDN); }
 
   if(b_neg)
   {
@@ -347,7 +347,7 @@ double mpfr::e_float::extract_double(void) const
   return ((!b_neg) ? dx : -dx);
 }
 
-INT64 mpfr::e_float::extract_int64(void) const
+INT64 mpfr::e_float::extract_signed_long_long(void) const
 {
   const bool b_neg = isneg();
 

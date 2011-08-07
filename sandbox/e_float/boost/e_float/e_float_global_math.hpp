@@ -234,4 +234,216 @@
   inline bool operator>=(const e_float& u, const e_float& v) { return (u.cmp(v) >= static_cast<INT32>(0)); }
   inline bool operator> (const e_float& u, const e_float& v) { return (u.cmp(v) >  static_cast<INT32>(0)); }
 
+  // Global comparison operators of const e_float& with all built-in types.
+  inline bool operator< (const e_float& u, const char v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const char v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const char v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const char v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const char v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const char v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const wchar_t v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const wchar_t v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const wchar_t v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const wchar_t v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const wchar_t v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const wchar_t v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const signed char v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const signed char v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const signed char v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const signed char v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const signed char v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const signed char v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const signed short v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const signed short v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const signed short v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const signed short v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const signed short v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const signed short v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const signed int v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const signed int v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const signed int v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const signed int v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const signed int v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const signed int v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const signed long v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const signed long v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const signed long v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const signed long v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const signed long v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const signed long v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const signed long long v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const signed long long v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const signed long long v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const signed long long v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const signed long long v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const signed long long v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const unsigned char v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const unsigned char v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const unsigned char v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const unsigned char v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const unsigned char v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const unsigned char v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const unsigned short v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const unsigned short v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const unsigned short v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const unsigned short v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const unsigned short v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const unsigned short v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const unsigned int v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const unsigned int v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const unsigned int v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const unsigned int v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const unsigned int v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const unsigned int v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const unsigned long v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const unsigned long v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const unsigned long v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const unsigned long v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const unsigned long v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const unsigned long v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const unsigned long long v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const unsigned long long v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const unsigned long long v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const unsigned long long v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const unsigned long long v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const unsigned long long v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const float v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const float v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const float v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const float v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const float v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const float v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const double v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const double v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const double v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const double v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const double v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const double v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const e_float& u, const long double v) { return (u.cmp(e_float(v)) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const e_float& u, const long double v) { return (u.cmp(e_float(v)) <= static_cast<INT32>(0)); }
+  inline bool operator==(const e_float& u, const long double v) { return (u.cmp(e_float(v)) == static_cast<INT32>(0)); }
+  inline bool operator!=(const e_float& u, const long double v) { return (u.cmp(e_float(v)) != static_cast<INT32>(0)); }
+  inline bool operator>=(const e_float& u, const long double v) { return (u.cmp(e_float(v)) >= static_cast<INT32>(0)); }
+  inline bool operator> (const e_float& u, const long double v) { return (u.cmp(e_float(v)) >  static_cast<INT32>(0)); }
+
+  // Global comparison operators of all built-in types with const e_float&.
+  inline bool operator< (const char u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const char u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const char u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const char u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const char u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const char u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const wchar_t u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const wchar_t u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const wchar_t u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const wchar_t u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const wchar_t u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const wchar_t u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const signed char u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const signed char u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const signed char u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const signed char u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const signed char u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const signed char u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const signed short u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const signed short u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const signed short u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const signed short u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const signed short u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const signed short u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const signed int u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const signed int u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const signed int u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const signed int u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const signed int u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const signed int u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const signed long u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const signed long u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const signed long u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const signed long u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const signed long u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const signed long u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const signed long long u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const signed long long u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const signed long long u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const signed long long u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const signed long long u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const signed long long u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const unsigned char u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const unsigned char u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const unsigned char u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const unsigned char u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const unsigned char u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const unsigned char u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const unsigned short u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const unsigned short u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const unsigned short u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const unsigned short u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const unsigned short u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const unsigned short u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const unsigned int u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const unsigned int u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const unsigned int u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const unsigned int u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const unsigned int u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const unsigned int u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const unsigned long u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const unsigned long u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const unsigned long u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const unsigned long u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const unsigned long u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const unsigned long u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const unsigned long long u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const unsigned long long u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const unsigned long long u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const unsigned long long u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const unsigned long long u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const unsigned long long u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const float u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const float u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const float u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const float u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const float u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const float u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const double u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const double u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const double u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const double u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const double u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const double u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
+  inline bool operator< (const long double u, const e_float& v) { return (e_float(u).cmp(v) <  static_cast<INT32>(0)); }
+  inline bool operator<=(const long double u, const e_float& v) { return (e_float(u).cmp(v) <= static_cast<INT32>(0)); }
+  inline bool operator==(const long double u, const e_float& v) { return (e_float(u).cmp(v) == static_cast<INT32>(0)); }
+  inline bool operator!=(const long double u, const e_float& v) { return (e_float(u).cmp(v) != static_cast<INT32>(0)); }
+  inline bool operator>=(const long double u, const e_float& v) { return (e_float(u).cmp(v) >= static_cast<INT32>(0)); }
+  inline bool operator> (const long double u, const e_float& v) { return (e_float(u).cmp(v) >  static_cast<INT32>(0)); }
+
 #endif // _E_FLOAT_GLOBAL_MATH_HPP_

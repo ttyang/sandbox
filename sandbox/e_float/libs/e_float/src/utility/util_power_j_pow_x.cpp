@@ -74,7 +74,7 @@ namespace Util
           const e_float rx = real(x);
 
           // Compute pure integer power for pure integer arguments.
-          if((rx < ef::int64max()) && (rx > ef::int64min()))
+          if((rx < ef::int64_max()) && (rx > ef::int64_min()))
           {
             pf_pow_x = pown(T(n), ef::to_int64(rx));
           }

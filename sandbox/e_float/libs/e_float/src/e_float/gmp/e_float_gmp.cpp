@@ -769,7 +769,7 @@ double gmp::e_float::extract_double(void) const
   return ((!b_neg) ? dx : -dx);
 }
 
-INT64 gmp::e_float::extract_int64(void) const
+INT64 gmp::e_float::extract_signed_long_long(void) const
 {
   const bool b_neg = isneg();
 

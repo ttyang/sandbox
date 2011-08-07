@@ -12,8 +12,8 @@
 #include <e_float/e_float_elementary.hpp>
 
 #if defined(__GNUC__)
-  static inline INT32 _isnan (double x) { return static_cast<INT32>(std::isnan   <double>(x)); }
-  static inline INT32 _finite(double x) { return static_cast<INT32>(std::isfinite<double>(x)); }
+  static inline int _isnan (double x) { return std::isnan   <double>(x); }
+  static inline int _finite(double x) { return std::isfinite<double>(x); }
 #endif
 
 e_float ef::floor(const e_float& x)
@@ -68,14 +68,14 @@ e_float ef::fmod(const e_float& v1, const e_float& v2)
   return v1 - (n * v2);
 }
 
-bool ef::isfinite(const double x) { return static_cast<INT32>(::_finite(x)) == static_cast<INT32>(1); }
-bool ef::isnan   (const double x) { return static_cast<INT32>(::_isnan (x)) == static_cast<INT32>(1); }
+bool ef::isfinite(const double x) { return (::_finite(x) != 0); }
+bool ef::isnan   (const double x) { return (::_isnan (x) != 0); }
 
 double ef::to_double(const e_float& x)    { return x.extract_double(); }
 double ef::to_double(const ef_complex& z) { return ef::to_double(z.real()); }
 
 INT64 ef::to_int64(const double x)      { return static_cast<INT64>(x); }
-INT64 ef::to_int64(const e_float& x)    { return x.extract_int64(); }
+INT64 ef::to_int64(const e_float& x)    { return x.extract_signed_long_long(); }
 INT64 ef::to_int64(const ef_complex& z) { return ef::to_int64(z.real()); }
 
 bool ef::isint(const double x)

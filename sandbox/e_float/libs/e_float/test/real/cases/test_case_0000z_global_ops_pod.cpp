@@ -176,6 +176,7 @@ namespace test
         my_test_result &= (-ef::four() == static_cast<long double>(-4.0));
 
         my_test_result &= (e_float(11.1f) == e_float("11.1000003814697265625"));
+        my_test_result &= (e_float(11.1) == e_float("11.0999999999999996447286321199499070644378662109375"));
 
         my_test_result &= (+ef::pi() > static_cast<float>(+3.14f));
         my_test_result &= (-ef::pi() < static_cast<float>(-3.14f));
@@ -201,6 +202,25 @@ namespace test
 
         my_test_result &= ((ef::one() * 4.0) == 4);
         my_test_result &= ((4.0 * ef::one()) == 4);
+
+        const e_float huge("1e12345678");
+        const e_float tiny("1e-12345678");
+
+        float f = huge;
+        double d = huge;
+        long double ld = huge;
+
+        my_test_result &= (f == std::numeric_limits<float>::infinity());
+        my_test_result &= (d == std::numeric_limits<double>::infinity());
+        my_test_result &= (ld == std::numeric_limits<long double>::infinity());
+
+        f = tiny;
+        d = tiny;
+        ld = tiny;
+
+        my_test_result &= (f == 0.0f);
+        my_test_result &= (d == 0.0);
+        my_test_result &= (ld == static_cast<long double>(0.0));
       }
     };
 

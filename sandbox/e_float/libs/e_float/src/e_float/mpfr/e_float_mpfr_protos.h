@@ -25,6 +25,8 @@
     int mpfr_set_ui (mpfr_ptr, unsigned long, mp_rnd_t);
     int mpfr_set_d  (mpfr_ptr, double, mp_rnd_t);
     int mpfr_set_ld (mpfr_ptr, long double, mp_rnd_t);
+    void mpfr_set_inf(mpfr_t, int);
+    void mpfr_set_nan(mpfr_t);
 
     #define mpfr_init_set(x, y, rnd)     ( mpfr_init(x), static_cast<void>(mpfr_set   ((x), (y), (rnd))))
     #define mpfr_init_set_ui(x, i, rnd)  ( mpfr_init(x), static_cast<void>(mpfr_set_ui((x), (i), (rnd))))
@@ -41,6 +43,7 @@
     int mpfr_sub_ui(mpfr_ptr, mpfr_srcptr, unsigned long int, mp_rnd_t);
     int mpfr_mul_ui(mpfr_ptr, mpfr_srcptr, unsigned long int, mp_rnd_t);
     int mpfr_div_ui(mpfr_ptr, mpfr_srcptr, unsigned long int, mp_rnd_t);
+    int mpfr_mul_2si(mpfr_t, mpfr_t, signed long, mp_rnd_t);
 
     int mpfr_cmp3(mpfr_srcptr, mpfr_srcptr, int);
     #define mpfr_cmp(b, c) mpfr_cmp3((b), (c), 1)

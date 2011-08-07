@@ -12,55 +12,62 @@
 #include <e_float/e_float_elementary_trans.hpp>
 #include <e_float/e_float_constants.hpp>
 
-const e_float& ef::two          (void) { static const e_float val(         2u); return val; }
-const e_float& ef::three        (void) { static const e_float val(         3u); return val; }
-const e_float& ef::four         (void) { static const e_float val(         4u); return val; }
-const e_float& ef::five         (void) { static const e_float val(         5u); return val; }
-const e_float& ef::six          (void) { static const e_float val(         6u); return val; }
-const e_float& ef::seven        (void) { static const e_float val(         7u); return val; }
-const e_float& ef::eight        (void) { static const e_float val(         8u); return val; }
-const e_float& ef::nine         (void) { static const e_float val(         9u); return val; }
-const e_float& ef::ten          (void) { static const e_float val(        10u); return val; }
-const e_float& ef::twenty       (void) { static const e_float val(        20u); return val; }
-const e_float& ef::thirty       (void) { static const e_float val(        30u); return val; }
-const e_float& ef::forty        (void) { static const e_float val(        40u); return val; }
-const e_float& ef::fifty        (void) { static const e_float val(        50u); return val; }
-const e_float& ef::hundred      (void) { static const e_float val(       100u); return val; }
-const e_float& ef::two_hundred  (void) { static const e_float val(       200u); return val; }
-const e_float& ef::three_hundred(void) { static const e_float val(       300u); return val; }
-const e_float& ef::four_hundred (void) { static const e_float val(       400u); return val; }
-const e_float& ef::five_hundred (void) { static const e_float val(       500u); return val; }
-const e_float& ef::thousand     (void) { static const e_float val(      1000u); return val; }
-const e_float& ef::two_k        (void) { static const e_float val(      2000u); return val; }
-const e_float& ef::three_k      (void) { static const e_float val(      3000u); return val; }
-const e_float& ef::four_k       (void) { static const e_float val(      4000u); return val; }
-const e_float& ef::five_k       (void) { static const e_float val(      5000u); return val; }
-const e_float& ef::ten_k        (void) { static const e_float val(     10000u); return val; }
-const e_float& ef::twenty_k     (void) { static const e_float val(     20000u); return val; }
-const e_float& ef::thirty_k     (void) { static const e_float val(     30000u); return val; }
-const e_float& ef::forty_k      (void) { static const e_float val(     40000u); return val; }
-const e_float& ef::fifty_k      (void) { static const e_float val(     50000u); return val; }
-const e_float& ef::hundred_k    (void) { static const e_float val(    100000u); return val; }
-const e_float& ef::million      (void) { static const e_float val(   1000000u); return val; }
-const e_float& ef::ten_M        (void) { static const e_float val(  10000000u); return val; }
-const e_float& ef::hundred_M    (void) { static const e_float val( 100000000u); return val; }
-const e_float& ef::billion      (void) { static const e_float val(1000000000u); return val; }
-const e_float& ef::trillion     (void) { static const e_float val(     "1e12"); return val; }
-const e_float& ef::googol       (void) { static const e_float val(    "1e100"); return val; }
-const e_float& ef::int32max     (void) { static const e_float val((std::numeric_limits<INT32>::max)()); return val; }
-const e_float& ef::int32min     (void) { static const e_float val((std::numeric_limits<INT32>::min)()); return val; }
-const e_float& ef::int64max     (void) { static const e_float val((std::numeric_limits<INT64>::max)()); return val; }
-const e_float& ef::int64min     (void) { static const e_float val((std::numeric_limits<INT64>::min)()); return val; }
-const e_float& ef::one_minus    (void) { static const e_float val(-1 ); return val; }
-const e_float& ef::tenth        (void) { static const e_float val(ef::one()  / static_cast<INT32>(10)); return val; }
-const e_float& ef::eighth       (void) { static const e_float val(ef::one()  / static_cast<INT32>( 8)); return val; }
-const e_float& ef::sixteenth    (void) { static const e_float val(ef::one()  / static_cast<INT32>(16)); return val; }
-const e_float& ef::fifth        (void) { static const e_float val(ef::one()  / static_cast<INT32>( 5)); return val; }
-const e_float& ef::quarter      (void) { static const e_float val(ef::one()  / static_cast<INT32>( 4)); return val; }
-const e_float& ef::third        (void) { static const e_float val(ef::one()  / static_cast<INT32>( 3)); return val; }
-const e_float& ef::two_third    (void) { static const e_float val(ef::two()  / static_cast<INT32>( 3)); return val; }
-const e_float& ef::four_third   (void) { static const e_float val(ef::four() / static_cast<INT32>( 3)); return val; }
-const e_float& ef::three_half   (void) { static const e_float val(ef::one() + ef::half());              return val; }
+const e_float& ef::two                   (void) { static const e_float val(         2u); return val; }
+const e_float& ef::three                 (void) { static const e_float val(         3u); return val; }
+const e_float& ef::four                  (void) { static const e_float val(         4u); return val; }
+const e_float& ef::five                  (void) { static const e_float val(         5u); return val; }
+const e_float& ef::six                   (void) { static const e_float val(         6u); return val; }
+const e_float& ef::seven                 (void) { static const e_float val(         7u); return val; }
+const e_float& ef::eight                 (void) { static const e_float val(         8u); return val; }
+const e_float& ef::nine                  (void) { static const e_float val(         9u); return val; }
+const e_float& ef::ten                   (void) { static const e_float val(        10u); return val; }
+const e_float& ef::twenty                (void) { static const e_float val(        20u); return val; }
+const e_float& ef::thirty                (void) { static const e_float val(        30u); return val; }
+const e_float& ef::forty                 (void) { static const e_float val(        40u); return val; }
+const e_float& ef::fifty                 (void) { static const e_float val(        50u); return val; }
+const e_float& ef::hundred               (void) { static const e_float val(       100u); return val; }
+const e_float& ef::two_hundred           (void) { static const e_float val(       200u); return val; }
+const e_float& ef::three_hundred         (void) { static const e_float val(       300u); return val; }
+const e_float& ef::four_hundred          (void) { static const e_float val(       400u); return val; }
+const e_float& ef::five_hundred          (void) { static const e_float val(       500u); return val; }
+const e_float& ef::thousand              (void) { static const e_float val(      1000u); return val; }
+const e_float& ef::two_k                 (void) { static const e_float val(      2000u); return val; }
+const e_float& ef::three_k               (void) { static const e_float val(      3000u); return val; }
+const e_float& ef::four_k                (void) { static const e_float val(      4000u); return val; }
+const e_float& ef::five_k                (void) { static const e_float val(      5000u); return val; }
+const e_float& ef::ten_k                 (void) { static const e_float val(     10000u); return val; }
+const e_float& ef::twenty_k              (void) { static const e_float val(     20000u); return val; }
+const e_float& ef::thirty_k              (void) { static const e_float val(     30000u); return val; }
+const e_float& ef::forty_k               (void) { static const e_float val(     40000u); return val; }
+const e_float& ef::fifty_k               (void) { static const e_float val(     50000u); return val; }
+const e_float& ef::hundred_k             (void) { static const e_float val(    100000u); return val; }
+const e_float& ef::million               (void) { static const e_float val(   1000000u); return val; }
+const e_float& ef::ten_M                 (void) { static const e_float val(  10000000u); return val; }
+const e_float& ef::hundred_M             (void) { static const e_float val( 100000000u); return val; }
+const e_float& ef::billion               (void) { static const e_float val(1000000000u); return val; }
+const e_float& ef::trillion              (void) { static const e_float val(     "1e12"); return val; }
+const e_float& ef::googol                (void) { static const e_float val(    "1e100"); return val; }
+const e_float& ef::int32_min             (void) { static const e_float val((std::numeric_limits<INT32>::min)()); return val; }
+const e_float& ef::int32_max             (void) { static const e_float val((std::numeric_limits<INT32>::max)()); return val; }
+const e_float& ef::int64_min             (void) { static const e_float val((std::numeric_limits<INT64>::min)()); return val; }
+const e_float& ef::int64_max             (void) { static const e_float val((std::numeric_limits<INT64>::max)()); return val; }
+const e_float& ef::unsigned_long_long_max(void) { static const e_float val((std::numeric_limits<unsigned long long>::max)()); return val; }
+const e_float& ef::signed_long_long_min  (void) { static const e_float val((std::numeric_limits<signed long long>::min)()); return val; }
+const e_float& ef::signed_long_long_max  (void) { static const e_float val((std::numeric_limits<signed long long>::max)()); return val; }
+const e_float& ef::double_min            (void) { static const e_float val((std::numeric_limits<double>::min)()); return val; }
+const e_float& ef::double_max            (void) { static const e_float val((std::numeric_limits<double>::max)()); return val; }
+const e_float& ef::long_double_min       (void) { static const e_float val((std::numeric_limits<long double>::min)()); return val; }
+const e_float& ef::long_double_max       (void) { static const e_float val((std::numeric_limits<long double>::max)()); return val; }
+const e_float& ef::one_minus             (void) { static const e_float val(-1 ); return val; }
+const e_float& ef::tenth                 (void) { static const e_float val(ef::one()  / static_cast<INT32>(10)); return val; }
+const e_float& ef::eighth                (void) { static const e_float val(ef::one()  / static_cast<INT32>( 8)); return val; }
+const e_float& ef::sixteenth             (void) { static const e_float val(ef::one()  / static_cast<INT32>(16)); return val; }
+const e_float& ef::fifth                 (void) { static const e_float val(ef::one()  / static_cast<INT32>( 5)); return val; }
+const e_float& ef::quarter               (void) { static const e_float val(ef::one()  / static_cast<INT32>( 4)); return val; }
+const e_float& ef::third                 (void) { static const e_float val(ef::one()  / static_cast<INT32>( 3)); return val; }
+const e_float& ef::two_third             (void) { static const e_float val(ef::two()  / static_cast<INT32>( 3)); return val; }
+const e_float& ef::four_third            (void) { static const e_float val(ef::four() / static_cast<INT32>( 3)); return val; }
+const e_float& ef::three_half            (void) { static const e_float val(ef::one() + ef::half());              return val; }
 
 const e_float& ef::sqrt2(void)
 {

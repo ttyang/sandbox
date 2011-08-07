@@ -61,7 +61,7 @@ efx::e_float::e_float(const unsigned char n) : data     (),
 
 efx::e_float::e_float(const wchar_t n) : data     (),
                                          exp      (static_cast<INT64>(0)),
-                                         neg      (std::numeric_limits<wchar_t>::is_signed && (n < static_cast<wchar_t>(0))),
+                                         neg      (std::numeric_limits<wchar_t>::is_signed ? (n < static_cast<wchar_t>(0)) : false),
                                          fpclass  (ef_finite),
                                          prec_elem(ef_elem_number)
 {
@@ -1300,32 +1300,30 @@ double efx::e_float::extract_double(void) const
 {
   // Returns the double conversion of a e_float.
 
-  // Check for zero or non-normal e_float.
-  if(iszero())
-  {
-    return 0.0;
-  }
-  else if(!isfinite())
+  // Check for non-normal e_float.
+  if(!isfinite())
   {
     if(isnan())
     {
       return std::numeric_limits<double>::quiet_NaN();
     }
-    else if(isinf())
+    else
     {
       return ((!neg) ?  std::numeric_limits<double>::infinity()
                      : -std::numeric_limits<double>::infinity());
     }
-    else
-    {
-      return 0.0;
-    }
   }
-  
-  // Check if e_float exceeds the  
-  static const e_float dbl_max((std::numeric_limits<double>::max)());
 
-  if(ef::fabs(*this) > dbl_max)
+  const e_float xx(ef::fabs(*this));
+
+  // Check for zero e_float.
+  if(iszero() || (xx < ef::double_min()))
+  {
+    return 0.0;
+  }
+
+  // Check if e_float exceeds the maximum of double.
+  if(xx > ef::double_max())
   {
     return ((!neg) ?  std::numeric_limits<double>::infinity()
                    : -std::numeric_limits<double>::infinity());
@@ -1343,39 +1341,128 @@ double efx::e_float::extract_double(void) const
   return d;
 }
 
-INT64 efx::e_float::extract_int64(void) const
+long double efx::e_float::extract_long_double(void) const
 {
-  // Computes a 64-bit integer cast of the input e_float value x.
-  // If |x| exceeds MAX_INT64, then this maximum value is returned.
+  // Returns the long double conversion of a e_float.
+
+  // Check for non-normal e_float.
+  if(!isfinite())
+  {
+    if(isnan())
+    {
+      return std::numeric_limits<long double>::quiet_NaN();
+    }
+    else
+    {
+      return ((!neg) ?  std::numeric_limits<long double>::infinity()
+                     : -std::numeric_limits<long double>::infinity());
+    }
+  }
+
+  const e_float xx(ef::fabs(*this));
+
+  // Check for zero e_float.
+  if(iszero() || (xx < ef::long_double_min()))
+  {
+    return 0.0;
+  }
+
+  // Check if e_float exceeds the maximum of double.
+  if(xx > ef::long_double_max())
+  {
+    return ((!neg) ?  std::numeric_limits<long double>::infinity()
+                   : -std::numeric_limits<long double>::infinity());
+  }
+
+  std::stringstream ss;
+
+  ss << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<long double>::digits10 + (2 + 1)))
+     << std::scientific
+     << *this;
+
+  long double ld;
+  ss >> ld;
+
+  return ld;
+}
+
+signed long long efx::e_float::extract_signed_long_long(void) const
+{
+  // Extracts a signed long long from *this.
+  // If |x| exceeds the maximum of signed long long,
+  // then this maximum value is returned.
 
   if(exp < static_cast<INT64>(0))
   {
-    return static_cast<INT64>(0);
+    return static_cast<signed long long>(0);
   }
 
   const bool b_neg = isneg();
 
   const e_float xn = ef::fabs(extract_integer_part());
 
-  INT64 val;
+  signed long long val;
 
-  if(xn > ef::int64max())
+  if(xn > ef::signed_long_long_max())
   {
-    val = (std::numeric_limits<INT64>::max)();
+    val = (std::numeric_limits<signed long long>::max)();
   }
   else
   {
     // Extract the data into the int64 value.
-    val = static_cast<INT64>(xn.data[0]);
+    val = static_cast<signed long long>(xn.data[0]);
 
-    for(INT32 i = static_cast<INT32>(1); i <= static_cast<INT32>(static_cast<INT32>(xn.exp) / ef_elem_digits10); i++)
+    const INT32 imax = (std::min)(static_cast<INT32>(static_cast<INT32>(xn.exp) / ef_elem_digits10), static_cast<INT32>(ef_elem_number - static_cast<INT32>(1)));
+
+    for(INT32 i = static_cast<INT32>(1); i <= imax; i++)
     {
-      val *= static_cast<INT64>(ef_elem_mask);
-      val += static_cast<INT64>(xn.data[i]);
+      val *= static_cast<signed long long>(ef_elem_mask);
+      val += static_cast<signed long long>(xn.data[i]);
     }
   }
 
   return ((!b_neg) ? val : static_cast<INT64>(-val));
+}
+
+unsigned long long efx::e_float::extract_unsigned_long_long(void) const
+{
+  // Extracts an unsigned long long from *this.
+  // If |x| exceeds the maximum of unsigned long long,
+  // then this maximum value is returned.
+
+  if(isneg())
+  {
+    return static_cast<unsigned long long>(extract_signed_long_long());
+  }
+
+  if(exp < static_cast<INT64>(0))
+  {
+    return static_cast<unsigned long long>(0u);
+  }
+
+  const e_float xn = ef::fabs(extract_integer_part());
+
+  unsigned long long val;
+
+  if(xn > ef::unsigned_long_long_max())
+  {
+    val = (std::numeric_limits<unsigned long long>::max)();
+  }
+  else
+  {
+    // Extract the data into the int64 value.
+    val = static_cast<unsigned long long>(xn.data[0]);
+
+    const INT32 imax = (std::min)(static_cast<INT32>(static_cast<INT32>(xn.exp) / ef_elem_digits10), static_cast<INT32>(ef_elem_number - static_cast<INT32>(1)));
+
+    for(INT32 i = static_cast<INT32>(1); i <= imax; i++)
+    {
+      val *= static_cast<unsigned long long>(ef_elem_mask);
+      val += static_cast<unsigned long long>(xn.data[i]);
+    }
+  }
+
+  return val;
 }
 
 efx::e_float efx::e_float::extract_integer_part(void) const

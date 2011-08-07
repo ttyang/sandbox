@@ -18,5 +18,13 @@
 
 void test::spot::test_spot(void)
 {
-  std::cout << e_float(0.0) << std::endl;
+  const std::streamsize original_prec = std::cout.precision(std::numeric_limits<e_float>::digits10);
+
+  const e_float x = ef::sqrt(ef::euler_gamma());
+  std::cout << x << std::endl;
+
+  const e_float p = ef::log(ef::pi() * 100);
+  std::cout << p << std::endl;
+
+  std::cout.precision(original_prec);
 }

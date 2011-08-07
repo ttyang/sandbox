@@ -112,15 +112,34 @@
     INT64 order(void) const { return get_order_approximate(); }
 
     // Conversion routines
-    virtual void    extract_parts       (double&, INT64&) const = 0;
-    virtual double  extract_double      (void) const = 0;
-    virtual INT64   extract_int64       (void) const = 0;
-    virtual e_float extract_integer_part(void) const = 0;
-    virtual e_float extract_decimal_part(void) const = 0;
+    virtual void               extract_parts(double&, INT64&) const = 0;
+    virtual double             extract_double            (void) const = 0;
+    virtual long double        extract_long_double       (void) const = 0;
+    virtual signed long long   extract_signed_long_long  (void) const = 0;
+    virtual unsigned long long extract_unsigned_long_long(void) const = 0;
+    virtual e_float            extract_integer_part      (void) const = 0;
+    virtual e_float            extract_decimal_part      (void) const = 0;
 
     // Formated Output routine.
     void wr_string(std::string& str, std::ostream& os) const;
     virtual bool rd_string(const char* const) = 0;
+
+    // Cast operators
+    operator char() const              { return (std::numeric_limits<char>::is_signed ? static_cast<char>(extract_signed_long_long()) : static_cast<char>(extract_unsigned_long_long())); }
+    operator wchar_t() const            { return (std::numeric_limits<char>::is_signed ? static_cast<wchar_t>(extract_signed_long_long()) : static_cast<wchar_t>(extract_unsigned_long_long())); }
+    operator signed char() const        { return static_cast<signed char>       (extract_signed_long_long()); }
+    operator signed short() const       { return static_cast<signed short>      (extract_signed_long_long()); }
+    operator signed int() const         { return static_cast<signed int>        (extract_signed_long_long()); }
+    operator signed long() const        { return static_cast<signed long>       (extract_signed_long_long()); }
+    operator signed long long() const   { return static_cast<signed long long>  (extract_signed_long_long()); }
+    operator unsigned char() const      { return static_cast<unsigned char>     (extract_unsigned_long_long()); }
+    operator unsigned short() const     { return static_cast<unsigned short>    (extract_unsigned_long_long()); }
+    operator unsigned int() const       { return static_cast<unsigned int>      (extract_unsigned_long_long()); }
+    operator unsigned long() const      { return static_cast<unsigned long>     (extract_unsigned_long_long()); }
+    operator unsigned long long() const { return static_cast<unsigned long long>(extract_unsigned_long_long()); }
+    operator float() const              { return static_cast<float>(extract_double()); }
+    operator double() const             { return extract_double(); }
+    operator long double() const        { return extract_long_double(); }
 
     // Specific higher functions which might be present in the MP implementation.
     virtual bool has_its_own_ldexp        (void) const { return false; }
