@@ -1,0 +1,71 @@
+# e_float/libs/e_float/test/jamfile.v2
+
+# e_float EFX test using Boost.test unit test framework
+
+# Copyright Paul A. Bristow 2011
+# Copyright Christopher Kormanyos 2011
+
+# From Copyright 2005: Eric Niebler
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+#~ from Copyright Rene Rivera 2008
+#~ Distributed under the Boost Software License, Version 1.0.
+#~ (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+
+project
+  : requirements
+		<library>/boost/test//boost_test_exec_monitor/<link>static
+		<include>../../..
+		<include>../../../boost/
+		<define>BOOST_ALL_NO_LIB=1 # Why?
+		<define>E_FLOAT_TYPE_EFX # Could also be E_FLOAT_TYPE_GMP or E_FLOAT_TYPE_MFPR.
+		<define>E_FLOAT_DIGITS10=50 # Overriding the default of 100 for testing purposes.
+		# But has no effect without bjam -a option???
+		
+		<toolset>gcc:<cxxflags>-Wextra
+		<toolset>gcc:<cxxflags>-Wshadow
+		<toolset>gcc:<warnings-as-errors>on
+		<toolset>gcc:<cxxflags>-Wno-long-long
+		<toolset>gcc:<cxxflags>-Wcast-align
+		<toolset>intel:<warnings-as-errors>on
+		
+		-<toolset>msvc:<cxxflags>/Za # Requires MS extensions, so explictly cancel /Za to enable extensions.
+		<toolset>msvc:<asynch-exceptions>on # Needed for Boost.Test
+		<toolset>msvc:<warnings>all
+		<toolset>msvc:<warnings-as-errors>on
+		<toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
+		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
+		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+		<toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
+		<toolset>msvc:<define>E_FLOAT_DIGITS10=50 # Overriding the default of 100 for testing purposes.
+		
+		# Warning suppression:
+		<toolset>msvc:<cxxflags>/wd4224 # nonstandard extension used : formal parameter 'arg' was previously defined as a type.
+		<toolset>msvc:<cxxflags>/wd4127 # expression is constant.
+    ;
+
+test-suite "e_float EFX" :
+    [ run ./naive_test/naive_test.cpp 
+      ../src/e_float/e_float.cpp
+      ../src/e_float/e_float_base.cpp
+      ../src/e_float/efx/e_float_efx.cpp
+      ../src/functions/constants/constants.cpp
+      ../src/functions/elementary/elementary_complex.cpp
+      ../src/functions/elementary/elementary_math.cpp
+      ../src/functions/elementary/elementary_hyper_g.cpp
+      ../src/functions/elementary/elementary_trans.cpp
+      ../src/functions/elementary/elementary_trig.cpp
+      ../src/functions/integer/prime.cpp
+      ../src/functions/integer/prime_factor.cpp
+      
+      ../src/utility/util_power_j_pow_x.cpp
+      ../src/utility/util_timer.cpp
+      ../src/utility/util_digit_scale.cpp
+    ]
+    #[ run  ../example/e_float_naive_eg.cpp ]
+
+  ;
+
