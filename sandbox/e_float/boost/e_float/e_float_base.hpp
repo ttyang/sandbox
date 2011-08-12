@@ -29,8 +29,8 @@
   // The supported range is 30-300.
   // Note: This is a compile-time constant.
 
-  #define E_FLOAT_DIGITS10     100
-  #define E_FLOAT_DIGITS10_MAX 300
+  #define E_FLOAT_DIGITS10       100
+  #define E_FLOAT_DIGITS10_LIMIT 300
 
   #if defined(E_FLOAT_TYPE_EFX)
     namespace efx { class e_float; }
@@ -48,17 +48,11 @@
   class e_float_base
   {
   public:
-
-    // The value of ef_digits10_setting is the desired number of decimal digits
-    // of precision in the e_float implementation. It is limited to the range of
-    // 30...300 decimal digits. The digit tolerance is invariant and it is set
-    // to be 15 percent (or maximally 150 digits) larger than ef_digits10.
-    // All of these quantities are invariant and they are set at compile time.
     static const INT32 ef_digits10_setting = E_FLOAT_DIGITS10;
-    static const INT32 ef_digits10_max     = E_FLOAT_DIGITS10_MAX;
-    static const INT32 ef_digits10         = ((ef_digits10_setting < 30) ? 30 : ((ef_digits10_setting > ef_digits10_max) ? ef_digits10_max : ef_digits10_setting));
+    static const INT32 ef_digits10_limit   = E_FLOAT_DIGITS10_LIMIT;
+    static const INT32 ef_digits10         = ((ef_digits10_setting < static_cast<INT32>(30)) ? static_cast<INT32>(30) : ((ef_digits10_setting > ef_digits10_limit) ? ef_digits10_limit : ef_digits10_setting));
     static const INT32 ef_digits10_extra   = static_cast<INT32>(((static_cast<INT64>(ef_digits10) * 15LL) + 50LL) / 100LL);
-    static const INT32 ef_digits10_tol     = static_cast<INT32>(ef_digits10 + ((ef_digits10_extra < 15) ? 15 : ((ef_digits10_extra > 150) ? 150 : ef_digits10_extra)));
+    static const INT32 ef_max_digits10     = static_cast<INT32>(ef_digits10 + ((ef_digits10_extra < static_cast<INT32>(5)) ? static_cast<INT32>(5) : ((ef_digits10_extra > static_cast<INT32>(30)) ? static_cast<INT32>(30) : ef_digits10_extra)));
 
     virtual ~e_float_base() { }
 

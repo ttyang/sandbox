@@ -155,8 +155,7 @@ bool ef::small_arg(const double x)
 bool ef::small_arg(const e_float& x)
 {
   static const double lim_d = static_cast<double>(static_cast<INT32>(ef::tol())) / 10.0;
-  static const INT64  lim_n = static_cast<INT64>(lim_d);
-  static const INT64  lim   = (lim_n < 6 ? 6 : lim_n);
+  static const INT64  lim   = (std::max)(static_cast<INT64>(lim_d), static_cast<INT64>(6));
 
   return (x.order() < static_cast<INT64>(-lim));
 }

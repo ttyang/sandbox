@@ -13,7 +13,7 @@
 
   namespace ef
   {
-    inline INT64 tol(void) { return static_cast<INT64>(e_float::ef_digits10_tol); }
+    inline INT64 tol(void) { return static_cast<INT64>(e_float::ef_max_digits10); }
     inline e_float fabs(const e_float& x) { return (x.isneg() ? e_float(x).negate() : x); }
   }
 

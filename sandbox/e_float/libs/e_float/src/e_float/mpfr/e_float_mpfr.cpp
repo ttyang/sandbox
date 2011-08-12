@@ -19,6 +19,7 @@
 
 #include "e_float_mpfr_protos.h"
 #include "../../utility/util_lexical_cast.h"
+#include "../../utility/util_numeric_cast.h"
 
 namespace
 {
@@ -31,13 +32,12 @@ namespace
 
 void mpfr::e_float::init(void)
 {
-  static bool precision_is_initialized = false;
+  static bool precision_is_initialized;
 
-  if(!precision_is_initialized)
+  if(precision_is_initialized == false)
   {
     precision_is_initialized = true;
-
-    ::mpfr_set_default_prec(static_cast<mp_prec_t>(ef_digits2));
+    ::mpfr_set_default_prec(static_cast<mp_prec_t>(ef_digits2 + static_cast<INT32>(4)));
   }
 }
 
@@ -82,8 +82,8 @@ mpfr::e_float::e_float(const float f)
   // mantissa expressed as an unsigned long long.
   from_unsigned_long_long(fb.get_mantissa());
 
-  // Scale the UINT64 representation to the fractional part of
-  // the double and multiply with the base-2 exponent.
+  // Scale the unsigned long long representation to the fractional
+  // part of the float and multiply with the base-2 exponent.
   const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
 
   if(p2 != 0) { mpfr_mul_2si(rop, rop, static_cast<signed long>(p2), GMP_RNDN); }
@@ -430,10 +430,7 @@ signed long long mpfr::e_float::extract_signed_long_long(void) const
 
   std::copy(str.begin(), str.begin() + str_sll.size(), str_sll.begin());
 
-  std::stringstream ss;
-  ss << str_sll;
-  signed long long n;
-  ss >> n;
+  const signed long long n = Util::numeric_cast<signed long long>(str_sll);
 
   return ((!b_neg) ? n : -n);
 }
@@ -470,10 +467,7 @@ unsigned long long mpfr::e_float::extract_unsigned_long_long(void) const
 
   std::copy(str.begin(), str.begin() + str_ull.size(), str_ull.begin());
 
-  std::stringstream ss;
-  ss << str_ull;
-  unsigned long long n;
-  ss >> n;
+  const unsigned long long n = Util::numeric_cast<unsigned long long>(str_ull);
 
   return n;
 }
@@ -516,20 +510,10 @@ INT64 mpfr::e_float::get_order_exact(void) const
   const std::string str = std::string(buf.data());
 
   // Extract the base-10 exponent.
-  INT64 my_exp;
-
   const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
 
-  if(pos_letter_e != std::string::npos)
-  {
-    std::stringstream ss;
-    ss << static_cast<const char*>(str.c_str() + (pos_letter_e + 1u));
-    ss >> my_exp;
-  }
-  else
-  {
-    my_exp = static_cast<INT64>(0);
-  }
+  const INT64 my_exp = ((pos_letter_e != std::string::npos) ? Util::numeric_cast<INT64>(static_cast<const char* const>(str.c_str() + (pos_letter_e + 1u)))
+                                                            : static_cast<INT64>(0));
 
   return my_exp;
 }
@@ -564,7 +548,7 @@ void mpfr::e_float::get_output_string(std::string& str, INT64& my_exp, const std
   const std::string str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "RNe");
 
   // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
-  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>(0) }};
+  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_max_digits10 + 32)> buf = {{ static_cast<char>(0) }};
 
   ::mpfr_sprintf(buf.data(), str_fmt.c_str(), rop);
 

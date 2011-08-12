@@ -20,6 +20,7 @@
 
 #include "e_float_gmp_protos.h"
 #include "../../utility/util_lexical_cast.h"
+#include "../../utility/util_numeric_cast.h"
 
 #if defined(__GNUC__)
   static inline INT32 _isnan (float x)       { return static_cast<INT32>(std::isnan   <float>(x)); }
@@ -44,13 +45,12 @@ namespace
 
 void gmp::e_float::init(void)
 {
-  static bool precision_is_initialized = false;
+  static bool precision_is_initialized;
 
-  if(!precision_is_initialized)
+  if(precision_is_initialized == false)
   {
     precision_is_initialized = true;
-
-    ::mpf_set_default_prec(static_cast<unsigned long int>(ef_digits2));
+    ::mpf_set_default_prec(static_cast<unsigned long>(ef_digits2 + static_cast<INT32>(4)));
   }
 }
 
@@ -69,14 +69,14 @@ const INT64& gmp::e_float::min_exp2(void)
 
 
 gmp::e_float::e_float() : fpclass  (ef_finite),
-                          prec_elem(ef_digits10_tol)
+                          prec_elem(ef_max_digits10)
 {
   init();
   ::mpf_init(rop);
 }
 
 gmp::e_float::e_float(const char n) : fpclass  (ef_finite),
-                                      prec_elem(ef_digits10_tol)
+                                      prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (std::numeric_limits<char>::is_signed ? (n < static_cast<char>(0)) : false);
@@ -85,7 +85,7 @@ gmp::e_float::e_float(const char n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const wchar_t n) : fpclass  (ef_finite),
-                                         prec_elem(ef_digits10_tol)
+                                         prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (std::numeric_limits<wchar_t>::is_signed ? (n < static_cast<wchar_t>(0)) : false);
@@ -94,7 +94,7 @@ gmp::e_float::e_float(const wchar_t n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const signed char n) : fpclass  (ef_finite),
-                                             prec_elem(ef_digits10_tol)
+                                             prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (n < static_cast<signed char>(0));
@@ -103,7 +103,7 @@ gmp::e_float::e_float(const signed char n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const signed short n) : fpclass  (ef_finite),
-                                              prec_elem(ef_digits10_tol)
+                                              prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (n < static_cast<signed short>(0));
@@ -112,7 +112,7 @@ gmp::e_float::e_float(const signed short n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const signed int n) : fpclass  (ef_finite),
-                                            prec_elem(ef_digits10_tol)
+                                            prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (n < static_cast<signed int>(0));
@@ -121,7 +121,7 @@ gmp::e_float::e_float(const signed int n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const signed long n) : fpclass  (ef_finite),
-                                             prec_elem(ef_digits10_tol)
+                                             prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (n < static_cast<signed long>(0));
@@ -130,7 +130,7 @@ gmp::e_float::e_float(const signed long n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const signed long long n) : fpclass  (ef_finite),
-                                                  prec_elem(ef_digits10_tol)
+                                                  prec_elem(ef_max_digits10)
 {
   init();
   const bool b_neg = (n < static_cast<signed long long>(0));
@@ -139,42 +139,42 @@ gmp::e_float::e_float(const signed long long n) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const unsigned char n) : fpclass  (ef_finite),
-                                               prec_elem(ef_digits10_tol)
+                                               prec_elem(ef_max_digits10)
 {
   init();
   from_unsigned_long(static_cast<unsigned long>(n));
 }
 
 gmp::e_float::e_float(const unsigned short n) : fpclass  (ef_finite),
-                                                prec_elem(ef_digits10_tol)
+                                                prec_elem(ef_max_digits10)
 {
   init();
   from_unsigned_long(static_cast<unsigned long>(n));
 }
 
 gmp::e_float::e_float(const unsigned int n) : fpclass  (ef_finite),
-                                              prec_elem(ef_digits10_tol)
+                                              prec_elem(ef_max_digits10)
 {
   init();
   from_unsigned_long(static_cast<unsigned long>(n));
 }
 
 gmp::e_float::e_float(const unsigned long n) : fpclass  (ef_finite),
-                                               prec_elem(ef_digits10_tol)
+                                               prec_elem(ef_max_digits10)
 {
   init();
   from_unsigned_long(static_cast<unsigned long>(n));
 }
 
 gmp::e_float::e_float(const unsigned long long n) : fpclass  (ef_finite),
-                                                    prec_elem(ef_digits10_tol)
+                                                    prec_elem(ef_max_digits10)
 {
   init();
   from_unsigned_long_long(static_cast<unsigned long long>(n));
 }
 
 gmp::e_float::e_float(const float f) : fpclass  (ef_finite),
-                                       prec_elem(ef_digits10_tol)
+                                       prec_elem(ef_max_digits10)
 {
   init();
 
@@ -192,8 +192,8 @@ gmp::e_float::e_float(const float f) : fpclass  (ef_finite),
   // mantissa expressed as an unsigned long long.
   from_unsigned_long_long(fb.get_mantissa());
 
-  // Scale the UINT64 representation to the fractional part of
-  // the double and multiply with the base-2 exponent.
+  // Scale the unsigned long long representation to the fractional
+  // part of the float and multiply with the base-2 exponent.
   const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
 
   if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
@@ -205,14 +205,14 @@ gmp::e_float::e_float(const float f) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const double d) : fpclass  (ef_finite),
-                                        prec_elem(ef_digits10_tol)
+                                        prec_elem(ef_max_digits10)
 {
   init();
   ::mpf_init_set_d(rop, d);
 }
 
 gmp::e_float::e_float(const long double ld) : fpclass  (ef_finite),
-                                              prec_elem(ef_digits10_tol)
+                                              prec_elem(ef_max_digits10)
 {
   init();
 
@@ -230,8 +230,8 @@ gmp::e_float::e_float(const long double ld) : fpclass  (ef_finite),
   // mantissa expressed as an unsigned long long.
   from_unsigned_long_long(fb.get_mantissa());
 
-  // Scale the UINT64 representation to the fractional part of
-  // the double and multiply with the base-2 exponent.
+  // Scale the unsigned long long representation to the fractional
+  // part of the long double and multiply with the base-2 exponent.
   const int p2 = fb.get_exponent() - (std::numeric_limits<long double>::digits - 1);
 
   if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
@@ -243,14 +243,14 @@ gmp::e_float::e_float(const long double ld) : fpclass  (ef_finite),
 }
 
 gmp::e_float::e_float(const char* const s) : fpclass  (ef_finite),
-                                             prec_elem(ef_digits10_tol)
+                                             prec_elem(ef_max_digits10)
 {
   init();
   static_cast<void>(rd_string(s));
 }
 
 gmp::e_float::e_float(const std::string& str) : fpclass  (ef_finite),
-                                                prec_elem(ef_digits10_tol)
+                                                prec_elem(ef_max_digits10)
 {
   init();
   static_cast<void>(rd_string(str.c_str()));
@@ -264,7 +264,7 @@ gmp::e_float::e_float(const e_float& mp) : fpclass  (mp.fpclass),
 }
 
 gmp::e_float::e_float(const double mantissa, const INT64 exponent) : fpclass  (ef_finite),
-                                                                     prec_elem(ef_digits10_tol)
+                                                                     prec_elem(ef_max_digits10)
 {
   init();
 
@@ -290,7 +290,7 @@ gmp::e_float::e_float(const double mantissa, const INT64 exponent) : fpclass  (e
 }
 
 gmp::e_float::e_float(const ::mpf_t& op) : fpclass  (ef_finite),
-                                           prec_elem(ef_digits10_tol)
+                                           prec_elem(ef_max_digits10)
 {
   init();
   ::mpf_init_set(rop, op);
@@ -877,10 +877,7 @@ signed long long gmp::e_float::extract_signed_long_long(void) const
   std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_sll.begin());
 
   // Get the signed long long result.
-  std::stringstream ss;
-  ss << str_sll;
-  signed long long n;
-  ss >> n;
+  const signed long long n = Util::numeric_cast<signed long long>(str_sll);
 
   return ((!b_neg) ? n : -n);
 }
@@ -928,10 +925,7 @@ unsigned long long gmp::e_float::extract_unsigned_long_long(void) const
   std::copy(str.begin(), std::find(str.begin(), str.end(), c0), str_ull.begin());
 
   // Get the unsigned long long result.
-  std::stringstream ss;
-  ss << str_ull;
-  unsigned long long n;
-  ss >> n;
+  const unsigned long long n = Util::numeric_cast<unsigned long long>(str_ull);
 
   return n;
 }
@@ -975,20 +969,10 @@ INT64 gmp::e_float::get_order_exact(void) const
   const std::string str = std::string(buf.data());
 
   // Extract the base-10 exponent.
-  INT64 my_exp;
-
   const std::size_t pos_letter_e = str.rfind(static_cast<char>('e'));
 
-  if(pos_letter_e != std::string::npos)
-  {
-    std::stringstream ss;
-    ss << static_cast<const char*>(str.c_str() + (pos_letter_e + 1u));
-    ss >> my_exp;
-  }
-  else
-  {
-    my_exp = static_cast<INT64>(0);
-  }
+  const INT64 my_exp = ((pos_letter_e != std::string::npos) ? Util::numeric_cast<INT64>(static_cast<const char* const>(str.c_str() + (pos_letter_e + 1u)))
+                                                            : static_cast<INT64>(0));
 
   return my_exp;
 }
@@ -1023,7 +1007,7 @@ void gmp::e_float::get_output_string(std::string& str, INT64& my_exp, const std:
   const std::string str_fmt = std::string("%.") + (Util::lexical_cast(the_number_of_digits_scientific) + "Fe");
 
   // Get the string representation of the e_float in scientific notation (lowercase, noshowpos).
-  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_digits10_tol + 32)> buf = {{ static_cast<char>('0') }};
+  std::tr1::array<char, static_cast<std::size_t>(e_float::ef_max_digits10 + 32)> buf = {{ static_cast<char>('0') }};
 
   static_cast<void>(gmp_sprintf(buf.data(), str_fmt.c_str(), rop));
 

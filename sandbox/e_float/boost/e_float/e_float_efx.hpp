@@ -25,7 +25,6 @@
     class e_float : public ::e_float_base
     {
     public:
-      static const INT32 ef_elem_digits10 = static_cast<INT32>(8);
       static const INT32 ef_radix         = static_cast<INT32>(10);
       static const INT32 ef_digits        = ef_digits10;
 
@@ -34,8 +33,10 @@
       static const INT64 ef_max_exp10     = static_cast<INT64>(+3063937869882635616LL); // Approx. [ef_max_exp / log10(2)], also an even multiple of 8
       static const INT64 ef_min_exp10     = static_cast<INT64>(-3063937869882635616LL);
 
+      static const INT32 ef_elem_digits10 = static_cast<INT32>(8);
+
     private:
-      static const INT32 ef_digits10_num_base = static_cast<INT32>((ef_digits10_tol / ef_elem_digits10) + (((ef_digits10_tol % ef_elem_digits10) != 0) ? 1 : 0));
+      static const INT32 ef_digits10_num_base = static_cast<INT32>((ef_max_digits10 / ef_elem_digits10) + (((ef_max_digits10 % ef_elem_digits10) != 0) ? 1 : 0));
       static const INT32 ef_elem_number       = static_cast<INT32>(ef_digits10_num_base + 2);
 
       typedef enum enum_fpclass
@@ -118,7 +119,7 @@
       // Elementary primitives.
       virtual e_float& calculate_inv (void);
       virtual e_float& calculate_sqrt(void);
-      virtual e_float& negate(void) { if(!iszero()) { neg = !neg; } return *this; }
+      virtual e_float& negate(void) { if(!iszero()) { neg = (!neg); } return *this; }
 
       // Comparison functions
       virtual bool isnan   (void) const { return (fpclass == ef_NaN); }
@@ -144,7 +145,8 @@
       virtual e_float            extract_decimal_part      (void) const;
 
     private:
-      static bool data_elem_is_nonzero_predicate(const UINT32& d) { return (d != static_cast<UINT32>(0u)); }
+      static bool data_elem_is_non_zero_predicate(const UINT32& d) { return (d != static_cast<UINT32>(0u)); }
+      static bool data_elem_is_non_nine_predicate(const UINT32& d) { return (d != static_cast<UINT32>(e_float::ef_elem_mask - 1)); }
 
       void from_unsigned_long_long(const unsigned long long u);
       void from_unsigned_long(const unsigned long u);
@@ -155,7 +157,7 @@
       static UINT32 mul_loop_n (UINT32* const u, UINT32 n, const INT32 p);
       static UINT32 div_loop_n (UINT32* const u, UINT32 n, const INT32 p);
 
-      virtual INT64 get_order_exact(void) const;
+      virtual INT64 get_order_exact(void) const { return get_order_fast(); }
       virtual INT64 get_order_fast(void) const;
       virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const;
 

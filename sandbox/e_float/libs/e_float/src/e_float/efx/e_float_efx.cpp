@@ -166,8 +166,8 @@ efx::e_float::e_float(const float f) : data     (),
   // mantissa expressed as an unsigned long long.
   from_unsigned_long_long(fb.get_mantissa());
 
-  // Scale the UINT64 representation to the fractional part of
-  // the double and multiply with the base-2 exponent.
+  // Scale the unsigned long long representation to the fractional
+  // part of the float and multiply with the base-2 exponent.
   const int p2 = fb.get_exponent() - (std::numeric_limits<float>::digits - 1);
 
   if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
@@ -201,8 +201,8 @@ efx::e_float::e_float(const double d) : data     (),
   // mantissa expressed as an unsigned long long.
   from_unsigned_long_long(db.get_mantissa());
 
-  // Scale the UINT64 representation to the fractional part of
-  // the double and multiply with the base-2 exponent.
+  // Scale the unsigned long long representation to the fractional
+  // part of the double and multiply with the base-2 exponent.
   const int p2 = db.get_exponent() - (std::numeric_limits<double>::digits - 1);
 
   if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
@@ -236,8 +236,8 @@ efx::e_float::e_float(const long double ld) : data     (),
   // mantissa expressed as an unsigned long long.
   from_unsigned_long_long(ldb.get_mantissa());
 
-  // Scale the UINT64 representation to the fractional part of
-  // the double and multiply with the base-2 exponent.
+  // Scale the unsigned long long representation to the fractional
+  // part of the long double and multiply with the base-2 exponent.
   const int p2 = ldb.get_exponent() - (std::numeric_limits<long double>::digits - 1);
 
   if(p2 != 0) { operator*=(ef::pow2(static_cast<INT64>(p2))); }
@@ -282,66 +282,49 @@ efx::e_float::e_float(const double mantissa,
                                               fpclass  (ef_finite),
                                               prec_elem(ef_elem_number)
 {
-  // Create an e_float from mantissa and exponent. No, this ctor
-  // does not maintain the full precision of double.
+  // Create an e_float from mantissa and exponent.
+  // This ctor does not maintain the full precision of double.
 
   const bool mantissa_is_iszero = (::fabs(mantissa) < ((std::numeric_limits<double>::min)() * 2.0));
 
   if(mantissa_is_iszero)
   {
-    if(exponent == static_cast<INT64>(0))
-    {
-      operator=(ef::one());
-    }
-    else
-    {
-      operator=(ef::zero());
-    }
+    operator=((exponent == static_cast<INT64>(0)) ? ef::one() : ef::zero());
+    return;
   }
-  else
+
+  const bool b_neg = (mantissa < 0.0);
+
+  neg = b_neg;
+
+  double d = ((!b_neg) ? mantissa : -mantissa);
+  INT64  e = exponent;
+
+  while(d > 10.0) { d /= 10.0; ++e; }
+  while(d <  1.0) { d *= 10.0; --e; }
+
+  INT32 shift = static_cast<INT32>(e % static_cast<INT32>(ef_elem_digits10));
+
+  while(static_cast<INT32>(shift-- % ef_elem_digits10) != static_cast<INT32>(0))
   {
-    const bool b_neg = (mantissa < 0.0);
+    d *= 10.0;
+    --e;
+  }
 
-    neg = b_neg;
+  exp = e;
+  neg = b_neg;
 
-    double d = ((!b_neg) ? mantissa : -mantissa);
-    INT64  e = exponent;
+  std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
 
-    while(d > 1.0)
-    {
-      d /= 10.0;
-      ++e;
-    }
+  static const INT32 digit_ratio = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) / static_cast<INT32>(ef_elem_digits10));
+  static const INT32 digit_loops = static_cast<INT32>(digit_ratio + static_cast<INT32>(2));
 
-    while(d < 1.0)
-    {
-      d *= 10.0;
-      --e;
-    }
-
-    INT32 shift = static_cast<INT32>(e % static_cast<INT32>(ef_elem_digits10));
-
-    while(static_cast<INT32>(shift-- % ef_elem_digits10) != static_cast<INT32>(0))
-    {
-      d *= 10.0;
-      --e;
-    }
-
-    exp = e;
-    neg = b_neg;
-
-    std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
-
-    static const INT32 digit_ratio = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) / static_cast<INT32>(ef_elem_digits10));
-    static const INT32 digit_loops = static_cast<INT32>(digit_ratio + static_cast<INT32>(2));
-
-    for(INT32 i = static_cast<INT32>(0); i < digit_loops; i++)
-    {
-      UINT32 n = static_cast<UINT32>(static_cast<UINT64>(d));
-      data[i]  = static_cast<UINT32>(n);
-      d       -= static_cast<double>(n);
-      d       *= static_cast<double>(ef_elem_mask);
-    }
+  for(INT32 i = static_cast<INT32>(0); i < digit_loops; i++)
+  {
+    UINT32 n = static_cast<UINT32>(static_cast<UINT64>(d));
+    data[i]  = static_cast<UINT32>(n);
+    d       -= static_cast<double>(n);
+    d       *= static_cast<double>(ef_elem_mask);
   }
 }
 
@@ -418,7 +401,7 @@ void efx::e_float::mul_loop_uv(const UINT32* const u, const UINT32* const v, UIN
     carry    = static_cast<UINT64>(sum / static_cast<UINT32>(ef_elem_mask));
   }
 
-  w[0] = static_cast<UINT32>(carry);
+  w[0u] = static_cast<UINT32>(carry);
 }
 
 UINT32 efx::e_float::mul_loop_n(UINT32* const u, UINT32 n, const INT32 p)
@@ -452,12 +435,17 @@ UINT32 efx::e_float::div_loop_n(UINT32* const u, UINT32 n, const INT32 p)
 
 void efx::e_float::precision(const INT32 prec_digits)
 {
-  const INT32 elems_x = static_cast<INT32>(  static_cast<INT32>( (prec_digits + (ef_elem_digits10 / 2)) / ef_elem_digits10)
+  if(prec_digits >= ef_digits10)
+  {
+    prec_elem = ef_elem_number;
+  }
+  else
+  {
+    const INT32 elems = static_cast<INT32>(  static_cast<INT32>( (prec_digits + (ef_elem_digits10 / 2)) / ef_elem_digits10)
                                            + static_cast<INT32>(((prec_digits % ef_elem_digits10) != 0) ? 1 : 0));
 
-  const INT32 elems = ((elems_x < static_cast<INT32>(2)) ? static_cast<INT32>(2) : elems_x);
-
-  prec_elem = ((elems > ef_elem_number) ? ef_elem_number : elems);
+    prec_elem = (std::min)(ef_elem_number, (std::max)(elems, static_cast<INT32>(2)));
+  }
 }
 
 efx::e_float& efx::e_float::operator=(const e_float& v)
@@ -496,7 +484,7 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
   // Get the offset for the add/sub operation.
   static const INT64 max_delta_exp = static_cast<INT64>((ef_elem_number - 1) * ef_elem_digits10);
 
-  const INT64 ofs_exp = exp - v.exp;
+  const INT64 ofs_exp = static_cast<INT64>(exp - v.exp);
 
   // Check if the operation is out of range, requiring special handling.
   if(v.iszero() || (ofs_exp > max_delta_exp))
@@ -659,9 +647,7 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
     }
 
     // Is it necessary to justify the data?
-    const array_type::const_iterator first_nonzero_elem = std::find_if(data.begin(),
-                                                                       data.end(),
-                                                                       data_elem_is_nonzero_predicate);
+    const array_type::const_iterator first_nonzero_elem = std::find_if(data.begin(), data.end(), data_elem_is_non_zero_predicate);
 
     if(first_nonzero_elem != data.begin())
     {
@@ -677,13 +663,8 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
         // Justify the data
         const std::size_t sj = static_cast<std::size_t>(std::distance<array_type::const_iterator>(data.begin(), first_nonzero_elem));
 
-        std::copy(data.begin() + static_cast<std::size_t>(sj),
-                  data.end(),
-                  data.begin());
-
-        std::fill(data.end() - sj,
-                  data.end(),
-                  static_cast<UINT32>(0u));
+        std::copy(data.begin() + static_cast<std::size_t>(sj), data.end(), data.begin());
+        std::fill(data.end() - sj, data.end(), static_cast<UINT32>(0u));
 
         exp -= static_cast<INT64>(sj * static_cast<std::size_t>(ef_elem_digits10));
       }
@@ -868,10 +849,7 @@ efx::e_float& efx::e_float::mul_unsigned_long_long(const unsigned long long n)
   }
 
   // Set up the multiplication loop.
-  const INT32 jmax = static_cast<INT32>(data.rend() - std::find_if(data.rbegin(),
-                                                                   data.rend(),
-                                                                   data_elem_is_nonzero_predicate));
-
+  const INT32 jmax = static_cast<INT32>(data.rend() - std::find_if(data.rbegin(), data.rend(), data_elem_is_non_zero_predicate));
   const INT32 jm1  = static_cast<INT32>(jmax + static_cast<INT32>(1));
   const INT32 prec = static_cast<INT32>(prec_elem);
   const INT32 jm   = (std::min)(jm1, prec);
@@ -1099,9 +1077,9 @@ efx::e_float& efx::e_float::calculate_sqrt(void)
   // Setup the iteration.
   // Estimate the square root using simple manipulations.
   const double sqd = ::sqrt(dd);
-  
+
   *this = e_float(sqd, static_cast<INT64>(ne / static_cast<INT64>(2)));
-  
+
   // Estimate 1.0 / (2.0 * x0) using simple manipulations.
   e_float vi(0.5 / sqd, static_cast<INT64>(-ne / static_cast<INT64>(2)));
 
@@ -1129,7 +1107,7 @@ efx::e_float& efx::e_float::calculate_sqrt(void)
     // Next iteration of *this
     *this += vi * (-(*this * *this) + x);
   }
-  
+
   prec_elem = ef_elem_number;
 
   return *this;
@@ -1141,8 +1119,13 @@ INT32 efx::e_float::cmp_data(const array_type& vd) const
   //         Return +1 for u > v
   //                 0 for u = v
   //                -1 for u < v
-  return ((data != vd) ? ((data > vd) ? static_cast<INT32>(1) : static_cast<INT32>(-1))
-                       : static_cast<INT32>(0));
+
+  array_type::size_type i = static_cast<array_type::size_type>(0u);
+
+  while((i < data.size()) && (data[i] == vd[i])) { ++i; }
+
+  return ((i == data.size()) ? static_cast<INT32>(0)
+                             : ((data[i] > vd[i]) ? static_cast<INT32>(1) : static_cast<INT32>(-1)));
 }
 
 INT32 efx::e_float::cmp(const e_float& v) const
@@ -1156,12 +1139,12 @@ INT32 efx::e_float::cmp(const e_float& v) const
   {
     // The value of *this is zero and v is either zero or non-zero.
     return (v.iszero() ? static_cast<INT32>(0)
-                       : (v.isneg() ? static_cast<INT32>(1) : static_cast<INT32>(-1)));
+                       : (v.neg ? static_cast<INT32>(1) : static_cast<INT32>(-1)));
   }
   else if(v.iszero())
   {
     // The value of v is zero and *this is non-zero.
-    return (isneg() ? static_cast<INT32>(-1) : static_cast<INT32>(1));
+    return (neg ? static_cast<INT32>(-1) : static_cast<INT32>(1));
   }
   else
   {
@@ -1185,34 +1168,16 @@ INT32 efx::e_float::cmp(const e_float& v) const
       // Compare the data.
       const INT32 val_cmp_data = cmp_data(v.data);
 
-      return (neg ? static_cast<INT32>(-val_cmp_data) : val_cmp_data);
+      return ((!neg) ? val_cmp_data : static_cast<INT32>(-val_cmp_data));
     }
   }
 }
 
 bool efx::e_float::iszero(void) const
 {
-  return (   isfinite()
-          && (   (data[0u] == static_cast<UINT32>(0u))
-              || (exp < std::numeric_limits<e_float>::min_exponent10)));
-}
-
-bool efx::e_float::isone(void) const
-{
-  // Check if the value of *this is identically 1 or very close to 1.
-
-  if(   (!neg)
-     && isfinite()
-     && (data[0u] == static_cast<UINT64>(1u))
-     && (exp == static_cast<INT64>(0))
-    )
+  if(fpclass == ef_finite)
   {
-    const array_type::const_iterator pos_first_nonzero_elem =
-      std::find_if(data.begin(),
-                   data.end(),
-                   data_elem_is_nonzero_predicate);
-
-    return (pos_first_nonzero_elem == data.end());
+    return ((data[0u] == static_cast<UINT32>(0u)) || (exp < std::numeric_limits<e_float>::min_exponent10));
   }
   else
   {
@@ -1220,40 +1185,49 @@ bool efx::e_float::isone(void) const
   }
 }
 
+bool efx::e_float::isone(void) const
+{
+  // Check if the value of *this is identically 1 or very close to 1.
+
+  const bool not_negative_and_is_finite = ((!neg) && isfinite());
+
+  if(not_negative_and_is_finite)
+  {
+    if((data[0u] == static_cast<UINT32>(1u)) && (exp == static_cast<INT64>(0)))
+    {
+      const array_type::const_iterator it_non_zero = std::find_if(data.begin(), data.end(), data_elem_is_non_zero_predicate);
+      return (it_non_zero == data.end());
+    }
+    else if((data[0u] == static_cast<UINT32>(ef_elem_mask - 1)) && (exp == static_cast<INT64>(-ef_elem_digits10)))
+    {
+      const array_type::const_iterator it_non_nine = std::find_if(data.begin(), data.end(), data_elem_is_non_nine_predicate);
+      return (it_non_nine == data.end());
+    }
+  }
+
+  return false;
+}
+
 bool efx::e_float::isint(void) const
 {
-  // Check if the value of *this is pure integer.
-  if(!isfinite())
-  {
-    return false;
-  }
+  if(fpclass != ef_finite) { return false; }
 
-  if(iszero())
-  {
-    return true;
-  }
+  if(iszero()) { return true; }
 
-  if(exp < static_cast<INT64>(0))
-  {
-    // The absolute value of the number is smaller than 1.
-    // It can not be an integer.
-    return false;
-  }
+  if(exp < static_cast<INT64>(0)) { return false; } // |*this| < 1.
 
   const array_type::size_type offset_decimal_part = static_cast<array_type::size_type>(exp / ef_elem_digits10) + 1u;
 
-  if(offset_decimal_part >= data.size())
+  if(offset_decimal_part >= static_cast<array_type::size_type>(ef_elem_number))
   {
     // The number is too large to resolve the integer part.
     // It considered to be a pure integer.
     return true;
   }
 
-  array_type::const_iterator pos_first_nonzero_elem = std::find_if(data.begin() + offset_decimal_part,
-                                                                   data.end(),
-                                                                   data_elem_is_nonzero_predicate);
+  array_type::const_iterator it_first_non_zero = std::find_if(data.begin() + offset_decimal_part, data.end(), data_elem_is_non_zero_predicate);
 
-  return (pos_first_nonzero_elem == data.end());
+  return (it_first_non_zero == data.end());
 }
 
 efx::e_float& efx::e_float::operator++(void) { return *this += ef::one(); }
@@ -1284,16 +1258,13 @@ void efx::e_float::extract_parts(double& mantissa, INT64& exponent) const
 
   static const double d_mask = static_cast<double>(ef_elem_mask);
 
-  mantissa =    static_cast<double>(data[0])
-             + (static_cast<double>(data[1]) /  d_mask
-             +  static_cast<double>(data[2]) / (d_mask * d_mask));
+  mantissa =     static_cast<double>(data[0])
+             +  (static_cast<double>(data[1]) /  d_mask)
+             + ((static_cast<double>(data[2]) / d_mask) / d_mask);
 
   mantissa /= static_cast<double>(p10);
 
-  if(neg)
-  {
-    mantissa = -mantissa;
-  }
+  if(neg) { mantissa = -mantissa; }
 }
 
 double efx::e_float::extract_double(void) const
@@ -1494,9 +1465,7 @@ efx::e_float efx::e_float::extract_integer_part(void) const
   const size_t first_clear = (static_cast<size_t>(x.exp) / static_cast<size_t>(ef_elem_digits10)) + 1u;
   const size_t last_clear  =  static_cast<size_t>(ef_elem_number);
 
-  std::fill(x.data.begin() + first_clear,
-            x.data.begin() + last_clear,
-            static_cast<UINT32>(0u));
+  std::fill(x.data.begin() + first_clear, x.data.begin() + last_clear, static_cast<UINT32>(0u));
 
   return x;
 }
@@ -1540,14 +1509,12 @@ efx::e_float efx::e_float::extract_decimal_part(void) const
   const size_t first_clear = static_cast<size_t>(ef_elem_number - first_copy);
   const size_t last_clear  = static_cast<size_t>(ef_elem_number);
 
-  std::fill(x.data.begin() + first_clear,
-            x.data.begin() + last_clear,
-            static_cast<UINT32>(0u));
+  std::fill(x.data.begin() + first_clear, x.data.begin() + last_clear, static_cast<UINT32>(0u));
 
   // Is it necessary to justify the data?
   const array_type::const_iterator first_nonzero_elem = std::find_if(x.data.begin(),
                                                                      x.data.end(),
-                                                                     data_elem_is_nonzero_predicate);
+                                                                     data_elem_is_non_zero_predicate);
 
   std::size_t sj = static_cast<std::size_t>(0u);
 
@@ -1583,55 +1550,31 @@ efx::e_float efx::e_float::extract_decimal_part(void) const
 const efx::e_float& efx::e_float::my_value_nan(void) const
 {
   static e_float val = ef::zero();
-
   val.fpclass = ef_NaN;
-
   static const e_float qnan(val);
-
   return qnan;
 }
 
 const efx::e_float& efx::e_float::my_value_inf(void) const
 {
   static e_float val = ef::zero();
-
   val.fpclass = ef_inf;
-
   static const e_float inf(val);
-
   return inf;
 }
 
 const efx::e_float& efx::e_float::my_value_max(void) const
 {
   static const INT64 exp10_max = std::numeric_limits<e_float>::max_exponent10;
-
   static const e_float val("1E" + Util::lexical_cast(exp10_max));
-
   return val;
 }
 
 const efx::e_float& efx::e_float::my_value_min(void) const
 {
   static const INT64 exp10_min = std::numeric_limits<e_float>::min_exponent10;
-
   static const e_float val("1E" + Util::lexical_cast(exp10_min));
-
   return val;
-}
-
-INT64 efx::e_float::get_order_exact(void) const
-{
-  if(iszero())
-  {
-    return static_cast<INT64>(0);
-  }
-  else
-  {
-    const std::string str = Util::lexical_cast(data[0]);
-    const INT64 str_len_minus_one = static_cast<INT64>(static_cast<INT64>(str.length()) - static_cast<INT64>(1));
-    return static_cast<INT64>(exp + str_len_minus_one);
-  }
 }
 
 INT64 efx::e_float::get_order_fast(void) const
@@ -1642,8 +1585,8 @@ INT64 efx::e_float::get_order_fast(void) const
   }
   else
   {
-    const double dx = ::log10(static_cast<double>(data[0])) + 0.5;
-    return static_cast<INT64>(exp + static_cast<INT64>(dx));
+    const double dx = ::log10(static_cast<double>(data[0])) + (std::numeric_limits<double>::epsilon() * 0.9);
+    return static_cast<INT64>(exp + static_cast<INT64>(static_cast<INT32>(dx)));
   }
 }
 
@@ -1699,13 +1642,13 @@ void efx::e_float::get_output_string(std::string& str, INT64& my_exp, const std:
         }
         else
         {
-          // Round up this digit
+          // Round up this digit.
           ++str.at(ix);
         }
       }
       else
       {
-        // Round up last digit.
+        // Round up the last digit.
         ++str[ix];
       }
     }
@@ -1716,7 +1659,7 @@ bool efx::e_float::rd_string(const char* const s)
 {
   std::string str(s);
 
-  // Get possible exponent and remove it
+  // Get a possible exponent and remove it.
   exp = static_cast<INT64>(0);
 
   std::size_t pos;
@@ -1725,12 +1668,12 @@ bool efx::e_float::rd_string(const char* const s)
      || ((pos = str.find('E')) != std::string::npos)
     )
   {
-    exp = Util::numeric_cast<INT64>(std::string(str.c_str() + (pos + 1u)));
-
+    // Remove the exponent part from the string.
+    exp = Util::numeric_cast<INT64>(static_cast<const char* const>(str.c_str() + (pos + 1u)));
     str = str.substr(static_cast<std::size_t>(0u), pos);
   }
 
-  // Get possible +/- sign and remove it
+  // Get a possible +/- sign and remove it.
   neg = false;
 
   if((pos = str.find(static_cast<char>('-'))) != std::string::npos)
@@ -1744,14 +1687,15 @@ bool efx::e_float::rd_string(const char* const s)
     str.erase(pos, static_cast<std::size_t>(1u));
   }
 
-  // Remove leading zeros for all input types
+  // Remove leading zeros for all input types.
   const std::string::iterator fwd_it_leading_zero = std::find_if(str.begin(), str.end(), char_is_nonzero_predicate);
 
   if(fwd_it_leading_zero != str.begin())
   {
     if(fwd_it_leading_zero == str.end())
     {
-      // The string contains nothing but leading zeros. The string is zero.
+      // The string contains nothing but leading zeros.
+      // This string represents zero.
       operator=(ef::zero());
       return true;
     }
@@ -1761,53 +1705,50 @@ bool efx::e_float::rd_string(const char* const s)
     }
   }
 
-  // Put the input string into the standard e_float input
-  // form aaa.bbbbE+/-n, where aa has 1...unit digits, bbbb
-  // has an even multiple of unit digits which are possibly
-  // zero padded on the right-end, and n is a signed 32-bit integer
-  // which is an even multiple of unit.
+  // Put the input string into the standard e_float input form
+  // aaa.bbbbE+/-n, where aa has 1...ef_elem_digits10, bbbb has an
+  // even multiple of ef_elem_digits10 which are possibly zero padded
+  // on the right-end, and n is a signed 32-bit integer which is an
+  // even multiple of ef_elem_digits10.
 
-  // Find possible decimal point
+  // Find a possible decimal point.
   pos = str.find(static_cast<char>('.'));
 
   if(pos != std::string::npos)
   {
     // Remove all trailing insignificant zeros.
-    const std::string::const_reverse_iterator rev_it_non_zero_elem =
-          std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
+    const std::string::const_reverse_iterator rit_non_zero = std::find_if(str.rbegin(), str.rend(), char_is_nonzero_predicate);
 
-    if(rev_it_non_zero_elem != str.rbegin())
+    if(rit_non_zero != str.rbegin())
     {
-      const std::string::size_type ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rev_it_non_zero_elem);
+      const std::string::size_type ofs = str.length() - std::distance<std::string::const_reverse_iterator>(str.rbegin(), rit_non_zero);
       str.erase(str.begin() + ofs, str.end());
     }
 
-    // Check if input is identically zero
+    // Check if the input is identically zero.
     if(str == std::string("."))
     {
       operator=(ef::zero());
       return true;
     }
-  
+
     // Remove leading significant zeros just after the decimal point
     // and adjust the exponent accordingly.
     // Note that the while-loop operates only on strings of the form ".000abcd..."
     // and peels away the zeros just after the decimal point.
     if(str.at(static_cast<std::size_t>(0u)) == static_cast<char>('.'))
     {
-      const std::string::iterator fwd_it_first_non_zero_decimal =
-            std::find_if(str.begin() + 1u, str.end(), char_is_nonzero_predicate);
+      const std::string::iterator it_non_zero = std::find_if(str.begin() + 1u, str.end(), char_is_nonzero_predicate);
 
-      std::string::size_type delta_exp = static_cast<std::size_t>(0u);
+      std::size_t delta_exp = static_cast<std::size_t>(0u);
 
       if(str.at(static_cast<std::size_t>(1u)) == static_cast<char>('0'))
       {
-        delta_exp = std::distance<std::string::const_iterator>(str.begin() + 1u,
-                                                               fwd_it_first_non_zero_decimal);
+        delta_exp = std::distance<std::string::const_iterator>(str.begin() + 1u, it_non_zero);
       }
 
-      // Bring one single digit into the mantissa and adjust exponent accordingly
-      str.erase(str.begin(), fwd_it_first_non_zero_decimal);
+      // Bring one single digit into the mantissa and adjust exponent accordingly.
+      str.erase(str.begin(), it_non_zero);
       str.insert(static_cast<std::size_t>(1u), ".");
       exp -= static_cast<INT64>(delta_exp + 1u);
     }
@@ -1818,8 +1759,7 @@ bool efx::e_float::rd_string(const char* const s)
     str.append(".");
   }
 
-  // Shift the decimal point such that the exponent is an even
-  // multiple of std::numeric_limits<e_float>::elem_digits10
+  // Shift the decimal point such that the exponent is an even multiple of ef_elem_digits10.
         std::size_t n_shift   = static_cast<std::size_t>(0u);
   const std::size_t n_exp_rem = static_cast<std::size_t>(exp % static_cast<INT64>(ef_elem_digits10));
 
@@ -1852,7 +1792,7 @@ bool efx::e_float::rd_string(const char* const s)
     exp -= static_cast<INT64>(n_shift);
   }
 
-  // Cut the size of the mantissa to <= ef_elem_digits10
+  // Cut the size of the mantissa to <= ef_elem_digits10.
   pos          = str.find(static_cast<char>('.'));
   pos_plus_one = static_cast<std::size_t>(pos + 1u);
 
@@ -1869,8 +1809,8 @@ bool efx::e_float::rd_string(const char* const s)
     exp += static_cast<INT64>(static_cast<INT64>(n) * static_cast<INT64>(ef_elem_digits10));
   }
 
-  // Pad the decimal part such that its value
-  // is an even multiple of ef_elem_digits10
+  // Pad the decimal part such that its value is an even
+  // multiple of ef_elem_digits10.
   pos          = str.find(static_cast<char>('.'));
   pos_plus_one = static_cast<std::size_t>(pos + 1u);
 
@@ -1884,7 +1824,7 @@ bool efx::e_float::rd_string(const char* const s)
     str.append(static_cast<std::size_t>(n_cnt), static_cast<char>('0'));
   }
 
-  // Truncate decimal part if it is too long
+  // Truncate decimal part if it is too long.
   const std::size_t max_dec = static_cast<std::size_t>((ef_elem_number - 1) * ef_elem_digits10);
 
   if(static_cast<std::size_t>(str.length() - pos) > max_dec)
@@ -1893,9 +1833,10 @@ bool efx::e_float::rd_string(const char* const s)
                      static_cast<std::size_t>(pos_plus_one + max_dec));
   }
 
-  // Now the input string has the standard e_float input form (see comment above).
+  // Now the input string has the standard e_float input form.
+  // (See the comment above.)
 
-  // Set the data to 0.
+  // Set all the data elements to 0.
   std::fill(data.begin(), data.end(), static_cast<UINT32>(0u));
 
   // Extract the data.

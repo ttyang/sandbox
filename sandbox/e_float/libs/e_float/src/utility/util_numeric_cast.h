@@ -24,6 +24,15 @@
       ss >> t;
       return t;
     }
+
+    template<typename T> inline T numeric_cast(const char* const s)
+    {
+      std::stringstream ss;
+      ss << s;
+      T t;
+      ss >> t;
+      return t;
+    }
   }
 
 #endif // _UTIL_NUMERIC_CAST_2009_11_24_H_

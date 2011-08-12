@@ -66,7 +66,7 @@
       static const INT64 ef_min_exp10 = static_cast<INT64>(-646456990LL);
 
     private:
-      static const INT32 ef_digits2 = static_cast<INT32>(((static_cast<INT64>(ef_digits10_tol) * 3322LL) + 500LL) / 1000LL);
+      static const INT32 ef_digits2 = static_cast<INT32>(((static_cast<INT64>(ef_max_digits10) * 3322LL) + 500LL) / 1000LL);
 
       typedef enum enum_fpclass
       {
