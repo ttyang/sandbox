@@ -25,13 +25,13 @@
     class e_float : public ::e_float_base
     {
     public:
-      static const INT32 ef_radix         = static_cast<INT32>(10);
-      static const INT32 ef_digits        = ef_digits10;
+      static const INT32 ef_radix  = static_cast<INT32>(10);
+      static const INT32 ef_digits = ef_digits10;
 
-      static const INT64 ef_max_exp       = static_cast<INT64>(+9223372036854775795LL);
-      static const INT64 ef_min_exp       = static_cast<INT64>(-9223372036854775795LL);
-      static const INT64 ef_max_exp10     = static_cast<INT64>(+3063937869882635616LL); // Approx. [ef_max_exp / log10(2)], also an even multiple of 8
-      static const INT64 ef_min_exp10     = static_cast<INT64>(-3063937869882635616LL);
+      static const INT64 ef_max_exp   = static_cast<INT64>(+9223372036854775795LL);
+      static const INT64 ef_min_exp   = static_cast<INT64>(-9223372036854775795LL);
+      static const INT64 ef_max_exp10 = static_cast<INT64>(+3063937869882635616LL); // Approx. [ef_max_exp / log10(2)], also an even multiple of 8
+      static const INT64 ef_min_exp10 = static_cast<INT64>(-3063937869882635616LL);
 
       static const INT32 ef_elem_digits10 = static_cast<INT32>(8);
 
@@ -100,8 +100,6 @@
       // Specific special values.
       virtual const e_float& my_value_nan(void) const;
       virtual const e_float& my_value_inf(void) const;
-      virtual const e_float& my_value_max(void) const;
-      virtual const e_float& my_value_min(void) const;
 
       virtual void precision(const INT32 prec_digits);
 

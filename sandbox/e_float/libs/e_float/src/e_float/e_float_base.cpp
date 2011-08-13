@@ -45,6 +45,20 @@ std::istream& operator>>(std::istream& is, e_float_base& f)
   return is;
 }
 
+const e_float& e_float_base::my_value_max(void) const
+{
+  static const std::string str_max =   std::string("9." + std::string(static_cast<std::size_t>(ef_max_digits10), static_cast<char>('9')))
+                                     + std::string("e+" + Util::lexical_cast(std::numeric_limits<e_float>::max_exponent10));
+  static const e_float val_max(str_max);
+  return val_max;
+}
+
+const e_float& e_float_base::my_value_min(void) const
+{
+  static const e_float val_min("1.0e" + Util::lexical_cast(std::numeric_limits<e_float>::min_exponent10));
+  return val_min;
+}
+
 e_float& e_float_base::add_signed_long_long(const signed long long n)
 {
   if(n < static_cast<signed long long>(0))
@@ -72,7 +86,9 @@ e_float& e_float_base::mul_signed_long_long(const signed long long n)
 
   mul_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
 
-  if(b_neg) { negate(); } return static_cast<e_float&>(*this);
+  if(b_neg) { negate(); }
+
+  return static_cast<e_float&>(*this);
 }
 
 e_float& e_float_base::div_signed_long_long(const signed long long n)
@@ -81,7 +97,9 @@ e_float& e_float_base::div_signed_long_long(const signed long long n)
 
   div_unsigned_long_long((!b_neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
 
-  if(b_neg) { negate(); } return static_cast<e_float&>(*this);
+  if(b_neg) { negate(); }
+
+  return static_cast<e_float&>(*this);
 }
 
 void e_float_base::wr_string(std::string& str, std::ostream& os) const
@@ -90,11 +108,30 @@ void e_float_base::wr_string(std::string& str, std::ostream& os) const
   const std::ios::fmtflags my_flags = os.flags();
 
   // Obtain the showpos flag.
-  const bool my_showpos = ((my_flags & std::ios::showpos) != static_cast<std::ios::fmtflags>(0u));
+  const bool my_showpos   = ((my_flags & std::ios::showpos)   != static_cast<std::ios::fmtflags>(0u));
+  const bool my_uppercase = ((my_flags & std::ios::uppercase) != static_cast<std::ios::fmtflags>(0u));
 
   // Handle INF and NaN.
-  if(isnan()) { str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF")); return; }
-  if(isinf()) { str = "INF"; return; }
+  if(!isfinite())
+  {
+    if(isinf())
+    {
+      if(my_uppercase)
+      {
+        str = ((!isneg()) ? (my_showpos ? std::string("+INF") : std::string("INF")) : std::string("-INF"));
+      }
+      else
+      {
+        str = ((!isneg()) ? (my_showpos ? std::string("+inf") : std::string("inf")) : std::string("-inf"));
+      }
+    }
+    else
+    {
+      str = (my_uppercase ? std::string("NAN") : std::string("nan"));
+    }
+
+    return;
+  }
 
   // Get the base-10 exponent.
   INT64 my_exp = get_order_exact();
@@ -175,7 +212,6 @@ void e_float_base::wr_string(std::string& str, std::ostream& os) const
   get_output_string(str, my_exp, the_number_of_digits_i_want_from_e_float);
 
   // Obtain additional format information.
-  const bool my_uppercase  = ((my_flags & std::ios::uppercase)  != static_cast<std::ios::fmtflags>(0u));
   const bool my_showpoint  = ((my_flags & std::ios::showpoint)  != static_cast<std::ios::fmtflags>(0u));
 
   // Write the output string in the desired format.

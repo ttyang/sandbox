@@ -1528,20 +1528,6 @@ const efx::e_float& efx::e_float::my_value_inf(void) const
   return inf;
 }
 
-const efx::e_float& efx::e_float::my_value_max(void) const
-{
-  static const INT64 exp10_max = std::numeric_limits<e_float>::max_exponent10;
-  static const e_float val("1E" + Util::lexical_cast(exp10_max));
-  return val;
-}
-
-const efx::e_float& efx::e_float::my_value_min(void) const
-{
-  static const INT64 exp10_min = std::numeric_limits<e_float>::min_exponent10;
-  static const e_float val("1E" + Util::lexical_cast(exp10_min));
-  return val;
-}
-
 INT64 efx::e_float::get_order_fast(void) const
 {
   if(iszero())

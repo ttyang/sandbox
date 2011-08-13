@@ -59,8 +59,8 @@
     // Specific special values.
     virtual const e_float& my_value_nan(void) const = 0;
     virtual const e_float& my_value_inf(void) const = 0;
-    virtual const e_float& my_value_max(void) const = 0;
-    virtual const e_float& my_value_min(void) const = 0;
+    const e_float& my_value_max(void) const;
+    const e_float& my_value_min(void) const;
 
     virtual void precision(const INT32) = 0;
 

@@ -13,6 +13,7 @@
 
   #include <cmath>
   #include <string>
+  #include <climits>
 
   #if defined(__GNUC__)
     #include <tr1/array>
@@ -65,16 +66,16 @@
     class e_float : public ::e_float_base
     {
     public:
-      static const INT32 ef_digits    = static_cast<INT32>(((static_cast<INT64>(ef_digits10) * 3322LL) + 500LL) / 1000LL);
+      static const INT32 ef_digits    = static_cast<INT32>((static_cast<signed long long>(ef_digits10) * 2136LL) / 643LL);
       static const INT32 ef_radix     = 2;
 
-      static const INT64 ef_max_exp   = static_cast<INT64>(+1073741822LL);
-      static const INT64 ef_min_exp   = static_cast<INT64>(-1073741822LL);
-      static const INT64 ef_max_exp10 = static_cast<INT64>(+323228496LL);
-      static const INT64 ef_min_exp10 = static_cast<INT64>(-323228496LL);
+      static const INT64 ef_max_exp   = static_cast<INT64>(LONG_MAX / static_cast<signed long>(2L)); // TBD: Ensure INT64 >= long
+      static const INT64 ef_min_exp   = static_cast<INT64>(LONG_MIN / static_cast<signed long>(2L)); // TBD: Ensure INT64 >= long
+      static const INT64 ef_max_exp10 = static_cast<INT64>((static_cast<signed long long>(ef_max_exp) * 643LL) / 2136LL);
+      static const INT64 ef_min_exp10 = static_cast<INT64>((static_cast<signed long long>(ef_min_exp) * 643LL) / 2136LL);
 
     private:
-      static const INT32 ef_digits2 = static_cast<INT32>(((static_cast<INT64>(ef_max_digits10) * 3322LL) + 500LL) / 1000LL);
+      static const INT32 ef_digits2 = static_cast<INT32>((static_cast<signed long long>(ef_max_digits10) * 2136LL) / 643LL);
       ::mpfr_t rop;
 
     public:
@@ -108,8 +109,6 @@
       // Specific special values.
       virtual const e_float& my_value_nan(void) const;
       virtual const e_float& my_value_inf(void) const;
-      virtual const e_float& my_value_max(void) const;
-      virtual const e_float& my_value_min(void) const;
 
       virtual void precision(const INT32) { }
 
