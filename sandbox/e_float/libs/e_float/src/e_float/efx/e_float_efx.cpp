@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
+#include <utility>
 
 #include <e_float/e_float.hpp>
 #include <e_float/e_float_constants.hpp>
@@ -1080,17 +1081,23 @@ efx::e_float& efx::e_float::calculate_sqrt(void)
 
 INT32 efx::e_float::cmp_data(const array_type& vd) const
 {
-  // Compare the data of *this (u) with those of v.
-  //         Return +1 for u > v
-  //                 0 for u = v
-  //                -1 for u < v
+  // Compare the data of *this with those of v.
+  //         Return +1 for *this > v
+  //                 0 for *this = v
+  //                -1 for *this < v
 
-  array_type::size_type i = static_cast<array_type::size_type>(0u);
+  const std::pair<array_type::const_iterator, array_type::const_iterator> mismatch_pair = std::mismatch(data.begin(), data.end(), vd.begin());
 
-  while((i < data.size()) && (data[i] == vd[i])) { ++i; }
+  const bool is_equal = ((mismatch_pair.first == data.end()) && (mismatch_pair.second == vd.end()));
 
-  return ((i == data.size()) ? static_cast<INT32>(0)
-                             : ((data[i] > vd[i]) ? static_cast<INT32>(1) : static_cast<INT32>(-1)));
+  if(is_equal)
+  {
+    return static_cast<INT32>(0);
+  }
+  else
+  {
+    return ((*mismatch_pair.first > *mismatch_pair.second) ? static_cast<INT32>(1) : static_cast<INT32>(-1));
+  }
 }
 
 INT32 efx::e_float::cmp(const e_float& v) const
