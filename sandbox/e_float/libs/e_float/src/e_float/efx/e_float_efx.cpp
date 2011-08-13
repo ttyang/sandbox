@@ -514,28 +514,15 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
     // at a time, each element with carry.
     if(ofs >= static_cast<INT32>(0))
     {
-      std::copy(v.data.begin(),
-                v.data.end()   - static_cast<size_t>(ofs),
-                n_data.begin() + static_cast<size_t>(ofs));
-
-      std::fill(n_data.begin(),
-                n_data.begin() + static_cast<size_t>(ofs),
-                static_cast<UINT32>(0u));
-
+      std::copy(v.data.begin(), v.data.end() - static_cast<size_t>(ofs), n_data.begin() + static_cast<size_t>(ofs));
+      std::fill(n_data.begin(), n_data.begin() + static_cast<size_t>(ofs), static_cast<UINT32>(0u));
       p_v = n_data.begin();
     }
     else
     {
-      std::copy(data.begin(),
-                data.end()     - static_cast<size_t>(-ofs),
-                n_data.begin() + static_cast<size_t>(-ofs));
-
-      std::fill(n_data.begin(),
-                n_data.begin() + static_cast<size_t>(-ofs),
-                static_cast<UINT32>(0u));
-
+      std::copy(data.begin(), data.end() - static_cast<size_t>(-ofs), n_data.begin() + static_cast<size_t>(-ofs));
+      std::fill(n_data.begin(), n_data.begin() + static_cast<size_t>(-ofs), static_cast<UINT32>(0u));
       p_u = n_data.begin();
-
       b_copy = true;
     }
 
@@ -558,12 +545,9 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
     // There needs to be a carry into the element -1 of the array data
     if(carry != static_cast<UINT32>(0u))
     {
-      std::copy_backward(data.begin(),
-                         data.end() - static_cast<std::size_t>(1u),
-                         data.end());
-
+      std::copy_backward(data.begin(), data.end() - static_cast<std::size_t>(1u), data.end());
       data[0] = carry;
-      exp    += static_cast<INT64>(ef_elem_digits10);
+      exp += static_cast<INT64>(ef_elem_digits10);
     }
   }
   else
@@ -579,14 +563,8 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
       // Copy the data of v, shifted down to a lower value
       // into the data array m_n. Set the operand pointer p_v
       // to point to the copied, shifted data m_n.
-      std::copy(v.data.begin(),
-                v.data.end()   - static_cast<size_t>(ofs),
-                n_data.begin() + static_cast<size_t>(ofs));
-
-      std::fill(n_data.begin(),
-                n_data.begin() + static_cast<size_t>(ofs),
-                static_cast<UINT32>(0u));
-
+      std::copy(v.data.begin(), v.data.end() - static_cast<size_t>(ofs), n_data.begin() + static_cast<size_t>(ofs));
+      std::fill(n_data.begin(), n_data.begin() + static_cast<size_t>(ofs), static_cast<UINT32>(0u));
       p_v = n_data.begin();
     }
     else
@@ -595,13 +573,8 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
       {
         // In this case, |u| < |v| and ofs is negative.
         // Shift the data of u down to a lower value.
-        std::copy_backward(data.begin(),
-                           data.end() - static_cast<size_t>(-ofs),
-                           data.end());
-
-        std::fill(data.begin(),
-                  data.begin() + static_cast<size_t>(-ofs),
-                  static_cast<UINT32>(0u));
+        std::copy_backward(data.begin(), data.end() - static_cast<size_t>(-ofs), data.end());
+        std::fill(data.begin(), data.begin() + static_cast<size_t>(-ofs), static_cast<UINT32>(0u));
       }
 
       // Copy the data of v into the data array n_data.
@@ -757,11 +730,9 @@ efx::e_float& efx::e_float::operator*=(const e_float& v)
   // Set the exponent of the result.
   exp += v.exp;
 
-  const std::size_t prec_mul = (std::min)(prec_elem, v.prec_elem);
+  std::tr1::array<UINT32, static_cast<std::size_t>(ef_elem_number + static_cast<INT32>(1))> w = {{ 0u }};
 
-  std::tr1::array<UINT32, static_cast<std::size_t>(ef_elem_number + 1)> w = {{ 0u }};
-
-  mul_loop_uv(data.data(), v.data.data(), w.data(), static_cast<INT32>(prec_mul));
+  mul_loop_uv(data.data(), v.data.data(), w.data(), (std::min)(prec_elem, v.prec_elem));
 
   // Copy the multiplication data into the result.
   // Shift the result and adjust the exponent if necessary.
@@ -849,13 +820,8 @@ efx::e_float& efx::e_float::mul_unsigned_long_long(const unsigned long long n)
   }
 
   // Set up the multiplication loop.
-  const INT32 jmax = static_cast<INT32>(data.rend() - std::find_if(data.rbegin(), data.rend(), data_elem_is_non_zero_predicate));
-  const INT32 jm1  = static_cast<INT32>(jmax + static_cast<INT32>(1));
-  const INT32 prec = static_cast<INT32>(prec_elem);
-  const INT32 jm   = (std::min)(jm1, prec);
-
   const UINT32 nn = static_cast<UINT32>(n);
-  const UINT32 carry = mul_loop_n(data.data(), nn, jm);
+  const UINT32 carry = mul_loop_n(data.data(), nn, prec_elem);
 
   // Handle the carry and adjust the exponent.
   if(carry != static_cast<UINT32>(0u))
@@ -864,8 +830,8 @@ efx::e_float& efx::e_float::mul_unsigned_long_long(const unsigned long long n)
 
     // Shift result of the multiplication one element to the right.
     std::copy_backward(data.begin(),
-                       data.begin() + static_cast<std::size_t>(jm - 1),
-                       data.begin() + static_cast<std::size_t>(jm));
+                       data.begin() + static_cast<std::size_t>(prec_elem - static_cast<INT32>(1)),
+                       data.begin() + static_cast<std::size_t>(prec_elem));
 
     data.front() = static_cast<UINT32>(carry);
   }
@@ -936,14 +902,13 @@ efx::e_float& efx::e_float::div_unsigned_long_long(const unsigned long long n)
     neg = b_neg;
     return operator/=(e_float(n));
   }
-  
-  if(n > static_cast<unsigned long long>(1u))
-  {
-    // Division loop.
-    const INT32 jm  = static_cast<INT32>(prec_elem);
 
-    const UINT32 nn = static_cast<UINT32>(n);
-    const UINT32 prev = div_loop_n(data.data(), nn, jm);
+  const UINT32 nn = static_cast<UINT32>(n);
+
+  if(nn > static_cast<UINT32>(1u))
+  {
+    // Do the division loop.
+    const UINT32 prev = div_loop_n(data.data(), nn, prec_elem);
 
     // Determine if one leading zero is in the result data.
     if(data[0] == static_cast<UINT32>(0u))
@@ -953,10 +918,10 @@ efx::e_float& efx::e_float::div_unsigned_long_long(const unsigned long long n)
 
       // Shift result of the division one element to the left.
       std::copy(data.begin() + static_cast<std::size_t>(1u),
-                data.begin() + static_cast<std::size_t>(jm),
+                data.begin() + static_cast<std::size_t>(prec_elem - static_cast<INT32>(1)),
                 data.begin());
 
-      data[static_cast<std::size_t>(jm - 1)] = static_cast<UINT32>(static_cast<UINT64>(prev * static_cast<UINT64>(ef_elem_mask)) / nn);
+      data[prec_elem - static_cast<INT32>(1)] = static_cast<UINT32>(static_cast<UINT64>(prev * static_cast<UINT64>(ef_elem_mask)) / nn);
     }
   }
 
