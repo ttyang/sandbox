@@ -56,7 +56,7 @@ EXTENSION    = exe
 # ------------------------------------------------------------------------------
 # Tool parameters
 # ------------------------------------------------------------------------------
-CFLAGS_BASE = -std=c++0x -O3 -I../../../boost
+CFLAGS_BASE = -std=c++0x -O3 -I../../../
 CFLAGS_WARN = -Wall -Wextra -pedantic -Weffc++
 LFLAGS_BASE =
 
