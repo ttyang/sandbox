@@ -10,43 +10,32 @@ on Linux or Unix systems, link with .../path/to/libf2c.a -lm
 or, if you install libf2c.a in a standard place, with -lf2c -lm
 -- in that order, at the end of the command line, as in
 cc *.o -lf2c -lm
-Source for libf2c is in /netlib/f2c/libf2c.zip, e.g.,
-
-http://www.netlib.org/f2c/libf2c.zip
+Source for libf2c is available at, e.g.,
+http://netlib.sandia.gov/f2c/index.html
 */
-
-/* http://netlib.sandia.gov/f2c/index.html */
 
 #define TEST_EF_NATIVE
 
-#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#ifdef TEST_BIG_NUMBER
-#include <boost/math/big_number/gmp.hpp>
-typedef boost::math::mpf_real_100 real_type;
-#elif defined(TEST_GMPXX)
-#include <gmpxx.h>
-typedef mpf_class real_type;
+
+#if defined(TEST_GMPXX)
+  #include <gmpxx.h>
+  typedef mpf_class real_type;
 #elif defined(TEST_EF_NATIVE)
-#include <e_float/e_float.hpp>
-typedef e_float real_type;
+  #include <e_float/e_float.hpp>
+  typedef e_float real_type;
 #define CAST_TO_RT(x) real_type(x)
-#elif defined(TEST_MATH_EF)
-#define E_FLOAT_TYPE_GMP
-#include <boost/math/bindings/e_float.hpp>
-typedef boost::math::ef::e_float real_type;
-//#define CAST_TO_RT(x) real_type(x)
 #else
-typedef double real_type;
+  typedef double real_type;
 #endif
 
 #ifndef CAST_TO_RT
 #define CAST_TO_RT(x) x
 #endif
 
-#include "f2c.h"
+#include "libf2c/f2c.h"
 
 extern "C" integer s_wsfe(cilist *);
 extern "C" integer e_wsfe(void);
@@ -110,7 +99,7 @@ extern "C" int MAIN__()
    std::cout << "Testing mpfr_class at 100 decimal degits" << std::endl;
    mpf_set_default_prec(((100 + 1) * 1000L) / 301L);
 #elif defined(TEST_EF_NATIVE)
-   std::cout << "Testing xxx::e_float" << std::endl;
+   std::cout << "Testing native e_float" << std::endl;
 #elif defined(TEST_MATH_EF)
    std::cout << "Testing boost::math::ef::e_float" << std::endl;
 #else
@@ -142,7 +131,7 @@ extern "C" int MAIN__()
    /* Builtin functions */
 
    /* Local variables */
-   static real_type a[1001000]	/* was [1001][1000] */, b[1000];
+   static real_type a[1001000]  /* was [1001][1000] */, b[1000];
    static integer i__, n;
    static real_type x[1000];
    static double t1;
@@ -182,7 +171,6 @@ extern "C" int MAIN__()
    d__1 = (real_type) n;
    /* Computing 2nd power */
    d__2 = (real_type) n;
-//   ops = boost::lexical_cast<double>(real_type(d__1 * (d__1 * d__1) * 2. / 3. + d__2 * d__2 * 2.));
    ops = static_cast<double>(real_type(d__1 * (d__1 * d__1) * 2. / 3. + d__2 * d__2 * 2.));
 
    matgen_(a, &lda, &n, b, &norma);
@@ -917,8 +905,10 @@ L30:
    return ret_val;
 } /* idamax_ */
 
-real_type epslon_(real_type *x)
+real_type epslon_(real_type* x)
 {
+  static_cast<void>(x);
+
 #ifdef TEST_BIG_NUMBER
    return std::ldexp(1.0, 1 - ((100 + 1) * 1000L) / 301L);
 #elif defined(TEST_GMPXX)

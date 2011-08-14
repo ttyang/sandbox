@@ -56,22 +56,22 @@ using std::string;
   BOOST_CHECK_EQUAL(oss.str(), result);\
 }
 
-#define	CHECK_LENGTH(manips, result)\
+#define  CHECK_LENGTH(manips, result)\
 {\
   BOOST_CHECK_EQUAL(oss.str().length(), strlen(result));\
 }\
 
 // Compare results of reading string in,
-#define	CHECK_IN(in, value)\
+#define  CHECK_IN(in, value)\
 {\
   e_float r;\
   std::istringstream iss(in);\
   iss >> r;\
   BOOST_CHECK_CLOSE_FRACTION(r, value, std::numeric_limits<e_float>::epsilon());\
-} // #define	CHECK_IN(in, value, sd, df, types)
+} // #define  CHECK_IN(in, value, sd, df, types)
 
 // CHECK_OUT_IN Output via manips, and read back in, check is same. 'Loopback'.
-#define	CHECK_OUT_IN(manips, result, value)\
+#define  CHECK_OUT_IN(manips, result, value)\
 {\
   std::stringstream ss;\
   ss << manips;\
@@ -79,7 +79,7 @@ using std::string;
   e_float r;\
   ss >> r;\
   BOOST_CHECK_CLOSE_FRACTION(r, value, std::numeric_limits<e_float>::epsilon());\
-}// #define	CHECK_OUT_IN(manips, result)
+}// #define  CHECK_OUT_IN(manips, result)
 
 
 // Must #define E_FLOAT_TYPE_EFX; in project properties.
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(e_float_test_template)
   // differ by more than 1e-49.
 
   // CHECK_OUT_IN Output via manips, and read back in, check is same. 'Loopback'.
-  // #define	CHECK_OUT_IN(manips, result, value)
+  // #define  CHECK_OUT_IN(manips, result, value)
   { // Integer example.
     int i = 255;
     std::string result = "ff";

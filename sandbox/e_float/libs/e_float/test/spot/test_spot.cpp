@@ -16,8 +16,18 @@
 
 #include "test_spot.h"
 
+/*
+extern "C" int MAIN__(void);
+namespace
+{
+  void linpack_benchmark(void) { MAIN__(); }
+}
+*/
+
 void test::spot::test_spot(void)
 {
+//  ::linpack_benchmark();
+
   const std::streamsize original_prec = std::cout.precision(std::numeric_limits<e_float>::digits10);
 
   const e_float x = ef::sqrt(ef::euler_gamma());
