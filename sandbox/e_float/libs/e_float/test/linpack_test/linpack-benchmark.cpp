@@ -14,7 +14,10 @@ Source for libf2c is available at, e.g.,
 http://netlib.sandia.gov/f2c/index.html
 */
 
-#define TEST_EF_NATIVE
+// When using with Visual Studio, add this to the linker input options:
+// ../test/linpack_test/libf2c/vc9/x64/libf2c.lib
+
+#define TEST_EFLOAT_NATIVE
 
 #include <iostream>
 #include <iomanip>
@@ -23,7 +26,7 @@ http://netlib.sandia.gov/f2c/index.html
 #if defined(TEST_GMPXX)
   #include <gmpxx.h>
   typedef mpf_class real_type;
-#elif defined(TEST_EF_NATIVE)
+#elif defined(TEST_EFLOAT_NATIVE)
   #include <e_float/e_float.hpp>
   typedef e_float real_type;
 #define CAST_TO_RT(x) real_type(x)
@@ -58,7 +61,7 @@ extern "C" int s_stop(char *, ftnlen);
 #include <time.h>
 
 
-#if defined(TEST_EF_NATIVE)
+#if defined(TEST_EFLOAT_NATIVE)
 #include <e_float/e_float_functions.hpp>
 using namespace ef;
 #endif
@@ -98,7 +101,7 @@ extern "C" int MAIN__()
 #elif defined(TEST_GMPXX)
    std::cout << "Testing mpfr_class at 100 decimal degits" << std::endl;
    mpf_set_default_prec(((100 + 1) * 1000L) / 301L);
-#elif defined(TEST_EF_NATIVE)
+#elif defined(TEST_EFLOAT_NATIVE)
    std::cout << "Testing native e_float" << std::endl;
 #elif defined(TEST_MATH_EF)
    std::cout << "Testing boost::math::ef::e_float" << std::endl;
