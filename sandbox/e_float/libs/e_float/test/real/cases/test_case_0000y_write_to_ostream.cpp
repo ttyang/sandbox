@@ -12,7 +12,7 @@
 #include <string>
 #include <iomanip>
 
-#include <e_float/e_float_functions.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 #include "../test_case_real.h"
 
 namespace

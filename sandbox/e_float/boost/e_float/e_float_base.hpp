@@ -22,7 +22,7 @@
   #include <string>
   #include <cmath>
 
-  #include <e_float/e_float_types.hpp>
+  #include <boost/e_float/e_float_types.hpp>
 
   // Select the number of decimal digits in e_float
   // by setting the value of E_FLOAT_DIGITS10.

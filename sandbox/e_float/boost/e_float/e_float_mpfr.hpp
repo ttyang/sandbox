@@ -21,7 +21,7 @@
     #include <array>
   #endif
 
-  #include <e_float/e_float_base.hpp>
+  #include <boost/e_float/e_float_base.hpp>
 
   // Declare the types of MPFR.
   extern "C"

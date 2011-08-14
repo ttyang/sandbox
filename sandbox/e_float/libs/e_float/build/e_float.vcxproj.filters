@@ -101,6 +101,9 @@
     <Filter Include="libs\e_float\test\linpack_test\libf2c">
       <UniqueIdentifier>{73700a00-2458-408c-a554-8352b1fcf152}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libs\e_float\test\linpack_test\gmp">
+      <UniqueIdentifier>{8ed1a5cd-3ea1-4fc5-b19d-1ad9517e07d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\e_float\e_float.cpp">
@@ -548,6 +551,12 @@
     </ClInclude>
     <ClInclude Include="..\test\linpack_test\libf2c\f2c.h">
       <Filter>libs\e_float\test\linpack_test\libf2c</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\linpack_test\gmp\gmp.h">
+      <Filter>libs\e_float\test\linpack_test\gmp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\linpack_test\gmp\gmpxx.h">
+      <Filter>libs\e_float\test\linpack_test\gmp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

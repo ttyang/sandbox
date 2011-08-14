@@ -11,7 +11,7 @@
 #ifndef _E_FLOAT_GAMMA_HPP_
   #define _E_FLOAT_GAMMA_HPP_
 
-  #include <e_float/e_float_complex.hpp>
+  #include <boost/e_float/e_float_complex.hpp>
 
   namespace ef
   {

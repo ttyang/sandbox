@@ -18,7 +18,7 @@
   #include <cmath>
   #include <string>
 
-  #include <e_float/e_float_base.hpp>
+  #include <boost/e_float/e_float_base.hpp>
 
   namespace efx
   {

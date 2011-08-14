@@ -13,7 +13,7 @@
 
   #include <complex>
 
-  #include <e_float/e_float_complex.hpp>
+  #include <boost/e_float/e_float_complex.hpp>
 
   namespace efz
   {

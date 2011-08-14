@@ -10,7 +10,7 @@
 
 #include <vector>
 
-#include <e_float/e_float.hpp>
+#include <boost/e_float/e_float.hpp>
 
 #include "util_digit_scale.h"
 #include "util_interpolate.h"

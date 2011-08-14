@@ -18,16 +18,25 @@ http://netlib.sandia.gov/f2c/index.html
 // ../test/linpack_test/libf2c/vc9/x64/libf2c.lib
 
 #define TEST_EFLOAT_NATIVE
+//#define TEST_GMPXX
 
 #include <iostream>
 #include <iomanip>
 #include <cmath>
 
 #if defined(TEST_GMPXX)
-  #include <gmpxx.h>
+  #if defined(_MSC_VER)
+  #pragma warning(disable:4127)
+  #pragma warning(disable:4146)
+  #pragma warning(disable:4503)
+  #pragma warning(disable:4512)
+  #pragma warning(disable:4800)
+  #endif
+  #include "gmp/gmpxx.h"
   typedef mpf_class real_type;
+  std::ostream & operator<<(std::ostream &o, const __mpf_struct*) { return o; } // TBD: Why the linker error? What should be done here?
 #elif defined(TEST_EFLOAT_NATIVE)
-  #include <e_float/e_float.hpp>
+  #include <boost/e_float/e_float.hpp>
   typedef e_float real_type;
 #define CAST_TO_RT(x) real_type(x)
 #else
@@ -62,7 +71,7 @@ extern "C" int s_stop(char *, ftnlen);
 
 
 #if defined(TEST_EFLOAT_NATIVE)
-#include <e_float/e_float_functions.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 using namespace ef;
 #endif
 
@@ -96,19 +105,14 @@ int dmxpy_(integer *, real_type *, integer *, integer *, real_type *, real_type 
 
 extern "C" int MAIN__()
 {
-#ifdef TEST_BIG_NUMBER
-   std::cout << "Testing big_number<mpf_real<100> >" << std::endl;
-#elif defined(TEST_GMPXX)
-   std::cout << "Testing mpfr_class at 100 decimal degits" << std::endl;
-   mpf_set_default_prec(((100 + 1) * 1000L) / 301L);
+#if defined(TEST_GMPXX)
+   std::cout << "Testing mpf_class at 100 decimal digits" << std::endl;
+   mpf_set_default_prec(((115) * 1000L) / 301L);
 #elif defined(TEST_EFLOAT_NATIVE)
-   std::cout << "Testing native e_float" << std::endl;
-#elif defined(TEST_MATH_EF)
-   std::cout << "Testing boost::math::ef::e_float" << std::endl;
+   std::cout << "Testing native e_float at " << std::numeric_limits<e_float>::digits10 << " digits" << std::endl;
 #else
    std::cout << "Testing double" << std::endl;
 #endif
-
 
    /* Format strings */
    static char fmt_1[] = "(\002 Please send the results of this run to:\002"
@@ -174,7 +178,14 @@ extern "C" int MAIN__()
    d__1 = (real_type) n;
    /* Computing 2nd power */
    d__2 = (real_type) n;
+
+   #if defined(TEST_GMPXX)
+   ops = real_type(d__1 * (d__1 * d__1) * 2. / 3. + d__2 * d__2 * 2.).get_d();
+   #elif defined(TEST_EFLOAT_NATIVE)
    ops = static_cast<double>(real_type(d__1 * (d__1 * d__1) * 2. / 3. + d__2 * d__2 * 2.));
+   #else
+   ops = static_cast<double>(real_type(d__1 * (d__1 * d__1) * 2. / 3. + d__2 * d__2 * 2.));
+   #endif
 
    matgen_(a, &lda, &n, b, &norma);
 
@@ -1199,47 +1210,41 @@ real_type ran_(integer *iseed)
 double x64 release results:
 ~~~~~~~~~~~~~~~~~~
 
-norm. resid      resid           machep         x(1)          x(n)
-6.4915           7.207e-013      2.2204e-016    1             1
-
-
 times are reported for matrices of order  1000
 factor     solve      total     mflops     unit        ratio
 times for array with leading dimension of1001
-0.58       0          0.58      1152.9     0.0017348   10.357
+0.936      0.015      0.951     703.12     0.0028445   16.982
 
 efx::e_float x64 release (from sandbox) results:
 ~~~~~~~~~~~~~~~~~~
 
-norm. resid      resid           machep         x(1)          x(n)
-4.83973e-023     2.41986e-119    1e-099         1             1
-
 times are reported for matrices of order  1000
 factor     solve      total     mflops     unit        ratio
 times for array with leading dimension of1001
-159.38     0.48       159.86    4.1827     0.47816      2854.7
+181.01     0.546      181.55    3.683      0.54303      3242
 
 mpfr::e_float x64 release (from sandbox) results:
 ~~~~~~~~~~~~~~~~~~
 
-norm. resid      resid           machep         x(1)          x(n)
-1.30249e-016     6.51244e-113    1e-099         1             1
-
-
 times are reported for matrices of order  1000
 factor     solve      total     mflops     unit        ratio
 times for array with leading dimension of1001
-163.53     0.51       164.04    4.0763     0.49064     2929.2
+184.36     0.561      184.92    3.6159     0.55311      3302.2
 
 gmp::e_float x64 release (from sandbox) results:
 ~~~~~~~~~~~~~~~~~~
 
-norm. resid      resid           machep         x(1)          x(n)
-2.36707e-016     1.18354e-112    1e-099         1             1
-
 times are reported for matrices of order  1000
 factor     solve      total     mflops     unit        ratio
 times for array with leading dimension of1001
-229.29     0.69       229.98    2.9075     0.68787     4106.7
+258.86     0.787      259.65    2.5753     0.77662      4636.6
+
+mpf_class x64 release results:
+~~~~~~~~~~~~~~~~~~
+
+times are reported for matrices of order  1000
+factor     solve      total     mflops     unit       ratio
+times for array with leading dimension of1001
+173        0.515      173.52    3.8536     0.519      3098.6
 
 */

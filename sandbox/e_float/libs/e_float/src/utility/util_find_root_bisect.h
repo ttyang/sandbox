@@ -12,7 +12,7 @@
   #define _UTIL_FIND_ROOT_BISECT_2009_10_31_H_
 
   #include <utility/util_find_root_base.h>
-  #include <e_float/e_float.hpp>
+  #include <boost/e_float/e_float.hpp>
 
   namespace Util
   {

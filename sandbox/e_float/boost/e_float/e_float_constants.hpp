@@ -11,7 +11,7 @@
 #ifndef _E_FLOAT_CONSTANTS_HPP_
   #define _E_FLOAT_CONSTANTS_HPP_
 
-  #include <e_float/e_float.hpp>
+  #include <boost/e_float/e_float.hpp>
 
   namespace ef
   {

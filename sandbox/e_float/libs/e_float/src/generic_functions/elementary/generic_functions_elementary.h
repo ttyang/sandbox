@@ -15,7 +15,7 @@
   #include <limits>
   #include <regex>
 
-  #include <e_float/e_float_elementary.hpp>
+  #include <boost/e_float/e_float_elementary.hpp>
 
   namespace generic_functions
   {

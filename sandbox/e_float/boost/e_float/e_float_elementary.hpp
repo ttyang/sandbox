@@ -11,8 +11,8 @@
 #ifndef _E_FLOAT_ELEMENTARY_HPP_
   #define _E_FLOAT_ELEMENTARY_HPP_
 
-  #include <e_float/e_float_elementary_complex.hpp>
-  #include <e_float/e_float_elementary_math.hpp>
-  #include <e_float/e_float_elementary_trans.hpp>
+  #include <boost/e_float/e_float_elementary_complex.hpp>
+  #include <boost/e_float/e_float_elementary_math.hpp>
+  #include <boost/e_float/e_float_elementary_trans.hpp>
 
 #endif // _E_FLOAT_ELEMENTARY_HPP_

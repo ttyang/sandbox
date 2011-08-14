@@ -9,7 +9,7 @@
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
 // Automatically generated file
-#include <e_float/e_float_functions.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 #include "../test_case_real.h"
 
 namespace test

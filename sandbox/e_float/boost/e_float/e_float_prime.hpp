@@ -13,7 +13,7 @@
 
   #include <deque>
 
-  #include <e_float/e_float.hpp>
+  #include <boost/e_float/e_float.hpp>
 
   namespace ef
   {

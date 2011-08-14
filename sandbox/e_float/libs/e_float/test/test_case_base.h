@@ -19,7 +19,7 @@
   #include <iterator>
 
 
-  #include <e_float/e_float_complex.hpp>
+  #include <boost/e_float/e_float_complex.hpp>
   #include "../src/utility/util_noncopyable.h"
 
   namespace test

@@ -11,7 +11,7 @@
 #include <vector>
 #include <algorithm>
 
-#include <e_float/e_float_prime.hpp>
+#include <boost/e_float/e_float_prime.hpp>
 
 #include "prime_factors.h"
 

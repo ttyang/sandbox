@@ -13,9 +13,9 @@
 #include <numeric>
 #include <functional>
 
-#include <e_float/e_float.hpp>
-#include <e_float/e_float_constants.hpp>
-#include <e_float/e_float_elementary.hpp>
+#include <boost/e_float/e_float.hpp>
+#include <boost/e_float/e_float_constants.hpp>
+#include <boost/e_float/e_float_elementary.hpp>
 
 e_float ef::hyp0F0(const e_float& x)
 {

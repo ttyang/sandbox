@@ -16,16 +16,16 @@
   // as a compiler defined preprocessor macro.
 
   #if defined(E_FLOAT_TYPE_EFX)
-    #include <e_float/e_float_efx.hpp>
+    #include <boost/e_float/e_float_efx.hpp>
   #elif defined(E_FLOAT_TYPE_GMP)
-    #include <e_float/e_float_gmp.hpp>
+    #include <boost/e_float/e_float_gmp.hpp>
   #elif defined(E_FLOAT_TYPE_MPFR)
-    #include <e_float/e_float_mpfr.hpp>
+    #include <boost/e_float/e_float_mpfr.hpp>
   #else
     #error e_float type undefined!
   #endif
 
-  #include <e_float/e_float_global_math.hpp>
-  #include <e_float/e_float_limits.hpp>
+  #include <boost/e_float/e_float_global_math.hpp>
+  #include <boost/e_float/e_float_limits.hpp>
 
 #endif // _E_FLOAT_HPP_

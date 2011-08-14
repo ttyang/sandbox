@@ -10,10 +10,10 @@
 
 #include <deque>
 
-#include <e_float/e_float_complex.hpp>
-#include <e_float/e_float_prime.hpp>
-#include <e_float/e_float_constants.hpp>
-#include <e_float/e_float_elementary.hpp>
+#include <boost/e_float/e_float_complex.hpp>
+#include <boost/e_float/e_float_prime.hpp>
+#include <boost/e_float/e_float_constants.hpp>
+#include <boost/e_float/e_float_elementary.hpp>
 
 #include "../functions/integer/prime_factors.h"
 #include "util_point.h"

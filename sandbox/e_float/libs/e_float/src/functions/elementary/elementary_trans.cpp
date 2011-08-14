@@ -12,9 +12,9 @@
 #include <numeric>
 #include <map>
 
-#include <e_float/e_float.hpp>
-#include <e_float/e_float_constants.hpp>
-#include <e_float/e_float_elementary.hpp>
+#include <boost/e_float/e_float.hpp>
+#include <boost/e_float/e_float_constants.hpp>
+#include <boost/e_float/e_float_elementary.hpp>
 
 #include "../../utility/util_lexical_cast.h"
 #include "../../utility/util_power_x_pow_n.h"

@@ -11,12 +11,12 @@
 #ifndef _E_FLOAT_FUNCTIONS_HPP_
   #define _E_FLOAT_FUNCTIONS_HPP_
 
-  #include <e_float/e_float_complex.hpp>
-  #include <e_float/e_float_constants.hpp>
-  #include <e_float/e_float_integer.hpp>
-  #include <e_float/e_float_prime.hpp>
-  #include <e_float/e_float_elementary.hpp>
-  #include <e_float/e_float_gamma.hpp>
-  #include <e_float/e_float_zeta.hpp>
+  #include <boost/e_float/e_float_complex.hpp>
+  #include <boost/e_float/e_float_constants.hpp>
+  #include <boost/e_float/e_float_integer.hpp>
+  #include <boost/e_float/e_float_prime.hpp>
+  #include <boost/e_float/e_float_elementary.hpp>
+  #include <boost/e_float/e_float_gamma.hpp>
+  #include <boost/e_float/e_float_zeta.hpp>
 
 #endif // _E_FLOAT_FUNCTIONS_HPP_

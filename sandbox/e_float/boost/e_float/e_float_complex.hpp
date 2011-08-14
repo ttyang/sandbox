@@ -11,7 +11,7 @@
 #ifndef _E_FLOAT_COMPLEX_HPP_
   #define _E_FLOAT_COMPLEX_HPP_
 
-  #include <e_float/e_float.hpp>
+  #include <boost/e_float/e_float.hpp>
 
   // A separate complex class for e_float has been created. Even though
   // a generic template class std::complex<T> exists, the C++ specification
