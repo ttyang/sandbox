@@ -2,6 +2,7 @@
 // naive_test.cpp
 
 // Copyright Paul A. Bristow 2011.
+// Copyright Christopher Kormanyos 2011.
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -89,7 +90,8 @@ using std::string;
 // Integral may be an integer or a double having an integral value.
 
 BOOST_AUTO_TEST_CASE(e_float_test_template)
-{  // These are just examples of using Boost.Test.
+{ // These are just examples of using Boost.Test.
+  // Need to be removed when no longer helpful.
   BOOST_TEST_MESSAGE("Test Boost.e_float"); // Only appears if command line has --log_level="message"
 
   string m = "Test with ";
@@ -171,10 +173,18 @@ BOOST_AUTO_TEST_CASE(e_float_test_template)
 } // BOOST_AUTO_TEST_CASE(e_float_template)
 
 BOOST_AUTO_TEST_CASE(e_float_test_macros)
-{ //
-
-  BOOST_CHECK_EQUAL(E_FLOAT_DIGITS10, 50);
+{ // Check some macro values.
+  // 
+  BOOST_CHECK_EQUAL(E_FLOAT_DIGITS10, 50); // Assumes we are testing at 50 digits, NOT the default.
 } // BOOST_AUTO_TEST_CASE(e_float_test_macros)
+
+
+BOOST_AUTO_TEST_CASE(e_float_test_ios)
+{ // Check some IOS defaults.
+  BOOST_CHECK_EQUAL(cout.precision(), 6);
+  std::ostringstream oss;
+  BOOST_CHECK_EQUAL(oss.precision(), 6);
+  }
 
 BOOST_AUTO_TEST_CASE(e_float_test_input)
 { // 
@@ -189,15 +199,17 @@ BOOST_AUTO_TEST_CASE(e_float_test_input)
    CHECK_IN("0.0123456", e_float("0.0123456"));
    CHECK_IN("1e-6", e_float("1e-6"));
    CHECK_IN("-1e-6", e_float("-1e-6"));
-
-
-
 } // BOOST_AUTO_TEST_CASE(e_float_test_input)
 
 BOOST_AUTO_TEST_CASE(e_float_test_output)
 { // 
 
   BOOST_TEST_MESSAGE("Test Boost.e_float output."); 
+
+  double double_four = 4.;
+
+  cout << "cout << showpoint << double_four outputs: " << showpoint << double_four << endl;
+  cout << "cout << setprecision(17) << showpoint << double_four  outputs: " << setprecision(17) << showpoint << double_four << endl;
 
   e_float my_float;
   e_float e_four(4); // Note integer value.
@@ -260,15 +272,13 @@ BOOST_AUTO_TEST_CASE(e_float_test_output)
   // defaultfloat
   CHECK_OUT(showpoint << setprecision(1) << d_fifth, "0.2"); 
   CHECK_OUT(setprecision(1) << ef::fifth(), "0.2");  // 
-
-  CHECK_OUT(fixed << showpos << showpoint << setprecision(1) << ef::fifth(), "+0.2"); 
-  CHECK_OUT(fixed << showpos << showpoint << setprecision(2) << ef::fifth(), "+0.20"); // 1 trailing zero.
-  CHECK_OUT(fixed << showpos << showpoint << setprecision(10) << ef::fifth(), "+0.2000000000"); // 9 trailing zeros.
-  CHECK_OUT(fixed << showpos << showpoint << setprecision(20) << ef::fifth(), "+0.20000000000000000000");  //  19 trailing zeros.
-  CHECK_OUT(fixed << showpos << showpoint << setprecision(50) << ef::fifth(), "+0.20000000000000000000000000000000000000000000000000");  // 49 trailing zeros.
+  // fixed << showpos << showpoint << setprecision(n) should give a total of n (precision) digits after decimal point.
+  CHECK_OUT(fixed << showpos << showpoint << setprecision(1) << ef::fifth(), "+0.2"); // 1 digits after decimal point, so no trailing zeros.
+  CHECK_OUT(fixed << showpos << showpoint << setprecision(2) << ef::fifth(), "+0.20"); // 1 digit after decimal point, 1 trailing zero.
+  CHECK_OUT(fixed << showpos << showpoint << setprecision(10) << ef::fifth(), "+0.2000000000"); // 1 digit after decimal point, 9 trailing zeros.
+  CHECK_OUT(fixed << showpos << showpoint << setprecision(20) << ef::fifth(), "+0.20000000000000000000");  // 1 digit after decimal point, 19 trailing zeros.
+  CHECK_OUT(fixed << showpos << showpoint << setprecision(50) << ef::fifth(), "+0.20000000000000000000000000000000000000000000000000");  // 1 digit after decimal point, 50-1 trailing zeros.
   CHECK_OUT(fixed << showpos << showpoint << setprecision(std::numeric_limits<e_float>::max_digits10) << ef::fifth(), "+0.200000000000000000000000000000000000000000000000000");  // 50 trailing zeros.
-
-
 
   double pi = 3.14159265358979323846264338327950288419716939937511;
   CHECK_OUT(fixed << showpos << showpoint << setprecision(2) << pi, "+3.14"); // 2 digits after decimal point.
@@ -279,7 +289,7 @@ BOOST_AUTO_TEST_CASE(e_float_test_output)
   CHECK_OUT(fixed << showpos << showpoint << setprecision(12) << pi, "+3.141592653590"); // 12 digits after decimal point.
   CHECK_OUT(fixed << showpos << showpoint << setprecision(20) << pi, "+3.14159265358979310000"); // setprecision(20) more than max_digits10 (17!) so 4 trailing zeros.
   CHECK_OUT(fixed << showpos << showpoint << setprecision(std::numeric_limits<double>::max_digits10) << pi, "+3.14159265358979310"); // max_digits10.
-  CHECK_OUT(fixed << showpos << showpoint << setprecision(std::numeric_limits<double>::digits10) << pi, "+3.141592653589793"); // digits10 'Guaranteed' no noisy digits.
+  CHECK_OUT(fixed << showpos << showpoint << setprecision(std::numeric_limits<double>::digits10) << pi, "+3.141592653589793"); // digits10 'guaranteed' no noisy digits.
 
   // With showpoint for decimal point and trailing zeros.
   CHECK_OUT(fixed << showpos << showpoint << setprecision(2) << ef::pi(), "+3.14"); // 2 digits after decimal point.
