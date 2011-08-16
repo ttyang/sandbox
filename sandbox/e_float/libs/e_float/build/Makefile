@@ -56,7 +56,7 @@ EXTENSION    = exe
 # ------------------------------------------------------------------------------
 # Tool parameters
 # ------------------------------------------------------------------------------
-CFLAGS_BASE = -std=c++0x -O3 -I../../../
+CFLAGS_BASE = -std=c++0x -O3 -DE_FLOAT_DIGITS10=50 -I../../../
 CFLAGS_WARN = -Wall -Wextra -pedantic -Weffc++
 LFLAGS_BASE =
 

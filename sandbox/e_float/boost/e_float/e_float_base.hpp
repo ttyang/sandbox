@@ -29,7 +29,9 @@
   // The supported range is 30-300.
   // Note: This is a compile-time constant.
 
-  #define E_FLOAT_DIGITS10       100
+  #if !defined(E_FLOAT_DIGITS10)
+    #define E_FLOAT_DIGITS10 50
+  #endif
   #define E_FLOAT_DIGITS10_LIMIT 300
 
   #if defined(E_FLOAT_TYPE_EFX)
