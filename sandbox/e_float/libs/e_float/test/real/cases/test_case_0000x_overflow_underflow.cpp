@@ -10,6 +10,7 @@
 
 #include <boost/e_float/e_float_functions.hpp>
 #include "../test_case_real.h"
+#include "../../../src/utility/util_lexical_cast.h"
 
 namespace test
 {
@@ -183,7 +184,10 @@ namespace test
       {
         data.clear();
 
-        e_float y = (std::numeric_limits<e_float>::min)() * static_cast<INT32>(100);
+        static const std::string str_tiny_exp = Util::lexical_cast(std::numeric_limits<e_float>::min_exponent10 + static_cast<INT64>(2));
+        static const std::string str_tiny = "1e" + str_tiny_exp;
+
+        e_float y(str_tiny);
 
         data.push_back(y);
 

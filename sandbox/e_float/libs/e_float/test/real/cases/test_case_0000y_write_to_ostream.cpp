@@ -14,6 +14,7 @@
 
 #include <boost/e_float/e_float_functions.hpp>
 #include "../test_case_real.h"
+#include "../../../src/utility/util_lexical_cast.h"
 
 namespace
 {
@@ -63,6 +64,13 @@ namespace
     }
 
     return str_pi;
+  }
+
+  const std::size_t& default_prec(void)
+  {
+    static std::stringstream the_ss;
+    static const std::size_t the_default_prec = static_cast<std::size_t>(the_ss.precision());
+    return the_default_prec;
   }
 }
 
@@ -145,7 +153,8 @@ namespace test
         ss << std::fixed << std::showpos << std::showpoint << std::setprecision(0) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("+3."));
+        std::string str_pi = std::string("+") + ::make_pi_string(::default_prec());
+        my_test_result &= (str == str_pi);
         ss.clear();
         ss.str("");
 
@@ -180,7 +189,7 @@ namespace test
         ss << std::fixed << std::showpos << std::showpoint << std::setprecision(std::numeric_limits<e_float>::digits10) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));
-        std::string str_pi = ::make_pi_string(static_cast<std::size_t>(std::numeric_limits<e_float>::digits10));
+        str_pi = ::make_pi_string(static_cast<std::size_t>(std::numeric_limits<e_float>::digits10));
         my_test_result &= (str == (std::string("+") + str_pi));
         ss.clear();
         ss.str("");
@@ -337,12 +346,54 @@ namespace test
         std::string str;
         std::stringstream ss;
 
-        ss << ef::million();
+        ss << ef::ten();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("1000000"));
+        my_test_result &= (str == std::string("10"));
         ss.clear();
         ss.str("");
+
+        ss << std::showpoint << ef::ten();
+        str = ss.str();
+        data.push_back(e_float(str));
+        static const std::string str_10 =   std::string("10.")
+                                          + std::string(static_cast<std::size_t>(default_prec() - 2u), static_cast<char>('0'));
+        my_test_result &= (str == str_10);
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpoint << e_float("1e1000");
+        str = ss.str();
+        data.push_back(e_float(str));
+        static const std::string str_1e1000 =   (std::string("1.")
+                                              +  std::string(static_cast<std::size_t>(default_prec() - 1u), static_cast<char>('0')))
+                                              +  std::string("e+001000");
+        my_test_result &= (str == str_1e1000);
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpoint << e_float("1e" + Util::lexical_cast(default_prec()));
+        str = ss.str();
+        data.push_back(e_float(str));
+        static const std::string str_1ePrec =   (std::string("1.")
+                                              +  std::string(static_cast<std::size_t>(default_prec() - 1u), static_cast<char>('0')))
+                                              + (std::string("e+00")
+                                              +  Util::lexical_cast(default_prec()));
+        my_test_result &= (str == str_1ePrec);
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpoint << e_float("1e" + Util::lexical_cast(default_prec() - 1u));
+        str = ss.str();
+        data.push_back(e_float(str));
+        static const std::string str_1ePm1 =    (std::string("1")
+                                              +  std::string(static_cast<std::size_t>(default_prec() - 1u), static_cast<char>('0')))
+                                              +  std::string(".");
+        my_test_result &= (str == str_1ePm1);
+        ss.clear();
+        ss.str("");
+
+        ss << std::noshowpoint;
 
         ss << e_float(100000000000uLL); // 10^11
         str = ss.str();
@@ -354,7 +405,7 @@ namespace test
         ss << std::showpoint << ef::googol();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("1.e+100"));
+        my_test_result &= (str == std::string("1.00000e+100"));
         ss.clear();
         ss.str("");
 
@@ -382,7 +433,7 @@ namespace test
         ss << std::showpoint << ef::eight();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("8."));
+        my_test_result &= (str == std::string("8.00000"));
         ss.clear();
         ss.str("");
 
@@ -396,36 +447,42 @@ namespace test
         ss << std::noshowpos << std::noshowpoint << std::setprecision(0) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("3"));
+        std::string str_pi = ::make_pi_string(::default_prec() - 1u);
+        my_test_result &= (str == str_pi);
         ss.clear();
         ss.str("");
 
         ss << std::noshowpos << std::noshowpoint << std::setprecision(0) << (ef::pi() * static_cast<INT32>(100));
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("314"));
+        str_pi = ::make_pi_string(::default_prec() - 1u);
+        str_pi.erase(str_pi.begin() + 1u, str_pi.begin() + 2u);
+        str_pi.insert(str_pi.begin() + 3u, static_cast<std::size_t>(1u), static_cast<char>('.'));
+        my_test_result &= (str == str_pi);
         ss.clear();
         ss.str("");
 
         ss << std::showpos << std::showpoint << std::setprecision(1) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("+3.1"));
+        my_test_result &= (str == std::string("+3."));
         ss.clear();
         ss.str("");
 
         ss << std::showpos << std::showpoint << std::setprecision(20) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("+3.14159265358979323846"));
+        my_test_result &= (str == std::string("+3.1415926535897932385"));
         ss.clear();
         ss.str("");
 
         ss << std::showpos << std::showpoint << std::setprecision(1000) << ef::pi();
         str = ss.str();
         data.push_back(e_float(str));
-        std::string str_pi = ::make_pi_string(static_cast<std::size_t>(std::numeric_limits<e_float>::max_digits10));
-        my_test_result &= (str == (std::string("+") + str_pi));
+        str_pi = std::string("+") + ::make_pi_string(static_cast<std::size_t>(std::numeric_limits<e_float>::max_digits10 - 1));
+        static const std::string str_zero_fill(static_cast<std::size_t>(1000 - std::numeric_limits<e_float>::max_digits10), static_cast<char>('0'));
+        str_pi += str_zero_fill;
+        my_test_result &= (str == str_pi);
         ss.clear();
         ss.str("");
       }

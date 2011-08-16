@@ -1149,7 +1149,27 @@ bool efx::e_float::iszero(void) const
 {
   if(fpclass == ef_finite)
   {
-    return ((data[0u] == static_cast<UINT32>(0u)) || (exp < std::numeric_limits<e_float>::min_exponent10));
+    bool is_leq_std_min = false;
+
+    const bool could_be_leq_std_min = (exp <= static_cast<INT64>(std::numeric_limits<e_float>::min_exponent10));
+
+    if(could_be_leq_std_min)
+    {
+      if(exp < static_cast<INT64>(std::numeric_limits<e_float>::min_exponent10))
+      {
+        is_leq_std_min = true;
+      }
+      else
+      {
+        if(data[0u] == static_cast<UINT32>(1u))
+        {
+          const array_type::const_iterator it_non_zero = std::find_if(data.begin() + 1u, data.end(), data_elem_is_non_zero_predicate);
+          if(it_non_zero == data.end()) { is_leq_std_min = true; }
+        }
+      }
+    }
+
+    return ((data[0u] == static_cast<UINT32>(0u)) || is_leq_std_min);
   }
   else
   {

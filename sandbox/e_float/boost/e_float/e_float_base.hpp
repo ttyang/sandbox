@@ -184,10 +184,10 @@
     static e_float my_cyl_bessel_jn(const INT32, const e_float&);
     static e_float my_cyl_bessel_yn(const INT32, const e_float&);
 
+    static bool char_is_nonzero_predicate(const char& c) { return (c != static_cast<char>('0')); }
+
   protected:
     inline e_float_base();
-
-    static bool char_is_nonzero_predicate(const char& c) { return (c != static_cast<char>('0')); }
 
     // Emphasize: This template class can be used with native floating-point
     // types like float, double and long double. Note: For long double,
@@ -251,19 +251,6 @@
     virtual INT64 get_order_exact(void) const = 0;
     virtual INT64 get_order_fast(void) const = 0;
     virtual void get_output_string(std::string& str, INT64& my_exp, const std::size_t number_of_digits) const = 0;
-
-    static void wr_string_scientific(std::string& str,
-                                     const INT64 my_exp,
-                                     const std::size_t os_precision,
-                                     const bool my_showpoint,
-                                     const bool my_uppercase,
-                                     const bool trim_trailing_zeros = false);
-
-    static void wr_string_fixed(std::string& str,
-                                const INT64 my_exp,
-                                const std::size_t os_precision,
-                                const bool my_showpoint,
-                                const bool trim_trailing_zeros = false);
   };
 
   // Create a loud link error if the digits in the
