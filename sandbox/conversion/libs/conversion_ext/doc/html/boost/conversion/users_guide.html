@@ -1028,7 +1028,7 @@
           <span class="keyword">return</span> <span class="identifier">T</span><span class="special">(</span><span class="identifier">Final</span><span class="special">::</span><span class="identifier">underlying</span><span class="special">(</span><span class="keyword">this</span><span class="special">));</span>
         <span class="special">}</span>
 <span class="preprocessor">#     endif</span>
-        <span class="keyword">friend</span> <span class="identifier">T</span> <span class="identifier">explicit_convert_to</span><span class="special">(</span><span class="identifier">Final</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">,</span>
+        <span class="keyword">friend</span> <span class="identifier">T</span> <span class="identifier">explicitly_convert_to</span><span class="special">(</span><span class="identifier">Final</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">,</span>
             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">::</span><span class="identifier">dummy</span><span class="special">::</span><span class="identifier">type_tag</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span>
         <span class="special">{</span>
           <span class="keyword">return</span> <span class="identifier">T</span><span class="special">(</span><span class="identifier">Final</span><span class="special">::</span><span class="identifier">underlying</span><span class="special">(</span><span class="identifier">rhs</span><span class="special">));</span>
@@ -1041,7 +1041,7 @@
           <span class="identifier">T</span><span class="special">()</span>
           <span class="keyword">const</span><span class="special">;</span></code>
           can be defined only on compilers supporting explicit conversion operators,
-          the <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>
+          the <code class="computeroutput"><span class="identifier">explicitly_convert_to</span></code>
           variant can be overloaded on most of the compilers, providing a portable
           solution.
         </p>

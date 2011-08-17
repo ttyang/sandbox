@@ -40,7 +40,7 @@
 [def __try_assign_to  `try_assign_to`]
 
 [def __is_extrinsically_convertible  `is_extrinsically_convertible`]
-[def __is_extrinsically_explicit_convertible  `is_extrinsically_explicit_convertible`]
+[def __is_extrinsically_explicitly_convertible  `is_extrinsically_explicitly_convertible`]
 
 
 [import ../../../boost/conversion/boost/chrono_time_point_to_posix_time_ptime.hpp]
@@ -881,7 +881,7 @@ This is particular useful when we want explicit conversion on compilers that don
               return T(Final::underlying(this));
             }
     #     endif
-            friend T explicit_convert_to(Final const& rhs,
+            friend T explicitly_convert_to(Final const& rhs,
                 boost::conversion::dummy::type_tag<T> const&)
             {
               return T(Final::underlying(rhs));
@@ -889,7 +889,7 @@ This is particular useful when we want explicit conversion on compilers that don
         };
     };
 
-While the `explicit operator T() const;` can be defined only on compilers supporting explicit conversion operators, the `explicit_convert_to` variant can be overloaded on most of the compilers, providing a portable solution.
+While the `explicit operator T() const;` can be defined only on compilers supporting explicit conversion operators, the `explicitly_convert_to` variant can be overloaded on most of the compilers, providing a portable solution.
     
 [endsect]
 

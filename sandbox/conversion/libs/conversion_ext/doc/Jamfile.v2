@@ -219,7 +219,7 @@ doxygen core
       [ glob ../../../boost/conversion/fp/convert_to.hpp ]
       [ glob ../../../boost/conversion/is_extrinsically_assignable.hpp ]
       [ glob ../../../boost/conversion/is_extrinsically_convertible.hpp ]
-      [ glob ../../../boost/conversion/is_extrinsically_explicit_convertible.hpp ]
+      [ glob ../../../boost/conversion/is_extrinsically_explicitly_convertible.hpp ]
    :
         <xsl:param>"boost.doxygen.reftitle=Core"
    ;
