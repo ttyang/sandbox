@@ -12,7 +12,7 @@
 /*!
  @file
  @brief
- Defines the free function @c implicitly.
+ Defines the @c convertible_from class.
  */
 #ifndef BOOST_CONVERSION_CONVERTIBLE_FROM_HPP
 #define BOOST_CONVERSION_CONVERTIBLE_FROM_HPP
@@ -71,32 +71,6 @@ namespace boost {
 
     };
 
-    //! @brief makes a wrapper implicitly convertible to types extrinsicly implicit convertibles from @c Source.
-    //!
-    //! The result provides implicitly conversion to any type which is extrinsically implicit convertible from @c Source.
-    //! @Returns convertible_from<Source>(s).
-    //! @NoThrow.
-    //! @Example
-    //! @code
-    //! template <typename T>
-    //! struct test {
-    //!   static void fct()
-    //!   {
-    //!     T v;
-    //!     std::cout << f(implicitly(v)) << " called" << std::endl;
-    //!   }
-    //! };
-    //! @endcode
-
-    template <typename Source>
-    typename enable_if_c<
-      is_copy_constructible<Source>::value
-    , convertible_from<Source>
-    >::type
-    implicitly(Source s)
-    {
-      return convertible_from<Source>(s);
-    }
   }
 }
 #endif

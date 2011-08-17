@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief Defines the @c assignable_to class and the factory @c lvalue.
+ @brief Defines the @c assignable_to class.
  */
 #ifndef BOOST_CONVERSION_ASSIGNABLE_TO_HPP
 #define BOOST_CONVERSION_ASSIGNABLE_TO_HPP
@@ -87,15 +87,7 @@ namespace boost {
         return *this;
       }
     };
-    //! makes an assignable to @c Target which accepts assignment from any type that is extrinsic assignable to @c Target.
 
-    //! The result is able to transform assignments by assign_to calls.
-    //! @NoThrow.
-    template <typename Target>
-    assignable_to<Target> lvalue(Target& r)
-    {
-      return assignable_to<Target>(r);
-    }
   }
 }
 
