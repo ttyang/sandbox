@@ -4,7 +4,7 @@
 <title>Struct template is_assignable</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="home" href="../index.html" title="Toward Boost.Conversion 0.6.1">
 <link rel="up" href="conversion/reference.html#header.boost.conversion.type_traits.is_assignable_hpp" title="Header &lt;boost/conversion/type_traits/is_assignable.hpp&gt;">
 <link rel="prev" href="conversion/reference.html" title="Reference">
 <link rel="next" href="../BOOST_CONVERSION_NO_IS_ASSIGNABLE.html" title="Macro BOOST_CONVERSION_NO_IS_ASSIGNABLE">
@@ -35,7 +35,7 @@
 <span class="keyword">struct</span> <a class="link" href="is_assignable.html" title="Struct template is_assignable">is_assignable</a> <span class="special">{</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp14724544"></a><h2>Description</h2>
+<a name="idp14744400"></a><h2>Description</h2>
 <p>States if the <code class="computeroutput">Target</code> is assignable from the <code class="computeroutput">Source</code>.</p>
 <p><span class="bold"><strong>Condition:</strong></span>: <code class="computeroutput">true_type</code> if <code class="computeroutput">declval&lt;Target&gt;() = declval&lt;Source&gt;()</code> is well-formed when treated as an unevaluated operand.</p>
 <p><span class="bold"><strong>Requires:</strong></span> <code class="computeroutput">Target</code> and <code class="computeroutput">Source</code> must be complete types, (possibly cv-qualified) void, or arrays of unknown bound.</p>

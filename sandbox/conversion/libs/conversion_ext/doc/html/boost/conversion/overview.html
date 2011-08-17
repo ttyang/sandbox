@@ -4,9 +4,9 @@
 <title>Overview</title>
 <link rel="stylesheet" href="../.././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
-<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
-<link rel="prev" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
+<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
+<link rel="prev" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
 <link rel="next" href="users_guide.html" title="Users' Guide">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,7 +33,7 @@
 <dt><span class="section"><a href="overview.html#boost.conversion.overview.caveats">Caveats</a></span></dt>
 </dl></div>
 <a name="boost.conversion.overview.how_to_use_this_documentation"></a><h4>
-<a name="idp13411920"></a>
+<a name="idp13413264"></a>
       <a class="link" href="overview.html#boost.conversion.overview.how_to_use_this_documentation">How
       to Use This Documentation</a>
     </h4>
@@ -295,9 +295,9 @@
             assignments between unrelated types.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">convert_to_or_fallback</span></code>
-            function which can be customized by the user to make explicit conversion
-            between unrelated types, relying on a fallback when the conversion fails.
+            a generic __convert_to_or_fallback function which can be customized by
+            the user to make explicit conversion between unrelated types, relying
+            on a fallback when the conversion fails.
           </li>
 <li class="listitem">
             a generic <code class="computeroutput"><span class="identifier">lvalue</span></code> function
@@ -360,23 +360,32 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="boost.conversion.overview.caveats"></a><a class="link" href="overview.html#boost.conversion.overview.caveats" title="Caveats">Caveats</a>
 </h3></div></div></div>
+<a name="boost.conversion.overview.caveats.supported_compilers"></a><h5>
+<a name="idp13642832"></a>
+        <a class="link" href="overview.html#boost.conversion.overview.caveats.supported_compilers">Supported
+        compilers</a>
+      </h5>
 <p>
         In order to provide the needed functionality, some type traits are mandatory:
-        <code class="computeroutput"><span class="identifier">is_constructible</span><span class="special">,</span>
-        </code>is_assignable` and others. The library provides a first implementation
-        of these type traits that works on compilers providing SFINAE for expressions.
-        The idea is that some of these type traits should be added to <span class="bold"><strong>Boost.TypeTraits</strong></span>.
+        <code class="computeroutput"><span class="identifier">is_constructible</span></code>, <code class="computeroutput"><span class="identifier">is_assignable</span> </code> and others. The library
+        provides a first implementation of these type traits that works on compilers
+        providing SFINAE for expressions. The idea is that some of these type traits
+        should be added to <span class="bold"><strong>Boost.TypeTraits</strong></span>.
       </p>
 <p>
         When the compiler doesn't provides with automatic ways to detect these traits,
         the library provides specializations for some std and boost types. If accepted
         the library will provide the specializations for all the standard types and
-        optionally for all the Boost types.
+        optionally for all the Boost types. Users working with compilers not supporting
+        the definition of these traits, or users that need to make their code portable,
+        will need to specialize these traits by hand.
       </p>
 <p>
-        Users working with compilers not supporting the definition of these traits,
-        or users that need to make their code portable, will need to specialize these
-        traits by hand. Know compiler that are working correctly are
+        The library needs in addition compilers that allow to define function template
+        with default arguments. On compilers don't supporting this feature the <code class="computeroutput"><span class="identifier">implicitly</span></code> function can not be provided.
+      </p>
+<p>
+        Know compilers that are working correctly today are:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -384,6 +393,79 @@
           </li>
 <li class="listitem">
             clang 2.9
+          </li>
+</ul></div>
+<a name="boost.conversion.overview.caveats.possible_odr_violation"></a><h5>
+<a name="idp13652928"></a>
+        <a class="link" href="overview.html#boost.conversion.overview.caveats.possible_odr_violation">Possible
+        ODR violation</a>
+      </h5>
+<p>
+        There is a big issue with the library: promote ODR violations.
+      </p>
+<p>
+        In particular, consider:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            library A defines type TA
+          </li>
+<li class="listitem">
+            library B defines type TB
+          </li>
+<li class="listitem">
+            library C defines a conversion from TA to TB
+          </li>
+<li class="listitem">
+            library D defines a conversion from TA to TB
+          </li>
+</ul></div>
+<p>
+        Now libraries C and D are incompatible; they cannot both be used in the same
+        program without ODR violation.
+      </p>
+<p>
+        Note that the same ODR violation occurs in the following general case:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            library T defines a trait type tt that must be specialized by the user,
+            or a concept that can be mapped by the user.
+          </li>
+<li class="listitem">
+            library A defines type TA
+          </li>
+<li class="listitem">
+            library C needs to specialize the type trait tt for TA or do a concept
+            map.
+          </li>
+<li class="listitem">
+            library D needs to specialize the type trait tt for TA or do a concept
+            map.
+          </li>
+</ul></div>
+<p>
+        Now libraries C and D are incompatible for the same reason.
+      </p>
+<p>
+        The library has no mean to prevent these ODR violation. If needed the library
+        could add something that could detect at link time these possible ODR violations.
+      </p>
+<p>
+        Extrinsic conversions can then be defined without risking ODR violations
+        only in three situations:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            When writing non-library code (i.e. code that will not be combined with
+            other code over which the author has no control).
+          </li>
+<li class="listitem">
+            When writing library code if both types belongs to this library, but
+            belongs to independent and uncorrelated parts.
+          </li>
+<li class="listitem">
+            As a stop-gap substitute for explicit conversion operators.
           </li>
 </ul></div>
 </div>

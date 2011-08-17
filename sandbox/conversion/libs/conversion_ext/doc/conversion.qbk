@@ -24,6 +24,8 @@
 
 [def __explicit_convert_to  `explicit_convert_to`]
 [def __implicit_convert_to  `implicit_convert_to`]
+[def __try_convert_to  `try_convert_to`]
+[def __try_assign_to  `try_assign_to`]
 [def __convert_to  `convert_to`]
 [def __convertible_to  `convertible_to`]
 [def __implicitly  `implicitly`]
@@ -31,14 +33,15 @@
 [def __implicit_converter_cp  `implicit_converter_cp`]
 [def __explicit_converter_cp  `explicit_converter_cp`]
 
-[def __try_convert_to  `try_convert_to`]
-[def __convert_to_or_fallback  `convert_to_or_fallback`]
+[sfinaedef __convert_to_or_fallback  `convert_to_or_fallback`]
 [def __assign_to  `assign_to`]
 [def __assignable_to  `assignable_to`]
 [def __lvalue  `lvalue`]
 [def __assigner_cp  `assigner_cp`]
-[def __try_assign_to  `try_assign_to`]
 
+[def __is_convertible  `is_convertible`]
+[def __is_constructible  `is_constructible`]
+[def __is_assignable  `is_assignable `]
 [def __is_extrinsically_convertible  `is_extrinsically_convertible`]
 [def __is_extrinsically_explicitly_convertible  `is_extrinsically_explicitly_convertible`]
 
@@ -157,12 +160,12 @@ To manage with extrinsically implicit conversion Boost.Conversion provides anoth
     template< class Target, class Source > 
     Target implicit_convert_to( Source const & u );
 
-This function alone can not manage with implicit conversion, as `implicit_convert_to` needs the target type to be stated explicitly. 
+This function alone can not manage with implicit conversion, as __implicit_convert_to needs the target type to be stated explicitly. 
 
   f(implicit_convert_to<T>(u));
 
   
-[*Boost.Conversion] provides an `implicitly` (make implicitly convertible from) function that creates a class providing implicit conversion operators for `Target` types for which the `Source` type is convertible using the `implicit_convert_to` function.  
+[*Boost.Conversion] provides an __implicitly (make implicitly convertible from) function that creates a class providing implicit conversion operators for `Target` types for which the `Source` type is convertible using the __implicit_convert_to function.  
 
   template < class Source >
   class convertible_from 
@@ -234,7 +237,7 @@ While the `ConvertToTarget` could be specific, it seems clear to me that the `Co
     template <typename Target1, typename Target2, typename Source1, typename Source2)
     std::pair<Target1,Target2> ConvertToPair(std::pair<Source1,Source2>& v);
 
-In order to do that we need that the pair template parameters define a common function, let it call `convert_to`,
+In order to do that we need that the pair template parameters define a common function, let it call __convert_to,
 
     template <typename Target, typename Source)
     Target convert_to(Source& v);
@@ -246,11 +249,11 @@ so `ConvertToPair` can be defined as
         return std::make_pair(convert_to<Target1>(v.fisrt), convert_to<Target2>(v.second));
     }
 
-We need to specialize the `convert_to` function for the specific classes `Source` and `Target`. We can do it as follows
+We need to specialize the __convert_to function for the specific classes `Source` and `Target`. We can do it as follows
 
     Target  convert_to(Source& v) {return ConvertToTarget(v);}
 
-Note that the preceding overloadings don't really work, as C++ doesn't use the result type on overload resolution. The library uses a customization point that takes into account the result type.
+Note that the preceding overloads doesn't really work, as C++ doesn't use the result type on overload resolution. The library uses a customization point that takes into account the result type.
 
 In my case I needed
 
@@ -276,7 +279,7 @@ to
 
 using the `ConvertToPair` function.
 
-What about converting `std::pair<Source,std::pair<Source,Source> >` to `std::pair<Target,std::pair<Target,Target> >`? The issue now is that `convert_to(std::make_pair<to, std::make_pair<to,to> >)` does not compile because the conversion of `std::pair` is named `ConvertToPair`. So we need to specialize the function `convert_to` for pairs.
+What about converting `std::pair<Source,std::pair<Source,Source> >` to `std::pair<Target,std::pair<Target,Target> >`? The issue now is that `convert_to(std::make_pair<to, std::make_pair<to,to> >)` does not compile because the conversion of `std::pair` is named `ConvertToPair`. So we need to specialize the function __convert_to for pairs.
 
 
     template <typename T1, typename T2, typename S1, typename S2)
@@ -285,7 +288,7 @@ What about converting `std::pair<Source,std::pair<Source,Source> >` to `std::pai
         return std::pair<T1,T2>(convert_to<T1>(from.first), convert_to<T2>(from.second));
     }
 
-There is still a last point. The preceding design works well with unrelated classes, but what about classes that already define conversion via a constructor or a conversion operator - do we need to specialize these conversions? The answer is no. We need to define the default implementation of the `convert_to` function to just return the explicit conversion.
+There is still a last point. The preceding design works well with unrelated classes, but what about classes that already define conversion via a constructor or a conversion operator - do we need to specialize these conversions? The answer is no. We need to define the default implementation of the __convert_to function to just return the explicit conversion.
 
     template < typename Target, typename Source>
     Target convert_to(const Source& from)
@@ -293,7 +296,7 @@ There is still a last point. The preceding design works well with unrelated clas
         return Target(from);
     }
 
-As noted above these overloadings don't work, and the library uses a customization point that takes into account the result type.
+As noted above these overloads don't work, and the library uses a customization point that takes into account the result type.
 
 What have we learned? Classes or algorithms relying on a conversion can be made more generic by relaying in a function that explicitly states this conversion. Thus, instead of requiring
 
@@ -334,11 +337,11 @@ With __assign_to we could do
 
     assign_to(a, assign_to(b, c));
 
-and if we find this less readable we can try with the "make assigner to `lvalue' free function.
+and if we find this less readable we can try with the "make assigner to __lvalue free function.
 
     lvalue(a) = lvalue(b) = c;
 
-The behavior of `lvalue` recalls the `tie` function of [*Boost.Tuple], but instead of invoking multiple assignments, it invokes a single `assign_to` call.
+The behavior of __lvalue recalls the `tie` function of [*Boost.Tuple], but instead of invoking multiple assignments, it invokes a single __assign_to call.
 
 So one of the advantages of using this common functions is uniformity. The other is that now we are able to find all the explicit conversions to one type, as we can do with explicit casts.
 
@@ -363,8 +366,8 @@ The library takes in account some of the features suggested by the [*Boost.Conve
 * a generic __try_assign_to function which can be customized by the user to make explicit optional assignments between unrelated types.
 * a generic __convert_to_or_fallback function which can be customized by the user to make explicit conversion between unrelated types, relying on a fallback when the conversion fails.
 
-* a generic __lvalue function returning a `assignable_to` wrapper which implements assignments by calls to __assign_to. 
-* a generic __implicitly function returning a `convertible_from` wrapper which implements the implicit conversion operators by calls to __implicit_convert_to.
+* a generic __lvalue function returning a __assignable_to wrapper which implements assignments by calls to __assign_to. 
+* a generic __implicitly function returning a __convertible_from wrapper which implements the implicit conversion operators by calls to __implicit_convert_to.
 * a __convertible_to wrapper that acts as a implicit converter when passing parameters to a function.
 
 [/* a generic `convert_to_via` function which convert a type `From` to another `To` using a temporary one `Via`.]
@@ -387,15 +390,49 @@ The library takes in account some of the features suggested by the [*Boost.Conve
 
 [section Caveats]
 
-In order to provide the needed functionality, some type traits are mandatory: `is_constructible, `is_assignable` and others. The library provides a first implementation of these type traits that works on compilers providing SFINAE for expressions. The idea is that some of these type traits should be added to [*Boost.TypeTraits].
+[heading Supported compilers]
 
-When the compiler doesn't provides with automatic ways to detect these traits, the library provides specializations for some std and boost types. If accepted the library will provide the specializations for all the standard types and optionally for all the Boost types.
+In order to provide the needed functionality, some type traits are mandatory: __is_constructible, __is_assignable and others. The library provides a first implementation of these type traits that works on compilers providing SFINAE for expressions. The idea is that some of these type traits should be added to [*Boost.TypeTraits].
 
-Users working with compilers not supporting the definition of these traits, or users that need to make their code portable, will need to specialize these traits by hand.  
-Know compiler that are working correctly are
+When the compiler doesn't provides with automatic ways to detect these traits, the library provides specializations for some std and boost types. If accepted the library will provide the specializations for all the standard types and optionally for all the Boost types. Users working with compilers not supporting the definition of these traits, or users that need to make their code portable, will need to specialize these traits by hand.
+
+The library needs in addition compilers that allow to define function template with default arguments. On compilers don't supporting this feature the __implicitly function can not be provided.
+  
+Know compilers that are working correctly today are:
 
 * Gcc-4.>3
 * clang 2.9
+
+[heading Possible ODR violation]
+
+There is a big issue with the library: promote ODR violations.  
+
+In particular, consider:
+
+* library A defines type TA
+* library B defines type TB
+* library C defines a conversion from TA to TB
+* library D defines a conversion from TA to TB
+
+Now libraries C and D are incompatible; they cannot both be used in the same program without ODR violation.
+
+Note that the same ODR violation occurs in the following general case:
+
+* library T defines a trait type tt that must be specialized by the user, or a concept that can be mapped by the user.
+* library A defines type TA
+* library C needs to specialize the type trait tt for TA or do a concept map.
+* library D needs to specialize the type trait tt for TA or do a concept map.
+
+Now libraries C and D are incompatible for the same reason. 
+
+The library has no mean to prevent these ODR violation. If needed the library could add something that could detect at link time these possible ODR violations.
+
+Extrinsic conversions can then be defined without risking ODR violations only in three situations:
+
+* When writing non-library code (i.e. code that will not be combined with other code over which the author has no control).
+* When writing library code if both types belongs to this library, but belongs to independent and uncorrelated parts. 
+* As a stop-gap substitute for explicit conversion operators.
+
 
 [endsect]
 
@@ -434,7 +471,7 @@ There is no need to compile [*Boost.Conversion], since it's a header only librar
 
 The generic part of [*Boost.Conversion] depends on *Boost.Config*, *Boost.TypeTraits*, *Boost.Optional* and *Boost.Fusion*. Of course it depends on the specific libraries when specific conversion are used from the directories `boost/conversion/boost`, in particular *Boost.Chrono* and *Boost.DateTime*, which need to link with.
 
-The library works well only on compilers that are able to define the traits `is_constructible` and `is_assignable`, that is compilers supporting SFINAE for expressions. For the other compilers the library has much more limitations. 
+The library works well only on compilers that are able to define some traits as __is_constructible and __is_assignable, that is compilers supporting SFINAE for expressions. In addition it needs to be able to allow the definition of functions template with default arguments. On compilers don't supporting this feature the __implicitly function can not be provided. 
 
 [/========================]
 [heading Exceptions safety]
@@ -1403,9 +1440,9 @@ If they can loss precision they satisfy
 
 
 
-[heading Ambiguity of multiple overloadings]
+[heading Ambiguity of multiple overloads]
 
-[warning Ambiguity of multiple overloadings]
+[warning Ambiguity of multiple overloads]
 ]
 
 [endsect]

@@ -4,8 +4,8 @@
 <title>Users' Guide</title>
 <link rel="stylesheet" href="../.././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
-<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
+<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
 <link rel="prev" href="overview.html" title="Overview">
 <link rel="next" href="reference.html" title="Reference">
 </head>
@@ -74,7 +74,7 @@
         Conversion</a>
 </h4></div></div></div>
 <a name="boost.conversion.users_guide.getting_started.install.getting_boost_conversion"></a><h6>
-<a name="idp13652832"></a>
+<a name="idp13673312"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.getting_boost_conversion">Getting
           Boost.Conversion</a>
         </h6>
@@ -88,7 +88,7 @@
           Sandbox</a>.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.building_boost_conversion"></a><h6>
-<a name="idp13657824"></a>
+<a name="idp13678304"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.building_boost_conversion">Building
           Boost.Conversion</a>
         </h6>
@@ -98,7 +98,7 @@
           in your compiler include path.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.requirements"></a><h6>
-<a name="idp13660880"></a>
+<a name="idp13681360"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.requirements">Requirements</a>
         </h6>
 <p>
@@ -110,13 +110,16 @@
           in particular <span class="bold"><strong>Boost.Chrono</strong></span> and <span class="bold"><strong>Boost.DateTime</strong></span>, which need to link with.
         </p>
 <p>
-          The library works well only on compilers that are able to define the traits
-          <code class="computeroutput"><span class="identifier">is_constructible</span></code> and <code class="computeroutput"><span class="identifier">is_assignable</span></code>, that is compilers supporting
-          SFINAE for expressions. For the other compilers the library has much more
-          limitations.
+          The library works well only on compilers that are able to define some traits
+          as <code class="computeroutput"><span class="identifier">is_constructible</span></code> and
+          <code class="computeroutput"><span class="identifier">is_assignable</span> </code>, that is
+          compilers supporting SFINAE for expressions. In addition it needs to be
+          able to allow the definition of functions template with default arguments.
+          On compilers don't supporting this feature the <code class="computeroutput"><span class="identifier">implicitly</span></code>
+          function can not be provided.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.exceptions_safety"></a><h6>
-<a name="idp13673120"></a>
+<a name="idp13694848"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.exceptions_safety">Exceptions
           safety</a>
         </h6>
@@ -125,7 +128,7 @@
           of exception safety as long as the underlying parameters provide it.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.thread_safety"></a><h6>
-<a name="idp13675712"></a>
+<a name="idp13697440"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.thread_safety">Thread
           safety</a>
         </h6>
@@ -133,7 +136,7 @@
           All functions in the library are thread-unsafe except when noted explicitly.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.tested_compilers"></a><h6>
-<a name="idp13678224"></a>
+<a name="idp13699952"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.tested_compilers">Tested
           compilers</a>
         </h6>
@@ -573,8 +576,8 @@
           value already.
         </p>
 <p>
-          The library provides a specific function <code class="computeroutput"><span class="identifier">convert_to_or_fallback</span></code>
-          that does that exactly
+          The library provides a specific function __convert_to_or_fallback that
+          does that exactly
         </p>
 <p>
           
@@ -998,7 +1001,7 @@
         </p>
 <p>
           The library provide customization points for al the function <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>, <code class="computeroutput"><span class="identifier">assign_to</span></code>,
-          <code class="computeroutput"><span class="identifier">try_assign_to</span></code>, <code class="computeroutput"><span class="identifier">try_convert_to</span></code> and <code class="computeroutput"><span class="identifier">convert_to_or_fallback</span></code>.
+          <code class="computeroutput"><span class="identifier">try_assign_to</span></code>, <code class="computeroutput"><span class="identifier">try_convert_to</span></code> and __convert_to_or_fallback.
         </p>
 <p>
           An alternative customization point is to overload a variant of the conversion

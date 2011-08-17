@@ -4,7 +4,7 @@
 <title>Struct template is_move_constructible</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="home" href="../index.html" title="Toward Boost.Conversion 0.6.1">
 <link rel="up" href="conversion/reference.html#header.boost.conversion.type_traits.is_move_constructible_hpp" title="Header &lt;boost/conversion/type_traits/is_move_constructible.hpp&gt;">
 <link rel="prev" href="is_move_assignable.html" title="Struct template is_move_assignable">
 <link rel="next" href="is_constructible_std_co_idm1248.html" title="Struct template is_constructible&lt;std::complex&lt; Target &gt;, std::complex&lt; Source &gt;&gt;">
@@ -35,7 +35,7 @@
 <span class="keyword">struct</span> <a class="link" href="is_move_constructible.html" title="Struct template is_move_constructible">is_move_constructible</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_copy_constructible</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="special">{</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp15066656"></a><h2>Description</h2>
+<a name="idp15087312"></a><h2>Description</h2>
 <p>States if <code class="computeroutput">T</code> is move constructible.</p>
 <p><span class="bold"><strong>Condition:</strong></span>: <code class="computeroutput">is_constructible&lt;T, T&amp;&amp;&gt;::value</code> is <code class="computeroutput">true</code>.</p>
 <p><span class="bold"><strong>Requires:</strong></span> <code class="computeroutput">T</code> must be a complete type, (possibly cv-qualified) void, or an array of unknown bound.</p>
