@@ -21,7 +21,7 @@ namespace UNS {
     return 1;
   }
 }
-#if defined BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_TAGGED
+#if defined BOOST_CONVERSION_NO_IS_EXTRINSICALLY_EXPLICITLY_CONVERTIBLE_TAGGED
 namespace boost {
   namespace conversion {
     template <>
