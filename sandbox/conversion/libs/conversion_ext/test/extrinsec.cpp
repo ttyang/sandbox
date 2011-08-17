@@ -128,7 +128,7 @@ namespace boost {
 
 BOOST_STATIC_ASSERT(( !boost::is_convertible< X,ICF_X >::value));
 BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_convertible< X,ICF_X >::value));
-BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_explicit_convertible< X,ICF_X >::value));
+BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_explicitly_convertible< X,ICF_X >::value));
 
 struct ECF_X {};
 BOOST_CONVERSION_DCL_DEFAULTS(ECF_X)
@@ -193,9 +193,9 @@ namespace boost {
 
 
   BOOST_STATIC_ASSERT(( !boost::conversion::is_extrinsically_convertible< X,AF_X >::value));
-  BOOST_STATIC_ASSERT(( !boost::conversion::is_extrinsically_explicit_convertible< X,AF_X >::value));
+  BOOST_STATIC_ASSERT(( !boost::conversion::is_extrinsically_explicitly_convertible< X,AF_X >::value));
   BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_convertible< X , ICF_X >::value));
-  BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_explicit_convertible< X , ICF_X >::value));
+  BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_explicitly_convertible< X , ICF_X >::value));
   BOOST_STATIC_ASSERT(( boost::is_copy_assignable< ICF_X >::value));
   BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_assignable< ICF_X, X >::value));
 

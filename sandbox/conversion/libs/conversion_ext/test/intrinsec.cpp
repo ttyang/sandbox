@@ -121,7 +121,7 @@ namespace boost
 BOOST_STATIC_ASSERT(( ! boost::is_convertible< X,ECF_X >::value));
 BOOST_STATIC_ASSERT(( boost::is_explicitly_convertible< X,ECF_X >::value));
 BOOST_STATIC_ASSERT(( ! boost::conversion::is_extrinsically_convertible< X,ECF_X >::value));
-BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_explicit_convertible< X,ECF_X >::value));
+BOOST_STATIC_ASSERT(( boost::conversion::is_extrinsically_explicitly_convertible< X,ECF_X >::value));
 BOOST_STATIC_ASSERT(( ! boost::is_explicitly_convertible< X,AF_X >::value));
 BOOST_STATIC_ASSERT(( ! boost::conversion::is_extrinsically_convertible< X,AF_X >::value));
 
