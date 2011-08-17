@@ -12,8 +12,8 @@
  * @brief Defines the type trait @c is_extrinsically_assignable.
  */
 
-#ifndef BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_HPP
-#define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_HPP
+#ifndef BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_HPP
+#define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_HPP
 
 #if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
 namespace boost {
@@ -39,7 +39,7 @@ namespace boost {
     struct is_extrinsically_assignable {};
 
     //! Macro defined if and only if the compiler doesn't support the features needed to define the @c is_extrinsically_assignable type trait.
-    #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+    #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
 
   }
 }
@@ -60,60 +60,60 @@ namespace boost {
   #if defined _MSC_VER
     #if ! defined BOOST_NO_SFINAE_EXPR
 #error
-      #define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
+      #define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
     #else
-      #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+      #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
     #endif
   #elif defined __clang__
-    #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
-    //#define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_DECLTYPE
+    #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
+    //#define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_DECLTYPE
   #elif defined __GNUC__
      #if __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ < 4 )
        #if ! defined BOOST_NO_SFINAE_EXPR
 #error
-         #define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
+         #define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
        #else
-         #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+         #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
        #endif
      #else
-       //#define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
-       //#define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_DECLTYPE
-       #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+       //#define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
+       //#define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_DECLTYPE
+       #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
      #endif
   #else
 #error
-    //#define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
-    #define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_DECLTYPE
-    //#define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+    //#define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
+    #define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_DECLTYPE
+    //#define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
   #endif
 #elif ! defined BOOST_NO_SFINAE_EXPR
   #if defined _MSC_VER
 #error
-    #define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
+    #define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
 #elif defined __clang__
-    //#define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
-    #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+    //#define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
+    #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
   #elif defined __GNUC__
-    #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+    #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
   #else
 #error
-    #define BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
+    #define BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
   #endif
 #else
-  #define BOOST_CONVERSION_NO_IS_EXTRINSIC_ASSIGNABLE
+  #define BOOST_CONVERSION_NO_IS_EXTRINSICALLY_ASSIGNABLE
 #endif
 
 #if ! defined BOOST_NO_RVALUE_REFERENCES
   #if defined _MSC_VER
   #elif defined __clang__
-      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_ASSIGNABLE_USES_RVALUE
+      #define BOOST_CONVERSION_TT_IS_EXTRINSICALLY_ASSIGNABLE_USES_RVALUE
   #elif defined __GNUC__
      #if __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ < 4 )
      #else
-      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_ASSIGNABLE_USES_RVALUE
+      #define BOOST_CONVERSION_TT_IS_EXTRINSICALLY_ASSIGNABLE_USES_RVALUE
      #endif
   #else
-      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_ASSIGNABLE_USES_RVALUE
+      #define BOOST_CONVERSION_TT_IS_EXTRINSICALLY_ASSIGNABLE_USES_RVALUE
   #endif
 #endif
 
@@ -133,7 +133,7 @@ namespace boost {
          || is_function<T>::value        >
         struct imp;
 
-#if defined BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_DECLTYPE
+#if defined BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_DECLTYPE
         template <typename T, typename S>
         struct imp<T,S,false,false>
         {
@@ -141,7 +141,7 @@ namespace boost {
           static decltype((
               ::boost::conversion::assign_to(declval<T1>(), declval<S1>()) // EXPR
               , true_type()))
-          #if defined BOOST_CONVERSION_TT_IS_EXTRINSIC_ASSIGNABLE_USES_RVALUE
+          #if defined BOOST_CONVERSION_TT_IS_EXTRINSICALLY_ASSIGNABLE_USES_RVALUE
           selector(T1&&, S1&&);
           #else
           selector(T1&, S1&);
@@ -154,7 +154,7 @@ namespace boost {
           typedef typename common_type<decltype(selector(declval<T>(), declval<S>()))>::type type;
         };
 
-#elif defined BOOST_CONVERSION_IS_EXTRINSIC_ASSIGNABLE_USES_SIZEOF
+#elif defined BOOST_CONVERSION_IS_EXTRINSICALLY_ASSIGNABLE_USES_SIZEOF
 
         template <typename T, typename S>
         struct imp<T,S,false,false>
