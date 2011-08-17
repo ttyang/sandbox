@@ -50,7 +50,7 @@ namespace boost {
   //! using the @c static_cast version.
   //! In this case the trait is equivalent to @c is_constructible<Target,Source>.
 
-  #define BOOST_CONVERSION_NO_IS_EXPLICIT_CONVERTIBLE
+  #define BOOST_CONVERSION_NO_IS_EXPLICITLY_CONVERTIBLE
 
 }
 #else
@@ -78,26 +78,26 @@ namespace boost {
 
 #if ! defined BOOST_NO_DECLTYPE
   #if defined _MSC_VER
-      #define BOOST_CONVERSION_NO_IS_EXPLICIT_CONVERTIBLE
+      #define BOOST_CONVERSION_NO_IS_EXPLICITLY_CONVERTIBLE
   #elif defined __clang__
-    #define BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+    #define BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
   #elif defined __GNUC__
      #if __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ < 4 )
        #if ! defined BOOST_NO_SFINAE_EXPR
-         #define BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+         #define BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
        #else
-         #define BOOST_CONVERSION_NO_IS_EXPLICIT_CONVERTIBLE
+         #define BOOST_CONVERSION_NO_IS_EXPLICITLY_CONVERTIBLE
        #endif
      #else
-       #define BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+       #define BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
      #endif
   #else
-       #define BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+       #define BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
   #endif
 #elif ! defined BOOST_NO_SFINAE_EXPR
-  #define BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+  #define BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
 #else
-  #define BOOST_CONVERSION_NO_IS_EXPLICIT_CONVERTIBLE
+  #define BOOST_CONVERSION_NO_IS_EXPLICITLY_CONVERTIBLE
 #endif
 
 
@@ -105,7 +105,7 @@ namespace boost {
   namespace type_traits {
     namespace detail {
       namespace is_explicitly_convertible {
-#if defined BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+#if defined BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
 
     // specific positive test functions
   template <typename S, typename T>
@@ -128,7 +128,7 @@ namespace boost {
     {};
 
 
-#elif defined BOOST_CONVERSION_IS_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+#elif defined BOOST_CONVERSION_IS_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
 
 // specialization for void, abstract, function or any of the parameters is void, scalar or reference
 // depends on whether static_cast<T>(declval<Args>() ...) is well formed

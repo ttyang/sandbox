@@ -32,8 +32,8 @@
  *  specialization is the only option in these cases.
  */
 
-#ifndef BOOST_CONVERSION_EXPLICIT_CONVERT_TO_HPP
-#define BOOST_CONVERSION_EXPLICIT_CONVERT_TO_HPP
+#ifndef BOOST_CONVERSION_EXPLICITLY_CONVERT_TO_HPP
+#define BOOST_CONVERSION_EXPLICITLY_CONVERT_TO_HPP
 
 #include <boost/conversion/implicit_convert_to.hpp>
 #include <boost/utility/enable_if.hpp>

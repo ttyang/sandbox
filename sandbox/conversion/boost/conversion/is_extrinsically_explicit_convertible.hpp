@@ -12,8 +12,8 @@
  * @brief Defines the type trait @c is_extrinsically_explicit_convertible.
  */
 
-#ifndef BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_HPP
-#define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_HPP
+#ifndef BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_HPP
+#define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_HPP
 
 #if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
 namespace boost {
@@ -38,7 +38,7 @@ namespace boost {
     struct is_extrinsically_explicit_convertible {};
 
   //! Macro defined if and only if the compiler doesn't support the features needed to define the @c is_extrinsically_explicit_convertible type trait for classes.
-  #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE
+  #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE
 
   }
 }
@@ -60,47 +60,47 @@ namespace boost {
 #if ! defined BOOST_NO_DECLTYPE
   #if defined _MSC_VER
     #if ! defined BOOST_NO_SFINAE_EXPR
-      #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+      #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
     #else
-      #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE
+      #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE
     #endif
   #elif defined __clang__
-    //#define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
-    //#define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_SIZEOF
-    #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE
+    //#define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
+    //#define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
+    #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE
   #elif defined __GNUC__
      #if __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ < 7 )
        #if ! defined BOOST_NO_SFINAE_EXPR
-         #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+         #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
        #else
-         #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE
+         #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE
        #endif
      #else
-       #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+       #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
      #endif
   #else
-       #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+       #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
   #endif
 #elif ! defined BOOST_NO_SFINAE_EXPR
-  #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+  #define BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
   #if defined __clang__
   #elif defined __GNUC__
   #endif
 #else
-  #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE
+  #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE
 #endif
 
 #if ! defined BOOST_NO_RVALUE_REFERENCES
   #if defined _MSC_VER
   #elif defined __clang__
-      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_RVALUE
+      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_RVALUE
   #elif defined __GNUC__
      #if __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ < 4 )
      #else
-      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_RVALUE
+      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_RVALUE
      #endif
   #else
-      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_RVALUE
+      #define BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_RVALUE
   #endif
 #endif
 
@@ -125,7 +125,7 @@ namespace boost {
             ))
             >
         struct imp;
-#if defined BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_DECLTYPE
+#if defined BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_DECLTYPE
 #error
         template <class S, class T>
         struct imp<S,T,false,false>
@@ -134,7 +134,7 @@ namespace boost {
           static decltype((
               ::boost::conversion::explicit_convert_to<T1>(declval<S1>()) // EXPR
               , true_type()))
-          #if defined BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_TAGGED_USES_RVALUE
+          #if defined BOOST_CONVERSION_TT_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_TAGGED_USES_RVALUE
           selector(S1&&, T1&&);
           #else
           selector(S1&, T1&);
@@ -146,7 +146,7 @@ namespace boost {
 
           typedef typename common_type<decltype(selector(declval<S>(), declval<T>()))>::type type;
         };
-#elif defined BOOST_CONVERSION_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_USES_SIZEOF
+#elif defined BOOST_CONVERSION_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE_USES_SIZEOF
         template <class S, class T>
         struct imp<S,T,false,false>
         {
