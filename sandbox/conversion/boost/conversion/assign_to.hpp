@@ -42,7 +42,7 @@
 #include <boost/conversion/type_traits/is_copy_assignable.hpp>
 #include <boost/conversion/type_traits/is_assignable.hpp>
 #include <boost/conversion/is_extrinsically_convertible.hpp>
-#include <boost/conversion/is_extrinsically_explicit_convertible.hpp>
+#include <boost/conversion/is_extrinsically_explicitly_convertible.hpp>
 #include <boost/type_traits/add_reference.hpp>
 
 namespace boost {
@@ -92,7 +92,7 @@ namespace boost {
 #else
         , typename enable_if_c<
           is_copy_assignable<Target>::value
-          && is_extrinsically_explicit_convertible<Source,Target>::value
+          && is_extrinsically_explicitly_convertible<Source,Target>::value
           && ! is_assignable<Target,Source>::value
           >::type
 #endif

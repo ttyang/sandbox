@@ -65,12 +65,12 @@ namespace boost {
   template < typename Target, typename Source, typename Enable = void >
   struct try_assigner : try_assigner_cp<Target,Source,Enable> {};
 
-  //! Specialization for @c try_assigner when @c is_extrinsically_explicit_convertible<Source,Target>.
+  //! Specialization for @c try_assigner when @c is_extrinsically_explicitly_convertible<Source,Target>.
   //!
   //! @tparam Target target type of the conversion.
   //! @tparam Source source type of the conversion.
   //!
-  //! @Requires @c is_extrinsically_explicit_convertible<Source,Target>
+  //! @Requires @c is_extrinsically_explicitly_convertible<Source,Target>
 
 
     template < typename Target, typename Source >

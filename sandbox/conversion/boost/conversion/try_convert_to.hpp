@@ -38,7 +38,7 @@
 #include <boost/conversion/config.hpp>
 #include <boost/conversion/convert_to.hpp>
 #include <boost/conversion/boost/optional.hpp>
-#include <boost/conversion/is_extrinsically_explicit_convertible.hpp>
+#include <boost/conversion/is_extrinsically_explicitly_convertible.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/utility/enable_if.hpp>
 
@@ -64,19 +64,19 @@ namespace boost {
     template < typename Target, typename Source, typename Enable = void >
     struct try_converter : try_converter_cp<Target,Source,Enable> {};
 
-    //! Specialization for @c try_converter when @c is_extrinsically_explicit_convertible<Source,Target>.
+    //! Specialization for @c try_converter when @c is_extrinsically_explicitly_convertible<Source,Target>.
     //!
     //! @tparam Target target type of the conversion.
     //! @tparam Source source type of the conversion.
     //!
-    //! @Requires @c is_extrinsically_explicit_convertible<Source,Target>
+    //! @Requires @c is_extrinsically_explicitly_convertible<Source,Target>
     template < typename Target, typename Source>
     struct try_converter<Target, Source,
 #if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
         requires(ExtrinsicallyExplicitConvertible<Source,Target>)
 #else
         typename enable_if_c<
-          is_extrinsically_explicit_convertible<Source,Target>::value
+          is_extrinsically_explicitly_convertible<Source,Target>::value
         >::type
 #endif
     > : true_type

@@ -41,7 +41,7 @@
 
 #include <boost/conversion/config.hpp>
 #include <boost/conversion/convert_to.hpp>
-#include <boost/conversion/is_extrinsically_explicit_convertible.hpp>
+#include <boost/conversion/is_extrinsically_explicitly_convertible.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/type_traits/integral_constant.hpp>
 #include <boost/utility/enable_if.hpp>
@@ -87,8 +87,8 @@ namespace boost {
               && ExtrinsicallyExplicitConvertible<Fallback,Target>)
 #else
         typename enable_if_c<
-             is_extrinsically_explicit_convertible<Source,Target>::value
-          && is_extrinsically_explicit_convertible<Fallback,Target>::value
+             is_extrinsically_explicitly_convertible<Source,Target>::value
+          && is_extrinsically_explicitly_convertible<Fallback,Target>::value
         >::type
 #endif
     > : true_type
@@ -142,7 +142,7 @@ namespace boost {
   }
 }
 
-#include <boost/conversion/detail/is_extrinsically_explicit_convertible_or_fallback_tagged.hpp>
+#include <boost/conversion/detail/is_extrinsically_explicitly_convertible_or_fallback_tagged.hpp>
 
 namespace boost {
   namespace conversion {
@@ -164,7 +164,7 @@ namespace boost {
     template <typename Target, typename Source, typename Fallback>
     typename enable_if_c<
          ! is_same<Target,Fallback>::value
-         && is_extrinsically_explicit_convertible_or_fallback_tagged<Source,Target,Fallback>::value
+         && is_extrinsically_explicitly_convertible_or_fallback_tagged<Source,Target,Fallback>::value
     , Target>::type
     convert_to_or_fallback(Source const& from, Fallback const& fallback) {
       return conversion::impl::convert_to_or_fallback_impl<Target>(from, fallback);
@@ -183,7 +183,7 @@ namespace boost {
     //! @endcode
     template <typename Target, typename Source>
     typename enable_if_c<
-         is_extrinsically_explicit_convertible_or_fallback_tagged<Source,Target,Target>::value
+         is_extrinsically_explicitly_convertible_or_fallback_tagged<Source,Target,Target>::value
     , Target>::type
     convert_to_or_fallback(Source const& from, Target const& fallback) {
       return conversion::impl::convert_to_or_fallback_impl<Target>(from, fallback);

@@ -20,7 +20,7 @@
 
 
 #include <boost/conversion/explicit_convert_to.hpp>
-#include <boost/conversion/is_extrinsically_explicit_convertible.hpp>
+#include <boost/conversion/is_extrinsically_explicitly_convertible.hpp>
 
 namespace boost {
 
@@ -45,7 +45,7 @@ namespace boost {
 #if !defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
     //typename disable_if<typename conversion::enable_functor<Source>::type, Target>::type
     typename enable_if_c<
-      conversion::is_extrinsically_explicit_convertible<Source,Target>::value,
+      conversion::is_extrinsically_explicitly_convertible<Source,Target>::value,
       Target
     >::type
 #else

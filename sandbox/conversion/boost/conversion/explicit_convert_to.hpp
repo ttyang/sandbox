@@ -149,7 +149,7 @@ namespace boost {
   }
 }
 
-#include <boost/conversion/detail/is_extrinsically_explicit_convertible_tagged.hpp>
+#include <boost/conversion/detail/is_extrinsically_explicitly_convertible_tagged.hpp>
 
 namespace boost {
   namespace conversion {
@@ -175,7 +175,7 @@ namespace boost {
     //! @endcode
     template <typename Target, typename Source>
     typename enable_if_c<
-        is_extrinsically_explicit_convertible_tagged<Source,Target>::value
+        is_extrinsically_explicitly_convertible_tagged<Source,Target>::value
     , Target>::type
     explicit_convert_to(Source const& from)
     {
@@ -190,7 +190,7 @@ namespace boost {
     //! @tparam Target target type of the conversion.
     //! @tparam Source source type of the conversion.
     //!
-    //! @Requires @c is_extrinsically_explicit_convertible<Source,Target>
+    //! @Requires @c is_extrinsically_explicitly_convertible<Source,Target>
     //! @Remarks We can see this specialization as a try_convert_to function.
     template < typename Target, typename Source>
     struct explicit_converter< optional<Target>, Source,

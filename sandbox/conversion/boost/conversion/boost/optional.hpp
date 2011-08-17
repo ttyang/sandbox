@@ -109,7 +109,7 @@ namespace boost {
         )
 #else
         , typename enable_if_c<
-        is_extrinsically_explicit_convertible<Source,Target>::value
+        is_extrinsically_explicitly_convertible<Source,Target>::value
         && ! detail::is_optional<Source>::value
         >::type
 #endif
