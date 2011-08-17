@@ -1,0 +1,680 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Appendices</title>
+<link rel="stylesheet" href="../.././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
+<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="prev" href="../trick_fusion_tuple.html" title="Struct trick_fusion_tuple">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../trick_fusion_tuple.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost.conversion.appendices"></a><a class="link" href="appendices.html" title="Appendices">Appendices</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history">Appendix: History</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_6_0__july_16__2011__"><span class="bold"><strong>Version 0.6.0, July 16, 2011</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_5_1__february_20__2011__"><span class="bold"><strong>Version 0.5.1, February 20, 2011</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_5_0__may_30__2010__"><span class="bold"><strong>Version 0.5.0, May 30, 2010</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_4_0__october_27__2009__"><span class="bold"><strong>Version 0.4.0, October 27, 2009</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_3_0__october_22__2009__"><span class="bold"><strong>Version 0.3.0, October 22, 2009</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_2_0__may_16__2009__"><span class="bold"><strong>Version 0.2.0, May 16, 2009</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_1_0__april_16__2009__"><span class="bold"><strong>Version 0.1.0, April 16, 2009</strong></span> </a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.rationale">Appendix: Design
+      Rationale</a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.implementation">Appendix:
+      Implementation Notes</a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.acknowledgements">Appendix:
+      Acknowledgements</a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.todo">Appendix : Future plans</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.appendices.history"></a><a class="link" href="appendices.html#boost.conversion.appendices.history" title="Appendix: History">Appendix: History</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_6_0__july_16__2011__"><span class="bold"><strong>Version 0.6.0, July 16, 2011</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_5_1__february_20__2011__"><span class="bold"><strong>Version 0.5.1, February 20, 2011</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_5_0__may_30__2010__"><span class="bold"><strong>Version 0.5.0, May 30, 2010</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_4_0__october_27__2009__"><span class="bold"><strong>Version 0.4.0, October 27, 2009</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_3_0__october_22__2009__"><span class="bold"><strong>Version 0.3.0, October 22, 2009</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_2_0__may_16__2009__"><span class="bold"><strong>Version 0.2.0, May 16, 2009</strong></span> </a></span></dt>
+<dt><span class="section"><a href="appendices.html#boost.conversion.appendices.history.__version_0_1_0__april_16__2009__"><span class="bold"><strong>Version 0.1.0, April 16, 2009</strong></span> </a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_6_0__july_16__2011__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_6_0__july_16__2011__" title="Version 0.6.0, July 16, 2011"><span class="bold"><strong>Version 0.6.0, July 16, 2011</strong></span> </a>
+</h4></div></div></div>
+<p>
+          This is a major evolution of the library.
+        </p>
+<p>
+          <span class="bold"><strong>New Features:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Added <code class="computeroutput"><span class="identifier">try_convert_to</span></code>,
+              <code class="computeroutput"><span class="identifier">try_assign_to</span></code>, <code class="computeroutput"><span class="identifier">convert_to_or_fallback</span></code> functions.
+            </li>
+<li class="listitem">
+              Added converter factory <code class="computeroutput"><span class="identifier">make_converter_to</span></code>.
+            </li>
+<li class="listitem">
+              Added type traits <code class="computeroutput"><span class="identifier">is_extrinsically_convertible</span></code>
+              and <code class="computeroutput"><span class="identifier">is_extrinsically_assignable</span></code>.
+            </li>
+<li class="listitem">
+              Added <code class="computeroutput"><span class="identifier">convertible_to</span></code>,
+              <code class="computeroutput"><span class="identifier">convertible_from</span></code> and
+              <code class="computeroutput"><span class="identifier">assignable_to</span></code> wrappers
+              and the corresponding <code class="computeroutput"><span class="identifier">implicitly</span></code>
+              and <code class="computeroutput"><span class="identifier">lvalue</span></code> free functions.
+            </li>
+<li class="listitem">
+              Added two levels of customization points <code class="computeroutput"><span class="identifier">converter</span></code><span class="emphasis"><em>`converter_cp`,
+              `assigner'</em></span><code class="computeroutput"><span class="identifier">assigner_cp</span></code>,
+              and so on to simplify the customizations for the users.
+            </li>
+<li class="listitem">
+              On compilers supporting it the interface is now concept-based, for
+              specialization or overloading.
+            </li>
+<li class="listitem">
+<p class="simpara">
+              Added type traits that have a better place in Boost.TypeTraits:
+            </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_assignable</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_copy_assignable</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_move_assignable</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_constructible</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_default_constructible</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_copy_constructible</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_move_constructible</span></code>,
+                </li>
+<li class="listitem">
+                  <code class="computeroutput"><span class="identifier">is_explictly_convertible</span></code>.
+                </li>
+</ul></div>
+</li>
+</ul></div>
+<p>
+          <span class="bold"><strong>Deprecated Features:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              The customization point using ADL has been disabled as it makes the
+              library more complex.
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">pack</span></code> will be removed
+              before review as is not well designed, and a tuple of references should
+              works as well.
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">convert_to_via</span></code> will
+              be removed before review as don't really useful.
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">mca</span></code> will be removed
+              before review, the news <code class="computeroutput"><span class="identifier">implicitly</span></code>
+              and <code class="computeroutput"><span class="identifier">lvalue</span></code> should be
+              used..
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_5_1__february_20__2011__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_5_1__february_20__2011__" title="Version 0.5.1, February 20, 2011"><span class="bold"><strong>Version 0.5.1, February 20, 2011</strong></span> </a>
+</h4></div></div></div>
+<p>
+          <span class="bold"><strong>Bug</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              Fix bug on chain mca assignment.
+            </li></ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_5_0__may_30__2010__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_5_0__may_30__2010__" title="Version 0.5.0, May 30, 2010"><span class="bold"><strong>Version 0.5.0, May 30, 2010</strong></span> </a>
+</h4></div></div></div>
+<p>
+          <span class="bold"><strong>New Features:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Added a <code class="computeroutput"><span class="identifier">pack</span></code> function
+              able to pack the <code class="computeroutput"><span class="identifier">Source</span></code>
+              and the <code class="computeroutput"><span class="identifier">Target</span></code> constructor
+              arguments in one parameter.
+            </li>
+<li class="listitem">
+              Added conversion between <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              Added <code class="computeroutput"><span class="identifier">is_convertible_to</span></code>
+              meta-function. Inherits: If an imaginary lvalue of type <code class="computeroutput"><span class="identifier">From</span></code> is convertible to type <code class="computeroutput"><span class="identifier">To</span></code> using <code class="computeroutput"><span class="identifier">convert_to</span></code>
+              then inherits from <code class="computeroutput"><span class="identifier">true_type</span></code>,
+              otherwise inherits from <code class="computeroutput"><span class="identifier">false_type</span></code>.
+            </li>
+</ul></div>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">From</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">To</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">is_convertible</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">true_type</span><span class="special">-</span><span class="keyword">or</span><span class="special">-</span><span class="identifier">false_type</span> <span class="special">{};</span>
+</pre>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              Added <code class="computeroutput"><span class="identifier">is_assignable_to</span></code>
+              meta-function.
+            </li></ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_4_0__october_27__2009__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_4_0__october_27__2009__" title="Version 0.4.0, October 27, 2009"><span class="bold"><strong>Version 0.4.0, October 27, 2009</strong></span> </a>
+</h4></div></div></div>
+<p>
+          <span class="emphasis"><em>Applying the same technique that <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">swap</span></code>
+          applies making use of ADL</em></span>
+        </p>
+<p>
+          <span class="bold"><strong>New Features:</strong></span>
+        </p>
+<p>
+          A <code class="computeroutput"><span class="identifier">Source</span></code> class is convertible
+          to a <code class="computeroutput"><span class="identifier">Target</span></code> class if:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Either: A function with the signature <code class="computeroutput"><span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">&gt;(</span><span class="identifier">Source</span>
+              <span class="keyword">const</span><span class="special">&amp;,</span>
+              <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dummy</span><span class="special">::</span><span class="identifier">type_tag</span><span class="special">&lt;</span><span class="identifier">To</span><span class="special">&gt;</span>
+              <span class="keyword">const</span><span class="special">&amp;)</span></code>
+              is available via argument dependent lookup
+            </li>
+<li class="listitem">
+              Or: A template specialization of <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">::</span><span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span> <span class="identifier">Source</span><span class="special">&gt;</span></code> exists for <code class="computeroutput"><span class="identifier">Target</span></code>
+              and <code class="computeroutput"><span class="identifier">Source</span></code>
+            </li>
+<li class="listitem">
+              Or: <code class="computeroutput"><span class="identifier">Target</span></code> is copy
+              constructible from <code class="computeroutput"><span class="identifier">Source</span></code>
+              (default implementation)
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_3_0__october_22__2009__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_3_0__october_22__2009__" title="Version 0.3.0, October 22, 2009"><span class="bold"><strong>Version 0.3.0, October 22, 2009</strong></span> </a>
+</h4></div></div></div>
+<p>
+          <span class="emphasis"><em>Changing the order of <code class="computeroutput"><span class="identifier">to</span></code>
+          and <code class="computeroutput"><span class="identifier">from</span></code> parameters on
+          <code class="computeroutput"><span class="identifier">assign_to</span></code> function + Added
+          <code class="computeroutput"><span class="identifier">mca</span></code> function</em></span>
+        </p>
+<p>
+          <span class="bold"><strong>Incompatibility:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Changing the order of <code class="computeroutput"><span class="identifier">to</span></code>
+              and <code class="computeroutput"><span class="identifier">from</span></code> parameters
+              on <code class="computeroutput"><span class="identifier">assign_to</span></code>.
+            </li>
+<li class="listitem">
+              Now <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span></code> and <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">assign_to</span><span class="special">.</span><span class="identifier">hpp</span></code>
+              files are separated.
+            </li>
+</ul></div>
+<p>
+          <span class="bold"><strong>New Features:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              Added <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code> global file.
+            </li>
+<li class="listitem">
+              Added <code class="computeroutput"><span class="identifier">mca</span><span class="special">()</span></code>
+              function.
+            </li>
+<li class="listitem">
+              Added <code class="computeroutput"><span class="identifier">convert_to_via</span></code>
+              function.
+            </li>
+</ul></div>
+<p>
+          <span class="bold"><strong>Test:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              Added test for the new features
+            </li></ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_2_0__may_16__2009__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_2_0__may_16__2009__" title="Version 0.2.0, May 16, 2009"><span class="bold"><strong>Version 0.2.0, May 16, 2009</strong></span> </a>
+</h4></div></div></div>
+<p>
+          <span class="emphasis"><em>Adding array + fusion::tuples + Adaptation to Boost 1.39</em></span>
+        </p>
+<p>
+          <span class="bold"><strong>New Features:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between Boost.Fusion sequences of explicitly convertible
+              types.
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.appendices.history.__version_0_1_0__april_16__2009__"></a><a class="link" href="appendices.html#boost.conversion.appendices.history.__version_0_1_0__april_16__2009__" title="Version 0.1.0, April 16, 2009"><span class="bold"><strong>Version 0.1.0, April 16, 2009</strong></span> </a>
+</h4></div></div></div>
+<p>
+          <span class="emphasis"><em>Announcement of Conversions</em></span>
+        </p>
+<p>
+          <span class="bold"><strong>Features:</strong></span>
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              a generic <code class="computeroutput"><span class="identifier">convert_to</span></code>
+              function which can be specialized by the user to make explicit conversion
+              between unrelated types.
+            </li>
+<li class="listitem">
+              a generic <code class="computeroutput"><span class="identifier">assign_to</span></code>
+              function which can be specialized by the user to make explicit assignment
+              between unrelated types.
+            </li>
+<li class="listitem">
+              conversion between C-arrays of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">complex</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>
+              and Streamable types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">optional</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">rational</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interval</span></code>
+              of explicitly convertible types.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">time_point</span></code>
+              and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ptime</span></code>.
+            </li>
+<li class="listitem">
+              conversion between <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">duration</span></code>
+              and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">time_duration</span></code>.
+            </li>
+</ul></div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.appendices.rationale"></a><a class="link" href="appendices.html#boost.conversion.appendices.rationale" title="Appendix: Design Rationale">Appendix: Design
+      Rationale</a>
+</h3></div></div></div>
+<a name="boost.conversion.appendices.rationale.why_overloading_the_conversion_functions_doesn_t_works_"></a><h5>
+<a name="idp19779856"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.rationale.why_overloading_the_conversion_functions_doesn_t_works_">Why
+        overloading the conversion functions doesn't works?</a>
+      </h5>
+<p>
+        For example, the prototype of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>
+        is
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">&gt;</span>
+<span class="identifier">Target</span>
+<span class="identifier">implicit_convert_to</span><span class="special">(</span><span class="identifier">Source</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">);</span>
+</pre>
+<p>
+        The users could overload this function with a specific source type, as it
+        appears as a parameter of the function, but they can not overload on the
+        source and the target types.
+      </p>
+<p>
+        To overcome this limitation the library could opt for two alternatives:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            Add a dummy parameter that can covey the Target type.
+          </li>
+<li class="listitem">
+            Implements the conversion function forwarding the call to a specific
+            converter functor.
+          </li>
+</ul></div>
+<p>
+        Adding a dummy parameter could look something like
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">&gt;</span>
+<span class="identifier">Target</span> <span class="identifier">implicit_convert_to</span><span class="special">(</span><span class="identifier">Source</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">,</span> <span class="identifier">dummy</span><span class="special">::</span><span class="identifier">type_tag</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+</pre>
+<p>
+        Callers of this function need to pass the additional parameter as for example
+      </p>
+<pre class="programlisting"><span class="identifier">MyTarget</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">implicit_convert_to</span><span class="special">(</span><span class="identifier">from</span><span class="special">,</span> <span class="identifier">dummy</span><span class="special">::</span><span class="identifier">type_tag</span><span class="special">&lt;</span><span class="identifier">MyTarget</span><span class="special">&gt;());</span> 
+</pre>
+<p>
+        User specializations consists just in overloading this function.
+      </p>
+<pre class="programlisting"><span class="identifier">MyTarget</span> <span class="identifier">implicit_convert_to</span><span class="special">(</span><span class="identifier">MySource</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">,</span> <span class="identifier">dummy</span><span class="special">&lt;</span><span class="identifier">MyTarget</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+</pre>
+<p>
+        The advantages are
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            the call doesn't needs to be qualified by the boost::conversion namespace
+            and ADL will choose the correct overload.
+          </li></ul></div>
+<p>
+        The drawbacks are
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            the unreadable syntax,
+          </li>
+<li class="listitem">
+            the possible default implementation provided by the library would not
+            be accessible as far as the user doesn't includes the boost::conversion
+            namespace.
+          </li>
+<li class="listitem">
+            we can not add new functions on the std namespace, so we can not overload
+            the behavior for standard classes, so a different technique is needed.
+          </li>
+</ul></div>
+<p>
+        Implementing the conversion function by forwarding the call to a specific
+        converter functor as follows
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">&gt;</span>
+<span class="identifier">Target</span>
+<span class="identifier">implicit_convert_to</span><span class="special">(</span><span class="identifier">Source</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="keyword">return</span> <span class="identifier">implicit_converter</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span><span class="identifier">Source</span><span class="special">&gt;()(</span><span class="identifier">from</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        User specializations consists just in specializing the functor implicit_converter.
+      </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> 
+  <span class="keyword">namespace</span> <span class="identifier">conversion</span> <span class="special">{</span>
+    <span class="keyword">struct</span> <span class="identifier">implicit_converter</span><span class="special">&lt;</span><span class="identifier">MyTarget</span><span class="special">,</span> <span class="identifier">MySource</span><span class="special">&gt;</span> <span class="special">{</span>
+      <span class="identifier">MyTarget</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">MySource</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">)</span> 
+      <span class="special">{</span>
+        <span class="comment">// return the specific conversion;
+</span>      <span class="special">}</span>
+    <span class="special">};</span>
+  <span class="special">}</span> 
+<span class="special">}</span>
+</pre>
+<p>
+        The advantages are
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            the technique can be applied to types on the standard namespace
+          </li>
+<li class="listitem">
+            the library can call to the customization point after providing a default
+            implementation.
+          </li>
+</ul></div>
+<p>
+        The drawbacks are
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            The users need to qualify with boost::conversion every call to implicit_converter
+            or introduce the namespace boost::conversion via the using statement.
+          </li></ul></div>
+<p>
+        The library provides a mixture of the preceding alternatives:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            defines a boost::conversion::convert_to function
+          </li>
+<li class="listitem">
+            that relies on an internal function which introduces an internal namespace
+            on which the default implementation is found by ADL if no best choice
+            is found.
+          </li>
+<li class="listitem">
+            this default implementation forwards the call to the customization functor
+          </li>
+<li class="listitem">
+            which can be partially specialized by the user.
+          </li>
+</ul></div>
+<p>
+        The library implements the conversion function forwarding the call to a specific
+        converter functor as follows
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">&gt;</span>
+<span class="identifier">Target</span>
+<span class="identifier">implicit_convert_to</span><span class="special">(</span><span class="identifier">Source</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="keyword">return</span> <span class="identifier">implicit_converter</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span><span class="identifier">Source</span><span class="special">&gt;()(</span><span class="identifier">from</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        The converter functor must define the operator() as follows:
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Enable</span> <span class="special">=</span> <span class="keyword">void</span> <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implicit_converter</span>
+<span class="special">{</span>
+  <span class="identifier">Target</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">typename</span> <span class="identifier">add_reference</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">Source</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">val</span><span class="special">)</span>
+  <span class="special">{</span>
+    <span class="special">...</span>
+  <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+        The library provides a specialization of this class for classes Target and
+        Source satisfying Convertible&lt;Source,Target&gt; as follows:
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span> <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implicit_converter</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span> <span class="identifier">Source</span>
+    <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">enable_if_c</span><span class="special">&lt;</span> <span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">Source</span><span class="special">,</span><span class="identifier">Target</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">&gt;::</span><span class="identifier">type</span>
+<span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">true_type</span>
+<span class="special">{</span>
+  <span class="identifier">Target</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">typename</span> <span class="identifier">add_reference</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">Source</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">val</span><span class="special">)</span>
+  <span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">val</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+        In the same way the library provides a specialization of this class, the
+        users can specialize this converter functor as the class has the source and
+        the target types as parameters.
+      </p>
+<p>
+        One of the problems using SFINAE, is that all the conditions must be complementary.
+        So the user needs to know what are the other conditions and ensure that there
+        is no ambiguity.
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span>  <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implicit_converter</span><span class="special">&lt;</span><span class="identifier">MyTarget</span><span class="special">,</span> <span class="identifier">MySource</span>
+    <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">enable_if_c</span><span class="special">&lt;</span> <span class="special">!</span> <span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">MySource</span><span class="special">,</span><span class="identifier">MyTarget</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">&gt;::</span><span class="identifier">type</span>
+<span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">true_type</span>
+<span class="special">{</span>
+  <span class="identifier">MyTarget</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">typename</span> <span class="identifier">add_reference</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">MySource</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">val</span><span class="special">)</span>
+  <span class="special">{</span>
+    <span class="comment">// return a specific conversion ;
+</span>  <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<a name="boost.conversion.appendices.rationale.why_the_library_provides_two_level_customization_point_for_conversion_functions_"></a><h5>
+<a name="idp19970912"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.rationale.why_the_library_provides_two_level_customization_point_for_conversion_functions_">Why
+        the library provides two-level customization point for conversion functions?</a>
+      </h5>
+<p>
+        While the preceding technique allows the users to override the default specialization,
+        it is quite dependent on the conditions the library makes a specialization.
+        While the condition for the implicit_converter is simple, other functions
+        can have a much more complex condition for which the library makes a specialization.
+      </p>
+<p>
+        To make easier the work of the users the library defines a catch all definition
+        that delegates to a second functor.
+      </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Enable</span> <span class="special">=</span> <span class="keyword">void</span> <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implicit_converter_cp</span> <span class="special">:</span> <span class="identifier">false_type</span> <span class="special">{};</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Enable</span> <span class="special">=</span> <span class="keyword">void</span> <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implicit_converter</span> <span class="special">:</span> <span class="identifier">implicit_converter_cp</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span><span class="identifier">Source</span><span class="special">,</span><span class="identifier">Enable</span><span class="special">&gt;</span> <span class="special">{};</span>
+</pre>
+<p>
+        Now the users can friendly specialize implicit_converter_cp as the library
+        doesn't provides any specialization of this class by default.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.appendices.implementation"></a><a class="link" href="appendices.html#boost.conversion.appendices.implementation" title="Appendix: Implementation Notes">Appendix:
+      Implementation Notes</a>
+</h3></div></div></div>
+<a name="boost.conversion.appendices.implementation.why__code__phrase_role__identifier__implicit_converter_cp__phrase__phrase_role__special___lt___phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t1__phrase__phrase_role__special_____phrase__phrase_role__identifier__a1__phrase__phrase_role__special___gt____phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t2__phrase__phrase_role__special_____phrase__phrase_role__identifier__a2__phrase__phrase_role__special___gt___phrase___phrase_role__special___gt___phrase___code__can_not_relay_on__code__phrase_role__identifier__assign_to__phrase__phrase_role__special___lt___phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t1__phrase__phrase_role__special_____phrase__phrase_role__identifier__a1__phrase__phrase_role__special___gt____phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t2__phrase__phrase_role__special_____phrase__phrase_role__identifier__a2__phrase__phrase_role__special___gt___phrase___phrase_role__special___gt___phrase___code__"></a><h5>
+<a name="idp20003600"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.implementation.why__code__phrase_role__identifier__implicit_converter_cp__phrase__phrase_role__special___lt___phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t1__phrase__phrase_role__special_____phrase__phrase_role__identifier__a1__phrase__phrase_role__special___gt____phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t2__phrase__phrase_role__special_____phrase__phrase_role__identifier__a2__phrase__phrase_role__special___gt___phrase___phrase_role__special___gt___phrase___code__can_not_relay_on__code__phrase_role__identifier__assign_to__phrase__phrase_role__special___lt___phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t1__phrase__phrase_role__special_____phrase__phrase_role__identifier__a1__phrase__phrase_role__special___gt____phrase___phrase_role__identifier__std__phrase__phrase_role__special______phrase__phrase_role__identifier__vector__phrase__phrase_role__special___lt___phrase__phrase_role__identifier__t2__phrase__phrase_role__special_____phrase__phrase_role__identifier__a2__phrase__phrase_role__special___gt___phrase___phrase_role__special___gt___phrase___code__">Why
+        <code class="computeroutput"><span class="identifier">implicit_converter_cp</span><span class="special">&lt;</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">A1</span><span class="special">&gt;,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">,</span><span class="identifier">A2</span><span class="special">&gt;</span>
+        <span class="special">&gt;</span></code> can not relay on <code class="computeroutput"><span class="identifier">assign_to</span><span class="special">&lt;</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">A1</span><span class="special">&gt;,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">,</span><span class="identifier">A2</span><span class="special">&gt;</span>
+        <span class="special">&gt;</span></code>?</a>
+      </h5>
+<a name="boost.conversion.appendices.implementation.why__code__phrase_role__identifier__convert_to__phrase___code__between_tuples_is_not_implemented_using__code__phrase_role__identifier__boost__phrase__phrase_role__special______phrase__phrase_role__identifier__fusion__phrase__phrase_role__special______phrase__phrase_role__identifier__transform__phrase___code__"></a><h5>
+<a name="idp20027024"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.implementation.why__code__phrase_role__identifier__convert_to__phrase___code__between_tuples_is_not_implemented_using__code__phrase_role__identifier__boost__phrase__phrase_role__special______phrase__phrase_role__identifier__fusion__phrase__phrase_role__special______phrase__phrase_role__identifier__transform__phrase___code__">Why
+        <code class="computeroutput"><span class="identifier">convert_to</span></code> between tuples
+        is not implemented using <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">transform</span></code>?</a>
+      </h5>
+<p>
+        <code class="computeroutput"><span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code> is
+        a kind of transformation, so the natural implementation of <code class="computeroutput"><span class="identifier">convert_to</span></code> for homogeneous containers could
+        be to use the transform function.
+      </p>
+<p>
+        This can not be applied to heterogeneous containers as tuples because the
+        function change with the type.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.appendices.acknowledgements"></a><a class="link" href="appendices.html#boost.conversion.appendices.acknowledgements" title="Appendix: Acknowledgements">Appendix:
+      Acknowledgements</a>
+</h3></div></div></div>
+<p>
+        Thanks to Vladimir Batov for proposing Boost.StringConversion. The discussions
+        on the Boost ML of his library were the source of inspiration of this generic
+        library. Boost.Conversion has inherited from some of the needs of Boost.StringConversion.
+        Thanks to Edward Diener for showing me indirectly that multiple assignments
+        should be taken in account. Thanks to Jeffrey Lee Hellrung for showing me
+        that Boost.Conversion should use also ADL as customization point, even if
+        I have decided to disable it so simplify the library. Thanks to Robert Stewart
+        for suggesting the use of a functor as customization point and for all the
+        constructive comments he made on the Boost ML. Thanks to Tomas Heller to
+        showing me how to cut the dependency on Boost.Phoenix while introducing the
+        overload of convert_to on Phoenix actors.
+      </p>
+<p>
+        And last thanks to Gordon Woodhull for proposing himself as review manager
+        of the library.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.appendices.todo"></a><a class="link" href="appendices.html#boost.conversion.appendices.todo" title="Appendix : Future plans">Appendix : Future plans</a>
+</h3></div></div></div>
+<a name="boost.conversion.appendices.todo.tasks_to_do_before_review"></a><h5>
+<a name="idp20044096"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.todo.tasks_to_do_before_review">Tasks
+        to do before review</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            Improve the doc as much as possible.
+          </li></ul></div>
+<a name="boost.conversion.appendices.todo.tasks_to_do_if_the_library_is_accepted"></a><h5>
+<a name="idp20047632"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.todo.tasks_to_do_if_the_library_is_accepted">Tasks
+        to do if the library is accepted</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            Add the type traits specializations for the C++ Standard types.
+          </li></ul></div>
+<a name="boost.conversion.appendices.todo.for_later_releases"></a><h5>
+<a name="idp20051280"></a>
+        <a class="link" href="appendices.html#boost.conversion.appendices.todo.for_later_releases">For later
+        releases</a>
+      </h5>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+            Analyze the impact of move semantics to the extrinsic conversion and
+            assignments functions.
+          </li></ul></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Vicente J. Botet Escriba<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../trick_fusion_tuple.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a>
+</div>
+</body>
+</html>

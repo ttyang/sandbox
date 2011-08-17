@@ -1,0 +1,1136 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Users' Guide</title>
+<link rel="stylesheet" href="../.././boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
+<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.0">
+<link rel="prev" href="overview.html" title="Overview">
+<link rel="next" href="reference.html" title="Reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="overview.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost.conversion.users_guide"></a><a class="link" href="users_guide.html" title="Users' Guide">Users' Guide</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.getting_started">Getting
+      Started</a></span></dt>
+<dd><dl><dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.getting_started.install">Installing
+        Conversion</a></span></dt></dl></dd>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial">Tutorial</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.using_extrinsic_conversions_and_assignments">Using
+        extrinsic conversions and assignments</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.chaining_assignments">Chaining
+        assignments</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.using_specific_conversions">Using
+        specific conversions</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.handling_invalid_conversions">Handling
+        invalid conversions</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.handling_invalid_conversions_via_a_fallback">Handling
+        invalid conversions via a fallback</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.can_extrinsic_conversions_be_applied_implicitly_">Can
+        extrinsic conversions be applied implicitly?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_write_a_function_that_accepts_a_parameter_that_is_extrinsically_convertible_to_a_given_type_">How
+        to write a function that accepts a parameter that is extrinsically convertible
+        to a given type?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.functors">Functors</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to">Usage
+        of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
+        <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> or <code class="computeroutput"><span class="identifier">assign_to</span></code></a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_specialize_extrinsic_conversions_">How
+        to specialize extrinsic conversions?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.what_to_do_when_the_compiler_doesn_t_supports_the_definition_of_the_needed_type_traits_">What
+        to do when the compiler doesn't supports the definition of the needed type
+        traits?</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.ext_references">External
+      Resources</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.users_guide.getting_started"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started" title="Getting Started">Getting
+      Started</a>
+</h3></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.getting_started.install">Installing
+        Conversion</a></span></dt></dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.getting_started.install"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install" title="Installing Conversion">Installing
+        Conversion</a>
+</h4></div></div></div>
+<a name="boost.conversion.users_guide.getting_started.install.getting_boost_conversion"></a><h6>
+<a name="idp13652832"></a>
+          <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.getting_boost_conversion">Getting
+          Boost.Conversion</a>
+        </h6>
+<p>
+          You can get the last stable release of Boost.Conversion by downloading
+          <code class="literal">conversion.zip</code> from the <a href="http://www.boostpro.com/vault/index.php?action=downloadfile&amp;filename=conversion.zip&amp;directory=Utilities&amp;" target="_top">Boost
+          Vault Utilities directory</a>
+        </p>
+<p>
+          You can also access the latest (unstable?) state from the <a href="https://svn.boost.org/svn/boost/sandbox/conversion" target="_top">Boost
+          Sandbox</a>.
+        </p>
+<a name="boost.conversion.users_guide.getting_started.install.building_boost_conversion"></a><h6>
+<a name="idp13657824"></a>
+          <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.building_boost_conversion">Building
+          Boost.Conversion</a>
+        </h6>
+<p>
+          There is no need to compile <span class="bold"><strong>Boost.Conversion</strong></span>,
+          since it's a header only library. Just include your Boost header directory
+          in your compiler include path.
+        </p>
+<a name="boost.conversion.users_guide.getting_started.install.requirements"></a><h6>
+<a name="idp13660880"></a>
+          <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.requirements">Requirements</a>
+        </h6>
+<p>
+          The generic part of <span class="bold"><strong>Boost.Conversion</strong></span> depends
+          on <span class="bold"><strong>Boost.Config</strong></span>, <span class="bold"><strong>Boost.TypeTraits</strong></span>,
+          <span class="bold"><strong>Boost.Optional</strong></span> and <span class="bold"><strong>Boost.Fusion</strong></span>.
+          Of course it depends on the specific libraries when specific conversion
+          are used from the directories <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">boost</span></code>,
+          in particular <span class="bold"><strong>Boost.Chrono</strong></span> and <span class="bold"><strong>Boost.DateTime</strong></span>, which need to link with.
+        </p>
+<p>
+          The library works well only on compilers that are able to define the traits
+          <code class="computeroutput"><span class="identifier">is_constructible</span></code> and <code class="computeroutput"><span class="identifier">is_assignable</span></code>, that is compilers supporting
+          SFINAE for expressions. For the other compilers the library has much more
+          limitations.
+        </p>
+<a name="boost.conversion.users_guide.getting_started.install.exceptions_safety"></a><h6>
+<a name="idp13673120"></a>
+          <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.exceptions_safety">Exceptions
+          safety</a>
+        </h6>
+<p>
+          All functions in the library are exception-neutral and provide strong guarantee
+          of exception safety as long as the underlying parameters provide it.
+        </p>
+<a name="boost.conversion.users_guide.getting_started.install.thread_safety"></a><h6>
+<a name="idp13675712"></a>
+          <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.thread_safety">Thread
+          safety</a>
+        </h6>
+<p>
+          All functions in the library are thread-unsafe except when noted explicitly.
+        </p>
+<a name="boost.conversion.users_guide.getting_started.install.tested_compilers"></a><h6>
+<a name="idp13678224"></a>
+          <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.tested_compilers">Tested
+          compilers</a>
+        </h6>
+<p>
+          <span class="bold"><strong>Boost.Conversion</strong></span> is known to work on the
+          following platforms/compilers (lack of some C++/C++0X language support
+          disables some functionality). The needed C++/C++0X language support is:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              SFINAE on expressions,
+            </li>
+<li class="listitem">
+              allow to define function template with default arguments,
+            </li>
+</ul></div>
+<p>
+          At present the author is unable to define the type traits <code class="computeroutput"><span class="identifier">is_constructible</span></code> and <code class="computeroutput"><span class="identifier">is_assignable</span></code>
+          if dectype and SFINAE on expressions is not available. On compilers that
+          <code class="computeroutput"><span class="identifier">is_constructible</span></code> and <code class="computeroutput"><span class="identifier">is_assignable</span></code> can not be detected by
+          the library, the user will need to specialize these traits explicitly.
+          The library defines two macros <code class="computeroutput"><span class="identifier">BOOST_CONVERSION_NO_IS_CONSTRUCTIBLE</span></code>
+          and <code class="computeroutput"><span class="identifier">BOOST_CONVERSION_NO_IS_ASSIGNABLE</span></code>
+          allowing to make the specialization only when needed.
+        </p>
+<p>
+          The <code class="computeroutput"><span class="identifier">implicitly</span><span class="special">()</span></code>
+          function and the <code class="computeroutput"><span class="identifier">convertible_from</span></code>
+          class are not provided on compilers on which <code class="computeroutput"><span class="identifier">BOOST_NO_FUNCTION_TEMPLATE_DEFAULT_ARGS</span></code>
+          is defined.
+        </p>
+<p>
+          Currently, <span class="bold"><strong>Boost.Conversion</strong></span> has been tested
+          in the following compilers/platforms using the trunk (Boost 1.48):
+        </p>
+<p>
+          Windows with
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              MSVC 10.0 (needs to specialize <code class="computeroutput"><span class="identifier">is_constructible</span></code>
+              and <code class="computeroutput"><span class="identifier">is_assignable</span></code> can
+              not be defined)
+            </li></ul></div>
+<p>
+          Cygwin 1.7 with
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+              GCC 4.3.4 (has some problems as <code class="computeroutput"><span class="identifier">is_constructible</span></code>
+              and <code class="computeroutput"><span class="identifier">is_assignable</span></code> can
+              not be defined)
+            </li></ul></div>
+<p>
+          MinGW with
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              GCC 4.5.0
+            </li>
+<li class="listitem">
+              GCC 4.5.0 -std=c++0x
+            </li>
+<li class="listitem">
+              GCC 4.5.2
+            </li>
+<li class="listitem">
+              GCC 4.5.2 -std=c++0x
+            </li>
+<li class="listitem">
+              GCC 4.6.0
+            </li>
+<li class="listitem">
+              GCC 4.6.0 -std=c++0x
+            </li>
+</ul></div>
+<p>
+          Darwin 10
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              GCC 4.1.2 (has some problems as <code class="computeroutput"><span class="identifier">is_constructible</span></code>
+              and <code class="computeroutput"><span class="identifier">is_assignable</span></code> can
+              not be defined)
+            </li>
+<li class="listitem">
+              clang 1.6 (has some problems as <code class="computeroutput"><span class="identifier">is_constructible</span></code>
+              and <code class="computeroutput"><span class="identifier">is_assignable</span></code> can
+              not be defined)
+            </li>
+<li class="listitem">
+              clang 2.9
+            </li>
+<li class="listitem">
+              clang 2.9 -std=c++0x
+            </li>
+</ul></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            Please let us know how this works on other platforms/compilers.
+          </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            Please send any questions, comments and bug reports to boost &lt;at&gt;
+            lists &lt;dot&gt; boost &lt;dot&gt; org.
+          </p></td></tr>
+</table></div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.users_guide.tutorial"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial" title="Tutorial">Tutorial</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.using_extrinsic_conversions_and_assignments">Using
+        extrinsic conversions and assignments</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.chaining_assignments">Chaining
+        assignments</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.using_specific_conversions">Using
+        specific conversions</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.handling_invalid_conversions">Handling
+        invalid conversions</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.handling_invalid_conversions_via_a_fallback">Handling
+        invalid conversions via a fallback</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.can_extrinsic_conversions_be_applied_implicitly_">Can
+        extrinsic conversions be applied implicitly?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_write_a_function_that_accepts_a_parameter_that_is_extrinsically_convertible_to_a_given_type_">How
+        to write a function that accepts a parameter that is extrinsically convertible
+        to a given type?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.functors">Functors</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to">Usage
+        of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
+        <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> or <code class="computeroutput"><span class="identifier">assign_to</span></code></a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_specialize_extrinsic_conversions_">How
+        to specialize extrinsic conversions?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.what_to_do_when_the_compiler_doesn_t_supports_the_definition_of_the_needed_type_traits_">What
+        to do when the compiler doesn't supports the definition of the needed type
+        traits?</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.using_extrinsic_conversions_and_assignments"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.using_extrinsic_conversions_and_assignments" title="Using extrinsic conversions and assignments">Using
+        extrinsic conversions and assignments</a>
+</h4></div></div></div>
+<p>
+          When you need to make a extrinsic explicit conversion, simply include the
+          file <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span></code> and use the <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          function.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">string</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">;</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">bool</span> <span class="identifier">is_even</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">val</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="keyword">return</span> <span class="special">(</span><span class="identifier">convert_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">val</span><span class="special">)</span> <span class="special">%</span> <span class="number">2</span><span class="special">)==</span><span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span> <span class="special">=</span> <span class="string">"2"</span><span class="special">;</span>
+  <span class="keyword">if</span> <span class="special">(</span><span class="identifier">is_even</span><span class="special">(</span><span class="identifier">str</span><span class="special">))</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"2 is even"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="keyword">else</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"2 is odd"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+  <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+
+</pre>
+<p>
+        </p>
+<p>
+          The result of this program will evidently be
+        </p>
+<pre class="programlisting"><span class="number">2</span> <span class="identifier">is</span> <span class="identifier">even</span><span class="special">.</span>
+</pre>
+<p>
+          <span class="emphasis"><em>See the source file <a href="../../../../example/even.cpp" target="_top">example/even.cpp</a></em></span>
+        </p>
+<p>
+          The <code class="computeroutput"><span class="identifier">convert_to</span></code> function
+          returns the explicit conversion to the target type.
+        </p>
+<pre class="programlisting"><span class="keyword">return</span> <span class="identifier">Target</span><span class="special">(</span><span class="identifier">source</span><span class="special">);</span>
+</pre>
+<p>
+          When the extrinsic conversion must be stored in a variable you can use
+          <code class="computeroutput"><span class="identifier">assign_to</span></code> instead. If the
+          trait <code class="computeroutput"><span class="identifier">is_assignable</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span><span class="identifier">Source</span><span class="special">&gt;</span></code>
+          is a <code class="computeroutput"><span class="identifier">true_type</span></code>, <code class="computeroutput"><span class="identifier">assign_to</span></code>(target,source) calls to the
+          assignment operator,
+        </p>
+<pre class="programlisting"><span class="identifier">target</span> <span class="special">=</span> <span class="identifier">source</span><span class="special">;</span>
+</pre>
+<p>
+          otherwise it does
+        </p>
+<pre class="programlisting"><span class="identifier">target</span> <span class="special">=</span> <span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">&gt;(</span><span class="identifier">source</span><span class="special">);</span>
+</pre>
+<p>
+          when <code class="computeroutput"><span class="identifier">Source</span></code> is extrinsically
+          convertible to <code class="computeroutput"><span class="identifier">Target</span></code>.
+        </p>
+<p>
+          For example the user can implement a function that swaps two convertible
+          types as follows:
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">assign_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">;</span>
+
+<span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">swap_convertibles</span><span class="special">(</span><span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">t</span><span class="special">,</span> <span class="identifier">U</span><span class="special">&amp;</span> <span class="identifier">u</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">T</span> <span class="identifier">tmp</span><span class="special">(</span><span class="identifier">t</span><span class="special">);</span>
+  <span class="identifier">assign_to</span><span class="special">(</span><span class="identifier">t</span><span class="special">,</span><span class="identifier">u</span><span class="special">);</span>
+  <span class="identifier">assign_to</span><span class="special">(</span><span class="identifier">u</span><span class="special">,</span><span class="identifier">tmp</span><span class="special">);</span>
+<span class="special">}</span>
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+  <span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">3</span><span class="special">;</span>
+  <span class="keyword">float</span> <span class="identifier">x</span> <span class="special">=</span> <span class="number">2.5</span><span class="special">;</span>
+
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"i= "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"x= "</span> <span class="special">&lt;&lt;</span> <span class="identifier">x</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+  <span class="identifier">swap_convertibles</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">x</span><span class="special">);</span>
+
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"i= "</span> <span class="special">&lt;&lt;</span> <span class="identifier">i</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"x= "</span> <span class="special">&lt;&lt;</span> <span class="identifier">x</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+
+
+</pre>
+<p>
+        </p>
+<p>
+          The result of this program will be
+        </p>
+<pre class="programlisting"><span class="identifier">i</span><span class="special">=</span> <span class="number">3</span>
+<span class="identifier">x</span><span class="special">=</span> <span class="number">2.5</span>
+<span class="identifier">i</span><span class="special">=</span> <span class="number">2</span>
+<span class="identifier">x</span><span class="special">=</span> <span class="number">3</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The name <code class="computeroutput"><span class="identifier">convert_to</span></code> could
+            also be <code class="computeroutput"><span class="identifier">convert</span></code> and
+            <code class="computeroutput"><span class="identifier">assign_to</span></code> be <code class="computeroutput"><span class="identifier">assign</span></code>, but I find the current names
+            more coherent with the other names used by the library. If the Boost
+            community agree on better names globally I will adopt them.
+          </p></td></tr>
+</table></div>
+<p>
+          <span class="emphasis"><em>See the source file <a href="../../../../example/swap.cpp" target="_top">example/swap.cpp</a></em></span>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.chaining_assignments"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.chaining_assignments" title="Chaining assignments">Chaining
+        assignments</a>
+</h4></div></div></div>
+<p>
+          When doing multiple assignments the user use to do
+        </p>
+<pre class="programlisting"><span class="identifier">a</span> <span class="special">=</span> <span class="identifier">b</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span>
+</pre>
+<p>
+          With <code class="computeroutput"><span class="identifier">assign_to</span></code> the users
+          could do
+        </p>
+<pre class="programlisting"><span class="identifier">assign_to</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">assign_to</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">));</span>
+</pre>
+<p>
+          and if they find this not really readable they can try with the <code class="computeroutput"><span class="identifier">lvalue</span></code> free function.
+        </p>
+<pre class="programlisting"><span class="identifier">lvalue</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">lvalue</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The name <code class="computeroutput"><span class="identifier">lvalue</span></code> comes
+            from the fact that it builds a lvalue that is able to works with extrinsic
+            conversions.
+          </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.using_specific_conversions"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.using_specific_conversions" title="Using specific conversions">Using
+        specific conversions</a>
+</h4></div></div></div>
+<p>
+          When you need to make a specific conversion you will need to include the
+          specific conversion file. E.g.
+        </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">pair</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">pint</span><span class="special">(</span><span class="number">0</span><span class="special">,</span><span class="number">1</span><span class="special">);</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">pdouble</span><span class="special">=</span><span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;(</span><span class="identifier">pint</span><span class="special">);</span>
+</pre>
+<p>
+          Do not forget to include these files when you use a generic class or algorithm
+          using the generic <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          or <code class="computeroutput"><span class="identifier">assign_to</span></code>, otherwise
+          your program will not compile. E.g. if you want to convert a pair of <code class="computeroutput"><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">time_point</span><span class="special">&lt;&gt;</span></code>
+          to a pair of <code class="computeroutput"><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">ptime</span></code>
+          do not forget to include both <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">pair</span><span class="special">.</span><span class="identifier">hpp</span></code>
+          and <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">chrono_posix_time</span><span class="special">.</span><span class="identifier">hpp</span></code>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.handling_invalid_conversions"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.handling_invalid_conversions" title="Handling invalid conversions">Handling
+        invalid conversions</a>
+</h4></div></div></div>
+<p>
+          The expected behavior of <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          is to throw an exception when the conversion is not possible. If an action
+          must be taken on failure the user needs to use a try-catch
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">=</span><span class="string">"not an int"</span><span class="special">;</span>
+<span class="keyword">int</span> <span class="identifier">t</span><span class="special">;</span>
+<span class="keyword">try</span> <span class="special">{</span>
+  <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">convert_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">str</span><span class="special">);</span>
+  <span class="special">(</span><span class="keyword">void</span><span class="special">)</span><span class="identifier">t</span><span class="special">;</span> <span class="comment">// warning removal
+</span>  <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="keyword">false</span><span class="special">);</span>
+<span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span>   <span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">" Not an integer"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          Sometimes the user could prefer no-throw behavior. The library provides
+          a way to get this behavior with the <code class="computeroutput"><span class="identifier">try_convert_to</span></code>
+          function, which returns an optional that is initialized only when the conversion
+          succeeds.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">optional</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">optt</span> <span class="special">=</span>  <span class="identifier">try_convert_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">str</span><span class="special">);</span>
+<span class="keyword">if</span> <span class="special">(!</span><span class="identifier">optt</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">" Not an integer"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          which is equivalent to
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">optional</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">optt</span> <span class="special">=</span>  <span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">optional</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">&gt;(</span><span class="identifier">str</span><span class="special">);</span>
+<span class="keyword">if</span> <span class="special">(!</span><span class="identifier">optt</span><span class="special">)</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">" Not an integer"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          Last the user can get the same behavior using the <code class="computeroutput"><span class="identifier">try_assign_to</span></code>
+          function, which returns if the assignment succeeded or not
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">if</span> <span class="special">(!</span><span class="identifier">try_assign_to</span><span class="special">(</span><span class="identifier">t</span><span class="special">,</span><span class="identifier">str</span><span class="special">))</span>
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">" Not an integer"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="keyword">true</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          <span class="emphasis"><em>See the source file <a href="../../../../example/no_throw.cpp" target="_top">example/no_throw.cpp</a></em></span>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.handling_invalid_conversions_via_a_fallback"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.handling_invalid_conversions_via_a_fallback" title="Handling invalid conversions via a fallback">Handling
+        invalid conversions via a fallback</a>
+</h4></div></div></div>
+<p>
+          In some cases the conversion failure can be ignored and the result replaced
+          with a fallback value. There are some ways to manage with that
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">str</span><span class="special">=</span><span class="string">"not an int"</span><span class="special">;</span>
+<span class="keyword">int</span> <span class="identifier">t</span><span class="special">=-</span><span class="number">1</span><span class="special">;</span>
+<span class="identifier">try_assign_to</span><span class="special">(</span><span class="identifier">t</span><span class="special">,</span><span class="identifier">str</span><span class="special">);</span>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">t</span><span class="special">==-</span><span class="number">1</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<p>
+          Note the use <code class="computeroutput"><span class="identifier">try_assign_to</span></code>
+          instead of <code class="computeroutput"><span class="identifier">assign_to</span></code>, as
+          it avoids an exception if the conversion fails, as there is a fallback
+          value already.
+        </p>
+<p>
+          The library provides a specific function <code class="computeroutput"><span class="identifier">convert_to_or_fallback</span></code>
+          that does that exactly
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">short</span> <span class="identifier">f</span><span class="special">=-</span><span class="number">1</span><span class="special">;</span>
+<span class="keyword">int</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">convert_to_or_fallback</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">str</span><span class="special">,</span><span class="identifier">f</span><span class="special">);</span>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">t</span><span class="special">==-</span><span class="number">1</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<p>
+          If the Fallback type is the same as the Target, the template parameter
+          Target can be deduced and then omitted as in
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">t</span> <span class="special">=</span> <span class="identifier">convert_to_or_fallback</span><span class="special">(</span><span class="identifier">str</span><span class="special">,-</span><span class="number">1</span><span class="special">);</span>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">t</span><span class="special">==-</span><span class="number">1</span><span class="special">);</span>
+</pre>
+<p>
+        </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            The name of this function could be also <code class="computeroutput"><span class="identifier">convert_to</span></code>
+            as the library can overload it, but I find it more explicit this way.
+            If the Boost community agree on a better name I will adopt it.
+          </p></td></tr>
+</table></div>
+<p>
+          <span class="emphasis"><em>See the source file <a href="../../../../example/fallback.cpp" target="_top">example/fallback.cpp</a></em></span>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.can_extrinsic_conversions_be_applied_implicitly_"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.can_extrinsic_conversions_be_applied_implicitly_" title="Can extrinsic conversions be applied implicitly?">Can
+        extrinsic conversions be applied implicitly?</a>
+</h4></div></div></div>
+<p>
+          The advertized reader will be asking himself if the library provide implicit
+          conversions as the language makes the difference between implicit and explicit
+          conversions. The idea is to maintain the extrinsic functions semantics
+          as close as possible to the semantics of intrinsic ones. Implicit conversion
+          are applied whenever the compiler find that this implicit conversion makes
+          the program well formed.
+        </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span>
+
+<span class="identifier">T</span> <span class="identifier">v</span><span class="special">;</span>
+<span class="identifier">f</span><span class="special">(</span><span class="identifier">v</span><span class="special">);</span>
+</pre>
+<p>
+          If there is an implicit conversion from <code class="computeroutput"><span class="identifier">T</span></code>
+          to <code class="computeroutput"><span class="keyword">int</span></code>, the preceding program
+          will be well formed.
+        </p>
+<p>
+          With extrinsic conversions it is desirable to preserve as much as possible
+          this behavior. The problem is that as extrinsic conversions are not in
+          the language and the compiler could not find them automatically, so the
+          user needs to call explicitly to the extrinsic conversion.
+        </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span>
+
+<span class="identifier">T</span> <span class="identifier">v</span><span class="special">;</span>
+<span class="identifier">f</span><span class="special">(</span><span class="identifier">implicit_convert_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">v</span><span class="special">));</span>
+</pre>
+<p>
+          Imagine now that <code class="computeroutput"><span class="identifier">f</span></code> is overloaded
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="keyword">int</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">2</span><span class="special">;</span> <span class="special">}</span>
+</pre>
+<p>
+        </p>
+<p>
+          and that the user has a function that should work when <code class="computeroutput"><span class="identifier">T</span></code>
+          is either implicitly convertible to int or std::string.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">ImplTest</span> <span class="special">{</span>
+  <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">whichOverload</span><span class="special">()</span>
+  <span class="special">{</span>
+    <span class="identifier">T</span> <span class="identifier">v</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="string">" called"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+        </p>
+<p>
+          If <code class="computeroutput"><span class="identifier">IntrCvtToInt</span></code> is convertible
+          to <code class="computeroutput"><span class="keyword">int</span></code> and <code class="computeroutput"><span class="identifier">IntrCvtToString</span></code>
+          is convertible to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>, then the following program will
+          be well formed.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">ImplTest</span><span class="special">&lt;</span><span class="identifier">IntrCvtToInt</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+<span class="identifier">ImplTest</span><span class="special">&lt;</span><span class="identifier">IntrCvtToString</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+<span class="comment">//ImplTest&lt;IntrCvtINtAndString&gt;::whichOverload(); // compile fail
+</span></pre>
+<p>
+        </p>
+<p>
+          and will result in
+        </p>
+<pre class="programlisting"><span class="number">1</span> <span class="identifier">called</span>
+<span class="number">2</span> <span class="identifier">called</span>
+</pre>
+<p>
+          But if T is <span class="bold"><strong>extrinsically</strong></span> implicit convertible
+          to <code class="computeroutput"><span class="keyword">int</span></code> or <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>
+          the user can not write a simple program that works as they doesn't know
+          to which <code class="computeroutput"><span class="identifier">Target</span></code> the type
+          <code class="computeroutput"><span class="identifier">T</span></code> must be converted to.
+        </p>
+<pre class="programlisting"><span class="identifier">T</span> <span class="identifier">v</span><span class="special">;</span>
+<span class="identifier">f</span><span class="special">(</span><span class="identifier">convert_to</span><span class="special">&lt;???&gt;(</span><span class="identifier">v</span><span class="special">));</span>
+</pre>
+<p>
+          So the following fails to compile if <code class="computeroutput"><span class="identifier">ExtrCvtToInt</span></code>
+          is extrinsically convertible to <code class="computeroutput"><span class="keyword">int</span></code>
+          and <code class="computeroutput"><span class="identifier">ExtrCvtToString</span></code> is
+          extrinsically convertible to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">ImplTest</span><span class="special">&lt;</span><span class="identifier">ExtrCvtToInt</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span> <span class="comment">// compile fail
+</span><span class="identifier">ImplTest</span><span class="special">&lt;</span><span class="identifier">ExtrCvtToString</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span> <span class="comment">// compile fail
+</span><span class="identifier">ImplTest</span><span class="special">&lt;</span><span class="identifier">ExtrCvtINtAndString</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span> <span class="comment">// compile fail
+</span></pre>
+<p>
+        </p>
+<p>
+          It would be great if the user could state explicitly that the parameter
+          they are passing to <code class="computeroutput"><span class="identifier">f</span></code> can
+          be implicitly convertible to the <code class="computeroutput"><span class="identifier">f</span></code>
+          parameter type. The library provides a function <code class="computeroutput"><span class="identifier">implicitly</span></code>
+          that makes a wrapper around a type that implicitly converts to any type
+          that is extrinsically convertible from its argument.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">ImplicitlyTest</span> <span class="special">{</span>
+  <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">whichOverload</span><span class="special">()</span>
+  <span class="special">{</span>
+    <span class="identifier">T</span> <span class="identifier">v</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">implicitly</span><span class="special">(</span><span class="identifier">v</span><span class="special">))</span> <span class="special">&lt;&lt;</span> <span class="string">" called"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+        </p>
+<p>
+          So the following will be correct and call to the expected <code class="computeroutput"><span class="identifier">f</span></code> overload.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">ImplicitlyTest</span><span class="special">&lt;</span><span class="identifier">IntrCvtToInt</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+<span class="identifier">ImplicitlyTest</span><span class="special">&lt;</span><span class="identifier">IntrCvtToString</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+<span class="identifier">ImplicitlyTest</span><span class="special">&lt;</span><span class="identifier">ExtrCvtToInt</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+<span class="identifier">ImplicitlyTest</span><span class="special">&lt;</span><span class="identifier">ExtrCvtToString</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+<span class="comment">//ImplicitlyTest&lt;ExtrCvtINtAndString&gt;::whichOverload(); // compile fail
+</span></pre>
+<p>
+        </p>
+<p>
+          and prints
+        </p>
+<pre class="programlisting"><span class="number">1</span> <span class="identifier">called</span>
+<span class="number">2</span> <span class="identifier">called</span>
+<span class="number">1</span> <span class="identifier">called</span>
+<span class="number">2</span> <span class="identifier">called</span>
+</pre>
+<p>
+          Note that extrinsically implicit convertible implies extrinsically explicit
+          convertible but the opposite is not true. That means that if <code class="computeroutput"><span class="identifier">ExtrExplicitCvtToInt</span></code> is extrinsically
+          explicit convertible to <code class="computeroutput"><span class="keyword">int</span></code>,
+          the following program will be ill formed
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">ImplicitlyTest</span><span class="special">&lt;</span><span class="identifier">ExtrExplicitCvtToInt</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+</pre>
+<p>
+        </p>
+<p>
+          having as result, for example
+        </p>
+<pre class="programlisting"><span class="special">../</span><span class="identifier">example</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">102</span><span class="special">:</span><span class="number">18</span><span class="special">:</span> <span class="identifier">error</span><span class="special">:</span> <span class="identifier">no</span> <span class="identifier">matching</span> <span class="identifier">function</span> <span class="keyword">for</span> <span class="identifier">call</span> <span class="identifier">to</span> <span class="char">'f'</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">implicitly</span><span class="special">(</span><span class="identifier">v</span><span class="special">))</span> <span class="special">&lt;&lt;</span> <span class="string">" called"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+               <span class="special">^</span>
+<span class="special">../</span><span class="identifier">example</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">134</span><span class="special">:</span><span class="number">34</span><span class="special">:</span> <span class="identifier">note</span><span class="special">:</span> <span class="identifier">in</span> <span class="identifier">instantiation</span> <span class="identifier">of</span> <span class="identifier">member</span> <span class="identifier">function</span> <span class="char">'ImplicitTest&lt;ExtrExplicitCvtToInt&gt;::whichOverload'</span> <span class="identifier">requested</span> <span class="identifier">here</span>
+  <span class="identifier">ImplicitTest</span><span class="special">&lt;</span><span class="identifier">ExtrExplicitCvtToInt</span><span class="special">&gt;::</span><span class="identifier">whichOverload</span><span class="special">();</span>
+                               <span class="special">^</span>
+<span class="special">../</span><span class="identifier">example</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">cpp</span><span class="special">:</span><span class="number">21</span><span class="special">:</span><span class="number">5</span><span class="special">:</span> <span class="identifier">note</span><span class="special">:</span> <span class="identifier">candidate</span> <span class="identifier">function</span> <span class="keyword">not</span> <span class="identifier">viable</span><span class="special">:</span> <span class="identifier">no</span> <span class="identifier">known</span> <span class="identifier">conversion</span> <span class="identifier">from</span> <span class="char">'convertible_from&lt;ExtrExplicitCvtToInt&gt;'</span> <span class="identifier">to</span> <span class="char">'int'</span> <span class="keyword">for</span> <span class="number">1</span><span class="identifier">st</span> <span class="identifier">argument</span>
+<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="keyword">int</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+</pre>
+<p>
+          <span class="emphasis"><em>See the source file <a href="../../../../example/overload.cpp" target="_top">example/overload.cpp</a></em></span>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.how_to_write_a_function_that_accepts_a_parameter_that_is_extrinsically_convertible_to_a_given_type_"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_write_a_function_that_accepts_a_parameter_that_is_extrinsically_convertible_to_a_given_type_" title="How to write a function that accepts a parameter that is extrinsically convertible to a given type?">How
+        to write a function that accepts a parameter that is extrinsically convertible
+        to a given type?</a>
+</h4></div></div></div>
+<p>
+          The use of the helper function <code class="computeroutput"><span class="identifier">implicitly</span></code>
+          is a little bit intrusive in some cases. It would be great if the users
+          could define a function accepting a type that is extrinsically convertible,
+          so the they will not be forced to use it. There are two alternatives:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              overload the function using SFINAE
+            </li>
+<li class="listitem">
+              change the function prototype
+            </li>
+</ul></div>
+<p>
+          If the user had already the function
+        </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="keyword">int</span><span class="special">);</span>
+</pre>
+<p>
+          She can add an overload that will make explicitly the conversion as follows
+        </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">typename</span> <span class="identifier">enable_if</span><span class="special">&lt;</span><span class="identifier">is_extrinsically_convertible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;,</span><span class="keyword">void</span> <span class="special">&gt;::</span><span class="identifier">type</span> 
+<span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">v</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">convert_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">v</span><span class="special">);</span> <span class="special">}</span>
+</pre>
+<p>
+          This template overload will be taken for overload resolution only if <code class="computeroutput"><span class="identifier">T</span></code> is not <code class="computeroutput"><span class="keyword">int</span></code>
+          (as non template functions are preferred to template ones) and <code class="computeroutput"><span class="identifier">T</span></code> is extrinsically convertible to <code class="computeroutput"><span class="keyword">int</span></code>. <code class="computeroutput"><span class="identifier">is_extrinsically_convertible</span></code>
+          is a trait added by the library that contains a nested value field that
+          is true or false depending on whether the <code class="computeroutput"><span class="identifier">Source</span></code>
+          type is extrinsically implicit convertible to <code class="computeroutput"><span class="identifier">Target</span></code>.
+        </p>
+<p>
+          An alternative could be to define the function <code class="computeroutput"><span class="identifier">f</span></code>
+          from the beginning stating explicitly that his parameter one that is extrinsically
+          convertible to <code class="computeroutput"><span class="keyword">int</span></code>.
+        </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">);</span>
+</pre>
+<p>
+          The <code class="computeroutput"><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>
+          class is a <code class="computeroutput"><span class="identifier">T</span></code> wrapper that
+          is implicitly constructible from any type extrinsically constructible
+          <code class="computeroutput"><span class="identifier">T</span></code>. <code class="computeroutput"><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code> is implicitly convertible to <code class="computeroutput"><span class="identifier">T</span></code>. For example, if <code class="computeroutput"><span class="identifier">T</span></code>
+          is extrinsically convertible to <code class="computeroutput"><span class="keyword">int</span></code>,
+          the following program will be well formed
+        </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">)</span> 
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">hex</span> <span class="special">&lt;&lt;</span> <span class="identifier">v</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+  <span class="identifier">T</span> <span class="identifier">v</span><span class="special">;</span>
+  <span class="identifier">f</span><span class="special">(</span><span class="identifier">v</span><span class="special">)</span>
+<span class="special">}</span>
+</pre>
+<p>
+          Unfortunately, <code class="computeroutput"><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code> is not a smart reference to <code class="computeroutput"><span class="identifier">T</span></code>, so any access to its underlying type
+          must be done using an explicit call to the <code class="computeroutput"><span class="identifier">get</span></code>
+          function.
+        </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">)</span> 
+<span class="special">{</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">get</span><span class="special">().</span><span class="identifier">c_str</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            While this alternative doesn't seems completely necessary, I wanted to
+            add them to the library for the review discussion. It could be removed
+            from without any problems.
+          </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.functors"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.functors" title="Functors">Functors</a>
+</h4></div></div></div>
+<p>
+          The library provide a specific Phoenix functor factory having as result
+          a functor that will call to the <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          function lazily.
+        </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">fp</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">array</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
+
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>            <span class="identifier">integers</span><span class="special">;</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*,</span> <span class="number">5</span><span class="special">&gt;</span> <span class="identifier">strings</span> <span class="special">=</span> <span class="special">{{</span> <span class="string">"15"</span><span class="special">,</span> <span class="string">"16"</span><span class="special">,</span> <span class="string">"17"</span><span class="special">,</span> <span class="string">"18"</span><span class="special">}};</span>
+
+<span class="comment">// With fallback value provided. No throwing.
+</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span>
+    <span class="identifier">strings</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span>
+    <span class="identifier">strings</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">back_inserter</span><span class="special">(</span><span class="identifier">integers</span><span class="special">),</span>
+    <span class="identifier">convert_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(</span><span class="identifier">_1</span><span class="special">)</span>
+<span class="special">);</span>
+
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">integers</span><span class="special">[</span><span class="number">0</span><span class="special">]</span> <span class="special">==</span> <span class="number">15</span><span class="special">);</span>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">integers</span><span class="special">[</span><span class="number">1</span><span class="special">]</span> <span class="special">==</span> <span class="number">16</span><span class="special">);</span>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">integers</span><span class="special">[</span><span class="number">2</span><span class="special">]</span> <span class="special">==</span> <span class="number">17</span><span class="special">);</span>
+<span class="identifier">BOOST_ASSERT</span><span class="special">(</span><span class="identifier">integers</span><span class="special">[</span><span class="number">3</span><span class="special">]</span> <span class="special">==</span> <span class="number">18</span><span class="special">);</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to" title="Usage of implicit_convert_to, explicit_convert_to or assign_to">Usage
+        of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
+        <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> or <code class="computeroutput"><span class="identifier">assign_to</span></code></a>
+</h4></div></div></div>
+<p>
+          The users should use <code class="computeroutput"><span class="identifier">assign_to</span></code>
+          whenever they had used operator=(), that is, when there is already a target
+          variable.
+        </p>
+<p>
+          The users should use the conversion forms <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
+          <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> whenever
+          they had used the conversion operator Target(), either implicit or explicitly.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.how_to_specialize_extrinsic_conversions_"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_specialize_extrinsic_conversions_" title="How to specialize extrinsic conversions?">How
+        to specialize extrinsic conversions?</a>
+</h4></div></div></div>
+<p>
+          <span class="bold"><strong>Boost.Conversion</strong></span> has two customization
+          point for each one of the provided functions:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              specializing the associated customization functor
+            </li>
+<li class="listitem">
+              overloading a variant of the function to customize
+            </li>
+</ul></div>
+<p>
+          For example, to customize the <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>
+          function you could partially specialize the functor <code class="computeroutput"><span class="identifier">implicit_converter_cp</span></code>.
+        </p>
+<pre class="programlisting"><span class="keyword">namespace</span>  <span class="identifier">boost</span> <span class="special">{</span> 
+  <span class="keyword">namespace</span> <span class="identifier">conversion</span> <span class="special">{</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Enable</span><span class="special">=</span><span class="keyword">void</span> <span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">implicit_converter_cp</span> <span class="special">:</span> <span class="identifier">true_type</span> <span class="special">{</span>
+      <span class="identifier">Target</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">const</span> <span class="identifier">Source</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">)</span>
+    <span class="special">};</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            the suffix _cp stands for customization point
+          </p></td></tr>
+</table></div>
+<p>
+          A possible specialization for <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span></code>
+          follows:
+        </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Target2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source2</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implicit_converter_cp</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">Target1</span><span class="special">,</span><span class="identifier">Target2</span><span class="special">&gt;,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">Source1</span><span class="special">,</span><span class="identifier">Source2</span><span class="special">&gt;</span> 
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">enable_if_c</span><span class="special">&lt;</span>
+        <span class="identifier">is_extrinsically_convertible</span><span class="special">&lt;</span><span class="identifier">Source1</span><span class="special">,</span> <span class="identifier">Target1</span><span class="special">&gt;::</span><span class="identifier">value</span>
+    <span class="special">&amp;&amp;</span> <span class="identifier">is_extrinsically_convertible</span><span class="special">&lt;</span><span class="identifier">Source2</span><span class="special">,</span> <span class="identifier">Target2</span><span class="special">&gt;::</span><span class="identifier">value</span>
+  <span class="special">&gt;::</span><span class="identifier">type</span>
+<span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">true_type</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">Target1</span><span class="special">,</span><span class="identifier">Target2</span><span class="special">&gt;</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">Source1</span><span class="special">,</span><span class="identifier">Source2</span><span class="special">&gt;&amp;</span> <span class="identifier">v</span><span class="special">)</span> 
+    <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;(</span><span class="identifier">implicit_convert_to</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">&gt;(</span><span class="identifier">from</span><span class="special">.</span><span class="identifier">first</span><span class="special">),</span> <span class="identifier">implicit_convert_to</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">&gt;(</span><span class="identifier">from</span><span class="special">.</span><span class="identifier">second</span><span class="special">));</span>
+    <span class="special">}</span>
+<span class="special">};</span>
+</pre>
+<p>
+          Note that the <code class="computeroutput"><span class="identifier">implicit_converter_cp</span></code>
+          specialization inherits from <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">true_type</span></code>.
+          This is needed as used by the <code class="computeroutput"><span class="identifier">is_extrinsically_convertible</span></code>
+          type trait.
+        </p>
+<p>
+          Note also the use of the <code class="computeroutput"><span class="identifier">Enable</span></code>
+          parameter to constraint the specialization to the enable types using the
+          <code class="computeroutput"><span class="identifier">enable_if</span></code> family functions.
+        </p>
+<p>
+          The library provide customization points for al the function <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>, <code class="computeroutput"><span class="identifier">assign_to</span></code>,
+          <code class="computeroutput"><span class="identifier">try_assign_to</span></code>, <code class="computeroutput"><span class="identifier">try_convert_to</span></code> and <code class="computeroutput"><span class="identifier">convert_to_or_fallback</span></code>.
+        </p>
+<p>
+          An alternative customization point is to overload a variant of the conversion
+          to specialize that adds a dummy parameter that can covey the return type
+          when needed.
+        </p>
+<p>
+          For example the <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>
+          function can be specialized by overloading the function
+        </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">&gt;</span>
+<span class="identifier">Target</span> <span class="identifier">explicit_convert_to</span><span class="special">(</span><span class="identifier">Source</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">from</span><span class="special">,</span> <span class="identifier">dummy</span><span class="special">::</span><span class="identifier">type_tag</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+</pre>
+<p>
+          This is particular useful when we want explicit conversion on compilers
+          that don't support explicit conversion operators. For example the Boost.Opaque
+          library define a mixing to add explicit conversion to a specific type as
+          follows:
+        </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">using_explicit_conversion_to</span> <span class="special">{</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Final</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Base</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">type</span><span class="special">:</span> <span class="identifier">Base</span> <span class="special">{</span>
+<span class="preprocessor">#     if</span> <span class="special">!</span> <span class="identifier">defined</span> <span class="identifier">BOOST_NO_EXPLICIT_CONVERSION_OPERATORS</span>
+        <span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="identifier">T</span><span class="special">()</span> <span class="keyword">const</span>
+        <span class="special">{</span>
+          <span class="keyword">return</span> <span class="identifier">T</span><span class="special">(</span><span class="identifier">Final</span><span class="special">::</span><span class="identifier">underlying</span><span class="special">(</span><span class="keyword">this</span><span class="special">));</span>
+        <span class="special">}</span>
+<span class="preprocessor">#     endif</span>
+        <span class="keyword">friend</span> <span class="identifier">T</span> <span class="identifier">explicit_convert_to</span><span class="special">(</span><span class="identifier">Final</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span><span class="special">,</span>
+            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">::</span><span class="identifier">dummy</span><span class="special">::</span><span class="identifier">type_tag</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span>
+        <span class="special">{</span>
+          <span class="keyword">return</span> <span class="identifier">T</span><span class="special">(</span><span class="identifier">Final</span><span class="special">::</span><span class="identifier">underlying</span><span class="special">(</span><span class="identifier">rhs</span><span class="special">));</span>
+        <span class="special">}</span>
+    <span class="special">};</span>
+<span class="special">};</span>
+</pre>
+<p>
+          While the <code class="computeroutput"><span class="keyword">explicit</span> <span class="keyword">operator</span>
+          <span class="identifier">T</span><span class="special">()</span>
+          <span class="keyword">const</span><span class="special">;</span></code>
+          can be defined only on compilers supporting explicit conversion operators,
+          the <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>
+          variant can be overloaded on most of the compilers, providing a portable
+          solution.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.what_to_do_when_the_compiler_doesn_t_supports_the_definition_of_the_needed_type_traits_"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.what_to_do_when_the_compiler_doesn_t_supports_the_definition_of_the_needed_type_traits_" title="What to do when the compiler doesn't supports the definition of the needed type traits?">What
+        to do when the compiler doesn't supports the definition of the needed type
+        traits?</a>
+</h4></div></div></div>
+<p>
+          When the compiler doesn't supports the definition of some of the type traits,
+          the library doesn't work as the user could expect. For each trait the library
+          provides a macro that states if the library can define correctly the type
+          trait. For example, BOOST_CONVERSION_NO_IS_ASSIGNABLE. In this case the
+          user needs to specialize the type trait explicitly as follows:
+        </p>
+<pre class="programlisting"><span class="preprocessor">#if</span> <span class="identifier">defined</span> <span class="identifier">BOOST_CONVERSION_NO_IS_ASSIGNABLE</span>
+<span class="keyword">namespace</span> <span class="identifier">boost</span>
+<span class="special">{</span>
+  <span class="keyword">template</span> <span class="special">&lt;&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_assignable</span><span class="special">&lt;</span> <span class="identifier">X</span><span class="special">&amp;,</span> <span class="identifier">X</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">&gt;</span>  <span class="special">:</span> <span class="identifier">true_type</span> <span class="special">{};</span>
+<span class="special">}</span>
+<span class="preprocessor">#endif</span> 
+</pre>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost.conversion.users_guide.ext_references"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.ext_references" title="External Resources">External
+      Resources</a>
+</h3></div></div></div>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term"><a href="http://www.boostpro.com/vault/index.php?action=downloadfile&amp;filename=boost-string-convert.zip&amp;directory=&amp;" target="_top"><span class="bold"><strong>Boost.Convert</strong></span></a></span></dt>
+<dd><p>
+              Vladimir Batov. Not yet reviewed
+            </p></dd>
+<dt><span class="term"><a href="http://www.boost.org/libs/conversion/lexical_cast.htm" target="_top"><span class="bold"><strong>Boost.Conversion.LexicalCast</strong></span></a></span></dt>
+<dd><p>
+              general literal text conversions, such as an int represented as a string,
+              or vice-versa from Kevlin Henney
+            </p></dd>
+<dt><span class="term"><a href="http://www.boost.org/libs/numeric/conversion" target="_top"><span class="bold"><strong>Boost.NumericConversion</strong></span></a></span></dt>
+<dd><p>
+              Optimized Policy-based Numeric Conversions from Fernando Cacciola.
+            </p></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2380.pdf" target="_top"><span class="bold"><strong>N2380 - Explicit Conversion Operator Draft Working Paper (revision
+          2)</strong></span></a></span></dt>
+<dd><p>
+              Lois Goldthwaite, Michael Wong, Jens Mauer, Alisdair Meredith.
+            </p></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2200.pdf" target="_top"><span class="bold"><strong>N2200 - Operator Overloading</strong></span></a></span></dt>
+<dd><p>
+              Gary Powell, Doug Gregor, Jaakko Jarvi.
+            </p></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1671.pdf" target="_top"><span class="bold"><strong>N1671 - Overloading operator.() &amp; operator.*()</strong></span></a></span></dt>
+<dd><p>
+              Gary Powell, Doug Gregor, Jaakko Jarvi.
+            </p></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1676.htm" target="_top"><span class="bold"><strong>N1676 - Non-member overloaded copy assignment operator</strong></span></a></span></dt>
+<dd><p>
+              Bronek Kozicki.
+            </p></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1694.html" target="_top"><span class="bold"><strong>N1694 - A Proposal to Extend the Function Call Operator</strong></span></a></span></dt>
+<dd><p>
+              Bronek Kozicki.
+            </p></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n3291.pdf" target="_top"><span class="bold"><strong>N3291 - Working Draft, Standard for Programming Language C++</strong></span></a></span></dt>
+<dd></dd>
+<dt><span class="term"><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3047.html" target="_top"><span class="bold"><strong>N3047 - Fixing is_constructible and is_explicitly_convertible</strong></span></a></span></dt>
+<dd><p>
+              Daniel Krugler
+            </p></dd>
+</dl>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Vicente J. Botet Escriba<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="overview.html"><img src="../../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../index.html"><img src="../../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

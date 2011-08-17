@@ -154,7 +154,7 @@ Unfortunately this doesn't works as overload resolution doesn't take care of tem
 
 To manage with extrinsically implicit conversion Boost.Conversion provides another all-purpose function template
 
-    template< class Tatget, class Source > 
+    template< class Target, class Source > 
     Target implicit_convert_to( Source const & u );
 
 This function alone can not manage with implicit conversion, as `implicit_convert_to` needs the target type to be stated explicitly. 
@@ -178,7 +178,7 @@ This function alone can not manage with implicit conversion, as `implicit_conver
     }
   };
   template < class Source >
-  convertible_from<From> implicitly(Source source) 
+  convertible_from<Source> implicitly(Source source) 
   { 
     return convertible_from<Source>(source); 
   } 
@@ -387,11 +387,15 @@ The library takes in account some of the features suggested by the [*Boost.Conve
 
 [section Caveats]
 
-In order to provide the needed functionality, two type traits are mandatory: `is_constructible` and `is_assignable`. The library provides a first implementation of these type traits that works on compilers providing some specific features. The idea is that these type traits should be added to [*Boost.TypeTraits].
+In order to provide the needed functionality, some type traits are mandatory: `is_constructible, `is_assignable` and others. The library provides a first implementation of these type traits that works on compilers providing SFINAE for expressions. The idea is that some of these type traits should be added to [*Boost.TypeTraits].
 
 When the compiler doesn't provides with automatic ways to detect these traits, the library provides specializations for some std and boost types. If accepted the library will provide the specializations for all the standard types and optionally for all the Boost types.
 
 Users working with compilers not supporting the definition of these traits, or users that need to make their code portable, will need to specialize these traits by hand.  
+Know compiler that are working correctly are
+
+* Gcc-4.>3
+* clang 2.9
 
 [endsect]
 
@@ -430,7 +434,7 @@ There is no need to compile [*Boost.Conversion], since it's a header only librar
 
 The generic part of [*Boost.Conversion] depends on *Boost.Config*, *Boost.TypeTraits*, *Boost.Optional* and *Boost.Fusion*. Of course it depends on the specific libraries when specific conversion are used from the directories `boost/conversion/boost`, in particular *Boost.Chrono* and *Boost.DateTime*, which need to link with.
 
-The library works well only on compilers that are able to define the traits `is_constructible` and `is_assignable`, that is compilers supporting `decltype` and SFINAE for expressions. For the other compilers the library has much more limitations. 
+The library works well only on compilers that are able to define the traits `is_constructible` and `is_assignable`, that is compilers supporting SFINAE for expressions. For the other compilers the library has much more limitations. 
 
 [/========================]
 [heading Exceptions safety]
@@ -450,16 +454,15 @@ All functions in the library are thread-unsafe except when noted explicitly.
 
 [*Boost.Conversion] is known to work on the following platforms/compilers (lack of some C++/C++0X language support disables some functionality). The needed C++/C++0X language support is:
 
-* dectype or SFINAE on expressions,
+* SFINAE on expressions,
 * allow to define function template with default arguments,
-*
 
 At present the author is unable to define the type traits `is_constructible` and `is_assignable` if dectype and SFINAE on expressions is not available. 
 On compilers that `is_constructible` and `is_assignable` can not be detected by the library, the user will need to specialize these traits explicitly. The library defines two macros `BOOST_CONVERSION_NO_IS_CONSTRUCTIBLE` and `BOOST_CONVERSION_NO_IS_ASSIGNABLE` allowing to make the specialization only when needed.
 
 The `implicitly()` function and the `convertible_from` class are not provided on compilers on which `BOOST_NO_FUNCTION_TEMPLATE_DEFAULT_ARGS` is defined.
 
-Currently, [*Boost.Conversion] has been tested in the following compilers/platforms using the trunk (Boost 1.47):
+Currently, [*Boost.Conversion] has been tested in the following compilers/platforms using the trunk (Boost 1.48):
 
 Windows with
 
@@ -501,13 +504,14 @@ Darwin 10
 [note Please send any questions, comments and bug reports to boost <at> lists <dot> boost <dot> org.]
 
 [endsect]
+[/
 [/=============================]
 [section Hello World! ]
 [/=============================]
 
 
 [endsect]
-
+]
 [endsect]
 
 [/====================================]
@@ -573,7 +577,7 @@ With __assign_to the users could do
 
     assign_to(a, assign_to(b, c));
 
-and if they find this not really readable they can try with the [*m]ake [*a]ssigner [*t]o `lvalue' free function.
+and if they find this not really readable they can try with the __lvalue free function.
 
     lvalue(a) = lvalue(b) = c;
 
@@ -651,7 +655,7 @@ The name of this function could be also __convert_to as the library can overload
 [section Can extrinsic conversions be applied implicitly?]
 [/====================================]
 
-The advertised reader will be asking himself if the library provide implicit conversions as the language makes the difference between implicit and explicit conversions. The idea is to maintain the extrinsic functions semantics as close as possible to the semantics of intrinsic ones. Implicit conversion are applied whenever the compiler find that this implicit conversion makes the program well formed.
+The advertized reader will be asking himself if the library provide implicit conversions as the language makes the difference between implicit and explicit conversions. The idea is to maintain the extrinsic functions semantics as close as possible to the semantics of intrinsic ones. Implicit conversion are applied whenever the compiler find that this implicit conversion makes the program well formed.
 
   void f(int);
 
@@ -693,7 +697,7 @@ So the following fails to compile if `ExtrCvtToInt` is extrinsically convertible
 
 [OVERLOAD_CPP_IMPL_EXTRINSIC]
 
-Why ADLIt would be great if the user could state explicitly that the parameter they are passing to `f` can be implicitly convertible to the `f` parameter type. The library provides a function __implicitly that makes a wrapper around a type that implicitly converts to any type that is extrinsically convertible from its argument.
+It would be great if the user could state explicitly that the parameter they are passing to `f` can be implicitly convertible to the `f` parameter type. The library provides a function __implicitly that makes a wrapper around a type that implicitly converts to any type that is extrinsically convertible from its argument.
 
 [OVERLOAD_CPP_IMPLICITLY_LIKE]
 
@@ -744,7 +748,7 @@ If the user had already the function
 She can add an overload that will make explicitly the conversion as follows
 
   template <typename T>
-  typename enable_if<is_extrinsically_convertible<int>,void >::type 
+  typename enable_if<is_extrinsically_convertible<T,int>,void >::type 
   f(T v) { return convert_to<int>(v); }
 
 This template overload will be taken for overload resolution only if `T` is not `int` (as non template functions are preferred to template ones) and `T` is extrinsically convertible to `int`. `is_extrinsically_convertible` is a trait added by the library that contains a nested value field that is true or false depending on whether the `Source` type is extrinsically implicit convertible to `Target`.
@@ -833,10 +837,12 @@ For example, to customize the __implicit_convert_to function you could partially
     }
   }
 
+[note the suffix _cp stands for customization point]
+
 A possible specialization for `std::pair` follows:
 
         template <typename Target1, typename Target2, typename Source1, typename Source2>
-        struct implicit_convert_cp< std::pair<Target1,Target2>, std::pair<Source1,Source2> 
+        struct implicit_converter_cp< std::pair<Target1,Target2>, std::pair<Source1,Source2> 
           , typename enable_if_c<
                 is_extrinsically_convertible<Source1, Target1>::value
             && is_extrinsically_convertible<Source2, Target2>::value
@@ -853,6 +859,8 @@ A possible specialization for `std::pair` follows:
 Note that the __implicit_converter_cp specialization inherits from `boost::true_type`. This is needed as used by the __is_extrinsically_convertible type trait.
 
 Note also the use of the `Enable` parameter to constraint the specialization to the enable types using the `enable_if` family functions.
+
+The library provide customization points for al the function __explicit_convert_to, __assign_to, __try_assign_to, __try_convert_to and __convert_to_or_fallback.
 
 An alternative customization point is to overload a variant of the conversion to specialize that adds a dummy parameter that can covey the return type when needed.
 
@@ -910,6 +918,7 @@ Sometimes the user needs the conversion construct the resulting type with some a
 
 [endsect]
 
+[/
 [section Examples]
 [/
 [section chrono::time_point and posix_time::ptime]
@@ -927,6 +936,7 @@ Sometimes the user needs the conversion construct the resulting type with some a
 
 ]
 [endsect]
+]
 
 [section:ext_references External Resources]
 [variablelist
@@ -1060,7 +1070,7 @@ This is a major evolution of the library.
 
 [endsect]
 
-[section [*Version 0.5.1, Fefruary 20, 2011] ]
+[section [*Version 0.5.1, February 20, 2011] ]
 
 [*Bug]
 
@@ -1118,7 +1128,7 @@ A `Source` class is convertible to a `Target` class if:
 
 
 [endsect]
-[section [*Version 0.2.0, Mai 16, 2009] ]
+[section [*Version 0.2.0, May 16, 2009] ]
 
 ['Adding array + fusion::tuples + Adaptation to Boost 1.39]
 
