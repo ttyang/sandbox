@@ -11,7 +11,7 @@
 /*!
  @file
  @brief
- Include this file when using conversions from/to @c std::string.
+ Include this file when using conversions from/to @c std::string via @c lexical_cast.
  */
 
 
