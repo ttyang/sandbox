@@ -12,12 +12,10 @@
 #include <boost/conversion/implicit_convert_to.hpp>
 #include <boost/conversion/explicit_convert_to.hpp>
 #include <boost/conversion/convert_to.hpp>
-#include <boost/conversion/convertible_from.hpp>
+#include <boost/conversion/implicitly.hpp>
 #include <boost/conversion/assign_to.hpp>
-#include <boost/conversion/assignable_to.hpp>
+#include <boost/conversion/lvalue.hpp>
 #include <boost/conversion/convertible_to.hpp>
-#include <boost/conversion/convertible_from.hpp>
-#include <boost/conversion/assignable_to.hpp>
 #include <boost/conversion/is_extrinsically_convertible.hpp>
 #include <iostream>
 #include <boost/detail/lightweight_test.hpp>

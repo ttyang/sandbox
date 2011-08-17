@@ -11,9 +11,9 @@
 #include <boost/conversion/explicit_convert_to.hpp>
 #include <boost/conversion/convert_to.hpp>
 #include <boost/conversion/assign_to.hpp>
-#include <boost/conversion/assignable_to.hpp>
-#include <boost/conversion/assignable_to.hpp>
-#include <boost/conversion/convertible_from.hpp>
+#include <boost/conversion/lvalue.hpp>
+#include <boost/conversion/assign_to.hpp>
+#include <boost/conversion/implicitly.hpp>
 #include <iostream>
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/static_assert.hpp>
