@@ -16,7 +16,7 @@
  * The function @c assign_to assigns the @c from parameter to the @c to parameter.
  *
  * The default behavior uses the assignment operator when the @c Target is assignable from the @c Source,
- * or makes an implicit conversion of the @ Source before assignment when the @c Source is
+ * or makes an implicit conversion of the @c Source before assignment when the @c Source is
  * implicitly convertible to @c Target.
  *
  * When the default behavior is not satisfactory or doesn't takes care of

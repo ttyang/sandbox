@@ -34,7 +34,7 @@ namespace boost {
     template <typename Source, typename Target>
     struct is_extrinsically_explicit_convertible_tagged {};
 
-  //! Macro stating if the compiler doesn't support the features needed to define the @c is_extrinsically_explicit_convertible type trait for classes.
+  //! Macro defined if and only if the compiler doesn't support the features needed to define the @c is_extrinsically_explicit_convertible type trait for classes.
   #define BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE_TAGGED
 
   }

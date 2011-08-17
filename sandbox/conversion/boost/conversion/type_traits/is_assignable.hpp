@@ -40,7 +40,7 @@ namespace boost {
   struct is_assignable
   {};
 
-  //! Macro stating if the compiler doesn't support the features needed to provide a valid implementation of @c is_assignable type trait.
+  //! Macro defined if and only if the compiler doesn't support the features needed to provide a valid implementation of @c is_assignable type trait.
   //! In this case the user needs to provide specific specializations.
   #define BOOST_CONVERSION_NO_IS_ASSIGNABLE
 }

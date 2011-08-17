@@ -46,7 +46,7 @@ namespace boost {
   struct is_constructible
   {};
 
-  //! Macro stating if the compiler doesn't support the features needed to define the @c is_constructible type trait.
+  //! Macro defined if and only if the compiler doesn't support the features needed to define the @c is_constructible type trait.
   #define BOOST_CONVERSION_NO_IS_CONSTRUCTIBLE
   //! Macro stating if the compiler doesn't support the features needed to define the @c is_default_constructible type trait.
   #define BOOST_CONVERSION_NO_IS_DEFAULT_CONSTRUCTIBLE

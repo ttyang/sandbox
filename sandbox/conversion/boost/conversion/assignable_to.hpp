@@ -11,7 +11,7 @@
 
 /*!
  @file
- @brief Defines the free function @c assignable_to class and the factory @c lvalue.
+ @brief Defines the @c assignable_to class and the factory @c lvalue.
  */
 #ifndef BOOST_CONVERSION_ASSIGNABLE_TO_HPP
 #define BOOST_CONVERSION_ASSIGNABLE_TO_HPP

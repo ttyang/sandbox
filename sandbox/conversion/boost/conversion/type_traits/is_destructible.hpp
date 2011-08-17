@@ -53,7 +53,7 @@ namespace boost {
   struct is_destructible
   {};
 
-  //! Macro stating if the compiler doesn't support the features needed to define the @c is_destructible type trait for classes.
+  //! Macro defined if and only if the compiler doesn't support the features needed to define the @c is_destructible type trait for classes.
   #define BOOST_CONVERSION_NO_IS_DESTRUCTIBLE
 
 }

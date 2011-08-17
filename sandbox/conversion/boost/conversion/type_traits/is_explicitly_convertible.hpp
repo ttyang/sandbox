@@ -46,7 +46,7 @@ namespace boost {
   struct is_explicitly_convertible
   {};
 
-  //! Macro stating if the compiler doesn't support the features needed to define the @c is_explicitly_convertible type trait
+  //! Macro defined if and only if the compiler doesn't support the features needed to define the @c is_explicitly_convertible type trait
   //! using the @c static_cast version.
   //! In this case the trait is equivalent to @c is_constructible<Target,Source>.
 

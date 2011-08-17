@@ -40,7 +40,7 @@ namespace boost {
   /**
    * @c is_copy_assignable specialization for reference types.
    *
-   * Condition: references are always copy assignable.
+   * @Condition: references are always copy assignable.
    */
   template <typename T>
   struct is_copy_assignable<T&> : true_type {};
