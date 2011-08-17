@@ -1390,7 +1390,7 @@ BOOST_STM_TRANSACTION_INVARIANT;
    // ok, forced to aborts are allowed, do them
    for (std::list<transaction*>::iterator k = aborted.begin(); k != aborted.end();)
    {
-        BOOST_ASSERT(k!=0);
+        BOOST_ASSERT(*k!=0);
       (*k)->force_to_abort();
     BOOST_STM_TRANSACTION_INVARIANT;
 
