@@ -95,7 +95,7 @@ namespace boost
 }
 #endif
 
-#if defined BOOST_CONVERSION_NO_IS_EXPLICIT_CONVERTIBLE
+#if defined BOOST_CONVERSION_NO_IS_EXPLICITLY_CONVERTIBLE
 namespace boost
 {
   template <> struct is_explicitly_convertible< X, ECF_X >  : true_type {};

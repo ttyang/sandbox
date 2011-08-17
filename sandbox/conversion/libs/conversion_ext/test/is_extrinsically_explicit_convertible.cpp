@@ -27,7 +27,7 @@ class NonCopyable {
   NonCopyable(NonCopyable&);
 };
 
-#if defined(BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICIT_CONVERTIBLE)
+#if defined(BOOST_CONVERSION_NO_IS_EXTRINSIC_EXPLICITLY_CONVERTIBLE)
 namespace boost
 {
   namespace conversion {
