@@ -11,7 +11,7 @@
 //[CP_OVERLOAD_CPP
 
 #include <boost/conversion/explicit_convert_to.hpp>
-#include <boost/conversion/is_extrinsically_explicit_convertible.hpp>
+#include <boost/conversion/is_extrinsically_explicitly_convertible.hpp>
 #include <iostream>
 
 namespace UNS {
@@ -25,7 +25,7 @@ namespace UNS {
 namespace boost {
   namespace conversion {
     template <>
-    struct is_extrinsically_explicit_convertible_tagged<UNS::S,int>
+    struct is_extrinsically_explicitly_convertible_tagged<UNS::S,int>
     : true_type {};
   }
 }
