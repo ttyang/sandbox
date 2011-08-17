@@ -7,7 +7,7 @@
 
 [article Toward Boost.Conversion
     [quickbook 1.5]
-    [version 0.6.0]
+    [version 0.6.1]
     [authors [Botet Escriba, Vicente J.]]
     [copyright 2009-2011 Vicente J. Botet Escriba]
     [id boost.conversion]
@@ -1036,6 +1036,11 @@ See  [@http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n3291.pdf [*N3291 -
 [/=================]
 
 [section:history Appendix: History]
+[section [*Version 0.6.1, July 19, 2011] ]
+
+Take in account some pre-review comments from John Bytheway and Paul Bristol concerning the documentation and some namming issues.
+ 
+[endsect]
 
 [section [*Version 0.6.0, July 16, 2011] ]
 
@@ -1424,7 +1429,7 @@ Thanks to Vladimir Batov for proposing Boost.StringConversion. The discussions o
 Thanks to Edward Diener for showing me indirectly that multiple assignments should be taken in account.
 Thanks to Jeffrey Lee Hellrung for showing me that Boost.Conversion should use also ADL as customization point, even if I have decided to disable it so simplify the library.
 Thanks to Robert Stewart for suggesting the use of a functor as customization point and for all the constructive comments he made on the Boost ML.  
-Thanks to Tomas Heller to showing me how to cut the dependency on Boost.Phoenix while introducing the overload of convert_to on Phoenix actors.
+Thanks to John Bytheway and Paul Bristol for their comments comment improving the documentation and naming consistency.
 
 And last thanks to Gordon Woodhull for proposing himself as review manager of the library. 
 
