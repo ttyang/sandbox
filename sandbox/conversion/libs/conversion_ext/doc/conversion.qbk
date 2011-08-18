@@ -112,6 +112,8 @@ The assignment operator could also be overloaded by a free function with some li
 
 [*Boost.Conversion] provides a library-based solution for these missing language features, shows its own limitations and propose some library workarounds needed to take care of an equivalent behavior. 
 
+The library can be used also as a workaround on compilers that doesn't provides explicit conversion operators.
+
 Note that [*Boost.Conversion] is not particularly concerned with cases of: 
 
 * type-to-type conversion via an input/output stream as Boost.LexicalCast does or 
@@ -126,7 +128,15 @@ When the users need to configure the conversion between specific value types the
 
 [section Motivation]
 
-When conversion is useful, but not provided by unrelated classes, the recommended approach is to use a named free function. One example of this could be a `date_to_week(date const&)` function. 
+When conversion is useful, but not provided by unrelated classes, the recommended approach is to use a named free function. One example of this could be a `date_to_week(date const&)` function. Other example are found on the standard chrono library
+
+    class system_clock {
+    public:
+      typedef chrono::time_point<system_clock>     time_point;
+      //...
+      static std::time_t to_time_t(const time_point<system_clock>& t);
+      static time_point<system_clock>  from_time_t(std::time_t t);
+  };
 
 This approach works well when the source and destination are known at compile time, but when templates are involved, it becomes problematic. How can one write generic code for user-supplied classes when the source and destination types could be anything? Predicting the name becomes impossible, `operator T()` is the accepted way to express such an intent.
 
