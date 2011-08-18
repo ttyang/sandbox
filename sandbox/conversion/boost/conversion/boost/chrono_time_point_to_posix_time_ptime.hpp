@@ -12,7 +12,7 @@
 /*!
  @file
  @brief
- Include this file when using conversions between @c boost::ptime and @c boost::chrono::time_point<>.
+ Include this file when using conversions between @c boost::ptime and @c boost::chrono::time_point<system_clock>.
  */
 
 //[CHRONO_TIME_POINT_TO_POSIX_TIME_PTIME_HPP
@@ -35,13 +35,13 @@ namespace boost {
   
   namespace conversion {
 
-    template < typename Clock, typename Duration>
-    struct implicit_converter_cp<posix_time::ptime, chrono::time_point<Clock, Duration>
+    template < typename Duration>
+    struct implicit_converter_cp<posix_time::ptime, chrono::time_point<chrono::system_clock, Duration>
         > : true_type
     {
-      posix_time::ptime operator()(const chrono::time_point<Clock, Duration>& from)
+      posix_time::ptime operator()(const chrono::time_point<chrono::system_clock, Duration>& from)
       {
-        typedef chrono::time_point<Clock, Duration> time_point_t;
+        typedef chrono::time_point<chrono::system_clock, Duration> time_point_t;
         typedef chrono::nanoseconds duration_t;
         typedef duration_t::rep rep_t;
         rep_t d = chrono::duration_cast<duration_t>(from.time_since_epoch()).count();
@@ -57,14 +57,14 @@ namespace boost {
       }
     };
 
-    template < typename Clock, typename Duration>
-    struct implicit_converter_cp<chrono::time_point<Clock, Duration>, posix_time::ptime
+    template < typename Duration>
+    struct implicit_converter_cp<chrono::time_point<chrono::system_clock, Duration>, posix_time::ptime
     > : true_type
     {
-      chrono::time_point<Clock, Duration> operator()(const posix_time::ptime& from)
+      chrono::time_point<chrono::system_clock, Duration> operator()(const posix_time::ptime& from)
       {
         posix_time::time_duration const time_since_epoch=from-posix_time::from_time_t(0);
-        chrono::time_point<Clock, Duration> t=chrono::system_clock::from_time_t(time_since_epoch.total_seconds());
+        chrono::time_point<chrono::system_clock, Duration> t=chrono::system_clock::from_time_t(time_since_epoch.total_seconds());
         long long nsec=time_since_epoch.fractional_seconds()*(1000000000/time_since_epoch.ticks_per_second());
         return  t+chrono::duration_cast<Duration>(chrono::nanoseconds(nsec));
       }
