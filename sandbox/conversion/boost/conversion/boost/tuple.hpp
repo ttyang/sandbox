@@ -22,11 +22,6 @@
 #include <boost/config.hpp>
 
 namespace boost {
-#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-  //! trick to generate the doc. Don't take care of it
-  struct trick_fusion_tuple{};
-#endif
-  
   namespace conversion {
 
     template < typename T1, typename T2, typename S1, typename S2>
@@ -80,6 +75,14 @@ namespace boost {
     };
 
   }
+#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
+  namespace doxygen_trick
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct tuple{};
+  }
+#endif
+
 }
 
 #endif

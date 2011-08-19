@@ -29,11 +29,6 @@
 
 
 namespace boost {
-#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-  //! trick to generate the doc. Don't take care of it
-  struct trick_optional{};
-#endif
-  
   namespace conversion {
 
     /**
@@ -133,6 +128,14 @@ namespace boost {
     };
 
   }
+#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
+  namespace doxygen_trick
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct optional{};
+  }
+#endif
+
 }
 
 #endif

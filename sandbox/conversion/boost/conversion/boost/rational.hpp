@@ -26,12 +26,6 @@
 #include <boost/utility/enable_if.hpp>
 
 namespace boost {
-
-#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-  //! trick to generate the doc. Don't take care of it
-  struct trick_rational{};
-#endif
-  
   namespace conversion {
 
     //! @brief @c implicit_converter specialization for source and target been @c boost::rational.
@@ -75,6 +69,14 @@ namespace boost {
       }
     };
   }
+#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
+  namespace doxygen_trick
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct rational{};
+  }
+#endif
+
 }
 
 #endif

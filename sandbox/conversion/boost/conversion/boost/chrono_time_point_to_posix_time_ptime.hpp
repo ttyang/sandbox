@@ -28,11 +28,6 @@
 #include <boost/config.hpp>
 
 namespace boost {
-  #if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-    //! trick to generate the doc. Don't take care of it
-    struct trick_chrono_time_point{};
-  #endif
-  
   namespace conversion {
 
     template < typename Duration>
@@ -70,7 +65,16 @@ namespace boost {
       }
     };
   }
+
+#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
+  namespace trick_doxygen
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct chrono_time_point_to_posix_time_ptime{};
+  }
+#endif
 }
+
 
 #endif
 //]

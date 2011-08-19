@@ -22,13 +22,8 @@
 #include <boost/conversion/assign_to.hpp>
 
 namespace boost {
-  #if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-    //! trick to generate the doc. Don't take care of it
-    struct trick_numeric_interval{};
-  #endif
-  
-  namespace conversion {
 
+  namespace conversion {
     //! @brief @c implicit_converter specialization for source and target been @c boost::numeric::interval.
     //!
     template < typename Target, typename PTarget, typename Source, typename PSource>
@@ -70,6 +65,14 @@ namespace boost {
       }
     };
   }
+
+#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
+  namespace doxygen_trick
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct numeric_interval{};
+  }
+#endif
 }
 
 #endif

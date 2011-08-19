@@ -26,8 +26,11 @@
 
 namespace boost {
 #if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-  //! trick to generate the doc. Don't take care of it
-  struct trick_vector{};
+  namespace doxygen_trick
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct vector{};
+  }
 #endif
   
   namespace conversion {

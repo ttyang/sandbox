@@ -34,7 +34,7 @@ namespace boost {
    * @Remark
    *   - On compilers providing an intrinsic for this trait, the intrinsic will be used.
    *   - On C++0x mode, @c std::is_constructible will be used when available.
-   *   - On compilers supporting SFINAE_EXPR or DECLTYPE the library provided a valid implementation.
+   *   - On compilers supporting SFINAE for expressions the library provided a valid implementation.
    *   - Otherwise,
    *     - the library will provide specialization for the builtin types in this file,
    *     - the library will provide specialization for specific standard types in the associated @c type_traits/std/file.hpp

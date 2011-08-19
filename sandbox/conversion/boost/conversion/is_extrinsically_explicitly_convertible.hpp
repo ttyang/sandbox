@@ -19,7 +19,7 @@
 namespace boost {
   namespace conversion {
     /**
-     * States if @c Source is extrinsically explicit convertible to @c Target.
+     * States if @c Source is extrinsically explicitly  convertible to @c Target.
      *
      * @Condition: @c true_type if and only if the return expression in the following code
      * would be well-formed:
@@ -31,7 +31,7 @@ namespace boost {
      * @Requires @c Target and @c Source must be complete types, (possibly cv-qualified) void, or arrays of unknown bound.
      *
      * @Remark
-     *   - On compilers supporting SFINAE_EXPR or DECLTYPE the library provided a valid implementation.
+     *   - On compilers supporting SFINAE for expressions the library provided a valid implementation.
      *   - Otherwise, the trait is equivalent to @c boost::conversion::explicit_converter<Target,Source>.
      */
     template <class Source, class Target>

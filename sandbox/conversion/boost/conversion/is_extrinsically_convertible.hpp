@@ -31,7 +31,7 @@ namespace boost {
      * @Requires @c Target and @c Source must be complete types, (possibly cv-qualified) void, or arrays of unknown bound.
      *
      * @Remark
-     *   - On compilers supporting SFINAE_EXPR or DECLTYPE the library provided a valid implementation.
+     *   - On compilers supporting SFINAE for expressions the library provided a valid implementation.
      *   - Otherwise, the trait is equivalent to @c boost::conversion::implicit_converter<Target,Source>.
      */
     template <typename Source, typename Target>

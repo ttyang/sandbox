@@ -17,7 +17,7 @@
  *
  * The default behavior uses the assignment operator when the @c Target is assignable from the @c Source,
  * or makes an implicit conversion of the @c Source before assignment when the @c Source is
- * implicitly convertible to @c Target.
+ * extrinsically implicitly convertible to @c Target.
  *
  * When the default behavior is not satisfactory or doesn't takes care of
  *  specific types, the user could customize the behavior of
@@ -73,13 +73,13 @@ namespace boost {
 
     /**
      * Specialization when @c Target is not assignable from @c Source, but
-     * @c Target is copy constructible and @c Source is extrinsic convertible to
+     * @c Target is copy constructible and @c Source is extrinsically  convertible to
      * @c Target.
      *
      * @tparam Target target type of the conversion.
      * @tparam Source source type of the conversion.
      *
-     * @Requires @c Target must be CopyAssinable and @c @c Source must be extrinsic convertible to @c Target.
+     * @Requires @c Target must be CopyAssinable and @c @c Source must be extrinsically  convertible to @c Target.
      */
     template < typename Target, typename Source>
     struct assigner<Target, Source
@@ -191,7 +191,7 @@ namespace boost {
      * @tparam N the size of the c-arrays.
      *
      * @Requires @c Target must be CopyAssinable and @c @c Source must be
-     * extrinsic convertible to @c Target.
+     * extrinsically convertible to @c Target.
      */
     template < typename Target, typename Source, std::size_t N  >
     struct assigner<Target[N],Source[N]

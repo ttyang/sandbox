@@ -27,11 +27,6 @@
 #include <boost/config.hpp>
 
 namespace boost {
-#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
-  //! trick to generate the doc. Don't take care of it
-  struct trick_chrono_duration{};
-#endif
-  
   namespace conversion {
     //! @brief @c implicit_converter specialization for conversions from @c boost::chrono::duration<> to @c boost::posix_time::time_duration.
     //!
@@ -71,6 +66,14 @@ namespace boost {
     };
 
   }
+#if defined(BOOST_CONVERSION_DOXYGEN_INVOKED)
+  namespace doxygen_trick
+  {
+    //! trick to generate the doc. Don't take care of it
+    struct chrono_duration_to_posix_time_duration{};
+  }
+#endif
+
 }
 
 #endif
