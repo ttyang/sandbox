@@ -236,7 +236,7 @@ void lvalue_assign_to_with_builtin_types() {
 }
 
 void assign_to_transitive() {
-    int a=0; int b=0; //int c=0;
+    int a=0; int b=0;
 
     //assign_to(a, assign_to(b, assign_to(c,1)));
     boost::conversion::assign_to(a, boost::conversion::assign_to(b, 1));
@@ -254,9 +254,7 @@ void lvalue_assign_to_transitive() {
 
 void fp_convert_to() {
   {
-    //char c=0;
     short s=1;
-    int i=2;
     long l=3;
 
     using boost::phoenix::placeholders::_1;
