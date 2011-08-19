@@ -4,9 +4,9 @@
 <title>Overview</title>
 <link rel="stylesheet" href="../.././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
-<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
-<link rel="prev" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
+<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.2">
+<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.2">
+<link rel="prev" href="../../index.html" title="Toward Boost.Conversion 0.6.2">
 <link rel="next" href="users_guide.html" title="Users' Guide">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -33,7 +33,7 @@
 <dt><span class="section"><a href="overview.html#boost.conversion.overview.caveats">Caveats</a></span></dt>
 </dl></div>
 <a name="boost.conversion.overview.how_to_use_this_documentation"></a><h4>
-<a name="idp13413264"></a>
+<a name="idp13411920"></a>
       <a class="link" href="overview.html#boost.conversion.overview.how_to_use_this_documentation">How
       to Use This Documentation</a>
     </h4>
@@ -120,13 +120,16 @@
         propose some library workarounds needed to take care of an equivalent behavior.
       </p>
 <p>
+        The library can be used also as a workaround on compilers that doesn't provides
+        explicit conversion operators.
+      </p>
+<p>
         Note that <span class="bold"><strong>Boost.Conversion</strong></span> is not particularly
         concerned with cases of:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            type-to-type conversion via an input/output stream as Boost.LexicalCast
-            does or
+            type-to-type conversion via an input/output stream as <a href="http://www.boost.org/libs/conversion/lexical_cast.htm" target="_top"><span class="bold"><strong>Boost.Conversion.LexicalCast</strong></span></a> does or
           </li>
 <li class="listitem">
             string-to-type or type-to-string as Vladimir Batov's Boost.Convert proposal
@@ -137,7 +140,7 @@
             or
           </li>
 <li class="listitem">
-            numeric conversion as Boost.Numeric can do.
+            numeric conversion as <a href="http://www.boost.org/libs/numeric/conversion" target="_top"><span class="bold"><strong>Boost.NumericConversion</strong></span></a> can do.
           </li>
 </ul></div>
 <p>
@@ -152,8 +155,17 @@
 <p>
         When conversion is useful, but not provided by unrelated classes, the recommended
         approach is to use a named free function. One example of this could be a
-        <code class="computeroutput"><span class="identifier">date_to_week</span><span class="special">(</span><span class="identifier">date</span> <span class="keyword">const</span><span class="special">&amp;)</span></code> function.
+        <code class="computeroutput"><span class="identifier">date_to_week</span><span class="special">(</span><span class="identifier">date</span> <span class="keyword">const</span><span class="special">&amp;)</span></code> function. Other example are found on
+        the standard chrono library
       </p>
+<pre class="programlisting">  <span class="keyword">class</span> <span class="identifier">system_clock</span> <span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">typedef</span> <span class="identifier">chrono</span><span class="special">::</span><span class="identifier">time_point</span><span class="special">&lt;</span><span class="identifier">system_clock</span><span class="special">&gt;</span>     <span class="identifier">time_point</span><span class="special">;</span>
+    <span class="comment">//...
+</span>    <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">time_t</span> <span class="identifier">to_time_t</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">time_point</span><span class="special">&lt;</span><span class="identifier">system_clock</span><span class="special">&gt;&amp;</span> <span class="identifier">t</span><span class="special">);</span>
+    <span class="keyword">static</span> <span class="identifier">time_point</span><span class="special">&lt;</span><span class="identifier">system_clock</span><span class="special">&gt;</span>  <span class="identifier">from_time_t</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">time_t</span> <span class="identifier">t</span><span class="special">);</span>
+<span class="special">};</span>
+</pre>
 <p>
         This approach works well when the source and destination are known at compile
         time, but when templates are involved, it becomes problematic. How can one
@@ -176,8 +188,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          <code class="computeroutput"><span class="identifier">convert_to</span></code> is a short hand
-          for <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>.
+          <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
+          is a short hand for <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>.
         </p></td></tr>
 </table></div>
 <p>
@@ -215,17 +227,17 @@
 <span class="identifier">Target</span> <span class="identifier">implicit_convert_to</span><span class="special">(</span> <span class="identifier">Source</span> <span class="keyword">const</span> <span class="special">&amp;</span> <span class="identifier">u</span> <span class="special">);</span>
 </pre>
 <p>
-        This function alone can not manage with implicit conversion, as <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code> needs the target type
-        to be stated explicitly.
+        This function alone can not manage with implicit conversion, as <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>
+        needs the target type to be stated explicitly.
       </p>
 <pre class="programlisting"><span class="identifier">f</span><span class="special">(</span><span class="identifier">implicit_convert_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;(</span><span class="identifier">u</span><span class="special">));</span>
 </pre>
 <p>
-        <span class="bold"><strong>Boost.Conversion</strong></span> provides an <code class="computeroutput"><span class="identifier">implicitly</span></code> (make implicitly convertible
-        from) function that creates a class providing implicit conversion operators
-        for <code class="computeroutput"><span class="identifier">Target</span></code> types for which
-        the <code class="computeroutput"><span class="identifier">Source</span></code> type is convertible
-        using the <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>
+        <span class="bold"><strong>Boost.Conversion</strong></span> provides an <code class="computeroutput"><a class="link" href="implicitly.html" title="Function template implicitly">implicitly</a></code> (make implicitly
+        convertible from) function that creates a class providing implicit conversion
+        operators for <code class="computeroutput"><span class="identifier">Target</span></code> types
+        for which the <code class="computeroutput"><span class="identifier">Source</span></code> type
+        is convertible using the <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>
         function.
       </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Source</span> <span class="special">&gt;</span>
@@ -265,54 +277,55 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>
+            a generic <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>
             function which can be customized by the user to make implicit conversion
             between unrelated types.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>
+            a generic <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
             function which can be customized by the user to make explicit conversion
             between unrelated types.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">convert_to</span></code>
-            function which is equivalent <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>
+            a generic <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
+            function which is equivalent <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
             or that behaves as a functor factory if its argument is a fusion actor.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">assign_to</span></code> function
-            which can be customized by the user to make explicit assignments between
-            unrelated types.
+            a generic <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>
+            function which can be customized by the user to make explicit assignments
+            between unrelated types.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">try_convert_to</span></code>
+            a generic <code class="computeroutput"><a class="link" href="try_convert_to.html" title="Function template try_convert_to">try_convert_to</a></code>
             function which can be customized by the user to make explicit optional
             conversion between unrelated types.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">try_assign_to</span></code>
+            a generic <code class="computeroutput"><a class="link" href="try_assign_to.html" title="Function template try_assign_to">try_assign_to</a></code>
             function which can be customized by the user to make explicit optional
             assignments between unrelated types.
           </li>
 <li class="listitem">
-            a generic __convert_to_or_fallback function which can be customized by
-            the user to make explicit conversion between unrelated types, relying
-            on a fallback when the conversion fails.
+            a generic <code class="computeroutput"><a class="link" href="convert_to_or_fallback_idp16187392.html" title="Function template convert_to_or_fallback">convert_to_or_fallback</a></code>
+            function which can be customized by the user to make explicit conversion
+            between unrelated types, relying on a fallback when the conversion fails.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">lvalue</span></code> function
-            returning a <code class="computeroutput"><span class="identifier">assignable_to</span></code>
-            wrapper which implements assignments by calls to <code class="computeroutput"><span class="identifier">assign_to</span></code>.
+            a generic <code class="computeroutput"><a class="link" href="lvalue.html" title="Function template lvalue">lvalue</a></code>
+            function returning a <code class="computeroutput"><a class="link" href="assignable_to.html" title="Class template assignable_to">assignable_to</a></code>
+            wrapper which implements assignments by calls to <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>.
           </li>
 <li class="listitem">
-            a generic <code class="computeroutput"><span class="identifier">implicitly</span></code>
-            function returning a <code class="computeroutput"><span class="identifier">convertible_from</span></code>
+            a generic <code class="computeroutput"><a class="link" href="implicitly.html" title="Function template implicitly">implicitly</a></code>
+            function returning a <code class="computeroutput"><a class="link" href="convertible_from.html" title="Class template convertible_from">convertible_from</a></code>
             wrapper which implements the implicit conversion operators by calls to
-            <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>.
+            <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>.
           </li>
 <li class="listitem">
-            a <code class="computeroutput"><span class="identifier">convertible_to</span></code> wrapper
-            that acts as a implicit converter when passing parameters to a function.
+            a <code class="computeroutput"><a class="link" href="convertible_to.html" title="Class template convertible_to">convertible_to</a></code>
+            wrapper that acts as a implicit converter when passing parameters to
+            a function.
           </li>
 <li class="listitem">
             conversion between <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span></code>
@@ -361,13 +374,13 @@
 <a name="boost.conversion.overview.caveats"></a><a class="link" href="overview.html#boost.conversion.overview.caveats" title="Caveats">Caveats</a>
 </h3></div></div></div>
 <a name="boost.conversion.overview.caveats.supported_compilers"></a><h5>
-<a name="idp13642832"></a>
+<a name="idp13667616"></a>
         <a class="link" href="overview.html#boost.conversion.overview.caveats.supported_compilers">Supported
         compilers</a>
       </h5>
 <p>
         In order to provide the needed functionality, some type traits are mandatory:
-        <code class="computeroutput"><span class="identifier">is_constructible</span></code>, <code class="computeroutput"><span class="identifier">is_assignable</span> </code> and others. The library
+        <code class="computeroutput"><a class="link" href="../is_constructible.html" title="Struct template is_constructible">is_constructible</a></code>, <code class="computeroutput"><a class="link" href="../is_assignable.html" title="Struct template is_assignable">is_assignable</a></code> and others. The library
         provides a first implementation of these type traits that works on compilers
         providing SFINAE for expressions. The idea is that some of these type traits
         should be added to <span class="bold"><strong>Boost.TypeTraits</strong></span>.
@@ -382,42 +395,45 @@
       </p>
 <p>
         The library needs in addition compilers that allow to define function template
-        with default arguments. On compilers don't supporting this feature the <code class="computeroutput"><span class="identifier">implicitly</span></code> function can not be provided.
+        with default arguments. On compilers don't supporting this feature the <code class="computeroutput"><a class="link" href="implicitly.html" title="Function template implicitly">implicitly</a></code> function can
+        not be provided.
       </p>
 <p>
         Know compilers that are working correctly today are:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            Gcc-4.&gt;3
+            gcc since 4.4
           </li>
 <li class="listitem">
             clang 2.9
           </li>
 </ul></div>
 <a name="boost.conversion.overview.caveats.possible_odr_violation"></a><h5>
-<a name="idp13652928"></a>
+<a name="idp13677584"></a>
         <a class="link" href="overview.html#boost.conversion.overview.caveats.possible_odr_violation">Possible
         ODR violation</a>
       </h5>
 <p>
-        There is a big issue with the library: promote ODR violations.
+        There is a big issue: The library could promote ODR violations.
       </p>
 <p>
         In particular, consider:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            library A defines type TA
+            library A defines type <code class="computeroutput"><span class="identifier">TA</span></code>
           </li>
 <li class="listitem">
-            library B defines type TB
+            library B defines type <code class="computeroutput"><span class="identifier">TB</span></code>
           </li>
 <li class="listitem">
-            library C defines a conversion from TA to TB
+            library C defines a conversion from <code class="computeroutput"><span class="identifier">TA</span></code>
+            to <code class="computeroutput"><span class="identifier">TB</span></code>
           </li>
 <li class="listitem">
-            library D defines a conversion from TA to TB
+            library D defines a conversion from <code class="computeroutput"><span class="identifier">TA</span></code>
+            to <code class="computeroutput"><span class="identifier">TB</span></code>
           </li>
 </ul></div>
 <p>
@@ -429,18 +445,21 @@
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            library T defines a trait type tt that must be specialized by the user,
-            or a concept that can be mapped by the user.
+            library T defines a trait type <code class="computeroutput"><span class="identifier">TT</span></code>
+            that must be specialized by the user, or a concept that can be mapped
+            by the user.
           </li>
 <li class="listitem">
-            library A defines type TA
+            library A defines type <code class="computeroutput"><span class="identifier">TA</span></code>
           </li>
 <li class="listitem">
-            library C needs to specialize the type trait tt for TA or do a concept
+            library C needs to specialize the type trait <code class="computeroutput"><span class="identifier">TT</span></code>
+            for <code class="computeroutput"><span class="identifier">TA</span></code> or do a concept
             map.
           </li>
 <li class="listitem">
-            library D needs to specialize the type trait tt for TA or do a concept
+            library D needs to specialize the type trait <code class="computeroutput"><span class="identifier">TT</span></code>
+            for <code class="computeroutput"><span class="identifier">TA</span></code> or do a concept
             map.
           </li>
 </ul></div>
@@ -453,7 +472,7 @@
       </p>
 <p>
         Extrinsic conversions can then be defined without risking ODR violations
-        only in three situations:
+        in some situations:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -466,6 +485,13 @@
           </li>
 <li class="listitem">
             As a stop-gap substitute for explicit conversion operators.
+          </li>
+<li class="listitem">
+            When writing library code if the author and tehe end users take care
+            of a well defined protocol and conform to some limitations. The section
+            <a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.proto" title="How can libraries define and use conversions between unrelated types?">How can libraries
+            define and use conversions between unrelated types?</a> propose a
+            posible approach.
           </li>
 </ul></div>
 </div>

@@ -4,8 +4,8 @@
 <title>Users' Guide</title>
 <link rel="stylesheet" href="../.././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
-<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.1">
+<link rel="home" href="../../index.html" title="Toward Boost.Conversion 0.6.2">
+<link rel="up" href="../../index.html" title="Toward Boost.Conversion 0.6.2">
 <link rel="prev" href="overview.html" title="Overview">
 <link rel="next" href="reference.html" title="Reference">
 </head>
@@ -50,13 +50,16 @@
         to a given type?</a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.functors">Functors</a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to">Usage
-        of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
-        <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> or <code class="computeroutput"><span class="identifier">assign_to</span></code></a></span></dt>
+        of <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>,
+        <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
+        or <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code></a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_specialize_extrinsic_conversions_">How
         to specialize extrinsic conversions?</a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.what_to_do_when_the_compiler_doesn_t_supports_the_definition_of_the_needed_type_traits_">What
         to do when the compiler doesn't supports the definition of the needed type
         traits?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.proto">How can
+        libraries define and use conversions between unrelated types?</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.ext_references">External
       Resources</a></span></dt>
@@ -74,7 +77,7 @@
         Conversion</a>
 </h4></div></div></div>
 <a name="boost.conversion.users_guide.getting_started.install.getting_boost_conversion"></a><h6>
-<a name="idp13673312"></a>
+<a name="idp13710864"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.getting_boost_conversion">Getting
           Boost.Conversion</a>
         </h6>
@@ -88,7 +91,7 @@
           Sandbox</a>.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.building_boost_conversion"></a><h6>
-<a name="idp13678304"></a>
+<a name="idp13715856"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.building_boost_conversion">Building
           Boost.Conversion</a>
         </h6>
@@ -98,7 +101,7 @@
           in your compiler include path.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.requirements"></a><h6>
-<a name="idp13681360"></a>
+<a name="idp13718912"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.requirements">Requirements</a>
         </h6>
 <p>
@@ -111,15 +114,15 @@
         </p>
 <p>
           The library works well only on compilers that are able to define some traits
-          as <code class="computeroutput"><span class="identifier">is_constructible</span></code> and
-          <code class="computeroutput"><span class="identifier">is_assignable</span> </code>, that is
-          compilers supporting SFINAE for expressions. In addition it needs to be
-          able to allow the definition of functions template with default arguments.
-          On compilers don't supporting this feature the <code class="computeroutput"><span class="identifier">implicitly</span></code>
+          as <code class="computeroutput"><a class="link" href="../is_constructible.html" title="Struct template is_constructible">is_constructible</a></code>
+          and <code class="computeroutput"><a class="link" href="../is_assignable.html" title="Struct template is_assignable">is_assignable</a></code>, that
+          is compilers supporting SFINAE for expressions. In addition it needs to
+          be able to allow the definition of functions template with default arguments.
+          On compilers don't supporting this feature the <code class="computeroutput"><a class="link" href="implicitly.html" title="Function template implicitly">implicitly</a></code>
           function can not be provided.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.exceptions_safety"></a><h6>
-<a name="idp13694848"></a>
+<a name="idp13732272"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.exceptions_safety">Exceptions
           safety</a>
         </h6>
@@ -128,7 +131,7 @@
           of exception safety as long as the underlying parameters provide it.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.thread_safety"></a><h6>
-<a name="idp13697440"></a>
+<a name="idp13734864"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.thread_safety">Thread
           safety</a>
         </h6>
@@ -136,7 +139,7 @@
           All functions in the library are thread-unsafe except when noted explicitly.
         </p>
 <a name="boost.conversion.users_guide.getting_started.install.tested_compilers"></a><h6>
-<a name="idp13699952"></a>
+<a name="idp13737376"></a>
           <a class="link" href="users_guide.html#boost.conversion.users_guide.getting_started.install.tested_compilers">Tested
           compilers</a>
         </h6>
@@ -275,13 +278,16 @@
         to a given type?</a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.functors">Functors</a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to">Usage
-        of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
-        <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> or <code class="computeroutput"><span class="identifier">assign_to</span></code></a></span></dt>
+        of <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>,
+        <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
+        or <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code></a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.how_to_specialize_extrinsic_conversions_">How
         to specialize extrinsic conversions?</a></span></dt>
 <dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.what_to_do_when_the_compiler_doesn_t_supports_the_definition_of_the_needed_type_traits_">What
         to do when the compiler doesn't supports the definition of the needed type
         traits?</a></span></dt>
+<dt><span class="section"><a href="users_guide.html#boost.conversion.users_guide.tutorial.proto">How can
+        libraries define and use conversions between unrelated types?</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -290,7 +296,7 @@
 </h4></div></div></div>
 <p>
           When you need to make a extrinsic explicit conversion, simply include the
-          file <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span></code> and use the <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          file <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span></code> and use the <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
           function.
         </p>
 <p>
@@ -329,17 +335,17 @@
           <span class="emphasis"><em>See the source file <a href="../../../../example/even.cpp" target="_top">example/even.cpp</a></em></span>
         </p>
 <p>
-          The <code class="computeroutput"><span class="identifier">convert_to</span></code> function
-          returns the explicit conversion to the target type.
+          The <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
+          function returns the explicit conversion to the target type.
         </p>
 <pre class="programlisting"><span class="keyword">return</span> <span class="identifier">Target</span><span class="special">(</span><span class="identifier">source</span><span class="special">);</span>
 </pre>
 <p>
           When the extrinsic conversion must be stored in a variable you can use
-          <code class="computeroutput"><span class="identifier">assign_to</span></code> instead. If the
-          trait <code class="computeroutput"><span class="identifier">is_assignable</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span><span class="identifier">Source</span><span class="special">&gt;</span></code>
-          is a <code class="computeroutput"><span class="identifier">true_type</span></code>, <code class="computeroutput"><span class="identifier">assign_to</span></code>(target,source) calls to the
-          assignment operator,
+          <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>
+          instead. If the trait <code class="computeroutput"><span class="identifier">is_assignable</span><span class="special">&lt;</span><span class="identifier">Target</span><span class="special">,</span><span class="identifier">Source</span><span class="special">&gt;</span></code> is a <code class="computeroutput"><span class="identifier">true_type</span></code>,
+          <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>(target,source)
+          calls to the assignment operator,
         </p>
 <pre class="programlisting"><span class="identifier">target</span> <span class="special">=</span> <span class="identifier">source</span><span class="special">;</span>
 </pre>
@@ -403,11 +409,12 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            The name <code class="computeroutput"><span class="identifier">convert_to</span></code> could
-            also be <code class="computeroutput"><span class="identifier">convert</span></code> and
-            <code class="computeroutput"><span class="identifier">assign_to</span></code> be <code class="computeroutput"><span class="identifier">assign</span></code>, but I find the current names
-            more coherent with the other names used by the library. If the Boost
-            community agree on better names globally I will adopt them.
+            The name <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
+            could also be <code class="computeroutput"><span class="identifier">convert</span></code>
+            and <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>
+            be <code class="computeroutput"><span class="identifier">assign</span></code>, but I find
+            the current names more coherent with the other names used by the library.
+            If the Boost community agree on better names globally I will adopt them.
           </p></td></tr>
 </table></div>
 <p>
@@ -425,13 +432,13 @@
 <pre class="programlisting"><span class="identifier">a</span> <span class="special">=</span> <span class="identifier">b</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span>
 </pre>
 <p>
-          With <code class="computeroutput"><span class="identifier">assign_to</span></code> the users
-          could do
+          With <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>
+          the users could do
         </p>
 <pre class="programlisting"><span class="identifier">assign_to</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">assign_to</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">));</span>
 </pre>
 <p>
-          and if they find this not really readable they can try with the <code class="computeroutput"><span class="identifier">lvalue</span></code> free function.
+          and if they find this not really readable they can try with the <code class="computeroutput"><a class="link" href="lvalue.html" title="Function template lvalue">lvalue</a></code> free function.
         </p>
 <pre class="programlisting"><span class="identifier">lvalue</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">lvalue</span><span class="special">(</span><span class="identifier">b</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">c</span><span class="special">;</span>
 </pre>
@@ -441,9 +448,9 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            The name <code class="computeroutput"><span class="identifier">lvalue</span></code> comes
-            from the fact that it builds a lvalue that is able to works with extrinsic
-            conversions.
+            The name <code class="computeroutput"><a class="link" href="lvalue.html" title="Function template lvalue">lvalue</a></code>
+            comes from the fact that it builds a lvalue that is able to works with
+            extrinsic conversions.
           </p></td></tr>
 </table></div>
 </div>
@@ -465,9 +472,10 @@
 </pre>
 <p>
           Do not forget to include these files when you use a generic class or algorithm
-          using the generic <code class="computeroutput"><span class="identifier">convert_to</span></code>
-          or <code class="computeroutput"><span class="identifier">assign_to</span></code>, otherwise
-          your program will not compile. E.g. if you want to convert a pair of <code class="computeroutput"><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">time_point</span><span class="special">&lt;&gt;</span></code>
+          using the generic <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
+          or <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>,
+          otherwise your program will not compile. E.g. if you want to convert a
+          pair of <code class="computeroutput"><span class="identifier">chrono</span><span class="special">::</span><span class="identifier">time_point</span><span class="special">&lt;&gt;</span></code>
           to a pair of <code class="computeroutput"><span class="identifier">posix_time</span><span class="special">::</span><span class="identifier">ptime</span></code>
           do not forget to include both <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">std</span><span class="special">/</span><span class="identifier">pair</span><span class="special">.</span><span class="identifier">hpp</span></code>
           and <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">chrono_posix_time</span><span class="special">.</span><span class="identifier">hpp</span></code>
@@ -479,7 +487,7 @@
         invalid conversions</a>
 </h4></div></div></div>
 <p>
-          The expected behavior of <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          The expected behavior of <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
           is to throw an exception when the conversion is not possible. If an action
           must be taken on failure the user needs to use a try-catch
         </p>
@@ -500,7 +508,7 @@
         </p>
 <p>
           Sometimes the user could prefer no-throw behavior. The library provides
-          a way to get this behavior with the <code class="computeroutput"><span class="identifier">try_convert_to</span></code>
+          a way to get this behavior with the <code class="computeroutput"><a class="link" href="try_convert_to.html" title="Function template try_convert_to">try_convert_to</a></code>
           function, which returns an optional that is initialized only when the conversion
           succeeds.
         </p>
@@ -532,7 +540,7 @@
 <p>
         </p>
 <p>
-          Last the user can get the same behavior using the <code class="computeroutput"><span class="identifier">try_assign_to</span></code>
+          Last the user can get the same behavior using the <code class="computeroutput"><a class="link" href="try_assign_to.html" title="Function template try_assign_to">try_assign_to</a></code>
           function, which returns if the assignment succeeded or not
         </p>
 <p>
@@ -570,14 +578,14 @@
 <p>
         </p>
 <p>
-          Note the use <code class="computeroutput"><span class="identifier">try_assign_to</span></code>
-          instead of <code class="computeroutput"><span class="identifier">assign_to</span></code>, as
-          it avoids an exception if the conversion fails, as there is a fallback
+          Note the use <code class="computeroutput"><a class="link" href="try_assign_to.html" title="Function template try_assign_to">try_assign_to</a></code>
+          instead of <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>,
+          as it avoids an exception if the conversion fails, as there is a fallback
           value already.
         </p>
 <p>
-          The library provides a specific function __convert_to_or_fallback that
-          does that exactly
+          The library provides a specific function <code class="computeroutput"><a class="link" href="convert_to_or_fallback_idp16187392.html" title="Function template convert_to_or_fallback">convert_to_or_fallback</a></code>
+          that does that exactly
         </p>
 <p>
           
@@ -606,7 +614,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-            The name of this function could be also <code class="computeroutput"><span class="identifier">convert_to</span></code>
+            The name of this function could be also <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
             as the library can overload it, but I find it more explicit this way.
             If the Boost community agree on a better name I will adopt it.
           </p></td></tr>
@@ -728,7 +736,7 @@
           It would be great if the user could state explicitly that the parameter
           they are passing to <code class="computeroutput"><span class="identifier">f</span></code> can
           be implicitly convertible to the <code class="computeroutput"><span class="identifier">f</span></code>
-          parameter type. The library provides a function <code class="computeroutput"><span class="identifier">implicitly</span></code>
+          parameter type. The library provides a function <code class="computeroutput"><a class="link" href="implicitly.html" title="Function template implicitly">implicitly</a></code>
           that makes a wrapper around a type that implicitly converts to any type
           that is extrinsically convertible from its argument.
         </p>
@@ -769,9 +777,9 @@
 <span class="number">2</span> <span class="identifier">called</span>
 </pre>
 <p>
-          Note that extrinsically implicit convertible implies extrinsically explicit
+          Note that extrinsically implicit convertible implies extrinsically explicitly
           convertible but the opposite is not true. That means that if <code class="computeroutput"><span class="identifier">ExtrExplicitCvtToInt</span></code> is extrinsically
-          explicit convertible to <code class="computeroutput"><span class="keyword">int</span></code>,
+          explicitly convertible to <code class="computeroutput"><span class="keyword">int</span></code>,
           the following program will be ill formed
         </p>
 <p>
@@ -804,10 +812,10 @@
         to a given type?</a>
 </h4></div></div></div>
 <p>
-          The use of the helper function <code class="computeroutput"><span class="identifier">implicitly</span></code>
+          The use of the helper function <code class="computeroutput"><a class="link" href="implicitly.html" title="Function template implicitly">implicitly</a></code>
           is a little bit intrusive in some cases. It would be great if the users
           could define a function accepting a type that is extrinsically convertible,
-          so the they will not be forced to use it. There are two alternatives:
+          so they will not be forced to use it. There are two alternatives:
         </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -838,8 +846,8 @@
         </p>
 <p>
           An alternative could be to define the function <code class="computeroutput"><span class="identifier">f</span></code>
-          from the beginning stating explicitly that his parameter one that is extrinsically
-          convertible to <code class="computeroutput"><span class="keyword">int</span></code>.
+          from the beginning stating explicitly that his parameter is one that is
+          extrinsically convertible to <code class="computeroutput"><span class="keyword">int</span></code>.
         </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">convertible_to</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">);</span>
 </pre>
@@ -890,7 +898,7 @@
 </h4></div></div></div>
 <p>
           The library provide a specific Phoenix functor factory having as result
-          a functor that will call to the <code class="computeroutput"><span class="identifier">convert_to</span></code>
+          a functor that will call to the <code class="computeroutput"><a class="link" href="convert_to.html" title="Function template convert_to">convert_to</a></code>
           function lazily.
         </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">/</span><span class="identifier">fp</span><span class="special">/</span><span class="identifier">convert_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -917,18 +925,20 @@
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.usage_of___implicit_convert_to____explicit_convert_to_or___assign_to" title="Usage of implicit_convert_to, explicit_convert_to or assign_to">Usage
-        of <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
-        <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> or <code class="computeroutput"><span class="identifier">assign_to</span></code></a>
+        of <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>,
+        <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
+        or <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code></a>
 </h4></div></div></div>
 <p>
-          The users should use <code class="computeroutput"><span class="identifier">assign_to</span></code>
+          The users should use <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>
           whenever they had used operator=(), that is, when there is already a target
           variable.
         </p>
 <p>
-          The users should use the conversion forms <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>,
-          <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code> whenever
-          they had used the conversion operator Target(), either implicit or explicitly.
+          The users should use the conversion forms <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>,
+          <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
+          whenever they had used the conversion operator Target(), either implicit
+          or explicitly.
         </p>
 </div>
 <div class="section">
@@ -949,8 +959,8 @@
             </li>
 </ul></div>
 <p>
-          For example, to customize the <code class="computeroutput"><span class="identifier">implicit_convert_to</span></code>
-          function you could partially specialize the functor <code class="computeroutput"><span class="identifier">implicit_converter_cp</span></code>.
+          For example, to customize the <code class="computeroutput"><a class="link" href="implicit_convert_to.html" title="Function template implicit_convert_to">implicit_convert_to</a></code>
+          function you could partially specialize the functor <code class="computeroutput"><a class="link" href="implicit_converter_cp.html" title="Struct template implicit_converter_cp">implicit_converter_cp</a></code>.
         </p>
 <pre class="programlisting"><span class="keyword">namespace</span>  <span class="identifier">boost</span> <span class="special">{</span> 
   <span class="keyword">namespace</span> <span class="identifier">conversion</span> <span class="special">{</span>
@@ -989,9 +999,9 @@
 <span class="special">};</span>
 </pre>
 <p>
-          Note that the <code class="computeroutput"><span class="identifier">implicit_converter_cp</span></code>
+          Note that the <code class="computeroutput"><a class="link" href="implicit_converter_cp.html" title="Struct template implicit_converter_cp">implicit_converter_cp</a></code>
           specialization inherits from <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">true_type</span></code>.
-          This is needed as used by the <code class="computeroutput"><span class="identifier">is_extrinsically_convertible</span></code>
+          This is needed as used by the <code class="computeroutput"><a class="link" href="is_extrinsically_conver_idp16413472.html" title="Struct template is_extrinsically_convertible">is_extrinsically_convertible</a></code>
           type trait.
         </p>
 <p>
@@ -1000,8 +1010,11 @@
           <code class="computeroutput"><span class="identifier">enable_if</span></code> family functions.
         </p>
 <p>
-          The library provide customization points for al the function <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>, <code class="computeroutput"><span class="identifier">assign_to</span></code>,
-          <code class="computeroutput"><span class="identifier">try_assign_to</span></code>, <code class="computeroutput"><span class="identifier">try_convert_to</span></code> and __convert_to_or_fallback.
+          The library provide customization points for al the function <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>,
+          <code class="computeroutput"><a class="link" href="assign_to.html" title="Function template assign_to">assign_to</a></code>,
+          <code class="computeroutput"><a class="link" href="try_assign_to.html" title="Function template try_assign_to">try_assign_to</a></code>,
+          <code class="computeroutput"><a class="link" href="try_convert_to.html" title="Function template try_convert_to">try_convert_to</a></code>
+          and <code class="computeroutput"><a class="link" href="convert_to_or_fallback_idp16187392.html" title="Function template convert_to_or_fallback">convert_to_or_fallback</a></code>.
         </p>
 <p>
           An alternative customization point is to overload a variant of the conversion
@@ -1009,7 +1022,7 @@
           when needed.
         </p>
 <p>
-          For example the <code class="computeroutput"><span class="identifier">explicit_convert_to</span></code>
+          For example the <code class="computeroutput"><a class="link" href="explicit_convert_to.html" title="Function template explicit_convert_to">explicit_convert_to</a></code>
           function can be specialized by overloading the function
         </p>
 <pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Target</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Source</span><span class="special">&gt;</span>
@@ -1069,6 +1082,112 @@
 <span class="special">}</span>
 <span class="preprocessor">#endif</span> 
 </pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost.conversion.users_guide.tutorial.proto"></a><a class="link" href="users_guide.html#boost.conversion.users_guide.tutorial.proto" title="How can libraries define and use conversions between unrelated types?">How can
+        libraries define and use conversions between unrelated types?</a>
+</h4></div></div></div>
+<p>
+          Header-only libraries can define conversion between unrelated types with
+          no ODR violation issue.
+        </p>
+<p>
+          Imagine the library C needs a conversion from <code class="computeroutput"><span class="identifier">TA</span></code>
+          to <code class="computeroutput"><span class="identifier">TB</span></code> and that this conversion
+          is defined in file <code class="computeroutput"><span class="identifier">C_TA_2_TB</span><span class="special">.</span><span class="identifier">h</span></code>
+        </p>
+<pre class="programlisting"><span class="comment">// C_TA_2_TB.hpp
+</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">A</span><span class="special">/</span><span class="identifier">TA</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">B</span><span class="special">/</span><span class="identifier">TB</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="comment">// specific definition of the conversion
+</span><span class="comment">// ...
+</span></pre>
+<p>
+          The problem appears when the library needs to use itself this or another
+          specific conversion. In order to avoid the problem the library can not
+          include the specific file defining the specific conversion.
+        </p>
+<pre class="programlisting"><span class="comment">// C_Uses_T1_2_TB.hpp
+</span><span class="comment">// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</span><span class="comment">// WARNING !!! The end user of this file must ensure that
+</span><span class="comment">// a single definition of the conversion from TA to TB is included in each .cpp file that uses it. 
+</span><span class="comment">// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">"A/TA.hpp"</span>
+<span class="preprocessor">#include</span> <span class="string">"B/TB.hpp"</span>
+
+<span class="keyword">namespace</span> <span class="identifier">C</span> <span class="special">{</span>
+  <span class="comment">// A function using the specific conversion implicitly
+</span>  <span class="keyword">void</span> <span class="identifier">depend_on_TA_to_TB_conversion</span><span class="special">()</span>
+  <span class="special">{</span>
+    <span class="comment">// ...
+</span>    <span class="comment">// uses generic conversion from TA to TB
+</span>    <span class="identifier">TB</span> <span class="identifier">b</span><span class="special">=</span><span class="identifier">Boost</span><span class="special">::</span><span class="identifier">conversion</span><span class="special">::</span><span class="identifier">convert_to</span><span class="special">&lt;</span><span class="identifier">TB</span><span class="special">&gt;(</span><span class="identifier">a</span><span class="special">);</span>
+    <span class="comment">// ...
+</span>  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+          Note that the header <code class="computeroutput"><span class="identifier">C_Uses_T1_2_TB</span><span class="special">.</span><span class="identifier">hpp</span></code>
+          couldn't compile without including the definition of the specific conversion,
+          as for example the provided by C in <code class="computeroutput"><span class="identifier">C_TA_2_TB</span><span class="special">.</span><span class="identifier">hpp</span></code>.
+        </p>
+<p>
+          In this way, the library doesn't depend directly to the specific conversion
+          definition. End users using the header file that depends implicitly of
+          the specific conversion could and must ensure that a unique definition
+          of the specific conversion is used by including one of the available definitions
+          in each <code class="computeroutput"><span class="special">.</span><span class="identifier">cpp</span></code>
+          file using the depending <code class="computeroutput"><span class="identifier">Uses_T1_2_TB</span><span class="special">.</span><span class="identifier">hpp</span></code>
+          header file.
+        </p>
+<pre class="programlisting"><span class="comment">// E_Uses_C_and_D_functions_depending_on_TA_to_TB_conversion.cpp
+</span>
+<span class="comment">// Include either the C or D definition but always the same
+</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">C_TA_2_TB</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">"C_Uses_T1_2_TB.hpp"</span>
+<span class="preprocessor">#include</span> <span class="string">"D_Uses_T1_2_TB.hpp"</span>
+
+<span class="comment">// use C:: depend_on_TA_to_TB_conversion()
+</span></pre>
+<p>
+          This is a little bit constraining, but it works in most of the cases. Of
+          course it assumes that the available conversion implementation are all
+          equivalents. If this is not the case, this doesn't works of course.
+        </p>
+<p>
+          Non header only libraries could define conversion without ODR violation
+          as far as the conversion is defined completely on a header file. However
+          they cannot use specific conversions on any <code class="computeroutput"><span class="special">.</span><span class="identifier">cpp</span></code> file as this will make a explicit
+          dependency to the provided conversion definition promoting ODR violations.
+          That means that any uses of the specific conversion must be included on
+          a header file as it is done for the case of header-only libraries.
+        </p>
+<p>
+          To limit the code included on the header files one possible approach could
+          be to provide a non-public conversion function in the library namespace
+          that can be defined on a binary file and place the generic conversion definition
+          in a header file.
+        </p>
+<pre class="programlisting"><span class="comment">// C_TA_2_TB.hpp
+</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">conversion</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="string">"A/TA.hpp"</span>
+<span class="preprocessor">#include</span> <span class="string">"B/TB.hpp"</span>
+
+<span class="keyword">namespace</span> <span class="identifier">C</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">detail</span> <span class="special">{</span>
+    <span class="comment">// A private declaration of the conversion
+</span>    <span class="identifier">TB</span> <span class="identifier">TA_to_TB</span> <span class="special">();</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+
+<span class="comment">// specific definition of the conversion using C::detail::TA_to_TB
+</span><span class="comment">// ...
+</span></pre>
 </div>
 </div>
 <div class="section">

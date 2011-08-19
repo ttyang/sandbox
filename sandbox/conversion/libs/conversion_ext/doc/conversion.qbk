@@ -7,7 +7,7 @@
 
 [article Toward Boost.Conversion
     [quickbook 1.5]
-    [version 0.6.1]
+    [version 0.6.2]
     [authors [Botet Escriba, Vicente J.]]
     [copyright 2009-2011 Vicente J. Botet Escriba]
     [id boost.conversion]
@@ -22,28 +22,30 @@
 
 [def __Boost_Conversion__  *Boost.Conversion*]
 
-[def __explicit_convert_to  `explicit_convert_to`]
-[def __implicit_convert_to  `implicit_convert_to`]
-[def __try_convert_to  `try_convert_to`]
-[def __try_assign_to  `try_assign_to`]
-[def __convert_to  `convert_to`]
-[def __convertible_to  `convertible_to`]
-[def __implicitly  `implicitly`]
-[def __convertible_from  `convertible_from`]
-[def __implicit_converter_cp  `implicit_converter_cp`]
-[def __explicit_converter_cp  `explicit_converter_cp`]
 
-[sfinaedef __convert_to_or_fallback  `convert_to_or_fallback`]
-[def __assign_to  `assign_to`]
-[def __assignable_to  `assignable_to`]
-[def __lvalue  `lvalue`]
-[def __assigner_cp  `assigner_cp`]
+[def __explicit_convert_to [funcref boost::conversion::explicit_convert_to explicit_convert_to]]
+[def __implicit_convert_to [funcref boost::conversion::implicit_convert_to implicit_convert_to]]
+[def __try_convert_to [funcref boost::conversion::try_convert_to try_convert_to]]
+[def __try_assign_to [funcref boost::conversion::try_assign_to try_assign_to]]
+[def __convert_to [funcref boost::conversion::convert_to convert_to]]
 
-[def __is_convertible  `is_convertible`]
-[def __is_constructible  `is_constructible`]
-[def __is_assignable  `is_assignable `]
-[def __is_extrinsically_convertible  `is_extrinsically_convertible`]
-[def __is_extrinsically_explicitly_convertible  `is_extrinsically_explicitly_convertible`]
+[def __convertible_to [classref boost::conversion::convertible_to convertible_to]]
+[def __implicitly [funcref boost::conversion::implicitly implicitly]]
+[def __convertible_from [classref boost::conversion::convertible_from convertible_from]]
+[def __implicit_converter_cp [classref boost::conversion::implicit_converter_cp implicit_converter_cp]]
+[def __explicit_converter_cp [classref boost::conversion::explicit_converter_cp explicit_converter_cp]]
+
+[def __convert_to_or_fallback [funcref boost::conversion::convert_to_or_fallback convert_to_or_fallback]]
+[def __assign_to [funcref boost::conversion::assign_to assign_to]]
+[def __assignable_to [classref boost::conversion::assignable_to assignable_to]]
+[def __lvalue [funcref boost::conversion::lvalue lvalue]]
+[def __assigner_cp [classref boost::conversion::assigner_cp assigner_cp]]
+
+[def __is_convertible [classref boost::is_convertible is_convertible]]
+[def __is_constructible [classref boost::is_constructible is_constructible]]
+[def __is_assignable [classref boost::is_assignable is_assignable]]
+[def __is_extrinsically_convertible [classref boost::conversion::is_extrinsically_convertible is_extrinsically_convertible]]
+[def __is_extrinsically_explicitly_convertible [classref boost::conversion::is_extrinsically_explicitly_convertible is_extrinsically_explicitly_convertible]]
 
 
 [import ../../../boost/conversion/boost/chrono_time_point_to_posix_time_ptime.hpp]
@@ -116,10 +118,10 @@ The library can be used also as a workaround on compilers that doesn't provides 
 
 Note that [*Boost.Conversion] is not particularly concerned with cases of: 
 
-* type-to-type conversion via an input/output stream as Boost.LexicalCast does or 
+* type-to-type conversion via an input/output stream as [@http://www.boost.org/libs/conversion/lexical_cast.htm [*Boost.Conversion.LexicalCast]] does or 
 * string-to-type or type-to-string as Vladimir Batov's Boost.Convert proposal or 
 * string-to-type or type-to-string as Jeroen Habraken on going Boost.Coerce or 
-* numeric conversion as Boost.Numeric can do.
+* numeric conversion as [@http://www.boost.org/libs/numeric/conversion [*Boost.NumericConversion]] can do.
 
 When the users need to configure the conversion between specific value types they will need to use the specific interface these libraries provide.
  
@@ -410,38 +412,40 @@ The library needs in addition compilers that allow to define function template w
   
 Know compilers that are working correctly today are:
 
-* Gcc-4.>3
+* gcc since 4.4 
 * clang 2.9
 
 [heading Possible ODR violation]
 
-There is a big issue with the library: promote ODR violations.  
+There is a big issue: The library could promote ODR violations.  
 
 In particular, consider:
 
-* library A defines type TA
-* library B defines type TB
-* library C defines a conversion from TA to TB
-* library D defines a conversion from TA to TB
+* library A defines type `TA`
+* library B defines type `TB`
+* library C defines a conversion from `TA` to `TB`
+* library D defines a conversion from `TA` to `TB`
 
 Now libraries C and D are incompatible; they cannot both be used in the same program without ODR violation.
 
 Note that the same ODR violation occurs in the following general case:
 
-* library T defines a trait type tt that must be specialized by the user, or a concept that can be mapped by the user.
-* library A defines type TA
-* library C needs to specialize the type trait tt for TA or do a concept map.
-* library D needs to specialize the type trait tt for TA or do a concept map.
+* library T defines a trait type `TT` that must be specialized by the user, or a concept that can be mapped by the user.
+* library A defines type `TA`
+* library C needs to specialize the type trait `TT` for `TA` or do a concept map.
+* library D needs to specialize the type trait `TT` for `TA` or do a concept map.
 
 Now libraries C and D are incompatible for the same reason. 
 
 The library has no mean to prevent these ODR violation. If needed the library could add something that could detect at link time these possible ODR violations.
 
-Extrinsic conversions can then be defined without risking ODR violations only in three situations:
+Extrinsic conversions can then be defined without risking ODR violations in some situations:
 
 * When writing non-library code (i.e. code that will not be combined with other code over which the author has no control).
 * When writing library code if both types belongs to this library, but belongs to independent and uncorrelated parts. 
 * As a stop-gap substitute for explicit conversion operators.
+* When writing library code if the author and tehe end users take care of a well defined protocol and conform to some limitations. 
+The section [link boost.conversion.users_guide.tutorial.proto How can libraries define and use conversions between unrelated types?] propose a posible approach.
 
 
 [endsect]
@@ -760,7 +764,7 @@ and prints
   1 called
   2 called
 
-Note that extrinsically implicit convertible implies extrinsically explicit convertible but the opposite is not true. That means that if `ExtrExplicitCvtToInt` is extrinsically explicit convertible to `int`, the following program will be ill formed
+Note that extrinsically implicit convertible implies extrinsically explicitly convertible but the opposite is not true. That means that if `ExtrExplicitCvtToInt` is extrinsically explicitly convertible to `int`, the following program will be ill formed
 
 [OVERLOAD_CPP_IMPLICITLY_EXPLICIT]
 
@@ -783,7 +787,7 @@ having as result, for example
 [section How to write a function that accepts a parameter that is extrinsically convertible to a given type?]
 [/====================================]
 
-The use of the helper function __implicitly is a little bit intrusive in some cases. It would be great if the users could define a function accepting a type that is extrinsically convertible, so the they will not be forced to use it. There are two alternatives:
+The use of the helper function __implicitly is a little bit intrusive in some cases. It would be great if the users could define a function accepting a type that is extrinsically convertible, so they will not be forced to use it. There are two alternatives:
 
 * overload the function using SFINAE
 * change the function prototype
@@ -800,7 +804,7 @@ She can add an overload that will make explicitly the conversion as follows
 
 This template overload will be taken for overload resolution only if `T` is not `int` (as non template functions are preferred to template ones) and `T` is extrinsically convertible to `int`. `is_extrinsically_convertible` is a trait added by the library that contains a nested value field that is true or false depending on whether the `Source` type is extrinsically implicit convertible to `Target`.
 
-An alternative could be to define the function `f` from the beginning stating explicitly that his parameter one that is extrinsically convertible to `int`.
+An alternative could be to define the function `f` from the beginning stating explicitly that his parameter is one that is extrinsically convertible to `int`.
 
   void f(convertible_to<int> v);
 
@@ -866,7 +870,7 @@ The users should use the conversion forms __implicit_convert_to, __explicit_conv
 [endsect]
 
 [section How to specialize extrinsic conversions?]
-[/====================================]
+[/===============================================]
 
 __Boost_Conversion__ has two customization point for each one of the provided functions:
 
@@ -941,6 +945,7 @@ While the `explicit operator T() const;` can be defined only on compilers suppor
 [endsect]
 
 [section What to do when the compiler doesn't supports the definition of the needed type traits?]
+[/==============================================================================================]
 
 When the compiler doesn't supports the definition of some of the type traits, the library doesn't work as the user could expect. For each trait the library provides a macro that states if the library can define correctly the type trait. For example, BOOST_CONVERSION_NO_IS_ASSIGNABLE. In this case the user needs to specialize the type trait explicitly as follows:
 
@@ -953,6 +958,89 @@ When the compiler doesn't supports the definition of some of the type traits, th
 
 [endsect]
 
+[section:proto How can libraries define and use conversions between unrelated types?]
+[/==================================================================================]
+
+Header-only libraries can define conversion between unrelated types with no ODR violation issue.
+ 
+Imagine the library C needs a conversion from `TA` to `TB` and that this conversion is defined in file `C_TA_2_TB.h`
+ 
+  // C_TA_2_TB.hpp
+ 
+  #include <boost/conversion.hpp>
+  #include <A/TA.hpp>
+  #include <B/TB.hpp>
+  // specific definition of the conversion
+  // ...
+ 
+The problem appears when the library needs to use itself this or another specific conversion. 
+In order to avoid the problem the library can not include the specific file defining the specific conversion.
+ 
+  // C_Uses_T1_2_TB.hpp
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // WARNING !!! The end user of this file must ensure that
+  // a single definition of the conversion from TA to TB is included in each .cpp file that uses it. 
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  #include <boost/conversion.hpp>
+  #include "A/TA.hpp"
+  #include "B/TB.hpp"
+ 
+  namespace C {
+    // A function using the specific conversion implicitly
+    void depend_on_TA_to_TB_conversion()
+    {
+      // ...
+      // uses generic conversion from TA to TB
+      TB b=Boost::conversion::convert_to<TB>(a);
+      // ...
+    }
+  }
+ 
+Note that the header `C_Uses_T1_2_TB.hpp` couldn't compile without including the definition of the specific conversion, 
+as for example the provided by C in `C_TA_2_TB.hpp`.
+ 
+In this way, the library doesn't depend directly to the specific conversion definition. 
+End users using the header file that depends implicitly of the specific conversion could and must ensure that a unique 
+definition of the specific conversion is used by including one of the available definitions in each `.cpp` file using the depending 
+`Uses_T1_2_TB.hpp` header file.
+ 
+  // E_Uses_C_and_D_functions_depending_on_TA_to_TB_conversion.cpp
+ 
+  // Include either the C or D definition but always the same
+  #include <C_TA_2_TB.hpp>
+  #include "C_Uses_T1_2_TB.hpp"
+  #include "D_Uses_T1_2_TB.hpp"
+ 
+  // use C:: depend_on_TA_to_TB_conversion()
+ 
+This is a little bit constraining, but it works in most of the cases. Of course it assumes that the available conversion implementation are all equivalents. 
+If this is not the case, this doesn't works of course.
+ 
+Non header only libraries could define conversion without ODR violation as far as the conversion is defined completely on a header file.
+However they cannot use specific conversions on any `.cpp` file as this will make a explicit dependency to the provided conversion 
+definition promoting ODR violations.
+That means that any uses of the specific conversion must be included on a header file as it is done for the case of header-only libraries.
+ 
+To limit the code included on the header files one possible approach could be to provide a non-public conversion function in the library namespace that can be defined on a binary file and place the generic conversion definition in a header file.
+ 
+  // C_TA_2_TB.hpp
+ 
+  #include <boost/conversion.hpp>
+  #include "A/TA.hpp"
+  #include "B/TB.hpp"
+ 
+  namespace C {
+    namespace detail {
+      // A private declaration of the conversion
+      TB TA_to_TB ();
+    }
+  }
+ 
+  // specific definition of the conversion using C::detail::TA_to_TB
+  // ...
+ 
+ 
+[endsect]
 
 
 [/

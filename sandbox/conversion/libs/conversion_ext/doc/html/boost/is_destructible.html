@@ -4,7 +4,7 @@
 <title>Struct template is_destructible</title>
 <link rel="stylesheet" href=".././boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
-<link rel="home" href="../index.html" title="Toward Boost.Conversion 0.6.1">
+<link rel="home" href="../index.html" title="Toward Boost.Conversion 0.6.2">
 <link rel="up" href="conversion/reference.html#header.boost.conversion.type_traits.is_destructible_hpp" title="Header &lt;boost/conversion/type_traits/is_destructible.hpp&gt;">
 <link rel="prev" href="is_default_constructible.html" title="Struct template is_default_constructible">
 <link rel="next" href="../BOOST_CONVERSION_NO_IS_DESTRUCTIBLE.html" title="Macro BOOST_CONVERSION_NO_IS_DESTRUCTIBLE">
@@ -35,7 +35,7 @@
 <span class="keyword">struct</span> <a class="link" href="is_destructible.html" title="Struct template is_destructible">is_destructible</a> <span class="special">{</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="idp14943280"></a><h2>Description</h2>
+<a name="idp15083120"></a><h2>Description</h2>
 <p>States if <code class="computeroutput">T</code> is destructible.</p>
 <p><span class="bold"><strong>Condition:</strong></span>: <code class="computeroutput">true_type</code> if and only if given:</p>
 <pre class="programlisting">   <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span>
@@ -52,7 +52,7 @@
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem"><p>On compilers providing an intrinsic for this trait, the intrinsic will be used.</p></li>
 <li class="listitem"><p>On C++0x mode, <code class="computeroutput">std::is_destructible</code> will be used when available.</p></li>
-<li class="listitem"><p>On compilers supporting SFINAE_EXPR or DECLTYPE the library provided a valid implementation.</p></li>
+<li class="listitem"><p>On compilers supporting SFINAE for expressions the library provided a valid implementation.</p></li>
 <li class="listitem">
 <p>Otherwise,</p>
 <div class="itemizedlist"><ul class="itemizedlist" type="circle">
