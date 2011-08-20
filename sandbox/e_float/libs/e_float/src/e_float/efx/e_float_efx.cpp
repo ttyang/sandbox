@@ -645,6 +645,10 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
     }
   }
 
+  // Check for underflow.
+  if(iszero()) { return (*this = ef::zero()); }
+
+  // Check for overflow.
   if(   (exp >= std::numeric_limits<e_float>::max_exponent10)
      && (ef::fabs(*this) > (std::numeric_limits<e_float>::max)())
     )
@@ -927,12 +931,7 @@ efx::e_float& efx::e_float::div_unsigned_long_long(const unsigned long long n)
   }
 
   // Check for underflow.
-  if(   (exp <= std::numeric_limits<e_float>::min_exponent10)
-     && (*this < (std::numeric_limits<e_float>::min)())
-    )
-  {
-    return (*this = ef::zero());
-  }
+  if(iszero()) { return (*this = ef::zero()); }
 
   // Set the sign of the result.
   neg = b_neg;
@@ -1844,9 +1843,24 @@ bool efx::e_float::rd_string(const char* const s)
   }
 
   // ...and check for underflow.
-  if(exp < std::numeric_limits<e_float>::min_exponent10)
+  if(exp <= std::numeric_limits<e_float>::min_exponent10)
   {
-    *this = ef::zero();
+    if(exp == std::numeric_limits<e_float>::min_exponent10)
+    {
+      // Check for identity with the minimum value.
+      e_float test = *this;
+
+      test.exp = static_cast<INT64>(0);
+
+      if(test.isone())
+      {
+        *this = ef::zero();
+      }
+    }
+    else
+    {
+      *this = ef::zero();
+    }
   }
 
   return true;
