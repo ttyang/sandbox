@@ -1064,7 +1064,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-gmp|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-efx|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-gmp|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-efx|x64'">true</ExcludedFromBuild>
@@ -1073,6 +1072,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-efx|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-gmp|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-mpfr|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='release-efx|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\test\real\cases\test_case_0000x_overflow_underflow.cpp" />
     <ClCompile Include="..\test\real\cases\test_case_0000y_write_to_ostream.cpp" />
