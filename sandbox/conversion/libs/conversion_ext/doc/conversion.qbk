@@ -100,9 +100,9 @@ Finally, you can mentally add the following to any code fragments in this docume
 [section Scope]
 [/==================]
 
-[*Boost.Conversion] manages extrinsic conversion between unrelated types. These conversion can be seen as implicit or explicit conversions ([@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2380.pdf [*N2380 - Explicit Conversion Operator Draft Working Paper (revision 2)]]).
+[*Boost.Conversion] manages extrinsic conversion between unrelated types. These conversions can be seen as implicit or explicit conversions ([@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2380.pdf [*N2380 - Explicit Conversion Operator Draft Working Paper (revision 2)]]).
 
-The conversion operator can not be overloaded with a free-standing function on C++. In the past, there were request to be able to overload the `static_cast` operator [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2200.pdf [*N2200 - Operator Overloading]]. The author of this library thinks that the language would be more uniform if this extrinsic overload would be possible. The new extrinsic conversion operators could take the following form 
+The conversion operator can not be overloaded with a free-standing function on C++. In the past, there were requests to be able to overload the `static_cast` operator [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2200.pdf [*N2200 - Operator Overloading]]. The author of this library thinks that the language would be more uniform if this extrinsic overload were possible. The new extrinsic conversion operators could take the following form 
 
   operator Target(const Source& val);
 
@@ -112,25 +112,25 @@ The assignment operator could also be overloaded by a free function with some li
 
   Target& operator=(Target&, Source const&);
 
-[*Boost.Conversion] provides a library-based solution for these missing language features, shows its own limitations and propose some library workarounds needed to take care of an equivalent behavior. 
+[*Boost.Conversion] provides a library-based solution for these missing language features, shows its own limitations and proposes some library workarounds needed to provide equivalent behavior. 
 
-The library can be used also as a workaround on compilers that doesn't provides explicit conversion operators.
+The library can also be used as a workaround on compilers that don't provide explicit conversion operators.
 
 Note that [*Boost.Conversion] is not particularly concerned with cases of: 
 
-* type-to-type conversion via an input/output stream as [@http://www.boost.org/libs/conversion/lexical_cast.htm [*Boost.Conversion.LexicalCast]] does or 
-* string-to-type or type-to-string as Vladimir Batov's Boost.Convert proposal or 
-* string-to-type or type-to-string as Jeroen Habraken on going Boost.Coerce or 
+* type-to-type conversion via an input/output stream as [@http://www.boost.org/libs/conversion/lexical_cast.htm [*Boost.Conversion.LexicalCast]] does, or 
+* string-to-type or type-to-string as Vladimir Batov's Boost.Convert proposal, or 
+* string-to-type or type-to-string as Jeroen Habraken ongoing Boost.Coerce, or 
 * numeric conversion as [@http://www.boost.org/libs/numeric/conversion [*Boost.NumericConversion]] can do.
 
-When the users need to configure the conversion between specific value types they will need to use the specific interface these libraries provide.
+When users need to configure the conversion between specific value types they will need to use the specific interface these libraries provide.
  
 [endsect]
 
 
 [section Motivation]
 
-When conversion is useful, but not provided by unrelated classes, the recommended approach is to use a named free function. One example of this could be a `date_to_week(date const&)` function. Other example are found on the standard chrono library
+When conversion is useful, but not provided by unrelated classes, the recommended approach is to use a named free function. One example of this could be a `date_to_week(date const&)` function. Other examples are found in the standard chrono library:
 
     class system_clock {
     public:
@@ -140,11 +140,11 @@ When conversion is useful, but not provided by unrelated classes, the recommende
       static time_point<system_clock>  from_time_t(std::time_t t);
   };
 
-This approach works well when the source and destination are known at compile time, but when templates are involved, it becomes problematic. How can one write generic code for user-supplied classes when the source and destination types could be anything? Predicting the name becomes impossible, `operator T()` is the accepted way to express such an intent.
+This approach works well when the source and destination are known at compile time, but when templates are involved, it becomes problematic. How can one write generic code for user-supplied classes when the source and destination types could be anything? Predicting the name becomes impossible; `operator T()` is the accepted way to express such an intent.
 
   T t = T(u);
 
-Generic programming demands syntactic regularity. [*Boost.Conversion] propose an all-purpose templated conversion function:
+Generic programming demands syntactic regularity. [*Boost.Conversion] proposes an all-purpose templated conversion function:
 
     template< class Target, class Source > 
     Target explicit_convert_to( Source const & u );
@@ -172,7 +172,7 @@ To manage with extrinsically implicit conversion Boost.Conversion provides anoth
     template< class Target, class Source > 
     Target implicit_convert_to( Source const & u );
 
-This function alone can not manage with implicit conversion, as __implicit_convert_to needs the target type to be stated explicitly. 
+This function alone can not manage implicit conversion, as __implicit_convert_to needs the target type to be stated explicitly. 
 
   f(implicit_convert_to<T>(u));
 
@@ -406,9 +406,9 @@ The library takes in account some of the features suggested by the [*Boost.Conve
 
 In order to provide the needed functionality, some type traits are mandatory: __is_constructible, __is_assignable and others. The library provides a first implementation of these type traits that works on compilers providing SFINAE for expressions. The idea is that some of these type traits should be added to [*Boost.TypeTraits].
 
-When the compiler doesn't provides with automatic ways to detect these traits, the library provides specializations for some std and boost types. If accepted the library will provide the specializations for all the standard types and optionally for all the Boost types. Users working with compilers not supporting the definition of these traits, or users that need to make their code portable, will need to specialize these traits by hand.
+When the compiler doesn't provide an automatic way to detect these traits, the library provides specializations for some std and boost types. If accepted the library will provide specializations for all the standard types and optionally for all the Boost types. Users working with compilers not supporting the definition of these traits, or users that need to make their code portable, will need to specialize these traits by hand.
 
-The library needs in addition compilers that allow to define function template with default arguments. On compilers don't supporting this feature the __implicitly function can not be provided.
+The library also requires a compiler that allows defining function templates with default arguments. On compilers not supporting this feature the __implicitly function can not be provided.
   
 Know compilers that are working correctly today are:
 
@@ -426,7 +426,7 @@ In particular, consider:
 * library C defines a conversion from `TA` to `TB`
 * library D defines a conversion from `TA` to `TB`
 
-Now libraries C and D are incompatible; they cannot both be used in the same program without ODR violation.
+Now libraries C and D are incompatible; they can not both be used in the same program without ODR violation.
 
 Note that the same ODR violation occurs in the following general case:
 
@@ -437,15 +437,15 @@ Note that the same ODR violation occurs in the following general case:
 
 Now libraries C and D are incompatible for the same reason. 
 
-The library has no mean to prevent these ODR violation. If needed the library could add something that could detect at link time these possible ODR violations.
+The library has no means to prevent these ODR violation. If needed the library could add something that could detect possible ODR violations at link time.
 
-Extrinsic conversions can then be defined without risking ODR violations in some situations:
+Extrinsic conversions can be defined without risking ODR violations in some situations:
 
 * When writing non-library code (i.e. code that will not be combined with other code over which the author has no control).
-* When writing library code if both types belongs to this library, but belongs to independent and uncorrelated parts. 
+* When writing library code if both types belong to this library, but belong to independent and uncorrelated parts. 
 * As a stop-gap substitute for explicit conversion operators.
-* When writing library code if the author and tehe end users take care of a well defined protocol and conform to some limitations. 
-The section [link boost.conversion.users_guide.tutorial.proto How can libraries define and use conversions between unrelated types?] propose a posible approach.
+* When writing library code if the author and end users follow a well defined protocol and conform to some limitations. 
+The section [link boost.conversion.users_guide.tutorial.proto How can libraries define and use conversions between unrelated types?] proposes a possible approach.
 
 
 [endsect]
@@ -505,19 +505,19 @@ All functions in the library are thread-unsafe except when noted explicitly.
 
 [*Boost.Conversion] is known to work on the following platforms/compilers (lack of some C++/C++0X language support disables some functionality). The needed C++/C++0X language support is:
 
-* SFINAE on expressions,
-* allow to define function template with default arguments,
+* SFINAE on expressions
+* function templates with default arguments
 
-At present the author is unable to define the type traits `is_constructible` and `is_assignable` if dectype and SFINAE on expressions is not available. 
-On compilers that `is_constructible` and `is_assignable` can not be detected by the library, the user will need to specialize these traits explicitly. The library defines two macros `BOOST_CONVERSION_NO_IS_CONSTRUCTIBLE` and `BOOST_CONVERSION_NO_IS_ASSIGNABLE` allowing to make the specialization only when needed.
+At present the author is unable to define the type traits `is_constructible` and `is_assignable` if decltype and SFINAE on expressions are not available. 
+On compilers where `is_constructible` and `is_assignable` can not be detected by the library, the user will need to specialize these traits explicitly. The library defines two macros `BOOST_CONVERSION_NO_IS_CONSTRUCTIBLE` and `BOOST_CONVERSION_NO_IS_ASSIGNABLE` allowing to make the specialization only when needed.
 
 The `implicitly()` function and the `convertible_from` class are not provided on compilers on which `BOOST_NO_FUNCTION_TEMPLATE_DEFAULT_ARGS` is defined.
 
-Currently, [*Boost.Conversion] has been tested in the following compilers/platforms using the trunk (Boost 1.48):
+Currently, [*Boost.Conversion] has been tested on the following compilers/platforms using the trunk (Boost 1.48):
 
 Windows with
 
-* MSVC 10.0 (needs to specialize `is_constructible` and `is_assignable` can not be defined)
+* MSVC 10.0 (needs to specialize as `is_constructible` and `is_assignable` can not be defined)
 
 Cygwin 1.7 with
 
@@ -681,7 +681,7 @@ Last the user can get the same behavior using the __try_assign_to function, whic
 [section Handling invalid conversions via a fallback]
 [/====================================]
 
-In some cases the conversion failure can be ignored and the result replaced with a fallback value. There are some ways to manage with that
+In some cases conversion failure can be ignored and the result replaced with a fallback value. There are some ways to manage with that
 
 [FALLBACK_CPP_TRY_ASSIGN_WAY]
 
@@ -909,18 +909,18 @@ A possible specialization for `std::pair` follows:
 
 Note that the __implicit_converter_cp specialization inherits from `boost::true_type`. This is needed as used by the __is_extrinsically_convertible type trait.
 
-Note also the use of the `Enable` parameter to constraint the specialization to the enable types using the `enable_if` family functions.
+Note also the use of the `Enable` parameter to constrain the specialization to the enable types using the `enable_if` family functions.
 
-The library provide customization points for al the function __explicit_convert_to, __assign_to, __try_assign_to, __try_convert_to and __convert_to_or_fallback.
+The library provides customization points for all the functions __explicit_convert_to, __assign_to, __try_assign_to, __try_convert_to and __convert_to_or_fallback.
 
-An alternative customization point is to overload a variant of the conversion to specialize that adds a dummy parameter that can covey the return type when needed.
+An alternative customization point is to overload a variant of the conversion to specialize that adds a dummy parameter that can convey the return type when needed.
 
 For example the __explicit_convert_to function can be specialized by overloading the function
 
     template <typename Target, typename Source>
     Target explicit_convert_to(Source const& from, dummy::type_tag<Target> const&);
 
-This is particular useful when we want explicit conversion on compilers that don't support explicit conversion operators. For example the Boost.Opaque library define a mixing to add explicit conversion to a specific type as follows:
+This is particular useful when we want explicit conversion on compilers that don't support explicit conversion operators. For example the Boost.Opaque library defines a mixing to add explicit conversion to a specific type as follows:
 
     template <typename T>
     struct using_explicit_conversion_to {
@@ -940,14 +940,14 @@ This is particular useful when we want explicit conversion on compilers that don
         };
     };
 
-While the `explicit operator T() const;` can be defined only on compilers supporting explicit conversion operators, the `explicitly_convert_to` variant can be overloaded on most of the compilers, providing a portable solution.
+While the `explicit operator T() const;` can be defined only on compilers supporting explicit conversion operators, the `explicitly_convert_to` variant can be overloaded on most compilers, providing a portable solution.
     
 [endsect]
 
-[section What to do when the compiler doesn't supports the definition of the needed type traits?]
+[section What to do when the compiler doesn't support definition of the needed type traits?]
 [/==============================================================================================]
 
-When the compiler doesn't supports the definition of some of the type traits, the library doesn't work as the user could expect. For each trait the library provides a macro that states if the library can define correctly the type trait. For example, BOOST_CONVERSION_NO_IS_ASSIGNABLE. In this case the user needs to specialize the type trait explicitly as follows:
+When the compiler doesn't support definition of some of the type traits, the library doesn't work as the user could expect. For each trait the library provides a macro that states if the library can define correctly the type trait. For example, BOOST_CONVERSION_NO_IS_ASSIGNABLE. In this case the user needs to specialize the type trait explicitly as follows:
 
   #if defined BOOST_CONVERSION_NO_IS_ASSIGNABLE
   namespace boost
@@ -974,7 +974,7 @@ Imagine the library C needs a conversion from `TA` to `TB` and that this convers
   // ...
  
 The problem appears when the library needs to use itself this or another specific conversion. 
-In order to avoid the problem the library can not include the specific file defining the specific conversion.
+In order to avoid the problem the library can not include the file defining the specific conversion.
  
   // C_Uses_T1_2_TB.hpp
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1013,13 +1013,13 @@ definition of the specific conversion is used by including one of the available 
  
   // use C:: depend_on_TA_to_TB_conversion()
  
-This is a little bit constraining, but it works in most of the cases. Of course it assumes that the available conversion implementation are all equivalents. 
-If this is not the case, this doesn't works of course.
+This is a little bit constraining, but it works in most of the cases. Of course it assumes that the available conversion implementations are all equivalent. 
+If this is not the case, this doesn't work of course.
  
-Non header only libraries could define conversion without ODR violation as far as the conversion is defined completely on a header file.
-However they cannot use specific conversions on any `.cpp` file as this will make a explicit dependency to the provided conversion 
-definition promoting ODR violations.
-That means that any uses of the specific conversion must be included on a header file as it is done for the case of header-only libraries.
+Non header only libraries could define conversion without ODR violation as long as the conversion is defined completely in a header file.
+However they can not use specific conversions in any `.cpp` file as this will make a explicit dependency to the provided conversion 
+definition, promoting ODR violations.
+That means that any uses of the specific conversion must be included in a header file as is done in the case of header-only libraries.
  
 To limit the code included on the header files one possible approach could be to provide a non-public conversion function in the library namespace that can be defined on a binary file and place the generic conversion definition in a header file.
  
@@ -1044,9 +1044,9 @@ To limit the code included on the header files one possible approach could be to
 
 
 [/
-[section How to convert to types needing some constructors arguments?]
+[section How to convert to types needing constructor arguments?]
 
-Sometimes the user needs the conversion construct the resulting type with some arguments. This could be the case for example of std::vector, for which the user could want to pass an allocator to the constructor. In order to maintain the same signature, the library provides a `pack` function that will wrap the Source and the Target constructor parameters in a single parameter. So the overloading must be done on the result of this `pack` function.
+Sometimes the user needs the conversion to construct the resulting type with some arguments. This could be the case for example with std::vector, for which the user could want to pass an allocator to the constructor. In order to maintain the same signature, the library provides a `pack` function that will wrap the Source and the Target constructor parameters in a single parameter. So the overloading must be done on the result of this `pack` function.
 
 [endsect]
 ]
@@ -1173,7 +1173,7 @@ See  [@http://www.open-std.org/jtc1/sc22/wg21/prot/14882fdis/n3291.pdf [*N3291 -
 [section:history Appendix: History]
 [section [*Version 0.6.1, July 19, 2011] ]
 
-Take in account some pre-review comments from John Bytheway and Paul Bristol concerning the documentation and some namming issues.
+Take into account some pre-review comments from John Bytheway and Paul Bristol concerning the documentation and some naming issues.
  
 [endsect]
 
@@ -1305,7 +1305,7 @@ A `Source` class is convertible to a `Target` class if:
 
 [section:rationale Appendix: Design Rationale]
 
-[heading Why overloading the conversion functions doesn't works?]
+[heading Why doesn't overloading the conversion functions work?]
 
 
 For example, the prototype of __implicit_convert_to is
@@ -1318,8 +1318,8 @@ The users could overload this function with a specific source type, as it appear
 
 To overcome this limitation the library could opt for two alternatives:
 
-* Add a dummy parameter that can covey the Target type.
-* Implements the conversion function forwarding the call to a specific converter functor.
+* Add a dummy parameter that can convey the Target type.
+* Implement the conversion function forwarding the call to a specific converter functor.
 
 
 Adding a dummy parameter could look something like
@@ -1344,7 +1344,7 @@ The advantages are
 The drawbacks are 
 
 * the unreadable syntax,
-* the possible default implementation provided by the library would not be accessible as far as the user doesn't includes the boost::conversion namespace.
+* the possible default implementation provided by the library would not be accessible unless the user includes the boost::conversion namespace.
 * we can not add new functions on the std namespace, so we can not overload the behavior for standard classes,
 so a different technique is needed.
 
@@ -1373,8 +1373,8 @@ User specializations consists just in specializing the functor implicit_converte
 
 The advantages are
 
-* the technique can be applied to types on the standard namespace
-* the library can call to the customization point after providing a default implementation.
+* the technique can be applied to types in the standard namespace
+* the library can call the customization point after providing a default implementation.
 
 The drawbacks are 
 
@@ -1427,7 +1427,7 @@ The library provides a specialization of this class for classes Target and Sourc
 
 In the same way the library provides a specialization of this class, the users can specialize this converter functor as the class has the source and the target types as parameters.
 
-One of the problems using SFINAE, is that all the conditions must be complementary. So the user needs to know what are the other conditions and ensure that there is no ambiguity.
+One of the problems using SFINAE, is that all the conditions must be complementary. So the user needs to know what  other conditions there are and ensure that there is no ambiguity.
 
     template <  >
     struct implicit_converter<MyTarget, MySource
@@ -1440,12 +1440,12 @@ One of the problems using SFINAE, is that all the conditions must be complementa
       }
     };
 
-[heading Why the library provides two-level customization point for conversion functions?]
+[heading Why does the library provide a two-level customization point for conversion functions?]
 
 While the preceding technique allows the users to override the default specialization, it is quite dependent on the conditions the library makes a specialization. While the condition for the implicit_converter is simple, other functions can have a much more complex condition for which the library makes a specialization.
 
 
-To make easier the work of the users the library defines a catch all definition that delegates to a second functor.
+To make the user's work easier the library defines a catch all definition that delegates to a second functor.
 
     template < typename Target, typename Source, class Enable = void >
     struct implicit_converter_cp : false_type {};
@@ -1453,7 +1453,7 @@ To make easier the work of the users the library defines a catch all definition 
     template < typename Target, typename Source, class Enable = void >
     struct implicit_converter : implicit_converter_cp<Target,Source,Enable> {};
 
-Now the users can friendly specialize implicit_converter_cp as the library doesn't provides any specialization of this class by default.
+Now the users can friendly specialize implicit_converter_cp as the library doesn't provide any specialization of this class by default.
 
 [/
 [heading Why the library provides two-level customization point for assignment function?]
@@ -1547,11 +1547,11 @@ If they can loss precision they satisfy
 
 [section:implementation Appendix: Implementation Notes]
 
-[heading Why `implicit_converter_cp< std::vector<T1,A1>, std::vector<T2,A2> >` can not relay on `assign_to< std::vector<T1,A1>, std::vector<T2,A2> >`?]
+[heading Why can't `implicit_converter_cp< std::vector<T1,A1>, std::vector<T2,A2> >` rely on `assign_to< std::vector<T1,A1>, std::vector<T2,A2> >`?]
 
 
 
-[heading Why `convert_to` between tuples is not implemented using `boost::fusion::transform`?]
+[heading Why isn't `convert_to` between tuples implemented using `boost::fusion::transform`?]
 
 `convert_to<T>` is a kind of transformation, so the natural implementation of `convert_to` for homogeneous containers could be to use the transform function.
 
@@ -1566,7 +1566,7 @@ Thanks to Jeffrey Lee Hellrung for showing me that Boost.Conversion should use a
 Thanks to Robert Stewart for suggesting the use of a functor as customization point and for all the constructive comments he made on the Boost ML.  
 Thanks to John Bytheway and Paul Bristol for their comments comment improving the documentation and naming consistency.
 
-And last thanks to Gordon Woodhull for proposing himself as review manager of the library. 
+And last thanks to Gordon Woodhull for volunteering as review manager of the library. 
 
 [endsect]
 [/
