@@ -13,12 +13,14 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //------------------------------------------------------------------------------
-#ifndef flags_hpp__77AE8A6F_0E93_433B_A1F2_531BBBB353FC
-#define flags_hpp__77AE8A6F_0E93_433B_A1F2_531BBBB353FC
+#ifndef flags_hpp__0F422517_D9AA_4E3F_B3E4_B139021D068E
+#define flags_hpp__0F422517_D9AA_4E3F_B3E4_B139021D068E
 #pragma once
 //------------------------------------------------------------------------------
 #include "boost/assert.hpp"
 #include "boost/noncopyable.hpp"
+
+#include "fcntl.h"
 //------------------------------------------------------------------------------
 namespace boost
 {
@@ -35,7 +37,7 @@ namespace mmap
 // interface, can also be covered.
 //                                            (10.10.2010.) (Domagoj Saric)
 
-struct win32_file_flags
+struct posix_file_flags
 {
     struct handle_access_rights
     {
@@ -56,11 +58,11 @@ struct win32_file_flags
     {
         enum value_type
         {
-            create_new                      = 1,
-            create_new_or_truncate_existing = 2,
-            open_existing                   = 3,
-            open_or_create                  = 4,
-            open_and_truncate_existing      = 5
+            create_new                      = O_CREAT | O_EXCL ,
+            create_new_or_truncate_existing = O_CREAT | O_TRUNC,
+            open_existing                   = 0                ,
+            open_or_create                  = O_CREAT          ,
+            open_and_truncate_existing      = O_TRUNC
         };
     };
     typedef open_policy::value_type open_policy_t;
@@ -81,7 +83,7 @@ struct win32_file_flags
         static unsigned int const execute;
     };
 
-    static win32_file_flags create
+    static posix_file_flags create
     (
         unsigned int handle_access_flags   ,
         unsigned int share_mode            ,
@@ -90,7 +92,7 @@ struct win32_file_flags
         unsigned int on_construction_rights
     );
 
-    static win32_file_flags create_for_opening_existing_files
+    static posix_file_flags create_for_opening_existing_files
     (
         unsigned int handle_access_flags,
         unsigned int share_mode         ,
@@ -98,10 +100,8 @@ struct win32_file_flags
         unsigned int system_hints
     );
 
-    unsigned long desired_access      ;
-    unsigned long share_mode          ;
-    unsigned long creation_disposition;
-    unsigned long flags_and_attributes;
+    int oflag;
+    int pmode;
 };
 
 //------------------------------------------------------------------------------
