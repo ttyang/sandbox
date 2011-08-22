@@ -56,6 +56,7 @@ struct dfs_default_visitor_operations {
     };  
 };
 
+// requires IncidenceGraph
 // returns pair<VisitorState, ColorState>
 template<typename Graph, typename VisitorOps, typename VisitorState,
          typename Vertex, 
@@ -94,6 +95,7 @@ struct depth_first_search {
                       typename search_color_map_ops::template set_color<Vertex, search_colors::Black, typename mpl::second<after_outedges>::type>::type> type;
 };
 
+// requires IncidenceGraph, VertexListGraph
 template<typename Graph, typename VisitorOps, typename VisitorState,
          typename FirstVertex = typename mpl::front<typename mpl_graph::vertices<Graph>::type>::type,
          typename ColorState = create_search_color_map::type>

@@ -1,9 +1,12 @@
-// fusion_graph - a heterogeneous typed graph data structure
+//  Copyright 2010 Gordon Woodhull. Distributed under the Boost
+//  Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-// (c) 2008 Gordon Woodhull 
-// Distributed under the Boost Software License, Version 1.0. 
-// (See accompanying file LICENSEmpl::_1_0.txt or copy at
-// http://www.boost.org/LICENSEmpl::_1_0.txt)
+#ifndef BOOST_METAGRAPH_FUSION_GRAPH_HPP_INCLUDED
+#define BOOST_METAGRAPH_FUSION_GRAPH_HPP_INCLUDED
+
+// fusion_graph - simple implementation of a 
+// heterogeneous typed graph data structure
 
 #include <boost/metagraph/mpl_graph/mpl_graph.hpp>
 
@@ -90,3 +93,5 @@ struct ptr_list_edge {
 } // fusion_graph
 } // metagraoh
 } // boost
+
+#endif // BOOST_METAGRAPH_FUSION_GRAPH_HPP_INCLUDED

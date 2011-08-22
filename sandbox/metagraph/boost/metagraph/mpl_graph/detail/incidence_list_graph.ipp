@@ -58,47 +58,14 @@ template<typename EST> struct fetch_source :
 template<typename EST> struct fetch_target : 
     mpl::back<EST> {};
 
-//#define MPL_GRAPH_PRODUCE_OUTMAP_AS_MAP
-#ifdef MPL_GRAPH_PRODUCE_OUTMAP_AS_MAP
-    // this implementation didn't work on msvc - anyway not sure if it's more efficient
-    // to build all maps at once at the expense of lots of map updates, or to use
-    // the many pass, easier-to-read filter-and-build algs below.
-// Source->Edge->Target map for out_*, adjacent_vertices
-template<typename ESTSequence>
-struct produce_il_outs_map :
-    mpl::fold<ESTSequence,
-              mpl::map<>,
-              mpl::insert<mpl::_1,
-                          mpl::pair<fetch_source<mpl::_2>,
-                                    mpl::insert<mpl::if_<mpl::has_key<mpl::_1,fetch_source<mpl::_2> >,
-                                                         mpl::at<mpl::_1,fetch_source<mpl::_2> >,
-                                                         mpl::map<> >,
-                                                mpl::pair<fetch_edge<mpl::_2>, fetch_target<mpl::_2> > > > > >
-{};
-template<typename Source, typename ESTSequence>
-struct produce_out_map<incidence_list_tag, Source, ESTSequence> :
-    mpl::at<typename produce_il_outs_map<ESTSequence>::type, Source>
-{};
-#else // produce out map by filtering est list  
 // Edge->Target map for an Source for out_*, adjacent_vertices
 template<typename Source, typename ESTSequence>
 struct produce_out_map<incidence_list_tag, Source, ESTSequence> :
-#ifdef USE_AS_MPL_MAP
-    mpl::as_map<
-        typename mpl::fold<typename mpl::filter_view<ESTSequence, boost::is_same<fetch_source<mpl::_1>,Source> >::type,
-             mpl::vector<>,
-             mpl::push_back<mpl::_1,mpl::pair<fetch_edge<mpl::_2>,fetch_target<mpl::_2> > > >::type>
-#else
     mpl::fold<typename mpl::filter_view<ESTSequence, boost::is_same<fetch_source<mpl::_1>,Source> >::type,
          mpl::map<>,
          mpl::insert<mpl::_1,mpl::pair<fetch_edge<mpl::_2>,fetch_target<mpl::_2> > > >
-#endif
 {};
 
-#endif
-
-/*
-*/
 // Edge->Source map for a Target for in_*, degree
 template<typename Target, typename ESTSequence>
 struct produce_in_map<incidence_list_tag, Target, ESTSequence> :
