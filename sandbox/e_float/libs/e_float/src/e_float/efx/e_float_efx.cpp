@@ -1148,27 +1148,14 @@ bool efx::e_float::iszero(void) const
 {
   if(fpclass == ef_finite)
   {
-    bool is_leq_std_min = false;
-
-    const bool could_be_leq_std_min = (exp <= static_cast<INT64>(std::numeric_limits<e_float>::min_exponent10));
-
-    if(could_be_leq_std_min)
+    if(exp < static_cast<INT64>(std::numeric_limits<e_float>::min_exponent10))
     {
-      if(exp < static_cast<INT64>(std::numeric_limits<e_float>::min_exponent10))
-      {
-        is_leq_std_min = true;
-      }
-      else
-      {
-        if(data[0u] == static_cast<UINT32>(1u))
-        {
-          const array_type::const_iterator it_non_zero = std::find_if(data.begin() + 1u, data.end(), data_elem_is_non_zero_predicate);
-          if(it_non_zero == data.end()) { is_leq_std_min = true; }
-        }
-      }
+      return true;
     }
-
-    return ((data[0u] == static_cast<UINT32>(0u)) || is_leq_std_min);
+    else
+    {
+      return (data[0u] == static_cast<UINT32>(0u));
+    }
   }
   else
   {
@@ -1843,24 +1830,9 @@ bool efx::e_float::rd_string(const char* const s)
   }
 
   // ...and check for underflow.
-  if(exp <= std::numeric_limits<e_float>::min_exponent10)
+  if(exp < std::numeric_limits<e_float>::min_exponent10)
   {
-    if(exp == std::numeric_limits<e_float>::min_exponent10)
-    {
-      // Check for identity with the minimum value.
-      e_float test = *this;
-
-      test.exp = static_cast<INT64>(0);
-
-      if(test.isone())
-      {
-        *this = ef::zero();
-      }
-    }
-    else
-    {
-      *this = ef::zero();
-    }
+    *this = ef::zero();
   }
 
   return true;
