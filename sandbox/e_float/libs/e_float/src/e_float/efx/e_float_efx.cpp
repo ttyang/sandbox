@@ -1106,6 +1106,38 @@ INT32 efx::e_float::cmp(const e_float& v) const
   //                 0 for *this = v
   //                -1 for *this < v
 
+  // Handle all non-finite cases.
+  if((!isfinite()) || (!v.isfinite()))
+  {
+    // NaN can never equal NaN. Return an implementation-dependent
+    // signed result. Also note that comparison of NaN with NaN
+    // using operators greater-than or less-than is undefined.
+    if(isnan() || v.isnan()) { return (isnan() ? static_cast<INT32>(1) : static_cast<INT32>(-1)); }
+
+    if(isinf() && v.isinf())
+    {
+      // Both *this and v are infinite. They are equal if they have the same sign.
+      // Otherwise, *this is less than v if and only if *this is negative.
+      return ((neg == v.neg) ? static_cast<INT32>(0) : (neg ? static_cast<INT32>(-1) : static_cast<INT32>(1)));
+    }
+
+    if(isinf())
+    {
+      // *this is infinite, but v is finite.
+      // So negative infinite *this is less than any finite v.
+      // Whereas positive infinite *this is greater than any finite v.
+      return (isneg() ? static_cast<INT32>(-1) : static_cast<INT32>(1));
+    }
+    else
+    {
+      // *this is finite, and v is infinite.
+      // So any finite *this is greater than negative infinite v.
+      // Whereas any finite *this is less than positive infinite v.
+      return (v.neg ? static_cast<INT32>(1) : static_cast<INT32>(-1));
+    }
+  }
+
+  // And now handle all *finite* cases.
   if(iszero())
   {
     // The value of *this is zero and v is either zero or non-zero.
@@ -1146,21 +1178,7 @@ INT32 efx::e_float::cmp(const e_float& v) const
 
 bool efx::e_float::iszero(void) const
 {
-  if(fpclass == ef_finite)
-  {
-    if(exp < static_cast<INT64>(std::numeric_limits<e_float>::min_exponent10))
-    {
-      return true;
-    }
-    else
-    {
-      return (data[0u] == static_cast<UINT32>(0u));
-    }
-  }
-  else
-  {
-    return false;
-  }
+  return ((fpclass == ef_finite) && (data[0u] == static_cast<UINT32>(0u)));
 }
 
 bool efx::e_float::isone(void) const
@@ -1543,7 +1561,7 @@ const efx::e_float& efx::e_float::my_value_inf(void) const
 
 INT64 efx::e_float::get_order_fast(void) const
 {
-  if(iszero())
+  if((!isfinite()) || (data[0] == static_cast<UINT32>(0u)))
   {
     return static_cast<INT64>(0);
   }
@@ -1830,9 +1848,24 @@ bool efx::e_float::rd_string(const char* const s)
   }
 
   // ...and check for underflow.
-  if(exp < std::numeric_limits<e_float>::min_exponent10)
+  if(exp <= std::numeric_limits<e_float>::min_exponent10)
   {
-    *this = ef::zero();
+    if(exp == std::numeric_limits<e_float>::min_exponent10)
+    {
+      // Check for identity with the minimum value.
+      e_float test = *this;
+
+      test.exp = static_cast<INT64>(0);
+
+      if(test.isone())
+      {
+        *this = ef::zero();
+      }
+    }
+    else
+    {
+      *this = ef::zero();
+    }
   }
 
   return true;

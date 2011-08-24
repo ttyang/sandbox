@@ -69,8 +69,8 @@
       static const INT32 ef_digits    = static_cast<INT32>((static_cast<signed long long>(ef_digits10) * 2136LL) / 643LL);
       static const INT32 ef_radix     = 2;
 
-      static const INT64 ef_max_exp   = static_cast<INT64>(LONG_MAX / static_cast<signed long>(2L)); // TBD: Ensure INT64 >= long
-      static const INT64 ef_min_exp   = static_cast<INT64>(LONG_MIN / static_cast<signed long>(2L)); // TBD: Ensure INT64 >= long
+      static const INT64 ef_max_exp   = static_cast<INT64>(LONG_MAX / static_cast<signed long>(2L)); // TBD: Ensure that (INT64 >= long)
+      static const INT64 ef_min_exp   = static_cast<INT64>(LONG_MIN / static_cast<signed long>(2L)); // TBD: Ensure that (INT64 >= long)
       static const INT64 ef_max_exp10 = static_cast<INT64>((static_cast<signed long long>(ef_max_exp) * 643LL) / 2136LL);
       static const INT64 ef_min_exp10 = static_cast<INT64>((static_cast<signed long long>(ef_min_exp) * 643LL) / 2136LL);
 

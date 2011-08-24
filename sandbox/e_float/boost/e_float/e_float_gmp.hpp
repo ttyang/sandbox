@@ -61,8 +61,8 @@
       static const INT32 ef_digits    = static_cast<INT32>((static_cast<signed long long>(ef_digits10) * 2136LL) / 643LL);
       static const INT32 ef_radix     = static_cast<INT32>(2);
 
-      static const INT64 ef_max_exp   = static_cast<INT64>(LONG_MAX - 8LL); // TBD: Ensure INT64 >= long
-      static const INT64 ef_min_exp   = static_cast<INT64>(LONG_MIN + 8LL); // TBD: Ensure INT64 >= long
+      static const INT64 ef_max_exp   = static_cast<INT64>(LONG_MAX - 31LL); // TBD: Ensure that (INT64 >= long)
+      static const INT64 ef_min_exp   = static_cast<INT64>(LONG_MIN + 31LL); // TBD: Ensure that (INT64 >= long)
       static const INT64 ef_max_exp10 = static_cast<INT64>((static_cast<signed long long>(ef_max_exp) * 643LL) / 2136LL);
       static const INT64 ef_min_exp10 = static_cast<INT64>((static_cast<signed long long>(ef_min_exp) * 643LL) / 2136LL);
 
@@ -72,7 +72,8 @@
       typedef enum enum_fpclass
       {
         ef_finite,
-        ef_inf,
+        ef_inf_pos,
+        ef_inf_neg,
         ef_NaN
       }
       t_fpclass;
@@ -136,9 +137,9 @@
       virtual e_float& negate(void);
 
       // Comparison functions
-      virtual bool isnan   (void) const { return (fpclass == ef_NaN); }
-      virtual bool isinf   (void) const { return (fpclass == ef_inf); }
-      virtual bool isfinite(void) const { return (fpclass == ef_finite); }
+      virtual bool isnan   (void) const { return  (fpclass == ef_NaN); }
+      virtual bool isinf   (void) const { return ((fpclass == ef_inf_pos) || (fpclass == ef_inf_neg)); }
+      virtual bool isfinite(void) const { return  (fpclass == ef_finite); }
 
       virtual bool iszero (void) const;
       virtual bool isone  (void) const;
@@ -163,8 +164,6 @@
       static const INT64& min_exp2(void);
 
       static void init(void);
-
-      INT32 cmp_data(const ::mpf_t& v) const;
 
       void from_unsigned_long_long(const unsigned long long u);
       void from_unsigned_long(const unsigned long u);

@@ -254,7 +254,46 @@ e_float& mpfr::e_float::negate(void)
 
 INT32 mpfr::e_float::cmp(const e_float& v) const
 {
-  return static_cast<INT32>(::mpfr_cmp(rop, v.rop));
+  // Handle all non-finite cases.
+  if((!isfinite()) || (!v.isfinite()))
+  {
+    // NaN can never equal NaN. Return an implementation-dependent
+    // signed result. Also note that comparison of NaN with NaN
+    // using operators greater-than or less-than is undefined.
+    if(isnan() || v.isnan()) { return (isnan() ? static_cast<INT32>(1) : static_cast<INT32>(-1)); }
+
+    if(isinf() && v.isinf())
+    {
+      // Both *this and v are infinite. They are equal if they have the same sign.
+      // Otherwise, *this is less than v if and only if *this is negative.
+      return ((isneg() == v.isneg()) ? static_cast<INT32>(0) : (isneg() ? static_cast<INT32>(-1) : static_cast<INT32>(1)));
+    }
+
+    if(isinf())
+    {
+      // *this is infinite, but v is finite.
+      // So negative infinite *this is less than any finite v.
+      // Whereas positive infinite *this is greater than any finite v.
+      return (isneg() ? static_cast<INT32>(-1) : static_cast<INT32>(1));
+    }
+    else
+    {
+      // *this is finite, and v is infinite.
+      // So any finite *this is greater than negative infinite v.
+      // Whereas any finite *this is less than positive infinite v.
+      return (v.isneg() ? static_cast<INT32>(1) : static_cast<INT32>(-1));
+    }
+  }
+
+  // And now handle all *finite* cases.
+  if(iszero() && v.iszero())
+  {
+    return static_cast<INT32>(0);
+  }
+  else
+  {
+    return static_cast<INT32>(::mpfr_cmp(rop, v.rop));
+  }
 }
 
 mpfr::e_float& mpfr::e_float::calculate_sqrt(void)
@@ -272,10 +311,14 @@ mpfr::e_float& mpfr::e_float::calculate_inv(void)
 bool mpfr::e_float::isnan   (void) const { return  (::mpfr_nan_p    (rop)  != 0); }
 bool mpfr::e_float::isinf   (void) const { return  (::mpfr_inf_p    (rop)  != 0); }
 bool mpfr::e_float::isfinite(void) const { return  ((!isnan()) && (!isinf())); }
-bool mpfr::e_float::iszero  (void) const { return  (::mpfr_zero_p   (rop)  != 0); }
 bool mpfr::e_float::isone   (void) const { return ((::mpfr_integer_p(rop)  != 0) && (::mpfr_get_si(rop, GMP_RNDN) == static_cast<unsigned long>(1uL))); }
 bool mpfr::e_float::isint   (void) const { return  (::mpfr_integer_p(rop)  != 0); }
 bool mpfr::e_float::isneg   (void) const { return  (::mpfr_sgn      (rop)  <  0); }
+
+bool mpfr::e_float::iszero(void) const
+{
+  return (::mpfr_zero_p(rop) != 0);
+}
 
 mpfr::e_float& mpfr::e_float::operator++(void) { ::mpfr_add_ui(rop, rop, static_cast<unsigned long>(1uL), GMP_RNDN); return *this; }
 mpfr::e_float& mpfr::e_float::operator--(void) { ::mpfr_sub_ui(rop, rop, static_cast<unsigned long>(1uL), GMP_RNDN); return *this; }

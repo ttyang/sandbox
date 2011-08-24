@@ -16,6 +16,7 @@
 #include <boost/e_float/e_float.hpp>
 #include <boost/e_float/e_float_functions.hpp>
 #include "../test_case_real.h"
+#include "../../../src/utility/util_lexical_cast.h"
 
 namespace
 {
@@ -203,8 +204,20 @@ namespace test
         my_test_result &= ((ef::one() * 4.0) == 4);
         my_test_result &= ((4.0 * ef::one()) == 4);
 
-        const e_float huge("1e12345678");
-        const e_float tiny("1e-12345678");
+        my_test_result &= (std::numeric_limits<e_float>::quiet_NaN() != 0);
+        my_test_result &= (std::numeric_limits<e_float>::quiet_NaN() != ef::one());
+        my_test_result &= (std::numeric_limits<e_float>::quiet_NaN() != std::numeric_limits<e_float>::quiet_NaN());
+
+        static const e_float huge("1e12345678");
+        static const e_float tiny("1e-12345678");
+
+        my_test_result &= (huge < +std::numeric_limits<e_float>::infinity());
+        my_test_result &= (tiny > -std::numeric_limits<e_float>::infinity());
+        my_test_result &= (+std::numeric_limits<e_float>::infinity() == (+1 / ef::zero()));
+        my_test_result &= (-std::numeric_limits<e_float>::infinity() == (-1 / ef::zero()));
+        my_test_result &= (-std::numeric_limits<e_float>::infinity() != +std::numeric_limits<e_float>::infinity());
+        my_test_result &= (+std::numeric_limits<e_float>::infinity() >  -std::numeric_limits<e_float>::infinity());
+        my_test_result &= (-std::numeric_limits<e_float>::infinity() <  +std::numeric_limits<e_float>::infinity());
 
         float f = huge;
         double d = huge;
@@ -221,6 +234,21 @@ namespace test
         my_test_result &= (f == 0.0f);
         my_test_result &= (d == 0.0);
         my_test_result &= (ld == static_cast<long double>(0.0));
+
+        static const e_float min_value("1e" + Util::lexical_cast(std::numeric_limits<e_float>::min_exponent10));
+
+        my_test_result &= ((std::numeric_limits<e_float>::min)() == min_value);
+        my_test_result &= ((std::numeric_limits<e_float>::min)() != 0);
+        my_test_result &= ((std::numeric_limits<e_float>::min)() != ef::zero());
+        my_test_result &= (0 != (std::numeric_limits<e_float>::min)());
+        my_test_result &= (ef::zero() != (std::numeric_limits<e_float>::min)());
+        my_test_result &= (0 < +(std::numeric_limits<e_float>::min)());
+        my_test_result &= (0 > -(std::numeric_limits<e_float>::min)());
+
+        static const e_float a_little_more_than_min_value("1e" + Util::lexical_cast(std::numeric_limits<e_float>::min_exponent10 + static_cast<INT64>(1)));
+
+        my_test_result &= (a_little_more_than_min_value != 0);
+        my_test_result &= (a_little_more_than_min_value > (std::numeric_limits<e_float>::min)());
       }
     };
 

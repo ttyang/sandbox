@@ -398,7 +398,7 @@ gmp::e_float& gmp::e_float::operator*=(const e_float& v)
 
   if(b_u_is_inf || b_v_is_inf)
   {
-    const bool b_result_is_neg = (isneg() == v.isneg());
+    const bool b_result_is_neg = (isneg() != v.isneg());
 
     *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
                                 : -std::numeric_limits<e_float>::infinity());
@@ -433,7 +433,7 @@ gmp::e_float& gmp::e_float::operator*=(const e_float& v)
       }
       else
       {
-        const bool b_result_is_neg = (isneg() == v.isneg());
+        const bool b_result_is_neg = (isneg() != v.isneg());
 
         *this = ((!b_result_is_neg) ?  std::numeric_limits<e_float>::infinity()
                                     : -std::numeric_limits<e_float>::infinity());
@@ -637,42 +637,57 @@ gmp::e_float& gmp::e_float::calculate_sqrt(void)
   return *this;
 }
 
-INT32 gmp::e_float::cmp_data(const ::mpf_t& v) const
+INT32 gmp::e_float::cmp(const e_float& v) const
 {
-  const INT32 result = static_cast<INT32>(::mpf_cmp(rop, v));
-  
-  if(result > static_cast<INT32>(0))
+  // Handle all non-finite cases.
+  if((!isfinite()) || (!v.isfinite()))
   {
-    return static_cast<INT32>(1);
+    // NaN can never equal NaN. Return an implementation-dependent
+    // signed result. Also note that comparison of NaN with NaN
+    // using operators greater-than or less-than is undefined.
+    if(isnan() || v.isnan()) { return (isnan() ? static_cast<INT32>(1) : static_cast<INT32>(-1)); }
+
+    if(isinf() && v.isinf())
+    {
+      // Both *this and v are infinite. They are equal if they have the same sign.
+      // Otherwise, *this is less than v if and only if *this is negative.
+      return ((isneg() == v.isneg()) ? static_cast<INT32>(0) : (isneg() ? static_cast<INT32>(-1) : static_cast<INT32>(1)));
+    }
+
+    if(isinf())
+    {
+      // *this is infinite, but v is finite.
+      // So negative infinite *this is less than any finite v.
+      // Whereas positive infinite *this is greater than any finite v.
+      return (isneg() ? static_cast<INT32>(-1) : static_cast<INT32>(1));
+    }
+    else
+    {
+      // *this is finite, and v is infinite.
+      // So any finite *this is greater than negative infinite v.
+      // Whereas any finite *this is less than positive infinite v.
+      return (v.isneg() ? static_cast<INT32>(1) : static_cast<INT32>(-1));
+    }
   }
-  else if(result < static_cast<INT32>(0))
-  {
-    return static_cast<INT32>(-1);
-  }
-  else
+
+  // And now handle all *finite* cases.
+  if(iszero() && v.iszero())
   {
     return static_cast<INT32>(0);
   }
-}
-
-INT32 gmp::e_float::cmp(const e_float& v) const
-{
-  const INT32 result = cmp_data(v.rop);
-
-  if(result == static_cast<INT32>(0))
-  {
-    return ((isfinite() && v.isfinite()) ? static_cast<INT32>(0) : static_cast<INT32>(1));
-  }
   else
   {
-    return result;
+    const int result = ::mpf_cmp(rop, v.rop);
+  
+    if     (result > 0) { return static_cast<INT32>(1); }
+    else if(result < 0) { return static_cast<INT32>(-1); }
+    else { return static_cast<INT32>(0); }
   }
 }
 
 bool gmp::e_float::iszero(void) const
 {
-  // Check if the value of *this is identically 0 or very close to 0.
-  return isint() && (cmp(ef::zero()) == static_cast<INT32>(0));
+  return (::mpf_sgn(rop) == 0);
 }
 
 bool gmp::e_float::isone(void) const
@@ -689,7 +704,14 @@ bool gmp::e_float::isint(void) const
 
 bool gmp::e_float::isneg(void) const
 {
-  return (::mpf_sgn(rop) < 0);
+  if(isinf())
+  {
+    return (fpclass == ef_inf_neg);
+  }
+  else
+  {
+    return (::mpf_sgn(rop) < 0);
+  }
 }
 
 const gmp::e_float& gmp::e_float::my_value_nan(void) const
@@ -703,12 +725,28 @@ const gmp::e_float& gmp::e_float::my_value_nan(void) const
 const gmp::e_float& gmp::e_float::my_value_inf(void) const
 {
   static e_float val(0u);
-  val.fpclass = ef_inf;
+  val.fpclass = ef_inf_pos;
   static const e_float inf(val);
   return inf;
 }
 
-e_float& gmp::e_float::negate(void) { ::mpf_neg(rop, rop); return *this; }
+e_float& gmp::e_float::negate(void)
+{
+  if(fpclass == ef_inf_pos)
+  {
+    fpclass = ef_inf_neg;
+  }
+  else if(fpclass == ef_inf_neg)
+  {
+    fpclass = ef_inf_pos;
+  }
+  else
+  {
+    ::mpf_neg(rop, rop);
+  }
+
+  return *this;
+}
 
 e_float& gmp::e_float::operator++(void) { ::mpf_add_ui(rop, rop, static_cast<unsigned long>(1u)); return *this; }
 e_float& gmp::e_float::operator--(void) { ::mpf_sub_ui(rop, rop, static_cast<unsigned long>(1u)); return *this; }

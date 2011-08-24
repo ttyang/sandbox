@@ -198,7 +198,9 @@ namespace test
 
           data.push_back(y);
 
-          if(ef::iszero(y)) { break; }
+          const bool is_zero_or_lt_min = (ef::iszero(y) || (y < (std::numeric_limits<e_float>::min)()));
+
+          if(is_zero_or_lt_min) { break; }
         }
 
         my_test_result = (k > static_cast<INT32>(1)) && (k < kmax);

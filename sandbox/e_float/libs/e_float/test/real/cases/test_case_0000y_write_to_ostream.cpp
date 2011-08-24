@@ -346,6 +346,20 @@ namespace test
         std::string str;
         std::stringstream ss;
 
+        ss << ef::zero();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("0"));
+        ss.clear();
+        ss.str("");
+
+        ss << ef::one_minus();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == std::string("-1"));
+        ss.clear();
+        ss.str("");
+
         ss << ef::ten();
         str = ss.str();
         data.push_back(e_float(str));
@@ -433,7 +447,16 @@ namespace test
         ss << std::showpoint << ef::eight();
         str = ss.str();
         data.push_back(e_float(str));
-        my_test_result &= (str == std::string("8.00000"));
+        static const std::string str_8_point_zeros =   std::string("8.")
+                                                     + std::string(static_cast<std::size_t>(default_prec() - 1u), static_cast<char>('0'));
+        my_test_result &= (str == str_8_point_zeros);
+        ss.clear();
+        ss.str("");
+
+        ss << std::showpoint << -ef::eight();
+        str = ss.str();
+        data.push_back(e_float(str));
+        my_test_result &= (str == ("-" + str_8_point_zeros));
         ss.clear();
         ss.str("");
 
