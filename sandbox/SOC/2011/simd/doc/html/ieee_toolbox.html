@@ -1,0 +1,493 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>IEEE Toolbox</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="boost/simd/tag/Valmin/apply_float__Dummy_id2632847.html" title="Struct template apply&lt;float, Dummy&gt;">
+<link rel="next" href="boost/simd/tag/bitfloating_.html" title="Struct bitfloating_">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost/simd/tag/Valmin/apply_float__Dummy_id2632847.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/bitfloating_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="ieee_toolbox"></a>IEEE Toolbox</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.bitfloating_hpp">Header &lt;boost/simd/toolbox/ieee/functions/bitfloating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.bitinteger_hpp">Header &lt;boost/simd/toolbox/ieee/functions/bitinteger.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.bitofsign_hpp">Header &lt;boost/simd/toolbox/ieee/functions/bitofsign.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.copysign_hpp">Header &lt;boost/simd/toolbox/ieee/functions/copysign.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.eps_hpp">Header &lt;boost/simd/toolbox/ieee/functions/eps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.exponent_hpp">Header &lt;boost/simd/toolbox/ieee/functions/exponent.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.exponentbits_hpp">Header &lt;boost/simd/toolbox/ieee/functions/exponentbits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.fast_frexp_hpp">Header &lt;boost/simd/toolbox/ieee/functions/fast_frexp.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.fast_ldexp_hpp">Header &lt;boost/simd/toolbox/ieee/functions/fast_ldexp.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.frac_hpp">Header &lt;boost/simd/toolbox/ieee/functions/frac.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.frexp_hpp">Header &lt;boost/simd/toolbox/ieee/functions/frexp.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.ilogb_hpp">Header &lt;boost/simd/toolbox/ieee/functions/ilogb.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.ldexp_hpp">Header &lt;boost/simd/toolbox/ieee/functions/ldexp.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.mantissa_hpp">Header &lt;boost/simd/toolbox/ieee/functions/mantissa.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.maxmag_hpp">Header &lt;boost/simd/toolbox/ieee/functions/maxmag.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.maxnum_hpp">Header &lt;boost/simd/toolbox/ieee/functions/maxnum.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.maxnummag_hpp">Header &lt;boost/simd/toolbox/ieee/functions/maxnummag.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.minmag_hpp">Header &lt;boost/simd/toolbox/ieee/functions/minmag.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.minnum_hpp">Header &lt;boost/simd/toolbox/ieee/functions/minnum.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.minnummag_hpp">Header &lt;boost/simd/toolbox/ieee/functions/minnummag.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.modf_hpp">Header &lt;boost/simd/toolbox/ieee/functions/modf.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.negate_hpp">Header &lt;boost/simd/toolbox/ieee/functions/negate.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.negation_hpp">Header &lt;boost/simd/toolbox/ieee/functions/negation.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.next_hpp">Header &lt;boost/simd/toolbox/ieee/functions/next.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.nextafter_hpp">Header &lt;boost/simd/toolbox/ieee/functions/nextafter.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.nextpow2_hpp">Header &lt;boost/simd/toolbox/ieee/functions/nextpow2.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.predecessor_hpp">Header &lt;boost/simd/toolbox/ieee/functions/predecessor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.prev_hpp">Header &lt;boost/simd/toolbox/ieee/functions/prev.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.round2even_hpp">Header &lt;boost/simd/toolbox/ieee/functions/round2even.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.saturate_hpp">Header &lt;boost/simd/toolbox/ieee/functions/saturate.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.saturate_at_hpp">Header &lt;boost/simd/toolbox/ieee/functions/saturate_at.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.sbits_hpp">Header &lt;boost/simd/toolbox/ieee/functions/sbits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.sign_hpp">Header &lt;boost/simd/toolbox/ieee/functions/sign.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.signnz_hpp">Header &lt;boost/simd/toolbox/ieee/functions/signnz.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.successor_hpp">Header &lt;boost/simd/toolbox/ieee/functions/successor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.ulp_hpp">Header &lt;boost/simd/toolbox/ieee/functions/ulp.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.ulpdist_hpp">Header &lt;boost/simd/toolbox/ieee/functions/ulpdist.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.include_hpp">Header &lt;boost/simd/toolbox/ieee/include.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.bitfloating_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/bitfloating.hpp" target="_top">boost/simd/toolbox/ieee/functions/bitfloating.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitfloating_.html" title="Struct bitfloating_">bitfloating_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.bitinteger_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/bitinteger.hpp" target="_top">boost/simd/toolbox/ieee/functions/bitinteger.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitinteger_.html" title="Struct bitinteger_">bitinteger_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.bitofsign_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/bitofsign.hpp" target="_top">boost/simd/toolbox/ieee/functions/bitofsign.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitofsign_.html" title="Struct bitofsign_">bitofsign_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.copysign_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/copysign.hpp" target="_top">boost/simd/toolbox/ieee/functions/copysign.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/copysign_.html" title="Struct copysign_">copysign_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.eps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/eps.hpp" target="_top">boost/simd/toolbox/ieee/functions/eps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/eps_.html" title="Struct eps_">eps_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.exponent_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/exponent.hpp" target="_top">boost/simd/toolbox/ieee/functions/exponent.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/exponent_.html" title="Struct exponent_">exponent_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.exponentbits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/exponentbits.hpp" target="_top">boost/simd/toolbox/ieee/functions/exponentbits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/exponentbits_.html" title="Struct exponentbits_">exponentbits_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.fast_frexp_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/fast_frexp.hpp" target="_top">boost/simd/toolbox/ieee/functions/fast_frexp.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/fast_frexp_.html" title="Struct fast_frexp_">fast_frexp_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.fast_ldexp_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/fast_ldexp.hpp" target="_top">boost/simd/toolbox/ieee/functions/fast_ldexp.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/fast_ldexp_.html" title="Struct fast_ldexp_">fast_ldexp_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.frac_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/frac.hpp" target="_top">boost/simd/toolbox/ieee/functions/frac.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/frac_.html" title="Struct frac_">frac_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.frexp_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/frexp.hpp" target="_top">boost/simd/toolbox/ieee/functions/frexp.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/frexp_.html" title="Struct frexp_">frexp_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.ilogb_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/ilogb.hpp" target="_top">boost/simd/toolbox/ieee/functions/ilogb.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ilogb_.html" title="Struct ilogb_">ilogb_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.ldexp_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/ldexp.hpp" target="_top">boost/simd/toolbox/ieee/functions/ldexp.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ldexp_.html" title="Struct ldexp_">ldexp_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.mantissa_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/mantissa.hpp" target="_top">boost/simd/toolbox/ieee/functions/mantissa.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/mantissa_.html" title="Struct mantissa_">mantissa_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.maxmag_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/maxmag.hpp" target="_top">boost/simd/toolbox/ieee/functions/maxmag.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/maxmag_.html" title="Struct maxmag_">maxmag_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.maxnum_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/maxnum.hpp" target="_top">boost/simd/toolbox/ieee/functions/maxnum.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/maxnum_.html" title="Struct maxnum_">maxnum_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.maxnummag_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/maxnummag.hpp" target="_top">boost/simd/toolbox/ieee/functions/maxnummag.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/maxnummag_.html" title="Struct maxnummag_">maxnummag_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.minmag_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/minmag.hpp" target="_top">boost/simd/toolbox/ieee/functions/minmag.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/minmag_.html" title="Struct minmag_">minmag_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.minnum_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/minnum.hpp" target="_top">boost/simd/toolbox/ieee/functions/minnum.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/minnum_.html" title="Struct minnum_">minnum_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.minnummag_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/minnummag.hpp" target="_top">boost/simd/toolbox/ieee/functions/minnummag.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/minnummag_.html" title="Struct minnummag_">minnummag_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.modf_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/modf.hpp" target="_top">boost/simd/toolbox/ieee/functions/modf.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/modf_.html" title="Struct modf_">modf_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.negate_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/negate.hpp" target="_top">boost/simd/toolbox/ieee/functions/negate.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/negate_.html" title="Struct negate_">negate_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.negation_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/negation.hpp" target="_top">boost/simd/toolbox/ieee/functions/negation.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/negation_.html" title="Struct negation_">negation_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.next_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/next.hpp" target="_top">boost/simd/toolbox/ieee/functions/next.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/next_.html" title="Struct next_">next_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.nextafter_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/nextafter.hpp" target="_top">boost/simd/toolbox/ieee/functions/nextafter.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/nextafter_.html" title="Struct nextafter_">nextafter_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.nextpow2_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/nextpow2.hpp" target="_top">boost/simd/toolbox/ieee/functions/nextpow2.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/nextpow2_.html" title="Struct nextpow2_">nextpow2_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.predecessor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/predecessor.hpp" target="_top">boost/simd/toolbox/ieee/functions/predecessor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/predecessor_.html" title="Struct predecessor_">predecessor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.prev_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/prev.hpp" target="_top">boost/simd/toolbox/ieee/functions/prev.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/prev_.html" title="Struct prev_">prev_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.round2even_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/round2even.hpp" target="_top">boost/simd/toolbox/ieee/functions/round2even.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/round2even_.html" title="Struct round2even_">round2even_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.saturate_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/saturate.hpp" target="_top">boost/simd/toolbox/ieee/functions/saturate.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/saturate_.html" title="Struct template saturate_">saturate_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.saturate_at_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/saturate_at.hpp" target="_top">boost/simd/toolbox/ieee/functions/saturate_at.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/saturate_at_.html" title="Struct template saturate_at_">saturate_at_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.sbits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/sbits.hpp" target="_top">boost/simd/toolbox/ieee/functions/sbits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/sbits_.html" title="Struct sbits_">sbits_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.sign_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/sign.hpp" target="_top">boost/simd/toolbox/ieee/functions/sign.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/sign_.html" title="Struct sign_">sign_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.signnz_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/signnz.hpp" target="_top">boost/simd/toolbox/ieee/functions/signnz.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/signnz_.html" title="Struct signnz_">signnz_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.successor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/successor.hpp" target="_top">boost/simd/toolbox/ieee/functions/successor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/successor_.html" title="Struct successor_">successor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.ulp_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/ulp.hpp" target="_top">boost/simd/toolbox/ieee/functions/ulp.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ulp_.html" title="Struct ulp_">ulp_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.functions.ulpdist_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/functions/ulpdist.hpp" target="_top">boost/simd/toolbox/ieee/functions/ulpdist.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ulpdist_.html" title="Struct ulpdist_">ulpdist_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.ieee.include_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/ieee/include.hpp" target="_top">boost/simd/toolbox/ieee/include.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_IEEE_BASE.html" title="Macro BOOST_SIMD_IEEE_BASE">BOOST_SIMD_IEEE_BASE</a>()
+<a class="link" href="BOOST_SIMD_IEEE_RELATIVE.html" title="Macro BOOST_SIMD_IEEE_RELATIVE">BOOST_SIMD_IEEE_RELATIVE</a>()
+<a class="link" href="BOOST_SIMD_IEEE_INCLUDE.html" title="Macro BOOST_SIMD_IEEE_INCLUDE">BOOST_SIMD_IEEE_INCLUDE</a>(F)</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost/simd/tag/Valmin/apply_float__Dummy_id2632847.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/bitfloating_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

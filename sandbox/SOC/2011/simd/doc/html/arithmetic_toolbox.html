@@ -1,0 +1,726 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Arithmetic Toolbox</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="BOOST_SIMD_OPERATOR_INCLUDE.html" title="Macro BOOST_SIMD_OPERATOR_INCLUDE">
+<link rel="next" href="boost/simd/tag/abs_.html" title="Struct abs_">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_OPERATOR_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/abs_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="arithmetic_toolbox"></a>Arithmetic Toolbox</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.abs_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/abs.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.abss_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/abss.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.adds_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/adds.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.arg_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/arg.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.average_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/average.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ceil_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ceil.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.correct_fma_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/correct_fma.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.dist_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/dist.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.divceil_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/divceil.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.divfix_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/divfix.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.divfloor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/divfloor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.divround_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/divround.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.divs_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/divs.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.fast_hypot_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/fast_hypot.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.fast_toint_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/fast_toint.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.floor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/floor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.fma_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/fma.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.hypot_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/hypot.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iceil_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iceil.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.idivceil_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/idivceil.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.idivfix_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/idivfix.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.idivfloor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/idivfloor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.idivround_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/idivround.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ifloor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ifloor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iround_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iround.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iround2even_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iround2even.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ldiv_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ldiv.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ldivide_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ldivide.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.logical_xor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/logical_xor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.max_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/max.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.min_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/min.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.minmod_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/minmod.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.minusone_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/minusone.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.mod_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/mod.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.muls_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/muls.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.negs_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/negs.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.oneminus_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/oneminus.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.oneplus_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/oneplus.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.random_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/random.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.rdivide_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/rdivide.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.rec_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/rec.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.rem_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/rem.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.remainder_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/remainder.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.remquo_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/remquo.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.round_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/round.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.rsqrt_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/rsqrt.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.sqr_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/sqr.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.sqrt_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/sqrt.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.subs_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/subs.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.tofloat_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/tofloat.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.toint_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/toint.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.trunc_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/trunc.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_add_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_add.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_prod_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_prod.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_split_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_split.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.include_hpp">Header &lt;boost/simd/toolbox/arithmetic/include.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.abs_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/abs.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/abs.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the absolute value functor: abs. </p>
+<p>Copyright 2003 and onward LASMEA UMR 6602 CNRS/U.B.P Clermont-Ferrand Copyright 2009 and onward LRI UMR 8623 CNRS/Univ Paris Sud XI</p>
+<p>Distributed under the Boost Software License, Version 1.0 See accompanying file LICENSE.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a></p>
+<p>alias modulus</p>
+<p>the functor returns a value of the same type than the entry. take care that for signed integers the absolute value of Valmin is Valmin (thus negative !) This is a side effect of the 2-complement representation of integers. To avoid this, you can use the "abss" saturated functor or convert the input parameter to a larger type before taking the abs value. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/abs_.html" title="Struct abs_">abs_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.abss_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/abss.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/abss.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the saturated absolute value functor: abss. </p>
+<p>Copyright 2003 and onward LASMEA UMR 6602 CNRS/U.B.P Clermont-Ferrand Copyright 2009 and onward LRI UMR 8623 CNRS/Univ Paris Sud XI</p>
+<p>Distributed under the Boost Software License, Version 1.0 See accompanying file LICENSE.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a></p>
+<p>alias saturated_abs</p>
+<p>This is generally equivalent to abs except for signed integer type for which abss(Valmin) is Valmax-1 </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/abss_.html" title="Struct abss_">abss_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.adds_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/adds.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/adds.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the saturated addition functor: adds. </p>
+<p>Copyright 2003 and onward LASMEA UMR 6602 CNRS/U.B.P Clermont-Ferrand Copyright 2009 and onward LRI UMR 8623 CNRS/Univ Paris Sud XI</p>
+<p>Distributed under the Boost Software License, Version 1.0 See accompanying file LICENSE.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a></p>
+<p>alias saturated_add</p>
+<p>This is generally equivalent to add except that in overflow cases Valmin or Valmax for the input type is returned </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/adds_.html" title="Struct adds_">adds_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.arg_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/arg.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/arg.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/arg_.html" title="Struct arg_">arg_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.average_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/average.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/average.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/average_.html" title="Struct average_">average_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.ceil_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/ceil.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/ceil.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ceil_.html" title="Struct ceil_">ceil_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.correct_fma_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/correct_fma.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/correct_fma.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/correct_fma_.html" title="Struct correct_fma_">correct_fma_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.dist_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/dist.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/dist.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/dist_.html" title="Struct dist_">dist_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.divceil_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/divceil.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/divceil.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/divceil_.html" title="Struct divceil_">divceil_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.divfix_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/divfix.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/divfix.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/divfix_.html" title="Struct divfix_">divfix_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.divfloor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/divfloor.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/divfloor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/divfloor_.html" title="Struct divfloor_">divfloor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.divround_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/divround.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/divround.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/divround_.html" title="Struct divround_">divround_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.divs_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/divs.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/divs.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/divs_.html" title="Struct divs_">divs_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.fast_hypot_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/fast_hypot.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/fast_hypot.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/fast_hypot_.html" title="Struct fast_hypot_">fast_hypot_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.fast_toint_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/fast_toint.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/fast_toint.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/fast_toint_.html" title="Struct fast_toint_">fast_toint_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.floor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/floor.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/floor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/floor_.html" title="Struct floor_">floor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.fma_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/fma.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/fma.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+     <a name="boost.simd.BOOST_DISPATCH_FUNCTION_id2627750"></a><span class="identifier">BOOST_DISPATCH_FUNCTION_INTERFACE</span><span class="special">(</span><a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">tag::fma_</a><span class="special">,</span> <span class="identifier">fam</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span><span class="special">;</span>
+     <a name="boost.simd.BOOST_DISPATCH_FUNCTION_id2627773"></a><span class="identifier">BOOST_DISPATCH_FUNCTION_INTERFACE</span><span class="special">(</span><a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">tag::fma_</a><span class="special">,</span> <span class="identifier">amul</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">fma_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.hypot_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/hypot.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/hypot.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/hypot_.html" title="Struct hypot_">hypot_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.iceil_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/iceil.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/iceil.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/iceil_.html" title="Struct iceil_">iceil_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.idivceil_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/idivceil.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/idivceil.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/idivceil_.html" title="Struct idivceil_">idivceil_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.idivfix_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/idivfix.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/idivfix.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/idivfix_.html" title="Struct idivfix_">idivfix_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.idivfloor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/idivfloor.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/idivfloor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/idivfloor_.html" title="Struct idivfloor_">idivfloor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.idivround_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/idivround.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/idivround.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/idivround_.html" title="Struct idivround_">idivround_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.ifloor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/ifloor.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/ifloor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ifloor_.html" title="Struct ifloor_">ifloor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.iround_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/iround.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/iround.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/iround_.html" title="Struct iround_">iround_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.iround2even_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/iround2even.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/iround2even.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/iround2even_.html" title="Struct iround2even_">iround2even_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.ldiv_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/ldiv.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/ldiv.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ldiv_.html" title="Struct ldiv_">ldiv_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.ldivide_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/ldivide.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/ldivide.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ldivide_.html" title="Struct ldivide_">ldivide_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.logical_xor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/logical_xor.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/logical_xor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/logical_xor_.html" title="Struct logical_xor_">logical_xor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.max_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/max.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/max.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/max_.html" title="Struct max_">max_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.min_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/min.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/min.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/min_.html" title="Struct min_">min_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.minmod_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/minmod.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/minmod.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/minmod_.html" title="Struct minmod_">minmod_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.minusone_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/minusone.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/minusone.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/minusone_.html" title="Struct minusone_">minusone_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.mod_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/mod.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/mod.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/mod_.html" title="Struct mod_">mod_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.muls_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/muls.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/muls.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/muls_.html" title="Struct muls_">muls_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.negs_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/negs.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/negs.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/negs_.html" title="Struct negs_">negs_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.oneminus_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/oneminus.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/oneminus.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/oneminus_.html" title="Struct oneminus_">oneminus_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.oneplus_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/oneplus.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/oneplus.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/oneplus_.html" title="Struct oneplus_">oneplus_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.random_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/random.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/random.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/random_.html" title="Struct random_">random_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.rdivide_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/rdivide.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/rdivide.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rdivide_.html" title="Struct rdivide_">rdivide_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.rec_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/rec.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/rec.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rec_.html" title="Struct rec_">rec_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.rem_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/rem.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/rem.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rem_.html" title="Struct rem_">rem_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.remainder_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/remainder.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/remainder.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/remainder_.html" title="Struct remainder_">remainder_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.remquo_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/remquo.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/remquo.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/remquo_.html" title="Struct remquo_">remquo_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.round_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/round.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/round.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/round_.html" title="Struct round_">round_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.rsqrt_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/rsqrt.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/rsqrt.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rsqrt_.html" title="Struct rsqrt_">rsqrt_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.sqr_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/sqr.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/sqr.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/sqr_.html" title="Struct sqr_">sqr_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.sqrt_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/sqrt.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/sqrt.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/sqrt_.html" title="Struct sqrt_">sqrt_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.subs_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/subs.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/subs.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/subs_.html" title="Struct subs_">subs_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.tofloat_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/tofloat.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/tofloat.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/tofloat_.html" title="Struct tofloat_">tofloat_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.toint_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/toint.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/toint.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/toint_.html" title="Struct toint_">toint_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.trunc_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/trunc.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/trunc.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/trunc_.html" title="Struct trunc_">trunc_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.two_add_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/two_add.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/two_add.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/two_add_.html" title="Struct two_add_">two_add_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.two_prod_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/two_prod.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/two_prod.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/two_prod_.html" title="Struct two_prod_">two_prod_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.two_split_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/two_split.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/two_split.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/two_split_.html" title="Struct two_split_">two_split_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.include_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/include.hpp" target="_top">boost/simd/toolbox/arithmetic/include.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_ARITHMETIC_BASE.html" title="Macro BOOST_SIMD_ARITHMETIC_BASE">BOOST_SIMD_ARITHMETIC_BASE</a>()
+<a class="link" href="BOOST_SIMD_ARITHMETIC_RELATIVE.html" title="Macro BOOST_SIMD_ARITHMETIC_RELATIVE">BOOST_SIMD_ARITHMETIC_RELATIVE</a>()
+<a class="link" href="BOOST_SIMD_ARITHMETIC_INCLUDE.html" title="Macro BOOST_SIMD_ARITHMETIC_INCLUDE">BOOST_SIMD_ARITHMETIC_INCLUDE</a>(F)</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_OPERATOR_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/abs_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

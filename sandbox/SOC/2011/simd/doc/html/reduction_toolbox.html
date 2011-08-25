@@ -1,0 +1,253 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Reduction Toolbox</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="BOOST_SIMD_PREDICATES_INCLUDE.html" title="Macro BOOST_SIMD_PREDICATES_INCLUDE">
+<link rel="next" href="boost/simd/tag/all_.html" title="Struct all_">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_PREDICATES_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/all_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="reduction_toolbox"></a>Reduction Toolbox</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.all_hpp">Header &lt;boost/simd/toolbox/reduction/functions/all.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.any_hpp">Header &lt;boost/simd/toolbox/reduction/functions/any.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.at_i_hpp">Header &lt;boost/simd/toolbox/reduction/functions/at_i.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.bitwise_all_hpp">Header &lt;boost/simd/toolbox/reduction/functions/bitwise_all.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.bitwise_any_hpp">Header &lt;boost/simd/toolbox/reduction/functions/bitwise_any.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.dot_hpp">Header &lt;boost/simd/toolbox/reduction/functions/dot.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.first_hpp">Header &lt;boost/simd/toolbox/reduction/functions/first.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.hmsb_hpp">Header &lt;boost/simd/toolbox/reduction/functions/hmsb.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.maximum_hpp">Header &lt;boost/simd/toolbox/reduction/functions/maximum.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.minimum_hpp">Header &lt;boost/simd/toolbox/reduction/functions/minimum.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.nbtrue_hpp">Header &lt;boost/simd/toolbox/reduction/functions/nbtrue.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.none_hpp">Header &lt;boost/simd/toolbox/reduction/functions/none.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.posmax_hpp">Header &lt;boost/simd/toolbox/reduction/functions/posmax.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.posmin_hpp">Header &lt;boost/simd/toolbox/reduction/functions/posmin.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.prod_hpp">Header &lt;boost/simd/toolbox/reduction/functions/prod.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.second_hpp">Header &lt;boost/simd/toolbox/reduction/functions/second.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.sum_hpp">Header &lt;boost/simd/toolbox/reduction/functions/sum.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.include_hpp">Header &lt;boost/simd/toolbox/reduction/include.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.all_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/all.hpp" target="_top">boost/simd/toolbox/reduction/functions/all.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/all_.html" title="Struct all_">all_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.any_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/any.hpp" target="_top">boost/simd/toolbox/reduction/functions/any.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/any_.html" title="Struct any_">any_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.at_i_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/at_i.hpp" target="_top">boost/simd/toolbox/reduction/functions/at_i.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/at_i_.html" title="Struct at_i_">at_i_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.bitwise_all_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/bitwise_all.hpp" target="_top">boost/simd/toolbox/reduction/functions/bitwise_all.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_all_.html" title="Struct bitwise_all_">bitwise_all_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.bitwise_any_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/bitwise_any.hpp" target="_top">boost/simd/toolbox/reduction/functions/bitwise_any.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_any_.html" title="Struct bitwise_any_">bitwise_any_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.dot_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/dot.hpp" target="_top">boost/simd/toolbox/reduction/functions/dot.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/dot_.html" title="Struct dot_">dot_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.first_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/first.hpp" target="_top">boost/simd/toolbox/reduction/functions/first.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/first_.html" title="Struct first_">first_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.hmsb_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/hmsb.hpp" target="_top">boost/simd/toolbox/reduction/functions/hmsb.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/hmsb_.html" title="Struct hmsb_">hmsb_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.maximum_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/maximum.hpp" target="_top">boost/simd/toolbox/reduction/functions/maximum.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/maximum_.html" title="Struct maximum_">maximum_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.minimum_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/minimum.hpp" target="_top">boost/simd/toolbox/reduction/functions/minimum.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/minimum_.html" title="Struct minimum_">minimum_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.nbtrue_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/nbtrue.hpp" target="_top">boost/simd/toolbox/reduction/functions/nbtrue.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/nbtrue_.html" title="Struct nbtrue_">nbtrue_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.none_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/none.hpp" target="_top">boost/simd/toolbox/reduction/functions/none.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/none_.html" title="Struct template none_">none_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.posmax_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/posmax.hpp" target="_top">boost/simd/toolbox/reduction/functions/posmax.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/posmax_.html" title="Struct posmax_">posmax_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.posmin_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/posmin.hpp" target="_top">boost/simd/toolbox/reduction/functions/posmin.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/posmin_.html" title="Struct posmin_">posmin_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.prod_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/prod.hpp" target="_top">boost/simd/toolbox/reduction/functions/prod.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/prod_.html" title="Struct prod_">prod_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.second_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/second.hpp" target="_top">boost/simd/toolbox/reduction/functions/second.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/second_.html" title="Struct second_">second_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.functions.sum_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/functions/sum.hpp" target="_top">boost/simd/toolbox/reduction/functions/sum.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/sum_.html" title="Struct sum_">sum_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.reduction.include_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/reduction/include.hpp" target="_top">boost/simd/toolbox/reduction/include.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_REDUCTION_BASE.html" title="Macro BOOST_SIMD_REDUCTION_BASE">BOOST_SIMD_REDUCTION_BASE</a>()
+<a class="link" href="BOOST_SIMD_REDUCTION_RELATIVE.html" title="Macro BOOST_SIMD_REDUCTION_RELATIVE">BOOST_SIMD_REDUCTION_RELATIVE</a>()
+<a class="link" href="BOOST_SIMD_REDUCTION_INCLUDE.html" title="Macro BOOST_SIMD_REDUCTION_INCLUDE">BOOST_SIMD_REDUCTION_INCLUDE</a>(F)</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_PREDICATES_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/all_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>SDK</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="getting_started.html" title="Getting Started">
+<link rel="next" href="rationale.html" title="Rationale">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="getting_started.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../simd.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simd.sdk"></a><a class="link" href="sdk.html" title="SDK">SDK</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="sdk.html#simd.sdk.pack">pack</a></span></dt>
+<dt><span class="section"><a href="sdk.html#simd.sdk.simd_iterator">SIMD Iterator</a></span></dt>
+<dt><span class="section"><a href="sdk.html#simd.sdk.memory">Memory</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="simd.sdk.pack"></a><a class="link" href="sdk.html#simd.sdk.pack" title="pack">pack</a>
+</h3></div></div></div>
+<p>
+        <code class="computeroutput"><span class="identifier">pack</span></code> is the basic building
+        brick of the boost.simd framework. It provides an abstraction of a SIMD register
+        and provides software emulation in case no such registers exist on the machine.
+      </p>
+<p>
+        Here is the forward declaration of the <code class="computeroutput"><span class="identifier">pack</span><span class="special">&lt;&gt;</span></code> class template :
+      </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Type</span>
+        <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">Cardinal</span>  <span class="special">=</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">native_cardinal</span><span class="special">&lt;</span><span class="identifier">Type</span><span class="special">&gt;::</span><span class="identifier">value</span>
+        <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">pack</span><span class="special">;</span>
+</pre>
+<p>
+        The template parameters are described bellow :
+      </p>
+<div class="variablelist">
+<p class="title"><b></b></p>
+<dl>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Type</span></code></span></dt>
+<dd><p>
+              The type of the data to store in the pack
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Cardinal</span></code></span></dt>
+<dd><p>
+              The cardinal (optional), that is the number of elements, to be stored
+              in the pack
+            </p></dd>
+</dl>
+</div>
+<p>
+        In case the cardinal is not specified, the best fit is automatically choosen
+        depending on the size of the SIMD registers and the size of the type stored,
+        that is following the formula :
+      </p>
+<pre class="programlisting"><span class="identifier">BOOST_SIMD_BYTES</span> <span class="special">/</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">Type</span><span class="special">);</span>
+</pre>
+<p>
+        <code class="computeroutput"><span class="identifier">BOOST_SIMD_BYTES</span></code> being the
+        size of the SIMD registers in bytes.
+      </p>
+<p>
+        In case the specified cardinal doesn't fit in a SIMD register, <code class="computeroutput"><span class="identifier">pack</span><span class="special">&lt;&gt;</span></code>
+        falls back to a software implementation based on a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="identifier">Type</span><span class="special">,</span> <span class="identifier">Cardinal</span><span class="special">&gt;</span></code>.
+      </p>
+<p>
+        As a convenience the <code class="computeroutput"><span class="identifier">pack</span><span class="special">&lt;&gt;</span></code> class can be constructed from a
+        <code class="computeroutput"><span class="identifier">Type</span></code> value, so we can write
+        :
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">pack</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">(</span><span class="number">4</span><span class="special">);</span>
+</pre>
+<p>
+        This will effectively load the value 4 into the register using the appropriate
+        intrinsic.
+      </p>
+<a name="simd.sdk.pack.element_access"></a><h4>
+<a name="simd.sdk.pack.h0"></a>
+        <a class="link" href="sdk.html#simd.sdk.pack.element_access">Element Access</a>
+      </h4>
+<p>
+        <code class="computeroutput"><span class="identifier">pack</span><span class="special">&lt;&gt;</span></code>
+        exposes an iterator interface, with <code class="computeroutput"><span class="identifier">begin</span><span class="special">()</span></code> and <code class="computeroutput"><span class="identifier">end</span><span class="special">()</span></code> member functions returning random access
+        iterators respectively pointing to the first element and to the past-the-end
+        element of the <code class="computeroutput"><span class="identifier">pack</span></code> :
+      </p>
+<pre class="programlisting"><span class="identifier">iterator</span>        <span class="identifier">begin</span><span class="special">();</span>
+<span class="identifier">iterator</span>        <span class="identifier">end</span><span class="special">();</span>
+<span class="identifier">const_iterator</span>  <span class="identifier">begin</span><span class="special">()</span>  <span class="keyword">const</span><span class="special">;</span>
+<span class="identifier">const_iterator</span>  <span class="identifier">end</span><span class="special">()</span>    <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+        The pack class also overloads the subscript operator to give random access
+        to its elements (with write support) :
+      </p>
+<pre class="programlisting"><span class="identifier">reference</span>        <span class="keyword">operator</span><span class="special">[](</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">);</span>
+<span class="identifier">const_reference</span>  <span class="keyword">operator</span><span class="special">[](</span><span class="keyword">int</span> <span class="identifier">i</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Accessing one element of a SIMD register is a relatively slow operation.
+        </p></td></tr>
+</table></div>
+<a name="simd.sdk.pack.streaming_support"></a><h4>
+<a name="simd.sdk.pack.h1"></a>
+        <a class="link" href="sdk.html#simd.sdk.pack.streaming_support">Streaming support</a>
+      </h4>
+<p>
+        boost.simd overloads the shift left (insertion to stream) operator, giving
+        you the ability to print the inner state of a <code class="computeroutput"><span class="identifier">pack</span></code>
+        :
+      </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">pack</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">(</span><span class="number">4</span><span class="special">);</span>
+<span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">p</span><span class="special">;</span>
+</pre>
+<p>
+        prints (assuming a 128 bits size SIMD register) :
+      </p>
+<pre class="programlisting">{4,4,4,4}
+</pre>
+<p>
+        These overload is accessible by including :
+      </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">sdk</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">pack</span><span class="special">/</span><span class="identifier">io</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="simd.sdk.simd_iterator"></a><a class="link" href="sdk.html#simd.sdk.simd_iterator" title="SIMD Iterator">SIMD Iterator</a>
+</h3></div></div></div>
+<p>
+        The library provides SIMD iterators :
+      </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">C</span> <span class="special">=</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">native_cardinal</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">&gt;</span>
+<span class="keyword">struct</span>  <span class="identifier">iterator</span>
+</pre>
+<p>
+        referencing pack of C elements of type T. Those iterators are read only and
+        support random access operations.
+      </p>
+<p>
+        In addition to these iterators, two functions are provided, namely <code class="computeroutput"><span class="identifier">begin</span></code> and <code class="computeroutput"><span class="identifier">end</span></code>
+        constructing SIMD iterators from a contiguous range. The <code class="computeroutput"><span class="identifier">begin</span></code>
+        function takes a range and returns a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">iterator</span><span class="special">&lt;&gt;</span></code> pointing to the first aligned address
+        after the start of the range. Another version of this function exists, taking
+        a cardinal as a template parameter. (By default it uses the native cardinal
+        of the range value_type). The <code class="computeroutput"><span class="identifier">end</span></code>
+        function also takes a range and returns a <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">iterator</span><span class="special">&lt;&gt;</span></code> pointing to the first aligned address
+        before the end of the range. Similarly another version of this function exists
+        taking a cardinal.
+      </p>
+<p>
+        Those functions are accessible by including :
+      </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">sdk</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">begin</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">sdk</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">end</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<p>
+        Finally boost.simd provides a function to create a range (cleverly named
+        <code class="computeroutput"><span class="identifier">range</span></code>), composed of the begin
+        and end iterators, from a contiguous range. This range covers the inner part
+        of the original range that supports SIMD operation. Similarly to the <code class="computeroutput"><span class="identifier">begin</span></code> and <code class="computeroutput"><span class="identifier">end</span></code>
+        functions two versions exist, and are defined in :
+      </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">sdk</span><span class="special">/</span><span class="identifier">simd</span><span class="special">/</span><span class="identifier">range</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="simd.sdk.memory"></a><a class="link" href="sdk.html#simd.sdk.memory" title="Memory">Memory</a>
+</h3></div></div></div>
+<p>
+        When dealing with SIMD registers, the memory needs to be aligned in order
+        to achieve good performances. To achieve this goal, boost.simd provides a
+        set of tool to allocate aligned memory. First the <code class="computeroutput"><span class="identifier">allocate</span></code>
+        function, defined in boost/simd/sdk/memory/allocate.hpp :
+      </p>
+<pre class="programlisting"><span class="identifier">byte</span><span class="special">*</span> <span class="identifier">allocate</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">nbytes</span> <span class="special">);</span>
+</pre>
+<p>
+        allocates a buffer of nbytes bytes starting at an aligned address.
+      </p>
+<p>
+        Obviously <code class="computeroutput"><span class="identifier">deallocate</span></code> and
+        <code class="computeroutput"><span class="identifier">reallocate</span></code> counterparts are
+        also available :
+      </p>
+<pre class="programlisting"><span class="keyword">void</span> <span class="identifier">deallocate</span><span class="special">(</span> <span class="identifier">byte</span><span class="special">*</span> <span class="identifier">ptr</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">nbytes</span> <span class="special">=</span> <span class="number">0</span><span class="special">);</span>
+<span class="identifier">byte</span><span class="special">*</span> <span class="identifier">reallocate</span><span class="special">(</span> <span class="identifier">byte</span><span class="special">*</span> <span class="identifier">ptr</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">nbytes</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">obytes</span><span class="special">);</span>
+</pre>
+<p>
+        All this functions live in the boost::simd::memory namespace.
+      </p>
+<p>
+        Lastly, an allocator, <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">memory</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;&gt;</span></code> is provided, which uses internally
+        the above memory handling related functions. This means that you can use
+        it with an STL container to get automatically aligned ranges :
+      </p>
+<pre class="programlisting"><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">simd</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">vec</span><span class="special">(</span><span class="number">9</span><span class="special">,</span> <span class="number">9</span><span class="special">);</span>
+</pre>
+<p>
+        <code class="computeroutput"><span class="identifier">vec</span></code> will start at an aligned
+        address meaning that you can immediately applicate SIMD operations on it
+        without using boost::simd::begin function. This allocator is defined in boost/simd/sdk/memory/allocator.hpp.
+      </p>
+<p>
+        An allocator adaptator is also available for you to adapt an allocator to
+        be aligned, it is named <code class="computeroutput"><span class="identifier">allocator_adaptor</span></code>.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="getting_started.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../simd.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="rationale.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

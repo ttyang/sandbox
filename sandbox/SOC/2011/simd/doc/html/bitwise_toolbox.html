@@ -1,0 +1,409 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Bitwise Toolbox</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="BOOST_SIMD_ARITHMETIC_INCLUDE.html" title="Macro BOOST_SIMD_ARITHMETIC_INCLUDE">
+<link rel="next" href="boost/simd/tag/bits_.html" title="Struct bits_">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_ARITHMETIC_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/bits_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="bitwise_toolbox"></a>Bitwise Toolbox</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.bits_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/bits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.bitwise_andnot_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/bitwise_andnot.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.bitwise_notand_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/bitwise_notand.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.bitwise_notor_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/bitwise_notor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.bitwise_ornot_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/bitwise_ornot.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.bitwise_select_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/bitwise_select.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.ffs_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/ffs.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.firstbitset_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/firstbitset.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.firstbitunset_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/firstbitunset.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.genmask_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/genmask.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.hi_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/hi.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.is_included_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/is_included.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.is_included_c_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/is_included_c.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.lo_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/lo.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.negif_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/negif.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.popcnt_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/popcnt.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.reversebits_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/reversebits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.rol_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/rol.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.ror_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/ror.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.rrol_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/rrol.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.rror_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/rror.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.rshl_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/rshl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.rshr_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/rshr.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.seladd_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/seladd.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.select_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/select.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.selsub_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/selsub.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.shli_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/shli.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.shrai_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/shrai.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.shri_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/shri.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.twopower_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/twopower.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.include_hpp">Header &lt;boost/simd/toolbox/bitwise/include.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.bits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/bits.hpp" target="_top">boost/simd/toolbox/bitwise/functions/bits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bits_.html" title="Struct bits_">bits_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.bitwise_andnot_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/bitwise_andnot.hpp" target="_top">boost/simd/toolbox/bitwise/functions/bitwise_andnot.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_andnot_.html" title="Struct bitwise_andnot_">bitwise_andnot_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.bitwise_notand_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/bitwise_notand.hpp" target="_top">boost/simd/toolbox/bitwise/functions/bitwise_notand.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_notand_.html" title="Struct bitwise_notand_">bitwise_notand_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.bitwise_notor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/bitwise_notor.hpp" target="_top">boost/simd/toolbox/bitwise/functions/bitwise_notor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_notor_.html" title="Struct bitwise_notor_">bitwise_notor_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.bitwise_ornot_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/bitwise_ornot.hpp" target="_top">boost/simd/toolbox/bitwise/functions/bitwise_ornot.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_ornot_.html" title="Struct bitwise_ornot_">bitwise_ornot_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.bitwise_select_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/bitwise_select.hpp" target="_top">boost/simd/toolbox/bitwise/functions/bitwise_select.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/bitwise_select_.html" title="Struct bitwise_select_">bitwise_select_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.ffs_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/ffs.hpp" target="_top">boost/simd/toolbox/bitwise/functions/ffs.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ffs_.html" title="Struct ffs_">ffs_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.firstbitset_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/firstbitset.hpp" target="_top">boost/simd/toolbox/bitwise/functions/firstbitset.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/firstbitset_.html" title="Struct firstbitset_">firstbitset_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.firstbitunset_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/firstbitunset.hpp" target="_top">boost/simd/toolbox/bitwise/functions/firstbitunset.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/firstbitunset_.html" title="Struct firstbitunset_">firstbitunset_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.genmask_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/genmask.hpp" target="_top">boost/simd/toolbox/bitwise/functions/genmask.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/genmask_.html" title="Struct genmask_">genmask_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.hi_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/hi.hpp" target="_top">boost/simd/toolbox/bitwise/functions/hi.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/hi_.html" title="Struct hi_">hi_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.is_included_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/is_included.hpp" target="_top">boost/simd/toolbox/bitwise/functions/is_included.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/is_included_.html" title="Struct is_included_">is_included_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.is_included_c_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/is_included_c.hpp" target="_top">boost/simd/toolbox/bitwise/functions/is_included_c.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/is_included_c_.html" title="Struct is_included_c_">is_included_c_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.lo_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/lo.hpp" target="_top">boost/simd/toolbox/bitwise/functions/lo.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/lo_.html" title="Struct lo_">lo_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.negif_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/negif.hpp" target="_top">boost/simd/toolbox/bitwise/functions/negif.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/negif_.html" title="Struct negif_">negif_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.popcnt_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/popcnt.hpp" target="_top">boost/simd/toolbox/bitwise/functions/popcnt.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/popcnt_.html" title="Struct popcnt_">popcnt_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.reversebits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/reversebits.hpp" target="_top">boost/simd/toolbox/bitwise/functions/reversebits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/reversebits_.html" title="Struct reversebits_">reversebits_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.rol_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/rol.hpp" target="_top">boost/simd/toolbox/bitwise/functions/rol.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rol_.html" title="Struct rol_">rol_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.ror_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/ror.hpp" target="_top">boost/simd/toolbox/bitwise/functions/ror.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/ror_.html" title="Struct ror_">ror_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.rrol_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/rrol.hpp" target="_top">boost/simd/toolbox/bitwise/functions/rrol.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rrol_.html" title="Struct rrol_">rrol_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.rror_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/rror.hpp" target="_top">boost/simd/toolbox/bitwise/functions/rror.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rror_.html" title="Struct rror_">rror_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.rshl_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/rshl.hpp" target="_top">boost/simd/toolbox/bitwise/functions/rshl.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rshl_.html" title="Struct rshl_">rshl_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.rshr_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/rshr.hpp" target="_top">boost/simd/toolbox/bitwise/functions/rshr.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/rshr_.html" title="Struct rshr_">rshr_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.seladd_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/seladd.hpp" target="_top">boost/simd/toolbox/bitwise/functions/seladd.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/seladd_.html" title="Struct seladd_">seladd_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.select_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/select.hpp" target="_top">boost/simd/toolbox/bitwise/functions/select.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/select_.html" title="Struct select_">select_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.selsub_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/selsub.hpp" target="_top">boost/simd/toolbox/bitwise/functions/selsub.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/selsub_.html" title="Struct selsub_">selsub_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.shli_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/shli.hpp" target="_top">boost/simd/toolbox/bitwise/functions/shli.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/shli_.html" title="Struct shli_">shli_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.shrai_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/shrai.hpp" target="_top">boost/simd/toolbox/bitwise/functions/shrai.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/shrai_.html" title="Struct shrai_">shrai_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.shri_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/shri.hpp" target="_top">boost/simd/toolbox/bitwise/functions/shri.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/shri_.html" title="Struct shri_">shri_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.functions.twopower_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/functions/twopower.hpp" target="_top">boost/simd/toolbox/bitwise/functions/twopower.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/twopower_.html" title="Struct twopower_">twopower_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.bitwise.include_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/bitwise/include.hpp" target="_top">boost/simd/toolbox/bitwise/include.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_BITWISE_BASE.html" title="Macro BOOST_SIMD_BITWISE_BASE">BOOST_SIMD_BITWISE_BASE</a>()
+<a class="link" href="BOOST_SIMD_BITWISE_RELATIVE.html" title="Macro BOOST_SIMD_BITWISE_RELATIVE">BOOST_SIMD_BITWISE_RELATIVE</a>()
+<a class="link" href="BOOST_SIMD_BITWISE_INCLUDE.html" title="Macro BOOST_SIMD_BITWISE_INCLUDE">BOOST_SIMD_BITWISE_INCLUDE</a>(F)</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_ARITHMETIC_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/bits_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

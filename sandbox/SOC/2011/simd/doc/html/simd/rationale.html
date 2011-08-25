@@ -1,0 +1,310 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Rationale</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="sdk.html" title="SDK">
+<link rel="next" href="../sdk_reference.html" title="SDK reference">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="sdk.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../simd.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="../sdk_reference.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simd.rationale"></a><a class="link" href="rationale.html" title="Rationale">Rationale</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="rationale.html#simd.rationale.considerations_on_simd_programming">Considerations
+      on SIMD programming</a></span></dt>
+<dt><span class="section"><a href="rationale.html#simd.rationale.parameters_and_return_types">Parameters
+      and return types</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="simd.rationale.considerations_on_simd_programming"></a><a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming" title="Considerations on SIMD programming">Considerations
+      on SIMD programming</a>
+</h3></div></div></div>
+<p>
+        When one use SIMD instructions to speed up his programs , he is confronted
+        to two main points:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            first he must deal with small vectors instead of scalar: <span class="bold"><strong><span class="emphasis"><em>the
+            Multiple Data part</em></span></strong></span>
+          </li>
+<li class="listitem">
+            second he has to do the same thing to all the elements of these vectors:
+            <span class="bold"><strong><span class="emphasis"><em>the Single Instruction part</em></span></strong></span>
+          </li>
+</ul></div>
+<p>
+        This has some practical issues.
+      </p>
+<a name="simd.rationale.considerations_on_simd_programming.considerations_about_sizes_and_types_"></a><h6>
+<a name="simd.rationale.considerations_on_simd_programming.h0"></a>
+        <a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming.considerations_about_sizes_and_types_">Considerations
+        about sizes and types:</a>
+      </h6>
+<p>
+        Generally (and totally in our current implementation) SIMD vectors have a
+        common bit size (64, 128 or 256 bits up to now) in which on can put a small
+        number of datas. This number is rightly computed as being the ratio of this
+        size by the size of the individual element
+      </p>
+<p>
+        For example an SSE2 vector of 128 bits can hold 16 <code class="computeroutput"><span class="keyword">char</span></code>,
+        8 <code class="computeroutput"><span class="keyword">short</span></code>, 4 <code class="computeroutput"><span class="keyword">int</span></code>
+        or <code class="computeroutput"><span class="keyword">float</span></code>, etc.
+      </p>
+<p>
+        SIMD API generally provide operation acting on SIMD vector for given element
+        type: it is senseless to add a vector of 16 <code class="computeroutput"><span class="keyword">char</span></code>
+        to one of 8 <code class="computeroutput"><span class="keyword">int</span></code>. This operation
+        are done in place, and that mean that:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            for integer values there is no intermediate promotion as in C. <code class="computeroutput"><span class="special">(</span><span class="keyword">char</span><span class="special">(</span><span class="number">100</span><span class="special">)+</span><span class="keyword">char</span><span class="special">(</span><span class="number">100</span><span class="special">))-</span><span class="keyword">char</span><span class="special">(</span><span class="number">80</span><span class="special">)</span></code> will
+            not produce the same result if they are part of 3 vectors of <code class="computeroutput"><span class="keyword">char</span></code> or merely scalars, because in C the
+            computation is done in int and the clipped if we put the result back
+            in a char.
+          </li>
+<li class="listitem">
+            for floating on intel cpus this also implies no passing through 80 bits
+            extended registers...
+          </li>
+</ul></div>
+<a name="simd.rationale.considerations_on_simd_programming.considerations__about_logic_and_branching_"></a><h6>
+<a name="simd.rationale.considerations_on_simd_programming.h1"></a>
+        <a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming.considerations__about_logic_and_branching_">Considerations
+        about logic and branching:</a>
+      </h6>
+<p>
+        Consider the simple piece of code:
+      </p>
+<pre class="programlisting">if (a&gt;=0) b = 1 else b = -1;
+</pre>
+<p>
+        This can of course be writen with scalar operands, but what if they are SIMD
+        vectors ?
+      </p>
+<p>
+        first we cannot write <code class="computeroutput"><span class="identifier">a</span><span class="special">&gt;=</span><span class="number">0</span></code> because this operator compare vector in lexicographical
+        order to preserve STL compatibility when iterating on arrays, so we can use
+        something like:
+      </p>
+<pre class="programlisting">ge(a,Zero)
+</pre>
+<p>
+        But the ge function that takes two SIMD vectors of same size and element
+        types will return a vector of N results, one for each element, and two problems
+        are at sight, what is the type of the resulting elements and what can be
+        done with then in a SIMDish fashion ?
+      </p>
+<p>
+        In fact the second part with be of great infuence on the first:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            the returned elements are not boolean stricto sensu. They are of the
+            common type of a and Zero and to not hold vector of 0 and 1 but of 0
+            and -1 for integers (0 and -Nan for real)
+          </li>
+<li class="listitem">
+            why: because -Nan and -1 share the property of having an identical bit
+            representation ~0, meaning all bits are at one.
+          </li>
+<li class="listitem">
+            what is the interest of this oddity ? The answer is that such values
+            provide bit mask for bitwise operations.
+          </li>
+</ul></div>
+<p>
+        then the if...else story can be rewritten:
+      </p>
+<pre class="programlisting"><span class="identifier">b</span> <span class="special">=</span> <span class="identifier">select</span><span class="special">(</span><span class="identifier">ge</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">Zero</span><span class="special">),</span><span class="identifier">One</span><span class="special">,</span><span class="identifier">Mone</span><span class="special">)</span>
+</pre>
+<p>
+        in fact using &amp; and | and ~ the preceding line can be formally rewritten
+      </p>
+<pre class="programlisting"><span class="identifier">b</span> <span class="special">=</span> <span class="special">(</span><span class="identifier">One</span> <span class="special">&amp;</span> <span class="identifier">ge</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">Zero</span><span class="special">))</span> <span class="special">|</span> <span class="special">(</span><span class="identifier">Mone</span> <span class="special">&amp;</span> <span class="special">~</span><span class="identifier">ge</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">Zero</span><span class="special">))</span>
+</pre>
+<p>
+        because the predicate returns a bunch of 1 for True and 0 for False.
+      </p>
+<p>
+        All this of course has a cost : In each test both branches have to be evaluated
+        and the rigth results selected.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="simd.rationale.parameters_and_return_types"></a><a class="link" href="rationale.html#simd.rationale.parameters_and_return_types" title="Parameters and return types">Parameters
+      and return types</a>
+</h3></div></div></div>
+<p>
+        As for the restrictions seen precedently on SIMD operations, the library
+        has two distinct policies for accepting functors input parameters according
+        their SIMD or Scalar nature.
+      </p>
+<a name="simd.rationale.parameters_and_return_types.run_time_input_parameters"></a><h4>
+<a name="simd.rationale.parameters_and_return_types.h0"></a>
+        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.run_time_input_parameters">Run
+        time input parameters</a>
+      </h4>
+<p>
+        The functors can be divided in three categories according to their number
+        of run time input parameters 0 (nullary), 1 (unary) or more (binary, ternary
+        ... n-ary)
+      </p>
+<a name="simd.rationale.parameters_and_return_types.nullary_and_unary_functors"></a><h5>
+<a name="simd.rationale.parameters_and_return_types.h1"></a>
+        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.nullary_and_unary_functors">Nullary
+        and unary functors</a>
+      </h5>
+<p>
+        For nullary and unary functors (the functors taking only one parameters)
+        there is not so much problems. The only peculiarity is that functions that
+        takes a scalar floating parameter can also in general take an integer because
+        of automatic conversion. In SIMD such conversions do not exist.
+      </p>
+<p>
+        Most of the time in case of scalar function properly designed for floating
+        entries, implementations are provided for integer ones if they make sense.
+        For example, you can call <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">next</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span></code>
+        with (SIMD vector) integer parameter <code class="computeroutput"><span class="identifier">a</span></code>.
+        In this case it will be equivalent to saturated <code class="computeroutput"><span class="identifier">a</span><span class="special">+</span><span class="identifier">One</span></code>, satration
+        being taken in the integer type of <code class="computeroutput"><span class="identifier">a</span></code>.
+      </p>
+<a name="simd.rationale.parameters_and_return_types.binary_and_n_ary_functors"></a><h5>
+<a name="simd.rationale.parameters_and_return_types.h2"></a>
+        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.binary_and_n_ary_functors">Binary
+        and n-ary functors</a>
+      </h5>
+<p>
+        For Binary and n-ary functors there are more restrictions.
+      </p>
+<p>
+        All SIMD vector parameters must have the same number of elements.
+      </p>
+<p>
+        This is the only restriction for bitwise operators as <code class="computeroutput"><span class="special">&amp;</span></code>
+        or <code class="computeroutput"><span class="special">|</span></code>.
+      </p>
+<p>
+        Almost all functors can have only one type of SIMD parameter (can also have
+        sometimes integer scalar parameters like <code class="computeroutput"><span class="identifier">shli</span></code>
+        or <code class="computeroutput"><span class="identifier">shri</span></code>)
+      </p>
+<p>
+        For example operator <code class="computeroutput"><span class="special">+</span></code> does
+        not work for adding an SIMD vector of int to an SIMD vector unsigned int
+        or an SIMD vector of float, even if the number of vector elements is the
+        same for these three kinds
+      </p>
+<p>
+        Finally in SIMD direct conversions are not allowed from integer types with
+        wrong element size to floating ones.
+      </p>
+<p>
+        tofloat for instance can only work with vector of integer elements the size
+        of which is 32 or 64 bits namely the size of a <code class="computeroutput"><span class="keyword">float</span></code>
+        or of a <code class="computeroutput"><span class="keyword">double</span></code>...
+      </p>
+<p>
+        To convert a vector of char to a vector of float you have to split it in
+        four parts before conversion ( <code class="computeroutput"><span class="identifier">split</span></code>
+        is part of toolbox <code class="computeroutput"><span class="identifier">swar</span></code>)
+      </p>
+<p>
+        Of course direct functors to do that, could have been provided, the rationale
+        not to do so is to prevent the user to mix types to often, because this is
+        generally inefficient in SIMD.
+      </p>
+<a name="simd.rationale.parameters_and_return_types.return_types"></a><h4>
+<a name="simd.rationale.parameters_and_return_types.h3"></a>
+        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.return_types">Return
+        types</a>
+      </h4>
+<p>
+        Most SIMD functors return a vector of the same type as the first SIMD input
+        parameter, the major exception being in the <code class="computeroutput"><span class="identifier">reduction</span></code>
+        toolbox the functors of which always return a scalar value computed from
+        all the vector elements and of course also in the conversion routines, namely:
+      </p>
+<p>
+        <code class="computeroutput"><span class="identifier">tofloat</span><span class="special">,</span>
+        <span class="identifier">toint</span><span class="special">,</span>
+        <span class="identifier">bitfloating</span><span class="special">,</span>
+        <span class="identifier">bitinteger</span></code>
+      </p>
+<p>
+        In scalar mode, the return type is computed as being the smallest promotion
+        of types that matter in the call. It is rather difficult to give a definition
+        of 'that matter', but quite easy to understand the concept from an example
+        : <code class="computeroutput"><span class="identifier">select</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="number">1.0f</span><span class="special">,</span> <span class="number">2</span><span class="special">)</span></code>
+        will always return a <code class="computeroutput"><span class="keyword">float</span></code> (never
+        a <code class="computeroutput"><span class="keyword">int</span></code>) and the scalar type of
+        <code class="computeroutput"><span class="identifier">a</span></code> does not matter: it is
+        only a boolean-like just to choose the result.
+      </p>
+<p>
+        Some functors as <code class="computeroutput"><span class="identifier">frexp</span></code> or
+        <code class="computeroutput"><span class="identifier">modf</span></code> return several results
+        for one call. In this case a choice of implementation is at disposal, one
+        can call
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">tie</span><span class="special">(</span><span class="identifier">m</span><span class="special">,</span><span class="identifier">e</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">frexp</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span></pre>
+<p>
+      </p>
+<p>
+        or
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">m</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">frexp</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">e</span><span class="special">)</span></pre>
+<p>
+      </p>
+<p>
+        or
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">frexp</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">m</span><span class="special">,</span><span class="identifier">e</span><span class="special">)</span></pre>
+<p>
+      </p>
+<p>
+        provided that the variables <code class="computeroutput"><span class="identifier">a</span><span class="special">,</span> <span class="identifier">m</span></code> and
+        <code class="computeroutput"><span class="identifier">e</span></code> are consistantly defined
+        and <code class="computeroutput"><span class="identifier">tie</span></code> available.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="sdk.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../simd.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="../sdk_reference.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

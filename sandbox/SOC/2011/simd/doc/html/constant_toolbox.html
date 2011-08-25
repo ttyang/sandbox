@@ -1,0 +1,875 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Constant Toolbox</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="BOOST_SIMD_BITWISE_INCLUDE.html" title="Macro BOOST_SIMD_BITWISE_INCLUDE">
+<link rel="next" href="boost/simd/tag/Inf.html" title="Struct Inf">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_BITWISE_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/Inf.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="constant_toolbox"></a>Constant Toolbox</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.cgold_hpp">Header &lt;boost/simd/toolbox/constant/constants/cgold.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eight_hpp">Header &lt;boost/simd/toolbox/constant/constants/eight.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eleven_hpp">Header &lt;boost/simd/toolbox/constant/constants/eleven.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eps_hpp">Header &lt;boost/simd/toolbox/constant/constants/eps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_10_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_10.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_11_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_11.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_12_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_12.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_4_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_4.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_5_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_5.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_6_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_6.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_7_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_7.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_8_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_8.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fact_9_hpp">Header &lt;boost/simd/toolbox/constant/constants/fact_9.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.false_hpp">Header &lt;boost/simd/toolbox/constant/constants/false.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.five_hpp">Header &lt;boost/simd/toolbox/constant/constants/five.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.four_hpp">Header &lt;boost/simd/toolbox/constant/constants/four.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.fourthrooteps_hpp">Header &lt;boost/simd/toolbox/constant/constants/fourthrooteps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.gold_hpp">Header &lt;boost/simd/toolbox/constant/constants/gold.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.half_hpp">Header &lt;boost/simd/toolbox/constant/constants/half.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.halfeps_hpp">Header &lt;boost/simd/toolbox/constant/constants/halfeps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.inf_hpp">Header &lt;boost/simd/toolbox/constant/constants/inf.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.int_splat_hpp">Header &lt;boost/simd/toolbox/constant/constants/int_splat.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.ldexpmask_hpp">Header &lt;boost/simd/toolbox/constant/constants/ldexpmask.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.maxexponent_hpp">Header &lt;boost/simd/toolbox/constant/constants/maxexponent.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.maxleftshift_hpp">Header &lt;boost/simd/toolbox/constant/constants/maxleftshift.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.meight_hpp">Header &lt;boost/simd/toolbox/constant/constants/meight.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mfive_hpp">Header &lt;boost/simd/toolbox/constant/constants/mfive.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mfour_hpp">Header &lt;boost/simd/toolbox/constant/constants/mfour.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mhalf_hpp">Header &lt;boost/simd/toolbox/constant/constants/mhalf.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mindenormal_hpp">Header &lt;boost/simd/toolbox/constant/constants/mindenormal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.minexponent_hpp">Header &lt;boost/simd/toolbox/constant/constants/minexponent.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.minf_hpp">Header &lt;boost/simd/toolbox/constant/constants/minf.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mlogeps2_hpp">Header &lt;boost/simd/toolbox/constant/constants/mlogeps2.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mnine_hpp">Header &lt;boost/simd/toolbox/constant/constants/mnine.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mone_hpp">Header &lt;boost/simd/toolbox/constant/constants/mone.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mseven_hpp">Header &lt;boost/simd/toolbox/constant/constants/mseven.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.msix_hpp">Header &lt;boost/simd/toolbox/constant/constants/msix.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mten_hpp">Header &lt;boost/simd/toolbox/constant/constants/mten.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mthree_hpp">Header &lt;boost/simd/toolbox/constant/constants/mthree.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mtwo_hpp">Header &lt;boost/simd/toolbox/constant/constants/mtwo.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.mzero_hpp">Header &lt;boost/simd/toolbox/constant/constants/mzero.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.nan_hpp">Header &lt;boost/simd/toolbox/constant/constants/nan.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.nbdigits_hpp">Header &lt;boost/simd/toolbox/constant/constants/nbdigits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.nbexponentbits_hpp">Header &lt;boost/simd/toolbox/constant/constants/nbexponentbits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.nbmantissabits_hpp">Header &lt;boost/simd/toolbox/constant/constants/nbmantissabits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.nine_hpp">Header &lt;boost/simd/toolbox/constant/constants/nine.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.one_hpp">Header &lt;boost/simd/toolbox/constant/constants/one.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.pi_hpp">Header &lt;boost/simd/toolbox/constant/constants/pi.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.quarter_hpp">Header &lt;boost/simd/toolbox/constant/constants/quarter.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.real_splat_hpp">Header &lt;boost/simd/toolbox/constant/constants/real_splat.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.seven_hpp">Header &lt;boost/simd/toolbox/constant/constants/seven.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.signmask_hpp">Header &lt;boost/simd/toolbox/constant/constants/signmask.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.six_hpp">Header &lt;boost/simd/toolbox/constant/constants/six.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.smallestposval_hpp">Header &lt;boost/simd/toolbox/constant/constants/smallestposval.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.splitfactor_hpp">Header &lt;boost/simd/toolbox/constant/constants/splitfactor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.sqrt_2_hpp">Header &lt;boost/simd/toolbox/constant/constants/sqrt_2.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.sqrt_2o_2_hpp">Header &lt;boost/simd/toolbox/constant/constants/sqrt_2o_2.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.sqrteps_hpp">Header &lt;boost/simd/toolbox/constant/constants/sqrteps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.ten_hpp">Header &lt;boost/simd/toolbox/constant/constants/ten.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.third_hpp">Header &lt;boost/simd/toolbox/constant/constants/third.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.thirdrooteps_hpp">Header &lt;boost/simd/toolbox/constant/constants/thirdrooteps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.thousand_hpp">Header &lt;boost/simd/toolbox/constant/constants/thousand.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.three_hpp">Header &lt;boost/simd/toolbox/constant/constants/three.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.threeeps_hpp">Header &lt;boost/simd/toolbox/constant/constants/threeeps.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.true_hpp">Header &lt;boost/simd/toolbox/constant/constants/true.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.twelve_hpp">Header &lt;boost/simd/toolbox/constant/constants/twelve.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.twenty_hpp">Header &lt;boost/simd/toolbox/constant/constants/twenty.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.two_hpp">Header &lt;boost/simd/toolbox/constant/constants/two.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.twotom10_hpp">Header &lt;boost/simd/toolbox/constant/constants/twotom10.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.twotonmb_hpp">Header &lt;boost/simd/toolbox/constant/constants/twotonmb.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.valmax_hpp">Header &lt;boost/simd/toolbox/constant/constants/valmax.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.valmin_hpp">Header &lt;boost/simd/toolbox/constant/constants/valmin.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.zero_hpp">Header &lt;boost/simd/toolbox/constant/constants/zero.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.cgold_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/cgold.hpp" target="_top">boost/simd/toolbox/constant/constants/cgold.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629146"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Cgold</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3EC3910D</span><span class="special">,</span> 
+                                    <span class="number">0x3FD8722191A02D61ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.eight_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/eight.hpp" target="_top">boost/simd/toolbox/constant/constants/eight.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629194"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eight</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">8</span><span class="special">,</span> <span class="number">0x41000000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4020000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.eleven_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/eleven.hpp" target="_top">boost/simd/toolbox/constant/constants/eleven.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629242"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eleven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">11</span><span class="special">,</span> <span class="number">0x41300000</span><span class="special">,</span> 
+                                    <span class="number">0x4026000000000000ll</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.eps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/eps.hpp" target="_top">boost/simd/toolbox/constant/constants/eps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629289"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0X34000000</span><span class="special">,</span> 
+                                    <span class="number">0x3CB0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_10_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_10.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_10.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_11_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_11.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_11.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_12_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_12.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_12.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_4_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_4.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_4.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_5_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_5.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_5.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_6_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_6.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_6.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_7_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_7.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_7.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_8_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_8.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_8.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fact_9_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fact_9.hpp" target="_top">boost/simd/toolbox/constant/constants/fact_9.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.false_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/false.hpp" target="_top">boost/simd/toolbox/constant/constants/false.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629463"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">False</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x0UL</span><span class="special">,</span> <span class="number">0x0ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.five_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/five.hpp" target="_top">boost/simd/toolbox/constant/constants/five.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629510"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Five</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">5</span><span class="special">,</span> <span class="number">0x40a00000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4014000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.four_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/four.hpp" target="_top">boost/simd/toolbox/constant/constants/four.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629558"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Four</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">4</span><span class="special">,</span> <span class="number">0x40800000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4010000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.fourthrooteps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/fourthrooteps.hpp" target="_top">boost/simd/toolbox/constant/constants/fourthrooteps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629606"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Fourthrooteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3C9837F0</span><span class="special">,</span> 
+                                    <span class="number">0x3F20000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.gold_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/gold.hpp" target="_top">boost/simd/toolbox/constant/constants/gold.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629654"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Gold</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3FCF1BBD</span><span class="special">,</span> 
+                                    <span class="number">0x3FF9E3779B97F4A8ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.half_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/half.hpp" target="_top">boost/simd/toolbox/constant/constants/half.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629702"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Half</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3F000000</span><span class="special">,</span> 
+                                    <span class="number">0x3FE0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.halfeps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/halfeps.hpp" target="_top">boost/simd/toolbox/constant/constants/halfeps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629750"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Halfeps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x33800000</span><span class="special">,</span> 
+                                    <span class="number">0x3CA0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.inf_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/inf.hpp" target="_top">boost/simd/toolbox/constant/constants/inf.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Inf.html" title="Struct Inf">Inf</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.int_splat_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/int_splat.hpp" target="_top">boost/simd/toolbox/constant/constants/int_splat.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Target<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">int64_t</span> N<span class="special">&gt;</span> 
+      <span class="identifier">Target</span> <a name="boost.simd.integral_constant"></a><span class="identifier">integral_constant</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">int64_t</span> I<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Intpattern.html" title="Struct template Intpattern">Intpattern</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.ldexpmask_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/ldexpmask.hpp" target="_top">boost/simd/toolbox/constant/constants/ldexpmask.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Ldexpmask.html" title="Struct Ldexpmask">Ldexpmask</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.maxexponent_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/maxexponent.hpp" target="_top">boost/simd/toolbox/constant/constants/maxexponent.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Maxexponent.html" title="Struct Maxexponent">Maxexponent</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.maxleftshift_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/maxleftshift.hpp" target="_top">boost/simd/toolbox/constant/constants/maxleftshift.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Maxleftshift.html" title="Struct Maxleftshift">Maxleftshift</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.meight_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/meight.hpp" target="_top">boost/simd/toolbox/constant/constants/meight.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630111"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Meight</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 8<span class="special">,</span> <span class="number">0xc1000000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc020000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mfive_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mfive.hpp" target="_top">boost/simd/toolbox/constant/constants/mfive.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630158"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mfive</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 5<span class="special">,</span> <span class="number">0xc0a00000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc014000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mfour_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mfour.hpp" target="_top">boost/simd/toolbox/constant/constants/mfour.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630206"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mfour</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 4<span class="special">,</span> <span class="number">0xc0800000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc010000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mhalf_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mhalf.hpp" target="_top">boost/simd/toolbox/constant/constants/mhalf.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630254"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mhalf</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0xBF000000</span><span class="special">,</span> 
+                                    <span class="number">0xBFE0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mindenormal_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mindenormal.hpp" target="_top">boost/simd/toolbox/constant/constants/mindenormal.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Mindenormal.html" title="Struct Mindenormal">Mindenormal</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.minexponent_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/minexponent.hpp" target="_top">boost/simd/toolbox/constant/constants/minexponent.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Minexponent.html" title="Struct Minexponent">Minexponent</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.minf_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/minf.hpp" target="_top">boost/simd/toolbox/constant/constants/minf.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Minf.html" title="Struct Minf">Minf</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mlogeps2_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mlogeps2.hpp" target="_top">boost/simd/toolbox/constant/constants/mlogeps2.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630515"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mlogeps2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x40FF1402</span><span class="special">,</span> 
+                                    <span class="number">0x403205966F2B4F13ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mnine_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mnine.hpp" target="_top">boost/simd/toolbox/constant/constants/mnine.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630563"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mnine</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 9<span class="special">,</span> <span class="number">0xc1100000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc022000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mone_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mone.hpp" target="_top">boost/simd/toolbox/constant/constants/mone.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630611"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mone</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 1<span class="special">,</span> <span class="number">0xbf800000UL</span><span class="special">,</span> 
+                                    <span class="number">0xbff0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mseven_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mseven.hpp" target="_top">boost/simd/toolbox/constant/constants/mseven.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630659"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mseven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 7<span class="special">,</span> <span class="number">0xc0e00000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc01c000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.msix_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/msix.hpp" target="_top">boost/simd/toolbox/constant/constants/msix.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630707"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Msix</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 6<span class="special">,</span> <span class="number">0xc0c00000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc018000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mten_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mten.hpp" target="_top">boost/simd/toolbox/constant/constants/mten.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630755"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mten</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 10<span class="special">,</span> <span class="number">0xc1200000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc024000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mthree_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mthree.hpp" target="_top">boost/simd/toolbox/constant/constants/mthree.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630802"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mthree</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 3<span class="special">,</span> <span class="number">0xc0400000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc008000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mtwo_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mtwo.hpp" target="_top">boost/simd/toolbox/constant/constants/mtwo.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630850"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mtwo</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 2<span class="special">,</span> <span class="number">0xc0000000UL</span><span class="special">,</span> 
+                                    <span class="number">0xc000000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.mzero_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/mzero.hpp" target="_top">boost/simd/toolbox/constant/constants/mzero.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630898"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mzero</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x80000000</span><span class="special">,</span> 
+                                    <span class="number">0x8000000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.nan_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/nan.hpp" target="_top">boost/simd/toolbox/constant/constants/nan.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630946"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Nan</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0xFFFFFFFF</span><span class="special">,</span> 
+                                    <span class="number">0xFFFFFFFFFFFFFFFFULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.nbdigits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/nbdigits.hpp" target="_top">boost/simd/toolbox/constant/constants/nbdigits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Nbdigits.html" title="Struct Nbdigits">Nbdigits</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.nbexponentbits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/nbexponentbits.hpp" target="_top">boost/simd/toolbox/constant/constants/nbexponentbits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Nbexponentbits.html" title="Struct Nbexponentbits">Nbexponentbits</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.nbmantissabits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/nbmantissabits.hpp" target="_top">boost/simd/toolbox/constant/constants/nbmantissabits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Nbmantissabits.html" title="Struct Nbmantissabits">Nbmantissabits</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.nine_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/nine.hpp" target="_top">boost/simd/toolbox/constant/constants/nine.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631196"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Nine</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">9</span><span class="special">,</span> <span class="number">0x41100000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4022000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.one_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/one.hpp" target="_top">boost/simd/toolbox/constant/constants/one.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631244"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">One</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3f800000UL</span><span class="special">,</span> 
+                                    <span class="number">0x3ff0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.pi_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/pi.hpp" target="_top">boost/simd/toolbox/constant/constants/pi.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631292"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Pi</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x40490FDB</span><span class="special">,</span> 
+                                    <span class="number">0x400921FB54442D18ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.quarter_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/quarter.hpp" target="_top">boost/simd/toolbox/constant/constants/quarter.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631340"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Quarter</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3E800000</span><span class="special">,</span> 
+                                    <span class="number">0x3FD0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.real_splat_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/real_splat.hpp" target="_top">boost/simd/toolbox/constant/constants/real_splat.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Target<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">uint64_t</span> D<span class="special">,</span> 
+             <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">uint32_t</span> F<span class="special">&gt;</span> 
+      <span class="identifier">Target</span> <a name="boost.simd.real_constant"></a><span class="identifier">real_constant</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Target<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">uint32_t</span> F<span class="special">&gt;</span> 
+      <span class="identifier">Target</span> <a name="boost.simd.single_constant"></a><span class="identifier">single_constant</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Target<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">uint64_t</span> D<span class="special">&gt;</span> 
+      <span class="identifier">Target</span> <a name="boost.simd.double_constant"></a><span class="identifier">double_constant</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Target<span class="special">,</span> <span class="identifier">uint64_t</span> Value<span class="special">&gt;</span> <span class="identifier">Target</span> <a name="boost.simd.Const"></a><span class="identifier">Const</span><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">uint32_t</span> F<span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">uint64_t</span> D<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Realpattern.html" title="Struct template Realpattern">Realpattern</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.seven_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/seven.hpp" target="_top">boost/simd/toolbox/constant/constants/seven.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631560"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Seven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">7</span><span class="special">,</span> <span class="number">0x40e00000UL</span><span class="special">,</span> 
+                                    <span class="number">0x401c000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.signmask_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/signmask.hpp" target="_top">boost/simd/toolbox/constant/constants/signmask.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Signmask.html" title="Struct Signmask">Signmask</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.six_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/six.hpp" target="_top">boost/simd/toolbox/constant/constants/six.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631741"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Six</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">6</span><span class="special">,</span> <span class="number">0x40c00000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4018000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.smallestposval_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/smallestposval.hpp" target="_top">boost/simd/toolbox/constant/constants/smallestposval.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631789"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Smallestposval</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x00800000</span><span class="special">,</span> 
+                                    <span class="number">0x0010000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.splitfactor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/splitfactor.hpp" target="_top">boost/simd/toolbox/constant/constants/splitfactor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631837"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Splitfactor</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x46000000</span><span class="special">,</span> 
+                                    <span class="number">0x41A0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.sqrt_2_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/sqrt_2.hpp" target="_top">boost/simd/toolbox/constant/constants/sqrt_2.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631885"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrt_2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3FB504F3</span><span class="special">,</span> 
+                                    <span class="number">0x3ff6A09E667F3BCCULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.sqrt_2o_2_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/sqrt_2o_2.hpp" target="_top">boost/simd/toolbox/constant/constants/sqrt_2o_2.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631933"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrt_2o_2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3F3504F3</span><span class="special">,</span> 
+                                    <span class="number">0x3FE6A09E667F3BCDULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.sqrteps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/sqrteps.hpp" target="_top">boost/simd/toolbox/constant/constants/sqrteps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631980"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x39B504F3</span><span class="special">,</span> 
+                                    <span class="number">0x3E50000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.ten_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/ten.hpp" target="_top">boost/simd/toolbox/constant/constants/ten.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632028"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Ten</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="number">0x41200000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4024000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.third_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/third.hpp" target="_top">boost/simd/toolbox/constant/constants/third.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632076"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Third</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3EAAAAAB</span><span class="special">,</span> 
+                                    <span class="number">0x3FD5555555555555ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.thirdrooteps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/thirdrooteps.hpp" target="_top">boost/simd/toolbox/constant/constants/thirdrooteps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632124"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Thirdrooteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3BA14518</span><span class="special">,</span> 
+                                    <span class="number">0x3ED965FEA53D6E42ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.thousand_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/thousand.hpp" target="_top">boost/simd/toolbox/constant/constants/thousand.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.three_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/three.hpp" target="_top">boost/simd/toolbox/constant/constants/three.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632186"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Three</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x40400000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4008000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.threeeps_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/threeeps.hpp" target="_top">boost/simd/toolbox/constant/constants/threeeps.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632234"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Threeeps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x34C00000</span><span class="special">,</span> 
+                                    <span class="number">0x3CC8000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.true_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/true.hpp" target="_top">boost/simd/toolbox/constant/constants/true.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_TRUE_HPP_INCLUDED.html" title="Macro BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_TRUE_HPP_INCLUDED">BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_TRUE_HPP_INCLUDED</a></pre>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632281"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">True</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3F800000UL</span><span class="special">,</span> 
+                                    <span class="number">0x3FF0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.twelve_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/twelve.hpp" target="_top">boost/simd/toolbox/constant/constants/twelve.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632333"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twelve</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">12</span><span class="special">,</span> <span class="number">0x41400000</span><span class="special">,</span> 
+                                    <span class="number">0x4028000000000000ll</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.twenty_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/twenty.hpp" target="_top">boost/simd/toolbox/constant/constants/twenty.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.two_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/two.hpp" target="_top">boost/simd/toolbox/constant/constants/two.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632395"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Two</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">0x40000000UL</span><span class="special">,</span> 
+                                    <span class="number">0x4000000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.twotom10_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/twotom10.hpp" target="_top">boost/simd/toolbox/constant/constants/twotom10.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632443"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twotom10</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3A800000</span><span class="special">,</span> 
+                                    <span class="number">0x3F50000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.twotonmb_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/twotonmb.hpp" target="_top">boost/simd/toolbox/constant/constants/twotonmb.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632491"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twotonmb</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x4B000000</span><span class="special">,</span> 
+                                    <span class="number">0x4330000000000000ULL</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.valmax_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/valmax.hpp" target="_top">boost/simd/toolbox/constant/constants/valmax.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Valmax.html" title="Struct Valmax">Valmax</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.valmin_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/valmin.hpp" target="_top">boost/simd/toolbox/constant/constants/valmin.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Valmin.html" title="Struct Valmin">Valmin</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.zero_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/zero.hpp" target="_top">boost/simd/toolbox/constant/constants/zero.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632883"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Zero</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="BOOST_SIMD_BITWISE_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/Inf.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Operator Toolbox</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
+<link rel="prev" href="boost/simd/result/range/result_This_Range__Card_id2625519.html" title="Struct template result&lt;This(Range, Cardinal)&gt;">
+<link rel="next" href="boost/simd/tag/load_.html" title="Struct load_">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost/simd/result/range/result_This_Range__Card_id2625519.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/load_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="operator_toolbox"></a>Operator Toolbox</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.bitwise_and_hpp">Header &lt;boost/simd/toolbox/operator/functions/bitwise_and.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.bitwise_or_hpp">Header &lt;boost/simd/toolbox/operator/functions/bitwise_or.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.bitwise_xor_hpp">Header &lt;boost/simd/toolbox/operator/functions/bitwise_xor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.comma_hpp">Header &lt;boost/simd/toolbox/operator/functions/comma.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.compare_equal_hpp">Header &lt;boost/simd/toolbox/operator/functions/compare_equal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.compare_greater_hpp">Header &lt;boost/simd/toolbox/operator/functions/compare_greater.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.compare_greater_equal_hpp">Header &lt;boost/simd/toolbox/operator/functions/compare_greater_equal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.compare_less_hpp">Header &lt;boost/simd/toolbox/operator/functions/compare_less.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.compare_less_equal_hpp">Header &lt;boost/simd/toolbox/operator/functions/compare_less_equal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.compare_not_equal_hpp">Header &lt;boost/simd/toolbox/operator/functions/compare_not_equal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.complement_hpp">Header &lt;boost/simd/toolbox/operator/functions/complement.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.divides_hpp">Header &lt;boost/simd/toolbox/operator/functions/divides.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.if_else_hpp">Header &lt;boost/simd/toolbox/operator/functions/if_else.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.load_hpp">Header &lt;boost/simd/toolbox/operator/functions/load.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.logical_and_hpp">Header &lt;boost/simd/toolbox/operator/functions/logical_and.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.logical_not_hpp">Header &lt;boost/simd/toolbox/operator/functions/logical_not.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.logical_or_hpp">Header &lt;boost/simd/toolbox/operator/functions/logical_or.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.make_hpp">Header &lt;boost/simd/toolbox/operator/functions/make.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.map_hpp">Header &lt;boost/simd/toolbox/operator/functions/map.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.minus_hpp">Header &lt;boost/simd/toolbox/operator/functions/minus.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.modulo_hpp">Header &lt;boost/simd/toolbox/operator/functions/modulo.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.multiplies_hpp">Header &lt;boost/simd/toolbox/operator/functions/multiplies.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.plus_hpp">Header &lt;boost/simd/toolbox/operator/functions/plus.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.shift_left_hpp">Header &lt;boost/simd/toolbox/operator/functions/shift_left.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.shift_right_hpp">Header &lt;boost/simd/toolbox/operator/functions/shift_right.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.splat_hpp">Header &lt;boost/simd/toolbox/operator/functions/splat.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.store_hpp">Header &lt;boost/simd/toolbox/operator/functions/store.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.unary_minus_hpp">Header &lt;boost/simd/toolbox/operator/functions/unary_minus.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.unary_plus_hpp">Header &lt;boost/simd/toolbox/operator/functions/unary_plus.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.include_hpp">Header &lt;boost/simd/toolbox/operator/include.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.bitwise_and_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/bitwise_and.hpp" target="_top">boost/simd/toolbox/operator/functions/bitwise_and.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">bitwise_and</span> <a name="boost.simd.tag.bitwise_and_"></a><span class="identifier">bitwise_and_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.bitwise_or_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/bitwise_or.hpp" target="_top">boost/simd/toolbox/operator/functions/bitwise_or.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">bitwise_or</span> <a name="boost.simd.tag.bitwise_or_"></a><span class="identifier">bitwise_or_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.bitwise_xor_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/bitwise_xor.hpp" target="_top">boost/simd/toolbox/operator/functions/bitwise_xor.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">bitwise_xor</span> <a name="boost.simd.tag.bitwise_xor_"></a><span class="identifier">bitwise_xor_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.comma_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/comma.hpp" target="_top">boost/simd/toolbox/operator/functions/comma.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">comma</span> <a name="boost.simd.tag.comma_"></a><span class="identifier">comma_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.compare_equal_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/compare_equal.hpp" target="_top">boost/simd/toolbox/operator/functions/compare_equal.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">equal_to</span> <a name="boost.simd.tag.compare_equal_"></a><span class="identifier">compare_equal_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.compare_greater_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/compare_greater.hpp" target="_top">boost/simd/toolbox/operator/functions/compare_greater.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">greater</span> <a name="boost.simd.tag.compare_greater_"></a><span class="identifier">compare_greater_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.compare_greater_equal_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/compare_greater_equal.hpp" target="_top">boost/simd/toolbox/operator/functions/compare_greater_equal.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">greater_equal</span> <a name="boost.simd.tag.compare_greater_equal_"></a><span class="identifier">compare_greater_equal_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.compare_less_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/compare_less.hpp" target="_top">boost/simd/toolbox/operator/functions/compare_less.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">less</span> <a name="boost.simd.tag.compare_less_"></a><span class="identifier">compare_less_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.compare_less_equal_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/compare_less_equal.hpp" target="_top">boost/simd/toolbox/operator/functions/compare_less_equal.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">less_equal</span> <a name="boost.simd.tag.compare_less_equal_"></a><span class="identifier">compare_less_equal_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.compare_not_equal_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/compare_not_equal.hpp" target="_top">boost/simd/toolbox/operator/functions/compare_not_equal.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">not_equal_to</span> <a name="boost.simd.tag.compare_not_equal_"></a><span class="identifier">compare_not_equal_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.complement_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/complement.hpp" target="_top">boost/simd/toolbox/operator/functions/complement.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">complement</span> <a name="boost.simd.tag.complement_"></a><span class="identifier">complement_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.divides_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/divides.hpp" target="_top">boost/simd/toolbox/operator/functions/divides.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">divides</span> <a name="boost.simd.tag.divides_"></a><span class="identifier">divides_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.if_else_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/if_else.hpp" target="_top">boost/simd/toolbox/operator/functions/if_else.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">if_else_</span> <a name="boost.simd.tag.if_else_"></a><span class="identifier">if_else_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.load_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/load.hpp" target="_top">boost/simd/toolbox/operator/functions/load.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">call</span><span class="special">&lt;</span> <a class="link" href="boost/simd/tag/load_.html" title="Struct load_">tag::load_</a><span class="special">(</span><span class="identifier">A0</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">A1</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">as_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">)</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="boost/simd/load.html" title="Global load">load</a><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/load_.html" title="Struct load_">load_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.logical_and_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/logical_and.hpp" target="_top">boost/simd/toolbox/operator/functions/logical_and.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">logical_and</span> <a name="boost.simd.tag.logical_and_"></a><span class="identifier">logical_and_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.logical_not_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/logical_not.hpp" target="_top">boost/simd/toolbox/operator/functions/logical_not.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">logical_not</span> <a name="boost.simd.tag.logical_not_"></a><span class="identifier">logical_not_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.logical_or_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/logical_or.hpp" target="_top">boost/simd/toolbox/operator/functions/logical_or.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">logical_or</span> <a name="boost.simd.tag.logical_or_"></a><span class="identifier">logical_or_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.make_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/make.hpp" target="_top">boost/simd/toolbox/operator/functions/make.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_PP_REPEAT_POWER_OF_2.html" title="Macro BOOST_SIMD_PP_REPEAT_POWER_OF_2">BOOST_SIMD_PP_REPEAT_POWER_OF_2</a>(m, data)
+<a class="link" href="M1_id2627037.html" title="Macro M1">M1</a>(z, n, t)
+<a class="link" href="M0_id2627052.html" title="Macro M0">M0</a>(z, n, t)</pre>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Site<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/functor_boost_simd_tag__id2626086.html" title="Struct template functor&lt;boost::simd::tag::make_, Site&gt;">functor</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">make_</span><span class="special">,</span> <span class="identifier">Site</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626571.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(1, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626602.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(2, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626633.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(4, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">8</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626664.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(8, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">8</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">16</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626695.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(16, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">16</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">32</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626727.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(32, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">32</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">64</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> 
+             <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/result_This_BOOST_PP_EN_id2626758.html" title="Struct template result&lt;This(BOOST_PP_ENUM_PARAMS(64, A), Target)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">64</span><span class="special">,</span> <span class="identifier">A</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span><span class="special">)</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626796"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626828"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626861"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">4</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">8</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626893"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">8</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">16</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626926"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">16</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">32</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626958"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">32</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">BOOST_PP_ENUM_PARAMS</span><span class="special">(</span><span class="number">64</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">)</span> <span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="identifier">Target</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.operator()_id2626991"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="number">64</span><span class="special">,</span> <span class="identifier">A</span><span class="special">,</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="identifier">a</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Target</span> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/make_.html" title="Struct make_">make_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.map_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/map.hpp" target="_top">boost/simd/toolbox/operator/functions/map.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/map_.html" title="Struct map_">map_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.minus_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/minus.hpp" target="_top">boost/simd/toolbox/operator/functions/minus.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">minus</span> <a name="boost.simd.tag.minus_"></a><span class="identifier">minus_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.modulo_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/modulo.hpp" target="_top">boost/simd/toolbox/operator/functions/modulo.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">modulus</span> <a name="boost.simd.tag.modulo_"></a><span class="identifier">modulo_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.multiplies_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/multiplies.hpp" target="_top">boost/simd/toolbox/operator/functions/multiplies.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">multiplies</span> <a name="boost.simd.tag.multiplies_"></a><span class="identifier">multiplies_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.plus_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/plus.hpp" target="_top">boost/simd/toolbox/operator/functions/plus.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">plus</span> <a name="boost.simd.tag.plus_"></a><span class="identifier">plus_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.shift_left_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/shift_left.hpp" target="_top">boost/simd/toolbox/operator/functions/shift_left.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">shift_left</span> <a name="boost.simd.tag.shift_left_"></a><span class="identifier">shift_left_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.shift_right_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/shift_right.hpp" target="_top">boost/simd/toolbox/operator/functions/shift_right.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">shift_right</span> <a name="boost.simd.tag.shift_right_"></a><span class="identifier">shift_right_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.splat_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/splat.hpp" target="_top">boost/simd/toolbox/operator/functions/splat.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">&gt;</span> 
+      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">call</span><span class="special">&lt;</span> <a class="link" href="boost/simd/tag/splat_.html" title="Struct splat_">tag::splat_</a><span class="special">(</span><span class="identifier">A0</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">as_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> 
+      <a name="boost.simd.splat"></a><span class="identifier">splat</span><span class="special">(</span><span class="identifier">A0</span> <span class="keyword">const</span> <span class="special">&amp;</span> a0<span class="special">)</span><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/splat_.html" title="Struct splat_">splat_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.store_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/store.hpp" target="_top">boost/simd/toolbox/operator/functions/store.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/store_.html" title="Struct store_">store_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.unary_minus_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/unary_minus.hpp" target="_top">boost/simd/toolbox/operator/functions/unary_minus.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">negate</span> <a name="boost.simd.tag.unary_minus_"></a><span class="identifier">unary_minus_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.functions.unary_plus_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/functions/unary_plus.hpp" target="_top">boost/simd/toolbox/operator/functions/unary_plus.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">unary_plus</span> <a name="boost.simd.tag.unary_plus_"></a><span class="identifier">unary_plus_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.operator.include_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/operator/include.hpp" target="_top">boost/simd/toolbox/operator/include.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_SIMD_OPERATOR_BASE.html" title="Macro BOOST_SIMD_OPERATOR_BASE">BOOST_SIMD_OPERATOR_BASE</a>()
+<a class="link" href="BOOST_SIMD_OPERATOR_RELATIVE.html" title="Macro BOOST_SIMD_OPERATOR_RELATIVE">BOOST_SIMD_OPERATOR_RELATIVE</a>()
+<a class="link" href="BOOST_SIMD_OPERATOR_INCLUDE.html" title="Macro BOOST_SIMD_OPERATOR_INCLUDE">BOOST_SIMD_OPERATOR_INCLUDE</a>(F)</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Blaise Pascal<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="boost/simd/result/range/result_This_Range__Card_id2625519.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/load_.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
