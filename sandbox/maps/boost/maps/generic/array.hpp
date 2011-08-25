@@ -304,7 +304,7 @@ namespace boost { namespace maps {
 
         void operator()( type& a ) 
         {   
-            memset( a, 0, S * sizeof(T) ); // '\0'
+            memset( a, 0, S * sizeof(T) );
         }
     };
 
