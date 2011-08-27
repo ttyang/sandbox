@@ -92,12 +92,10 @@ namespace boost { namespace maps {
             type f = p, l = p+S, r = q;
             allocator a;
             try
-            {   for (; f != l; ++f, ++r)
-		            a.construct(f, *r);
+            {   for (; f != l; ++f, ++r) a.construct(f, *r);
             }catch( ... )
             {   type n = p;
-                for (; n != r; ++n)
-		            a.destroy(n);
+                for (; n != r; ++n) a.destroy(n);
                 throw;
             }
         }
