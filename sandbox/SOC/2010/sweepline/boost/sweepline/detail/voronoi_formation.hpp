@@ -766,37 +766,6 @@ namespace detail {
                                  point2.y() - point3.y()));
     }
 
-    // Robust voronoi vertex data structure. Used during removing degenerate
-    // edges(zero-length).
-    // Vertex coordinates are: center_x / denom, center_y / denom.
-    // Variables: center_x - x-coordinate of the circle's center;
-    //            center_y - y-coordinate of the circle's center;
-    //            denom - denominator for the previous two values.
-    template <typename T>
-    class robust_voronoi_vertex {
-    public:
-        typedef T coordinate_type;
-        typedef epsilon_robust_comparator<coordinate_type> erc_type;
-
-        robust_voronoi_vertex(const erc_type &c_x, const erc_type &c_y) :
-            center_x(c_x),
-            center_y(c_y) {}
-
-        coordinate_type x() const { return center_x.dif(); }
-
-        coordinate_type y() const { return center_y.dif(); }
-
-        // Compare two vertices with the given ulp precision.
-        bool equals(const robust_voronoi_vertex *that, int ulp) const {
-            return this->center_x.compares_undefined(that->center_x, ulp) &&
-                   this->center_y.compares_undefined(that->center_y, ulp);
-        }
-
-    private:
-        erc_type center_x;
-        erc_type center_y;
-    };
-
     // Find the x-coordinate (relative to the sweepline position) of the point
     // of the intersection of the horizontal line going through the new site
     // with the arc corresponding to the point site.

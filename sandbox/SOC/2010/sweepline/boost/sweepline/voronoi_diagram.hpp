@@ -576,25 +576,20 @@ namespace sweepline {
     };
 
     // Represents voronoi vertex.
-    // Data members: 1) robust vertex data structure;
-    //               2) vertex point itself;
-    //               3) pointer to the incident edge;
-    //               4) number of incident edges.
+    // Data members: 1) vertex point itself;
+    //               2) pointer to the incident edge;
+    //               3) number of incident edges.
     template <typename T>
     class voronoi_vertex {
     public:
         typedef T coordinate_type;
         typedef detail::point_2d<T> point_type;
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
-        typedef detail::robust_voronoi_vertex<coordinate_type> robust_voronoi_vertex_type;
 
         voronoi_vertex(const point_type &vertex, voronoi_edge_type *edge) :
             vertex_(vertex),
             incident_edge_(edge),
             num_incident_edges_(3) {}
-
-        const robust_voronoi_vertex_type *robust_vertex() const { return robust_vertex_; }
-        void robust_voronoi_vertex(robust_voronoi_vertex_type *v) { robust_vertex_ = v; }
 
         const point_type &vertex() const { return vertex_; }
 
@@ -606,7 +601,6 @@ namespace sweepline {
         void num_incident_edges(int n) { num_incident_edges_ = n; }
 
     private:
-        robust_voronoi_vertex_type *robust_vertex_;
         point_type vertex_;
         voronoi_edge_type *incident_edge_;
         int num_incident_edges_;
@@ -715,11 +709,10 @@ namespace sweepline {
     //   1) cell_records_ - vector of the voronoi cells;
     //   2) vertex_records_ - list of the voronoi vertices;
     //   3) edge_records_ - list of the voronoi edges;
-    //   4) robust_vertices_ - list of the robust vertices;
-    //   5) voronoi_rect_ - bounding rectangle;
-    //   6) num_cell_records_ - number of the voronoi cells;
-    //   7) num_vertex_records_ - number of the voronoi vertices;
-    //   8) num_edge_records_ - number of the voronoi edges.
+    //   4) voronoi_rect_ - bounding rectangle;
+    //   5) num_cell_records_ - number of the voronoi cells;
+    //   6) num_vertex_records_ - number of the voronoi vertices;
+    //   7) num_edge_records_ - number of the voronoi edges.
     // CCW ordering is used on the faces perimeter and around the vertices.
     // Robust vertices are used to make the simplification stage epsilon
     // robust. Vector data structure is used to store voronoi cells as the
@@ -770,7 +763,6 @@ namespace sweepline {
             num_vertex_records_(0) {}
 
         void clear() {
-            robust_vertices_.clear();
             voronoi_cells_type().swap(cell_records_);
             vertex_records_.clear();
             edge_records_.clear();
@@ -811,8 +803,6 @@ namespace sweepline {
     private:
         typedef detail::site_event<coordinate_type> site_event_type;
         typedef detail::circle_event<coordinate_type> circle_event_type;
-        typedef detail::robust_voronoi_vertex<coordinate_type>
-            robust_voronoi_vertex_type;
 
         friend class detail::voronoi_builder<int>;
 
@@ -905,14 +895,9 @@ namespace sweepline {
                                            voronoi_edge_type *edge12,
                                            voronoi_edge_type *edge23) {
             // Add a new voronoi vertex.
-            robust_vertices_.push_back(
-                robust_voronoi_vertex_type(circle.erc_x(), circle.erc_y()));
-            const robust_voronoi_vertex_type &robust_vertex =
-                robust_vertices_.back();
             vertex_records_.push_back(voronoi_vertex_type(
-                point_type(robust_vertex.x(), robust_vertex.y()), edge12));
+                point_type(circle.erc_x().dif(), circle.erc_y().dif()), edge12));
             voronoi_vertex_type &new_vertex = vertex_records_.back();
-            new_vertex.robust_voronoi_vertex(&robust_vertices_.back());
 
             // Update vertex pointers of the old edges.
             edge12->vertex0(&new_vertex);
@@ -1009,7 +994,8 @@ namespace sweepline {
                 const voronoi_vertex_type *v2 = edge_it1->vertex1();
 
                 // Make epsilon robust check.
-                if (v1->robust_vertex()->equals(v2->robust_vertex(), 128)) {
+                if (detail::almost_equal(v1->vertex().x(), v2->vertex().x(), 256) &&
+                    detail::almost_equal(v1->vertex().y(), v2->vertex().y(), 256)) {
                     // Decrease number of cell's incident edges.
                     edge_it1->cell()->dec_num_incident_edges();
                     edge_it1->twin()->cell()->dec_num_incident_edges();
@@ -1055,7 +1041,6 @@ namespace sweepline {
                     ++num_edge_records_;
                 }
             }
-            robust_vertices_.clear();
 
             // Remove degenerate voronoi vertices with zero incident edges.
             for (voronoi_vertex_iterator_type vertex_it =
@@ -1144,7 +1129,6 @@ namespace sweepline {
             }
         }
 
-        std::list< robust_voronoi_vertex_type > robust_vertices_;
         voronoi_cells_type cell_records_;
         voronoi_vertices_type vertex_records_;
         voronoi_edges_type edge_records_;
