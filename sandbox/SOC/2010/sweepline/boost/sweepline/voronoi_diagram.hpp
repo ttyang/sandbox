@@ -1,4 +1,4 @@
-// Boost sweepline/voronoi_output.hpp header file
+// Boost sweepline/voronoi_diagram.hpp header file
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,8 +7,27 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_SWEEPLINE_VORONOI_OUTPUT
-#define BOOST_SWEEPLINE_VORONOI_OUTPUT
+#ifndef BOOST_SWEEPLINE_VORONOI_DIAGRAM
+#define BOOST_SWEEPLINE_VORONOI_DIAGRAM
+
+#include <algorithm>
+#include <cmath>
+#include <cstring>
+#include <list>
+#include <map>
+#include <queue>
+#include <stack>
+#include <vector>
+
+#pragma warning(disable:4800)
+#include <gmpxx.h>
+
+#include "boost/polygon/polygon.hpp"
+using namespace boost::polygon;
+
+#include "detail/mpt_wrapper.hpp"
+#include "detail/voronoi_fpt_kernel.hpp"
+#include "detail/voronoi_formation.hpp"
 
 namespace boost {
 namespace sweepline {
@@ -18,20 +37,6 @@ namespace sweepline {
     ///////////////////////////////////////////////////////////////////////////
 
     // Forward declarations.
-    namespace detail {
-        template <typename T>
-        class site_event;
-
-        template <typename T>
-        class circle_event;
-
-        template <typename T>
-        class robust_voronoi_vertex;
-
-        template <typename T>
-        class voronoi_builder;
-    }
-
     template <typename T>
     class voronoi_cell;
 
@@ -41,84 +46,17 @@ namespace sweepline {
     template <typename T>
     class voronoi_output;
 
-    // Cartesian 2D point data structure.
-    template <typename T>
-    class point_2d {
-    public:
-        typedef T coordinate_type;
-
-        point_2d() {}
-
-        point_2d(coordinate_type x, coordinate_type y) {
-            x_ = x;
-            y_ = y;
-        }
-
-        bool operator==(const point_2d &that) const {
-            return (this->x_ == that.x()) && (this->y_ == that.y());
-        }
-
-        bool operator!=(const point_2d &that) const {
-            return (this->x_ != that.x()) || (this->y_ != that.y());
-        }
-
-        // Comparison function.
-        // Defines ordering of the points on the 2D plane.
-        bool operator<(const point_2d &that) const {
-            if (this->x_ != that.x_)
-                return this->x_ < that.x_;
-            return this->y_ < that.y_;
-        }
-
-        bool operator<=(const point_2d &that) const {
-            return !(that < (*this));
-        }
-
-        bool operator>(const point_2d &that) const {
-            return that < (*this);
-        }
-
-        bool operator>=(const point_2d &that) const {
-            return !((*this) < that);
-        }
-
-        coordinate_type x() const {
-            return this->x_;
-        }
-
-        coordinate_type y() const {
-            return this->y_;
-        }
-
-        void x(coordinate_type x) {
-            x_ = x;
-        }
-
-        void y(coordinate_type y) {
-            y_ = y;
-        }
-
-    private:
-        coordinate_type x_;
-        coordinate_type y_;
-    };
-
-    template <typename T>
-    static inline point_2d<T> make_point_2d(T x, T y) {
-        return point_2d<T>(x,y);
-    }
-
     // Bounding rectangle data structure. Contains coordinates
     // of the bottom left and the upper right points of the rectangle.
     template <typename T>
     class BRect {
     public:
         typedef T coordinate_type;
-        typedef point_2d<coordinate_type> point_2d_type;
+        typedef detail::point_2d<coordinate_type> point_type;
 
         BRect() {}
 
-        BRect(const point_2d_type &p1, const point_2d_type &p2) {
+        BRect(const point_type &p1, const point_type &p2) {
             x_min_ = (std::min)(p1.x(), p2.x());
             y_min_ = (std::min)(p1.y(), p2.y());
             x_max_ = (std::max)(p1.x(), p2.x());
@@ -134,7 +72,7 @@ namespace sweepline {
         }
 
         // Extend the rectangle with a new point.
-        void update(const point_2d_type &p) {
+        void update(const point_type &p) {
             x_min_ = (std::min)(x_min_, p.x());
             y_min_ = (std::min)(y_min_, p.y());
             x_max_ = (std::max)(x_max_, p.x());
@@ -142,7 +80,7 @@ namespace sweepline {
         }
 
         // Check whether a point is situated inside the bounding rectangle.
-        bool contains(const point_2d_type &p) const {
+        bool contains(const point_type &p) const {
             return p.x() > x_min_ && p.x() < x_max_ &&
                    p.y() > y_min_ && p.y() < y_max_;
         }
@@ -192,7 +130,10 @@ namespace sweepline {
     class voronoi_helper {
     public:
         typedef T coordinate_type;
-        typedef point_2d<coordinate_type> point_2d_type;
+        typedef point_data<coordinate_type> out_point_type;
+        typedef detail::point_2d<coordinate_type> point_type;
+        typedef directed_line_segment_data<coordinate_type> segment_type;
+        typedef directed_line_segment_set_data<coordinate_type> segment_set_type;
         typedef BRect<coordinate_type> brect_type;
 
         // There are three different types of edges:
@@ -229,7 +170,7 @@ namespace sweepline {
         // Max_error is the maximum distance (relative to the minor of two
         // rectangle sides) allowed between the parabola and line segments
         // that interpolate it.
-        static std::vector<point_2d_type> get_intermediate_points(
+        static std::vector<out_point_type> get_point_interpolation(
                 const voronoi_edge<coordinate_type> *edge,
                 const BRect<coordinate_type> &brect,
                 double max_error) {
@@ -240,7 +181,7 @@ namespace sweepline {
             const voronoi_cell<coordinate_type> *cell2 = edge->twin()->cell();
 
             // edge_points - contains intermediate points.
-            std::vector<point_2d_type> edge_points;
+            std::vector<point_type> edge_points;
             if (!(cell1->contains_segment() ^ cell2->contains_segment())) {
                 // Edge is a segment, ray, or line.
                 if (edge->vertex0() != NULL && edge->vertex1() != NULL) {
@@ -250,12 +191,12 @@ namespace sweepline {
                 } else {
                     // Edge is a ray or line.
                     // Clip it with the bounding rectangle.
-                    const point_2d_type &site1 = cell1->point0();
-                    const point_2d_type &site2 = cell2->point0();
-                    point_2d_type origin((site1.x() + site2.x()) * 0.5,
-                                         (site1.y() + site2.y()) * 0.5);
-                    point_2d_type direction(site1.y() - site2.y(),
-                                            site2.x() - site1.x());
+                    const point_type &site1 = cell1->point0();
+                    const point_type &site2 = cell2->point0();
+                    point_type origin((site1.x() + site2.x()) * 0.5,
+                                      (site1.y() + site2.y()) * 0.5);
+                    point_type direction(site1.y() - site2.y(),
+                                         site2.x() - site1.x());
 
                     // Find intersection points.
                     find_intersections(origin, direction, LINE,
@@ -269,15 +210,15 @@ namespace sweepline {
                 }
             } else {
                 // point1 - site point;
-                const point_2d_type &point1 = (cell1->contains_segment()) ?
+                const point_type &point1 = (cell1->contains_segment()) ?
                     cell2->point0() : cell1->point0();
 
                 // point2 - startpoint of the segment site;
-                const point_2d_type &point2 = (cell1->contains_segment()) ?
+                const point_type &point2 = (cell1->contains_segment()) ?
                     cell1->point0() : cell2->point0();
 
                 // point3 - endpoint of the segment site;
-                const point_2d_type &point3 = (cell1->contains_segment()) ?
+                const point_type &point3 = (cell1->contains_segment()) ?
                     cell1->point1() : cell2->point1();
 
                 if (edge->vertex0() != NULL && edge->vertex1() != NULL) {
@@ -296,7 +237,7 @@ namespace sweepline {
                     coordinate_type dir_y =
                         (cell1->contains_segment() ^ (point1 == point3)) ?
                         point2.x() - point3.x() : point3.x() - point2.x();
-                    point_2d_type direction(dir_x, dir_y);
+                    point_type direction(dir_x, dir_y);
 
                     // Find intersection points.
                     find_intersections(point1, direction, LINE,
@@ -309,15 +250,36 @@ namespace sweepline {
                         edge_points[0] = edge->vertex0()->vertex();
                 }
             }
-            return edge_points;
+            std::vector<out_point_type> ret_val;
+            for (typename std::vector<point_type>::const_iterator it = edge_points.begin();
+                 it != edge_points.end(); ++it) {
+                coordinate_type x = it->x();
+                coordinate_type y = it->y();
+                ret_val.push_back(out_point_type(x, y));
+            }
+            return ret_val;
+        }
+
+        // Interpolate voronoi edge with a set of segments to satisfy maximal
+        // error requirement.
+        static segment_set_type get_segment_interpolation(
+            const voronoi_edge<coordinate_type> *edge,
+            const BRect<coordinate_type> &brect,
+            double max_error) {
+                std::vector<out_point_type> point_interpolation = 
+                    get_point_interpolcation(edge, brect, max_error);
+                segment_set_type ret_val;
+                for (size_t i = 1; i < point_interpolation.size(); ++i)
+                    ret_val.insert(segment_type(point_interpolation[i-1], point_interpolation[i]));
+                return ret_val;
         }
 
         // Find edge-rectangle intersection points.
         // Edge is represented by its origin, direction and type.
         static void find_intersections(
-                const point_2d_type &origin, const point_2d_type &direction,
+                const point_type &origin, const point_type &direction,
                 kEdgeType edge_type, const brect_type &brect,
-                std::vector<point_2d_type> &intersections) {
+                std::vector<point_type> &intersections) {
             // Find the center of the rectangle.
             coordinate_type center_x = (brect.x_min() + brect.x_max()) * 0.5;
             coordinate_type center_y = (brect.y_min() + brect.y_max()) * 0.5;
@@ -373,11 +335,11 @@ namespace sweepline {
 
             // Update intersections vector.
             if (fT0_used && check_extent(fT0, edge_type))
-                intersections.push_back(make_point_2d(
+                intersections.push_back(point_type(
                     origin.x() + fT0 * direction.x(),
                     origin.y() + fT0 * direction.y()));
             if (fT1_used && fT0 != fT1 && check_extent(fT1, edge_type))
-                intersections.push_back(make_point_2d(
+                intersections.push_back(point_type(
                     origin.x() + fT1 * direction.x(),
                     origin.y() + fT1 * direction.y()));
         }
@@ -395,10 +357,10 @@ namespace sweepline {
         // Max_dist is the maximum distance allowed between parabola and line
         // segments that interpolate it.
         static void fill_intermediate_points(
-                point_2d_type point_site,
-                point_2d_type segment_site_start,
-                point_2d_type segment_site_end,
-                std::vector<point_2d_type> &intermediate_points,
+                point_type point_site,
+                point_type segment_site_start,
+                point_type segment_site_end,
+                std::vector<point_type> &intermediate_points,
                 double max_dist) {
             // Check if bisector is a segment.
             if (point_site == segment_site_start ||
@@ -439,7 +401,7 @@ namespace sweepline {
                                     segm_vec_y * point_vec_x;
 
             // Save the last point.
-            point_2d_type last_point = intermediate_points[1];
+            point_type last_point = intermediate_points[1];
             intermediate_points.pop_back();
 
             // Use stack to avoid recursion.
@@ -478,7 +440,7 @@ namespace sweepline {
                         (segm_vec_x * new_y + segm_vec_y * new_x) /
                         sqr_segment_length + segment_site_start.y();
                     intermediate_points.push_back(
-                        make_point_2d(inter_x, inter_y));
+                        point_type(inter_x, inter_y));
                     cur_x = new_x;
                     cur_y = new_y;
                 } else {
@@ -546,9 +508,9 @@ namespace sweepline {
         // Assumption is made that projection of the point lies
         // between the startpoint and endpoint of the segment.
         static coordinate_type get_point_projection(
-                const point_2d_type &point,
-                const point_2d_type &segment_start,
-                const point_2d_type &segment_end) {
+                const point_type &point,
+                const point_type &segment_start,
+                const point_type &segment_end) {
             coordinate_type segment_vec_x = segment_end.x() -
                                             segment_start.x();
             coordinate_type segment_vec_y = segment_end.y() -
@@ -572,11 +534,11 @@ namespace sweepline {
     class voronoi_cell {
     public:
         typedef T coordinate_type;
-        typedef point_2d<coordinate_type> point_2d_type;
+        typedef detail::point_2d<coordinate_type> point_type;
         typedef detail::site_event<coordinate_type> site_event_type;
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
 
-        voronoi_cell(const point_2d_type &p1, const point_2d_type &p2,
+        voronoi_cell(const point_type &p1, const point_type &p2,
                      bool contains_segment, voronoi_edge_type *edge) :
             point0_(p1),
             point1_(p2),
@@ -589,28 +551,25 @@ namespace sweepline {
 
         // Returns site point in case cell contains point site,
         // the first point of the segment site else.
-        const point_2d_type &point0() const { return point0_; }
+        const point_type &point0() const { return point0_; }
 
         // Returns the second site of the segment site.
         // Don't use with the point sites.
-        const point_2d_type &point1() const { return point1_; }
+        const point_type &point1() const { return point1_; }
 
         voronoi_edge_type *incident_edge() { return incident_edge_; }
         const voronoi_edge_type *incident_edge() const {
             return incident_edge_;
         }
+        void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
         int num_incident_edges() const { return num_incident_edges_; }
-
-    private:
-        friend class voronoi_output<coordinate_type>;
-
-        void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
         void inc_num_incident_edges() { ++num_incident_edges_; }
         void dec_num_incident_edges() { --num_incident_edges_; }
 
-        point_2d_type point0_;
-        point_2d_type point1_;
+    private:
+        point_type point0_;
+        point_type point1_;
         bool contains_segment_;
         voronoi_edge_type *incident_edge_;
         int num_incident_edges_;
@@ -625,42 +584,30 @@ namespace sweepline {
     class voronoi_vertex {
     public:
         typedef T coordinate_type;
-        typedef point_2d<T> point_2d_type;
+        typedef detail::point_2d<T> point_type;
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
+        typedef detail::robust_voronoi_vertex<coordinate_type> robust_voronoi_vertex_type;
 
-        voronoi_vertex(const point_2d_type &vertex, voronoi_edge_type *edge) :
+        voronoi_vertex(const point_type &vertex, voronoi_edge_type *edge) :
             vertex_(vertex),
             incident_edge_(edge),
             num_incident_edges_(3) {}
 
-        const point_2d_type &vertex() const { return vertex_; }
+        const robust_voronoi_vertex_type *robust_vertex() const { return robust_vertex_; }
+        void robust_voronoi_vertex(robust_voronoi_vertex_type *v) { robust_vertex_ = v; }
+
+        const point_type &vertex() const { return vertex_; }
 
         voronoi_edge_type *incident_edge() { return incident_edge_; }
-        const voronoi_edge_type *incident_edge() const {
-            return incident_edge_;
-        }
+        const voronoi_edge_type *incident_edge() const { return incident_edge_; }
+        void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
         int num_incident_edges() const { return num_incident_edges_; }
-
-    private:
-        typedef detail::robust_voronoi_vertex<coordinate_type>
-            robust_voronoi_vertex_type;
-
-        friend class voronoi_output<coordinate_type>;
-
-        const robust_voronoi_vertex_type *robust_vertex() const {
-            return robust_vertex_;
-        }
-
-        void robust_voronoi_vertex(robust_voronoi_vertex_type *v) {
-            robust_vertex_ = v;
-        }
-
-        void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
         void num_incident_edges(int n) { num_incident_edges_ = n; }
 
+    private:
         robust_voronoi_vertex_type *robust_vertex_;
-        point_2d_type vertex_;
+        point_type vertex_;
         voronoi_edge_type *incident_edge_;
         int num_incident_edges_;
     };
@@ -689,39 +636,37 @@ namespace sweepline {
 
         voronoi_cell_type *cell() { return cell_; }
         const voronoi_cell_type *cell() const { return cell_; }
+        void cell(voronoi_cell_type *c) { cell_ = c; }
 
         voronoi_vertex_type *vertex0() { return vertex_; }
         const voronoi_vertex_type *vertex0() const { return vertex_; }
+        void vertex0(voronoi_vertex_type *v) { vertex_ = v; }
 
         voronoi_vertex_type *vertex1() { return twin_->vertex0(); }
         const voronoi_vertex_type *vertex1() const { return twin_->vertex0(); }
+        void vertex1(voronoi_vertex_type *v) { twin_->vertex0(v); }
 
         voronoi_edge_type *twin() { return twin_; }
         const voronoi_edge_type *twin() const { return twin_; }
+        void twin(voronoi_edge_type *e) { twin_ = e; }
 
         voronoi_edge_type *next() { return next_; }
         const voronoi_edge_type *next() const { return next_; }
+        void next(voronoi_edge_type *e) { next_ = e; }
 
         voronoi_edge_type *prev() { return prev_; }
         const voronoi_edge_type *prev() const { return prev_; }
+        void prev(voronoi_edge_type *e) { prev_ = e; }
 
         // Return a pointer to the rotation next edge
         // over the starting point of the half-edge.
-        voronoi_edge_type *rot_next() {
-            return (vertex_) ? prev_->twin() : NULL;
-        }
-        const voronoi_edge_type *rot_next() const {
-            return (vertex_) ? prev_->twin() : NULL;
-        }
+        voronoi_edge_type *rot_next() { return (vertex_) ? prev_->twin() : NULL; }
+        const voronoi_edge_type *rot_next() const { return (vertex_) ? prev_->twin() : NULL; }
 
         // Return a pointer to the rotation prev edge
         // over the starting point of the half-edge.
-        voronoi_edge_type *rot_prev() {
-            return (vertex_) ? twin_->next() : NULL;
-        }
-        const voronoi_edge_type *rot_prev() const {
-            return (vertex_) ? twin_->next() : NULL;
-        }
+        voronoi_edge_type *rot_prev() { return (vertex_) ? twin_->next() : NULL; }
+        const voronoi_edge_type *rot_prev() const { return (vertex_) ? twin_->next() : NULL; }
 
         // Return true if the edge is finite (segment, parabolic arc).
         // Return false if the edge is infinite (ray, line).
@@ -730,15 +675,13 @@ namespace sweepline {
         // Return true if the edge is linear.
         // Return false if the edge is curved (parabolic arc).
         bool is_linear() const {
-            return !(cell()->contains_segment() ^
-                     twin()->cell()->contains_segment());
+            return !(cell()->contains_segment() ^ twin()->cell()->contains_segment());
         }
 
         // Returns true if the edge is curved (parabolic arc).
         // Returns false if the edge is linear.
         bool is_curved() const {
-            return (cell()->contains_segment() ^
-                    twin()->cell()->contains_segment());
+            return (cell()->contains_segment() ^ twin()->cell()->contains_segment());
         }
 
         // Return false if edge goes through the endpoint of the segment.
@@ -746,14 +689,12 @@ namespace sweepline {
         bool is_primary() const {
             voronoi_cell_type *cell1 = cell_;
             voronoi_cell_type *cell2 = twin_->cell();
-            if (cell1->contains_segment() &&
-                !cell2->contains_segment()) {
+            if (cell1->contains_segment() && !cell2->contains_segment()) {
                 if (cell1->point0() == cell2->point0() ||
                     cell1->point1() == cell2->point0())
                     return false;
             }
-            if (cell2->contains_segment() &&
-                !cell1->contains_segment()) {
+            if (cell2->contains_segment() && !cell1->contains_segment()) {
                 if (cell2->point0() == cell1->point0() ||
                     cell2->point1() == cell1->point0())
                     return false;
@@ -762,15 +703,6 @@ namespace sweepline {
         }
 
     private:
-        friend class voronoi_output<coordinate_type>;
-
-        void cell(voronoi_cell_type *c) { cell_ = c; }
-        void vertex0(voronoi_vertex_type *v) { vertex_ = v; }
-        void vertex1(voronoi_vertex_type *v) { twin_->vertex0(v); }
-        void twin(voronoi_edge_type *e) { twin_ = e; }
-        void next(voronoi_edge_type *e) { next_ = e; }
-        void prev(voronoi_edge_type *e) { prev_ = e; }
-
         voronoi_cell_type *cell_;
         voronoi_vertex_type *vertex_;
         voronoi_edge_type *twin_;
@@ -809,7 +741,7 @@ namespace sweepline {
     class voronoi_output {
     public:
         typedef T coordinate_type;
-        typedef point_2d<coordinate_type> point_2d_type;
+        typedef detail::point_2d<coordinate_type> point_type;
 
         typedef voronoi_cell<coordinate_type> voronoi_cell_type;
         typedef std::vector<voronoi_cell_type> voronoi_cells_type;
@@ -848,7 +780,7 @@ namespace sweepline {
             num_vertex_records_ = 0;
         }
 
-        const BRect<T> &bounding_rectangle() const {
+        const BRect<coordinate_type> &bounding_rectangle() const {
             return voronoi_rect_;
         }
 
@@ -882,7 +814,7 @@ namespace sweepline {
         typedef detail::robust_voronoi_vertex<coordinate_type>
             robust_voronoi_vertex_type;
 
-        friend class detail::voronoi_builder<T>;
+        friend class detail::voronoi_builder<int>;
 
         void init(int num_sites) {
             // Resize cell vector to avoid reallocations.
@@ -974,13 +906,11 @@ namespace sweepline {
                                            voronoi_edge_type *edge23) {
             // Add a new voronoi vertex.
             robust_vertices_.push_back(
-                robust_voronoi_vertex_type(circle.erc_x(),
-                                           circle.erc_y(),
-                                           circle.erc_denom()));
+                robust_voronoi_vertex_type(circle.erc_x(), circle.erc_y()));
             const robust_voronoi_vertex_type &robust_vertex =
                 robust_vertices_.back();
             vertex_records_.push_back(voronoi_vertex_type(
-                make_point_2d(robust_vertex.x(), robust_vertex.y()), edge12));
+                point_type(robust_vertex.x(), robust_vertex.y()), edge12));
             voronoi_vertex_type &new_vertex = vertex_records_.back();
             new_vertex.robust_voronoi_vertex(&robust_vertices_.back());
 
@@ -1020,7 +950,7 @@ namespace sweepline {
         }
 
         // Remove zero-length edges from the voronoi output.
-        void simplify() {
+        void clean() {
             voronoi_edge_iterator_type edge_it1;
             voronoi_edge_iterator_type edge_it = edge_records_.begin();
             num_cell_records_ = cell_records_.size();
@@ -1229,6 +1159,43 @@ namespace sweepline {
         voronoi_output(const voronoi_output&);
         void operator=(const voronoi_output&);
     };
+
+    // Public methods to compute voronoi diagram.
+    // points - vector of input points.
+    // segments - vector of input segments.
+    // output - voronoi output data structure to hold voronoi diagram.
+    // The assumption is made that input doesn't contain segments that
+    // intersect or points lying on the segments. Also coordinates of
+    // the points and of the endpoints of the segments should be within
+    // signed integer range [-2^31, 2^31-1].
+    // Complexity - O(N*logN), memory usage - O(N), where N is the total
+    // number of points and segments.
+
+    template <typename T>
+    static inline void build_voronoi(
+        const typename detail::voronoi_traits<T>::input_point_set_type &points,
+        typename detail::voronoi_traits<T>::output_type &output) {
+            typename detail::voronoi_traits<T>::input_segment_set_type segments_empty;
+            build_voronoi<T>(points, segments_empty, output);
+    }
+
+    template <typename T>
+    static inline void build_voronoi(
+        const typename detail::voronoi_traits<T>::input_segment_set_type &segments,
+        typename detail::voronoi_traits<T>::output_type &output) {
+            typename detail::voronoi_traits<T>::input_point_set_type points_empty;
+            build_voronoi<T>(points_empty, segments, output);
+    }
+
+    template <typename T>
+    static inline void build_voronoi(
+        const typename detail::voronoi_traits<T>::input_point_set_type &points,
+        const typename detail::voronoi_traits<T>::input_segment_set_type &segments,
+        typename detail::voronoi_traits<T>::output_type &output) {
+            detail::voronoi_builder<T> builder(output);
+            builder.init(points, segments);
+            builder.run_sweepline();
+    }
 
 } // sweepline
 } // boost

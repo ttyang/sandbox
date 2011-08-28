@@ -10,8 +10,18 @@
 #ifndef BOOST_SWEEPLINE_VORONOI_FORMATION
 #define BOOST_SWEEPLINE_VORONOI_FORMATION
 
+#include "mpt_wrapper.hpp"
+#include "voronoi_fpt_kernel.hpp"
+
 namespace boost {
 namespace sweepline {
+
+    template <typename T>
+    class voronoi_edge;
+
+    template <typename T>
+    class voronoi_output;
+
 namespace detail {
 
     ///////////////////////////////////////////////////////////////////////////
@@ -36,6 +46,68 @@ namespace detail {
         RIGHT_ORIENTATION = -1,
         COLLINEAR = 0,
         LEFT_ORIENTATION = 1,
+    };
+
+    // Cartesian 2D point data structure.
+    template <typename T>
+    class point_2d {
+    public:
+        typedef T coordinate_type;
+
+        point_2d() {}
+
+        point_2d(coordinate_type x, coordinate_type y) {
+            x_ = x;
+            y_ = y;
+        }
+
+        bool operator==(const point_2d &that) const {
+            return (this->x_ == that.x()) && (this->y_ == that.y());
+        }
+
+        bool operator!=(const point_2d &that) const {
+            return (this->x_ != that.x()) || (this->y_ != that.y());
+        }
+
+        // Comparison function.
+        // Defines ordering of the points on the 2D plane.
+        bool operator<(const point_2d &that) const {
+            if (this->x_ != that.x_)
+                return this->x_ < that.x_;
+            return this->y_ < that.y_;
+        }
+
+        bool operator<=(const point_2d &that) const {
+            return !(that < (*this));
+        }
+
+        bool operator>(const point_2d &that) const {
+            return that < (*this);
+        }
+
+        bool operator>=(const point_2d &that) const {
+            return !((*this) < that);
+        }
+
+        coordinate_type x() const {
+            return x_;
+        }
+
+        coordinate_type y() const {
+            return y_;
+        }
+
+        void x(coordinate_type x) {
+            x_ = x;
+        }
+
+        void y(coordinate_type y) {
+            y_ = y;
+        }
+
+    private:
+        coordinate_type x_;
+        coordinate_type y_;
     };
 
     // Site event type.
@@ -64,7 +136,7 @@ namespace detail {
     class site_event {
     public:
         typedef T coordinate_type;
-        typedef point_2d<T> point_2d_type;
+        typedef point_2d<T> point_type;
 
         // Point site contructors.
         site_event() :
@@ -79,7 +151,7 @@ namespace detail {
             is_vertical_(true),
             is_inverse_(false) {}
 
-        site_event(const point_2d_type &point, int index) :
+        site_event(const point_type &point, int index) :
             point0_(point),
             site_index_(index),
             is_segment_(false),
@@ -99,8 +171,8 @@ namespace detail {
             is_vertical_ = (point0_.x() == point1_.x());
         }
 
-        site_event(const point_2d_type &point1,
-                   const point_2d_type &point2, int index) :
+        site_event(const point_type &point1,
+                   const point_type &point2, int index) :
             point0_(point1),
             point1_(point2),
             site_index_(index),
@@ -232,7 +304,7 @@ namespace detail {
 
         // Return point for the point sites.
         // Return startpoint for the segment sites.
-        const point_2d_type &point0(bool oriented = false) const {
+        const point_type &point0(bool oriented = false) const {
             if (!oriented)
                 return point0_;
             return is_inverse_ ? point1_ : point0_;
@@ -240,7 +312,7 @@ namespace detail {
 
         // Return endpoint of the segment sites.
         // Doesn't make sense for the point sites.
-        const point_2d_type &point1(bool oriented = false) const {
+        const point_type &point1(bool oriented = false) const {
             if (!oriented)
                 return point1_;
             return is_inverse_ ? point0_ : point1_;
@@ -273,8 +345,8 @@ namespace detail {
         }
 
     private:
-        point_2d_type point0_;
-        point_2d_type point1_;
+        point_type point0_;
+        point_type point1_;
         int site_index_;
         bool is_segment_;
         bool is_vertical_;
@@ -331,7 +403,7 @@ namespace detail {
     class circle_event {
     public:
         typedef T coordinate_type;
-        typedef point_2d<T> point_2d_type;
+        typedef point_2d<T> point_type;
         typedef site_event<T> site_event_type;
         typedef epsilon_robust_comparator<T> erc_type;
         typedef beach_line_node<coordinate_type> Key;
@@ -340,7 +412,7 @@ namespace detail {
         typedef typename std::map< Key, Value, NodeComparer >::iterator
             beach_line_iterator;
 
-        circle_event() : denom_(1), is_active_(true) {}
+        circle_event() : is_active_(true) {}
 
         circle_event(coordinate_type c_x,
                      coordinate_type c_y,
@@ -348,7 +420,6 @@ namespace detail {
             center_x_(c_x),
             center_y_(c_y),
             lower_x_(lower_x),
-            denom_(1),
             is_active_(true) {}
 
         circle_event(const erc_type &c_x,
@@ -357,32 +428,11 @@ namespace detail {
             center_x_(c_x),
             center_y_(c_y),
             lower_x_(lower_x),
-            denom_(1),
             is_active_(true) {}
 
-        circle_event(const erc_type &c_x,
-                     const erc_type &c_y,
-                     const erc_type &lower_x,
-                     const erc_type &denom) :
-                center_x_(c_x),
-                center_y_(c_y),
-                lower_x_(lower_x),
-                denom_(denom),
-                is_active_(true) {
-            if (denom_.abs()) {
-                center_x_.swap();
-                center_y_.swap();
-                lower_x_.swap();
-            }
-        }
-
         bool operator==(const circle_event &that) const {
-            erc_type lhs1 = lower_x_ * that.denom_;
-            erc_type rhs1 = denom_ * that.lower_x_;
-            erc_type lhs2 = center_y_ * that.denom_;
-            erc_type rhs2 = denom_ * that.center_y_;
-            return (lhs1.compare(rhs1, 128) == UNDEFINED &&
-                    lhs2.compare(rhs2, 128) == UNDEFINED);
+            return (this->lower_x_.compare(that.lower_x_, 128) == UNDEFINED &&
+                    this->center_y_.compare(that.center_y_, 128) == UNDEFINED);
         }
 
         bool operator!=(const circle_event &that) const {
@@ -393,22 +443,14 @@ namespace detail {
         // Each rightmost point has next representation:
         // (lower_x / denom, center_y / denom), denom is always positive.
         bool operator<(const circle_event &that) const {
-            // Evaluate comparison expressions for x-coordinates.
-            erc_type lhs1 = lower_x_ * that.denom_;
-            erc_type rhs1 = denom_ * that.lower_x_;
-
             // Compare x-coordinates of the rightmost points. If the result
             // is undefined we assume that x-coordinates are equal.
-            kPredicateResult pres = lhs1.compare(rhs1, 128);
+            kPredicateResult pres = this->lower_x_.compare(that.lower_x_, 128);
             if (pres != UNDEFINED)
                 return (pres == LESS);
 
-            // Evaluate comparison expressions for y-coordinates.
-            erc_type lhs2 = center_y_ * that.denom_;
-            erc_type rhs2 = denom_ * that.center_y_;
-
             // Compare y-coordinates of the rightmost points.
-            return (lhs2.compare(rhs2, 128) == LESS);
+            return this->center_y_.compare(that.center_y_, 128) == LESS;
         }
 
         bool operator<=(const circle_event &that) const {
@@ -430,18 +472,18 @@ namespace detail {
         // If circle point is greater than site point return 1.
         kPredicateResult compare(const site_event_type &s_event) const {
             // Compare x-coordinates.
-            kPredicateResult pres = lower_x_.compare(denom_ * s_event.x(), 64);
+            kPredicateResult pres = lower_x_.compare(s_event.x(), 64);
             // If the comparison result is undefined
             // x-coordinates are considered to be equal.
             if (pres != UNDEFINED)
                 return pres;
             // Compare y-coordinates in case of equal x-coordinates.
-            return center_y_.compare(denom_ * s_event.y(), 64);
+            return center_y_.compare(s_event.y(), 64);
         }
 
         // Evaluate x-coordinate of the center of the circle.
         coordinate_type x() const {
-            return center_x_.dif() / denom_.dif();
+            return center_x_.dif();
         }
 
         void x(coordinate_type center_x) {
@@ -450,7 +492,7 @@ namespace detail {
 
         // Evaluate y-coordinate of the center of the circle.
         coordinate_type y() const {
-            return center_y_.dif() / denom_.dif();
+            return center_y_.dif();
         }
 
         void y(coordinate_type center_y) {
@@ -459,15 +501,15 @@ namespace detail {
 
         // Evaluate x-coordinate of the rightmost point of the circle.
         coordinate_type lower_x() const {
-            return lower_x_.dif() / denom_.dif();
+            return lower_x_.dif();
         }
 
         void lower_x(coordinate_type lower_x) {
             lower_x_ = lower_x;
         }
 
-        point_2d_type center() const {
-            return make_point_2d(x(), y());
+        point_type center() const {
+            return point_type(x(), y());
         }
 
         const erc_type &erc_x() const {
@@ -476,10 +518,6 @@ namespace detail {
 
         const erc_type &erc_y() const {
             return center_y_;
-        }
-
-        const erc_type &erc_denom() const {
-            return denom_;
         }
 
         // Return iterator to the second bisector from the beach line
@@ -504,7 +542,6 @@ namespace detail {
         erc_type center_x_;
         erc_type center_y_;
         erc_type lower_x_;
-        erc_type denom_;
         beach_line_iterator bisector_node_;
         bool is_active_;
     };
@@ -741,31 +778,23 @@ namespace detail {
         typedef T coordinate_type;
         typedef epsilon_robust_comparator<coordinate_type> erc_type;
 
-        robust_voronoi_vertex(const erc_type &c_x,
-                              const erc_type &c_y,
-                              const erc_type &den) :
+        robust_voronoi_vertex(const erc_type &c_x, const erc_type &c_y) :
             center_x(c_x),
-            center_y(c_y),
-            denom(den) {}
+            center_y(c_y) {}
 
-        coordinate_type x() const { return center_x.dif() / denom.dif(); }
+        coordinate_type x() const { return center_x.dif(); }
 
-        coordinate_type y() const { return center_y.dif() / denom.dif(); }
+        coordinate_type y() const { return center_y.dif(); }
 
         // Compare two vertices with the given ulp precision.
         bool equals(const robust_voronoi_vertex *that, int ulp) const {
-            erc_type lhs1(this->center_x * that->denom);
-            erc_type rhs1(this->denom * that->center_x);
-            erc_type lhs2(this->center_y * that->denom);
-            erc_type rhs2(this->denom * that->center_y);
-            return lhs1.compares_undefined(rhs1, ulp) &&
-                   lhs2.compares_undefined(rhs2, ulp);
+            return this->center_x.compares_undefined(that->center_x, ulp) &&
+                   this->center_y.compares_undefined(that->center_y, ulp);
         }
 
     private:
         erc_type center_x;
         erc_type center_y;
-        erc_type denom;
     };
 
     // Find the x-coordinate (relative to the sweepline position) of the point
@@ -1122,7 +1151,7 @@ namespace detail {
                 c_event.y(0.25 * cA[2].get_d() / denom.get_d());
             }
             if (recompute_lower_x) {
-                c_event.lower_x(0.25 * sqr_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
+                c_event.lower_x(0.25 * sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
                                 (denom.get_d() * std::sqrt(segm_len.get_d())));
             }
             return true;
@@ -1137,7 +1166,7 @@ namespace detail {
             cA[1] = (segment_index == 2) ? -vec_x : vec_x;
             cB[1] = det;
             if (recompute_c_x) {
-                c_event.x(0.5 * sqr_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
+                c_event.x(0.5 * sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
                           denom_sqr);
             }
         }
@@ -1148,7 +1177,7 @@ namespace detail {
             cA[3] = (segment_index == 2) ? -vec_y : vec_y;
             cB[3] = det;
             if (recompute_c_y) {
-                c_event.y(0.5 * sqr_expr_evaluator<2>::eval<mpt_type, mpf_type>(&cA[2], &cB[2]).get_d() /
+                c_event.y(0.5 * sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(&cA[2], &cB[2]).get_d() /
                           denom_sqr);
             }
         }
@@ -1160,7 +1189,7 @@ namespace detail {
             cB[2] = 1;
             cA[3] = (segment_index == 2) ? -teta : teta;
             cB[3] = det;
-            c_event.lower_x(0.5 * sqr_expr_evaluator<4>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
+            c_event.lower_x(0.5 * sqrt_expr_evaluator<4>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
                             (denom_sqr * std::sqrt(segm_len.get_d())));
         }
         
@@ -1170,17 +1199,17 @@ namespace detail {
     // Evaluates A[3] + A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) +
     //           A[2] * sqrt(B[3] * (sqrt(B[0] * B[1]) + B[2]));
     template <typename mpt, typename mpf>
-    static mpf sqr_expr_evaluator_pss(mpt *A, mpt *B) {
+    static mpf sqrt_expr_evaluator_pss(mpt *A, mpt *B) {
         static mpt cA[4], cB[4];
         static mpf lh, rh, numer;
         if (A[3] == 0) {
-            lh = sqr_expr_evaluator<2>::eval<mpt, mpf>(A, B);
+            lh = sqrt_expr_evaluator<2>::eval<mpt, mpf>(A, B);
             cA[0] = 1;
             cB[0] = B[0] * B[1];
             cA[1] = B[2];
             cB[1] = 1;
             rh = A[2].get_d() * std::sqrt(B[3].get_d() *
-                sqr_expr_evaluator<2>::eval<mpt, mpf>(cA, cB).get_d());
+                sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB).get_d());
             if (((lh >= 0) && (rh >= 0)) || ((lh <= 0) && (rh <= 0))) {
                 return lh + rh;
             }
@@ -1189,7 +1218,7 @@ namespace detail {
             cB[0] = 1;
             cA[1] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
             cB[1] = B[0] * B[1];
-            numer = sqr_expr_evaluator<2>::eval<mpt, mpf>(cA, cB);
+            numer = sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB);
             return numer / (lh - rh);
         }
         cA[0] = A[3];
@@ -1198,13 +1227,13 @@ namespace detail {
         cB[1] = B[0];
         cA[2] = A[1];
         cB[2] = B[1];
-        lh = sqr_expr_evaluator<3>::eval<mpt, mpf>(cA, cB);
+        lh = sqrt_expr_evaluator<3>::eval<mpt, mpf>(cA, cB);
         cA[0] = 1;
         cB[0] = B[0] * B[1];
         cA[1] = B[2];
         cB[1] = 1;
         rh = A[2].get_d() * std::sqrt(B[3].get_d() *
-            sqr_expr_evaluator<2>::eval<mpt, mpf>(cA, cB).get_d());
+            sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB).get_d());
         if (((lh >= 0) && (rh >= 0)) || ((lh <= 0) && (rh <= 0))) {
             return lh + rh;
         }
@@ -1217,7 +1246,7 @@ namespace detail {
         cB[2] = B[1];
         cA[3] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
         cB[3] = B[0] * B[1];
-        numer = sqr_expr_evaluator<4>::eval<mpt, mpf>(cA, cB);
+        numer = sqrt_expr_evaluator<4>::eval<mpt, mpf>(cA, cB);
         return numer / (lh - rh);
     }
 
@@ -1261,7 +1290,7 @@ namespace detail {
                 cA[1] = a[0] * a[0] * (segm_start1.y() + segm_start2.y()) -
                         a[0] * b[0] * (segm_start1.x() + segm_start2.x() - 2.0 * site1.x()) +
                         b[0] * b[0] * (2.0 * site1.y());
-                double c_y = sqr_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d();
+                double c_y = sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d();
                 c_event.y(c_y / denom);
             }
 
@@ -1272,14 +1301,14 @@ namespace detail {
                         a[0] * a[0] * (2.0 * site1.x());
 
                 if (recompute_c_x) {
-                    double c_x = sqr_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d();
+                    double c_x = sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d();
                     c_event.x(c_x / denom);
                 }
 
                 if (recompute_lower_x) {
                     cA[2] = (c[0] < 0) ? -c[0] : c[0];
                     cB[2] = a[0] * a[0] + b[0] * b[0];
-                    double lower_x = sqr_expr_evaluator<3>::eval<mpt_type, mpf_type>(cA, cB).get_d();
+                    double lower_x = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cA, cB).get_d();
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -1308,14 +1337,14 @@ namespace detail {
         cB[1] = a[1] * a[1] + b[1] * b[1];
         cB[2] = a[0] * a[1] + b[0] * b[1];
         cB[3] = (a[0] * dy - b[0] * dx) * (a[1] * dy - b[1] * dx) * -2;
-        double temp = sqr_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+        double temp = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
         double denom = temp * orientation.get_d();
 
         if (recompute_c_y) {
             cA[0] = b[1] * (dx * dx + dy * dy) - iy * (dx * a[1] + dy * b[1]);
             cA[1] = b[0] * (dx * dx + dy * dy) - iy * (dx * a[0] + dy * b[0]);
             cA[2] = iy * sign;
-            double cy = sqr_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+            double cy = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
             c_event.y(cy / denom);
         }
 
@@ -1325,13 +1354,13 @@ namespace detail {
             cA[2] = ix * sign;
 
             if (recompute_c_x) {
-                double cx = sqr_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+                double cx = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
                 c_event.x(cx / denom);
             }
 
             if (recompute_lower_x) {
                 cA[3] = orientation * (dx * dx + dy * dy) * (temp < 0 ? -1 : 1);
-                double lower_x = sqr_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+                double lower_x = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
                 c_event.lower_x(lower_x / denom);
             }
         }
@@ -1384,7 +1413,7 @@ namespace detail {
             int k = (i+2) % 3;
             cross[i] = a[j] * b[k] - a[k] * b[j];
         }
-        double denom = sqr_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+        double denom = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
 
         if (recompute_c_y) {
             for (int i = 0; i < 3; ++i) {
@@ -1392,7 +1421,7 @@ namespace detail {
                 int k = (i+2) % 3;
                 cross[i] = b[j] * c[k] - b[k] * c[j];
             }
-            double c_y = sqr_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+            double c_y = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
             c_event.y(c_y / denom);
         }
 
@@ -1408,13 +1437,13 @@ namespace detail {
             }
 
             if (recompute_c_x) {
-                double c_x = sqr_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+                double c_x = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
                 c_event.x(c_x / denom);
             }
             
             if (recompute_lower_x) {
                 sqr_len[3] = 1;
-                double lower_x = sqr_expr_evaluator<4>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+                double lower_x = sqrt_expr_evaluator<4>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
                 c_event.lower_x(lower_x / denom);
             }
         }
@@ -1754,7 +1783,7 @@ namespace detail {
     class beach_line_node {
     public:
         typedef T coordinate_type;
-        typedef point_2d<T> point_2d_type;
+        typedef point_2d<T> point_type;
         typedef site_event<T> site_event_type;
 
         beach_line_node() {}
@@ -1833,7 +1862,7 @@ namespace detail {
         // Return true if the horizontal line going through the new site
         // intersects the arc corresponding to the right_site before the
         // arc corresponding to the left_site.
-        bool less(const point_2d_type &new_site) const {
+        bool less(const point_type &new_site) const {
             if (!left_site_.is_segment()) {
                 return (!right_site_.is_segment()) ? less_pp(new_site) : less_ps(new_site);
             } else {
@@ -1842,19 +1871,19 @@ namespace detail {
         }
 
     private:
-        bool less_pp(const point_2d_type &new_site) const {
+        bool less_pp(const point_type &new_site) const {
             return less_predicate(left_site_.point0(), right_site_.point0(), new_site);
         }
 
-        bool less_ps(const point_2d_type &new_site) const {
+        bool less_ps(const point_type &new_site) const {
             return less_predicate(left_site_.point0(), right_site_, new_site, false);
         }
 
-        bool less_sp(const point_2d_type &new_site) const {
+        bool less_sp(const point_type &new_site) const {
             return less_predicate(right_site_.point0(), left_site_, new_site, true);
         }
 
-        bool less_ss(const point_2d_type &new_site) const {
+        bool less_ss(const point_type &new_site) const {
             return less_predicate(left_site_, right_site_, new_site);
         }
 
@@ -1947,6 +1976,24 @@ namespace detail {
         }
     };
 
+    template <typename T>
+    struct voronoi_traits;
+
+    template <>
+    struct voronoi_traits<int> {
+        typedef int input_coordinate_type;
+        typedef double coordinate_type;
+        typedef double output_coordinate_type;
+
+        typedef point_data<input_coordinate_type> input_point_type;
+        typedef std::vector<input_point_type> input_point_set_type;
+
+        typedef directed_line_segment_data<input_coordinate_type> input_segment_type;
+        typedef directed_line_segment_set_data<input_coordinate_type> input_segment_set_type;
+        
+        typedef voronoi_output<output_coordinate_type> output_type;
+    };
+
     ///////////////////////////////////////////////////////////////////////////
     // VORONOI BUILDER ////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -2001,9 +2048,15 @@ namespace detail {
     template <typename T>
     class voronoi_builder {
     public:
-        typedef T coordinate_type;
-        typedef point_2d<coordinate_type> point_2d_type;
-        typedef voronoi_output<coordinate_type> output_type;
+        typedef typename voronoi_traits<T>::input_point_type input_point_type;
+        typedef typename voronoi_traits<T>::input_point_set_type input_point_set_type;
+
+        typedef typename voronoi_traits<T>::input_segment_type input_segment_type;
+        typedef typename voronoi_traits<T>::input_segment_set_type input_segment_set_type;
+
+        typedef typename voronoi_traits<T>::coordinate_type coordinate_type;
+        typedef point_2d<coordinate_type> point_type;
+        typedef typename voronoi_traits<T>::output_type output_type;
         typedef site_event<coordinate_type> site_event_type;
         typedef circle_event<coordinate_type> circle_event_type;
 
@@ -2016,37 +2069,33 @@ namespace detail {
         // There will be one site event for each input point and three site
         // events for each input segment (both endpoints of a segment and the
         // segment itself).
-        template <typename iType>
-        void init(const std::vector< point_2d<iType> > &points,
-                  const std::vector< std::pair< point_2d<iType>, point_2d<iType> > > &segments) {
-            typedef std::pair< point_2d<iType>, point_2d<iType> > iSegment2D;
-
+        void init(const input_point_set_type &points,
+                  const input_segment_set_type &segments) {
             // Clear output.
             output_.clear();
 
-            // TODO(asydorchuk): We may add segment intersection checks there.
-
             // Avoid additional memory reallocations.
+            segments.clean();
             site_events_.reserve(points.size() + segments.size() * 3);
 
             // Create a site event from each input point.
-            for (typename std::vector< point_2d<iType> >::const_iterator it = points.begin();
+            for (typename input_point_set_type::const_iterator it = points.begin();
                  it != points.end(); ++it) {
-                site_events_.push_back(make_site_event(static_cast<T>(it->x()),
-                                                       static_cast<T>(it->y()),
-                                                       0));
+                site_events_.push_back(make_site_event(
+                    static_cast<coordinate_type>(it->x()),
+                    static_cast<coordinate_type>(it->y()), 0));
             }
 
             // Each segment creates three segment sites:
             //   1) the startpoint of the segment;
             //   2) the endpoint of the segment;
             //   3) the segment itself.
-            for (typename std::vector<iSegment2D>::const_iterator it = segments.begin();
+            for (typename input_segment_set_type::iterator_type it = segments.begin();
                  it != segments.end(); ++it) {
-                T x1 = static_cast<T>(it->first.x());
-                T y1 = static_cast<T>(it->first.y());
-                T x2 = static_cast<T>(it->second.x());
-                T y2 = static_cast<T>(it->second.y());
+                coordinate_type x1 = static_cast<coordinate_type>(it->low().x());
+                coordinate_type y1 = static_cast<coordinate_type>(it->low().y());
+                coordinate_type x2 = static_cast<coordinate_type>(it->high().x());
+                coordinate_type y2 = static_cast<coordinate_type>(it->high().y());
                 site_events_.push_back(make_site_event(x1, y1, 0));
                 site_events_.push_back(make_site_event(x2, y2, 0));
                 site_events_.push_back(make_site_event(x1, y1, x2, y2, 0));
@@ -2126,8 +2175,8 @@ namespace detail {
                 }
             }
 
-            // Simplify the output (remove zero-length edges).
-            output_.simplify();
+            // Clean the output (remove zero-length edges).
+            output_.clean();
             clear();
         }
 
@@ -2142,7 +2191,7 @@ namespace detail {
         typedef std::map< key_type, value_type, node_comparer_type >
             beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
-        typedef std::pair<point_2d_type, beach_line_iterator> end_point_type;
+        typedef std::pair<point_type, beach_line_iterator> end_point_type;
 
         // Init the beach line with the two first sites.
         // The first site is always a point.

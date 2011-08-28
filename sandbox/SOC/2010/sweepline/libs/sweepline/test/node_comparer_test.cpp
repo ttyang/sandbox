@@ -7,13 +7,15 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_sweepline.hpp"
+#define BOOST_TEST_MODULE node_comparer_test
+#include <boost/mpl/list.hpp>
+#include <boost/test/test_case_template.hpp>
+
+#include "boost/sweepline/voronoi_diagram.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
 
-#define BOOST_TEST_MODULE node_comparer_test
-#include <boost/test/test_case_template.hpp>
+typedef boost::mpl::list<double> test_types;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp1, T, test_types) {
     typedef site_event<T> site_event_type;

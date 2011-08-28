@@ -11,7 +11,7 @@
 #include <boost/mpl/list.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "boost/sweepline/voronoi_sweepline.hpp"
+#include "boost/sweepline/voronoi_diagram.hpp"
 using namespace boost::sweepline::detail;
 
 typedef boost::mpl::list<double, mpf_class, mpt_wrapper<mpf_class, 8> > test_types;

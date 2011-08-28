@@ -7,13 +7,15 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_sweepline.hpp"
+#define BOOST_TEST_MODULE event_types_test
+#include <boost/mpl/list.hpp>
+#include <boost/test/test_case_template.hpp>
+
+#include "boost/sweepline/voronoi_diagram.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
 
-#define BOOST_TEST_MODULE event_types_test
-#include <boost/test/test_case_template.hpp>
+typedef boost::mpl::list<double> test_types;
 
 #define EVENT_TYPES_CHECK_COMPARISON(A, B, ARR)    \
             BOOST_CHECK_EQUAL((A)<(B), (ARR)[0]);  \
@@ -24,21 +26,21 @@ using namespace boost::sweepline::detail;
             BOOST_CHECK_EQUAL((A)!=(B), (ARR)[5])
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(point_2d_test1, T, test_types) {
-    point_2d<T> point1 = make_point_2d(static_cast<T>(1), static_cast<T>(2));
+    point_2d<T> point1 = point_2d<T>(static_cast<T>(1), static_cast<T>(2));
     point_2d<T> point2;
 
     BOOST_CHECK_EQUAL(point1.x(), static_cast<T>(1));
     BOOST_CHECK_EQUAL(point1.y(), static_cast<T>(2));
 
-    point2 = make_point_2d(static_cast<T>(0), static_cast<T>(2));
+    point2 = point_2d<T>(static_cast<T>(0), static_cast<T>(2));
     bool arr1[] = { false, true, false, true, false, true };
     EVENT_TYPES_CHECK_COMPARISON(point1, point2, arr1);
 
-    point2 = make_point_2d(static_cast<T>(1), static_cast<T>(3));
+    point2 = point_2d<T>(static_cast<T>(1), static_cast<T>(3));
     bool arr2[] = { true, false, true, false, false, true };
     EVENT_TYPES_CHECK_COMPARISON(point1, point2, arr2);
 
-    point2 = make_point_2d(static_cast<T>(1), static_cast<T>(2));
+    point2 = point_2d<T>(static_cast<T>(1), static_cast<T>(2));
     bool arr3[] = { false, false, true, true, true, false };
     EVENT_TYPES_CHECK_COMPARISON(point1, point2, arr3);
 }
@@ -66,11 +68,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(site_event_test1, T, test_types) {
 
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(site_event_test2, T, test_types) {
-    point_2d<T> point1 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(2));
-    point_2d<T> point2 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(0));
-    point_2d<T> point3 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(-2));
-    point_2d<T> point4 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(-1));
-    point_2d<T> point5 = make_point_2d<T>(static_cast<T>(1), static_cast<T>(1));
+    point_2d<T> point1 = point_2d<T>(static_cast<T>(0), static_cast<T>(2));
+    point_2d<T> point2 = point_2d<T>(static_cast<T>(0), static_cast<T>(0));
+    point_2d<T> point3 = point_2d<T>(static_cast<T>(0), static_cast<T>(-2));
+    point_2d<T> point4 = point_2d<T>(static_cast<T>(0), static_cast<T>(-1));
+    point_2d<T> point5 = point_2d<T>(static_cast<T>(1), static_cast<T>(1));
     site_event<T> site1 = make_site_event<T>(point1, point2, 0);
 
     BOOST_CHECK_EQUAL(point1 == site1.point1(), true);
@@ -113,10 +115,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(site_event_test2, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(site_event_test3, T, test_types) {
-    point_2d<T> point1 = make_point_2d<T>(static_cast<T>(10), static_cast<T>(10));
-    point_2d<T> point2 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(0));
-    point_2d<T> point3 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(1));
-    point_2d<T> point4 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(10));
+    point_2d<T> point1 = point_2d<T>(static_cast<T>(10), static_cast<T>(10));
+    point_2d<T> point2 = point_2d<T>(static_cast<T>(0), static_cast<T>(0));
+    point_2d<T> point3 = point_2d<T>(static_cast<T>(0), static_cast<T>(1));
+    point_2d<T> point4 = point_2d<T>(static_cast<T>(0), static_cast<T>(10));
     site_event<T> site1 = make_site_event<T>(point1, point2, 0);
 
     BOOST_CHECK_EQUAL(point1 == site1.point1(), true);
@@ -142,18 +144,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(site_event_test3, T, test_types) {
     EVENT_TYPES_CHECK_COMPARISON(site1, site2, arr1_1);
     EVENT_TYPES_CHECK_COMPARISON(site2, site1, arr1_2);
 
-    point3 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(-10));
-    point4 = make_point_2d<T>(static_cast<T>(0), static_cast<T>(-1));
+    point3 = point_2d<T>(static_cast<T>(0), static_cast<T>(-10));
+    point4 = point_2d<T>(static_cast<T>(0), static_cast<T>(-1));
     site2 = make_site_event<T>(point3, point4, 0);
     EVENT_TYPES_CHECK_COMPARISON(site1, site2, arr1_1);
     EVENT_TYPES_CHECK_COMPARISON(site2, site1, arr1_2);
 
-    point4 = make_point_2d<T>(static_cast<T>(10), static_cast<T>(9));
+    point4 = point_2d<T>(static_cast<T>(10), static_cast<T>(9));
     site2 = make_site_event<T>(point2, point4, 0);
     EVENT_TYPES_CHECK_COMPARISON(site1, site2, arr1_2);
     EVENT_TYPES_CHECK_COMPARISON(site2, site1, arr1_1);
 
-    point4 = make_point_2d<T>(static_cast<T>(9), static_cast<T>(10));
+    point4 = point_2d<T>(static_cast<T>(9), static_cast<T>(10));
     site2 = make_site_event<T>(point2, point4, 0);
     EVENT_TYPES_CHECK_COMPARISON(site1, site2, arr1_1);
     EVENT_TYPES_CHECK_COMPARISON(site2, site1, arr1_2);

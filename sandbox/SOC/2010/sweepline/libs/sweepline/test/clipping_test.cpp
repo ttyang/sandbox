@@ -7,15 +7,15 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#include <stdlib.h>
-#include <time.h>
-
-#include "test_type_list.hpp"
-#include "boost/sweepline/voronoi_sweepline.hpp"
-using namespace boost::sweepline;
-
 #define BOOST_TEST_MODULE voronoi_clipping_test
+#include <boost/mpl/list.hpp>
 #include <boost/test/test_case_template.hpp>
+
+#include "boost/sweepline/voronoi_diagram.hpp"
+using namespace boost::sweepline;
+using namespace boost::sweepline::detail;
+
+typedef boost::mpl::list<double> test_types;
 
 // Test segment clipping.
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_clipping_test1, T, test_types) {
@@ -87,7 +87,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_clipping_test2, T, test_types) {
     BRect<T> test_rect(static_cast<T>(0.0), static_cast<T>(-1.0),
                        static_cast<T>(4.0), static_cast<T>(3.0));
     std::vector< point_2d<T> > intersections;
-    srand(static_cast<unsigned int>(time(NULL)));
     point_2d<T> test_origin(2, 1);
 
     for (int i = -50; i <= 50; i++)
@@ -107,7 +106,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_clipping_test3, T, test_types) {
     BRect<T> test_rect(static_cast<T>(0.0), static_cast<T>(-1.0),
                        static_cast<T>(4.0), static_cast<T>(3.0));
     std::vector< point_2d<T> > intersections;
-    srand(static_cast<unsigned int>(time(NULL)));
     point_2d<T> test_origin(2, 1);
 
     for (int i = -50; i <= 50; i++)
@@ -179,7 +177,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(ray_clipping_test2, T, test_types) {
     BRect<T> test_rect(static_cast<T>(0.0), static_cast<T>(-1.0),
                        static_cast<T>(4.0), static_cast<T>(3.0));
     std::vector< point_2d<T> > intersections;
-    srand(static_cast<unsigned int>(time(NULL)));
     point_2d<T> test_origin(2, 1);
 
     for (int i = -50; i <= 50; i++)
@@ -252,7 +249,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(line_clipping_test2, T, test_types) {
     BRect<T> test_rect(static_cast<T>(0.0), static_cast<T>(-1.0),
                        static_cast<T>(4.0), static_cast<T>(3.0));
     std::vector< point_2d<T> > intersections;
-    srand(static_cast<unsigned int>(time(NULL)));
     point_2d<T> test_origin(2, 1);
 
     for (int i = -50; i <= 50; i++)

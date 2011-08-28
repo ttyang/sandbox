@@ -12,7 +12,7 @@
 #include <QtOpenGL/QGLWidget>
 #include <QtGui/QtGui>
 
-#include "boost/sweepline/voronoi_sweepline.hpp"
+#include "boost/sweepline/voronoi_diagram.hpp"
 using namespace boost::sweepline;
 
 class GLWidget : public QGLWidget {
@@ -29,8 +29,8 @@ public:
     }
 
     void build(QString file_path) {
-        std::vector<ipoint_2d_type> point_sites;
-        std::vector<isegment_2d_type> segment_sites;
+        ipoint_set_type point_sites;
+        isegment_set_type segment_sites;
 
         // Open file.
         QFile data(file_path);
@@ -46,18 +46,18 @@ public:
         in_stream >> num_point_sites;
         for (int i = 0; i < num_point_sites; i++) {
             in_stream >> x1 >> y1;
-            point_sites.push_back(make_point_2d(x1, y1));
+            point_sites.push_back(ipoint_type(x1, y1));
         }
         in_stream >> num_edge_sites;
         for (int i = 0; i < num_edge_sites; i++) {
             in_stream >> x1 >> y1 >> x2 >> y2;
-            segment_sites.push_back(std::make_pair(
-                make_point_2d(x1, y1), make_point_2d(x2, y2)));
+            segment_sites.insert(isegment_type(
+                ipoint_type(x1, y1), ipoint_type(x2, y2)));
         }
         in_stream.flush();
 
         // Build voronoi diagram.
-        build_voronoi(point_sites, segment_sites, voronoi_output_);
+        build_voronoi<int>(point_sites, segment_sites, voronoi_output_);
         brect_ = voronoi_helper<coordinate_type>::get_view_rectangle(
             voronoi_output_.bounding_rectangle());
 
@@ -126,8 +126,8 @@ protected:
             for (it = edges.begin(); it != edges.end(); it++) {
                 if (!it->is_primary() && primary_edges_only_)
                     continue;
-                std::vector<point_2d_type> temp_v =
-                    voronoi_helper<coordinate_type>::get_intermediate_points(&(*it), brect_, 1E-3);
+                std::vector<opoint_type> temp_v =
+                    voronoi_helper<coordinate_type>::get_point_interpolation(&(*it), brect_, 1E-3);
                 for (int i = 0; i < static_cast<int>(temp_v.size()) - 1; i++) {
                     glVertex2f(temp_v[i].x(), temp_v[i].y());
                     glVertex2f(temp_v[i+1].x(), temp_v[i+1].y());
@@ -155,9 +155,12 @@ private:
     }
 
     typedef double coordinate_type;
-    typedef point_2d<coordinate_type> point_2d_type;
-    typedef point_2d<int> ipoint_2d_type;
-    typedef std::pair<ipoint_2d_type, ipoint_2d_type> isegment_2d_type;
+    typedef boost::sweepline::detail::point_2d<coordinate_type> point_type;
+    typedef point_data<int> ipoint_type;
+    typedef point_data<double> opoint_type;
+    typedef directed_line_segment_data<int> isegment_type;
+    typedef std::vector<ipoint_type> ipoint_set_type;
+    typedef directed_line_segment_set_data<int> isegment_set_type;
     typedef voronoi_output<coordinate_type>::voronoi_cells_type voronoi_cells_type;
     typedef voronoi_output<coordinate_type>::voronoi_vertices_type voronoi_vertices_type;
     typedef voronoi_output<coordinate_type>::voronoi_edges_type voronoi_edges_type;
