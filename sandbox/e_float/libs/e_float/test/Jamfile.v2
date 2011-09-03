@@ -47,24 +47,80 @@ project
 		<toolset>msvc:<cxxflags>/wd4127 # expression is constant.
     ;
 
-test-suite "e_float EFX" :
-    [ run ./naive_test/naive_test.cpp 
-      ../src/e_float/e_float.cpp
-      ../src/e_float/e_float_base.cpp
-      ../src/e_float/efx/e_float_efx.cpp
-      ../src/functions/constants/constants.cpp
-      ../src/functions/elementary/elementary_complex.cpp
-      ../src/functions/elementary/elementary_math.cpp
-      ../src/functions/elementary/elementary_hyper_g.cpp
-      ../src/functions/elementary/elementary_trans.cpp
-      ../src/functions/elementary/elementary_trig.cpp
-      ../src/functions/integer/prime.cpp
-      ../src/functions/integer/prime_factor.cpp
-      
-      ../src/utility/util_power_j_pow_x.cpp
-      ../src/utility/util_timer.cpp
-      ../src/utility/util_digit_scale.cpp
-    ]
+    
+ test-suite "e_float EFX numerical" :
+		[ run ./e_float_numerical_test/e_float_test.cpp 
+		      ../src/e_float/e_float.cpp
+		      ../src/e_float/e_float_base.cpp
+		      ../src/e_float/efx/e_float_efx.cpp
+		      ../src/functions/constants/constants.cpp
+		      ../src/functions/elementary/elementary_complex.cpp
+		      ../src/functions/elementary/elementary_math.cpp
+		      ../src/functions/elementary/elementary_hyper_g.cpp
+		      ../src/functions/elementary/elementary_trans.cpp
+		      ../src/functions/elementary/elementary_trig.cpp
+		      ../src/functions/gamma/factorial.cpp
+		      ../src/functions/gamma/factorial2.cpp
+		      ../src/functions/gamma/gamma.cpp
+		      ../src/functions/gamma/gamma_util.cpp
+		      ../src/functions/gamma/pochhammer.cpp
+		      ../src/functions/integer/prime.cpp
+		      ../src/functions/integer/prime_factor.cpp
+		      ../src/functions/integer/bernoulli_b.cpp
+		      ../src/functions/zeta/zeta.cpp
+		      
+		      ../src/functions/tables/A000142.cpp
+		      ../src/functions/tables/A000367.cpp
+		      ../src/functions/tables/A002445.cpp
+		      ../src/functions/tables/A006882.cpp
+		      ../src/functions/tables/A007318.cpp
+		      
+		      ../src/utility/util_power_j_pow_x.cpp
+		      ../src/utility/util_timer.cpp
+		      ../src/utility/util_digit_scale.cpp
+		      
+		      ./test_case_base.cpp
+		      ./real/test_real.cpp
+		      		      
+		      ./real/cases/test_case_0000x_overflow_underflow.cpp
+		      ./real/cases/test_case_0000y_write_to_ostream.cpp
+		      ./real/cases/test_case_0000z_global_ops_pod.cpp
+		      ./real/cases/test_case_00051_factorial.cpp
+		      ./real/cases/test_case_00021_bernoulli.cpp
+		      ./real/cases/test_case_00011_various_elem_math.cpp
+		      ./real/cases/test_case_00903_zeta_neg_x.cpp
+		      ./real/cases/test_case_00902_zeta_all_x.cpp
+		      ./real/cases/test_case_00901_zeta_small_x.cpp
+		      ./real/cases/test_case_00221_various_gamma_func.cpp
+		      ./real/cases/test_case_00205_gamma_near_neg_n.cpp
+		      ./real/cases/test_case_00204_gamma_tiny_x.cpp
+		      ./real/cases/test_case_00203_gamma_small_x.cpp
+		      ./real/cases/test_case_00202_gamma_medium_x.cpp
+		      ./real/cases/test_case_00201_gamma.cpp
+		      ./real/cases/test_case_00126_atanh.cpp
+		      ./real/cases/test_case_00125_acosh.cpp
+		      ./real/cases/test_case_00124_asinh.cpp
+		      ./real/cases/test_case_00123_tanh.cpp
+		      ./real/cases/test_case_00122_cosh.cpp
+		      ./real/cases/test_case_00121_sinh.cpp
+		      ./real/cases/test_case_00115_various_elem_trans.cpp
+		      ./real/cases/test_case_00114_various_trig.cpp
+		      ./real/cases/test_case_00113_atan_x_small_to_large.cpp
+		      ./real/cases/test_case_00112_cos_x_near_pi_half.cpp
+		      ./real/cases/test_case_00111_sin_small_x.cpp
+		      ./real/cases/test_case_00106_rootn.cpp
+		      ./real/cases/test_case_00105_sqrt.cpp
+		      ./real/cases/test_case_00104_log.cpp
+		      ./real/cases/test_case_00103_exp.cpp
+		      ./real/cases/test_case_00102_cos.cpp
+		      ./real/cases/test_case_00101_sin.cpp
+		      ./real/cases/test_case_00071_various_int_func.cpp
+		      ./real/cases/test_case_00021_bernoulli.cpp
+		      ./real/cases/test_case_00051_factorial.cpp
+		      ./real/cases/test_case_00052_factorial2.cpp
+	      
+		]
+
     #[ run  ../example/e_float_naive_eg.cpp ]
 
   ;
