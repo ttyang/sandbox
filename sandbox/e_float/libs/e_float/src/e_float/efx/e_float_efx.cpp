@@ -129,7 +129,7 @@ efx::e_float::e_float(const signed long long n) : data     (),
                                                   fpclass  (ef_finite),
                                                   prec_elem(ef_elem_number)
 {
-  from_unsigned_long_long((!neg) ? static_cast<unsigned long long>(n) : static_cast<UINT64>(-n));
+  from_unsigned_long_long((!neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
 }
 
 efx::e_float::e_float(const unsigned long long n) : data     (),
@@ -286,7 +286,7 @@ efx::e_float::e_float(const double mantissa,
   // Create an e_float from mantissa and exponent.
   // This ctor does not maintain the full precision of double.
 
-  const bool mantissa_is_iszero = (::fabs(mantissa) < ((std::numeric_limits<double>::min)() * 2.0));
+  const bool mantissa_is_iszero = (::fabs(mantissa) < ((std::numeric_limits<double>::min)() * (1.0 + std::numeric_limits<double>::epsilon())));
 
   if(mantissa_is_iszero)
   {
@@ -295,8 +295,6 @@ efx::e_float::e_float(const double mantissa,
   }
 
   const bool b_neg = (mantissa < 0.0);
-
-  neg = b_neg;
 
   double d = ((!b_neg) ? mantissa : -mantissa);
   INT64  e = exponent;
@@ -335,7 +333,7 @@ void efx::e_float::from_unsigned_long(const unsigned long u)
 
   exp = static_cast<INT64>(0);
 
-  std::size_t i = 0u;
+  std::size_t i =static_cast<std::size_t>(0u);
 
   unsigned long uu = u;
 
@@ -363,7 +361,7 @@ void efx::e_float::from_unsigned_long_long(const unsigned long long u)
 
   exp = static_cast<INT64>(0);
 
-  std::size_t i = 0u;
+  std::size_t i =static_cast<std::size_t>(0u);
 
   unsigned long long uu = u;
 
@@ -413,8 +411,8 @@ UINT32 efx::e_float::mul_loop_n(UINT32* const u, UINT32 n, const INT32 p)
   for(INT32 j = p - 1; j >= static_cast<INT32>(0); j--)
   {
     const UINT64 t = static_cast<UINT64>(carry + static_cast<UINT64>(u[j] * static_cast<UINT64>(n)));
-    carry          = static_cast<UINT64>(t / static_cast<UINT32>(e_float::ef_elem_mask));
-    u[j]           = static_cast<UINT32>(t - static_cast<UINT64>(static_cast<UINT32>(e_float::ef_elem_mask) * static_cast<UINT64>(carry)));
+    carry          = static_cast<UINT64>(t / static_cast<UINT32>(ef_elem_mask));
+    u[j]           = static_cast<UINT32>(t - static_cast<UINT64>(static_cast<UINT32>(ef_elem_mask) * static_cast<UINT64>(carry)));
   }
   
   return static_cast<UINT32>(carry);
@@ -426,7 +424,7 @@ UINT32 efx::e_float::div_loop_n(UINT32* const u, UINT32 n, const INT32 p)
 
   for(INT32 j = static_cast<INT32>(0); j < p; j++)
   {
-    const UINT64 t = static_cast<UINT64>(u[j] + static_cast<UINT64>(prev * static_cast<UINT32>(e_float::ef_elem_mask)));
+    const UINT64 t = static_cast<UINT64>(u[j] + static_cast<UINT64>(prev * static_cast<UINT32>(ef_elem_mask)));
     u[j]           = static_cast<UINT32>(t / n);
     prev           = static_cast<UINT64>(t - static_cast<UINT64>(n * static_cast<UINT64>(u[j])));
   }
@@ -443,7 +441,7 @@ void efx::e_float::precision(const INT32 prec_digits)
   else
   {
     const INT32 elems = static_cast<INT32>(  static_cast<INT32>( (prec_digits + (ef_elem_digits10 / 2)) / ef_elem_digits10)
-                                           + static_cast<INT32>(((prec_digits % ef_elem_digits10) != 0) ? 1 : 0));
+                                           + static_cast<INT32>(((prec_digits %  ef_elem_digits10) != 0) ? 1 : 0));
 
     prec_elem = (std::min)(ef_elem_number, (std::max)(elems, static_cast<INT32>(2)));
   }
@@ -833,7 +831,7 @@ efx::e_float& efx::e_float::mul_unsigned_long_long(const unsigned long long n)
   {
     exp += static_cast<INT64>(ef_elem_digits10);
 
-    // Shift result of the multiplication one element to the right.
+    // Shift the result of the multiplication one element to the right.
     std::copy_backward(data.begin(),
                        data.begin() + static_cast<std::size_t>(prec_elem - static_cast<INT32>(1)),
                        data.begin() + static_cast<std::size_t>(prec_elem));
@@ -1221,9 +1219,9 @@ bool efx::e_float::isint(void) const
     return true;
   }
 
-  array_type::const_iterator it_first_non_zero = std::find_if(data.begin() + offset_decimal_part, data.end(), data_elem_is_non_zero_predicate);
+  array_type::const_iterator it_non_zero = std::find_if(data.begin() + offset_decimal_part, data.end(), data_elem_is_non_zero_predicate);
 
-  return (it_first_non_zero == data.end());
+  return (it_non_zero == data.end());
 }
 
 efx::e_float& efx::e_float::operator++(void) { return *this += ef::one(); }
@@ -1252,11 +1250,9 @@ void efx::e_float::extract_parts(double& mantissa, INT64& exponent) const
     ++exponent;
   }
 
-  static const double d_mask = static_cast<double>(ef_elem_mask);
-
   mantissa =     static_cast<double>(data[0])
-             +  (static_cast<double>(data[1]) /  d_mask)
-             + ((static_cast<double>(data[2]) / d_mask) / d_mask);
+             +  (static_cast<double>(data[1]) / static_cast<double>(ef_elem_mask))
+             + ((static_cast<double>(data[2]) / static_cast<double>(ef_elem_mask)) / static_cast<double>(ef_elem_mask));
 
   mantissa /= static_cast<double>(p10);
 
@@ -1356,8 +1352,8 @@ long double efx::e_float::extract_long_double(void) const
 signed long long efx::e_float::extract_signed_long_long(void) const
 {
   // Extracts a signed long long from *this.
-  // If |x| exceeds the maximum of signed long long,
-  // then this maximum value is returned.
+  // If (x > maximum of signed long long) or (x < minimum of signed long long),
+  // then the maximum or minimum of signed long long is returned accordingly.
 
   if(exp < static_cast<INT64>(0))
   {
@@ -1366,36 +1362,42 @@ signed long long efx::e_float::extract_signed_long_long(void) const
 
   const bool b_neg = isneg();
 
-  const e_float xn = ef::fabs(extract_integer_part());
+  unsigned long long val;
 
-  signed long long val;
-
-  if(xn > ef::signed_long_long_max())
+  if((!b_neg) && (*this > ef::signed_long_long_max()))
   {
-    val = (std::numeric_limits<signed long long>::max)();
+    return (std::numeric_limits<signed long long>::max)();
+  }
+  else if(b_neg &&  (*this < ef::signed_long_long_min()))
+  {
+    return (std::numeric_limits<signed long long>::min)();
   }
   else
   {
-    // Extract the data into the int64 value.
-    val = static_cast<signed long long>(xn.data[0]);
+    // Extract the data into an unsigned long long value.
+    const e_float xn(ef::fabs(extract_integer_part()));
+
+    val = static_cast<unsigned long long>(xn.data[0]);
 
     const INT32 imax = (std::min)(static_cast<INT32>(static_cast<INT32>(xn.exp) / ef_elem_digits10), static_cast<INT32>(ef_elem_number - static_cast<INT32>(1)));
 
     for(INT32 i = static_cast<INT32>(1); i <= imax; i++)
     {
-      val *= static_cast<signed long long>(ef_elem_mask);
-      val += static_cast<signed long long>(xn.data[i]);
+      val *= static_cast<unsigned long long>(ef_elem_mask);
+      val += static_cast<unsigned long long>(xn.data[i]);
     }
   }
 
-  return ((!b_neg) ? val : static_cast<INT64>(-val));
+  return ((!b_neg) ? static_cast<signed long long>(val) : static_cast<signed long long>(-static_cast<signed long long>(val)));
 }
 
 unsigned long long efx::e_float::extract_unsigned_long_long(void) const
 {
   // Extracts an unsigned long long from *this.
-  // If |x| exceeds the maximum of unsigned long long,
-  // then this maximum value is returned.
+  // If x exceeds the maximum of unsigned long long,
+  // then the maximum of unsigned long long is returned.
+  // If x is negative, then the unsigned long long cast of
+  // the signed long long extracted value is returned.
 
   if(isneg())
   {
@@ -1407,17 +1409,17 @@ unsigned long long efx::e_float::extract_unsigned_long_long(void) const
     return static_cast<unsigned long long>(0u);
   }
 
-  const e_float xn = ef::fabs(extract_integer_part());
+  const e_float xn(extract_integer_part());
 
   unsigned long long val;
 
   if(xn > ef::unsigned_long_long_max())
   {
-    val = (std::numeric_limits<unsigned long long>::max)();
+    return (std::numeric_limits<unsigned long long>::max)();
   }
   else
   {
-    // Extract the data into the int64 value.
+    // Extract the data into an unsigned long long value.
     val = static_cast<unsigned long long>(xn.data[0]);
 
     const INT32 imax = (std::min)(static_cast<INT32>(static_cast<INT32>(xn.exp) / ef_elem_digits10), static_cast<INT32>(ef_elem_number - static_cast<INT32>(1)));

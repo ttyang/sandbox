@@ -417,26 +417,26 @@ e_float ef::exp(const e_float& x)
 
   if(ef::isinf(x))
   {
-    return (!ef::isneg(x) ? std::numeric_limits<e_float>::infinity() : ef::zero());
+    return ((!ef::isneg(x)) ? std::numeric_limits<e_float>::infinity() : ef::zero());
   }
 
-  if(ef::iszero(x) || x.order() < -ef::tol())
+  if(ef::iszero(x) || (x.order() < -ef::tol()))
   {
     return ef::one();
   }
 
   // Get local copy of argument and force it to be positive.
   const bool bo_x_is_neg = ef::isneg(x);
-  
-  const e_float xx = !bo_x_is_neg ? x : -x;
+
+  const e_float xx = ((!bo_x_is_neg) ? x : -x);
 
   // Check the range of the argument.
-  static const e_float maximum_arg_for_exp = e_float(std::numeric_limits<e_float>::max_exponent);
+  static const e_float maximum_arg_for_exp = std::numeric_limits<e_float>::max_exponent;
 
   if(xx > maximum_arg_for_exp)
   {
     // Overflow / underflow
-    return !bo_x_is_neg ? std::numeric_limits<e_float>::infinity() : ef::zero();
+    return ((!bo_x_is_neg) ? std::numeric_limits<e_float>::infinity() : ef::zero());
   }
 
   // Check for pure-integer arguments which can be either signed or unsigned.
@@ -447,31 +447,35 @@ e_float ef::exp(const e_float& x)
 
   // The algorithm for exp has been taken from MPFUN.
   // exp(t) = [ (1 + r + r^2/2! + r^3/3! + r^4/4! ...)^p2 ] * 2^n
-  // where p2 is a power of 2 such as 512, r = t_prime / p2, and
+  // where p2 is a power of 2 such as 2048, r = t_prime / p2, and
   // t_prime = t - n*ln2, with n chosen to minimize the absolute
   // value of t_prime. In the resulting Taylor series, which is
   // implemented as a hypergeometric function, |r| is bounded by
   // ln2 / p2. For small arguments, no scaling is done.
 
-  static const e_float one_over_ln2 = ef::one() / ef::ln2();
-
-  e_float nf = ef::integer_part(xx * one_over_ln2);
-  
-  // Scaling.
-  static const INT32 p2 = static_cast<INT32>(UINT32(1u) << 11);
-
-  const bool b_scale = xx.order() > static_cast<INT64>(-4);
+  const bool b_scale = (xx.order() > static_cast<INT64>(-4));
 
   // Compute the exponential series of the (possibly) scaled argument.
-  e_float exp_series = ef::hyp0F0(b_scale ? (xx - nf * ef::ln2()) / p2 : xx);
+  e_float exp_series;
 
   if(b_scale)
   {
-    exp_series  = ef::pown(exp_series, p2);
-    exp_series *= ef::pow2(ef::to_int64(nf));
+    // Compute 1 / ln2 as a warm-cached constant value.
+    static const e_float one_over_ln2 = ef::one() / ef::ln2();
+
+    const e_float nf = ef::integer_part(xx * one_over_ln2);
+
+    // The scaling is 2^11 = 2048.
+    const INT32 p2 = static_cast<INT32>(UINT32(1u) << 11);
+
+    exp_series = ef::pown(ef::hyp0F0((xx - (nf * ef::ln2())) / p2), static_cast<INT64>(p2)) * ef::pow2(ef::to_int64(nf));
   }
-  
-  return ((!bo_x_is_neg) ? exp_series : exp_series.calculate_inv());
+  else
+  {
+    exp_series = ef::hyp0F0(xx);
+  }
+
+  return ((!bo_x_is_neg) ? exp_series : (ef::one() / exp_series));
 }
 
 namespace Log_Series

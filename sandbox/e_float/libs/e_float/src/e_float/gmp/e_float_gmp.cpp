@@ -182,7 +182,7 @@ gmp::e_float::e_float(const float f) : fpclass  (ef_finite),
 
   if(::_finite(f) == 0)
   {
-    operator=(::_isnan(f) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
+    operator=((::_isnan(f) != 0) ? my_value_nan() : ((!b_neg) ? my_value_inf() : -my_value_inf()));
     return;
   }
 
@@ -678,7 +678,7 @@ INT32 gmp::e_float::cmp(const e_float& v) const
   else
   {
     const int result = ::mpf_cmp(rop, v.rop);
-  
+
     if     (result > 0) { return static_cast<INT32>(1); }
     else if(result < 0) { return static_cast<INT32>(-1); }
     else { return static_cast<INT32>(0); }

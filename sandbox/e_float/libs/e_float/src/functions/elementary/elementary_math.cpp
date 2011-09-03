@@ -75,7 +75,7 @@ double ef::to_double(const e_float& x)    { return x.extract_double(); }
 double ef::to_double(const ef_complex& z) { return ef::to_double(z.real()); }
 
 INT64 ef::to_int64(const double x)      { return static_cast<INT64>(x); }
-INT64 ef::to_int64(const e_float& x)    { return x.extract_signed_long_long(); }
+INT64 ef::to_int64(const e_float& x)    { return static_cast<INT64>(x.extract_signed_long_long()); }
 INT64 ef::to_int64(const ef_complex& z) { return ef::to_int64(z.real()); }
 
 bool ef::isint(const double x)
@@ -100,28 +100,22 @@ bool ef::isint(const double x)
 
 INT32 ef::to_int32(const double x)
 {
-  static const INT64 n32_max = static_cast<INT64>((std::numeric_limits<INT32>::max)());
-  static const INT64 n32_min = static_cast<INT64>((std::numeric_limits<INT32>::min)());
+  const INT64 n32_max = static_cast<INT64>((std::numeric_limits<INT32>::max)());
+  const INT64 n32_min = static_cast<INT64>((std::numeric_limits<INT32>::min)());
 
-  INT64 n64 = ef::to_int64(x);
+  const INT64 n64 = ef::to_int64(x);
 
-  if(n64 < n32_min) { n64 = n32_min; }
-  if(n64 > n32_max) { n64 = n32_max; }
-
-  return static_cast<INT32>(n64);
+  return static_cast<INT32>((std::min)((std::max)(n64, n32_min), n32_max));
 }
 
 INT32 ef::to_int32(const e_float& x)
 {
-  static const INT64 n32_max = static_cast<INT64>((std::numeric_limits<INT32>::max)());
-  static const INT64 n32_min = static_cast<INT64>((std::numeric_limits<INT32>::min)());
+  const INT64 n32_max = static_cast<INT64>((std::numeric_limits<INT32>::max)());
+  const INT64 n32_min = static_cast<INT64>((std::numeric_limits<INT32>::min)());
 
-  INT64 n64 = ef::to_int64(x);
+  const INT64 n64 = ef::to_int64(x);
 
-  if(n64 < n32_min) { n64 = n32_min; }
-  if(n64 > n32_max) { n64 = n32_max; }
-
-  return static_cast<INT32>(n64);
+  return static_cast<INT32>((std::min)((std::max)(n64, n32_min), n32_max));
 }
 
 INT32 ef::to_int32(const ef_complex& z)
@@ -177,8 +171,7 @@ bool ef::large_arg(const double x)
 bool ef::large_arg(const e_float& x)
 {
   static const double lim_d = static_cast<double>(static_cast<INT32>(ef::tol())) / 10.0;
-  static const INT64  lim_n = static_cast<INT64>(lim_d);
-  static const INT64  lim   = (lim_n < 6 ? 6 : lim_n);
+  static const INT64  lim   = (std::max)(static_cast<INT64>(lim_d), static_cast<INT64>(6));
 
   return (x.order() > lim);
 }
