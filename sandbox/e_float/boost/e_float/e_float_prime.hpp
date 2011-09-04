@@ -11,13 +11,4 @@
 #ifndef _E_FLOAT_PRIME_HPP_
   #define _E_FLOAT_PRIME_HPP_
 
-  #include <deque>
-
-  #include <boost/e_float/e_float.hpp>
-
-  namespace ef
-  {
-    void prime(const UINT32 n, std::deque<UINT32>& primes);
-  }
-
 #endif // _PRIME_2008_09_11_H_

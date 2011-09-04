@@ -8,17 +8,15 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
-#include <vector>
 #include <algorithm>
 
-#include <boost/e_float/e_float_prime.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 
 namespace Primes
 {
   struct Inserter
   {
   private:
-
     mutable UINT32 count;
     mutable std::back_insert_iterator<std::deque<UINT32> > it;
 

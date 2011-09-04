@@ -13,9 +13,7 @@
 #include <cstdio>
 #include <cstdarg>
 
-#include <boost/e_float/e_float.hpp>
-#include <boost/e_float/e_float_constants.hpp>
-#include <boost/e_float/e_float_elementary.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 
 #include "e_float_mpfr_protos.h"
 #include "../../utility/util_lexical_cast.h"

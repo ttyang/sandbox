@@ -11,27 +11,4 @@
 #ifndef _E_FLOAT_GAMMA_HPP_
   #define _E_FLOAT_GAMMA_HPP_
 
-  #include <boost/e_float/e_float_complex.hpp>
-
-  namespace ef
-  {
-    e_float gamma               (const e_float& x);
-    e_float gamma_near_n        (const INT32 n, const e_float& x);
-    e_float factorial           (const UINT32 n);
-    e_float factorial2          (const  INT32 n);
-    e_float binomial            (const UINT32 n, const UINT32 k);
-    e_float binomial            (const UINT32 n, const e_float& y);
-    e_float binomial            (const e_float& x, const UINT32 k);
-    e_float binomial            (const e_float& x, const e_float& y);
-    e_float pochhammer          (const e_float& x, const UINT32 n);
-    e_float pochhammer          (const e_float& x, const e_float& a);
-  }
-
-  namespace efz
-  {
-    ef_complex gamma           (const ef_complex& z);
-    ef_complex pochhammer      (const ef_complex& z, const UINT32 n);
-    ef_complex pochhammer      (const ef_complex& z, const ef_complex& a);
-  }
-
 #endif // _E_FLOAT_GAMMA_HPP_

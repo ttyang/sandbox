@@ -11,14 +11,4 @@
 #ifndef _E_FLOAT_INTEGER_HPP_
   #define _E_FLOAT_INTEGER_HPP_
 
-  #include <vector>
-
-  #include <boost/e_float/e_float.hpp>
-
-  namespace ef
-  {
-    e_float bernoulli      (const UINT32 n);
-    void    bernoulli_table(std::vector<e_float>& bn, const UINT32 n);
-  }
-
 #endif // _E_FLOAT_INTEGER_HPP_

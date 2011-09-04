@@ -10,11 +10,7 @@
 
 #include <numeric>
 
-#include <boost/e_float/e_float_complex.hpp>
-#include <boost/e_float/e_float_constants.hpp>
-#include <boost/e_float/e_float_elementary.hpp>
-#include <boost/e_float/e_float_integer.hpp>
-#include <boost/e_float/e_float_gamma.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 
 #include "../tables/tables.h"
 #include "../../utility/util_coefficient_expansion.h"

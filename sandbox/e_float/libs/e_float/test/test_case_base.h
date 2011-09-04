@@ -12,14 +12,13 @@
   #define _TEST_CASE_BASE_2009_11_12_H_
 
   #include <string>
-  #include <vector>
   #include <fstream>
   #include <iomanip>
   #include <algorithm>
   #include <iterator>
 
 
-  #include <boost/e_float/e_float_complex.hpp>
+  #include <boost/e_float/e_float_functions.hpp>
   #include "../src/utility/util_noncopyable.h"
 
   namespace test

@@ -8,9 +8,7 @@
 // "Algorithm 910: A Portable C++ Multiple-Precision System for Special-Function Calculations",
 // in ACM TOMS, {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. http://doi.acm.org/10.1145/1916461.1916469
 
-#include <boost/e_float/e_float.hpp>
-#include <boost/e_float/e_float_elementary_trans.hpp>
-#include <boost/e_float/e_float_constants.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 
 const e_float& ef::two                   (void) { static const e_float val(         2u); return val; }
 const e_float& ef::three                 (void) { static const e_float val(         3u); return val; }

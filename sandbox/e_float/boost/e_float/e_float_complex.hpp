@@ -11,6 +11,8 @@
 #ifndef _E_FLOAT_COMPLEX_HPP_
   #define _E_FLOAT_COMPLEX_HPP_
 
+  #include <complex>
+
   #include <boost/e_float/e_float.hpp>
 
   // A separate complex class for e_float has been created. Even though
@@ -241,5 +243,237 @@
   };
 
   inline std::ostream& operator<<(std::ostream& os, const ef_complex& z) { return os << '(' << z.real() << ',' << z.imag() << ')'; }
+
+  // Global unary operators of e_float reference.
+  inline       ef_complex  operator-(const ef_complex& u) { return ef_complex(-u.real(), -u.imag()); }
+  inline       ef_complex& operator+(      ef_complex& u) { return u; }
+  inline const ef_complex& operator+(const ef_complex& u) { return u; }
+
+  // Global operators post-increment and post-decrement
+  inline ef_complex operator++(ef_complex& u, int) { const ef_complex v(u); ++u; return v; }
+  inline ef_complex operator--(ef_complex& u, int) { const ef_complex v(u); --u; return v; }
+
+  // Global comparison operators
+  inline bool operator==(const ef_complex& u, const ef_complex& v) { return (u.real() == v.real()) && (u.imag() == v.imag()); }
+  inline bool operator!=(const ef_complex& u, const ef_complex& v) { return (u.real() != v.real()) || (u.imag() != v.imag()); }
+
+  // Global arithmetic operators with const ef_complex& and const ef_complex&.
+  inline ef_complex operator+(const ef_complex& u, const ef_complex& v) { return ef_complex(u) += v; }
+  inline ef_complex operator-(const ef_complex& u, const ef_complex& v) { return ef_complex(u) -= v; }
+  inline ef_complex operator*(const ef_complex& u, const ef_complex& v) { return ef_complex(u) *= v; }
+  inline ef_complex operator/(const ef_complex& u, const ef_complex& v) { return ef_complex(u) /= v; }
+
+  // Global arithmetic operators with const ef_complex& and const e_float&.
+  inline ef_complex operator+(const ef_complex& u, const e_float& v) { return ef_complex(u.real() + v, u.imag()); }
+  inline ef_complex operator-(const ef_complex& u, const e_float& v) { return ef_complex(u.real() - v, u.imag()); }
+  inline ef_complex operator*(const ef_complex& u, const e_float& v) { return ef_complex(u.real() * v, u.imag() * v); }
+  inline ef_complex operator/(const ef_complex& u, const e_float& v) { return ef_complex(u.real() / v, u.imag() / v); }
+
+  // Global arithmetic operators with const e_float& and const ef_complex&.
+  inline ef_complex operator+(const e_float& u, const ef_complex& v) { return ef_complex(u + v.real(), v.imag()); }
+  inline ef_complex operator-(const e_float& u, const ef_complex& v) { return ef_complex(u - v.real(), -v.imag()); }
+  inline ef_complex operator*(const e_float& u, const ef_complex& v) { return ef_complex(u * v.real(), u * v.imag()); }
+  inline ef_complex operator/(const e_float& u, const ef_complex& v) { const e_float v_norm = v.norm(); return ef_complex((u * v.real()) / v_norm, (-u * v.imag()) / v_norm); }
+
+  // Global add/sub/mul/div of const ef_complex& with all built-in types.
+  inline ef_complex operator+(const ef_complex& z, const char n)               { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const signed char n)        { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const signed short n)       { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const signed int n)         { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const signed long n)        { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const signed long long n)   { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const unsigned char n)      { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const wchar_t n)            { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const unsigned short n)     { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const unsigned int n)       { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const unsigned long n)      { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const unsigned long long n) { return ef_complex(z.real() + n, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const float f)              { return ef_complex(z.real() + f, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const double d)             { return ef_complex(z.real() + d, z.imag()); }
+  inline ef_complex operator+(const ef_complex& z, const long double ld)       { return ef_complex(z.real() + ld, z.imag()); }
+
+  inline ef_complex operator-(const ef_complex& z, const char n)               { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const signed char n)        { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const signed short n)       { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const signed int n)         { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const signed long n)        { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const signed long long n)   { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const unsigned char n)      { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const wchar_t n)            { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const unsigned short n)     { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const unsigned int n)       { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const unsigned long n)      { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const unsigned long long n) { return ef_complex(z.real() - n, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const float f)              { return ef_complex(z.real() - f, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const double d)             { return ef_complex(z.real() - d, z.imag()); }
+  inline ef_complex operator-(const ef_complex& z, const long double ld)       { return ef_complex(z.real() - ld, z.imag()); }
+
+  inline ef_complex operator*(const ef_complex& z, const char n)               { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const signed char n)        { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const signed short n)       { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const signed int n)         { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const signed long n)        { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const signed long long n)   { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const unsigned char n)      { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const wchar_t n)            { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const unsigned short n)     { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const unsigned int n)       { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const unsigned long n)      { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const unsigned long long n) { return ef_complex(z.real() * n, z.imag() * n); }
+  inline ef_complex operator*(const ef_complex& z, const float f)              { return ef_complex(z.real() * f, z.imag() * f); }
+  inline ef_complex operator*(const ef_complex& z, const double d)             { return ef_complex(z.real() * d, z.imag() * d); }
+  inline ef_complex operator*(const ef_complex& z, const long double ld)       { return ef_complex(z.real() * ld, z.imag() * ld); }
+
+  inline ef_complex operator/(const ef_complex& z, const char n)               { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const signed char n)        { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const signed short n)       { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const signed int n)         { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const signed long n)        { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const signed long long n)   { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const unsigned char n)      { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const wchar_t n)            { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const unsigned short n)     { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const unsigned int n)       { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const unsigned long n)      { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const unsigned long long n) { return ef_complex(z.real() / n, z.imag() / n); }
+  inline ef_complex operator/(const ef_complex& z, const float f)              { return ef_complex(z.real() / f, z.imag() / f); }
+  inline ef_complex operator/(const ef_complex& z, const double d)             { return ef_complex(z.real() / d, z.imag() / d); }
+  inline ef_complex operator/(const ef_complex& z, const long double ld)       { return ef_complex(z.real() / ld, z.imag() / ld); }
+
+  // Global add/sub/mul/div of all built-in types with const ef_complex&.
+  inline ef_complex operator+(const char n, const ef_complex& v)               { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const signed char n, const ef_complex& v)        { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const signed short n, const ef_complex& v)       { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const signed int n, const ef_complex& v)         { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const signed long n, const ef_complex& v)        { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const signed long long n, const ef_complex& v)   { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const unsigned char n, const ef_complex& v)      { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const wchar_t n, const ef_complex& v)            { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const unsigned short n, const ef_complex& v)     { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const unsigned int n, const ef_complex& v)       { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const unsigned long n, const ef_complex& v)      { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const unsigned long long n, const ef_complex& v) { return ef_complex(v.real() + n, v.imag()); }
+  inline ef_complex operator+(const float f, const ef_complex& v)              { return ef_complex(v.real() + f, v.imag() + f); }
+  inline ef_complex operator+(const double d, const ef_complex& v)             { return ef_complex(v.real() + d, v.imag() + d); }
+  inline ef_complex operator+(const long double ld, const ef_complex& v)       { return ef_complex(v.real() + ld, v.imag() + ld); }
+
+  inline ef_complex operator-(const char n, const ef_complex& v)               { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const signed char n, const ef_complex& v)        { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const signed short n, const ef_complex& v)       { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const signed int n, const ef_complex& v)         { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const signed long n, const ef_complex& v)        { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const signed long long n, const ef_complex& v)   { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const unsigned char n, const ef_complex& v)      { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const wchar_t n, const ef_complex& v)            { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const unsigned short n, const ef_complex& v)     { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const unsigned int n, const ef_complex& v)       { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const unsigned long n, const ef_complex& v)      { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const unsigned long long n, const ef_complex& v) { return ef_complex(n - v.real(), -v.imag()); }
+  inline ef_complex operator-(const float f, const ef_complex& v)              { return ef_complex(f - v.real(), -v.imag()); }
+  inline ef_complex operator-(const double d, const ef_complex& v)             { return ef_complex(d - v.real(), -v.imag()); }
+  inline ef_complex operator-(const long double ld, const ef_complex& v)       { return ef_complex(ld - v.real(), -v.imag()); }
+
+  inline ef_complex operator*(const char n, const ef_complex& v)               { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const signed char n, const ef_complex& v)        { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const signed short n, const ef_complex& v)       { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const signed int n, const ef_complex& v)         { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const signed long n, const ef_complex& v)        { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const signed long long n, const ef_complex& v)   { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const unsigned char n, const ef_complex& v)      { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const wchar_t n, const ef_complex& v)            { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const unsigned short n, const ef_complex& v)     { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const unsigned int n, const ef_complex& v)       { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const unsigned long n, const ef_complex& v)      { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const unsigned long long n, const ef_complex& v) { return ef_complex(v.real() * n, v.imag() * n); }
+  inline ef_complex operator*(const float f, const ef_complex& v)              { return ef_complex(v.real() * f, v.imag() * f); }
+  inline ef_complex operator*(const double d, const ef_complex& v)             { return ef_complex(v.real() * d, v.imag() * d); }
+  inline ef_complex operator*(const long double ld, const ef_complex& v)       { return ef_complex(v.real() * ld, v.imag() * ld); }
+
+  inline ef_complex operator/(const char n, const ef_complex& v)               { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const signed char n, const ef_complex& v)        { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const signed short n, const ef_complex& v)       { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const signed int n, const ef_complex& v)         { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const signed long n, const ef_complex& v)        { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const signed long long n, const ef_complex& v)   { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const unsigned char n, const ef_complex& v)      { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const wchar_t n, const ef_complex& v)            { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const unsigned short n, const ef_complex& v)     { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const unsigned int n, const ef_complex& v)       { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const unsigned long n, const ef_complex& v)      { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const unsigned long long n, const ef_complex& v) { const e_float v_norm = v.norm(); return ef_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+  inline ef_complex operator/(const float f, const ef_complex& v)              { const e_float v_norm = v.norm(); return ef_complex((f * v.real()) / v_norm, -(f * v.imag()) / v_norm); }
+  inline ef_complex operator/(const double d, const ef_complex& v)             { const e_float v_norm = v.norm(); return ef_complex((d * v.real()) / v_norm, -(d * v.imag()) / v_norm); }
+  inline ef_complex operator/(const long double ld, const ef_complex& v)       { const e_float v_norm = v.norm(); return ef_complex((ld * v.real()) / v_norm, -(ld * v.imag()) / v_norm); }
+
+  // Global self add/sub/mul/div of ef_complex& with all built-in types.
+  inline ef_complex& operator+=(ef_complex& z, const char n)               { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const signed char n)        { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const signed short n)       { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const signed int n)         { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const signed long n)        { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const signed long long n)   { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const unsigned char n)      { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const wchar_t n)            { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const unsigned short n)     { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const unsigned int n)       { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const unsigned long n)      { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const unsigned long long n) { z.Re += n; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const float f)              { z.Re += f; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const double d)             { z.Re += d; return z; }
+  inline ef_complex& operator+=(ef_complex& z, const long double ld)       { z.Re += ld; return z; }
+
+  inline ef_complex& operator-=(ef_complex& z, const char n)               { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const signed char n)        { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const signed short n)       { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const signed int n)         { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const signed long n)        { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const signed long long n)   { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const unsigned char n)      { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const wchar_t n)            { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const unsigned short n)     { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const unsigned int n)       { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const unsigned long n)      { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const unsigned long long n) { z.Re -= n; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const float f)              { z.Re -= f; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const double d)             { z.Re -= d; return z; }
+  inline ef_complex& operator-=(ef_complex& z, const long double ld)       { z.Re -= ld; return z; }
+
+  inline ef_complex& operator*=(ef_complex& z, const char n)               { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const signed char n)        { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const signed short n)       { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const signed int n)         { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const signed long n)        { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const signed long long n)   { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const unsigned char n)      { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const wchar_t n)            { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const unsigned short n)     { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const unsigned int n)       { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const unsigned long n)      { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const unsigned long long n) { z.Re *= n; z.Im *= n; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const float f)              { z.Re *= f; z.Im *= f; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const double d)             { z.Re *= d; z.Im *= d; return z; }
+  inline ef_complex& operator*=(ef_complex& z, const long double ld)       { z.Re *= ld; z.Im *= ld; return z; }
+
+  inline ef_complex& operator/=(ef_complex& z, const char n)               { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const signed char n)        { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const signed short n)       { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const signed int n)         { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const signed long n)        { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const signed long long n)   { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const unsigned char n)      { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const wchar_t n)            { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const unsigned short n)     { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const unsigned int n)       { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const unsigned long n)      { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const unsigned long long n) { z.Re /= n; z.Im /= n; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const float f)              { z.Re /= f; z.Im /= f; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const double d)             { z.Re /= d; z.Im /= d; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const long double ld)       { z.Re /= ld; z.Im /= ld; return z; }
+
+  // Global self add/sub/mul/div of ef_complex& with const e_float&.
+  inline ef_complex& operator+=(ef_complex& z, const e_float& v) { z.Re += v;            return z; }
+  inline ef_complex& operator-=(ef_complex& z, const e_float& v) { z.Re -= v;            return z; }
+  inline ef_complex& operator*=(ef_complex& z, const e_float& v) { z.Re *= v; z.Im *= v; return z; }
+  inline ef_complex& operator/=(ef_complex& z, const e_float& v) { z.Re /= v; z.Im /= v; return z; }
 
 #endif // _E_FLOAT_COMPLEX_HPP_

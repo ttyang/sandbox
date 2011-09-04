@@ -11,18 +11,4 @@
 #ifndef _E_FLOAT_ZETA_HPP_
   #define _E_FLOAT_ZETA_HPP_
 
-  #include <boost/e_float/e_float.hpp>
-  #include <boost/e_float/e_float_complex.hpp>
-
-  namespace ef
-  {
-    e_float riemann_zeta(const INT32 n);
-    e_float riemann_zeta(const e_float& s);
-  }
-
-  namespace efz
-  {
-    ef_complex riemann_zeta(const ef_complex& s);
-  }
-
 #endif // _E_FLOAT_ZETA_HPP_

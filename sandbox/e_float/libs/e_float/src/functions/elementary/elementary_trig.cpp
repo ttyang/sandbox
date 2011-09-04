@@ -19,9 +19,7 @@
 // 
 // *****************************************************************************
 
-#include <boost/e_float/e_float.hpp>
-#include <boost/e_float/e_float_constants.hpp>
-#include <boost/e_float/e_float_elementary.hpp>
+#include <boost/e_float/e_float_functions.hpp>
 
 e_float ef::sin(const e_float& x)
 {
