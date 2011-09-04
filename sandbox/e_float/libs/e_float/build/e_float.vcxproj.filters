@@ -495,43 +495,10 @@
     <ClInclude Include="..\..\..\boost\e_float\e_float_base.hpp">
       <Filter>boost\e_float</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_complex.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_constants.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_elementary.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_elementary_complex.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_elementary_math.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_elementary_trans.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\boost\e_float\e_float_functions.hpp">
       <Filter>boost\e_float</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_gamma.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_global_math.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_integer.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_prime.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\boost\e_float\e_float_types.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_zeta.hpp">
       <Filter>boost\e_float</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\boost\e_float\e_float_efx.hpp">
@@ -541,9 +508,6 @@
       <Filter>boost\e_float</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\boost\e_float\e_float_mpfr.hpp">
-      <Filter>boost\e_float</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\boost\e_float\e_float_limits.hpp">
       <Filter>boost\e_float</Filter>
     </ClInclude>
     <ClInclude Include="..\src\functions\integer\prime_factors.h">
