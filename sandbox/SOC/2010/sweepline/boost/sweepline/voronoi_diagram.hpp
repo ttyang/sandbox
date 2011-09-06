@@ -52,15 +52,22 @@ namespace sweepline {
     class BRect {
     public:
         typedef T coordinate_type;
-        typedef detail::point_2d<coordinate_type> point_type;
+        typedef point_data<coordinate_type> point_type;
 
         BRect() {}
 
-        BRect(const point_type &p1, const point_type &p2) {
-            x_min_ = (std::min)(p1.x(), p2.x());
-            y_min_ = (std::min)(p1.y(), p2.y());
-            x_max_ = (std::max)(p1.x(), p2.x());
-            y_max_ = (std::max)(p1.y(), p2.y());
+        template <typename P>
+        BRect(const P &p) {
+            x_min_ = x_max_ = static_cast<coordinate_type>(p.x());
+            y_min_ = y_max_ = static_cast<coordinate_type>(p.y());
+        }
+
+        template <typename P>
+        BRect(const P &p1, const P &p2) {
+            x_min_ = (std::min)(static_cast<coordinate_type>(p1.x()), static_cast<coordinate_type>(p2.x()));
+            y_min_ = (std::min)(static_cast<coordinate_type>(p1.y()), static_cast<coordinate_type>(p2.y()));
+            x_max_ = (std::max)(static_cast<coordinate_type>(p1.x()), static_cast<coordinate_type>(p2.x()));
+            y_max_ = (std::max)(static_cast<coordinate_type>(p1.y()), static_cast<coordinate_type>(p2.y()));
         }
 
         BRect(coordinate_type x_mn, coordinate_type y_mn,
@@ -72,22 +79,23 @@ namespace sweepline {
         }
 
         // Extend the rectangle with a new point.
-        void update(const point_type &p) {
-            x_min_ = (std::min)(x_min_, p.x());
-            y_min_ = (std::min)(y_min_, p.y());
-            x_max_ = (std::max)(x_max_, p.x());
-            y_max_ = (std::max)(y_max_, p.y());
+        template <typename P>
+        void update(const P &p) {
+            x_min_ = (std::min)(x_min_, static_cast<coordinate_type>(p.x()));
+            y_min_ = (std::min)(y_min_, static_cast<coordinate_type>(p.y()));
+            x_max_ = (std::max)(x_max_, static_cast<coordinate_type>(p.x()));
+            y_max_ = (std::max)(y_max_, static_cast<coordinate_type>(p.y()));
         }
 
         // Check whether a point is situated inside the bounding rectangle.
         bool contains(const point_type &p) const {
-            return p.x() > x_min_ && p.x() < x_max_ &&
-                   p.y() > y_min_ && p.y() < y_max_;
+            return p.x() >= x_min_ && p.x() <= x_max_ &&
+                   p.y() >= y_min_ && p.y() <= y_max_;
         }
 
         // Check whether the bounding rectangle has a non-zero area.
-        bool is_valid() const {
-            return (x_min_ < x_max_) && (y_min_ < y_max_);
+        bool verify() const {
+            return (x_min_ <= x_max_) && (y_min_ <= y_max_);
         }
 
         // Return the x-coordinate of the bottom left point of the rectangle.
@@ -130,8 +138,7 @@ namespace sweepline {
     class voronoi_helper {
     public:
         typedef T coordinate_type;
-        typedef point_data<coordinate_type> out_point_type;
-        typedef detail::point_2d<coordinate_type> point_type;
+        typedef point_data<coordinate_type> point_type;
         typedef directed_line_segment_data<coordinate_type> segment_type;
         typedef directed_line_segment_set_data<coordinate_type> segment_set_type;
         typedef BRect<coordinate_type> brect_type;
@@ -170,7 +177,7 @@ namespace sweepline {
         // Max_error is the maximum distance (relative to the minor of two
         // rectangle sides) allowed between the parabola and line segments
         // that interpolate it.
-        static std::vector<out_point_type> get_point_interpolation(
+        static std::vector<point_type> get_point_interpolation(
                 const voronoi_edge<coordinate_type> *edge,
                 const BRect<coordinate_type> &brect,
                 double max_error) {
@@ -250,14 +257,7 @@ namespace sweepline {
                         edge_points[0] = edge->vertex0()->vertex();
                 }
             }
-            std::vector<out_point_type> ret_val;
-            for (typename std::vector<point_type>::const_iterator it = edge_points.begin();
-                 it != edge_points.end(); ++it) {
-                coordinate_type x = it->x();
-                coordinate_type y = it->y();
-                ret_val.push_back(out_point_type(x, y));
-            }
-            return ret_val;
+            return edge_points;
         }
 
         // Interpolate voronoi edge with a set of segments to satisfy maximal
@@ -266,7 +266,7 @@ namespace sweepline {
             const voronoi_edge<coordinate_type> *edge,
             const BRect<coordinate_type> &brect,
             double max_error) {
-                std::vector<out_point_type> point_interpolation = 
+                std::vector<point_type> point_interpolation = 
                     get_point_interpolcation(edge, brect, max_error);
                 segment_set_type ret_val;
                 for (size_t i = 1; i < point_interpolation.size(); ++i)
@@ -534,14 +534,14 @@ namespace sweepline {
     class voronoi_cell {
     public:
         typedef T coordinate_type;
-        typedef detail::point_2d<coordinate_type> point_type;
-        typedef detail::site_event<coordinate_type> site_event_type;
+        typedef point_data<coordinate_type> point_type;
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
 
-        voronoi_cell(const point_type &p1, const point_type &p2,
+        template <typename P>
+        voronoi_cell(const P &p1, const P &p2,
                      bool contains_segment, voronoi_edge_type *edge) :
-            point0_(p1),
-            point1_(p2),
+            point0_(static_cast<coordinate_type>(p1.x()), static_cast<coordinate_type>(p1.y())),
+            point1_(static_cast<coordinate_type>(p2.x()), static_cast<coordinate_type>(p2.y())),
             contains_segment_(contains_segment),
             incident_edge_(edge),
             num_incident_edges_(0) {}
@@ -583,11 +583,12 @@ namespace sweepline {
     class voronoi_vertex {
     public:
         typedef T coordinate_type;
-        typedef detail::point_2d<T> point_type;
+        typedef point_data<T> point_type;
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
 
-        voronoi_vertex(const point_type &vertex, voronoi_edge_type *edge) :
-            vertex_(vertex),
+        template <typename P>
+        voronoi_vertex(const P &vertex, voronoi_edge_type *edge) :
+            vertex_(static_cast<coordinate_type>(vertex.x()), static_cast<coordinate_type>(vertex.y())),
             incident_edge_(edge),
             num_incident_edges_(3) {}
 
@@ -734,7 +735,7 @@ namespace sweepline {
     class voronoi_output {
     public:
         typedef T coordinate_type;
-        typedef detail::point_2d<coordinate_type> point_type;
+        typedef point_data<coordinate_type> point_type;
 
         typedef voronoi_cell<coordinate_type> voronoi_cell_type;
         typedef std::vector<voronoi_cell_type> voronoi_cells_type;
@@ -806,7 +807,7 @@ namespace sweepline {
 
         friend class detail::voronoi_builder<int>;
 
-        void init(int num_sites) {
+        void reserve(int num_sites) {
             // Resize cell vector to avoid reallocations.
             cell_records_.reserve(num_sites);
 
@@ -819,8 +820,7 @@ namespace sweepline {
         // Update the voronoi output in case of a single point input.
         void process_single_site(const site_event_type &site) {
             // Update bounding rectangle.
-            voronoi_rect_ = BRect<coordinate_type>(site.point0(),
-                                                   site.point0());
+            voronoi_rect_ = BRect<coordinate_type>(site.point0());
 
             // Update cell records.
             cell_records_.push_back(voronoi_cell_type(site.point0(),

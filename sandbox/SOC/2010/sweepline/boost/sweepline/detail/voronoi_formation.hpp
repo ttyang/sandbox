@@ -2085,7 +2085,7 @@ namespace detail {
             site_event_iterator_ = site_events_.begin();
 
             // Init the output data structure.
-            output_.init(site_events_.size());
+            output_.reserve(site_events_.size());
         }
 
         void clear() {
