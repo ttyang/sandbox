@@ -57,7 +57,7 @@ public:
         in_stream.flush();
 
         // Build voronoi diagram.
-        build_voronoi<int>(point_sites, segment_sites, voronoi_output_);
+        construct_voronoi<int>(point_sites, segment_sites, voronoi_output_);
         brect_ = voronoi_helper<coordinate_type>::get_view_rectangle(
             voronoi_output_.bounding_rectangle());
 

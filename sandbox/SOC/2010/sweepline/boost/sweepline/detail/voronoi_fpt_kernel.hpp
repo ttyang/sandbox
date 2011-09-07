@@ -27,13 +27,13 @@ namespace detail {
     // sign-magnitude integers. Values are considered to be almost equal if
     // their integer reinterpretatoins differ in not more than maxUlps units.
     template <typename T>
-    static bool almost_equal(T a, T b, unsigned int ulps) {
+    bool almost_equal(T a, T b, unsigned int ulps) {
         if (a < b) return static_cast<unsigned int>(b - a) <= ulps;
         return static_cast<unsigned int>(a - b) <= ulps;
     }
 
     template<>
-    static bool almost_equal<float>(float a, float b, unsigned int maxUlps) {
+    bool almost_equal<float>(float a, float b, unsigned int maxUlps) {
 	    unsigned int ll_a, ll_b;
 
         // Reinterpret double bits as 32-bit signed integer.
@@ -51,7 +51,7 @@ namespace detail {
     }
 
     template<>
-    static bool almost_equal<double>(double a, double b, unsigned int maxUlps) {
+    bool almost_equal<double>(double a, double b, unsigned int maxUlps) {
         unsigned long long ll_a, ll_b;
 
         // Reinterpret double bits as 64-bit signed integer.
@@ -76,17 +76,17 @@ namespace detail {
     }
 
     template <typename T>
-    static double get_d(const T& value) {
+    double get_d(const T& value) {
         return value.get_d();
     }
 
     template <>
-    static double get_d(const float& value) {
+    double get_d(const float& value) {
         return value;
     }
 
     template <>
-    static double get_d(const double& value) {
+    double get_d(const double& value) {
         return value;
     }
 
