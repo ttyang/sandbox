@@ -59,7 +59,7 @@ e_float ef::bernoulli(const UINT32 n)
       const e_float factor = ((ef::factorial(n) / ef::pown(ef::two_pi(), static_cast<INT64>(n))) * static_cast<INT32>(2));
       const e_float bn     = sum * factor;
 
-      return !b_neg ? bn : -bn;
+      return ((!b_neg) ? bn : -bn);
     }
   }
 }
@@ -67,47 +67,50 @@ e_float ef::bernoulli(const UINT32 n)
 void ef::bernoulli_table(std::vector<e_float>& bn, const UINT32 n)
 {
   // See reference "Computing Bernoulli and Tangent Numbers", Richard P. Brent.
-  // See also the book Richard P. Brent and Paul Zimmermann, "Modern Computer Arithmetic",
+  // Also see "Modern Computer Arithmetic", Richard P. Brent and Paul Zimmermann,
   // Cambridge University Press, 2010, 237 pp.
 
   const UINT32 nn = (((n % static_cast<UINT32>(2)) != static_cast<UINT32>(0u)) ? static_cast<UINT32>(n + 1u) : n);
 
-  const INT32 m = nn / 2;
+  const INT32 m = static_cast<INT32>(nn / static_cast<UINT32>(2u));
 
   std::vector<e_float> tangent_numbers(static_cast<std::vector<e_float>::size_type>(m + 1));
 
   tangent_numbers[0u] = ef::zero();
   tangent_numbers[1u] = ef::one();
 
-  for(INT32 k = 2; k <= m; k++)
+  for(INT32 k = static_cast<INT32>(2); k <= m; k++)
   {
-    tangent_numbers[k] = (k - 1) * tangent_numbers[k - 1];
+    tangent_numbers[k] = tangent_numbers[k - 1] * static_cast<INT32>(k - static_cast<INT32>(1));
   }
 
-  for(INT32 k = 2; k <= m; k++)
+  for(INT32 k = static_cast<INT32>(2); k <= m; k++)
   {
     for(INT32 j = k; j <= m; j++)
     {
-      tangent_numbers[j] = (tangent_numbers[j - 1] * (j - k)) + (tangent_numbers[j] * (j - k + 2));
+      const INT32 j_minus_k = static_cast<INT32>(j - k);
+
+      tangent_numbers[j] =   (tangent_numbers[j - 1] * j_minus_k)
+                           + (tangent_numbers[j] * static_cast<INT32>(j_minus_k + static_cast<INT32>(2)));
     }
   }
 
   e_float two_pow_two_m(4);
 
   bn.clear();
-  bn.resize(static_cast<std::vector<e_float>::size_type>(nn + 1));
+  bn.resize(static_cast<std::vector<e_float>::size_type>(nn + static_cast<UINT32>(1u)));
 
-  for(INT32 i = 1; i < static_cast<INT32>(tangent_numbers.size()); i++)
+  for(INT32 i = static_cast<INT32>(1); i < static_cast<INT32>(tangent_numbers.size()); i++)
   {
     const INT32 two_i = static_cast<INT32>(static_cast<INT32>(2) * i);
 
-    const e_float b = (tangent_numbers[i] * two_i) / (two_pow_two_m * (two_pow_two_m - 1));
+    const e_float b = (tangent_numbers[i] * two_i) / ((two_pow_two_m * two_pow_two_m) - two_pow_two_m);
 
     const bool  b_neg = (static_cast<INT32>(two_i % static_cast<INT32>(4)) == static_cast<INT32>(0));
 
     bn[2 * i] = ((!b_neg) ? b : -b);
 
-    two_pow_two_m *= 4;
+    two_pow_two_m *= static_cast<INT32>(4);
   }
 
   bn[0u] =  ef::one();
