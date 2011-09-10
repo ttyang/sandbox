@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>call_visitors</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="simple_edge_writer.html" title="simple_edge_writer&lt;VertexPropertyMap, OutputStream, CharT, Filter&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="simple_edge_writer.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.call_visitors"></a><a class="link" href="call_visitors.html" title="call_visitors"><code class="computeroutput"><span class="identifier">call_visitors</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.call_visitors.synopsis"></a><a class="link" href="call_visitors.html#index.call_visitors.synopsis" title="Synopsis">Synopsis</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span>
+    <span class="keyword">typename</span> <span class="identifier">Filter</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">VisitorList</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T</span>
+  <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">InputGraph</span>
+<span class="special">&gt;</span>
+<span class="keyword">void</span>
+    <span class="identifier">call_visitors</span><span class="special">(</span>
+        <span class="identifier">VisitorList</span><span class="special">&amp;</span> <span class="identifier">visitors</span>
+      <span class="special">,</span> <span class="identifier">T</span> <span class="identifier">t</span>
+      <span class="special">,</span> <span class="identifier">InputGraph</span><span class="special">&amp;</span> <span class="identifier">input_graph</span>
+    <span class="special">);</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.call_visitors.description"></a><a class="link" href="call_visitors.html#index.call_visitors.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        This function will invoke the function call operator of each element in the
+        specified visitor list whose event filter type matches the one specified.
+      </p>
+<p>
+        This function enables <a href="http://www.boost.org/libs/graph/doc/index.html" target="_top">BGL</a>
+        algorithms such as <a class="link" href="loop_erased_random_tree.html" title="loop_erased_random_tree and loop_erased_random_weighted_tree"><code class="computeroutput"><span class="identifier">loop_erased_random_tree</span><span class="special">()</span></code></a>
+        to decouple visitor event points from algorithm-specific class definitions
+        while offering user code the ability to take advantage of a simpler programming
+        interface via <a href="http://www.boost.org/libs/fusion/doc/html/" target="_top">Boost.Fusion</a>
+        containers. It still supports the <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event Visitor List</strong></span></a> interface as an alternative.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.call_visitors.definition"></a><a class="link" href="call_visitors.html#index.call_visitors.definition" title="Where defined">Where defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/call_visitors.hpp" target="_top">boost/graph/call_visitors.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.call_visitors.type_requirements"></a><a class="link" href="call_visitors.html#index.call_visitors.type_requirements" title="Type Requirements">Type Requirements</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">Filter</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">explicitly</span> <span class="identifier">passed</span> <span class="identifier">in</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="keyword">template</span> <span class="identifier">parameter</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">VisitorList</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">either</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html" target="_top"><span class="bold"><strong>Fusion Forward Sequence</strong></span></a> <span class="identifier">concept</span> <span class="keyword">or</span>
+  <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event Visitor List</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="error">`</span><span class="identifier">VisitorList</span><span class="error">`</span> <span class="identifier">models</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html" target="_top"><span class="bold"><strong>Fusion Forward Sequence</strong></span></a> <span class="identifier">concept</span><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span>
+  <span class="identifier">second</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="identifier">each</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top">half-runtime pair</a> <span class="identifier">in</span> <span class="error">`</span><span class="identifier">VisitorList</span><span class="error">`</span> <span class="identifier">whose</span> <span class="identifier">first</span> <span class="identifier">type</span>
+  <span class="identifier">matches</span> <span class="error">`</span><span class="identifier">Filter</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/BinaryFunction.html" target="_top"><span class="bold"><strong>Binary Function</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>  <span class="identifier">Furthermore</span><span class="special">,</span>
+  <span class="identifier">the</span> <span class="identifier">function</span> <span class="identifier">call</span> <span class="keyword">operator</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">second</span> <span class="identifier">type</span> <span class="identifier">must</span> <span class="identifier">accept</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span>
+  <span class="identifier">first</span> <span class="identifier">argument</span> <span class="identifier">type</span> <span class="keyword">and</span> <span class="identifier">a</span> <span class="identifier">reference</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">second</span>
+  <span class="identifier">argument</span> <span class="identifier">type</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.call_visitors.parameters"></a><a class="link" href="call_visitors.html#index.call_visitors.parameters" title="Parameters">Parameters</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Parameter
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+<th>
+                <p>
+                  Runtime requirements
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">visitors</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The visitor list to be filtered for event point invocation.
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">t</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The object to be passed in as the first argument to the function
+                  call of each visitor whose event filter type matches <code class="computeroutput"><span class="identifier">Filter</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  The input graph must also contain the specified object.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">input_graph</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The object to be passed in as the second argument to the function
+                  call of each visitor whose event filter type matches <code class="computeroutput"><span class="identifier">Filter</span></code>.
+                </p>
+              </td>
+<td>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="simple_edge_writer.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a>
+</div>
+</body>
+</html>

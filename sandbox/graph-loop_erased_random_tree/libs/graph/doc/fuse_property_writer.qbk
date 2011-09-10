@@ -1,0 +1,29 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:fuse_property_writer `fuse_property_writer`]
+
+[section Synopsis]
+[reference__fuse_property_writer]
+[endsect]
+
+[section Description]
+Requires the `Filter` type to be explicitly passed in as a template
+parameter.  Creates and returns a __fusion_pair__ that matches the
+filter type with a __property_writer__ object that will be
+invoked when the algorithm reaches the appropriate event point.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_fuse_property_writer_hpp__>
+``
+[endsect]
+
+[endsect] [/ fuse_property_writer]
+

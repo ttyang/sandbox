@@ -1,0 +1,577 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:loop_erased_random_tree
+`loop_erased_random_tree` and `loop_erased_random_weighted_tree`]
+
+[section Prototypes]
+
+[section:loop_erased_random_tree `loop_erased_random_tree`]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+[reference__loop_erased_random_tree__prototype_old]
+
+The function prototype that explicitly takes in all parameters is defined if
+the `BOOST_GRAPH_LOOP_ERASED_RANDOM_TREE_TAKES_ALL_PARAMS` preprocessor token
+is defined--that is, if you set `BOOST_PARAMETER_MAX_ARITY` to 8 or higher.
+
+``
+namespace boost {
+
+    template <
+        typename InputGraph
+      , typename RNGEngine
+      , typename PredecessorMap
+      , typename VertexColorMap
+      , typename Visitor
+      , typename TerminatePredicate
+    >
+    bool
+        loop_erased_random_tree(
+            InputGraph const& input_graph
+          , RNGEngine& rng_engine
+          , PredecessorMap predecessor_map
+          , typename graph_traits<Graph>::vertex_descriptor root_vertex
+          , typename graph_traits<Graph>::vertex_descriptor source_vertex
+          , VertexColorMap color_map
+          , Visitor visitor
+          , TerminatePredicate terminate_predicate
+        );
+}  // namespace boost
+``
+
+Otherwise, the following function prototype is defined if the
+`BOOST_GRAPH_LOOP_ERASED_RANDOM_TREE_TAKES_5_PARAMS` preprocessor token is
+defined--that is, if you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower than its
+default value of 5.
+
+``
+namespace boost {
+
+    template <
+        typename InputGraph
+      , typename RNGEngine
+      , typename PredecessorMap
+    >
+    bool
+        loop_erased_random_tree(
+            InputGraph const& input_graph
+          , RNGEngine& rng_engine
+          , PredecessorMap predecessor_map
+          , typename graph_traits<Graph>::vertex_descriptor root_vertex
+          , typename graph_traits<Graph>::vertex_descriptor source_vertex
+        );
+}  // namespace boost
+``
+
+If you need to pass in any additional arguments, then either you must set
+`BOOST_PARAMETER_MAX_ARITY` to 8 or higher, or you must use the first prototype
+instead.
+[endsect] [/ loop_erased_random_tree]
+
+[section:loop_erased_random_weighted_tree `loop_erased_random_weighted_tree`]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+[reference__loop_erased_random_weighted_tree__prototype_old]
+
+The function prototype that explicitly takes in all parameters is defined if
+the `BOOST_GRAPH_LOOP_ERASED_RANDOM_WEIGHTED_TREE_TAKES_ALL_PARAMS`
+preprocessor token is defined--that is, if you set `BOOST_PARAMETER_MAX_ARITY`
+to 11 or higher.
+
+``
+namespace boost {
+
+    template <
+        typename InputGraph
+      , typename RNGEngine
+      , typename PredecessorMap
+      , typename EdgeWeightMap
+      , typename VertexColorMap
+      , typename Visitor
+      , typename DistanceCompare
+      , typename DistanceCombine
+      , typename TerminatePredicate
+    >
+    bool
+        loop_erased_random_weighted_tree(
+            InputGraph const& input_graph
+          , RNGEngine& rng_engine
+          , PredecessorMap predecessor_map
+          , typename graph_traits<Graph>::vertex_descriptor root_vertex
+          , typename graph_traits<Graph>::vertex_descriptor source_vertex
+          , EdgeWeightMap weight_map
+          , VertexColorMap color_map
+          , Visitor visitor
+          , DistanceCompare distance_compare
+          , DistanceCombine distance_combine
+          , TerminatePredicate terminate_predicate
+        );
+}  // namespace boost
+``
+
+Otherwise, the following function prototype is defined if the
+`BOOST_GRAPH_LOOP_ERASED_RANDOM_WEIGHTED_TREE_TAKES_5_PARAMS` preprocessor
+token is defined--that is, if you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower
+than its default value of 5.
+
+``
+namespace boost {
+
+    template <
+        typename InputGraph
+      , typename RNGEngine
+      , typename PredecessorMap
+    >
+    bool
+        loop_erased_random_weighted_tree(
+            InputGraph const& input_graph
+          , RNGEngine& rng_engine
+          , PredecessorMap predecessor_map
+          , typename graph_traits<Graph>::vertex_descriptor root_vertex
+          , typename graph_traits<Graph>::vertex_descriptor source_vertex
+        );
+}  // namespace boost
+``
+
+If you need to pass in any additional arguments, then either you must set
+`BOOST_PARAMETER_MAX_ARITY` to 11 or higher, or you must use the first
+protype instead.
+[endsect] [/ loop_erased_random_weighted_tree]
+
+[endsect] [/ Prototypes]
+
+[section Description]
+These functions implement both the __RandomTree__ and __RandomTreeWithRoot__
+algorithms by __James_Gary_Propp__ and __David_Bruce_Wilson__, located at
+__algorithm_link__.  The `loop_erased_random_tree` function assumes the input
+graph to be unweighted, while the `loop_erased_random_weighted_tree` function
+will use either the specified weight map or the input graph's internal
+__weight_map__ property to compute the probability of an edge being chosen as a
+successor.  The predecessor map will hold the output.
+
+If neither vertex is specified, then the function invoked will use the
+`RandomTree()` algorithm.  The function will return `true` unless it detects
+more than one dead-end vertex (one with out-degree zero), in which case it will
+return `false`.
+
+If both vertices are specified, then the function invoked will search for a
+random path from the source vertex to the root vertex.  Essentially, it will
+run only one iteration of the __RandomTreeWithRoot__ algorithm.  The function
+will return `true` immediately upon success, `false` as soon as it detects a
+dead-end vertex that is not the root vertex.
+
+If only the root vertex is specified, then the function invoked will use the
+__RandomTreeWithRoot__ algorithm.  The function will return `true` unless it
+detects a dead-end vertex that is not the root vertex, in which case it will
+return `false` after visiting every vertex (indicating that the output is
+actually a forest).
+
+In each of the previous cases, the predecessor map is actually a successor map,
+i.e. for each edge `e` in the graph that is part of the output:
+
+``
+    predecessor_map[source(e, g)] == target(e, g)
+``
+
+If only the source vertex is specified, then the function will use the
+__RandomTreeWithRoot__ algorithm as before, except that the predecessor map
+will follow the usual convention:
+
+``
+    predecessor_map[target(e, g)] == source(e, g)
+``
+
+We recommend that the `InputGraph` type model the __Bidirectional_Graph__
+concept so that this usage runs efficiently.
+
+[section:random_tree_with_root `RandomTreeWithRoot()` Outline]
+This algorithm attempts to build random paths from every other vertex to the
+root vertex (or from the source vertex to every other vertex).  The visitor
+event points for this algorithm are indicated by the labels on the right.
+
+``
+for each vertex v in V[G]                               initialize_vertex(v)
+    color[v] := WHITE
+    p[v] := v
+end for                                                 start_vertex(root)
+                                                        discover_vertex(root)
+color[root] := BLACK
+for each vertex v in V[G]
+    while (color[v] != BLACK)
+        if (color[v] = WHITE)                           discover_vertex(v)
+            ...
+        color[v] := GRAY                                examine_vertex(v)
+        Let edge e := RandomEdge(v)                     examine_edge(e)
+        Let vertex u := e.opposite
+        if (color[u] = GRAY)                            back_edge(e)
+            for each vertex w in loop from p[u] to u
+                color[w] := RED
+                p[w] := w                               loop_erased_vertex(w)
+            end for
+        else                                            tree_edge(e)
+            p[v] := u
+        v := u
+    end while
+    Reset v
+    while (color[v] != BLACK)
+        color[v] := BLACK                               finish_vertex(v)
+        v := p[v]
+    end while
+end for                                                 finish_vertex(root)
+``
+[endsect]
+
+[section:random_tree `RandomTree()` Outline]
+This algorithm repeatedly attempts to pick random vertices as roots until it
+picks only one vertex to be the root.  The visitor event points for this
+algorithm are indicated by the labels on the right.
+
+``
+for each vertex v in V[G]                                 initialize_vertex(v)
+    color[v] := WHITE
+    p[v] := v
+end for
+success := FALSE
+epsilon := 0.5
+while success != TRUE
+    Let root_count := 0;
+    for each vertex v in V[G]
+        while (color[v] != BLACK)
+            if (color[v] = WHITE)                         discover_vertex(v)
+                ...
+            color[v] := GRAY                              examine_vertex(v)
+            if (Chance() < epsilon)
+                root_count := root_count + 1
+                break while
+            Let edge e := RandomEdge(v)                   examine_edge(e)
+            Let vertex u := e.opposite
+            if (color[u] = GRAY)                          back_edge(e)
+                for each vertex w in loop from p[u] to u
+                    color[w] := RED
+                    p[w] := w                             loop_erased_vertex(w)
+                end for
+            else                                          tree_edge(e)
+                p[v] := u
+            v := u
+        end while
+        Reset v
+        while (color[v] != BLACK)
+            color[v] := BLACK                             finish_vertex(v)
+            v := p[v]
+        end while
+    end for
+    if (root_count > 1)
+        epsilon := epsilon / 2
+    else
+        success := TRUE
+end while
+``
+[endsect]
+
+[endsect] [/ Description]
+
+[section:definition Where Defined]
+The __boost_graph_loop_erased_random_tree_hpp__ header file defines the
+`loop_erased_random_tree` function, while the
+__boost_graph_loop_erased_random_weighted_tree_hpp__ header file defines the
+`loop_erased_random_weighted_tree` function.
+[endsect]
+
+[section Type Requirements]
+
+  * `InputGraph` must model the __Incidence_Graph__, __Vertex_List_Graph__, and
+    (if `weight_map` is used but unspecified) __Property_Graph__ concepts.
+  * `RNGEngine` must model the __Uniform_Random_Number_Generator__ concept.
+  * `PredecessorMap` must model the __Read_Write_Property_Map__ concept.
+  * The __vertex_descriptor_type__ of `InputGraph` must be usable as both the
+    key type and the value type of `PredecessorMap`.
+  * `EdgeWeightMap` must model the __Readable_Property_Map__ concept.
+  * The __edge_descriptor_type__ of `InputGraph` must be usable as the key
+    type of `EdgeWeightMap`.
+  * `VertexColorMap` must model the __Read_Write_Property_Map__ concept.
+  * The __vertex_descriptor_type__ of `InputGraph` must be usable as the key
+    type of `VertexColorMap`.
+  * The value type of `VertexColorMap` must model the __Color_Value__ concept.
+  * `Visitor` must model either the __Fusion_Forward_Sequence__ concept or
+    the __Event_Visitor_List__ concept.
+  * If `Visitor` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `Visitor` whose first type is
+    `on_initialize_vertex`, `on_start_vertex`, `on_discover_vertex`,
+    `on_examine_vertex`, `on_loop_erased_vertex`, or `on_finish_vertex` must
+    model the __Binary_Function__ concept.  Furthermore, the function call
+    operator of the second type must accept the __vertex_descriptor_type__ of
+    `InputGraph` as a valid first argument type and a reference to
+    `InputGraph const` as a valid second argument type.
+  * If `Visitor` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `Visitor` whose first type is
+    `on_examine_edge`, `on_tree_edge`, or `on_back_edge` must model the
+    __Binary_Function__ concept.  Furthermore, the function call operator of
+    the second type must accept the __edge_descriptor_type__ of `InputGraph`
+    as a valid first argument type and a reference to `InputGraph const` as a
+    valid second argument type.
+  * If `Visitor` models the __Event_Visitor_List__ concept, then the
+    __Event_Visitor__ element type whose event filter type is
+    `on_initialize_vertex`, `on_start_vertex`, `on_discover_vertex`,
+    `on_examine_vertex`, `on_loop_erased_vertex`, or `on_finish_vertex`--if one
+    exists--must accept the __vertex_descriptor_type__ of `InputGraph` as a
+    valid first argument type to its apply member function.
+  * If `Visitor` models the __Event_Visitor_List__ concept, then the
+    __Event_Visitor__ element type whose event filter type is
+    `on_examine_edge`, `on_tree_edge`, or `on_back`--if one exists--must accept
+    the __edge_descriptor_type__ of `InputGraph` as a valid first argument type
+    to its apply member function.
+  * `DistanceCompare` must model the __Strict_Weak_Ordering__ concept.
+  * The function call operator of `DistanceCompare` must accept the value type
+    of `EdgeWeightMap` as both a valid first argument type and a valid second
+    argument type.
+  * `DistanceCombine` must model the __Binary_Function__ concept.
+  * The function call operator of `DistanceCombine` must accept the value type
+    of `EdgeWeightMap` as both a valid first argument type and a valid second
+    argument type.  Its result type must be convertible to the value type of
+    `EdgeWeightMap`.
+  * `TerminatePredicate` must model the __Binary_Predicate__ concept.
+  * The function call operator of `TerminatePredicate` must accept the
+    __vertex_descriptor_type__ of `InputGraph` as a valid first argument type
+    and a reference to `InputGraph const` as a valid second argument type.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`input_graph`]
+        [The input graph.]
+        [
+            If both `root_vertex` and `source_vertex` are specified, then
+            `is_connected(source_vertex, root_vertex, input_graph)` must return
+            `true`.  Otherwise, the entire input graph must be at least weakly
+            connected.  (This funciton may run infinitely otherwise.)
+        ]
+        [None; always required.]
+    ]
+    [
+        [`rng_engine`]
+        [
+            The number generator that the function invoked to find a random
+            successor or predecessor.  If neither `root_vertex` nor
+            `source_vertex` are specified, then the function will also use the
+            number generator to execute its `Chance()` implementation.  See
+            both the __RandomTree__ and __RandomTreeWithRoot__ outlines.
+        ]
+        []
+        [None; always required.]
+    ]
+    [
+        [`predecessor_map`]
+        [
+            The predecessor map.  It records the edges in the tree that the
+            function invoked computes.  If `source_vertex` is specified but
+            `root_vertex` is not, then the edges `(predecessor_map[u], u)` for
+            each vertex `u` in `input_graph` are in the tree; otherwise, the
+            edges `(u, predecessor_map[u])` for each vertex `u` in
+            `input_graph` are in the tree.  If `predecessor_map[u] == u`, then
+            `u` is either a root vertex, a dead-end vertex, or an unvisited
+            vertex.
+        ]
+        []
+        [None; always required.]
+    ]
+    [
+        [`root_vertex`]
+        [The root vertex.]
+        [
+            If this parameter is specified, then the argument must be a valid
+            dereferenced value for some __vertex_iterator__ in the range
+            returned by [^_vertices_(input_graph)].
+        ]
+        [[^_graph_traits_<InputGraph>::null_vertex()]]
+    ]
+    [
+        [`source_vertex`]
+        [The source vertex.]
+        [
+            If this parameter is specified, then the argument must be a valid
+            dereferenced value for some __vertex_iterator__ in the range
+            returned by [^_vertices_(input_graph)].
+        ]
+        [[^_graph_traits_<InputGraph>::null_vertex()]]
+    ]
+    [
+        [`weight_map`]
+        [
+            The weight map.  Recognized and used only by the
+            `loop_erased_random_weighted_tree` function.  Does not need to be
+            stochastic by default: in other words, the weights of the
+            successor edges of a vertex need not add up to one.
+        ]
+        [All values must be non-negative.]
+        [[^_get_map_(_weight_map_, input_graph)]]
+    ]
+    [
+        [`color_map`]
+        [
+            Used by the function invoked to keep track of its progress through
+            the input graph.  `WHITE` vertices are undiscovered.  `RED`
+            vertices have been loop-erased.  `GRAY` vertices are part of the
+            current search for a `BLACK` vertex.  As soon at the search
+            succeeds, these vertices will also become `BLACK`.
+        ]
+        []
+        [[^_make_vertex_property_map_(input_graph, white_color)]]
+    ]
+    [
+        [`visitor`]
+        [
+            A heterogeneous container of event visitors.  See the
+            __RandomTree__ and __RandomTreeWithRoot__ outlines for an
+            explanation of the event points and when they are triggered.
+        ]
+        []
+        [`null_visitor()`]
+    ]
+    [
+        [`distance_compare`]
+        [
+            A function object that compares probabilities based on edge
+            weights.  Recognized and used only by the
+            `loop_erased_random_weighted_tree` function, for efficient
+            searching through successor edges.
+        ]
+        []
+        [[^_std_less_<_property_traits_<EdgeWeightMap>::value_type>()]]
+    ]
+    [
+        [`distance_combine`]
+        [
+            A function object that assists in the computation of probabilities
+            based on edge weights by combining them with each other or with the
+            results of other such computations.  Recognized and used only by
+            the `loop_erased_random_weighted_tree` function.
+        ]
+        []
+        [[^_std_plus_<_property_traits_<EdgeWeightMap>::value_type>()]]
+    ]
+    [
+        [`terminate_predicate`]
+        [
+            A function object that stops the function invoked from discovering
+            a vertex if passing it to the predicate causes the predicate to
+            return `true`.
+        ]
+        []
+        [A __Binary_Predicate__ object that always returns `false`.]
+    ]
+]
+[endsect] [/ Parameters]
+
+[section:tree_example `loop_erased_random_tree` Example]
+The following routine displays the output of several random spanning trees
+without a specified root vertex.
+
+[loop_erased_random_tree_example]
+
+The following routine displays the output of several random spanning trees with
+the specified root vertex.
+
+[loop_erased_random_tree_with_target_example]
+
+The following routine displays the output of several random spanning trees with
+the source vertex passed in by __named_parameter__.  The
+`loop_erased_random_tree` function recognizes its __parameters__ this way by
+prepending the name of each parameter with a single underscore.  The __BGL__
+defines all such __Boost_Parameter__ objects in the `boost::graph::keywords`
+namespace.
+
+[loop_erased_random_tree_with_source_example]
+
+The following routine displays several random paths from the start vertex to
+the end vertex.
+
+[loop_erased_random_path_example]
+
+Code that assembles an __Event_Visitor_List__ object composed of many event
+visitors can become tedious to write or maintain.  (Aside: note the use of
+the `BOOST_GRAPH_LOOP_ERASED_RANDOM_TREE_TAKES_ALL_PARAMS` preprocessor token
+to separate __Boost_Parameter__-style invocation from the use of
+__old_style_named_parameters__.)
+
+[loop_erased_random_tree_example_with_visitor_list]
+
+The __fusion_make_list__ and __fusion_make_pair__ functions allow user code to
+associate the appropriate event filter types with their visitor objects in a
+manner that is much more straightforward.  (For writing vertex property values
+and edge connections to an output stream, the __fuse_property_writer__ and
+__fuse_simple_edge_writer__ functions provide added convenience.)
+
+[loop_erased_random_tree_example_with_fusion_visitor_list]
+
+The complete example program can be compiled from these files:
+
+  * __example_loop_erased_random_tree_hpp__
+  * __example_loop_erased_random_tree_cpp__
+
+Note that this program will not compile if `BOOST_PARAMETER_MAX_ARITY` is set
+lower than its default value of 5.
+[endsect] [/ loop_erased_random_tree Example]
+
+[section:weighted_tree_example `loop_erased_random_weighted_tree` Example]
+The following routine displays the output of several random spanning trees
+without a specified root vertex.
+
+[loop_erased_random_weighted_tree_example]
+
+The following routine displays the output of several random spanning trees with
+the specified root vertex.
+
+[loop_erased_random_weighted_tree_with_target_example]
+
+The following routine displays the output of several random spanning trees with
+the source vertex passed in by __named_parameter__.  The
+`loop_erased_random_weighted_tree` function recognizes its __parameters__ this
+way by prepending the name of each parameter with a single underscore.  The
+__BGL__ defines all such __Boost_Parameter__ objects in the
+`boost::graph::keywords` namespace.
+
+[loop_erased_random_weighted_tree_with_source_example]
+
+The following routine displays several random paths from the start vertex to
+the end vertex.
+
+[loop_erased_random_weighted_path_example]
+
+Code that assembles an __Event_Visitor_List__ object composed of many event
+visitors can become tedious to write or maintain.  (Aside: note the use of the
+`BOOST_GRAPH_LOOP_ERASED_RANDOM_WEIGHTED_TREE_TAKES_ALL_PARAMS` preprocessor
+token to separate __Boost_Parameter__-style invocation from the use of
+__old_style_named_parameters__.)
+
+[loop_erased_random_weighted_tree_example_with_visitor_list]
+
+The __fusion_make_list__ and __fusion_make_pair__ functions allow user code to
+associate the appropriate event filter types with their visitor objects in a
+manner that is much more straightforward.  (For writing vertex property values
+and edge connections to an output stream, the __fuse_property_writer__ and
+__fuse_simple_edge_writer__ functions provide added convenience.)
+
+[loop_erased_random_weighted_tree_example_with_fusion_visitor_list]
+
+The complete example program can be compiled from these files:
+
+  * __example_loop_erased_random_weighted_tree_hpp__
+  * __example_loop_erased_random_weighted_tree_cpp__
+
+Note that this program will not compile if `BOOST_PARAMETER_MAX_ARITY` is set
+lower than its default value of 5.
+[endsect] [/ loop_erased_random_weighted_tree Example]
+
+[endsect] [/ loop_erased_random_tree and loop_erased_random_weighted_tree]
+

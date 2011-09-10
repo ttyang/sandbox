@@ -1,0 +1,433 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>vertex_property_map_gen&lt;Graph, Value&gt;</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="loop_erased_random_tree.html" title="loop_erased_random_tree and loop_erased_random_weighted_tree">
+<link rel="next" href="fuse_property_writer.html" title="fuse_property_writer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="loop_erased_random_tree.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="fuse_property_writer.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.vertex_property_map_gen"></a><a class="link" href="vertex_property_map_gen.html" title="vertex_property_map_gen&lt;Graph, Value&gt;"><code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">,</span>
+    <span class="identifier">Value</span><span class="special">&gt;</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.vertex_property_map_gen.synopsis"></a><a class="link" href="vertex_property_map_gen.html#index.vertex_property_map_gen.synopsis" title="Synopsis">Synopsis</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Value</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">vertex_property_map_gen</span>
+    <span class="special">{</span>
+
+     <span class="keyword">public</span><span class="special">:</span>
+        <span class="keyword">typedef</span> <span class="comment">// implementation_defined
+</span>                <span class="identifier">type</span><span class="special">;</span>
+    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.vertex_property_map_gen.description"></a><a class="link" href="vertex_property_map_gen.html#index.vertex_property_map_gen.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        This metafunction returns a type that models the <a href="http://www.boost.org/libs/property_map/doc/LvaluePropertyMap.html" target="_top"><span class="bold"><strong>Lvalue Property Map</strong></span></a> concept. If the <code class="computeroutput"><span class="identifier">Graph</span></code> type models the <a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top"><span class="bold"><strong>Vertex List Graph</strong></span></a> concept and possesses an
+        internal <a href="http://www.boost.org/libs/graph/doc/PropertyTag.html" target="_top"><code class="computeroutput"><span class="identifier">vertex_index</span></code></a> property map whose
+        value type is an integer type, then the return type will wrap an <a href="http://www.boost.org/libs/property_map/doc/iterator_property_map.html" target="_top"><code class="computeroutput"><span class="identifier">iterator_property_map</span></code></a> around a
+        <a href="http://www.sgi.com/tech/stl/Deque.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">deque</span></code></a>
+        of <code class="computeroutput"><span class="identifier">Value</span></code> elements; otherwise,
+        the return type will wrap an <a href="http://www.boost.org/libs/property_map/doc/associative_property_map.html" target="_top"><code class="computeroutput"><span class="identifier">associative_property_map</span></code></a> around
+        a <a href="http://www.sgi.com/tech/stl/Map.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span></code></a>
+        that associates vertices with <code class="computeroutput"><span class="identifier">Value</span></code>
+        objects. This latter quality frees <a href="http://www.boost.org/libs/graph/doc/index.html" target="_top">BGL</a>
+        algorithms such as <a class="link" href="loop_erased_random_tree.html" title="loop_erased_random_tree and loop_erased_random_weighted_tree"><code class="computeroutput"><span class="identifier">loop_erased_random_tree</span><span class="special">()</span></code></a>
+        from requiring a <a href="http://www.boost.org/libs/graph/doc/PropertyTag.html" target="_top"><code class="computeroutput"><span class="identifier">vertex_index</span></code></a> property map (either
+        as an input argument or stored internally by the input graph) if some other
+        utility property map is not specified.
+      </p>
+<p>
+        Also, unlike <a href="http://www.boost.org/libs/property_map/doc/iterator_property_map.html" target="_top"><code class="computeroutput"><span class="identifier">iterator_property_map</span></code></a> and <a href="http://www.boost.org/libs/property_map/doc/associative_property_map.html" target="_top"><code class="computeroutput"><span class="identifier">associative_property_map</span></code></a> instances,
+        a <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span></code>
+        object can stand alone in a persistent setting, e.g.:
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">;</span>
+    <span class="keyword">typename</span> <span class="identifier">vertex_property_map_gen</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">,</span><span class="identifier">default_color_type</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">color_map</span><span class="special">;</span>
+
+    <span class="comment">// Do something with color_map.
+</span><span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.vertex_property_map_gen.definition"></a><a class="link" href="vertex_property_map_gen.html#index.vertex_property_map_gen.definition" title="Where defined">Where defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/vertex_property_map_gen.hpp" target="_top">boost/graph/vertex_property_map_gen.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.vertex_property_map_gen.model_of"></a><a class="link" href="vertex_property_map_gen.html#index.vertex_property_map_gen.model_of" title="Model of">Model of</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="http://www.boost.org/libs/property_map/doc/LvaluePropertyMap.html" target="_top"><span class="bold"><strong>Lvalue Property Map</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.vertex_property_map_gen.return_type_members"></a><a class="link" href="vertex_property_map_gen.html#index.vertex_property_map_gen.return_type_members" title="Return Type Members">Return
+      Type Members</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  Key type
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">key_type</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Same as <code class="literal"><a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a>&lt;Graph&gt;::vertex_descriptor</code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Value type
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">value_type</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Same as <code class="computeroutput"><span class="identifier">Value</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Reference type
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">reference</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Same as <code class="computeroutput"><span class="identifier">Value</span><span class="special">&amp;</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Category type
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">category</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Same as <code class="computeroutput"><span class="identifier">lvalue_property_map_tag</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Constructor
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span><span class="special">(</span><span class="identifier">Graph</span>
+                  <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Constructs a <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span></code>
+                  object that will associate vertices of the specified graph with
+                  <code class="computeroutput"><span class="identifier">Value</span></code> objects.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Copy constructor
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span><span class="special">(</span><span class="identifier">type</span>
+                  <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Defined by the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> concept.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Assignment operator
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">type</span>
+                  <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Defined by the <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> concept.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Property access
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">reference</span> <span class="keyword">operator</span><span class="special">[](</span><span class="identifier">key_type</span>
+                  <span class="keyword">const</span><span class="special">&amp;)</span>
+                  <span class="keyword">const</span><span class="special">;</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Accesses the property value of the specified vertex.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.vertex_property_map_gen.non_members"></a><a class="link" href="vertex_property_map_gen.html#index.vertex_property_map_gen.non_members" title="Non-members">Non-members</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  Vertex property map creation
+                </p>
+              </td>
+<td>
+                <p>
+                  
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Value</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <span class="identifier">vertex_property_map_gen</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">,</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">make_vertex_property_map</span><span class="special">(</span><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+                </p>
+              </td>
+<td>
+                <p>
+                  Requires the <code class="computeroutput"><span class="identifier">Value</span></code>
+                  type to be explicitly passed in as a template parameter. Creates
+                  and returns a <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span></code>
+                  object that will associate vertices of the specified graph with
+                  <code class="computeroutput"><span class="identifier">Value</span></code> objects.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Vertex property map creation with value
+                </p>
+              </td>
+<td>
+                <p>
+                  
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Value</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <span class="identifier">vertex_property_map_gen</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">,</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">make_vertex_property_map</span><span class="special">(</span><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span><span class="special">,</span> <span class="identifier">Value</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+                </p>
+              </td>
+<td>
+                <p>
+                  Requires a <code class="computeroutput"><span class="identifier">Value</span></code>
+                  object to be explicitly passed in as the second argument. Creates
+                  and returns a <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span></code>
+                  object that will associate vertices of the specified graph with
+                  <code class="computeroutput"><span class="identifier">Value</span></code> objects.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Vertex predecessor map creation
+                </p>
+              </td>
+<td>
+                <p>
+                  
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <span class="identifier">vertex_property_map_gen</span><span class="special">&lt;</span>
+        <span class="identifier">Graph</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+    <span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">make_vertex_predecessor_map</span><span class="special">(</span><span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+                </p>
+              </td>
+<td>
+                <p>
+                  Creates and returns a <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span><span class="special">::</span><span class="identifier">type</span></code>
+                  object that will associate vertices of the specified graph with
+                  each other.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../doc/images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The <code class="computeroutput"><span class="identifier">vertex_property_map_gen</span></code>
+        metafunction is a simple wrapper around either an <a href="http://www.boost.org/libs/property_map/doc/iterator_property_map.html" target="_top"><code class="computeroutput"><span class="identifier">iterator_property_map</span></code></a> or an <a href="http://www.boost.org/libs/property_map/doc/associative_property_map.html" target="_top"><code class="computeroutput"><span class="identifier">associative_property_map</span></code></a>; neither
+        the constructor nor the non-member creation functions will initialize the
+        objects returned the way some data structures (e.g. <a href="http://www.boost.org/libs/graph/doc/adjacency_list.html" target="_top"><code class="computeroutput"><span class="identifier">adjacency_list</span></code></a> with vertex selector
+        <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vecS</span></code>) or algorithms (e.g. <a href="http://www.boost.org/libs/graph/doc/depth_first_search.html" target="_top"><code class="computeroutput"><span class="identifier">depth_first_search</span></code></a>) initialize
+        their respective property maps.
+      </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="loop_erased_random_tree.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="fuse_property_writer.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

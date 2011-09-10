@@ -1,0 +1,74 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:call_visitors `call_visitors`]
+
+[section Synopsis]
+[reference__call_visitors]
+[endsect]
+
+[section Description]
+This function will invoke the function call operator of each element in the
+specified visitor list whose event filter type matches the one specified.
+
+This function enables __BGL__ algorithms such as __loop_erased_random_tree__ to
+decouple visitor event points from algorithm-specific class definitions while
+offering user code the ability to take advantage of a simpler programming
+interface via __Boost_Fusion__ containers.  It still supports the
+__Event_Visitor_List__ interface as an alternative.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_call_visitors_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `Filter` must be explicitly passed in as a template parameter.
+  * `VisitorList` must model either the __Fusion_Forward_Sequence__ concept or
+    the __Event_Visitor_List__ concept.
+  * If `VisitorList` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `VisitorList` whose first type
+    matches `Filter` must model the __Binary_Function__ concept.  Furthermore,
+    the function call operator of the second type must accept `T` as a valid
+    first argument type and a reference to `InputGraph` as a valid second
+    argument type.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements]]
+    [
+        [`visitors`]
+        [The visitor list to be filtered for event point invocation.]
+        []
+    ]
+    [
+        [`t`]
+        [
+            The object to be passed in as the first argument to the function
+            call of each visitor whose event filter type matches `Filter`.
+        ]
+        [The input graph must also contain the specified object.]
+    ]
+    [
+        [`input_graph`]
+        [
+            The object to be passed in as the second argument to the function
+            call of each visitor whose event filter type matches `Filter`.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[endsect] [/ call_visitors]
+

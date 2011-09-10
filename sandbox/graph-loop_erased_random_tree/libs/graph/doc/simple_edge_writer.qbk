@@ -1,0 +1,142 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:simple_edge_writer
+`simple_edge_writer<VertexPropertyMap, OutputStream, CharT, Filter>`]
+
+[section Synopsis]
+[reference__simple_edge_writer]
+[endsect]
+
+[section Description]
+This __Event_Visitor__ uses the property map values of the source and target
+vertices of edges that an algorithm visits at some event point.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_simple_edge_writer_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+
+  * __Event_Visitor__
+  * __Binary_Function__
+  * __Copy_Constructible__
+
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description]]
+    [
+        [VertexPropertyMap]
+        [
+            A __Readable_Property_Map__ whose key type is the vertex descriptor
+            of the graph.
+        ]
+    ]
+    [
+        [OutputStream]
+        [
+            The type of stream to which the values of `VertexPropertyMap` will
+            be output.
+        ]
+    ]
+    [
+        [CharT]
+        [
+            The character type of the suffix string that will be output after
+            each edge connection on which this event visitor is invoked.
+        ]
+    ]
+    [
+        [Filter]
+        [
+            The tag to specify when the `simple_edge_writer` should be invoked
+            by the graph algorithm.
+        ]
+    ]
+]
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Event filter type]
+        [`event_filter`]
+        [Same as `Filter`]
+    ]
+    [
+        [Constructor]
+        [``
+            simple_edge_writer(
+                VertexPropertyMap property_map
+              , OutputStream& os
+              , CharT const* suffix
+            );
+        ``]
+        [
+            Constructs a `simple_edge_writer` object that will use the property
+            map to output the source and target vertices of the visited edges
+            to the specified stream, followed by the specified suffix.
+        ]
+    ]
+    [
+        [Copy constructor]
+        [`simple_edge_writer(simple_edge_writer const& copy);`]
+        [Defined by the __Copy_Constructible__ concept.]
+    ]
+    [
+        [Function call operator]
+        [``
+            template <typename Graph>
+            void
+                operator()(
+                    typename _graph_traits_<Graph>::edge_descriptor e
+                  , Graph const& g
+                );
+        ``]
+        [
+            Writes the property values of the source and target vertices of `e`
+            to the output stream, along with the suffix string.
+        ]
+    ]
+]
+[endsect]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Simple edge writer creation]
+        [[reference__make_simple_edge_writer]]
+        [
+            Requires a `Filter` object to be explicitly passed in as the second
+            argument.  Creates and returns a `simple_edge_writer` object that
+            will be invoked when the algorithm reaches the appropriate event
+            point.
+        ]
+    ]
+    [
+        [Simple edge writer creation with filter]
+        [[reference__fuse_simple_edge_writer]]
+        [
+            Requires the `Filter` type to be explicitly passed in as a template
+            parameter.  Creates and returns a __fusion_pair__ that matches the
+            filter type with a `simple_edge_writer` object that will be
+            invoked when the algorithm reaches the appropriate event point.
+        ]
+    ]
+]
+[endsect]
+
+[endsect] [/ simple_edge_writer]
+

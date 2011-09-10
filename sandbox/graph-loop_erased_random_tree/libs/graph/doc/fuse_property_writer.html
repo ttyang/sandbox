@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>fuse_property_writer</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="vertex_property_map_gen.html" title="vertex_property_map_gen&lt;Graph, Value&gt;">
+<link rel="next" href="simple_edge_writer.html" title="simple_edge_writer&lt;VertexPropertyMap, OutputStream, CharT, Filter&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="vertex_property_map_gen.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="simple_edge_writer.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.fuse_property_writer"></a><a class="link" href="fuse_property_writer.html" title="fuse_property_writer"><code class="computeroutput"><span class="identifier">fuse_property_writer</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.fuse_property_writer.synopsis"></a><a class="link" href="fuse_property_writer.html#index.fuse_property_writer.synopsis" title="Synopsis">Synopsis</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Filter</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PropertyMap</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">OutputIterator</span><span class="special">&gt;</span>
+    <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span>
+        <span class="identifier">Filter</span>
+      <span class="special">,</span> <span class="identifier">property_writer</span><span class="special">&lt;</span><span class="identifier">PropertyMap</span><span class="special">,</span><span class="identifier">OutputIterator</span><span class="special">,</span><span class="identifier">Filter</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+        <span class="identifier">fuse_property_writer</span><span class="special">(</span><span class="identifier">PropertyMap</span> <span class="identifier">property_map</span><span class="special">,</span> <span class="identifier">OutputIterator</span> <span class="identifier">out_itr</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.fuse_property_writer.description"></a><a class="link" href="fuse_property_writer.html#index.fuse_property_writer.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        Requires the <code class="computeroutput"><span class="identifier">Filter</span></code> type
+        to be explicitly passed in as a template parameter. Creates and returns a
+        <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">pair</span></code></a> that matches the filter type
+        with a <a href="http://www.boost.org/libs/graph/doc/property_writer.html" target="_top"><code class="computeroutput"><span class="identifier">property_writer</span></code></a> object that will
+        be invoked when the algorithm reaches the appropriate event point.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.fuse_property_writer.definition"></a><a class="link" href="fuse_property_writer.html#index.fuse_property_writer.definition" title="Where defined">Where defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/call_visitors.hpp" target="_top">boost/graph/fuse_property_writer.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="vertex_property_map_gen.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="simple_edge_writer.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
