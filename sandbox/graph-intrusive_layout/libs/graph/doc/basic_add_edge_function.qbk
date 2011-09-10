@@ -1,0 +1,111 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:basic_add_edge_function `basic_add_edge_function`]
+
+[section Synopsis]
+[reference__basic_add_edge_function__definition]
+[reference__basic_2way_edge_adder__prototype]
+[reference__basic_edge_adder__prototype]
+[endsect]
+
+[section Description]
+This simple function object type allows layout algorithms to indicate which
+vertices should be neighbors without having to modify the underlying graph
+structure themselves.  It will serve your needs if the graph does not possess
+any internal edge property maps, or if the edge properties can be initialized
+later on.
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_basic_add_edge_function_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements]]
+    [
+        [`Graph`]
+        [The type of graph to whom this function object will add edges.]
+        [It must model the __Mutable_Graph__ concept.]
+    ]
+    [
+        [`Is2Way`]
+        [
+            A boolean constant that controls whether or not the input vertices
+            will be biconnected.  If `Graph` is undirected, then adjacent
+            vertices will be biconnected anyway, but it makes a difference for
+            directed graphs.
+        ]
+        []
+    ]
+]
+
+[section:model_of Model of]
+__Binary_Function__
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[variablelist Notation
+    [[`graph`][An object of type `Graph`.]]
+    [[`f`][An object of type `basic_add_edge_function`.]]
+    [[`u`, `v`][Objects of type [^_graph_traits_<Graph>::vertex_descriptor].]]
+]
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Constructor]
+        [`basic_add_edge_function(graph)`]
+        [
+            Constructs a new `basic_add_edge_function` object that will add
+            edges to the specified graph.
+        ]
+    ]
+    [
+        [Function call operator]
+        [`f(u, v)`]
+        [
+            Calls [^_add_edge_(u, v)].  If `Is2Way` is `true` and the graph is
+            directed, also calls [^_add_edge_(v, u)].
+        ]
+    ]
+]
+[endsect]
+
+[section Non-members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Two-way construction function]
+        [`basic_2way_edge_adder(graph)`]
+        [
+            Constructs and returns a new `basic_add_edge_function` object that
+            will add two-way edges to the specified graph.
+        ]
+    ]
+    [
+        [One-way construction function]
+        [`basic_edge_adder(graph)`]
+        [
+            Constructs and returns a new `basic_add_edge_function` object that
+            will add one-way edges to the specified graph.
+        ]
+    ]
+]
+[endsect]
+
+[endsect] [/ basic_add_edge_function]
+

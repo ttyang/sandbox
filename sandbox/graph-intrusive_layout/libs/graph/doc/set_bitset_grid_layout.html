@@ -1,0 +1,348 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>set_bitset_grid_layout</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="count_bt_cubic_hcomb_verts.html" title="count_bitruncated_cubic_honeycomb_layout_vertices">
+<link rel="next" href="count_bitset_grid_verts.html" title="count_bitset_grid_layout_vertices">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="count_bt_cubic_hcomb_verts.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="count_bitset_grid_verts.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.set_bitset_grid_layout"></a><a class="link" href="set_bitset_grid_layout.html" title="set_bitset_grid_layout"><code class="computeroutput"><span class="identifier">set_bitset_grid_layout</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bitset_grid_layout.prototype"></a><a class="link" href="set_bitset_grid_layout.html#index.set_bitset_grid_layout.prototype" title="Prototype">Prototype</a>
+</h3></div></div></div>
+<p>
+        The function prototype that takes in <a href="http://www.boost.org/libs/graph/doc/bgl_named_params.html" target="_top">old-style
+        named parameters</a> is always defined.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">VertexIterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">EdgeFunction</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Params</span><span class="special">&gt;</span>
+    <span class="keyword">void</span>
+        <span class="identifier">set_bitset_grid_layout</span><span class="special">(</span>
+            <span class="identifier">VertexIterator</span> <span class="identifier">vertex_iterator</span>
+          <span class="special">,</span> <span class="identifier">EdgeFunction</span> <span class="identifier">edge_function</span>
+          <span class="special">,</span> <span class="identifier">Params</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">params</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        The function prototype that explicitly takes in all parameters is defined
+        if the <code class="computeroutput"><span class="identifier">BOOST_GRAPH_SET_BITSET_GRID_LAYOUT_TAKES_ALL_PARAMS</span></code>
+        preprocessor token is defined--that is, if you set <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+        to 4 or higher. (You may also choose to leave it at its default value of
+        5.)
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">VertexIterator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">EdgeFunction</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">DimensionCount</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PositionMap</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">void</span>
+        <span class="identifier">set_bitset_grid_layout</span><span class="special">(</span>
+            <span class="identifier">VertexIterator</span> <span class="identifier">vertex_iterator</span>
+          <span class="special">,</span> <span class="identifier">EdgeFunction</span> <span class="identifier">edge_function</span>
+          <span class="special">,</span> <span class="identifier">DimensionCount</span> <span class="identifier">dimension_count</span>
+          <span class="special">,</span> <span class="identifier">PositionMap</span> <span class="identifier">position_map</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bitset_grid_layout.description"></a><a class="link" href="set_bitset_grid_layout.html#index.set_bitset_grid_layout.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        This algorithm performs layout of directed or undirected graphs, associating
+        each vertex with a bitset representation of its logical index. The edge function
+        will be invoked for each pair of vertices whose bitsets differ by exactly
+        one bit.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bitset_grid_layout.definition"></a><a class="link" href="set_bitset_grid_layout.html#index.set_bitset_grid_layout.definition" title="Where Defined">Where Defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/set_bitset_grid_layout.hpp" target="_top">boost/graph/set_bitset_grid_layout.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bitset_grid_layout.type_requirements"></a><a class="link" href="set_bitset_grid_layout.html#index.set_bitset_grid_layout.type_requirements" title="Type Requirements">Type
+      Requirements</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">VertexIterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/iterator/doc/ReadableIterator.html" target="_top"><span class="bold"><strong>Readable Iterator</strong></span></a> <span class="keyword">and</span>
+  <a href="http://www.boost.org/libs/iterator/doc/IncrementableIterator.html" target="_top"><span class="bold"><strong>Incrementable Iterator</strong></span></a> <span class="identifier">concepts</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">EdgeFunction</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/BinaryFunction.html" target="_top"><span class="bold"><strong>Binary Function</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">VertexIterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="identifier">both</span> <span class="identifier">the</span> <span class="identifier">first</span>
+  <span class="keyword">and</span> <span class="identifier">second</span> <span class="identifier">argument</span> <span class="identifier">types</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">EdgeFunction</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">DimensionCount</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/property_map/doc/WritablePropertyMap.html" target="_top"><span class="bold"><strong>Writable Property Map</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">VertexIterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">usable</span> <span class="identifier">as</span> <span class="identifier">the</span> <span class="identifier">key</span> <span class="identifier">type</span> <span class="identifier">of</span>
+  <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="identifier">the</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span> <span class="identifier">is</span> <span class="keyword">not</span> <span class="identifier">an</span> <span class="identifier">instantiation</span> <span class="identifier">of</span>
+  <a href="http://www.sgi.com/tech/stl/bitset.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bitset</span></code></a><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span> <span class="identifier">value</span> <span class="identifier">that</span> <span class="error">`</span><span class="identifier">DimensionCount</span><span class="error">`</span> <span class="identifier">represents</span> <span class="identifier">must</span> <span class="identifier">be</span>
+  <span class="identifier">greater</span> <span class="identifier">than</span> <span class="number">1.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bitset_grid_layout.parameters"></a><a class="link" href="set_bitset_grid_layout.html#index.set_bitset_grid_layout.parameters" title="Parameters">Parameters</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Parameter
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+<th>
+                <p>
+                  Runtime requirements
+                </p>
+              </th>
+<th>
+                <p>
+                  Default
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">vertex_iterator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  An iterator over the vertices of a graph. The algorithm will store
+                  copies of the vertex descriptors dereferenced from it.
+                </p>
+              </td>
+<td>
+                <p>
+                  If this iterator points to the beginning of a range of vertices
+                  in a graph, then this range must at least as large as the value
+                  returned by <code class="literal"><a class="link" href="count_bitset_grid_verts.html" title="count_bitset_grid_layout_vertices">count_bitset_grid_layout_vertices</a>(dimension_count,
+                  position_map)</code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  None; always required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">edge_function</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A function that is invoked each time the algorithm recognizes the
+                  input vertices as edges.
+                </p>
+              </td>
+<td>
+                <p>
+                  Each vertex descriptor dereferenced from <code class="computeroutput"><span class="identifier">vertex_iterator</span></code>
+                  must be a valid argument.
+                </p>
+              </td>
+<td>
+                <p>
+                  None; always required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dimension_count</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  An <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> representing
+                  the number of bits in each bitset to be associated with each vertex.
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  If the value type of <code class="computeroutput"><span class="identifier">PositionMap</span></code>
+                  is an instantiation of <a href="http://www.sgi.com/tech/stl/bitset.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bitset</span></code></a>, then an <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> representing
+                  its size; otherwise required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">position_map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Maps each vertex to an object representing a bitset in the resulting
+                  layout.
+                </p>
+              </td>
+<td>
+                <p>
+                  Each vertex descriptor dereferenced from <code class="computeroutput"><span class="identifier">vertex_iterator</span></code>
+                  must be a valid key.
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dummy_property_map</span><span class="special">()</span></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        The last two parameters can be deduced by type. However, if for some reason
+        you need to specify their names, remember that the <a href="http://www.boost.org/libs/graph/doc/index.html" target="_top">BGL</a>
+        prefixes each <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>
+        keyword with an underscore and defines it in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span></code>
+        namespace.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bitset_grid_layout.example"></a><a class="link" href="set_bitset_grid_layout.html#index.set_bitset_grid_layout.example" title="Example">Example</a>
+</h3></div></div></div>
+<p>
+        The first graph will have a layout of bitsets, each carrying four bits. The
+        size of each bitset is fixed at compile time, but the position map holds
+        this information, so the <a class="link" href="count_bitset_grid_verts.html" title="count_bitset_grid_layout_vertices"><code class="computeroutput"><span class="identifier">count_bitset_grid_layout_vertices</span><span class="special">()</span></code></a>
+        function must take it in. In order for this function to be called during
+        construction of the graph, the position map must be external to the graph.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vecS</span><span class="special">,</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">setS</span><span class="special">,</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">directedS</span><span class="special">&gt;</span>
+            <span class="identifier">MidGraph</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span>
+                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">MidGraph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+              <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">bitset</span><span class="special">&lt;</span><span class="number">4</span><span class="special">&gt;</span>
+            <span class="special">&gt;</span>
+            <span class="identifier">Vertex2BitsMap</span><span class="special">;</span>
+
+    <span class="identifier">Vertex2BitsMap</span> <span class="identifier">v2b_map</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">associative_property_map</span><span class="special">&lt;</span><span class="identifier">Vertex2BitsMap</span><span class="special">&gt;</span> <span class="identifier">pos_map</span><span class="special">(</span><span class="identifier">v2b_map</span><span class="special">);</span>
+    <span class="identifier">MidGraph</span> <span class="identifier">mid_graph</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">count_bitset_grid_layout_vertices</span><span class="special">(</span><span class="identifier">pos_map</span><span class="special">));</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">set_bitset_grid_layout</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertices</span><span class="special">(</span><span class="identifier">mid_graph</span><span class="special">).</span><span class="identifier">first</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">basic_2way_edge_adder</span><span class="special">(</span><span class="identifier">mid_graph</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">position_map</span><span class="special">(</span><span class="identifier">pos_map</span><span class="special">)</span>
+    <span class="special">);</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">print_graph</span><span class="special">(</span><span class="identifier">mid_graph</span><span class="special">,</span> <span class="identifier">pos_map</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    </pre>
+<p>
+      </p>
+<p>
+        The bitsets in the layout of the second graph will carry five bits each.
+        This time, the memory will be allocated at runtime, so the <code class="computeroutput"><span class="identifier">dimension_count</span></code> parameter is required.
+        Note that the order of the last two arguments can differ from the positional
+        definition of the layout function.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting">    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_distance_t</span> <span class="identifier">PositionTag</span><span class="special">;</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="number">5</span><span class="special">&gt;</span> <span class="identifier">bit_count</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span><span class="special">&lt;</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">multisetS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">listS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">undirectedS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property</span><span class="special">&lt;</span><span class="identifier">PositionTag</span><span class="special">,</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dynamic_bitset</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span>
+    <span class="special">&gt;</span> <span class="identifier">big_graph</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">count_bitset_grid_layout_vertices</span><span class="special">(</span><span class="identifier">bit_count</span><span class="special">)</span>
+    <span class="special">);</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">set_bitset_grid_layout</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertices</span><span class="special">(</span><span class="identifier">big_graph</span><span class="special">).</span><span class="identifier">first</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">basic_edge_adder</span><span class="special">(</span><span class="identifier">big_graph</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">PositionTag</span><span class="special">(),</span> <span class="identifier">big_graph</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">bit_count</span>
+    <span class="special">);</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">print_graph</span><span class="special">(</span><span class="identifier">big_graph</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">PositionTag</span><span class="special">(),</span> <span class="identifier">big_graph</span><span class="special">));</span>
+
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        The complete example program can be compiled from this file: &lt;<a href="../example/bitset_grid_layouts.cpp" target="_top">example/bitset_grid_layouts.cpp</a>&gt;.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="count_bt_cubic_hcomb_verts.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="count_bitset_grid_verts.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

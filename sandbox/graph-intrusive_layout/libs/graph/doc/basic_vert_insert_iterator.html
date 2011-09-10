@@ -1,0 +1,332 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>basic_vertex_insert_iterator</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="count_bitset_grid_verts.html" title="count_bitset_grid_layout_vertices">
+<link rel="next" href="basic_add_edge_function.html" title="basic_add_edge_function">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="count_bitset_grid_verts.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="basic_add_edge_function.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.basic_vert_insert_iterator"></a><a class="link" href="basic_vert_insert_iterator.html" title="basic_vertex_insert_iterator"><code class="computeroutput"><span class="identifier">basic_vertex_insert_iterator</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.basic_vert_insert_iterator.synopsis"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.synopsis" title="Synopsis">Synopsis</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">basic_vertex_insert_iterator</span>
+      <span class="special">:</span> <span class="keyword">public</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_facade</span><span class="special">&lt;</span>
+            <span class="identifier">basic_vertex_insert_iterator</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;</span>
+          <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span>
+          <span class="special">,</span> <span class="identifier">forward_traversal_tag</span>
+        <span class="special">&gt;</span>
+    <span class="special">{</span>
+
+     <span class="keyword">public</span><span class="special">:</span>
+        <span class="keyword">explicit</span> <span class="identifier">basic_vertex_insert_iterator</span><span class="special">(</span><span class="identifier">Graph</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">OtherGraph</span><span class="special">&gt;</span>
+        <span class="identifier">basic_vertex_insert_iterator</span><span class="special">(</span>
+            <span class="identifier">basic_vertex_insert_iterator</span><span class="special">&lt;</span><span class="identifier">OtherGraph</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span>
+        <span class="special">);</span>
+
+    <span class="special">};</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+    <span class="identifier">basic_vertex_insert_iterator</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;</span> <span class="identifier">basic_vertex_inserter</span><span class="special">(</span><span class="identifier">Graph</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.basic_vert_insert_iterator.description"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        Since some popular graph types provide a <code class="computeroutput"><span class="identifier">clear</span><span class="special">()</span></code> member function but not a <code class="computeroutput"><span class="identifier">resize</span><span class="special">()</span></code>
+        member function, it may not be possible to reserve enough vertices for layout
+        algorithms to work in some cases. This iterator facade enables the layout
+        algorithms to add vertices on the fly. It will serve your needs if the graph
+        does not possess any internal vertex property maps, or if the vertex properties
+        can be initialized later on.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.basic_vert_insert_iterator.definition"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.definition" title="Where Defined">Where Defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/basic_vert_insert_iterator.hpp" target="_top">boost/graph/basic_vert_insert_iterator.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.basic_vert_insert_iterator.tpl_param"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.tpl_param" title="Template Parameters">Template
+      Parameters</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Parameter
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+<th>
+                <p>
+                  Requirements
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">Graph</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The type of the graph to whom this iterator will add vertices.
+                </p>
+              </td>
+<td>
+                <p>
+                  It must model the <a href="http://www.boost.org/libs/graph/doc/MutableGraph.html" target="_top"><span class="bold"><strong>Mutable Graph</strong></span></a> concept.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="index.basic_vert_insert_iterator.tpl_param.model_of"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.tpl_param.model_of" title="Model of">Model
+        of</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="http://www.boost.org/libs/iterator/doc/ReadableIterator.html" target="_top"><span class="bold"><strong>Readable Iterator</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/iterator/doc/IncrementableIterator.html" target="_top"><span class="bold"><strong>Incrementable Iterator</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="index.basic_vert_insert_iterator.tpl_param.public_bases"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.tpl_param.public_bases" title="Public Base Classes">Public
+        Base Classes</a>
+</h4></div></div></div>
+<p>
+          <a href="http://www.boost.org/libs/iterator/doc/iterator_facade.html" target="_top"><code class="computeroutput"><span class="identifier">iterator_facade</span></code></a>
+        </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">graph</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Graph</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">itr</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">basic_vertex_insert_iterator</span></code>.
+            </p></dd>
+</dl>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.basic_vert_insert_iterator.members"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.members" title="Members">Members</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  Constructor
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">basic_vertex_insert_iterator</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Constructs a new <code class="computeroutput"><span class="identifier">basic_vertex_insert_iterator</span></code>
+                  object that will add vertices to the specified graph.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Dereference operator
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="special">*</span><span class="identifier">itr</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Adds a new vertex to the graph, then returns the representative
+                  <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">vertex descriptor</a>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Pre-increment operator
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="special">++</span><span class="identifier">itr</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  No-op.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  Post-increment operator
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">itr</span><span class="special">++</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  No-op.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.basic_vert_insert_iterator.non_members"></a><a class="link" href="basic_vert_insert_iterator.html#index.basic_vert_insert_iterator.non_members" title="Non-members">Non-members</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Name
+                </p>
+              </th>
+<th>
+                <p>
+                  Expression
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  Construction function
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">basic_vertex_inserter</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Constructs and returns a new <code class="computeroutput"><span class="identifier">basic_vertex_insert_iterator</span></code>
+                  object that will add vertices to the specified graph.
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="count_bitset_grid_verts.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="basic_add_edge_function.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,306 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:set_orthogonal_grid_layout `set_orthogonal_grid_layout`]
+
+[section Prototype]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+``
+namespace boost {
+
+    template <typename VertexIterator, typename EdgeFunction, typename Params>
+    void
+        set_orthogonal_grid_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Params const& params
+        );
+}  // namespace boost
+``
+
+The function prototype that explicitly takes in all parameters is defined if
+the `BOOST_GRAPH_SET_ORTHOGONAL_GRID_LAYOUT_TAKES_ALL_PARAMS` preprocessor
+token is defined--that is, if you set `BOOST_PARAMETER_MAX_ARITY` to 11 or
+higher.
+
+``
+namespace boost {
+
+    template <
+        typename VertexIterator
+      , typename EdgeFunction
+      , typename Dimensions
+      , typename DimensionCount
+      , typename WraparoundPolicy
+      , typename PointFactory
+      , typename PositionIndexMap
+      , typename Scale
+      , typename PositionMap
+      , typename Point
+    >
+    void
+        set_orthogonal_grid_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Dimensions const& dimensions
+          , DimensionCount dimension_count
+          , bool is_zeta
+          , WraparoundPolicy const& wraparound_policy
+          , PointFactory point_factory
+          , PositionIndexMap position_index_map
+          , Scale const& scale
+          , PositionMap position_map
+          , Point const& origin
+        );
+}  // namespace boost
+``
+
+Otherwise, the following function prototype is defined if the
+`BOOST_GRAPH_SET_ORTHOGONAL_GRID_LAYOUT_TAKES_5_PARAMS` preprocessor token is
+defined--that is, if you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower than its
+default value of 5.
+
+``
+namespace boost {
+
+    template <
+        typename VertexIterator
+      , typename EdgeFunction
+      , typename Dimensions
+      , typename DimensionCount
+    >
+    void
+        set_orthogonal_grid_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Dimensions const& dimensions
+          , DimensionCount dimension_count
+          , bool is_zeta
+        );
+}  // namespace boost
+``
+
+If you need to pass in any additional arguments, then either you must set
+`BOOST_PARAMETER_MAX_ARITY` to 11 or higher, or you must use the first
+prototype instead.
+[endsect] [/ Prototype]
+
+[section Description]
+This algorithm performs layout of directed or undirected graphs, positioning
+each vertex at a point in a standard rectangular grid that fits the specified
+dimensions.  The edge function will be invoked for each pair of vertices that
+are horizontally or vertically next to each other in the layout.  If a
+__zeta_layout__ is requested, then the edge function will also be invoked for
+each pair of vertices that are diagonally next to each other.
+[endsect] [/ Description]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_set_orthogonal_grid_layout_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `VertexIterator` must model the __Readable_Iterator__ and
+    __Incrementable_Iterator__ concepts.
+  * `EdgeFunction` must model the __Binary_Function__ concept.
+  * The value type of `VertexIterator` must be convertible to both the first
+    and second argument types of `EdgeFunction`.
+  * `Dimensions` must implement an index operator that accepts an integer type
+    as a valid argument and whose return type is a reference to a numeric type.
+  * If `point_factory` is not specified, then `Dimensions` must model the
+    __Default_Constructible__ concept.
+  * `DimensionCount` must model the __MPL_Integral_Constant__ concept.
+  * The value that `DimensionCount` represents must be greater than 1.
+  * `WraparoundPolicy` must implement an index operator that accepts an integer
+    type as a valid argument and whose return type is `bool`.
+  * `PointFactory` must model the __Generator__ concept.
+  * The return type of `PointFactory` must be convertible to `Point`.
+  * `PositionIndexMap` must implement an index operator that accepts an integer
+    type as a valid argument and whose return type is also an integer type.
+  * `Scale` must implement an index operator that accepts an integer type as a
+    valid argument and whose return type is a reference to a numeric type.
+  * If neither `point_factory` nor `scale` are specified, then `Dimensions`
+    must be convertible to `Scale`.
+  * `PositionMap` must model the __Writable_Property_Map__ concept.
+  * The value type of `VertexIterator` must be usable as the key type of
+    `PositionMap`.
+  * `Point` must implement an index operator that accepts an integer type as a
+    valid argument and whose return type is a reference to a numeric type.
+  * `Point` must be usable as the value type of `PositionMap`.
+  * If neither `point_factory` nor `origin` are specified, then `Dimensions`
+    must be convertible to `Point`.
+  * The return types of the index operators of `Dimensions`, `Scale`, and
+    `Point` must be interoperable arithmetic-wise.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`vertex_iterator`]
+        [
+            An iterator over the vertices of a graph.  The algorithm will store
+            copies of the vertex descriptors dereferenced from it.
+        ]
+        [
+            If this iterator points to the beginning of a range of vertices
+            in a graph, then this range must at least as large as the value
+            returned by [^_count_orthogonal_grid_layout_vertices_(dimensions,
+            dimension_count, point_factory, position_index_map, scale)].
+        ]
+        [None; always required.]
+    ]
+    [
+        [`edge_function`]
+        [
+            A function that is invoked each time the algorithm recognizes the
+            input vertices as edges.
+        ]
+        [
+            Each vertex descriptor dereferenced from `vertex_iterator` must be
+            a valid argument.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`dimensions`]
+        [The physical size of the resulting layout.]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.  Furthermore, If `point_factory`
+            is not specified, then the default constructor of `Dimensions`
+            must ensure that the object returned fulfills this requirement.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`dimension_count`]
+        [
+            An __MPL_Integral_Constant__ representing the number of dimensions
+            the resulting layout will straddle.
+        ]
+        []
+        [An __MPL_Integral_Constant__ representing the value `2`.]
+    ]
+    [
+        [`is_zeta`]
+        [
+            A boolean flag that controls whether or not the algorithm will
+            recognize diagonal edges.  In two dimensions, setting this flag to
+            `true` means that a vertex will have 8 neighbors instead of 4; in
+            three dimensions, a vertex will have 26 neighbors instead of 6;
+            in N dimensions, a vertex will have (3 ^ N - 1) neighbors instead
+            of 2 * N (assuming wraparound is allowed for all dimensions).  See
+            the __set_orthogonal_grid_layout__description__ for further
+            information.
+        ]
+        []
+        [`false`]
+    ]
+    [
+        [`wraparound_policy`]
+        [
+            An object whose index operator returns a boolean flag indicating
+            whether or not the algorithm will allow edges to wrap around in
+            the specified dimension.
+        ]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [An object whose index operator always returns `false`.]
+    ]
+    [
+        [`point_factory`]
+        [
+            A function that constructs and returns `Point` objects.  Required
+            if the default constructor of `Point` does not exist or prevents
+            its index operator from fulfilling its runtime requirement.
+        ]
+        [
+            The index operator of each object returned must accept values
+            returned by the index operator of `position_index_map`.
+        ]
+        [[^_value_factory_<Dimensions>()]]
+    ]
+    [
+        [`position_index_map`]
+        [
+            Maps each dimension index to a unique integer.  Specify an argument
+            for this parameter if, for example, a 3-D application calls for
+            different orthogonal layouts to reside on different dimensional
+            planes.
+        ]
+        [
+            The index operator must accept values in the range
+            `[0, DimensionCount::value)`.
+        ]
+        [[^_identity_property_map_()]]
+    ]
+    [
+        [`scale`]
+        [
+            An object representing the distance between two adjacent vertices
+            in each dimension.
+        ]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [
+            A `Point` whose index operator returns one for each of the input
+            dimensions returned by the index operator of `position_index_map`.
+        ]
+    ]
+    [
+        [`position_map`]
+        [
+            Maps each vertex to a `Point` object representing a position in the
+            resulting layout.
+        ]
+        [
+            Each vertex descriptor dereferenced from `vertex_iterator` must be
+            a valid key.
+        ]
+        [`dummy_property_map()`]
+    ]
+    [
+        [`origin`]
+        [
+            An object representing the vertex position whose coordinates are
+            at the lower bound of each dimension.
+        ]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [
+            A `Point` whose index operator returns zero for each of the input
+            dimensions returned by the index operator of `position_index_map`.
+        ]
+    ]
+]
+
+Remember that the __BGL__ prefixes each __Boost_Parameter__ keyword with an
+underscore and defines it in the `boost::graph::keywords` namespace.
+[endsect] [/ Parameters]
+
+[section Example]
+[example__orthogonal_grid_layouts]
+
+The complete example program can be compiled from this file:
+<__example_orthogonal_grid_layouts_cpp__>.
+[endsect]
+
+[endsect] [/ set_orthogonal_grid_layout]
+

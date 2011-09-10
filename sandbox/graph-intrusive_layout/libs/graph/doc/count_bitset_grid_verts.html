@@ -1,0 +1,196 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>count_bitset_grid_layout_vertices</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="set_bitset_grid_layout.html" title="set_bitset_grid_layout">
+<link rel="next" href="basic_vert_insert_iterator.html" title="basic_vertex_insert_iterator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="set_bitset_grid_layout.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="basic_vert_insert_iterator.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.count_bitset_grid_verts"></a><a class="link" href="count_bitset_grid_verts.html" title="count_bitset_grid_layout_vertices"><code class="computeroutput"><span class="identifier">count_bitset_grid_layout_vertices</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bitset_grid_verts.prototype"></a><a class="link" href="count_bitset_grid_verts.html#index.count_bitset_grid_verts.prototype" title="Prototype">Prototype</a>
+</h3></div></div></div>
+<p>
+        The function prototype that takes in <a href="http://www.boost.org/libs/graph/doc/bgl_named_params.html" target="_top">old-style
+        named parameters</a> is always defined.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Params</span><span class="special">&gt;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">count_bitset_grid_layout_vertices</span><span class="special">(</span><span class="identifier">Params</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">params</span><span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        The function prototype that takes in <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>
+        keywords is defined if you <span class="emphasis"><em>don't</em></span> set <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+        lower than 2.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">DimensionCount</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PositionMap</span><span class="special">&gt;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span>
+        <span class="identifier">count_bitset_grid_layout_vertices</span><span class="special">(</span>
+            <span class="identifier">DimensionCount</span> <span class="identifier">dimension_count</span>
+          <span class="special">,</span> <span class="identifier">PositionMap</span> <span class="identifier">position_map</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bitset_grid_verts.description"></a><a class="link" href="count_bitset_grid_verts.html#index.count_bitset_grid_verts.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        Returns the number of times that the <a class="link" href="set_bitset_grid_layout.html" title="set_bitset_grid_layout"><code class="computeroutput"><span class="identifier">set_bitset_grid_layout</span><span class="special">()</span></code></a>
+        algorithm will dereference and increment its vertex iterator if passed the
+        same arguments to this function.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bitset_grid_verts.definition"></a><a class="link" href="count_bitset_grid_verts.html#index.count_bitset_grid_verts.definition" title="Where Defined">Where Defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/set_bitset_grid_layout.hpp" target="_top">boost/graph/set_bitset_grid_layout.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bitset_grid_verts.type_requirements"></a><a class="link" href="count_bitset_grid_verts.html#index.count_bitset_grid_verts.type_requirements" title="Type Requirements">Type
+      Requirements</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">DimensionCount</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/property_map/doc/WritablePropertyMap.html" target="_top"><span class="bold"><strong>Writable Property Map</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="identifier">the</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span> <span class="identifier">is</span> <span class="keyword">not</span> <span class="identifier">an</span> <span class="identifier">instantiation</span> <span class="identifier">of</span>
+  <a href="http://www.sgi.com/tech/stl/bitset.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bitset</span></code></a><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span> <span class="identifier">value</span> <span class="identifier">that</span> <span class="error">`</span><span class="identifier">DimensionCount</span><span class="error">`</span> <span class="identifier">represents</span> <span class="identifier">must</span> <span class="identifier">be</span>
+  <span class="identifier">greater</span> <span class="identifier">than</span> <span class="number">1.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bitset_grid_verts.parameters"></a><a class="link" href="count_bitset_grid_verts.html#index.count_bitset_grid_verts.parameters" title="Parameters">Parameters</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Parameter
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+<th>
+                <p>
+                  Runtime requirements
+                </p>
+              </th>
+<th>
+                <p>
+                  Default
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dimension_count</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  An <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> representing
+                  the number of bits in each bitset to be associated with each vertex.
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  If the value type of <code class="computeroutput"><span class="identifier">PositionMap</span></code>
+                  is an instantiation of <a href="http://www.sgi.com/tech/stl/bitset.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bitset</span></code></a>, then an <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>MPL Integral Constant</strong></span></a> representing
+                  its size; otherwise required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">position_map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Required only if the value type of <code class="computeroutput"><span class="identifier">PositionMap</span></code>
+                  is an instantiation of <a href="http://www.sgi.com/tech/stl/bitset.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">bitset</span></code></a>.
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dummy_property_map</span><span class="special">()</span></code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        These two parameters can be deduced by type. However, if for some reason
+        you need to specify their names, remember that the <a href="http://www.boost.org/libs/graph/doc/index.html" target="_top">BGL</a>
+        prefixes each <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>
+        keyword with an underscore and defines it in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span></code>
+        namespace.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="set_bitset_grid_layout.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="basic_vert_insert_iterator.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

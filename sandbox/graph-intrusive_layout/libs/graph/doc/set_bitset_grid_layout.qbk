@@ -1,0 +1,166 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:set_bitset_grid_layout `set_bitset_grid_layout`]
+
+[section Prototype]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+``
+namespace boost {
+
+    template <typename VertexIterator, typename EdgeFunction, typename Params>
+    void
+        set_bitset_grid_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Params const& params
+        );
+}  // namespace boost
+``
+
+The function prototype that explicitly takes in all parameters is defined if
+the `BOOST_GRAPH_SET_BITSET_GRID_LAYOUT_TAKES_ALL_PARAMS` preprocessor
+token is defined--that is, if you set `BOOST_PARAMETER_MAX_ARITY` to 4 or
+higher.  (You may also choose to leave it at its default value of 5.)
+
+``
+namespace boost {
+
+    template <
+        typename VertexIterator
+      , typename EdgeFunction
+      , typename DimensionCount
+      , typename PositionMap
+    >
+    void
+        set_bitset_grid_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , DimensionCount dimension_count
+          , PositionMap position_map
+        );
+}  // namespace boost
+``
+[endsect] [/ Prototype]
+
+[section Description]
+This algorithm performs layout of directed or undirected graphs, associating
+each vertex with a bitset representation of its logical index.  The edge
+function will be invoked for each pair of vertices whose bitsets differ by
+exactly one bit.
+[endsect] [/ Description]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_set_bitset_grid_layout_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `VertexIterator` must model the __Readable_Iterator__ and
+    __Incrementable_Iterator__ concepts.
+  * `EdgeFunction` must model the __Binary_Function__ concept.
+  * The value type of `VertexIterator` must be convertible to both the first
+    and second argument types of `EdgeFunction`.
+  * `DimensionCount` must model the __MPL_Integral_Constant__ concept.
+  * `PositionMap` must model the __Writable_Property_Map__ concept.
+  * The value type of `VertexIterator` must be usable as the key type of
+    `PositionMap`.
+  * If the value type of `PositionMap` is not an instantiation of
+    __std_bitset__, then the value that `DimensionCount` represents must be
+    greater than 1.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`vertex_iterator`]
+        [
+            An iterator over the vertices of a graph.  The algorithm will store
+            copies of the vertex descriptors dereferenced from it.
+        ]
+        [
+            If this iterator points to the beginning of a range of vertices
+            in a graph, then this range must at least as large as the value
+            returned by [^_count_bitset_grid_layout_vertices_(dimension_count,
+            position_map)].
+        ]
+        [None; always required.]
+    ]
+    [
+        [`edge_function`]
+        [
+            A function that is invoked each time the algorithm recognizes the
+            input vertices as edges.
+        ]
+        [
+            Each vertex descriptor dereferenced from `vertex_iterator` must be
+            a valid argument.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`dimension_count`]
+        [
+            An __MPL_Integral_Constant__ representing the number of bits in
+            each bitset to be associated with each vertex.
+        ]
+        []
+        [
+            If the value type of `PositionMap` is an instantiation of
+            __std_bitset__, then an __MPL_Integral_Constant__ representing its
+            size; otherwise required.
+        ]
+    ]
+    [
+        [`position_map`]
+        [
+            Maps each vertex to an object representing a bitset in the
+            resulting layout.
+        ]
+        [
+            Each vertex descriptor dereferenced from `vertex_iterator` must be
+            a valid key.
+        ]
+        [`dummy_property_map()`]
+    ]
+]
+
+The last two parameters can be deduced by type.  However, if for some reason
+you need to specify their names, remember that the __BGL__ prefixes each
+__Boost_Parameter__ keyword with an underscore and defines it in the
+`boost::graph::keywords` namespace.
+[endsect] [/ Parameters]
+
+[section Example]
+The first graph will have a layout of bitsets, each carrying four bits.  The
+size of each bitset is fixed at compile time, but the position map holds this
+information, so the __count_bitset_grid_layout_vertices__ function must take it
+in.  In order for this function to be called during construction of the graph,
+the position map must be external to the graph.
+
+[example__bitset_grid_layouts__static]
+
+The bitsets in the layout of the second graph will carry five bits each.  This
+time, the memory will be allocated at runtime, so the `dimension_count`
+parameter is required.  Note that the order of the last two arguments can
+differ from the positional definition of the layout function.
+
+[example__bitset_grid_layouts__dynamic]
+
+The complete example program can be compiled from this file:
+<__example_bitset_grid_layouts_cpp__>.
+[endsect]
+
+[endsect] [/ set_bitset_grid_layout]
+

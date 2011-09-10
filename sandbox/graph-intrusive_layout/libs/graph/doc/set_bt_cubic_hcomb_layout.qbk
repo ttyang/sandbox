@@ -1,0 +1,268 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:set_bt_cubic_hcomb_layout `set_bitruncated_cubic_honeycomb_layout`]
+
+[section Prototype]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+``
+namespace boost {
+
+    template <typename VertexIterator, typename EdgeFunction, typename Params>
+    void
+        set_bitruncated_cubic_honeycomb_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Params const& params
+        );
+}  // namespace boost
+``
+
+The function prototype that explicitly takes in all parameters is defined if
+the `BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_ALL_PARAMS` preprocessor
+token is defined--that is, if you set `BOOST_PARAMETER_MAX_ARITY` to 9 or
+higher.
+
+``
+namespace boost {
+
+    template <
+        typename VertexIterator
+      , typename EdgeFunction
+      , typename Dimensions
+      , typename Scalar
+      , typename WraparoundPolicy
+      , typename PointFactory
+      , typename PositionIndexMap
+      , typename PositionMap
+      , typename Point
+    >
+    void
+        set_bitruncated_cubic_honeycomb_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Dimensions const& dimensions
+          , Scalar inscribed_radius
+          , WraparoundPolicy const& wraparound_policy
+          , PointFactory point_factory
+          , PositionIndexMap position_index_map
+          , PositionMap position_map
+          , Point const& origin
+        );
+}  // namespace boost
+``
+
+Otherwise, the following function prototype is defined if the
+`BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_5_PARAMS` preprocessor token
+is defined--that is, if you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower than
+its default value of 5.
+
+``
+namespace boost {
+
+    template <
+        typename VertexIterator
+      , typename EdgeFunction
+      , typename Dimensions
+      , typename Scalar
+      , typename WraparoundPolicy
+    >
+    void
+        set_bitruncated_cubic_honeycomb_layout(
+            VertexIterator vertex_iterator
+          , EdgeFunction edge_function
+          , Dimensions const& dimensions
+          , Scalar inscribed_radius
+          , WraparoundPolicy const& wraparound_policy
+        );
+}  // namespace boost
+``
+
+If you need to pass in any additional arguments, then either you must set
+`BOOST_PARAMETER_MAX_ARITY` to 9 or higher, or you must use the first prototype
+instead.
+[endsect] [/ Prototype]
+
+[section Description]
+This algorithm performs layout of directed or undirected graphs, positioning
+each vertex at the centroid of a __truncated_octahedron__ in a
+__bitruncated_cubic_honeycomb__ that fits the specified dimensions.  The edge
+function will be invoked for each pair of vertices whose corresponding
+__truncated_octahedra__ share a face in the honeycomb.
+[endsect] [/ Description]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_set_bt_cubic_hcomb_layout_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `VertexIterator` must model the __Readable_Iterator__ and
+    __Incrementable_Iterator__ concepts.
+  * `EdgeFunction` must model the __Binary_Function__ concept.
+  * The value type of `VertexIterator` must be convertible to both the first
+    and second argument types of `EdgeFunction`.
+  * `Dimensions` must implement an index operator that accepts an integer type
+    as a valid argument and whose return type is a reference to a numeric type.
+  * If `point_factory` is not specified, then `Dimensions` must model the
+    __Default_Constructible__ concept.
+  * `Scalar` must be a numeric type.
+  * `WraparoundPolicy` must implement an index operator that accepts an integer
+    type as a valid argument and whose return type is `bool`.
+  * `PointFactory` must model the __Generator__ concept.
+  * The return type of `PointFactory` must be convertible to `Point`.
+  * `PositionIndexMap` must implement an index operator that accepts an integer
+    type as a valid argument and whose return type is also an integer type.
+  * `PositionMap` must model the __Writable_Property_Map__ concept.
+  * The value type of `VertexIterator` must be usable as the key type of
+    `PositionMap`.
+  * `Point` must implement an index operator that accepts an integer type as a
+    valid argument and whose return type is a reference to a numeric type.
+  * `Point` must be usable as the value type of `PositionMap`.
+  * If neither `point_factory` nor `origin` are specified, then `Dimensions`
+    must be convertible to `Point`.
+  * `Scalar` and the return types of the index operators of `Dimensions` and
+    `Point` must be interoperable arithmetic-wise.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`vertex_iterator`]
+        [
+            An iterator over the vertices of a graph.  The algorithm will store
+            copies of the vertex descriptors dereferenced from it.
+        ]
+        [
+            If this iterator points to the beginning of a range of vertices
+            in a graph, then this range must at least as large as the value
+            returned by
+            [^_count_bitruncated_cubic_honeycomb_layout_vertices_(dimensions,
+            inscribed_radius, position_index_map)].
+        ]
+        [None; always required.]
+    ]
+    [
+        [`edge_function`]
+        [
+            A function that is invoked each time the algorithm recognizes the
+            input vertices as edges.
+        ]
+        [
+            Each vertex descriptor dereferenced from `vertex_iterator` must be
+            a valid argument.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`dimensions`]
+        [The physical size of the resulting layout.]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.  Furthermore, If `point_factory`
+            is not specified, then the default constructor of `Dimensions`
+            must ensure that the object returned fulfills this requirement.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`inscribed_radius`]
+        [
+            The radius of the sphere inscribed by the __truncated_octahedron__
+            that each vertex represents.  See the
+            __set_bitruncated_cubic_honeycomb_layout__description__ for further
+            information.
+        ]
+        []
+        [`1`]
+    ]
+    [
+        [`wraparound_policy`]
+        [
+            An object whose index operator returns a boolean flag indicating
+            whether or not the algorithm will allow edges to wrap around in
+            the specified dimension.
+        ]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [An object whose index operator always returns `false`.]
+    ]
+    [
+        [`point_factory`]
+        [
+            A function that constructs and returns `Point` objects.  Required
+            if the default constructor of `Point` does not exist or prevents
+            its index operator from fulfilling its runtime requirement.
+        ]
+        [
+            The index operator of each object returned must accept values
+            returned by the index operator of `position_index_map`.
+        ]
+        [[^_value_factory_<Dimensions>()]]
+    ]
+    [
+        [`position_index_map`]
+        [
+            Maps each dimension index to a unique integer.  Specify an argument
+            for this parameter if, for example, a 3-D application calls for
+            different upsilon tessellation layouts to reside on different
+            dimensional planes.
+        ]
+        [The index operator must accept values in the range `[0, 2]`.]
+        [[^_identity_property_map_()]]
+    ]
+    [
+        [`position_map`]
+        [
+            Maps each vertex to a `Point` object representing a position in the
+            resulting layout.
+        ]
+        [
+            Each vertex descriptor dereferenced from `vertex_iterator` must be
+            a valid key.
+        ]
+        [`dummy_property_map()`]
+    ]
+    [
+        [`origin`]
+        [
+            An object representing the vertex position whose coordinates are
+            at the lower bound of each dimension.
+        ]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [
+            A `Point` whose index operator returns zero for each of the input
+            dimensions returned by the index operator of `position_index_map`.
+        ]
+    ]
+]
+
+Remember that the __BGL__ prefixes each __Boost_Parameter__ keyword with an
+underscore and defines it in the `boost::graph::keywords` namespace.
+[endsect] [/ Parameters]
+
+[section Example]
+[example__bitruncated_cubic_honeycomb]
+
+The complete example program can be compiled from this file:
+<__example_bitruncated_cubic_honeycomb_cpp__>.
+[endsect]
+
+[endsect] [/ set_bitruncated_cubic_honeycomb_layout]
+

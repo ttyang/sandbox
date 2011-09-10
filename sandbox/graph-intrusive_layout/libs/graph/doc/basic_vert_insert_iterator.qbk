@@ -1,0 +1,105 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:basic_vert_insert_iterator `basic_vertex_insert_iterator`]
+
+[section Synopsis]
+[reference__basic_vertex_insert_iterator__definition]
+[reference__basic_vertex_inserter__prototype]
+[endsect]
+
+[section Description]
+Since some popular graph types provide a `clear()` member function but not a
+`resize()` member function, it may not be possible to reserve enough vertices
+for layout algorithms to work in some cases.  This iterator facade enables the
+layout algorithms to add vertices on the fly.  It will serve your needs if the
+graph does not possess any internal vertex property maps, or if the vertex
+properties can be initialized later on.
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_basic_vert_insert_iterator_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements]]
+    [
+        [`Graph`]
+        [The type of the graph to whom this iterator will add vertices.]
+        [It must model the __Mutable_Graph__ concept.]
+    ]
+]
+
+[section:model_of Model of]
+
+  * __Readable_Iterator__
+  * __Incrementable_Iterator__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+__iterator_facade__
+[endsect]
+
+[variablelist Notation
+    [[`graph`][An object of type `Graph`.]]
+    [[`itr`][An object of type `basic_vertex_insert_iterator`.]]
+]
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Constructor]
+        [`basic_vertex_insert_iterator(graph)`]
+        [
+            Constructs a new `basic_vertex_insert_iterator` object that will
+            add vertices to the specified graph.
+        ]
+    ]
+    [
+        [Dereference operator]
+        [`*itr`]
+        [
+            Adds a new vertex to the graph, then returns the representative
+            __vertex_descriptor__.
+        ]
+    ]
+    [
+        [Pre-increment operator]
+        [`++itr`]
+        [No-op.]
+    ]
+    [
+        [Post-increment operator]
+        [`itr++`]
+        [No-op.]
+    ]
+]
+[endsect]
+
+[section Non-members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Construction function]
+        [`basic_vertex_inserter(graph)`]
+        [
+            Constructs and returns a new `basic_vertex_insert_iterator` object
+            that will add vertices to the specified graph.
+        ]
+    ]
+]
+[endsect]
+
+[endsect] [/ basic_vertex_insert_iterator]
+

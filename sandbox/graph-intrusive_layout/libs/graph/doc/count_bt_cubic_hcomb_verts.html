@@ -1,0 +1,221 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>count_bitruncated_cubic_honeycomb_layout_vertices</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="set_bt_cubic_hcomb_layout.html" title="set_bitruncated_cubic_honeycomb_layout">
+<link rel="next" href="set_bitset_grid_layout.html" title="set_bitset_grid_layout">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="set_bt_cubic_hcomb_layout.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="set_bitset_grid_layout.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.count_bt_cubic_hcomb_verts"></a><a class="link" href="count_bt_cubic_hcomb_verts.html" title="count_bitruncated_cubic_honeycomb_layout_vertices"><code class="computeroutput"><span class="identifier">count_bitruncated_cubic_honeycomb_layout_vertices</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bt_cubic_hcomb_verts.prototype"></a><a class="link" href="count_bt_cubic_hcomb_verts.html#index.count_bt_cubic_hcomb_verts.prototype" title="Prototype">Prototype</a>
+</h3></div></div></div>
+<p>
+        The function prototype that takes in <a href="http://www.boost.org/libs/graph/doc/bgl_named_params.html" target="_top">old-style
+        named parameters</a> is always defined.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Params</span><span class="special">&gt;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span>
+        <span class="identifier">count_bitruncated_cubic_honeycomb_layout_vertices</span><span class="special">(</span>
+            <span class="identifier">Params</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">params</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        The function prototype that takes in <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>
+        keywords is defined if you <span class="emphasis"><em>don't</em></span> set <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+        lower than 3.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Dimensions</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Scalar</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PositionIndexMap</span><span class="special">&gt;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span>
+        <span class="identifier">count_bitruncated_cubic_honeycomb_layout_vertices</span><span class="special">(</span>
+            <span class="identifier">Dimensions</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">dimensions</span>
+          <span class="special">,</span> <span class="identifier">Scalar</span> <span class="identifier">inscribed_radius</span>
+          <span class="special">,</span> <span class="identifier">PositionIndexMap</span> <span class="identifier">position_index_map</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bt_cubic_hcomb_verts.description"></a><a class="link" href="count_bt_cubic_hcomb_verts.html#index.count_bt_cubic_hcomb_verts.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        Returns the number of times that the <a class="link" href="set_bt_cubic_hcomb_layout.html" title="set_bitruncated_cubic_honeycomb_layout"><code class="computeroutput"><span class="identifier">set_bitruncated_cubic_honeycomb_layout</span><span class="special">()</span></code></a> algorithm will dereference and increment
+        its vertex iterator if passed the same arguments to this function.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bt_cubic_hcomb_verts.definition"></a><a class="link" href="count_bt_cubic_hcomb_verts.html#index.count_bt_cubic_hcomb_verts.definition" title="Where Defined">Where Defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/set_bt_cubic_hcomb_layout.hpp" target="_top">boost/graph/set_bt_cubic_hcomb_layout.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bt_cubic_hcomb_verts.type_requirements"></a><a class="link" href="count_bt_cubic_hcomb_verts.html#index.count_bt_cubic_hcomb_verts.type_requirements" title="Type Requirements">Type
+      Requirements</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">Dimensions</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">implement</span> <span class="identifier">an</span> <span class="identifier">index</span> <span class="keyword">operator</span> <span class="identifier">that</span> <span class="identifier">accepts</span> <span class="identifier">an</span> <span class="identifier">integer</span> <span class="identifier">type</span>
+  <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">argument</span> <span class="keyword">and</span> <span class="identifier">whose</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="identifier">a</span> <span class="identifier">reference</span> <span class="identifier">to</span> <span class="identifier">a</span> <span class="identifier">numeric</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Scalar</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">a</span> <span class="identifier">numeric</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Scalar</span><span class="error">`</span> <span class="keyword">and</span> <span class="identifier">the</span> <span class="keyword">return</span> <span class="identifier">types</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">index</span> <span class="identifier">operators</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Dimensions</span><span class="error">`</span> <span class="identifier">must</span>
+  <span class="identifier">be</span> <span class="identifier">interoperable</span> <span class="identifier">arithmetic</span><span class="special">-</span><span class="identifier">wise</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">PositionIndexMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">implement</span> <span class="identifier">an</span> <span class="identifier">index</span> <span class="keyword">operator</span> <span class="identifier">that</span> <span class="identifier">accepts</span> <span class="identifier">an</span> <span class="identifier">integer</span>
+  <span class="identifier">type</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">argument</span> <span class="keyword">and</span> <span class="identifier">whose</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="identifier">also</span> <span class="identifier">an</span> <span class="identifier">integer</span> <span class="identifier">type</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.count_bt_cubic_hcomb_verts.parameters"></a><a class="link" href="count_bt_cubic_hcomb_verts.html#index.count_bt_cubic_hcomb_verts.parameters" title="Parameters">Parameters</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Parameter
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+<th>
+                <p>
+                  Runtime requirements
+                </p>
+              </th>
+<th>
+                <p>
+                  Default
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dimensions</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The physical size of the resulting layout.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator must accept values returned by the index operator
+                  of <code class="computeroutput"><span class="identifier">position_index_map</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  None; always required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">inscribed_radius</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The radius of the sphere inscribed by the truncated octahedron
+                  that each vertex represents. See the <a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.description" title="Description">description</a>
+                  for further information.
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="number">1</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">position_index_map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Maps each dimension index to a unique integer. Specify an argument
+                  for this parameter if, for example, a 3-D application calls for
+                  different upsilon tessellation layouts to reside on different dimensional
+                  planes.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator must accept values in the range <code class="computeroutput"><span class="special">[</span><span class="number">0</span><span class="special">,</span> <span class="number">2</span><span class="special">]</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal"><a href="http://www.boost.org/libs/property_map/doc/identity_property_map.html" target="_top">identity_property_map</a>()</code>
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="set_bt_cubic_hcomb_layout.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="set_bitset_grid_layout.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

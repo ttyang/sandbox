@@ -1,0 +1,99 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:count_upsilon_tessel_verts
+`count_upsilon_tessellation_layout_vertices`]
+
+[section Prototype]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+``
+namespace boost {
+
+    template <typename Params>
+    std::size_t
+        count_upsilon_tessellation_layout_vertices(Params const& params);
+}  // namespace boost
+``
+
+The function prototype that takes in __Boost_Parameter__ keywords is defined if
+you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower than 3.
+
+``
+namespace boost {
+
+    template <typename Dimensions, typename Scalar, typename PositionIndexMap>
+    std::size_t
+        count_upsilon_tessellation_layout_vertices(
+            Dimensions const& dimensions
+          , Scalar vertex_centroid_distance
+          , PositionIndexMap position_index_map
+        );
+}  // namespace boost
+``
+[endsect]
+
+[section Description]
+Returns the number of times that the __set_upsilon_tessellation_layout__
+algorithm will dereference and increment its vertex iterator if passed the same
+arguments to this function.
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_set_upsilon_tessel_layout_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `Dimensions` must implement an index operator that accepts an integer type
+    as a valid argument and whose return type is a reference to a numeric type.
+  * `Scalar` must be a numeric type.
+  * `Scalar` and the return types of the index operators of `Dimensions` must
+    be interoperable arithmetic-wise.
+  * `PositionIndexMap` must implement an index operator that accepts an integer
+    type as a valid argument and whose return type is also an integer type.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`dimensions`]
+        [The physical size of the resulting layout.]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`vertex_centroid_distance`]
+        [The distance between two orthogonally adjacent vertices.]
+        []
+        [`1`]
+    ]
+    [
+        [`position_index_map`]
+        [
+            Maps each dimension index to a unique integer.  Specify an argument
+            for this parameter if, for example, a 3-D application calls for
+            different upsilon tessellation layouts to reside on different
+            dimensional planes.
+        ]
+        [The index operator must accept values in the range `[0, 1]`.]
+        [[^_identity_property_map_()]]
+    ]
+]
+[endsect]
+
+[endsect] [/ count_upsilon_tessellation_layout_vertices]
+

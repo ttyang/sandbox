@@ -1,0 +1,523 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>set_bitruncated_cubic_honeycomb_layout</title>
+<link rel="stylesheet" href="../doc/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="index 0.1">
+<link rel="up" href="../index.html" title="index 0.1">
+<link rel="prev" href="count_upsilon_tessel_verts.html" title="count_upsilon_tessellation_layout_vertices">
+<link rel="next" href="count_bt_cubic_hcomb_verts.html" title="count_bitruncated_cubic_honeycomb_layout_vertices">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="count_upsilon_tessel_verts.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="count_bt_cubic_hcomb_verts.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="index.set_bt_cubic_hcomb_layout"></a><a class="link" href="set_bt_cubic_hcomb_layout.html" title="set_bitruncated_cubic_honeycomb_layout"><code class="computeroutput"><span class="identifier">set_bitruncated_cubic_honeycomb_layout</span></code></a>
+</h2></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bt_cubic_hcomb_layout.prototype"></a><a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.prototype" title="Prototype">Prototype</a>
+</h3></div></div></div>
+<p>
+        The function prototype that takes in <a href="http://www.boost.org/libs/graph/doc/bgl_named_params.html" target="_top">old-style
+        named parameters</a> is always defined.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">VertexIterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">EdgeFunction</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Params</span><span class="special">&gt;</span>
+    <span class="keyword">void</span>
+        <span class="identifier">set_bitruncated_cubic_honeycomb_layout</span><span class="special">(</span>
+            <span class="identifier">VertexIterator</span> <span class="identifier">vertex_iterator</span>
+          <span class="special">,</span> <span class="identifier">EdgeFunction</span> <span class="identifier">edge_function</span>
+          <span class="special">,</span> <span class="identifier">Params</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">params</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        The function prototype that explicitly takes in all parameters is defined
+        if the <code class="computeroutput"><span class="identifier">BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_ALL_PARAMS</span></code>
+        preprocessor token is defined--that is, if you set <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+        to 9 or higher.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">VertexIterator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">EdgeFunction</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Dimensions</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Scalar</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">WraparoundPolicy</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PointFactory</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PositionIndexMap</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PositionMap</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Point</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">void</span>
+        <span class="identifier">set_bitruncated_cubic_honeycomb_layout</span><span class="special">(</span>
+            <span class="identifier">VertexIterator</span> <span class="identifier">vertex_iterator</span>
+          <span class="special">,</span> <span class="identifier">EdgeFunction</span> <span class="identifier">edge_function</span>
+          <span class="special">,</span> <span class="identifier">Dimensions</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">dimensions</span>
+          <span class="special">,</span> <span class="identifier">Scalar</span> <span class="identifier">inscribed_radius</span>
+          <span class="special">,</span> <span class="identifier">WraparoundPolicy</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">wraparound_policy</span>
+          <span class="special">,</span> <span class="identifier">PointFactory</span> <span class="identifier">point_factory</span>
+          <span class="special">,</span> <span class="identifier">PositionIndexMap</span> <span class="identifier">position_index_map</span>
+          <span class="special">,</span> <span class="identifier">PositionMap</span> <span class="identifier">position_map</span>
+          <span class="special">,</span> <span class="identifier">Point</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">origin</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        Otherwise, the following function prototype is defined if the <code class="computeroutput"><span class="identifier">BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_5_PARAMS</span></code>
+        preprocessor token is defined--that is, if you <span class="emphasis"><em>don't</em></span>
+        set <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+        lower than its default value of 5.
+      </p>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">VertexIterator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">EdgeFunction</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Dimensions</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Scalar</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">WraparoundPolicy</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">void</span>
+        <span class="identifier">set_bitruncated_cubic_honeycomb_layout</span><span class="special">(</span>
+            <span class="identifier">VertexIterator</span> <span class="identifier">vertex_iterator</span>
+          <span class="special">,</span> <span class="identifier">EdgeFunction</span> <span class="identifier">edge_function</span>
+          <span class="special">,</span> <span class="identifier">Dimensions</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">dimensions</span>
+          <span class="special">,</span> <span class="identifier">Scalar</span> <span class="identifier">inscribed_radius</span>
+          <span class="special">,</span> <span class="identifier">WraparoundPolicy</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">wraparound_policy</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+      </p>
+<p>
+        If you need to pass in any additional arguments, then either you must set
+        <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+        to 9 or higher, or you must use the first prototype instead.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bt_cubic_hcomb_layout.description"></a><a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        This algorithm performs layout of directed or undirected graphs, positioning
+        each vertex at the centroid of a <a href="http://en.wikipedia.org/wiki/Truncated_octahedron" target="_top">truncated
+        octahedron</a> in a <a href="http://en.wikipedia.org/wiki/Bitruncated_cubic_honeycomb" target="_top">bitruncated
+        cubic honeycomb</a> that fits the specified dimensions. The edge function
+        will be invoked for each pair of vertices whose corresponding <a href="http://en.wikipedia.org/wiki/Truncated_octahedron" target="_top">truncated
+        octahedra</a> share a face in the honeycomb.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bt_cubic_hcomb_layout.definition"></a><a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.definition" title="Where Defined">Where Defined</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/set_bt_cubic_hcomb_layout.hpp" target="_top">boost/graph/set_bt_cubic_hcomb_layout.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bt_cubic_hcomb_layout.type_requirements"></a><a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.type_requirements" title="Type Requirements">Type
+      Requirements</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">VertexIterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/iterator/doc/ReadableIterator.html" target="_top"><span class="bold"><strong>Readable Iterator</strong></span></a> <span class="keyword">and</span>
+  <a href="http://www.boost.org/libs/iterator/doc/IncrementableIterator.html" target="_top"><span class="bold"><strong>Incrementable Iterator</strong></span></a> <span class="identifier">concepts</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">EdgeFunction</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/BinaryFunction.html" target="_top"><span class="bold"><strong>Binary Function</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">VertexIterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="identifier">both</span> <span class="identifier">the</span> <span class="identifier">first</span>
+  <span class="keyword">and</span> <span class="identifier">second</span> <span class="identifier">argument</span> <span class="identifier">types</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">EdgeFunction</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Dimensions</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">implement</span> <span class="identifier">an</span> <span class="identifier">index</span> <span class="keyword">operator</span> <span class="identifier">that</span> <span class="identifier">accepts</span> <span class="identifier">an</span> <span class="identifier">integer</span> <span class="identifier">type</span>
+  <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">argument</span> <span class="keyword">and</span> <span class="identifier">whose</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="identifier">a</span> <span class="identifier">reference</span> <span class="identifier">to</span> <span class="identifier">a</span> <span class="identifier">numeric</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="error">`</span><span class="identifier">point_factory</span><span class="error">`</span> <span class="identifier">is</span> <span class="keyword">not</span> <span class="identifier">specified</span><span class="special">,</span> <span class="identifier">then</span> <span class="error">`</span><span class="identifier">Dimensions</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span>
+  <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Scalar</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">a</span> <span class="identifier">numeric</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">WraparoundPolicy</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">implement</span> <span class="identifier">an</span> <span class="identifier">index</span> <span class="keyword">operator</span> <span class="identifier">that</span> <span class="identifier">accepts</span> <span class="identifier">an</span> <span class="identifier">integer</span>
+  <span class="identifier">type</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">argument</span> <span class="keyword">and</span> <span class="identifier">whose</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="error">`</span><span class="keyword">bool</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">PointFactory</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/Generator.html" target="_top"><span class="bold"><strong>Generator</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">PointFactory</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">Point</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">PositionIndexMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">implement</span> <span class="identifier">an</span> <span class="identifier">index</span> <span class="keyword">operator</span> <span class="identifier">that</span> <span class="identifier">accepts</span> <span class="identifier">an</span> <span class="identifier">integer</span>
+  <span class="identifier">type</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">argument</span> <span class="keyword">and</span> <span class="identifier">whose</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="identifier">also</span> <span class="identifier">an</span> <span class="identifier">integer</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/property_map/doc/WritablePropertyMap.html" target="_top"><span class="bold"><strong>Writable Property Map</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">VertexIterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">usable</span> <span class="identifier">as</span> <span class="identifier">the</span> <span class="identifier">key</span> <span class="identifier">type</span> <span class="identifier">of</span>
+  <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Point</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">implement</span> <span class="identifier">an</span> <span class="identifier">index</span> <span class="keyword">operator</span> <span class="identifier">that</span> <span class="identifier">accepts</span> <span class="identifier">an</span> <span class="identifier">integer</span> <span class="identifier">type</span> <span class="identifier">as</span> <span class="identifier">a</span>
+  <span class="identifier">valid</span> <span class="identifier">argument</span> <span class="keyword">and</span> <span class="identifier">whose</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="identifier">a</span> <span class="identifier">reference</span> <span class="identifier">to</span> <span class="identifier">a</span> <span class="identifier">numeric</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Point</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">usable</span> <span class="identifier">as</span> <span class="identifier">the</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">PositionMap</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="identifier">neither</span> <span class="error">`</span><span class="identifier">point_factory</span><span class="error">`</span> <span class="identifier">nor</span> <span class="error">`</span><span class="identifier">origin</span><span class="error">`</span> <span class="identifier">are</span> <span class="identifier">specified</span><span class="special">,</span> <span class="identifier">then</span> <span class="error">`</span><span class="identifier">Dimensions</span><span class="error">`</span>
+  <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">Point</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Scalar</span><span class="error">`</span> <span class="keyword">and</span> <span class="identifier">the</span> <span class="keyword">return</span> <span class="identifier">types</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">index</span> <span class="identifier">operators</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Dimensions</span><span class="error">`</span> <span class="keyword">and</span>
+  <span class="error">`</span><span class="identifier">Point</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">interoperable</span> <span class="identifier">arithmetic</span><span class="special">-</span><span class="identifier">wise</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bt_cubic_hcomb_layout.parameters"></a><a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.parameters" title="Parameters">Parameters</a>
+</h3></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Parameter
+                </p>
+              </th>
+<th>
+                <p>
+                  Description
+                </p>
+              </th>
+<th>
+                <p>
+                  Runtime requirements
+                </p>
+              </th>
+<th>
+                <p>
+                  Default
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">vertex_iterator</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  An iterator over the vertices of a graph. The algorithm will store
+                  copies of the vertex descriptors dereferenced from it.
+                </p>
+              </td>
+<td>
+                <p>
+                  If this iterator points to the beginning of a range of vertices
+                  in a graph, then this range must at least as large as the value
+                  returned by <code class="literal"><a class="link" href="count_bt_cubic_hcomb_verts.html" title="count_bitruncated_cubic_honeycomb_layout_vertices">count_bitruncated_cubic_honeycomb_layout_vertices</a>(dimensions,
+                  inscribed_radius, position_index_map)</code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  None; always required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">edge_function</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A function that is invoked each time the algorithm recognizes the
+                  input vertices as edges.
+                </p>
+              </td>
+<td>
+                <p>
+                  Each vertex descriptor dereferenced from <code class="computeroutput"><span class="identifier">vertex_iterator</span></code>
+                  must be a valid argument.
+                </p>
+              </td>
+<td>
+                <p>
+                  None; always required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dimensions</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The physical size of the resulting layout.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator must accept values returned by the index operator
+                  of <code class="computeroutput"><span class="identifier">position_index_map</span></code>.
+                  Furthermore, If <code class="computeroutput"><span class="identifier">point_factory</span></code>
+                  is not specified, then the default constructor of <code class="computeroutput"><span class="identifier">Dimensions</span></code> must ensure that the
+                  object returned fulfills this requirement.
+                </p>
+              </td>
+<td>
+                <p>
+                  None; always required.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">inscribed_radius</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  The radius of the sphere inscribed by the <a href="http://en.wikipedia.org/wiki/Truncated_octahedron" target="_top">truncated
+                  octahedron</a> that each vertex represents. See the <a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.description" title="Description">description</a>
+                  for further information.
+                </p>
+              </td>
+<td>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="number">1</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">wraparound_policy</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  An object whose index operator returns a boolean flag indicating
+                  whether or not the algorithm will allow edges to wrap around in
+                  the specified dimension.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator must accept values returned by the index operator
+                  of <code class="computeroutput"><span class="identifier">position_index_map</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  An object whose index operator always returns <code class="computeroutput"><span class="keyword">false</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">point_factory</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  A function that constructs and returns <code class="computeroutput"><span class="identifier">Point</span></code>
+                  objects. Required if the default constructor of <code class="computeroutput"><span class="identifier">Point</span></code>
+                  does not exist or prevents its index operator from fulfilling its
+                  runtime requirement.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator of each object returned must accept values returned
+                  by the index operator of <code class="computeroutput"><span class="identifier">position_index_map</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal"><a href="http://www.boost.org/libs/functional/factory/doc/html/" target="_top">value_factory</a>&lt;Dimensions&gt;()</code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">position_index_map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Maps each dimension index to a unique integer. Specify an argument
+                  for this parameter if, for example, a 3-D application calls for
+                  different upsilon tessellation layouts to reside on different dimensional
+                  planes.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator must accept values in the range <code class="computeroutput"><span class="special">[</span><span class="number">0</span><span class="special">,</span> <span class="number">2</span><span class="special">]</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="literal"><a href="http://www.boost.org/libs/property_map/doc/identity_property_map.html" target="_top">identity_property_map</a>()</code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">position_map</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  Maps each vertex to a <code class="computeroutput"><span class="identifier">Point</span></code>
+                  object representing a position in the resulting layout.
+                </p>
+              </td>
+<td>
+                <p>
+                  Each vertex descriptor dereferenced from <code class="computeroutput"><span class="identifier">vertex_iterator</span></code>
+                  must be a valid key.
+                </p>
+              </td>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">dummy_property_map</span><span class="special">()</span></code>
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <code class="computeroutput"><span class="identifier">origin</span></code>
+                </p>
+              </td>
+<td>
+                <p>
+                  An object representing the vertex position whose coordinates are
+                  at the lower bound of each dimension.
+                </p>
+              </td>
+<td>
+                <p>
+                  The index operator must accept values returned by the index operator
+                  of <code class="computeroutput"><span class="identifier">position_index_map</span></code>.
+                </p>
+              </td>
+<td>
+                <p>
+                  A <code class="computeroutput"><span class="identifier">Point</span></code> whose index
+                  operator returns zero for each of the input dimensions returned
+                  by the index operator of <code class="computeroutput"><span class="identifier">position_index_map</span></code>.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+        Remember that the <a href="http://www.boost.org/libs/graph/doc/index.html" target="_top">BGL</a>
+        prefixes each <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>
+        keyword with an underscore and defines it in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span></code>
+        namespace.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="index.set_bt_cubic_hcomb_layout.example"></a><a class="link" href="set_bt_cubic_hcomb_layout.html#index.set_bt_cubic_hcomb_layout.example" title="Example">Example</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">numeric</span><span class="special">::</span><span class="identifier">ublas</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">Point</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_distance_t</span> <span class="identifier">PositionTag</span><span class="special">;</span>
+
+    <span class="identifier">Point</span> <span class="identifier">dimensions</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
+
+    <span class="identifier">dimensions</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">dimensions</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">=</span> <span class="number">7.0</span><span class="special">;</span>
+    <span class="identifier">dimensions</span><span class="special">(</span><span class="number">2</span><span class="special">)</span> <span class="special">=</span> <span class="number">8.0</span><span class="special">;</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span><span class="special">&lt;</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">multisetS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">listS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">undirectedS</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property</span><span class="special">&lt;</span><span class="identifier">PositionTag</span><span class="special">,</span><span class="identifier">Point</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span> <span class="identifier">graph</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">count_bitruncated_cubic_honeycomb_layout_vertices</span><span class="special">(</span><span class="identifier">dimensions</span><span class="special">)</span>
+    <span class="special">);</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">,</span><span class="number">3</span><span class="special">&gt;</span> <span class="identifier">wraparound_policy</span> <span class="special">=</span> <span class="special">{{</span><span class="keyword">false</span><span class="special">,</span> <span class="keyword">true</span><span class="special">,</span> <span class="keyword">true</span><span class="special">}};</span>
+
+<span class="preprocessor">#ifdef</span> <span class="identifier">BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_ALL_PARAMS</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">set_bitruncated_cubic_honeycomb_layout</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertices</span><span class="special">(</span><span class="identifier">graph</span><span class="special">).</span><span class="identifier">first</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">basic_2way_edge_adder</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">dimensions</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">::</span><span class="identifier">_wraparound_policy</span> <span class="special">=</span> <span class="identifier">wraparound_policy</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">::</span><span class="identifier">_point_factory</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">val</span><span class="special">(</span><span class="identifier">Point</span><span class="special">(</span><span class="number">3</span><span class="special">))</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">::</span><span class="identifier">_position_map</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span>
+            <span class="identifier">PositionTag</span><span class="special">()</span>
+          <span class="special">,</span> <span class="identifier">graph</span>
+        <span class="special">)</span>
+    <span class="special">);</span>
+<span class="preprocessor">#else</span>  <span class="comment">// !BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_ALL_PARAMS
+</span>    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">set_bitruncated_cubic_honeycomb_layout</span><span class="special">(</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertices</span><span class="special">(</span><span class="identifier">graph</span><span class="special">).</span><span class="identifier">first</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">basic_2way_edge_adder</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)</span>
+      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dimensions</span><span class="special">(</span>
+            <span class="identifier">dimensions</span>
+        <span class="special">).</span><span class="identifier">wraparound_policy</span><span class="special">(</span>
+            <span class="identifier">wraparound_policy</span>
+        <span class="special">).</span><span class="identifier">point_factory</span><span class="special">(</span>
+            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">val</span><span class="special">(</span><span class="identifier">Point</span><span class="special">(</span><span class="number">3</span><span class="special">))</span>
+        <span class="special">).</span><span class="identifier">position_map</span><span class="special">(</span>
+            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">PositionTag</span><span class="special">(),</span> <span class="identifier">graph</span><span class="special">)</span>
+        <span class="special">)</span>
+    <span class="special">);</span>
+<span class="preprocessor">#endif</span>  <span class="comment">// BOOST_GRAPH_SET_BITRUNCATED_CUBIC_HONEYCOMB_TAKES_ALL_PARAMS
+</span>    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">print_graph</span><span class="special">(</span><span class="identifier">graph</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">PositionTag</span><span class="special">(),</span> <span class="identifier">graph</span><span class="special">));</span>
+
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        The complete example program can be compiled from this file: &lt;<a href="../example/bitruncated_cubic_honeycomb.cpp" target="_top">example/bitruncated_cubic_honeycomb.cpp</a>&gt;.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="count_upsilon_tessel_verts.html"><img src="../doc/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../doc/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../doc/images/home.png" alt="Home"></a><a accesskey="n" href="count_bt_cubic_hcomb_verts.html"><img src="../doc/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

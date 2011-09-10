@@ -1,0 +1,150 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:count_ortho_grid_verts `count_orthogonal_grid_layout_vertices`]
+
+[section Prototype]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+``
+namespace boost {
+
+    template <typename Params>
+    std::size_t count_orthogonal_grid_layout_vertices(Params const& params);
+}  // namespace boost
+``
+
+The function prototype that takes in __Boost_Parameter__ keywords is defined if
+you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower than its default value of 5.
+
+``
+namespace boost {
+
+    template <
+        typename Dimensions
+      , typename DimensionCount
+      , typename PointFactory
+      , typename PositionIndexMap
+      , typename Scale
+    >
+    std::size_t
+        count_orthogonal_grid_layout_vertices(
+            Dimensions const& dimensions
+          , DimensionCount dimension_count
+          , PointFactory point_factory
+          , PositionIndexMap position_index_map
+          , Scale const& scale
+        );
+}  // namespace boost
+``
+[endsect]
+
+[section Description]
+Returns the number of times that the __set_orthogonal_grid_layout__ algorithm
+will dereference and increment its vertex iterator if passed the same
+arguments to this function.
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_set_orthogonal_grid_layout_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `Dimensions` must implement an index operator that accepts an integer type
+    as a valid argument and whose return type is a reference to a numeric type.
+  * If `point_factory` is not specified, then `Dimensions` must model the
+    __Default_Constructible__ concept.
+  * `DimensionCount` must model the __MPL_Integral_Constant__ concept.
+  * The value that `DimensionCount` represents must be greater than 1.
+  * `PointFactory` must model the __Generator__ concept.
+  * The return type of `PointFactory` must be convertible to `Scale`.
+  * `PositionIndexMap` must implement an index operator that accepts an integer
+    type as a valid argument and whose return type is also an integer type.
+  * `Scale` must implement an index operator that accepts an integer type as a
+    valid argument and whose return type is a reference to a numeric type.
+  * If neither `point_factory` nor `scale` are specified, then `Dimensions`
+    must be convertible to `Scale`.
+  * The return types of the index operators of `Dimensions` and `Scale` must be
+    interoperable arithmetic-wise.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`dimensions`]
+        [The physical size of the resulting layout.]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.  Furthermore, If `point_factory`
+            is not specified, then the default constructor of `Dimensions`
+            must ensure that the object returned fulfills this requirement.
+        ]
+        [None; always required.]
+    ]
+    [
+        [`dimension_count`]
+        [
+            An __MPL_Integral_Constant__ representing the number of dimensions
+            the resulting layout will straddle.
+        ]
+        []
+        [An __MPL_Integral_Constant__ representing the value `2`.]
+    ]
+    [
+        [`point_factory`]
+        [
+            A function that constructs and returns `Point` objects.  Required
+            if the default constructor of `Point` does not exist or prevents
+            its index operator from fulfilling its runtime requirement.
+        ]
+        [
+            The index operator of each object returned must accept values
+            returned by the index operator of `position_index_map`.
+        ]
+        [[^_value_factory_<Dimensions>()]]
+    ]
+    [
+        [`position_index_map`]
+        [
+            Maps each dimension index to a unique integer.  Specify an argument
+            for this parameter if, for example, a 3-D application calls for
+            different orthogonal layouts to reside on different dimensional
+            planes.
+        ]
+        [
+            The index operator must accept values in the range
+            `[0, DimensionCount::value)`.
+        ]
+        [[^_identity_property_map_()]]
+    ]
+    [
+        [`scale`]
+        [
+            An object representing the distance between two adjacent vertices
+            in each dimension.
+        ]
+        [
+            The index operator must accept values returned by the index
+            operator of `position_index_map`.
+        ]
+        [
+            A `Point` whose index operator returns one for each of the input
+            dimensions returned by the index operator of `position_index_map`.
+        ]
+    ]
+]
+[endsect] [/ Parameters]
+
+[endsect] [/ count_orthogonal_grid_layout_vertices]
+

@@ -1,0 +1,95 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:count_bitset_grid_verts `count_bitset_grid_layout_vertices`]
+
+[section Prototype]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+``
+namespace boost {
+
+    template <typename Params>
+    std::size_t count_bitset_grid_layout_vertices(Params const& params);
+}  // namespace boost
+``
+
+The function prototype that takes in __Boost_Parameter__ keywords is defined if
+you /don't/ set `BOOST_PARAMETER_MAX_ARITY` lower than 2.
+
+``
+namespace boost {
+
+    template <typename DimensionCount, typename PositionMap>
+    std::size_t
+        count_bitset_grid_layout_vertices(
+            DimensionCount dimension_count
+          , PositionMap position_map
+        );
+}  // namespace boost
+``
+[endsect]
+
+[section Description]
+Returns the number of times that the __set_bitset_grid_layout__ algorithm will
+dereference and increment its vertex iterator if passed the same arguments to
+this function.
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_set_bitset_grid_layout_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `DimensionCount` must model the __MPL_Integral_Constant__ concept.
+  * `PositionMap` must model the __Writable_Property_Map__ concept.
+  * If the value type of `PositionMap` is not an instantiation of
+    __std_bitset__, then the value that `DimensionCount` represents must be
+    greater than 1.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`dimension_count`]
+        [
+            An __MPL_Integral_Constant__ representing the number of bits in
+            each bitset to be associated with each vertex.
+        ]
+        []
+        [
+            If the value type of `PositionMap` is an instantiation of
+            __std_bitset__, then an __MPL_Integral_Constant__ representing its
+            size; otherwise required.
+        ]
+    ]
+    [
+        [`position_map`]
+        [
+            Required only if the value type of `PositionMap` is an
+            instantiation of __std_bitset__.
+        ]
+        []
+        [`dummy_property_map()`]
+    ]
+]
+
+These two parameters can be deduced by type.  However, if for some reason
+you need to specify their names, remember that the __BGL__ prefixes each
+__Boost_Parameter__ keyword with an underscore and defines it in the
+`boost::graph::keywords` namespace.
+[endsect] [/ Parameters]
+
+[endsect] [/ count_bitset_grid_layout_vertices]
+
