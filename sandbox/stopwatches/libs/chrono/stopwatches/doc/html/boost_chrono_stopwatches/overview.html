@@ -1,0 +1,210 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Overview</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.0">
+<link rel="home" href="../index.html" title="Boost.Chrono.Stopwatches 0.3.0">
+<link rel="up" href="../index.html" title="Boost.Chrono.Stopwatches 0.3.0">
+<link rel="prev" href="../index.html" title="Boost.Chrono.Stopwatches 0.3.0">
+<link rel="next" href="users_guide.html" title="Users'Guide">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="users_guide.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_chrono_stopwatches.overview"></a><a class="link" href="overview.html" title="Overview">Overview</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="overview.html#boost_chrono_stopwatches.overview.motivation">Motivation</a></span></dt>
+<dt><span class="section"><a href="overview.html#boost_chrono_stopwatches.overview.description">Description</a></span></dt>
+</dl></div>
+<a name="boost_chrono_stopwatches.overview.how_to_use_this_documentation"></a><h4>
+<a name="idp13414784"></a>
+      <a class="link" href="overview.html#boost_chrono_stopwatches.overview.how_to_use_this_documentation">How
+      to Use This Documentation</a>
+    </h4>
+<p>
+      This documentation makes use of the following naming and formatting conventions.
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          Code is in <code class="computeroutput"><span class="identifier">fixed</span> <span class="identifier">width</span>
+          <span class="identifier">font</span></code> and is syntax-highlighted.
+        </li>
+<li class="listitem">
+          Replaceable text that you will need to supply is in <em class="replaceable"><code>italics</code></em>.
+        </li>
+<li class="listitem">
+          Free functions are rendered in the code font followed by (), as in <code class="computeroutput"><span class="identifier">free_function</span><span class="special">()</span></code>.
+        </li>
+<li class="listitem">
+          If a name refers to a class template, it is specified like this: <code class="computeroutput"><span class="identifier">class_template</span><span class="special">&lt;&gt;</span></code>;
+          that is, it is in code font and its name is followed by <code class="computeroutput"><span class="special">&lt;&gt;</span></code>
+          to indicate that it is a class template.
+        </li>
+<li class="listitem">
+          If a name refers to a function-like macro, it is specified like this:
+          <code class="computeroutput"><span class="identifier">MACRO</span><span class="special">()</span></code>;
+          that is, it is uppercase in code font and its name is followed by <code class="computeroutput"><span class="special">()</span></code> to indicate that it is a function-like
+          macro. Object-like macros appear without the trailing <code class="computeroutput"><span class="special">()</span></code>.
+        </li>
+<li class="listitem">
+          Names that refer to <span class="emphasis"><em>concepts</em></span> in the generic programming
+          sense are specified in CamelCase.
+        </li>
+</ul></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        In addition, notes such as this one specify non-essential information that
+        provides additional background or rationale.
+      </p></td></tr>
+</table></div>
+<p>
+      Finally, you can mentally add the following to any code fragments in this document:
+    </p>
+<pre class="programlisting"><span class="comment">// Include all of Stopwatches files
+</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">chrono</span><span class="special">/</span><span class="identifier">stopwatches</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">;</span>
+</pre>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_chrono_stopwatches.overview.motivation"></a><a class="link" href="overview.html#boost_chrono_stopwatches.overview.motivation" title="Motivation">Motivation</a>
+</h3></div></div></div>
+<a name="boost_chrono_stopwatches.overview.motivation.measuring_elapsed_time"></a><h5>
+<a name="idp13444944"></a>
+        <a class="link" href="overview.html#boost_chrono_stopwatches.overview.motivation.measuring_elapsed_time">Measuring
+        elapsed time</a>
+      </h5>
+<p>
+        Knowing how long a program, a function or a specific code block takes to
+        execute is useful in both test and production environments. <span class="bold"><strong>Boost.Chrono.Stopwatches</strong></span>
+        introduces the <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a> concept which is a mechanism
+        to measure the elapsed time. A Stopwatch allows to start, stop, suspend and
+        resume measuring the elapsed time. <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_hpp.stopwatch" title="Template Class stopwatch&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch</span></code></a><code class="computeroutput"><span class="special">&lt;&gt;</span></code>
+        is the basic model of <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a>.
+      </p>
+<a name="boost_chrono_stopwatches.overview.motivation.reporting_elapsed_time"></a><h5>
+<a name="idp13453456"></a>
+        <a class="link" href="overview.html#boost_chrono_stopwatches.overview.motivation.reporting_elapsed_time">Reporting
+        elapsed time</a>
+      </h5>
+<p>
+        It is often necessary to report elapsed time on a user display or in a log
+        file. <a class="link" href="reference.html#boost_chrono_stopwatches.reference.reporters.stopwatch_reporter_hpp.stopwatch_reporter" title="Template Class stopwatch_reporter&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch_reporter</span></code></a>&lt;&gt; provides
+        a runtime reporting mechanism for this purpose which can be invoked in just
+        one line of code.
+      </p>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">chrono</span><span class="special">;</span>
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <a class="link" href="reference.html#boost_chrono_stopwatches.reference.reporters.stopwatch_reporter_hpp.stopwatch_reporter" title="Template Class stopwatch_reporter&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch_reporter</span></code></a><span class="special">&lt;</span><a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_hpp.stopwatch" title="Template Class stopwatch&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch</span></code></a><span class="special">&lt;</span><span class="identifier">process_cpu_clock</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">_</span><span class="special">;</span>
+  <span class="comment">// ...
+</span><span class="special">}</span>
+</pre>
+<p>
+        Will produce the following output
+      </p>
+<pre class="programlisting"><span class="identifier">real</span> <span class="number">0.034</span><span class="identifier">s</span><span class="special">,</span> <span class="identifier">cpu</span> <span class="number">0.031</span><span class="identifier">s</span> <span class="special">(</span><span class="number">93.0</span><span class="special">%),</span> <span class="identifier">user</span> <span class="number">0.031</span><span class="identifier">s</span><span class="special">,</span> <span class="identifier">system</span> <span class="number">0.000</span><span class="identifier">s</span>
+</pre>
+<p>
+        As this is one of the expression more commonly use, the library provides
+        a stopclock shortcut so the preceding can be writen as
+      </p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <a class="link" href="reference.html#boost_chrono_stopwatches.reference.reporters.stopclock_hpp.stopclock" title="Template Class stopclock&lt;&gt;"><code class="computeroutput"><span class="identifier">stopclock</span></code></a><span class="special">&lt;&gt;</span> <span class="identifier">_</span><span class="special">;</span>
+  <span class="comment">// ...
+</span><span class="special">}</span>
+</pre>
+<a name="boost_chrono_stopwatches.overview.motivation.how_reliable_are_these_measures_"></a><h5>
+<a name="idp13489040"></a>
+        <a class="link" href="overview.html#boost_chrono_stopwatches.overview.motivation.how_reliable_are_these_measures_">How
+        reliable are these measures?</a>
+      </h5>
+<p>
+        There are a number of things that can lead to unreliable measurement (see
+        <a class="link" href="appendices.html#boost_chrono_stopwatches.appendices.rationale" title="Appendix B: Rationale">here</a>
+        for more details), but they mostly amount to reporting overhead. Boost.Chrono
+        provides two ways to improve reliability of time measurements. A <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_accumulator_hpp.stopwatch_accumulator" title="Template Class stopwatch_accumulator&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch_accumulator</span></code></a> only reports
+        statistics once all measurements have been acquired, which removes reporting
+        overhead from the measurements. The other approach is to use a <a class="link" href="reference.html#boost_chrono_stopwatches.reference.other_clocks.suspendible_clock_req" title="SuspendibleClock Requirements"><code class="computeroutput"><span class="identifier">SuspendibleClock</span></code></a> such that the reporting
+        overhead can be ignored by suspending elapsed time tracking during reporting
+        operations
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_chrono_stopwatches.overview.description"></a><a class="link" href="overview.html#boost_chrono_stopwatches.overview.description" title="Description">Description</a>
+</h3></div></div></div>
+<p>
+        On top of the standard facilities of <span class="bold"><strong>Boost.Chrono</strong></span>,
+        <span class="bold"><strong>Boost.Chrono.Stopwatches</strong></span> provides:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p class="simpara">
+            Stopwatches: A facility to measure elapsed time with the ability to start,
+            stop, suspend, or resume measurement.
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a> concept
+              </li>
+<li class="listitem">
+                Scoped helper classes allowing to pairwise start/stop operations,
+                suspend/resume and resume/suspend a <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a>.
+              </li>
+<li class="listitem">
+                <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_hpp.stopwatch" title="Template Class stopwatch&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch</span></code></a>, model of <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a> capturing elapsed
+                <code class="computeroutput"><span class="identifier">Clock</span></code> times.
+              </li>
+<li class="listitem">
+                <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_accumulator_hpp.stopwatch_accumulator" title="Template Class stopwatch_accumulator&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch_accumulator</span></code></a>, model
+                of <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a> capturing cummulated
+                elapsed Clock times.
+              </li>
+</ul></div>
+</li>
+<li class="listitem">
+<p class="simpara">
+            Stopclocks: a complete time reporting package that can be invoked in
+            a single line of code.
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                <a class="link" href="reference.html#boost_chrono_stopwatches.reference.reporters.stopwatch_reporter_hpp.stopwatch_reporter" title="Template Class stopwatch_reporter&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch_reporter</span></code></a>, convenient
+                reporting to an output stream (including wide char streams) of the
+                elapsed time of models of <a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_req" title="Stopwatch Requirements"><code class="computeroutput"><span class="identifier">Stopwatch</span></code></a> results.
+              </li>
+<li class="listitem">
+                <a class="link" href="reference.html#boost_chrono_stopwatches.reference.reporters.stopclock_hpp.stopclock" title="Template Class stopclock&lt;&gt;"><code class="computeroutput"><span class="identifier">stopclock</span><span class="special">&lt;</span><span class="identifier">Clock</span><span class="special">&gt;</span></code></a>
+                shortcut of <code class="computeroutput"><a class="link" href="reference.html#boost_chrono_stopwatches.reference.reporters.stopwatch_reporter_hpp.stopwatch_reporter" title="Template Class stopwatch_reporter&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch_reporter</span></code></a><span class="special">&lt;</span><a class="link" href="reference.html#boost_chrono_stopwatches.reference.stopwatches.stopwatch_hpp.stopwatch" title="Template Class stopwatch&lt;&gt;"><code class="computeroutput"><span class="identifier">stopwatch</span></code></a><span class="special">&lt;</span><span class="identifier">Clock</span><span class="special">&gt;&gt;</span></code>
+              </li>
+</ul></div>
+</li>
+</ul></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009 -2011 Vicente J. Botet Escriba<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="users_guide.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
