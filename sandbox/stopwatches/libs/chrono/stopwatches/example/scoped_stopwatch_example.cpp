@@ -7,29 +7,40 @@
 #include <boost/chrono/stopwatches/stopwatches.hpp>
 #include <cmath>
 #include "sleep_for.hpp"
+#include <boost/chrono/chrono_io.hpp>
+//#include <iostream>
 
 using namespace boost::chrono;
 
 long double res;
 void f1(long j)
 {
-    stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+    //stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+    //stopwatch<> sw;
     for (long i =0; i< j; i+=1)
         res+=std::sqrt( res+123.456L+i );  // burn some time
     if (j!=0) f1(j-1);
-    stopwatch_reporter<stopwatch<> >::scoped_suspend s(_);
-    boost::this_thread::sleep_for(boost::chrono::milliseconds(10));
+    //stopwatch_reporter<stopwatch<> >::scoped_suspend s(_);
+    //std::cout << "f1("<< j <<") Elapsed time: " << sw.elapsed() << std::endl;
 
 }
 int main()
 {
-  stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+  //stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+    stopwatch<> sw;
 
     res=0;
-    for (long i =0; i< 3; ++i) {
-        f1(i*100);
+    for (long i =1; i< 4; ++i) {
+      stopwatch<> sw;
+        f1(i*1000);
+        {
+        stopwatch_suspender<stopwatch<> > _(sw);
+        boost::this_thread::sleep_for(boost::chrono::milliseconds(10));
+        }
+        std::cout << "f1("<< i*1000 <<") Elapsed time: " << sw.elapsed() << std::endl;
     }
 
     std::cout<< res << std::endl;
+    std::cout << "main() Elapsed time: " << sw.elapsed() << std::endl;
   return 0;
 }

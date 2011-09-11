@@ -5,6 +5,7 @@
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
 #include <boost/chrono/stopwatches/stopwatches.hpp>
+#include <boost/chrono/stopwatches/scoped_stopclock.hpp>
 #include <cmath>
 
 using namespace boost::chrono;

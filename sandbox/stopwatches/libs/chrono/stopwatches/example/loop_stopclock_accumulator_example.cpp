@@ -6,6 +6,7 @@
 
 //#include <boost/chrono/stopclock_accumulator.hpp>
 #include <boost/chrono/stopwatches/stopwatches.hpp>
+#include <boost/chrono/stopwatches/stopclock_accumulator.hpp>
 
 #include <cmath>
 #include "sleep_for.hpp"

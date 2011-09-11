@@ -5,27 +5,32 @@
 //  See http://www.boost.org/LICENSE_1_0.txt
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#include <iostream>
+//#include <iostream>
 #include <boost/chrono/stopwatches/stopwatches.hpp>
+#include <boost/chrono/chrono_io.hpp>
 #include <cmath>
 
 using namespace boost::chrono;
 
 int f1(long j)
 {
-  stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+  //stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+  stopwatch<> sw;
 
   for ( long i = 0; i < j; ++i )
     std::sqrt( 123.456L );  // burn some time
 
+  std::cout << "f1("<< j <<") Elapsed time: " << sw.elapsed() << std::endl;
   return 0;
 }
 int main()
 {
-  stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+  //stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
+  stopwatch<> sw;
 
   f1(1000);
   f1(2000);
   f1(3000);
+  std::cout << "main() Elapsed time: " << sw.elapsed() << std::endl;
   return 0;
 }
