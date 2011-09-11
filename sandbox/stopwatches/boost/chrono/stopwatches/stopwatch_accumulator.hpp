@@ -14,21 +14,41 @@
 #include <boost/system/error_code.hpp>
 #include <boost/chrono/stopwatches/lightweight_stopwatch.hpp>
 #include <boost/utility/base_from_member.hpp>
+#include <boost/accumulators/framework/accumulator_set.hpp>
+#include <boost/accumulators/statistics/count.hpp>
+#include <boost/accumulators/statistics/sum.hpp>
+#include <boost/accumulators/statistics/min.hpp>
+#include <boost/accumulators/statistics/max.hpp>
+#include <boost/accumulators/statistics/mean.hpp>
 
 namespace boost
 {
   namespace chrono
   {
 
+    template <typename Features, typename Weight=void>
+    struct lightweight_stopwatch_accumulator_set_traits {
+        template <typename D>
+        struct apply {
+            struct type {
+                typedef accumulators::accumulator_set<typename D::rep, Features, Weight> storage_type;
+                typedef D duration_type;
+                static duration_type get_duration(storage_type& acc_) { return duration_type(accumulators::sum(acc_)); }
+                static void set_duration(storage_type& acc_, duration_type d) { acc_(d.count()); }
+                static void reset(storage_type& acc_) { acc_=storage_type(); }
+            };
+        };
+    };
+
 //--------------------------------------------------------------------------------------//
-//                                    stopwatch
+//                                    stopwatch_accumulator
 //
 //~ A stopwatch accumulator is a class designed to measure the amount of time elapsed from a particular time
 //~ when activated to when it is deactivated.
 
-//~ Calling start starts the timer running, and calling stop stops it.
-//~ A call to reset resets the stopwatch to zero.
-//~ A stopwatch can also be used to record split times or lap times.
+//~ Calling start starts the stopwatch_accumulator running, and calling stop stops it.
+//~ A call to reset resets the stopwatch_accumulator to zero.
+//~ A stopwatch_accumulator can also be used to record split times or lap times.
 //~ The elapsed time since the last start is available through the elapsed function.
 //--------------------------------------------------------------------------------------//
 
@@ -57,6 +77,7 @@ namespace boost
     {
     public:
         typedef base_from_member<typename accumulators::accumulator_set<typename Clock::duration::rep, Features, Weight> > pbase_type;
+        typedef typename accumulators::accumulator_set<typename Clock::duration::rep, Features, Weight> accumulator_set;
 
         stopwatch_accumulator( )
         : pbase_type(), 

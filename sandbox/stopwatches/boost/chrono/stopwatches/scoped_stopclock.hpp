@@ -12,6 +12,7 @@
 #include <boost/chrono/process_cpu_clocks.hpp>
 #include <boost/chrono/stopwatches/time_formatter.hpp>
 #include <boost/chrono/stopwatches/stopwatch_accumulator_time_formatter.hpp>
+#include <boost/chrono/stopwatches/stopclock.hpp>
 
 namespace boost { namespace chrono  {
 

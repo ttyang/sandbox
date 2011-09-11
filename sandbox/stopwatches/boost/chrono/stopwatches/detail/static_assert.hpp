@@ -1,4 +1,4 @@
-//  boost/stopwatches/detail/static_assert.hpp  --------------------------------------------------------------//
+//  boost/chrono/stopwatches/detail/static_assert.hpp  --------------------------------------------------------------//
 //  Copyright 2009-2011 Vicente J. Botet Escriba
 //  Distributed under the Boost Software License, Version 1.0.
 //  See http://www.boost.org/LICENSE_1_0.txt

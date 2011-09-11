@@ -95,25 +95,25 @@ namespace boost { namespace chrono  {
                     case 's':
                         //~ os << boost::chrono::duration<double>(duration_t(accumulators::sum(acc))).count();
                         time_formatter::show_time<chrono::process_cpu_clock>(accumulators::sum(acc), format2, places, os, ec);
-            if (!BOOST_CHRONO_IS_THROWS(ec)) {
-                if (ec) return;
-            }
+                        if (!BOOST_CHRONO_IS_THROWS(ec)) {
+                            if (ec) return;
+                        }
                         //~ os << accumulators::sum(acc);
                         break;
                     case 'm':
                         //~ os << boost::chrono::duration<double>(duration_t((accumulators::min)(acc))).count();
                         time_formatter::show_time<chrono::process_cpu_clock>((accumulators::min)(acc), format2, places, os, ec);
-            if (!BOOST_CHRONO_IS_THROWS(ec)) {
-                if (ec) return;
-            }
+                        if (!BOOST_CHRONO_IS_THROWS(ec)) {
+                            if (ec) return;
+                        }
                         //~ os << (accumulators::min)(acc);
                         break;
                     case 'M':
                         //~ os << boost::chrono::duration<double>(duration_t((accumulators::max)(acc))).count();
                         time_formatter::show_time<chrono::process_cpu_clock>((accumulators::max)(acc), format2, places, os, ec);
-            if (!BOOST_CHRONO_IS_THROWS(ec)) {
-                if (ec) return;
-            }
+                        if (!BOOST_CHRONO_IS_THROWS(ec)) {
+                            if (ec) return;
+                        }
                         //~ os << (accumulators::max)(acc);
                         break;
                     case 'a':
@@ -121,9 +121,9 @@ namespace boost { namespace chrono  {
                          //? os << boost::chrono::duration<double>(duration_t(typename duration_t::rep(accumulators::mean(acc)))).count()
                                 //~ os << boost::chrono::duration<double>(duration_t(accumulators::sum(acc))).count() / accumulators::count(acc)
                             time_formatter::show_time<chrono::process_cpu_clock>(accumulators::sum(acc) / accumulators::count(acc), format2, places, os, ec);
-                if (!BOOST_CHRONO_IS_THROWS(ec)) {
-                if (ec) return;
-                }
+                            if (!BOOST_CHRONO_IS_THROWS(ec)) {
+                                if (ec) return;
+                            }
                         } else {
                             os << 0;
                         }

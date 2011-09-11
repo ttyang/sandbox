@@ -175,9 +175,9 @@ namespace boost { namespace chrono  {
     template <class Stopwatch, class Formatter>
     void basic_stopwatch_reporter<Stopwatch, Formatter>::report( system::error_code & ec ) {
         chrono::clock_suspender<typename Stopwatch::clock> _(ec);
-    if (!BOOST_CHRONO_IS_THROWS(ec)) {
-        if (ec) return;
-    }
+        if (!BOOST_CHRONO_IS_THROWS(ec)) {
+            if (ec) return;
+        }
         if ( m_format.empty() ) m_format = Formatter::default_format();
 
         m_reported = true;

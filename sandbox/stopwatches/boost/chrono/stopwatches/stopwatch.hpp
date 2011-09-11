@@ -19,13 +19,27 @@ namespace boost
   namespace chrono
   {
 
+    struct lightweight_stopwatch_identity_traits {
+        template <typename D>
+        struct apply {
+            struct type {
+                typedef D duration_type;
+                typedef duration_type storage_type;
+                static duration_type get_duration(storage_type& acc_) { return acc_; }
+                static void set_duration(storage_type& acc_, duration_type d) { acc_=d; }
+                static void reset(storage_type& acc_) { acc_=storage_type(); }
+            };
+        };
+
+    };
+
 //--------------------------------------------------------------------------------------//
 //                                    stopwatch
 //
 //~ A stopwatch is a class designed to measure the amount of time elapsed from a particular time
 //~ when activated to when it is deactivated.
 
-//~ Calling start starts the timer running, and calling stop stops it.
+//~ Calling start starts the stopwatch running, and calling stop stops it.
 //~ A call to reset resets the stopwatch to zero.
 //~ A stopwatch can also also used to record split times or lap times.
 //~ The elapsed time since the last start is available through the elapsed function.
@@ -35,22 +49,20 @@ namespace boost
     template <class Clock=chrono::system_clock>
     class stopwatch;
 
-    //~ struct dont_start_t{};
-    //~ static const dont_start_t dont_start = {};
 //--------------------------------------------------------------------------------------//
 
     template <class Clock>
-    class stopwatch : private base_from_member<typename Clock::duration>, public lightweight_stopwatch<Clock>
+    class stopwatch : private base_from_member<typename Clock::duration>, public lightweight_stopwatch<Clock,lightweight_stopwatch_identity_traits>
     {
     public:
         typedef base_from_member<typename Clock::duration> pbase_type;
         explicit stopwatch( system::error_code & ec = BOOST_CHRONO_THROWS  )
-        : pbase_type(), lightweight_stopwatch<Clock>(pbase_type::member, ec)
+        : pbase_type(), lightweight_stopwatch<Clock,lightweight_stopwatch_identity_traits>(pbase_type::member, ec)
         {
         }
 
         explicit stopwatch( const dont_start_t& t )
-        : pbase_type(), lightweight_stopwatch<Clock>(pbase_type::member, t)
+        : pbase_type(), lightweight_stopwatch<Clock,lightweight_stopwatch_identity_traits>(pbase_type::member, t)
         { }
         
     };
