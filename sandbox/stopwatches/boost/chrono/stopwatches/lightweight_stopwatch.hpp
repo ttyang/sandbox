@@ -12,7 +12,6 @@
 #include <boost/chrono/chrono.hpp>
 #include <boost/chrono/stopwatches/stopwatch_scoped.hpp>
 #include <boost/system/error_code.hpp>
-//#include <boost/chrono/chrono_io.hpp>
 
 namespace boost
 {
@@ -30,7 +29,6 @@ namespace boost
     class lightweight_stopwatch;
 
 
-//--------------------------------------------------------------------------------------//
     template <typename Clock, typename Traits>
     class lightweight_stopwatch
     {
@@ -48,7 +46,6 @@ namespace boost
           start_(duration::zero()), level_(0), partial_(duration::zero()), suspend_level_(0)
           , storage_(&acc), construction_(clock::now( ))
         {
-          //std::cout << "construction_:" << construction_ << std::endl;
             start(ec);
         }
 
@@ -57,7 +54,6 @@ namespace boost
           start_(duration::zero()), level_(0), partial_(duration::zero()), suspend_level_(0)
           , storage_(&acc), construction_(clock::now( ))
         {
-          //std::cout << "construction_:" << construction_ << std::endl;
         }
 
         ~lightweight_stopwatch() {
@@ -66,7 +62,6 @@ namespace boost
         }
 
         
-//--------------------------------------------------------------------------------------//
         std::pair<duration, time_point> restart( system::error_code & ec = BOOST_CHRONO_THROWS )
         {
           time_point tmp=clock::now( ec );
@@ -224,31 +219,6 @@ namespace boost
         storage_type* storage_;
         time_point construction_;
     };
-
-//--------------------------------------------------------------------------------------//
-//    typedef accumulators::features<
-//                        accumulators::tag::count,
-//                        accumulators::tag::sum,
-//                        accumulators::tag::min,
-//                        accumulators::tag::max,
-//                        accumulators::tag::mean
-//        > default_features;
-//    typedef boost::chrono::lightweight_stopwatch< boost::chrono::system_clock > system_lightweight_stopwatch;
-//#ifdef BOOST_CHRONO_HAS_CLOCK_STEADY
-//    typedef boost::chrono::lightweight_stopwatch< boost::chrono::steady_clock > steady_lightweight_stopwatch;
-//#endif
-//    typedef boost::chrono::lightweight_stopwatch< boost::chrono::high_resolution_clock > high_resolution_lightweight_stopwatch;
-//
-//    typedef boost::chrono::lightweight_stopwatch< boost::chrono::system_clock,
-//        lightweight_stopwatch_accumulator_set_traits<default_features> > system_lightweight_stopwatch_accumulator;
-//#ifdef BOOST_CHRONO_HAS_CLOCK_STEADY
-//    typedef boost::chrono::lightweight_stopwatch< boost::chrono::steady_clock,
-//        lightweight_stopwatch_accumulator_set_traits<default_features> > steady_lightweight_stopwatch_accumulator;
-//#endif
-//    typedef boost::chrono::lightweight_stopwatch< boost::chrono::high_resolution_clock,
-//        lightweight_stopwatch_accumulator_set_traits<default_features> > high_resolution_lightweight_stopwatch_accumulator;
-
-//--------------------------------------------------------------------------------------//
 
 
   } // namespace chrono

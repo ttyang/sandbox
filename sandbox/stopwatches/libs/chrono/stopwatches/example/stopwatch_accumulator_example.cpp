@@ -50,7 +50,7 @@ class stopwatch_reporter : public Stopwatch
   ~stopwatch_reporter() {
     typename Stopwatch::accumulator_set& acc = this->get_storage();
     typedef typename Stopwatch::duration duration_t;
-    int precision_=3;
+    std::size_t precision_=3;
 
     os_ << fmt_
         % boost::accumulators::count(acc)

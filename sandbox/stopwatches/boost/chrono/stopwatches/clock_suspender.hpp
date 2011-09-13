@@ -10,27 +10,34 @@
 #include <boost/system/error_code.hpp>
 #include <boost/mpl/bool.hpp>
 
-namespace boost { namespace chrono {
+namespace boost
+{
+  namespace chrono
+  {
 
-
-    template <class Clock>
-    struct is_suspendible : mpl:: false_ {};
-
-    template <class Clock>
-    class clock_suspender {
-    public:
-        clock_suspender(system::error_code & ec = BOOST_CHRONO_THROWS) {
-            ec.clear();
-        }
-        ~clock_suspender() {}
-    private:
-        //~ clock_suspender(); // = delete;
-        clock_suspender(const clock_suspender&); // = delete;
-        clock_suspender& operator=(const clock_suspender&); // = delete;
+    template<class Clock>
+    struct is_suspendible: mpl::false_
+    {
     };
 
+    template<class Clock>
+    class clock_suspender
+    {
+    public:
+      clock_suspender(system::error_code & ec = BOOST_CHRONO_THROWS)
+      {
+        ec.clear();
+      }
+      ~clock_suspender()
+      {
+      }
+    private:
+      //~ clock_suspender(); // = delete;
+      clock_suspender(const clock_suspender&); // = delete;
+      clock_suspender& operator=(const clock_suspender&); // = delete;
+    };
 
-} // namespace chrono
+  } // namespace chrono
 } // namespace boost
 
 

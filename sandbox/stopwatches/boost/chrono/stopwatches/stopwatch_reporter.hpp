@@ -33,10 +33,11 @@
 namespace boost { namespace chrono  {
 
 //--------------------------------------------------------------------------------------//
-//~ provides a everything a Timer provides and it adds reporting capabilities that can be invoked in a single line of code. The reporting is controleed by two parameters:
+//~ Provides a everything a Stopwatch provides and it adds reporting capabilities that can be invoked in a single line of code.
+//  The reporting is controlled by two parameters:
 
     //~ * format : The output format
-    //~ * places(precission): the number of decimal placess used.
+    //~ * places(precision): the number of decimal places used.
 
 //~ The default places is given by default_places and is 3. The default format is "\n%ts\n", where
 
