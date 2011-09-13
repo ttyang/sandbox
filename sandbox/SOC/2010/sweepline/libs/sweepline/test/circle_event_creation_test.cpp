@@ -11,7 +11,7 @@
 #include <boost/mpl/list.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "boost/sweepline/voronoi_diagram.hpp"
+#include "boost/sweepline/voronoi_builder.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
 
@@ -64,8 +64,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(circle_event_creation_pps_test1, T, test_types) {
     site_event_type site1_2(static_cast<T>(0), static_cast<T>(2), 0);
     is_event = create_circle_event_pps(site1_1, site1_2, segm_site, 2, c_event);
     BOOST_CHECK_EQUAL(is_event, true);
-    BOOST_CHECK_EQUAL(c_event.center().x() == static_cast<T>(-1), true);
-    BOOST_CHECK_EQUAL(c_event.center().y() == static_cast<T>(1), true);
+    BOOST_CHECK_EQUAL(c_event.x() == static_cast<T>(-1), true);
+    BOOST_CHECK_EQUAL(c_event.y() == static_cast<T>(1), true);
     is_event = create_circle_event_pps(site1_1, site1_2, segm_site, 1, c_event);
     BOOST_CHECK_EQUAL(is_event, false);
     is_event = create_circle_event_pps(site1_1, site1_2, segm_site, 3, c_event);

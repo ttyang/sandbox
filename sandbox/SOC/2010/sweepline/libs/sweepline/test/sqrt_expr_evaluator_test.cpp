@@ -13,7 +13,7 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "boost/sweepline/voronoi_diagram.hpp"
+#include "boost/sweepline/voronoi_builder.hpp"
 using namespace boost::sweepline::detail;
 
 template <int N>

@@ -14,6 +14,9 @@ namespace boost {
 namespace sweepline {
 namespace detail {
 
+    template <typename T>
+    class epsilon_robust_comparator;
+
     // Represents the result of the epsilon robust predicate.
     // If the result is undefined some further processing is usually required.
     enum kPredicateResult {
@@ -27,10 +30,7 @@ namespace detail {
     // sign-magnitude integers. Values are considered to be almost equal if
     // their integer reinterpretatoins differ in not more than maxUlps units.
     template <typename T>
-    bool almost_equal(T a, T b, unsigned int ulps) {
-        if (a < b) return static_cast<unsigned int>(b - a) <= ulps;
-        return static_cast<unsigned int>(a - b) <= ulps;
-    }
+    bool almost_equal(T a, T b, unsigned int ulps);
 
     template<>
     bool almost_equal<float>(float a, float b, unsigned int maxUlps) {
@@ -90,10 +90,10 @@ namespace detail {
         return value;
     }
 
-    template <typename _fpt>
+    template <typename FPT>
     class robust_fpt {
     public:
-	    typedef _fpt floating_point_type;
+	    typedef FPT floating_point_type;
 	    typedef double relative_error_type;
 
 	    // Rounding error is at most 1 EPS.
@@ -112,39 +112,39 @@ namespace detail {
         relative_error_type re() const { return re_; }
         relative_error_type ulp() const { return re_; }
 
-        bool operator==(double that) const {
-            if (that == 0)
-                return this->fpv_ == that;
-            return almost_equal(this->fpv_, that, 
-                                static_cast<unsigned int>(this->ulp()));
+        template <typename T>
+        bool operator==(T that) const {
+            floating_point_type value = static_cast<floating_point_type>(that);
+            return almost_equal(this->fpv_, value, static_cast<unsigned int>(this->ulp()));
         }
 
-        bool operator!=(double that) const {
+        template <typename T>
+        bool operator!=(T that) const {
             return !(*this == that);
         }
 
-        bool operator<(double that) const {
-            if (*this == that)
-                return false;
-            return this->fpv_ < that;
+        template <typename T>
+        bool operator<(T that) const {
+            if (*this == that) return false;
+            return this->fpv_ < static_cast<floating_point_type>(that);
         }
 
-        bool operator<=(double that) const {
-            if (*this == that)
-                return true;
-            return this->fpv_ < that;
+        template <typename T>
+        bool operator<=(T that) const {
+            if (*this == that) return true;
+            return this->fpv_ < static_cast<floating_point_type>(that);
         }
 
-        bool operator>(double that) const {
-            if (*this == that)
-                return false;
-            return this->fpv_ > that;
+        template <typename T>
+        bool operator>(T that) const {
+            if (*this == that) return false;
+            return this->fpv_ > static_cast<floating_point_type>(that);
         }
 
-        bool operator>=(double that) const {
-            if (*this == that)
-                return true;
-            return this->fpv_ > that;
+        template <typename T>
+        bool operator>=(T that) const {
+            if (*this == that) return true;
+            return this->fpv_ > static_cast<floating_point_type>(that);
         }
 
 	    bool operator==(const robust_fpt &that) const {
@@ -260,7 +260,7 @@ namespace detail {
             return robust_fpt(fpv, re);
         }
 
-        robust_fpt get_sqrt() const {
+        robust_fpt sqrt() const {
             return robust_fpt(std::sqrt(fpv_), re_ * 0.5 + ROUNDING_ERROR);
         }
 
@@ -406,12 +406,6 @@ namespace detail {
             if (almost_equal(lhs, rhs, ulp))
                 return UNDEFINED;
             return (lhs < rhs) ? LESS : MORE;
-        }
-
-        // Check whether comparison has undefined result.
-        bool compares_undefined(const epsilon_robust_comparator &rc,
-                                int ulp) const {
-            return this->compare(rc, ulp) == UNDEFINED;
         }
 
     private:

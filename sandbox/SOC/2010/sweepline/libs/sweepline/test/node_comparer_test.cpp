@@ -11,7 +11,7 @@
 #include <boost/mpl/list.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "boost/sweepline/voronoi_diagram.hpp"
+#include "boost/sweepline/voronoi_builder.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
 
@@ -19,7 +19,7 @@ typedef boost::mpl::list<double> test_types;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp1, T, test_types) {
     typedef site_event<T> site_event_type;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     typedef typename std::map< bline_node, int,
         node_comparer<bline_node> >::const_iterator bline_it;
 
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp1, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp2, T, test_types) {
     typedef site_event<T> site_event_type;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     typedef typename std::map< bline_node, int,
         node_comparer<bline_node> >::const_iterator bline_it;
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp2, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp3, T, test_types) {
     typedef point_2d<T> Point2D;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     node_comparer<bline_node> node_comparer_test;
 
     bline_node initial_node(
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp3, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp4, T, test_types) {
     typedef point_2d<T> Point2D;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     node_comparer<bline_node> node_comparer_test;
 
     bline_node initial_node(
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp4, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp5, T, test_types) {
     typedef point_2d<T> Point2D;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     node_comparer<bline_node> node_comparer_test;
 
     bline_node initial_node(
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp5, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp6, T, test_types) {
     typedef point_2d<T> Point2D;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     node_comparer<bline_node> node_comparer_test;
 
     bline_node initial_node(
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp6, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp7, T, test_types) {
     typedef point_2d<T> Point2D;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     node_comparer<bline_node> node_comparer_test;
 
     bline_node initial_node(
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp7, T, test_types) {
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(node_comparer_test_pp8, T, test_types) {
     typedef point_2d<T> Point2D;
-    typedef beach_line_node<T> bline_node;
+    typedef beach_line_node_key<T> bline_node;
     node_comparer<bline_node> node_comparer_test;
 
     bline_node initial_node(

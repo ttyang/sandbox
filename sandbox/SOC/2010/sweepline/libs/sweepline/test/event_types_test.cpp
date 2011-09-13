@@ -11,7 +11,7 @@
 #include <boost/mpl/list.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "boost/sweepline/voronoi_diagram.hpp"
+#include "boost/sweepline/voronoi_builder.hpp"
 using namespace boost::sweepline;
 using namespace boost::sweepline::detail;
 

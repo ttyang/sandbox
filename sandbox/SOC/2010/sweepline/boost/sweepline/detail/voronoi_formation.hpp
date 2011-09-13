@@ -15,10 +15,6 @@
 
 namespace boost {
 namespace sweepline {
-
-    template <typename T>
-    class voronoi_edge;
-
 namespace detail {
 
     ///////////////////////////////////////////////////////////////////////////
@@ -27,16 +23,13 @@ namespace detail {
 
     // Forward declarations.
     template <typename T>
-    class beach_line_node;
+    class beach_line_node_key;
 
     template <typename T>
     class beach_line_node_data;
 
     template <typename T>
     struct node_comparer;
-
-    template <typename T>
-    class epsilon_robust_comparator;
 
     // Represents the result of the orientation test.
     enum kOrientation {
@@ -402,8 +395,7 @@ namespace detail {
         typedef T coordinate_type;
         typedef point_2d<T> point_type;
         typedef site_event<T> site_event_type;
-        typedef epsilon_robust_comparator<T> erc_type;
-        typedef beach_line_node<coordinate_type> Key;
+        typedef beach_line_node_key<coordinate_type> Key;
         typedef beach_line_node_data<coordinate_type> Value;
         typedef node_comparer<Key> NodeComparer;
         typedef typename std::map< Key, Value, NodeComparer >::iterator
@@ -419,17 +411,9 @@ namespace detail {
             lower_x_(lower_x),
             is_active_(true) {}
 
-        circle_event(const erc_type &c_x,
-                     const erc_type &c_y,
-                     const erc_type &lower_x) :
-            center_x_(c_x),
-            center_y_(c_y),
-            lower_x_(lower_x),
-            is_active_(true) {}
-
         bool operator==(const circle_event &that) const {
-            return (this->lower_x_.compare(that.lower_x_, 128) == UNDEFINED &&
-                    this->center_y_.compare(that.center_y_, 128) == UNDEFINED);
+            return almost_equal(this->lower_x_, that.lower_x_, 128) &&
+                   almost_equal(this->center_y_, that.center_y_, 128);
         }
 
         bool operator!=(const circle_event &that) const {
@@ -440,14 +424,11 @@ namespace detail {
         // Each rightmost point has next representation:
         // (lower_x / denom, center_y / denom), denom is always positive.
         bool operator<(const circle_event &that) const {
-            // Compare x-coordinates of the rightmost points. If the result
-            // is undefined we assume that x-coordinates are equal.
-            kPredicateResult pres = this->lower_x_.compare(that.lower_x_, 128);
-            if (pres != UNDEFINED)
-                return (pres == LESS);
-
-            // Compare y-coordinates of the rightmost points.
-            return this->center_y_.compare(that.center_y_, 128) == LESS;
+            if (almost_equal(this->lower_x_, that.lower_x_, 128)) {
+                if (almost_equal(this->center_y_, that.center_y_, 128)) return false;
+                return this->center_y_ < that.center_y_;
+            }
+            return this->lower_x_ < that.lower_x_;
         }
 
         bool operator<=(const circle_event &that) const {
@@ -467,20 +448,17 @@ namespace detail {
         // If circle point is less than site point return -1.
         // If circle point is equal to site point return 0.
         // If circle point is greater than site point return 1.
-        kPredicateResult compare(const site_event_type &s_event) const {
-            // Compare x-coordinates.
-            kPredicateResult pres = lower_x_.compare(s_event.x(), 64);
-            // If the comparison result is undefined
-            // x-coordinates are considered to be equal.
-            if (pres != UNDEFINED)
-                return pres;
-            // Compare y-coordinates in case of equal x-coordinates.
-            return center_y_.compare(s_event.y(), 64);
+        kPredicateResult compare(const site_event_type &that) const {
+            if (almost_equal(this->lower_x_, that.x(), 64)) {
+                if (almost_equal(this->center_y_, that.y(), 64)) return UNDEFINED;
+                return this->center_y_ < that.y() ? LESS : MORE;
+            }
+            return this->lower_x_ < that.x() ? LESS : MORE;
         }
 
         // Evaluate x-coordinate of the center of the circle.
         coordinate_type x() const {
-            return center_x_.dif();
+            return center_x_;
         }
 
         void x(coordinate_type center_x) {
@@ -489,7 +467,7 @@ namespace detail {
 
         // Evaluate y-coordinate of the center of the circle.
         coordinate_type y() const {
-            return center_y_.dif();
+            return center_y_;
         }
 
         void y(coordinate_type center_y) {
@@ -498,23 +476,11 @@ namespace detail {
 
         // Evaluate x-coordinate of the rightmost point of the circle.
         coordinate_type lower_x() const {
-            return lower_x_.dif();
+            return lower_x_;
         }
 
         void lower_x(coordinate_type lower_x) {
             lower_x_ = lower_x;
-        }
-
-        point_type center() const {
-            return point_type(x(), y());
-        }
-
-        const erc_type &erc_x() const {
-            return center_x_;
-        }
-
-        const erc_type &erc_y() const {
-            return center_y_;
         }
 
         // Return iterator to the second bisector from the beach line
@@ -536,9 +502,9 @@ namespace detail {
         }
 
     private:
-        erc_type center_x_;
-        erc_type center_y_;
-        erc_type lower_x_;
+        coordinate_type center_x_;
+        coordinate_type center_y_;
+        coordinate_type lower_x_;
         beach_line_iterator bisector_node_;
         bool is_active_;
     };
@@ -1513,7 +1479,7 @@ namespace detail {
             t += teta / (robust_fpt<T>(8.0) * A);
             t -= A / (robust_fpt<T>(2.0) * teta);
         } else {
-            robust_fpt<T> det = ((teta * teta + denom * denom) * A * B).get_sqrt();
+            robust_fpt<T> det = ((teta * teta + denom * denom) * A * B).sqrt();
             if (segment_index == 2) {
                 t -= det / (denom * denom);
             } else {
@@ -1589,9 +1555,9 @@ namespace detail {
             t -= robust_fpt<T>(a1) * robust_fpt<T>((segm_start1.x() + segm_start2.x()) * 0.5 - site1.x());
             t -= robust_fpt<T>(b1) * robust_fpt<T>((segm_start1.y() + segm_start2.y()) * 0.5 - site1.y());
             if (point_index == 2) {
-                t += det.get_sqrt();
+                t += det.sqrt();
             } else {
-                t -= det.get_sqrt();
+                t -= det.sqrt();
             }
             t /= a;
             epsilon_robust_comparator< robust_fpt<T> > c_x, c_y;
@@ -1600,7 +1566,7 @@ namespace detail {
             c_y += robust_fpt<T>(0.5 * (segm_start1.y() + segm_start2.y()));
             c_y += robust_fpt<T>(b1) * t;
             epsilon_robust_comparator< robust_fpt<T> > lower_x(c_x);
-            lower_x += robust_fpt<T>(0.5) * c.fabs() / a.get_sqrt();
+            lower_x += robust_fpt<T>(0.5) * c.fabs() / a.sqrt();
             recompute_c_x = c_x.dif().ulp() > 128;
             recompute_c_y = c_y.dif().ulp() > 128;
             recompute_lower_x = lower_x.dif().ulp() > 128;
@@ -1636,9 +1602,9 @@ namespace detail {
             b -= sqr_sum2 * robust_fpt<T>(robust_cross_product(a1, b1, -site1.y(), site1.x()), 2.0);
             t -= b;
             if (point_index == 2) {
-                t += det.get_sqrt();
+                t += det.sqrt();
             } else {
-                t -= det.get_sqrt();
+                t -= det.sqrt();
             }
             t /= (a * a);
             epsilon_robust_comparator< robust_fpt<T> > c_x(ix), c_y(iy);
@@ -1686,9 +1652,9 @@ namespace detail {
         robust_fpt<T> b3(site3.y1(true) - site3.y0(true), 0.0);
         robust_fpt<T> c3(robust_cross_product(site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true)), 2.0);
         
-        robust_fpt<T> len1 = (a1 * a1 + b1 * b1).get_sqrt();
-        robust_fpt<T> len2 = (a2 * a2 + b2 * b2).get_sqrt();
-        robust_fpt<T> len3 = (a3 * a3 + b3 * b3).get_sqrt();
+        robust_fpt<T> len1 = (a1 * a1 + b1 * b1).sqrt();
+        robust_fpt<T> len2 = (a2 * a2 + b2 * b2).sqrt();
+        robust_fpt<T> len3 = (a3 * a3 + b3 * b3).sqrt();
         robust_fpt<T> cross_12(robust_cross_product(a1.fpv(), b1.fpv(), a2.fpv(), b2.fpv()), 2.0);
         robust_fpt<T> cross_23(robust_cross_product(a2.fpv(), b2.fpv(), a3.fpv(), b3.fpv()), 2.0);
         robust_fpt<T> cross_31(robust_cross_product(a3.fpv(), b3.fpv(), a1.fpv(), b1.fpv()), 2.0);
@@ -1746,25 +1712,25 @@ namespace detail {
     // The one site is considered to be newer than the other in case it was
     // processed by the algorithm later.
     template <typename T>
-    class beach_line_node {
+    class beach_line_node_key {
     public:
         typedef T coordinate_type;
         typedef point_2d<T> point_type;
         typedef site_event<T> site_event_type;
 
-        beach_line_node() {}
+        beach_line_node_key() {}
 
         // Constructs degenerate bisector, used to search an arc that is above
         // the given site. The input to the constructor is the new site point.
-        explicit beach_line_node(const site_event_type &new_site) {
+        explicit beach_line_node_key(const site_event_type &new_site) {
             left_site_ = new_site;
             right_site_ = new_site;
         }
 
         // Constructs a new bisector. The input to the constructor is the two
         // sites that create the bisector. The order of sites is important.
-        beach_line_node(const site_event_type &left_site,
-                        const site_event_type &right_site) {
+        beach_line_node_key(const site_event_type &left_site,
+                            const site_event_type &right_site) {
             left_site_ = left_site;
             right_site_ = right_site;
         }
@@ -1864,7 +1830,7 @@ namespace detail {
     template <typename T>
     class beach_line_node_data {
     public:
-        explicit beach_line_node_data(voronoi_edge<T> *new_edge) :
+        explicit beach_line_node_data(void *new_edge) :
             edge_(new_edge),
             contains_circle_event_(false) {}
 
@@ -1879,17 +1845,17 @@ namespace detail {
             contains_circle_event_ = false;
         }
 
-        voronoi_edge<T> *edge() const {
+        void *edge() const {
             return edge_;
         }
 
-        void edge(voronoi_edge<T> *new_edge) {
+        void edge(void *new_edge) {
             edge_ = new_edge;
         }
 
     private:
         typename circle_events_queue<T>::circle_event_type_it circle_event_it_;
-        voronoi_edge<T> *edge_;
+        void *edge_;
         bool contains_circle_event_;
     };
 

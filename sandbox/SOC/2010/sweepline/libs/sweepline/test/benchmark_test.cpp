@@ -17,7 +17,7 @@
 #include <boost/test/test_case_template.hpp>
 #include <boost/timer.hpp>
 
-#include "boost/sweepline/voronoi_diagram.hpp"
+#include "boost/sweepline/voronoi.hpp"
 
 typedef boost::mpl::list<int> test_types;
 
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test1, T, test_types) {
     typedef point_data<coordinate_type> point_type;
     boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
     boost::timer timer;
-    typename boost::sweepline::voronoi_output<double> test_output;
+    typename boost::sweepline::voronoi_diagram<double> test_output;
 
     std::ofstream bench_file("benchmark.txt", std::ios_base::out | std::ios_base::app);
     bench_file << "Voronoi Segment Sweepline Benchmark Test (time in seconds):" << std::endl;

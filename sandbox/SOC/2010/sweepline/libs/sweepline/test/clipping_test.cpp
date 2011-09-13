@@ -13,7 +13,6 @@
 
 #include "boost/sweepline/voronoi_diagram.hpp"
 using namespace boost::sweepline;
-using namespace boost::sweepline::detail;
 
 typedef boost::mpl::list<double> test_types;
 

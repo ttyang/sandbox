@@ -12,7 +12,7 @@
 #include <QtOpenGL/QGLWidget>
 #include <QtGui/QtGui>
 
-#include "boost/sweepline/voronoi_diagram.hpp"
+#include "boost/sweepline/voronoi.hpp"
 using namespace boost::sweepline;
 
 class GLWidget : public QGLWidget {
@@ -57,9 +57,9 @@ public:
         in_stream.flush();
 
         // Build voronoi diagram.
-        construct_voronoi<int>(point_sites, segment_sites, voronoi_output_);
+        construct_voronoi<int>(point_sites, segment_sites, vd_);
         brect_ = voronoi_helper<coordinate_type>::get_view_rectangle(
-            voronoi_output_.bounding_rectangle());
+            vd_.bounding_rectangle());
 
         // Update view.
         update_view_port();
@@ -83,7 +83,7 @@ protected:
 
         // Draw voronoi sites.
         {
-            const voronoi_cells_type &cells = voronoi_output_.cell_records();
+            const voronoi_cells_type &cells = vd_.cell_records();
             voronoi_cell_const_iterator_type it;
             glColor3f(0.0f, 0.0f, 1.0f);
             glPointSize(9);
@@ -108,7 +108,7 @@ protected:
 
         // Draw voronoi vertices.
         {
-            const voronoi_vertices_type &vertices = voronoi_output_.vertex_records();
+            const voronoi_vertices_type &vertices = vd_.vertex_records();
             voronoi_vertex_const_iterator_type it;
             glColor3f(0.0f, 1.0f, 0.0f);
             glBegin(GL_POINTS);
@@ -119,7 +119,7 @@ protected:
 
         // Draw voronoi edges.
         {
-            const voronoi_edges_type &edges = voronoi_output_.edge_records();
+            const voronoi_edges_type &edges = vd_.edge_records();
             voronoi_edge_const_iterator_type it;
             glColor3f(0.0f, 1.0f, 0.0f);
             glBegin(GL_LINES);
@@ -161,17 +161,17 @@ private:
     typedef directed_line_segment_data<int> isegment_type;
     typedef std::vector<ipoint_type> ipoint_set_type;
     typedef directed_line_segment_set_data<int> isegment_set_type;
-    typedef voronoi_output<coordinate_type>::voronoi_cells_type voronoi_cells_type;
-    typedef voronoi_output<coordinate_type>::voronoi_vertices_type voronoi_vertices_type;
-    typedef voronoi_output<coordinate_type>::voronoi_edges_type voronoi_edges_type;
-    typedef voronoi_output<coordinate_type>::voronoi_cell_const_iterator_type
+    typedef voronoi_diagram<coordinate_type>::voronoi_cells_type voronoi_cells_type;
+    typedef voronoi_diagram<coordinate_type>::voronoi_vertices_type voronoi_vertices_type;
+    typedef voronoi_diagram<coordinate_type>::voronoi_edges_type voronoi_edges_type;
+    typedef voronoi_diagram<coordinate_type>::voronoi_cell_const_iterator_type
         voronoi_cell_const_iterator_type;
-    typedef voronoi_output<coordinate_type>::voronoi_vertex_const_iterator_type
+    typedef voronoi_diagram<coordinate_type>::voronoi_vertex_const_iterator_type
         voronoi_vertex_const_iterator_type;
-    typedef voronoi_output<coordinate_type>::voronoi_edge_const_iterator_type
+    typedef voronoi_diagram<coordinate_type>::voronoi_edge_const_iterator_type
         voronoi_edge_const_iterator_type;
     BRect<coordinate_type> brect_;
-    voronoi_output<coordinate_type> voronoi_output_;
+    voronoi_diagram<coordinate_type> vd_;
     bool primary_edges_only_;
 };
 
