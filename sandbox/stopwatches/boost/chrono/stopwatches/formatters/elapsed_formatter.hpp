@@ -45,7 +45,7 @@ namespace boost
             style_(symbol)
       {
       }
-      basic_elapsed_formatter(ostream_type& o) :
+      basic_elapsed_formatter(ostream_type& os) :
         internal_fmt_(BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT),
             fmt_(internal_fmt_), precision_(3), os_(os),
             style_(symbol)
@@ -61,7 +61,7 @@ namespace boost
         style_(symbol)
       {
       }
-      basic_elapsed_formatter(format_type & fmt) :
+      basic_elapsed_formatter(format_type & fmt, ostream_type& os=std::cout) :
         fmt_(fmt), precision_(3), os_(os),
         style_(symbol)
       {
