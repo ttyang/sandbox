@@ -38,27 +38,34 @@ namespace boost
       typedef std::basic_ostream<CharT, Traits> ostream_type;
 
       basic_oneshot_formatter() :
-        format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT), precision_(3),
-            os_(std::cout)
+        format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT),
+            precision_(3), os_(std::cout)
       {
       }
-      basic_oneshot_formatter(const char_type* fmt) :
-        format_(fmt), precision_(3), os_(std::cout)
+      basic_oneshot_formatter(ostream_type& os) :
+        format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT),
+            precision_(3), os_(os)
       {
       }
-      basic_oneshot_formatter(string_type const& fmt) :
-        str_(fmt), format_(str_.c_str()), precision_(3), os_(std::cout)
+      basic_oneshot_formatter(const char_type* fmt, ostream_type& os =
+          std::cout) :
+        format_(fmt), precision_(3), os_(os)
+      {
+      }
+      basic_oneshot_formatter(string_type const& fmt, ostream_type& os =
+          std::cout) :
+        str_(fmt), format_(str_.c_str()), precision_(3), os_(os)
       {
       }
       void set_precision(std::size_t precision)
       {
-        precision_=precision;
+        precision_ = precision;
         if (precision_ > 9)
           precision_ = 9; // sanity check
-        }
+      }
       void set_os(ostream_type os)
       {
-        os_=os;
+        os_ = os;
       }
       static string_type format(const char* s)
       {

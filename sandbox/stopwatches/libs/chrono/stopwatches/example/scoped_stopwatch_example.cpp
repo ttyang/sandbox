@@ -59,7 +59,7 @@ void f3(long j)
 {
   typedef basic_elapsed_formatter<milli > formatter;
   formatter fmt("Elapsed time: %1%",std::cerr);
-  fmt.set_duration_style(text);
+  fmt.set_duration_style(duration_style::prefix_text);
   fmt.set_precision(6);
 
   stopwatch_reporter2<stopwatch<high_resolution_clock>, formatter> sw(fmt);
