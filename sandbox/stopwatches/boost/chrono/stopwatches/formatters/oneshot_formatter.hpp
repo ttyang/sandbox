@@ -18,8 +18,10 @@
 #include <cstring>
 #include <cassert>
 #include <boost/assert.hpp>
+#include <boost/chrono/stopwatches/formatters/duration_style.hpp>
+#include <boost/chrono/chrono_io.hpp>
 
-#define BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT "%ds\n"
+#define BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT "%d\n"
 
 namespace boost
 {

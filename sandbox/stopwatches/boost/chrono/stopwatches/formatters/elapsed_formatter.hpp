@@ -45,18 +45,24 @@ namespace boost
             style_(symbol)
       {
       }
+      basic_elapsed_formatter(ostream_type& o) :
+        internal_fmt_(BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT),
+            fmt_(internal_fmt_), precision_(3), os_(os),
+            style_(symbol)
+      {
+      }
       basic_elapsed_formatter(const char* fmt, ostream_type& os=std::cout) :
         internal_fmt_(fmt), fmt_(internal_fmt_), precision_(3), os_(os),
         style_(symbol)
       {
       }
-      basic_elapsed_formatter(string_type const& fmt) :
-        internal_fmt_(fmt), fmt_(internal_fmt_), precision_(3), os_(std::cout),
+      basic_elapsed_formatter(string_type const& fmt, ostream_type& os=std::cout) :
+        internal_fmt_(fmt), fmt_(internal_fmt_), precision_(3), os_(os),
         style_(symbol)
       {
       }
       basic_elapsed_formatter(format_type & fmt) :
-        fmt_(fmt), precision_(3), os_(std::cout),
+        fmt_(fmt), precision_(3), os_(os),
         style_(symbol)
       {
       }
