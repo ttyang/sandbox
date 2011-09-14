@@ -7,12 +7,10 @@
 #ifndef BOOST_STOPWATCHES_FORMATTERS_ELAPSED_HPP
 #define BOOST_STOPWATCHES_FORMATTERS_ELAPSED_HPP
 
-#include <boost/chrono/chrono.hpp>
+#include <boost/chrono/stopwatches/formatters/base_formatter.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/current_function.hpp>
 #include <boost/chrono/stopwatches/detail/adaptive_string.hpp>
-#include <boost/chrono/stopwatches/formatters/duration_style.hpp>
-#include <boost/chrono/chrono_io.hpp>
 #include <boost/format.hpp>
 #include <boost/format/group.hpp>
 #include <boost/cstdint.hpp>
@@ -21,6 +19,7 @@
 #include <iostream>
 #include <cassert>
 #include <iomanip>
+
 #define BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT "%1%"
 
 namespace boost
@@ -28,48 +27,7 @@ namespace boost
   namespace chrono
   {
 
-    template<typename CharT = char, typename Traits = std::char_traits<CharT> >
-    class base_formatter
-    {
 
-    public:
-      typedef basic_format<CharT, Traits> format_type;
-      typedef CharT char_type;
-      typedef std::basic_ostream<CharT, Traits> ostream_type;
-
-      base_formatter() :
-        precision_(3), os_(std::cout),
-            style_(duration_style::symbol)
-      {
-      }
-      base_formatter(ostream_type& os) :
-        precision_(3), os_(os),
-            style_(duration_style::symbol)
-      {
-      }
-
-      void set_precision(std::size_t precision)
-      {
-        precision_=precision;
-        if (precision_ > 9)
-          precision_ = 9; // sanity check
-      }
-      void set_os(ostream_type& os)
-      {
-        os_=os;
-      }
-      void set_duration_style(duration_style::type style)
-      {
-        style_==style;
-      }
-
-    protected:
-      std::size_t precision_;
-      ostream_type & os_;
-      duration_style::type style_;
-
-
-    };
     template<typename Ratio=micro, typename CharT = char, typename Traits = std::char_traits<CharT>,
         class Alloc = std::allocator<CharT> >
     class basic_elapsed_formatter : public base_formatter<CharT, Traits>
