@@ -289,8 +289,9 @@ namespace sweepline {
             if (!site_event.is_segment()) {
                 while (!end_points_.empty() &&
                        end_points_.top().first == site_event.point0()) {
-                    beach_line_.erase(end_points_.top().second);
+                    beach_line_iterator b_it = end_points_.top().second;
                     end_points_.pop();
+                    beach_line_.erase(b_it);
                 }
             } else {
                 while (last != site_events_.end() &&
