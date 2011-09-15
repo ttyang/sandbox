@@ -491,7 +491,7 @@
       </p>
 <pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">vector_error</span> <span class="special">{</span> <span class="special">...</span> <span class="special">};</span>
 
-<span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span>
+<span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Constructor with member initializers.</span>
 <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">count</span> <span class="special">)</span>
     <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span> <span class="special">)</span>
@@ -512,10 +512,21 @@
 <span class="special">}</span>
 </pre>
 <p>
-        For functions other than constructors, function-try-blocks are programmed
-        outside the macros and around the body definition as usual:
+        For functions other than constructors or constructors without member initializers,
+        function-try-blocks are programmed outside the macros and around the body
+        definition as usual:
       </p>
-<pre class="programlisting"><span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
+<pre class="programlisting"><span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Constructor without member initializers.</span>
+<span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">)</span>
+<span class="special">)</span> <span class="keyword">try</span> <span class="special">{</span>
+    <span class="special">...</span>
+<span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"unknown error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">count</span> <span class="special">&lt;&lt;</span> <span class="string">" elements"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="keyword">throw</span> <span class="identifier">vector_error</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span> <span class="comment">// Non-constructor function.</span>
 <span class="keyword">float</span> <span class="special">(</span><span class="identifier">sqrt</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">float</span> <span class="identifier">x</span> <span class="special">)</span>
     <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">x</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">x</span> <span class="special">==</span> <span class="identifier">result</span> <span class="special">*</span> <span class="identifier">result</span> <span class="special">)</span>
