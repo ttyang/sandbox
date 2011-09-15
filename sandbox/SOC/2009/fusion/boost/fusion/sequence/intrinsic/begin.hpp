@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -13,13 +13,22 @@
 #include <boost/fusion/support/tag_of.hpp>
 #include <boost/fusion/support/is_sequence.hpp>
 #include <boost/utility/enable_if.hpp>
+#include <boost/fusion/sequence/intrinsic/detail/segmented_begin.hpp>
 
 namespace boost { namespace fusion
 {
     namespace extension
     {
         template<typename>
-        struct begin_impl;
+        struct begin_impl
+        {
+            template<typename Seq>
+            struct apply
+              : detail::segmented_begin<Seq>
+            {
+                BOOST_FUSION_MPL_ASSERT((traits::is_segmented<Seq>))
+            };
+        };
     }
 
     namespace result_of
@@ -36,7 +45,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq>
-    inline typename lazy_enable_if<
+    typename lazy_enable_if<
         traits::is_sequence<BOOST_FUSION_R_ELSE_CLREF(Seq)>
       , result_of::begin<BOOST_FUSION_R_ELSE_CLREF(Seq)>
     >::type
@@ -48,7 +57,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq>
-    inline typename lazy_enable_if<
+    typename lazy_enable_if<
         traits::is_sequence<Seq&>
       , result_of::begin<Seq&>
     >::type

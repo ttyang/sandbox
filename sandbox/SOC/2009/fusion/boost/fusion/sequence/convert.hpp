@@ -1,5 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,7 +12,6 @@
 #include <boost/fusion/support/internal/base.hpp>
 #include <boost/fusion/container/vector/convert.hpp>
 
-//TODO doc!!!
 namespace boost { namespace fusion
 {
     namespace extension
@@ -45,8 +45,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Tag, typename Seq>
-    inline typename
-        result_of::convert<Tag, BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
+    typename result_of::convert<Tag, BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
     convert(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return result_of::convert<

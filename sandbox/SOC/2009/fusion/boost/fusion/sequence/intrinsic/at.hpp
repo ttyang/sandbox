@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -73,7 +73,7 @@ namespace boost { namespace fusion
     }
 
     template<typename N, typename Seq>
-    inline typename result_of::at<BOOST_FUSION_R_ELSE_CLREF(Seq), N>::type
+    typename result_of::at<BOOST_FUSION_R_ELSE_CLREF(Seq), N>::type
     at(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return result_of::at<BOOST_FUSION_R_ELSE_CLREF(Seq), N>::call(
@@ -82,7 +82,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename N, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
             result_of::at<,Seq,&,N>)
     at(Seq& seq)
     {
@@ -91,8 +91,7 @@ namespace boost { namespace fusion
 #endif
 
     template<int N, typename Seq>
-    inline typename
-        result_of::at_c<BOOST_FUSION_R_ELSE_CLREF(Seq), N>::type
+    typename result_of::at_c<BOOST_FUSION_R_ELSE_CLREF(Seq), N>::type
     at_c(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return fusion::at<mpl::int_<N> >(BOOST_FUSION_FORWARD(Seq,seq));
@@ -100,7 +99,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<int N, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
             result_of::at_c<,Seq,&, N>)
     at_c(Seq& seq)
     {

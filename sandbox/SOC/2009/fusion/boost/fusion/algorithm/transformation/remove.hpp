@@ -1,8 +1,8 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
@@ -30,7 +30,7 @@ namespace boost { namespace fusion
     }
 
     template<typename T, typename Seq>
-    inline typename result_of::remove<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::type
+    typename result_of::remove<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::type
     remove(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return fusion::remove_if<is_same<mpl::_1, T> >(
@@ -39,7 +39,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename T, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
         result_of::remove<,Seq,&, T>)
     remove_if(Seq& seq)
     {

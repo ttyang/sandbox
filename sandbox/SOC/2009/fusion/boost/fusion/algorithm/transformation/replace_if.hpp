@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -37,7 +37,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename F, typename NewValue>
-    inline typename result_of::replace_if<
+    typename result_of::replace_if<
         BOOST_FUSION_R_ELSE_CLREF(Seq)
       , BOOST_FUSION_RREF_ELSE_OBJ(F)
       , BOOST_FUSION_R_ELSE_CLREF(NewValue)
@@ -63,7 +63,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq, typename F, typename NewValue>
-    inline typename result_of::replace_if<Seq&, F, NewValue const&>::type
+    typename result_of::replace_if<Seq&, F, NewValue const&>::type
     replace_if(Seq& seq,F pred,NewValue const& new_value)
     {
         typedef result_of::replace_if<Seq&, F, NewValue const&> result;

@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -60,14 +60,14 @@ namespace boost { namespace fusion
     }
 
     template<int N, typename It>
-    inline typename result_of::advance_c<It const&, N>::type
+    typename result_of::advance_c<It const&, N>::type
     advance_c(It const& it)
     {
         return result_of::advance_c<It const&, N>::call(it);
     }
 
     template<typename N, typename It>
-    inline typename result_of::advance<It const&, N>::type
+    typename result_of::advance<It const&, N>::type
     advance(It const& it)
     {
         return result_of::advance<It const&, N>::call(it);

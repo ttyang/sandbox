@@ -1,5 +1,5 @@
 /*==============================================================================
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -76,10 +76,9 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq>
-    inline typename
-        result_of::BOOST_PP_CAT(as_,BOOST_FUSION_SEQ_NAME)<
-            BOOST_FUSION_R_ELSE_CLREF(Seq)
-        >::type
+    typename result_of::BOOST_PP_CAT(as_,BOOST_FUSION_SEQ_NAME)<
+        BOOST_FUSION_R_ELSE_CLREF(Seq)
+    >::type
     BOOST_PP_CAT(as_,BOOST_FUSION_SEQ_NAME)(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return result_of::BOOST_PP_CAT(as_,BOOST_FUSION_SEQ_NAME)<

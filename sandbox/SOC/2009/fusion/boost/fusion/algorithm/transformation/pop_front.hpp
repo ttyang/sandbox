@@ -1,8 +1,8 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
@@ -26,17 +26,17 @@ namespace boost { namespace fusion
             BOOST_FUSION_MPL_ASSERT((traits::is_forward<Seq>))
             BOOST_FUSION_MPL_ASSERT_NOT((empty<Seq>))
 
-            typedef 
+            typedef
                 iterator_range<
                     typename next<typename begin<Seq>::type>::type
                   , typename end<Seq>::type
-                > 
+                >
             type;
         };
     }
 
     template<typename Seq>
-    inline typename result_of::pop_front<BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
+    typename result_of::pop_front<BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
     pop_front(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return typename
@@ -49,7 +49,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq>
-    inline typename result_of::pop_front<Seq&>::type
+    typename result_of::pop_front<Seq&>::type
     pop_front(Seq& seq)
     {
         return typename

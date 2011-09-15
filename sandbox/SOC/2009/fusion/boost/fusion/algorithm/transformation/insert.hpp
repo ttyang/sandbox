@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -36,12 +36,11 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename Pos, typename T>
-    inline typename
-        result_of::insert<
-            BOOST_FUSION_R_ELSE_CLREF(Seq)
-          , Pos const&
-          , BOOST_FUSION_R_ELSE_CLREF(T)
-        >::type
+    typename result_of::insert<
+        BOOST_FUSION_R_ELSE_CLREF(Seq)
+      , Pos const&
+      , BOOST_FUSION_R_ELSE_CLREF(T)
+    >::type
     insert(BOOST_FUSION_R_ELSE_CLREF(Seq) seq,
             Pos const& pos,
             BOOST_FUSION_R_ELSE_CLREF(T) x)
@@ -54,7 +53,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq, typename Pos, typename T>
-    inline typename result_of::insert<Seq&, Pos const&, T const&>::type
+    typename result_of::insert<Seq&, Pos const&, T const&>::type
     insert(Seq& seq,Pos const& pos,T const& x)
     {
         return insert_range(seq, pos, fusion::make_single_view(x));

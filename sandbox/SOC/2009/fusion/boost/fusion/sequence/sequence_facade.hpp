@@ -1,5 +1,5 @@
 /*==============================================================================
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -12,17 +12,19 @@
 #include <boost/fusion/support/internal/facade_generation.hpp>
 #include <boost/mpl/bool.hpp>
 
+// TODO 3rd parameter?
 #define BOOST_FUSION_SEQUENCE_INTRINSIC_FUNCS                                   \
-    ((at_key, 1, 1))                                                            \
-    ((at, 1, 0))                                                                \
-    ((back, 0, 0))                                                              \
-    ((begin, 0, 0))                                                             \
-    ((empty, 0, 1))                                                             \
-    ((end, 0, 0))                                                               \
-    ((has_key, 1, 1))                                                           \
-    ((size, 0, 1))                                                              \
-    ((value_at_key, 1, 1))                                                      \
-    ((value_at, 1, 0))
+    ((at_key, 1))                                                               \
+    ((at, 1))                                                                   \
+    ((back, 0))                                                                 \
+    ((begin, 0))                                                                \
+    ((empty, 0))                                                                \
+    ((end, 0))                                                                  \
+    ((has_key, 1))                                                              \
+    ((is_segmented, 0))                                                         \
+    ((size, 0))                                                                 \
+    ((value_at_key, 1))                                                         \
+    ((value_at, 1))
 
 BOOST_FUSION_FACADE_DEFINE_INTRINSIC_FUNCS_WRAPPER(
     sequence_facade_tag, BOOST_FUSION_SEQUENCE_INTRINSIC_FUNCS)

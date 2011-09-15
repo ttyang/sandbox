@@ -1,9 +1,9 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
     Copyright (c) 2006 Dan Marsden
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
@@ -30,22 +30,21 @@ namespace boost { namespace fusion {
         };
     }
 
-#define BOOST_FUSION_JOIN(SEQ1_CV_REF_MODIFIER,SEQ2_CV_REF_MODIFIER)\
-    template<typename Seq1, typename Seq2>\
-    inline typename\
-        result_of::join<\
-            Seq1 SEQ1_CV_REF_MODIFIER\
-          , Seq2 SEQ2_CV_REF_MODIFIER\
-        >::type\
-    join(Seq1 SEQ1_CV_REF_MODIFIER seq1,\
-         Seq2 SEQ2_CV_REF_MODIFIER seq2)\
-    {\
-        return typename\
-            result_of::join<\
-                Seq1 SEQ1_CV_REF_MODIFIER\
-              , Seq2 SEQ2_CV_REF_MODIFIER\
-            >::type(static_cast<Seq1 SEQ1_CV_REF_MODIFIER>(seq1)\
-                  , static_cast<Seq2 SEQ2_CV_REF_MODIFIER>(seq2));\
+#define BOOST_FUSION_JOIN(SEQ1_CV_REF_MODIFIER,SEQ2_CV_REF_MODIFIER)            \
+    template<typename Seq1, typename Seq2>                                      \
+    typename                                                                    \
+        result_of::join<                                                        \
+            Seq1 SEQ1_CV_REF_MODIFIER                                           \
+          , Seq2 SEQ2_CV_REF_MODIFIER                                           \
+        >::type                                                                 \
+    join(Seq1 SEQ1_CV_REF_MODIFIER seq1,                                        \
+         Seq2 SEQ2_CV_REF_MODIFIER seq2)                                        \
+    {                                                                           \
+        return typename result_of::join<                                        \
+            Seq1 SEQ1_CV_REF_MODIFIER                                           \
+          , Seq2 SEQ2_CV_REF_MODIFIER                                           \
+        >::type(static_cast<Seq1 SEQ1_CV_REF_MODIFIER>(seq1)                    \
+          , static_cast<Seq2 SEQ2_CV_REF_MODIFIER>(seq2));                      \
     }
 
     BOOST_FUSION_JOIN(

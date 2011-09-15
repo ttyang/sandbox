@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2007 Tobias Schwinger
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -129,8 +129,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Size, typename Seq>
-    inline typename
-        result_of::repeat<BOOST_FUSION_R_ELSE_CLREF(Seq),Size>::type
+    typename result_of::repeat<BOOST_FUSION_R_ELSE_CLREF(Seq),Size>::type
     repeat(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return typename result_of::repeat<
@@ -141,8 +140,8 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Size, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
-            result_of::repeat<,Seq,&, Size>)
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+        result_of::repeat<,Seq,&, Size>)
     repeat(Seq& seq)
     {
         return typename result_of::repeat<Seq&,Size>::type(seq);
@@ -150,7 +149,7 @@ namespace boost { namespace fusion
 #endif
 
     template<typename Seq>
-    inline typename result_of::repeat<BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
+    typename result_of::repeat<BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
     repeat(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return typename result_of::repeat<BOOST_FUSION_R_ELSE_CLREF(Seq)>::type(

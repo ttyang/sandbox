@@ -1,8 +1,8 @@
 /*==============================================================================
     Copyright (c) 2006-2007 Tobias Schwinger
-    Copyright (c) 2009 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
-    Use modification and distribution are subject to the Boost Software 
+    Use modification and distribution are subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
@@ -29,34 +29,34 @@ namespace boost { namespace fusion { namespace detail
         typedef typename detail::remove_reference<WantedRef>::type* wanted;
 
         template<typename T>
-        static inline wanted
+        static wanted
         do_get_pointer(BOOST_FUSION_R_ELSE_LREF(T), wanted ptr)
         {
             return ptr;
         }
 
         template<typename T>
-        static inline wanted
+        static wanted
         do_get_pointer(BOOST_FUSION_R_ELSE_LREF(T) t, void const*)
         {
             return get_pointer(BOOST_FUSION_FORWARD(T,t));
         }
 
     public:
-        static inline wanted
+        static wanted
         get(WantedRef x)
         {
             return boost::addressof(x);
         }
 
-        static inline wanted
+        static wanted
         get(wanted ptr)
         {
             return ptr;
         }
 
         template<typename T>
-        static inline wanted
+        static wanted
         get(BOOST_FUSION_R_ELSE_LREF(T) t,
             //TODO
             typename disable_if<
@@ -76,7 +76,7 @@ namespace boost { namespace fusion { namespace detail
     {
         using boost::get_pointer;
         void const* get_pointer(...);
-  
+
         template<typename T>
         small_type const_tester(T*);
 

@@ -1,5 +1,5 @@
 /*==============================================================================
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -36,8 +36,7 @@ namespace boost { namespace fusion
     }
 
     template<typename T, typename Seq>
-    inline typename
-        result_of::find_key<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::type const
+    typename result_of::find_key<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::type
     find_key(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return result_of::find_key<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::call(
@@ -46,8 +45,8 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename T, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
-            result_of::find_key<,Seq,&, T>) const
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+        result_of::find_key<,Seq,&, T>) const
     find_key(Seq& seq)
     {
         return result_of::find_key<Seq&, T>::call(seq);

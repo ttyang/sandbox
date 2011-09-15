@@ -12,16 +12,17 @@
 #include <boost/fusion/support/internal/facade_generation.hpp>
 
 #define BOOST_FUSION_ITERATOR_INTRINSIC_FUNCS                                   \
-    ((advance, 1, 1))                                                           \
-    ((deref_data, 0, 0))                                                        \
-    ((deref, 0, 0))                                                             \
-    ((distance, 1, 0))                                                          \
-    ((equal_to, 1, 0))                                                          \
-    ((key_of, 0, 0))                                                            \
-    ((next, 0, 0))                                                              \
-    ((prior, 0, 0))                                                             \
-    ((value_of_data, 0, 0))                                                     \
-    ((value_of, 0, 0))
+    ((advance, 1))                                                              \
+    ((deref_data, 0))                                                           \
+    ((deref, 0))                                                                \
+    ((distance, 1))                                                             \
+    ((equal_to, 1))                                                             \
+    ((is_segmented, 0))                                                         \
+    ((key_of, 0))                                                               \
+    ((next, 0))                                                                 \
+    ((prior, 0))                                                                \
+    ((value_of_data, 0))                                                        \
+    ((value_of, 0))
 
 BOOST_FUSION_FACADE_DEFINE_INTRINSIC_FUNCS_WRAPPER(
     iterator_facade_tag, BOOST_FUSION_ITERATOR_INTRINSIC_FUNCS)

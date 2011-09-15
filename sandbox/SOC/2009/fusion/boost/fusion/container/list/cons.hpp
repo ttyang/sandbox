@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2005 Joel de Guzman
     Copyright (c) 2005 Eric Niebler
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,7 +27,7 @@
 #endif
 #include <boost/utility/enable_if.hpp>
 
-#include <boost/fusion/container/list/detail/cons_fwd.hpp>
+#include <boost/fusion/container/list/list_fwd.hpp>
 #include <boost/fusion/container/list/detail/cons_iterator.hpp>
 #include <boost/fusion/container/list/detail/value_at_impl.hpp>
 #include <boost/fusion/container/list/detail/at_impl.hpp>
@@ -58,7 +58,7 @@ namespace boost { namespace fusion
 
         typedef mpl::int_<0> size;
         typedef cons_tag fusion_tag;
-        typedef fusion_sequence_tag tag; 
+        typedef fusion_sequence_tag tag;
         typedef forward_traversal_tag category;
 
         nil()
@@ -104,7 +104,7 @@ namespace boost { namespace fusion
         {}
     };
 
-    template<typename Car, typename Cdr = nil>
+    template<typename Car, typename Cdr>
     struct cons
     {
         typedef Car car_type;
@@ -112,7 +112,7 @@ namespace boost { namespace fusion
 
         typedef mpl::int_<Cdr::size::value+1> size;
         typedef cons_tag fusion_tag;
-        typedef fusion_sequence_tag tag; 
+        typedef fusion_sequence_tag tag;
         typedef forward_traversal_tag category;
 
         cons()

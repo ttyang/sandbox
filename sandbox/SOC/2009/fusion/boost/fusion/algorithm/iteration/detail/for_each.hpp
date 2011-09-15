@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -23,6 +23,7 @@
 #include <boost/preprocessor/tuple/eat.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
+#include <boost/mpl/bool.hpp>
 
 namespace boost { namespace fusion { namespace detail
 {
@@ -94,7 +95,14 @@ namespace boost { namespace fusion { namespace detail
 #undef BOOST_FUSION_UNROLLED_FOR_EACH_IMPL
 #undef BOOST_FUSION_UNROLLED_FOR_EACH_IMPL_NEXT
 #undef BOOST_FUSION_UNROLLED_FOR_EACH_IMPL_N
-}}}
 
+    template<typename SeqRef, typename F>
+    void
+    for_each(SeqRef seq, BOOST_FUSION_RREF_ELSE_OBJ(F), mpl::false_)
+    {
+        for_each_unrolled<result_of::size<SeqRef>::type::value>(
+            fusion::begin(BOOST_FUSION_FORWARD(SeqRef, seq)));
+    }
+}}}
 
 #endif

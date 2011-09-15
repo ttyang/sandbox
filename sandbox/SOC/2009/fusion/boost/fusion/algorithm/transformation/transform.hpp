@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -76,12 +76,11 @@ namespace boost { namespace fusion
 
     //TODO boost config macro for default arguments for function templates
     template<typename IsAssociative,typename Seq, typename F>
-    inline typename
-        result_of::transform<
-            BOOST_FUSION_R_ELSE_CLREF(Seq)
-          , BOOST_FUSION_RREF_ELSE_OBJ(F)
-          , IsAssociative
-        >::type
+    typename result_of::transform<
+        BOOST_FUSION_R_ELSE_CLREF(Seq)
+      , BOOST_FUSION_RREF_ELSE_OBJ(F)
+      , IsAssociative
+    >::type
     transform(BOOST_FUSION_R_ELSE_CLREF(Seq) seq,
             BOOST_FUSION_RREF_ELSE_OBJ(F) f)
     {
@@ -93,11 +92,10 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename F>
-    inline typename
-        result_of::transform<
-            BOOST_FUSION_R_ELSE_CLREF(Seq)
-          , BOOST_FUSION_RREF_ELSE_OBJ(F)
-        >::type
+    typename result_of::transform<
+        BOOST_FUSION_R_ELSE_CLREF(Seq)
+      , BOOST_FUSION_RREF_ELSE_OBJ(F)
+    >::type
     transform(BOOST_FUSION_R_ELSE_CLREF(Seq) seq,
             BOOST_FUSION_RREF_ELSE_OBJ(F) f)
     {
@@ -109,7 +107,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename IsAssociative,typename Seq, typename F>
-    inline typename result_of::transform<Seq&, F>::type
+    typename result_of::transform<Seq&, F>::type
     transform(Seq& seq, F f)
     {
 #ifdef BOOST_MSVC
@@ -124,7 +122,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename F>
-    inline typename result_of::transform<Seq&, F>::type
+    typename result_of::transform<Seq&, F>::type
     transform(Seq& seq, F f)
     {
         return typename result_of::transform<Seq&, F>::type(seq, f);
@@ -133,7 +131,7 @@ namespace boost { namespace fusion
 
 #define BOOST_FUSION_TRANSFORM_BINARY(SEQ1_CV_REF_MODIFIER,SEQ2_CV_REF_MODIFIER)\
     template<typename IsAssociative,typename Seq1, typename Seq2, typename F>\
-    inline typename\
+    typename\
         result_of::transform<\
             Seq1 SEQ1_CV_REF_MODIFIER\
           , Seq2 SEQ2_CV_REF_MODIFIER\
@@ -156,12 +154,11 @@ namespace boost { namespace fusion
     }\
     \
     template<typename Seq1, typename Seq2, typename F>\
-    inline typename\
-        result_of::transform<\
-            Seq1 SEQ1_CV_REF_MODIFIER\
-          , Seq2 SEQ2_CV_REF_MODIFIER\
-          , BOOST_FUSION_RREF_ELSE_OBJ(F)\
-        >::type\
+    typename result_of::transform<\
+        Seq1 SEQ1_CV_REF_MODIFIER\
+      , Seq2 SEQ2_CV_REF_MODIFIER\
+      , BOOST_FUSION_RREF_ELSE_OBJ(F)\
+    >::type\
     transform(Seq1 SEQ1_CV_REF_MODIFIER seq1\
           , Seq2 SEQ2_CV_REF_MODIFIER seq2\
           , BOOST_FUSION_RREF_ELSE_OBJ(F) f)\

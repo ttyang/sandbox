@@ -20,23 +20,23 @@
 
 #define BOOST_FUSION_DEFINE_SEQUENCE_FACADE_INTRINSIC_FUNC_WRAPPER(R, TAG, FUNC)\
     template<typename>                                                          \
-    struct BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(3, 0, FUNC),_impl);                 \
+    struct BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2, 0, FUNC),_impl);                 \
                                                                                 \
     template<>                                                                  \
-    struct BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(3, 0, FUNC),_impl)<TAG>             \
+    struct BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2, 0, FUNC),_impl)<TAG>             \
     {                                                                           \
         template<                                                               \
             typename T                                                          \
-            BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(3, 1, FUNC))                  \
+            BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(2, 1, FUNC))                  \
             BOOST_PP_ENUM_PARAMS(                                               \
-                BOOST_PP_TUPLE_ELEM(3, 1, FUNC), typename T)                    \
+                BOOST_PP_TUPLE_ELEM(2, 1, FUNC), typename T)                    \
         >                                                                       \
         struct apply                                                            \
           : detail::remove_reference<T>::type::                                 \
-                template BOOST_PP_TUPLE_ELEM(3, 0, FUNC)<                       \
+                template BOOST_PP_TUPLE_ELEM(2, 0, FUNC)<                       \
                 T                                                               \
-                BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(3, 1, FUNC))              \
-                BOOST_PP_ENUM_PARAMS(BOOST_PP_TUPLE_ELEM(3, 1, FUNC), T)        \
+                BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(2, 1, FUNC))              \
+                BOOST_PP_ENUM_PARAMS(BOOST_PP_TUPLE_ELEM(2, 1, FUNC), T)        \
             >                                                                   \
         {};                                                                     \
     };
@@ -60,17 +60,17 @@ namespace boost { namespace fusion                                              
 #define BOOST_FUSION_DEFINE_SEQUENCE_FACADE_INTRINSIC_FUNC_FORDER(R, _, FUNC)   \
     template<                                                                   \
         typename T                                                              \
-        BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(3, 1, FUNC))                      \
+        BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(2, 1, FUNC))                      \
         BOOST_PP_ENUM_PARAMS(                                                   \
-            BOOST_PP_TUPLE_ELEM(3, 1, FUNC), typename T)                        \
+            BOOST_PP_TUPLE_ELEM(2, 1, FUNC), typename T)                        \
     >                                                                           \
-    struct BOOST_PP_TUPLE_ELEM(3, 0, FUNC)                                      \
-      : extension::BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(3, 0, FUNC),_impl)<         \
+    struct BOOST_PP_TUPLE_ELEM(2, 0, FUNC)                                      \
+      : extension::BOOST_PP_CAT(BOOST_PP_TUPLE_ELEM(2, 0, FUNC),_impl)<         \
             typename mpl::apply1<mpl::always<void_>,T>::type                    \
         >::template apply<                                                      \
             T                                                                   \
-            BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(3, 1, FUNC))                  \
-            BOOST_PP_ENUM_PARAMS(BOOST_PP_TUPLE_ELEM(3, 1, FUNC), T)            \
+            BOOST_PP_COMMA_IF(BOOST_PP_TUPLE_ELEM(2, 1, FUNC))                  \
+            BOOST_PP_ENUM_PARAMS(BOOST_PP_TUPLE_ELEM(2, 1, FUNC), T)            \
         >                                                                       \
     {};
 

@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
     Copyright (c) 2007 Dan Marsden
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -27,7 +27,7 @@ namespace boost { namespace fusion
             {}
 
             template<typename E>
-            inline int
+            int
             operator()(int count, BOOST_FUSION_R_ELSE_CLREF(E) e)
             {
                 return f(BOOST_FUSION_FORWARD(E,e)) ? ++count : count;
@@ -54,11 +54,10 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename F>
-    inline typename
-        result_of::count_if<
-            BOOST_FUSION_R_ELSE_CLREF(Seq)
-          , BOOST_FUSION_RREF_ELSE_OBJ(F)
-        >::type
+    typename result_of::count_if<
+        BOOST_FUSION_R_ELSE_CLREF(Seq)
+      , BOOST_FUSION_RREF_ELSE_OBJ(F)
+    >::type
     count_if(BOOST_FUSION_R_ELSE_CLREF(Seq) seq,
              BOOST_FUSION_RREF_ELSE_OBJ(F) f)
     {
@@ -70,7 +69,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq, typename F>
-    inline typename result_of::count_if<Seq&,F>::type
+    typename result_of::count_if<Seq&,F>::type
     count_if(Seq& seq, F f)
     {
         return fusion::fold(seq,

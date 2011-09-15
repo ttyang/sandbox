@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
     Copyright (c) 2006 Dan Marsden
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -59,10 +59,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Key, typename Seq>
-    inline typename result_of::at_key<
-        BOOST_FUSION_R_ELSE_CLREF(Seq)
-      , Key
-    >::type
+    typename result_of::at_key<BOOST_FUSION_R_ELSE_CLREF(Seq), Key>::type
     at_key(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return result_of::at_key<BOOST_FUSION_R_ELSE_CLREF(Seq), Key>::call(
@@ -71,7 +68,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Key, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
         result_of::at_key<,Seq,&,Key>)
     at_key(Seq& seq)
     {

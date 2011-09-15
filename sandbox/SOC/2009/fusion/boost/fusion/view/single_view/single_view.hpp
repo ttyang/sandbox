@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -59,7 +59,7 @@ namespace boost { namespace fusion
         typedef T value_type;
 
         typedef single_view_tag fusion_tag;
-        typedef fusion_sequence_tag tag; 
+        typedef fusion_sequence_tag tag;
         typedef random_access_traversal_tag category;
         typedef mpl::int_<1> size;
 
@@ -179,8 +179,7 @@ namespace boost { namespace fusion
     }
 
     template<typename T>
-    inline typename
-        result_of::make_single_view<BOOST_FUSION_R_ELSE_CLREF(T)>::type
+    typename result_of::make_single_view<BOOST_FUSION_R_ELSE_CLREF(T)>::type
     make_single_view(BOOST_FUSION_R_ELSE_CLREF(T) val)
     {
         return typename result_of::make_single_view<
@@ -191,7 +190,8 @@ namespace boost { namespace fusion
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename T, typename Seq>
     //cschmidt: see https://svn.boost.org/trac/boost/ticket/3305
-#   if defined(BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS) || BOOST_WORKAROUND(__GNUC__,<4)
+#   if defined(BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS) || \
+        BOOST_WORKAROUND(__GNUC__,<4)
     typename lazy_disable_if<
         is_const<T>
       , result_of::make_single_view<T&>

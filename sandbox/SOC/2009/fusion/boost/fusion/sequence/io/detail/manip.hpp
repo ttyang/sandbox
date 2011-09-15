@@ -3,7 +3,7 @@
     Copyright (c) 1999-2003 Jaakko Jarvi
     Copyright (c) 2001-2006 Joel de Guzman
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
@@ -27,7 +27,7 @@
 #endif
 
 //$$$ these should be part of the public API$$$
-//$$$ rename tuple_open, tuple_close and tuple_delimiter to 
+//$$$ rename tuple_open, tuple_close and tuple_delimiter to
 //    open, close and delimeter and add these synonyms to the
 //    TR1 tuple module.
 
@@ -164,14 +164,14 @@ namespace boost { namespace fusion
             name##_type(const string_type& d): data(d) {}                       \
         };                                                                      \
                                                                                 \
-        template<typename Stream>                                              \
+        template<typename Stream>                                               \
         Stream& operator>>(Stream& s, const name##_type& m)                     \
         {                                                                       \
             string_ios_manip<name##_tag, Stream>(s).set(m.data);                \
             return s;                                                           \
         }                                                                       \
                                                                                 \
-        template<typename Stream>                                              \
+        template<typename Stream>                                               \
         Stream& operator<<(Stream& s, const name##_type& m)                     \
         {                                                                       \
             string_ios_manip<name##_tag, Stream>(s).set(m.data);                \
@@ -180,19 +180,19 @@ namespace boost { namespace fusion
     }
 
 #define STD_TUPLE_DEFINE_MANIPULATOR_FUNCTIONS(name)                            \
-    inline detail::name##_type                                                  \
+    detail::name##_type                                                         \
     name(const std::string& s)                                                  \
     {                                                                           \
         return detail::name##_type(s);                                          \
     }                                                                           \
                                                                                 \
-    inline detail::name##_type                                                  \
+    detail::name##_type                                                         \
     name(const char* s)                                                         \
     {                                                                           \
         return detail::name##_type(std::string(s));                             \
     }                                                                           \
                                                                                 \
-    inline detail::name##_type                                                  \
+    detail::name##_type                                                         \
     name(char c)                                                                \
     {                                                                           \
         return detail::name##_type(std::string(1, c));                          \
@@ -203,32 +203,32 @@ namespace boost { namespace fusion
 #if defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
 
 #define STD_TUPLE_DEFINE_MANIPULATOR_FUNCTIONS(name)                            \
-    template<typename Char, typename Traits>                                   \
-    inline detail::name##_type<Char, Traits>                                    \
+    template<typename Char, typename Traits>                                    \
+    detail::name##_type<Char, Traits>                                           \
     name(const std::basic_string<Char, Traits>& s)                              \
     {                                                                           \
         return detail::name##_type<Char, Traits>(s);                            \
     }                                                                           \
                                                                                 \
-    inline detail::name##_type<char>                                            \
+    detail::name##_type<char>                                                   \
     name(char const* s)                                                         \
     {                                                                           \
         return detail::name##_type<char>(std::basic_string<char>(s));           \
     }                                                                           \
                                                                                 \
-    inline detail::name##_type<wchar_t>                                         \
+    detail::name##_type<wchar_t>                                                \
     name(wchar_t const* s)                                                      \
     {                                                                           \
         return detail::name##_type<wchar_t>(std::basic_string<wchar_t>(s));     \
     }                                                                           \
                                                                                 \
-    inline detail::name##_type<char>                                            \
+    detail::name##_type<char>                                                   \
     name(char c)                                                                \
     {                                                                           \
         return detail::name##_type<char>(std::basic_string<char>(1, c));        \
     }                                                                           \
                                                                                 \
-    inline detail::name##_type<wchar_t>                                         \
+    detail::name##_type<wchar_t>                                                \
     name(wchar_t c)                                                             \
     {                                                                           \
         return detail::name##_type<wchar_t>(std::basic_string<wchar_t>(1, c));  \
@@ -237,29 +237,29 @@ namespace boost { namespace fusion
 #else // defined(BOOST_NO_FUNCTION_TEMPLATE_ORDERING)
 
 #define STD_TUPLE_DEFINE_MANIPULATOR_FUNCTIONS(name)                            \
-    template<typename Char, typename Traits>                                   \
-    inline detail::name##_type<Char, Traits>                                    \
+    template<typename Char, typename Traits>                                    \
+    detail::name##_type<Char, Traits>                                           \
     name(const std::basic_string<Char, Traits>& s)                              \
     {                                                                           \
         return detail::name##_type<Char, Traits>(s);                            \
     }                                                                           \
                                                                                 \
-    template<typename Char>                                                    \
-    inline detail::name##_type<Char>                                            \
+    template<typename Char>                                                     \
+    detail::name##_type<Char>                                                   \
     name(Char s[])                                                              \
     {                                                                           \
         return detail::name##_type<Char>(std::basic_string<Char>(s));           \
     }                                                                           \
                                                                                 \
-    template<typename Char>                                                    \
-    inline detail::name##_type<Char>                                            \
+    template<typename Char>                                                     \
+    detail::name##_type<Char>                                                   \
     name(Char const s[])                                                        \
     {                                                                           \
         return detail::name##_type<Char>(std::basic_string<Char>(s));           \
     }                                                                           \
                                                                                 \
-    template<typename Char>                                                    \
-    inline detail::name##_type<Char>                                            \
+    template<typename Char>                                                     \
+    detail::name##_type<Char>                                                   \
     name(Char c)                                                                \
     {                                                                           \
         return detail::name##_type<Char>(std::basic_string<Char>(1, c));        \
@@ -272,7 +272,7 @@ namespace boost { namespace fusion
     {                                                                           \
         struct name##_tag;                                                      \
                                                                                 \
-        template<typename Char, typename Traits = std::char_traits<Char> >     \
+        template<typename Char, typename Traits = std::char_traits<Char> >      \
         struct name##_type                                                      \
         {                                                                       \
             typedef std::basic_string<Char, Traits> string_type;                \
@@ -280,14 +280,14 @@ namespace boost { namespace fusion
             name##_type(const string_type& d): data(d) {}                       \
         };                                                                      \
                                                                                 \
-        template<typename Stream, typename Char, typename Traits>              \
+        template<typename Stream, typename Char, typename Traits>               \
         Stream& operator>>(Stream& s, const name##_type<Char,Traits>& m)        \
         {                                                                       \
             string_ios_manip<name##_tag, Stream>(s).set(m.data);                \
             return s;                                                           \
         }                                                                       \
                                                                                 \
-        template<typename Stream, typename Char, typename Traits>              \
+        template<typename Stream, typename Char, typename Traits>               \
         Stream& operator<<(Stream& s, const name##_type<Char,Traits>& m)        \
         {                                                                       \
             string_ios_manip<name##_tag, Stream>(s).set(m.data);                \

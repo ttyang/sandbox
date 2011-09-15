@@ -19,7 +19,7 @@
 namespace boost { namespace fusion
 {
     template<typename Seq>
-    inline std::istream&
+    std::istream&
     in(std::istream& is, Seq& seq)
     {
         BOOST_FUSION_MPL_ASSERT((traits::is_sequence<Seq>))
@@ -32,11 +32,10 @@ namespace boost { namespace fusion
     namespace operators
     {
         template<typename Seq>
-        inline typename
-            enable_if<
-               fusion::traits::is_sequence<Seq>
-             , std::istream&
-            >::type
+        typename enable_if<
+            fusion::traits::is_sequence<Seq>
+          , std::istream&
+        >::type
         operator>>(std::istream& is, Seq& seq)
         {
             BOOST_FUSION_MPL_ASSERT((traits::is_sequence<Seq>))

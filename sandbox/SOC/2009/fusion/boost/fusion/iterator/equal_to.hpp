@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -39,7 +39,7 @@ namespace boost { namespace fusion
     namespace iterator_operators
     {
         template<typename It1, typename It2>
-        inline BOOST_FUSION_CONSTEXPR
+        BOOST_FUSION_CONSTEXPR
         typename enable_if<
             mpl::and_<traits::is_iterator<It1>, traits::is_iterator<It2> >
           , bool
@@ -50,7 +50,7 @@ namespace boost { namespace fusion
         }
 
         template<typename It1, typename It2>
-        inline BOOST_FUSION_CONSTEXPR
+        BOOST_FUSION_CONSTEXPR
         typename enable_if<
             mpl::and_<
                 traits::is_iterator<It1>

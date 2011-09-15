@@ -2,7 +2,7 @@
     Copyright (c) 2001-2006 Joel de Guzman
     Copyright (c) 2005 Eric Niebler
     Copyright (c) 2007 Dan Marsden
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -28,7 +28,7 @@ namespace boost { namespace fusion
             {}
 
             template<typename E>
-            inline bool
+            bool
             operator()(BOOST_FUSION_R_ELSE_CLREF(E) e)
             {
                 return !f(BOOST_FUSION_FORWARD(E,e));
@@ -55,11 +55,10 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename F>
-    inline typename
-        result_of::any<
-            BOOST_FUSION_R_ELSE_CLREF(Seq)
-          , BOOST_FUSION_RREF_ELSE_OBJ(F)
-        >::type
+    typename result_of::any<
+        BOOST_FUSION_R_ELSE_CLREF(Seq)
+      , BOOST_FUSION_RREF_ELSE_OBJ(F)
+    >::type
     any(BOOST_FUSION_R_ELSE_CLREF(Seq) seq, BOOST_FUSION_RREF_ELSE_OBJ(F) f)
     {
         return !fusion::all(
@@ -70,7 +69,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq, typename F>
-    inline typename result_of::any<Seq&,F>::type
+    typename result_of::any<Seq&,F>::type
     any(Seq& seq, F f)
     {
         return !fusion::all(seq,detail::any_helper<F>(f));

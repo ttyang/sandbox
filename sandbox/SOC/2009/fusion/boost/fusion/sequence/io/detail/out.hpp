@@ -78,7 +78,7 @@ namespace boost { namespace fusion { namespace detail
     };
 
     template<typename OS, typename Seq>
-    inline void
+    void
     print_sequence(OS& os, Seq const& seq)
     {
         delimiter_out<tuple_open_tag>::print(os, "(");

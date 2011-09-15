@@ -1,5 +1,5 @@
 /*==============================================================================
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -35,7 +35,7 @@ namespace boost { namespace fusion
 #if defined(BOOST_FUSION_NO_RVALUE_REFERENCES) ||\
     defined(BOOST_NO_FUNCTION_TEMPLATE_DEFAULT_ARGS)
     template<typename F, typename Seq>
-    inline typename result_of::BOOST_FUSION_INVOKE_NAME<F, Seq const&>::type
+    typename result_of::BOOST_FUSION_INVOKE_NAME<F, Seq const&>::type
     BOOST_FUSION_INVOKE_NAME(F f, BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
          return result_of::BOOST_FUSION_INVOKE_NAME<
@@ -46,7 +46,7 @@ namespace boost { namespace fusion
 
 #   ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename F, typename Seq>
-    inline typename result_of::BOOST_FUSION_INVOKE_NAME<F,Seq&>::type
+    typename result_of::BOOST_FUSION_INVOKE_NAME<F,Seq&>::type
     BOOST_FUSION_INVOKE_NAME(F f,Seq& seq)
     {
         return result_of::BOOST_FUSION_INVOKE_NAME<F,Seq&>::call(f,seq);
@@ -54,7 +54,7 @@ namespace boost { namespace fusion
 #   endif
 #else
     template<typename FQualified=void,typename F=void, typename Seq=void>
-    inline typename result_of::BOOST_FUSION_INVOKE_NAME<
+    typename result_of::BOOST_FUSION_INVOKE_NAME<
         typename mpl::if_c<
             is_same<FQualified, void>::value
           , F&&
@@ -75,4 +75,3 @@ namespace boost { namespace fusion
     }
 #endif
 }}
-

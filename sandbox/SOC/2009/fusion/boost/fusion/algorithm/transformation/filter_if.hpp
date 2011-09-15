@@ -1,8 +1,8 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
@@ -38,10 +38,9 @@ namespace boost { namespace fusion
             typedef filter_view<Seq, Pred, PredIsMetafunction> type;
         };
     }
-    
+
     template<typename Pred, typename Seq>
-    inline typename
-        result_of::filter_if<BOOST_FUSION_R_ELSE_CLREF(Seq), Pred>::type
+    typename result_of::filter_if<BOOST_FUSION_R_ELSE_CLREF(Seq), Pred>::type
     filter_if(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
         return typename result_of::filter_if<
@@ -51,7 +50,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Pred, typename Seq>
-    inline BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
+    BOOST_FUSION_EXPLICIT_TEMPLATE_NON_CONST_ARG_OVERLOAD(
             result_of::filter_if<,Seq,&, Pred>)
     filter_if(Seq& seq)
     {
@@ -60,7 +59,7 @@ namespace boost { namespace fusion
 #endif
 
     template<typename Pred, typename PredIsMetafunction, typename Seq>
-    inline typename result_of::filter_if<
+    typename result_of::filter_if<
         BOOST_FUSION_R_ELSE_CLREF(Seq)
       , Pred
       , PredIsMetafunction
@@ -78,12 +77,12 @@ namespace boost { namespace fusion
     template<typename Pred, typename PredIsMetafunction, typename Seq>
 #   if defined(BOOST_NO_EXPLICIT_FUNCTION_TEMPLATE_ARGUMENTS) ||\
         BOOST_WORKAROUND(__GNUC__,<4)
-    inline typename lazy_disable_if<
+    typename lazy_disable_if<
         is_const<Seq>
       , result_of::filter_if<Seq&,Pred,PredIsMetafunction>
     >::type
 #   else
-    inline typename result_of::filter_if<Seq&,Pred,PredIsMetafunction>::type
+    typename result_of::filter_if<Seq&,Pred,PredIsMetafunction>::type
 #   endif
     filter_if(Seq& seq)
     {

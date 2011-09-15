@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
     Copyright (c) 2007 Dan Marsden
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -11,6 +11,8 @@
 #define BOOST_FUSION_ALGORITHM_QUERY_DETAIL_FIND_IF_HPP
 
 #include <boost/fusion/sequence/intrinsic/begin.hpp>
+#include <boost/fusion/sequence/intrinsic/end.hpp>
+#include <boost/fusion/iterator/value_of.hpp>
 #include <boost/fusion/iterator/equal_to.hpp>
 #include <boost/fusion/iterator/next.hpp>
 #include <boost/fusion/iterator/advance_c.hpp>
@@ -26,6 +28,10 @@
 #include <boost/mpl/or.hpp>
 #include <boost/mpl/apply.hpp>
 #include <boost/mpl/identity.hpp>
+#include <boost/mpl/quote.hpp>
+#include <boost/mpl/lambda.hpp>
+#include <boost/mpl/bind.hpp>
+#include <boost/mpl/placeholders.hpp>
 
 namespace boost { namespace fusion
 {
@@ -194,6 +200,18 @@ namespace boost { namespace fusion
                     fusion::begin(BOOST_FUSION_FORWARD(Seq,seq)));
             }
         };
+
+        template<typename Seq, typename Pred>
+        struct find_if
+          : static_find_if<
+                 typename result_of::begin<Seq>::type
+               , typename result_of::end<Seq>::type
+               , mpl::bind1<
+                     typename mpl::lambda<Pred>::type
+                   , mpl::bind1<mpl::quote1<result_of::value_of>,mpl::_1>
+                 >
+            >
+        {};
     }
 }}
 

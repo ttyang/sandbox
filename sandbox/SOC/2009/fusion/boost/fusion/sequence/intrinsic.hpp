@@ -17,6 +17,7 @@
 #include <boost/fusion/sequence/intrinsic/end.hpp>
 #include <boost/fusion/sequence/intrinsic/front.hpp>
 #include <boost/fusion/sequence/intrinsic/has_key.hpp>
+#include <boost/fusion/sequence/intrinsic/segments.hpp>
 #include <boost/fusion/sequence/intrinsic/size.hpp>
 #include <boost/fusion/sequence/intrinsic/swap.hpp>
 #include <boost/fusion/sequence/intrinsic/value_at_c.hpp>

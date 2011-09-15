@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -26,7 +26,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Seq, typename State, typename F>
-    inline typename result_of::accumulate<
+    typename result_of::accumulate<
         BOOST_FUSION_R_ELSE_CLREF(Seq)
       , BOOST_FUSION_R_ELSE_CLREF(State)
       , BOOST_FUSION_RREF_ELSE_OBJ(F)
@@ -43,8 +43,7 @@ namespace boost { namespace fusion
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
     template<typename Seq, typename State, typename F>
-    inline typename
-        result_of::accumulate<Seq&, State const&, F>::type
+    typename result_of::accumulate<Seq&, State const&, F>::type
     accumulate(Seq& seq,State const& state,F f)
     {
         return fusion::fold(seq,state,f);

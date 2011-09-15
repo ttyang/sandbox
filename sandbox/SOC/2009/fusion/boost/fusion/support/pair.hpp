@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2005 Joel de Guzman
     Copyright (c) 2006 Tobias Schwinger
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -16,13 +16,13 @@
 #ifndef BOOST_FUSION_NO_RVALUE_REFERENCES
 #   include <boost/fusion/support/internal/is_explicitly_convertible.hpp>
 #endif
-
 #include <boost/preprocessor/empty.hpp>
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
 #   include <boost/call_traits.hpp>
 #else
 #   include <boost/utility/enable_if.hpp>
 #endif
+#include <iosfwd>
 
 namespace boost { namespace fusion
 {
@@ -145,8 +145,7 @@ namespace boost { namespace fusion
     }
 
     template<typename First, typename Second>
-    inline typename
-        result_of::make_pair<First,BOOST_FUSION_R_ELSE_CLREF(Second)>::type
+    typename result_of::make_pair<First,BOOST_FUSION_R_ELSE_CLREF(Second)>::type
     make_pair(BOOST_FUSION_R_ELSE_CLREF(Second) second)
     {
         return typename result_of::make_pair<
@@ -165,18 +164,17 @@ namespace boost { namespace fusion
         >::type(BOOST_FUSION_FORWARD(T,t));
     }
 
-    template<typename OStream, typename First, typename Second>
-    inline BOOST_FUSION_R_ELSE_LREF(OStream)
-    operator<<(BOOST_FUSION_R_ELSE_LREF(OStream) os,
-        pair<First, Second> const& p)
+    template<typename First, typename Second>
+    std::ostream&
+    operator<<(ostream& os, pair<First, Second> const& p)
     {
         os << p.second;
         return os;
     }
 
-    template<typename IStream, typename First, typename Second>
-    inline BOOST_FUSION_R_ELSE_LREF(IStream)
-    operator>>(BOOST_FUSION_R_ELSE_LREF(IStream) is,
+    template<typename First, typename Second>
+    std::istream&
+    operator>>(std::istream& is,
         pair<First, Second> BOOST_FUSION_R_ELSE_LREF(BOOST_PP_EMPTY()) p)
     {
         is >> static_cast<
@@ -186,7 +184,7 @@ namespace boost { namespace fusion
     }
 
     template<typename First, typename SecondLhs, typename SecondRhs>
-    inline bool
+    bool
     operator==(pair<First, SecondLhs> const& lhs,
             pair<First, SecondRhs> const& rhs)
     {
@@ -194,7 +192,7 @@ namespace boost { namespace fusion
     }
 
     template<typename First, typename SecondLhs, typename SecondRhs>
-    inline bool
+    bool
     operator!=(pair<First, SecondLhs> const& lhs,
             pair<First, SecondRhs> const& rhs)
     {

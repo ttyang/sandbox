@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2005 Joel de Guzman
     Copyright (c) 2005 Eric Niebler
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -33,7 +33,7 @@ namespace boost { namespace fusion
     }
 
     template<typename Car>
-    inline typename result_of::make_cons<BOOST_FUSION_R_ELSE_CLREF(Car)>::type
+    typename result_of::make_cons<BOOST_FUSION_R_ELSE_CLREF(Car)>::type
     make_cons(BOOST_FUSION_R_ELSE_CLREF(Car) car)
     {
         typedef typename
@@ -44,11 +44,10 @@ namespace boost { namespace fusion
     }
 
     template<typename Car, typename Cdr>
-    inline typename
-        result_of::make_cons<
-            BOOST_FUSION_R_ELSE_CLREF(Car)
-          , BOOST_FUSION_R_ELSE_CLREF(Cdr)
-        >::type
+    typename result_of::make_cons<
+        BOOST_FUSION_R_ELSE_CLREF(Car)
+      , BOOST_FUSION_R_ELSE_CLREF(Cdr)
+    >::type
     make_cons(BOOST_FUSION_R_ELSE_CLREF(Car) car,
               BOOST_FUSION_R_ELSE_CLREF(Cdr) cdr)
     {
