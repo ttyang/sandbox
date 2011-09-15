@@ -41,6 +41,7 @@
       and Operator Names</a></span></dt>
 <dt><span class="section"><a href="grammar.html#contract__.grammar.exception_specifications">Exception
       Specifications</a></span></dt>
+<dt><span class="section"><a href="grammar.html#contract__.grammar.member_initializers">Member Initializers</a></span></dt>
 <dt><span class="section"><a href="grammar.html#contract__.grammar.function_parameters">Function Parameters</a></span></dt>
 <dt><span class="section"><a href="grammar.html#contract__.grammar.result_and_old_of_declarations">Result
       and Old-Of Declarations</a></span></dt>
@@ -227,6 +228,11 @@
             zero or more times.
           </li>
 <li class="listitem">
+            <code class="computeroutput"><span class="identifier">tokens</span><span class="special">+</span></code>
+            indicates <code class="computeroutput"><span class="identifier">tokens</span></code> repeated
+            one or more times.
+          </li>
+<li class="listitem">
             Terminals are indicated in bold <span class="bold"><strong><code class="literal">symbol</code></strong></span>.
           </li>
 <li class="listitem">
@@ -364,9 +370,9 @@
         <span class="emphasis"><em>[type] function-name</em></span> <span class="special">(</span> <span class="emphasis"><em>[function-params]</em></span> <span class="special">)</span>
         <span class="emphasis"><em>[</em></span><span class="keyword">const</span><span class="emphasis"><em>] [</em></span><span class="keyword">volatile</span><span class="emphasis"><em>] [</em></span><span class="identifier">override</span> <span class="emphasis"><em>|</em></span> <span class="keyword">new</span><span class="emphasis"><em>] [</em></span><span class="identifier">final</span><span class="emphasis"><em>]</em></span>
         <span class="emphasis"><em>[</em></span><span class="keyword">throw</span><span class="special">(</span> <span class="emphasis"><em>[expections]</em></span> <span class="special">)</span><span class="emphasis"><em>]</em></span>
-        <span class="emphasis"><em>[</em></span><span class="identifier">initialize</span><span class="special">(</span> <span class="bold"><strong>member-initializer</strong></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span><span class="emphasis"><em>]</em></span>
         <span class="emphasis"><em>[</em></span><span class="identifier">precondition</span><span class="special">(</span> <span class="emphasis"><em>assertion</em></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span><span class="emphasis"><em>]</em></span>
         <span class="emphasis"><em>[</em></span><span class="identifier">postcondition</span><span class="special">(</span> <span class="emphasis"><em>result-oldof-assertions</em></span> <span class="special">)</span><span class="emphasis"><em>]</em></span>
+        <span class="emphasis"><em>[member-initializers]</em></span>
 </pre>
 </div>
 <div class="section">
@@ -439,7 +445,95 @@
 <p>
         The keyword <code class="computeroutput"><span class="keyword">void</span></code> is used for
         no-throw <code class="computeroutput"><span class="keyword">throw</span><span class="special">(</span>
-        <span class="keyword">void</span> <span class="special">)</span></code>.
+        <span class="keyword">void</span> <span class="special">)</span></code>
+        (instead of <code class="computeroutput"><span class="keyword">throw</span><span class="special">()</span></code>).
+      </p>
+<p>
+        Exception specifications apply to the entire function call so to exceptions
+        thrown by the body but also to exceptions thrown by the contract checking
+        code (if the contract broken handlers are redefined to throw) and to exceptions
+        thrown by this library implementation code (in case the library runs out
+        of resources, encounters an internal error, etc):
+      </p>
+<pre class="programlisting"><span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
+<span class="keyword">int</span> <span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">x</span> <span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="comment">// The entire function call (body and contracts) do not throw.</span>
+<span class="special">)</span> <span class="special">;</span>
+</pre>
+<p>
+        If exception specifications are instead programmed just outside the macros
+        and before the body definition then they only apply to exceptions thrown
+        by the body and not to exceptions thrown by the contract checking and implementation
+        code:
+      </p>
+<pre class="programlisting"><span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
+<span class="keyword">int</span> <span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">x</span> <span class="special">)</span>
+<span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="special">)</span> <span class="special">;</span> <span class="comment">// Only the body does not throw (contracts might still throw).</span>
+</pre>
+<p>
+        In both cases the exception specifications are part of the function declaration
+        so they need to be repeated in the body function signature when the body
+        is defined separately from the function declaration like in the example above:
+      </p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">CONTRACT_FREE_BODY</span><span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">x</span> <span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="special">)</span> <span class="special">{</span> <span class="special">...</span> <span class="special">}</span> <span class="comment">// Body definition for both function declarations above.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="contract__.grammar.member_initializers"></a><a class="link" href="grammar.html#contract__.grammar.member_initializers" title="Member Initializers">Member Initializers</a>
+</h3></div></div></div>
+<pre class="programlisting"><span class="emphasis"><em>member-initializers:</em></span>
+        <span class="emphasis"><em>[</em></span><span class="keyword">try</span><span class="emphasis"><em>]</em></span> <span class="identifier">initialize</span><span class="special">(</span> <span class="bold"><strong>member-initializer</strong></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span>
+        <span class="emphasis"><em>{</em></span><span class="keyword">catch</span><span class="special">(</span><span class="bold"><strong>exception-decl</strong></span><span class="special">)</span> <span class="special">(</span> <span class="bold"><strong>statements</strong></span> <span class="special">)</span><span class="emphasis"><em>}*</em></span>
+</pre>
+<p>
+        As indicated by the above syntax, it is possible to wrap constructor member
+        initializers within a function-try-block:
+      </p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">vector_error</span> <span class="special">{</span> <span class="special">...</span> <span class="special">};</span>
+
+<span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span>
+<span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">count</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span> <span class="special">)</span>
+
+    <span class="keyword">try</span> <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">ptr_</span><span class="special">(</span><span class="keyword">new</span> <span class="identifier">T</span><span class="special">[</span><span class="identifier">count</span><span class="special">])</span> <span class="special">)</span>
+    <span class="keyword">catch</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">bad_alloc</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">)</span> <span class="special">(</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"not enough memory for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">count</span> <span class="special">&lt;&lt;</span> <span class="string">" elements: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">ex</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">throw</span> <span class="identifier">vector_error</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
+    <span class="special">)</span> <span class="keyword">catch</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">exception</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">)</span> <span class="special">(</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">count</span> <span class="special">&lt;&lt;</span> <span class="string">" elements: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">ex</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">throw</span> <span class="identifier">vector_error</span><span class="special">(</span><span class="number">2</span><span class="special">);</span>
+    <span class="special">)</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">(</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"unknown error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">count</span> <span class="special">&lt;&lt;</span> <span class="string">" elements"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">throw</span> <span class="identifier">vector_error</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
+    <span class="special">)</span>
+<span class="special">)</span> <span class="special">{</span> <span class="comment">// Above function-try-block only applies to exceptions thrown by the body (and not by the contracts).</span>
+    <span class="special">...</span>
+<span class="special">}</span>
+</pre>
+<p>
+        For functions other than constructors, function-try-blocks are programmed
+        outside the macros and around the body definition as usual:
+      </p>
+<pre class="programlisting"><span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
+<span class="keyword">float</span> <span class="special">(</span><span class="identifier">sqrt</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">float</span> <span class="identifier">x</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">x</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">x</span> <span class="special">==</span> <span class="identifier">result</span> <span class="special">*</span> <span class="identifier">result</span> <span class="special">)</span>
+<span class="special">)</span> <span class="keyword">try</span> <span class="special">{</span> <span class="comment">// This function-try-block only applies to exceptions thrown by the body (and not by the contracts).</span>
+    <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">*</span> <span class="identifier">x</span><span class="special">;</span>
+<span class="special">}</span> <span class="keyword">catch</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">exceptions</span><span class="special">&amp;</span> <span class="identifier">ex</span><span class="special">)</span> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">x</span> <span class="special">&lt;&lt;</span> <span class="string">": "</span> <span class="special">&lt;&lt;</span> <span class="identifier">ex</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="special">-</span><span class="number">1.0</span><span class="special">;</span>
+<span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"unknown error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">x</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="special">-</span><span class="number">2.0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+        As specified by <a class="link" href="bibliography.html" title="Bibliography">[N1962]</a>, function-try-blocks
+        always apply to exceptions only thrown by the body and not by the contract
+        code (either in case the contract broken handlers are redefined to throw
+        or if this library implementation code throws because of an internal error).
       </p>
 </div>
 <div class="section">

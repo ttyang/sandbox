@@ -183,22 +183,13 @@
                   
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// Contracts add not type requirements.</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">utility</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For boost::prior().</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 
-<span class="comment">// Tools (forward declared, see actual declarations at the bottom).</span>
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">&gt;</span>
-<span class="keyword">bool</span> <span class="identifier">all_equals</span> <span class="special">(</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span> <span class="special">)</span> <span class="special">;</span>
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Size</span> <span class="special">&gt;</span>
-<span class="keyword">bool</span> <span class="identifier">equal_distance</span> <span class="special">(</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Size</span> <span class="identifier">size</span> <span class="special">)</span> <span class="special">;</span>
-
-<span class="comment">// New vector interface (with contracts).</span>
-
-<span class="identifier">CONTRACT_CLASS</span><span class="special">(</span>
+<span class="identifier">CONTRACT_CLASS</span><span class="special">(</span> <span class="comment">// New vector interface (with contracts).</span>
 <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Alloc</span><span class="special">,</span> <span class="keyword">default</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
 <span class="keyword">class</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="comment">// No base classes so no subcontracting for this example.</span>
 <span class="special">)</span> <span class="special">{</span>
@@ -240,13 +231,19 @@
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span> <span class="special">)</span>
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">T</span><span class="special">())</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span>
+            <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">T</span><span class="special">()</span>
+        <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span>
+            <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">val</span>
+        <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
@@ -254,16 +251,16 @@
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span>
-            <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">),</span>
+            <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">,</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">()</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
-    <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span> <span class="special">)</span> <span class="comment">// Concept.</span>
+    <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span> <span class="comment">// With concept requirements.</span>
+    <span class="keyword">public</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span> <span class="special">)</span>
     <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">last</span> <span class="special">)</span>
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">equal_distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">size</span><span class="special">())</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">())</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
@@ -271,7 +268,7 @@
     <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;)</span> <span class="identifier">al</span> <span class="special">)</span>
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
-            <span class="identifier">equal_distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">size</span><span class="special">()),</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">()),</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">()</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
@@ -279,15 +276,19 @@
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&amp;)</span> <span class="identifier">right</span> <span class="special">)</span>
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">)</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">range</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
+        <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
-    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span> <span class="comment">// Operator symbol followed by (arbitrary) name `copy`.</span>
+    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span> <span class="comment">// Operator symbol and (arbitrary) name `copy`.</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">&amp;)</span> <span class="keyword">operator</span><span class="special">(=)(</span><span class="identifier">copy</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&amp;)</span> <span class="identifier">right</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-            <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">,</span>
-            <span class="identifier">result</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">range</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">end</span><span class="special">()),</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">result</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">;</span>
@@ -298,7 +299,7 @@
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-    <span class="comment">// No required wrapping parenthesis for keyword types like `void`, `bool`, etc.</span>
+    <span class="comment">// No required wrapping parenthesis for keyword types `void`, `bool`, etc.</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">reserve</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&lt;</span> <span class="identifier">max_size</span><span class="special">()</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">count</span> <span class="special">)</span>
@@ -371,10 +372,10 @@
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">resize</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">newsize</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
-            <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span> <span class="comment">// Old value (as before body).</span>
+            <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span> <span class="comment">// Old value (before body).</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">newsize</span><span class="special">,</span>
             <span class="keyword">if</span><span class="special">(</span><span class="identifier">newsize</span> <span class="special">&gt;</span> <span class="identifier">old_size</span><span class="special">)</span> <span class="special">(</span> <span class="comment">// Version 1: Within an `if`.</span>
-                <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">old_size</span><span class="special">,</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">T</span><span class="special">())</span>
+                <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">old_size</span><span class="special">,</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">T</span><span class="special">()</span>
             <span class="special">)</span> <span class="comment">// Omitted optional `else( ... )`.</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
@@ -386,8 +387,9 @@
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span> <span class="comment">// Specify old type.</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">newsize</span><span class="special">,</span>
-            <span class="identifier">newsize</span> <span class="special">&gt;</span> <span class="identifier">old_size</span> <span class="special">?</span> <span class="comment">// Version 2: With ternary operator.</span>
-                    <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">old_size</span><span class="special">,</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">:</span> <span class="keyword">true</span>
+            <span class="identifier">newsize</span> <span class="special">&gt;</span> <span class="identifier">old_size</span> <span class="comment">// Version 2: With ternary operator.</span>
+                <span class="special">?</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">old_size</span><span class="special">,</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">val</span>
+                <span class="special">:</span> <span class="keyword">true</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">resize</span><span class="special">(</span><span class="identifier">newsize</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
@@ -480,9 +482,10 @@
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">push_back</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;</span> <span class="identifier">max_size</span><span class="special">()</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
             <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span>
             <span class="keyword">auto</span> <span class="identifier">old_capacity</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">capacity</span><span class="special">(),</span>
-            <span class="identifier">back</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">,</span>
+            <span class="identifier">back</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">,</span> <span class="comment">// Trivial == if not EqualityComparable&lt;T&gt;.</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_size</span> <span class="special">+</span> <span class="number">1</span><span class="special">,</span>
             <span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">old_capacity</span>
         <span class="special">)</span>
@@ -504,8 +507,11 @@
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span> <span class="special">)</span>
     <span class="keyword">void</span> <span class="special">(</span><span class="identifier">assign</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">last</span> <span class="special">)</span>
-        <span class="comment">// Precondition: [first, last) is not a sub-range of [begin(), end()).</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">equal_distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">size</span><span class="special">())</span> <span class="special">)</span>
+        <span class="identifier">precondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">).</span><span class="identifier">contained</span><span class="special">(</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">()))</span> <span class="special">==</span> <span class="keyword">false</span>
+        <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">())</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
     <span class="special">}</span>
@@ -513,7 +519,7 @@
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">assign</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&lt;=</span> <span class="identifier">max_size</span><span class="special">()</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">val</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
     <span class="special">}</span>
@@ -522,12 +528,17 @@
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span> <span class="special">(</span><span class="identifier">insert</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span> <span class="identifier">pos</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;</span> <span class="identifier">max_size</span><span class="special">()</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
             <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span>
-            <span class="identifier">val</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">result</span><span class="special">,</span>
-            <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_size</span> <span class="special">+</span> <span class="number">1</span>
-            <span class="comment">// if(capacity() &gt; oldof capacity()): [begin(), end()] invalid</span>
-            <span class="comment">// else: [pos, end()) invalid</span>
+            <span class="keyword">auto</span> <span class="identifier">old_capacity</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">capacity</span><span class="special">(),</span>
+            <span class="identifier">val</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">result</span><span class="special">,</span> <span class="comment">// Trivial == if not EqualityComparable&lt;T&gt;.</span>
+            <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_size</span> <span class="special">+</span> <span class="number">1</span><span class="special">,</span>
+            <span class="keyword">if</span><span class="special">(</span><span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;</span> <span class="identifier">old_capacity</span><span class="special">)</span> <span class="special">(</span>
+                <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">()).</span><span class="identifier">invalid</span><span class="special">()</span>
+            <span class="special">)</span> <span class="keyword">else</span> <span class="special">(</span>
+                <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">pos</span><span class="special">,</span> <span class="identifier">end</span><span class="special">()).</span><span class="identifier">invalid</span><span class="special">()</span>
+            <span class="special">)</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">pos</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
@@ -537,16 +548,20 @@
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">insert</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span> <span class="identifier">pos</span><span class="special">,</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">count</span> <span class="special">&lt;</span> <span class="identifier">max_size</span><span class="special">()</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
+            <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">prior</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span>
             <span class="keyword">auto</span> <span class="identifier">old_capacity</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">capacity</span><span class="special">(),</span>
             <span class="keyword">auto</span> <span class="identifier">old_pos</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">pos</span><span class="special">,</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_size</span> <span class="special">+</span> <span class="identifier">count</span><span class="special">,</span>
             <span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">old_capacity</span><span class="special">,</span>
             <span class="keyword">if</span><span class="special">(</span><span class="identifier">capacity</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_capacity</span><span class="special">)</span> <span class="special">(</span>
-                <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">prior</span><span class="special">(</span><span class="identifier">old_pos</span><span class="special">),</span>
-                        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">prior</span><span class="special">(</span><span class="identifier">old_pos</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span>
-                <span class="comment">// [pos, end()) invalid</span>
-            <span class="special">)</span> <span class="comment">// else: [begin(), end()) invalid</span>
+                <span class="identifier">range</span><span class="special">(</span><span class="identifier">prior</span><span class="special">(</span><span class="identifier">old_pos</span><span class="special">),</span>
+                        <span class="identifier">prior</span><span class="special">(</span><span class="identifier">old_pos</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">count</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">,</span>
+                <span class="identifier">range</span><span class="special">(</span><span class="identifier">const_iterator</span><span class="special">(</span><span class="identifier">pos</span><span class="special">),</span> <span class="identifier">end</span><span class="special">()).</span><span class="identifier">invalid</span><span class="special">()</span>
+            <span class="special">)</span> <span class="keyword">else</span> <span class="special">(</span>
+                <span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">()).</span><span class="identifier">invalid</span><span class="special">()</span>
+            <span class="special">)</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">pos</span><span class="special">,</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
@@ -556,7 +571,8 @@
     <span class="keyword">public</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">)</span>
     <span class="keyword">void</span> <span class="special">(</span><span class="identifier">insert</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">iterator</span><span class="special">)</span> <span class="identifier">pos</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">last</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span>
-            <span class="comment">// [first, last) not a sub-range of [begin(), end())</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">).</span><span class="identifier">contained</span><span class="special">(</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">()))</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">,</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">&lt;</span> <span class="identifier">max_size</span><span class="special">()</span>
         <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
@@ -579,8 +595,8 @@
             <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span>
-            <span class="keyword">if</span><span class="special">(</span><span class="identifier">empty</span><span class="special">())</span> <span class="special">(</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">()</span> <span class="special">)</span> 
-            <span class="comment">// [pos, end()) invalid</span>
+            <span class="keyword">if</span><span class="special">(</span><span class="identifier">empty</span><span class="special">())</span> <span class="special">(</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">()</span> <span class="special">),</span>
+            <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">pos</span><span class="special">,</span> <span class="identifier">end</span><span class="special">()).</span><span class="identifier">invalid</span><span class="special">()</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">erase</span><span class="special">();</span>
@@ -593,8 +609,8 @@
             <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">size</span><span class="special">(),</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_size</span> <span class="special">-</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">),</span>
-            <span class="keyword">if</span><span class="special">(</span><span class="identifier">empty</span><span class="special">())</span> <span class="special">(</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">()</span> <span class="special">)</span>
-            <span class="comment">// [first, last) invalid</span>
+            <span class="keyword">if</span><span class="special">(</span><span class="identifier">empty</span><span class="special">())</span> <span class="special">(</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">()</span> <span class="special">),</span>
+            <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">).</span><span class="identifier">invalid</span><span class="special">()</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
@@ -610,10 +626,12 @@
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">swap</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">&amp;)</span> <span class="identifier">right</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_self</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="special">*</span><span class="keyword">this</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_right</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">right</span><span class="special">,</span>
-            <span class="identifier">old_self</span> <span class="special">==</span> <span class="identifier">right</span><span class="special">,</span>
-            <span class="identifier">old_right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span> <span class="special">==</span>
+                    <span class="identifier">range</span><span class="special">(</span><span class="identifier">old_self</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">old_self</span><span class="special">.</span><span class="identifier">end</span><span class="special">()),</span>
+            <span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">range</span><span class="special">(</span><span class="identifier">old_right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">old_right</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">right</span><span class="special">);</span>
@@ -622,49 +640,6 @@
 <span class="keyword">private</span><span class="special">:</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="identifier">vect_</span><span class="special">;</span>
 <span class="special">};</span>
-
-<span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">)</span>
-    <span class="identifier">requires</span><span class="special">(</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="comment">// For simplicity, assume T comparable.</span>
-    <span class="special">)</span>
-<span class="keyword">bool</span> <span class="special">(</span><span class="identifier">all_equals</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
-<span class="special">)</span> <span class="special">{</span>
-    <span class="keyword">for</span><span class="special">(</span><span class="identifier">Iter</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">first</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">last</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="keyword">if</span><span class="special">(*</span><span class="identifier">i</span> <span class="special">!=</span> <span class="identifier">val</span><span class="special">)</span> <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
-    <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
-<span class="special">}</span>
-
-<span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Size</span> <span class="special">)</span>
-    <span class="identifier">requires</span><span class="special">(</span>
-        <span class="comment">// Could use internal tagging mechanism to pass even input iterators.</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
-        <span class="comment">// IDENTITY_TYPE to handle unwrapped commas within macro parameters.</span>
-        <span class="keyword">typename</span> <span class="identifier">CONTRACT_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">Size</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;))</span>
-    <span class="special">)</span>
-<span class="keyword">bool</span> <span class="special">(</span><span class="identifier">equal_distance</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Size</span><span class="special">)</span> <span class="identifier">size</span> <span class="special">)</span>
-<span class="special">)</span> <span class="special">{</span>
-    <span class="keyword">return</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
-<span class="special">}</span>
-
-<span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
-<span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">(==)(</span><span class="identifier">equal</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;)</span> <span class="identifier">left</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;)</span> <span class="identifier">right</span> <span class="special">)</span>
-    <span class="identifier">postcondition</span><span class="special">(</span>
-        <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-        <span class="keyword">if</span><span class="special">(</span><span class="identifier">result</span><span class="special">)</span> <span class="special">(</span>
-            <span class="identifier">left</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span>
-            <span class="comment">// left and right values are all equal to each other.</span>
-        <span class="special">)</span>
-    <span class="special">)</span>
-<span class="special">)</span> <span class="special">{</span>
-    <span class="keyword">if</span><span class="special">(</span><span class="identifier">left</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">!=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">size</span><span class="special">())</span> <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
-    <span class="keyword">for</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span>
-            <span class="identifier">l</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span> <span class="identifier">l</span> <span class="special">!=</span> <span class="identifier">left</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span> <span class="special">++</span><span class="identifier">l</span><span class="special">,</span> <span class="special">++</span><span class="identifier">r</span><span class="special">)</span>
-        <span class="keyword">if</span><span class="special">(*</span><span class="identifier">l</span> <span class="special">!=</span> <span class="special">*</span><span class="identifier">r</span><span class="special">)</span> <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
-    <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
-<span class="special">}</span>
 </pre>
 <p>
                 </p>
@@ -679,16 +654,7 @@
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 
-
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">&gt;</span>
-<span class="keyword">bool</span> <span class="identifier">all_equals</span> <span class="special">(</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span> <span class="special">)</span> <span class="special">;</span>
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Size</span> <span class="special">&gt;</span>
-<span class="keyword">bool</span> <span class="identifier">equal_distance</span> <span class="special">(</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Size</span> <span class="identifier">size</span> <span class="special">)</span> <span class="special">;</span>
-
-
-
+<span class="comment">// For simplicity, assume EqualityComparable&lt;T&gt; and all_equal defined.</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Alloc</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">vector</span>
@@ -731,13 +697,19 @@
 
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">explicit</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">size_type</span> <span class="identifier">count</span> <span class="special">)</span>
         <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span>
-        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span> <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">T</span><span class="special">());</span> <span class="special">}</span>
+        <span class="identifier">postcondition</span> <span class="special">{</span> 
+            <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span> 
+            <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">T</span><span class="special">());</span>
+        <span class="special">}</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span> <span class="special">)</span>
         <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span>
-        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span> <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">);</span> <span class="special">}</span>
+        <span class="identifier">postcondition</span> <span class="special">{</span>
+            <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span>
+            <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">);</span>
+        <span class="special">}</span>
     <span class="special">{}</span>
 
 
@@ -754,7 +726,7 @@
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">&gt;</span> <span class="identifier">requires</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span>
     <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">InIt</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">last</span> <span class="special">)</span>
         <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span>
-        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">equal_distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">size</span><span class="special">());</span> <span class="special">}</span>
+        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">());</span> <span class="special">}</span>
     <span class="special">{}</span>
 
 
@@ -762,7 +734,7 @@
     <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">InIt</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">last</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;</span> <span class="identifier">al</span> <span class="special">)</span>
         <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
-            <span class="identifier">equal_distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">size</span><span class="special">());</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">());</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">();</span>
         <span class="special">}</span>
     <span class="special">{}</span>
@@ -770,13 +742,17 @@
 
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&amp;</span> <span class="identifier">right</span> <span class="special">)</span>
         <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">)</span>
-        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span> <span class="special">}</span>
+        <span class="identifier">postcondition</span> <span class="special">{</span>
+            
+            <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
+        <span class="special">}</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=</span> <span class="special">(</span> <span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&amp;</span> <span class="identifier">right</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span><span class="identifier">result</span><span class="special">)</span> <span class="special">{</span>
 
+            
             <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
             <span class="identifier">result</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
         <span class="special">}</span>
@@ -877,8 +853,9 @@
         <span class="identifier">postcondition</span> <span class="special">{</span>
 
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">newsize</span><span class="special">;</span>
-            <span class="identifier">newsize</span> <span class="special">&gt;</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">?</span>
-                    <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">:</span> <span class="keyword">true</span><span class="special">;</span>
+            <span class="identifier">newsize</span> <span class="special">&gt;</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">()</span>
+                <span class="special">?</span> <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">)</span>
+                <span class="special">:</span> <span class="keyword">true</span><span class="special">;</span>
         <span class="special">}</span>
     <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">resize</span><span class="special">(</span><span class="identifier">newsize</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
@@ -973,6 +950,7 @@
         <span class="identifier">postcondition</span> <span class="special">{</span>
 
 
+            
             <span class="identifier">back</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">;</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
             <span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">oldof</span> <span class="identifier">capacity</span><span class="special">()</span>
@@ -995,8 +973,11 @@
 
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">&gt;</span> <span class="identifier">requires</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">assign</span> <span class="special">(</span> <span class="identifier">InIt</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">last</span> <span class="special">)</span>
-
-        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">equal_distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">size</span><span class="special">());</span> <span class="special">}</span>
+        <span class="identifier">precondition</span> <span class="special">{</span>
+        
+            <span class="comment">// Range [first, last) is not contained in [begin(), end()).</span>
+        <span class="special">}</span>
+        <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">());</span> <span class="special">}</span>
     <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">assign</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
     <span class="special">}</span>
@@ -1015,10 +996,15 @@
         <span class="identifier">postcondition</span><span class="special">(</span><span class="identifier">result</span><span class="special">)</span> <span class="special">{</span>
 
 
+            
+            
             <span class="identifier">val</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">result</span><span class="special">;</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span>
-
-
+            <span class="keyword">if</span><span class="special">(</span><span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;</span> <span class="identifier">oldof</span> <span class="identifier">capacity</span><span class="special">()</span> <span class="special">{</span>
+                <span class="comment">// Range [begin(), end()) is invalid.</span>
+            <span class="special">}</span> <span class="keyword">else</span> <span class="special">{</span>
+                <span class="comment">// Range [pos, end()) is invalid.</span>
+            <span class="special">}</span>
         <span class="special">}</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">pos</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
@@ -1031,12 +1017,16 @@
 
 
 
+            
+            
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">count</span><span class="special">;</span>
             <span class="identifier">capacity</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">oldof</span> <span class="identifier">capacity</span><span class="special">();</span>
             <span class="keyword">if</span><span class="special">(</span><span class="identifier">capacity</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="identifier">capacity</span><span class="special">())</span> <span class="special">{</span>
                 <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">prior</span><span class="special">(</span><span class="identifier">oldof</span> <span class="identifier">pos</span><span class="special">),</span>
                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">prior</span><span class="special">(</span><span class="identifier">oldof</span> <span class="identifier">pos</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">);</span>
-
+                <span class="comment">// Range [pos, end()) is invalid.</span>
+            <span class="special">}</span> <span class="keyword">else</span> <span class="special">{</span>
+                <span class="comment">// Range [begin(), end()) is invalid.</span>
             <span class="special">}</span>
         <span class="special">}</span>
     <span class="special">{</span>
@@ -1048,6 +1038,7 @@
     <span class="keyword">void</span> <span class="identifier">insert</span> <span class="special">(</span> <span class="identifier">iterator</span> <span class="identifier">pos</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">last</span> <span class="special">)</span>
         <span class="identifier">precondition</span> <span class="special">{</span>
 
+            <span class="comment">// Range [first, last) is not contained in [begin(), end()).</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">&lt;</span> <span class="identifier">max_size</span><span class="special">();</span>
         <span class="special">}</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
@@ -1071,7 +1062,7 @@
 
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">oldod</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
             <span class="keyword">if</span><span class="special">(</span><span class="identifier">empty</span><span class="special">())</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">();</span>
-
+            <span class="comment">// Range [pos, end()) is invalid.</span>
         <span class="special">}</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">erase</span><span class="special">();</span>
@@ -1085,7 +1076,7 @@
 
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">-</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
             <span class="keyword">if</span><span class="special">(</span><span class="identifier">empty</span><span class="special">())</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">();</span>
-
+            <span class="comment">// Range [first, last) is invalid.</span>
         <span class="special">}</span>
     <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
@@ -1102,9 +1093,11 @@
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">void</span> <span class="identifier">swap</span> <span class="special">(</span> <span class="identifier">vector</span><span class="special">&amp;</span> <span class="identifier">right</span> <span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
 
-
-            <span class="identifier">oldof</span> <span class="special">*</span><span class="keyword">this</span> <span class="special">==</span> <span class="identifier">right</span><span class="special">;</span>
-            <span class="identifier">oldof</span> <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
+            
+            
+            <span class="identifier">right</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
+            
+            <span class="special">*</span><span class="keyword">this</span> <span class="special">==</span> <span class="identifier">oldof</span> <span class="identifier">right</span><span class="special">;</span>
         <span class="special">}</span>
     <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">right</span><span class="special">);</span>
@@ -1113,49 +1106,6 @@
 <span class="keyword">private</span><span class="special">:</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Alloc</span><span class="special">&gt;</span> <span class="identifier">vect_</span><span class="special">;</span>
 <span class="special">};</span>
-
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">&gt;</span>
-    <span class="identifier">requires</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
-
-<span class="keyword">bool</span> <span class="identifier">all_equals</span> <span class="special">(</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span> <span class="special">)</span>
-<span class="special">{</span>
-    <span class="keyword">for</span><span class="special">(</span><span class="identifier">Iter</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">first</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">last</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="keyword">if</span><span class="special">(*</span><span class="identifier">i</span> <span class="special">!=</span> <span class="identifier">val</span><span class="special">)</span> <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
-    <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
-<span class="special">}</span>
-
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Size</span> <span class="special">&gt;</span>
-    <span class="identifier">requires</span>
-
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
-
-        <span class="keyword">typename</span> <span class="identifier">CONTRACT_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">Size</span><span class="special">,</span> <span class="keyword">int</span><span class="special">&gt;))</span>
-
-<span class="keyword">bool</span> <span class="identifier">equal_distance</span> <span class="special">(</span> <span class="identifier">Iter</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">Iter</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">Size</span> <span class="identifier">size</span> <span class="special">)</span>
-<span class="special">{</span>
-    <span class="keyword">return</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">);</span>
-<span class="special">}</span>
-
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
-<span class="keyword">bool</span> <span class="keyword">operator</span><span class="special">==</span> <span class="special">(</span> <span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">left</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;&amp;</span> <span class="identifier">right</span> <span class="special">)</span>
-    <span class="identifier">postcondition</span><span class="special">(</span><span class="identifier">result</span><span class="special">)</span> <span class="special">{</span>
-
-        <span class="keyword">if</span><span class="special">(</span><span class="identifier">result</span><span class="special">)</span> <span class="special">{</span>
-            <span class="identifier">left</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">size</span><span class="special">();</span>
-
-        <span class="special">}</span>
-    <span class="special">}</span>
-<span class="special">{</span>
-    <span class="keyword">if</span><span class="special">(</span><span class="identifier">left</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">!=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">size</span><span class="special">())</span> <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
-    <span class="keyword">for</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">const_iterator</span>
-            <span class="identifier">l</span> <span class="special">=</span> <span class="identifier">left</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">r</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span> <span class="identifier">l</span> <span class="special">!=</span> <span class="identifier">left</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span> <span class="special">++</span><span class="identifier">l</span><span class="special">,</span> <span class="special">++</span><span class="identifier">r</span><span class="special">)</span>
-        <span class="keyword">if</span><span class="special">(*</span><span class="identifier">l</span> <span class="special">!=</span> <span class="special">*</span><span class="identifier">r</span><span class="special">)</span> <span class="keyword">return</span> <span class="keyword">false</span><span class="special">;</span>
-    <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span>
-<span class="special">}</span>
 </pre>
 <p>
                 </p>
@@ -1398,6 +1348,7 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">&gt;</span>
@@ -1412,15 +1363,13 @@
 <span class="special">};</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">)</span>
-    <span class="identifier">requires</span><span class="special">(</span>
-        <span class="identifier">Addable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postconditions.</span>
-        <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
-    <span class="special">)</span>
+<span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">Addable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
 <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="special">(</span><span class="identifier">add</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">x</span><span class="special">,</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">y</span> <span class="special">)</span>
-    <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
+        <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
+        <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span> <span class="comment">// Trivial == if T not EqualityComparable.</span>
+    <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">;</span>
 <span class="special">}</span>
@@ -1437,6 +1386,7 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">bool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
@@ -1449,7 +1399,7 @@
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">input_iterator_tag</span> <span class="special">)</span>
 <span class="special">{</span>
     <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">n</span><span class="special">--)</span> <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">n</span> <span class="special">)</span> <span class="identifier">n</span> <span class="special">)</span>
+        <span class="identifier">CONTRACT_LOOP_VARIANT_TPL</span><span class="special">(</span> <span class="identifier">n</span> <span class="special">)</span>
         <span class="special">++</span><span class="identifier">i</span><span class="special">;</span>
     <span class="special">}</span>
 <span class="special">}</span>
@@ -1460,7 +1410,7 @@
 <span class="special">{</span>
     <span class="keyword">if</span><span class="special">(</span><span class="identifier">n</span> <span class="special">&gt;=</span> <span class="number">0</span><span class="special">)</span> <span class="special">{</span>
         <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">n</span><span class="special">--)</span> <span class="special">)</span> <span class="special">{</span>
-            <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">n</span> <span class="special">)</span> <span class="identifier">n</span> <span class="special">)</span>
+            <span class="identifier">CONTRACT_LOOP_VARIANT_TPL</span><span class="special">(</span> <span class="identifier">n</span> <span class="special">)</span>
             <span class="special">++</span><span class="identifier">i</span><span class="special">;</span>
         <span class="special">}</span>
     <span class="special">}</span> <span class="keyword">else</span> <span class="special">{</span>
@@ -1468,7 +1418,7 @@
         <span class="identifier">Distance</span> <span class="identifier">n_max</span> <span class="special">=</span> <span class="identifier">n</span><span class="special">;</span>
 <span class="preprocessor">#endif</span>
         <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">n</span><span class="special">++)</span> <span class="special">)</span> <span class="special">{</span>
-            <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">n_max</span><span class="special">,</span> <span class="identifier">n</span> <span class="special">)</span> <span class="identifier">n_max</span> <span class="special">-</span> <span class="identifier">n</span> <span class="special">)</span>
+            <span class="identifier">CONTRACT_LOOP_VARIANT_TPL</span><span class="special">(</span> <span class="identifier">n_max</span> <span class="special">-</span> <span class="identifier">n</span> <span class="special">)</span>
             <span class="special">--</span><span class="identifier">i</span><span class="special">;</span>
         <span class="special">}</span>
     <span class="special">}</span>
@@ -1492,7 +1442,7 @@
 <span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">InputIterator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Distance</span> <span class="special">)</span>
 <span class="keyword">void</span> <span class="special">(</span><span class="identifier">myadvance</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InputIterator</span><span class="special">&amp;)</span> <span class="identifier">i</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Distance</span><span class="special">)</span> <span class="identifier">n</span> <span class="special">)</span>
     <span class="identifier">precondition</span><span class="special">(</span>
-        <span class="comment">// Precondition: All iterators in [i, i + n] non-singular.</span>
+        <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">n</span> <span class="special">+</span> <span class="number">1</span><span class="special">).</span><span class="identifier">nonsingular</span><span class="special">(),</span> <span class="comment">// Range [i, i + n].</span>
         <span class="keyword">if</span><span class="special">(</span><span class="identifier">is_input_iterator</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">InputIterator</span><span class="special">&gt;::</span>
                 <span class="identifier">iterator_category</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">)</span> <span class="special">(</span>
             <span class="identifier">n</span> <span class="special">&gt;</span> <span class="number">0</span> <span class="comment">// if input iterator, n positive</span>
@@ -1503,8 +1453,8 @@
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">old_i</span><span class="special">,</span> <span class="identifier">i</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">n</span> <span class="comment">// iterator advanced of n</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
-    <span class="identifier">aux</span><span class="special">::</span><span class="identifier">myadvance_dispatch</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">n</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">InputIterator</span><span class="special">&gt;::</span>
-            <span class="identifier">iterator_category</span><span class="special">());</span>
+    <span class="identifier">aux</span><span class="special">::</span><span class="identifier">myadvance_dispatch</span><span class="special">(</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">n</span><span class="special">,</span> <span class="keyword">typename</span> 
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">iterator_traits</span><span class="special">&lt;</span><span class="identifier">InputIterator</span><span class="special">&gt;::</span> <span class="identifier">iterator_category</span><span class="special">());</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -1519,18 +1469,19 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
 <span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">Iter</span> <span class="special">)</span>
     <span class="identifier">requires</span><span class="special">(</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="keyword">typename</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="comment">// Equality needed to find value.</span>
                 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;</span>
     <span class="special">)</span>
 <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="special">(</span><span class="identifier">myfind</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span>
         <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">value</span> <span class="special">)</span>
-    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">first</span> <span class="special">&lt;=</span> <span class="identifier">last</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">).</span><span class="identifier">valid</span><span class="special">()</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
         <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
         <span class="keyword">if</span><span class="special">(</span><span class="identifier">result</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">(</span>
@@ -1539,7 +1490,9 @@
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span> <span class="special">&amp;&amp;</span> <span class="special">*</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">value</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span> <span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
+        <span class="comment">/** @todo I get a GCC internal error (on Cygwin) if I use const-expr here... why? Can I work around it? */</span>
+        <span class="identifier">CONTRACT_LOOP_VARIANT_TPL</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span> <span class="special">)</span>
+                <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
         <span class="special">++</span><span class="identifier">first</span><span class="special">;</span>
     <span class="special">}</span>
     <span class="keyword">return</span> <span class="identifier">first</span><span class="special">;</span>
@@ -1557,6 +1510,7 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">// Use importance ordering to specify assertion computational complexity.</span>
@@ -1568,12 +1522,10 @@
     <span class="identifier">requires</span><span class="special">(</span>
         <span class="keyword">typename</span> <span class="identifier">CONTRACT_IDENTITY_TYPE</span><span class="special">((</span>
                 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">UnaryFunction</span><span class="special">&lt;</span><span class="identifier">UnaryOp</span><span class="special">,</span> <span class="identifier">Result</span><span class="special">,</span> <span class="identifier">Arg0</span><span class="special">&gt;</span> <span class="special">))</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postconditions.</span>
-        <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
     <span class="special">)</span>
 <span class="special">(</span><span class="identifier">Result</span><span class="special">)</span> <span class="special">(</span><span class="identifier">apply</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">UnaryOp</span><span class="special">)</span> <span class="identifier">op</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Arg0</span><span class="special">)</span> <span class="identifier">arg0</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Result</span><span class="special">&amp;)</span> <span class="identifier">result</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span> <span class="comment">// Trivial == is Result hasn't ==.</span>
         <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
         <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">op</span><span class="special">(</span><span class="identifier">arg0</span><span class="special">),</span> <span class="identifier">importance</span> <span class="identifier">O_BODY</span><span class="special">,</span>
         <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span>
@@ -1585,14 +1537,12 @@
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span> <span class="comment">// Overload to invoke binary functors.</span>
 <span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">Result</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg0</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">BinaryOp</span> <span class="special">)</span>
     <span class="identifier">requires</span><span class="special">(</span>
-        <span class="keyword">typename</span> <span class="identifier">CONTRACT_INDETITY_TYPE</span><span class="special">((</span>
+        <span class="keyword">typename</span> <span class="identifier">CONTRACT_IDENTITY_TYPE</span><span class="special">((</span>
                 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">BinaryFunction</span><span class="special">&lt;</span><span class="identifier">BinaryOp</span><span class="special">,</span> <span class="identifier">Result</span><span class="special">,</span> <span class="identifier">Arg0</span><span class="special">,</span> <span class="identifier">Arg1</span><span class="special">&gt;</span> <span class="special">))</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postconditions.</span>
-        <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
     <span class="special">)</span>
 <span class="special">(</span><span class="identifier">Result</span><span class="special">)</span> <span class="special">(</span><span class="identifier">apply</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">BinaryOp</span><span class="special">)</span> <span class="identifier">op</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Arg0</span><span class="special">)</span> <span class="identifier">arg0</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Arg1</span><span class="special">)</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Result</span><span class="special">&amp;)</span> <span class="identifier">result</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span> <span class="comment">// Avoid == requirement on Result.</span>
         <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
         <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">op</span><span class="special">(</span><span class="identifier">arg0</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">),</span> <span class="identifier">importance</span> <span class="identifier">O_BODY</span><span class="special">,</span>
         <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span>
@@ -1613,24 +1563,26 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
 <span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">Iter</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Func</span> <span class="special">)</span>
     <span class="identifier">requires</span><span class="special">(</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;</span>
-        <span class="keyword">typename</span> <span class="identifier">CONTRACT_INDENTITY_TYPE</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">UnaryFunction</span><span class="special">&lt;</span><span class="identifier">Func</span><span class="special">,</span> <span class="keyword">void</span><span class="special">,</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
+        <span class="keyword">typename</span> <span class="identifier">CONTRACT_IDENTITY_TYPE</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">UnaryFunction</span><span class="special">&lt;</span><span class="identifier">Func</span><span class="special">,</span> <span class="keyword">void</span><span class="special">,</span>
                 <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="special">))</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postconditions.</span>
-        <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">Func</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
     <span class="special">)</span>
 <span class="special">(</span><span class="identifier">Func</span><span class="special">)</span> <span class="special">(</span><span class="identifier">my_for_each</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Func</span><span class="special">)</span> <span class="identifier">func</span> <span class="special">)</span>
-    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">first</span> <span class="special">&lt;=</span> <span class="identifier">last</span> <span class="special">)</span>
-    <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">func</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">).</span><span class="identifier">valid</span><span class="special">()</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
+        <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
+        <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">func</span> <span class="comment">// Trivial == if not EqualityComparable&lt;Func&gt;.</span>
+    <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&lt;</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// OK: Iter is InputIterator.</span>
-        <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span> <span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
+        <span class="identifier">CONTRACT_LOOP_VARIANT_TPL</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">func</span><span class="special">(*</span><span class="identifier">first</span><span class="special">);</span> <span class="comment">// OK: func is UnaryFunction.</span>
         <span class="special">++</span><span class="identifier">first</span><span class="special">;</span> <span class="comment">// OK: Iter is InputIterator.</span>
     <span class="special">}</span>
@@ -1648,8 +1600,9 @@
 <p>
         
 </p>
-<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">CONTRACT_CONFIG_FUNCTION_ARITY_MAX</span> <span class="number">6</span> <span class="comment">// Support 5 function parameters.</span>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">CONTRACT_CONFIG_FUNCTION_ARITY_MAX</span> <span class="number">6</span> <span class="comment">// Up 5 function parameters.</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
 
@@ -1664,15 +1617,15 @@
                 <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIter1</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span>
                 <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIter1</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span>
                 <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIter2</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;</span> <span class="special">))</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postcondition</span>
-        <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="keyword">typename</span>
-                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIter1</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
     <span class="special">)</span>
 <span class="special">(</span><span class="identifier">OutIter</span><span class="special">)</span> <span class="special">(</span><span class="identifier">mytransform</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InIter1</span><span class="special">)</span> <span class="identifier">first1</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIter1</span><span class="special">)</span> <span class="identifier">last1</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIter2</span><span class="special">)</span> <span class="identifier">first2</span><span class="special">,</span>
         <span class="special">(</span><span class="identifier">OutIter</span><span class="special">)</span> <span class="identifier">result</span><span class="special">,</span> <span class="special">(</span><span class="identifier">BinOp</span><span class="special">)</span> <span class="identifier">op</span> <span class="special">)</span>
-    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">first1</span> <span class="special">&lt;=</span> <span class="identifier">last1</span> <span class="special">)</span>
-    <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">first1</span><span class="special">,</span> <span class="identifier">last1</span><span class="special">).</span><span class="identifier">valid</span><span class="special">()</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
+        <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
+        <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span> <span class="comment">// Trivial == if InIter1::value_type has no ==.</span>
+    <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span><span class="identifier">first1</span><span class="special">,</span> <span class="identifier">last1</span><span class="special">,</span> <span class="identifier">first2</span><span class="special">,</span> <span class="identifier">result</span><span class="special">,</span> <span class="identifier">op</span><span class="special">);</span>
 <span class="special">}</span>
@@ -1689,6 +1642,7 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
@@ -1702,13 +1656,12 @@
 <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">)</span> <span class="special">(</span><span class="identifier">mycount</span><span class="special">)</span> <span class="special">(</span>
         <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span>
         <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">value</span> <span class="special">)</span>
-    <span class="comment">// Precondition: [first, last) is valid range.</span>
-    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">first</span> <span class="special">&lt;=</span> <span class="identifier">last</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">).</span><span class="identifier">valid</span><span class="special">()</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">result</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">difference_type</span> <span class="identifier">result</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
     <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">first</span> <span class="special">!=</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// OK: Iter is equality comparable.</span>
-        <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
+        <span class="identifier">CONTRACT_LOOP_VARIANT_TPL</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
         <span class="keyword">if</span><span class="special">(*</span><span class="identifier">first</span> <span class="special">==</span> <span class="identifier">value</span><span class="special">)</span> <span class="comment">// OK: Value is equality comparable.</span>
             <span class="special">++</span><span class="identifier">result</span><span class="special">;</span>
         <span class="special">++</span><span class="identifier">first</span><span class="special">;</span> <span class="comment">// OK: Iterator is input iterator.</span>
@@ -1801,6 +1754,7 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
@@ -1808,15 +1762,15 @@
     <span class="identifier">requires</span><span class="special">(</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;,</span>
         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">CopyConstructible</span><span class="special">&lt;</span><span class="keyword">typename</span>
-                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;,</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postconditions.</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="keyword">typename</span>
                 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
     <span class="special">)</span>
 <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">)</span> <span class="special">(</span><span class="identifier">deref</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">Iter</span><span class="special">)</span> <span class="identifier">i</span> <span class="special">)</span>
-    <span class="comment">// Precondition: i is non-singular.</span>
-    <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">result</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">i</span> <span class="special">)</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">singular</span><span class="special">(</span><span class="identifier">i</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
+    <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
+        <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
+        <span class="identifier">result</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">i</span> <span class="comment">// Trivial == if Iter::value_type not EqualityComparable.</span>
+    <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="special">*</span><span class="identifier">i</span><span class="special">;</span>
 <span class="special">}</span>
@@ -1833,20 +1787,16 @@
         
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">trivial</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">)</span>
-    <span class="identifier">requires</span><span class="special">(</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">LessThanComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
-<span class="preprocessor">#ifndef</span> <span class="identifier">CONTRACT_CONFIG_NO_POSTCONDITIONS</span> <span class="comment">// Equality only for postconditions.</span>
-        <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
-<span class="preprocessor">#endif</span>
-    <span class="special">)</span>
+<span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">LessThanComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
 <span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">(</span><span class="identifier">min</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">x</span><span class="special">,</span> <span class="special">(</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">y</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
+        <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="keyword">operator</span><span class="special">==,</span>
         <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-        <span class="identifier">x</span> <span class="special">&lt;</span> <span class="identifier">y</span> <span class="special">?</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">:</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">y</span> <span class="comment">// Need both `&lt;` and `==`.</span>
+        <span class="identifier">x</span> <span class="special">&lt;</span> <span class="identifier">y</span> <span class="special">?</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">:</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">y</span> <span class="comment">// Trivial == if T has no ==.</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">&lt;</span> <span class="identifier">y</span> <span class="special">?</span> <span class="identifier">x</span> <span class="special">:</span> <span class="identifier">y</span><span class="special">;</span> <span class="comment">// OK: T is less than comparable `&lt;`.</span>
@@ -3173,12 +3123,12 @@
     <span class="special">}</span>
 
 <span class="keyword">private</span><span class="special">:</span>
+    <span class="comment">// Contract helpers.</span>
 
-    <span class="comment">/** @todo make this static */</span>
-    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span> <span class="comment">// Postcondition helper.</span>
-    <span class="keyword">private</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">all_equal</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">left</span><span class="special">,</span>
+    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">all_equal</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">left</span><span class="special">,</span>
             <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">right</span><span class="special">,</span> <span class="identifier">size_t</span> <span class="identifier">offset</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">0</span> 
-        <span class="special">)</span> <span class="keyword">const</span>
+        <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">left</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">+</span> <span class="identifier">offset</span> <span class="special">)</span> <span class="comment">// correct offset</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">for</span><span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">offset</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">size</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span>
@@ -3471,10 +3421,9 @@
 <span class="keyword">private</span><span class="special">:</span>
     <span class="comment">// Contract helpers.</span>
 
-    <span class="comment">/** @todo make these static */</span>
     <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-    <span class="keyword">private</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">all_observers_valid</span><span class="special">)</span> <span class="special">(</span>
-            <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">observer</span> <span class="keyword">const</span><span class="special">*&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">observers</span> <span class="special">)</span> <span class="keyword">const</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">all_observers_valid</span><span class="special">)</span> <span class="special">(</span>
+            <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">observer</span> <span class="keyword">const</span><span class="special">*&gt;</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">observers</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">for</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">observer</span> <span class="keyword">const</span><span class="special">*&gt;::</span><span class="identifier">const_iterator</span>
                 <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">observers</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span> <span class="identifier">i</span> <span class="special">!=</span> <span class="identifier">observers</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="special">{</span>
@@ -4439,9 +4388,10 @@
     <span class="special">}</span>
 
 <span class="keyword">private</span><span class="special">:</span>
-    <span class="comment">/** @todo make this static */</span>
     <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-    <span class="keyword">private</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">days_in</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">month</span> <span class="special">)</span> <span class="keyword">const</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">days_in</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">month</span> <span class="special">)</span>
+        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">month</span> <span class="special">&gt;=</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">month</span> <span class="special">&lt;=</span> <span class="number">12</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span> <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span> <span class="identifier">result</span> <span class="special">&gt;=</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">result</span> <span class="special">&lt;=</span> <span class="number">31</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="number">31</span><span class="special">;</span> <span class="comment">// For simplicity, assume all months have 31 days.</span>
     <span class="special">}</span>

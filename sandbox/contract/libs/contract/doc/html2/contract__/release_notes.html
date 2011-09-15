@@ -35,26 +35,34 @@
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
+            Allows const( [(type_)] var, ... ) with optional (type_) for const assertions,
+            select-assertion if-conditions, and loop variants.
+          </li>
+<li class="listitem">
+            There were several GCC internal compiler errors when using const-assertions
+            in N2081 examples... Why? Can I work around these errors?
+          </li>
+<li class="listitem">
+            Add support for exception spec. Can I support C++0x-like <code class="computeroutput"><span class="identifier">notrhow</span></code>? Can I can support function-try-blocks?
+            http://msdn.microsoft.com/en-us/library/e9etx778%28v=vs.71%29.aspx http://www.gotw.ca/gotw/066.htm
+          </li>
+<li class="listitem">
             Include all necessary headers for all files.
           </li>
 <li class="listitem">
-            Program concept checking for functions (not just class).
+            Replace all PP_NOT with PP_COMPL when no bool conversion is needed.
           </li>
 <li class="listitem">
-            Fix static member function contract (see some examples that fails).
+            Also allow typedefs within assertions-- anything else?
           </li>
 <li class="listitem">
             Implement named parameters.
           </li>
 <li class="listitem">
-            Allows const( [(type_)] var, ... ) with optional (type_) for const assertions,
-            select-assertion if-conditions, and loop variants.
-          </li>
-<li class="listitem">
-            Add support for exception spec.
-          </li>
-<li class="listitem">
-            Replace all PP_NOT with PP_COMPL when no bool conversion is needed.
+            Verify that member initializers are part of constructor definition and
+            if so move <code class="computeroutput"><span class="identifier">initialize</span><span class="special">(</span> <span class="special">...</span> <span class="special">)</span></code> to be the very last element in the syntax
+            (after pre and post). Instead, I think exception specs are part of the
+            declaration -- verify that -- so it's OK if they appear before pre/post.
           </li>
 </ol></div>
 </div>
