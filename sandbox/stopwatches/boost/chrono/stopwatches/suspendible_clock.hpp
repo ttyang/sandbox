@@ -4,8 +4,8 @@
 //  See http://www.boost.org/LICENSE_1_0.txt
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_SUSPENDIBLE_CLOCK_HPP
-#define BOOST_STOPWATCHES_SUSPENDIBLE_CLOCK_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_SUSPENDIBLE_CLOCK_HPP
+#define BOOST_CHRONO_STOPWATCHES_SUSPENDIBLE_CLOCK_HPP
 
 #include <boost/version.hpp>
 #include <boost/chrono/chrono.hpp>

@@ -4,8 +4,8 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_STOPCLOCK_HPP
-#define BOOST_STOPWATCHES_STOPCLOCK_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_STOPCLOCK_HPP
+#define BOOST_CHRONO_STOPWATCHES_STOPCLOCK_HPP
 
 #include <boost/chrono/stopwatches/config.hpp>
 #include <boost/chrono/stopwatches/detail/static_assert.hpp>
@@ -19,25 +19,6 @@
 
 namespace boost { namespace chrono  {
 
-//--------------------------------------------------------------------------------------//
-//~ provides a everything a Timer provides and it adds reporting capabilities that can be invoked in a single line of code. The reporting is controleed by two parameters:
-
-    //~ * format : The output format
-    //~ * places(precission): the number of decimal placess used.
-
-//~ The default places is given by default_places and is 3. The default format is "\n%ts\n", where
-
-    //~ * %t : the result of elapsed() when the reporting is done.
-
-//~ The time is given using the suffix "s" following the System International d'Unites Std.
-
-/* void f1()
- * {
- *      stopclock<> _;
- *      // ...
- * }
- */
-//--------------------------------------------------------------------------------------//
 
     template <class Clock>
     struct stopwatch_reporter_default_formatter<stopwatch<Clock> > {

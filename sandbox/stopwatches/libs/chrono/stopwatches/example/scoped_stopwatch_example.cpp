@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <boost/chrono/stopwatches/stopwatches.hpp>
+#include <boost/chrono/stopwatches/simple_stopwatch.hpp>
 #include <boost/chrono/stopwatches/formatters/elapsed_formatter.hpp>
 #include <boost/chrono/stopwatches/formatters/oneshot_formatter.hpp>
 #include <boost/chrono/stopwatches/reporters/stopwatch_reporter.hpp>
@@ -19,8 +20,13 @@ namespace boost { namespace chrono  {
   template <>
   struct stopwatch_reporter2_default_formatter<stopwatch<system_clock> > {
       typedef elapsed_formatter type;
-  };    template <>
+  };
+  template <>
   struct stopwatch_reporter2_default_formatter<stopwatch<high_resolution_clock> > {
+      typedef elapsed_formatter type;
+  };
+  template <>
+  struct stopwatch_reporter2_default_formatter<simple_stopwatch<high_resolution_clock> > {
       typedef elapsed_formatter type;
   };
 }}
@@ -32,7 +38,7 @@ using namespace boost;
 long double res;
 void f0(long j)
 {
-  stopwatch_reporter2<stopwatch<high_resolution_clock> > sw;
+  stopwatch_reporter2<simple_stopwatch<high_resolution_clock> > sw;
   for (long i =0; i< j; i+=1)
     res+=std::sqrt( res+123.456L+i );  // burn some time
 }
@@ -79,7 +85,7 @@ int main()
     f3(3000000);
 
   std::cout<< res << std::endl;
-  return 1;
+  return 0;
 }
 
 

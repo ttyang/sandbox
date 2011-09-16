@@ -4,8 +4,8 @@
 //  See http://www.boost.org/LICENSE_1_0.txt
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_FORMATTERS_ONESHOT_HPP
-#define BOOST_STOPWATCHES_FORMATTERS_ONESHOT_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_FORMATTERS_ONESHOT_HPP
+#define BOOST_CHRONO_STOPWATCHES_FORMATTERS_ONESHOT_HPP
 
 #include <boost/chrono/chrono.hpp>
 #include <boost/system/error_code.hpp>
@@ -30,42 +30,32 @@ namespace boost
 
     template<typename CharT = char, typename Traits = std::char_traits<CharT>,
         class Alloc = std::allocator<CharT> >
-    class basic_oneshot_formatter
+    class basic_oneshot_formatter: public base_formatter<CharT, Traits>
     {
     public:
+      typedef base_formatter<CharT, Traits> base_type;
       typedef std::basic_string<CharT, Traits, Alloc> string_type;
       typedef CharT char_type;
       typedef std::basic_ostream<CharT, Traits> ostream_type;
 
       basic_oneshot_formatter() :
-        format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT),
-            precision_(3), os_(std::cout)
+        base_type(), format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT)
       {
       }
       basic_oneshot_formatter(ostream_type& os) :
-        format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT),
-            precision_(3), os_(os)
+        base_type(os),
+            format_(BOOST_CHRONO_STOPWATCHES_ONESHOOT_FORMAT_DEFAULT)
       {
       }
       basic_oneshot_formatter(const char_type* fmt, ostream_type& os =
           std::cout) :
-        format_(fmt), precision_(3), os_(os)
+        base_type(os), format_(fmt)
       {
       }
       basic_oneshot_formatter(string_type const& fmt, ostream_type& os =
           std::cout) :
-        str_(fmt), format_(str_.c_str()), precision_(3), os_(os)
+        base_type(), str_(fmt), format_(str_.c_str())
       {
-      }
-      void set_precision(std::size_t precision)
-      {
-        precision_ = precision;
-        if (precision_ > 9)
-          precision_ = 9; // sanity check
-      }
-      void set_os(ostream_type os)
-      {
-        os_ = os;
       }
       static string_type format(const char* s)
       {
@@ -84,24 +74,26 @@ namespace boost
         if (d < duration_t::zero())
           return;
 
-        boost::io::ios_flags_saver ifs(os_);
-        os_.setf(std::ios_base::fixed, std::ios_base::floatfield);
-        boost::io::ios_precision_saver ips(os_);
-        os_.precision(precision_);
+        boost::io::ios_flags_saver ifs(this->os_);
+        this->os_.setf(std::ios_base::fixed, std::ios_base::floatfield);
+        boost::io::ios_precision_saver ips(this->os_);
+        this->os_.precision(this->precision_);
+        duration_style_io_saver<> idss(this->os_);
+        this->os_ << duration_fmt(this->style_);
 
         for (; *format_; ++format_)
         {
           if ((*format_ != '%') || (!*(format_ + 1))
               || (!std::strchr("d", *(format_ + 1))))
           {
-            os_ << *format_;
+            this->os_ << *format_;
           } else
           {
             ++format_;
             switch (*format_)
             {
             case 'd':
-              os_ << boost::chrono::duration<double>(d).count();
+              this->os_ << boost::chrono::duration<double>(d).count();
               break;
             default:
               // todo this should be replaced by a ec or an exception.
@@ -114,8 +106,6 @@ namespace boost
     private:
       string_type str_;
       const char_type* format_;
-      std::size_t precision_;
-      ostream_type & os_;
     };
 
     typedef basic_oneshot_formatter<char> oneshot_formatter;

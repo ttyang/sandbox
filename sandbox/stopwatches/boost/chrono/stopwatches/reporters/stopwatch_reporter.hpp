@@ -5,8 +5,8 @@
 //   copy at http://www.boost.org/LICENSE_1_0.txt)
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_REPORTERS_STOPWATCH_REPORTER_HPP
-#define BOOST_STOPWATCHES_REPORTERS_STOPWATCH_REPORTER_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_REPORTERS_STOPWATCH_REPORTER_HPP
+#define BOOST_CHRONO_STOPWATCHES_REPORTERS_STOPWATCH_REPORTER_HPP
 
 #if !defined(BOOST_ENABLE_WARNINGS) && !defined(BOOST_STOPWATCHES_ENABLE_WARNINGS) 
 #if defined __GNUC__
@@ -91,10 +91,12 @@ namespace boost
     template<class Stopwatch, class Formatter>
     void basic_stopwatch_reporter2<Stopwatch, Formatter>::report(system::error_code & ec)
     {
-      //        chrono::clock_suspender<typename Stopwatch::clock> _(ec);
-      //        if (!BOOST_CHRONO_IS_THROWS(ec)) {
-      //            if (ec) return;
-      //        }
+      chrono::clock_suspender<typename Stopwatch::clock> _(ec);
+      if (!BOOST_CHRONO_IS_THROWS(ec))
+      {
+        if (ec)
+          return;
+      }
 
       reported_ = true;
       formatter_(*this, ec);
@@ -219,18 +221,5 @@ namespace boost
 #endif
 
 #endif
-
-//boost::chrono::basic_stopwatch_reporter2<Stopwatch, Formatter>::basic_stopwatch_reporter2(const Formatter&)Õ
-//boost::chrono::basic_stopwatch_reporter2<Stopwatch, Formatter>::basic_stopwatch_reporter2(const boost::chrono::basic_stopwatch_reporter2<Stopwatch, Formatter>&) [with Stopwatch = boost::chrono::stopwatch<boost::chrono::system_clock>, Formatter = boost::chrono::basic_elapsed_formatter<boost::ratio<1l, 1000000l>, char, std::char_traits<char>, std::allocator<char> >]
-//boost::chrono::basic_stopwatch_reporter2<Stopwatch, Formatter>::basic_stopwatch_reporter2(const typename Formatter::string_type&) [with Stopwatch = boost::chrono::stopwatch<boost::chrono::system_clock>, Formatter = boost::chrono::basic_elapsed_formatter<boost::ratio<1l, 1000000l>, char, std::char_traits<char>, std::allocator<char> >]
-//boost::chrono::basic_stopwatch_reporter2<Stopwatch, Formatter>::basic_stopwatch_reporter2(const typename Formatter::char_type*) [with Stopwatch = boost::chrono::stopwatch<boost::chrono::system_clock>, Formatter = boost::chrono::basic_elapsed_formatter<boost::ratio<1l, 1000000l>, char, std::char_traits<char>, std::allocator<char> >]
-
-
-
-
-
-
-
-
 
 

@@ -4,8 +4,8 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //  See http://www.boost.org/libs/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_LIGHTWEIGHT_STOPWATCH__HPP
-#define BOOST_STOPWATCHES_LIGHTWEIGHT_STOPWATCH__HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_LIGHTWEIGHT_STOPWATCH__HPP
+#define BOOST_CHRONO_STOPWATCHES_LIGHTWEIGHT_STOPWATCH__HPP
 
 #include <utility>
 

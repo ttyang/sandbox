@@ -5,10 +5,10 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_CONFIG_HPP
-#define BOOST_STOPWATCHES_CONFIG_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_CONFIG_HPP
+#define BOOST_CHRONO_STOPWATCHES_CONFIG_HPP
 
 #include <boost/config.hpp>
 
-#endif // BOOST_STOPWATCHES_CONFIG_HPP
+#endif // BOOST_CHRONO_STOPWATCHES_CONFIG_HPP
 

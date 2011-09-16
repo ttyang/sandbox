@@ -4,8 +4,8 @@
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_STOPWATCH_ACCUMULATOR_FORMATTER_HPP
-#define BOOST_STOPWATCHES_STOPWATCH_ACCUMULATOR_FORMATTER_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_STOPWATCH_ACCUMULATOR_FORMATTER_HPP
+#define BOOST_CHRONO_STOPWATCHES_STOPWATCH_ACCUMULATOR_FORMATTER_HPP
 
 #include <boost/chrono/chrono.hpp>
 #include <boost/system/error_code.hpp>

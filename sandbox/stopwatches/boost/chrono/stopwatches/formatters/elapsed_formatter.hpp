@@ -4,8 +4,8 @@
 //  See http://www.boost.org/LICENSE_1_0.txt
 //  See http://www.boost.org/libs/chrono/stopwatches for documentation.
 
-#ifndef BOOST_STOPWATCHES_FORMATTERS_ELAPSED_HPP
-#define BOOST_STOPWATCHES_FORMATTERS_ELAPSED_HPP
+#ifndef BOOST_CHRONO_STOPWATCHES_FORMATTERS_ELAPSED_HPP
+#define BOOST_CHRONO_STOPWATCHES_FORMATTERS_ELAPSED_HPP
 
 #include <boost/chrono/stopwatches/formatters/base_formatter.hpp>
 #include <boost/system/error_code.hpp>
@@ -27,10 +27,10 @@ namespace boost
   namespace chrono
   {
 
-
-    template<typename Ratio=micro, typename CharT = char, typename Traits = std::char_traits<CharT>,
+    template<typename Ratio = micro, typename CharT = char,
+        typename Traits = std::char_traits<CharT>,
         class Alloc = std::allocator<CharT> >
-    class basic_elapsed_formatter : public base_formatter<CharT, Traits>
+    class basic_elapsed_formatter: public base_formatter<CharT, Traits>
     {
 
     public:
@@ -40,26 +40,28 @@ namespace boost
       typedef CharT char_type;
       typedef std::basic_ostream<CharT, Traits> ostream_type;
 
-      basic_elapsed_formatter() : base_type(),
-        internal_fmt_(BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT),
+      basic_elapsed_formatter() :
+        base_type(),
+            internal_fmt_(BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT),
             fmt_(internal_fmt_)
       {
       }
-      basic_elapsed_formatter(ostream_type& os) : base_type(os),
-        internal_fmt_(BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT),
-            fmt_(internal_fmt_)
-      {
-      }
-      basic_elapsed_formatter(const char* fmt, ostream_type& os=std::cout) :
+      basic_elapsed_formatter(ostream_type& os) :
         base_type(os),
-        internal_fmt_(fmt), fmt_(internal_fmt_)
+            internal_fmt_(BOOST_CHRONO_STOPWATCHES_ELAPSED_FORMAT_DEFAULT),
+            fmt_(internal_fmt_)
       {
       }
-      basic_elapsed_formatter(string_type const& fmt, ostream_type& os=std::cout) :
+      basic_elapsed_formatter(const char* fmt, ostream_type& os = std::cout) :
         base_type(os), internal_fmt_(fmt), fmt_(internal_fmt_)
       {
       }
-      basic_elapsed_formatter(format_type & fmt, ostream_type& os=std::cout) :
+      basic_elapsed_formatter(string_type const& fmt, ostream_type& os =
+          std::cout) :
+        base_type(os), internal_fmt_(fmt), fmt_(internal_fmt_)
+      {
+      }
+      basic_elapsed_formatter(format_type & fmt, ostream_type& os = std::cout) :
         base_type(os), fmt_(fmt)
       {
       }

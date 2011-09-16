@@ -115,5 +115,5 @@ int main()
 //  std::cout << "f1() Mean: " << accumulators::mean(acc) << std::endl;
 //  std::cout << "f1() Min: " << (accumulators::min)(acc) << std::endl;
 //  std::cout << "f1() Max: " << (accumulators::max)(acc) << std::endl;
-  return 1;
+  return 0;
 }
