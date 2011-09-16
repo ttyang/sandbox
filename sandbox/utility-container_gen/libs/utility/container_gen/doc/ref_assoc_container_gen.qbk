@@ -29,6 +29,13 @@ typedef _mpl_apply_wrap2_<
         >::type
         MapOfCharSets2Strings;
 ``
+
+[important
+    This component depends on __Boost_Type_Traits_Operators__, which has been
+    recently accepted into Boost but is currently not part of an official
+    release.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
 [endsect]
 
 [section:definition Where defined]
