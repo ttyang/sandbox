@@ -1,0 +1,41 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:associative_container_gen `associative_container_gen`]
+
+[section Synopsis]
+[reference__associative_container_gen]
+[endsect]
+
+[section Description]
+The __raw_associative_node__ and __simple_associative_node__ data structures
+use this metafunction class to determine the storage type that will associate
+key objects with child nodes.  This library provides specializations of this
+metafunction class for each selector it provides whose resulting storage type
+models the __Associative_Container__ concept.
+
+It is possible to nest containers via `associative_container_gen`, e.g.:
+
+``
+typedef _mpl_apply_wrap2_<
+            associative_container_gen<mapS>
+          , _mpl_apply_wrap1_<associative_container_gen<setS>,char>::type
+          , _std_string_
+        >::type
+        MapOfCharSets2Strings;
+``
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_associative_container_gen_hpp__>
+``
+[endsect]
+
+[endsect] [/ associative_container_gen]
+

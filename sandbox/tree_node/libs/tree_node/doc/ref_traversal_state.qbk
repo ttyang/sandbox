@@ -1,0 +1,33 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:traversal_state `traversal_state`]
+
+[section Synopsis]
+[reference__traversal_state]
+[endsect]
+
+[section Description]
+This enumeration type is the return type of the dereferenceability expression
+defined by each iterator type that this library provides.  The `no_traversal`
+value corresponds to `false` in a boolean context, enabling the iterator types
+to fulfill their runtime requirements for dereferenceability.  The
+`pre_order_traversal` and `post_order_traversal` values are significant because
+the __depth_first_iterator__ traverses each node twice, so algorithms must be
+able to distinguish which state the iterator is in when it traverses a tree
+node.  The `breadth_first_traversal` value is defined for completeness.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_traversal_state_hpp__>
+``
+[endsect]
+
+[endsect] [/ traversal_state]
+

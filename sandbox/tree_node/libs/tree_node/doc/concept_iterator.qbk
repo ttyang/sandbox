@@ -1,0 +1,106 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:tree_node_iterator Tree Node Iterator]
+
+[section Description]
+Tree-traversing iterators at the __Tree_Node__ level must be created
+differently from iterators at the __Container__ level.  Furthermore, tree node
+iterators typically store more stateful information than their __Container__
+counterparts; requiring two of them to check for dereferenceability may prove
+somewhat memory-inefficient.  This concept provides an alternate means of
+checking for dereferenceability that requires the use of only the active
+iterator.
+[endsect]
+
+[section Refinement of]
+__Forward_Iterator__
+[endsect]
+
+[variablelist Notation
+    [[`Iterator`][A type that models the [*Tree Node Iterator] concept.]]
+    [[`itr`][An object of type `Iterator`.]]
+    [[`Node`][A type that models the __Tree_Node__ concept.]]
+    [[`node`][An object of type `Node::pointer`.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Forward_Iterator__ concept;
+however, the requirements for the value type are strengthened: it must model
+the __Trivial_Iterator__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Forward_Iterator__ concept, the
+following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Default constructor]
+        [``
+            Iterator()
+            Iterator itr
+        ``]
+        []
+        [Constructs a non-dereferenceable (past-the-end) iterator.]
+        [Constant]
+    ]
+    [
+        [Constructor from mutable node]
+        [``
+            Iterator(node)
+            Iterator itr(node)
+        ``]
+        []
+        [Refinement-specific.]
+        [Amortized constant]
+    ]
+    [
+        [Constructor from immutable node]
+        [``
+            Iterator(const_node)
+            Iterator itr(const_node)
+        ``]
+        []
+        [Refinement-specific.]
+        [Amortized constant]
+    ]
+    [
+        [Dereferenceability]
+        [`itr`]
+        [A type that can be used in a boolean context.]
+        [
+            Returns a value convertible to `true` if `itr` is dereferenceable,
+            a value convertible to `false` if it is past-the-end.
+        ]
+        [Constant]
+    ]
+]
+
+The __Forward_Iterator__ requirement that the increment operators must exhibit
+constant time complexity has been relaxed; they now need only exhibit linear
+time complexity with respect to the number of descendants in the worst case.
+[endsect]
+
+[section Models]
+
+  * All models of the __Full_Tree_Node_Iterator__ concept.
+  * All models of the __Tree_Node_Descendant_Iterator__ concept.
+
+[endsect]
+
+[endsect] [/ Tree Node Iterator]
+

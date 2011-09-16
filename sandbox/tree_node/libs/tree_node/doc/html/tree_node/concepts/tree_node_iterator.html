@@ -1,0 +1,274 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Tree Node Iterator</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
+<link rel="up" href="../concepts.html" title="Concepts">
+<link rel="prev" href="associative_tree_node.html" title="Associative Tree Node">
+<link rel="next" href="full_tree_node_iterator.html" title="Full Tree Node Iterator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="associative_tree_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="full_tree_node_iterator.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.concepts.tree_node_iterator"></a><a class="link" href="tree_node_iterator.html" title="Tree Node Iterator">Tree Node Iterator</a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.tree_node_iterator.description"></a><a class="link" href="tree_node_iterator.html#tree_node.concepts.tree_node_iterator.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Tree-traversing iterators at the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> level must be created differently
+          from iterators at the <a href="http://www.sgi.com/tech/stl/Container.html" target="_top"><span class="bold"><strong>Container</strong></span></a> level. Furthermore, tree node
+          iterators typically store more stateful information than their <a href="http://www.sgi.com/tech/stl/Container.html" target="_top"><span class="bold"><strong>Container</strong></span></a> counterparts; requiring two of
+          them to check for dereferenceability may prove somewhat memory-inefficient.
+          This concept provides an alternate means of checking for dereferenceability
+          that requires the use of only the active iterator.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.tree_node_iterator.refinement_of"></a><a class="link" href="tree_node_iterator.html#tree_node.concepts.tree_node_iterator.refinement_of" title="Refinement of">Refinement
+        of</a>
+</h4></div></div></div>
+<p>
+          <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a>
+        </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Iterator</span></code></span></dt>
+<dd><p>
+              A type that models the <span class="bold"><strong>Tree Node Iterator</strong></span>
+              concept.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">itr</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Iterator</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Node</span></code></span></dt>
+<dd><p>
+              A type that models the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">node</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">const_node</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span></code>.
+            </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.tree_node_iterator.types"></a><a class="link" href="tree_node_iterator.html#tree_node.concepts.tree_node_iterator.types" title="Associated Types">Associated
+        Types</a>
+</h4></div></div></div>
+<p>
+          No additional types beyond those defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept; however, the requirements
+          for the value type are strengthened: it must model the <a href="http://www.sgi.com/tech/stl/trivial.html" target="_top"><span class="bold"><strong>Trivial Iterator</strong></span></a> concept.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.tree_node_iterator.expressions"></a><a class="link" href="tree_node_iterator.html#tree_node.concepts.tree_node_iterator.expressions" title="Valid Expressions and Semantics">Valid
+        Expressions and Semantics</a>
+</h4></div></div></div>
+<p>
+          In addition to the expressions defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept, the following
+          expressions must be valid.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return Type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                    Complexity</a>
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Default constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Iterator</span><span class="special">()</span>
+<span class="identifier">Iterator</span> <span class="identifier">itr</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Constructs a non-dereferenceable (past-the-end) iterator.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constant
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Constructor from mutable node
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Iterator</span><span class="special">(</span><span class="identifier">node</span><span class="special">)</span>
+<span class="identifier">Iterator</span> <span class="identifier">itr</span><span class="special">(</span><span class="identifier">node</span><span class="special">)</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Refinement-specific.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Amortized constant
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Constructor from immutable node
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Iterator</span><span class="special">(</span><span class="identifier">const_node</span><span class="special">)</span>
+<span class="identifier">Iterator</span> <span class="identifier">itr</span><span class="special">(</span><span class="identifier">const_node</span><span class="special">)</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Refinement-specific.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Amortized constant
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Dereferenceability
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">itr</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    A type that can be used in a boolean context.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns a value convertible to <code class="computeroutput"><span class="keyword">true</span></code>
+                    if <code class="computeroutput"><span class="identifier">itr</span></code> is dereferenceable,
+                    a value convertible to <code class="computeroutput"><span class="keyword">false</span></code>
+                    if it is past-the-end.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constant
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          The <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> requirement that the increment
+          operators must exhibit constant time complexity has been relaxed; they
+          now need only exhibit linear time complexity with respect to the number
+          of descendants in the worst case.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.tree_node_iterator.models"></a><a class="link" href="tree_node_iterator.html#tree_node.concepts.tree_node_iterator.models" title="Models">Models</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="identifier">All</span> <span class="identifier">models</span> <span class="identifier">of</span> <span class="identifier">the</span> <a class="link" href="full_tree_node_iterator.html" title="Full Tree Node Iterator"><span class="bold"><strong>Full Tree Node Iterator</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">All</span> <span class="identifier">models</span> <span class="identifier">of</span> <span class="identifier">the</span> <a class="link" href="tree_node_desc_iterator.html" title="Tree Node Descendant Iterator"><span class="bold"><strong>Tree Node Descendant Iterator</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="associative_tree_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="full_tree_node_iterator.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

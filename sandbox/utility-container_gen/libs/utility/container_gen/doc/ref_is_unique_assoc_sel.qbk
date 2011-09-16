@@ -1,0 +1,35 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_unique_associative_selector `is_unique_associative_selector`]
+
+[section Synopsis]
+[reference__is_unique_associative_selector]
+[endsect]
+
+[section Description]
+The __graph_parallel_edge_traits__ metafunction uses this metafunction to
+specify whether or not the storage type returned by __container_gen__ will
+allow parallel edges--that is, if the storage type will *not* model the
+__Unique_Associative_Container__ concept.  Returns __mpl_true__ if the storage
+type *will* model the __Unique_Associative_Container__ concept, __mpl_false__
+otherwise.
+
+Specialize this metafunction to return __mpl_true__ for your custom selector if
+and only if the storage type to be returned by __container_gen__ models the
+__Unique_Associative_Container__ concept.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_is_unique_assoc_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ is_unique_associative_selector]
+

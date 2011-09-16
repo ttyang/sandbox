@@ -1,0 +1,74 @@
+[library container_gen
+    [quickbook 1.5]
+    [version 0.1]
+    [authors [Lumsdaine, Andrew][Lee, Lie-Quan][Claveirole, Thomas][Siek, Jeremy G.][Enage, Cromwell D.]]
+    [copyright 1997-2011 Andrew Lumsdaine, Lie-Quan Lee, Thomas Claveirole, Jeremy G. Siek, Cromwell D. Enage]
+    [purpose Collection of container-generating metafunctions]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[/ General concept links.]
+[def __Random_Access_Container__ [@http://www.sgi.com/tech/stl/RandomAccessContainer.html [*Random Access Container]]]
+[def __Associative_Container__ [@http://www.sgi.com/tech/stl/AssociativeContainer.html [*Associative Container]]]
+[def __Unique_Associative_Container__ [@http://www.sgi.com/tech/stl/UniqueAssociativeContainer.html [*Unique Associative Container]]]
+
+[/ STL reference links.]
+[def __std_list__ [@http://www.sgi.com/tech/stl/List.html `std::list`]]
+[def _std_string_ [@http://www.sgi.com/tech/stl/basic_string.html std::string]]
+
+[/ Boost library links.]
+[def __Boost_Utility__ [@boost:libs/utility/index.html [*Boost.Utility]]]
+[def __BGL__ [@boost:libs/graph/doc/index.html BGL]]
+
+[/ Boost reference links.]
+[def _mpl_apply_wrap1_ [@boost:libs/mpl/doc/refmanual/apply-wrap.html boost::mpl::apply_wrap1]]
+[def _mpl_apply_wrap2_ [@boost:libs/mpl/doc/refmanual/apply-wrap.html boost::mpl::apply_wrap2]]
+[def __mpl_true__ [@boost:libs/mpl/doc/refmanual/bool.html `boost::mpl::true_`]]
+[def __mpl_false__ [@boost:libs/mpl/doc/refmanual/bool.html `boost::mpl::false_`]]
+[def __graph_adjacency_list__ [@boost:libs/graph/doc/adjacency_list.html `boost::adjacency_list`]]
+[def __graph_parallel_edge_traits__ [@boost:libs/graph/doc/using_adjacency_list.html#SECTION00834200000000000000 `boost::parallel_edge_traits`]]
+[def __raw_associative_node__ [@http://svn.boost.org/svn/boost/sandbox/tree_node/libs/tree_node/doc/html/tree_node/reference/raw_associative_node.html `raw_associative_node`]]
+[def __simple_associative_node__ [@http://svn.boost.org/svn/boost/sandbox/tree_node/libs/tree_node/doc/html/tree_node/reference/simple_associative_node.html `simple_associative_node`]]
+
+[/ Boost.Utility.ContainerGen reference header file links.]
+[def __boost_utility_container_selector_hpp__ [@../../../../../boost/utility/container_selector.hpp boost/utility/container_selector.hpp]]
+[def __boost_utility_is_random_access_selector_hpp__ [@../../../../../boost/utility/is_random_access_selector.hpp boost/utility/is_random_access_selector.hpp]]
+[def __boost_utility_is_unique_assoc_selector_hpp__ [@../../../../../boost/utility/is_unique_assoc_selector.hpp boost/utility/is_unique_assoc_selector.hpp]]
+[def __boost_utility_container_gen_hpp__ [@../../../../../boost/utility/container_gen.hpp boost/utility/container_gen.hpp]]
+[def __boost_utility_associative_container_gen_hpp__ [@../../../../../boost/utility/associative_container_gen.hpp boost/utility/associative_container_gen.hpp]]
+
+[/ Boost.Utility.ContainerGen reference links.]
+[def __container_gen__ [link container_gen.reference.container_gen `container_gen`]]
+[def _container_gen_ [link container_gen.reference.container_gen container_gen]]
+[def __associative_container_gen__ [link container_gen.reference.associative_container_gen `associative_container_gen`]]
+[def _associative_container_gen_ [link container_gen.reference.associative_container_gen associative_container_gen]]
+[def __is_random_access_selector__ [link container_gen.reference.is_random_access_selector `is_random_access_selector`]]
+[def _is_random_access_selector_ [link container_gen.reference.is_random_access_selector is_random_access_selector]]
+[def __is_unique_associative_selector__ [link container_gen.reference.is_unique_associative_selector `is_unique_associative_selector`]]
+[def _is_unique_associative_selector_ [link container_gen.reference.is_unique_associative_selector is_unique_associative_selector]]
+
+[/ Autogenerate reference documentation directly from code.]
+[/ Bypass Doxygen.]
+[import ../../../../boost/utility/container_selector.hpp]
+[import ../../../../boost/utility/is_random_access_selector.hpp]
+[import ../../../../boost/utility/is_unique_assoc_selector.hpp]
+[import ../../../../boost/utility/container_gen.hpp]
+[import ../../../../boost/utility/associative_container_gen.hpp]
+[import ../../../../libs/graph/example/container_gen.cpp]
+
+[/ index.html Start]
+
+[heading Rationale]
+Significant interest was expressed in moving the `container_gen` metafunction
+from its current place in the __BGL__ to a more general residence such as
+__Boost_Utility__.  The relevant discussion is archived here:
+[@http://lists.boost.org/Archives/boost/2011/05/181573.php].
+
+[/ index.html End]
+
+[include reference.qbk]
+

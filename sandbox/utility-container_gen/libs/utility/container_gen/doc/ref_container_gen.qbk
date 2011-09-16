@@ -1,0 +1,51 @@
+[/=============================================================================
+    Copyright (C) 2000-2001 Jeremy G. Siek
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:container_gen `container_gen`]
+
+[section Synopsis]
+[reference__container_gen]
+[endsect]
+
+[section Description]
+The __graph_adjacency_list__ class template uses this metafunction to map the
+`OutEdgeList` and `VertexList` selectors to the actual container types used for
+the graph storage.  This library provides specializations of this metafunction
+for each selector it defines.  Here are the selector definitions:
+
+[reference__container_selectors]
+
+The specialization for the `listS` selector is shown here.
+
+[reference__container_gen__list_specialization]
+
+To use some other container of your choice, or to supply more template
+arguments to a standard container than just `ValueType`, define a selector
+class and then specialize this metafunction for your selector.  In the code
+below we show how to create a selector that lets you specify the allocator
+to be used with the __std_list__.
+
+[example__container_gen__list_with_allocator_selector]
+
+It is possible to nest containers via `container_gen`, e.g.:
+
+``
+typedef container_gen<setS,container_gen<setS,int>::type>::type
+        SetOfSetsOfIntegers;
+``
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_container_gen_hpp__>
+``
+[endsect]
+
+[endsect] [/ container_gen]
+

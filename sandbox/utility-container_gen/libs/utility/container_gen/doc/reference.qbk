@@ -1,0 +1,22 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Reference]
+
+[include ref_container_gen.qbk]
+[include ref_assoc_container_gen.qbk]
+[include ref_is_rand_access_selector.qbk]
+[include ref_is_unique_assoc_sel.qbk]
+
+  * __container_gen__
+  * __associative_container_gen__
+  * __is_random_access_selector__
+  * __is_unique_associative_selector__
+
+[endsect] [/ Reference]
+

@@ -1,0 +1,83 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:full_tree_node_iterator Full Tree Node Iterator]
+
+[section Description]
+This concept specifies the requirement that models traverse the root node as
+well as its descendants.
+[endsect]
+
+[section Refinement of]
+__Tree_Node_Iterator__
+[endsect]
+
+[variablelist Notation
+    [[`Iterator`][A type that models the [*Full Tree Node Iterator] concept.]]
+    [[`itr`][An object of type `Iterator`.]]
+    [[`Node`][A type that models the __Tree_Node__ concept.]]
+    [[`node`][An object of type `Node::pointer`.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Tree_Node_Iterator__ concept;
+however, the requirements for the value type are strengthened: its unqualified
+value type, in turn, must model the __Tree_Node__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+None beyond those defined in the __Tree_Node_Iterator__ concept; however, the
+type requirements for the constructors are strengthened, and their semantics
+are clarified.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Type requirements]
+        [Semantics]
+    ]
+    [
+        [Constructor from mutable node]
+        [``
+            Iterator(node)
+            Iterator itr(node)
+        ``]
+        []
+        [
+            Constructs an iterator that will iterate through the specified node
+            and its descendants.
+        ]
+    ]
+    [
+        [Constructor from immutable node]
+        [``
+            Iterator(const_node)
+            Iterator itr(const_node)
+        ``]
+        [The value type of `Iterator::value_type` must be `const`-qualified.]
+        [
+            Constructs an iterator that will iterate through the specified node
+            and its descendants.
+        ]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * The return type of __make_breadth_first_iterator__.
+  * The return type of __make_pre_order_iterator__.
+  * The return type of __make_post_order_iterator__.
+  * The return type of __make_depth_first_iterator__.
+
+[endsect]
+
+[endsect] [/ Tree Node Iterator]
+

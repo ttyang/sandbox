@@ -1,0 +1,785 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>simple_associative_node</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="raw_associative_node.html" title="raw_associative_node">
+<link rel="next" href="breadth_first_iterator.html" title="breadth_first_iterator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="raw_associative_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="breadth_first_iterator.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.reference.simple_associative_node"></a><a class="link" href="simple_associative_node.html" title="simple_associative_node"><code class="computeroutput"><span class="identifier">simple_associative_node</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.synopsis"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">Key</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Data</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AssociativeContainerSelector</span> <span class="special">=</span> <span class="identifier">mapS</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">simple_associative_node</span>
+      <span class="special">:</span> <span class="keyword">public</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">enable_shared_from_this</span><span class="special">&lt;</span>
+            <span class="identifier">simple_associative_node</span><span class="special">&lt;</span><span class="identifier">Key</span><span class="special">,</span><span class="identifier">Data</span><span class="special">,</span><span class="identifier">AssociativeContainerSelector</span><span class="special">&gt;</span>
+        <span class="special">&gt;</span>
+      <span class="special">,</span> <span class="keyword">private</span> <span class="identifier">noncopyable</span>
+    <span class="special">{</span>
+     <span class="keyword">public</span><span class="special">:</span>
+        <span class="keyword">typedef</span> <span class="identifier">Key</span>
+                <span class="identifier">key_type</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="identifier">Data</span>
+                <span class="identifier">data_type</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">simple_associative_node</span><span class="special">&gt;</span>
+                <span class="identifier">pointer</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">simple_associative_node</span> <span class="keyword">const</span><span class="special">&gt;</span>
+                <span class="identifier">const_pointer</span><span class="special">;</span>
+
+        <span class="keyword">typedef</span> <span class="comment">// implementation_defined
+</span>                <span class="identifier">child_iterator</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="comment">// implementation_defined
+</span>                <span class="identifier">const_child_iterator</span><span class="special">;</span>
+
+        <span class="special">~</span><span class="identifier">simple_associative_node</span><span class="special">();</span>
+
+        <span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">data_type</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">();</span>
+
+        <span class="identifier">const_pointer</span> <span class="identifier">get_parent</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">get_parent</span><span class="special">();</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">);</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">,</span> <span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+
+        <span class="identifier">const_child_iterator</span> <span class="identifier">get_child_begin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">child_iterator</span> <span class="identifier">get_child_begin</span><span class="special">();</span>
+
+        <span class="identifier">const_child_iterator</span> <span class="identifier">get_child_end</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">child_iterator</span> <span class="identifier">get_child_end</span><span class="special">();</span>
+
+        <span class="identifier">const_child_iterator</span> <span class="identifier">find_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">child_iterator</span> <span class="identifier">find_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">);</span>
+
+        <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">const_child_iterator</span><span class="special">,</span><span class="identifier">const_child_iterator</span><span class="special">&gt;</span>
+            <span class="identifier">find_children</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">child_iterator</span><span class="special">,</span><span class="identifier">child_iterator</span><span class="special">&gt;</span>
+            <span class="identifier">find_children</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">);</span>
+
+        <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">remove_children</span><span class="special">(</span><span class="identifier">Key</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">);</span>
+
+        <span class="keyword">void</span> <span class="identifier">remove_all_children</span><span class="special">();</span>
+
+        <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">create</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+
+        <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">create</span><span class="special">();</span>
+
+        <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">create_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">);</span>
+    <span class="special">};</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.description"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          This class template is suitable for classes or algorithms that need to
+          map keys to child nodes in a tree node data structure that must be exposed
+          to external code. Objects of this type must be stored by <code class="computeroutput"><span class="identifier">simple_associative_node</span><span class="special">::</span><span class="identifier">pointer</span></code> and can only be instantiated
+          through the <code class="computeroutput"><span class="keyword">static</span></code> creation
+          methods that this class template provides. Their children can be accessed
+          by their associated keys for fast lookup.
+        </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            This component depends on <a href="http://svn.boost.org/svn/boost/sandbox/type_traits/libs/type_traits/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.TypeTraitsOperators</strong></span></a>, which has been
+            recently accepted into Boost but is currently not part of an official
+            release. For now, you must perform a Subversion checkout from the <a href="http://svn.boost.org/" target="_top">SVN Trac</a>.
+          </p></td></tr>
+</table></div>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            This component depends on <a href="http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Utility.ContainerGen</strong></span></a>, which is not
+            yet a part of Boost. For now, you must perform a Subversion checkout
+            from the <a href="http://svn.boost.org/" target="_top">SVN Trac</a>.
+          </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.definition"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/simple_associative_node.hpp" target="_top">boost/tree_node/simple_associative_node.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.tpl_param"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.tpl_param" title="Template Parameters">Template
+        Parameters</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Parameter
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Requirements
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Default
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Key</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of a key object to be associated with a child of a
+                    <code class="computeroutput"><span class="identifier">raw_associative_node</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Data</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of the object to be stored in a <code class="computeroutput"><span class="identifier">simple_associative_node</span></code>.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">AssociativeContainerSelector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type that determines the internal map types whose mapped
+                    types are the same as the pointer type.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    It must be a type for which <a href="http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/container_gen/reference/associative_container_gen.html" target="_top"><code class="computeroutput"><span class="identifier">associative_container_gen</span></code></a>
+                    returns a valid container.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">mapS</span></code>
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.model_of"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.model_of" title="Model of">Model
+        of</a>
+</h4></div></div></div>
+<p>
+          <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative
+          Tree Node</strong></span></a>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.public_bases"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.public_bases" title="Public Base Classes">Public
+        Base Classes</a>
+</h4></div></div></div>
+<p>
+          <a href="http://www.boost.org/libs/smart_ptr/enable_shared_from_this.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">enable_shared_from_this</span></code></a>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.members"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.members" title="Members">Members</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Data type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">data_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Data type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">data_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Pointer type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Pointer-to-const type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_pointer</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child iterator type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">child_iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Immutable child iterator type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_child_iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Node creation with data
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">static</span> <span class="identifier">pointer</span>
+                    <span class="identifier">create</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Creates a <code class="computeroutput"><span class="identifier">simple_associative_node</span></code>
+                    object with the specified data and returns a pointer to it.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Node creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">static</span> <span class="identifier">pointer</span>
+                    <span class="identifier">create</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Creates a <code class="computeroutput"><span class="identifier">simple_associative_node</span></code>
+                    object and returns a pointer to it.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Node copy creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">static</span> <span class="identifier">pointer</span>
+                    <span class="identifier">create_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Creates a deep copy of the specified node. Returns a pointer
+                    to the new node.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Data access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Data access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">data_type</span><span class="special">&amp;</span>
+                    <span class="identifier">get_data</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Parent access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_pointer</span> <span class="identifier">get_parent</span><span class="special">()</span>
+                    <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Parent access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">get_parent</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child creation with data
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key_type</span>
+                    <span class="keyword">const</span><span class="special">&amp;,</span>
+                    <span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key_type</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child copy creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key_type</span>
+                    <span class="keyword">const</span><span class="special">&amp;,</span>
+                    <span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range begin access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_child_iterator</span>
+                    <span class="identifier">get_child_begin</span><span class="special">()</span>
+                    <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range begin access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">child_iterator</span> <span class="identifier">get_child_begin</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range past-the-end access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_child_iterator</span>
+                    <span class="identifier">get_child_end</span><span class="special">()</span>
+                    <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range past-the-end access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">child_iterator</span> <span class="identifier">get_child_end</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_child_iterator</span>
+                    <span class="identifier">find_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">child_iterator</span> <span class="identifier">find_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;Node::const_child_iterator,Node::const_child_iterator&gt;
+                    find_children(key_type const&amp;) const;</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;Node::child_iterator,Node::child_iterator&gt;
+                    find_children(key_type const&amp;);</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove children
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">remove_children</span><span class="special">(</span><span class="identifier">key_type</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove all children
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">remove_all_children</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.simple_associative_node.example"></a><a class="link" href="simple_associative_node.html#tree_node.reference.simple_associative_node.example" title="Example">Example</a>
+</h4></div></div></div>
+<p>
+          &lt;<a href="../../../../example/simple_associative_node.cpp" target="_top">example/simple_associative_node.cpp</a>&gt;
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="raw_associative_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="breadth_first_iterator.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

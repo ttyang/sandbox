@@ -1,0 +1,176 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:tree_node Tree Node]
+
+[section Description]
+All tree node implementations that this library provides model this concept.
+[endsect]
+
+[variablelist Notation
+    [[`Node`][A type that models the [*Tree Node] concept.]]
+    [[`node`][An object of type `Node::pointer`.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+]
+
+[section:types Associated Types]
+[table
+    [[Name][Expression][Description][Requirements]]
+    [
+        [Data type]
+        [`Node::data_type`]
+        [The type of the object stored in a tree node.]
+        [
+            It must model the __Copy_Constructible__ concept, but need not
+            model the __Assignable__ concept.
+        ]
+    ]
+    [
+        [Pointer type]
+        [`Node::pointer`]
+        [The type of a pointer to a `Node` object.]
+        [
+            It must model the __Trivial_Iterator__ concept, it must point to
+            a mutable object, and it must be implicitly convertible to
+            `Node::const_pointer`.
+        ]
+    ]
+    [
+        [Pointer-to-const type]
+        [`Node::const_pointer`]
+        [The type of a pointer to a `Node const` object.]
+        [
+            It must model the __Trivial_Iterator__ concept, and it must /not/
+            point to a mutable object.
+        ]
+    ]
+    [
+        [Child iterator type]
+        [`Node::child_iterator`]
+        [
+            The type of iterator used to iterate through the children of a
+            `Node` object.
+        ]
+        [
+            It must model the __Input_Iterator__ concept, and it must be
+            convertible to `Node::const_child_iterator`.
+        ]
+    ]
+    [
+        [Immutable child iterator type]
+        [`Node::const_child_iterator`]
+        [
+            The type of iterator used to iterate through the children of a
+            `Node const` object.
+        ]
+        [
+            It must model the __Input_Iterator__ concept, and it must be
+            convertible to `Node::const_child_iterator`.
+        ]
+    ]
+]
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+[table
+    [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
+    [
+        [Data access]
+        [`const_node->get_data()`]
+        [`Data const&`]
+        [Returns the object stored in the tree node.]
+        [Constant]
+    ]
+    [
+        [Data access]
+        [`node->get_data()`]
+        [`Data&`]
+        [Returns the object stored in the tree node.]
+        [Constant]
+    ]
+    [
+        [Parent access]
+        [`const_node->get_parent()`]
+        [`Node::const_pointer`]
+        [
+            Returns the parent of the tree node, or a null pointer if the node
+            is the root.
+        ]
+        [Constant]
+    ]
+    [
+        [Parent access]
+        [`node->get_parent()`]
+        [`Node::pointer`]
+        [
+            Returns the parent of the tree node, or a null pointer if the node
+            is the root.
+        ]
+        [Constant]
+    ]
+    [
+        [Children range begin access]
+        [`const_node->get_child_begin()`]
+        [`Node::const_child_iterator`]
+        [
+            Returns an iterator pointing to the beginning of the range of
+            children of the tree node.  If the range is empty, then the
+            iterator points past-the-end.
+        ]
+        [Constant]
+    ]
+    [
+        [Children range begin access]
+        [`node->get_child_begin()`]
+        [`Node::child_iterator`]
+        [
+            Returns an iterator pointing to the beginning of the range of
+            children of the tree node.  If the range is empty, then the
+            iterator points past-the-end.
+        ]
+        [Constant]
+    ]
+    [
+        [Children range past-the-end access]
+        [`const_node->get_child_end();`]
+        [`Node::const_child_iterator`]
+        [
+            Returns an iterator pointing past the end of the range of children
+            of the tree node.
+        ]
+        [Constant]
+    ]
+    [
+        [Children range past-the-end access]
+        [`node->get_child_end();`]
+        [`Node::child_iterator`]
+        [
+            Returns an iterator pointing past the end of the range of children
+            of the tree node.
+        ]
+        [Constant]
+    ]
+    [
+        [Remove all children]
+        [`node->remove_all_children()`]
+        [`void`]
+        [Removes all children from the tree node.]
+        [Linear with respect to the number of children]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * All models of the __Random_Access_Child_Iterator_Tree_Node__ concept.
+  * All models of the __Associative_Tree_Node__ concept.
+
+[endsect]
+
+[endsect] [/ Tree Node]
+

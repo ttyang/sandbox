@@ -1,0 +1,29 @@
+project html ;
+import boostbook : boostbook ;
+using quickbook ;
+
+xml container_gen
+    :
+        container_gen.qbk
+    ;
+boostbook standalone
+    :
+        container_gen
+    :
+        <xsl:param>admon.graphics.path=images/
+        <xsl:param>navig.graphics.path=images/
+        <xsl:param>boost.root=http://www.boost.org
+        <xsl:param>boost.libraries=http://www.boost.org/libs/libraries.htm
+        <xsl:param>boost.image.src=../../../../../boost.png
+        <xsl:param>boost.image.alt="C++ Boost"
+        <xsl:param>boost.image.w=277
+        <xsl:param>boost.image.h=86
+        <xsl:param>html.stylesheet=boostbook.css
+        <xsl:param>nav.layout=none
+        <xsl:param>chunk.section.depth=2
+        <xsl:param>chunk.first.sections=1
+        <xsl:param>generate.section.toc.level=0
+        <xsl:param>toc.section.depth=0
+        <xsl:param>toc.max.depth=0
+    ;
+

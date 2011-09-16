@@ -1,0 +1,165 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>container_gen</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.1">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="../reference.html" title="Reference">
+<link rel="next" href="associative_container_gen.html" title="associative_container_gen">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="associative_container_gen.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container_gen.reference.container_gen"></a><a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.container_gen.synopsis"></a><a class="link" href="container_gen.html#container_gen.reference.container_gen.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Selector</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ValueType</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">container_gen</span>
+    <span class="special">{</span>
+        <span class="comment">// typedef .... type;
+</span>    <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.container_gen.description"></a><a class="link" href="container_gen.html#container_gen.reference.container_gen.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          The <a href="http://www.boost.org/libs/graph/doc/adjacency_list.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span></code></a> class template
+          uses this metafunction to map the <code class="computeroutput"><span class="identifier">OutEdgeList</span></code>
+          and <code class="computeroutput"><span class="identifier">VertexList</span></code> selectors
+          to the actual container types used for the graph storage. This library
+          provides specializations of this metafunction for each selector it defines.
+          Here are the selector definitions:
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+<span class="preprocessor">#if</span> <span class="special">!</span><span class="identifier">defined</span> <span class="identifier">BOOST_NO_SLIST</span>
+    <span class="keyword">struct</span> <span class="identifier">slistS</span> <span class="special">{</span> <span class="special">};</span>
+<span class="preprocessor">#endif</span>
+
+    <span class="keyword">struct</span> <span class="identifier">vecS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">dequeS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">listS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">setS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">mapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">multisetS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">multimapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_setS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_mapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_multisetS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">hash_multimapS</span> <span class="special">{</span> <span class="special">};</span>
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+        </p>
+<p>
+          The specialization for the <code class="computeroutput"><span class="identifier">listS</span></code>
+          selector is shown here.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ValueType</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">container_gen</span><span class="special">&lt;</span><span class="identifier">listS</span><span class="special">,</span><span class="identifier">ValueType</span><span class="special">&gt;</span>
+    <span class="special">{</span>
+        <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+    <span class="special">};</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+        </p>
+<p>
+          To use some other container of your choice, or to supply more template
+          arguments to a standard container than just <code class="computeroutput"><span class="identifier">ValueType</span></code>,
+          define a selector class and then specialize this metafunction for your
+          selector. In the code below we show how to create a selector that lets
+          you specify the allocator to be used with the <a href="http://www.sgi.com/tech/stl/List.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span></code></a>.
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Allocator</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">list_with_allocatorS</span> <span class="special">{</span> <span class="special">};</span>
+
+<span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Alloc</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ValueType</span><span class="special">&gt;</span>
+  <span class="keyword">struct</span> <span class="identifier">container_gen</span><span class="special">&lt;</span><span class="identifier">list_with_allocatorS</span><span class="special">&lt;</span><span class="identifier">Alloc</span><span class="special">&gt;,</span><span class="identifier">ValueType</span><span class="special">&gt;</span> <span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">Alloc</span><span class="special">::</span><span class="keyword">template</span> <span class="identifier">rebind</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">&gt;::</span><span class="identifier">other</span> <span class="identifier">Allocator</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">ValueType</span><span class="special">,</span> <span class="identifier">Allocator</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+  <span class="special">};</span>
+<span class="special">}</span>
+
+<span class="comment">// now you can define a graph using std::list and a specific allocator  
+</span><span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">adjacency_list</span><span class="special">&lt;</span> <span class="identifier">list_with_allocatorS</span><span class="special">&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">allocator</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
+  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">vecS</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">directedS</span><span class="special">&gt;</span> <span class="identifier">MyGraph</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+<p>
+          It is possible to nest containers via <code class="computeroutput"><span class="identifier">container_gen</span></code>,
+          e.g.:
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">container_gen</span><span class="special">&lt;</span><span class="identifier">setS</span><span class="special">,</span><span class="identifier">container_gen</span><span class="special">&lt;</span><span class="identifier">setS</span><span class="special">,</span><span class="keyword">int</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">type</span>
+        <span class="identifier">SetOfSetsOfIntegers</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.container_gen.definition"></a><a class="link" href="container_gen.html#container_gen.reference.container_gen.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../../boost/utility/container_gen.hpp" target="_top">boost/utility/container_gen.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 1997 -2011 Andrew Lumsdaine, Lie-Quan Lee, Thomas Claveirole,
+      Jeremy G. Siek, Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="associative_container_gen.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
