@@ -1,6 +1,6 @@
 /*==============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
-    Copyright (c) 2009-2010 Christopher Schmidt
+    Copyright (c) 2009-2011 Christopher Schmidt
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -21,6 +21,9 @@
 #include <boost/fusion/view/iterator_range/detail/iterator_range_fwd.hpp>
 #include <boost/fusion/view/iterator_range/detail/begin_impl.hpp>
 #include <boost/fusion/view/iterator_range/detail/end_impl.hpp>
+#include <boost/fusion/view/iterator_range/detail/is_segmented_impl.hpp>
+#include <boost/fusion/view/iterator_range/detail/segmented_iterator_range.hpp>
+#include <boost/fusion/view/iterator_range/detail/segments_impl.hpp>
 #include <boost/fusion/view/iterator_range/detail/at_impl.hpp>
 #include <boost/fusion/view/iterator_range/detail/value_at_impl.hpp>
 
@@ -30,6 +33,12 @@ namespace boost { namespace fusion
 {
     struct iterator_range_tag;
     struct fusion_sequence_tag;
+
+    namespace traits
+    {
+        template<typename>
+        struct category_of;
+    }
 
     template<typename Begin, typename End>
     struct iterator_range

@@ -12,6 +12,17 @@
 #include <boost/fusion/sequence/intrinsic/begin.hpp>
 #include <boost/fusion/mpl/detail/fusion_iterator.hpp>
 
+namespace boost { namespace fusion
+{
+    struct fusion_sequence_tag;
+
+    namespace result_of
+    {
+        template<typename>
+        struct begin;
+    }
+}}
+
 namespace boost { namespace mpl
 {
     template<typename>

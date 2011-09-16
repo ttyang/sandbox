@@ -30,17 +30,17 @@ namespace ns
     class point
     {
     public:
-    
+
         point() : x(0), y(0) {}
         point(X in_x, Y in_y) : x(in_x), y(in_y) {}
-            
+
         X get_x() const { return x; }
         Y get_y() const { return y; }
         void set_x(X x_) { x = x_; }
         void set_y(Y y_) { y = y_; }
-        
+
     private:
-        
+
         X x;
         Y y;
     };
@@ -57,7 +57,6 @@ int
 main()
 {
     using namespace boost::fusion;
-    using namespace std;
 
     typedef ns::point<int,int> point;
 
@@ -137,4 +136,3 @@ main()
 
     return boost::report_errors();
 }
-

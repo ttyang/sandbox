@@ -16,6 +16,12 @@
 
 namespace boost { namespace fusion
 {
+    namespace result_of
+    {
+        template<typename>
+        struct size;
+    }
+
     namespace extension
     {
         template<typename>

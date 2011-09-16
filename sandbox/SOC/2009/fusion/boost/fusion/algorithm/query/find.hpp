@@ -13,12 +13,9 @@
 #include <boost/fusion/support/internal/base.hpp>
 #include <boost/fusion/sequence/intrinsic/begin.hpp>
 #include <boost/fusion/sequence/intrinsic/end.hpp>
-#include <boost/fusion/iterator/value_of.hpp>
 #include <boost/fusion/support/is_segmented.hpp>
 #include <boost/fusion/support/internal/workaround.hpp>
-#include <boost/mpl/eval_if.hpp>
-#include <boost/mpl/placeholders.hpp>
-#include <boost/type_traits/is_same.hpp>
+#include <boost/mpl/if.hpp>
 
 #include <boost/fusion/algorithm/query/detail/find_if.hpp>
 #include <boost/fusion/algorithm/query/detail/find_segmented.hpp>
@@ -29,15 +26,11 @@ namespace boost { namespace fusion
     {
         template<typename Seq, typename T>
         struct find
-          : mpl::eval_if<
+          : mpl::if_<
                 traits::is_segmented<Seq>
-              , detail::find_semented<Seq, T>
-              , detail::static_seq_find_if<
-                    typename begin<Seq>::type
-                  , typename end<Seq>::type
-                  , is_same<value_of<mpl::_1>, T>
-                >
-            >
+              , detail::find_segmented<Seq, T>
+              , detail::find<Seq, T>
+            >::type
         {
             BOOST_FUSION_MPL_ASSERT((traits::is_sequence<Seq>))
             BOOST_FUSION_MPL_ASSERT((
@@ -49,7 +42,8 @@ namespace boost { namespace fusion
     typename result_of::find<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::type
     find(BOOST_FUSION_R_ELSE_CLREF(Seq) seq)
     {
-        return result_of::find<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::call(seq);
+        return result_of::find<BOOST_FUSION_R_ELSE_CLREF(Seq), T>::call(
+            BOOST_FUSION_FORWARD(Seq,seq));
     }
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES

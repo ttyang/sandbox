@@ -1,7 +1,7 @@
 /*=============================================================================
     Copyright (c) 2001-2006 Joel de Guzman
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 #include <boost/detail/lightweight_test.hpp>
@@ -202,7 +202,7 @@ main()
         type vec; // compile check only
         std::cout << "vector50 of int: " << sizeof(vec) << std::endl;
     }
-    
+
     {
         // testing copy and assign from a view
         vector0<> empty;
@@ -227,4 +227,3 @@ main()
 
     return boost::report_errors();
 }
-

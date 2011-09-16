@@ -8,11 +8,8 @@
 #ifndef BOOST_FUSION_SEQUENCE_CONVENIENCE_MOVE_HPP
 #define BOOST_FUSION_SEQUENCE_CONVENIENCE_MOVE_HPP
 
+#ifndef BOOST_FUSION_NO_RVALUE_REFERENCES
 #include <boost/fusion/support/internal/base.hpp>
-#ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
-#   error "Your compiler must support rvalue reference in order to support moving."
-#endif
-
 #include <boost/fusion/sequence/intrinsic/front.hpp>
 #include <boost/fusion/sequence/intrinsic/back.hpp>
 #include <boost/fusion/algorithm/iteration/for_each.hpp>
@@ -55,4 +52,5 @@ namespace boost { namespace fusion
     }
 }}
 
+#endif
 #endif

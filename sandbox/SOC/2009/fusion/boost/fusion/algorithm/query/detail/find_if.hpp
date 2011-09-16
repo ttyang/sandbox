@@ -17,12 +17,14 @@
 #include <boost/fusion/iterator/next.hpp>
 #include <boost/fusion/iterator/advance_c.hpp>
 #include <boost/fusion/iterator/distance.hpp>
+#include <boost/fusion/iterator/value_of.hpp>
 #include <boost/fusion/support/category_of.hpp>
 #include <boost/preprocessor/comparison/equal.hpp>
 #include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
+#include <boost/mpl/placeholders.hpp>
 #include <boost/mpl/identity.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/or.hpp>
@@ -32,6 +34,7 @@
 #include <boost/mpl/lambda.hpp>
 #include <boost/mpl/bind.hpp>
 #include <boost/mpl/placeholders.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 namespace boost { namespace fusion
 {
@@ -203,15 +206,46 @@ namespace boost { namespace fusion
 
         template<typename Seq, typename Pred>
         struct find_if
-          : static_find_if<
-                 typename result_of::begin<Seq>::type
-               , typename result_of::end<Seq>::type
-               , mpl::bind1<
-                     typename mpl::lambda<Pred>::type
-                   , mpl::bind1<mpl::quote1<result_of::value_of>,mpl::_1>
-                 >
-            >
-        {};
+        {
+            typedef
+                static_find_if<
+                     typename result_of::begin<Seq>::type
+                   , typename result_of::end<Seq>::type
+                   , mpl::bind1<
+                         typename mpl::lambda<Pred>::type
+                       , mpl::bind1<mpl::quote1<result_of::value_of>,mpl::_1>
+                     >
+                >
+            impl;
+
+            typedef typename impl::type type;
+
+            static type
+            call(Seq seq)
+            {
+                return impl::call(fusion::begin(BOOST_FUSION_FORWARD(Seq,seq)));
+            }
+        };
+
+        template<typename Seq, typename T>
+        struct find
+        {
+            typedef
+                static_find_if<
+                     typename result_of::begin<Seq>::type
+                   , typename result_of::end<Seq>::type
+                   , is_same<result_of::value_of<mpl::_1>, T>
+                >
+            impl;
+
+            typedef typename impl::type type;
+
+            static type
+            call(Seq seq)
+            {
+                return impl::call(fusion::begin(BOOST_FUSION_FORWARD(Seq,seq)));
+            }
+        };
     }
 }}
 

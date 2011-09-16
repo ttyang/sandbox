@@ -98,10 +98,11 @@ namespace boost { namespace fusion { namespace detail
 
     template<typename SeqRef, typename F>
     void
-    for_each(SeqRef seq, BOOST_FUSION_RREF_ELSE_OBJ(F), mpl::false_)
+    for_each(SeqRef seq, BOOST_FUSION_RREF_ELSE_OBJ(F) f, mpl::false_)
     {
-        for_each_unrolled<result_of::size<SeqRef>::type::value>(
-            fusion::begin(BOOST_FUSION_FORWARD(SeqRef, seq)));
+        for_each_unrolled<result_of::size<SeqRef>::type::value>::call(
+            fusion::begin(BOOST_FUSION_FORWARD(SeqRef, seq)),
+            BOOST_FUSION_FORWARD(F,f));
     }
 }}}
 

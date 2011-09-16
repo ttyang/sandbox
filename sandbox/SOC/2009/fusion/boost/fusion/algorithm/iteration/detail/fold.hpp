@@ -370,25 +370,51 @@ namespace boost { namespace fusion
                 return static_cast<StateRef>(state);
             }
         };
+
+        template<typename Seq, typename State, typename F, bool IsSegmented>
+        struct BOOST_PP_CAT(result_of_,BOOST_FUSION_FOLD_NAME)
+        {
+            typedef
+                BOOST_PP_CAT(BOOST_FUSION_FOLD_NAME,_impl)<
+                    result_of::size<Seq>::value
+                  , typename detail::add_lref<
+#ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
+                        typename add_const<
+#endif
+                            State
+#ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
+                        >::type
+#endif
+                    >::type
+                  , typename result_of::
+                        BOOST_FUSION_FOLD_IMPL_FIRST_IT_FUNCTION<Seq>::type
+                  , F
+                >
+            impl;
+
+            typedef typename impl::type type;
+
+            static type
+            call(State state, Seq seq, F f)
+            {
+                return impl::call(
+                    BOOST_FUSION_FORWARD(State,state),
+                    fusion::BOOST_FUSION_FOLD_IMPL_FIRST_IT_FUNCTION(
+                        BOOST_FUSION_FORWARD(Seq,seq)),
+                    BOOST_FUSION_FORWARD(F,f));
+            }
+        };
     }
 
     namespace result_of
     {
         template<typename Seq, typename State, typename F>
         struct BOOST_FUSION_FOLD_NAME
-          : detail::BOOST_PP_CAT(BOOST_FUSION_FOLD_NAME,_impl)<
-                size<Seq>::value
-              , typename detail::add_lref<
-#ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
-                    typename add_const<
-#endif
-                        State
-#ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
-                    >::type
-#endif
-                >::type
-              , typename BOOST_FUSION_FOLD_IMPL_FIRST_IT_FUNCTION<Seq>::type
+          : detail::BOOST_PP_CAT(result_of_,BOOST_FUSION_FOLD_NAME)<
+                Seq
+              , State
               , F
+              , traits::is_segmented<Seq>::type::value
             >
         {
             BOOST_FUSION_MPL_ASSERT((traits::is_sequence<Seq>))
@@ -416,8 +442,7 @@ namespace boost { namespace fusion
           , BOOST_FUSION_RREF_ELSE_OBJ(F)
         >::call(
             BOOST_FUSION_FORWARD(State,state),
-            fusion::BOOST_FUSION_FOLD_IMPL_FIRST_IT_FUNCTION(
-                BOOST_FUSION_FORWARD(Seq,seq)),
+            BOOST_FUSION_FORWARD(Seq,seq),
             BOOST_FUSION_FORWARD(F,f));
     }
 
@@ -431,9 +456,7 @@ namespace boost { namespace fusion
     BOOST_FUSION_FOLD_NAME(Seq& seq,State const& state,F f)
     {
         return result_of::BOOST_FUSION_FOLD_NAME<Seq&,State const&,F>::call(
-            state,
-            fusion::BOOST_FUSION_FOLD_IMPL_FIRST_IT_FUNCTION(seq),
-            f);
+            state, seq, f);
     }
 #endif
 }}

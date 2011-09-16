@@ -124,11 +124,10 @@ main()
         BOOST_MPL_ASSERT((boost::is_same<result_of::value_at_key<point, ns::y_member>::type, int>));
 
         point p = {5, 3};
-        
+
         BOOST_TEST(at_key<ns::x_member>(p) == 5);
         BOOST_TEST(at_key<ns::y_member>(p) == 3);
     }
 
     return boost::report_errors();
 }
-

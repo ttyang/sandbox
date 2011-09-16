@@ -38,6 +38,7 @@ BOOST_FUSION_DEFINE_IS_SEQUENCE_IS_VIEW_IMPL(joint_view_tag, 1)
 
 namespace boost { namespace fusion
 {
+    struct associative_tag;
     struct forward_traversal_tag;
     struct fusion_sequence_tag;
 

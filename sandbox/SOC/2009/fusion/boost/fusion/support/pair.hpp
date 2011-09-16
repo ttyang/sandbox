@@ -166,7 +166,7 @@ namespace boost { namespace fusion
 
     template<typename First, typename Second>
     std::ostream&
-    operator<<(ostream& os, pair<First, Second> const& p)
+    operator<<(std::ostream& os, pair<First, Second> const& p)
     {
         os << p.second;
         return os;
@@ -174,7 +174,8 @@ namespace boost { namespace fusion
 
     template<typename First, typename Second>
     std::istream&
-    operator>>(std::istream& is,
+    operator>>(
+        std::istream& is,
         pair<First, Second> BOOST_FUSION_R_ELSE_LREF(BOOST_PP_EMPTY()) p)
     {
         is >> static_cast<

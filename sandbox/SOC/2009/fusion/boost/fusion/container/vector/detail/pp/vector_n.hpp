@@ -112,30 +112,30 @@ namespace boost { namespace fusion
 
 #   if BOOST_FUSION_N
 #       ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
-#           define BOOST_FUSION_MEMBER_INIT(Z, N, MODIFIER)\
+#           define BOOST_FUSION_MEMBER_INIT(Z, N, MODIFIER)                     \
                 BOOST_PP_CAT(m,N)(vec.BOOST_PP_CAT(m,N))
 #       else
-#           define BOOST_FUSION_MEMBER_INIT(Z, N, MODIFIER)\
-                 BOOST_PP_CAT(m,N)(static_cast<\
-                     typename detail::forward_as<\
-                         int MODIFIER\
-                       , BOOST_PP_CAT(T,N)\
+#           define BOOST_FUSION_MEMBER_INIT(Z, N, MODIFIER)                     \
+                 BOOST_PP_CAT(m,N)(static_cast<                                 \
+                     typename detail::forward_as<                               \
+                         int MODIFIER                                           \
+                       , BOOST_PP_CAT(T,N)                                      \
                      >::type>(vec.BOOST_PP_CAT(m,N)))
 #       endif
 
-#       define BOOST_FUSION_VECTOR_CTOR(MODIFIER,_)\
-        BOOST_PP_CAT(vector, BOOST_FUSION_N)(\
-            BOOST_PP_CAT(vector, BOOST_FUSION_N) MODIFIER vec)\
-          : BOOST_PP_ENUM(BOOST_FUSION_N, BOOST_FUSION_MEMBER_INIT, MODIFIER)\
+#       define BOOST_FUSION_VECTOR_CTOR(MODIFIER,_)                             \
+        BOOST_PP_CAT(vector, BOOST_FUSION_N)(                                   \
+            BOOST_PP_CAT(vector, BOOST_FUSION_N) MODIFIER vec)                  \
+          : BOOST_PP_ENUM(BOOST_FUSION_N, BOOST_FUSION_MEMBER_INIT, MODIFIER)   \
         {}
 
         BOOST_FUSION_ALL_CTOR_COMBINATIONS(BOOST_FUSION_VECTOR_CTOR,_)
 
 #       undef BOOST_FUSION_MEMBER_INIT
 #   else
-#       define BOOST_FUSION_VECTOR_CTOR(MODIFIER,_)\
-        BOOST_PP_CAT(vector, BOOST_FUSION_N)(\
-            BOOST_PP_CAT(vector, BOOST_FUSION_N) MODIFIER)\
+#       define BOOST_FUSION_VECTOR_CTOR(MODIFIER,_)                             \
+        BOOST_PP_CAT(vector, BOOST_FUSION_N)(                                   \
+            BOOST_PP_CAT(vector, BOOST_FUSION_N) MODIFIER)                      \
         {}
 
         BOOST_FUSION_ALL_CTOR_COMBINATIONS(BOOST_FUSION_VECTOR_CTOR,_)
@@ -143,8 +143,8 @@ namespace boost { namespace fusion
 #   undef BOOST_FUSION_VECTOR_CTOR
 
 #   if BOOST_FUSION_N
-#       define BOOST_FUSION_MEMBER_INIT(Z, N, _)\
-        BOOST_PP_CAT(m,N)(\
+#       define BOOST_FUSION_MEMBER_INIT(Z, N, _)                                \
+        BOOST_PP_CAT(m,N)(                                                      \
             BOOST_FUSION_FORWARD(BOOST_PP_CAT(A,N), BOOST_PP_CAT(_,N)))
 
 #       ifndef BOOST_FUSION_NO_RVALUE_REFERENCES
@@ -169,11 +169,11 @@ namespace boost { namespace fusion
 #       undef BOOST_FUSION_MEMBER_INIT
 
 #       if BOOST_FUSION_N==1
-#           define BOOST_FUSION_MEMBER_INIT(Z, N, SEQ)\
+#           define BOOST_FUSION_MEMBER_INIT(Z, N, SEQ)                          \
             m0(fusion::front(SEQ))
 #       else
-#           define BOOST_FUSION_MEMBER_INIT(Z, N, SEQ)\
-            BOOST_PP_CAT(m,N)(fusion::deref(\
+#           define BOOST_FUSION_MEMBER_INIT(Z, N, SEQ)                          \
+            BOOST_PP_CAT(m,N)(fusion::deref(                                    \
                 fusion::advance_c<N>(fusion::begin(SEQ))))
 #       endif
 
@@ -200,16 +200,16 @@ namespace boost { namespace fusion
                 >))
         }
 
-#       define BOOST_FUSION_VECTOR_SEQ_ASSIGN_CTOR(MODIFIER,_)\
-        template<typename SeqRef>\
-        BOOST_PP_CAT(vector,BOOST_FUSION_N)(\
-            detail::sequence_assign_type<SeqRef> MODIFIER seq_assign)\
-          : BOOST_PP_ENUM(BOOST_FUSION_N,\
-                  BOOST_FUSION_MEMBER_INIT,\
-                  seq_assign.get())\
-        {\
-            BOOST_FUSION_MPL_ASSERT((\
-                mpl::equal_to<size,result_of::size<SeqRef> >));\
+#       define BOOST_FUSION_VECTOR_SEQ_ASSIGN_CTOR(MODIFIER,_)                  \
+        template<typename SeqRef>                                               \
+        BOOST_PP_CAT(vector,BOOST_FUSION_N)(                                    \
+            detail::sequence_assign_type<SeqRef> MODIFIER seq_assign)           \
+          : BOOST_PP_ENUM(BOOST_FUSION_N,                                       \
+                  BOOST_FUSION_MEMBER_INIT,                                     \
+                  seq_assign.get())                                             \
+        {                                                                       \
+            BOOST_FUSION_MPL_ASSERT((                                           \
+                mpl::equal_to<size,result_of::size<SeqRef> >));                 \
         }
 
         BOOST_FUSION_ALL_CTOR_COMBINATIONS(
@@ -218,12 +218,12 @@ namespace boost { namespace fusion
 #       undef BOOST_FUSION_VECTOR_SEQ_ASSIGN_CTOR
 #       undef BOOST_FUSION_MEMBER_INIT
 #   else
-#       define BOOST_FUSION_VECTOR_ASSIGN_CTOR(MODIFIER,_)\
-        template<typename SeqRef>\
-        BOOST_PP_CAT(vector,BOOST_FUSION_N)(\
-            detail::sequence_assign_type<SeqRef> MODIFIER)\
-        {\
-            BOOST_FUSION_MPL_ASSERT((result_of::empty<SeqRef>))\
+#       define BOOST_FUSION_VECTOR_ASSIGN_CTOR(MODIFIER,_)                      \
+        template<typename SeqRef>                                               \
+        BOOST_PP_CAT(vector,BOOST_FUSION_N)(                                    \
+            detail::sequence_assign_type<SeqRef> MODIFIER)                      \
+        {                                                                       \
+            BOOST_FUSION_MPL_ASSERT((result_of::empty<SeqRef>))                 \
         }
 
         BOOST_FUSION_ALL_CTOR_COMBINATIONS(BOOST_FUSION_VECTOR_ASSIGN_CTOR,_)
@@ -256,13 +256,13 @@ namespace boost { namespace fusion
 
             m0=fusion::deref(it0);
 
-#       define BOOST_FUSION_DEREF_MEMBER_ASSIGN(Z, N, _)\
-            typedef typename\
-                result_of::next<BOOST_PP_CAT(It, BOOST_PP_DEC(N))>::type\
-            BOOST_PP_CAT(It, N);\
-            BOOST_PP_CAT(It, N) BOOST_PP_CAT(it, N)=\
-                fusion::next(BOOST_PP_CAT(it, BOOST_PP_DEC(N)));\
-            \
+#       define BOOST_FUSION_DEREF_MEMBER_ASSIGN(Z, N, _)                        \
+            typedef typename                                                    \
+                result_of::next<BOOST_PP_CAT(It, BOOST_PP_DEC(N))>::type        \
+            BOOST_PP_CAT(It, N);                                                \
+            BOOST_PP_CAT(It, N) BOOST_PP_CAT(it, N)=                            \
+                fusion::next(BOOST_PP_CAT(it, BOOST_PP_DEC(N)));                \
+                                                                                \
             BOOST_PP_CAT(m, N) = fusion::deref(BOOST_PP_CAT(it, N));
 
             BOOST_PP_REPEAT_FROM_TO(
@@ -291,33 +291,33 @@ namespace boost { namespace fusion
 #   ifdef BOOST_FUSION_PREFER_MPL
 #       define BOOST_FUSION_META_VALUE_AT(N)
 #   else
-#       define BOOST_FUSION_META_VALUE_AT(N)\
+#       define BOOST_FUSION_META_VALUE_AT(N)                                    \
             typedef BOOST_PP_CAT(T,N) BOOST_PP_CAT(t,N);
 #   endif
 
-#   define BOOST_FUSION_MEMBER_DECL(Z, N, _)\
-        BOOST_FUSION_META_VALUE_AT(N)\
-        \
-        typename detail::add_lref<BOOST_PP_CAT(T,N)>::type\
-        at_impl(mpl::int_<N>)\
-        {\
-            return static_cast<\
-                typename detail::add_lref<BOOST_PP_CAT(T,N)>::type\
-            >(BOOST_PP_CAT(m,N));\
-        }\
-        \
-        typename detail::add_lref<\
-            typename add_const<BOOST_PP_CAT(T,N)>::type\
-        >::type\
-        at_impl(mpl::int_<N>) const\
-        {\
-            return static_cast<\
-                typename detail::add_lref<\
-                    typename add_const<BOOST_PP_CAT(T,N)>::type\
-                >::type\
-            >(BOOST_PP_CAT(m,N));\
-        }\
-        \
+#   define BOOST_FUSION_MEMBER_DECL(Z, N, _)                                    \
+        BOOST_FUSION_META_VALUE_AT(N)                                           \
+                                                                                \
+        typename detail::add_lref<BOOST_PP_CAT(T,N)>::type                      \
+        at_impl(mpl::int_<N>)                                                   \
+        {                                                                       \
+            return static_cast<                                                 \
+                typename detail::add_lref<BOOST_PP_CAT(T,N)>::type              \
+            >(BOOST_PP_CAT(m,N));                                               \
+        }                                                                       \
+                                                                                \
+        typename detail::add_lref<                                              \
+            typename add_const<BOOST_PP_CAT(T,N)>::type                         \
+        >::type                                                                 \
+        at_impl(mpl::int_<N>) const                                             \
+        {                                                                       \
+            return static_cast<                                                 \
+                typename detail::add_lref<                                      \
+                    typename add_const<BOOST_PP_CAT(T,N)>::type                 \
+                >::type                                                         \
+            >(BOOST_PP_CAT(m,N));                                               \
+        }                                                                       \
+                                                                                \
         BOOST_PP_CAT(T,N) BOOST_PP_CAT(m,N);
 
         BOOST_PP_REPEAT(BOOST_FUSION_N, BOOST_FUSION_MEMBER_DECL, _)

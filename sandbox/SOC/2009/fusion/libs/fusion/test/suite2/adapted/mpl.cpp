@@ -32,9 +32,5 @@
 
 BOOST_MPL_ASSERT_NOT((fusion::traits::is_sequence<mpl::vector<> >));
 
-#include <boost/fusion/adapted/mpl.hpp>
-
-//BOOST_MPL_ASSERT((fusion::traits::is_sequence<mpl::vector<> >));
-
 BOOST_AUTO_TEST_CASE(dummy)
 {}

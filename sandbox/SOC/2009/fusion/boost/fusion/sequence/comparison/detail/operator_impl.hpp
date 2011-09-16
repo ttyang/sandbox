@@ -1,7 +1,7 @@
 /*==============================================================================
     Copyright (c) 2010 Christopher Schmidt
 
-    Distributed under the Boost Software License, Version 1.0. (See accompanying 
+    Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
 
@@ -9,6 +9,7 @@
 #include <boost/fusion/sequence/intrinsic/begin.hpp>
 #include <boost/fusion/sequence/intrinsic/size.hpp>
 #include <boost/fusion/sequence/intrinsic/end.hpp>
+#include <boost/fusion/sequence/comparison/enable_comparison.hpp>
 #include <boost/fusion/iterator/deref.hpp>
 #include <boost/fusion/iterator/next.hpp>
 #include <boost/fusion/iterator/equal_to.hpp>
@@ -74,14 +75,7 @@ namespace boost { namespace fusion
 
         template<typename Seq1, typename Seq2>
         typename boost::enable_if<
-           mpl::and_<
-                traits::is_sequence<Seq1 const&>
-              , traits::is_sequence<Seq2 const&>
-              , mpl::equal_to<
-                    result_of::size<Seq1 const&>
-                  , result_of::size<Seq2 const&>
-                >
-            >
+            traits::enable_comparison<Seq1, Seq2>
           , bool
         >::type
         operator BOOST_FUSION_OPERATOR(Seq1 const& seq1, Seq2 const& seq2)

@@ -14,7 +14,7 @@
 #include <boost/fusion/sequence/intrinsic/end.hpp>
 #include <boost/fusion/support/is_segmented.hpp>
 #include <boost/fusion/support/internal/workaround.hpp>
-#include <boost/mpl/eval_if.hpp>
+#include <boost/mpl/if.hpp>
 
 #include <boost/fusion/algorithm/query/detail/find_if.hpp>
 #include <boost/fusion/algorithm/query/detail/find_if_segmented.hpp>
@@ -25,11 +25,11 @@ namespace boost { namespace fusion
     {
         template<typename Seq, typename Pred>
         struct find_if
-          : mpl::eval_if<
+          : mpl::if_<
                 typename traits::is_segmented<Seq>::type
               , detail::find_if_segmented<Seq, Pred>
               , detail::find_if<Seq, Pred>
-            >
+            >::type
         {
             BOOST_FUSION_MPL_ASSERT((traits::is_sequence<Seq>))
             BOOST_FUSION_MPL_ASSERT((
@@ -44,7 +44,7 @@ namespace boost { namespace fusion
         return
             result_of::find_if<
                 BOOST_FUSION_R_ELSE_CLREF(Seq), Pred
-            >::call(fusion::begin(BOOST_FUSION_FORWARD(Seq,seq)));
+            >::call(BOOST_FUSION_FORWARD(Seq,seq));
     }
 
 #ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
@@ -53,7 +53,7 @@ namespace boost { namespace fusion
             result_of::find_if<,Seq,&,Pred>)
     find_if(Seq& seq)
     {
-        return result_of::find_if<Seq&, Pred>::call(fusion::begin(seq));
+        return result_of::find_if<Seq&, Pred>::call(seq);
     }
 #endif
 }}

@@ -29,17 +29,17 @@ namespace ns
     class point
     {
     public:
-    
+
         point() : x(0), y(0) {}
         point(int in_x, int in_y) : x(in_x), y(in_y) {}
-            
+
         int get_x() const { return x; }
         int get_y() const { return y; }
         void set_x(int x_) { x = x_; }
         void set_y(int y_) { y = y_; }
-        
+
     private:
-        
+
         int x;
         int y;
     };
@@ -55,7 +55,6 @@ int
 main()
 {
     using namespace boost::fusion;
-    using namespace std;
 
     std::cout << tuple_open('[');
     std::cout << tuple_close(']');
@@ -133,4 +132,3 @@ main()
 
     return boost::report_errors();
 }
-

@@ -47,6 +47,22 @@ namespace boost { namespace fusion
     struct single_view_tag;
     struct fusion_sequence_tag;
 
+    namespace result_of
+    {
+        template<typename>
+        struct front;
+    }
+
+    template<typename Seq>
+    typename result_of::front<BOOST_FUSION_R_ELSE_CLREF(Seq)>::type
+    front(BOOST_FUSION_R_ELSE_CLREF(Seq) seq);
+
+#ifdef BOOST_FUSION_NO_RVALUE_REFERENCES
+    template<typename Seq>
+    typename result_of::front<Seq&>::type
+    front(Seq& seq);
+#endif
+
 #ifdef BOOST_MSVC
 #   pragma warning(push)
     //'class' : multiple copy constructors specified
