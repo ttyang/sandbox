@@ -14,8 +14,8 @@ int f1(long j)
 {
   scoped_stopclock<> _(BOOST_CURRENT_FUNCTION);
 
-  for ( long i = 0; i < j; ++i )
-    std::sqrt( 123.456L );  // burn some time
+  for (long i = 0; i < j; ++i)
+    std::sqrt(123.456L); // burn some time
 
   return 0;
 }

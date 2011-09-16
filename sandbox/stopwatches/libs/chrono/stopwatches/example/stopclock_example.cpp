@@ -11,16 +11,16 @@ using namespace boost::chrono;
 
 int f1(long j)
 {
-  stopclock<> _(BOOST_STOPWATCHES_TIME_FUNCTION_FORMAT);   
+  stopclock<> _(BOOST_STOPWATCHES_TIME_FUNCTION_FORMAT);
 
-  for ( long i = 0; i < j; ++i )
-    std::sqrt( 123.456L );  // burn some time
+  for (long i = 0; i < j; ++i)
+    std::sqrt(123.456L); // burn some time
 
   return 0;
 }
 int main()
 {
-  stopclock<> _(BOOST_STOPWATCHES_TIME_FUNCTION_FORMAT);   
+  stopclock<> _(BOOST_STOPWATCHES_TIME_FUNCTION_FORMAT);
 
   f1(1000);
   f1(2000);

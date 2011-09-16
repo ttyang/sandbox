@@ -17,10 +17,10 @@ int f1(long j)
   //stopwatch_reporter<stopwatch<> > _(BOOST_STOPWATCHES_STOPWATCH_FUNCTION_FORMAT);
   stopwatch<> sw;
 
-  for ( long i = 0; i < j; ++i )
-    std::sqrt( 123.456L );  // burn some time
+  for (long i = 0; i < j; ++i)
+    std::sqrt(123.456L); // burn some time
 
-  std::cout << "f1("<< j <<") Elapsed time: " << sw.elapsed() << std::endl;
+  std::cout << "f1(" << j << ") Elapsed time: " << sw.elapsed() << std::endl;
   return 0;
 }
 int main()

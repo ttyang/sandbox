@@ -10,9 +10,9 @@
 #include <string>
 #include <iostream>
 
-int main( int argc, char * argv[] )
+int main(int argc, char * argv[])
 {
-  if ( argc == 1 )
+  if (argc == 1)
   {
     std::cout << "invoke: timex [-v] command [args...]\n"
       "  command will be executed and timings displayed\n"
@@ -23,23 +23,26 @@ int main( int argc, char * argv[] )
   std::string s;
 
   bool verbose = false;
-  if ( argc > 1 && *argv[1] == '-' && *(argv[1]+1) == 'v' )
+  if (argc > 1 && *argv[1] == '-' && *(argv[1] + 1) == 'v')
   {
     verbose = true;
     ++argv;
     --argc;
   }
 
-  for ( int i = 1; i < argc; ++i )
+  for (int i = 1; i < argc; ++i)
   {
-    if ( i > 1 ) s += ' ';
+    if (i > 1)
+      s += ' ';
     s += argv[i];
   }
 
-  if ( verbose )
-    { std::cout << "command: \"" << s.c_str() << "\"\n"; }
+  if (verbose)
+  {
+    std::cout << "command: \"" << s.c_str() << "\"\n";
+  }
 
   boost::chrono::stopclock<> t;
 
-  return std::system( s.c_str() );
+  return std::system(s.c_str());
 }

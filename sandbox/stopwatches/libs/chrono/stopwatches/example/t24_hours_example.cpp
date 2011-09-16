@@ -15,17 +15,19 @@ using namespace boost::chrono;
 
 int f1(long j)
 {
-  stopwatch_reporter<stopwatch<process_real_cpu_clock>, t24_hours_formatter> hhmmss(BOOST_STOPWATCHES_24_HOURS_FUNCTION_FORMAT);
+  stopwatch_reporter<stopwatch<process_real_cpu_clock> , t24_hours_formatter>
+      hhmmss(BOOST_STOPWATCHES_24_HOURS_FUNCTION_FORMAT);
   //stopwatch_reporter<stopwatch<process_real_cpu_clock>, t24_hours_formatter> hhmmss;
 
-  for ( long i = 0; i < j; ++i )
-    std::sqrt( 123.456L );  // burn some time
+  for (long i = 0; i < j; ++i)
+    std::sqrt(123.456L); // burn some time
 
   return 0;
 }
 int main()
 {
-  stopwatch_reporter<stopwatch<process_real_cpu_clock>, t24_hours_formatter> hhmmss(BOOST_STOPWATCHES_24_HOURS_FUNCTION_FORMAT);
+  stopwatch_reporter<stopwatch<process_real_cpu_clock> , t24_hours_formatter>
+      hhmmss(BOOST_STOPWATCHES_24_HOURS_FUNCTION_FORMAT);
 
   f1(1000);
   f1(2000);

@@ -10,9 +10,9 @@
 
 #include <boost/chrono/stopwatches/stopwatches.hpp>
 
- int main()
- {
-    boost::chrono::stopclock<> _;
- }
+int main()
+{
+  boost::chrono::stopclock<> _;
+}
 
 #endif

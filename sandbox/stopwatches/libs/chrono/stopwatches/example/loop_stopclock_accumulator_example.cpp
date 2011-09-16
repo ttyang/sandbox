@@ -16,21 +16,22 @@ using namespace boost::chrono;
 int f1(long j)
 {
   stopclock_accumulator<> acc(BOOST_STOPWATCHES_ACCUMULATOR_FUNCTION_FORMAT);
-  for ( long i = 0; i < j; ++i ) {
+  for (long i = 0; i < j; ++i)
+  {
     stopclock_accumulator<>::scoped_run _(acc);
-      //~ std::cout << "i="<<i <<" ";
-      //~ std::cout << " j="<<j <<" ";
+    //~ std::cout << "i="<<i <<" ";
+    //~ std::cout << " j="<<j <<" ";
     //~ stopclock<> s;
-    std::sqrt( 123.456L );  // burn some time
+    std::sqrt(123.456L); // burn some time
     boost::this_thread::sleep_for(boost::chrono::milliseconds(20));
   }
-  
 
   return 0;
 }
 int main()
 {
-  static stopclock_accumulator<> acc(BOOST_STOPWATCHES_ACCUMULATOR_FUNCTION_FORMAT);
+  static stopclock_accumulator<>
+      acc(BOOST_STOPWATCHES_ACCUMULATOR_FUNCTION_FORMAT);
   stopclock_accumulator<>::scoped_run _(acc);
 
   f1(100);

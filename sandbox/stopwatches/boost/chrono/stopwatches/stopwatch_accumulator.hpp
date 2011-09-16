@@ -26,73 +26,89 @@ namespace boost
   namespace chrono
   {
 
-    template <typename Features, typename Weight=void>
-    struct lightweight_stopwatch_accumulator_set_traits {
-        template <typename D>
-        struct apply {
-            struct type {
-                typedef accumulators::accumulator_set<typename D::rep, Features, Weight> storage_type;
-                typedef D duration_type;
-                static duration_type get_duration(storage_type& acc_) { return duration_type(accumulators::sum(acc_)); }
-                static void set_duration(storage_type& acc_, duration_type d) { acc_(d.count()); }
-                static void reset(storage_type& acc_) { acc_=storage_type(); }
-            };
+    template<typename Features, typename Weight = void>
+    struct lightweight_stopwatch_accumulator_set_traits
+    {
+      template<typename D>
+      struct apply
+      {
+        struct type
+        {
+          typedef accumulators::accumulator_set<typename D::rep, Features,
+              Weight> storage_type;
+          typedef D duration_type;
+          static duration_type get_duration(storage_type& acc_)
+          {
+            return duration_type(accumulators::sum(acc_));
+          }
+          static void set_duration(storage_type& acc_, duration_type d)
+          {
+            acc_(d.count());
+          }
+          static void reset(storage_type& acc_)
+          {
+            acc_ = storage_type();
+          }
         };
+      };
     };
 
-//--------------------------------------------------------------------------------------//
-//                                    stopwatch_accumulator
-//
-//~ A stopwatch accumulator is a class designed to measure the amount of time elapsed from a particular time
-//~ when activated to when it is deactivated.
+    //--------------------------------------------------------------------------------------//
+    //                                    stopwatch_accumulator
+    //
+    //~ A stopwatch accumulator is a class designed to measure the amount of time elapsed from a particular time
+    //~ when activated to when it is deactivated.
 
-//~ Calling start starts the stopwatch_accumulator running, and calling stop stops it.
-//~ A call to reset resets the stopwatch_accumulator to zero.
-//~ A stopwatch_accumulator can also be used to record split times or lap times.
-//~ The elapsed time since the last start is available through the elapsed function.
-//--------------------------------------------------------------------------------------//
+    //~ Calling start starts the stopwatch_accumulator running, and calling stop stops it.
+    //~ A call to reset resets the stopwatch_accumulator to zero.
+    //~ A stopwatch_accumulator can also be used to record split times or lap times.
+    //~ The elapsed time since the last start is available through the elapsed function.
+    //--------------------------------------------------------------------------------------//
 
     // forward declaration
-    template <class Clock=chrono::high_resolution_clock,
-        typename Features=accumulators::features<
-                        accumulators::tag::count,
-                        accumulators::tag::sum,
-                        accumulators::tag::min,
-                        accumulators::tag::max,
-                        accumulators::tag::mean >,
-        typename Weight=void
-    >
+    template<class Clock = chrono::high_resolution_clock,
+        typename Features = accumulators::features<accumulators::tag::count,
+            accumulators::tag::sum, accumulators::tag::min,
+            accumulators::tag::max, accumulators::tag::mean>,
+        typename Weight = void>
     class stopwatch_accumulator;
 
+    //--------------------------------------------------------------------------------------//
 
-//--------------------------------------------------------------------------------------//
-
-    template <class Clock, typename Features, typename Weight>
-    class stopwatch_accumulator
-        : private base_from_member<
-            typename accumulators::accumulator_set<typename Clock::duration::rep, Features, Weight> 
-                //~ typename lightweight_stopwatch_accumulator_set_traits<Features,Weight>::template apply<Clock::duration>::storage_type
-            >,
-          public lightweight_stopwatch<Clock,lightweight_stopwatch_accumulator_set_traits<Features,Weight> >
+    template<class Clock, typename Features, typename Weight>
+    class stopwatch_accumulator: private base_from_member<
+        typename accumulators::accumulator_set<typename Clock::duration::rep,
+            Features, Weight>
+    //~ typename lightweight_stopwatch_accumulator_set_traits<Features,Weight>::template apply<Clock::duration>::storage_type
+    > , public lightweight_stopwatch<Clock,
+        lightweight_stopwatch_accumulator_set_traits<Features, Weight> >
     {
     public:
-        typedef base_from_member<typename accumulators::accumulator_set<typename Clock::duration::rep, Features, Weight> > pbase_type;
-        typedef typename accumulators::accumulator_set<typename Clock::duration::rep, Features, Weight> accumulator_set;
+      typedef base_from_member<typename accumulators::accumulator_set<
+          typename Clock::duration::rep, Features, Weight> > pbase_type;
+      typedef typename accumulators::accumulator_set<
+          typename Clock::duration::rep, Features, Weight> accumulator_set;
 
-        stopwatch_accumulator( )
-        : pbase_type(), 
-          lightweight_stopwatch<Clock,lightweight_stopwatch_accumulator_set_traits<Features,Weight> >(pbase_type::member, dont_start)
-        { }
+      stopwatch_accumulator() :
+            pbase_type(),
+            lightweight_stopwatch<Clock,
+                lightweight_stopwatch_accumulator_set_traits<Features, Weight> > (pbase_type::member, dont_start)
+      {
+      }
     };
 
-//--------------------------------------------------------------------------------------//
-    typedef boost::chrono::stopwatch_accumulator< boost::chrono::system_clock > system_stopwatch_accumulator;
+    //--------------------------------------------------------------------------------------//
+    typedef boost::chrono::stopwatch_accumulator<boost::chrono::system_clock>
+        system_stopwatch_accumulator;
 #ifdef BOOST_CHRONO_HAS_CLOCK_STEADY
-    typedef boost::chrono::stopwatch_accumulator< boost::chrono::steady_clock > steady_stopwatch_accumulator;
+    typedef boost::chrono::stopwatch_accumulator<boost::chrono::steady_clock>
+        steady_stopwatch_accumulator;
 #endif
-    typedef boost::chrono::stopwatch_accumulator< boost::chrono::high_resolution_clock > high_resolution_stopwatch_accumulator;
+    typedef boost::chrono::stopwatch_accumulator<
+        boost::chrono::high_resolution_clock>
+        high_resolution_stopwatch_accumulator;
 
-//--------------------------------------------------------------------------------------//
+  //--------------------------------------------------------------------------------------//
 
 
   } // namespace chrono
