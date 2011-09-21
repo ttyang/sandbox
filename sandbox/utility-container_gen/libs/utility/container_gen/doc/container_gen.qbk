@@ -23,6 +23,8 @@
 [/ Boost library links.]
 [def __Boost_Utility__ [@boost:libs/utility/index.html [*Boost.Utility]]]
 [def __BGL__ [@boost:libs/graph/doc/index.html BGL]]
+[def __SVN_Trac__ [@http://svn.boost.org/ SVN Trac]]
+[def __Boost_Type_Traits_Operators__ [@http://svn.boost.org/svn/boost/sandbox/type_traits/libs/type_traits/doc/html/index.html [*Boost.TypeTraitsOperators]]]
 
 [/ Boost reference links.]
 [def _mpl_apply_wrap1_ [@boost:libs/mpl/doc/refmanual/apply-wrap.html boost::mpl::apply_wrap1]]

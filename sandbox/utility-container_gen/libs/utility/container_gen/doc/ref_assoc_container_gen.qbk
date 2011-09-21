@@ -31,10 +31,12 @@ typedef _mpl_apply_wrap2_<
 ``
 
 [important
-    This component depends on __Boost_Type_Traits_Operators__, which has been
-    recently accepted into Boost but is currently not part of an official
+    This last capability depends on __Boost_Type_Traits_Operators__, which has
+    been recently accepted into Boost but is currently not part of an official
     release.  For now, you must perform a Subversion checkout from the
-    __SVN_Trac__.
+    __SVN_Trac__, add the `type_traits` module to your list of header
+    directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
+    to obtain this capability.
 ]
 [endsect]
 

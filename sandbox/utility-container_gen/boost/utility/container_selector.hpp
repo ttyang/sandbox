@@ -61,11 +61,18 @@ namespace boost {
 #include <set>
 
 #include <boost/tr1/unordered_set.hpp>
-#include <boost/mpl/if.hpp>
+#include <boost/functional/hash.hpp>
 
+#if !defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS && BOOST_VERSION >= 104800
+#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
+#endif
+
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
+#include <boost/mpl/if.hpp>
 #include <boost/detail/metafunction/is_container.hpp>
 #include <boost/detail/function/range_equal.hpp>
 #include <boost/detail/function/range_less.hpp>
+#endif
 
 namespace boost {
 
@@ -112,12 +119,16 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
                       , ::std::set<T,::boost::detail::range_less>
                       , ::std::set<T>
                     >::type
                     type;
+#else
+            typedef ::std::set<T> type;
+#endif
         };
     };
 
@@ -126,12 +137,16 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
                       , ::std::set<T,::boost::detail::range_less>
                       , ::std::set<T>
                     >::type
                     type;
+#else
+            typedef ::std::set<T> type;
+#endif
         };
     };
 
@@ -140,12 +155,16 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
                       , ::std::multiset<T,::boost::detail::range_less>
                       , ::std::multiset<T>
                     >::type
                     type;
+#else
+            typedef ::std::multiset<T> type;
+#endif
         };
     };
 
@@ -154,12 +173,16 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
                       , ::std::multiset<T,::boost::detail::range_less>
                       , ::std::multiset<T>
                     >::type
                     type;
+#else
+            typedef ::std::multiset<T> type;
+#endif
         };
     };
 
@@ -168,19 +191,20 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<ValueType>
+                        ::boost::detail::is_container<T>
                       , ::std::tr1::unordered_set<
                             ValueType
-                          , ::boost::hash<ValueType>
+                          , ::boost::hash<T>
                           , ::boost::detail::range_equal
                         >
-                      , ::std::tr1::unordered_set<
-                            ValueType
-                          , ::boost::hash<ValueType>
-                        >
+                      , ::std::tr1::unordered_set<T,::boost::hash<T> >
                     >::type
                     type;
+#else
+            typedef ::std::tr1::unordered_set<T,::boost::hash<T> > type;
+#endif
         };
     };
 
@@ -189,19 +213,20 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<ValueType>
+                        ::boost::detail::is_container<T>
                       , ::std::tr1::unordered_set<
-                            ValueType
-                          , ::boost::hash<ValueType>
+                            T
+                          , ::boost::hash<T>
                           , ::boost::detail::range_equal
                         >
-                      , ::std::tr1::unordered_set<
-                            ValueType
-                          , ::boost::hash<ValueType>
-                        >
+                      , ::std::tr1::unordered_set<T,::boost::hash<T> >
                     >::type
                     type;
+#else
+            typedef ::std::tr1::unordered_set<T,::boost::hash<T> > type;
+#endif
         };
     };
 
@@ -210,19 +235,20 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<ValueType>
+                        ::boost::detail::is_container<T>
                       , ::std::tr1::unordered_multiset<
-                            ValueType
-                          , ::boost::hash<ValueType>
+                            T
+                          , ::boost::hash<T>
                           , ::boost::detail::range_equal
                         >
-                      , ::std::tr1::unordered_multiset<
-                            ValueType
-                          , ::boost::hash<ValueType>
-                        >
+                      , ::std::tr1::unordered_multiset<T,::boost::hash<T> >
                     >::type
                     type;
+#else
+            typedef ::std::tr1::unordered_multiset<T,::boost::hash<T> > type;
+#endif
         };
     };
 
@@ -231,19 +257,20 @@ namespace boost {
         template <typename T>
         struct bind_
         {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
             typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<ValueType>
+                        ::boost::detail::is_container<T>
                       , ::std::tr1::unordered_multiset<
-                            ValueType
-                          , ::boost::hash<ValueType>
+                            T
+                          , ::boost::hash<T>
                           , ::boost::detail::range_equal
                         >
-                      , ::std::tr1::unordered_multiset<
-                            ValueType
-                          , ::boost::hash<ValueType>
-                        >
+                      , ::std::tr1::unordered_multiset<T,::boost::hash<T> >
                     >::type
                     type;
+#else
+            typedef ::std::tr1::unordered_multiset<T,::boost::hash<T> > type;
+#endif
         };
     };
 

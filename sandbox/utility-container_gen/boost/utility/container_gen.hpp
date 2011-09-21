@@ -32,11 +32,18 @@
 #include <set>
 
 #include <boost/tr1/unordered_set.hpp>
-#include <boost/mpl/if.hpp>
+#include <boost/functional/hash.hpp>
 
+#if !defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS && BOOST_VERSION >= 104800
+#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
+#endif
+
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
+#include <boost/mpl/if.hpp>
 #include <boost/detail/metafunction/is_container.hpp>
 #include <boost/detail/function/range_equal.hpp>
 #include <boost/detail/function/range_less.hpp>
+#endif
 
 //[reference__container_gen__list_specialization
 namespace boost {
@@ -78,50 +85,67 @@ namespace boost {
     template <typename ValueType>
     struct container_gen<setS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::set<ValueType,::boost::detail::range_less>
                   , ::std::set<ValueType>
                 >::type
                 type;
+#else
+        typedef ::std::set<ValueType> type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<mapS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::set<ValueType,::boost::detail::range_less>
                   , ::std::set<ValueType>
                 >::type
                 type;
+#else
+        typedef ::std::set<ValueType> type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<multisetS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::multiset<ValueType,::boost::detail::range_less>
                   , ::std::multiset<ValueType>
                 >::type
                 type;
+#else
+        typedef ::std::multiset<ValueType> type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<multimapS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::multiset<ValueType,::boost::detail::range_less>
                   , ::std::multiset<ValueType>
                 >::type
                 type;
+#else
+        typedef ::std::multiset<ValueType> type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<hash_setS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::tr1::unordered_set<
@@ -135,11 +159,19 @@ namespace boost {
                     >
                 >::type
                 type;
+#else
+        typedef ::std::tr1::unordered_set<
+                    ValueType
+                  , ::boost::hash<ValueType>
+                >
+                type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<hash_mapS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::tr1::unordered_set<
@@ -153,11 +185,19 @@ namespace boost {
                     >
                 >::type
                 type;
+#else
+        typedef ::std::tr1::unordered_set<
+                    ValueType
+                  , ::boost::hash<ValueType>
+                >
+                type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<hash_multisetS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::tr1::unordered_multiset<
@@ -171,11 +211,19 @@ namespace boost {
                     >
                 >::type
                 type;
+#else
+        typedef ::std::tr1::unordered_multiset<
+                    ValueType
+                  , ::boost::hash<ValueType>
+                >
+                type;
+#endif
     };
 
     template <typename ValueType>
     struct container_gen<hash_multimapS,ValueType>
     {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
                   , ::std::tr1::unordered_multiset<
@@ -189,6 +237,13 @@ namespace boost {
                     >
                 >::type
                 type;
+#else
+        typedef ::std::tr1::unordered_multiset<
+                    ValueType
+                  , ::boost::hash<ValueType>
+                >
+                type;
+#endif
     };
     //->
 }  // namespace boost

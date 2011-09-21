@@ -33,7 +33,7 @@ to be used with the __std_list__.
 
 [example__container_gen__list_with_allocator_selector]
 
-It is possible to nest containers via `container_gen`, e.g.:
+It is possible to nest associative containers via `container_gen`, e.g.:
 
 ``
 typedef container_gen<setS,container_gen<setS,int>::type>::type
@@ -41,10 +41,12 @@ typedef container_gen<setS,container_gen<setS,int>::type>::type
 ``
 
 [important
-    This component depends on __Boost_Type_Traits_Operators__, which has been
-    recently accepted into Boost but is currently not part of an official
+    This last capability depends on __Boost_Type_Traits_Operators__, which has
+    been recently accepted into Boost but is currently not part of an official
     release.  For now, you must perform a Subversion checkout from the
-    __SVN_Trac__.
+    __SVN_Trac__, add the `type_traits` module to your list of header
+    directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
+    to obtain this capability.
 ]
 [endsect]
 
