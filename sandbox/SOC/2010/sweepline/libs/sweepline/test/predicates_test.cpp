@@ -20,21 +20,21 @@ typedef boost::mpl::list<double> test_types;
 #define CHECK_ORIENTATION_EQUAL(p1, p2, p3, exp) \
         BOOST_CHECK_EQUAL(orientation_test(p1, p2, p3) == exp, true)
 
-#define CHECK_LESS_PREDICATE_PP(lp, rp, np, exp) \
-        BOOST_CHECK_EQUAL(less_predicate(lp, rp, np) == exp, true)
+#define CHECK_LESS_PREDICATE_PP(ls, rs, ns, exp) \
+        BOOST_CHECK_EQUAL(less_predicate_pp(ls, rs, ns) == exp, true)
 
-#define CHECK_FAST_LESS_PREDICATE_PS(lp, rs, np, reverse, exp) \
-        BOOST_CHECK_EQUAL(fast_less_predicate(lp, rs, np, reverse) == exp, true); \
+#define CHECK_FAST_LESS_PREDICATE_PS(ls, rs, ns, reverse, exp) \
+        BOOST_CHECK_EQUAL(fast_less_predicate_ps(ls, rs, ns, reverse) == exp, true); \
         if (exp != UNDEFINED) { \
             bool exp_res = (exp == LESS) ? true : false; \
-            BOOST_CHECK_EQUAL(less_predicate(lp, rs, np, reverse), exp_res); \
+            BOOST_CHECK_EQUAL(less_predicate_ps(ls, rs, ns, reverse), exp_res); \
         }
 
-#define CHECK_LESS_PREDICATE_PS(lp, rs, np, reverse, exp) \
-        BOOST_CHECK_EQUAL(less_predicate(lp, rs, np, reverse) == exp, true)
+#define CHECK_LESS_PREDICATE_PS(ls, rs, ns, reverse, exp) \
+        BOOST_CHECK_EQUAL(less_predicate_ps(ls, rs, ns, reverse) == exp, true)
 
-#define CHECK_LESS_PREDICATE_SS(ls, rs, np, exp) \
-        BOOST_CHECK_EQUAL(less_predicate(ls, rs, np) == exp, true)
+#define CHECK_LESS_PREDICATE_SS(ls, rs, ns, exp) \
+        BOOST_CHECK_EQUAL(less_predicate_ss(ls, rs, ns) == exp, true)
 
 // This test uses integer values in the range [-2^31, 2^31), to validate
 // orientation predicate for the hole integer range input coordinates.
@@ -71,19 +71,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(orientation_test1, T, test_types) {
 
 // Test main point-point predicate.
 BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicates_point_point_test1, T, test_types) {
-    point_2d<T> point1 = point_2d<T>(static_cast<T>(-5), static_cast<T>(0));
-    point_2d<T> point2 = point_2d<T>(static_cast<T>(-8), static_cast<T>(9));
-    point_2d<T> point3 = point_2d<T>(static_cast<T>(-2), static_cast<T>(1));
+    site_event<T> point1(static_cast<T>(-5), static_cast<T>(0), 0);
+    site_event<T> point2(static_cast<T>(-8), static_cast<T>(9), 0);
+    site_event<T> point3(static_cast<T>(-2), static_cast<T>(1), 0);
 
-    point_2d<T> site1 = point_2d<T>(static_cast<T>(0), static_cast<T>(5));
+    site_event<T> site1(static_cast<T>(0), static_cast<T>(5), 0);
     CHECK_LESS_PREDICATE_PP(point1, point2, site1, false);
     CHECK_LESS_PREDICATE_PP(point3, point1, site1, false);
 
-    point_2d<T> site2 = point_2d<T>(static_cast<T>(0), static_cast<T>(4));
+    site_event<T> site2(static_cast<T>(0), static_cast<T>(4), 0);
     CHECK_LESS_PREDICATE_PP(point1, point2, site2, false);
     CHECK_LESS_PREDICATE_PP(point3, point1, site2, false);
 
-    point_2d<T> site3 = point_2d<T>(static_cast<T>(0), static_cast<T>(6));
+    site_event<T> site3(static_cast<T>(0), static_cast<T>(6), 0);
     CHECK_LESS_PREDICATE_PP(point1, point2, site3, true);
     CHECK_LESS_PREDICATE_PP(point3, point1, site3, true);
 }
@@ -94,9 +94,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(fast_less_predicate_point_segment_test1, T, test_t
     point_2d<T> segm_end = point_2d<T>(static_cast<T>(-4), static_cast<T>(20));
     site_event<T> segm_site(segm_start, segm_end, 0);
 
-    point_2d<T> site_p = point_2d<T>(static_cast<T>(-2), static_cast<T>(10));
-    point_2d<T> new_p1 = point_2d<T>(static_cast<T>(0), static_cast<T>(11));
-    point_2d<T> new_p2 = point_2d<T>(static_cast<T>(0), static_cast<T>(9));
+    site_event<T> site_p(static_cast<T>(-2), static_cast<T>(10), 0);
+    site_event<T> new_p1(static_cast<T>(0), static_cast<T>(11), 1);
+    site_event<T> new_p2(static_cast<T>(0), static_cast<T>(9), 2);
 
     CHECK_FAST_LESS_PREDICATE_PS(site_p, segm_site, new_p1, false, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p, segm_site, new_p2, false, MORE);
@@ -110,21 +110,21 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(fast_less_predicate_point_segment_test2, T, test_t
     point_2d<T> segm_end = point_2d<T>(static_cast<T>(2), static_cast<T>(-2));
     site_event<T> segm_site(segm_start, segm_end, 0);
 
-    point_2d<T> site_p1 = point_2d<T>(static_cast<T>(-2), static_cast<T>(4));
-    point_2d<T> new_p1 = point_2d<T>(static_cast<T>(0), static_cast<T>(-1));
+    site_event<T> site_p1(static_cast<T>(-2), static_cast<T>(4), 0);
+    site_event<T> new_p1(static_cast<T>(0), static_cast<T>(-1), 0);
     segm_site.inverse();
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p1, false, MORE);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p1, true, MORE);
 
-    point_2d<T> new_p2 = point_2d<T>(static_cast<T>(0), static_cast<T>(1));
+    site_event<T> new_p2(static_cast<T>(0), static_cast<T>(1), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p2, false, MORE);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p2, true, UNDEFINED);
 
-    point_2d<T> new_p3 = point_2d<T>(static_cast<T>(0), static_cast<T>(4));
+    site_event<T> new_p3(static_cast<T>(0), static_cast<T>(4), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p3, false, MORE);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p3, true, UNDEFINED);
 
-    point_2d<T> new_p4 = point_2d<T>(static_cast<T>(0), static_cast<T>(5));
+    site_event<T> new_p4(static_cast<T>(0), static_cast<T>(5), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p4, false, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p4, true, LESS);
 }
@@ -135,28 +135,28 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(fast_less_predicate_point_segment_test3, T, test_t
     point_2d<T> segm_end = point_2d<T>(static_cast<T>(2), static_cast<T>(-2));
     site_event<T> segm_site(segm_start, segm_end, 0);
 
-    point_2d<T> site_p1 = point_2d<T>(static_cast<T>(-2), static_cast<T>(-4));
-    point_2d<T> site_p2 = point_2d<T>(static_cast<int>(-4), static_cast<int>(1));
+    site_event<T> site_p1(static_cast<T>(-2), static_cast<T>(-4), 0);
+    site_event<T> site_p2(static_cast<int>(-4), static_cast<int>(1), 0);
 
-    point_2d<T> new_p1 = point_2d<T>(static_cast<T>(0), static_cast<T>(1));
+    site_event<T> new_p1(static_cast<T>(0), static_cast<T>(1), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p1, false, LESS);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p1, true, LESS);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p1, false, LESS);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p1, true, LESS);
 
-    point_2d<T> new_p2 = point_2d<T>(static_cast<T>(0), static_cast<T>(-2));
+    site_event<T> new_p2(static_cast<T>(0), static_cast<T>(-2), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p2, false, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p2, true, LESS);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p2, false, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p2, true, LESS);
 
-    point_2d<T> new_p3 = point_2d<T>(static_cast<T>(0), static_cast<T>(-8));
+    site_event<T> new_p3(static_cast<T>(0), static_cast<T>(-8), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p3, false, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p3, true, LESS);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p3, false, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p3, true, LESS);
 
-    point_2d<T> new_p4 = point_2d<T>(static_cast<T>(0), static_cast<T>(-9));
+    site_event<T> new_p4(static_cast<T>(0), static_cast<T>(-9), 0);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p4, false, MORE);
     CHECK_FAST_LESS_PREDICATE_PS(site_p1, segm_site, new_p4, true, UNDEFINED);
     CHECK_FAST_LESS_PREDICATE_PS(site_p2, segm_site, new_p4, false, MORE);
@@ -171,39 +171,39 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicate_point_segment_test1, T, test_types)
     site_event<T> segm_site2(segm_start, segm_end, 0);
     segm_site2.inverse();
 
-    point_2d<T> site_p1 = point_2d<T>(static_cast<T>(-2), static_cast<T>(4));
-    point_2d<T> site_p2 = point_2d<T>(static_cast<T>(-2), static_cast<T>(-4));
-    point_2d<T> site_p3 = point_2d<T>(static_cast<int>(-4), static_cast<int>(1));
+    site_event<T> site_p1(static_cast<T>(-2), static_cast<T>(4), 0);
+    site_event<T> site_p2(static_cast<T>(-2), static_cast<T>(-4), 0);
+    site_event<T> site_p3(static_cast<int>(-4), static_cast<int>(1), 0);
 
-    point_2d<T> new_p1 = point_2d<T>(static_cast<T>(0), static_cast<T>(1));
+    site_event<T> new_p1(static_cast<T>(0), static_cast<T>(1), 0);
     CHECK_LESS_PREDICATE_PS(site_p1, segm_site2, new_p1, true, false);
 
-    point_2d<T> new_p2 = point_2d<T>(static_cast<T>(0), static_cast<T>(4));
+    site_event<T> new_p2(static_cast<T>(0), static_cast<T>(4), 0);
     CHECK_LESS_PREDICATE_PS(site_p1, segm_site2, new_p2, true, true);
 
-    point_2d<T> new_p3 = point_2d<T>(static_cast<T>(0), static_cast<T>(5));
+    site_event<T> new_p3(static_cast<T>(0), static_cast<T>(5), 0);
     CHECK_LESS_PREDICATE_PS(site_p1, segm_site2, new_p3, false, false);
 
-    point_2d<T> new_p4 = point_2d<T>(static_cast<T>(0), static_cast<T>(7));
+    site_event<T> new_p4(static_cast<T>(0), static_cast<T>(7), 0);
     CHECK_LESS_PREDICATE_PS(site_p1, segm_site2, new_p4, false, true);
 
-    point_2d<T> new_p5 = point_2d<T>(static_cast<T>(0), static_cast<T>(-2));
+    site_event<T> new_p5(static_cast<T>(0), static_cast<T>(-2), 0);
     CHECK_LESS_PREDICATE_PS(site_p2, segm_site1, new_p5, false, false);
     CHECK_LESS_PREDICATE_PS(site_p3, segm_site1, new_p5, false, false);
 
-    point_2d<T> new_p6 = point_2d<T>(static_cast<T>(0), static_cast<T>(-8));
+    site_event<T> new_p6(static_cast<T>(0), static_cast<T>(-8), 0);
     CHECK_LESS_PREDICATE_PS(site_p2, segm_site1, new_p6, false, false);
     CHECK_LESS_PREDICATE_PS(site_p3, segm_site1, new_p6, false, false);
 
-    point_2d<T> new_p7 = point_2d<T>(static_cast<T>(0), static_cast<T>(-9));
+    site_event<T> new_p7(static_cast<T>(0), static_cast<T>(-9), 0);
     CHECK_LESS_PREDICATE_PS(site_p2, segm_site1, new_p7, true, true);
     CHECK_LESS_PREDICATE_PS(site_p3, segm_site1, new_p7, true, true);
 
-    point_2d<T> new_p8 = point_2d<T>(static_cast<T>(0), static_cast<T>(-18));
+    site_event<T> new_p8(static_cast<T>(0), static_cast<T>(-18), 0);
     CHECK_LESS_PREDICATE_PS(site_p2, segm_site1, new_p8, true, false);
     CHECK_LESS_PREDICATE_PS(site_p3, segm_site1, new_p8, true, false);
 
-    point_2d<T> new_p9 = point_2d<T>(static_cast<T>(0), static_cast<T>(-1));
+    site_event<T> new_p9(static_cast<T>(0), static_cast<T>(-1), 0);
     CHECK_LESS_PREDICATE_PS(site_p2, segm_site1, new_p9, false, true);
     CHECK_LESS_PREDICATE_PS(site_p3, segm_site1, new_p9, false, true);
 }
@@ -217,9 +217,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicate_segment_segment_test1, T, test_type
     segm_site1_2.inverse();
 
     // New sites.
-    point_2d<T> new_site1 = point_2d<T>(static_cast<T>(2), static_cast<T>(7));
-    point_2d<T> new_site2 = point_2d<T>(static_cast<T>(1), static_cast<T>(5));
-    point_2d<T> new_site3 = point_2d<T>(static_cast<T>(-1), static_cast<T>(5));
+    site_event<T> new_site1(static_cast<T>(2), static_cast<T>(7), 0);
+    site_event<T> new_site2(static_cast<T>(1), static_cast<T>(5), 0);
+    site_event<T> new_site3(static_cast<T>(-1), static_cast<T>(5), 0);
 
     CHECK_LESS_PREDICATE_SS(segm_site1_1, segm_site1_2, new_site1, false);
     CHECK_LESS_PREDICATE_SS(segm_site1_1, segm_site1_2, new_site2, false);
@@ -236,10 +236,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicate_segment_segment_test2, T, test_type
     segm_site1_2.inverse();
 
     // New sites.
-    point_2d<T> new_site1 = point_2d<T>(static_cast<T>(0), static_cast<T>(2));
-    point_2d<T> new_site2 = point_2d<T>(static_cast<T>(0), static_cast<T>(5));
-    point_2d<T> new_site3 = point_2d<T>(static_cast<T>(0), static_cast<T>(6));
-    point_2d<T> new_site4 = point_2d<T>(static_cast<T>(0), static_cast<T>(8));
+    site_event<T> new_site1(static_cast<T>(0), static_cast<T>(2), 0);
+    site_event<T> new_site2(static_cast<T>(0), static_cast<T>(5), 0);
+    site_event<T> new_site3(static_cast<T>(0), static_cast<T>(6), 0);
+    site_event<T> new_site4(static_cast<T>(0), static_cast<T>(8), 0);
 
     // Common end points.
     point_2d<T> segm_start2 = point_2d<T>(static_cast<T>(-5), static_cast<T>(5));
@@ -273,6 +273,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(less_predicate_segment_segment_test3, T, test_type
     site_event_type segm_site1(segm_start1, segm_end, 0);
     segm_site1.inverse();
     site_event_type segm_site2(segm_start2, segm_end, 1);
-    point_2d<T> point(-4, 2);
+    site_event<T> point(-4, 2, 0);
     CHECK_LESS_PREDICATE_SS(segm_site1, segm_site2, point, false);
 }

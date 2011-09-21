@@ -18,6 +18,8 @@
 #include "boost/polygon/polygon.hpp"
 using namespace boost::polygon;
 
+#include "detail/voronoi_fpt_kernel.hpp"
+
 namespace boost {
 namespace sweepline {
 

@@ -36,10 +36,10 @@ namespace sweepline {
     ///////////////////////////////////////////////////////////////////////////
     
     template <typename T>
-    struct voronoi_traits;
+    struct voronoi_builder_traits;
 
     template <>
-    struct voronoi_traits<int> {
+    struct voronoi_builder_traits<int> {
         typedef double coordinate_type;
     };
 
@@ -97,7 +97,7 @@ namespace sweepline {
     template <typename T, typename VD>
     class voronoi_builder {
     public:
-        typedef typename voronoi_traits<T>::coordinate_type coordinate_type;
+        typedef typename voronoi_builder_traits<T>::coordinate_type coordinate_type;
         typedef VD output_type;
 
         voronoi_builder() {}
@@ -106,7 +106,7 @@ namespace sweepline {
         void insert_points(PointIterator first_point, PointIterator last_point) {
             // Create a site event from each input point.
             for (PointIterator it = first_point; it != last_point; ++it) {
-                site_events_.push_back(detail::make_site_event(
+                site_events_.push_back(detail::site_event<coordinate_type>(
                     static_cast<coordinate_type>(it->x()),
                     static_cast<coordinate_type>(it->y()), 0));
             }
@@ -123,9 +123,9 @@ namespace sweepline {
                 coordinate_type y1 = static_cast<coordinate_type>(it->low().y());
                 coordinate_type x2 = static_cast<coordinate_type>(it->high().x());
                 coordinate_type y2 = static_cast<coordinate_type>(it->high().y());
-                site_events_.push_back(detail::make_site_event(x1, y1, 0));
-                site_events_.push_back(detail::make_site_event(x2, y2, 0));
-                site_events_.push_back(detail::make_site_event(x1, y1, x2, y2, 0));
+                site_events_.push_back(detail::site_event<coordinate_type>(x1, y1, 0));
+                site_events_.push_back(detail::site_event<coordinate_type>(x2, y2, 0));
+                site_events_.push_back(detail::site_event<coordinate_type>(x1, y1, x2, y2, 0));
             }
         }
 
@@ -155,11 +155,14 @@ namespace sweepline {
                 } else if (site_event_iterator_ == site_events_.end()) {
                     process_circle_event();
                 } else {
-                    if (circle_events_.top().compare(*site_event_iterator_) == detail::MORE) {
+                    if (circle_events_.top().first.compare(*site_event_iterator_) == detail::MORE) {
                         process_site_event();
                     } else {
                         process_circle_event();
                     }
+                }
+                while (!circle_events_.empty() && !circle_events_.top().first.is_active()) {
+                    circle_events_.pop();
                 }
             }
 
@@ -175,18 +178,27 @@ namespace sweepline {
 
     private:
         typedef detail::point_2d<coordinate_type> point_type;
+        
         typedef detail::site_event<coordinate_type> site_event_type;
-        typedef detail::circle_event<coordinate_type> circle_event_type;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
-        typedef typename output_type::voronoi_edge_type edge_type;
-        typedef detail::circle_events_queue<coordinate_type> circle_event_queue_type;
-        typedef detail::beach_line_node_key<coordinate_type> key_type;
-        typedef detail::beach_line_node_data<coordinate_type> value_type;
-        typedef detail::node_comparer<key_type> node_comparer_type;
+
+        typedef detail::circle_event<coordinate_type> circle_event_type;
+        typedef detail::beach_line_node_key<site_event_type> key_type;
+        typedef detail::beach_line_node_data<circle_event_type> value_type;
+        typedef detail::beach_line_node_comparer<key_type> node_comparer_type;
         typedef std::map< key_type, value_type, node_comparer_type >
             beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
+        typedef std::pair<circle_event_type, beach_line_iterator> event_type; 
+        typedef struct {
+            bool operator()(const event_type &lhs, const event_type &rhs) const {
+                return lhs.first > rhs.first;
+            }
+        } event_comparison;
+        typedef detail::ordered_queue<event_type, event_comparison>
+            circle_event_queue_type;
+        typedef typename output_type::voronoi_edge_type edge_type;
         typedef std::pair<point_type, beach_line_iterator> end_point_type;
 
         // Create site events.
@@ -394,8 +406,9 @@ namespace sweepline {
         // map data structure keeps correct ordering.
         void process_circle_event() {
             // Get the topmost circle event.
-            const circle_event_type &circle_event = circle_events_.top();
-            beach_line_iterator it_first = circle_event.bisector();
+            const event_type &e = circle_events_.top();
+            const circle_event_type &circle_event = e.first;
+            beach_line_iterator it_first = e.second;
             beach_line_iterator it_last = it_first;
 
             // Get the C site.
@@ -544,15 +557,12 @@ namespace sweepline {
             circle_event_type c_event;
             // Check if the three input sites create a circle event.
             if (create_circle_event(site1, site2, site3, c_event)) {
-                // Update circle event's bisector iterator to point to the
-                // second bisector that forms it in the beach line.
-                c_event.bisector(bisector_node);
-
                 // Add the new circle event to the circle events queue.
                 // Update bisector's circle event iterator to point to the
                 // new circle event in the circle event queue.
-                bisector_node->second.activate_circle_event(
-                    circle_events_.push(c_event));
+                event_type &e = circle_events_.push(
+                    std::pair<circle_event_type, beach_line_iterator>(c_event, bisector_node));
+                bisector_node->second.activate_circle_event(&e.first);
             }
         }
 
