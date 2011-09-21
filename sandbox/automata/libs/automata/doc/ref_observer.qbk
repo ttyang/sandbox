@@ -1,0 +1,182 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:base_observer `base_observer`]
+
+[section Synopsis]
+[reference__base_observer]
+[endsect]
+
+[section Description]
+This convenient base class no-ops all the methods that __Observer__ concept
+models must implement but may never use.  It also stores an immutable view of
+the subject automaton so that derived classes do not need to do so.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_observer_base_hpp__>
+``
+[endsect]
+
+[section Example]
+See the tutorial on __t_building_your_own_automata_types__.
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`SubjectAutomaton`]
+        [
+            The base type of the subject automaton.  Classes derived
+            from `base_observer` are typically the return types of
+            __Unary_Metafunction_Classes__ meant to be used as
+            __t_policies__, so a derived class can simply pass in
+            the argument type upon inheritance.
+        ]
+        []
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+N/A
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description][Scope]]
+    [
+        [Subject constructor]
+        [`explicit base_observer(SubjectAutomaton const&);`]
+        [
+            When implementing any constructors in the derived class--including
+            the canonical copy constructor--invoke this constructor in the
+            initializer list.  For the canonical copy constructor, pass in the
+            subject automaton of the observer being copied.
+        ]
+        [`protected`]
+    ]
+    [
+        [Initialization notification]
+        [``
+            template <typename Builder>
+            void on_initialize(Builder const&);
+        ``]
+        [
+            Overwrite this method template in the derived class to execute code
+            after the subject automaton has been initialized.
+        ]
+        [`public`]
+    ]
+    [
+        [Reset notification]
+        [`void on_reset();`]
+        [
+            Overwrite this method template in the derived class to execute code
+            after the subject automaton has been reset.
+        ]
+        [`public`]
+    ]
+    [
+        [Input acceptance notification]
+        [`void on_accept_input(SubjectAutomaton::input const&);`]
+        [
+            Overwrite this method in the derived class to handle inputs that
+            the subject automaton has successfully processed.
+        ]
+        [`public`]
+    ]
+    [
+        [Input rejection notification]
+        [`void on_reject_input(SubjectAutomaton::input const&);`]
+        [
+            Overwrite this method in the derived class to handle inputs that
+            the subject automaton has failed to process.
+        ]
+        [`public`]
+    ]
+    [
+        [Input invalidation notification]
+        [`void on_invalid_input(SubjectAutomaton::input const&);`]
+        [Overwrite this method in the derived class to handle invalid inputs.]
+        [`public`]
+    ]
+    [
+        [Undo acceptance notification]
+        [`void on_accept_undo();`]
+        [
+            Overwrite this method template in the derived class to execute code
+            after the subject automaton has performed an undo operation.
+        ]
+        [`public`]
+    ]
+    [
+        [Undo rejection notification]
+        [`void on_reject_undo();`]
+        [
+            Overwrite this method template in the derived class to execute code
+            after the subject automaton has rejected an undo request.
+        ]
+        [`public`]
+    ]
+    [
+        [Subject automaton accessor]
+        [`SubjectAutomaton const& get_subject_automaton() const;`]
+        [Returns an immutable view of the subject automaton.]
+        [`protected`]
+    ]
+]
+[endsect] [/ Members]
+
+[endsect] [/ base_observer]
+
+[section:full_noop_observer `full_noop_observer`]
+
+[section Synopsis]
+[reference__full_noop_observer]
+[endsect]
+
+[section Description]
+This convenient base class no-ops all the methods that __Observer__ concept
+models must implement but may never use.  It also stores an immutable view of
+the subject automaton so that derived classes do not need to do so.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_observer_full_noop_hpp__>
+``
+[endsect]
+
+[endsect] [/ full_noop_observer]
+
+[section:output_observer `output_observer`]
+
+[section Synopsis]
+[reference__output_observer]
+[endsect]
+
+[section Description]
+This class template .
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_observer_output_hpp__>
+``
+[endsect]
+
+[endsect] [/ output_observer]
+

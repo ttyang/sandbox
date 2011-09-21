@@ -1,0 +1,225 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Glossary]
+The design of Boost.Automata is based primarily on the most practical aspects
+of __automata_theory__.  (Implementations of other state machines in the
+__Chomsky_hierarchy__ or elsewhere are also welcome to be subsumed,
+however.)  A glossary of terms is included below to help you understand this
+library's various moving parts and their relation to one another.
+
+[table
+    [[Term][Definition]]
+    [
+        [*automaton*]
+        [
+            Also known as a *state machine*.  Depending on the context, an
+            automaton may represent an artificially intelligent agent, a
+            parser, or a graph walker.  When you initialize an automaton, you
+            change its *transition function*.  When you otherwise modify an
+            automaton, either by resetting it or by processing *input symbols*,
+            you change its *state*.
+        ]
+    ]
+    [
+        [*state*]
+        ['''
+          <orderedlist numeration='arabic'>
+            <listitem>
+              <para>An entity that determines the behavior of an
+              <emphasis role='strong'>automaton</emphasis>.  Depending on the
+              context, a state may describe an agent's logical thought process,
+              a node in a parse tree, or a location that a graph walker can
+              reach.</para>
+            </listitem>
+            <listitem>
+              <para>A collection of data that corresponds to such an
+              entity.</para>
+            </listitem>
+          </orderedlist>
+        ''']
+    ]
+    [
+        [*current state*]
+        ['''
+          <orderedlist numeration='arabic'>
+            <listitem>
+              <para>The entity that determines the current behavior of an
+              <emphasis role='strong'>automaton</emphasis>.</para>
+            </listitem>
+            <listitem>
+              <para>The collection of data that corresponds to such an entity
+              by virtue of being currently stored in the automaton.</para>
+            </listitem>
+          </orderedlist>
+        ''']
+    ]
+    [
+        [*input symbol*]
+        [
+            An entity that an *automaton* processes.  Depending on the context,
+            an input symbol may represent the firing of an axon in a neural
+            network, a letter in an alphabet, or a signal that tells the graph
+            walker to traverse a certain edge.
+        ]
+    ]
+    [
+        [*nontrivial input symbol*]
+        [
+            An *input symbol* that, if processed by an *automaton*, causes it
+            to change its *current state*.
+        ]
+    ]
+    [
+        [*source state*]
+        [
+            The *current state* of an *automaton* that has been initialized or
+            reset.  Depending on the context, the source state may describe an
+            agent's first thought, the root of a parse tree, or the source
+            vertex of a graph.
+        ]
+    ]
+    [
+        [*final state*]
+        [
+            A *state* at which an *automaton* should stop processing *input
+            symbols* during a normal course of execution; also known as an
+            *accepting state*.  Depending on the context, a final state may
+            describe AI enlightenment, a leaf in a parse tree, or the target
+            vertex of a graph.
+        ]
+    ]
+    [
+        [*transition function*]
+        [
+            A function that takes in the *current state* of an *automaton* and
+            one or more *input symbols* and calculates the set of *states* to
+            which the automaton may change if it processes the input symbol(s).
+        ]
+    ]
+    [
+        [*state set*]
+        [
+            The collection of *states* that can be members of the set returned
+            by a *transition function*.
+        ]
+    ]
+    [
+        [*nondeterministic automaton*]
+        [
+            An *automaton* whose *transition function* may process /zero or
+            more/ *input symbols* and/or return /one or more/ *states* at
+            which the automaton could end up.
+        ]
+    ]
+    [
+        [*deterministic automaton*]
+        [
+            An *automaton* whose *transition function* returns /exactly one/
+            *state*, the state at which the automaton will end up.
+        ]
+    ]
+    [
+        [*discrete automaton*]
+        [
+            An *automaton* that recognizes a countable (but not necessarily
+            finite) *state set*.  With such a state set it is possible to
+            calculate which *input symbols* are *nontrivial* for a certain
+            state.
+        ]
+    ]
+    [
+        [*finite automaton*]
+        [
+            A *discrete automaton* that recognizes a bounded or non-infinite
+            *state set*.
+        ]
+    ]
+    [
+        [*nondeterministic finite automaton (NFA)*]
+        [
+            A *finite automaton* that is also a *nondeterministic automaton*.
+        ]
+    ]
+    [
+        [*deterministic finite automaton (DFA)*]
+        [
+            A *finite automaton* whose *transition function* processes
+            /exactly one/ *input symbol* and returns /exactly one/ *state*,
+            the state at which the automaton will end up.  An unsigned integer
+            can therefore represent the *current state* of a DFA.
+        ]
+    ]
+    [
+        [*state register*]
+        [
+            The part of a *DFA* that stores its *current state*.
+        ]
+    ]
+    [
+        [*pushdown automaton (PDA)*]
+        [
+            A *discrete automaton* that can be (though not necessarily is)
+            implemented as a *finite automaton* plus a stack that recognizes a
+            different set of symbols from the one the automaton itself regards
+            as *input symbols*.  As a result, its *transition function* accepts
+            an additional but optional parameter that tells the automaton
+            whether or not to pop from the stack, and its return value includes
+            an optional symbol to push on top of the stack.
+        ]
+    ]
+    [
+        [*nondeterministic pushdown automaton (NPDA)*]
+        [
+            A *pushdown automaton* whose (conceptually) underlying *finite
+            automaton* is an *NFA*.
+        ]
+    ]
+    [
+        [*deterministic pushdown automaton (DPDA)*]
+        [
+            A *pushdown automaton* whose (conceptually) underlying *finite
+            automaton* is a *DFA*.
+        ]
+    ]
+    [
+        [*memento*]
+        [
+            A data structure used to save the *current state* of an *automaton*
+            before an *input symbol* is processed so that the automaton can be
+            restored to that state when the processing of that input symbol
+            needs to be undone.
+        ]
+    ]
+    [
+        [*previous state*]
+        [
+            The *state* of an *automaton* that was saved to the *memento*
+            before it processed an *input symbol*.
+        ]
+    ]
+    [
+        [*cellular automaton*]
+        [
+            An *automaton* whose *state* is stored in cells that are themselves
+            automata.  The *transition function* of each cell takes in the
+            states of the neighboring cells as input.
+        ]
+    ]
+    [
+        [*totalistic cellular automaton*]
+        [
+            A *cellular automaton* whose cell *state* is a discrete value and
+            whose cell *transition function* either adds up or tallies the
+            states of the neighboring cells.
+        ]
+    ]
+]
+
+[endsect] [/ Glossary]
+

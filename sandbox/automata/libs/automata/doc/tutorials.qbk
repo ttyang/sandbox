@@ -1,0 +1,45 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Tutorials]
+You should study the following tutorials in order so that you can use
+Boost.Automata effectively.  However, if you can't wait to check out the fun
+stuff, the last three tutorials feature a __t_maze_application__ and a
+__t_neural_network__, respectively.
+
+  # The __Basics_tutorial__ covers how to build the transition functions of
+    __pushdown_automata__ so that they can parse inputs properly.
+  # The __Deterministic_Finite_Automata_tutorial__ covers how to build several
+    types of __dfa__ transition functions.
+  # The __Function_to_Automaton_tutorial__ shows you how to convert an
+    ordinary function into an automaton.
+  # The __Automata_Builders_tutorial__ illustrates several different
+    algorithmic methods for building automata and their transition functions.
+  # The __Input_Rules_tutorial__ presents a facility for changing the behavior
+    of automata during state changes.
+  # The __Observer_Policies_tutorial__ describes how to attach almost any
+    combination of commonly used properties to any type of automaton.
+  # The __Input_Validation_and_Undoable_Automata_tutorial__ shows you how to
+    customize input validation and how to enable and configure the undo
+    functionality.
+  # Finally, the Boost.Automata framework allows you to [tutoriallink
+    byo_automata..build your own automata types] while still taking advantage
+    of the features that this library offers.
+
+[include tut_basics.qbk]
+[include tut_dfa.qbk]
+[include tut_func2a.qbk]
+[include tut_builders.qbk]
+[include tut_input_rules.qbk]
+[include tut_observer_policies.qbk]
+[include tut_cellular_automata.qbk]
+[include tut_undo.qbk]
+[include tut_byo_automata.qbk]
+
+[endsect] [/ Tutorials]
+

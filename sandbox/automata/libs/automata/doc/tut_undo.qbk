@@ -1,0 +1,174 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:undo Tutorial: Input Validation and Undoable Automata]
+Unlike the [link automata.tutorials other tutorial programs] that come with
+[link automata Boost.Automata], this program will allow its user to interact
+with it through the console.  The user will expect the program to exit
+gracefully--without uncaught exceptions or assertion failures--if he or she
+enters invalid input, e.g. a word or letter.  The user will also expect to be
+able to undo any bad inputs that the program otherwise considers valid.
+
+[section:graph_algo Anatomy of a Graph Algorithm]
+First, we need to write a function that generates random mazes.  A random maze
+can be thought of as the minimum spanning tree in an undirected graph with
+random weights.  So, we start off our `make_maze()` function template by
+defining a random number generator that we can use.
+
+[example__make_maze__rng]
+
+Now, the incoming graph to be modified will most likely /not/ possess a
+random-weight property map: we need to build our minimum spanning tree off a
+utility graph, then copy the result over.
+
+[example__make_maze__util_type]
+
+An industrial-strength maze creation algorithm would take different layouts
+into consideration.  To keep things simple, we will hard-code our layout to
+one level of 6 rows by 5 columns of cells, all of which are orthogonally
+adjacent to each other, though they will initially be separated by walls.
+
+__maze_before__ [/ A 6-by-5 labyrinth with all its cell walls]
+
+Next, we will set up our layout.  The graph constructor will add thirty
+vertices upon execution.  Then the `for` loops will add the orthogonal
+edges.  Each edge will be assigned a random weight as it is added to the
+utility graph.
+
+[example__make_maze__util_graph]
+
+The __graph_kruskal_mst__ algorithm will basically knock down each wall
+inside our labyrinth until all cells are connected, meaning that for every pair
+of cells a path exists that will run uninterrupted.
+
+__maze_after__ [/ The labyrinth after enough cell walls are knocked down]
+
+The result will be stored as a container of edges.
+
+[example__make_maze__do_it]
+
+We finish our function template by building the structure of the input graph to
+match that of our spanning tree.
+
+[example__make_maze__finish]
+[endsect]
+
+[section:main The Main Program]
+Our maze creation algorithm expects the input graph to be undirected and empty,
+so that's what we'll start out with before calling it.
+
+[example__maze__make]
+
+The __Observer_Policies_tutorial__ shows us how to add [termlink final states]
+to an automaton, while the __Automata_Builders_tutorial__ shows us how to
+create an automaton from a __graph_adjacency_list__ representation.  Now,
+instead of writing our own __Observer_Builder__, we will make use of the
+__single_final_state_builder_from_graph__ class template that this library
+provides by inserting into a __Fusion_Forward_Sequence__, then passing it as
+an additional argument to the __builder_from_graph__ class template.
+
+[example__maze__builder_type]
+
+The presence of the `_Policies` __named_template_parameter__
+tells the compiler to expect a __Fusion_Forward_Sequence__ of
+__Unary_Metafunction_Classes__ whose return types are __Observer_Builders__,
+instead of an edge input map type, as the third argument to the
+__builder_from_graph__ type definition.  The classic alternative is to
+explicitly pass in the default __mpl_void__ type as the edge input map before
+passing in `BuilderPolicies`, which is more cumbersome:
+
+``
+    typedef _builder_from_graph_<
+                Graph
+              , _property_map_<Graph,vertex_index_t>::type
+              , _mpl_void_
+              , BuilderPolicies
+            >
+            Builder;
+``
+
+When constructing a `Builder` object, however, the `BuilderPolicies` object
+can be a __deduced_argument__--that is, an argument that is not explicitly
+named--where the compiler would normally expect an edge input map instance.
+
+[example__maze__builder]
+
+The above statement, which makes room 29 a final state, is definitely more
+convenient than either
+
+``
+    Builder
+        builder(
+            g
+          , get(_vertex_index_, g)
+          , _policies = BuilderPolicies(SingleFinalStateBuilder(vertex(29, g)))
+        );
+``
+
+where `_policies` is the corresponding __named_parameter__, or
+
+``
+    Builder
+        builder(
+            g
+          , get(_vertex_index_, g)
+          , _mpl_void_()
+          , BuilderPolicies(SingleFinalStateBuilder(vertex(29, g)))
+        );
+``
+
+Building the other policy types is pretty much the same as in the
+__Observer_Policies_tutorial__.
+
+[example__maze__policies]
+
+[heading More Policies]
+Recall that __t_two_of_our_program_requirements__ are to handle invalid inputs
+without asserting/throwing exceptions and to enable the user to undo any bad
+but valid inputs.  An __input_validation_policy__ with default template
+arguments will satisfy the first requirement.  Passing __mpl_true__ as the
+last template argument to the __automaton__ type definition will enable it
+to model the __Undoable_Automaton__ concept, thus satisfying the second
+requirement.
+
+[example__maze__type]
+
+Without specifying the `_undo_limit` argument, the program would allow the user
+to undo his or her actions until the automaton returns to the starting state.
+
+``
+    Maze maze(builder, maze_policies);
+``
+
+By specifying a non-zero `_undo_limit`, only that many consecutive `undo()`
+actions are possible at most; subsequent undo operations are ignored.  For this
+application, the number of vertices in the maze graph is a reasonable limit.
+
+[example__maze__object]
+
+[note
+    If the state type of an __automaton__ is an integer, then the
+    constructor cannot deduce the `_undo_limit` argument: you must specify it
+    either by name or by position.  The presence of the `_source_state`
+    parameter, though not required here, should illustrate why parameter
+    deduction is not possible.
+]
+
+The simulation driver code will execute until the user either reaches the goal
+room or enters some non-numeric input.
+
+[example__maze__run]
+[endsect] [/ The Main Program]
+
+The complete working program for this tutorial is contained in two files:
+
+  * __example_maze_hpp__
+  * __example_maze_cpp__
+
+[endsect] [/ Tutorial: Input Validation and Undoable Automata]
+

@@ -1,0 +1,53 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Reference]
+
+[include ref_automaton.qbk]
+[include ref_function_automaton.qbk]
+[include ref_generator.qbk]
+[include ref_transition_function.qbk]
+[include ref_input_rule.qbk]
+[include ref_observer.qbk]
+[include ref_policy.qbk]
+[include ref_builder.qbk]
+
+  * __automaton__
+  * __function_automaton__
+  * __deterministic_generator__
+  * __adaptor_transition_function__
+  * __dpda_generator__
+  * __dpda_transition_function__
+  * __dfa_generator__
+  * __matrix_transition_function__
+  * __mapped_input_tabular_transition_function__
+  * __mapped_input_transition_function__
+  * __next_state_transition_function__
+  * __input_rule_transition_function__
+  * __wolfram_code_input_rule__
+  * __cellular_graph_input_rule__
+  * __conway_vertex_transition_function__
+  * __base_observer__
+  * __single_final_state_policy__
+      * __is_at_final_state__
+  * __parallel_final_states_policy__
+      * __has_visited_any_state__
+  * __serial_final_states_policy__
+      * __has_no_unvisited_states__
+  * __bool_insertion_policy__
+  * __dpda_insertion_policy__
+  * __dfa_insertion_policy__
+  * __input_validation_policy__
+  * __default_input_validation_policy__
+  * __builder_from_graph__
+  * __single_final_state_builder_from_graph__
+  * __multiple_final_states_builder_from_graph__
+  * __function_builder__
+
+[endsect] [/ Reference]
+

@@ -1,0 +1,183 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:observer_policies Tutorial: Observer Policies]
+We build [termlink automata] to perform repetitive tasks for us, routines that
+either validate [termlink input symbols] or respond to changes in the [termlink
+states] of the automata.  Some of these routines are often reused in different
+combinations by different types of automata.  The Boost.Automata framework
+categorizes these routines according to the __Observer__ concept and its
+refinements.  More specifically, the routines that respond to state changes are
+__Automaton_Observers__, while the ones that validate input symbols are
+__Input_Validators__.
+
+The __automaton__ class template binds itself to its observers at compile
+time, by way of *policies* enacted by the __automaton__ type.  In general,
+a *policy* is a class type that, when passed as a template argument to a
+parameterized class type, determines a particular aspect of the paramterized
+type's overall behavior.  This tutorial will focus on the policy classes and
+templates provided by Boost.Automata that bind the __automaton__ type to
+__Automaton_Observers__.  The
+__Input_Validation_and_Undoable_Automata_tutorial__ will expand on the
+policy classes and templates that bind the __automaton__ type to
+__Input_Validators__.
+
+[section:final_state Final-State Policies]
+We will reuse the second and fourth examples from the __DFA_tutorial__.  Here
+is a tabular representation of the second example's transition function.
+
+[table
+    [[Current State][Input]]
+    [[             ][alpha][beta][gamma][delta]]
+    [[            0][1][1][2][0]]
+    [[            1][1][2][0][1]]
+    [[            2][2][2][2][3]]
+    [[          *3*][3][3][3][3]]
+]
+
+For this example, we will designate state 3 as the [termlink final state].  An
+automaton should stop processing inputs once it has reached a final state,
+e.g. so that an application can evaluate the inputs already processed.  For
+the other example, we will designate states 2 and 5 as final states.
+
+[table
+    [[Current State][Valid Next States]]
+    [[            0][1][2][4]]
+    [[            1][0][2][3]]
+    [[          *2*][3][4]]
+    [[            3][0][1][2]]
+    [[            4][0][3][5]]
+    [[          *5*][]]
+]
+
+We will alter our __DFA_program__ to incorporate the final states previously
+mentioned.  First, we will reuse the transition function types:
+
+[example__dfa_builder__function_types]
+
+Next, we will replace the build functions with a `sample_dfa_builder` functor
+class.  Inside its body, we will define some __Observer_Builders__.  (They
+don't /have/ to be nested; it's just that no one outside the
+`sample_dfa_builder` needs to know about them for this application to
+work.)  __t_Automata_builders__ know only how to build __Automata__,
+not any __Automaton_Observers__ associated with them; hence, the need for
+__Observer_Builders__.
+
+[example__dfa_builder__class]
+
+The `get_final_state()` method is invoked by the return type of the
+__single_final_state_policy__ class template, while the
+`make_final_states()` member function template is invoked by the return type of
+the __parallel_final_states_policy__ class template.
+
+[example__dfa_builder__get_final_state]
+
+The `sample_dfa_builder::observer_builder_map` type definition binds the
+nested __Observer_Builders__ to their respective automaton policies.  The
+`sample_dfa_builder` class needs only to store an instance of this type,
+initialize it in the constructor, and provide an appropriate accessor to
+it.  The __single_final_state_policy__ template will look for an
+__Observer_Builder__ to which the `single_final_state_key<>` is mapped
+so that it can initialize exactly one final state, while the
+__parallel_final_states_policy__ class template will look for an
+__Observer_Builder__ to which the `multiple_final_states_key<>` is mapped
+so that it can initialize more than one final state.
+
+[example__dfa_builder__ctor__get_map]
+
+The function call operator implementations are the same as those of the build
+functions in the __DFA_tutorial__.
+
+[example__dfa_builder__call_ops]
+[endsect] [/ Final-State Policies]
+
+[section:insertion Insertion Policies]
+By default, the __automaton__ class template knows nothing about
+final states.  We must pass in as an additional template argument a
+__Fusion_Forward_Sequence__ containing either a
+__single_final_state_policy__ to store exactly one final state or a
+__parallel_final_states_policy__ to store more than one.  For our first
+example automaton, in addition to a __single_final_state_policy__, we will
+also define a couple of policies that control the automaton's console
+output.  They are called *insertion policies* because each of the underlying
+classes used to present the actual output must overload the insertion operator
+(`<<`) to do its work.
+
+[example__dfa__policies_1]
+
+The odd-looking string literal is a __Boost_Format__ string that displays
+four elements: the name of the observer's function just invoked (represented
+by the `%1%` token), the resultant state of its subject automaton (`%2%`), the
+inputs that would cause the automaton to change from that state (`%3%`), and
+any input that was passed to the function (`%4%`).  __Boost_Format__ strings
+enable the formatting of output stream data in much the same way that C-style
+format strings do for the other arguments that are passed to the `printf()`
+function or its ilk.  One key difference is that __Boost_Format__ string
+arguments can be specified by position--which they are in this case--instead
+of by type (`%u`, `%s`, etc.); this greatly increases the flexibility of the
+output format, since otherwise the order of the elements is fixed.  We cover
+__Boost_Format__ string processing when we show you how to
+__t_build_your_own_policy_types__.
+
+Each policy type must be a __Unary_Metafunction_Class__ whose return type
+models the __Automaton_Observer__ concept.  The return type of the
+__dfa_insertion_policy__ class template is a type whose instances will present
+state and input information during initialization, resetting, and input
+processing of the automaton.  The return type of the __bool_insertion_policy__
+class template is a type whose instances will check if an underlying policy
+that is also associated with the automaton--in this case, the
+__single_final_state_policy__--has flagged a certain condition as `true`; this
+check will also be performed--and its results displayed--during initialization,
+resetting, and input processing of the automaton.  The __automaton__ class
+template will create __Automaton_Observers__ of these types and associate them
+with itself.
+
+[example__dfa__1]
+
+Here, the first __Boost_Format__ string will be used when the automaton
+reaches the final state.  As long as it *doesn't*, the second string will be
+used.  Both format strings take in a single element: the current state of the
+automaton.
+
+The inputs from __t_the_original_program__ will be processed in the same order
+by this automaton.  The only differences are the absence of `BOOST_CHECK`
+statements and that the input processing statements to be executed after the
+`reset()` statement are "rolled" into a `while` loop.  The
+__Automaton_Observer__ to which the __single_final_state_policy__ is mapped
+overloads the boolean conversion operator to return `true` if and only if the
+automaton's [termlink current state] is the same as the final state to which
+the policy is initialized; this overload enables an instance of the
+__Automaton_Observer__--accessed by giving __fusion_at_key__ the
+__single_final_state_policy__ type and the automaton's observer map
+instance--to appear in the `while` conditional expression.  Lastly, the
+automaton will send the appropriate output to the console during the execution
+of each mutating method, thanks to the insertion policies enacted on it.
+
+[example__dfa__run_1]
+
+A __parallel_final_states_policy__ will be used to initialize the final
+states of the second automaton; otherwise, the setup is essentially the same.
+
+[example__dfa__2]
+
+As before, the inputs from __t_the_original_program__ will be processed in the
+same order by this automaton.  The `BOOST_CHECK` statements are also omitted;
+instead, the insertion policies enacted on the automaton will cause it to send
+output to the console as each input is processed.
+
+[example__dfa__run_2]
+[endsect] [/ Insertion Policies]
+
+The complete working program for this tutorial is contained in three files:
+
+  * __example_dfa_builder_hpp__
+  * __example_dfa_builder_cpp__
+  * __example_dfa_cpp__
+
+[endsect] [/ Tutorial: Observer Policies]
+

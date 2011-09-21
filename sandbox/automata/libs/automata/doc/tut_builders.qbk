@@ -1,0 +1,86 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:builders Tutorial: Automata Builders]
+The greatest strength of a *dynamic* automaton lies in its transition
+function's ability to be *algorithmically* computed (i.e. built by some other
+routine).  Applications that require state machines to be run in structured but
+dynamic layouts (e.g. [@http://en.wikipedia.org/wiki/Formal_language
+formal-language] acceptors, __t_random_maze_situations__) benefit the most
+from this ability.  The __Automaton_Builder__ concept allows an automaton and
+its underlying transition function to be built generically by any conforming
+algorithm.
+
+We will alter our __t_basic_test_program__ by removing our build functions and
+making use of the __builder_from_graph__ class template instead.  Graphs are
+natural representations of automata and their transition functions, with
+each vertex mapping to a unique state and each edge mapping to a unique
+transition.  This particular class template leverages the power of the
+__Boost_Graph_Library__ to build transition functions.
+
+First things first.  Our automaton type definitions:
+
+[test__builder_from_graph__dpda_typedef]
+
+When a graph represents the [termlink transition function] of a [termlink
+DPDA], each vertex is associated with a unique [termlink state register
+value].  We associate each edge with a __fusion_map__ that contains three
+objects: an [termlink input symbol]; an optional symbol that, if present, must
+be popped from the stack in order for the transition to take place; and an
+optional symbol to be pushed onto the stack as a result of the transition.  The
+graph is usually directed because the transitions are one-way.
+
+[test__builder_from_graph__graph_typedef]
+
+For the __builder_from_graph__ to be able to do its work, the input
+graph must possess certain __property_maps__, which can be accessed via
+__property_tags__.  We could use any of the tag types that the BGL predefines,
+but one of the property maps will be an edge input map, and none of the BGL
+tag types have a name that would easily identify such a property map.  So, we
+use one provided by this library, called `edge_input_t`.
+
+[test__builder_from_graph__builder_typedef]
+
+Next, we extract the functionality from our old build functions.  The
+__fusion_map__ constructor can take in the __fusion_pair__ objects to
+be added.  In turn, we use the __fusion_make_pair__ function template to
+associate the key type with the appropriate symbol inside the map.  Right now,
+we'll handle the first example grammar: `S --> aSb | 0`.
+
+[test__builder_from_graph__case0_edge_inputs]
+
+We can construct our graph with the number of vertices that we need, but we
+need to add the edges individually.  Upon the successful addition of an edge,
+we associate it with the proper edge input symbols.  Note that we access our
+edge input map using the `edge_input` identifier.  Its name is that of the tag
+type, but without the `_t` suffix, as per BGL conventions.
+
+[test__builder_from_graph__case0_graph]
+
+For a DPDA, a minimal __builder_from_graph__ object is constructed using a
+graph, a vertex state map, and an edge input map.  Since our DPDA doesn't enact
+any __t_policies__, this setup is good enough:
+
+[test__builder_from_graph__case0_dpda]
+
+Finally, we test our word-accepting automaton.
+
+[test__builder_from_graph__case0_run]
+
+The complete working program for this tutorial is contained in
+__test_builder_from_graph_cpp__.
+
+[important
+    __Build__ __Boost_Test__ before you attempt to compile the program.
+]
+
+[note
+    You do *not* need to __build__ the __Boost_Graph_Library__.
+]
+[endsect] [/ Tutorial: Automata Builders]
+

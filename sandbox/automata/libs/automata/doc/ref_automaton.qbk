@@ -1,0 +1,501 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:automaton `automaton`]
+
+[section Synopsis]
+[reference__automaton]
+[endsect]
+
+[section Description]
+This class template serves as the primary front-end of Boost.Automata; in most
+cases, you will use it to pull together all the components you need--such as
+state registers, transition functions, and observer-generating policies--into
+a single state machine, or as many as you need for the task at hand.  With the
+appropriate components, an `automaton` type can model any refinement of the
+__Automaton__ concept defined by this library or by the user.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_automaton_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_BaseGenerator`]
+        [
+            The type that determines what comprises the [termlink state] of
+            this `automaton`.
+        ]
+        [
+          * It must model the __Unary_Metafunction_Class__ concept.
+          * Its return type must model the __Automaton_Base__ concept.
+          * If the `_IsUndoable` template-argument type evaluates to
+            __mpl_true__, then the return type must also model the
+            __Copy_Constructible__ concept.
+        ]
+        []
+    ]
+    [
+        [`_Function`]
+        [The type of the underlying transition function.]
+        [
+          * It must model the __Transition_Function__
+            concept.
+          * It must be a valid argument to the `_BaseGenerator`
+            template-argument type.
+        ]
+        []
+    ]
+    [
+        [`_Policies`]
+        [
+            The type of a heterogeneous container of policies that this
+            `automaton` will enact.
+        ]
+        [
+          * It must model the __Fusion_Forward_Sequence__ concept.
+          * Each of its element types must model the
+            __Unary_Metafunction_Class__ concept.
+          * The return type of the `_BaseGenerator` template-argument type
+            must be a valid argument for each element type.
+          * If the `_IsUndoable` template-argument type evaluates to
+            __mpl_true__, then the return type of each element type must
+            model the __Undoable_Automaton_Observer__ concept; otherwise,
+            the return type of each element type must model the
+            __Automaton_Observer__ concept.
+        ]
+        [__fusion_nil__]
+    ]
+    [
+        [`_InputValidationPolicy`]
+        [
+            The type that determines how this `automaton` will validate its
+            inputs.
+        ]
+        [
+          * It must model the __Unary_Metafunction_Class__ concept.
+          * The return type of the `_BaseGenerator` template-argument type
+            must be a valid argument to this type.
+          * The return type must model the __Input_Validator__ concept.
+        ]
+        [__default_input_validation_policy__]
+    ]
+    [
+        [`_IsUndoable`]
+        [
+            The type that determines whether or not this `automaton` type will
+            model the __Undoable_Automaton__ concept.
+        ]
+        [It must model the __Boolean_Integral_Constant__ concept.]
+        [__mpl_false__]
+    ]
+]
+
+You can use the parameter names as __template_keywords__.  For example, the
+following type definitions are semantically equivalent:
+
+``
+typedef automaton<
+            _dfa_generator_
+          , _matrix_transition_function_<_ublas_matrix_<std::size_t> >
+          , _fusion_nil_
+          , _default_input_validation_policy_
+          , _mpl_true_
+        >
+        DFA1;
+typedef automaton<
+            _dfa_generator_
+          , _matrix_transition_function_<_ublas_matrix_<std::size_t> >
+          , [*_IsUndoable]<_mpl_true_>
+        >
+        DFA2;
+typedef automaton<
+            [*_IsUndoable]<_mpl_true_>
+          , [*_BaseGenerator]<_dfa_generator_>
+          , [*_Function]<
+                _matrix_transition_function_< _ublas_matrix_<std::size_t> >
+            >
+        >
+        DFA3;
+``
+
+The last two definitions have the added benefit of not having to specify the
+default types of the `_Policies` and `_InputValidationPolicy` template
+parameters.
+
+All template parameter names for this class template are defined in the
+`boost::automata::keyword` namespace.
+[endsect] [/ Template Parameters]
+
+[section:model_of Model of]
+  * __Automaton__
+  * __Discrete_Automaton__ if the return type of the `_BaseGenerator`
+    template-argument type models the __Discrete_Automaton_Base__ concept
+  * __Input_Enumerable_Automaton__ if the return type of the `_BaseGenerator`
+    template-argument type models the __Input_Enumerable_Automaton_Base__
+    concept
+  * __Automaton_With_State_Register__ if the `_Function` template-argument
+    type models the __State_Register_Transition_Function__ concept
+  * __DPDA__ if the `_BaseGenerator` template-argument type evaluates to
+    __dpda_generator__ and the `_Function` template-argument type models the
+    __DPDA_Transition_Function__ concept
+  * __DFA__ if the `_BaseGenerator` template-argument type evaluates to
+    __dfa_generator__ and the `_Function` template-argument type models the
+    __DFA_Transition_Function__ concept
+  * __Extensible_Automaton__ if the `_Policies` template-argument type is a
+    non-__empty__ __Fusion_Forward_Sequence__ model
+  * __Undoable_Automaton__ if the `_isUndoable` template-argument type
+    evaluates to __mpl_true__
+[endsect]
+
+[section:public_bases Public Base Classes]
+The return type of the `_BaseGenerator` template-argument type.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Transition function type]
+        [`transition_function`]
+        [Defined by the __Automaton__ concept.]
+    ]
+    [
+        [Observer map type]
+        [`observer_map`]
+        [Defined by the __Extensible_Automaton__ concept.]
+    ]
+    [
+        [Traits type]
+        [`traits`]
+        [Defined by the __Automaton__ concept.]
+    ]
+    [
+        [Default constructor]
+        [`automaton();`]
+        [
+          * Defined by the __Default_Constructible__ concept.
+          * Defined if and only if the return type of the `_BaseGenerator`
+            template-argument type defines its default constructor in
+            `public` or `protected` scope.
+        ]
+    ]
+    [
+        [Build Constructor]
+        [``
+            template <
+                typename A0
+              , typename A1
+              , typename A2
+              , typename A3
+              , typename A4
+            >
+            automaton(
+                A0 const&
+              , A1 const& = implementation_defined
+              , A2 const& = implementation_defined
+              , A3 const& = implementation_defined
+              , A4 const& = implementation_defined
+            );
+        ``]
+        [
+             Read the [link automata.reference.automaton.build_ctor_param
+             Build Constructor Parameters] section for parameter descriptions.
+        ]
+    ]
+    [
+        [Copy constructor]
+        [`automaton(automaton const&);`]
+        [
+          * Defined by the __Copy_Constructible__ concept.
+          * Defined if and only if the return type of the `_BaseGenerator`
+            template-argument type models the __Copy_Constructible__
+            concept, the return type of each element type of the `_Policies`
+            template-argument type models the __Copyable_Observer__ concept,
+            and the return type of the `_InputValidationPolicy`
+            template-argument type models the __Copyable_Observer__ concept.
+        ]
+    ]
+    [
+        [Assignment operator]
+        [`automaton& operator=(automaton const&);`]
+        [
+          * Defined by the __Assignable__ concept.
+          * Defined if and only if the return type of the `_BaseGenerator`
+            template-argument type models the __Assignable__ concept, the
+            return type of each element type of the `_Policies`
+            template-argument type models the __Assignable__ concept, and
+            the return type of the `_InputValidationPolicy` template-argument
+            type models the __Assignable__ concept.
+        ]
+    ]
+    [
+        [State assignment operator]
+        [`function_automaton& operator=(traits::state const&);`]
+        [Sets the [termlink source state] of this `automaton`.]
+    ]
+    [
+        [Function assignment operator]
+        [``
+            template <typename TFunction>
+            automaton& operator=(TFunction);
+        ``]
+        [
+          * Forwards to the transition function's assignment operator.
+          * Defined if and only if the previously mentioned operator is
+            defined and accepts the specified argument.
+        ]
+    ]
+    [
+        [Initialization]
+        [``
+            template <typename A0, typename A1>
+            void initialize(A0 const&, A1 const& = implementation_defined);
+        ``]
+        [
+           * Defined by the __Automaton__ concept.
+           * Read the [link automata.reference.automaton.init_param
+             Initialization Parameters] section for parameter descriptions.
+        ]
+    ]
+    [
+        [Resetting]
+        [`void reset();`]
+        [
+          * Defined by the __Automaton__ concept.
+          * If the underlying observer map is non-__empty__, then this
+            `automaton` will invoke each observer's `on_reset()` method.
+        ]
+    ]
+    [
+        [Transition function accessor]
+        [`transition_function const& get_transition_function() const;`]
+        [Defined by the __Automaton__ concept.]
+    ]
+    [
+        [Observer map accessor]
+        [`observer_map const& get_observer_map() const;`]
+        [Defined by the __Extensible_Automaton__ concept.]
+    ]
+    [
+        [Input processing]
+        [`template <typename Input> bool operator()(Input const&);`]
+        [
+          * Defined by the __Automaton__ concept.
+          * If the underlying observer map is non-__empty__, then this
+            `automaton` will perform one of the following actions:
+              * Forward the input to each observer's `on_invalid_input()`
+                method if the underlying input validator marks the input as
+                invalid.
+              * Forward the input to each observer's `on_accept_input()`
+                method if the `automaton` type is a __Discrete_Automaton__
+                and the nontrivial input check returns `true`, or if the
+                `automaton` type does *not* model the __Discrete_Automaton__
+                concept and the input processing implementation returns `true`.
+              * Forward the input to each observer's `on_reject_input()`
+                method if the `automaton` type is a __Discrete_Automaton__
+                and the nontrivial input check returns `false`, or if the
+                `automaton` type does *not* model the __Discrete_Automaton__
+                concept and the input processing implementation returns
+                `false`.
+        ]
+    ]
+    [
+        [Undo operation]
+        [`void undo();`]
+        [
+          * Defined by the __Undoable_Automaton__ concept.
+          * Defined if and only if the type of this `automaton` has been
+            configured to model the __Undoable_Automaton__ concept.
+          * If the underlying observer map is non-__empty__, then:
+              # If the operation succeeds in restoring this `automaton` to the
+                most recent snapshot, then it will invoke each observer's
+                `on_accept_undo()` method.
+              # Otherwise, the automaton will invoke each observer's
+                `on_reject_undo()` method.
+        ]
+    ]
+    [
+        [Undo ability check]
+        [`bool can_undo() const;`]
+        [
+          * Defined by the __Undoable_Automaton__ concept.
+          * Defined if and only if the type of this `automaton` has been
+            configured to model the __Undoable_Automaton__ concept.
+        ]
+    ]
+    [
+        [Undo limit access]
+        [`std::size_t get_undo_limit() const;`]
+        [
+          * Defined by the __Undoable_Automaton__ concept.
+          * Defined if and only if the type of this `automaton` has been
+            configured to model the __Undoable_Automaton__ concept.
+        ]
+    ]
+]
+[endsect] [/ Members]
+
+[section:build_ctor_param Build Constructor Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_builder`]
+        [
+            A function object used to initialize the underlying transition
+            function.
+        ]
+        [
+          * If the `_Policies` template-argument type is non-__empty__, then
+            the data type must model the __Extensible_Automaton_Builder__
+            concept; otherwise, the data type must model the
+            __Automaton_Builder__ concept.
+          * The transition function must be a valid argument.
+        ]
+        []
+    ]
+    [
+        [`_policies`]
+        [
+            A heterogeneous container of policies that this `automaton` will
+            enact.  If this container is non-__empty__, then the automaton
+            will transform each policy type into its metafunction class return
+            type, create an instance of that return type as an __Observer__,
+            and associate the policy type with the observer in the underlying
+            observer map.  If this parameter is specified, then each observer's
+            build constructor will be invoked; otherwise, each observer's
+            subject-policy constructor will be invoked.
+        ]
+        [
+            The data type must be the same as the `_Policies` template-argument
+            type.
+        ]
+        [
+            A default-constructed instance of the `_Policies` template-argument
+            type.
+        ]
+    ]
+    [
+        [`_input_validation_policy`]
+        [
+            This `automaton` will transform the `_InputValidationPolicy`
+            template-argument type into its metafunction class return type and
+            create an instance of that return type as an
+            __Input_Validator__, which it will use for input validation.  If
+            this parameter is specified, then the input validator's build
+            constructor will be invoked; otherwise, the input validator's
+            subject-policy constructor will be invoked.
+        ]
+        [
+            The data type must be the same as the `_InputValidationPolicy`
+            template-argument type.
+        ]
+        [
+            A default-constructed instance of the `_InputValidationPolicy`
+            template-argument type.
+        ]
+    ]
+    [
+        [`_source_state`]
+        [The [termlink source state] of this `automaton`.]
+        [The data type must be convertible to `traits::state`.]
+        [`traits::state()`]
+    ]
+    [
+        [`_undo_limit`]
+        [
+            The number of consecutive times that the `undo()` operation can be
+            carried out on this `automaton`.
+        ]
+        [
+          * The data type must be a primitive integral type.
+          * The type of this `automaton` must be configured to fulfill the
+            __Undoable_Automaton__ concept.
+        ]
+        [`std::size_t()`]
+    ]
+]
+
+You can __name_each_parameter__ when you invoke this constructor.  Assume
+that the following function is defined:
+
+``
+void foo(_matrix_transition_function_<_ublas_matrix_<std::size_t> >&);
+``
+
+Continuing the [link automata.reference.automaton.tpl_param type definitions
+example], the following statements are semantically equivalent:
+
+``
+DFA1
+    dfa1(
+        foo
+      , _fusion_nil_()
+      , _default_input_validation_policy_()
+      , 18
+      , 32
+    );
+DFA2
+    dfa2(
+        foo
+      , [*_source_state] = 18
+      , [*_undo_limit] = 32
+    );
+DFA3
+    dfa3(
+        [*_undo_limit] = 32
+      , [*_builder] = foo
+      , [*_source_state] = 18
+    );
+``
+
+The last two instructions have the added benefit of not having to specify the
+default values of the `_policies` and `_input_validation_policy` parameters.
+
+All parameter names for this operation are defined in the
+`boost::automata::keyword` namespace.
+[endsect] [/ Build Constructor Parameters]
+
+[section:init_param Initialization Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_builder`]
+        [
+            A function object used to initialize the underlying transition
+            function.
+        ]
+        [
+          * If the `_Policies` template-argument type is non-__empty__, then
+            the data type must model the __Extensible_Automaton_Builder__
+            concept; otherwise, the data type must model the
+            __Automaton_Builder__ concept.
+          * The transition function must be a valid argument.
+        ]
+        []
+    ]
+    [
+        [`_source_state`]
+        [The [termlink source state] of this `automaton`.]
+        [The data type must be convertible to `traits::state`.]
+        [`traits::state()`]
+    ]
+]
+
+You can __name_each_parameter__ when you invoke the `initialize()`
+method.  All parameter names for this operation are defined in the
+`boost::automata::keyword` namespace.
+[endsect]
+
+[endsect] [/ automaton]
+

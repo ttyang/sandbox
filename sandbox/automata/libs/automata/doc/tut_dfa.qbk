@@ -1,0 +1,161 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:dfa Tutorial: Deterministic Finite Automata]
+When the first template argument of an __automaton__ type instantiation is the
+__dfa_generator__ class and the second template argument models the
+__DFA_Transition_Function__ concept, the automaton type itself models the
+__DFA__ concept.  However, there are many more ways to implement a transition
+function for a DFA than there are for a DPDA.  Also, when describing DFA
+mechanics, the terms [termlink state] and [termlink state register value] are
+interchangeable; furthermore, the [termlink source state] has a value of zero
+by default.
+
+We start with the following type definitions:
+
+[test__dfa_trans_func__typedefs]
+
+[section:tabular Tabular Transition Functions]
+DFA transition functions are typically implemented in terms of tables or
+matrices.  The table below shows the output of a sample transition function.
+
+[table
+    [[Current State][Input]]
+    [[             ][0][1][2][3]]
+    [[            0][1][1][2][0]]
+    [[            1][1][2][0][1]]
+    [[            2][2][2][2][3]]
+    [[            3][3][3][3][3]]
+]
+
+The __matrix_transition_function__ class template models the
+__Tabular_Transition_Function__ concept.  Since it is used in the
+`Function0` type definition, we can write a function that models the
+__Automaton_Builder__ concept by taking in an object of this particular
+type.  This function can reproduce the transition table like so:
+
+[test__dfa_build1__function]
+
+The `reset()` method call builds a transition table that recognizes 4 states
+(0 through 3) and 4 inputs (0 through 3).  Until the next `set_transition()`
+method call, all transitions are set so that the next state will always be
+equal to the current state, i.e. the function call operator of an associated
+DFA will always return `false`.  The three assignment calls also set
+transitions, but their syntax makes it clear that the transition function call
+operator should return the next state if invoked with the same arguments.  The
+tradeoff is that the function assignment call creates a temporary object to
+provide its syntactic sugar, while the `set_transition()` method goes through
+no such hoops.
+
+We can now build and run our automaton:
+
+[test__matrix_dfa__case]
+[endsect]
+
+[section:mapped_input Mapped-Input Transition Functions]
+Human-readable transition tables do not normally use indices to represent
+inputs, however.  The table below replaces the input indices with the actual
+symbols that they represent.
+
+[table
+    [[Current State][Input]]
+    [[             ][alpha][beta][gamma][delta]]
+    [[            0][1][1][2][0]]
+    [[            1][1][2][0][1]]
+    [[            2][2][2][2][3]]
+    [[            3][3][3][3][3]]
+]
+
+The __mapped_input_tabular_transition_function__ class template models the
+__Mapped_Input_Tabular_Transition_Function__ concept.  As its name suggests,
+it requires a __Tabular_Transition_Function__ to run on top of.  Since it is
+used in the `Function1` type definition, we can write a function that models
+the __Automaton_Builder__ concept by taking in an object of this particular
+type.  This function can reproduce the human-readable transition table like so:
+
+[test__dfa_build2__function]
+
+This time, the `reset()` method call builds a transition table that recognizes
+4 states (0 through 3) and 4 inputs (`"alpha"`, `"beta"`, `"gamma"`, and
+`"delta"`).  Aside from the different input type, the `set_transition()` and
+function assignment calls will work as before.
+
+We can now build and run our automaton:
+
+[test__mapped_input_tabular_dfa__case]
+
+The __mapped_input_transition_function__ class template models the
+__Mapped_Input_Transition_Function__ concept.  It does not require a
+__Tabular_Transition_Function__, unlike the
+__mapped_input_tabular_transition_function__.  Since it is used in the
+`Function2` type definition, we can write a function that models the
+__Automaton_Builder__ concept by taking in an object of this particular
+type.  This function can reproduce the previous transition table like so:
+
+[test__dfa_build3__function]
+
+This time, the `reset()` method call builds a transition table that recognizes
+4 states (0 through 3).  Each `set_transition()` and function assignment call
+will, in addition to specifying the next state for that particular input, add
+the input symbol to the set of recognized inputs if it is not already there.
+
+The tradeoff for not requiring a __Tabular_Transition_Function__ is that the
+__mapped_input_transition_function__ call operator is not as fast as that of
+the __mapped_input_tabular_transition_function__.
+
+We can now build and run our automaton:
+
+[test__mapped_input_dfa__case]
+[endsect]
+
+[section:next_state Next-State Transition Functions]
+For the times when the inputs are states themselves (or, more accurately,
+represent requests to set the DFA to the specified state), a *next-state
+transition function* will be more appropriate.  The table below shows the
+output of one such transition function.
+
+[table
+    [[Current State][Valid Next States]]
+    [[            0][1][2][4]]
+    [[            1][0][2][3]]
+    [[            2][3][4]]
+    [[            3][0][1][2]]
+    [[            4][0][3][5]]
+    [[            5][]]
+]
+
+The __next_state_transition_function__ class template models the
+__Next_State_Transition_Function__ concept.  Since it is used in the
+`Function3` type definition, we can write a function that models the
+__Automaton_Builder__ concept by taking in an object of this particular
+type.  This function can reproduce the transition table like so:
+
+[test__dfa_build4__function]
+
+Notice that we now /add/ transitions rather than set them; since the next state
+serves as an input, the extra parameter becomes redundant.  In this context,
+the function addition assignment syntax makes more sense than the regular
+function assignment syntax.  The temporary-object tradeoff still applies,
+though.
+
+We can now build and run our automaton:
+
+[test__next_state_dfa__case]
+[endsect]
+
+The complete working program for this tutorial is contained in three files:
+
+  * __test_dfa_builder_hpp__
+  * __test_dfa_builder_cpp__
+  * __test_dfa_cpp__
+
+[important
+    __Build__ __Boost_Test__ before you attempt to compile the program.
+]
+[endsect] [/ Tutorial: Deterministic Finite Automata]
+

@@ -1,0 +1,80 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Concepts]
+
+[include cc_automaton.qbk]
+[include cc_discrete_automaton.qbk]
+[include cc_finite_input_automaton.qbk]
+[include cc_automaton_wsr.qbk]
+[include cc_dpda.qbk]
+[include cc_dfa.qbk]
+[include cc_ext_automaton.qbk]
+[include cc_undo_automaton.qbk]
+[include cc_automaton_base.qbk]
+[include cc_discrete_auto_base.qbk]
+[include cc_finite_input_auto_base.qbk]
+[include cc_transition_function.qbk]
+[include cc_sr_trans_func.qbk]
+[include cc_dpda_trans_func.qbk]
+[include cc_dfa_trans_func.qbk]
+[include cc_tabular_trans_func.qbk]
+[include cc_mapped_in_tab_trans_func.qbk]
+[include cc_mapped_input_trans_func.qbk]
+[include cc_next_state_trans_func.qbk]
+[include cc_observer.qbk]
+[include cc_automaton_observer.qbk]
+[include cc_undo_automaton_observer.qbk]
+[include cc_input_validator.qbk]
+[include cc_automaton_builder.qbk]
+[include cc_ext_automaton_builder.qbk]
+[include cc_observer_builder.qbk]
+[include cc_obs_builder_from_graph.qbk]
+[include cc_extraction_source.qbk]
+[include cc_insertion_target.qbk]
+[include cc_trans_func_matrix.qbk]
+
+[heading Core Concepts]
+
+  * __Automaton__
+      * __Discrete_Automaton__
+          * __Finite_Input_Automaton__
+      * __Automaton_With_State_Register__
+          * __DPDA__
+          * __DFA__
+      * __Extensible_Automaton__
+      * __Undoable_Automaton__
+  * __Automaton_Base__
+      * __Discrete_Automaton_Base__
+          * __Finite_Input_Automaton_Base__
+  * __Transition_Function__
+      * __State_Register_Transition_Function__
+          * __DPDA_Transition_Function__
+          * __DFA_Transition_Function__
+              * __Tabular_Transition_Function__
+              * __Mapped_Input_Tabular_Transition_Function__
+              * __Mapped_Input_Transition_Function__
+              * __Next_State_Transition_Function__
+  * __Observer__
+      * __Copyable_Observer__
+      * __Automaton_Observer__
+          * __Undoable_Automaton_Observer__
+      * __Input_Validator__
+  * __Automaton_Builder__
+      * __Extensible_Automaton_Builder__
+  * __Observer_Builder__
+      * __Observer_Builder_From_Graph__
+
+[heading Auxiliary Concepts]
+
+  * __Extraction_Source__
+  * __Insertion_Target__
+  * __Transition_Function_Matrix__
+
+[endsect] [/ Concepts]
+

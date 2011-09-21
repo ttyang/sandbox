@@ -1,0 +1,400 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:byo_automata Tutorial: Building Your Own Automata]
+Boost.Automata is also a /framework/ in which you can build your own
+dynamically configurable state machine types.  Here, we will concentrate on
+building the data structures necessary to run an
+[@http://en.wikipedia.org/wiki/Artificial_neural_network artificial neural
+network].  While more traditional automata cannot execute transitions that are
+not explicitly defined by their transition functions, neural networks can infer
+such transitions based on the ones that /are/ specified, or in this context,
+*learned*.  The trade-off is that a neural network can make mistakes if it has
+not been sufficiently trained.
+
+Suppose that our job is to develop a grizzly bear hunting AI.  Our neural
+network, representing the hunter, must take several criteria into account: his
+own health, whether or not he has a knife, whether or not he has a rifle, and
+the number of bears in the area.  Based on these criteria, the hunter must
+either hunt for a bear, run away, wander around (in search of a weapon dropped
+by a fellow hunter), or hide; these actions comprise the possible states of our
+neural network.
+
+__neural_network_mystery__ [/ What should the hunter do?]
+
+The [@http://en.wikipedia.org/wiki/Artificial_neuron neuron] is the basic
+building block of all neural networks.  It accumulates its inputs into a
+[@http://en.wikipedia.org/wiki/Weight_function weighted sum], then passes
+the result to an *activation function* (usually the
+[@http://en.wikipedia.org/wiki/Sigmoid_function sigmoid function], but can be
+any function that is [@http://en.wikipedia.org/wiki/Monotonic_function
+monotonic]) which calculates the neuron's output.
+
+__neuron__ [/ The anatomy of a neuron]
+
+Within a single layer, each neuron takes in the same collection of inputs but
+applies a separate weight to each input.  The collection of outputs that the
+neurons in this layer produce becomes the collection of inputs consumed by the
+neurons in the next layer.  In the first layer, each input represents a
+criterion that the hunter must take into account.  In the last layer, each
+output corresponds to a possible state or action; the output with the strongest
+signal determines what the hunter will actually do.
+
+__neural_network_layout__ [/ A neural network representing the hunter]
+
+During the learning phase, a basic neural network implementation runs through
+several cycles of [@http://en.wikipedia.org/wiki/Feed-forward feed-forward] and
+[@http://en.wikipedia.org/wiki/Backpropagation back-propagation], which are the
+neural network equivalents of trial and error, respectively.  In the
+feed-forward stage, the neural network will take an input sample and calculate
+its output as it would during the simulation phase.  In the back-propagation
+stage, the neural network will compare its results with the desired output and
+adjust all its neurons' weights and bias inputs accordingly, so that the output
+of succeeding trials will match the desired output as closely as possible.
+
+We'll be writing plenty of modular code this time around, so we should be
+organized about it.  Our custom classes and functions will reside in the
+`example` namespace and, for the most part, will be defined in separate
+header files (and only header files, to maintain readability).
+
+[section:generator The `neural_network_generator` Class]
+We'll start with a __Unary_Metafunction_Class__: a class with a nested,
+parameterized `apply` class that takes in a single template parameter.  In
+a binary metafunction class, the `apply` type would take in two template
+parameters; in a trinary metafunction class, three; and so on.  The `apply`
+class template, in turn, contains either a nested class or a type definition
+called `type`, which is the result of *invoking* a metafunction class.  In
+our case, the `type` class must model the __Automaton_Base__ concept.  The
+__t_section_on_transition_functions__ will explain the reason for all these
+requirements.
+
+Metafunctions and metafunction classes are also known as *type generators*;
+hence, the name of our metafunction class shall be `neural_network_generator`.
+
+[example__neural_network_generator__preamble]
+
+The `tag` type definition is required by the __Automaton_Base__ concept to
+either be or inherit from `automaton_base_tag`.  We do not use
+`discrete_automaton_base_tag` or any other derived type because we will not
+implement an `is_nontrivial_input()` member function, so our class cannot model
+the __Discrete_Automaton_Base__ concept or any of its refinements.
+
+The following nested class definition contains those types that are specific to
+a neural network automaton type.  Should we ever design a *Neural Network*
+concept that is a refinement of the __Automaton__ concept, we would place
+the requirements for these types in our concept design.
+
+[example__neural_network_generator__traits]
+
+The first `private` code section defines the requirements that transition
+function type must fulfill, as well as the data members that a neural network
+automaton would need (other than the transition function).  The requirements
+come in the form of [@boost:/libs/concept_check/concept_check.htm concept
+checking] and [@boost:/dock/html/boost_staticassert.html static assertions], so
+that we can safely make some assumptions about the presence and characteristics
+of the transition function's associated types and expressions.  Moreover, these
+assertions are tested at compile-time rather than at runtime; the sooner we
+find any broken code, the better off we are when we fix them.
+
+[example__neural_network_generator__private]
+
+Because the `output` type is a __Sequence__, we can assume that the
+`_current_output` data member has a fill constructor; for our example, we also
+assume that the transition function type defines the number of output neurons
+as a static constant called `state_count`.  Since our transition function type
+fulfills the __State_Register_Transition_Function__ concept, we should go ahead
+and make our automaton type fulfill the __Automaton_With_State_Register__
+concept by initializing the source state to zero.
+
+[example__neural_network_generator__ctors]
+
+The `process_input_impl()` method is invoked by the __automaton__ function
+call operator and handles the automaton's basic input processing.  The
+transition function object cannot be modified at this point.  Here, we let the
+transition function handle implementation of the feed-forward stage up to the
+point where the neurons in the last layer calculate their outputs.  Note that
+the __State_Register_Transition_Function__ concept does /not/ require the
+transition function type to overload the function call operator in any way;
+instead, in our case, we assume that it implements a `feed_forward()` member
+function that accepts an immutable `input` object and a mutable `output` object
+as its arguments.
+
+[example__neural_network_generator__input_start]
+
+After that, our automaton will take over and determine the appropriate state
+according to which output has the highest value.
+
+[example__neural_network_generator__input_max]
+
+Finally, we notify all __Automaton_Observers__ associated with the enclosing
+automaton that our input processing function has accepted the specified input,
+since we assume that any valid input will change the internal state.
+
+[example__neural_network_generator__input_return]
+
+Naturally, we should define methods that provide read-only access to our
+data.  The __automaton__ class template will actually inherit this part
+of our interface.
+
+[example__neural_network_generator__accessors]
+
+[endsect] [/ The `neural_network_generator` class]
+
+[section:transition_function The `neural_network_transition_function` Class]
+All __Transition_Function__ models must possess a `tag` type definition so
+that __Automaton_Builder__ models can tell whether or not they are building
+the right type of transition function.  The refinement of the
+__Transition_Function__ concept that a type actually models will determine
+what its `tag` type should be.  In our case, we'll go ahead and use a custom
+type.
+
+[example__neural_network_trans_func__tag]
+
+The first thing we need to do with our `neural_network_transition_function`
+class is to fulfill the type and variable requirements imposed by the
+[link automata.tutorials.byo_automata.generator `neural_network_generator`
+return type].  We choose __std_vector__ as our __Sequence__ type for both
+input and output.  The `BOOST_STATIC_CONSTANT` macro declares compile-time
+`static const` variables for compilers that do not support regular declarations
+of such variables.
+
+An industrial-strength neural network implementation would define a neuron type
+that encapsulates the weights and bias variables.  We elect not to do this here
+so that we can focus on more automaton-specific details.
+
+[example__neural_network_trans_func__class]
+
+All __Transition_Function__ types are required to implement a default
+constructor.  This one resizes the weight matrices and bias containers based on
+the values of the `static const` variables we defined earlier so that other
+methods don't have to continually resize them.
+
+[example__neural_network_trans_func__ctor]
+
+Our transition function will ignore negative input values and any state
+register values at or above the number of possible actions.
+
+[example__neural_network_trans_func__recognize]
+
+One restriction with regard to the activation function that wasn't mentioned
+before is that it must be differentiable.  The backpropagation phase uses this
+derivative function to compute the errors in the intermediate results.  We
+implement both functions as `static` helper methods for simplicity; a more
+customizable approach would be to factor them out into separate functions or
+function objects and then to bring them in as __Boost_Function__ objects.
+
+[example__neural_network_trans_func__feed_forward_helpers]
+
+The `_feed_forward()` helper method computes the overall outputs for a single
+neuron layer.  The `feed_forward()` method that our `neural_network_generator`
+return type actually requires will in turn use this helper method on each
+layer to compute the outputs of the entire network.
+
+Remember: transition functions are *not required* to output a next state.
+
+[example__neural_network_trans_func__feed_forward]
+
+So far, we've seen how our `neural_network_transition_function` carries out its
+work and what parts of its data we can access.  We have not yet determined how
+this transition function can be built, i.e. how we can modify this data.  By
+convention, the __Transition_Function__ models provided by Boost.Automata
+possess straightforward modifier methods akin to those of __STL__ containers,
+e.g. `reset()` or `set_transition()`.  However, *convention* does not mean
+*requirement*: again, we opt for simplicity and boil everything down into a
+single `reset()` method to complete the `public` interface.
+
+The `_back_propagate()` helper method adjusts the weights and biases for a
+single neuron layer.  It assumes that the errors were computed beforehand.
+
+[example__neural_network_trans_func__reset_helper]
+
+Now, for the `reset()` method: it's a member function template that takes in
+everything we need to perform neural network training.  The input samples
+and their expected outputs are in separate containers.  The `sample_count`
+parameter determines how many samples will be used to train the network; this
+value is independent of the total number of samples.  The `learning_rate`
+parameter will be used by the `_back_propagate()` helper method.
+
+[example__neural_network_trans_func__reset]
+
+The weights and biases must be initialized to random values between -0.5 and
++0.5; we employ __Boost_Random__ for this purpose.
+
+[example__neural_network_trans_func__reset__init_rand_weights]
+
+Our helper methods place their results in containers that are passed in as
+output parameters.  We define these containers to their correct sizes here,
+again so that they don't have to be continually resized later.
+
+[example__neural_network_trans_func__reset__init_outputs_errors]
+
+[link automata.tutorials.byo_automata As stated before], the learning phase
+consists of two stages: feed-forward and backpropagate.  The helper methods
+simply the implementation of these stages.
+
+[example__neural_network_trans_func__reset__start_cycle]
+
+However, let's not forget to compute the errors in each neuron layer's outputs
+before using the `_back_propagate()` method.
+
+[example__neural_network_trans_func__reset__back_propagate]
+
+If the number of samples used to train the network exceeds the total number of
+samples (the normal case), then existing samples will be reused.
+
+[example__neural_network_trans_func__reset__end_cycle]
+[endsect] [/ The `neural_network_transition_function` Class]
+
+[section:make_samples The `make_samples` Function Template]
+This quick-and-dirty routine manufactures the input samples and their expected
+outputs that the [link automata.tutorials.byo_automata.transition_function
+`neural_network_transition_function::reset()` method] needs.  In reality, this
+data would be loaded from files, runtime databases, etc.
+
+[example__neural_network_make_samples]
+[endsect]
+
+[section:builder The `neural_network_builder` Class Template]
+
+The component we're about to describe needs to be aware of the existence of
+the `neural_network_transition_function_tag` type.  A forward declaration will
+suffice here.
+
+[example__neural_network_builder__fwd_decl]
+
+The `neural_network_builder` is known as a *template function object*, not
+because the type itself is a class template, but because its function call
+operator is templated.  As the [link automata.tutorials.byo_automata.generator
+`neural_network_generator` return type] did, this operator assumes only certain
+facts about the type of function it takes in, namely that its tag type is the
+same as `neural_network_transition_function_tag` and that its `reset()` method
+can take in the same arguments that the
+[link automata.tutorials.byo_automata.transition_function
+`neural_network_transition_function::reset()` method] did.
+
+[example__neural_network_builder]
+[endsect]
+
+[section:policy The `neural_network_insertion_policy` Class Template]
+The __t_built_in_insertion_policies__ are, for the most part, compatible only
+with the built-in automata generators.  Furthermore, they assume that the
+states and inputs themselves are sufficiently readable by humans and can
+therefore be sent directly to output streams.  Our custom automaton expects the
+inputs and outputs to be simple containers of double-precision floating point
+numbers, which look meaningless without context.  This application expects the
+`neural_network_insertion_policy` class template to provide that context by
+storing the actual names of the states and the inputs and sending them to the
+output stream whenever necessary.
+
+We refer to output streams as *insertion targets* because they are manipulated
+solely through the use of the insertion operator (`<<`).  This class is
+templated so that any type for which the insertion operator is suitably
+overloaded can serve as an insertion target.
+
+[example__neural_network_policy]
+
+The __basic_format__ class template handles the dirty work of taking in the
+elements to be displayed via the modulus operator (`%`), then matching them
+with their respective tokens inside the underlying format string.  Afterwards,
+__basic_format__ objects can be either sent directly to the output stream or
+converted to __std_string__ objects for further processing.  Because we want
+to display the name of the input or state to which each value is attributed,
+we need a total of three __basic_format__ objects: one for displaying each
+input and its value, one for displaying each state and its value, and one for
+the overall state of the automaton.
+
+This helper method is in `private` scope because only nested classes will make
+use of it.
+
+[example__neural_network_policy__output_helper]
+
+The __automaton__ class template requires each policy type to be a
+__Unary_Metafunction_Class__ that takes in its own type (or, to be more
+accurate, a base type) and returns the corresponding __Automaton_Observer__
+model.  Here, the return type inherits some convenient no-op methods from
+__full_noop_observer__ and maintains an instance of our policy type so that
+it can use our helper method.
+
+[example__neural_network_policy__return_type]
+
+The subject constructor is invoked on an observer whenever its subject
+automaton is created using its own build constructor.
+
+[example__neural_network_policy__return_type__subject_ctor]
+
+[warning
+    Do not invoke any of the subject automaton's member functions or variables
+    from within your observer's constructors!
+]
+
+The subject copy constructor enables the subject automaton to model the
+__Copy_Constructible__ concept if the user so desires.
+
+[example__neural_network_policy__return_type__subject_copy]
+
+[important
+    In the subject copy constructor, always take care to initialize the parent
+    __Observer__ with the subject automaton explicitly passed in, not that of
+    the observer to be copied.
+]
+
+The canonical copy constructor is actually required by the __Observer__
+concept, which is a refinement of the __Copy_Constructible__ concept, among
+other things.
+
+[example__neural_network_policy__return_type__copy_ctor]
+
+This assignment operator enables the subject automaton to model the
+__Assignable__ concept.  However, because it doesn't really make sense to
+copy the contents of the policy objects, this operator essentially becomes a
+no-op.
+
+[example__neural_network_policy__return_type__assign_op]
+
+We are only interested in the state of our neural network as it processes each
+input.  The __t_generator_type__ that we wrote assumes that all inputs should
+succeed, and we are not going to define any
+__t_input_validators_or_undo_capability__, so we need to overwrite only one
+function.
+
+[example__neural_network_policy__return_type__on_accept]
+[endsect] [/ The `neural_network_insertion_policy` Class Template]
+
+[section:main Putting It All Together]
+Now that we've defined our components, let's integrate them into the
+Boost.Automata framework.  As usual, descriptive type definitions enhance
+the readability of our program.
+
+[example__neural_network__type_definitions]
+
+We have to load our training sets before we can do anything else.
+
+[example__neural_network__inputs_outputs]
+
+The names of the states and the inputs are stored in __array__ objects,
+which must be initialized through separate instructions.  Otherwise, we can
+build our neural network automaton and its associated policies in one shot.
+
+[example__neural_network__automaton]
+
+Once our neural network is trained, running it is very simple.
+
+[example__neural_network__run]
+[endsect]
+
+The complete working program for this tutorial is contained in six files:
+
+  * __example_neural_network_generator_hpp__
+  * __example_neural_network_trans_func_hpp__
+  * __example_neural_network_make_samples_hpp__
+  * __example_neural_network_builder_hpp__
+  * __example_neural_network_policy_hpp__
+  * __example_neural_network_cpp__
+
+[endsect] [/ Tutorial: Building Your Own Automata]
+

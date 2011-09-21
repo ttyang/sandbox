@@ -1,0 +1,49 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:builder_from_graph `builder_from_graph`]
+
+[section Synopsis]
+[reference__builder_from_graph]
+[endsect]
+
+[section Description]
+In most literature that deals with __automata_theory__, graphs are used to
+represent [termlink transition functions].  This class template enables
+transition functions to be built via __BGL__ algorithms.  The type of
+transition function that can be built depends on how a particular
+`builder_from_graph` and its supporting data structures are declared and
+defined.
+[endsect]
+
+[endsect] [/ builder_from_graph]
+
+[section:single_final_state_bfg `single_final_state_builder_from_graph`]
+
+[section Synopsis]
+[reference__single_final_state_builder_from_graph]
+[endsect]
+
+[endsect] [/ single_final_state_builder_from_graph]
+
+[section:multi_final_states_bfg `multiple_final_states_builder_from_graph`]
+
+[section Synopsis]
+[reference__multiple_final_states_builder_from_graph]
+[endsect]
+
+[endsect] [/ multiple_final_states_builder_from_graph]
+
+[section:function_builder `function_builder`]
+
+[section Synopsis]
+[reference__function_builder]
+[endsect]
+
+[endsect] [/ function_builder]
+

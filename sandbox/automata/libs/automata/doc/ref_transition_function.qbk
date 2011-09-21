@@ -1,0 +1,1720 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:adaptor_trans_func `adaptor_transition_function`]
+
+[section Synopsis]
+[reference__adaptor_transition_function]
+[endsect]
+
+[section Description]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_adaptor_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Function`]
+        [
+            The type of the underlying function that this transition function
+            forwards to.
+        ]
+        [
+          * It must model either the __Unary_Function__ concept or the
+            __Binary_Function__ concept.
+          * If it models the __Binary_Function__ concept, then the data type of
+            at least one of its arguments must be the same as the return data
+            type.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+  * __State_Register_Transition_Function__ if the state type is the same as
+    `std::size_t`, __Transition_Function__ otherwise
+  * __Adaptable_Unary_Function__ if `Function` models the __Unary_Function__
+    concept.
+  * __Adaptable_Binary_Function__ if `Function` models the __Binary_Function__
+    concept.
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+  * __Equality_Comparable__
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description][When defined]]
+    [
+        [Tag type]
+        [`tag`]
+        [Defined by the __Transition_Function__ concept.]
+        [Always.]
+    ]
+    [
+        [Result type]
+        [`result_type`]
+        [Same as the return data type of the underlying function.]
+        [Always.]
+    ]
+    [
+        [State type]
+        [`state`]
+        [Same as the result type.]
+        [Always.]
+    ]
+    [
+        [Input type]
+        [`input`]
+        [
+            The data type of the argument to the underlying function that is
+            not a state.  It may be the same as the state type.
+        ]
+        [Always.]
+    ]
+    [
+        [Argument type]
+        [`argument_type`]
+        [Same as the input type.]
+        [When `Function` models the __Unary_Function__ concept.]
+    ]
+    [
+        [First argument type]
+        [`first_argument_type`]
+        [Same as the state type.]
+        [When `Function` models the __Binary_Function__ concept.]
+    ]
+    [
+        [Second argument type]
+        [`second_argument_type`]
+        [Same as the input type.]
+        [When `Function` models the __Binary_Function__ concept.]
+    ]
+    [
+        [Default constructor]
+        [`adaptor_transition_function();`]
+        [Defined by the __Default_Constructible__ concept.]
+        [Always.]
+    ]
+    [
+        [Function conversion constructor]
+        [``
+            template <typename TFunction>
+            adaptor_transition_function(TFunction);
+        ``]
+        []
+        [Always.]
+    ]
+    [
+        [Copy constructor]
+        [`adaptor_transition_function(adaptor_transition_function const&);`]
+        [Defined by the __Copy_Constructible__ concept.]
+        [Always.]
+    ]
+    [
+        [Assignment operator]
+        [``
+            adaptor_transition_function&
+            operator=(adaptor_transition_function const&);
+        ``]
+        [Defined by the __Assignable__ concept.]
+        [Always.]
+    ]
+    [
+        [Function assignment operator]
+        [``
+            template <typename TFunction>
+            adaptor_transition_function& operator=(TFunction function);
+        ``]
+        []
+        [Always.]
+    ]
+    [
+        [Input recognition]
+        [`bool recognizes_input(input const&) const;`]
+        [
+          * Defined by the __Transition_Function__ concept.
+          * If an underlying input recognition function exists, forwards the
+            argument to that function and returns its result; returns `true`
+            otherwise.
+        ]
+        [Always.]
+    ]
+    [
+        [State recognition]
+        [`bool recognizes_state(state const&) const;`]
+        [
+            If an underlying state recognition function exists, forwards the
+            argument to that function and returns its result; returns `true`
+            otherwise.
+        ]
+        [When `Function` models the __Binary_Function__ concept.]
+    ]
+    [
+        [Unary function call]
+        [`result_type operator()(argument_type const&) const;`]
+        [
+            Forwards the arguments to the underlying function and returns the
+            result of that function.
+        ]
+        [When `Function` models the __Unary_Function__ concept.]
+    ]
+    [
+        [Binary function call]
+        [``
+            result_type
+                operator()(
+                    first_argument_type const&
+                  , second_argument_type const&
+                ) const;
+        ``]
+        [
+            Forwards the arguments to the underlying function and returns the
+            result of that function.
+        ]
+        [When `Function` models the __Binary_Function__ concept.]
+    ]
+    [
+        [Input recognizer setting]
+        [``
+            template <typename InputRecognizer>
+            void set_input_recognizer(InputRecognizer);
+        ``]
+        [
+            Sets this `adaptor_transition_function` to use the specified
+            function as the underlying input recognizer.
+        ]
+        [Always.]
+    ]
+    [
+        [State recognizer setting]
+        [``
+            template <typename StateRecognizer>
+            void set_state_recognizer(StateRecognizer);
+        ``]
+        [
+            Sets this `adaptor_transition_function` to use the specified
+            function as the underlying state recognizer.
+        ]
+        [When `Function` models the __Binary_Function__ concept.]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Equality]
+        [``
+            template <typename Function1, typename Function2>
+            bool
+                operator==(
+                    adaptor_transition_function<Function1> const&
+                  , adaptor_transition_function<Function2> const&
+                );
+        ``]
+        [
+          * Defined by the __Equality_Comparable__ concept.
+          * Returns `true` if and only if the underlying functions are equal.
+        ]
+    ]
+    [
+        [Inequality]
+        [``
+            template <typename Function1, typename Function2>
+            bool
+                operator!=(
+                    adaptor_transition_function<Function1> const&
+                  , adaptor_transition_function<Function2> const&
+                );
+        ``]
+        [
+          * Defined by the __Equality_Comparable__ concept.
+          * Returns `true` if and only if the underlying functions are *not*
+            equal.
+        ]
+    ]
+]
+[endsect]
+
+[endsect] [/ adaptor_transition_function]
+
+[section:dpda_trans_func `dpda_transition_function`]
+
+[section Synopsis]
+[reference__dpda_transition_function]
+[endsect]
+
+[section Description]
+Straightforward implementation of a __DPDA_Transition_Function__.
+
+[important
+    This component depends on __Boost_Type_Traits_Operators__, which has been
+    recently accepted into Boost but is currently not part of an official
+    release.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_dpda_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_StackElement`]
+        [The stack element type of this transition function.]
+        []
+        []
+    ]
+    [
+        [`_Input`]
+        [The input type of this transition function.]
+        []
+        []
+    ]
+    [
+        [`_AssociativeContainerSelector`]
+        [
+            The type that determines the internal map types whose mapped types
+            are the same as the result map type.
+        ]
+        [
+          * It must be either `mapS`, `unordered_mapS`, or `hash_mapS` (if
+            available).
+          * If this type is `mapS`, then the `_Input` and `_StackElement` types
+            must fulfill the requirements imposed on the key type of
+            __std_map__.
+          * If this type is `unordered_mapS`, then the `_Input` and
+            `_StackElement` types must fulfill the requirements imposed on the
+            key type of __tr1_unordered_map__.
+          * If this type is `hash_mapS`, then the `_Input` and `_StackElement`
+            types must fulfill the requirements imposed on the key type of
+            __non_std_hash_map__.
+        ]
+        [`mapS`]
+    ]
+    [
+        [`_RandomAccessContainerSelector`]
+        [
+            The type that determines the internal container type whose element
+            type is that determined by the `_AssociativeContainerSelector`
+            type.
+        ]
+        [It must be either `vecS` or `dequeS`.]
+        [`vecS`]
+    ]
+]
+
+You can use the parameter names as __template_keywords__.  For example, the
+following type definitions are semantically equivalent:
+
+``
+typedef dpda_transition_function<char,char,mapS,dequeS>
+        Function1;
+typedef dpda_transition_function<
+            char
+          , char
+          , [*_RandomAccessContainerSelector]<dequeS>
+        >
+        Function2;
+typedef dpda_transition_function<
+            [*_RandomAccessContainerSelector]<dequeS>
+          , [*_StackElement]<char>
+          , [*_Input]<char>
+        >
+        Function3;
+``
+
+The last two definitions have the added benefit of not having to specify the
+default type of the `_AssociativeContainerSelector` template parameter.
+
+All template parameter names for this class template are defined in the
+`boost::automata::keyword` namespace.
+[endsect] [/ Template Parameters]
+
+[section:model_of Model of]
+  * __DPDA_Transition_Function__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+  * __Equality_Comparable__
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Tag type]
+        [`tag`]
+        [__Transition_Function__]
+    ]
+    [
+        [Input type]
+        [`input`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value type]
+        [`state`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Stack element type]
+        [`stack_element`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Stack sequence type]
+        [`stack_sequence`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Stack iterator type]
+        [`stack_iterator`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Optional stack element type]
+        [`optional_stack_element`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Result map type]
+        [`result_map`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Result type]
+        [`result_type`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Default constructor]
+        [`dpda_transition_function();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Copy constructor]
+        [`dpda_transition_function(dpda_transition_function const&);`]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [
+            `dpda_transition_function&
+            operator=(dpda_transition_function const&);`
+        ]
+        [__Assignable__]
+    ]
+    [
+        [Input recognition]
+        [`bool recognizes_input(input const&) const;`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value recognition]
+        [`bool recognizes_state(state const&) const;`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Stack element recognition]
+        [`bool recognizes_stack_element(stack_element const&) const;`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Binary function call]
+        [`result_type operator()(state const&, input const&) const;`]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Trinary function call]
+        [``
+            result_type
+                operator()(
+                    state const&
+                  , input const&
+                  , stack_element const&
+                ) const;
+        ``]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Nontrivial input enumeration]
+        [``
+            template <typename Iterator>
+            void
+                make_nontrivial_inputs(
+                    state const&
+                  , stack_element const&
+                  , Iterator
+                ) const;
+        ``]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Input-only nontrivial input enumeration]
+        [``
+            template <typename Iterator>
+            void make_nontrivial_inputs(state const&, Iterator) const;
+        ``]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Transition setting]
+        [``
+            void
+                set_transition(
+                    state const&
+                  , input const&
+                  , stack_element const&
+                  , result_map const&
+                );
+            implementation_defined
+                operator()(state const&, input const&, stack_element const&);
+        ``]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Input-only transition setting]
+        [``
+            void set_transition(state const&, input const&, result_map const&);
+            implementation_defined operator()(state const&, input const&);
+        ``]
+        [__DPDA_Transition_Function__]
+    ]
+    [
+        [Resetting]
+        [`void reset(std::size_t);`]
+        [__DPDA_Transition_Function__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Equality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+              , typename T6
+              , typename T7
+            >
+            bool
+                operator==(
+                    dpda_transition_function<T0,T1,T2,T3> const&
+                  , dpda_transition_function<T4,T5,T6,T7> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+    [
+        [Inequality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+              , typename T6
+              , typename T7
+            >
+            bool
+                operator!=(
+                    dpda_transition_function<T0,T1,T2,T3> const&
+                  , dpda_transition_function<T4,T5,T6,T7> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+]
+[endsect]
+
+[endsect] [/ dpda_transition_function]
+
+[section:matrix_trans_func `matrix_transition_function`]
+
+[section Synopsis]
+[reference__matrix_transition_function]
+[endsect]
+
+[section Description]
+Straightforward implementation of a __Tabular_Transition_Function__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_matrix_hpp__>
+``
+[endsect]
+
+[section Example]
+The table below shows the output of a sample transition function.
+
+[table
+    [[Current State][Input]]
+    [[             ][0][1][2][3]]
+    [[            0][1][1][2][0]]
+    [[            1][1][2][0][1]]
+    [[            2][2][2][2][3]]
+    [[            3][3][3][3][3]]
+]
+
+The example below shows how to build the transition function above using this
+class template.
+
+[``
+    matrix_transition_function<_ublas_matrix_<std::size_t> > function;
+
+    function.reset(4, 4);
+    function.set_transition(0, 0, 1);
+    function.set_transition(0, 1, 1);
+    function.set_transition(0, 2, 2);
+    function(1, 1) = 2;  // Same as function.set_transition(1, 1, 2);
+    function(1, 2) = 0;
+    function(2, 3) = 3;
+
+    // Output...
+``]
+
+In normal usage, the `reset()` and `set_transition()` methods are invoked by
+the function call operator of a custom __Automaton_Builder__, as shown in
+the __DFA_tutorial__ and in the __Observer_Policies_tutorial__.
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`StateInputMatrix`]
+        [The type of the underlying table that this transition function uses.]
+        [It must model the __Transition_Function_Matrix__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+  * __Tabular_Transition_Function__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+  * __Equality_Comparable__
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Tag type]
+        [`tag`]
+        [__Transition_Function__]
+    ]
+    [
+        [Input type]
+        [`input`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value type]
+        [`state`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Result type]
+        [`result_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [First argument type]
+        [`first_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Second argument type]
+        [`second_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Default constructor]
+        [`matrix_transition_function();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Copy constructor]
+        [`matrix_transition_function(matrix_transition_function const&);`]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [
+            `matrix_transition_function&
+            operator=(matrix_transition_function const&);`
+        ]
+        [__Assignable__]
+    ]
+    [
+        [Input recognition]
+        [`bool recognizes_input(input const&) const;`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value recognition]
+        [`bool recognizes_state(state const&) const;`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Function call]
+        [
+            `result_type
+            operator()(first_argument_type, second_argument_type) const;`
+        ]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Nontrivial input enumeration]
+        [``
+            template <typename Iterator>
+            void make_nontrivial_inputs(state const&, Iterator) const;
+        ``]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Transition setting]
+        [``
+            void
+                set_transition(
+                    first_argument_type
+                  , second_argument_type
+                  , result_type
+                );
+            implementation_defined
+                operator()(first_argument_type, second_argument_type);
+        ``]
+        [__Tabular_Transition_Function__]
+    ]
+    [
+        [Resetting]
+        [`void reset(std::size_t, std::size_t);`]
+        [__Tabular_Transition_Function__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Equality]
+        [``
+            template <
+                typename StateInputMatrix
+              , typename OtherStateInputMatrix
+            >
+            bool
+                operator==(
+                    matrix_transition_function<StateInputMatrix> const&
+                  , matrix_transition_function<OtherStateInputMatrix> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+    [
+        [Inequality]
+        [``
+            template <
+                typename StateInputMatrix
+              , typename OtherStateInputMatrix
+            >
+            bool
+                operator!=(
+                    matrix_transition_function<StateInputMatrix> const&
+                  , matrix_transition_function<OtherStateInputMatrix> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+]
+[endsect]
+
+[endsect] [/ matrix_transition_function]
+
+[section:mapped_in_tab_trans_func `mapped_input_tabular_transition_function`]
+
+[section Synopsis]
+[reference__mapped_input_tabular_transition_function]
+[endsect]
+
+[section Description]
+Straightforward implementation of a
+__Mapped_Input_Tabular_Transition_Function__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_mapped_input_tabular_hpp__>
+``
+[endsect]
+
+[section Example]
+The table below shows the output of a sample transition function.
+
+[table
+    [[Current State][Input]]
+    [[             ][alpha][beta][gamma][delta]]
+    [[            0][1][1][2][0]]
+    [[            1][1][2][0][1]]
+    [[            2][2][2][2][3]]
+    [[            3][3][3][3][3]]
+]
+
+The example below shows how to build the transition function above using this
+class template.
+
+[``
+    mapped_input_tabular_transition_function
+        _std_string_
+      , _matrix_transition_function_<_ublas_matrix_<std::size_t> >
+    > function;
+    _std_vector_<_std_string_> inputs;
+
+    inputs.push_back("alpha");
+    inputs.push_back("beta");
+    inputs.push_back("gamma");
+    inputs.push_back("delta");
+    function.reset(4, inputs);
+    function.set_transition(0, "alpha", 1);
+    function.set_transition(0, "beta", 1);
+    function.set_transition(0, "gamma", 2);
+    function(1, "beta") = 2;  // Same as function.set_transition(1, "beta", 2);
+    function(1, "gamma") = 0;
+    function(2, "delta") = 3;
+
+    // Output...
+``]
+
+In normal usage, the `reset()` and `set_transition()` methods are invoked by
+the function call operator of a custom __Automaton_Builder__, as shown in
+the __DFA_tutorial__ and in the __Observer_Policies_tutorial__.
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_Input`]
+        [The input type of this transition function.]
+        []
+        []
+    ]
+    [
+        [`_Function`]
+        [The underlying tabular transition function.]
+        [It must model the __Tabular_Transition_Function__ concept.]
+        []
+    ]
+    [
+        [`_AssociativeContainerSelector`]
+        [
+            The type that determines the internal map type from the input type
+            to the state type.
+        ]
+        [
+          * It must be either `mapS`, `unordered_mapS`, or `hash_mapS` (if
+            available).
+          * If this type is `mapS`, then the `_Input` type must fulfill
+            the requirements imposed on the key type of __std_map__.
+          * If this type is `unordered_mapS`, then the `_Input` type
+            must fulfill the requirements imposed on the key type of
+            __tr1_unordered_map__.
+          * If this type is `hash_mapS`, then the `_Input` type must fulfill
+            the requirements imposed on the key type of __non_std_hash_map__.
+        ]
+        [`mapS`]
+    ]
+]
+
+You can use the parameter names as __template_keywords__.  For example, the
+following type definitions are semantically equivalent:
+
+``
+typedef mapped_input_tabular_transition_function<
+            char
+          , _matrix_transition_function_<_ublas_matrix_<std::size_t> >
+          , unordered_mapS
+        >
+        Function1;
+typedef mapped_input_tabular_transition_function<
+            char
+          , _matrix_transition_function_<_ublas_matrix_<std::size_t> >
+          , [*_AssociativeContainerSelector]<unordered_mapS>
+        >
+        Function2;
+typedef mapped_input_tabular_transition_function<
+            [*_AssociativeContainerSelector]<unordered_mapS>
+          , [*_Function]<
+                _matrix_transition_function_<_ublas_matrix_<std::size_t> >
+            >
+          , [*_Input]<char>
+        >
+        Function3;
+``
+
+All template parameter names for this class template are defined in the
+`boost::automata::keyword` namespace.
+[endsect] [/ Template Parameters]
+
+[section:model_of Model of]
+  * __Mapped_Input_Tabular_Transition_Function__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+  * __Equality_Comparable__
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Tag type]
+        [`tag`]
+        [__Transition_Function__]
+    ]
+    [
+        [Input type]
+        [`input`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value type]
+        [`state`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Result type]
+        [`result_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [First argument type]
+        [`first_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Second argument type]
+        [`second_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Default constructor]
+        [`mapped_input_tabular_transition_function();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Copy constructor]
+        [``
+            mapped_input_tabular_transition_function(
+                mapped_input_tabular_transition_function const&
+            );
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [
+            `mapped_input_tabular_transition_function&
+            operator=(mapped_input_tabular_transition_function const&);`
+        ]
+        [__Assignable__]
+    ]
+    [
+        [Input recognition]
+        [`bool recognizes_input(second_argument_type) const;`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value recognition]
+        [`bool recognizes_state(first_argument_type) const;`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Function call]
+        [
+            `result_type
+            operator()(first_argument_type, second_argument_type) const;`
+        ]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Nontrivial input enumeration]
+        [``
+            template <typename Iterator>
+            void make_nontrivial_inputs(state const&, Iterator) const;
+        ``]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Transition setting]
+        [``
+            void
+                set_transition(
+                    first_argument_type
+                  , second_argument_type
+                  , result_type
+                );
+            implementation_defined
+                operator()(first_argument_type, second_argument_type);
+        ``]
+        [__Mapped_Input_Tabular_Transition_Function__]
+    ]
+    [
+        [Resetting]
+        [``
+            template <typename Iterator>
+            void reset(std::size_t, Iterator, Iterator);
+        ``]
+        [__Mapped_Input_Tabular_Transition_Function__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Equality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+            >
+            bool
+                operator==(
+                    mapped_input_tabular_transition_function<T0,T1,T2> const&
+                  , mapped_input_tabular_transition_function<T3,T4,T5> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+    [
+        [Inequality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+            >
+            bool
+                operator!=(
+                    mapped_input_tabular_transition_function<T0,T1,T2> const&
+                  , mapped_input_tabular_transition_function<T3,T4,T5> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+]
+[endsect]
+
+[endsect] [/ mapped_input_tabular_transition_function]
+
+[section:mapped_in_trans_func `mapped_input_transition_function`]
+
+[section Synopsis]
+[reference__mapped_input_transition_function]
+[endsect]
+
+[section Description]
+Straightforward implementation of a __Mapped_Input_Transition_Function__.
+
+[important
+    This component depends on __Boost_Type_Traits_Operators__, which has been
+    recently accepted into Boost but is currently not part of an official
+    release.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_mapped_input_hpp__>
+``
+[endsect]
+
+[section Example]
+The table below shows the output of a sample transition function.
+
+[table
+    [[Current State][Input]]
+    [[             ][alpha][beta][gamma][delta]]
+    [[            0][1][1][2][0]]
+    [[            1][1][2][0][1]]
+    [[            2][2][2][2][3]]
+    [[            3][3][3][3][3]]
+]
+
+The example below shows how to build the transition function above using this
+class template.
+
+[``
+    mapped_input_transition_function<_std_string_> function;
+
+    function.reset(4);
+    function.set_transition(0, "alpha", 1);
+    function.set_transition(0, "beta", 1);
+    function.set_transition(0, "gamma", 2);
+    function(1, "beta") = 2;  // Same as function.set_transition(1, "beta", 2);
+    function(1, "gamma") = 0;
+    function(2, "delta") = 3;
+
+    // Output...
+``]
+
+In normal usage, the `reset()` and `set_transition()` methods are invoked by
+the function call operator of a custom __Automaton_Builder__, as shown in the
+__DFA_tutorial__ and in the __Observer_Policies_tutorial__.
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_Input`]
+        [The input type of this transition function.]
+        []
+        []
+    ]
+    [
+        [`_AssociativeContainerSelector`]
+        [
+            The type that determines the internal map type from the input type
+            to the state type.
+        ]
+        [
+          * It must be either `mapS`, `unordered_mapS`, or `hash_mapS` (if
+            available).
+          * If this type is `mapS`, then the `_Input` type must fulfill
+            the requirements imposed on the key type of __std_map__.
+          * If this type is `unordered_mapS`, then the `_Input` type
+            must fulfill the requirements imposed on the key type of
+            __tr1_unordered_map__.
+          * If this type is `hash_mapS`, then the `_Input` type must fulfill
+            the requirements imposed on the key type of __non_std_hash_map__.
+        ]
+        [`mapS`]
+    ]
+    [
+        [`_RandomAccessContainerSelector`]
+        [The type that determines the internal transition container type.]
+        [It must be either `vecS` or `dequeS`.]
+        [`vecS`]
+    ]
+]
+
+You can use the parameter names as __template_keywords__.  For example, the
+following type definitions are semantically equivalent:
+
+``
+typedef mapped_input_transition_function<
+            char
+          , mapS
+          , dequeS
+        >
+        Function1;
+typedef mapped_input_transition_function<
+            char
+          , [*_RandomAccessContainerSelector]<dequeS>
+        >
+        Function2;
+typedef mapped_input_transition_function<
+            [*_RandomAccessContainerSelector]<dequeS>
+          , [*_Input]<char>
+        >
+        Function3;
+``
+
+The last two definitions have the added benefit of not having to specify the
+default type of the `_AssociativeContainerSelector` template parameter.
+
+All template parameter names for this class template are defined in the
+`boost::automata::keyword` namespace.
+[endsect] [/ Template Parameters]
+
+[section:model_of Model of]
+  * __Mapped_Input_Transition_Function__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+  * __Equality_Comparable__
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Tag type]
+        [`tag`]
+        [__Transition_Function__]
+    ]
+    [
+        [Input type]
+        [`input`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value type]
+        [`state`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Result type]
+        [`result_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [First argument type]
+        [`first_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Second argument type]
+        [`second_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Default constructor]
+        [`mapped_input_transition_function();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Copy constructor]
+        [``
+            mapped_input_transition_function(
+                mapped_input_transition_function const&
+            );
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [
+            `mapped_input_transition_function&
+            operator=(mapped_input_transition_function const&);`
+        ]
+        [__Assignable__]
+    ]
+    [
+        [Input recognition]
+        [`bool recognizes_input(second_argument_type) const;`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value recognition]
+        [`bool recognizes_state(first_argument_type) const;`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Function call]
+        [
+            `result_type
+            operator()(first_argument_type, second_argument_type) const;`
+        ]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Nontrivial input enumeration]
+        [``
+            template <typename Iterator>
+            void make_nontrivial_inputs(state const&, Iterator) const;
+        ``]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Transition setting]
+        [``
+            void
+                set_transition(
+                    first_argument_type
+                  , second_argument_type
+                  , result_type
+                );
+            implementation_defined
+                operator()(first_argument_type, second_argument_type);
+        ``]
+        [__Mapped_Input_Transition_Function__]
+    ]
+    [
+        [Resetting]
+        [`void reset(std::size_t);`]
+        [__Mapped_Input_Transition_Function__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Equality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+            >
+            bool
+                operator==(
+                    mapped_input_transition_function<T0,T1,T2> const&
+                  , mapped_input_transition_function<T3,T4,T5> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+    [
+        [Inequality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+            >
+            bool
+                operator!=(
+                    mapped_input_transition_function<T0,T1,T2> const&
+                  , mapped_input_transition_function<T3,T4,T5> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+]
+[endsect] [/ Non-members]
+
+[endsect] [/ mapped_input_transition_function]
+
+[section:next_state_trans_func `next_state_transition_function`]
+
+[section Synopsis]
+[reference__next_state_transition_function]
+[endsect]
+
+[section Description]
+Straightforward implementation of a __Next_State_Transition_Function__.
+
+[important
+    This component depends on __Boost_Type_Traits_Operators__, which has been
+    recently accepted into Boost but is currently not part of an official
+    release.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_next_state_hpp__>
+``
+[endsect]
+
+[section Example]
+The table below shows the output of a sample transition function.
+
+[table
+    [[Current State][Valid Next States]]
+    [[            0][1][2][4]]
+    [[            1][0][2][3]]
+    [[            2][3][4]]
+    [[            3][0][1][2]]
+    [[            4][0][3][5]]
+    [[            5][]]
+]
+
+The example below shows how to build the transition function above using this
+class template.
+
+[``
+    next_state_transition_function<> function;
+
+    function.reset(6);
+    function.add_transition(0, 1);
+    function.add_transition(0, 2);
+    function.add_transition(0, 4);
+    function.add_transition(1, 0);
+    function.add_transition(1, 2);
+    function.add_transition(1, 3);
+    function(2) += 3;  // Same as function.add_transition(2, 3);
+    function(2) += 4;
+    function(3) += 0;
+    function(3) += 1;
+    function(3) += 2;
+    function(4) += 0;
+    function(4) += 3;
+    function(4) += 5;
+
+    // Output...
+``]
+
+In normal usage, the `reset()` and `add_transition()` methods are invoked by
+the function call operator of a custom __Automaton_Builder__, as shown in the
+__DFA_tutorial__ and in the __Observer_Policies_tutorial__.
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`_AssociativeContainerSelector`]
+        [The type that determines the internal input set type.]
+        [
+            It must be either `setS`, `unordered_setS`, or `hash_setS` (if
+            available).
+        ]
+        [`setS`]
+    ]
+    [
+        [`_RandomAccessContainerSelector`]
+        [The type that determines the internal transition container type.]
+        [It must be either `vecS` or `dequeS`.]
+        [`vecS`]
+    ]
+]
+
+You can use the parameter names as __template_keywords__.  All template
+parameter names for this class template are defined in the
+`boost::automata::keyword` namespace.
+[endsect]
+
+[section Model of]
+  * __Next_State_Transition_Function__
+  * __Adaptable_Binary_Function__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+  * __Equality_Comparable__
+[endsect]
+
+[section Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Tag type]
+        [`tag`]
+        [__Transition_Function__]
+    ]
+    [
+        [Input type]
+        [`input`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value type]
+        [`state`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Result type]
+        [`result_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [First argument type]
+        [`first_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Second argument type]
+        [`second_argument_type`]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Default constructor]
+        [`next_state_transition_function();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Copy constructor]
+        [``
+            next_state_transition_function(
+                next_state_transition_function const&
+            );
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [
+            `next_state_transition_function&
+            operator=(next_state_transition_function const&);`
+        ]
+        [__Assignable__]
+    ]
+    [
+        [Input recognition]
+        [`bool recognizes_input(second_argument_type) const;`]
+        [__Transition_Function__]
+    ]
+    [
+        [State register value recognition]
+        [`bool recognizes_state(first_argument_type) const;`]
+        [__State_Register_Transition_Function__]
+    ]
+    [
+        [Function call]
+        [
+            `result_type
+            operator()(first_argument_type, second_argument_type) const;`
+        ]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Nontrivial input enumeration]
+        [``
+            template <typename Inputs>
+            void make_nontrivial_inputs(state const&, Inputs&) const;
+        ``]
+        [__DFA_Transition_Function__]
+    ]
+    [
+        [Transition setting]
+        [``
+            void add_transition(first_argument_type, second_argument_type);
+            implementation_defined operator()(first_argument_type);
+        ``]
+        [__Next_State_Transition_Function__]
+    ]
+    [
+        [Resetting]
+        [`void reset(std::size_t);`]
+        [__Next_State_Transition_Function__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Equality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+            >
+            bool
+                operator==(
+                    next_state_transition_function<T0,T1> const&
+                  , next_state_transition_function<T2,T3> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+    [
+        [Inequality]
+        [``
+            template <
+                typename T0
+              , typename T1
+              , typename T2
+              , typename T3
+              , typename T4
+              , typename T5
+            >
+            bool
+                operator!=(
+                    next_state_transition_function<T0,T1> const&
+                  , next_state_transition_function<T2,T3> const&
+                );
+        ``]
+        [__Equality_Comparable__]
+    ]
+]
+[endsect]
+
+[endsect] [/ next_state_transition_function]
+
+[section:dt_explicit_trans_func `decision_tree_explicit_transition_function`]
+
+[section Synopsis]
+[reference__decision_tree_explicit_transition_function]
+[endsect]
+
+[section Description]
+
+[important
+    This component depends on __Boost_Tree_Node__, which is not yet a part of
+    Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_decision_tree_hpp__>
+``
+[endsect]
+
+[endsect] [/ decision_tree_explicit_transition_function]
+
+[section:input_rule_trans_func `input_rule_transition_function`]
+
+[section Synopsis]
+[reference__input_rule_transition_function]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_input_rule_hpp__>
+``
+[endsect]
+
+[endsect] [/ input_rule_transition_function]
+
+[section:ttl_bool_cell_trans_func `totalistic_boolean_cell_transition_function`]
+
+[section Synopsis]
+[reference__totalistic_boolean_cell_transition_function]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_totalistic_boolean_cell_hpp__>
+``
+[endsect]
+
+[endsect] [/ totalistic_boolean_cell_transition_function]
+
+[section:ttl_dt_cell_trans_func `totalistic_dt_cell_transition_function`]
+
+[section Synopsis]
+[reference__totalistic_dt_cell_transition_function]
+[endsect]
+
+[section Description]
+
+[important
+    This component depends on __Boost_Tree_Node__, which is not yet a part of
+    Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_totalistic_dt_cell_hpp__>
+``
+[endsect]
+
+[endsect] [/ totalistic_dt_cell_transition_function]
+
+[section:mdp_mapped_input_trans_func `mdp_mapped_input_transition_function`]
+
+[section Synopsis]
+[reference__mdp_mapped_input_transition_function]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_mdp_mapped_input_hpp__>
+``
+[endsect]
+
+[endsect] [/ mdp_mapped_input_transition_function]
+
+[section:decision_tree_trans_func `decision_tree_transition_function`]
+
+[section Synopsis]
+[reference__decision_tree_transition_function]
+[endsect]
+
+[section Description]
+
+[important
+    This component depends on __Boost_Tree_Node__, which is not yet a part of
+    Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_transition_function_decision_tree_hpp__>
+``
+[endsect]
+
+[endsect] [/ decision_tree_transition_function]
+

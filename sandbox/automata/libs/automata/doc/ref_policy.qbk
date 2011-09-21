@@ -1,0 +1,284 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:single_final_state_policy `single_final_state_policy`]
+
+[section Synopsis]
+[reference__single_final_state_policy]
+[endsect]
+
+[section Description]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_policy_single_final_state__>
+``
+[endsect]
+
+[section Example]
+See the [link automata.tutorials.observer_policies.final_state Final-State
+Policies section] of the __Observer_Policies_tutorial__.
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Uid`]
+        [
+            A primitive integral constant that uniquely identifies this
+            template instantiation.
+        ]
+        []
+        [`0UL`]
+    ]
+]
+[endsect]
+
+[section:metafunc_class_param Metafunction Class Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`SubjectAutomaton`]
+        [The base type of the subject automaton.]
+        [
+          * It must model the __Automaton_Base__ concept.
+          * It must implement [termlink current state] access.  See the
+            __Automaton_With_State_Register__ concept.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:ret_type_desc Return Type Description]
+[endsect]
+
+[section:ret_type_model_of Return Type Model of]
+__Undoable_Automaton_Observer__
+[endsect]
+
+[section:ret_type_public_bases Return Type Public Base Classes]
+__base_observer__
+[endsect]
+
+[section:ret_type_members Return Type Members]
+[table
+    [[Name][Expression][Description][Where defined]]
+    [
+        [Build constructor]
+        [``
+            template <typename Builder>
+            type(
+                Builder const& builder
+              , single_final_state_policy const& policy
+              , SubjectAutomaton const& automaton
+            );
+        ``]
+        [
+          # Constructs this observer and associates it with the specified
+            subject automaton.
+          # Requires the `Builder` type to model the
+            __Extensible_Automaton_Builder__ concept.
+          # Requires the builder's observer builder map to associate the
+            type `single_final_state_key<Uid>` with a valid object.
+          # Requires the type of this object to implement a `get_final_state()`
+            method whose return type is convertible to the [termlink state
+            register] value type of the subject automaton.
+          # Stores the return value of the object's `get_final_state()`
+            method.  The boolean conversion operator will compare this value
+            with the subject automaton's [termlink current state].
+        ]
+        [__Observer__]
+    ]
+    [
+        [Observer-copy constructor]
+        [`type(type const& copy, SubjectAutomaton const& automaton);`]
+        [
+            Constructs this observer, associates it with the specified
+            automaton, and copies the [termlink state register] value from the
+            other observer.
+        ]
+        [__Copyable_Observer__]
+    ]
+    [
+        [Copy constructor]
+        [`type(type const& copy);`]
+        []
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [`type& operator=(type const& copy);`]
+        []
+        [__Assignable__]
+    ]
+    [
+        [Initialization notification]
+        [``
+            template <typename Builder>
+            void on_initialize(Builder const& builder);
+        ``]
+        [
+          # Requires the `Builder` type to model the
+            __Extensible_Automaton_Builder__ concept.
+          # Requires the builder's observer builder map to associate the
+            type `single_final_state_key<Uid>` with a valid object.
+          # Requires the type of this object to implement a `get_final_state()`
+            method whose return type is convertible to the [termlink state
+            register] value type of the subject automaton.
+          # Stores the return value of the object's `get_final_state()`
+            method.  The boolean conversion operator will compare this value
+            with the subject automaton's [termlink current state].
+        ]
+        [__Observer__]
+    ]
+    [
+        [Boolean conversion operator]
+        [`operator bool() const;`]
+        [
+            Returns the result of the __is_at_final_state__ function
+            template using the observers' subject automaton, its transition
+            function tag type, and the [termlink state register] value stored
+            in this observer.
+        ]
+        [`type`]
+    ]
+]
+[endsect] [/ Return Type Members]
+
+[endsect] [/ single_final_state_policy]
+
+[section:is_at_final_state `is_at_final_state`]
+
+[section Prototype]
+[reference__is_at_final_state]
+[endsect]
+
+[section Description]
+This function template determines whether or not the specified automaton is at
+the specified [termlink final state].
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_policy_single_final_state__>
+``
+[endsect]
+
+[section:type_reqs Type Requirements]
+  * The `SubjectAutomaton` type must model the __Automaton_Base__ concept.
+  * The `SubjectAutomaton` type must implement [termlink current state]
+    access.  See the __Automaton_With_State_Register__ concept.
+[endsect]
+
+[section Preconditions]
+[endsect]
+
+[section Complexity]
+[endsect]
+
+[endsect] [/ is_at_final_state]
+
+[section:parall_final_states_policy `parallel_final_states_policy`]
+
+[section Synopsis]
+[reference__parallel_final_states_policy]
+[endsect]
+
+[endsect] [/ parallel_final_states_policy]
+
+[section:has_visited_any_state `has_visited_any_state`]
+
+[section Prototype]
+[reference__has_visited_any_state]
+[endsect]
+
+[endsect] [/ has_visited_any_state]
+
+[section:serial_final_states_policy `serial_final_states_policy`]
+
+[section Synopsis]
+[reference__serial_final_states_policy]
+[endsect]
+
+[endsect] [/ serial_final_states_policy]
+
+[section:has_no_unvisited_states `has_no_unvisited_states`]
+
+[section Prototype]
+[reference__has_no_unvisited_states]
+[endsect]
+
+[endsect] [/ has_no_unvisited_states]
+
+[section:bool_insertion_policy `bool_insertion_policy`]
+
+[section Synopsis]
+[reference__bool_insertion_policy]
+[endsect]
+
+[endsect] [/ bool_insertion_policy]
+
+[section:dpda_insertion_policy `dpda_insertion_policy`]
+
+[section Synopsis]
+[reference__dpda_insertion_policy]
+[endsect]
+
+[endsect] [/ dpda_insertion_policy]
+
+[section:dfa_insertion_policy `dfa_insertion_policy`]
+
+[section Synopsis]
+[reference__dfa_insertion_policy]
+[endsect]
+
+[endsect] [/ dfa_insertion_policy]
+
+[section:mdp_best_input_policy `mdp_best_input_policy`]
+
+[section Prototype]
+[reference__mdp_best_input_policy]
+[endsect]
+
+[endsect] [/ mdp_best_input_policy]
+
+[section:moore_output_policy `moore_output_policy`]
+
+[section Prototype]
+[reference__moore_output_policy]
+[endsect]
+
+[endsect] [/ moore_output_policy]
+
+[section:mealy_output_policy `mealy_output_policy`]
+
+[section Prototype]
+[reference__mealy_output_policy]
+[endsect]
+
+[endsect] [/ mealy_output_policy]
+
+[section:input_valid_policy `input_validation_policy`]
+
+[section Synopsis]
+[reference__input_validation_policy]
+[endsect]
+
+[endsect] [/ input_validation_policy]
+
+[section:def_input_valid_policy `default_input_validation_policy`]
+
+[section Synopsis]
+[reference__default_input_validation_policy]
+[endsect]
+
+[endsect] [/ default_input_validation_policy]
+

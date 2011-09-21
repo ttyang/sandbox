@@ -1,0 +1,53 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:input_rules Tutorial: Input Rules]
+
+Using an __automaton__ to implement a __zero_player_game__--a machine whose
+next state is determined solely by its [termlink current state]--should be a
+trivial matter.  Zero-player games tend to belong in families, however:
+conceptually, the [termlink transition function] of each family member is the
+only property that differs between them.  None of the __Transition_Function__
+models can change behavior during input processing by the __automaton__ that
+owns them in this framework.  Input rules provide the missing flexibility.
+
+Earlier tutorials have shown how __Automaton_Builders__ build
+__Transition_Functions__; this time, we see how they can also build state
+objects.  The function that uses a random number generator will be used to
+initialize the __automaton__ for implementing __Rule_184__.
+
+[example__elementary_cellular_automaton__builders]
+
+The __wolfram_code_input_rule__ class template works on bidirectional models of
+the __Sequence__ concept such as __std_deque__.  In turn, this class template
+models the __Input_Rule__ concept.  Objects of such types can be passed in as
+inputs processed by any __automaton__ whose transition function type is
+a compatible __input_rule_transition_function__.  This function delegates state
+transitions to the __Input_Rule__ object, which either modifies the current
+state in place or--in this case--returns the next state.
+
+[example__elementary_cellular_automaton__typedefs]
+
+Suceeding states will be displayed in each line.  The output of each `run` call
+will look like either a growing triangle or a block that may be ragged on the
+right side.
+
+[example__elementary_cellular_automaton__run]
+
+The __wolfram_code_input_rule__ can be configured to transition state sequences
+according to rules named by the __Wolfram_code__.  This program will output the
+results of applying __Rule_30__, __Rule_90__, Rule 124 (which is a mirror image
+of __Rule_110__) and __Rule_184__ to the __automaton__.
+
+[example__elementary_cellular_automaton__main]
+
+The complete working program for this tutorial is contained in
+__example_elem_cell_automaton_cpp__.
+
+[endsect] [/ Tutorial: Input Rules]
+

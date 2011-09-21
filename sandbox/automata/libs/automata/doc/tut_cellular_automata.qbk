@@ -1,0 +1,129 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:cellular_automata Tutorial: Cellular Automata]
+
+[section:game_of_life Conway's Game of Life]
+__Conway_Game_of_Life__ is the premier example of a __cellular_automaton__.  It
+operates under a simple rule: each dead cell becomes alive if it has exactly
+three live neighbors, and each live cell remains alive if it has two or three
+live neighbors.  We can build a [termlink totalistic cellular automaton] that
+exhibits this behavior by defining a function that takes in an instance of a
+__totalistic_boolean_cell_transition_function__ and follows Conway's rule.
+
+[example__game_of_life__cell_function]
+
+Next, we define the types of the automaton cells, their graph layout, and the
+external property map that will bind them together.  As long as the graph is
+mutable, it doesn't matter how else it is configured.  The property map will
+serve as the state of our cellular automaton.
+
+[example__game_of_life__more_typedefs]
+
+The __cellular_graph_input_rule__ will refer to the graph layout to determine
+which cells are neighbors when it is used to update our automaton.  Since
+neither the layout nor the input rule will change, they can be members of our
+singleton program.
+
+[example__game_of_life__program]
+
+For the sake of illustration, we want our program to start with a __glider__
+at the upper left corner.  To accomplish this during construction of our
+automaton, we write an __Adaptable_Unary_Function__ that will build the
+starting state by forwarding it to a helper function, which will then build
+the individual cells, using the cell function we first wrote as well as some
+hardcoded data to represent our glider.
+
+[example__game_of_life__build_cells]
+
+The __moore_output_policy__ class template models the __Automaton_Observer__
+concept by providing a uniform way to handle all relevant events: it passes
+the subject automaton to our `output_cells` __Unary_Function__, which in turn
+forwards the [termlink current state] to a helper function that displays the
+individual cell states.
+
+[example__game_of_life__output]
+
+The __input_rule_transition_function__ must be configured so that the
+__cellular_graph_input_rule__ can modify the cell map in place.  With that
+accomplished, our program can run the simulation.
+
+[example__game_of_life__run]
+
+If you run the program, you should see ASCII frames of the glider flying toward
+the lower right corner and then wrapping around back to its starting position
+in twenty-five iterations.
+
+The complete working program for this tutorial is contained in
+__example_game_of_life_cpp__.
+[endsect] [/ Conway's Game of Life]
+
+[section:wireworld Wireworld]
+__Wireworld__ is another example of a __cellular_automaton__.  Machines of this
+type behave like animated circuit diagrams.  This time around, there are four
+possible states for each cell instead of two, so we need a different type of
+transition function: the __totalistic_dt_cell_transition_function__.  Its
+`add_transition()` method first takes in a symbol that will textually represent
+the cell's current state.  Each succeeding line reads as follows:
+
+  * If the [termlink current state] is 'o', then the next state should be '+'.
+  * If the current state is '+', then the next state should be ' '.
+  * If the current state is ' ' and current state of one neighbor is 'o', then
+    the next state should be 'o'.
+  * If the current state is ' ' and two neighbors are at current state 'o',
+    then the next state should be 'o'.
+
+[example__wireworld__cell_function]
+
+Next, we define the types of the automaton cells, their graph layout, and the
+external property map that will bind them together.  As long as the graph is
+mutable, it doesn't matter how else it is configured.  The property map will
+serve as the state of our cellular automaton.
+
+[example__wireworld__more_typedefs]
+
+The __cellular_graph_input_rule__ will refer to the graph layout to determine
+which cells are neighbors when it is used to update our automaton.  Since
+neither the layout nor the input rule will change, they can be members of our
+singleton program.
+
+[example__wireworld__program]
+
+For the sake of illustration, we want our program to animate a logic circuit of
+2 diodes.  To accomplish this during construction of our automaton, we write an
+__Adaptable_Unary_Function__ that will build the starting state by forwarding
+it to a helper function, which will then build the individual cells, using the
+cell function we first wrote as well as some hardcoded data to represent our
+diode.  A more robust cell-building function, of course, would perform this
+initialization with less pain, e.g. by reading from a file.
+
+[example__wireworld__build_cells]
+
+The __moore_output_policy__ class template models the __Automaton_Observer__
+concept by providing a uniform way to handle all relevant events: it passes
+the subject automaton to our `output_cells` __Unary_Function__, which in turn
+forwards the [termlink current state] to a helper function that displays the
+individual cell states.
+
+[example__wireworld__output]
+
+The __input_rule_transition_function__ must be configured so that the
+__cellular_graph_input_rule__ can modify the cell map in place.  With that
+accomplished, our program can run the simulation.
+
+[example__wireworld__run]
+
+If you run the program, you should see ASCII frames of electrons passing
+through the top diode but not the bottom one.
+
+The complete working program for this tutorial is contained in
+__example_wireworld_cpp__.
+[endsect] [/ Wireworld]
+
+[endsect] [/ Tutorial: Cellular Automata]
+

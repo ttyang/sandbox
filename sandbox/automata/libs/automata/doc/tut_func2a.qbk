@@ -1,0 +1,75 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:func2a Tutorial: From Function To Automaton]
+Converting an ordinary binary function to a transition function that
+Boost.Automata can use ought to be much more straightforward than defining a
+__Unary_Metafunction_Class__ and a wrapper __Transition_Function__ model,
+both of which the __automaton__ class template requires.  Here, we take a
+detour to examine the more specialized __function_automaton__ and its
+relative syntactic appeal.
+
+Let's say that we want to create a [@http://en.wikipedia.org/wiki/Markov_chain
+Markov chain].  Its state type is a mathematical vector, and its transition
+function is a matrix-vector multiplication operator.  Our binary function is a
+simple wrapper around __ublas_prod__.
+
+[example__ublas_product__function]
+
+We will use our Markov chain to study a simple weather model.  The following
+values will form our matrix:
+
+  * A sunny day has a 90% chance of remaining sunny in the next day and a 10%
+    chance of becoming rainy in the next day.
+  * A rainy day has a 50% chance of becoming sunny in the next day and a 50%
+    chance of staying rainy in the next day.
+
+Thus, our state vector contains two elements: the chance that it is sunny
+today, and the chance that it is raining.  Our source state indicates that it
+is definitely sunny on the first day.  We want to verify that because our
+matrix is stochastic, the Markov chain will eventually reach a steady state.
+
+[example__markov_chain__setup]
+
+The __function_automaton__ class template requires a function type, which can
+be tricky to hand-code.  With the advent of __Boost_Typeof__, this hand-coding
+is no longer a necessity.  All we need to pass into the constructor are our
+binary function and the desired source state.
+
+[example__markov_chain__automaton]
+
+[note
+    __Boost_Parameter__ currently has
+    [@https://svn.boost.org/trac/boost/ticket/2793 trouble]
+    deducing arguments that resolve to functions.  For now, you must pass the
+    function argument by name or by position--in this case, the first position.
+]
+
+[note
+    The reason we didn't use __ublas_prod__ directly is because it's actually
+    an overloaded function template.  It becomes overly difficult just to pass
+    the appropriate function overload as an argument, let alone deduce the
+    correct type.
+]
+
+The program works as follows: it translates our current state vector to today's
+chances of rain or shine.  Each positive integer we enter indicates the number
+of days that we want to look ahead, but we'll only get the results for the last
+day.  The program ends when we enter an illegal value or a non-positive
+integer.
+
+[example__markov_chain__usage]
+
+Continuously entering positive integers will show that our Markov chain does
+indeed reach a steady state: all future days have an 83.33% chance of being
+sunny and a 16.67% chance of being rainy.
+
+The complete working program for this tutorial is contained in
+__example_markov_chain_cpp__.
+[endsect] [/ Tutorial: From Function To Automaton]
+

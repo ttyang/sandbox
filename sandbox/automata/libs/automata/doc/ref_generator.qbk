@@ -1,0 +1,694 @@
+[/=============================================================================
+    Copyright (C) 2007-2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:deterministic_generator `deterministic_generator`]
+
+[section Synopsis]
+[reference__deterministic_generator]
+[endsect]
+
+[section Description]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_generator_deterministic_hpp__>
+``
+[endsect]
+
+[section:metafunc_class_param Metafunction Class Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Function`]
+        [The transition function type of the return automaton base type.]
+        [
+          * It must model the __Transition_Function__ concept.
+          * The result type must model the __Assignable__ concept.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:ret_type_desc Return Type Description]
+[endsect]
+
+[section:ret_type_model_of Return Type Model of]
+  * __Automaton_Base__
+  * __Copy_Constructible__
+  * __Assignable__
+[endsect]
+
+[section:ret_type_public_bases Return Type Public Base Classes]
+None.
+[endsect]
+
+[section:ret_type_members Return Type Members]
+[table
+    [[Name][Expression][Description][Visibility]]
+    [
+        [Tag type]
+        [`tag`]
+        [Defined by the __Automaton_Base__ concept.]
+        [`public`]
+    ]
+    [
+        [State type]
+        [`traits::state`]
+        [
+          * The type of an object that represents the state of this
+            __Automaton_Base__.
+          * Defined as the transition function's return type.
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Default constructor]
+        [`type();`]
+        [
+          * Constructs an instance of this __Automaton_Base__ whose
+            [termlink current state] and [termlink source state] are
+            default-constructed.
+          * Enables the derived __automaton__ type to model the
+            __Default_Constructible__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Source state constructor]
+        [`type(traits::state const&);`]
+        [
+          * Constructs an instance of this __Automaton_Base__ whose
+            [termlink current state] is default-constructed and whose
+            [termlink source state] is set to the specified state.
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Copy constructor]
+        [`type(type const&);`]
+        [
+          * Constructs an instance of this __Automaton_Base__ whose
+            [termlink current state] and [termlink source state] are
+            the same as those of the instance passed in.
+          * Defined by the __Copy_Constructible__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Assignment operator]
+        [`type& operator=(type const&);`]
+        [
+          * Sets the [termlink current state] and [termlink source state]
+            of this __Automaton_Base__ to those of the automaton passed in.
+          * Defined by the __Assignable__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Source state initializer]
+        [`void initialize_impl(traits::state const&);`]
+        [
+          * Sets the [termlink source state] of this __Automaton_Base__ to
+            the specified state.
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Resetting implementation]
+        [`void reset_impl();`]
+        [
+          * Sets the [termlink current state] of this __Automaton_Base__ to the
+            [termlink source state].
+          * Defined by the __Automaton_Base__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Current state access]
+        [`traits::state const& get_current_state() const;`]
+        [
+          * Accesses the [termlink current state].
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Source state access]
+        [`traits::state const& get_source_state() const;`]
+        [
+          * Accesses the [termlink source state].
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`public`]
+    ]
+]
+[endsect] [/ Return Type Members]
+
+[endsect] [/ deterministic_generator]
+
+[section:dpda_generator `dpda_generator`]
+
+[section Synopsis]
+[reference__dpda_generator]
+[endsect]
+
+[section Description]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_generator_dpda_hpp__>
+``
+[endsect]
+
+[section:metafunc_class_param Metafunction Class Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Function`]
+        [The transition function type of the return automaton base type.]
+        [It must model the __DPDA_Transition_Function__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section:ret_type_desc Return Type Description]
+[endsect]
+
+[section:ret_type_model_of Return Type Model of]
+  * __Input_Enumerable_Automaton_Base__
+  * __Copy_Constructible__
+  * __Assignable__
+[endsect]
+
+[section:ret_type_public_bases Return Type Public Base Classes]
+None.
+[endsect]
+
+[section:ret_type_members Return Type Members]
+[table
+    [[Name][Expression][Description][Visibility]]
+    [
+        [Tag type]
+        [`tag`]
+        [Defined by the __Input_Enumerable_Automaton_Base__ concept.]
+        [`public`]
+    ]
+    [
+        [Stack element type]
+        [`traits::stack_element`]
+        [Enables the derived __automaton__ type to model the __DPDA__ concept.]
+        [`public`]
+    ]
+    [
+        [Stack iterator type]
+        [`traits::stack_iterator`]
+        [Enables the derived __automaton__ type to model the __DPDA__ concept.]
+        [`public`]
+    ]
+    [
+        [State register value type]
+        [`traits::state`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Default constructor]
+        [`type();`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Default_Constructible__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Source state register value constructor]
+        [`type(traits::state const&);`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Copy constructor]
+        [`type(type const&);`]
+        [Defined by the __Copy_Constructible__ concept.]
+        [`public`]
+    ]
+    [
+        [Assignment operator]
+        [`type& operator=(type const&);`]
+        [Defined by the __Assignable__ concept.]
+        [`public`]
+    ]
+    [
+        [Source state register value initializer]
+        [`void initialize_impl(traits::state const&);`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Resetting implementation]
+        [`void reset_impl();`]
+        [Defined by the __Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Nontrivial input check implementation]
+        [``
+            void
+                is_nontrivial_input_impl(
+                    Function const&
+                  , Function::input const&
+                ) const;
+        ``]
+        [Defined by the __Input_Enumerable_Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Nontrivial input enumeration implementation]
+        [``
+            template <typename Iterator>
+            void make_nontrivial_inputs_impl(Function const&, Iterator) const;
+        ``]
+        [Defined by the __Input_Enumerable_Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Input processing implementation]
+        [`bool process_input_impl(Function const&, Function::input const&);`]
+        [Defined by the __Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Empty stack check]
+        [`bool has_empty_stack() const;`]
+        [Enables the derived __automaton__ type to model the __DPDA__ concept.]
+        [`public`]
+    ]
+    [
+        [Stack top access]
+        [`traits::stack_element const& get_stack_top() const;`]
+        [Enables the derived __automaton__ type to model the __DPDA__ concept.]
+        [`public`]
+    ]
+    [
+        [Beginning of stack range]
+        [`traits::stack_iterator const& get_stack_begin() const;`]
+        [Enables the derived __automaton__ type to model the __DPDA__ concept.]
+        [`public`]
+    ]
+    [
+        [End of stack range]
+        [`traits::stack_iterator const& get_stack_end() const;`]
+        [Enables the derived __automaton__ type to model the __DPDA__ concept.]
+        [`public`]
+    ]
+    [
+        [Current state register value access]
+        [`traits::state const& get_current_state() const;`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Source state register value access]
+        [`traits::state const& get_source_state() const;`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`public`]
+    ]
+]
+[endsect] [/ Return Type Members]
+
+[endsect] [/ dpda_generator]
+
+[section:dfa_generator `dfa_generator`]
+
+[section Synopsis]
+[reference__dfa_generator]
+[endsect]
+
+[section Description]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_generator_dfa_hpp__>
+``
+[endsect]
+
+[section:metafunc_class_param Metafunction Class Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Function`]
+        [The transition function type of the return automaton base type.]
+        [It must model the __DFA_Transition_Function__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section:ret_type_desc Return Type Description]
+[endsect]
+
+[section:ret_type_model_of Return Type Model of]
+  * __Input_Enumerable_Automaton_Base__
+  * __Copy_Constructible__
+  * __Assignable__
+[endsect]
+
+[section:ret_type_public_bases Return Type Public Base Classes]
+None.
+[endsect]
+
+[section:ret_type_members Return Type Members]
+[table
+    [[Name][Expression][Description][Visibility]]
+    [
+        [Tag type]
+        [`tag`]
+        [Defined by the __Input_Enumerable_Automaton_Base__ concept.]
+        [`public`]
+    ]
+    [
+        [State register value type]
+        [`traits::state`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Default constructor]
+        [`type();`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Default_Constructible__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Source state register value constructor]
+        [`type(traits::state const&);`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Copy constructor]
+        [`type(type const&);`]
+        [Defined by the __Copy_Constructible__ concept.]
+        [`public`]
+    ]
+    [
+        [Assignment operator]
+        [`type& operator=(type const&);`]
+        [Defined by the __Assignable__ concept.]
+        [`public`]
+    ]
+    [
+        [Source state register value initializer]
+        [`void initialize_impl(traits::state const&);`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Resetting implementation]
+        [`void reset_impl();`]
+        [Defined by the __Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Nontrivial input check implementation]
+        [``
+            void
+                is_nontrivial_input_impl(
+                    Function const&
+                  , Function::input const&
+                ) const;
+        ``]
+        [Defined by the __Input_Enumerable_Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Nontrivial input enumeration implementation]
+        [``
+            template <typename Iterator>
+            void make_nontrivial_inputs_impl(Function const&, Iterator) const;
+        ``]
+        [Defined by the __Input_Enumerable_Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Input processing implementation]
+        [`bool process_input_impl(Function const&, Function::input const&);`]
+        [Defined by the __Automaton_Base__ concept.]
+        [`protected`]
+    ]
+    [
+        [Current state register value access]
+        [`traits::state const& get_current_state() const;`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Source state register value access]
+        [`traits::state const& get_source_state() const;`]
+        [
+            Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept.
+        ]
+        [`public`]
+    ]
+]
+[endsect] [/ Return Type Members]
+
+[endsect] [/ dfa_generator]
+
+[section:probabilistic_generator `probabilistic_generator`]
+
+[section Synopsis]
+[reference__probabilistic_generator]
+[endsect]
+
+[section Description]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_generator_probabilistic_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`RNGEngine`]
+        [
+            The type of the underlying engine used to generate numbers.
+        ]
+        [It must model the __Uniform_Random_Number_Generator__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section:metafunc_class_param Metafunction Class Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Function`]
+        [The transition function type of the return automaton base type.]
+        [
+          * It must model the __Probabilistic_Transition_Function__ concept.
+          * The result type must model the __Assignable__ concept.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:ret_type_desc Return Type Description]
+[endsect]
+
+[section:ret_type_model_of Return Type Model of]
+  * __Automaton_Base__
+  * __Copy_Constructible__
+  * __Assignable__
+[endsect]
+
+[section:ret_type_public_bases Return Type Public Base Classes]
+None.
+[endsect]
+
+[section:ret_type_members Return Type Members]
+[table
+    [[Name][Expression][Description][Visibility]]
+    [
+        [Tag type]
+        [`tag`]
+        [Defined by the __Automaton_Base__ concept.]
+        [`public`]
+    ]
+    [
+        [State type]
+        [`traits::state`]
+        [
+          * The type of an object that represents the state of this
+            __Automaton_Base__.
+          * Defined as the transition function's return type.
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Default constructor]
+        [`type();`]
+        [
+          * Constructs an instance of this __Automaton_Base__ whose
+            [termlink current state] and [termlink source state] are
+            default-constructed.
+          * Enables the derived __automaton__ type to model the
+            __Default_Constructible__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Source state constructor]
+        [`type(traits::state const&);`]
+        [
+          * Constructs an instance of this __Automaton_Base__ whose
+            [termlink current state] is default-constructed and whose
+            [termlink source state] is set to the specified state.
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Copy constructor]
+        [`type(type const&);`]
+        [
+          * Constructs an instance of this __Automaton_Base__ whose
+            [termlink current state] and [termlink source state] are
+            the same as those of the instance passed in.
+          * Defined by the __Copy_Constructible__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Assignment operator]
+        [`type& operator=(type const&);`]
+        [
+          * Sets the [termlink current state] and [termlink source state]
+            of this __Automaton_Base__ to those of the automaton passed in.
+          * Defined by the __Assignable__ concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Source state initializer]
+        [`void initialize_impl(traits::state const&);`]
+        [
+          * Sets the [termlink source state] of this __Automaton_Base__ to
+            the specified state.
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Resetting implementation]
+        [`void reset_impl();`]
+        [
+          * Sets the [termlink current state] of this __Automaton_Base__ to the
+            [termlink source state].
+          * Defined by the __Automaton_Base__ concept.
+        ]
+        [`protected`]
+    ]
+    [
+        [Current state access]
+        [`traits::state const& get_current_state() const;`]
+        [
+          * Accesses the [termlink current state].
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`public`]
+    ]
+    [
+        [Source state access]
+        [`traits::state const& get_source_state() const;`]
+        [
+          * Accesses the [termlink source state].
+          * Enables the derived __automaton__ type to model the
+            __Automaton_With_State_Register__ concept if the transition
+            function type models the __State_Register_Transition_Function__
+            concept.
+        ]
+        [`public`]
+    ]
+]
+[endsect] [/ Return Type Members]
+
+[endsect] [/ probabilistic_generator]
+

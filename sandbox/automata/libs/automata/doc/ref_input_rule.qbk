@@ -1,0 +1,86 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:cellular_graph_input_rule `cellular_graph_input_rule`]
+
+[section Synopsis]
+[reference__cellular_graph_input_rule]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_input_rule_cellular_graph_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Graph`]
+        [
+            The type of the underlying graph whose vertices the input property
+            map will associate with .
+        ]
+        [
+            It must model the __Graph__ concept.
+        ]
+        []
+    ]
+]
+[endsect]
+
+
+
+[endsect] [/ cellular_graph_input_rule]
+
+[section:wolfram_code_input_rule `wolfram_code_input_rule`]
+
+[section Synopsis]
+[reference__wolfram_code_input_rule]
+[endsect]
+
+[section Description]
+
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_automata_input_rule_wolfram_code_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Function`]
+        [
+            The type of the underlying function that this transition function
+            forwards to.
+        ]
+        [
+          * It must model either the __Unary_Function__ concept or the
+            __Binary_Function__ concept.
+          * If it models the __Binary_Function__ concept, then the data type of
+            at least one of its arguments must be the same as the return data
+            type.
+        ]
+        []
+    ]
+]
+[endsect]
+
+
+
+[endsect] [/ wolfram_code_input_rule]
+
