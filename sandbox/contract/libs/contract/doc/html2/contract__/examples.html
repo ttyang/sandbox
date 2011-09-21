@@ -37,8 +37,8 @@
       Equal: Operators</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.__n1962___sum__separated_body_definition">[N1962]
       Sum: Separated body definition</a></span></dt>
-<dt><span class="section"><a href="examples.html#contract__.examples.__n1962___square_root__default_parameters">[N1962]
-      Square Root: Default parameters</a></span></dt>
+<dt><span class="section"><a href="examples.html#contract__.examples.__n1962___square_root__default_parameters_and_comparison_with_d_syntax">[N1962]
+      Square Root: Default parameters and comparison with D syntax</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.__n1962___block__block_invariants">[N1962]
       Block: Block invariants</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.n2081_add">[N2081] Add: Generic addition
@@ -93,10 +93,10 @@
       String: Throw when contract is broken</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.cline90_vector">[Cline90] Vector:
       Comparison with A++ proposal syntax</a></span></dt>
+<dt><span class="section"><a href="examples.html#contract__.examples.__cline90___stack__function_try_blocks_and_exception_specifications">[Cline90]
+      Stack: Function-try-blocks and exception specifications</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.__cline90___vector_stack__subcontracting_from_abstract_data_type">[Cline90]
       Vector-Stack: Subcontracting from Abstract Data Type</a></span></dt>
-<dt><span class="section"><a href="examples.html#contract__.examples.__cline90___stack__a_very_simple_stack">[Cline90]
-      Stack: A very simple stack</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.__cline90___calendar__a_very_simple_calendar">[Cline90]
       Calendar: A very simple calendar</a></span></dt>
 </dl></div>
@@ -218,68 +218,68 @@
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>  <span class="comment">// Must always specify the access level (public).</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">()</span> <span class="special">)</span> <span class="comment">// Member initializers.</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">()</span> <span class="special">)</span> <span class="comment">// Member initializers.</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;)</span> <span class="identifier">al</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">(),</span> <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">()</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span>
             <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">T</span><span class="special">()</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span>
             <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">val</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span> <span class="identifier">count</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">val</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;)</span> <span class="identifier">al</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">,</span>
             <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">,</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">()</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span> <span class="comment">// With concept requirements.</span>
     <span class="keyword">public</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span> <span class="special">)</span>
     <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">last</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">())</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span> <span class="special">)</span>
     <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">first</span><span class="special">,</span> <span class="special">(</span><span class="identifier">InIt</span><span class="special">)</span> <span class="identifier">last</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;)</span> <span class="identifier">al</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">()),</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">()</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&amp;)</span> <span class="identifier">right</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="keyword">using</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">trivial</span><span class="special">::</span><span class="identifier">range</span><span class="special">,</span>
             <span class="identifier">range</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">())</span> <span class="special">==</span> <span class="identifier">range</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">end</span><span class="special">())</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span> <span class="comment">// Operator symbol and (arbitrary) name `copy`.</span>
@@ -684,68 +684,68 @@
 
     <span class="comment">// `public:` and `void` used to visually align with this library code.</span>
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">()</span>
         <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span><span class="special">;</span> <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">()</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">explicit</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;</span> <span class="identifier">al</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">al</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">empty</span><span class="special">();</span> <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">();</span> <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">al</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">explicit</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">size_type</span> <span class="identifier">count</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span> 
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span> 
             <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">T</span><span class="special">());</span>
         <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span>
             <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">);</span>
         <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">size_type</span> <span class="identifier">count</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">val</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;</span> <span class="identifier">al</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
             <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span><span class="special">;</span>
             <span class="identifier">all_equals</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">end</span><span class="special">(),</span> <span class="identifier">val</span><span class="special">);</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">();</span>
         <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">,</span> <span class="identifier">val</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">&gt;</span> <span class="identifier">requires</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span>
     <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">InIt</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">last</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">());</span> <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">InIt</span> <span class="special">&gt;</span> <span class="identifier">requires</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">InIt</span><span class="special">&gt;</span>
     <span class="identifier">vector</span> <span class="special">(</span> <span class="identifier">InIt</span> <span class="identifier">first</span><span class="special">,</span> <span class="identifier">InIt</span> <span class="identifier">last</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Alloc</span><span class="special">&amp;</span> <span class="identifier">al</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
             <span class="identifier">std</span><span class="special">::</span><span class="identifier">distance</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">int</span><span class="special">(</span><span class="identifier">size</span><span class="special">());</span>
             <span class="identifier">al</span> <span class="special">==</span> <span class="identifier">get_allocator</span><span class="special">();</span>
         <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">last</span><span class="special">,</span> <span class="identifier">al</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
     <span class="keyword">public</span><span class="special">:</span> <span class="identifier">vector</span> <span class="special">(</span> <span class="keyword">const</span> <span class="identifier">vector</span><span class="special">&amp;</span> <span class="identifier">right</span> <span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">)</span>
         <span class="identifier">postcondition</span> <span class="special">{</span>
             
             <span class="identifier">right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
         <span class="special">}</span>
+        <span class="special">:</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">right</span><span class="special">.</span><span class="identifier">vect_</span><span class="special">)</span>
     <span class="special">{}</span>
 
 
@@ -1294,13 +1294,32 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="contract__.examples.__n1962___square_root__default_parameters"></a><a class="link" href="examples.html#contract__.examples.__n1962___square_root__default_parameters" title="[N1962] Square Root: Default parameters">[N1962]
-      Square Root: Default parameters</a>
+<a name="contract__.examples.__n1962___square_root__default_parameters_and_comparison_with_d_syntax"></a><a class="link" href="examples.html#contract__.examples.__n1962___square_root__default_parameters_and_comparison_with_d_syntax" title="[N1962] Square Root: Default parameters and comparison with D syntax">[N1962]
+      Square Root: Default parameters and comparison with D syntax</a>
 </h3></div></div></div>
-<p>
-        
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  C++03 (this library)
+                </p>
+              </th>
+<th>
+                <p>
+                  D (<span class="underline">_D_</span>)
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+                  
 </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">cmath</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span> <span class="comment">// Default value for `precision` parameter.</span>
@@ -1315,7 +1334,31 @@
 <span class="special">}</span>
 </pre>
 <p>
-      </p>
+                </p>
+              </td>
+<td>
+                <p>
+                  
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="comment">// Extra spacing and newlines used to visually align with this library code.</span>
+
+
+
+<span class="identifier">real</span> <span class="identifier">mysqrt</span> <span class="special">(</span> <span class="identifier">real</span> <span class="identifier">x</span> <span class="special">)</span> <span class="comment">// No default parameters in D.</span>
+    <span class="identifier">in</span> <span class="special">{</span> <span class="identifier">assert</span><span class="special">(</span> <span class="identifier">x</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">);</span> <span class="special">}</span> 
+    <span class="identifier">out</span><span class="special">(</span><span class="identifier">root</span><span class="special">)</span> <span class="special">{</span>
+
+        <span class="identifier">assert</span><span class="special">(</span> <span class="identifier">std</span><span class="special">.</span><span class="identifier">math</span><span class="special">.</span><span class="identifier">fabs</span><span class="special">(</span><span class="identifier">root</span> <span class="special">*</span> <span class="identifier">root</span> <span class="special">-</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">&lt;=</span> <span class="number">1e6</span> <span class="special">);</span>
+    <span class="special">}</span> 
+<span class="identifier">body</span> <span class="special">{</span> 
+    <span class="keyword">return</span> <span class="identifier">std</span><span class="special">.</span><span class="identifier">math</span><span class="special">.</span><span class="identifier">sqrt</span><span class="special">(</span><span class="identifier">x</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -2251,12 +2294,12 @@
     <span class="comment">// Create stack for max of n elements, if n &lt; 0 set error (no precondition).</span>
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">stack3</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="keyword">int</span><span class="special">&amp;)</span> <span class="identifier">n</span><span class="special">,</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;)</span> <span class="identifier">none</span><span class="special">,</span> <span class="keyword">default</span> <span class="identifier">T</span><span class="special">()</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">none_</span><span class="special">(</span><span class="identifier">none</span><span class="special">),</span> <span class="identifier">representation_</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">error_</span><span class="special">(</span><span class="identifier">NO_ERROR</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="special">(</span><span class="identifier">n</span> <span class="special">&lt;</span> <span class="number">0</span><span class="special">)</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">error</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">SIZE_ERROR</span><span class="special">),</span> <span class="comment">// error if impossible</span>
             <span class="special">(</span><span class="identifier">n</span> <span class="special">&gt;=</span> <span class="number">0</span><span class="special">)</span> <span class="special">==</span> <span class="special">!</span><span class="identifier">error</span><span class="special">(),</span> <span class="comment">// no error if possible</span>
             <span class="keyword">if</span><span class="special">(</span><span class="keyword">bool</span><span class="special">(!</span><span class="identifier">error</span><span class="special">()))</span> <span class="special">(</span> <span class="identifier">capacity</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">n</span> <span class="special">)</span> <span class="comment">// created if no error</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">none_</span><span class="special">(</span><span class="identifier">none</span><span class="special">),</span> <span class="identifier">representation_</span><span class="special">(</span><span class="number">0</span><span class="special">),</span> <span class="identifier">error_</span><span class="special">(</span><span class="identifier">NO_ERROR</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">if</span><span class="special">(</span><span class="identifier">n</span> <span class="special">&gt;=</span> <span class="number">0</span><span class="special">)</span> <span class="identifier">representation_</span> <span class="special">=</span> <span class="identifier">stack4</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;(</span><span class="identifier">n</span><span class="special">);</span>
         <span class="keyword">else</span> <span class="identifier">error_</span> <span class="special">=</span> <span class="identifier">SIZE_ERROR</span><span class="special">;</span>
@@ -2416,8 +2459,8 @@
             <span class="keyword">const</span><span class="special">(</span> <span class="identifier">x</span> <span class="special">)</span> <span class="identifier">x</span> <span class="special">&gt;</span> <span class="number">0</span><span class="special">,</span> <span class="keyword">const</span><span class="special">(</span> <span class="identifier">y</span> <span class="special">)</span> <span class="identifier">y</span> <span class="special">&gt;</span> <span class="number">0</span>
             <span class="comment">// x and y have the same GCD as a and b.</span>
         <span class="special">)</span>
-        <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span>              <span class="comment">// Loop variant is a non-negative and</span>
-            <span class="keyword">const</span><span class="special">(</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">y</span> <span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">max</span><span class="special">(</span><span class="identifier">x</span><span class="special">,</span> <span class="identifier">y</span><span class="special">)</span>    <span class="comment">// monotonically decreasing expression.</span>
+        <span class="identifier">CONTRACT_LOOP_VARIANT</span><span class="special">(</span>           <span class="comment">// Loop variant is a non-negative and</span>
+            <span class="keyword">const</span><span class="special">(</span> <span class="identifier">x</span><span class="special">,</span> <span class="identifier">y</span> <span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">max</span><span class="special">(</span><span class="identifier">x</span><span class="special">,</span> <span class="identifier">y</span><span class="special">)</span> <span class="comment">// monotonically decreasing expression.</span>
         <span class="special">)</span>
 
         <span class="keyword">if</span><span class="special">(</span><span class="identifier">x</span> <span class="special">&gt;</span> <span class="identifier">y</span><span class="special">)</span> <span class="identifier">x</span> <span class="special">=</span> <span class="identifier">x</span> <span class="special">-</span> <span class="identifier">y</span><span class="special">;</span>
@@ -2822,8 +2865,8 @@
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Create currier with specified insurance value.</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">different_courier</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">double</span> <span class="keyword">const</span> <span class="identifier">insurance_cover_dollar</span><span class="special">,</span>
             <span class="keyword">default</span> <span class="identifier">different_insurance_dollar</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">courier</span><span class="special">(</span><span class="identifier">insurance_cover_dollar</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">insurance_cover_dollar</span> <span class="special">&gt;</span> <span class="number">0.0</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">courier</span><span class="special">(</span><span class="identifier">insurance_cover_dollar</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span> <span class="comment">// Cannot separated body definition because has member initializers.</span>
 
     <span class="identifier">CONTRACT_DESTRUCTOR</span><span class="special">(</span> <span class="comment">// Destroy courier.</span>
@@ -3504,7 +3547,7 @@
 <span class="keyword">public</span><span class="special">:</span>
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Create concrete observer.</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">concrete_observer</span><span class="special">)</span> <span class="special">(</span>
-            <span class="special">(</span><span class="identifier">concrete_subject</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">the_subject</span><span class="special">)</span>
+            <span class="special">(</span><span class="identifier">concrete_subject</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="identifier">the_subject</span> <span class="special">)</span>
         <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">subject_</span><span class="special">(</span><span class="identifier">the_subject</span><span class="special">),</span> <span class="identifier">observed_state_</span><span class="special">()</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
@@ -3572,8 +3615,8 @@
 
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Create an enabled button.</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">push_button</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">enabled_</span><span class="special">(</span><span class="keyword">true</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">enabled</span><span class="special">()</span> <span class="special">)</span> <span class="comment">// enabled</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">enabled_</span><span class="special">(</span><span class="keyword">true</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_DESTRUCTOR</span><span class="special">(</span> <span class="comment">// Destroy button.</span>
@@ -3636,10 +3679,10 @@
 
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Create button associated with given counter.</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">decrement_button</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">counter</span><span class="special">&amp;)</span> <span class="identifier">the_counter</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">counter_ref_</span><span class="special">(</span><span class="identifier">the_counter</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span>
             <span class="identifier">enabled</span><span class="special">()</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">the_counter</span><span class="special">.</span><span class="identifier">value</span><span class="special">()</span> <span class="special">&gt;</span> <span class="number">0</span><span class="special">)</span> <span class="comment">// enabled iff positive value</span>
         <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">counter_ref_</span><span class="special">(</span><span class="identifier">the_counter</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">counter_ref_</span><span class="special">.</span><span class="identifier">attach</span><span class="special">(</span><span class="keyword">this</span><span class="special">);</span>
     <span class="special">}</span>
@@ -3699,8 +3742,8 @@
 
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Construct counter with specified value.</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">counter</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="keyword">const</span> <span class="identifier">a_value</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">10</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">value_</span><span class="special">(</span><span class="identifier">a_value</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">value</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">a_value</span> <span class="special">)</span> <span class="comment">// value set</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">value_</span><span class="special">(</span><span class="identifier">a_value</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_DESTRUCTOR</span><span class="special">(</span> <span class="comment">// Destroy counter.</span>
@@ -3999,9 +4042,9 @@
 <span class="keyword">public</span><span class="special">:</span>
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">count</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">10</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">data_</span><span class="special">(</span><span class="keyword">new</span> <span class="identifier">T</span><span class="special">[</span><span class="identifier">count</span><span class="special">]),</span> <span class="identifier">size_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">data_</span><span class="special">(</span><span class="keyword">new</span> <span class="identifier">T</span><span class="special">[</span><span class="identifier">count</span><span class="special">]),</span> <span class="identifier">size_</span><span class="special">(</span><span class="identifier">count</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">size_</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">data_</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">();</span>
     <span class="special">}</span>
@@ -4022,7 +4065,6 @@
     <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">resize</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">count</span> <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
-        <span class="comment">// A++ `init` is equivalent to this library OLDOF but not needed here.</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">T</span><span class="special">*</span> <span class="identifier">slice</span> <span class="special">=</span> <span class="keyword">new</span> <span class="identifier">T</span><span class="special">[</span><span class="identifier">count</span><span class="special">];</span>
@@ -4114,13 +4156,120 @@
 
 
 
-
 </pre>
 <p>
                 </p>
               </td>
 </tr></tbody>
 </table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="contract__.examples.__cline90___stack__function_try_blocks_and_exception_specifications"></a><a class="link" href="examples.html#contract__.examples.__cline90___stack__function_try_blocks_and_exception_specifications" title="[Cline90] Stack: Function-try-blocks and exception specifications">[Cline90]
+      Stack: Function-try-blocks and exception specifications</a>
+</h3></div></div></div>
+<p>
+        
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">exception</span><span class="special">&gt;</span>
+
+<span class="identifier">CONTRACT_CLASS</span><span class="special">(</span>
+<span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">)</span>
+<span class="keyword">class</span> <span class="special">(</span><span class="identifier">stack</span><span class="special">)</span>
+<span class="special">)</span> <span class="special">{</span>
+    <span class="comment">// NOTE: Incomplete set of assertions addressing only `empty` and `full`.</span>
+
+    <span class="identifier">CONTRACT_CLASS_INVARIANT</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
+
+<span class="keyword">public</span><span class="special">:</span>
+    <span class="keyword">struct</span> <span class="identifier">out_of_memory</span> <span class="special">{};</span>
+    <span class="keyword">struct</span> <span class="identifier">error</span> <span class="special">{};</span>
+
+    <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">stack</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">capacity</span> <span class="special">)</span>
+        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">capacity</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="identifier">empty</span><span class="special">(),</span>
+            <span class="identifier">full</span><span class="special">()</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">capacity</span> <span class="special">==</span> <span class="number">0</span><span class="special">)</span>
+        <span class="special">)</span>
+        <span class="comment">// Function-try-blocks are programmed within the macros only for</span>
+        <span class="comment">// constructors with member initializers otherwise they are programmed</span>
+        <span class="comment">// with the body definition and outside the macros.</span>
+        <span class="keyword">try</span> <span class="identifier">initialize</span><span class="special">(</span> <span class="comment">// Try-block for both constructor initializers and body.</span>
+            <span class="identifier">data_</span><span class="special">(</span><span class="keyword">new</span> <span class="identifier">T</span><span class="special">[</span><span class="identifier">capacity</span><span class="special">]),</span>
+            <span class="identifier">capacity_</span><span class="special">(</span><span class="identifier">capacity</span><span class="special">),</span>
+            <span class="identifier">size_</span><span class="special">(</span><span class="number">0</span><span class="special">)</span>
+        <span class="special">)</span> <span class="keyword">catch</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">bad_alloc</span><span class="special">&amp;</span> <span class="identifier">e</span><span class="special">)</span> <span class="special">(</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"out of memory for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">capacity</span> <span class="special">&lt;&lt;</span> <span class="string">"-stack: "</span> <span class="special">&lt;&lt;</span>
+                    <span class="identifier">e</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+            <span class="keyword">throw</span> <span class="identifier">out_of_memory</span><span class="special">();</span>
+        <span class="special">)</span> <span class="keyword">catch</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">exception</span><span class="special">&amp;</span> <span class="identifier">e</span><span class="special">)</span> <span class="special">(</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">capacity</span> <span class="special">&lt;&lt;</span> <span class="string">"-stack: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span>
+                    <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+            <span class="keyword">throw</span><span class="special">;</span> <span class="comment">// Re-throw STL exception.</span>
+        <span class="special">)</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">(</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"unknown error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">capacity</span> <span class="special">&lt;&lt;</span> <span class="string">"-stack"</span> <span class="special">&lt;&lt;</span>
+                    <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+            <span class="keyword">throw</span> <span class="identifier">error</span><span class="special">();</span>
+        <span class="special">)</span>
+    <span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">for</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">i</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span> <span class="special">&lt;</span> <span class="identifier">capacity_</span><span class="special">;</span> <span class="special">++</span><span class="identifier">i</span><span class="special">)</span> <span class="identifier">data_</span><span class="special">[</span><span class="identifier">i</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">();</span>
+    <span class="special">}</span>
+
+    <span class="identifier">CONTRACT_DESTRUCTOR_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="special">(~</span><span class="identifier">stack</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="comment">// Throw nothing.</span>
+    <span class="special">)</span> <span class="keyword">try</span> <span class="special">{</span> <span class="comment">// Function-try-block (outside the macro).</span>
+        <span class="keyword">delete</span><span class="special">[]</span> <span class="identifier">data_</span><span class="special">;</span>
+    <span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"error for stack destruction, terminating"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">terminate</span><span class="special">();</span> <span class="comment">// Destructor should never throw.</span>
+    <span class="special">}</span>
+
+    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">empty</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="keyword">const</span>
+    <span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">size_</span> <span class="special">==</span> <span class="number">0</span><span class="special">;</span>
+    <span class="special">}</span>
+
+    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">full</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="keyword">const</span>
+    <span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">size_</span> <span class="special">==</span> <span class="identifier">capacity_</span><span class="special">;</span>
+    <span class="special">}</span>
+
+    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">push</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">value</span> <span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">exception</span><span class="special">,</span> <span class="identifier">error</span> <span class="special">)</span> <span class="comment">// Ex spec.</span>
+        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">full</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
+    <span class="special">)</span> <span class="keyword">try</span> <span class="special">{</span> <span class="comment">// Function-try-block (outside the macro).</span>
+        <span class="identifier">data_</span><span class="special">[</span><span class="identifier">size_</span><span class="special">++]</span> <span class="special">=</span> <span class="identifier">value</span><span class="special">;</span> 
+    <span class="special">}</span> <span class="keyword">catch</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">exception</span><span class="special">&amp;</span> <span class="identifier">e</span><span class="special">)</span> <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">capacity_</span> <span class="special">&lt;&lt;</span> <span class="string">"-stack: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">what</span><span class="special">()</span> <span class="special">&lt;&lt;</span>
+                <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">throw</span><span class="special">;</span> <span class="comment">// Re-throw STL exception.</span>
+    <span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cerr</span> <span class="special">&lt;&lt;</span> <span class="string">"unknown error for "</span> <span class="special">&lt;&lt;</span> <span class="identifier">capacity_</span> <span class="special">&lt;&lt;</span> <span class="string">"-stack"</span> <span class="special">&lt;&lt;</span>
+                <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="keyword">throw</span> <span class="identifier">error</span><span class="special">();</span>
+    <span class="special">}</span>
+
+    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="special">(</span><span class="identifier">pop</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
+        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">full</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
+    <span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">data_</span><span class="special">[--</span><span class="identifier">size_</span><span class="special">];</span>
+    <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">T</span><span class="special">*</span> <span class="identifier">data_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">capacity_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">size_</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -4211,12 +4360,9 @@
 <span class="keyword">public</span><span class="special">:</span>
     <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">vstack</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">count</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">10</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span>
-            <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">),</span> <span class="comment">// OK, initializers executed after preconditions.</span>
-            <span class="identifier">length_</span><span class="special">(</span><span class="number">0</span><span class="special">)</span>
-        <span class="special">)</span>
         <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">length</span><span class="special">()</span> <span class="special">==</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">capacity</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">count</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">vect_</span><span class="special">(</span><span class="identifier">count</span><span class="special">),</span> <span class="identifier">length_</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">)</span> <span class="comment">// OK, executed after precond.</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_DESTRUCTOR_TPL</span><span class="special">(</span>
@@ -4265,79 +4411,6 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="contract__.examples.__cline90___stack__a_very_simple_stack"></a><a class="link" href="examples.html#contract__.examples.__cline90___stack__a_very_simple_stack" title="[Cline90] Stack: A very simple stack">[Cline90]
-      Stack: A very simple stack</a>
-</h3></div></div></div>
-<p>
-        
-</p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
-
-<span class="identifier">CONTRACT_CLASS</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">)</span>
-<span class="keyword">class</span> <span class="special">(</span><span class="identifier">stack</span><span class="special">)</span>
-<span class="special">)</span> <span class="special">{</span>
-    <span class="comment">// NOTE: Incomplete set of assertions addressing only `empty` and `full`.</span>
-
-    <span class="identifier">CONTRACT_CLASS_INVARIANT</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-
-<span class="keyword">public</span><span class="special">:</span>
-    <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">stack</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">count</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">data_</span><span class="special">()</span> <span class="special">)</span>
-        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">count</span> <span class="special">&gt;=</span> <span class="number">0</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span>
-            <span class="identifier">empty</span><span class="special">(),</span>
-            <span class="identifier">full</span><span class="special">()</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">count</span> <span class="special">==</span> <span class="number">0</span><span class="special">)</span>
-        <span class="special">)</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">data_</span><span class="special">.</span><span class="identifier">reserve</span><span class="special">(</span><span class="identifier">count</span><span class="special">);</span>
-    <span class="special">}</span>
-
-    <span class="identifier">CONTRACT_DESTRUCTOR_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">virtual</span> <span class="special">(~</span><span class="identifier">stack</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-    <span class="special">)</span> <span class="special">{}</span>
-
-    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">empty</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="keyword">const</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">data_</span><span class="special">.</span><span class="identifier">empty</span><span class="special">();</span>
-    <span class="special">}</span>
-
-    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">bool</span> <span class="special">(</span><span class="identifier">full</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="keyword">const</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">data_</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">data_</span><span class="special">.</span><span class="identifier">capacity</span><span class="special">();</span>
-    <span class="special">}</span>
-
-    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">push</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">value</span> <span class="special">)</span>
-        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">full</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">data_</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">value</span><span class="special">);</span>
-    <span class="special">}</span>
-
-    <span class="identifier">CONTRACT_FUNCTION_TPL</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="special">(</span><span class="identifier">pop</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">empty</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">full</span><span class="special">()</span> <span class="special">==</span> <span class="keyword">false</span> <span class="special">)</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">T</span> <span class="identifier">value</span> <span class="special">=</span> <span class="identifier">data_</span><span class="special">.</span><span class="identifier">back</span><span class="special">();</span>
-        <span class="identifier">data_</span><span class="special">.</span><span class="identifier">pop_back</span><span class="special">();</span>
-        <span class="keyword">return</span> <span class="identifier">value</span><span class="special">;</span>
-    <span class="special">}</span>
-
-<span class="keyword">private</span><span class="special">:</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">data_</span><span class="special">;</span>
-<span class="special">};</span>
-</pre>
-<p>
-      </p>
-</div>
-<div class="section">
-<div class="titlepage"><div><div><h3 class="title">
 <a name="contract__.examples.__cline90___calendar__a_very_simple_calendar"></a><a class="link" href="examples.html#contract__.examples.__cline90___calendar__a_very_simple_calendar" title="[Cline90] Calendar: A very simple calendar">[Cline90]
       Calendar: A very simple calendar</a>
 </h3></div></div></div>
@@ -4359,8 +4432,8 @@
 <span class="keyword">public</span><span class="special">:</span>
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span>
     <span class="keyword">public</span> <span class="special">(</span><span class="identifier">calendar</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">month_</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="identifier">date_</span><span class="special">(</span><span class="number">31</span><span class="special">)</span> <span class="special">)</span>
         <span class="identifier">postcondition</span><span class="special">(</span> <span class="identifier">month</span><span class="special">()</span> <span class="special">==</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">date</span><span class="special">()</span> <span class="special">==</span> <span class="number">31</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">month_</span><span class="special">(</span><span class="number">1</span><span class="special">),</span> <span class="identifier">date_</span><span class="special">(</span><span class="number">31</span><span class="special">)</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
 
     <span class="identifier">CONTRACT_DESTRUCTOR</span><span class="special">(</span>

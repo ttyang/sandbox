@@ -446,36 +446,13 @@
         The keyword <code class="computeroutput"><span class="keyword">void</span></code> is used for
         no-throw <code class="computeroutput"><span class="keyword">throw</span><span class="special">(</span>
         <span class="keyword">void</span> <span class="special">)</span></code>
-        (instead of <code class="computeroutput"><span class="keyword">throw</span><span class="special">()</span></code>).
+        (instead of <code class="computeroutput"><span class="keyword">throw</span><span class="special">(</span>
+        <span class="special">)</span></code>). Exception specifications apply
+        to only to exceptions thrown by the body and not to exceptions thrown by
+        the contract checking code (if the contract broken handlers are redefined
+        to throw) and to exceptions thrown by this library implementation code (in
+        case the library runs out of resources, encounters an internal error, etc).
       </p>
-<p>
-        Exception specifications apply to the entire function call so to exceptions
-        thrown by the body but also to exceptions thrown by the contract checking
-        code (if the contract broken handlers are redefined to throw) and to exceptions
-        thrown by this library implementation code (in case the library runs out
-        of resources, encounters an internal error, etc):
-      </p>
-<pre class="programlisting"><span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-<span class="keyword">int</span> <span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">x</span> <span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="comment">// The entire function call (body and contracts) do not throw.</span>
-<span class="special">)</span> <span class="special">;</span>
-</pre>
-<p>
-        If exception specifications are instead programmed just outside the macros
-        and before the body definition then they only apply to exceptions thrown
-        by the body and not to exceptions thrown by the contract checking and implementation
-        code:
-      </p>
-<pre class="programlisting"><span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-<span class="keyword">int</span> <span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">x</span> <span class="special">)</span>
-<span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="special">)</span> <span class="special">;</span> <span class="comment">// Only the body does not throw (contracts might still throw).</span>
-</pre>
-<p>
-        In both cases the exception specifications are part of the function declaration
-        so they need to be repeated in the body function signature when the body
-        is defined separately from the function declaration like in the example above:
-      </p>
-<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">CONTRACT_FREE_BODY</span><span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">x</span> <span class="special">)</span> <span class="keyword">throw</span><span class="special">(</span> <span class="special">)</span> <span class="special">{</span> <span class="special">...</span> <span class="special">}</span> <span class="comment">// Body definition for both function declarations above.</span>
-</pre>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -514,7 +491,7 @@
 <p>
         For functions other than constructors or constructors without member initializers,
         function-try-blocks are programmed outside the macros and around the body
-        definition as usual:
+        definition as usual: <sup>[<a name="id956506" href="#ftn.id956506" class="footnote">1</a>]</sup>
       </p>
 <pre class="programlisting"><span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Constructor without member initializers.</span>
 <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
@@ -1141,6 +1118,13 @@
 </tr>
 </tbody>
 </table></div>
+</div>
+<div class="footnotes">
+<br><hr width="100" align="left">
+<div class="footnote"><p><sup>[<a id="ftn.id956506" href="#id956506" class="para">1</a>] </sup>
+          <span class="bold"><strong>Rationale.</strong></span> This ensures zero run-time
+          overhead for these functions when all contracts are disable at compile-time.
+        </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
