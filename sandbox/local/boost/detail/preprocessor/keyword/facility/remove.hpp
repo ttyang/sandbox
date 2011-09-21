@@ -9,14 +9,30 @@
 
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
-#include <boost/preprocessor/facilities/expand.hpp>
 #include <boost/preprocessor/cat.hpp>
+
+// PRIVATE //
+
+// From PP_EXPAND (my own reentrant version).
+#if ~BOOST_PP_CONFIG_FLAGS() & BOOST_PP_CONFIG_MWCC() && ~BOOST_PP_CONFIG_FLAGS() & BOOST_PP_CONFIG_DMC()
+#   define BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_(x) \
+        BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_I_(x)
+#else
+#   define BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_(x) \
+        BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_OO_((x))
+#   define BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_OO_(par) \
+        BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_I_ ## par
+#endif
+#define BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_I_(x) x
+
+// PUBLIC //
 
 // `is_front_macro(tokens)` is 1 iff `tokens` start with keyword to remove.
 // `removing_prefix ## <keyword-to-remove>` must expand to nothing.
 #define BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT( \
         tokens, is_front_macro, removing_prefix) \
-    BOOST_PP_EXPAND( /* without EXPAND doesn't expand on MSVC */ \
+    /* without EXPAND doesn't expand on MSVC */ \
+    BOOST_DETAIL_PP_KEYWORD_FACILITY_REMOVE_FRONT_EXPAND_( \
         BOOST_PP_IIF(is_front_macro(tokens), \
             BOOST_PP_CAT \
         , \

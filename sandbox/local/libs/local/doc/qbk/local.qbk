@@ -9,7 +9,7 @@
     [version 0.2.0 ]
     [/ purpose Local functions, blocks, and exits for C++]
     [/ category Function Objects and Higher-Order Programming]
-    [authors [Caminiti (lorcaminiti -at- gmail.com), Lorenzo]]
+    [authors [Caminiti <lorcaminiti-AT-gmail.com>, Lorenzo]]
     [copyright 2009-2011 Lorenzo Caminiti]
     [license
         Use, modification, and distribution is subject to the

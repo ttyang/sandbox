@@ -51,6 +51,16 @@ inline typename boost::add_reference<T>::type identity_value(
  * contains a comma not wrapped by round parenthesis so it will be interpreted
  * as two separate macro parameters by the preprocessor).
  *
+ * On some compilers (like GCC), using this macro on abstract types (classes
+ * with one or more pure virtual functions) generate a compile-time error.
+ * This can be worked around by manipulating the type adding and removing a
+ * reference to it:
+ * @code
+ *  boost::remove_reference< BOOST_IDENTITY_TYPE((boost::add_reference<
+ *      my_abstract_type< int, double >
+ *  >::type)) >::type
+ * @endcode
+ *
  * @Params
  * @Param{parenthesized_type,
  *  The type expression to be passed as macro parameter wrapped by a single set

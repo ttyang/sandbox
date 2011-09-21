@@ -13,26 +13,48 @@
 
 #include "size.hpp"
 #include "eat.hpp"
-#include <boost/preprocessor/logical/not.hpp>
-#include <boost/preprocessor/control/if.hpp>
-#include <boost/preprocessor/comparison/greater.hpp>
+#include <boost/preprocessor/logical/compl.hpp>
+#include <boost/preprocessor/control/iif.hpp>
+#include <boost/preprocessor/comparison/equal.hpp>
+#include <boost/preprocessor/tuple/elem.hpp>
 // `IS_UNARY` not working on Borland and other pp which have no variadic anyway.
 #include <boost/preprocessor/detail/is_unary.hpp>
 
 // PRIVATE //
 
-#define BOOST_LOCAL_AUX_PP_IS_VARIADIC_NOT_UNARY_(...) \
-    BOOST_PP_NOT(BOOST_PP_IS_UNARY(__VA_ARGS__))
+#define BOOST_LOCAL_AUX_PP_IS_VARIADIC_NOT_UNARY1_(tokens) \
+    BOOST_PP_COMPL(BOOST_PP_IS_UNARY(tokens))
+    
+#define BOOST_LOCAL_AUX_PP_IS_VARIADIC_REMOVE1_(tokens) /* nothing */
+        
+// Tokens `(t1) t2`.
+#define BOOST_LOCAL_AUX_PP_IS_VARIADIC_SKIP1_(tokens) \
+    BOOST_LOCAL_AUX_PP_IS_VARIADIC_NOT_UNARY1_( \
+        BOOST_LOCAL_AUX_PP_IS_VARIADIC_REMOVE1_ tokens \
+        (1) /* trailing unary handles empty */ \
+    )
+
+#define BOOST_LOCAL_AUX_PP_IS_VARIADIC_NOT_UNARY2_(tokens) \
+    BOOST_PP_IIF(BOOST_PP_IS_UNARY(tokens), \
+        BOOST_LOCAL_AUX_PP_IS_VARIADIC_SKIP1_ \
+    , \
+        1 /* it is not unary */ \
+        BOOST_PP_TUPLE_EAT(1) \
+    )(tokens)
+
+#define BOOST_LOCAL_AUX_PP_IS_VARIADIC_(size, ...) \
+    BOOST_PP_IIF(BOOST_PP_EQUAL(size, 1), \
+        BOOST_LOCAL_AUX_PP_IS_VARIADIC_NOT_UNARY2_ \
+    , /* size == 0 or size > 1 (it's variadic) */ \
+        1 \
+        BOOST_LOCAL_AUX_PP_VARIADIC_EAT \
+    )(__VA_ARGS__)
 
 // PUBLIC //
 
 #define BOOST_LOCAL_AUX_PP_IS_VARIADIC(...) \
-    BOOST_PP_IF(BOOST_PP_GREATER( /* IIF does not expand on MSVC */ \
-            BOOST_LOCAL_AUX_PP_VARIADIC_SIZE(__VA_ARGS__), 1), \
-        1 BOOST_LOCAL_AUX_PP_VARIADIC_EAT \
-    , \
-        BOOST_LOCAL_AUX_PP_IS_VARIADIC_NOT_UNARY_ \
-    )(__VA_ARGS__)
+    BOOST_LOCAL_AUX_PP_IS_VARIADIC_( \
+            BOOST_LOCAL_AUX_PP_VARIADIC_SIZE(__VA_ARGS__), __VA_ARGS__)
 
 #endif // BOOST_NO_VARIADIC_MACROS
 

@@ -15,10 +15,24 @@
 #include <boost/preprocessor/detail/is_unary.hpp>
 #include <boost/preprocessor/cat.hpp>
 
+// PRIVATE //
+
+#define BOOST_DETAIL_PP_KEYWORD_FACILITY_IS_(a, b) \
+    BOOST_PP_IS_UNARY(BOOST_PP_CAT(a, b))
+
+// PUBLIC //
+
 // `chekcing_prefix ## tokens` expand to unary (e.g., `(1)`) iff `tokens` start
 // with keyword to check.
 #define BOOST_DETAIL_PP_KEYWORD_FACILITY_IS_FRONT(tokens, checking_prefix) \
-    BOOST_PP_IS_UNARY(BOOST_PP_CAT(checking_prefix, tokens))
+    BOOST_PP_IIF(BOOST_PP_IS_UNARY(tokens), \
+        /* on MSVC this check works even if tokens already unary but on */ \
+        /* ISO C++ (including GCC) this check on non-unary tokens gives */ \
+        /* a concatenation error -- so return false is tokens is not unary */ \
+        0 BOOST_PP_TUPLE_EAT(2) \
+    , \
+        BOOST_DETAIL_PP_KEYWORD_FACILITY_IS_ \
+    )(checking_prefix, tokens)
 
 // `token ## chekcing_postfix` expand to unary (e.g., `(1)`) iff `token` is the
 // keyword to check. This check only works if `token` is a single token, it
@@ -26,7 +40,7 @@
 // This check will expand to 0 with no error if `token` starts with a
 // non-alphanumeric symbol (e.g., `*this`).
 #define BOOST_DETAIL_PP_KEYWORD_FACILITY_IS_BACK(token, checking_postfix) \
-    BOOST_PP_IS_UNARY(BOOST_PP_CAT(token, checking_postfix))
+    BOOST_DETAIL_PP_KEYWORD_FACILITY_IS_(token, checking_postfix)
 
 #endif // #include guard
 
