@@ -25,6 +25,7 @@
 using namespace boost::polygon;
 
 #include "detail/mpt_wrapper.hpp"
+#include "detail/voronoi_calc_kernel.hpp"
 #include "detail/voronoi_fpt_kernel.hpp"
 #include "detail/voronoi_formation.hpp"
 
@@ -41,6 +42,7 @@ namespace sweepline {
     template <>
     struct voronoi_builder_traits<int> {
         typedef double coordinate_type;
+        typedef detail::voronoi_calc_kernel<int> calc_kernel_type;
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -148,6 +150,7 @@ namespace sweepline {
             // The algorithm stops when there are no events to process.
             // The circle events with the same rightmost point as the next
             // site event go first.
+            event_comparison_predicate event_comparison;
             while (!circle_events_.empty() ||
                    !(site_event_iterator_ == site_events_.end())) {
                 if (circle_events_.empty()) {
@@ -155,7 +158,7 @@ namespace sweepline {
                 } else if (site_event_iterator_ == site_events_.end()) {
                     process_circle_event();
                 } else {
-                    if (circle_events_.top().first.compare(*site_event_iterator_) == detail::MORE) {
+                    if (event_comparison(*site_event_iterator_, circle_events_.top().first)) {
                         process_site_event();
                     } else {
                         process_circle_event();
@@ -177,13 +180,17 @@ namespace sweepline {
         }
 
     private:
-        typedef detail::point_2d<coordinate_type> point_type;
+        typedef voronoi_builder_traits<int>::calc_kernel_type calc_kernel_type;
         
+        typedef detail::point_2d<coordinate_type> point_type;
         typedef detail::site_event<coordinate_type> site_event_type;
+        typedef calc_kernel_type::site_comparison_predicate site_comparison_predicate;
+        typedef calc_kernel_type::site_equality_predicate site_equality_predicate;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
-
         typedef detail::circle_event<coordinate_type> circle_event_type;
+        typedef calc_kernel_type::circle_comparison_predicate circle_comparison_predicate;
+        typedef calc_kernel_type::event_comparison_predicate event_comparison_predicate;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<circle_event_type> value_type;
         typedef detail::beach_line_node_comparer<key_type> node_comparer_type;
@@ -193,8 +200,9 @@ namespace sweepline {
         typedef std::pair<circle_event_type, beach_line_iterator> event_type; 
         typedef struct {
             bool operator()(const event_type &lhs, const event_type &rhs) const {
-                return lhs.first > rhs.first;
+                return predicate(rhs.first, lhs.first);
             }
+            circle_comparison_predicate predicate;
         } event_comparison;
         typedef detail::ordered_queue<event_type, event_comparison>
             circle_event_queue_type;
@@ -207,11 +215,11 @@ namespace sweepline {
         // segment itself).
         void init_sites_queue() {
             // Sort the site events.
-            sort(site_events_.begin(), site_events_.end());
+            sort(site_events_.begin(), site_events_.end(), site_comparison_predicate());
 
             // Remove duplicates.
             site_events_.erase(unique(
-                site_events_.begin(), site_events_.end()), site_events_.end());
+                site_events_.begin(), site_events_.end(), site_equality_predicate()), site_events_.end());
 
             // Number the sites.
             for (size_t cur = 0; cur < site_events_.size(); ++cur)

@@ -120,12 +120,15 @@ namespace detail {
 
         // Point site contructors.
         site_event() :
+            point0_(0, 0),
+            point1_(0, 0),
             is_segment_(false),
             is_vertical_(true),
             is_inverse_(false) {}
 
         site_event(coordinate_type x, coordinate_type y, int index) :
             point0_(x, y),
+            point1_(x, y),
             site_index_(index),
             is_segment_(false),
             is_vertical_(true),
@@ -133,6 +136,7 @@ namespace detail {
 
         site_event(const point_type &point, int index) :
             point0_(point),
+            point1_(point),
             site_index_(index),
             is_segment_(false),
             is_vertical_(true),
@@ -161,85 +165,6 @@ namespace detail {
             if (point0_ > point1_)
                 (std::swap)(point0_, point1_);
             is_vertical_ = (point0_.x() == point1_.x());
-        }
-
-        bool operator==(const site_event &that) const {
-            return (point0_ == that.point0_) &&
-                   ((!is_segment_ && !that.is_segment_) ||
-                   (is_segment_ && that.is_segment_ &&
-                    point1_ == that.point1_));
-        }
-
-        bool operator!=(const site_event &that) const {
-            return !((*this) == that);
-        }
-
-        // All the sites are sorted by the coordinates of the first point.
-        // Point sites preceed vertical segment sites with equal first points.
-        // Point sites and vertical segments preceed non-vertical segments
-        // with the same x-coordinate of the first point (for any y).
-        // Non-vertical segments with equal first points are ordered using
-        // counterclockwise direction starting from the positive direction of
-        // the x-axis. Such ordering simplifies the initialization step of the
-        // algorithm.
-        bool operator<(const site_event &that) const {
-            // Compare x-coordinates of the first points.
-            if (this->point0_.x() != that.point0_.x())
-                return this->point0_.x() < that.point0_.x();
-
-            // X-coordinates of the first points are the same.
-            if (!(this->is_segment_)) {
-                // The first site is a point.
-                if (!that.is_segment_) {
-                    // The second site is a point.
-                    return this->point0_.y() < that.point0_.y();
-                }
-                if (that.is_vertical_) {
-                    // The second site is a vertical segment.
-                    return this->point0_.y() <= that.point0_.y();
-                }
-                // The second site is a non-vertical segment.
-                return true;
-            } else {
-                // The first site is a segment.
-                if (that.is_vertical_) {
-                    // The second site is a point or a vertical segment.
-                    if (this->is_vertical_) {
-                        // The first site is a vertical segment.
-                        return this->point0_.y() < that.point0_.y();
-                    }
-                    // The first site is a non-vertical segment.
-                    return false;
-                }
-
-                // The second site is a non-vertical segment.
-                if (this->is_vertical_) {
-                    // The first site is a vertical segment.
-                    return true;
-                }
-
-                // Compare y-coordinates of the first points.
-                if (this->point0_.y() != that.point0_.y())
-                    return this->point0_.y() < that.point0_.y();
-
-                // Y-coordinates of the first points are the same.
-                // Both sites are segment. Sort by angle using CCW ordering
-                // starting at the positive direction of the x axis.
-                return orientation_test(this->point1_, this->point0_,
-                                        that.point1_) == LEFT_ORIENTATION;
-            }
-        }
-
-        bool operator<=(const site_event &that) const {
-            return !(that < (*this));
-        }
-
-        bool operator>(const site_event &that) const {
-            return that < (*this);
-        }
-
-        bool operator>=(const site_event &that) const {
-            return !((*this) < that);
         }
 
         coordinate_type x(bool oriented = false) const {
@@ -373,51 +298,6 @@ namespace detail {
             lower_x_(lower_x),
             is_active_(true) {}
 
-        bool operator==(const circle_event &that) const {
-            return almost_equal(this->lower_x_, that.lower_x_, 128) &&
-                   almost_equal(this->center_y_, that.center_y_, 128);
-        }
-
-        bool operator!=(const circle_event &that) const {
-            return !((*this) == that);
-        }
-
-        // Compare rightmost points of the circle events.
-        // Each rightmost point has next representation:
-        // (lower_x / denom, center_y / denom), denom is always positive.
-        bool operator<(const circle_event &that) const {
-            if (almost_equal(this->lower_x_, that.lower_x_, 128)) {
-                if (almost_equal(this->center_y_, that.center_y_, 128)) return false;
-                return this->center_y_ < that.center_y_;
-            }
-            return this->lower_x_ < that.lower_x_;
-        }
-
-        bool operator<=(const circle_event &that) const {
-            return !(that < (*this));
-        }
-
-        bool operator>(const circle_event &that) const {
-            return that < (*this);
-        }
-
-        bool operator>=(const circle_event &that) const {
-            return !((*this) < that);
-        }
-
-        // Compare the rightmost point of the circle event with
-        // the point that represents the site event.
-        // If circle point is less than site point return -1.
-        // If circle point is equal to site point return 0.
-        // If circle point is greater than site point return 1.
-        kPredicateResult compare(const site_event_type &that) const {
-            if (almost_equal(this->lower_x_, that.x(), 64)) {
-                if (almost_equal(this->center_y_, that.y(), 64)) return UNDEFINED;
-                return this->center_y_ < that.y() ? LESS : MORE;
-            }
-            return this->lower_x_ < that.x() ? LESS : MORE;
-        }
-
         // Evaluate x-coordinate of the center of the circle.
         coordinate_type x() const {
             return center_x_;
@@ -439,6 +319,10 @@ namespace detail {
         // Evaluate x-coordinate of the rightmost point of the circle.
         coordinate_type lower_x() const {
             return lower_x_;
+        }
+
+        coordinate_type lower_y() const {
+            return center_y_;
         }
 
         void lower_x(coordinate_type lower_x) {
