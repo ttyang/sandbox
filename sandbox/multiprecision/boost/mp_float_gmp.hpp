@@ -54,16 +54,16 @@
       class mp_float_gmp : public mp_float_base
       {
       public:
-        static const boost::int32_t mp_digits    = static_cast<boost::int32_t>((static_cast<signed long long>(mp_digits10) * 2136LL) / 643LL);
+        static const boost::int32_t mp_float_digits    = static_cast<boost::int32_t>((static_cast<signed long long>(mp_float_digits10) * 2136LL) / 643LL);
         static const boost::int32_t mp_radix     = static_cast<boost::int32_t>(2);
 
-        static const boost::int64_t mp_max_exp   = static_cast<boost::int64_t>(LONG_MAX - 31LL); // TBD: Ensure that (boost::int64_t >= long)
-        static const boost::int64_t mp_min_exp   = static_cast<boost::int64_t>(LONG_MIN + 31LL); // TBD: Ensure that (boost::int64_t >= long)
-        static const boost::int64_t mp_max_exp10 = static_cast<boost::int64_t>((static_cast<signed long long>(mp_max_exp) * 643LL) / 2136LL);
-        static const boost::int64_t mp_min_exp10 = static_cast<boost::int64_t>((static_cast<signed long long>(mp_min_exp) * 643LL) / 2136LL);
+        static const boost::int64_t mp_float_max_exp   = static_cast<boost::int64_t>(LONG_MAX - 31LL); // TBD: Ensure that (boost::int64_t >= long)
+        static const boost::int64_t mp_float_min_exp   = static_cast<boost::int64_t>(LONG_MIN + 31LL); // TBD: Ensure that (boost::int64_t >= long)
+        static const boost::int64_t mp_float_max_exp10 = static_cast<boost::int64_t>((static_cast<signed long long>(mp_float_max_exp) * 643LL) / 2136LL);
+        static const boost::int64_t mp_float_min_exp10 = static_cast<boost::int64_t>((static_cast<signed long long>(mp_float_min_exp) * 643LL) / 2136LL);
 
       private:
-        static const boost::int32_t mp_digits2 = static_cast<boost::int32_t>((static_cast<signed long long>(mp_max_digits10) * 2136LL) / 643LL);
+        static const boost::int32_t mp_float_digits2 = static_cast<boost::int32_t>((static_cast<signed long long>(mp_float_max_digits10) * 2136LL) / 643LL);
 
         typedef enum enum_fpclass
         {

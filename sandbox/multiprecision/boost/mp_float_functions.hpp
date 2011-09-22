@@ -22,7 +22,7 @@
     namespace multiprecision
     {
       inline boost::int32_t   max_iteration(void)    { return static_cast<boost::int32_t>(10000); }
-      inline boost::int64_t   tol (void)             { return static_cast<boost::int64_t>(boost::multiprecision::mp_float::mp_max_digits10); }
+      inline boost::int64_t   tol (void)             { return static_cast<boost::int64_t>(boost::multiprecision::mp_float::mp_float_max_digits10); }
 
       inline boost::multiprecision::mp_float fabs(const boost::multiprecision::mp_float& x) { return (x.isneg() ? boost::multiprecision::mp_float(x).negate() : x); }
 

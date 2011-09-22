@@ -11,12 +11,19 @@
 #ifndef _MP_FLOAT_BASE_2004_02_08_HPP_
   #define _MP_FLOAT_BASE_2004_02_08_HPP_
 
-  #include <iostream>
   #include <limits>
   #include <string>
   #include <cmath>
 
   #include <boost/cstdint.hpp>
+
+  // Forward declaration of I/O streams to avoid #include <iostream>.
+  namespace std
+  {
+    template<class Elem> struct char_traits;
+    template<class Elem, class Traits> class basic_ostream;
+    template<class Elem, class Traits> class basic_istream;
+  }
 
   // Select the number of decimal digits in mp_float
   // by setting the value of BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10.
@@ -54,11 +61,11 @@
       class mp_float_base
       {
       public:
-        static const boost::int32_t mp_digits10_setting = BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10;
-        static const boost::int32_t mp_digits10_limit   = BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10_LIMIT;
-        static const boost::int32_t mp_digits10         = ((mp_digits10_setting < static_cast<boost::int32_t>(30)) ? static_cast<boost::int32_t>(30) : ((mp_digits10_setting > mp_digits10_limit) ? mp_digits10_limit : mp_digits10_setting));
-        static const boost::int32_t mp_digits10_extra   = static_cast<boost::int32_t>(((static_cast<boost::int64_t>(mp_digits10) * 15LL) + 50LL) / 100LL);
-        static const boost::int32_t mp_max_digits10     = static_cast<boost::int32_t>(mp_digits10 + ((mp_digits10_extra < static_cast<boost::int32_t>(5)) ? static_cast<boost::int32_t>(5) : ((mp_digits10_extra > static_cast<boost::int32_t>(30)) ? static_cast<boost::int32_t>(30) : mp_digits10_extra)));
+        static const boost::int32_t mp_float_digits10_setting = BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10;
+        static const boost::int32_t mp_float_digits10_limit   = BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10_LIMIT;
+        static const boost::int32_t mp_float_digits10         = ((mp_float_digits10_setting < static_cast<boost::int32_t>(30)) ? static_cast<boost::int32_t>(30) : ((mp_float_digits10_setting > mp_float_digits10_limit) ? mp_float_digits10_limit : mp_float_digits10_setting));
+        static const boost::int32_t mp_float_digits10_extra   = static_cast<boost::int32_t>(((static_cast<boost::int64_t>(mp_float_digits10) * 15LL) + 50LL) / 100LL);
+        static const boost::int32_t mp_float_max_digits10     = static_cast<boost::int32_t>(mp_float_digits10 + ((mp_float_digits10_extra < static_cast<boost::int32_t>(5)) ? static_cast<boost::int32_t>(5) : ((mp_float_digits10_extra > static_cast<boost::int32_t>(30)) ? static_cast<boost::int32_t>(30) : mp_float_digits10_extra)));
 
         virtual ~mp_float_base() { }
 
@@ -102,7 +109,7 @@
         virtual bool isone (void) const = 0;
         virtual bool isint (void) const = 0;
         virtual bool isneg (void) const = 0;
-                bool ispos (void) const { return (!isneg()); }
+                bool ispos (void) const { return (isneg() == false); }
 
         // Operators pre-increment and pre-decrement.
         virtual mp_float_base& operator++(void) = 0;
@@ -195,36 +202,37 @@
       protected:
         inline mp_float_base();
 
-        // Emphasize: This template class can be used with native floating-point
-        // types like float, double and long double. Note: For long double,
-        // you need to verify that the mantissa fits in unsigned long long.
-        template<typename native_float_type>
-        class native_float_parts
+        // Emphasize: This template can be used with built-in
+        // floating-point types like float, double and long double.
+        // Note: For long double, ensure that the mantissa fits in
+        // unsigned long long.
+        template<typename built_in_float_type>
+        class built_in_float_parts
         {
         public:
-          native_float_parts(const native_float_type f) : u(0uLL), e(0) { make_parts(f); }
+          built_in_float_parts(const built_in_float_type f) : u(0uLL), e(0) { make_parts(f); }
 
           const unsigned long long& get_mantissa(void) const { return u; }
           const int& get_exponent(void) const { return e; }
 
         private:
-          native_float_parts();
-          native_float_parts(const native_float_parts&);
-          const native_float_parts& operator=(const native_float_parts&);
+          built_in_float_parts();
+          built_in_float_parts(const built_in_float_parts&);
+          const built_in_float_parts& operator=(const built_in_float_parts&);
 
           unsigned long long u;
           int e;
 
-          void make_parts(const native_float_type f)
+          void make_parts(const built_in_float_type f)
           {
-            if(f == static_cast<native_float_type>(0.0)) { return; }
+            if(f == static_cast<built_in_float_type>(0.0)) { return; }
 
             // Get the fraction and base-2 exponent.
-            native_float_type man = ::frexp(f, &e);
+            built_in_float_type man = ::frexp(f, &e);
 
             boost::uint32_t n2 = 0u;
 
-            for(boost::uint32_t i = static_cast<boost::uint32_t>(0u); i < static_cast<boost::uint32_t>(std::numeric_limits<native_float_type>::digits); i++)
+            for(boost::uint32_t i = static_cast<boost::uint32_t>(0u); i < static_cast<boost::uint32_t>(std::numeric_limits<built_in_float_type>::digits); i++)
             {
               // Extract the mantissa of the floating-point type in base-2
               // (yes, one bit at a time) and store it in an unsigned long long.
@@ -232,45 +240,57 @@
               man *= 2;
 
               n2   = static_cast<boost::uint32_t>(man);
-              man -= static_cast<native_float_type>(n2);
+              man -= static_cast<built_in_float_type>(n2);
 
               if(n2 != static_cast<boost::uint32_t>(0u))
               {
                 u |= 1u;
               }
 
-              if(i < static_cast<boost::uint32_t>(std::numeric_limits<native_float_type>::digits - 1))
+              if(i < static_cast<boost::uint32_t>(std::numeric_limits<built_in_float_type>::digits - 1))
               {
                 u <<= 1u;
               }
             }
 
             // Ensure that the value is normalized and adjust the exponent.
-            u |= static_cast<unsigned long long>(1uLL << (std::numeric_limits<native_float_type>::digits - 1));
+            u |= static_cast<unsigned long long>(1uLL << (std::numeric_limits<built_in_float_type>::digits - 1));
             e -= 1;
           }
         };
 
       private:
-        static bool digits_match_lib_dll_is_ok;
+        static bool my_mp_float_digits10_do_match_those_of_lib_dll;
 
         virtual boost::int64_t get_order_exact(void) const = 0;
-        virtual boost::int64_t get_order_fast(void) const = 0;
+        virtual boost::int64_t get_order_fast (void) const = 0;
         virtual void get_output_string(std::string& str, boost::int64_t& my_exp, const std::size_t number_of_digits) const = 0;
       };
+    }
+  }
 
-      // Create a loud link error if the digits in the
-      // mp_float headers mismatch those in a Lib or DLL.
-      template<const boost::int32_t digits10> boost::int32_t digits_match_lib_dll(void);        // There's no function body here.
-      template<> boost::int32_t digits_match_lib_dll<mp_float_base::mp_digits10>(void); // The function body is in mp_float_base.cpp.
+  namespace boost
+  {
+    namespace multiprecision
+    {
+      // Operations with I/O streams.
+      std::basic_ostream<char, std::char_traits<char> >& operator<<(std::basic_ostream<char, std::char_traits<char> >&, const mp_float_base&);
+      std::basic_istream<char, std::char_traits<char> >& operator>>(std::basic_istream<char, std::char_traits<char> >&, mp_float_base&);
+
+      // Use a template function to create a loud link error if the digits
+      // in the mp_float headers mismatch those in a linked-to Lib or DLL.
+      template<const boost::int32_t my_mp_float_digits10>
+      boost::int_fast32_t template_mp_float_digits10_match_those_of_lib_dll(void);
+
+      // This is a specialization of the digit10-match template.
+      // There's no function body here, because it's in mp_float_base.cpp.
+      template<>
+      boost::int_fast32_t template_mp_float_digits10_match_those_of_lib_dll<mp_float_base::mp_float_digits10>(void);
 
       inline mp_float_base::mp_float_base()
       {
-        digits_match_lib_dll_is_ok = (digits_match_lib_dll<mp_digits10>() == mp_digits10);
+        my_mp_float_digits10_do_match_those_of_lib_dll = (template_mp_float_digits10_match_those_of_lib_dll<mp_float_digits10>() == static_cast<boost::int_fast32_t>(mp_float_digits10));
       }
-
-      std::ostream& operator<<(std::ostream& os, const mp_float_base& f);
-      std::istream& operator>>(std::istream& is, mp_float_base& f);
     }
   }
 

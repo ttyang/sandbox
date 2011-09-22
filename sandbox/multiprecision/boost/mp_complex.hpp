@@ -258,7 +258,9 @@
   {
     namespace multiprecision
     {
-      inline std::ostream& operator<<(std::ostream& os, const mp_complex& z) { return os << '(' << z.real() << ',' << z.imag() << ')'; }
+      // Operations with I/O streams.
+      std::basic_ostream<char, std::char_traits<char> >& operator<<(std::basic_ostream<char, std::char_traits<char> >&, const mp_complex&);
+      std::basic_istream<char, std::char_traits<char> >& operator>>(std::basic_istream<char, std::char_traits<char> >&, mp_complex&);
 
       // Global unary operators of mp_float reference.
       inline       mp_complex  operator-(const mp_complex& u) { return mp_complex(-u.real(), -u.imag()); }
