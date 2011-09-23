@@ -1,8 +1,21 @@
 //Purpose:
-//  Demo array whose dimensions and sizes are defined at runtime.
+//  Demo array whose dimensions and sizes are defined at runtime
+//  using stepper_offset.
 //
 #include <boost/iostreams/utility/indent_scoped_ostreambuf.hpp>
 #include <boost/array_stepper/array_own_print.hpp>
+
+#ifndef BOOST_ARRAY_STEPPER_ITER_STEP_OFFSET_LJE20110627
+#define BOOST_ARRAY_STEPPER_ITER_STEP_OFFSET_LJE20110627
+#include <boost/array_stepper/stepper_offset.hpp>
+namespace boost
+{
+namespace array_stepper
+{
+
+}//exit array_stepper namespace
+}//exit boost namespace
+#endif
 
 using namespace boost::array_stepper;
 typedef array<int> array_t;
