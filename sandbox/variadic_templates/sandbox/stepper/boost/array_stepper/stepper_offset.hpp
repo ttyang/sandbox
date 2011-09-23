@@ -4,8 +4,9 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/make_signed.hpp>
 #include <boost/type_traits/make_unsigned.hpp>
-#include <limits>
 #include <boost/array_stepper/permutation0_last.hpp>
+#include <limits>
+
 namespace boost
 {
 namespace array_stepper
@@ -27,6 +28,7 @@ enum stepr_index
 enum
 { stepr_size=stepr_axis+1
 };
+  
   template
   < typename Value=int 
     //Value must include negative values(i.e. be signed) 
@@ -203,22 +205,47 @@ struct stepper_offset
     {
         return my_offset;
     }
+      offset_t
+    offset(index_t a_index)const
+    {
+        axis_t const a_axis= my_stepper_ones[0][stepr_axis];
+        return offset()+my_stepper_ones[a_axis].offset(a_index);
+    }
       const_iterator
     begin()const
     {
         return my_stepper_ones.begin();
     }
       void
-    permute( axes_permutation_t a_permut)
+    permute_axes
+      ( axes_permutation_t a_permut
+      , axis_t a_from=0
+      )
     {
-        stepper_ones_t so_v(stepper_ones());
-        unsigned r=rank();
-        for( unsigned i=0; i<r; ++i)
+        unsigned r=rank()-a_from;
+        std::vector<value_t> axes(r);
+        for( unsigned i=a_from; i<r; ++i)
+        {
+            axes[i]=my_stepper_ones[i][stepr_axis];
+        }
+        for( unsigned i=a_from; i<r; ++i)
         {
             unsigned p=a_permut[i];
-            my_stepper_ones[i]=so_v[p];
-            //my_stepper_ones[i][stepr_axis]=a_permut[so_v[i][stepr_axis]];
+            my_stepper_ones[i][stepr_axis]=axes[p];
         }
+    }
+      void
+    rotate_axes
+      ( axis_t a_from=0
+      )
+    {
+        unsigned r=rank();
+        axis_t a_axis=my_stepper_ones[a_from][stepr_axis];
+        for( unsigned i=a_from; i<r-1; ++i)
+        {
+            my_stepper_ones[i][stepr_axis]=my_stepper_ones[i+1][stepr_axis];
+        }
+        my_stepper_ones[r-1][stepr_axis]=a_axis;
     }
  protected:
       offset_t
@@ -230,26 +257,69 @@ struct stepper_offset
         unsigned size=a_lengths.size();
         if(0<size)
         {
-            unsigned i=0;
-            unsigned now_index =a_permut[i];
-            value_t  now_length=a_lengths[now_index];
-            int      now_sign  =isign(now_length);
-            my_stepper_ones[now_index][stepr_length]=abs(now_length);
-            my_stepper_ones[now_index][stepr_stride]=now_sign;
-            my_stepper_ones[now_index][stepr_axis  ]=size-1-i;
-            my_offset+=my_stepper_ones[now_index].offset();
-            for(++i; i<size; ++i)
+          #if 0
+            unsigned leng_indx=0;
+            unsigned perm_indx=a_permut[leng_indx];
+            value_t  leng_valu=a_lengths[perm_indx];
+            int      leng_sign=isign(leng_valu);
+            my_stepper_ones[perm_indx][stepr_length]=abs(leng_valu);
+            my_stepper_ones[perm_indx][stepr_stride]=leng_sign;
+            my_stepper_ones[perm_indx][stepr_axis  ]=size-1-leng_indx;
+            my_offset+=my_stepper_ones[perm_indx].offset();
+            for(++leng_indx; leng_indx<size; ++leng_indx)
             {
-                value_t pre_space=my_stepper_ones[now_index].space();
-                now_index =a_permut[i];
-                now_length=a_lengths[now_index];
-                now_sign  =isign(now_length);
-                my_stepper_ones[now_index][stepr_length]=abs(now_length);
-                my_stepper_ones[now_index][stepr_stride]=now_sign*pre_space;
-                my_stepper_ones[now_index][stepr_axis  ]=size-1-i;
-                my_offset+=my_stepper_ones[now_index].offset();
+                value_t pre_space=my_stepper_ones[perm_indx].space();
+                perm_indx=a_permut[leng_indx];
+                leng_valu=a_lengths[perm_indx];
+                leng_sign=isign(leng_valu);
+                my_stepper_ones[perm_indx][stepr_length]=abs(leng_valu);
+                my_stepper_ones[perm_indx][stepr_stride]=leng_sign*pre_space;
+                my_stepper_ones[perm_indx][stepr_axis  ]=size-1-leng_indx;
+                my_offset+=my_stepper_ones[perm_indx].offset();
             }
-            return my_stepper_ones[now_index].space();
+            return my_stepper_ones[perm_indx].space();
+          #elif 0
+            unsigned leng_indx=0;
+            unsigned perm_indx=a_permut[leng_indx];
+            value_t  leng_valu=a_lengths[perm_indx];
+            int      leng_sign=isign(leng_valu);
+            my_stepper_ones[perm_indx][stepr_length]=abs(leng_valu);
+            my_stepper_ones[perm_indx][stepr_stride]=leng_sign;
+            my_stepper_ones[perm_indx][stepr_axis  ]=leng_indx;
+            my_offset+=my_stepper_ones[perm_indx].offset();
+            for(++leng_indx; leng_indx<size; ++leng_indx)
+            {
+                value_t pre_space=my_stepper_ones[perm_indx].space();
+                perm_indx=a_permut[leng_indx];
+                leng_valu=a_lengths[perm_indx];
+                leng_sign=isign(leng_valu);
+                my_stepper_ones[perm_indx][stepr_length]=abs(leng_valu);
+                my_stepper_ones[perm_indx][stepr_stride]=leng_sign*pre_space;
+                my_stepper_ones[perm_indx][stepr_axis  ]=leng_indx;
+                my_offset+=my_stepper_ones[perm_indx].offset();
+            }
+            return my_stepper_ones[perm_indx].space();
+          #else
+            unsigned maxm_indx=size-1;//MAXiMum index
+            for( unsigned leng_indx=0; leng_indx<size; ++leng_indx)
+            {
+                unsigned perm_indx=maxm_indx-a_permut[leng_indx];
+                value_t  leng_valu=a_lengths[leng_indx];
+                int      leng_sign=isign(leng_valu);
+                my_stepper_ones[perm_indx][stepr_length]=abs(leng_valu);
+                my_stepper_ones[perm_indx][stepr_stride]=leng_sign;
+                my_stepper_ones[leng_indx][stepr_axis  ]=perm_indx;
+            }
+            {
+                my_offset=my_stepper_ones[maxm_indx].offset();
+                for( int axis_indx=maxm_indx-1; 0<=axis_indx; --axis_indx)
+                {
+                    my_stepper_ones[axis_indx][stepr_stride]*=my_stepper_ones[axis_indx+1].space();
+                    my_offset+=my_stepper_ones[axis_indx].offset();
+                }
+            }
+            return my_stepper_ones[maxm_indx].space();
+          #endif
         }
         else
         {
