@@ -21,14 +21,14 @@
   {
     namespace multiprecision
     {
-      inline boost::int32_t   max_iteration(void)    { return static_cast<boost::int32_t>(10000); }
-      inline boost::int64_t   tol (void)             { return static_cast<boost::int64_t>(boost::multiprecision::mp_float::mp_float_max_digits10); }
+      inline boost::int32_t max_iteration(void) { return static_cast<boost::int32_t>(10000); }
+      inline boost::int64_t tol(void)           { return static_cast<boost::int64_t>(boost::multiprecision::mp_float::mp_float_max_digits10); }
 
       inline boost::multiprecision::mp_float fabs(const boost::multiprecision::mp_float& x) { return (x.isneg() ? boost::multiprecision::mp_float(x).negate() : x); }
 
       boost::multiprecision::mp_float floor(const boost::multiprecision::mp_float& x);
       boost::multiprecision::mp_float ceil (const boost::multiprecision::mp_float& x);
-      boost::int32_t   sgn   (const boost::multiprecision::mp_float& x);
+      boost::int32_t                  sgn  (const boost::multiprecision::mp_float& x);
       boost::multiprecision::mp_float ldexp(const boost::multiprecision::mp_float& v, int e);
       boost::multiprecision::mp_float frexp(const boost::multiprecision::mp_float& v, int* expon);
       boost::multiprecision::mp_float fmod (const boost::multiprecision::mp_float& v1, const boost::multiprecision::mp_float& v2);
@@ -49,36 +49,36 @@
       inline bool isneg(const boost::multiprecision::mp_float& x)       { return x.isneg(); }
       inline bool isneg(const boost::multiprecision::mp_complex& z)     { return z.isneg(); }
 
-      inline boost::multiprecision::mp_float abs (const boost::multiprecision::mp_float& x)      { return boost::multiprecision::fabs(x); }
-      inline boost::multiprecision::mp_float real(const boost::multiprecision::mp_float& x)      { return x; }
-      inline boost::multiprecision::mp_float imag(const boost::multiprecision::mp_float&)        { return boost::multiprecision::zero(); }
+      inline boost::multiprecision::mp_float abs (const boost::multiprecision::mp_float& x) { return boost::multiprecision::fabs(x); }
+      inline boost::multiprecision::mp_float real(const boost::multiprecision::mp_float& x) { return x; }
+      inline boost::multiprecision::mp_float imag(const boost::multiprecision::mp_float&)   { return boost::multiprecision::zero(); }
 
-      inline bool ispos(const double x)          { return !isneg(x); }
-      inline bool ispos(const boost::multiprecision::mp_float& x)       { return !x.isneg(); }
-      inline bool ispos(const boost::multiprecision::mp_complex& z)     { return !z.isneg(); }
+      inline bool ispos(const double x)                             { return !isneg(x); }
+      inline bool ispos(const boost::multiprecision::mp_float& x)   { return !x.isneg(); }
+      inline bool ispos(const boost::multiprecision::mp_complex& z) { return !z.isneg(); }
 
              bool isint(const double x);
-      inline bool isint(const boost::multiprecision::mp_float& x)       { return x.isint(); }
-      inline bool isint(const boost::multiprecision::mp_complex& z)     { return z.isint(); }
+      inline bool isint(const boost::multiprecision::mp_float& x)   { return x.isint(); }
+      inline bool isint(const boost::multiprecision::mp_complex& z) { return z.isint(); }
 
-      inline bool isone(const double x)                                 { return (::fabs(1.0 - x) < (std::numeric_limits<double>::min)() * 2); }
-      inline bool isone(const boost::multiprecision::mp_float& x)       { return x.isone(); }
-      inline bool isone(const boost::multiprecision::mp_complex& z)     { return z.isone(); }
+      inline bool isone(const double x)                             { return (::fabs(1.0 - x) < (std::numeric_limits<double>::min)() * 2); }
+      inline bool isone(const boost::multiprecision::mp_float& x)   { return x.isone(); }
+      inline bool isone(const boost::multiprecision::mp_complex& z) { return z.isone(); }
 
-      inline bool iszero(const double x)                                { return (::fabs(x) < (std::numeric_limits<double>::min)() * 2); }
-      inline bool iszero(const boost::multiprecision::mp_float& x)      { return x.iszero(); }
-      inline bool iszero(const boost::multiprecision::mp_complex& z)    { return z.iszero(); }
+      inline bool iszero(const double x)                             { return (::fabs(x) < (std::numeric_limits<double>::min)() * 2); }
+      inline bool iszero(const boost::multiprecision::mp_float& x)   { return x.iszero(); }
+      inline bool iszero(const boost::multiprecision::mp_complex& z) { return z.iszero(); }
 
       boost::multiprecision::mp_float integer_part(const boost::multiprecision::mp_float& x);
       boost::multiprecision::mp_float decimal_part(const boost::multiprecision::mp_float& x);
 
       void to_parts(const boost::multiprecision::mp_float& x, double& mantissa, boost::int64_t& exponent);
 
-      inline double to_double(const double& x)   { return x; }
+      inline double to_double(const double& x) { return x; }
              double to_double(const boost::multiprecision::mp_float& x);
              double to_double(const boost::multiprecision::mp_complex& z);
 
-      inline boost::int64_t order_of(const double x)    { return static_cast<boost::int64_t>(static_cast<boost::int32_t>(::log10(x))); }
+      inline boost::int64_t order_of(const double x)                           { return static_cast<boost::int64_t>(static_cast<boost::int32_t>(::log10(x) + (std::numeric_limits<double>::epsilon() * 0.9))); }
       inline boost::int64_t order_of(const boost::multiprecision::mp_float& x) { return x.order(); }
 
       boost::int64_t to_int64(const double x);

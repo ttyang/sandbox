@@ -28,15 +28,14 @@
       class mp_float_efx : public mp_float_base
       {
       public:
-        static const boost::int32_t mp_radix  = static_cast<boost::int32_t>(10);
+        static const boost::int32_t mp_radix        = static_cast<boost::int32_t>(10);
         static const boost::int32_t mp_float_digits = mp_float_digits10;
 
         static const boost::int64_t mp_float_max_exp   = static_cast<boost::int64_t>(+9223372036854775795LL);
         static const boost::int64_t mp_float_min_exp   = static_cast<boost::int64_t>(-9223372036854775795LL);
         static const boost::int64_t mp_float_max_exp10 = static_cast<boost::int64_t>(+3063937869882635616LL); // Approx. [mp_float_max_exp / log10(2)], also an even multiple of 8
         static const boost::int64_t mp_float_min_exp10 = static_cast<boost::int64_t>(-3063937869882635616LL);
-
-        static const boost::int32_t mp_elem_digits10 = static_cast<boost::int32_t>(8);
+        static const boost::int32_t mp_elem_digits10   = static_cast<boost::int32_t>(8);
 
       private:
         static const boost::int32_t mp_float_digits10_num_base = static_cast<boost::int32_t>((mp_float_max_digits10 / mp_elem_digits10) + (((mp_float_max_digits10 % mp_elem_digits10) != 0) ? 1 : 0));
@@ -74,7 +73,7 @@
         mp_float_efx(const wchar_t n);
         mp_float_efx(const signed short n);
         mp_float_efx(const unsigned short n);
-        mp_float_efx(const signed int n);
+        mp_float_efx(const int n);
         mp_float_efx(const unsigned int n);
         mp_float_efx(const signed long n);
         mp_float_efx(const unsigned long n);
@@ -97,7 +96,6 @@
 
         virtual ~mp_float_efx() { }
 
-      public:
         virtual boost::int32_t cmp(const mp_float_efx& v) const;
 
         // Specific special values.

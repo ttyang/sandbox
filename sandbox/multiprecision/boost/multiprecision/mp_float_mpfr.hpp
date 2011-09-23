@@ -83,7 +83,7 @@
         mp_float_mpfr(const wchar_t n);
         mp_float_mpfr(const signed short n);
         mp_float_mpfr(const unsigned short n);
-        mp_float_mpfr(const signed int n);
+        mp_float_mpfr(const int n);
         mp_float_mpfr(const unsigned int n);
         mp_float_mpfr(const signed long n);
         mp_float_mpfr(const unsigned long n);

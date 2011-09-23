@@ -107,7 +107,7 @@
       inline mp_float operator+(const mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? mp_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)) : mp_float(u).add_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float operator+(const mp_float& u, const signed char n)        { return mp_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator+(const mp_float& u, const signed short n)       { return mp_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
-      inline mp_float operator+(const mp_float& u, const signed int n)         { return mp_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
+      inline mp_float operator+(const mp_float& u, const int n)                { return mp_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator+(const mp_float& u, const signed long n)        { return mp_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator+(const mp_float& u, const signed long long n)   { return mp_float(u).add_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator+(const mp_float& u, const unsigned char n)      { return mp_float(u).add_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -123,7 +123,7 @@
       inline mp_float operator-(const mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? mp_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)) : mp_float(u).sub_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float operator-(const mp_float& u, const signed char n)        { return mp_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator-(const mp_float& u, const signed short n)       { return mp_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
-      inline mp_float operator-(const mp_float& u, const signed int n)         { return mp_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
+      inline mp_float operator-(const mp_float& u, const int n)                { return mp_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator-(const mp_float& u, const signed long n)        { return mp_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator-(const mp_float& u, const signed long long n)   { return mp_float(u).sub_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator-(const mp_float& u, const unsigned char n)      { return mp_float(u).sub_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -139,7 +139,7 @@
       inline mp_float operator*(const mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? mp_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)) : mp_float(u).mul_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float operator*(const mp_float& u, const signed char n)        { return mp_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator*(const mp_float& u, const signed short n)       { return mp_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
-      inline mp_float operator*(const mp_float& u, const signed int n)         { return mp_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
+      inline mp_float operator*(const mp_float& u, const int n)                { return mp_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator*(const mp_float& u, const signed long n)        { return mp_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator*(const mp_float& u, const signed long long n)   { return mp_float(u).mul_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator*(const mp_float& u, const unsigned char n)      { return mp_float(u).mul_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -155,7 +155,7 @@
       inline mp_float operator/(const mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? mp_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)) : mp_float(u).div_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float operator/(const mp_float& u, const signed char n)        { return mp_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator/(const mp_float& u, const signed short n)       { return mp_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
-      inline mp_float operator/(const mp_float& u, const signed int n)         { return mp_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
+      inline mp_float operator/(const mp_float& u, const int n)                { return mp_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator/(const mp_float& u, const signed long n)        { return mp_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator/(const mp_float& u, const signed long long n)   { return mp_float(u).div_signed_long_long(static_cast<signed long long>(n)); }
       inline mp_float operator/(const mp_float& u, const unsigned char n)      { return mp_float(u).div_unsigned_long_long(static_cast<unsigned long long>(n)); }
@@ -172,7 +172,7 @@
       inline mp_float operator+(const char n, const mp_float& u)               { return ((!std::numeric_limits<char>::is_signed) ? mp_float(u).add_unsigned_long_long(n) : mp_float(u).add_signed_long_long(n)); }
       inline mp_float operator+(const signed char n, const mp_float& u)        { return mp_float(u).add_signed_long_long(n); }
       inline mp_float operator+(const signed short n, const mp_float& u)       { return mp_float(u).add_signed_long_long(n); }
-      inline mp_float operator+(const signed int n, const mp_float& u)         { return mp_float(u).add_signed_long_long(n); }
+      inline mp_float operator+(const int n, const mp_float& u)                { return mp_float(u).add_signed_long_long(n); }
       inline mp_float operator+(const signed long n, const mp_float& u)        { return mp_float(u).add_signed_long_long(n); }
       inline mp_float operator+(const signed long long n, const mp_float& u)   { return mp_float(u).add_signed_long_long(n); }
       inline mp_float operator+(const unsigned char n, const mp_float& u)      { return mp_float(u).add_unsigned_long_long(n); }
@@ -188,7 +188,7 @@
       inline mp_float operator-(const char n, const mp_float& u)               { return mp_float(n)  -= u; }
       inline mp_float operator-(const signed char n, const mp_float& u)        { return mp_float(n)  -= u; }
       inline mp_float operator-(const signed short n, const mp_float& u)       { return mp_float(n)  -= u; }
-      inline mp_float operator-(const signed int n, const mp_float& u)         { return mp_float(n)  -= u; }
+      inline mp_float operator-(const int n, const mp_float& u)                { return mp_float(n)  -= u; }
       inline mp_float operator-(const signed long n, const mp_float& u)        { return mp_float(n)  -= u; }
       inline mp_float operator-(const signed long long n, const mp_float& u)   { return mp_float(n)  -= u; }
       inline mp_float operator-(const unsigned char n, const mp_float& u)      { return mp_float(n)  -= u; }
@@ -204,7 +204,7 @@
       inline mp_float operator*(const char n, const mp_float& u)               { return ((!std::numeric_limits<char>::is_signed) ? mp_float(u).mul_unsigned_long_long(n) : mp_float(u).mul_signed_long_long(n)); }
       inline mp_float operator*(const signed char n, const mp_float& u)        { return mp_float(u).mul_signed_long_long(n); }
       inline mp_float operator*(const signed short n, const mp_float& u)       { return mp_float(u).mul_signed_long_long(n); }
-      inline mp_float operator*(const signed int n, const mp_float& u)         { return mp_float(u).mul_signed_long_long(n); }
+      inline mp_float operator*(const int n, const mp_float& u)                { return mp_float(u).mul_signed_long_long(n); }
       inline mp_float operator*(const signed long n, const mp_float& u)        { return mp_float(u).mul_signed_long_long(n); }
       inline mp_float operator*(const signed long long n, const mp_float& u)   { return mp_float(u).mul_signed_long_long(n); }
       inline mp_float operator*(const unsigned char n, const mp_float& u)      { return mp_float(u).mul_unsigned_long_long(n); }
@@ -220,7 +220,7 @@
       inline mp_float operator/(const char n, const mp_float& u)               { return mp_float(n)  /= u; }
       inline mp_float operator/(const signed char n, const mp_float& u)        { return mp_float(n)  /= u; }
       inline mp_float operator/(const signed short n, const mp_float& u)       { return mp_float(n)  /= u; }
-      inline mp_float operator/(const signed int n, const mp_float& u)         { return mp_float(n)  /= u; }
+      inline mp_float operator/(const int n, const mp_float& u)                { return mp_float(n)  /= u; }
       inline mp_float operator/(const signed long n, const mp_float& u)        { return mp_float(n)  /= u; }
       inline mp_float operator/(const signed long long n, const mp_float& u)   { return mp_float(n)  /= u; }
       inline mp_float operator/(const unsigned char n, const mp_float& u)      { return mp_float(n)  /= u; }
@@ -237,7 +237,7 @@
       inline mp_float& operator+=(mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? u.add_unsigned_long_long(static_cast<unsigned long long>(n)) : u.add_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float& operator+=(mp_float& u, const signed char n)        { return u.add_signed_long_long(n); }
       inline mp_float& operator+=(mp_float& u, const signed short n)       { return u.add_signed_long_long(n); }
-      inline mp_float& operator+=(mp_float& u, const signed int n)         { return u.add_signed_long_long(n); }
+      inline mp_float& operator+=(mp_float& u, const int n)                { return u.add_signed_long_long(n); }
       inline mp_float& operator+=(mp_float& u, const signed long n)        { return u.add_signed_long_long(n); }
       inline mp_float& operator+=(mp_float& u, const signed long long n)   { return u.add_signed_long_long(n); }
       inline mp_float& operator+=(mp_float& u, const unsigned char n)      { return u.add_unsigned_long_long(n); }
@@ -252,7 +252,7 @@
 
       inline mp_float& operator-=(mp_float& u, const signed char n)        { return ((!std::numeric_limits<char>::is_signed) ? u.sub_unsigned_long_long(static_cast<unsigned long long>(n)) : u.sub_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float& operator-=(mp_float& u, const signed short n)       { return u.sub_signed_long_long(n); }
-      inline mp_float& operator-=(mp_float& u, const signed int n)         { return u.sub_signed_long_long(n); }
+      inline mp_float& operator-=(mp_float& u, const int n)                { return u.sub_signed_long_long(n); }
       inline mp_float& operator-=(mp_float& u, const signed long n)        { return u.sub_signed_long_long(n); }
       inline mp_float& operator-=(mp_float& u, const signed long long n)   { return u.sub_signed_long_long(n); }
       inline mp_float& operator-=(mp_float& u, const unsigned char n)      { return u.sub_unsigned_long_long(n); }
@@ -268,7 +268,7 @@
       inline mp_float& operator*=(mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? u.mul_unsigned_long_long(static_cast<unsigned long long>(n)) : u.mul_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float& operator*=(mp_float& u, const signed char n)        { return u.mul_signed_long_long(n); }
       inline mp_float& operator*=(mp_float& u, const signed short n)       { return u.mul_signed_long_long(n); }
-      inline mp_float& operator*=(mp_float& u, const signed int n)         { return u.mul_signed_long_long(n); }
+      inline mp_float& operator*=(mp_float& u, const int n)                { return u.mul_signed_long_long(n); }
       inline mp_float& operator*=(mp_float& u, const signed long n)        { return u.mul_signed_long_long(n); }
       inline mp_float& operator*=(mp_float& u, const signed long long n)   { return u.mul_signed_long_long(n); }
       inline mp_float& operator*=(mp_float& u, const unsigned char n)      { return u.mul_unsigned_long_long(n); }
@@ -284,7 +284,7 @@
       inline mp_float& operator/=(mp_float& u, const char n)               { return ((!std::numeric_limits<char>::is_signed) ? u.div_unsigned_long_long(static_cast<unsigned long long>(n)) : u.div_signed_long_long(static_cast<signed long long>(n))); }
       inline mp_float& operator/=(mp_float& u, const signed char n)        { return u.div_signed_long_long(n); }
       inline mp_float& operator/=(mp_float& u, const signed short n)       { return u.div_signed_long_long(n); }
-      inline mp_float& operator/=(mp_float& u, const signed int n)         { return u.div_signed_long_long(n); }
+      inline mp_float& operator/=(mp_float& u, const int n)                { return u.div_signed_long_long(n); }
       inline mp_float& operator/=(mp_float& u, const signed long n)        { return u.div_signed_long_long(n); }
       inline mp_float& operator/=(mp_float& u, const signed long long n)   { return u.div_signed_long_long(n); }
       inline mp_float& operator/=(mp_float& u, const unsigned char n)      { return u.div_unsigned_long_long(n); }
@@ -334,12 +334,12 @@
       inline bool operator>=(const mp_float& u, const signed short v) { return (u.cmp(mp_float(v)) >= static_cast<boost::int32_t>(0)); }
       inline bool operator> (const mp_float& u, const signed short v) { return (u.cmp(mp_float(v)) >  static_cast<boost::int32_t>(0)); }
 
-      inline bool operator< (const mp_float& u, const signed int v) { return (u.cmp(mp_float(v)) <  static_cast<boost::int32_t>(0)); }
-      inline bool operator<=(const mp_float& u, const signed int v) { return (u.cmp(mp_float(v)) <= static_cast<boost::int32_t>(0)); }
-      inline bool operator==(const mp_float& u, const signed int v) { return (u.cmp(mp_float(v)) == static_cast<boost::int32_t>(0)); }
-      inline bool operator!=(const mp_float& u, const signed int v) { return (u.cmp(mp_float(v)) != static_cast<boost::int32_t>(0)); }
-      inline bool operator>=(const mp_float& u, const signed int v) { return (u.cmp(mp_float(v)) >= static_cast<boost::int32_t>(0)); }
-      inline bool operator> (const mp_float& u, const signed int v) { return (u.cmp(mp_float(v)) >  static_cast<boost::int32_t>(0)); }
+      inline bool operator< (const mp_float& u, const int v) { return (u.cmp(mp_float(v)) <  static_cast<boost::int32_t>(0)); }
+      inline bool operator<=(const mp_float& u, const int v) { return (u.cmp(mp_float(v)) <= static_cast<boost::int32_t>(0)); }
+      inline bool operator==(const mp_float& u, const int v) { return (u.cmp(mp_float(v)) == static_cast<boost::int32_t>(0)); }
+      inline bool operator!=(const mp_float& u, const int v) { return (u.cmp(mp_float(v)) != static_cast<boost::int32_t>(0)); }
+      inline bool operator>=(const mp_float& u, const int v) { return (u.cmp(mp_float(v)) >= static_cast<boost::int32_t>(0)); }
+      inline bool operator> (const mp_float& u, const int v) { return (u.cmp(mp_float(v)) >  static_cast<boost::int32_t>(0)); }
 
       inline bool operator< (const mp_float& u, const signed long v) { return (u.cmp(mp_float(v)) <  static_cast<boost::int32_t>(0)); }
       inline bool operator<=(const mp_float& u, const signed long v) { return (u.cmp(mp_float(v)) <= static_cast<boost::int32_t>(0)); }
@@ -440,12 +440,12 @@
       inline bool operator>=(const signed short u, const mp_float& v) { return (mp_float(u).cmp(v) >= static_cast<boost::int32_t>(0)); }
       inline bool operator> (const signed short u, const mp_float& v) { return (mp_float(u).cmp(v) >  static_cast<boost::int32_t>(0)); }
 
-      inline bool operator< (const signed int u, const mp_float& v) { return (mp_float(u).cmp(v) <  static_cast<boost::int32_t>(0)); }
-      inline bool operator<=(const signed int u, const mp_float& v) { return (mp_float(u).cmp(v) <= static_cast<boost::int32_t>(0)); }
-      inline bool operator==(const signed int u, const mp_float& v) { return (mp_float(u).cmp(v) == static_cast<boost::int32_t>(0)); }
-      inline bool operator!=(const signed int u, const mp_float& v) { return (mp_float(u).cmp(v) != static_cast<boost::int32_t>(0)); }
-      inline bool operator>=(const signed int u, const mp_float& v) { return (mp_float(u).cmp(v) >= static_cast<boost::int32_t>(0)); }
-      inline bool operator> (const signed int u, const mp_float& v) { return (mp_float(u).cmp(v) >  static_cast<boost::int32_t>(0)); }
+      inline bool operator< (const int u, const mp_float& v) { return (mp_float(u).cmp(v) <  static_cast<boost::int32_t>(0)); }
+      inline bool operator<=(const int u, const mp_float& v) { return (mp_float(u).cmp(v) <= static_cast<boost::int32_t>(0)); }
+      inline bool operator==(const int u, const mp_float& v) { return (mp_float(u).cmp(v) == static_cast<boost::int32_t>(0)); }
+      inline bool operator!=(const int u, const mp_float& v) { return (mp_float(u).cmp(v) != static_cast<boost::int32_t>(0)); }
+      inline bool operator>=(const int u, const mp_float& v) { return (mp_float(u).cmp(v) >= static_cast<boost::int32_t>(0)); }
+      inline bool operator> (const int u, const mp_float& v) { return (mp_float(u).cmp(v) >  static_cast<boost::int32_t>(0)); }
 
       inline bool operator< (const signed long u, const mp_float& v) { return (mp_float(u).cmp(v) <  static_cast<boost::int32_t>(0)); }
       inline bool operator<=(const signed long u, const mp_float& v) { return (mp_float(u).cmp(v) <= static_cast<boost::int32_t>(0)); }

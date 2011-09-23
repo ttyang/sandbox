@@ -87,7 +87,7 @@
         mp_float_gmp(const wchar_t n);
         mp_float_gmp(const signed short n);
         mp_float_gmp(const unsigned short n);
-        mp_float_gmp(const signed int n);
+        mp_float_gmp(const int n);
         mp_float_gmp(const unsigned int n);
         mp_float_gmp(const signed long n);
         mp_float_gmp(const unsigned long n);

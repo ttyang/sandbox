@@ -136,7 +136,7 @@
         operator wchar_t() const            { return (std::numeric_limits<char>::is_signed ? static_cast<wchar_t>(extract_signed_long_long()) : static_cast<wchar_t>(extract_unsigned_long_long())); }
         operator signed char() const        { return static_cast<signed char>       (extract_signed_long_long()); }
         operator signed short() const       { return static_cast<signed short>      (extract_signed_long_long()); }
-        operator signed int() const         { return static_cast<signed int>        (extract_signed_long_long()); }
+        operator int() const                { return static_cast<int>               (extract_signed_long_long()); }
         operator signed long() const        { return static_cast<signed long>       (extract_signed_long_long()); }
         operator signed long long() const   { return static_cast<signed long long>  (extract_signed_long_long()); }
         operator unsigned char() const      { return static_cast<unsigned char>     (extract_unsigned_long_long()); }

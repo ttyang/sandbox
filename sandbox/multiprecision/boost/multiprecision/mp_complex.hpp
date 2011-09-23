@@ -33,7 +33,7 @@
       inline mp_complex& operator+=(mp_complex&, const char);
       inline mp_complex& operator+=(mp_complex&, const signed char);
       inline mp_complex& operator+=(mp_complex&, const signed short);
-      inline mp_complex& operator+=(mp_complex&, const signed int);
+      inline mp_complex& operator+=(mp_complex&, const int);
       inline mp_complex& operator+=(mp_complex&, const signed long);
       inline mp_complex& operator+=(mp_complex&, const signed long long);
       inline mp_complex& operator+=(mp_complex&, const unsigned char);
@@ -49,7 +49,7 @@
       inline mp_complex& operator-=(mp_complex&, const char);
       inline mp_complex& operator-=(mp_complex&, const signed char);
       inline mp_complex& operator-=(mp_complex&, const signed short);
-      inline mp_complex& operator-=(mp_complex&, const signed int);
+      inline mp_complex& operator-=(mp_complex&, const int);
       inline mp_complex& operator-=(mp_complex&, const signed long);
       inline mp_complex& operator-=(mp_complex&, const signed long long);
       inline mp_complex& operator-=(mp_complex&, const unsigned char);
@@ -65,7 +65,7 @@
       inline mp_complex& operator*=(mp_complex&, const char);
       inline mp_complex& operator*=(mp_complex&, const signed char);
       inline mp_complex& operator*=(mp_complex&, const signed short);
-      inline mp_complex& operator*=(mp_complex&, const signed int);
+      inline mp_complex& operator*=(mp_complex&, const int);
       inline mp_complex& operator*=(mp_complex&, const signed long);
       inline mp_complex& operator*=(mp_complex&, const signed long long);
       inline mp_complex& operator*=(mp_complex&, const unsigned char);
@@ -81,7 +81,7 @@
       inline mp_complex& operator/=(mp_complex&, const char);
       inline mp_complex& operator/=(mp_complex&, const signed char);
       inline mp_complex& operator/=(mp_complex&, const signed short);
-      inline mp_complex& operator/=(mp_complex&, const signed int);
+      inline mp_complex& operator/=(mp_complex&, const int);
       inline mp_complex& operator/=(mp_complex&, const signed long);
       inline mp_complex& operator/=(mp_complex&, const signed long long);
       inline mp_complex& operator/=(mp_complex&, const unsigned char);
@@ -118,7 +118,7 @@
         mp_complex(const wchar_t n)            : Re(n), Im(boost::multiprecision::zero()) { }
         mp_complex(const signed short n)       : Re(n), Im(boost::multiprecision::zero()) { }
         mp_complex(const unsigned short n)     : Re(n), Im(boost::multiprecision::zero()) { }
-        mp_complex(const signed int n)         : Re(n), Im(boost::multiprecision::zero()) { }
+        mp_complex(const int n)                : Re(n), Im(boost::multiprecision::zero()) { }
         mp_complex(const unsigned int n)       : Re(n), Im(boost::multiprecision::zero()) { }
         mp_complex(const signed long n)        : Re(n), Im(boost::multiprecision::zero()) { }
         mp_complex(const unsigned long n)      : Re(n), Im(boost::multiprecision::zero()) { }
@@ -185,7 +185,7 @@
         friend inline mp_complex& operator+=(mp_complex&, const char);
         friend inline mp_complex& operator+=(mp_complex&, const signed char);
         friend inline mp_complex& operator+=(mp_complex&, const signed short);
-        friend inline mp_complex& operator+=(mp_complex&, const signed int);
+        friend inline mp_complex& operator+=(mp_complex&, const int);
         friend inline mp_complex& operator+=(mp_complex&, const signed long);
         friend inline mp_complex& operator+=(mp_complex&, const signed long long);
         friend inline mp_complex& operator+=(mp_complex&, const unsigned char);
@@ -201,7 +201,7 @@
         friend inline mp_complex& operator-=(mp_complex&, const char);
         friend inline mp_complex& operator-=(mp_complex&, const signed char);
         friend inline mp_complex& operator-=(mp_complex&, const signed short);
-        friend inline mp_complex& operator-=(mp_complex&, const signed int);
+        friend inline mp_complex& operator-=(mp_complex&, const int);
         friend inline mp_complex& operator-=(mp_complex&, const signed long);
         friend inline mp_complex& operator-=(mp_complex&, const signed long long);
         friend inline mp_complex& operator-=(mp_complex&, const unsigned char);
@@ -217,7 +217,7 @@
         friend inline mp_complex& operator*=(mp_complex&, const char);
         friend inline mp_complex& operator*=(mp_complex&, const signed char);
         friend inline mp_complex& operator*=(mp_complex&, const signed short);
-        friend inline mp_complex& operator*=(mp_complex&, const signed int);
+        friend inline mp_complex& operator*=(mp_complex&, const int);
         friend inline mp_complex& operator*=(mp_complex&, const signed long);
         friend inline mp_complex& operator*=(mp_complex&, const signed long long);
         friend inline mp_complex& operator*=(mp_complex&, const unsigned char);
@@ -233,7 +233,7 @@
         friend inline mp_complex& operator/=(mp_complex&, const char);
         friend inline mp_complex& operator/=(mp_complex&, const signed char);
         friend inline mp_complex& operator/=(mp_complex&, const signed short);
-        friend inline mp_complex& operator/=(mp_complex&, const signed int);
+        friend inline mp_complex& operator/=(mp_complex&, const int);
         friend inline mp_complex& operator/=(mp_complex&, const signed long);
         friend inline mp_complex& operator/=(mp_complex&, const signed long long);
         friend inline mp_complex& operator/=(mp_complex&, const unsigned char);
@@ -297,7 +297,7 @@
       inline mp_complex operator+(const mp_complex& z, const char n)               { return mp_complex(z.real() + n, z.imag()); }
       inline mp_complex operator+(const mp_complex& z, const signed char n)        { return mp_complex(z.real() + n, z.imag()); }
       inline mp_complex operator+(const mp_complex& z, const signed short n)       { return mp_complex(z.real() + n, z.imag()); }
-      inline mp_complex operator+(const mp_complex& z, const signed int n)         { return mp_complex(z.real() + n, z.imag()); }
+      inline mp_complex operator+(const mp_complex& z, const int n)                { return mp_complex(z.real() + n, z.imag()); }
       inline mp_complex operator+(const mp_complex& z, const signed long n)        { return mp_complex(z.real() + n, z.imag()); }
       inline mp_complex operator+(const mp_complex& z, const signed long long n)   { return mp_complex(z.real() + n, z.imag()); }
       inline mp_complex operator+(const mp_complex& z, const unsigned char n)      { return mp_complex(z.real() + n, z.imag()); }
@@ -313,7 +313,7 @@
       inline mp_complex operator-(const mp_complex& z, const char n)               { return mp_complex(z.real() - n, z.imag()); }
       inline mp_complex operator-(const mp_complex& z, const signed char n)        { return mp_complex(z.real() - n, z.imag()); }
       inline mp_complex operator-(const mp_complex& z, const signed short n)       { return mp_complex(z.real() - n, z.imag()); }
-      inline mp_complex operator-(const mp_complex& z, const signed int n)         { return mp_complex(z.real() - n, z.imag()); }
+      inline mp_complex operator-(const mp_complex& z, const int n)                { return mp_complex(z.real() - n, z.imag()); }
       inline mp_complex operator-(const mp_complex& z, const signed long n)        { return mp_complex(z.real() - n, z.imag()); }
       inline mp_complex operator-(const mp_complex& z, const signed long long n)   { return mp_complex(z.real() - n, z.imag()); }
       inline mp_complex operator-(const mp_complex& z, const unsigned char n)      { return mp_complex(z.real() - n, z.imag()); }
@@ -329,7 +329,7 @@
       inline mp_complex operator*(const mp_complex& z, const char n)               { return mp_complex(z.real() * n, z.imag() * n); }
       inline mp_complex operator*(const mp_complex& z, const signed char n)        { return mp_complex(z.real() * n, z.imag() * n); }
       inline mp_complex operator*(const mp_complex& z, const signed short n)       { return mp_complex(z.real() * n, z.imag() * n); }
-      inline mp_complex operator*(const mp_complex& z, const signed int n)         { return mp_complex(z.real() * n, z.imag() * n); }
+      inline mp_complex operator*(const mp_complex& z, const int n)                { return mp_complex(z.real() * n, z.imag() * n); }
       inline mp_complex operator*(const mp_complex& z, const signed long n)        { return mp_complex(z.real() * n, z.imag() * n); }
       inline mp_complex operator*(const mp_complex& z, const signed long long n)   { return mp_complex(z.real() * n, z.imag() * n); }
       inline mp_complex operator*(const mp_complex& z, const unsigned char n)      { return mp_complex(z.real() * n, z.imag() * n); }
@@ -345,7 +345,7 @@
       inline mp_complex operator/(const mp_complex& z, const char n)               { return mp_complex(z.real() / n, z.imag() / n); }
       inline mp_complex operator/(const mp_complex& z, const signed char n)        { return mp_complex(z.real() / n, z.imag() / n); }
       inline mp_complex operator/(const mp_complex& z, const signed short n)       { return mp_complex(z.real() / n, z.imag() / n); }
-      inline mp_complex operator/(const mp_complex& z, const signed int n)         { return mp_complex(z.real() / n, z.imag() / n); }
+      inline mp_complex operator/(const mp_complex& z, const int n)                { return mp_complex(z.real() / n, z.imag() / n); }
       inline mp_complex operator/(const mp_complex& z, const signed long n)        { return mp_complex(z.real() / n, z.imag() / n); }
       inline mp_complex operator/(const mp_complex& z, const signed long long n)   { return mp_complex(z.real() / n, z.imag() / n); }
       inline mp_complex operator/(const mp_complex& z, const unsigned char n)      { return mp_complex(z.real() / n, z.imag() / n); }
@@ -362,7 +362,7 @@
       inline mp_complex operator+(const char n, const mp_complex& v)               { return mp_complex(v.real() + n, v.imag()); }
       inline mp_complex operator+(const signed char n, const mp_complex& v)        { return mp_complex(v.real() + n, v.imag()); }
       inline mp_complex operator+(const signed short n, const mp_complex& v)       { return mp_complex(v.real() + n, v.imag()); }
-      inline mp_complex operator+(const signed int n, const mp_complex& v)         { return mp_complex(v.real() + n, v.imag()); }
+      inline mp_complex operator+(const int n, const mp_complex& v)                { return mp_complex(v.real() + n, v.imag()); }
       inline mp_complex operator+(const signed long n, const mp_complex& v)        { return mp_complex(v.real() + n, v.imag()); }
       inline mp_complex operator+(const signed long long n, const mp_complex& v)   { return mp_complex(v.real() + n, v.imag()); }
       inline mp_complex operator+(const unsigned char n, const mp_complex& v)      { return mp_complex(v.real() + n, v.imag()); }
@@ -378,7 +378,7 @@
       inline mp_complex operator-(const char n, const mp_complex& v)               { return mp_complex(n - v.real(), -v.imag()); }
       inline mp_complex operator-(const signed char n, const mp_complex& v)        { return mp_complex(n - v.real(), -v.imag()); }
       inline mp_complex operator-(const signed short n, const mp_complex& v)       { return mp_complex(n - v.real(), -v.imag()); }
-      inline mp_complex operator-(const signed int n, const mp_complex& v)         { return mp_complex(n - v.real(), -v.imag()); }
+      inline mp_complex operator-(const int n, const mp_complex& v)                { return mp_complex(n - v.real(), -v.imag()); }
       inline mp_complex operator-(const signed long n, const mp_complex& v)        { return mp_complex(n - v.real(), -v.imag()); }
       inline mp_complex operator-(const signed long long n, const mp_complex& v)   { return mp_complex(n - v.real(), -v.imag()); }
       inline mp_complex operator-(const unsigned char n, const mp_complex& v)      { return mp_complex(n - v.real(), -v.imag()); }
@@ -394,7 +394,7 @@
       inline mp_complex operator*(const char n, const mp_complex& v)               { return mp_complex(v.real() * n, v.imag() * n); }
       inline mp_complex operator*(const signed char n, const mp_complex& v)        { return mp_complex(v.real() * n, v.imag() * n); }
       inline mp_complex operator*(const signed short n, const mp_complex& v)       { return mp_complex(v.real() * n, v.imag() * n); }
-      inline mp_complex operator*(const signed int n, const mp_complex& v)         { return mp_complex(v.real() * n, v.imag() * n); }
+      inline mp_complex operator*(const int n, const mp_complex& v)                { return mp_complex(v.real() * n, v.imag() * n); }
       inline mp_complex operator*(const signed long n, const mp_complex& v)        { return mp_complex(v.real() * n, v.imag() * n); }
       inline mp_complex operator*(const signed long long n, const mp_complex& v)   { return mp_complex(v.real() * n, v.imag() * n); }
       inline mp_complex operator*(const unsigned char n, const mp_complex& v)      { return mp_complex(v.real() * n, v.imag() * n); }
@@ -410,7 +410,7 @@
       inline mp_complex operator/(const char n, const mp_complex& v)               { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
       inline mp_complex operator/(const signed char n, const mp_complex& v)        { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
       inline mp_complex operator/(const signed short n, const mp_complex& v)       { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
-      inline mp_complex operator/(const signed int n, const mp_complex& v)         { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
+      inline mp_complex operator/(const int n, const mp_complex& v)                { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
       inline mp_complex operator/(const signed long n, const mp_complex& v)        { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
       inline mp_complex operator/(const signed long long n, const mp_complex& v)   { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
       inline mp_complex operator/(const unsigned char n, const mp_complex& v)      { const mp_float v_norm = v.norm(); return mp_complex((n * v.real()) / v_norm, -(n * v.imag()) / v_norm); }
@@ -427,7 +427,7 @@
       inline mp_complex& operator+=(mp_complex& z, const char n)               { z.Re += n; return z; }
       inline mp_complex& operator+=(mp_complex& z, const signed char n)        { z.Re += n; return z; }
       inline mp_complex& operator+=(mp_complex& z, const signed short n)       { z.Re += n; return z; }
-      inline mp_complex& operator+=(mp_complex& z, const signed int n)         { z.Re += n; return z; }
+      inline mp_complex& operator+=(mp_complex& z, const int n)                { z.Re += n; return z; }
       inline mp_complex& operator+=(mp_complex& z, const signed long n)        { z.Re += n; return z; }
       inline mp_complex& operator+=(mp_complex& z, const signed long long n)   { z.Re += n; return z; }
       inline mp_complex& operator+=(mp_complex& z, const unsigned char n)      { z.Re += n; return z; }
@@ -443,7 +443,7 @@
       inline mp_complex& operator-=(mp_complex& z, const char n)               { z.Re -= n; return z; }
       inline mp_complex& operator-=(mp_complex& z, const signed char n)        { z.Re -= n; return z; }
       inline mp_complex& operator-=(mp_complex& z, const signed short n)       { z.Re -= n; return z; }
-      inline mp_complex& operator-=(mp_complex& z, const signed int n)         { z.Re -= n; return z; }
+      inline mp_complex& operator-=(mp_complex& z, const int n)                { z.Re -= n; return z; }
       inline mp_complex& operator-=(mp_complex& z, const signed long n)        { z.Re -= n; return z; }
       inline mp_complex& operator-=(mp_complex& z, const signed long long n)   { z.Re -= n; return z; }
       inline mp_complex& operator-=(mp_complex& z, const unsigned char n)      { z.Re -= n; return z; }
@@ -459,7 +459,7 @@
       inline mp_complex& operator*=(mp_complex& z, const char n)               { z.Re *= n; z.Im *= n; return z; }
       inline mp_complex& operator*=(mp_complex& z, const signed char n)        { z.Re *= n; z.Im *= n; return z; }
       inline mp_complex& operator*=(mp_complex& z, const signed short n)       { z.Re *= n; z.Im *= n; return z; }
-      inline mp_complex& operator*=(mp_complex& z, const signed int n)         { z.Re *= n; z.Im *= n; return z; }
+      inline mp_complex& operator*=(mp_complex& z, const int n)                { z.Re *= n; z.Im *= n; return z; }
       inline mp_complex& operator*=(mp_complex& z, const signed long n)        { z.Re *= n; z.Im *= n; return z; }
       inline mp_complex& operator*=(mp_complex& z, const signed long long n)   { z.Re *= n; z.Im *= n; return z; }
       inline mp_complex& operator*=(mp_complex& z, const unsigned char n)      { z.Re *= n; z.Im *= n; return z; }
@@ -475,7 +475,7 @@
       inline mp_complex& operator/=(mp_complex& z, const char n)               { z.Re /= n; z.Im /= n; return z; }
       inline mp_complex& operator/=(mp_complex& z, const signed char n)        { z.Re /= n; z.Im /= n; return z; }
       inline mp_complex& operator/=(mp_complex& z, const signed short n)       { z.Re /= n; z.Im /= n; return z; }
-      inline mp_complex& operator/=(mp_complex& z, const signed int n)         { z.Re /= n; z.Im /= n; return z; }
+      inline mp_complex& operator/=(mp_complex& z, const int n)                { z.Re /= n; z.Im /= n; return z; }
       inline mp_complex& operator/=(mp_complex& z, const signed long n)        { z.Re /= n; z.Im /= n; return z; }
       inline mp_complex& operator/=(mp_complex& z, const signed long long n)   { z.Re /= n; z.Im /= n; return z; }
       inline mp_complex& operator/=(mp_complex& z, const unsigned char n)      { z.Re /= n; z.Im /= n; return z; }
