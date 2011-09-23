@@ -33,8 +33,6 @@
 [def __mpl_false__ [@boost:libs/mpl/doc/refmanual/bool.html `boost::mpl::false_`]]
 [def __graph_adjacency_list__ [@boost:libs/graph/doc/adjacency_list.html `boost::adjacency_list`]]
 [def __graph_parallel_edge_traits__ [@boost:libs/graph/doc/using_adjacency_list.html#SECTION00834200000000000000 `boost::parallel_edge_traits`]]
-[def __raw_associative_node__ [@http://svn.boost.org/svn/boost/sandbox/tree_node/libs/tree_node/doc/html/tree_node/reference/raw_associative_node.html `raw_associative_node`]]
-[def __simple_associative_node__ [@http://svn.boost.org/svn/boost/sandbox/tree_node/libs/tree_node/doc/html/tree_node/reference/simple_associative_node.html `simple_associative_node`]]
 
 [/ Boost.Utility.ContainerGen reference header file links.]
 [def __boost_utility_container_selector_hpp__ [@../../../../../boost/utility/container_selector.hpp boost/utility/container_selector.hpp]]
@@ -61,6 +59,7 @@
 [import ../../../../boost/utility/container_gen.hpp]
 [import ../../../../boost/utility/associative_container_gen.hpp]
 [import ../../../../libs/graph/example/container_gen.cpp]
+[import ../../../../libs/utility/container_gen/example/output_char_tallies.cpp]
 
 [/ index.html Start]
 

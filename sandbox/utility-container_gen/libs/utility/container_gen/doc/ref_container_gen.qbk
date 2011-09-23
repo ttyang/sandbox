@@ -47,6 +47,9 @@ typedef container_gen<setS,container_gen<setS,int>::type>::type
     __SVN_Trac__, add the `type_traits` module to your list of header
     directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
     to obtain this capability.
+
+    If you do not need this capability, then you do not need
+    __Boost_Type_Traits_Operators__.
 ]
 [endsect]
 

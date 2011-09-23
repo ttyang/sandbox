@@ -13,11 +13,19 @@
 [endsect]
 
 [section Description]
-The __raw_associative_node__ and __simple_associative_node__ data structures
-use this metafunction class to determine the storage type that will associate
-key objects with child nodes.  This library provides specializations of this
-metafunction class for each selector it provides whose resulting storage type
-models the __Associative_Container__ concept.
+This metafunction class can be used to determine the appropriate associative
+container type given the specified selector.  The example routine below uses
+the `associative_container_gen` return type to associate each distinct string
+character with the number of times it appears in the string.
+
+[example__output_char_tallies__definition]
+
+This library provides specializations of this metafunction class for each
+selector it provides whose resulting storage type models the
+__Associative_Container__ concept.  Here, two such selectors are passed in
+calls to the example routine.
+
+[example__output_char_tallies__calls]
 
 It is possible to nest containers via `associative_container_gen`, e.g.:
 
@@ -37,6 +45,9 @@ typedef _mpl_apply_wrap2_<
     __SVN_Trac__, add the `type_traits` module to your list of header
     directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
     to obtain this capability.
+
+    If you do not need this capability, then you do not need
+    __Boost_Type_Traits_Operators__.
 ]
 [endsect]
 
