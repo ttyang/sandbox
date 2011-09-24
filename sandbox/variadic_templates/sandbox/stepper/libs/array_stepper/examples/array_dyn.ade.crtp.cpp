@@ -55,7 +55,7 @@ operator<<
         <<")"
     #else
       sout
-        <<std::setw(ew)<<std::setprecision(ep)<<err
+        <<std::setw(ew)<<std::showpos<<std::left<<std::setprecision(ep)<<err
     #endif
         ;
       return sout;
@@ -145,10 +145,9 @@ t_offset=0.1
 t_max=1.0
   ;
   unsigned
-N_t=0
+N_t=3
   /**@brief
    *  Number of time increments.
-   *  Actual value calculated by mk_del_t.
    */
   ;
   value_t const 
@@ -174,7 +173,7 @@ mk_del_t()
             //extra insurance.
             ;
       }
-      N_t=(t_max-t_offset)/del_t;
+      if(N_t==0) N_t=(t_max-t_offset)/del_t;
       return del_t;
   }
   
