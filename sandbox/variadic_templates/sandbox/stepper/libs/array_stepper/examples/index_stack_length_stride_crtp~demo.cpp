@@ -19,7 +19,7 @@ void test_inc_dec(lsos_t& lsos_v)
     std::cout<<"ID="<<id_names[ID]<<"\n";
     unsigned space=lsos_v.space();
     {
-        for(unsigned node=0; node<space; ++node, ++lsos_v)
+        for(unsigned node=0; node<space; ++node, lsos_v.template inc_dec_ator<ID>())
         {
             std::cout<<"node["<<std::setw(2)<<node<<"]=";
             std::cout<<lsos_v<<"\n";
@@ -42,6 +42,7 @@ int main()
     lso_t::length_strides_t lss_v=lso_v.length_strides();
     lsos_t lsos_v( lss_v.begin(), lss_v.end());
     test_inc_dec<inc_ator>(lsos_v);
+    test_inc_dec<dec_ator>(lsos_v);
   #if 1
     typedef types_t::axis_t axis_t;
     axis_t axis_v=2;
