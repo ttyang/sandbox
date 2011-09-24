@@ -32,7 +32,6 @@
 [def __build__ [@boost:more/getting_started.html build]]
 [def __Boost_Test__ [@boost:libs/test/doc/index.html [*Boost.Test]]]
 [def __SVN_Trac__ [@http://svn.boost.org/ SVN Trac]]
-[def __Boost_Type_Traits_Operators__ [@http://svn.boost.org/svn/boost/sandbox/type_traits/libs/type_traits/doc/html/index.html [*Boost.TypeTraitsOperators]]]
 [def __Boost_Utility_ContainerGen__ [@http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/index.html [*Boost.Utility.ContainerGen]]]
 
 [/ Boost concept links.]

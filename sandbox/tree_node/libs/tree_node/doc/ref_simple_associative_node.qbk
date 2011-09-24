@@ -21,13 +21,6 @@ the `static` creation methods that this class template provides.  Their
 children can be accessed by their associated keys for fast lookup.
 
 [important
-    This component depends on __Boost_Type_Traits_Operators__, which has been
-    recently accepted into Boost but is currently not part of an official
-    release.  For now, you must perform a Subversion checkout from the
-    __SVN_Trac__.
-]
-
-[important
     This component depends on __Boost_Utility_ContainerGen__, which is not yet
     a part of Boost.  For now, you must perform a Subversion checkout from the
     __SVN_Trac__.
