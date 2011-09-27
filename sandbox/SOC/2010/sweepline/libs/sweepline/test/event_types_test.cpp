@@ -25,10 +25,10 @@ typedef boost::mpl::list<double> test_types;
     BOOST_CHECK_EQUAL((A)==(B), (ARR)[4]); \
     BOOST_CHECK_EQUAL((A)!=(B), (ARR)[5])
 
-voronoi_calc_kernel<int>::site_comparison_predicate site_comparison;
-voronoi_calc_kernel<int>::site_equality_predicate site_equality;
-voronoi_calc_kernel<int>::circle_comparison_predicate circle_comparison;
-voronoi_calc_kernel<int>::event_comparison_predicate event_comparison;
+voronoi_calc_kernel<int>::site_comparison_predicate<site_event<double> > site_comparison;
+voronoi_calc_kernel<int>::site_equality_predicate<site_event<double> > site_equality;
+voronoi_calc_kernel<int>::circle_comparison_predicate<circle_event<double> > circle_comparison;
+voronoi_calc_kernel<int>::event_comparison_predicate< site_event<double>, circle_event<double> > event_comparison;
 
 #define SITE_COMPARISON_CHECK(A, B, ARR) \
     BOOST_CHECK_EQUAL(site_comparison(A, B), (ARR)[0]);  \

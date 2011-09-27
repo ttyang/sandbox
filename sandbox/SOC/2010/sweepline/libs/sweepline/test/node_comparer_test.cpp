@@ -20,7 +20,7 @@ typedef boost::mpl::list<double> test_types;
 #define DEFINE_BEACH_LINE \
     typedef site_event<T> site_event_type; \
     typedef beach_line_node_key<site_event_type> key_type; \
-    typedef beach_line_node_comparer<key_type> node_comparer_type; \
+    typedef voronoi_calc_kernel<int>::node_comparison_predicate<key_type> node_comparer_type; \
     typedef std::map< key_type, int, node_comparer_type > beach_line_type; \
     typedef typename beach_line_type::iterator beach_line_iterator
 

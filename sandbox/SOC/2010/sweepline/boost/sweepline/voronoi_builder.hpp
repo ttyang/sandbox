@@ -181,21 +181,24 @@ namespace sweepline {
 
     private:
         typedef voronoi_builder_traits<int>::calc_kernel_type calc_kernel_type;
-        
+
         typedef detail::point_2d<coordinate_type> point_type;
         typedef detail::site_event<coordinate_type> site_event_type;
-        typedef calc_kernel_type::site_comparison_predicate site_comparison_predicate;
-        typedef calc_kernel_type::site_equality_predicate site_equality_predicate;
+        typedef calc_kernel_type::site_comparison_predicate<site_event_type>
+            site_comparison_predicate;
+        typedef calc_kernel_type::site_equality_predicate<site_event_type>
+            site_equality_predicate;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
         typedef detail::circle_event<coordinate_type> circle_event_type;
-        typedef calc_kernel_type::circle_comparison_predicate circle_comparison_predicate;
-        typedef calc_kernel_type::event_comparison_predicate event_comparison_predicate;
+        typedef calc_kernel_type::circle_comparison_predicate<circle_event_type>
+            circle_comparison_predicate;
+        typedef calc_kernel_type::event_comparison_predicate<site_event_type, circle_event_type>
+            event_comparison_predicate;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<circle_event_type> value_type;
-        typedef detail::beach_line_node_comparer<key_type> node_comparer_type;
-        typedef std::map< key_type, value_type, node_comparer_type >
-            beach_line_type;
+        typedef calc_kernel_type::node_comparison_predicate<key_type> node_comparer_type;
+        typedef std::map< key_type, value_type, node_comparer_type > beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
         typedef std::pair<circle_event_type, beach_line_iterator> event_type; 
         typedef struct {
@@ -203,8 +206,8 @@ namespace sweepline {
                 return predicate(rhs.first, lhs.first);
             }
             circle_comparison_predicate predicate;
-        } event_comparison;
-        typedef detail::ordered_queue<event_type, event_comparison>
+        } event_comparison_type;
+        typedef detail::ordered_queue<event_type, event_comparison_type>
             circle_event_queue_type;
         typedef typename output_type::voronoi_edge_type edge_type;
         typedef std::pair<point_type, beach_line_iterator> end_point_type;

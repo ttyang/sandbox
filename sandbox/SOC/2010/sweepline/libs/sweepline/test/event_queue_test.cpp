@@ -36,12 +36,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(event_queue_test1, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(event_queue_test2, T, test_types) {
-    ordered_queue<T, std::greater<T> > event_q;
+    ordered_queue< std::pair<T, T>, std::greater< std::pair<T, T> > > event_q;
     for (int i = 0; i <= 10; i++) {
-        event_q.push(static_cast<T>(i)) *= 2;
+        event_q.push(std::make_pair(i, i)).second *= 2;
     }
     for (int i = 0; i <= 10; i++) {
-        BOOST_CHECK_EQUAL(event_q.top(), static_cast<T>(2 * i));
+        BOOST_CHECK_EQUAL(event_q.top().second, static_cast<T>(2 * i));
         event_q.pop();
     }
     BOOST_CHECK_EQUAL(event_q.empty(), true);
