@@ -195,6 +195,8 @@ namespace sweepline {
             circle_comparison_predicate;
         typedef calc_kernel_type::event_comparison_predicate<site_event_type, circle_event_type>
             event_comparison_predicate;
+        typedef calc_kernel_type::circle_formation_predicate<site_event_type, circle_event_type>
+            circle_formation_predicate_type;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<circle_event_type> value_type;
         typedef calc_kernel_type::node_comparison_predicate<key_type> node_comparer_type;
@@ -513,52 +515,6 @@ namespace sweepline {
             return it;
         }
 
-        // Create a circle event from the given three sites.
-        // Returns true if the circle event exists, else false.
-        // If exists circle event is saved into the c_event variable.
-        bool create_circle_event(const site_event_type &site1,
-                                 const site_event_type &site2,
-                                 const site_event_type &site3,
-                                 circle_event_type &c_event) const {
-            if (!site1.is_segment()) {
-                if (!site2.is_segment()) {
-                    if (!site3.is_segment()) {
-                        // (point, point, point) sites.
-                        return create_circle_event_ppp(site1, site2, site3, c_event);
-                    } else {
-                        // (point, point, segment) sites.
-                        return create_circle_event_pps(site1, site2, site3, 3, c_event);
-                    }
-                } else {
-                    if (!site3.is_segment()) {
-                        // (point, segment, point) sites.
-                        return create_circle_event_pps(site1, site3, site2, 2, c_event);
-                    } else {
-                        // (point, segment, segment) sites.
-                        return create_circle_event_pss(site1, site2, site3, 1, c_event);
-                    }
-                }
-            } else {
-                if (!site2.is_segment()) {
-                    if (!site3.is_segment()) {
-                        // (segment, point, point) sites.
-                        return create_circle_event_pps(site2, site3, site1, 1, c_event);
-                    } else {
-                        // (segment, point, segment) sites.
-                        return create_circle_event_pss(site2, site1, site3, 2, c_event);
-                    }
-                } else {
-                    if (!site3.is_segment()) {
-                        // (segment, segment, point) sites.
-                        return create_circle_event_pss(site3, site1, site2, 3, c_event);
-                    } else {
-                        // (segment, segment, segment) sites.
-                        return create_circle_event_sss(site1, site2, site3, c_event);
-                    }
-                }
-            }
-        }
-
         // Add a new circle event to the event queue.
         // bisector_node corresponds to the (site2, site3) bisector.
         void activate_circle_event(const site_event_type &site1,
@@ -567,7 +523,7 @@ namespace sweepline {
                                    beach_line_iterator bisector_node) {
             circle_event_type c_event;
             // Check if the three input sites create a circle event.
-            if (create_circle_event(site1, site2, site3, c_event)) {
+            if (circle_formation_predicate_(site1, site2, site3, c_event)) {
                 // Add the new circle event to the circle events queue.
                 // Update bisector's circle event iterator to point to the
                 // new circle event in the circle event queue.
@@ -591,6 +547,7 @@ namespace sweepline {
         circle_event_queue_type circle_events_;
         beach_line_type beach_line_;
         output_type *output_;
+        circle_formation_predicate_type circle_formation_predicate_;
 
         //Disallow copy constructor and operator=
         voronoi_builder(const voronoi_builder&);
