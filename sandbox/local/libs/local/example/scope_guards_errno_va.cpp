@@ -23,7 +23,7 @@ int f() {
     BOOST_LOCAL_EXIT(void) { // Same as D's `scope(exit)`.
         std::cout << "exit" << std::endl;
     } BOOST_LOCAL_EXIT_END
-
+/*
     BOOST_LOCAL_EXIT(const bind& error) { // Sane as D's `scope(success)`.
         if (!error) std::cout << "success" << std::endl;
     } BOOST_LOCAL_EXIT_END
@@ -31,7 +31,7 @@ int f() {
     BOOST_LOCAL_EXIT(const bind& error) { // Same as D's `scope(failure)`.
         if (error) std::cout << "failure" << std::endl;
     } BOOST_LOCAL_EXIT_END
-    
+*/
     return error = -1; // Must set error.
 }
 

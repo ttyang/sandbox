@@ -16,6 +16,7 @@
 #include "../../type_traits/add_pointed_const.hpp"
 #include "../../function.hpp"
 #include "../../../config.hpp"
+#include "../../../../utility/identity.hpp"
 #include <boost/detail/preprocessor/keyword/auto.hpp>
 #include <boost/detail/preprocessor/keyword/register.hpp>
 #include <boost/type_traits/add_const.hpp>
@@ -421,9 +422,10 @@
         /* functor type -- this type cannot have ID postfix because it is */ \
         /* used the `NAME` macro (this symbol is within functor class so */ \
         /* it does not have to have ID postfix) */ \
-        typedef ::boost::local::aux::function< \
-                BOOST_LOCAL_AUX_SYMBOL_FUNCTION_TYPE, \
-                default_count> BOOST_LOCAL_AUX_SYMBOL_FUNCTOR_TYPE; \
+        typedef typename_keyword BOOST_IDENTITY_TYPE(( /* IDEN for tparam , */ \
+                ::boost::local::aux::function< \
+                    BOOST_LOCAL_AUX_SYMBOL_FUNCTION_TYPE, default_count \
+                >)) BOOST_LOCAL_AUX_SYMBOL_FUNCTOR_TYPE; \
         /* typeof types -- these types are qualified with extra eventual */ \
         /* const and/or & if their variables are bound by const and/or & */ \
         /* (this is because it is not possible to strip the eventual & */ \
@@ -462,6 +464,9 @@
         /* constructor */ \
         inline explicit BOOST_LOCAL_AUX_SYMBOL_FUNCTOR_CLASS_NAME(id)( \
                 void* BOOST_LOCAL_AUX_FUNCTION_CODE_FUNCTOR_BIND_PARAM_) \
+            /* NOTE: there is no way to wrap member initializer commas */ \
+            /* within paren so you must handle these commas manually if */ \
+            /* expanding this macro within another macro */ \
             BOOST_LOCAL_AUX_FUNCTION_CODE_FUNCTOR_MEMBER_INITS_(const_binds, \
                     has_const_bind_this, binds, has_bind_this, id) \
         { /* do nothing */ } \
@@ -499,7 +504,7 @@
                 BOOST_PP_ENUM( \
                         /* PP_INC to handle no dflt (EXPAND for MVSC) */ \
                         BOOST_PP_EXPAND(BOOST_PP_INC(default_count)), \
-                        BOOST_LOCAL_AUX_FUNCTION_CODE_FUNCTOR_STATIC_CALL_FUNC_PTR_, \
+  BOOST_LOCAL_AUX_FUNCTION_CODE_FUNCTOR_STATIC_CALL_FUNC_PTR_, \
                         ~) \
             ); \
         } \
@@ -593,7 +598,7 @@
                     ) \
                 ) \
                 BOOST_PP_LIST_FOR_EACH_I( \
-                        BOOST_LOCAL_AUX_FUNCTION_CODE_FUNCTOR_UNBIND_DECL_WITH_DEFAULT_, \
+  BOOST_LOCAL_AUX_FUNCTION_CODE_FUNCTOR_UNBIND_DECL_WITH_DEFAULT_, \
                         ~, unbinds) \
             ) /* end body function params */ \
             /* const member func so it cannot change obj (reassign member */ \

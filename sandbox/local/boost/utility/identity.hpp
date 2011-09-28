@@ -24,6 +24,7 @@
 #include <boost/type_traits/function_traits.hpp>
 #include <boost/type_traits/add_reference.hpp>
 
+/** @cond */
 namespace boost { namespace aux {
 
 // Identity for values (compilers should be able to optimize call overhead).
@@ -34,6 +35,7 @@ inline typename boost::add_reference<T>::type identity_value(
 }
 
 }} // namespace boost::aux
+/** @endcond */
 
 /**
  * @brief This macro wraps the specified type expression within extra

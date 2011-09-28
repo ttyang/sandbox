@@ -12,6 +12,7 @@
 #include "../../scope_exit/scope_exit.hpp" // Use this lib's ScopeExit impl.
 #include "../../preprocessor/sign/params_any_bind.hpp"
 #include "../../preprocessor/sign/param_any_bind.hpp"
+#include "../../../../utility/identity.hpp"
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/control/expr_iif.hpp>
@@ -67,8 +68,21 @@
     BOOST_SCOPE_EXIT_AUX_PARAM_DECL(r, id_typename, i, \
             BOOST_LOCAL_AUX_PP_SIGN_PARAM_ANY_BIND_WITHOUT_TYPE(bind))
 
-#define BOOST_LOCAL_AUX_FUNCTION_CODE_BINDING_MEMBER_(r, id, i, bind) \
-    BOOST_SCOPE_EXIT_AUX_MEMBER(r, id, i, \
+#define BOOST_LOCAL_AUX_FUNCTION_CODE_BINDING_MEMBER_DECL_( \
+        r, id, typename_keyword, i, var) \
+    typename_keyword \
+    BOOST_IDENTITY_TYPE(( /* must use IDENTITY because of tparam comma */ \
+        boost::scope_exit::aux::member< \
+            BOOST_SCOPE_EXIT_AUX_PARAM_T(id, i, var), \
+            BOOST_SCOPE_EXIT_AUX_TAG(id, i) \
+        > \
+    )) \
+    BOOST_SCOPE_EXIT_AUX_PARAM(id,i,var);
+
+#define BOOST_LOCAL_AUX_FUNCTION_CODE_BINDING_MEMBER_(r, id_typename, i, bind) \
+    BOOST_LOCAL_AUX_FUNCTION_CODE_BINDING_MEMBER_DECL_(r, \
+            BOOST_PP_TUPLE_ELEM(2, 0, id_typename), \
+            BOOST_PP_TUPLE_ELEM(2, 1, id_typename), i, \
             BOOST_LOCAL_AUX_PP_SIGN_PARAM_ANY_BIND_WITHOUT_TYPE(bind))
 
 #define BOOST_LOCAL_AUX_FUNCTION_CODE_BINDING_PARAM_INIT_(r, id, i, bind) \
@@ -131,8 +145,12 @@
                 (id, typename_keyword), all_binds) \
         BOOST_PP_LIST_FOR_EACH_I( \
                 BOOST_LOCAL_AUX_FUNCTION_CODE_BINDING_MEMBER_, \
-                id, all_binds) \
-    } BOOST_LOCAL_AUX_SYMBOL_PARAMS_LOCAL_VARIABLE_NAME(id) = { \
+                (id, typename_keyword), all_binds) \
+    } BOOST_LOCAL_AUX_SYMBOL_PARAMS_LOCAL_VARIABLE_NAME(id) = \
+    /* NOTE: there is no way to wrap member initializer commas within paren */ \
+    /* so you must handle these commas manually if expanding this macro */ \
+    /* within another macro */ \
+    { \
         /* initialize the struct with param values to bind */ \
         BOOST_PP_EXPR_IIF(BOOST_PP_LIST_IS_CONS(all_bind_this_types), this) \
         BOOST_PP_COMMA_IF(BOOST_PP_BITAND( \

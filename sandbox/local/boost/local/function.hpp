@@ -23,6 +23,11 @@
 // params and nothing `` for no params.
 #if defined(BOOST_NO_VARIADIC_MACROS) || defined(BOOST_LOCAL_CONFIG_COMPLIANT)
 
+/** @cond */
+#define BOOST_LOCAL_FUNCTION_PARAMS_(id, is_template, parameters) \
+    BOOST_LOCAL_AUX_FUNCTION_PARAMS(parameters, id, is_template)
+/** @endcond */
+
 /**
  * @brief This macro is used to declare the local function parameters.
  *
@@ -138,8 +143,7 @@
  *  @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}, Boost.Function.
  */
 #define BOOST_LOCAL_FUNCTION_PARAMS(parameters) \
-    BOOST_LOCAL_AUX_FUNCTION_PARAMS(parameters, \
-            __LINE__, 0 /* no template */)
+    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 0 /* no template */, parameters)
 
 /**
  * @brief This macro is the same as @RefMacro{BOOST_LOCAL_FUNCTION_PARAMS} but
@@ -148,22 +152,22 @@
  * @See @RefMacro{BOOST_LOCAL_FUNCTION_PARAMS}, @RefSect{Tutorial} section.
  */
 #define BOOST_LOCAL_FUNCTION_PARAMS_TPL(parameters) \
-    BOOST_LOCAL_AUX_FUNCTION_PARAMS(parameters, \
-            __LINE__, 1 /* template */)
+    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 1 /* template */, parameters)
 
 #else // BOOST_NO_VARIADIC_MACROS
 
 #include "aux_/preprocessor/variadic/to_seq.hpp"
 
-#define BOOST_LOCAL_FUNCTION_PARAMS(...) \
+#define BOOST_LOCAL_FUNCTION_PARAMS_(id, is_template, ...) \
     BOOST_LOCAL_AUX_FUNCTION_PARAMS(BOOST_LOCAL_AUX_PP_VARIADIC_TO_SEQ( \
             (void) /* for empty seq */, __VA_ARGS__), \
-            __LINE__, 0 /* no template */)
+            id, is_template)
+
+#define BOOST_LOCAL_FUNCTION_PARAMS(...) \
+    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 0 /* no template */, __VA_ARGS__)
 
 #define BOOST_LOCAL_FUNCTION_PARAMS_TPL(...) \
-    BOOST_LOCAL_AUX_FUNCTION_PARAMS(BOOST_LOCAL_AUX_PP_VARIADIC_TO_SEQ( \
-            (void) /* for empty seq */, __VA_ARGS__), \
-            __LINE__, 1 /* template */)
+    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 1 /* template */, __VA_ARGS__)
 
 #endif // BOOST_NO_VARIADIC_MACROS
 
