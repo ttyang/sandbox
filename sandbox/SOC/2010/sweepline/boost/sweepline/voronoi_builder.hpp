@@ -41,8 +41,8 @@ namespace sweepline {
 
     template <>
     struct voronoi_builder_traits<int> {
-        typedef double coordinate_type;
         typedef detail::voronoi_calc_kernel<int> calc_kernel_type;
+        typedef calc_kernel_type::fpt_type coordinate_type;
     };
 
     ///////////////////////////////////////////////////////////////////////////
