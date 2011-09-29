@@ -89,6 +89,7 @@
 #include "polygon_set_concept.hpp"
 
 #include "directed_line_segment_data.hpp"
+#include "directed_line_segment_set_data.hpp"
 #include "directed_line_segment_traits.hpp"
 #include "directed_line_segment_concept.hpp"
 

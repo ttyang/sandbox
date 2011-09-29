@@ -102,6 +102,7 @@ namespace boost { namespace polygon{
     inline bool dirty() const { return dirty_; }
 
     void clean() const {
+      if (!dirty_) return;
       typedef T Unit;
       typedef typename scanline_base<Unit>::Point Point;
       typedef typename scanline_base<Unit>::half_edge half_edge;

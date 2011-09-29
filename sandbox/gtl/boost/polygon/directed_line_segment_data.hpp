@@ -43,7 +43,15 @@ namespace boost { namespace polygon{
       return points_[dir.to_int()]; 
     }
     inline point_type low() const { return points_[0]; }
+    inline point_type low(point_type low) {
+        points_[0] = low;
+        return *this;
+    }
     inline point_type high() const { return points_[1]; }
+    inline point_type high(point_type high) {
+        points_[1] = high;
+        return *this;
+    }
     inline bool operator==(const directed_line_segment_data& that) const {
       return low() == that.low() && high() == that.high(); }
     inline bool operator!=(const directed_line_segment_data& that) const {
