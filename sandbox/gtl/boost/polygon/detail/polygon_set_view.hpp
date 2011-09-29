@@ -14,7 +14,13 @@ namespace boost { namespace polygon{
   inline void polygon_set_data<coordinate_type>::clean() const {
     if(dirty_) {
       polygon_45_set_data<coordinate_type> tmp;
-      if(downcast(tmp) ) {
+      //very important:
+      //the 45 degree algorithm does not satisfy
+      //the precondition of arbitrary polygon formation
+      //that vertices be "linearly consistent"
+      //therefore it doesn't work to fall back on 45-degree
+      //booleans for arbitrary angle polygons
+      if(0) { //downcast(tmp) ) {
         tmp.clean();
         data_.clear();
         is_45_ = true;
@@ -153,13 +159,13 @@ namespace boost { namespace polygon{
   };
 
   template <typename ltype, typename rtype, int op_type>
-  typename polygon_set_view<ltype, rtype, op_type>::iterator_type 
+  typename polygon_set_traits<polygon_set_view<ltype, rtype, op_type> >::iterator_type
   polygon_set_traits<polygon_set_view<ltype, rtype, op_type> >::
   begin(const polygon_set_view<ltype, rtype, op_type>& polygon_set) {
     return polygon_set.begin();
   }
   template <typename ltype, typename rtype, int op_type>
-  typename polygon_set_view<ltype, rtype, op_type>::iterator_type 
+  typename polygon_set_traits<polygon_set_view<ltype, rtype, op_type> >::iterator_type
   polygon_set_traits<polygon_set_view<ltype, rtype, op_type> >::
   end(const polygon_set_view<ltype, rtype, op_type>& polygon_set) {
     return polygon_set.end();

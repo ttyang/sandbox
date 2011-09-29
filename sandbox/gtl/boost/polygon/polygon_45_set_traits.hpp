@@ -94,6 +94,7 @@ namespace boost { namespace polygon{
     static inline void set(std::list<T>& polygon_set, input_iterator_type input_begin, input_iterator_type input_end) {
       polygon_set.clear();
       polygon_45_set_data<typename polygon_45_set_traits<std::list<T> >::coordinate_type> ps;
+      ps.reserve(std::distance(input_begin, input_end));
       ps.insert(input_begin, input_end);
       ps.sort();
       ps.clean();
@@ -105,7 +106,10 @@ namespace boost { namespace polygon{
     template <typename input_iterator_type>
     static inline void set(std::vector<T>& polygon_set, input_iterator_type input_begin, input_iterator_type input_end) {
       polygon_set.clear();
+      size_t num_ele = std::distance(input_begin, input_end);
+      polygon_set.reserve(num_ele);
       polygon_45_set_data<typename polygon_45_set_traits<std::list<T> >::coordinate_type> ps;
+      ps.reserve(num_ele);
       ps.insert(input_begin, input_end);
       ps.sort();
       ps.clean();
@@ -137,7 +141,7 @@ namespace boost { namespace polygon{
 
     static inline bool clean(const polygon_45_set_data<T>& polygon_set) { polygon_set.clean(); return true; }
 
-    static inline bool sorted(const polygon_45_set_data<T>& polygon_set) { int untested = 0;polygon_set.sort(); return true; }
+    static inline bool sorted(const polygon_45_set_data<T>& polygon_set) { polygon_set.sort(); return true; }
 
   };
 }  

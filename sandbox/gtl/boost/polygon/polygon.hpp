@@ -7,6 +7,7 @@
 */
 #ifndef BOOST_POLYGON_POLYGON_HPP
 #define BOOST_POLYGON_POLYGON_HPP
+#define BOOST_POLYGON_VERSION 014401
 
 #include "isotropy.hpp"
 
@@ -86,5 +87,9 @@
 #include "detail/polygon_set_view.hpp"
 
 #include "polygon_set_concept.hpp"
+
+#include "directed_line_segment_data.hpp"
+#include "directed_line_segment_traits.hpp"
+#include "directed_line_segment_concept.hpp"
 
 #endif

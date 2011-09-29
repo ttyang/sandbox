@@ -119,18 +119,18 @@ namespace boost { namespace polygon{
     //       orient_ = orient;
     //       output_.clear();
     //       output_.insert(output_.end(), input_begin, input_end);
-    //       std::sort(output_.begin(), output_.end());
+    //       polygon_sort(output_.begin(), output_.end());
     //     }
   };
 
   template <typename ltype, typename rtype, int op_type>
-  typename polygon_45_set_view<ltype, rtype, op_type>::iterator_type 
+  typename polygon_45_set_traits<polygon_45_set_view<ltype, rtype, op_type> >::iterator_type
   polygon_45_set_traits<polygon_45_set_view<ltype, rtype, op_type> >::
   begin(const polygon_45_set_view<ltype, rtype, op_type>& polygon_45_set) {
     return polygon_45_set.begin();
   }
   template <typename ltype, typename rtype, int op_type>
-  typename polygon_45_set_view<ltype, rtype, op_type>::iterator_type 
+  typename polygon_45_set_traits<polygon_45_set_view<ltype, rtype, op_type> >::iterator_type
   polygon_45_set_traits<polygon_45_set_view<ltype, rtype, op_type> >::
   end(const polygon_45_set_view<ltype, rtype, op_type>& polygon_45_set) {
     return polygon_45_set.end();
