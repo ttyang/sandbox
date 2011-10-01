@@ -491,7 +491,7 @@
 <p>
         For functions other than constructors or constructors without member initializers,
         function-try-blocks are programmed outside the macros and around the body
-        definition as usual: <sup>[<a name="id956506" href="#ftn.id956506" class="footnote">1</a>]</sup>
+        definition as usual: <sup>[<a name="id958125" href="#ftn.id958125" class="footnote">1</a>]</sup>
       </p>
 <pre class="programlisting"><span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span> <span class="comment">// Constructor without member initializers.</span>
 <span class="special">(</span><span class="identifier">vector</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
@@ -621,30 +621,37 @@
 </h3></div></div></div>
 <pre class="programlisting"><span class="emphasis"><em>assertion:</em></span>
         <span class="emphasis"><em>expr-assertion | select-assertion |</em></span>
-        <span class="keyword">using</span> <span class="bold"><strong>using-directive</strong></span> <span class="emphasis"><em>|</em></span> <span class="keyword">namespace</span> <span class="bold"><strong>namespace-alias</strong></span>
+        <span class="keyword">using</span> <span class="bold"><strong>using-directive</strong></span> <span class="emphasis"><em>|</em></span>
+        <span class="keyword">namespace</span> <span class="bold"><strong>namespace-alias</strong></span> <span class="emphasis"><em>|</em></span>
+        <span class="keyword">typedef</span> <span class="bold"><strong>existing-type new-type-name</strong></span>
 </pre>
 <p>
         Some basic name visibility manipulations are allowed at the local scope where
         the assertions are being declared in case they are ever needed to simplify
         the assertion expressions. Therefore, using-directives and namespace-aliases
-        are allowed where assertions are declaraed (this will affect all assertion
-        in the specific declaration scope). Note that these name visibility manipulations
-        have no effect on the program run-time state and therefore they do not compromise
-        the assertion constant-correctness requirement.
+        are allowed where assertions are declared (this will affect all assertions
+        within the specified declaration scope). Note that these name visibility
+        manipulations have no effect on the program run-time state and therefore
+        they do not compromise the assertion constant-correctness requirement.
       </p>
 <pre class="programlisting"><span class="emphasis"><em>expr-assertion:</em></span>
         <span class="emphasis"><em>bool-expr |</em></span> <span class="identifier">static_assert</span><span class="special">(</span><span class="bold"><strong>static-bool-expr</strong></span><span class="special">,</span> <span class="bold"><strong>string-literal</strong></span><span class="special">)</span>
-        <span class="emphasis"><em>[</em></span><span class="special">,</span> <span class="identifier">importance</span> <span class="bold"><strong>natural-literal</strong></span><span class="emphasis"><em>]</em></span>
+        <span class="emphasis"><em>[</em></span><span class="special">,</span> <span class="identifier">requires</span> <span class="bold"><strong>static-bool-expr</strong></span><span class="emphasis"><em>]</em></span>
 
 <span class="emphasis"><em>select-assertion:</em></span>
-        <span class="keyword">if</span><span class="special">(</span><span class="emphasis"><em>bool-expr</em></span><span class="special">)</span> <span class="special">(</span> <span class="emphasis"><em>expr-assertion</em></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span>
-        <span class="emphasis"><em>[</em></span><span class="keyword">else</span> <span class="special">(</span> <span class="emphasis"><em>expr-assertion</em></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span><span class="emphasis"><em>]</em></span>
+        <span class="keyword">if</span><span class="special">(</span><span class="emphasis"><em>bool-expr</em></span><span class="special">)</span> <span class="special">(</span> <span class="emphasis"><em>assertion</em></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span>
+        <span class="emphasis"><em>[</em></span><span class="keyword">else</span> <span class="special">(</span> <span class="emphasis"><em>assertion</em></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span><span class="emphasis"><em>]</em></span>
 </pre>
 <p>
-        Note that select-assertions cannot be nested into one another. Furthermore,
-        it is not possible to specify importance ordering for the entire select-assertion
-        if-then-else expression. Eventual importance ordering must be specified for
-        the single assertions within the select-assertion if-then-else expression.
+        Note that it is not possible to specify assertion requirements (using <code class="computeroutput"><span class="identifier">requires</span></code>) for the entire select-assertion
+        if-then-else expression. Eventual assertion requirements must be specified
+        for the single assertion expressions within the select-assertion if-then-else
+        statement and they will never disable the checking of the select-assertion
+        if-condition (use the ternary operator <code class="computeroutput"><span class="special">?</span>
+        <span class="special">:</span></code> instead of a select-assertion if
+        you need to program a conditional assertion with a condition that is also
+        disabled by the assertion requirements <code class="literal"><span class="emphasis"><em>condition</em></span>
+        ? <span class="emphasis"><em>assertion-expr</em></span> : true, requires <span class="emphasis"><em>static-bool</em></span></code>).
       </p>
 <pre class="programlisting"><span class="emphasis"><em>bool-epxr:</em></span>
         <span class="bold"><strong>runtime-bool-expr</strong></span> <span class="emphasis"><em>|</em></span> <span class="keyword">const</span><span class="special">(</span> <span class="emphasis"><em>[type]</em></span> <span class="bold"><strong>inscope-var</strong></span><span class="special">,</span> <span class="special">...</span> <span class="special">)</span> <span class="bold"><strong>const-bool-expr</strong></span>
@@ -1121,7 +1128,7 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id956506" href="#id956506" class="para">1</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id958125" href="#id958125" class="para">1</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This ensures zero run-time
           overhead for these functions when all contracts are disable at compile-time.
         </p></div>
