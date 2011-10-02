@@ -1,0 +1,87 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template downgrade</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../../reference.html#header.boost.dispatch.meta.downgrade_hpp" title="Header &lt;boost/dispatch/meta/downgrade.hpp&gt;">
+<link rel="prev" href="behave_as.html" title="Struct template behave_as">
+<link rel="next" href="enable_if_type.html" title="Struct template enable_if_type">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="behave_as.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.downgrade_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="enable_if_type.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.meta.downgrade"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template downgrade</span></h2>
+<p>boost::dispatch::meta::downgrade</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../reference.html#header.boost.dispatch.meta.downgrade_hpp" title="Header &lt;boost/dispatch/meta/downgrade.hpp&gt;">boost/dispatch/meta/downgrade.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> 
+         <span class="keyword">typename</span> Sign<span class="comment">  // Optional sign to use while downgrading <code class="computeroutput">Type</code>. If unspecified, <code class="computeroutput">Sign</code> is equals to the sign of <code class="computeroutput">Type</code>.</span>
+         <span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="downgrade.html" title="Struct template downgrade">downgrade</a> <span class="special">{</span>
+
+  <span class="comment">// <a class="link" href="downgrade.html#id352351-bb">public member functions</a></span>
+   <a class="link" href="downgrade.html#id352355-bb"><span class="identifier">BOOST_MPL_ASSERT_MSG</span></a><span class="special">(</span><span class="special">(</span><a class="link" href="is_fundamental.html" title="Struct template is_fundamental">is_fundamental</a><span class="special">&lt;</span> <span class="identifier">typenamemeta</span><span class="special">::</span><span class="identifier">primitive_of</span><span class="special">&lt;</span> <span class="keyword">typename</span> <a class="link" href="strip.html" title="Struct template strip">meta::strip</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
+                        <span class="identifier">BOOST_DISPATCH_NON_FUNDAMENTAL_PRIMITIVE_USED_IN_META_DOWNGRADE</span><span class="special">,</span> 
+                        <span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id885284"></a><h2>Description</h2>
+<p>Returns the input type rebound with a type that is twice as small as its primitive, with optional sign change.\</p>
+<p>
+</p>
+<p><b>Models:&#160;</b></p>
+<p>
+</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <a class="link" href="downgrade.html" title="Struct template downgrade">boost::dispatch::meta::downgrade&lt;T, Sign&gt;::type</a> <span class="identifier">r</span><span class="special">;</span>
+</pre>
+<p>is equivalent to:</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">make_floating</span><span class="special">&lt;</span> <span class="identifier">max</span><span class="special">&lt;</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">primitive_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">)</span><span class="special">/</span><span class="number">2</span>
+                       <span class="special">,</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">float</span><span class="special">)</span>
+                       <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span>
+                  <span class="special">,</span> <span class="identifier">factory_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>
+                  <span class="special">&gt;</span>::type                                  <span class="identifier">r</span><span class="special">;</span>
+</pre>
+<p>if <code class="computeroutput"><a class="link" href="primitive_of.html" title="Struct template primitive_of">primitive_of&lt;T&gt;</a></code> is of hierarchy boost::dispatch::tag::floating_ and to:</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> make_integer&lt; max&lt;sizeof(primitive_of&lt;T&gt;::type<span class="special">)</span><span class="special">/</span><span class="number">2</span><span class="special">,</span> <span class="number">1</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span>
+                     <span class="special">,</span> <span class="identifier">Sign</span>
+                     <span class="special">,</span> <span class="identifier">factory_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>
+                     <span class="special">&gt;</span><span class="special">::</span>type                                <span class="identifier">r</span><span class="special">;</span>
+</pre>
+<p>otherwise.</p>
+<pre class="programlisting"></pre>
+<p> </p>
+<div class="refsect2">
+<a name="id885639"></a><h3>
+<a name="id352351-bb"></a><code class="computeroutput">downgrade</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="id352355-bb"></a><span class="identifier">BOOST_MPL_ASSERT_MSG</span><span class="special">(</span><span class="special">(</span><a class="link" href="is_fundamental.html" title="Struct template is_fundamental">is_fundamental</a><span class="special">&lt;</span> <span class="identifier">typenamemeta</span><span class="special">::</span><span class="identifier">primitive_of</span><span class="special">&lt;</span> <span class="keyword">typename</span> <a class="link" href="strip.html" title="Struct template strip">meta::strip</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
+                      <span class="identifier">BOOST_DISPATCH_NON_FUNDAMENTAL_PRIMITIVE_USED_IN_META_DOWNGRADE</span><span class="special">,</span> 
+                      <span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="behave_as.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.downgrade_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="enable_if_type.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

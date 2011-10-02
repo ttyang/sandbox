@@ -3,6 +3,7 @@
 
 #include <boost/simd/toolbox/predicates/functions/is_greater.hpp>
 #include <boost/simd/toolbox/predicates/functions/scalar/is_greater.hpp>
+#include <boost/simd/toolbox/predicates/functions/simd/sse/avx/is_greater.hpp>
 #include <boost/simd/toolbox/predicates/functions/simd/sse/sse2/is_greater.hpp>
 #include <boost/simd/toolbox/predicates/functions/simd/sse/sse4_2/is_greater.hpp>
 #include <boost/simd/toolbox/predicates/functions/simd/vmx/altivec/is_greater.hpp>

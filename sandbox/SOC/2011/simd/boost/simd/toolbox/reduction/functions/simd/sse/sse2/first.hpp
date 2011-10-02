@@ -8,9 +8,12 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_REDUCTION_FUNCTIONS_SIMD_SSE_SSE2_FIRST_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_REDUCTION_FUNCTIONS_SIMD_SSE_SSE2_FIRST_HPP_INCLUDED
+
 #ifdef BOOST_SIMD_HAS_SSE2_SUPPORT
-#include <boost/dispatch/meta/as_real.hpp>
+#include <boost/dispatch/meta/as_floating.hpp>
 #include <boost/dispatch/meta/as_integer.hpp>
+#include <boost/simd/sdk/simd/native_cast.hpp>
+
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is type8_
 /////////////////////////////////////////////////////////////////////////////
@@ -54,7 +57,7 @@ namespace boost { namespace simd { namespace ext
 
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION(boost::simd::tag::first_, boost::simd::tag::sse2_,
                         (A0),
-                        ((simd_<float_<A0>,boost::simd::tag::sse_>))
+                        ((simd_<single_<A0>,boost::simd::tag::sse_>))
                        )
   {
     typedef typename meta::scalar_of<A0>::type result_type;
@@ -100,7 +103,7 @@ namespace boost { namespace simd { namespace ext
     BOOST_SIMD_FUNCTOR_CALL_REPEAT(1)
     {
       typedef typename dispatch::meta::as_integer<A0>::type type;
-      typedef typename dispatch::meta::as_real<A0>::type rtype;
+      typedef typename dispatch::meta::as_floating<A0>::type rtype;
       return boost::simd::bitwise_cast<result_type, double >(_mm_cvtsd_f64(simd::native_cast<rtype>(a0))); 
     }
   };

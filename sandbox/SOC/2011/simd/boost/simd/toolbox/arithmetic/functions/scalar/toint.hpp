@@ -10,8 +10,8 @@
 #define BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SCALAR_TOINT_HPP_INCLUDED
 #include <boost/dispatch/meta/as_integer.hpp>
 #include <boost/simd/include/constants/infinites.hpp>
+#include <boost/simd/include/constants/zero.hpp>
 #include <boost/simd/include/functions/is_nan.hpp>
-
 
 namespace boost { namespace simd { namespace ext
 {
@@ -24,7 +24,7 @@ namespace boost { namespace simd { namespace ext
   };
 
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::toint_, tag::cpu_, (A0)
-                            , (scalar_< real_<A0> >)
+                            , (scalar_< floating_<A0> >)
                             )
   {
     typedef typename dispatch::meta::as_integer<A0> ::type result_type;

@@ -5,19 +5,61 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch 1.0">
-<link rel="prev" href="scalar_hierarchy_and_properties.html" title="Scalar hierarchy and properties">
+<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
+<link rel="prev" href="generic_scalar_adaptors.html" title="Generic scalar adaptors">
 <link rel="next" href="defining_specializations.html" title="Defining specializations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="scalar_hierarchy_and_properties.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="defining_specializations.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="generic_scalar_adaptors.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="defining_specializations.html"><img src="../images/next.png" alt="Next"></a>
 </div>
-<div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dispatch.defining_functions"></a><a class="link" href="defining_functions.html" title="Defining functions">Defining functions</a>
-</h2></div></div></div></div>
+</h2></div></div></div>
+<p>
+      Defining functions mostly requires defining a tag type <code class="computeroutput"><span class="identifier">Tag</span></code>
+      to identity the function (which may itself be a hierarchy). Then all you have
+      to do is create a default-constructed object of type <code class="computeroutput"><span class="identifier">functor</span><span class="special">&lt;</span><span class="identifier">Tag</span><span class="special">&gt;</span></code>
+      and pass it the arguments.<br> You may also call <code class="computeroutput"><span class="identifier">functor</span><span class="special">&lt;</span><span class="identifier">Tag</span><span class="special">,</span>
+      <span class="identifier">Site</span><span class="special">&gt;</span></code>
+      with a given hierarchy <code class="computeroutput"><span class="identifier">Site</span></code>
+      to force a specific family of specializations.
+    </p>
+<p>
+      Define the tag (not a hierarchy in this case):
+    </p>
+<pre class="programlisting"><span class="keyword">struct</span> <em class="replaceable"><code>my_function_tag</code></em> <span class="special">{};</span>
+</pre>
+<p>
+      Solution 1: make a global <code class="computeroutput"><span class="identifier">functor</span><span class="special">&lt;</span></code><em class="replaceable"><code>Tag</code></em><code class="computeroutput"><span class="special">&gt;</span></code> object:
+    </p>
+<pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">functor</span><span class="special">&lt;</span><em class="replaceable"><code>my_function_tag</code></em><span class="special">&gt;</span> <em class="replaceable"><code>my_function</code></em> <span class="special">=</span> <span class="special">{};</span>
+</pre>
+<p>
+      Solution 2: make a forwarding function (faster compilation times):
+    </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">A0</span><span class="special">&gt;</span>
+<span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span>
+<span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">call</span><span class="special">&lt;</span><em class="replaceable"><code>my_function_tag</code></em><span class="special">(</span><span class="identifier">A0</span> <span class="keyword">const</span><span class="special">&amp;)&gt;::</span><span class="identifier">type</span>
+<em class="replaceable"><code>my_function</code></em><span class="special">(</span><span class="identifier">A0</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a0</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">functor</span><span class="special">&lt;</span><em class="replaceable"><code>my_function_tag</code></em><span class="special">&gt;()(</span><span class="identifier">a0</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<p>
+      The second solution requires to manually deal with arity and perfect-forwarding
+      issues. You may also use the <code class="computeroutput"><span class="identifier">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION</span></code>
+      macro to make defining such forwarding functions easier.
+    </p>
+<p>
+      The <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">call</span></code>
+      function behaves just like <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">result_of</span></code>,
+      but takes a tag instead of a function object in order to be a bit more terse.
+    </p>
+</div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
@@ -30,7 +72,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="scalar_hierarchy_and_properties.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="defining_specializations.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="generic_scalar_adaptors.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="defining_specializations.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

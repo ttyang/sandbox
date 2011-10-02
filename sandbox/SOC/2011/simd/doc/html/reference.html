@@ -1,0 +1,1031 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Reference</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
+<link rel="prev" href="dispatch/defining_specializations.html" title="Defining specializations">
+<link rel="next" href="BOOST_DISPATCH_FORCE_INLINE.html" title="Macro BOOST_DISPATCH_FORCE_INLINE">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="dispatch/defining_specializations.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="dispatch.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="BOOST_DISPATCH_FORCE_INLINE.html"><img src="images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="reference"></a>Reference</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.attributes_hpp">Header &lt;boost/dispatch/attributes.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.allocator_hpp">Header &lt;boost/dispatch/concept/allocator.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.categorizable_hpp">Header &lt;boost/dispatch/concept/categorizable.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.category_hpp">Header &lt;boost/dispatch/concept/category.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.category_hpp">Header &lt;boost/dispatch/dsl/category.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.documentation_hpp">Header &lt;boost/dispatch/meta/documentation.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_associative_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_associative_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_bidirectionnal_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_bidirectionnal_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_forward_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_forward_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_random_access_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_random_access_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.has_primitive_hpp">Header &lt;boost/dispatch/concept/has_primitive.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.hierarchized_hpp">Header &lt;boost/dispatch/concept/hierarchized.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.same_type_hpp">Header &lt;boost/dispatch/concept/same_type.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.call_hpp">Header &lt;boost/dispatch/dsl/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.preprocessed.call_hpp">Header &lt;boost/dispatch/dsl/preprocessed/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.call_hpp">Header &lt;boost/dispatch/functor/meta/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.preprocessed.call_hpp">Header &lt;boost/dispatch/functor/meta/preprocessed/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessor.call_hpp">Header &lt;boost/dispatch/functor/preprocessor/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.compile_hpp">Header &lt;boost/dispatch/dsl/compile.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.compute_hpp">Header &lt;boost/dispatch/dsl/compute.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.proto.extends_hpp">Header &lt;boost/dispatch/dsl/proto/extends.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.proto.unpack_hpp">Header &lt;boost/dispatch/dsl/proto/unpack.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.semantic_of_hpp">Header &lt;boost/dispatch/dsl/semantic_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.forward_hpp">Header &lt;boost/dispatch/functor/forward.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.functor_hpp">Header &lt;boost/dispatch/functor/functor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessed.functor_hpp">Header &lt;boost/dispatch/functor/preprocessed/functor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.hierarchy_hpp">Header &lt;boost/dispatch/functor/meta/hierarchy.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.make_functor_hpp">Header &lt;boost/dispatch/functor/meta/make_functor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessed.functor0x_hpp">Header &lt;boost/dispatch/functor/preprocessed/functor0x.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessor.dispatch_hpp">Header &lt;boost/dispatch/functor/preprocessor/dispatch.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessor.function_hpp">Header &lt;boost/dispatch/functor/preprocessor/function.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.adapted_traits_hpp">Header &lt;boost/dispatch/meta/adapted_traits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.all_hpp">Header &lt;boost/dispatch/meta/all.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.any_hpp">Header &lt;boost/dispatch/meta/any.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.arithmetic_hpp">Header &lt;boost/dispatch/meta/arithmetic.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_hpp">Header &lt;boost/dispatch/meta/as.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_floating_hpp">Header &lt;boost/dispatch/meta/as_floating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_integer_hpp">Header &lt;boost/dispatch/meta/as_integer.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_ref_hpp">Header &lt;boost/dispatch/meta/as_ref.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_signed_hpp">Header &lt;boost/dispatch/meta/as_signed.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_unsigned_hpp">Header &lt;boost/dispatch/meta/as_unsigned.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.behave_as_hpp">Header &lt;boost/dispatch/meta/behave_as.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.downgrade_hpp">Header &lt;boost/dispatch/meta/downgrade.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.enable_if_type_hpp">Header &lt;boost/dispatch/meta/enable_if_type.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.factory_of_hpp">Header &lt;boost/dispatch/meta/factory_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.floating_hpp">Header &lt;boost/dispatch/meta/floating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.fusion_hpp">Header &lt;boost/dispatch/meta/fusion.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.hierarchy_of_hpp">Header &lt;boost/dispatch/meta/hierarchy_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_fundamental_hpp">Header &lt;boost/dispatch/meta/is_fundamental.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_iterator_hpp">Header &lt;boost/dispatch/meta/is_iterator.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_result_of_supported_hpp">Header &lt;boost/dispatch/meta/is_result_of_supported.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_scalar_hpp">Header &lt;boost/dispatch/meta/is_scalar.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_signed_hpp">Header &lt;boost/dispatch/meta/is_signed.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_unspecified_hpp">Header &lt;boost/dispatch/meta/is_unspecified.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.lambda_terminal_hpp">Header &lt;boost/dispatch/meta/lambda_terminal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.make_floating_hpp">Header &lt;boost/dispatch/meta/make_floating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.make_integer_hpp">Header &lt;boost/dispatch/meta/make_integer.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.mpl_hpp">Header &lt;boost/dispatch/meta/mpl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.na_hpp">Header &lt;boost/dispatch/meta/na.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.preprocessed.result_of_hpp">Header &lt;boost/dispatch/meta/preprocessed/result_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.result_of_hpp">Header &lt;boost/dispatch/meta/result_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.primitive_of_hpp">Header &lt;boost/dispatch/meta/primitive_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.print_hpp">Header &lt;boost/dispatch/meta/print.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.property_of_hpp">Header &lt;boost/dispatch/meta/property_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.scalar_of_hpp">Header &lt;boost/dispatch/meta/scalar_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.sign_of_hpp">Header &lt;boost/dispatch/meta/sign_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.strip_hpp">Header &lt;boost/dispatch/meta/strip.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.preprocessor.strip_hpp">Header &lt;boost/dispatch/preprocessor/strip.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.upgrade_hpp">Header &lt;boost/dispatch/meta/upgrade.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.preprocessor.remove_typename_hpp">Header &lt;boost/dispatch/preprocessor/remove_typename.hpp&gt;</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.attributes_hpp"></a>Header &lt;<a href="../../boost/dispatch/attributes.hpp" target="_top">boost/dispatch/attributes.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_DISPATCH_FORCE_INLINE.html" title="Macro BOOST_DISPATCH_FORCE_INLINE">BOOST_DISPATCH_FORCE_INLINE</a>
+<a class="link" href="BOOST_DISPATCH_NO_INLINE.html" title="Macro BOOST_DISPATCH_NO_INLINE">BOOST_DISPATCH_NO_INLINE</a>
+<a class="link" href="BOOST_DISPATCH_DEPRECATED.html" title="Macro BOOST_DISPATCH_DEPRECATED">BOOST_DISPATCH_DEPRECATED</a></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.allocator_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/allocator.hpp" target="_top">boost/dispatch/concept/allocator.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> X<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/Allocator.html" title="Struct template Allocator">Allocator</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">class</span> <a class="link" href="boost/dispatch/allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.categorizable_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/categorizable.hpp" target="_top">boost/dispatch/concept/categorizable.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> 
+             <span class="keyword">bool</span> Enable <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="keyword">typename</span>                                          <span class="identifier">meta</span><span class="special">::</span><span class="identifier">category_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">tag</span>                                        <span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">unknown</span>                                        <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/Categorizable.html" title="Struct template Categorizable">Categorizable</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/Categorizable_T__false_id334236.html" title="Struct template Categorizable&lt;T, false&gt;">Categorizable</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">false</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.category_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/category.hpp" target="_top">boost/dispatch/concept/category.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/Category.html" title="Struct template Category">Category</a><span class="special">;</span>
+    <span class="keyword">struct</span> <a class="link" href="boost/dispatch/category_archetype.html" title="Struct category_archetype">category_archetype</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.category_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/category.hpp" target="_top">boost/dispatch/dsl/category.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/ast_.html" title="Struct template ast_">ast_</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/ast_unspecified_T_id347398.html" title="Struct template ast_&lt;unspecified_&lt; T &gt;&gt;">ast_</a><span class="special">&lt;</span><span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Domain<span class="special">,</span> <span class="keyword">typename</span> Tag<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/expr_.html" title="Struct template expr_">expr_</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Domain<span class="special">,</span> <span class="keyword">typename</span> Tag<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/expr_unspecified_T___Do_id347441.html" title="Struct template expr_&lt;unspecified_&lt; T &gt;, Domain, Tag&gt;">expr_</a><span class="special">&lt;</span><span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Domain</span><span class="special">,</span> <span class="identifier">Tag</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.documentation_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/documentation.hpp" target="_top">boost/dispatch/meta/documentation.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.fusion_associative_sequence_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/fusion_associative_sequence.hpp" target="_top">boost/dispatch/concept/fusion_associative_sequence.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/FusionAssociativeSequence.html" title="Struct template FusionAssociativeSequence">FusionAssociativeSequence</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.fusion_bidirectionnal_sequence_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/fusion_bidirectionnal_sequence.hpp" target="_top">boost/dispatch/concept/fusion_bidirectionnal_sequence.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/FusionBidirectionalSequ_id347566.html" title="Struct template FusionBidirectionalSequence">FusionBidirectionalSequence</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.fusion_forward_sequence_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/fusion_forward_sequence.hpp" target="_top">boost/dispatch/concept/fusion_forward_sequence.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/FusionForwardSequence.html" title="Struct template FusionForwardSequence">FusionForwardSequence</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.fusion_random_access_sequence_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/fusion_random_access_sequence.hpp" target="_top">boost/dispatch/concept/fusion_random_access_sequence.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> S<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/FusionRandomAccessSequence.html" title="Struct template FusionRandomAccessSequence">FusionRandomAccessSequence</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.has_primitive_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/has_primitive.hpp" target="_top">boost/dispatch/concept/has_primitive.hpp</a>&gt;</h3></div></div></div>
+<p>Define the <a class="link" href="boost/dispatch/HasPrimitive.html" title="Struct template HasPrimitive">boost::dispatch::HasPrimitive</a> Concept. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> 
+             <span class="keyword">bool</span> Enable <span class="special">=</span> <a class="link" href="boost/dispatch/meta/is_fundamental.html" title="Struct template is_fundamental">meta::is_fundamental</a><span class="special">&lt;</span><span class="keyword">typename</span> <a class="link" href="boost/dispatch/meta/primitive_of.html" title="Struct template primitive_of">meta::primitive_of</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span>type<span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/HasPrimitive.html" title="Struct template HasPrimitive">HasPrimitive</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/HasPrimitive_T__false_id347768.html" title="Struct template HasPrimitive&lt;T, false&gt;">HasPrimitive</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">false</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.hierarchized_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/hierarchized.hpp" target="_top">boost/dispatch/concept/hierarchized.hpp</a>&gt;</h3></div></div></div>
+<p>Define the <a class="link" href="boost/dispatch/Hierarchizable.html" title="Struct template Hierarchizable">boost::dispatch::Hierarchizable</a> Concept. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> 
+             <span class="keyword">bool</span> Enable <span class="special">=</span> <span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span> <span class="special">&lt;</span> <span class="keyword">typename</span> <a class="link" href="boost/dispatch/meta/hierarchy_of.html" title="Struct template hierarchy_of">meta::hierarchy_of</a><span class="special">&lt;</span><span class="identifier">Hierarchized</span><span class="special">&gt;</span><span class="special">::</span>type                            <span class="special">,</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="identifier">Hierarchized</span><span class="special">&gt;</span>                            <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/Hierarchizable.html" title="Struct template Hierarchizable">Hierarchizable</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/Hierarchizable_T__false_id347867.html" title="Struct template Hierarchizable&lt;T, false&gt;">Hierarchizable</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">false</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.concept.same_type_hpp"></a>Header &lt;<a href="../../boost/dispatch/concept/same_type.hpp" target="_top">boost/dispatch/concept/same_type.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">,</span> 
+             <span class="keyword">bool</span> EnableIf <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/SameType.html" title="Struct template SameType">SameType</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T1<span class="special">,</span> <span class="keyword">typename</span> T2<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/SameType_T1__T2__false_id347943.html" title="Struct template SameType&lt;T1, T2, false&gt;">SameType</a><span class="special">&lt;</span><span class="identifier">T1</span><span class="special">,</span> <span class="identifier">T2</span><span class="special">,</span> <span class="keyword">false</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.call_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/call.hpp" target="_top">boost/dispatch/dsl/call.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+       <a name="boost.dispatch.meta.BOOST_DISPATCH_FUNCTOR__id347999"></a><span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(</span><span class="special">(</span><span class="identifier">boost</span><span class="special">)</span><span class="special">(</span><span class="identifier">dispatch</span><span class="special">)</span><span class="special">(</span><span class="identifier">meta</span><span class="special">)</span><span class="special">,</span> 
+                                             <span class="identifier">tag</span><span class="special">::</span><span class="identifier">terminal_</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a><span class="special">,</span> 
+                                             <span class="special">(</span><span class="identifier">Expr</span><span class="special">)</span><span class="special">,</span> 
+                                             <span class="special">(</span><a class="link" href="boost/dispatch/meta/ast_.html" title="Struct template ast_">ast_</a><span class="special">&lt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">Expr</span> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/tag/ast_.html" title="Struct ast_">ast_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.preprocessed.call_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/preprocessed/call.hpp" target="_top">boost/dispatch/dsl/preprocessed/call.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Func<span class="special">,</span> <span class="keyword">typename</span> Dummy<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/implement_Func_tag_ast__id348052.html" title="Struct template implement&lt;Func(tag::ast_), tag::formal_, Dummy&gt;">implement</a><span class="special">&lt;</span><span class="identifier">Func</span><span class="special">(</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">ast_</span><span class="special">)</span><span class="special">,</span> <span class="identifier">tag</span><span class="special">::</span><span class="identifier">formal_</span><span class="special">,</span> <span class="identifier">Dummy</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Func<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">&gt;</span> 
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">any</a><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">A0</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">implement</span><span class="special">&lt;</span> <span class="identifier">Func</span><span class="special">(</span><a class="link" href="boost/dispatch/tag/ast_.html" title="Struct ast_">tag::ast_</a><span class="special">)</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span>type 
+        <a name="boost.dispatch.meta.dispatching_id348319"></a><span class="identifier">dispatching</span><span class="special">(</span><span class="identifier">Func</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a><span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A0</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">adl_helper</span> <span class="special">=</span> <span class="identifier">adl_helper</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Func<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">&gt;</span> 
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">any</a><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">implement</span><span class="special">&lt;</span> <span class="identifier">Func</span><span class="special">(</span><a class="link" href="boost/dispatch/tag/ast_.html" title="Struct ast_">tag::ast_</a><span class="special">)</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span>type 
+        <a name="boost.dispatch.meta.dispatching_id348370"></a><span class="identifier">dispatching</span><span class="special">(</span><span class="identifier">Func</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a><span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A0</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A1</span> <span class="special">&gt;</span> const<span class="special">,</span> <span class="identifier">adl_helper</span> <span class="special">=</span> <span class="identifier">adl_helper</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Func<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">,</span> <span class="keyword">typename</span> A2<span class="special">&gt;</span> 
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">any</a><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">,</span> <span class="identifier">A2</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">implement</span><span class="special">&lt;</span> <span class="identifier">Func</span><span class="special">(</span><a class="link" href="boost/dispatch/tag/ast_.html" title="Struct ast_">tag::ast_</a><span class="special">)</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span>type 
+        <a name="boost.dispatch.meta.dispatching_id348432"></a><span class="identifier">dispatching</span><span class="special">(</span><span class="identifier">Func</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a><span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A0</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A1</span> <span class="special">&gt;</span> const<span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A2</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">adl_helper</span> <span class="special">=</span> <span class="identifier">adl_helper</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Func<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">,</span> <span class="keyword">typename</span> A2<span class="special">,</span> 
+               <span class="keyword">typename</span> A3<span class="special">&gt;</span> 
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">any</a><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">,</span> <span class="identifier">A2</span><span class="special">,</span> <span class="identifier">A3</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">implement</span><span class="special">&lt;</span> <span class="identifier">Func</span><span class="special">(</span><a class="link" href="boost/dispatch/tag/ast_.html" title="Struct ast_">tag::ast_</a><span class="special">)</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span>type 
+        <a name="boost.dispatch.meta.dispatching_id348503"></a><span class="identifier">dispatching</span><span class="special">(</span><span class="identifier">Func</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a><span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A0</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A1</span> <span class="special">&gt;</span> const<span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A2</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A3</span> <span class="special">&gt;</span> const<span class="special">,</span> <span class="identifier">adl_helper</span> <span class="special">=</span> <span class="identifier">adl_helper</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Func<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">,</span> <span class="keyword">typename</span> A2<span class="special">,</span> 
+               <span class="keyword">typename</span> A3<span class="special">,</span> <span class="keyword">typename</span> A4<span class="special">&gt;</span> 
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">any</a><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">is_expr</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">,</span> <span class="identifier">A2</span><span class="special">,</span> <span class="identifier">A3</span><span class="special">,</span> <span class="identifier">A4</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">implement</span><span class="special">&lt;</span> <span class="identifier">Func</span><span class="special">(</span><a class="link" href="boost/dispatch/tag/ast_.html" title="Struct ast_">tag::ast_</a><span class="special">)</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span>type 
+        <a name="boost.dispatch.meta.dispatching_id348583"></a><span class="identifier">dispatching</span><span class="special">(</span><span class="identifier">Func</span><span class="special">,</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">tag::formal_</a><span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A0</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A1</span> <span class="special">&gt;</span> const<span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A2</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A3</span> <span class="special">&gt;</span> const<span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">A4</span> <span class="special">&gt;</span> const<span class="special">,</span> 
+                    <span class="identifier">adl_helper</span> <span class="special">=</span> <span class="identifier">adl_helper</span><span class="special">(</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.meta.call_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/meta/call.hpp" target="_top">boost/dispatch/functor/meta/call.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/call.html" title="Struct template call">boost::dispatch::meta::call</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Sig<span class="special">,</span> 
+               <span class="keyword">typename</span> EvalContext <span class="special">=</span> <span class="keyword">typename</span> <a class="link" href="boost/dispatch/default_site.html" title="Struct template default_site">default_site</a><span class="special">&lt;</span> <span class="keyword">typename</span>  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function_types</span><span class="special">::</span>                                                        <span class="identifier">result_type</span><span class="special">&lt;</span><span class="identifier">Sig</span><span class="special">&gt;</span><span class="special">::</span>type                                            <span class="special">&gt;</span><span class="special">::</span>type<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/call.html" title="Struct template call">call</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Args<span class="special">,</span> <span class="keyword">typename</span> Site<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/call_Tag_Args____Site_id348785.html" title="Struct template call&lt;Tag(Args...), Site&gt;">call</a><span class="special">&lt;</span><span class="identifier">Tag</span><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Site</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.meta.preprocessed.call_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/meta/preprocessed/call.hpp" target="_top">boost/dispatch/functor/meta/preprocessed/call.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.preprocessor.call_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/preprocessor/call.hpp" target="_top">boost/dispatch/functor/preprocessor/call.hpp</a>&gt;</h3></div></div></div>
+<p>Defines macros for building a boost::dispatch::ext::call specialization. </p>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_DISPATCH_FUNCTOR_CALL.html" title="Macro BOOST_DISPATCH_FUNCTOR_CALL">BOOST_DISPATCH_FUNCTOR_CALL</a>(N)
+<a class="link" href="BOOST_DISPATCH_FUNCTOR_CALL_REPEAT.html" title="Macro BOOST_DISPATCH_FUNCTOR_CALL_REPEAT">BOOST_DISPATCH_FUNCTOR_CALL_REPEAT</a>(N)
+<a class="link" href="BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_id349047.html" title="Macro BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</a>(NS, Tag, Site, Types, Seq)
+<a class="link" href="BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_TPL.html" title="Macro BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_TPL">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_TPL</a>(NS, Tag, Site, Types, Seq)
+<a class="link" href="BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_IF.html" title="Macro BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_IF">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_IF</a>(NS, Tag, Site, Types, Cond, Ret, Seq)</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.compile_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/compile.hpp" target="_top">boost/dispatch/dsl/compile.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Phase<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/compile.html" title="Struct template compile">compile</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+  <span class="keyword">namespace</span> <span class="identifier">proto</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Phase<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/proto/is_callable_boost_dispa_id349155.html" title="Struct template is_callable&lt;boost::dispatch::meta::compile&lt; Phase &gt;&gt;">is_callable</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">compile</span><span class="special">&lt;</span> <span class="identifier">Phase</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.compute_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/compute.hpp" target="_top">boost/dispatch/dsl/compute.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/compute.html" title="Struct template compute">compute</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+  <span class="keyword">namespace</span> <span class="identifier">proto</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">typename</span> Target<span class="special">&gt;</span> 
+      <span class="keyword">struct</span> <a class="link" href="boost/proto/is_callable_boost_dispa_id349201.html" title="Struct template is_callable&lt;boost::dispatch::meta::compute&lt; Tag, Target &gt;&gt;">is_callable</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">compute</span><span class="special">&lt;</span> <span class="identifier">Tag</span><span class="special">,</span> <span class="identifier">Target</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.proto.extends_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/proto/extends.hpp" target="_top">boost/dispatch/dsl/proto/extends.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_PROTO_BASIC_EXTENDS_TPL.html" title="Macro BOOST_PROTO_BASIC_EXTENDS_TPL">BOOST_PROTO_BASIC_EXTENDS_TPL</a>(Expr, Derived, Domain)</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.proto.unpack_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/proto/unpack.hpp" target="_top">boost/dispatch/dsl/proto/unpack.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_PROTO_ARITY.html" title="Macro BOOST_PROTO_ARITY">BOOST_PROTO_ARITY</a>
+<a class="link" href="BOOST_PROTO_CHILD_N.html" title="Macro BOOST_PROTO_CHILD_N">BOOST_PROTO_CHILD_N</a>(_, N, __)
+<a class="link" href="BOOST_PROTO_CHILD_E_N.html" title="Macro BOOST_PROTO_CHILD_E_N">BOOST_PROTO_CHILD_E_N</a>(_, N, __)
+<a class="link" href="BOOST_PP_ITERATION_PARAMS_1.html" title="Macro BOOST_PP_ITERATION_PARAMS_1">BOOST_PP_ITERATION_PARAMS_1</a></pre>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">proto</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Fun<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/proto/unpack.html" title="Struct template unpack">unpack</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Fun<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/proto/is_callable_unpack_Fun_id349278.html" title="Struct template is_callable&lt;unpack&lt; Fun &gt;&gt;">is_callable</a><span class="special">&lt;</span><span class="identifier">unpack</span><span class="special">&lt;</span> <span class="identifier">Fun</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.dsl.semantic_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/dsl/semantic_of.hpp" target="_top">boost/dispatch/dsl/semantic_of.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Expr<span class="special">,</span> <span class="keyword">typename</span> Enable <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/semantic_of.html" title="Struct template semantic_of">semantic_of</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Expr<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/semantic_of_const_Expr_id349358.html" title="Struct template semantic_of&lt;const Expr&gt;">semantic_of</a><span class="special">&lt;</span><span class="keyword">const</span> <span class="identifier">Expr</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Expr<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/semantic_of_Expr___id349374.html" title="Struct template semantic_of&lt;Expr &amp;&gt;">semantic_of</a><span class="special">&lt;</span><span class="identifier">Expr</span> <span class="special">&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.forward_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/forward.hpp" target="_top">boost/dispatch/functor/forward.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">typename</span> Enable <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/default_site.html" title="Struct template default_site">default_site</a><span class="special">;</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+    <span class="special">}</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">proto</span><span class="special">::</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">terminal</span> <a name="boost.dispatch.tag.terminal_"></a><span class="identifier">terminal_</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.functor_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/functor.hpp" target="_top">boost/dispatch/functor/functor.hpp</a>&gt;</h3></div></div></div>
+<p>Implements Boost.Dispatch main functor handler. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">typename</span> EvalContext<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/functor.html" title="Struct template functor">functor</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section"><div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.preprocessed.functor_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/preprocessed/functor.hpp" target="_top">boost/dispatch/functor/preprocessed/functor.hpp</a>&gt;</h3></div></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.meta.hierarchy_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/meta/hierarchy.hpp" target="_top">boost/dispatch/functor/meta/hierarchy.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the basic evaluation context hierarchy for <a class="link" href="boost/dispatch/functor.html" title="Struct template functor">boost::dispatch::functor</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/tag/formal_.html" title="Struct formal_">formal_</a><span class="special">;</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/tag/cpu_.html" title="Struct cpu_">cpu_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.meta.make_functor_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/meta/make_functor.hpp" target="_top">boost/dispatch/functor/meta/make_functor.hpp</a>&gt;</h3></div></div></div>
+<p>Implements a delayed <a class="link" href="boost/dispatch/functor.html" title="Struct template functor">boost::dispatch::functor</a> type instanciation system. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">typename</span> Dummy <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/make_functor.html" title="Struct template make_functor">make_functor</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.preprocessed.functor0x_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/preprocessed/functor0x.hpp" target="_top">boost/dispatch/functor/preprocessed/functor0x.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A0<span class="special">&gt;</span> 
+  <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <span class="identifier">functor</span><span class="special">(</span><span class="identifier">A0</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type <a name="operator()_id350220"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">A0</span> <span class="special">&amp;&amp;</span> a0<span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">&gt;</span> 
+  <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <span class="identifier">functor</span><span class="special">(</span><span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type 
+  <a name="operator()_id350241"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">A0</span> <span class="special">&amp;&amp;</span> a0<span class="special">,</span> <span class="identifier">A1</span> <span class="special">&amp;&amp;</span> a1<span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">,</span> <span class="keyword">typename</span> A2<span class="special">&gt;</span> 
+  <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <span class="identifier">functor</span><span class="special">(</span><span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">,</span> <span class="identifier">A2</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type 
+  <a name="operator()_id350273"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">A0</span> <span class="special">&amp;&amp;</span> a0<span class="special">,</span> <span class="identifier">A1</span> <span class="special">&amp;&amp;</span> a1<span class="special">,</span> <span class="identifier">A2</span> <span class="special">&amp;&amp;</span> a2<span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">,</span> <span class="keyword">typename</span> A2<span class="special">,</span> <span class="keyword">typename</span> A3<span class="special">&gt;</span> 
+  <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <span class="identifier">functor</span><span class="special">(</span><span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">,</span> <span class="identifier">A2</span><span class="special">,</span> <span class="identifier">A3</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type 
+  <a name="operator()_id350315"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">A0</span> <span class="special">&amp;&amp;</span> a0<span class="special">,</span> <span class="identifier">A1</span> <span class="special">&amp;&amp;</span> a1<span class="special">,</span> <span class="identifier">A2</span> <span class="special">&amp;&amp;</span> a2<span class="special">,</span> <span class="identifier">A3</span> <span class="special">&amp;&amp;</span> a3<span class="special">)</span><span class="special">;</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> A0<span class="special">,</span> <span class="keyword">typename</span> A1<span class="special">,</span> <span class="keyword">typename</span> A2<span class="special">,</span> <span class="keyword">typename</span> A3<span class="special">,</span> <span class="keyword">typename</span> A4<span class="special">&gt;</span> 
+  <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <span class="identifier">functor</span><span class="special">(</span><span class="identifier">A0</span><span class="special">,</span> <span class="identifier">A1</span><span class="special">,</span> <span class="identifier">A2</span><span class="special">,</span> <span class="identifier">A3</span><span class="special">,</span> <span class="identifier">A4</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type 
+  <a name="operator()_id350368"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">A0</span> <span class="special">&amp;&amp;</span> a0<span class="special">,</span> <span class="identifier">A1</span> <span class="special">&amp;&amp;</span> a1<span class="special">,</span> <span class="identifier">A2</span> <span class="special">&amp;&amp;</span> a2<span class="special">,</span> <span class="identifier">A3</span> <span class="special">&amp;&amp;</span> a3<span class="special">,</span> <span class="identifier">A4</span> <span class="special">&amp;&amp;</span> a4<span class="special">)</span><span class="special">;</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.preprocessor.dispatch_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/preprocessor/dispatch.hpp" target="_top">boost/dispatch/functor/preprocessor/dispatch.hpp</a>&gt;</h3></div></div></div>
+<p>Defines macros for registering a functor overload. </p>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_DISPATCH_DISPATCH_TYPE_TPL.html" title="Macro BOOST_DISPATCH_DISPATCH_TYPE_TPL">BOOST_DISPATCH_DISPATCH_TYPE_TPL</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_DISPATCH_TYPE.html" title="Macro BOOST_DISPATCH_DISPATCH_TYPE">BOOST_DISPATCH_DISPATCH_TYPE</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_DISPATCH_ARG.html" title="Macro BOOST_DISPATCH_DISPATCH_ARG">BOOST_DISPATCH_DISPATCH_ARG</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_DISPATCH_TAG.html" title="Macro BOOST_DISPATCH_DISPATCH_TAG">BOOST_DISPATCH_DISPATCH_TAG</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_NS_.html" title="Macro BOOST_DISPATCH_NS_">BOOST_DISPATCH_NS_</a>(s, data, elem)
+<a class="link" href="BOOST_DISPATCH_NS.html" title="Macro BOOST_DISPATCH_NS">BOOST_DISPATCH_NS</a>(seq)
+<a class="link" href="BOOST_DISPATCH_CLOSE_.html" title="Macro BOOST_DISPATCH_CLOSE_">BOOST_DISPATCH_CLOSE_</a>(s, data, elem)
+<a class="link" href="BOOST_DISPATCH_CLOSE.html" title="Macro BOOST_DISPATCH_CLOSE">BOOST_DISPATCH_CLOSE</a>(seq)
+<a class="link" href="BOOST_DISPATCH_REOPEN_.html" title="Macro BOOST_DISPATCH_REOPEN_">BOOST_DISPATCH_REOPEN_</a>(s, data, elem)
+<a class="link" href="BOOST_DISPATCH_REOPEN.html" title="Macro BOOST_DISPATCH_REOPEN">BOOST_DISPATCH_REOPEN</a>(seq)
+<a class="link" href="BOOST_DISPATCH_REGISTER_DISPATCH.html" title="Macro BOOST_DISPATCH_REGISTER_DISPATCH">BOOST_DISPATCH_REGISTER_DISPATCH</a>(NS, Tag, Site, Types, Seq)
+<a class="link" href="BOOST_DISPATCH_REGISTER_DISPATCH_TPL.html" title="Macro BOOST_DISPATCH_REGISTER_DISPATCH_TPL">BOOST_DISPATCH_REGISTER_DISPATCH_TPL</a>(NS, Tag, Site, Types, Seq)
+<a class="link" href="BOOST_DISPATCH_REGISTER_DISPATCH_IF.html" title="Macro BOOST_DISPATCH_REGISTER_DISPATCH_IF">BOOST_DISPATCH_REGISTER_DISPATCH_IF</a>(NS, Tag, Site, Types, Cond, Ret, Seq)
+<a class="link" href="BOOST_DISPATCH_REGISTER_DISPATCH_IF_TPL.html" title="Macro BOOST_DISPATCH_REGISTER_DISPATCH_IF_TPL">BOOST_DISPATCH_REGISTER_DISPATCH_IF_TPL</a>(NS, Tag, Site, Types, Cond, Ret, Seq)</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.functor.preprocessor.function_hpp"></a>Header &lt;<a href="../../boost/dispatch/functor/preprocessor/function.hpp" target="_top">boost/dispatch/functor/preprocessor/function.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_DISPATCH_FUNCTION_INTERFACE_id350745.html" title="Macro BOOST_DISPATCH_FUNCTION_INTERFACE">BOOST_DISPATCH_FUNCTION_INTERFACE</a>(TAG, NAME, N)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_BODY.html" title="Macro BOOST_DISPATCH_FUNCTION_BODY">BOOST_DISPATCH_FUNCTION_BODY</a>(TAG, N)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_id350773.html" title="Macro BOOST_DISPATCH_FUNCTION_IMPLEMENTATION">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION</a>(TAG, NAME, N)
+<a class="link" href="BOOST_DISPATCH_FN_TYPES.html" title="Macro BOOST_DISPATCH_FN_TYPES">BOOST_DISPATCH_FN_TYPES</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_FN_ARGS.html" title="Macro BOOST_DISPATCH_FN_ARGS">BOOST_DISPATCH_FN_ARGS</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_TPL.html" title="Macro BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_TPL">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_TPL</a>(TAG, NAME, ARGS, N)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF_1.html" title="Macro BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF_1">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF_1</a>(NAME, TAG)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF_2.html" title="Macro BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF_2">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF_2</a>(NAME, TAG)
+<a class="link" href="BOOST_DISPATCH_FN_REF.html" title="Macro BOOST_DISPATCH_FN_REF">BOOST_DISPATCH_FN_REF</a>(z, n, t)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF.html" title="Macro BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION_SELF</a>(TAG, NAME, N)
+<a class="link" href="BOOST_DISPATCH_FUNCTION_METHOD_SELF.html" title="Macro BOOST_DISPATCH_FUNCTION_METHOD_SELF">BOOST_DISPATCH_FUNCTION_METHOD_SELF</a>(NAME, TAG, SELF)</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.adapted_traits_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/adapted_traits.hpp" target="_top">boost/dispatch/meta/adapted_traits.hpp</a>&gt;</h3></div></div></div>
+<p>Provides adaptation of some boost type traits for Boost.Dispatch types. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_floating_point.html" title="Struct template is_floating_point">is_floating_point</a><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_integral.html" title="Struct template is_integral">is_integral</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.all_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/all.hpp" target="_top">boost/dispatch/meta/all.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements <a class="link" href="boost/dispatch/meta/all.html" title="Struct template all">boost::dispatch::meta::all</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Pred<span class="special">,</span> 
+               <span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="identifier">BOOST_DISPATCH_MAX_META_ARITY</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">,</span><span class="special">=</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">na_</span> <span class="identifier">BOOST_PP_INTERCEPT</span><span class="special">)</span> <span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/all.html" title="Struct template all">all</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.any_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/any.hpp" target="_top">boost/dispatch/meta/any.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">boost::dispatch::meta::any</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Pred<span class="special">,</span> 
+               <span class="identifier">BOOST_PP_ENUM_BINARY_PARAMS</span><span class="special">(</span><span class="identifier">BOOST_DISPATCH_MAX_META_ARITY</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">A</span><span class="special">,</span><span class="special">=</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">na_</span> <span class="identifier">BOOST_PP_INTERCEPT</span><span class="special">)</span> <span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/any.html" title="Struct template any">any</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.arithmetic_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/arithmetic.hpp" target="_top">boost/dispatch/meta/arithmetic.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the meta::arithmetic . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/arithmetic.html" title="Struct arithmetic">arithmetic</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.as_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/as.hpp" target="_top">boost/dispatch/meta/as.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implement the <a class="link" href="boost/dispatch/meta/as_.html" title="Struct template as_">boost::dispatch::meta::as_</a> generic type wrapper. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_.html" title="Struct template as_">as_</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/hierarchy_of_as_T___Ori_id351300.html" title="Struct template hierarchy_of&lt;as_&lt; T &gt;, Origin&gt;">hierarchy_of</a><span class="special">&lt;</span><span class="identifier">as_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/primitive_of_as_T_id351339.html" title="Struct template primitive_of&lt;as_&lt; T &gt;&gt;">primitive_of</a><span class="special">&lt;</span><span class="identifier">as_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/factory_of_as_T_id351357.html" title="Struct template factory_of&lt;as_&lt; T &gt;&gt;">factory_of</a><span class="special">&lt;</span><span class="identifier">as_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.as_floating_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/as_floating.hpp" target="_top">boost/dispatch/meta/as_floating.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements <a class="link" href="boost/dispatch/meta/as_floating.html" title="Struct template as_floating">boost::dispatch::meta::as_floating</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_floating.html" title="Struct template as_floating">as_floating</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.as_integer_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/as_integer.hpp" target="_top">boost/dispatch/meta/as_integer.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements <a class="link" href="boost/dispatch/meta/as_integer.html" title="Struct template as_integer">boost::dispatch::meta::as_integer</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Sign <span class="special">=</span> <span class="keyword">typename</span> <a class="link" href="boost/dispatch/meta/sign_of.html" title="Struct template sign_of">meta::sign_of</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span>type<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_integer.html" title="Struct template as_integer">as_integer</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.as_ref_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/as_ref.hpp" target="_top">boost/dispatch/meta/as_ref.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_ref.html" title="Struct template as_ref">as_ref</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_ref_T___id351715.html" title="Struct template as_ref&lt;T &amp;&gt;">as_ref</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_ref_T_const_id351735.html" title="Struct template as_ref&lt;T const&gt;">as_ref</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.as_signed_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/as_signed.hpp" target="_top">boost/dispatch/meta/as_signed.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements <a class="link" href="boost/dispatch/meta/as_signed.html" title="Struct template as_signed">boost::dispatch::meta::as_signed</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_signed.html" title="Struct template as_signed">as_signed</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.as_unsigned_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/as_unsigned.hpp" target="_top">boost/dispatch/meta/as_unsigned.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements <a class="link" href="boost/dispatch/meta/as_unsigned.html" title="Struct template as_unsigned">boost::dispatch::meta::as_unsigned</a>. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/as_unsigned.html" title="Struct template as_unsigned">as_unsigned</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.behave_as_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/behave_as.hpp" target="_top">boost/dispatch/meta/behave_as.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the <a class="link" href="boost/dispatch/meta/behave_as.html" title="Struct template behave_as">boost::dispatch::meta::behave_as</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Lambda<span class="special">,</span> <span class="keyword">typename</span> Hierarchizable<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/behave_as.html" title="Struct template behave_as">behave_as</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.downgrade_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/downgrade.hpp" target="_top">boost/dispatch/meta/downgrade.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/downgrade.html" title="Struct template downgrade">boost::dispatch::meta::downgrade</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Sign<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/downgrade.html" title="Struct template downgrade">downgrade</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.enable_if_type_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/enable_if_type.hpp" target="_top">boost/dispatch/meta/enable_if_type.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the <a class="link" href="boost/dispatch/meta/enable_if_type.html" title="Struct template enable_if_type">boost::dispatch::meta::enable_if_type</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> R <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/enable_if_type.html" title="Struct template enable_if_type">enable_if_type</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.factory_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/factory_of.hpp" target="_top">boost/dispatch/meta/factory_of.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/factory_of.html" title="Struct template factory_of">boost::dispatch::meta::factory_of</a> meta-functions. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Hierarchizable<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/factory_of.html" title="Struct template factory_of">factory_of</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.floating_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/floating.hpp" target="_top">boost/dispatch/meta/floating.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the meta::arithmetic . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/floating.html" title="Struct floating">floating</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.fusion_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/fusion.hpp" target="_top">boost/dispatch/meta/fusion.hpp</a>&gt;</h3></div></div></div>
+<p>Register Fusion sequence and std::array as Hierarchizable. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/fusion_sequence_.html" title="Struct template fusion_sequence_">fusion_sequence_</a><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> N<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/array_.html" title="Struct template array_">array_</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> N<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/array_unspecified_T___N_id352767.html" title="Struct template array_&lt;unspecified_&lt; T &gt;, N&gt;">array_</a><span class="special">&lt;</span><span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">N</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> N<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/primitive_of_boost_arra_id352803.html" title="Struct template primitive_of&lt;boost::array&lt; T, N &gt;&gt;">primitive_of</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> N<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/factory_of_boost_array__id352831.html" title="Struct template factory_of&lt;boost::array&lt; T, N &gt;&gt;">factory_of</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> N<span class="special">,</span> <span class="keyword">typename</span> Origin<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/hierarchy_of_boost_arra_id352860.html" title="Struct template hierarchy_of&lt;boost::array&lt; T, N &gt;, Origin&gt;">hierarchy_of</a><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">array</span><span class="special">&lt;</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.hierarchy_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/hierarchy_of.hpp" target="_top">boost/dispatch/meta/hierarchy_of.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the hierarchy building classes and . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin <span class="special">=</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/hierarchy_of.html" title="Struct template hierarchy_of">hierarchy_of</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/hierarchy_of_T____Origi_id352954.html" title="Struct template hierarchy_of&lt;T &amp;, Origin&gt;">hierarchy_of</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/hierarchy_of_T_const__O_id352980.html" title="Struct template hierarchy_of&lt;T const, Origin&gt;">hierarchy_of</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.is_fundamental_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/is_fundamental.hpp" target="_top">boost/dispatch/meta/is_fundamental.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/is_fundamental.html" title="Struct template is_fundamental">boost::dispatch::meta::is_fundamental</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_fundamental.html" title="Struct template is_fundamental">is_fundamental</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.is_iterator_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/is_iterator.hpp" target="_top">boost/dispatch/meta/is_iterator.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/is_iterator.html" title="Struct template is_iterator">boost::dispatch::meta::is_iterator</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Enable <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_iterator.html" title="Struct template is_iterator">is_iterator</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_iterator_T___typenam_id353142.html" title="Struct template is_iterator&lt;T *, typename boost::enable_if_c&lt; !boost::is_function&lt; typename boost::remove_pointer&lt; T &gt;::type &gt;::value &gt;::type&gt;">is_iterator</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if_c</span><span class="special">&lt;</span> <span class="special">!</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_function</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_iterator_T__typename_id353160.html" title="Struct template is_iterator&lt;T, typename boost::enable_if_c&lt; boost::is_function&lt; typename boost::remove_pointer&lt; T &gt;::type &gt;::value &gt;::type&gt;">is_iterator</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if_c</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_function</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">remove_pointer</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_iterator_T__typename_id353177.html" title="Struct template is_iterator&lt;T, typenameenable_if_type&lt; typenamestrip&lt; T &gt;::type::iterator_category &gt;::type&gt;">is_iterator</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">typenameenable_if_type</span><span class="special">&lt;</span> <span class="identifier">typenamestrip</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">::</span><span class="identifier">iterator_category</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.is_result_of_supported_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/is_result_of_supported.hpp" target="_top">boost/dispatch/meta/is_result_of_supported.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/is_result_of_supported.html" title="Struct template is_result_of_supported">boost::dispatch::meta::is_result_of_supported</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Enable <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_result_of_supported.html" title="Struct template is_result_of_supported">is_result_of_supported</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_result_of_supported__id353234.html" title="Struct template is_result_of_supported&lt;T, typename boost::enable_if_c&lt; boost::mpl::or_&lt; meta::has_result_type&lt; typename boost::function_types::result_type&lt; T &gt;::type &gt;, details::result_defined&lt; typename boost::function_types::result_type&lt; T &gt;::type, T &gt; &gt;::value &gt;::type&gt;">is_result_of_supported</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if_c</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">has_result_type</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function_types</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">details</span><span class="special">::</span><span class="identifier">result_defined</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function_types</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.is_scalar_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/is_scalar.hpp" target="_top">boost/dispatch/meta/is_scalar.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/is_scalar.html" title="Struct template is_scalar">boost::dispatch::meta::is_scalar</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_scalar.html" title="Struct template is_scalar">is_scalar</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.is_signed_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/is_signed.hpp" target="_top">boost/dispatch/meta/is_signed.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_signed.html" title="Struct template is_signed">is_signed</a><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_unsigned.html" title="Struct template is_unsigned">is_unsigned</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.is_unspecified_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/is_unspecified.hpp" target="_top">boost/dispatch/meta/is_unspecified.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_unspecified.html" title="Struct template is_unspecified">is_unspecified</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.lambda_terminal_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/lambda_terminal.hpp" target="_top">boost/dispatch/meta/lambda_terminal.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Lambda<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/lambda_terminal.html" title="Struct template lambda_terminal">lambda_terminal</a><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.make_floating_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/make_floating.hpp" target="_top">boost/dispatch/meta/make_floating.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_floating_sizeof_do_id353422.html" title="Struct make_floating&lt;sizeof(double), na_&gt;">make_floating</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">double</span><span class="special">)</span><span class="special">,</span> <span class="identifier">na_</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_floating_sizeof_fl_id353440.html" title="Struct make_floating&lt;sizeof(float), na_&gt;">make_floating</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">float</span><span class="special">)</span><span class="special">,</span> <span class="identifier">na_</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Transform<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_floating_sizeof_do_id353457.html" title="Struct template make_floating&lt;sizeof(double), Transform&gt;">make_floating</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">double</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Transform</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Transform<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_floating_sizeof_fl_id353473.html" title="Struct template make_floating&lt;sizeof(float), Transform&gt;">make_floating</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">float</span><span class="special">)</span><span class="special">,</span> <span class="identifier">Transform</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.make_integer_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/make_integer.hpp" target="_top">boost/dispatch/meta/make_integer.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> Size<span class="special">,</span> <span class="keyword">typename</span> Transform<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_Size__unsi_id353503.html" title="Struct template make_integer&lt;Size, unsigned, Transform&gt;">make_integer</a><span class="special">&lt;</span><span class="identifier">Size</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">,</span> <span class="identifier">Transform</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> Size<span class="special">,</span> <span class="keyword">typename</span> Transform<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_Size__sign_id353529.html" title="Struct template make_integer&lt;Size, signed, Transform&gt;">make_integer</a><span class="special">&lt;</span><span class="identifier">Size</span><span class="special">,</span> <span class="keyword">signed</span><span class="special">,</span> <span class="identifier">Transform</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Transform<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_sizeof_boo_id353555.html" title="Struct template make_integer&lt;sizeof(boost::int64_t), unsigned, Transform&gt;">make_integer</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">int64_t</span><span class="special">)</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">,</span> <span class="identifier">Transform</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Transform<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_sizeof_boo_id353573.html" title="Struct template make_integer&lt;sizeof(boost::int64_t), signed, Transform&gt;">make_integer</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">int64_t</span><span class="special">)</span><span class="special">,</span> <span class="keyword">signed</span><span class="special">,</span> <span class="identifier">Transform</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> Size<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_Size__unsi_id353592.html" title="Struct template make_integer&lt;Size, unsigned, na_&gt;">make_integer</a><span class="special">&lt;</span><span class="identifier">Size</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">,</span> <span class="identifier">na_</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> Size<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_Size__sign_id353619.html" title="Struct template make_integer&lt;Size, signed, na_&gt;">make_integer</a><span class="special">&lt;</span><span class="identifier">Size</span><span class="special">,</span> <span class="keyword">signed</span><span class="special">,</span> <span class="identifier">na_</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_sizeof_boo_id353646.html" title="Struct make_integer&lt;sizeof(boost::int64_t), unsigned, na_&gt;">make_integer</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">int64_t</span><span class="special">)</span><span class="special">,</span> <span class="keyword">unsigned</span><span class="special">,</span> <span class="identifier">na_</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/make_integer_sizeof_boo_id353666.html" title="Struct make_integer&lt;sizeof(boost::int64_t), signed, na_&gt;">make_integer</a><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">int64_t</span><span class="special">)</span><span class="special">,</span> <span class="keyword">signed</span><span class="special">,</span> <span class="identifier">na_</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.mpl_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/mpl.hpp" target="_top">boost/dispatch/meta/mpl.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/mpl_integral_.html" title="Struct template mpl_integral_">mpl_integral_</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/mpl_integral_unspecifie_id353717.html" title="Struct template mpl_integral_&lt;unspecified_&lt; T &gt;&gt;">mpl_integral_</a><span class="special">&lt;</span><span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.na_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/na.hpp" target="_top">boost/dispatch/meta/na.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the <a class="link" href="boost/dispatch/meta/na_.html" title="Struct na_">boost::dispatch::meta::na_</a> type. </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/na_.html" title="Struct na_">na_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.preprocessed.result_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/preprocessed/result_of.hpp" target="_top">boost/dispatch/meta/preprocessed/result_of.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.result_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/result_of.hpp" target="_top">boost/dispatch/meta/result_of.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/is_function.html" title="Struct template is_function">is_function</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> F<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/result_of_F_Args____typ_id354478.html" title="Struct template result_of&lt;F(Args...), typename boost::enable_if&lt; is_function&lt; F &gt; &gt;::type&gt;">result_of</a><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <span class="identifier">is_function</span><span class="special">&lt;</span> <span class="identifier">F</span> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> F<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/result_of_F_Args____typ_id354501.html" title="Struct template result_of&lt;F(Args...), typename boost::enable_if&lt; has_result_type&lt; F &gt; &gt;::type&gt;">result_of</a><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">enable_if</span><span class="special">&lt;</span> <span class="identifier">has_result_type</span><span class="special">&lt;</span> <span class="identifier">F</span> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> F<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/result_of_F_Args____typ_id354531.html" title="Struct template result_of&lt;F(Args...), typename boost::disable_if&lt; boost::mpl::or_&lt; is_function&lt; F &gt;, has_result_type&lt; F &gt; &gt; &gt;::type&gt;">result_of</a><span class="special">&lt;</span><span class="identifier">F</span><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">disable_if</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span> <span class="identifier">is_function</span><span class="special">&lt;</span> <span class="identifier">F</span> <span class="special">&gt;</span><span class="special">,</span> <span class="identifier">has_result_type</span><span class="special">&lt;</span> <span class="identifier">F</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span><span class="special">;</span>
+       <a name="boost.dispatch.meta.BOOST_MPL_HAS_XXX_TRAIT_id354563"></a><span class="identifier">BOOST_MPL_HAS_XXX_TRAIT_DEF</span><span class="special">(</span><span class="identifier">result_type</span><span class="special">)</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.primitive_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/primitive_of.hpp" target="_top">boost/dispatch/meta/primitive_of.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the <a class="link" href="boost/dispatch/meta/primitive_of.html" title="Struct template primitive_of">boost::dispatch::meta::primitive_of</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Hierarchizable<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/primitive_of.html" title="Struct template primitive_of">primitive_of</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.print_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/print.hpp" target="_top">boost/dispatch/meta/print.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the boost::dispatch::meta::print . </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.property_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/property_of.hpp" target="_top">boost/dispatch/meta/property_of.hpp</a>&gt;</h3></div></div></div>
+<p>Defines and implements the <a class="link" href="boost/dispatch/meta/property_of.html" title="Struct template property_of">boost::dispatch::meta::property_of</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin <span class="special">=</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/property_of.html" title="Struct template property_of">property_of</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/property_of_T____Origin_id354727.html" title="Struct template property_of&lt;T &amp;, Origin&gt;">property_of</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Origin<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/property_of_T_const__Or_id354753.html" title="Struct template property_of&lt;T const, Origin&gt;">property_of</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.scalar_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/scalar_of.hpp" target="_top">boost/dispatch/meta/scalar_of.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/scalar_of.html" title="Struct template scalar_of">scalar_of</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.sign_of_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/sign_of.hpp" target="_top">boost/dispatch/meta/sign_of.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/sign_of.html" title="Struct template sign_of">sign_of</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.strip_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/strip.hpp" target="_top">boost/dispatch/meta/strip.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the <a class="link" href="boost/dispatch/meta/strip.html" title="Struct template strip">boost::dispatch::meta::strip</a> . </p>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/strip.html" title="Struct template strip">strip</a><span class="special">;</span>
+
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/strip_T_const_id354950.html" title="Struct template strip&lt;T const&gt;">strip</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/strip_T_volatile_id354969.html" title="Struct template strip&lt;T volatile&gt;">strip</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">volatile</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/strip_T_const_volatile_id354987.html" title="Struct template strip&lt;T const volatile&gt;">strip</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="keyword">const</span> <span class="keyword">volatile</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/strip_T___id355006.html" title="Struct template strip&lt;T &amp;&gt;">strip</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/strip_T____id355025.html" title="Struct template strip&lt;T &amp;&amp;&gt;">strip</a><span class="special">&lt;</span><span class="identifier">T</span> <span class="special">&amp;&amp;</span><span class="special">&gt;</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.preprocessor.strip_hpp"></a>Header &lt;<a href="../../boost/dispatch/preprocessor/strip.hpp" target="_top">boost/dispatch/preprocessor/strip.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the BOOST_DISPATCH_PP_STRIP macro. </p>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_APPLY.html" title="Macro BOOST_DISPATCH_PP_DETAILS_APPLY">BOOST_DISPATCH_PP_DETAILS_APPLY</a>(macro, args)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_APPLY_I.html" title="Macro BOOST_DISPATCH_PP_DETAILS_APPLY_I">BOOST_DISPATCH_PP_DETAILS_APPLY_I</a>(macro, args)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_STRIP_PARENS_I.html" title="Macro BOOST_DISPATCH_PP_DETAILS_STRIP_PARENS_I">BOOST_DISPATCH_PP_DETAILS_STRIP_PARENS_I</a>(...)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_EVAL.html" title="Macro BOOST_DISPATCH_PP_DETAILS_EVAL">BOOST_DISPATCH_PP_DETAILS_EVAL</a>(test, x)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_EVAL_I.html" title="Macro BOOST_DISPATCH_PP_DETAILS_EVAL_I">BOOST_DISPATCH_PP_DETAILS_EVAL_I</a>(test, x)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_TEST_ARITY.html" title="Macro BOOST_DISPATCH_PP_DETAILS_TEST_ARITY">BOOST_DISPATCH_PP_DETAILS_TEST_ARITY</a>(...)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_TEST_ARITY_I.html" title="Macro BOOST_DISPATCH_PP_DETAILS_TEST_ARITY_I">BOOST_DISPATCH_PP_DETAILS_TEST_ARITY_I</a>(a, b, c, ...)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS.html" title="Macro BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS">BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS</a>(cond, x)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_I.html" title="Macro BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_I">BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_I</a>(cond, x)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_1.html" title="Macro BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_1">BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_1</a>(x)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_2.html" title="Macro BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_2">BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_2</a>(x)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_2_I.html" title="Macro BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_2_I">BOOST_DISPATCH_PP_DETAILS_MAYBE_STRIP_PARENS_2_I</a>(...)
+<a class="link" href="BOOST_DISPATCH_PP_STRIP.html" title="Macro BOOST_DISPATCH_PP_STRIP">BOOST_DISPATCH_PP_STRIP</a>(X)</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.meta.upgrade_hpp"></a>Header &lt;<a href="../../boost/dispatch/meta/upgrade.hpp" target="_top">boost/dispatch/meta/upgrade.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">dispatch</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">meta</span> <span class="special">{</span>
+      <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">,</span> <span class="keyword">typename</span> Sign <span class="special">=</span> <span class="keyword">typename</span> <a class="link" href="boost/dispatch/meta/sign_of.html" title="Struct template sign_of">meta::sign_of</a><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span>type<span class="special">&gt;</span> 
+        <span class="keyword">struct</span> <a class="link" href="boost/dispatch/meta/upgrade.html" title="Struct template upgrade">upgrade</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.dispatch.preprocessor.remove_typename_hpp"></a>Header &lt;<a href="../../boost/dispatch/preprocessor/remove_typename.hpp" target="_top">boost/dispatch/preprocessor/remove_typename.hpp</a>&gt;</h3></div></div></div>
+<p>Defines the BOOST_DISPATCH_PP_STRIP macro. </p>
+<pre class="synopsis">
+
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_KEYWORD_FACILITY_IS_FRONT.html" title="Macro BOOST_DISPATCH_PP_DETAILS_KEYWORD_FACILITY_IS_FRONT">BOOST_DISPATCH_PP_DETAILS_KEYWORD_FACILITY_IS_FRONT</a>(T, checking_prefix)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_KEYWORD_FACILITY_REMOVE_FRONT.html" title="Macro BOOST_DISPATCH_PP_DETAILS_KEYWORD_FACILITY_REMOVE_FRONT">BOOST_DISPATCH_PP_DETAILS_KEYWORD_FACILITY_REMOVE_FRONT</a>(tokens, is_front_macro, removing_prefix)
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_IS_typename.html" title="Macro BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_IS_typename">BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_IS_typename</a>
+<a class="link" href="typename_BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_IS.html" title="Macro typename_BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_IS">typename_BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_IS</a>
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_REMOVE_typename.html" title="Macro BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_REMOVE_typename">BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_REMOVE_typename</a>
+<a class="link" href="typename_BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_REMOVE.html" title="Macro typename_BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_REMOVE">typename_BOOST_DISPATCH_PP_DETAILS_KEYWORD_TYPENAME_REMOVE</a>
+<a class="link" href="BOOST_DISPATCH_PP_DETAILS_KEYWORD_IS_TYPENAME_FRONT.html" title="Macro BOOST_DISPATCH_PP_DETAILS_KEYWORD_IS_TYPENAME_FRONT">BOOST_DISPATCH_PP_DETAILS_KEYWORD_IS_TYPENAME_FRONT</a>(tokens)
+<a class="link" href="BOOST_DISPATCH_PP_REMOVE_TYPENAME.html" title="Macro BOOST_DISPATCH_PP_REMOVE_TYPENAME">BOOST_DISPATCH_PP_REMOVE_TYPENAME</a>(X)</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="dispatch/defining_specializations.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="dispatch.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="BOOST_DISPATCH_FORCE_INLINE.html"><img src="images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

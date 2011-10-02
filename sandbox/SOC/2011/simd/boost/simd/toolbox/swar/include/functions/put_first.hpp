@@ -4,7 +4,6 @@
 #include <boost/simd/toolbox/swar/functions/put_first.hpp>
 #include <boost/simd/toolbox/swar/functions/scalar/put_first.hpp>
 #include <boost/simd/toolbox/swar/functions/simd/common/put_first.hpp>
-#include <boost/simd/toolbox/swar/functions/simd/sse/avx/put_first.hpp>
 #include <boost/simd/toolbox/swar/functions/simd/sse/sse2/put_first.hpp>
 
 #endif

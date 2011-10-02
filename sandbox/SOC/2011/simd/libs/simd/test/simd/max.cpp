@@ -26,7 +26,7 @@
 #include <boost/simd/include/functions/load.hpp>
 
 
-NT2_TEST_CASE_TPL ( max_real__2_0,  BOOST_SIMD_SIMD_REAL_TYPES)
+NT2_TEST_CASE_TPL ( max_real__2_0, BOOST_SIMD_SIMD_TYPES )
 {
   using boost::simd::max;
   using boost::simd::tag::max_;
@@ -45,7 +45,6 @@ NT2_TEST_CASE_TPL ( max_real__2_0,  BOOST_SIMD_SIMD_REAL_TYPES)
   double ulpd;
   ulpd=0.0;
 
-
   // specific values tests
   NT2_TEST_ULP_EQUAL(max(boost::simd::Inf<vT>(), boost::simd::Inf<vT>())[0], boost::simd::Inf<T>(), 0);
   NT2_TEST_ULP_EQUAL(max(boost::simd::Minf<vT>(), boost::simd::Minf<vT>())[0], boost::simd::Minf<T>(), 0);
@@ -53,4 +52,4 @@ NT2_TEST_CASE_TPL ( max_real__2_0,  BOOST_SIMD_SIMD_REAL_TYPES)
   NT2_TEST_ULP_EQUAL(max(boost::simd::Nan<vT>(), boost::simd::Nan<vT>())[0], boost::simd::Nan<T>(), 0);
   NT2_TEST_ULP_EQUAL(max(boost::simd::One<vT>(), boost::simd::One<vT>())[0], boost::simd::One<T>(), 0);
   NT2_TEST_ULP_EQUAL(max(boost::simd::Zero<vT>(), boost::simd::Zero<vT>())[0], boost::simd::Zero<T>(), 0);
-} // end of test for real_
+} // end of test for floating_

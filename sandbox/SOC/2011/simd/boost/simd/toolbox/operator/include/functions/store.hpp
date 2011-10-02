@@ -4,6 +4,7 @@
 #include <boost/simd/toolbox/operator/functions/store.hpp>
 #include <boost/simd/toolbox/operator/functions/scalar/store.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/common/store.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/sse/avx/store.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/sse/sse2/store.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/vmx/altivec/store.hpp>
 

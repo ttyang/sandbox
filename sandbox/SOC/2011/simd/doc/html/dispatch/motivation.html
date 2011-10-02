@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch 1.0">
-<link rel="prev" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch 1.0">
+<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
+<link rel="prev" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
 <link rel="next" href="defining_hierarchies.html" title="Defining hierarchies">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -40,7 +40,7 @@
       You could do this with two means: SFINAE or tag dispatching.
     </p>
 <p>
-      With SFINAE: 
+      With SFINAE:
 </p>
 <pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">typename</span> <span class="identifier">enable_if</span><span class="special">&lt;</span>
@@ -78,28 +78,63 @@
 <p>
     </p>
 <p>
-      Or, with tag dispatching: 
+      Or, with tag dispatching:
 </p>
-<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">fundamental_tag</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">floating_point_tag</span> <span class="special">:</span> <span class="identifier">fundamental_tag</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">integral_tag</span> <span class="special">:</span> <span class="identifier">fundamental_tag</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">signed_integral_tag</span> <span class="special">:</span> <span class="identifier">integral_tag</span> <span class="special">{};</span>
+<span class="keyword">struct</span> <span class="identifier">unsigned_integral_tag</span> <span class="special">:</span> <span class="identifier">integral_tag</span> <span class="special">{};</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">category_of</span><span class="special">;</span>
+
+<span class="keyword">template</span><span class="special">&lt;&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">category_of</span><span class="special">&lt;</span><span class="keyword">float</span><span class="special">&gt;</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating_point_tag</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">template</span><span class="special">&lt;&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">category_of</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">floating_point_tag</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">template</span><span class="special">&lt;&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">category_of</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">signed_integral_tag</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">template</span><span class="special">&lt;&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">category_of</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span><span class="special">&gt;</span>
+<span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">unsigned_integral_tag</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="comment">/* etc. for all fundamental types... */</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">t</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="keyword">return</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">t</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">is_floating_point</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">(),</span> <span class="keyword">typename</span> <span class="identifier">is_signed</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">());</span>
+    <span class="keyword">return</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">t</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">category_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">);</span>
 <span class="special">}</span>
 
-<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span>
-<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span><span class="special">,</span> <span class="identifier">U</span><span class="special">)</span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">floating_point_tag</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span>
-<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span><span class="special">)</span>
+<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">integral_tag</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
 <span class="special">}</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">U</span><span class="special">&gt;</span>
-<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">,</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span><span class="special">)</span>
+<span class="keyword">int</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">unsigned_integral_tag</span><span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">return</span> <span class="number">2</span><span class="special">;</span>
 <span class="special">}</span>
@@ -108,38 +143,49 @@
     </p>
 <p>
       The SFINAE approach clearly doesn't scale in terms of programming, since all
-      overloads must be mutually exclusive, but also in terms of compile times, since
-      SFINAE-based overload resolution is linear.
+      overloads must be mutually exclusive, but also in terms of compilation times,
+      since SFINAE-based overload resolution is linear.
     </p>
 <p>
-      Tag dispatching, on the other hand, can be very good if rather than using
-      <code class="computeroutput"><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span></code> / <code class="computeroutput"><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span></code>
-      a hierarchy of inheriting types are used, allowing to make use of the best-match
-      feature of C++ overloading to introduce specializations without requiring them
-      to be mutually exclusive. <br> Doing this in a clean, concise, reusable and
-      idiomatic manner is however of some difficulty, which is why that is only done
-      in an ad-hoc way in practice.
+      Tag dispatching, on the other hand, can be very good: by using a hierarchy
+      of inheriting types, it's possible to make use of the best-match feature of
+      C++ overloading to introduce specializations without requiring them to be mutually
+      exclusive. The <code class="computeroutput"><span class="identifier">iterator_category</span></code>
+      system of standard iterators is a good example of that. <br> Doing this in
+      a clean, concise, reusable and idiomatic manner is however of some difficulty,
+      which is why that is only done in an ad-hoc way in practice.
     </p>
 <p>
-      Boost.Dispatch solves that problem by providing a generic way to do best-match
-      selection, with an extensible hierarchy system that contains ready-made hierarchies
-      and that can be easily extended.
+      Boost.Dispatch solves that problem through two related components:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          An extensible hierarchy system that contains ready-made hierarchies and
+          that can be easily extended. This provides a powerful and idiomatic way
+          to define inheriting category tags.
+        </li>
+<li class="listitem">
+          A dispatching mechanism built on top of the hierarchies and overloading,
+          that automates the use of tag dispatching with all arguments.
+        </li>
+</ul></div>
+<p>
+      Here is what the above looks like when written with Boost.Dispatch:
     </p>
 <p>
-      
 </p>
 <pre class="programlisting"><span class="comment">// each function must have a type to be uniquely identified</span>
 <span class="keyword">struct</span> <span class="identifier">f_</span> <span class="special">{};</span>
 
-<span class="special">/</span> <span class="identifier">we</span> <span class="identifier">define</span> <span class="identifier">the</span> <span class="identifier">free</span> <span class="identifier">function</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">that</span> <span class="keyword">for</span> <span class="identifier">now</span> <span class="identifier">only</span> <span class="identifier">does</span> <span class="identifier">a</span> <span class="keyword">static</span> <span class="identifier">assert</span>
+<span class="comment">// we define the free function f, that for now only does a static assert</span>
 <span class="identifier">BOOST_DISPATCH_FUNCTION_IMPLEMENTATION</span><span class="special">(</span><span class="identifier">f_</span><span class="special">,</span> <span class="identifier">f</span><span class="special">,</span> <span class="number">1</span><span class="special">)</span>
 
-<span class="comment">// we define the specialization for real types</span>
-<span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(</span> <span class="special">(),</span>
+<span class="comment">// we define a specialization for real types</span>
+<span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(,</span>
     <span class="identifier">f_</span><span class="special">,</span>
     <span class="identifier">tag</span><span class="special">::</span><span class="identifier">cpu_</span><span class="special">,</span>
     <span class="special">(</span><span class="identifier">A0</span><span class="special">),</span>
-    <span class="special">(</span><span class="identifier">scalar_</span><span class="special">&lt;</span> <span class="identifier">real_</span><span class="special">&lt;</span><span class="identifier">A0</span><span class="special">&gt;</span> <span class="special">&gt;)</span>
+    <span class="special">(</span><span class="identifier">scalar_</span><span class="special">&lt;</span> <span class="identifier">floating_</span><span class="special">&lt;</span><span class="identifier">A0</span><span class="special">&gt;</span> <span class="special">&gt;)</span>
 <span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">result_type</span><span class="special">;</span>
@@ -149,12 +195,12 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">// we define the specialization for signed types</span>
-<span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(</span> <span class="special">(),</span>
+<span class="comment">// we define a specialization for integral types</span>
+<span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(,</span>
     <span class="identifier">f_</span><span class="special">,</span>
     <span class="identifier">tag</span><span class="special">::</span><span class="identifier">cpu_</span><span class="special">,</span>
     <span class="special">(</span><span class="identifier">A0</span><span class="special">),</span>
-    <span class="special">(</span><span class="identifier">scalar_</span><span class="special">&lt;</span> <span class="identifier">signed_</span><span class="special">&lt;</span><span class="identifier">A0</span><span class="special">&gt;</span> <span class="special">&gt;)</span>
+    <span class="special">(</span><span class="identifier">scalar_</span><span class="special">&lt;</span> <span class="identifier">integer_</span><span class="special">&lt;</span><span class="identifier">A0</span><span class="special">&gt;</span> <span class="special">&gt;)</span>
 <span class="special">)</span>
 <span class="special">{</span>
     <span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">result_type</span><span class="special">;</span>
@@ -164,8 +210,8 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="comment">// we define the specialization for unsigned types</span>
-<span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(</span> <span class="special">(),</span>
+<span class="comment">// we define a specialization for unsigned types</span>
+<span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">(,</span>
     <span class="identifier">f_</span><span class="special">,</span>
     <span class="identifier">tag</span><span class="special">::</span><span class="identifier">cpu_</span><span class="special">,</span>
     <span class="special">(</span><span class="identifier">A0</span><span class="special">),</span>
@@ -182,9 +228,11 @@
 <p>
     </p>
 <p>
-      Here, the second specialization applies to any signed scalar type, including
-      floating-point ones. However, since there is also a specialization for real
-      (i.e. floating point) types, the latter gets preferred, since <code class="computeroutput"><span class="identifier">real_</span></code> is a refinement of <code class="computeroutput"><span class="identifier">signed_</span></code>.
+      Here, the second specialization applies to any integral type, including unsigned
+      ones. However, since there is also a specialization for unsigned types, the
+      latter gets preferred, since <code class="computeroutput"><span class="identifier">unsigned_</span></code>
+      is a refinement of <code class="computeroutput"><span class="identifier">integer_</span></code>
+      in the built-in hierarchies.
     </p>
 <p>
       Additionally, with Boost.Dispatch, all specializations are registered in an

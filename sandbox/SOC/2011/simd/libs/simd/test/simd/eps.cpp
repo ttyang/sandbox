@@ -1,36 +1,56 @@
-/*******************************************************************************
- *         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
- *         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
- *
- *          Distributed under the Boost Software License, Version 1.0.
- *                 See accompanying file LICENSE.txt or copy at
- *                     http://www.boost.org/LICENSE_1_0.txt
- ******************************************************************************/
-#define NT2_UNIT_MODULE "boost::simd::constants eps related"
+//////////////////////////////////////////////////////////////////////////////
+///   Copyright 2003 and onward LASMEA UMR 6602 CNRS/U.B.P Clermont-Ferrand
+///   Copyright 2009 and onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
+///
+///          Distributed under the Boost Software License, Version 1.0
+///                 See accompanying file LICENSE.txt or copy at
+///                     http://www.boost.org/LICENSE_1_0.txt
+//////////////////////////////////////////////////////////////////////////////
+#define NT2_UNIT_MODULE "nt2 boost.simd.ieee toolbox - eps/simd Mode"
 
-#include <boost/simd/include/constants/eps_related.hpp>
+//////////////////////////////////////////////////////////////////////////////
+// unit test behavior of boost.simd.ieee components in simd mode
+//////////////////////////////////////////////////////////////////////////////
+/// created by jt the 04/12/2010
+/// 
+#include <boost/simd/toolbox/ieee/include/functions/eps.hpp>
+#include <boost/simd/include/functions/ulpdist.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/dispatch/functor/meta/call.hpp>
+#include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
-#include <nt2/sdk/unit/tests/relation.hpp>
-#include <boost/simd/sdk/simd/native.hpp>
-   
-////////////////////////////////////////////////////////////////////////////////
-// Test values for IEEE specs
-////////////////////////////////////////////////////////////////////////////////
-NT2_TEST_CASE_TPL(eps, BOOST_SIMD_TYPES)
-{
-  typedef BOOST_SIMD_DEFAULT_EXTENSION  ext_t;
-  typedef boost::simd::native<T,ext_t> vd_t;
-  for(std::size_t i=0; i< boost::simd::meta::cardinal_of<vd_t>::value;++i)
-  {
-    NT2_TEST_EQUAL( (boost::simd::Eps<vd_t>())[i], boost::simd::Eps<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Halfeps<vd_t>())[i], boost::simd::Halfeps<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Threeeps<vd_t>())[i], boost::simd::Threeeps<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Sqrteps<vd_t>())[i], boost::simd::Sqrteps<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Fourthrooteps<vd_t>())[i], boost::simd::Fourthrooteps<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Thirdrooteps<vd_t>())[i], boost::simd::Thirdrooteps<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Mlogeps2<vd_t>())[i], boost::simd::Mlogeps2<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Mindenormal<vd_t>())[i], boost::simd::Mindenormal<T>() );
-    NT2_TEST_EQUAL( (boost::simd::Smallestposval<vd_t>())[i], boost::simd::Smallestposval<T>() );
-  }
-}
+#include <boost/simd/sdk/memory/buffer.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
+#include <boost/simd/sdk/memory/is_aligned.hpp>
+#include <boost/simd/sdk/memory/aligned_type.hpp>
+#include <boost/simd/include/functions/load.hpp>
 
+
+NT2_TEST_CASE_TPL ( eps_real__1_0,  BOOST_SIMD_SIMD_REAL_TYPES)
+{
+  using boost::simd::eps;
+  using boost::simd::tag::eps_;
+  using boost::simd::load; 
+  using boost::simd::native;
+  using boost::simd::meta::cardinal_of;
+  typedef BOOST_SIMD_DEFAULT_EXTENSION  ext_t;
+  typedef typename boost::dispatch::meta::upgrade<T>::type   u_t;
+  typedef native<T,ext_t>                        n_t;
+  typedef n_t                                     vT;
+  typedef typename boost::dispatch::meta::as_integer<T>::type iT;
+  typedef native<iT,ext_t>                       ivT;
+  typedef typename boost::dispatch::meta::call<eps_(vT)>::type r_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type sr_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type ssr_t;
+  double ulpd;
+  ulpd=0.0;
+
+
+  // specific values tests
+  NT2_TEST_EQUAL(eps(boost::simd::Inf<vT>())[0], boost::simd::Nan<sr_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Minf<vT>())[0], boost::simd::Nan<sr_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Mone<vT>())[0], boost::simd::Eps<sr_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Nan<vT>())[0], boost::simd::Nan<sr_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::One<vT>())[0], boost::simd::Eps<sr_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Zero<vT>())[0], boost::simd::Mindenormal<sr_t>());
+} // end of test for floating_

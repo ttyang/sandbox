@@ -12,12 +12,10 @@
 #include <boost/dispatch/meta/as_integer.hpp>
 #include <boost/simd/include/constants/digits.hpp>
 #include <boost/simd/include/functions/is_invalid.hpp>
-
 #include <boost/simd/include/functions/shri.hpp>
 #include <boost/simd/include/functions/exponentbits.hpp>
 #include <boost/simd/include/functions/is_nez.hpp>
 #include <boost/simd/include/functions/is_eqz.hpp>
-
 #include <boost/simd/toolbox/ieee/details/math.hpp>
 
 #ifdef BOOST_SIMD_TOOLBOX_IEEE_HAS_ILOGB
@@ -31,9 +29,7 @@ namespace boost { namespace simd { namespace ext
                             , (scalar_< double_<A0> >)
                             )
   {
-
     typedef typename dispatch::meta::as_integer<A0, signed>::type result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       if (is_invalid(a0)) return Zero<A0>(); 
@@ -52,12 +48,10 @@ namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::exponent_, tag::cpu_
                             , (A0)
-                            , (scalar_< float_<A0> >)
+                            , (scalar_< single_<A0> >)
                             )
   {
-
     typedef typename dispatch::meta::as_integer<A0, signed>::type result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       if (is_invalid(a0) || is_eqz(a0)) return Zero<A0>(); 
@@ -69,13 +63,13 @@ namespace boost { namespace simd { namespace ext
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is real_
+// Implementation when type A0 is floating_
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::exponent_, tag::cpu_
                             , (A0)
-                            , (scalar_< real_<A0> >)
+                            , (scalar_< floating_<A0> >)
                             )
   {
 

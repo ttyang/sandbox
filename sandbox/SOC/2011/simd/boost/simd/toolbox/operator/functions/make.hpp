@@ -9,7 +9,7 @@
 #ifndef BOOST_SIMD_TOOLBOX_OPERATOR_FUNCTIONS_SIMD_MAKE_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_OPERATOR_FUNCTIONS_SIMD_MAKE_HPP_INCLUDED
 #include <boost/simd/include/simd.hpp>
-#include <boost/simd/toolbox/operator/include.hpp>
+
 #include <boost/dispatch/meta/as.hpp>
 
 namespace boost { namespace simd
@@ -66,7 +66,7 @@ namespace boost { namespace dispatch
 namespace boost { namespace simd
 {
   #define M0(z,n,t)                                                                        \
-  template<class T, BOOST_PP_ENUM_PARAMS(n, class A)> inline                               \
+  template<class T, BOOST_PP_ENUM_PARAMS(n, class A)> BOOST_DISPATCH_FORCE_INLINE          \
   T make(BOOST_PP_ENUM_BINARY_PARAMS(n, A, const& a))                                      \
   {                                                                                        \
     typename boost::dispatch::make_functor<tag::make_, T>::type callee;                    \

@@ -3,6 +3,8 @@
 
 #include <boost/simd/toolbox/operator/functions/minus.hpp>
 #include <boost/simd/toolbox/operator/functions/scalar/minus.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/common/minus.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/sse/avx/minus.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/sse/sse2/minus.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/vmx/altivec/minus.hpp>
 

@@ -4,7 +4,6 @@
 #include <boost/simd/toolbox/arithmetic/functions/tofloat.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/scalar/tofloat.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/simd/common/tofloat.hpp>
-#include <boost/simd/toolbox/arithmetic/functions/simd/pack/tofloat.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/simd/sse/avx/tofloat.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/simd/sse/sse2/tofloat.hpp>
 

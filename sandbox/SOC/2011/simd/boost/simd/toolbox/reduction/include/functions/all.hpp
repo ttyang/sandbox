@@ -4,6 +4,5 @@
 #include <boost/simd/toolbox/reduction/functions/all.hpp>
 #include <boost/simd/toolbox/reduction/functions/scalar/all.hpp>
 #include <boost/simd/toolbox/reduction/functions/simd/common/all.hpp>
-#include <boost/simd/toolbox/reduction/functions/simd/sse/sse2/all.hpp>
 
 #endif

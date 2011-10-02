@@ -4,5 +4,6 @@
 #include <boost/simd/toolbox/arithmetic/functions/round.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/scalar/round.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/simd/common/round.hpp>
+#include <boost/simd/toolbox/arithmetic/functions/simd/sse/avx/round.hpp>
 
 #endif

@@ -9,27 +9,25 @@
 #ifndef BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SIMD_COMMON_TOFLOAT_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SIMD_COMMON_TOFLOAT_HPP_INCLUDED
 
-#include <boost/dispatch/meta/as_real.hpp>
+#include <boost/simd/toolbox/arithmetic/functions/tofloat.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is real_
+// Implementation when type A0 is floating_
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::tofloat_, tag::cpu_
                             , (A0)(X)
-                            , ((simd_<real_<A0>,X>))
+                            , ((simd_<floating_<A0>,X>))
                             )
   {
 
-    typedef typename dispatch::meta::as_real<A0>::type result_type;
-
+    typedef A0 result_type;
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       return a0;
     }
   };
 } } }
-
 
 #endif

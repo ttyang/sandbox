@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct floating</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../../reference.html#header.boost.dispatch.meta.floating_hpp" title="Header &lt;boost/dispatch/meta/floating.hpp&gt;">
+<link rel="prev" href="factory_of.html" title="Struct template factory_of">
+<link rel="next" href="floating/result_This_A0__id352643.html" title="Struct template result&lt;This(A0)&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="factory_of.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.floating_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="floating/result_This_A0__id352643.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.meta.floating"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct floating</span></h2>
+<p>boost::dispatch::meta::floating</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../reference.html#header.boost.dispatch.meta.floating_hpp" title="Header &lt;boost/dispatch/meta/floating.hpp&gt;">boost/dispatch/meta/floating.hpp</a>&gt;
+
+</span>
+<span class="keyword">struct</span> <a class="link" href="floating.html" title="Struct floating">floating</a> <span class="special">{</span>
+  <span class="comment">// member classes/structs/unions</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="keyword">typename</span> A0<span class="special">&gt;</span> 
+  <span class="keyword">struct</span> <a class="link" href="floating/result_This_A0__id352643.html" title="Struct template result&lt;This(A0)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">A0</span><span class="special">)</span><span class="special">&gt;</span> <span class="special">{</span>
+    <span class="comment">// types</span>
+    <span class="keyword">typedef</span> <span class="keyword">float</span>                              <a class="link" href="floating/result_This_A0__id352643.html#boost.dispatch.meta.floating.result_This(A0)_id352643.base_real"><span class="identifier">base_real</span></a><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">make_floating</span><span class="special">&lt;</span> <span class="identifier">value</span> <span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <a class="link" href="floating/result_This_A0__id352643.html#boost.dispatch.meta.floating.result_This(A0)_id352643.type"><span class="identifier">type</span></a><span class="special">;</span>     
+
+    <span class="comment">// <a class="link" href="floating/result_This_A0__id352643.html#id352673-bb">public member functions</a></span>
+     <a class="link" href="floating/result_This_A0__id352643.html#id352677-bb"><span class="identifier">BOOST_STATIC_CONSTANT</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> 
+                           <span class="identifier">value</span> <span class="special">=</span> <span class="special">(</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">A0</span><span class="special">)</span> <span class="special">&gt;</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">base_real</span><span class="special">)</span><span class="special">)</span><span class="special">?</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">A0</span><span class="special">)</span><span class="special">:</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">base_real</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id887141"></a><h2>Description</h2>
+<p>For a list of types <code class="computeroutput">T0</code>,...,Tn, floating computes the type able to store a value of the smallest floating-point value type compatible with all <code class="computeroutput">T0</code>,...,Tn</p>
+<p>For types <code class="computeroutput">T0</code>,...,Tn,</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">result_of</span><span class="special">&lt;</span><span class="identifier">floating</span><span class="special">(</span><span class="identifier">T0</span><span class="special">,</span><span class="special">...</span><span class="special">,</span><span class="identifier">Tn</span><span class="special">)</span><span class="special">&gt;</span>::type type
+</pre>
+<p>is equivalent to:</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="special">:</span><span class="identifier">make_floating</span><span class="special">&lt;</span> <span class="identifier">max</span><span class="special">&lt;</span><span class="keyword">sizeof</span><span class="special">(</span><span class="keyword">float</span><span class="special">)</span><span class="special">,</span><span class="special">...</span><span class="special">,</span><span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">Tn</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&gt;</span>::type type<span class="special">;</span>
+</pre>
+<p>:</p>
+<pre class="programlisting"></pre>
+<p> </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="factory_of.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.floating_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="floating/result_This_A0__id352643.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

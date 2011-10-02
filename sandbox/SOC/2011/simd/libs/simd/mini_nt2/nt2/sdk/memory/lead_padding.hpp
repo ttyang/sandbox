@@ -25,8 +25,10 @@ namespace nt2 { namespace memory
   //////////////////////////////////////////////////////////////////////////////
   struct lead_padding
   {
-    typedef ext::padding_<lead_padding>                  dispatch_hierarchy_tag;
-    //typedef boost::mpl::pair<tag::padding_,lead_padding>  nt2_settings_type;
+    lead_padding( std::size_t v = BOOST_SIMD_CONFIG_ALIGNMENT ) : value_(v) {}
+    
+    std::size_t value() const { return value_; }    
+    std::size_t value_;
   };
 } }
 

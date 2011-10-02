@@ -8,7 +8,6 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SIMD_COMMON_IS_GEZ_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SIMD_COMMON_IS_GEZ_HPP_INCLUDED
-
 #include <boost/simd/toolbox/predicates/functions/is_gez.hpp>
 #include <boost/simd/include/functions/is_greater_equal.hpp>
 #include <boost/simd/include/constants/zero.hpp>
@@ -45,12 +44,10 @@ namespace boost { namespace simd { namespace ext
                             , ((simd_<unsigned_<A0>,X>))
                             )
   {
-
     typedef A0 result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(1)
+    inline result_type operator()(const A0&)const
     {
-        return boost::simd::True<A0>();
+      return boost::simd::True<A0>();
     }
   };
 } } }

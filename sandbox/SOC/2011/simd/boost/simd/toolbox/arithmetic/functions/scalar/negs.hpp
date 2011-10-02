@@ -21,9 +21,7 @@ namespace boost { namespace simd { namespace ext
                             , (scalar_< signed_<A0> >)
                             )
   {
-
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       return (a0 == boost::simd::Valmin<A0>()) ? boost::simd::Valmax<A0>() : -a0; 
@@ -32,7 +30,7 @@ namespace boost { namespace simd { namespace ext
 
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::negs_, tag::cpu_
                             , (A0)
-                            , (scalar_< real_<A0> >)
+                            , (scalar_< floating_<A0> >)
                             )
   {
     typedef A0 result_type;

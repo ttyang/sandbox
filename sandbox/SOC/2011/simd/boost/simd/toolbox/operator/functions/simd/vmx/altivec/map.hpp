@@ -12,7 +12,7 @@
 
 #include <boost/simd/sdk/simd/category.hpp>
 #include <boost/simd/toolbox/operator/specific/details/maybe_genmask.hpp>
-#include <boost/dispatch/extension/parameters.hpp>
+#include <boost/dispatch/details/parameters.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
@@ -31,16 +31,15 @@
 #define M2(z,n,t) ((simd_< BOOST_PP_TUPLE_ELEM(2,0,t) <BOOST_PP_CAT(A, BOOST_PP_INC(n))>, boost::simd::tag::altivec_>))
 
 #define M0(z,n,t)                                                             \
-namespace boost { namespace simd                             \
+namespace boost { namespace simd { namespace ext                              \
 {                                                                             \
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::map_,boost::simd::tag::altivec_                      \
                             , BOOST_PP_REPEAT(BOOST_PP_INC(n), M5,t)          \
                             , (unspecified_<A0>)BOOST_PP_REPEAT(n,M2,t)       \
                             )                                                 \
   {                                                                           \
-    typedef typename meta::                                                   \
-    result_of< typename meta::                                                \
-               strip<A0>::type const( BOOST_PP_ENUM(n,M6,~) )                 \
+    typedef typename dispatch::meta::                                         \
+    result_of< A0 const( BOOST_PP_ENUM(n,M6,~) )                              \
              >::type                                                          \
     rtype;                                                                    \
     typedef typename details::                                                \
@@ -49,9 +48,9 @@ namespace boost { namespace simd                             \
              , typename meta::scalar_of<A1>::type                             \
              >::type                                                          \
     stype;                                                                    \
-    typedef simd::native<stype, boost::simd::tag::altivec_> result_type;                   \
+    typedef simd::native<stype, boost::simd::tag::altivec_> result_type;      \
                                                                               \
-    BOOST_SIMD_FUNCTOR_CALL(BOOST_PP_INC(n))                              \
+    BOOST_SIMD_FUNCTOR_CALL(BOOST_PP_INC(n))                                  \
     {                                                                         \
       result_type that = {{BOOST_PP_ENUM(BOOST_PP_TUPLE_ELEM(2,1,t),M3,n)}};  \
       return that;                                                            \
@@ -64,7 +63,7 @@ namespace boost { namespace simd                             \
 BOOST_PP_REPEAT_FROM_TO(1,BOOST_DISPATCH_MAX_ARITY,M0, (T,C) ) \
 /**/
 
-BOOST_SIMD_MAP_CALL(float_  ,  4 )
+BOOST_SIMD_MAP_CALL(single_  ,  4 )
 BOOST_SIMD_MAP_CALL(ints32_ ,  4 )
 BOOST_SIMD_MAP_CALL(ints16_ ,  8 )
 BOOST_SIMD_MAP_CALL(ints8_  , 16 )

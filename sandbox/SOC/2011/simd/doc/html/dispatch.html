@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>Chapter&#160;1.&#160;Dispatch 1.0</title>
+<title>Chapter&#160;1.&#160;Dispatch</title>
 <link rel="stylesheet" href="boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
@@ -18,7 +18,7 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="dispatch"></a>Chapter&#160;1.&#160;Dispatch 1.0</h2></div>
+<a name="dispatch"></a>Chapter&#160;1.&#160;Dispatch</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Joel</span> <span class="surname">Falcou</span>
 </h3></div></div>
@@ -42,13 +42,104 @@
 <dt><span class="section"><a href="dispatch.html#dispatch.preface">Preface</a></span></dt>
 <dt><span class="section"><a href="dispatch/motivation.html">Motivation</a></span></dt>
 <dt><span class="section"><a href="dispatch/defining_hierarchies.html">Defining hierarchies</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="dispatch/defining_hierarchies.html#dispatch.defining_hierarchies.hierarchy_concept">Hierarchy
+      Concept</a></span></dt>
+<dt><span class="section"><a href="dispatch/defining_hierarchies.html#dispatch.defining_hierarchies.example__simplified_arithmetic_hierarchy">Example:
+      simplified arithmetic hierarchy</a></span></dt>
+<dt><span class="section"><a href="dispatch/defining_hierarchies.html#dispatch.defining_hierarchies.example__the__target___composite_hierarchy">Example:
+      the <code class="computeroutput"><span class="identifier">target_</span></code> composite hierarchy</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="dispatch/associating_types_to_hierarchies.html">Associating
     types to hierarchies</a></span></dt>
-<dt><span class="section"><a href="dispatch/scalar_hierarchy_and_properties.html">Scalar hierarchy
-    and properties</a></span></dt>
+<dt><span class="section"><a href="dispatch/built_in_hierarchies.html">Built-in hierarchies</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="dispatch/built_in_hierarchies.html#dispatch.built_in_hierarchies.scalar_hierarchy">Scalar
+      hierarchy</a></span></dt>
+<dt><span class="section"><a href="dispatch/built_in_hierarchies.html#dispatch.built_in_hierarchies.target_hierarchy">Target
+      hierarchy</a></span></dt>
+<dt><span class="section"><a href="dispatch/built_in_hierarchies.html#dispatch.built_in_hierarchies.array_hierarchy">Array
+      hierarchy</a></span></dt>
+<dt><span class="section"><a href="dispatch/built_in_hierarchies.html#dispatch.built_in_hierarchies.fusion_hierarchy">Fusion
+      hierarchy</a></span></dt>
+<dt><span class="section"><a href="dispatch/built_in_hierarchies.html#dispatch.built_in_hierarchies.ast_hierarchy">AST hierarchy</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="dispatch/generic_scalar_adaptors.html">Generic scalar adaptors</a></span></dt>
 <dt><span class="section"><a href="dispatch/defining_functions.html">Defining functions</a></span></dt>
 <dt><span class="section"><a href="dispatch/defining_specializations.html">Defining specializations</a></span></dt>
-<dt><span class="section"><a href="dispatch/reference.html">Reference</a></span></dt>
+<dt><span class="section"><a href="reference.html">Reference</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.attributes_hpp">Header &lt;boost/dispatch/attributes.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.allocator_hpp">Header &lt;boost/dispatch/concept/allocator.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.categorizable_hpp">Header &lt;boost/dispatch/concept/categorizable.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.category_hpp">Header &lt;boost/dispatch/concept/category.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.category_hpp">Header &lt;boost/dispatch/dsl/category.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.documentation_hpp">Header &lt;boost/dispatch/meta/documentation.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_associative_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_associative_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_bidirectionnal_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_bidirectionnal_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_forward_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_forward_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.fusion_random_access_sequence_hpp">Header &lt;boost/dispatch/concept/fusion_random_access_sequence.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.has_primitive_hpp">Header &lt;boost/dispatch/concept/has_primitive.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.hierarchized_hpp">Header &lt;boost/dispatch/concept/hierarchized.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.concept.same_type_hpp">Header &lt;boost/dispatch/concept/same_type.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.call_hpp">Header &lt;boost/dispatch/dsl/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.preprocessed.call_hpp">Header &lt;boost/dispatch/dsl/preprocessed/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.call_hpp">Header &lt;boost/dispatch/functor/meta/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.preprocessed.call_hpp">Header &lt;boost/dispatch/functor/meta/preprocessed/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessor.call_hpp">Header &lt;boost/dispatch/functor/preprocessor/call.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.compile_hpp">Header &lt;boost/dispatch/dsl/compile.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.compute_hpp">Header &lt;boost/dispatch/dsl/compute.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.proto.extends_hpp">Header &lt;boost/dispatch/dsl/proto/extends.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.proto.unpack_hpp">Header &lt;boost/dispatch/dsl/proto/unpack.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.dsl.semantic_of_hpp">Header &lt;boost/dispatch/dsl/semantic_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.forward_hpp">Header &lt;boost/dispatch/functor/forward.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.functor_hpp">Header &lt;boost/dispatch/functor/functor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessed.functor_hpp">Header &lt;boost/dispatch/functor/preprocessed/functor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.hierarchy_hpp">Header &lt;boost/dispatch/functor/meta/hierarchy.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.meta.make_functor_hpp">Header &lt;boost/dispatch/functor/meta/make_functor.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessed.functor0x_hpp">Header &lt;boost/dispatch/functor/preprocessed/functor0x.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessor.dispatch_hpp">Header &lt;boost/dispatch/functor/preprocessor/dispatch.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.functor.preprocessor.function_hpp">Header &lt;boost/dispatch/functor/preprocessor/function.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.adapted_traits_hpp">Header &lt;boost/dispatch/meta/adapted_traits.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.all_hpp">Header &lt;boost/dispatch/meta/all.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.any_hpp">Header &lt;boost/dispatch/meta/any.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.arithmetic_hpp">Header &lt;boost/dispatch/meta/arithmetic.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_hpp">Header &lt;boost/dispatch/meta/as.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_floating_hpp">Header &lt;boost/dispatch/meta/as_floating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_integer_hpp">Header &lt;boost/dispatch/meta/as_integer.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_ref_hpp">Header &lt;boost/dispatch/meta/as_ref.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_signed_hpp">Header &lt;boost/dispatch/meta/as_signed.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.as_unsigned_hpp">Header &lt;boost/dispatch/meta/as_unsigned.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.behave_as_hpp">Header &lt;boost/dispatch/meta/behave_as.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.downgrade_hpp">Header &lt;boost/dispatch/meta/downgrade.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.enable_if_type_hpp">Header &lt;boost/dispatch/meta/enable_if_type.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.factory_of_hpp">Header &lt;boost/dispatch/meta/factory_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.floating_hpp">Header &lt;boost/dispatch/meta/floating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.fusion_hpp">Header &lt;boost/dispatch/meta/fusion.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.hierarchy_of_hpp">Header &lt;boost/dispatch/meta/hierarchy_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_fundamental_hpp">Header &lt;boost/dispatch/meta/is_fundamental.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_iterator_hpp">Header &lt;boost/dispatch/meta/is_iterator.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_result_of_supported_hpp">Header &lt;boost/dispatch/meta/is_result_of_supported.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_scalar_hpp">Header &lt;boost/dispatch/meta/is_scalar.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_signed_hpp">Header &lt;boost/dispatch/meta/is_signed.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.is_unspecified_hpp">Header &lt;boost/dispatch/meta/is_unspecified.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.lambda_terminal_hpp">Header &lt;boost/dispatch/meta/lambda_terminal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.make_floating_hpp">Header &lt;boost/dispatch/meta/make_floating.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.make_integer_hpp">Header &lt;boost/dispatch/meta/make_integer.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.mpl_hpp">Header &lt;boost/dispatch/meta/mpl.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.na_hpp">Header &lt;boost/dispatch/meta/na.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.preprocessed.result_of_hpp">Header &lt;boost/dispatch/meta/preprocessed/result_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.result_of_hpp">Header &lt;boost/dispatch/meta/result_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.primitive_of_hpp">Header &lt;boost/dispatch/meta/primitive_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.print_hpp">Header &lt;boost/dispatch/meta/print.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.property_of_hpp">Header &lt;boost/dispatch/meta/property_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.scalar_of_hpp">Header &lt;boost/dispatch/meta/scalar_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.sign_of_hpp">Header &lt;boost/dispatch/meta/sign_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.strip_hpp">Header &lt;boost/dispatch/meta/strip.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.preprocessor.strip_hpp">Header &lt;boost/dispatch/preprocessor/strip.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.meta.upgrade_hpp">Header &lt;boost/dispatch/meta/upgrade.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reference.html#header.boost.dispatch.preprocessor.remove_typename_hpp">Header &lt;boost/dispatch/preprocessor/remove_typename.hpp&gt;</a></span></dt>
+</dl></dd>
 </dl>
 </div>
 <div class="section">
@@ -73,9 +164,10 @@
         Boost.Dispatch is a library in development and is not part of Boost.
       </p></td></tr>
 </table></div>
-<a name="dispatch.preface.how_to_use_this_manual"></a><h4>
+<h4>
 <a name="dispatch.preface.h0"></a>
-      <a class="link" href="dispatch.html#dispatch.preface.how_to_use_this_manual">How to use this manual</a>
+      <span><a name="dispatch.preface.how_to_use_this_manual"></a></span><a class="link" href="dispatch.html#dispatch.preface.how_to_use_this_manual">How
+      to use this manual</a>
     </h4>
 <p>
       Some icons are used to mark certain topics indicative of their relevance. These
@@ -166,7 +258,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: August 25, 2011 at 22:08:14 GMT</small></p></td>
+<td align="left"><p><small>Last revised: October 01, 2011 at 18:14:35 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

@@ -10,10 +10,7 @@
 #define BOOST_SIMD_TOOLBOX_OPERATOR_FUNCTIONS_SIMD_SSE_SSE2_SPLAT_HPP_INCLUDED
 #ifdef BOOST_SIMD_HAS_SSE2_SUPPORT
 
-#include <boost/dispatch/meta/as.hpp>
-#include <boost/simd/sdk/simd/category.hpp>
-#include <boost/dispatch/details/ignore_unused.hpp>
-#include <boost/dispatch/functor/preprocessor/call.hpp>
+#include <boost/simd/toolbox/operator/functions/splat.hpp>
 #include <boost/simd/include/functions/make.hpp>
 
 //==============================================================================
@@ -27,11 +24,9 @@ namespace boost { namespace simd { namespace ext
                       )
   {
     typedef typename A1::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A0 const& a0, A1 const&) const
     {
-      ignore_unused(a1);
-      result_type that = { _mm_set1_pd(double(a0))  };
+      result_type that = { _mm_set1_pd(double(a0)) };
       return that;
     }
   };
@@ -44,15 +39,13 @@ namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::splat_, boost::simd::tag::sse2_, (A0)(A1)
                             , (scalar_< fundamental_<A0> >)
-                              ((target_< simd_< float_<A1>, boost::simd::tag::sse_ > >))
+                              ((target_< simd_< single_<A1>, boost::simd::tag::sse_ > >))
                       )
   {
     typedef typename A1::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A0 const& a0, A1 const&) const
     {
-      ignore_unused(a1);
-      result_type that = { _mm_set1_ps(float(a0))  };
+      result_type that = { _mm_set1_ps(float(a0)) };
       return that;
     }
   };
@@ -69,11 +62,9 @@ namespace boost { namespace simd { namespace ext
                       )
   {
     typedef typename A1::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A0 const& a0, A1 const&) const
     {
-      ignore_unused(a1);
-      result_type that = { _mm_set1_epi8(a0)  };
+      result_type that = { _mm_set1_epi8(a0) };
       return that;
     }
   };
@@ -90,11 +81,9 @@ namespace boost { namespace simd { namespace ext
                       )
   {
     typedef typename A1::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A0 const& a0, A1 const&) const
     {
-      ignore_unused(a1);
-      result_type that = { _mm_set1_epi16(a0)  };
+      result_type that = { _mm_set1_epi16(a0) };
       return that;
     }
   };
@@ -111,11 +100,9 @@ namespace boost { namespace simd { namespace ext
                       )
   {
     typedef typename A1::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A0 const& a0, A1 const&) const
     {
-      ignore_unused(a1);
-      result_type that = { _mm_set1_epi32(a0)  };
+      result_type that = { _mm_set1_epi32(a0) };
       return that;
     }
   };
@@ -132,11 +119,14 @@ namespace boost { namespace simd { namespace ext
                       )
   {
     typedef typename A1::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_DISPATCH_FORCE_INLINE result_type operator()(A0 const& a0, A1 const&) const
     {
-      ignore_unused(a1);
-      return boost::simd::make<typename A1::type>(a0, a0);
+#ifdef BOOST_SIMD_ARCH_X86_64
+      result_type that = { _mm_set1_epi64x(a0) };
+#else
+      result_type that = make<result_type>(a0, a0);
+#endif
+      return that;
     }
   };
 } } }

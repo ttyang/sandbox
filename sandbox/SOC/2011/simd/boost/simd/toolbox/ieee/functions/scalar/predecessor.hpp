@@ -9,13 +9,11 @@
 #ifndef BOOST_SIMD_TOOLBOX_IEEE_FUNCTIONS_SCALAR_PREDECESSOR_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_IEEE_FUNCTIONS_SCALAR_PREDECESSOR_HPP_INCLUDED
 #include <boost/simd/include/constants/infinites.hpp>
-
 #include <boost/simd/include/functions/bitfloating.hpp>
 #include <boost/simd/include/functions/bitinteger.hpp>
 #include <boost/simd/include/functions/minusone.hpp>
-#include <boost/simd/include/functions/is_nan.hpp>
 #include <boost/simd/include/functions/abs.hpp>
-
+#include <boost/simd/include/functions/is_nan.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is arithmetic_
@@ -27,9 +25,7 @@ namespace boost { namespace simd { namespace ext
                             , (scalar_< arithmetic_<A0> >)(scalar_< integer_<A1> >)
                             )
   {
-
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(2)
     {
       if (Valmin<A0>()+boost::simd::abs(a1) > a0) return Valmin<A0>(); 
@@ -46,9 +42,7 @@ namespace boost { namespace simd { namespace ext
                             , (scalar_< arithmetic_<A0> >)
                             )
   {
-
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       if (a0 != Valmin<A0>())
@@ -62,22 +56,23 @@ namespace boost { namespace simd { namespace ext
 
 ////
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is real_
+// Implementation when type A0 is floating_
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::predecessor_, tag::cpu_
-                            , (A0)(A1)
-                            , (scalar_< real_<A0> >)(scalar_< integer_<A1> >)
+				     , (A0)(A1)
+                            , (scalar_< floating_<A0> >)(scalar_< integer_<A1> >)
                             )
   {
 
     typedef A0 result_type;
 
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_SIMD_FUNCTOR_CALL_REPEAT(2)
     {
-      if (is_nan(a0)) return a0; 
-      return a0==Minf<A0>() ? a0 : bitfloating(bitinteger(a0)-boost::simd::abs(a1));
+      typedef typename dispatch::meta::as_integer<A0, signed>::type itype; 
+      if (is_nan(a0)) return a0;
+      return a0==Minf<A0>() ? a0 : bitfloating(bitinteger(a0)-itype(boost::simd::abs(a1)));
     }
   };
 } } }
@@ -87,7 +82,7 @@ namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::predecessor_, tag::cpu_
                             , (A0)
-                            , (scalar_< real_<A0> >)
+                            , (scalar_< floating_<A0> >)
                             )
   {
 

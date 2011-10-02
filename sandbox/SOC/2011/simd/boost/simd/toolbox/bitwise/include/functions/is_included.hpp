@@ -4,6 +4,7 @@
 #include <boost/simd/toolbox/bitwise/functions/is_included.hpp>
 #include <boost/simd/toolbox/bitwise/functions/scalar/is_included.hpp>
 #include <boost/simd/toolbox/bitwise/functions/simd/common/is_included.hpp>
+#include <boost/simd/toolbox/bitwise/functions/simd/sse/avx/is_included.hpp>
 #include <boost/simd/toolbox/bitwise/functions/simd/sse/sse4_1/is_included.hpp>
 
 #endif

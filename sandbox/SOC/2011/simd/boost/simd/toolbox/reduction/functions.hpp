@@ -9,6 +9,7 @@
 #include <boost/simd/toolbox/reduction/include/functions/dot.hpp>
 #include <boost/simd/toolbox/reduction/include/functions/first.hpp>
 #include <boost/simd/toolbox/reduction/include/functions/hmsb.hpp>
+#include <boost/simd/toolbox/reduction/include/functions/is_simd_logical.hpp>
 #include <boost/simd/toolbox/reduction/include/functions/maximum.hpp>
 #include <boost/simd/toolbox/reduction/include/functions/minimum.hpp>
 #include <boost/simd/toolbox/reduction/include/functions/nbtrue.hpp>

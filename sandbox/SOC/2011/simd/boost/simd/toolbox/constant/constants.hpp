@@ -1,6 +1,7 @@
 #ifndef BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_HPP_INCLUDED
 
+#include <boost/simd/toolbox/constant/include/constants/allbits.hpp>
 #include <boost/simd/toolbox/constant/include/constants/cgold.hpp>
 #include <boost/simd/toolbox/constant/include/constants/digits.hpp>
 #include <boost/simd/toolbox/constant/include/constants/eight.hpp>

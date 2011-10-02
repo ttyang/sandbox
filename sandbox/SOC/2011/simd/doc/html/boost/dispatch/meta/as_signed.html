@@ -1,0 +1,85 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template as_signed</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../../reference.html#header.boost.dispatch.meta.as_signed_hpp" title="Header &lt;boost/dispatch/meta/as_signed.hpp&gt;">
+<link rel="prev" href="as_ref_T_const_id351735.html" title="Struct template as_ref&lt;T const&gt;">
+<link rel="next" href="as_unsigned.html" title="Struct template as_unsigned">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="as_ref_T_const_id351735.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.as_signed_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="as_unsigned.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.meta.as_signed"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template as_signed</span></h2>
+<p>boost::dispatch::meta::as_signed</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../reference.html#header.boost.dispatch.meta.as_signed_hpp" title="Header &lt;boost/dispatch/meta/as_signed.hpp&gt;">boost/dispatch/meta/as_signed.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="comment">  // Type to modify</span>
+         <span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="as_signed.html" title="Struct template as_signed">as_signed</a> <span class="special">{</span>
+
+  <span class="comment">// <a class="link" href="as_signed.html#id351887-bb">public member functions</a></span>
+   <a class="link" href="as_signed.html#id351890-bb"><span class="identifier">BOOST_MPL_ASSERT_MSG</span></a><span class="special">(</span><span class="special">(</span><a class="link" href="is_fundamental.html" title="Struct template is_fundamental">is_fundamental</a><span class="special">&lt;</span> <span class="identifier">typenamemeta</span><span class="special">::</span><span class="identifier">primitive_of</span><span class="special">&lt;</span> <span class="keyword">typename</span> <a class="link" href="strip.html" title="Struct template strip">meta::strip</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
+                        <span class="identifier">BOOST_DISPATCH_NON_FUNDAMENTAL_PRIMITIVE_USED_IN_META_AS_SIGNED</span><span class="special">,</span> 
+                        <span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id883142"></a><h2>Description</h2>
+<p>Returns the input type rebound the signed equivalent type to its primitive type.</p>
+<p>
+</p>
+<p><b>Models:&#160;</b></p>
+<p>
+</p>
+<p>For any type <code class="computeroutput">T</code>,</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">as_signed</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> type<span class="special">;</span>
+</pre>
+<p>is equivalent to</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">T</span>  type<span class="special">;</span>
+</pre>
+<p>if <code class="computeroutput">primitive&lt;T&gt;::type</code> is <code class="computeroutput">signed</code> and to</p>
+<pre class="programlisting">  <span class="keyword">typedef</span> <span class="identifier">apply</span><span class="special">&lt;</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">factory_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span>
+               <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_signed</span><span class="special">&lt;</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">primitive_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="special">&gt;</span>::type
+               <span class="special">&gt;</span>::type                                              type<span class="special">;</span>
+</pre>
+<p>if <code class="computeroutput">primitive&lt;T&gt;::type</code> is unsigned. Note than for this , real types like <code class="computeroutput">double</code> or <code class="computeroutput">float</code> are considered signed.</p>
+<p><b>Example usage:&#160;</b></p>
+<p>
+</p>
+<pre class="programlisting"></pre>
+<p> </p>
+<div class="refsect2">
+<a name="id883419"></a><h3>
+<a name="id351887-bb"></a><code class="computeroutput">as_signed</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"> <a name="id351890-bb"></a><span class="identifier">BOOST_MPL_ASSERT_MSG</span><span class="special">(</span><span class="special">(</span><a class="link" href="is_fundamental.html" title="Struct template is_fundamental">is_fundamental</a><span class="special">&lt;</span> <span class="identifier">typenamemeta</span><span class="special">::</span><span class="identifier">primitive_of</span><span class="special">&lt;</span> <span class="keyword">typename</span> <a class="link" href="strip.html" title="Struct template strip">meta::strip</a><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span>type <span class="special">&gt;</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span><span class="special">,</span> 
+                      <span class="identifier">BOOST_DISPATCH_NON_FUNDAMENTAL_PRIMITIVE_USED_IN_META_AS_SIGNED</span><span class="special">,</span> 
+                      <span class="special">(</span><span class="identifier">T</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="as_ref_T_const_id351735.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.as_signed_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="as_unsigned.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

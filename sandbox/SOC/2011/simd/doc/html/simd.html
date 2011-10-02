@@ -6,14 +6,14 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="libraries.html" title="Part&#160;I.&#160;The Boost C++ Libraries (BoostBook Subset)">
-<link rel="prev" href="dispatch/reference.html" title="Reference">
+<link rel="prev" href="BOOST_DISPATCH_PP_REMOVE_TYPENAME.html" title="Macro BOOST_DISPATCH_PP_REMOVE_TYPENAME">
 <link rel="next" href="simd/getting_started.html" title="Getting Started">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="dispatch/reference.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="simd/getting_started.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="BOOST_DISPATCH_PP_REMOVE_TYPENAME.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="simd/getting_started.html"><img src="images/next.png" alt="Next"></a>
 </div>
 <div class="chapter">
 <div class="titlepage"><div>
@@ -67,34 +67,28 @@
 <dt><span class="section"><a href="sdk_reference.html">SDK reference</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.arch.none_hpp">Header &lt;boost/simd/sdk/config/arch/none.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.os.none_hpp">Header &lt;boost/simd/sdk/config/os/none.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.compiler.none_hpp">Header &lt;boost/simd/sdk/config/compiler/none.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.os.none_hpp">Header &lt;boost/simd/sdk/config/os/none.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.none_hpp">Header &lt;boost/simd/sdk/simd/extensions/none.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.is_supported_hpp">Header &lt;boost/simd/sdk/config/is_supported.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.software_hpp">Header &lt;boost/simd/sdk/config/software.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.type_lists_hpp">Header &lt;boost/simd/sdk/config/type_lists.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.types_hpp">Header &lt;boost/simd/sdk/config/types.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.sse.types_hpp">Header &lt;boost/simd/sdk/simd/extensions/sse/types.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.vmx.types_hpp">Header &lt;boost/simd/sdk/simd/extensions/vmx/types.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.versioning_hpp">Header &lt;boost/simd/sdk/config/versioning.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.constant.category_hpp">Header &lt;boost/simd/sdk/constant/category.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.category_hpp">Header &lt;boost/simd/sdk/simd/category.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.constant.common_hpp">Header &lt;boost/simd/sdk/constant/common.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.constant.constant_hpp">Header &lt;boost/simd/sdk/constant/constant.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.constant.register_hpp">Header &lt;boost/simd/sdk/constant/register.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.evaluation_hpp">Header &lt;boost/simd/sdk/dsl/evaluation.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.evaluation_hpp">Header &lt;boost/simd/sdk/simd/pack/evaluation.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.evaluate_hpp">Header &lt;boost/simd/sdk/dsl/evaluate.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.evaluate_hpp">Header &lt;boost/simd/sdk/simd/pack/evaluate.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.is_assignment_expression_hpp">Header &lt;boost/simd/sdk/dsl/is_assignment_expression.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.is_comparison_expression_hpp">Header &lt;boost/simd/sdk/dsl/is_comparison_expression.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.literal_hpp">Header &lt;boost/simd/sdk/dsl/literal.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.lambda_generator_hpp">Header &lt;boost/simd/sdk/dsl/lambda_generator.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.recognition_hpp">Header &lt;boost/simd/sdk/dsl/recognition.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.error.assert_hpp">Header &lt;boost/simd/sdk/error/assert.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.error.concepts_hpp">Header &lt;boost/simd/sdk/error/concepts.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.error.debug_hpp">Header &lt;boost/simd/sdk/error/debug.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.error.report_hpp">Header &lt;boost/simd/sdk/error/report.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.memory.report_hpp">Header &lt;boost/simd/sdk/memory/report.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.report_hpp">Header &lt;boost/simd/sdk/simd/report.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.arch.report_hpp">Header &lt;boost/simd/sdk/config/arch/report.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.os.report_hpp">Header &lt;boost/simd/sdk/config/os/report.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.compiler.report_hpp">Header &lt;boost/simd/sdk/config/compiler/report.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.error.warning_hpp">Header &lt;boost/simd/sdk/error/warning.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.dsl.typed_expression_hpp">Header &lt;boost/simd/sdk/dsl/typed_expression.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.functor.hierarchy_hpp">Header &lt;boost/simd/sdk/functor/hierarchy.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.functor.preprocessor.call_hpp">Header &lt;boost/simd/sdk/functor/preprocessor/call.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.call_hpp">Header &lt;boost/simd/sdk/simd/pack/call.hpp&gt;</a></span></dt>
@@ -119,9 +113,15 @@
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.memory.overload_hpp">Header &lt;boost/simd/sdk/memory/overload.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.memory.parameters_hpp">Header &lt;boost/simd/sdk/memory/parameters.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.memory.reallocate_hpp">Header &lt;boost/simd/sdk/memory/reallocate.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.memory.report_hpp">Header &lt;boost/simd/sdk/memory/report.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.report_hpp">Header &lt;boost/simd/sdk/simd/report.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.arch.report_hpp">Header &lt;boost/simd/sdk/config/arch/report.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.compiler.report_hpp">Header &lt;boost/simd/sdk/config/compiler/report.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.config.os.report_hpp">Header &lt;boost/simd/sdk/config/os/report.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.all_hpp">Header &lt;boost/simd/sdk/meta/all.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.any_hpp">Header &lt;boost/simd/sdk/meta/any.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.cardinal_of_hpp">Header &lt;boost/simd/sdk/meta/cardinal_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.cardinal_of_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/cardinal_of.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.double_hpp">Header &lt;boost/simd/sdk/meta/double.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.float_hpp">Header &lt;boost/simd/sdk/meta/float.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.int_c_hpp">Header &lt;boost/simd/sdk/meta/int_c.hpp&gt;</a></span></dt>
@@ -132,12 +132,11 @@
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.size_hpp">Header &lt;boost/simd/sdk/meta/size.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.meta.templatize_hpp">Header &lt;boost/simd/sdk/meta/templatize.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.begin_hpp">Header &lt;boost/simd/sdk/simd/begin.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.category_hpp">Header &lt;boost/simd/sdk/simd/category.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.constant.category_hpp">Header &lt;boost/simd/sdk/constant/category.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.end_hpp">Header &lt;boost/simd/sdk/simd/end.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions_hpp">Header &lt;boost/simd/sdk/simd/extensions.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.meta.altivec_hpp">Header &lt;boost/simd/sdk/simd/extensions/meta/altivec.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.meta.avx_hpp">Header &lt;boost/simd/sdk/simd/extensions/meta/avx.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.meta.sse_hpp">Header &lt;boost/simd/sdk/simd/extensions/meta/sse.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.io_hpp">Header &lt;boost/simd/sdk/simd/io.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.io_hpp">Header &lt;boost/simd/sdk/simd/pack/io.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.iterator_hpp">Header &lt;boost/simd/sdk/simd/iterator.hpp&gt;</a></span></dt>
@@ -153,28 +152,27 @@
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.native_cast_hpp">Header &lt;boost/simd/sdk/simd/native_cast.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.native_fwd_hpp">Header &lt;boost/simd/sdk/simd/native_fwd.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.pack_hpp">Header &lt;boost/simd/sdk/simd/pack/pack.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.compare_hpp">Header &lt;boost/simd/sdk/simd/pack/compare.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.domain_hpp">Header &lt;boost/simd/sdk/simd/pack/domain.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.expression_hpp">Header &lt;boost/simd/sdk/simd/pack/expression.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.generator_hpp">Header &lt;boost/simd/sdk/simd/pack/generator.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.grammar_hpp">Header &lt;boost/simd/sdk/simd/pack/grammar.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.load_hpp">Header &lt;boost/simd/sdk/simd/pack/load.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.make_hpp">Header &lt;boost/simd/sdk/simd/pack/make.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.downgrade_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/downgrade.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.factory_of_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/factory_of.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.primitive_of_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/primitive_of.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.retarget_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/retarget.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.terminal_of_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/terminal_of.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.semantic_of_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/semantic_of.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.meta.upgrade_hpp">Header &lt;boost/simd/sdk/simd/pack/meta/upgrade.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.splat_hpp">Header &lt;boost/simd/sdk/simd/pack/splat.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.store_hpp">Header &lt;boost/simd/sdk/simd/pack/store.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.pack.terminal_hpp">Header &lt;boost/simd/sdk/simd/pack/terminal.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.preprocessor.include_hpp">Header &lt;boost/simd/sdk/simd/preprocessor/include.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.meta.sse_hpp">Header &lt;boost/simd/sdk/simd/extensions/meta/sse.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.range_hpp">Header &lt;boost/simd/sdk/simd/range.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.tags_hpp">Header &lt;boost/simd/sdk/simd/tags.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="sdk_reference.html#header.boost.simd.sdk.simd.extensions.meta.tags_hpp">Header &lt;boost/simd/sdk/simd/extensions/meta/tags.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="operator_toolbox.html">Operator Toolbox</a></span></dt>
 <dd><dl>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.assign_hpp">Header &lt;boost/simd/toolbox/operator/functions/assign.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.bitwise_and_hpp">Header &lt;boost/simd/toolbox/operator/functions/bitwise_and.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.bitwise_or_hpp">Header &lt;boost/simd/toolbox/operator/functions/bitwise_or.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.bitwise_xor_hpp">Header &lt;boost/simd/toolbox/operator/functions/bitwise_xor.hpp&gt;</a></span></dt>
@@ -202,9 +200,9 @@
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.shift_right_hpp">Header &lt;boost/simd/toolbox/operator/functions/shift_right.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.splat_hpp">Header &lt;boost/simd/toolbox/operator/functions/splat.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.store_hpp">Header &lt;boost/simd/toolbox/operator/functions/store.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.unaligned_load_hpp">Header &lt;boost/simd/toolbox/operator/functions/unaligned_load.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.unary_minus_hpp">Header &lt;boost/simd/toolbox/operator/functions/unary_minus.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.functions.unary_plus_hpp">Header &lt;boost/simd/toolbox/operator/functions/unary_plus.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="operator_toolbox.html#header.boost.simd.toolbox.operator.include_hpp">Header &lt;boost/simd/toolbox/operator/include.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="arithmetic_toolbox.html">Arithmetic Toolbox</a></span></dt>
 <dd><dl>
@@ -234,6 +232,7 @@
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ifloor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ifloor.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iround_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iround.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iround2even_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iround2even.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.isqrt_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/isqrt.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ldiv_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ldiv.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ldivide_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ldivide.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.logical_xor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/logical_xor.hpp&gt;</a></span></dt>
@@ -263,7 +262,6 @@
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_add_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_add.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_prod_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_prod.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_split_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_split.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.include_hpp">Header &lt;boost/simd/toolbox/arithmetic/include.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="bitwise_toolbox.html">Bitwise Toolbox</a></span></dt>
 <dd><dl>
@@ -297,10 +295,10 @@
 <dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.shrai_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/shrai.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.shri_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/shri.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.functions.twopower_hpp">Header &lt;boost/simd/toolbox/bitwise/functions/twopower.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="bitwise_toolbox.html#header.boost.simd.toolbox.bitwise.include_hpp">Header &lt;boost/simd/toolbox/bitwise/include.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="constant_toolbox.html">Constant Toolbox</a></span></dt>
 <dd><dl>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.allbits_hpp">Header &lt;boost/simd/toolbox/constant/constants/allbits.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.cgold_hpp">Header &lt;boost/simd/toolbox/constant/constants/cgold.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eight_hpp">Header &lt;boost/simd/toolbox/constant/constants/eight.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eleven_hpp">Header &lt;boost/simd/toolbox/constant/constants/eleven.hpp&gt;</a></span></dt>
@@ -414,7 +412,6 @@
 <dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.successor_hpp">Header &lt;boost/simd/toolbox/ieee/functions/successor.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.ulp_hpp">Header &lt;boost/simd/toolbox/ieee/functions/ulp.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.functions.ulpdist_hpp">Header &lt;boost/simd/toolbox/ieee/functions/ulpdist.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="ieee_toolbox.html#header.boost.simd.toolbox.ieee.include_hpp">Header &lt;boost/simd/toolbox/ieee/include.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="predicates_toolbox.html">Predicates Toolbox</a></span></dt>
 <dd><dl>
@@ -423,7 +420,6 @@
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_equal_with_equal_nans_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_equal_with_equal_nans.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_eqz_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_eqz.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_even_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_even.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_false_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_false.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_finite_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_finite.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_flint_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_flint.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_gez_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_gez.hpp&gt;</a></span></dt>
@@ -454,11 +450,9 @@
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_odd_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_odd.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_ord_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_ord.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_positive_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_positive.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_true_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_true.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.is_unord_hpp">Header &lt;boost/simd/toolbox/predicates/functions/is_unord.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.majority_hpp">Header &lt;boost/simd/toolbox/predicates/functions/majority.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.functions.sb2b_hpp">Header &lt;boost/simd/toolbox/predicates/functions/sb2b.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="predicates_toolbox.html#header.boost.simd.toolbox.predicates.include_hpp">Header &lt;boost/simd/toolbox/predicates/include.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="reduction_toolbox.html">Reduction Toolbox</a></span></dt>
 <dd><dl>
@@ -470,6 +464,7 @@
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.dot_hpp">Header &lt;boost/simd/toolbox/reduction/functions/dot.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.first_hpp">Header &lt;boost/simd/toolbox/reduction/functions/first.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.hmsb_hpp">Header &lt;boost/simd/toolbox/reduction/functions/hmsb.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.is_simd_logical_hpp">Header &lt;boost/simd/toolbox/reduction/functions/is_simd_logical.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.maximum_hpp">Header &lt;boost/simd/toolbox/reduction/functions/maximum.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.minimum_hpp">Header &lt;boost/simd/toolbox/reduction/functions/minimum.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.nbtrue_hpp">Header &lt;boost/simd/toolbox/reduction/functions/nbtrue.hpp&gt;</a></span></dt>
@@ -479,7 +474,6 @@
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.prod_hpp">Header &lt;boost/simd/toolbox/reduction/functions/prod.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.second_hpp">Header &lt;boost/simd/toolbox/reduction/functions/second.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.functions.sum_hpp">Header &lt;boost/simd/toolbox/reduction/functions/sum.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="reduction_toolbox.html#header.boost.simd.toolbox.reduction.include_hpp">Header &lt;boost/simd/toolbox/reduction/include.hpp&gt;</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="swar_toolbox.html">SWAR Toolbox</a></span></dt>
 <dd><dl>
@@ -496,7 +490,6 @@
 <dt><span class="section"><a href="swar_toolbox.html#header.boost.simd.toolbox.swar.functions.splatted_second_hpp">Header &lt;boost/simd/toolbox/swar/functions/splatted_second.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="swar_toolbox.html#header.boost.simd.toolbox.swar.functions.splatted_sum_hpp">Header &lt;boost/simd/toolbox/swar/functions/splatted_sum.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="swar_toolbox.html#header.boost.simd.toolbox.swar.functions.split_hpp">Header &lt;boost/simd/toolbox/swar/functions/split.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="swar_toolbox.html#header.boost.simd.toolbox.swar.include_hpp">Header &lt;boost/simd/toolbox/swar/include.hpp&gt;</a></span></dt>
 </dl></dd>
 </dl>
 </div>
@@ -513,9 +506,9 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="simd.preface"></a><a class="link" href="simd.html#simd.preface" title="Preface">Preface</a>
 </h2></div></div></div>
-<a name="simd.preface.description"></a><h4>
+<h4>
 <a name="simd.preface.h0"></a>
-      <a class="link" href="simd.html#simd.preface.description">Description</a>
+      <span><a name="simd.preface.description"></a></span><a class="link" href="simd.html#simd.preface.description">Description</a>
     </h4>
 <p>
       <span class="bold"><strong>Boost.simd</strong></span> is a library that provides a proper
@@ -527,9 +520,9 @@
       like absolute, including predicates (is even etc...). Of course those operations
       are available both on SIMD registers and scalar types.
     </p>
-<a name="simd.preface.motivation"></a><h4>
+<h4>
 <a name="simd.preface.h1"></a>
-      <a class="link" href="simd.html#simd.preface.motivation">Motivation</a>
+      <span><a name="simd.preface.motivation"></a></span><a class="link" href="simd.html#simd.preface.motivation">Motivation</a>
     </h4>
 <p>
       Nowadays performance is often critical in software development. Parallelism
@@ -545,12 +538,12 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: August 25, 2011 at 22:08:14 GMT</small></p></td>
+<td align="left"><p><small>Last revised: October 01, 2011 at 18:14:31 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="dispatch/reference.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="simd/getting_started.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="BOOST_DISPATCH_PP_REMOVE_TYPENAME.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="libraries.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="simd/getting_started.html"><img src="images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

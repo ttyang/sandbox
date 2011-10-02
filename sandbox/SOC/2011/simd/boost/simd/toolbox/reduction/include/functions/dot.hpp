@@ -4,5 +4,7 @@
 #include <boost/simd/toolbox/reduction/functions/dot.hpp>
 #include <boost/simd/toolbox/reduction/functions/scalar/dot.hpp>
 #include <boost/simd/toolbox/reduction/functions/simd/common/dot.hpp>
+#include <boost/simd/toolbox/reduction/functions/simd/sse/avx/dot.hpp>
+#include <boost/simd/toolbox/reduction/functions/simd/sse/sse4_1/dot.hpp>
 
 #endif

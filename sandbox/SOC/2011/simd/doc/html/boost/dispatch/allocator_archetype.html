@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template allocator_archetype</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../reference.html#header.boost.dispatch.concept.allocator_hpp" title="Header &lt;boost/dispatch/concept/allocator.hpp&gt;">
+<link rel="prev" href="Allocator.html" title="Struct template Allocator">
+<link rel="next" href="allocator_archetype/rebind.html" title="Struct template rebind">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="Allocator.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.dispatch.concept.allocator_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="allocator_archetype/rebind.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.allocator_archetype"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template allocator_archetype</span></h2>
+<p>boost::dispatch::allocator_archetype</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../reference.html#header.boost.dispatch.concept.allocator_hpp" title="Header &lt;boost/dispatch/concept/allocator.hpp&gt;">boost/dispatch/concept/allocator.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">T</span>           <a name="boost.dispatch.allocator_archetype.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>     
+  <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="special">*</span>         <a name="boost.dispatch.allocator_archetype.pointer"></a><span class="identifier">pointer</span><span class="special">;</span>        
+  <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span> <span class="special">*</span>   <a name="boost.dispatch.allocator_archetype.const_pointer"></a><span class="identifier">const_pointer</span><span class="special">;</span>  
+  <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="special">&amp;</span>         <a name="boost.dispatch.allocator_archetype.reference"></a><span class="identifier">reference</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">T</span> <span class="keyword">const</span> <span class="special">&amp;</span>   <a name="boost.dispatch.allocator_archetype.const_reference"></a><span class="identifier">const_reference</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="boost.dispatch.allocator_archetype.size_type"></a><span class="identifier">size_type</span><span class="special">;</span>      
+
+  <span class="comment">// member classes/structs/unions</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> U<span class="special">&gt;</span> 
+  <span class="keyword">struct</span> <a class="link" href="allocator_archetype/rebind.html" title="Struct template rebind">rebind</a> <span class="special">{</span>
+    <span class="comment">// types</span>
+    <span class="keyword">typedef</span> <a class="link" href="allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a><span class="special">&lt;</span> <span class="identifier">U</span> <span class="special">&gt;</span> <a class="link" href="allocator_archetype/rebind.html#boost.dispatch.allocator_archetype.rebind.other"><span class="identifier">other</span></a><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="allocator_archetype.html#id334051-bb">public member functions</a></span>
+  <span class="identifier">pointer</span> <a class="link" href="allocator_archetype.html#id334054-bb"><span class="identifier">allocate</span></a><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">size_type</span> <a class="link" href="allocator_archetype.html#id334068-bb"><span class="identifier">max_size</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">pointer</span> <a class="link" href="allocator_archetype.html#id334076-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">const_pointer</span> <a class="link" href="allocator_archetype.html#id334090-bb"><span class="identifier">address</span></a><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="allocator_archetype.html#id334103-bb"><span class="identifier">construct</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="allocator_archetype.html#id334123-bb"><span class="identifier">destroy</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="allocator_archetype.html#id334136-bb"><span class="identifier">deallocate</span></a><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="allocator_archetype.html#id334156-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><a class="link" href="allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="allocator_archetype.html#id334172-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><a class="link" href="allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id849336"></a><h2>Description</h2>
+<div class="refsect2">
+<a name="id849339"></a><h3>
+<a name="id334051-bb"></a><code class="computeroutput">allocator_archetype</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="identifier">pointer</span> <a name="id334054-bb"></a><span class="identifier">allocate</span><span class="special">(</span><span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">size_type</span> <a name="id334068-bb"></a><span class="identifier">max_size</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">pointer</span> <a name="id334076-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="identifier">reference</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">const_pointer</span> <a name="id334090-bb"></a><span class="identifier">address</span><span class="special">(</span><span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id334103-bb"></a><span class="identifier">construct</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">const_reference</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id334123-bb"></a><span class="identifier">destroy</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id334136-bb"></a><span class="identifier">deallocate</span><span class="special">(</span><span class="identifier">pointer</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="id334156-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><a class="link" href="allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">bool</span> <a name="id334172-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><a class="link" href="allocator_archetype.html" title="Class template allocator_archetype">allocator_archetype</a> <span class="keyword">const</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="Allocator.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.dispatch.concept.allocator_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="allocator_archetype/rebind.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

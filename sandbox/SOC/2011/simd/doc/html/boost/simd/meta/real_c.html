@@ -27,21 +27,21 @@
 </span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Type<span class="special">,</span> <span class="identifier">Type</span> Value<span class="special">&gt;</span> 
 <span class="keyword">struct</span> <a class="link" href="real_c.html" title="Struct template real_c">real_c</a> <span class="special">{</span>
   <span class="comment">// types</span>
-  <span class="keyword">typedef</span> <a class="link" href="real_c.html" title="Struct template real_c">real_c</a>                                <a name="boost.simd.meta.real_c.type"></a><span class="identifier">type</span><span class="special">;</span>      
-  <span class="keyword">typedef</span> <span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">as_real</span><span class="special">&lt;</span> <span class="identifier">Type</span> <span class="special">&gt;</span><span class="special">::</span><a class="link" href="real_c.html#boost.simd.meta.real_c.type">type</a> <a name="boost.simd.meta.real_c.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <a class="link" href="real_c.html" title="Struct template real_c">real_c</a>                                    <a name="boost.simd.meta.real_c.type"></a><span class="identifier">type</span><span class="special">;</span>      
+  <span class="keyword">typedef</span> <span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">as_floating</span><span class="special">&lt;</span> <span class="identifier">Type</span> <span class="special">&gt;</span><span class="special">::</span><a class="link" href="real_c.html#boost.simd.meta.real_c.type">type</a> <a name="boost.simd.meta.real_c.value_type"></a><span class="identifier">value_type</span><span class="special">;</span>
 
-  <span class="comment">// <a class="link" href="real_c.html#id2619005-bb">public member functions</a></span>
-   <a class="link" href="real_c.html#id2619009-bb"><span class="identifier">BOOST_STATIC_CONSTANT</span></a><span class="special">(</span><span class="identifier">Type</span><span class="special">,</span> <span class="identifier">value</span> <span class="special">=</span> <span class="identifier">Value</span><span class="special">)</span><span class="special">;</span>
-  <a class="link" href="real_c.html#id2619030-bb"><span class="keyword">operator</span> <span class="identifier">value_type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="comment">// <a class="link" href="real_c.html#id367768-bb">public member functions</a></span>
+   <a class="link" href="real_c.html#id367771-bb"><span class="identifier">BOOST_STATIC_CONSTANT</span></a><span class="special">(</span><span class="identifier">Type</span><span class="special">,</span> <span class="identifier">value</span> <span class="special">=</span> <span class="identifier">Value</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="real_c.html#id367792-bb"><span class="keyword">operator</span> <span class="identifier">value_type</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 <span class="special">}</span><span class="special">;</span></pre></div>
 <div class="refsect1">
-<a name="id3267682"></a><h2>Description</h2>
+<a name="id943523"></a><h2>Description</h2>
 <div class="refsect2">
-<a name="id3267685"></a><h3>
-<a name="id2619005-bb"></a><code class="computeroutput">real_c</code> public member functions</h3>
+<a name="id943527"></a><h3>
+<a name="id367768-bb"></a><code class="computeroutput">real_c</code> public member functions</h3>
 <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem"><pre class="literallayout"> <a name="id2619009-bb"></a><span class="identifier">BOOST_STATIC_CONSTANT</span><span class="special">(</span><span class="identifier">Type</span><span class="special">,</span> <span class="identifier">value</span> <span class="special">=</span> <span class="identifier">Value</span><span class="special">)</span><span class="special">;</span></pre></li>
-<li class="listitem"><pre class="literallayout"><a name="id2619030-bb"></a><span class="keyword">operator</span> <span class="identifier">value_type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"> <a name="id367771-bb"></a><span class="identifier">BOOST_STATIC_CONSTANT</span><span class="special">(</span><span class="identifier">Type</span><span class="special">,</span> <span class="identifier">value</span> <span class="special">=</span> <span class="identifier">Value</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><a name="id367792-bb"></a><span class="keyword">operator</span> <span class="identifier">value_type</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
 </ol></div>
 </div>
 </div>

@@ -30,6 +30,7 @@
 #include <nt2/toolbox/arithmetic/include/functions/ifloor.hpp>
 #include <nt2/toolbox/arithmetic/include/functions/iround.hpp>
 #include <nt2/toolbox/arithmetic/include/functions/iround2even.hpp>
+#include <nt2/toolbox/arithmetic/include/functions/isqrt.hpp>
 #include <nt2/toolbox/arithmetic/include/functions/itrunc.hpp>
 #include <nt2/toolbox/arithmetic/include/functions/ldiv.hpp>
 #include <nt2/toolbox/arithmetic/include/functions/ldivide.hpp>

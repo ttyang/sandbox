@@ -24,14 +24,14 @@
 #include <boost/simd/include/constants/valmax.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is real_
+// Implementation when type A0 is floating_
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION(boost::simd::tag::adds_, tag::cpu_,
                           (A0)(X),
-                          ((simd_<real_<A0>,X>))
-                          ((simd_<real_<A0>,X>))
+                          ((simd_<floating_<A0>,X>))
+                          ((simd_<floating_<A0>,X>))
                          )
   {
     typedef A0 result_type;
@@ -56,8 +56,7 @@ namespace boost { namespace simd { namespace ext
     BOOST_SIMD_FUNCTOR_CALL_REPEAT(2)
     {
       A0 a0pa1 = a0+a1;
-      return b_or(a0pa1, lt(a0pa1, a0)); 
-     //      return sel(lt(a0pa1, boost::simd::max(a0, a1)), Valmax<A0>(), a0pa1); 
+      return select(lt(a0pa1, a0), Valmax<A0>(), a0pa1); 
     }
   };
 

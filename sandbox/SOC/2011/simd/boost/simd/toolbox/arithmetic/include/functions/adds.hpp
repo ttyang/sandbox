@@ -4,6 +4,7 @@
 #include <boost/simd/toolbox/arithmetic/functions/adds.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/scalar/adds.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/simd/common/adds.hpp>
+#include <boost/simd/toolbox/arithmetic/functions/simd/sse/avx/adds.hpp>
 #include <boost/simd/toolbox/arithmetic/functions/simd/sse/sse2/adds.hpp>
 
 #endif

@@ -47,9 +47,9 @@
 <p>
         This has some practical issues.
       </p>
-<a name="simd.rationale.considerations_on_simd_programming.considerations_about_sizes_and_types_"></a><h6>
+<h6>
 <a name="simd.rationale.considerations_on_simd_programming.h0"></a>
-        <a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming.considerations_about_sizes_and_types_">Considerations
+        <span><a name="simd.rationale.considerations_on_simd_programming.considerations_about_sizes_and_types_"></a></span><a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming.considerations_about_sizes_and_types_">Considerations
         about sizes and types:</a>
       </h6>
 <p>
@@ -81,9 +81,9 @@
             extended registers...
           </li>
 </ul></div>
-<a name="simd.rationale.considerations_on_simd_programming.considerations__about_logic_and_branching_"></a><h6>
+<h6>
 <a name="simd.rationale.considerations_on_simd_programming.h1"></a>
-        <a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming.considerations__about_logic_and_branching_">Considerations
+        <span><a name="simd.rationale.considerations_on_simd_programming.considerations__about_logic_and_branching_"></a></span><a class="link" href="rationale.html#simd.rationale.considerations_on_simd_programming.considerations__about_logic_and_branching_">Considerations
         about logic and branching:</a>
       </h6>
 <p>
@@ -154,9 +154,9 @@
         has two distinct policies for accepting functors input parameters according
         their SIMD or Scalar nature.
       </p>
-<a name="simd.rationale.parameters_and_return_types.run_time_input_parameters"></a><h4>
+<h4>
 <a name="simd.rationale.parameters_and_return_types.h0"></a>
-        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.run_time_input_parameters">Run
+        <span><a name="simd.rationale.parameters_and_return_types.run_time_input_parameters"></a></span><a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.run_time_input_parameters">Run
         time input parameters</a>
       </h4>
 <p>
@@ -164,9 +164,9 @@
         of run time input parameters 0 (nullary), 1 (unary) or more (binary, ternary
         ... n-ary)
       </p>
-<a name="simd.rationale.parameters_and_return_types.nullary_and_unary_functors"></a><h5>
+<h5>
 <a name="simd.rationale.parameters_and_return_types.h1"></a>
-        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.nullary_and_unary_functors">Nullary
+        <span><a name="simd.rationale.parameters_and_return_types.nullary_and_unary_functors"></a></span><a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.nullary_and_unary_functors">Nullary
         and unary functors</a>
       </h5>
 <p>
@@ -183,9 +183,9 @@
         In this case it will be equivalent to saturated <code class="computeroutput"><span class="identifier">a</span><span class="special">+</span><span class="identifier">One</span></code>, satration
         being taken in the integer type of <code class="computeroutput"><span class="identifier">a</span></code>.
       </p>
-<a name="simd.rationale.parameters_and_return_types.binary_and_n_ary_functors"></a><h5>
+<h5>
 <a name="simd.rationale.parameters_and_return_types.h2"></a>
-        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.binary_and_n_ary_functors">Binary
+        <span><a name="simd.rationale.parameters_and_return_types.binary_and_n_ary_functors"></a></span><a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.binary_and_n_ary_functors">Binary
         and n-ary functors</a>
       </h5>
 <p>
@@ -228,9 +228,9 @@
         not to do so is to prevent the user to mix types to often, because this is
         generally inefficient in SIMD.
       </p>
-<a name="simd.rationale.parameters_and_return_types.return_types"></a><h4>
+<h4>
 <a name="simd.rationale.parameters_and_return_types.h3"></a>
-        <a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.return_types">Return
+        <span><a name="simd.rationale.parameters_and_return_types.return_types"></a></span><a class="link" href="rationale.html#simd.rationale.parameters_and_return_types.return_types">Return
         types</a>
       </h4>
 <p>
@@ -262,7 +262,6 @@
         can call
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">tie</span><span class="special">(</span><span class="identifier">m</span><span class="special">,</span><span class="identifier">e</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">frexp</span><span class="special">(</span><span class="identifier">a</span><span class="special">)</span></pre>
 <p>
@@ -271,7 +270,6 @@
         or
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">m</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">frexp</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">e</span><span class="special">)</span></pre>
 <p>
@@ -280,7 +278,6 @@
         or
       </p>
 <p>
-        
 </p>
 <pre class="programlisting"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">simd</span><span class="special">::</span><span class="identifier">frexp</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span><span class="identifier">m</span><span class="special">,</span><span class="identifier">e</span><span class="special">)</span></pre>
 <p>

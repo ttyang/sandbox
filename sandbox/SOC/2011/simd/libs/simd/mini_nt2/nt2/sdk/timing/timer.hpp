@@ -10,7 +10,7 @@
 #define NT2_SDK_TIMING_TIMER_HPP_INCLUDED
 
 #include <stack>
-#include <nt2/sdk/error/assert.hpp>
+#include <boost/assert.hpp>
 
 namespace nt2
 {
@@ -30,7 +30,7 @@ namespace nt2
 
       type toc( bool display ) const
       {
-        NT2_ASSERT(!empty() && "Unbalanced timing calls");
+        BOOST_ASSERT_MSG(!empty(), "Unbalanced timing calls");
         type t = time()-times().top();
         times().pop();
         if(display) timer_type::Print(t);

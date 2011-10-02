@@ -1,25 +1,12 @@
-//==============================================================================
-//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II       
-//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI       
-//                                                                              
-//          Distributed under the Boost Software License, Version 1.0.          
-//                 See accompanying file LICENSE.txt or copy at                 
-//                     http://www.boost.org/LICENSE_1_0.txt                     
-//==============================================================================
 #ifndef NT2_TOOLBOX_OPERATOR_INCLUDE_FUNCTIONS_BITWISE_AND_HPP_INCLUDED
 #define NT2_TOOLBOX_OPERATOR_INCLUDE_FUNCTIONS_BITWISE_AND_HPP_INCLUDED
 
-#include <boost/simd/toolbox/operator/include/functions/bitwise_and.hpp>
-
-namespace nt2
-{
-  namespace tag
-  {
-    using boost::simd::tag::bitwise_and_;
-  }
-
-  using boost::simd::bitwise_and;
-  using boost::simd::b_and;
-}
+#include <nt2/toolbox/operator/functions/bitwise_and.hpp>
+#include <boost/simd/toolbox/operator/functions/bitwise_and.hpp>
+#include <boost/simd/toolbox/operator/functions/scalar/bitwise_and.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/common/bitwise_and.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/sse/avx/bitwise_and.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/sse/sse2/bitwise_and.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/vmx/altivec/bitwise_and.hpp>
 
 #endif

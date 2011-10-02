@@ -30,9 +30,9 @@ namespace boost { namespace simd { namespace ext
   {
     typedef typename A2::type result_type;
 
-    BOOST_SIMD_FUNCTOR_CALL(3)
+    inline result_type operator()(const A0& a0, const A1& a1, const A2&) const
     {
-      result_type that;
+    result_type that;
       std::memcpy ( &that
                   , reinterpret_cast<result_type const*>(a0) + a1
                   , sizeof that
@@ -50,8 +50,8 @@ namespace boost { namespace simd { namespace ext
                             )
   {
     typedef typename A2::type result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(4)
+    inline result_type operator()(const A0& a0, const A1& a1,
+                                  const A2&, const A3&) const
     {
       result_type that;
       std::memcpy ( &that

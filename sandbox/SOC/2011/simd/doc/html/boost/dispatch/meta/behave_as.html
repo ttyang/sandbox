@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template behave_as</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../../reference.html#header.boost.dispatch.meta.behave_as_hpp" title="Header &lt;boost/dispatch/meta/behave_as.hpp&gt;">
+<link rel="prev" href="as_unsigned.html" title="Struct template as_unsigned">
+<link rel="next" href="downgrade.html" title="Struct template downgrade">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="as_unsigned.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.behave_as_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="downgrade.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.meta.behave_as"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template behave_as</span></h2>
+<p>boost::dispatch::meta::behave_as</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../../reference.html#header.boost.dispatch.meta.behave_as_hpp" title="Header &lt;boost/dispatch/meta/behave_as.hpp&gt;">boost/dispatch/meta/behave_as.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Lambda<span class="special">,</span> <span class="comment">  // to apply.</span>
+         <span class="keyword">typename</span> Hierarchizable<span class="comment">  // Type to introspect.</span>
+         <span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="behave_as.html" title="Struct template behave_as">behave_as</a> <span class="special">:</span> <span class="keyword">public</span> boost::mpl::apply1::type&lt; Lambda, primitive_of&lt; strip&lt; Hierarchizable &gt;::type &gt;::type &gt;
+<span class="special">{</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id884705"></a><h2>Description</h2>
+<p>Forward the application of a given  <code class="computeroutput">Lambda</code> onto the primitive type of a given <a class="link" href="../Hierarchizable.html" title="Struct template Hierarchizable">Hierarchizable</a>.</p>
+<p>
+</p>
+<p>For any <a class="link" href="../Hierarchizable.html" title="Struct template Hierarchizable">Hierarchizable</a> type <code class="computeroutput">T</code> and any Lambda <code class="computeroutput">L:</code> </p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <a class="link" href="behave_as.html" title="Struct template behave_as">boost::dispatch::meta::behave_as&lt;L,T&gt;::type</a> <span class="identifier">r</span><span class="special">;</span>
+</pre>
+<p>is equivalent to:</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">apply1</span> <span class="special">&lt;</span> <span class="identifier">L</span>
+                <span class="special">,</span> <a class="link" href="primitive_of.html" title="Struct template primitive_of">boost::dispatch::meta::primitive_of&lt; boost::dispatch::meta::strip&lt; T &gt;::type</a> <span class="special">&gt;</span>::type
+                <span class="special">&gt;</span>::type     <span class="identifier">r</span><span class="special">;</span>
+</pre>
+<p>For any other types, a <code class="computeroutput">BOOST_DISPATCH_BEHAVIOR_OF_NON_FUNDAMENTAL_PRIMITIVE_IS_UNDEFINED</code> static assertion is raised.</p>
+<pre class="programlisting"></pre>
+<p> </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="as_unsigned.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../../reference.html#header.boost.dispatch.meta.behave_as_hpp"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="downgrade.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

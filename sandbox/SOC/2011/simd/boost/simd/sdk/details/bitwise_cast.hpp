@@ -14,9 +14,11 @@
  * \brief Defines and implements the \ref boost::simd::bitwise_cast utility function
  */
 
-#include <boost/dispatch/error/static_assert.hpp>
 #include <boost/dispatch/attributes.hpp>
+#include <boost/mpl/assert.hpp>
 #include <boost/mpl/identity.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/utility/enable_if.hpp>
 #include <cstring>
 
 #ifdef BOOST_MSVC
@@ -103,13 +105,33 @@ namespace details
    */
   //============================================================================
   template<typename To, typename From>
-  BOOST_DISPATCH_FORCE_INLINE To bitwise_cast(From const& from)
+  BOOST_DISPATCH_FORCE_INLINE
+  typename disable_if<
+    is_same<To, From>,
+    To
+  >::type
+  bitwise_cast(From const& from)
   {
-    BOOST_DISPATCH_STATIC_ASSERT( sizeof(From) == sizeof(To)
-                     , BOOST_SIMD_TARGET_IS_NOT_SAME_SIZE_AS_SOURCE_IN_BITWISE_CAST
-                     , "Target is not same size as source in boost::simd::bitwise_cast"
-                     );
+    //==========================================================================
+    /*
+     * Target is not same size as source in boost::simd::bitwise_cast
+     */    
+    //==========================================================================
+    BOOST_MPL_ASSERT_MSG
+    ( (sizeof(From) == sizeof(To))
+    , BOOST_SIMD_TARGET_IS_NOT_SAME_SIZE_AS_SOURCE_IN_BITWISE_CAST
+    , (From&,To&)
+    );  
+    
     return details::bitwise_cast<To, From>::template call<To>(from);
+  }
+  
+  template<typename To>
+  BOOST_DISPATCH_FORCE_INLINE
+  To const&
+  bitwise_cast(typename mpl::identity<To>::type const& from)
+  {
+    return from;
   }
 
 #else
@@ -117,20 +139,21 @@ namespace details
   template<typename To, typename From>
   BOOST_DISPATCH_FORCE_INLINE To const& bitwise_cast(From const& from)
   {
-    BOOST_DISPATCH_STATIC_ASSERT( sizeof(From) == sizeof(To)
-                     , BOOST_SIMD_TARGET_IS_NOT_SAME_SIZE_AS_SOURCE_IN_BITWISE_CAST
-                     , "Target is not same size as source in boost::simd::bitwise_cast"
-                     );
+    //==========================================================================
+    /*
+     * Target is not same size as source in boost::simd::bitwise_cast
+     */    
+    //==========================================================================
+    BOOST_MPL_ASSERT_MSG
+    ( (sizeof(From) == sizeof(To))
+    , BOOST_SIMD_TARGET_IS_NOT_SAME_SIZE_AS_SOURCE_IN_BITWISE_CAST
+    , (From&,To&)
+    );   
+
     return reinterpret_cast<To const&>(from);
   }
 
 #endif
-
-  template<typename To>
-  BOOST_DISPATCH_FORCE_INLINE To const& bitwise_cast(typename mpl::identity<To>::type const& from)
-  {
-	return from;
-  }
 
 } }
 #endif

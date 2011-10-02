@@ -19,7 +19,7 @@
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::iceil_, tag::cpu_, (A0)
-                            , (scalar_< fundamental_<A0> >)
+                            , (scalar_< arithmetic_<A0> >)
                             )
   {
     typedef A0 result_type;
@@ -27,11 +27,10 @@ namespace boost { namespace simd { namespace ext
   };
 
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::iceil_, tag::cpu_, (A0)
-                            , (scalar_< real_<A0> >)
+                            , (scalar_< floating_<A0> >)
                             )
   {
     typedef typename dispatch::meta::as_integer<A0>::type result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       if (boost::simd::is_inf(a0))

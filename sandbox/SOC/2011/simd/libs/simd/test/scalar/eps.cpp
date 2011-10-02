@@ -1,58 +1,104 @@
-/*******************************************************************************
- *         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
- *         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
- *
- *          Distributed under the Boost Software License, Version 1.0.
- *                 See accompanying file LICENSE.txt or copy at
- *                     http://www.boost.org/LICENSE_1_0.txt
- ******************************************************************************/
-#define NT2_UNIT_MODULE "boost::simd::constants eps related"
+//////////////////////////////////////////////////////////////////////////////
+///   Copyright 2003 and onward LASMEA UMR 6602 CNRS/U.B.P Clermont-Ferrand
+///   Copyright 2009 and onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
+///
+///          Distributed under the Boost Software License, Version 1.0
+///                 See accompanying file LICENSE.txt or copy at
+///                     http://www.boost.org/LICENSE_1_0.txt
+//////////////////////////////////////////////////////////////////////////////
+#define NT2_UNIT_MODULE "nt2 boost.simd.ieee toolbox - eps/scalar Mode"
 
-#include <boost/simd/include/constants/eps_related.hpp>
+//////////////////////////////////////////////////////////////////////////////
+// unit test behavior of boost.simd.ieee components in scalar mode
+//////////////////////////////////////////////////////////////////////////////
+/// created by jt the 04/12/2010
+/// 
+#include <boost/simd/toolbox/ieee/include/functions/eps.hpp>
+#include <boost/simd/include/functions/ulpdist.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <boost/dispatch/functor/meta/call.hpp>
+#include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
-#include <nt2/sdk/unit/tests/relation.hpp>
+#include <boost/simd/sdk/memory/buffer.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
-////////////////////////////////////////////////////////////////////////////////
-// Test value of eps constants for every base real types
-////////////////////////////////////////////////////////////////////////////////
-NT2_TEST_CASE( double_eps_value )
-{
-  NT2_TEST_EQUAL( boost::simd::Eps<double>()            , 2.220446049250313e-16   );
-  NT2_TEST_EQUAL( boost::simd::Halfeps<double>()        , 1.1102230246251565e-16  );
-  NT2_TEST_EQUAL( boost::simd::Threeeps<double>()       , 6.661338147750939e-16   );
-  NT2_TEST_EQUAL( boost::simd::Sqrteps<double>()        , 1.4901161193847656e-8   );
-  NT2_TEST_EQUAL( boost::simd::Fourthrooteps<double>()  , 1.2207031250000000e-4   );
-  NT2_TEST_EQUAL( boost::simd::Thirdrooteps<double>()   , 6.0554544523933440e-6   );
-  NT2_TEST_EQUAL( boost::simd::Mlogeps2<double>()       , 18.021826694558580      );
-  NT2_TEST_EQUAL( boost::simd::Mindenormal<double>()    , 5.0000000000000000e-324 );
-  NT2_TEST_EQUAL( boost::simd::Smallestposval<double>() , 2.2250738585072014e-308 );
-}
 
-NT2_TEST_CASE( float_eps_value )
+NT2_TEST_CASE_TPL ( eps_real__1_0,  BOOST_SIMD_REAL_TYPES)
 {
-  NT2_TEST_EQUAL( boost::simd::Eps<float>()             , 1.1920928955078125e-7  );
-  NT2_TEST_EQUAL( boost::simd::Halfeps<float>()         , 5.960464477539063e-8   );
-  NT2_TEST_EQUAL( boost::simd::Threeeps<float>()        , 3.5762786865234375e-7  );
-  NT2_TEST_EQUAL( boost::simd::Sqrteps<float>()         , 0.0003452669770922512  );
-  NT2_TEST_EQUAL( boost::simd::Fourthrooteps<float>()    , 0.018581360578536987   );
-  NT2_TEST_EQUAL( boost::simd::Thirdrooteps<float>()    , 0.004921566694974899   );
-  NT2_TEST_EQUAL( boost::simd::Mlogeps2<float>()        , 7.971192359924316      );
-  NT2_TEST_EQUAL( boost::simd::Mindenormal<float>()     , 1.401298464324817e-45  );
-  NT2_TEST_EQUAL( boost::simd::Smallestposval<float>()  , 1.1754943508222875e-38 );
-}
+  
+  using boost::simd::eps;
+  using boost::simd::tag::eps_;
+  typedef typename boost::dispatch::meta::as_integer<T>::type iT;
+  typedef typename boost::dispatch::meta::call<eps_(T)>::type r_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type sr_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type ssr_t;
+  typedef typename boost::dispatch::meta::upgrade<T>::type u_t;
+  typedef T wished_r_t;
 
-////////////////////////////////////////////////////////////////////////////////
-// Test value of eps constants for every base integral types
-////////////////////////////////////////////////////////////////////////////////
-NT2_TEST_CASE_TPL( real_value, BOOST_SIMD_INTEGRAL_TYPES )
+
+  // return type conformity test 
+  NT2_TEST( (boost::is_same < r_t, wished_r_t >::value) );
+  std::cout << std::endl; 
+  double ulpd;
+  ulpd=0.0;
+
+
+  // specific values tests
+  NT2_TEST_EQUAL(eps(boost::simd::Inf<T>()), boost::simd::Nan<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Minf<T>()), boost::simd::Nan<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Mone<T>()), boost::simd::Eps<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Nan<T>()), boost::simd::Nan<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::One<T>()), boost::simd::Eps<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Zero<T>()), boost::simd::Mindenormal<r_t>());
+} // end of test for floating_
+
+NT2_TEST_CASE_TPL ( eps_unsigned_int__1_0,  BOOST_SIMD_UNSIGNED_TYPES)
 {
-  NT2_TEST_EQUAL( boost::simd::Eps<T>()             , 1 );
-  NT2_TEST_EQUAL( boost::simd::Halfeps<T>()         , 1 );
-  NT2_TEST_EQUAL( boost::simd::Threeeps<T>()        , 3 );
-  NT2_TEST_EQUAL( boost::simd::Sqrteps<T>()         , 1 );
-  NT2_TEST_EQUAL( boost::simd::Fourthrooteps<T>()   , 1 );
-  NT2_TEST_EQUAL( boost::simd::Thirdrooteps<T>()    , 1 );
-  NT2_TEST_EQUAL( boost::simd::Mlogeps2<T>()        , 0 );
-  NT2_TEST_EQUAL( boost::simd::Mindenormal<T>()     , 1 );
-  NT2_TEST_EQUAL( boost::simd::Smallestposval<T>()  , 1 );
-}
+  
+  using boost::simd::eps;
+  using boost::simd::tag::eps_;
+  typedef typename boost::dispatch::meta::as_integer<T>::type iT;
+  typedef typename boost::dispatch::meta::call<eps_(T)>::type r_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type sr_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type ssr_t;
+  typedef typename boost::dispatch::meta::upgrade<T>::type u_t;
+  typedef T wished_r_t;
+
+
+  // return type conformity test 
+  NT2_TEST( (boost::is_same < r_t, wished_r_t >::value) );
+  std::cout << std::endl; 
+  double ulpd;
+  ulpd=0.0;
+
+
+  // specific values tests
+  NT2_TEST_EQUAL(eps(boost::simd::One<T>()), boost::simd::One<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Zero<T>()), boost::simd::One<r_t>());
+} // end of test for unsigned_int_
+
+NT2_TEST_CASE_TPL ( eps_signed_int__1_0,  BOOST_SIMD_INTEGRAL_SIGNED_TYPES)
+{
+  
+  using boost::simd::eps;
+  using boost::simd::tag::eps_;
+  typedef typename boost::dispatch::meta::as_integer<T>::type iT;
+  typedef typename boost::dispatch::meta::call<eps_(T)>::type r_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type sr_t;
+  typedef typename boost::simd::meta::scalar_of<r_t>::type ssr_t;
+  typedef typename boost::dispatch::meta::upgrade<T>::type u_t;
+  typedef T wished_r_t;
+
+
+  // return type conformity test 
+  NT2_TEST( (boost::is_same < r_t, wished_r_t >::value) );
+  std::cout << std::endl; 
+  double ulpd;
+  ulpd=0.0;
+
+
+  // specific values tests
+  NT2_TEST_EQUAL(eps(boost::simd::Mone<T>()), boost::simd::One<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::One<T>()), boost::simd::One<r_t>());
+  NT2_TEST_EQUAL(eps(boost::simd::Zero<T>()), boost::simd::One<r_t>());
+} // end of test for signed_int_

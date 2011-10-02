@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template functor</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../reference.html#header.boost.dispatch.functor.functor_hpp" title="Header &lt;boost/dispatch/functor/functor.hpp&gt;">
+<link rel="prev" href="default_site.html" title="Struct template default_site">
+<link rel="next" href="functor/result_This_Args___id349511.html" title="Struct template result&lt;This(Args...)&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="default_site.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.dispatch.functor.functor_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="functor/result_This_Args___id349511.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.functor"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template functor</span></h2>
+<p>boost::dispatch::functor</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../reference.html#header.boost.dispatch.functor.functor_hpp" title="Header &lt;boost/dispatch/functor/functor.hpp&gt;">boost/dispatch/functor/functor.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="comment">  // Function tag to dispatch to.</span>
+         <span class="keyword">typename</span> EvalContext<span class="comment">  // Tag defining how to perform said function
+                               // call with respect to architecture or phase
+                               // settings.</span>
+         <span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="functor.html" title="Struct template functor">functor</a> <span class="special">{</span>
+  <span class="comment">// member classes/structs/unions</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> This<span class="special">,</span> <span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+  <span class="keyword">struct</span> <a class="link" href="functor/result_This_Args___id349511.html" title="Struct template result&lt;This(Args...)&gt;">result</a><span class="special">&lt;</span><span class="identifier">This</span><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="functor.html#id349532-bb">public member functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+    <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <a class="link" href="functor.html" title="Struct template functor">functor</a><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type 
+    <a class="link" href="functor.html#id349535-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id869835"></a><h2>Description</h2>
+<p><a class="link" href="functor.html" title="Struct template functor">functor</a> is a generic, concept-dispatched polymorphic function object. Every function in Boost.Dispatch are defined in term of implementing a call strategy for <a class="link" href="functor.html" title="Struct template functor">functor</a>. The main rationale is to centralize and homogenize the way functions with multiple possible implementation with respect to types, architectures and compilation phases are handled.</p>
+<p>
+</p>
+<p><b>Models:&#160;</b></p>
+<p>
+</p>
+<p><span class="bold"><strong>See Also:</strong></span></p>
+<p>call </p>
+<p>Type Hierarchies </p>
+<p><a class="link" href="make_functor.html" title="Struct template make_functor">make_functor</a> </p>
+<p>
+</p>
+<div class="refsect2">
+<a name="id869884"></a><h3>
+<a name="id349532-bb"></a><code class="computeroutput">functor</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span><span class="special">...</span> Args<span class="special">&gt;</span> 
+  <span class="identifier">BOOST_DISPATCH_FORCE_INLINE</span> <span class="identifier">result</span><span class="special">&lt;</span> <a class="link" href="functor.html" title="Struct template functor">functor</a><span class="special">(</span><span class="identifier">Args</span><span class="special">...</span><span class="special">)</span><span class="special">&gt;</span><span class="special">::</span>type 
+  <a name="id349535-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">Args</span> <span class="special">&amp;&amp;</span><span class="special">...</span> args<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Polymorphic variadic function call operator. This catch-all operators dispatches its arguments to the proper type and architecture based implementation using the Type Hierarchies system.</p>
+<p>args Arguments of function <code class="computeroutput">Tag</code> implementation 
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term">Returns:</span></p></td>
+<td><p>The result of the calculation of function <code class="computeroutput">Tag</code> </p></td>
+</tr></tbody>
+</table></div>
+</li></ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="default_site.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.dispatch.functor.functor_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="functor/result_This_Args___id349511.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

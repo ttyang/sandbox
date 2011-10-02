@@ -4,6 +4,7 @@
 #include <boost/simd/toolbox/arithmetic/include/functions/abs.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/abss.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/adds.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/amul.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/arg.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/average.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/ceil.hpp>
@@ -14,6 +15,7 @@
 #include <boost/simd/toolbox/arithmetic/include/functions/divfloor.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/divround.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/divs.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/fam.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/fast_hypot.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/fast_toint.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/floor.hpp>
@@ -24,12 +26,16 @@
 #include <boost/simd/toolbox/arithmetic/include/functions/idivfix.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/idivfloor.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/idivround.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/ifix.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/ifloor.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/iround.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/iround2even.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/isqrt.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/itrunc.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/ldiv.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/ldivide.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/logical_xor.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/madd.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/max.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/min.hpp>
 #include <boost/simd/toolbox/arithmetic/include/functions/minmod.hpp>

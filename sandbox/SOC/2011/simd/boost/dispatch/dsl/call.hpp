@@ -1,11 +1,11 @@
-/*******************************************************************************
- *         Copyright 2003-2010 LASMEA UMR 6602 CNRS/U.B.P
- *         Copyright 2009-2010 LRI    UMR 8623 CNRS/Univ Paris Sud XI
- *
- *          Distributed under the Boost Software License, Version 1.0.
- *                 See accompanying file LICENSE.txt or copy at
- *                     http://www.boost.org/LICENSE_1_0.txt
- ******************************************************************************/
+//==============================================================================
+//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II
+//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI
+//
+//          Distributed under the Boost Software License, Version 1.0.
+//                 See accompanying file LICENSE.txt or copy at
+//                     http://www.boost.org/LICENSE_1_0.txt
+//==============================================================================
 #ifndef BOOST_DISPATCH_DSL_CALL_HPP_INCLUDED
 #define BOOST_DISPATCH_DSL_CALL_HPP_INCLUDED
 
@@ -14,20 +14,55 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <boost/proto/make_expr.hpp>
 #include <boost/dispatch/meta/any.hpp>
+#include <boost/dispatch/meta/as_ref.hpp>
 #include <boost/dispatch/dsl/category.hpp>
 #include <boost/dispatch/functor/functor.hpp>
 #include <boost/dispatch/functor/meta/call.hpp>
-#include <boost/dispatch/dsl/proto/as_child.hpp>
 #include <boost/dispatch/functor/meta/hierarchy.hpp>
 
 #if defined(BOOST_DISPATCH_DONT_USE_PREPROCESSED_FILES)
-#include <boost/dispatch/extension/parameters.hpp>
+#include <boost/dispatch/details/parameters.hpp>
 #include <boost/preprocessor/selection/min.hpp>
 #include <boost/dispatch/functor/preprocessor/call.hpp>
 #include <boost/dispatch/functor/preprocessor/dispatch.hpp>
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
 #include <boost/preprocessor/repetition/enum_binary_params.hpp>
 #endif
+
+namespace boost { namespace dispatch
+{
+namespace tag
+{  
+  struct ast_ {};
+}
+
+namespace meta
+{
+  BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION((boost)(dispatch)(meta)
+                                , tag::terminal_, tag::formal_
+                                , (Expr)
+                                , (ast_< unspecified_<Expr> >)
+                                )
+  {
+    template<class Sig>
+    struct result;
+    
+    template<class This, class A0>
+    struct result<This(A0)>
+    {
+      typedef typename as_ref<A0>::type type;
+    };
+    
+    template<class A0>
+    BOOST_DISPATCH_FORCE_INLINE
+    typename result<implement(A0&)>::type
+    operator()(A0& expr) const
+    {
+        return expr;
+    }
+  };
+    
+} } }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Defines the catch-all call for proto expression
@@ -55,33 +90,30 @@ BOOST_DISPATCH_REGISTER_DISPATCH_IF((boost)(dispatch)(meta), Func, tag::formal_\
                       )                                                       \
 /**/
 
-#define M0(z,n,t)                                                 \
-template<class This,BOOST_PP_ENUM_PARAMS(n,class A)>              \
-struct result<This(BOOST_PP_ENUM_PARAMS(n,A))>                    \
-{                                                                 \
-  typedef typename boost::proto::result_of::                      \
-  make_expr < Func                                                \
-            , BOOST_PP_ENUM_BINARY_PARAMS                         \
-              ( n                                                 \
-              , typename details::result_of                       \
-                ::as_child< typename meta::strip< A               \
-              ,                                 >::type const&    \
-                          >::type BOOST_PP_INTERCEPT              \
-              )                                                   \
-            >::type type;                                         \
-};                                                                \
-template<BOOST_PP_ENUM_PARAMS(n,class A)> inline                  \
-typename result<implement                                         \
-                (BOOST_PP_ENUM_BINARY_PARAMS( n,A                 \
-                                            , const&              \
-                                              BOOST_PP_INTERCEPT) \
-                )                                                 \
-               >::type                                            \
-operator()(BOOST_PP_ENUM_BINARY_PARAMS(n,A,const& a) ) const      \
-{                                                                 \
-  return boost::proto::                                           \
-  make_expr<Func>( BOOST_PP_ENUM(n,M1,~) );                       \
-}                                                                 \
+#define M0(z,n,t)                                                              \
+template<class This,BOOST_PP_ENUM_PARAMS(n,class A)>                           \
+struct result<This(BOOST_PP_ENUM_PARAMS(n,A))>                                 \
+{                                                                              \
+  typedef typename boost::proto::result_of::                                   \
+  make_expr < Func                                                             \
+            , boost::proto::deduce_domain                                      \
+            , BOOST_PP_ENUM_BINARY_PARAMS(n, typename as_ref<A, >::type BOOST_PP_INTERCEPT) \
+            >::type type;                                                      \
+};                                                                             \
+template<BOOST_PP_ENUM_PARAMS(n,class A)>                                      \
+BOOST_DISPATCH_FORCE_INLINE                                                    \
+typename result<implement                                                      \
+                (BOOST_PP_ENUM_BINARY_PARAMS(n, A, & a))                       \
+               >::type                                                         \
+operator()(BOOST_PP_ENUM_BINARY_PARAMS(n, A, & a)) const                       \
+{                                                                              \
+  return boost::proto::detail::                                                \
+  make_expr_< Func                                                             \
+            , boost::proto::                                                   \
+              deduce_domain                                                    \
+            , BOOST_PP_ENUM_BINARY_PARAMS(n, A, & BOOST_PP_INTERCEPT)          \
+            >()( BOOST_PP_ENUM_PARAMS(n, a) );                                 \
+}                                                                              \
 /**/
 
 namespace boost { namespace dispatch { namespace meta
@@ -91,8 +123,8 @@ namespace boost { namespace dispatch { namespace meta
                                                       , BOOST_PROTO_MAX_ARITY
                                                       )
                                         )
-                         ,M4,~
-                         )
+                          ,M4,~
+                          )
 
   template<class Func,class Dummy>
   struct implement<Func(tag::ast_),tag::formal_,Dummy>
@@ -103,8 +135,8 @@ namespace boost { namespace dispatch { namespace meta
                                                         , BOOST_PROTO_MAX_ARITY
                                                         )
                                           )
-                           ,M0,~
-                           )
+                            ,M0,~
+                            )
   };
 } } }
 

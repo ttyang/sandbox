@@ -1,6 +1,7 @@
 #ifndef NT2_TOOLBOX_CONSTANT_CONSTANTS_HPP_INCLUDED
 #define NT2_TOOLBOX_CONSTANT_CONSTANTS_HPP_INCLUDED
 
+#include <nt2/toolbox/constant/include/constants/allbits.hpp>
 #include <nt2/toolbox/constant/include/constants/cgold.hpp>
 #include <nt2/toolbox/constant/include/constants/digits.hpp>
 #include <nt2/toolbox/constant/include/constants/eight.hpp>

@@ -22,9 +22,13 @@
 #include <boost/simd/toolbox/predicates/include/functions/is_nan.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_negative.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_nez.hpp>
+#include <boost/simd/toolbox/predicates/include/functions/is_nge.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_ngez.hpp>
+#include <boost/simd/toolbox/predicates/include/functions/is_ngt.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_ngtz.hpp>
+#include <boost/simd/toolbox/predicates/include/functions/is_nle.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_nlez.hpp>
+#include <boost/simd/toolbox/predicates/include/functions/is_nlt.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_nltz.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_not_equal.hpp>
 #include <boost/simd/toolbox/predicates/include/functions/is_not_equal_with_equal_nans.hpp>

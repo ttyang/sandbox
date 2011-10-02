@@ -6,14 +6,14 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
-<link rel="prev" href="BOOST_SIMD_OPERATOR_INCLUDE.html" title="Macro BOOST_SIMD_OPERATOR_INCLUDE">
+<link rel="prev" href="boost/simd/unaligned_load.html" title="Global unaligned_load">
 <link rel="next" href="boost/simd/tag/abs_.html" title="Struct abs_">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="BOOST_SIMD_OPERATOR_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/abs_.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/simd/unaligned_load.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/abs_.html"><img src="images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -45,6 +45,7 @@
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ifloor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ifloor.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iround_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iround.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.iround2even_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/iround2even.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.isqrt_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/isqrt.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ldiv_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ldiv.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.ldivide_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/ldivide.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.logical_xor_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/logical_xor.hpp&gt;</a></span></dt>
@@ -74,16 +75,17 @@
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_add_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_add.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_prod_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_prod.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.functions.two_split_hpp">Header &lt;boost/simd/toolbox/arithmetic/functions/two_split.hpp&gt;</a></span></dt>
-<dt><span class="section"><a href="arithmetic_toolbox.html#header.boost.simd.toolbox.arithmetic.include_hpp">Header &lt;boost/simd/toolbox/arithmetic/include.hpp&gt;</a></span></dt>
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.simd.toolbox.arithmetic.functions.abs_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/abs.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/abs.hpp</a>&gt;</h3></div></div></div>
-<p>Defines the absolute value functor: abs. </p>
-<p>Copyright 2003 and onward LASMEA UMR 6602 CNRS/U.B.P Clermont-Ferrand Copyright 2009 and onward LRI UMR 8623 CNRS/Univ Paris Sud XI</p>
-<p>Distributed under the Boost Software License, Version 1.0 See accompanying file LICENSE.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a></p>
-<p>alias modulus</p>
-<p>the functor returns a value of the same type than the entry. take care that for signed integers the absolute value of Valmin is Valmin (thus negative !) This is a side effect of the 2-complement representation of integers. To avoid this, you can use the "abss" saturated functor or convert the input parameter to a larger type before taking the abs value. </p>
+<p>Defines the absolute value function: abs. </p>
+<p><b>Alias modulus.&#160;</b></p>
+<p>
+</p>
+<p><b>Description:&#160;</b>the function always returns a value of the same type than the entry. Take care that for signed integers the absolute value of Valmin is Valmin (thus negative!) This is a side effect of the 2-complement representation of integers. To avoid this, you can use the "abss" saturated functor or convert the input parameter to a larger type before taking the abs value. </p>
+<p>
+</p>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
@@ -272,8 +274,8 @@
 <a name="header.boost.simd.toolbox.arithmetic.functions.fma_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/fma.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/fma.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
-     <a name="boost.simd.BOOST_DISPATCH_FUNCTION_id2627750"></a><span class="identifier">BOOST_DISPATCH_FUNCTION_INTERFACE</span><span class="special">(</span><a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">tag::fma_</a><span class="special">,</span> <span class="identifier">fam</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span><span class="special">;</span>
-     <a name="boost.simd.BOOST_DISPATCH_FUNCTION_id2627773"></a><span class="identifier">BOOST_DISPATCH_FUNCTION_INTERFACE</span><span class="special">(</span><a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">tag::fma_</a><span class="special">,</span> <span class="identifier">amul</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span><span class="special">;</span>
+     <a name="boost.simd.BOOST_DISPATCH_FUNCTION_id373655"></a><span class="identifier">BOOST_DISPATCH_FUNCTION_INTERFACE</span><span class="special">(</span><a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">tag::fma_</a><span class="special">,</span> <span class="identifier">fam</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span><span class="special">;</span>
+     <a name="boost.simd.BOOST_DISPATCH_FUNCTION_id373677"></a><span class="identifier">BOOST_DISPATCH_FUNCTION_INTERFACE</span><span class="special">(</span><a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">tag::fma_</a><span class="special">,</span> <span class="identifier">amul</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span><span class="special">;</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
       <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/fma_.html" title="Struct fma_">fma_</a><span class="special">;</span>
     <span class="special">}</span>
@@ -375,6 +377,17 @@
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
       <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/iround2even_.html" title="Struct iround2even_">iround2even_</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.arithmetic.functions.isqrt_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/functions/isqrt.hpp" target="_top">boost/simd/toolbox/arithmetic/functions/isqrt.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/isqrt_.html" title="Struct isqrt_">isqrt_</a><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -698,15 +711,6 @@
   <span class="special">}</span>
 <span class="special">}</span></pre>
 </div>
-<div class="section">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="header.boost.simd.toolbox.arithmetic.include_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/arithmetic/include.hpp" target="_top">boost/simd/toolbox/arithmetic/include.hpp</a>&gt;</h3></div></div></div>
-<pre class="synopsis">
-
-<a class="link" href="BOOST_SIMD_ARITHMETIC_BASE.html" title="Macro BOOST_SIMD_ARITHMETIC_BASE">BOOST_SIMD_ARITHMETIC_BASE</a>()
-<a class="link" href="BOOST_SIMD_ARITHMETIC_RELATIVE.html" title="Macro BOOST_SIMD_ARITHMETIC_RELATIVE">BOOST_SIMD_ARITHMETIC_RELATIVE</a>()
-<a class="link" href="BOOST_SIMD_ARITHMETIC_INCLUDE.html" title="Macro BOOST_SIMD_ARITHMETIC_INCLUDE">BOOST_SIMD_ARITHMETIC_INCLUDE</a>(F)</pre>
-</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
@@ -720,7 +724,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="BOOST_SIMD_OPERATOR_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/abs_.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/simd/unaligned_load.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/abs_.html"><img src="images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Struct template make_functor</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../reference.html#header.boost.dispatch.functor.meta.make_functor_hpp" title="Header &lt;boost/dispatch/functor/meta/make_functor.hpp&gt;">
+<link rel="prev" href="tag/cpu_.html" title="Struct cpu_">
+<link rel="next" href="../../BOOST_DISPATCH_DISPATCH_TYPE_TPL.html" title="Macro BOOST_DISPATCH_DISPATCH_TYPE_TPL">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tag/cpu_.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.dispatch.functor.meta.make_functor_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../../BOOST_DISPATCH_DISPATCH_TYPE_TPL.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.dispatch.make_functor"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Struct template make_functor</span></h2>
+<p>boost::dispatch::make_functor</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../reference.html#header.boost.dispatch.functor.meta.make_functor_hpp" title="Header &lt;boost/dispatch/functor/meta/make_functor.hpp&gt;">boost/dispatch/functor/meta/make_functor.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Tag<span class="special">,</span> <span class="keyword">typename</span> Dummy <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span> 
+<span class="keyword">struct</span> <a class="link" href="make_functor.html" title="Struct template make_functor">make_functor</a> <span class="special">{</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <a class="link" href="functor.html" title="Struct template functor">functor</a><span class="special">&lt;</span> <span class="identifier">Tag</span> <span class="special">&gt;</span> <a name="boost.dispatch.make_functor.type"></a><span class="identifier">type</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id874987"></a><h2>Description</h2>
+<p>This meta-function builds a concrete <a class="link" href="functor.html" title="Struct template functor">functor</a> type from a given function <code class="computeroutput">Tag</code>. It's main purpose is to delay the instanciation of <a class="link" href="functor.html" title="Struct template functor">functor</a> type in dependant context to satisfy the two-phase look-up rule enforced by clang and g++-4.6 and superior.</p>
+<p>
+</p>
+<p><b>Models:&#160;</b></p>
+<p>
+</p>
+<p><b>Semantic:&#160;</b></p>
+<p>
+For any <code class="computeroutput">Tag</code> : </p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">make_functor</span><span class="special">&lt;</span><span class="identifier">Tag</span><span class="special">&gt;</span><span class="special">::</span><span class="identifier">type</span> <span class="identifier">type</span><span class="special">;</span>
+</pre>
+<p>is equivalent to</p>
+<pre class="programlisting"> <span class="keyword">typedef</span> <span class="identifier">functor</span><span class="special">&lt;</span><span class="identifier">Tag</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+</pre>
+<p> </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
+      UMR 6602 CNRS/Univ. Clermont II<br>Copyright &#169; 2009-2011 LRI UMR 8623
+      CNRS/Univ Paris Sud XI<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tag/cpu_.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../../reference.html#header.boost.dispatch.functor.meta.make_functor_hpp"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="../../BOOST_DISPATCH_DISPATCH_TYPE_TPL.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

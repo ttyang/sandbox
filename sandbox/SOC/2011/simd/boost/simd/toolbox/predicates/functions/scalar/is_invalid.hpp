@@ -8,8 +8,6 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SCALAR_IS_INVALID_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SCALAR_IS_INVALID_HPP_INCLUDED
-#include <boost/dispatch/details/ignore_unused.hpp>
-
 #include <boost/simd/include/functions/is_nan.hpp>
 
 
@@ -23,31 +21,26 @@ namespace boost { namespace simd { namespace ext
                             , (scalar_< arithmetic_<A0> >)
                             )
   {
-
     typedef bool result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(1)
+    inline result_type operator()(A0 const&)const 
     {
-      ignore_unused(a0);
-      return false;
+      return boost::simd::False<A0>();
     }
   };
 } } }
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is real_
+// Implementation when type A0 is floating_
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::is_invalid_, tag::cpu_
                             , (A0)
-                            , (scalar_< real_<A0> >)
+                            , (scalar_< floating_<A0> >)
                             )
   {
-
     typedef bool result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
        return boost::simd::is_nan(a0-a0);

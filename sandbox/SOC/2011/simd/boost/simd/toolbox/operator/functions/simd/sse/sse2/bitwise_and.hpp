@@ -25,7 +25,6 @@ namespace boost { namespace simd { namespace ext
 
     BOOST_SIMD_FUNCTOR_CALL(2)
     {
-      using boost::simd::native_cast;
       typedef typename dispatch::meta::as_integer< A0 >::type int_type;
       A0     that = { native_cast<A0>
                       ( _mm_and_si128 ( native_cast<int_type>( a0 )
@@ -54,8 +53,8 @@ namespace boost { namespace simd { namespace ext
 
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::bitwise_and_, boost::simd::tag::sse2_
                             , (A0)(A1)
-                            , ((simd_<float_<A0>,boost::simd::tag::sse_>))
-                              ((simd_<float_<A1>,boost::simd::tag::sse_>))
+                            , ((simd_<single_<A0>,boost::simd::tag::sse_>))
+                              ((simd_<single_<A1>,boost::simd::tag::sse_>))
                             )
   {
     typedef A0 result_type;

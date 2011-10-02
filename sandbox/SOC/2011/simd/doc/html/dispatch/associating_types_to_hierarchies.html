@@ -5,20 +5,104 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch 1.0">
+<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
 <link rel="prev" href="defining_hierarchies.html" title="Defining hierarchies">
-<link rel="next" href="scalar_hierarchy_and_properties.html" title="Scalar hierarchy and properties">
+<link rel="next" href="built_in_hierarchies.html" title="Built-in hierarchies">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="defining_hierarchies.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="scalar_hierarchy_and_properties.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="defining_hierarchies.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="built_in_hierarchies.html"><img src="../images/next.png" alt="Next"></a>
 </div>
-<div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dispatch.associating_types_to_hierarchies"></a><a class="link" href="associating_types_to_hierarchies.html" title="Associating types to hierarchies">Associating
     types to hierarchies</a>
-</h2></div></div></div></div>
+</h2></div></div></div>
+<p>
+      Associating a type to a hierarchy is usually just a matter of specializing
+      the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">hierarchy_of</span></code>
+      meta-function:
+    </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Origin</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">hierarchy_of</span><span class="special">&lt;</span><em class="replaceable"><code>my_type</code></em><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <em class="replaceable"><code>my_hierarchy</code></em> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Cv-qualifiers and references are stripped by default when calling <code class="computeroutput"><span class="identifier">hierarchy_of</span></code>, so there is no need to define
+        the hierarchy of reference variants
+      </p></td></tr>
+</table></div>
+<p>
+      Typically the hierarchy will be a template holding the hierarchized type, so
+      for example with the <code class="computeroutput"><span class="identifier">double_</span></code>
+      hierarchy defined previously you'll want
+    </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Origin</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">hierarchy_of</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">double_</span><span class="special">&lt;</span><span class="identifier">Origin</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      If you have a composite hierarchy, you will probably want something like
+    </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Origin</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">hierarchy_of</span><span class="special">&lt;</span><span class="identifier">as_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">Origin</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">target_</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">hierarchy_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Origin</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      The <code class="computeroutput"><span class="identifier">Origin</span></code> parameter refers
+      to the type being hierarchized <span class="emphasis"><em>globally</em></span>, while the first
+      parameter is the type being hierarchized relatively, i.e. an inner type of
+      the origin.
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <code class="computeroutput"><span class="identifier">meta</span><span class="special">::</span><span class="identifier">hierarchy_of</span></code> purposedly doesn't accept
+        the use of SFINAE for partial specializations, because those tend to be too
+        generic and cause problems. If you want to use SFINAE, specialize <code class="computeroutput"><span class="identifier">details</span><span class="special">::</span><span class="identifier">hierarchy_of</span></code> instead, which has an extra
+        parameter usable for this and is only selected if there is no suitable specialization
+        of <code class="computeroutput"><span class="identifier">meta</span><span class="special">::</span><span class="identifier">hierarchy_of</span></code>.
+      </p></td></tr>
+</table></div>
+<p>
+      Furthermore, if you associate a composite hierarchy to your type, you'll need
+      to specialize <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">primitive_of</span></code>:
+    </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">primitive_of</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+  <span class="special">:</span> <span class="identifier">primitive_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+<span class="special">{</span>
+<span class="special">};</span>
+</pre>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        <code class="computeroutput"><span class="identifier">primitive_of</span></code> must not refer
+        to the inner type, but to the <span class="bold"><strong>innermost</strong></span>
+        type, i.e. the inner of the inner if two composite hierarchies are chained
+        together.
+      </p></td></tr>
+</table></div>
+</div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
@@ -31,7 +115,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="defining_hierarchies.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="scalar_hierarchy_and_properties.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="defining_hierarchies.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="built_in_hierarchies.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

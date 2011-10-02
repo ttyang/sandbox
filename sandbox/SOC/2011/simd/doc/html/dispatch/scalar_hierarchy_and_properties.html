@@ -24,6 +24,9 @@
       The hierarchy of a built-in fundamental type <code class="computeroutput"><span class="identifier">T</span></code>
       is the composite <code class="computeroutput"><span class="identifier">scalar_</span><span class="special">&lt;</span>
       <span class="keyword">typename</span> <span class="identifier">property_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="special">&gt;</span></code>.
+      <br> Properties are decoupled from <code class="computeroutput"><span class="identifier">scalar_</span></code>
+      so that it is easy to create new hierarchies such as <code class="computeroutput"><span class="identifier">simd_</span><span class="special">&lt;</span> <span class="identifier">integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+      <span class="special">&gt;</span></code> etc.
     </p>
 <p>
       A list of all properties available and how they relate to each other is listed

@@ -1,24 +1,9 @@
-//==============================================================================
-//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II       
-//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI       
-//                                                                              
-//          Distributed under the Boost Software License, Version 1.0.          
-//                 See accompanying file LICENSE.txt or copy at                 
-//                     http://www.boost.org/LICENSE_1_0.txt                     
-//==============================================================================
 #ifndef NT2_TOOLBOX_IEEE_INCLUDE_FUNCTIONS_SIGNNZ_HPP_INCLUDED
 #define NT2_TOOLBOX_IEEE_INCLUDE_FUNCTIONS_SIGNNZ_HPP_INCLUDED
 
-#include <boost/simd/toolbox/ieee/include/functions/signnz.hpp>
-
-namespace nt2
-{
-  namespace tag
-  {
-    using boost::simd::tag::signnz_;
-  }
-
-  using boost::simd::signnz;
-}
+#include <nt2/toolbox/ieee/functions/signnz.hpp>
+#include <boost/simd/toolbox/ieee/functions/signnz.hpp>
+#include <boost/simd/toolbox/ieee/functions/scalar/signnz.hpp>
+#include <boost/simd/toolbox/ieee/functions/simd/common/signnz.hpp>
 
 #endif

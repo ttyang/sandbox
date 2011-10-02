@@ -64,7 +64,7 @@ namespace nt2 {  namespace details
     #endif
   }
   
-  std::ostream& indent(std::ostream& os, size_t depth)
+  inline std::ostream& indent(std::ostream& os, size_t depth)
   {
     for(size_t i=0; i<depth; ++i)
       os << "    ";
@@ -88,7 +88,7 @@ namespace nt2
    *
    * \include type_id.cpp
    *
-   * This examples outpus:
+   * This examples output:
    *
    * \code
    * char [21]

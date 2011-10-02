@@ -5,19 +5,84 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch 1.0">
+<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
 <link rel="prev" href="defining_functions.html" title="Defining functions">
-<link rel="next" href="reference.html" title="Reference">
+<link rel="next" href="../reference.html" title="Reference">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="defining_functions.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="defining_functions.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="../reference.html"><img src="../images/next.png" alt="Next"></a>
 </div>
-<div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dispatch.defining_specializations"></a><a class="link" href="defining_specializations.html" title="Defining specializations">Defining specializations</a>
-</h2></div></div></div></div>
+</h2></div></div></div>
+<p>
+      Once you have defined a function, you may then inject specializations using
+      its tag, a site, a sequence of template parameters and a sequence of hierarchies,
+      one per argument.
+    </p>
+<p>
+      To do so you must associate those elements with a Polymorphic Function Object
+      (most of the time actuallay monomorphic, since the types of the arguments will
+      be encoded in the hierarchies).
+    </p>
+<p>
+      You may either do this by hand by overloading the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">dispatching</span><span class="special">(</span></code><em class="replaceable"><code>Tag</code></em><code class="computeroutput"><span class="special">,</span> </code><em class="replaceable"><code>Site</code></em><code class="computeroutput"><span class="special">,</span> </code><em class="replaceable"><code>HierarchyArg0</code></em><code class="computeroutput"><span class="special">,</span> <span class="special">...,</span> </code><em class="replaceable"><code>HierarchyArgN</code></em><code class="computeroutput"><span class="special">)</span></code> function and making it return a PFO of your
+      choice, or preferably use one of the provided macros.
+    </p>
+<p>
+      The PFO may be in any namespace of your choice, and doesn't have to be in the
+      same namespace as the function or its tag.
+    </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+        To use the Boost.Dispatch specialization macros, you need to forward-declare
+</p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Sig</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Site</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">implement</span><span class="special">;</span>
+</pre>
+<p>
+        in the namespace you wish to put your specializations in.
+      </p>
+</td></tr>
+</table></div>
+<p>
+      The recommended macro to use is <code class="computeroutput"><span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span></code>,
+      used like so
+    </p>
+<pre class="programlisting"><span class="keyword">namespace</span> <em class="replaceable"><code>my_namespace</code></em>
+<span class="special">{</span>
+    <span class="keyword">namespace</span> <em class="replaceable"><code>my_inner_namespace</code></em>
+    <span class="special">{</span>
+        <span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION</span><span class="special">((</span><em class="replaceable"><code>my_namespace</code></em><span class="special">)(</span><em class="replaceable"><code>my_inner_namespace</code></em><span class="special">)</span>
+                                             <span class="special">,</span> <em class="replaceable"><code>fully::qualified::function_tag</code></em><span class="special">,</span> <em class="replaceable"><code>fully::qualified::site</code></em><span class="special">,</span> <span class="special">(</span><span class="identifier">A0</span><span class="special">)(</span><span class="identifier">A1</span><span class="special">)</span>
+                                             <span class="special">,</span> <span class="special">(</span><em class="replaceable"><code>fully::qualified::hierarchy_for_arg0</code></em><span class="special">&lt;</span><span class="identifier">A0</span><span class="special">&gt;)(</span><em class="replaceable"><code>fully::qualified::hierarchy_for_arg1</code></em><span class="special">&lt;</span><span class="identifier">A1</span><span class="special">&gt;)</span>
+                                             <span class="special">)</span>
+        <span class="special">{</span>
+            <span class="keyword">typedef</span> <em class="replaceable"><code>some_type</code></em> <span class="identifier">result_type</span><span class="special">;</span> <span class="comment">// or result_of protocol</span>
+
+            <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">A0</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a0</span><span class="special">,</span> <span class="identifier">A1</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a1</span><span class="special">)</span> <span class="keyword">const</span>
+            <span class="special">{</span>
+                <span class="comment">// function body</span>
+            <span class="special">}</span>
+        <span class="special">};</span>
+    <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+      Other variants allow to define a SFINAE condition on the specialization (<code class="computeroutput"><span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_IF</span></code>),
+      the use of non-type template parameters (<code class="computeroutput"><span class="identifier">BOOST_DISPATCH_FUNCTOR_IMPLEMENTATION_TPL</span></code>),
+      or just the ability define a mapping to an existing PFO (<code class="computeroutput"><span class="identifier">BOOST_DISPATCH_REGISTER_DISPATCH</span></code>).
+    </p>
+</div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA
@@ -30,7 +95,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="defining_functions.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="reference.html"><img src="../images/next.png" alt="Next"></a>
+<a accesskey="p" href="defining_functions.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="../reference.html"><img src="../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

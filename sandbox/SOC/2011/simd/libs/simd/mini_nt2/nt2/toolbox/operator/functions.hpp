@@ -1,6 +1,7 @@
 #ifndef NT2_TOOLBOX_OPERATOR_FUNCTIONS_HPP_INCLUDED
 #define NT2_TOOLBOX_OPERATOR_FUNCTIONS_HPP_INCLUDED
 
+#include <nt2/toolbox/operator/include/functions/assign.hpp>
 #include <nt2/toolbox/operator/include/functions/bitwise_and.hpp>
 #include <nt2/toolbox/operator/include/functions/bitwise_or.hpp>
 #include <nt2/toolbox/operator/include/functions/bitwise_xor.hpp>
@@ -28,6 +29,7 @@
 #include <nt2/toolbox/operator/include/functions/shift_right.hpp>
 #include <nt2/toolbox/operator/include/functions/splat.hpp>
 #include <nt2/toolbox/operator/include/functions/store.hpp>
+#include <nt2/toolbox/operator/include/functions/unaligned_load.hpp>
 #include <nt2/toolbox/operator/include/functions/unary_minus.hpp>
 #include <nt2/toolbox/operator/include/functions/unary_plus.hpp>
 

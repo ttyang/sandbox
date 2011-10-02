@@ -3,6 +3,8 @@
 
 #include <boost/simd/toolbox/operator/functions/multiplies.hpp>
 #include <boost/simd/toolbox/operator/functions/scalar/multiplies.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/common/multiplies.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/sse/avx/multiplies.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/sse/sse2/multiplies.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/sse/sse4_1/multiplies.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/vmx/altivec/multiplies.hpp>

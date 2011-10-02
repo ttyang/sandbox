@@ -24,7 +24,6 @@ namespace boost { namespace simd { namespace ext
                             )
   {
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(2)
     {
       return b_or(shri(a0, a1), shli(a0, (sizeof(A0)*CHAR_BIT-a1)));
@@ -32,11 +31,10 @@ namespace boost { namespace simd { namespace ext
   };
 
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::ror_, tag::cpu_, (A0)(A1)
-                            , (scalar_< real_<A0> >)(scalar_< integer_<A1> >)
+                            , (scalar_< floating_<A0> >)(scalar_< integer_<A1> >)
                             )
   {
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(2)
     {
       typedef typename dispatch::meta::as_integer<A0, unsigned>::type itype;

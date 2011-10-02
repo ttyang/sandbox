@@ -1,11 +1,11 @@
-/*******************************************************************************
- *         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
- *         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
- *
- *          Distributed under the Boost Software License, Version 1.0.
- *                 See accompanying file LICENSE.txt or copy at
- *                     http://www.boost.org/LICENSE_1_0.txt
- ******************************************************************************/
+//==============================================================================
+//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II
+//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI
+//
+//          Distributed under the Boost Software License, Version 1.0.
+//                 See accompanying file LICENSE.txt or copy at
+//                     http://www.boost.org/LICENSE_1_0.txt
+//==============================================================================
 #ifndef BOOST_SIMD_SDK_SIMD_DETAILS_COMMON_HPP_INCLUDED
 #define BOOST_SIMD_SDK_SIMD_DETAILS_COMMON_HPP_INCLUDED
 
@@ -32,7 +32,7 @@ namespace boost { namespace simd { namespace details
 #if !defined(BOOST_SIMD_DONT_USE_PREPROCESSED_FILES)
 #include <boost/simd/toolbox/operator/specific/preprocessed/common.hpp>
 #else
-#include <boost/dispatch/extension/parameters.hpp>
+#include <boost/dispatch/details/parameters.hpp>
 #include <boost/simd/sdk/functor/preprocessor/dispatch.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
@@ -45,26 +45,28 @@ namespace boost { namespace simd { namespace details
 ////////////////////////////////////////////////////////////////////////////////
 // Register all tag and extension agnostic call for common code sharing
 ////////////////////////////////////////////////////////////////////////////////
-#define M0(z,n,t) (generic_< unspecified_<A0> >)
+#define M0(z,n,t) (A##n)
+#define M1(z,n,t) (generic_< unspecified_<A##n> >)
 
-#define M1(z,n,t)                                            \
-BOOST_SIMD_REGISTER_DISPATCH ( Tag , tag::cpu_, (A0)(Tag)    \
-                             , BOOST_PP_REPEAT(n,M0,~)       \
+#define M2(z,n,t)                                            \
+BOOST_SIMD_REGISTER_DISPATCH ( Tag , tag::cpu_, (Tag)BOOST_PP_REPEAT(n,M0,~) \
+                             , BOOST_PP_REPEAT(n,M1,~)       \
                              )                               \
 /**/
 
 namespace boost { namespace simd { namespace ext
 {
-  BOOST_PP_REPEAT_FROM_TO(1,BOOST_PP_INC(BOOST_DISPATCH_MAX_ARITY),M1,~)
+  BOOST_PP_REPEAT_FROM_TO(1,BOOST_PP_INC(BOOST_DISPATCH_MAX_ARITY),M2,~)
 } } }
 
-#undef M0
+#undef M2
 #undef M1
+#undef M0
 
 ////////////////////////////////////////////////////////////////////////////////
 // Generate all the common map calls over Tag using boost::simd::map
 ////////////////////////////////////////////////////////////////////////////////
-#define M0(z,n,t) generic_< unspecified_<BOOST_PP_CAT(A,n)> >
+#define M0(z,n,t) generic_< unspecified_<A##n> >
 
 #define M1(z,n,t)                                                           \
 namespace boost { namespace simd { namespace ext                            \

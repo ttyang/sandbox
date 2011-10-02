@@ -10,13 +10,14 @@
 #define BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_IS_NEZ_HPP_INCLUDED
 #include <boost/simd/include/simd.hpp>
 #include <boost/dispatch/include/functor.hpp>
-#include <boost/simd/toolbox/predicates/include.hpp>
+
 
 namespace boost { namespace simd { namespace tag
   {         
     struct is_nez_ {};
   }
-  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::is_nez_, is_nez, 1)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::is_nez_, is_nez,  1)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::is_nez_, is_true, 1)
 } }
  
 #endif

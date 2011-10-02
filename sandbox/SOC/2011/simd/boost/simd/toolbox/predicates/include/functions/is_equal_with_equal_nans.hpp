@@ -4,5 +4,6 @@
 #include <boost/simd/toolbox/predicates/functions/is_equal_with_equal_nans.hpp>
 #include <boost/simd/toolbox/predicates/functions/scalar/is_equal_with_equal_nans.hpp>
 #include <boost/simd/toolbox/predicates/functions/simd/common/is_equal_with_equal_nans.hpp>
+#include <boost/simd/toolbox/predicates/functions/simd/sse/avx/is_equal_with_equal_nans.hpp>
 
 #endif

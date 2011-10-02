@@ -6,19 +6,20 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
 <link rel="up" href="simd.html" title="Chapter&#160;2.&#160;simd">
-<link rel="prev" href="BOOST_SIMD_BITWISE_INCLUDE.html" title="Macro BOOST_SIMD_BITWISE_INCLUDE">
-<link rel="next" href="boost/simd/tag/Inf.html" title="Struct Inf">
+<link rel="prev" href="boost/simd/tag/twopower_.html" title="Struct twopower_">
+<link rel="next" href="boost/simd/tag/Allbits.html" title="Struct Allbits">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="BOOST_SIMD_BITWISE_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/Inf.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/simd/tag/twopower_.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/Allbits.html"><img src="images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="constant_toolbox"></a>Constant Toolbox</h2></div></div></div>
 <div class="toc"><dl>
+<dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.allbits_hpp">Header &lt;boost/simd/toolbox/constant/constants/allbits.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.cgold_hpp">Header &lt;boost/simd/toolbox/constant/constants/cgold.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eight_hpp">Header &lt;boost/simd/toolbox/constant/constants/eight.hpp&gt;</a></span></dt>
 <dt><span class="section"><a href="constant_toolbox.html#header.boost.simd.toolbox.constant.constants.eleven_hpp">Header &lt;boost/simd/toolbox/constant/constants/eleven.hpp&gt;</a></span></dt>
@@ -95,11 +96,22 @@
 </dl></div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
+<a name="header.boost.simd.toolbox.constant.constants.allbits_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/allbits.hpp" target="_top">boost/simd/toolbox/constant/constants/allbits.hpp</a>&gt;</h3></div></div></div>
+<pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
+      <span class="keyword">struct</span> <a class="link" href="boost/simd/tag/Allbits.html" title="Struct Allbits">Allbits</a><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+<span class="special">}</span></pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.simd.toolbox.constant.constants.cgold_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/cgold.hpp" target="_top">boost/simd/toolbox/constant/constants/cgold.hpp</a>&gt;</h3></div></div></div>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629146"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Cgold</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3EC3910D</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375072"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Cgold</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3EC3910D</span><span class="special">,</span> 
                                     <span class="number">0x3FD8722191A02D61ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -111,7 +123,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629194"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eight</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">8</span><span class="special">,</span> <span class="number">0x41000000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375119"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eight</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">8</span><span class="special">,</span> <span class="number">0x41000000UL</span><span class="special">,</span> 
                                     <span class="number">0x4020000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -123,7 +135,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629242"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eleven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">11</span><span class="special">,</span> <span class="number">0x41300000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375166"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eleven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">11</span><span class="special">,</span> <span class="number">0x41300000</span><span class="special">,</span> 
                                     <span class="number">0x4026000000000000ll</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -135,7 +147,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629289"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0X34000000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375213"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Eps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0X34000000</span><span class="special">,</span> 
                                     <span class="number">0x3CB0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -165,7 +177,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629463"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">False</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x0UL</span><span class="special">,</span> <span class="number">0x0ULL</span><span class="special">)</span><span class="special">;</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375382"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">False</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x0UL</span><span class="special">,</span> <span class="number">0x0ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -176,7 +188,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629510"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Five</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">5</span><span class="special">,</span> <span class="number">0x40a00000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375429"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Five</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">5</span><span class="special">,</span> <span class="number">0x40a00000UL</span><span class="special">,</span> 
                                     <span class="number">0x4014000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -188,7 +200,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629558"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Four</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">4</span><span class="special">,</span> <span class="number">0x40800000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375475"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Four</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">4</span><span class="special">,</span> <span class="number">0x40800000UL</span><span class="special">,</span> 
                                     <span class="number">0x4010000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -200,7 +212,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629606"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Fourthrooteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3C9837F0</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375522"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Fourthrooteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3C9837F0</span><span class="special">,</span> 
                                     <span class="number">0x3F20000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -212,7 +224,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629654"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Gold</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3FCF1BBD</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375569"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Gold</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3FCF1BBD</span><span class="special">,</span> 
                                     <span class="number">0x3FF9E3779B97F4A8ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -224,7 +236,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629702"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Half</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3F000000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375616"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Half</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3F000000</span><span class="special">,</span> 
                                     <span class="number">0x3FE0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -236,7 +248,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2629750"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Halfeps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x33800000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id375663"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Halfeps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x33800000</span><span class="special">,</span> 
                                     <span class="number">0x3CA0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -305,7 +317,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630111"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Meight</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 8<span class="special">,</span> <span class="number">0xc1000000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376019"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Meight</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 8<span class="special">,</span> <span class="number">0xc1000000UL</span><span class="special">,</span> 
                                     <span class="number">0xc020000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -317,7 +329,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630158"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mfive</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 5<span class="special">,</span> <span class="number">0xc0a00000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376066"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mfive</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 5<span class="special">,</span> <span class="number">0xc0a00000UL</span><span class="special">,</span> 
                                     <span class="number">0xc014000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -329,7 +341,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630206"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mfour</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 4<span class="special">,</span> <span class="number">0xc0800000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376113"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mfour</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 4<span class="special">,</span> <span class="number">0xc0800000UL</span><span class="special">,</span> 
                                     <span class="number">0xc010000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -341,7 +353,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630254"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mhalf</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0xBF000000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376159"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mhalf</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0xBF000000</span><span class="special">,</span> 
                                     <span class="number">0xBFE0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -386,7 +398,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630515"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mlogeps2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x40FF1402</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376418"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mlogeps2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x40FF1402</span><span class="special">,</span> 
                                     <span class="number">0x403205966F2B4F13ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -398,7 +410,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630563"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mnine</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 9<span class="special">,</span> <span class="number">0xc1100000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376464"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mnine</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 9<span class="special">,</span> <span class="number">0xc1100000UL</span><span class="special">,</span> 
                                     <span class="number">0xc022000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -410,7 +422,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630611"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mone</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 1<span class="special">,</span> <span class="number">0xbf800000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376511"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mone</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 1<span class="special">,</span> <span class="number">0xbf800000UL</span><span class="special">,</span> 
                                     <span class="number">0xbff0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -422,7 +434,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630659"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mseven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 7<span class="special">,</span> <span class="number">0xc0e00000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376558"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mseven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 7<span class="special">,</span> <span class="number">0xc0e00000UL</span><span class="special">,</span> 
                                     <span class="number">0xc01c000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -434,7 +446,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630707"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Msix</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 6<span class="special">,</span> <span class="number">0xc0c00000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376605"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Msix</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 6<span class="special">,</span> <span class="number">0xc0c00000UL</span><span class="special">,</span> 
                                     <span class="number">0xc018000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -446,7 +458,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630755"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mten</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 10<span class="special">,</span> <span class="number">0xc1200000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376652"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mten</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 10<span class="special">,</span> <span class="number">0xc1200000UL</span><span class="special">,</span> 
                                     <span class="number">0xc024000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -458,7 +470,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630802"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mthree</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 3<span class="special">,</span> <span class="number">0xc0400000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376698"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mthree</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 3<span class="special">,</span> <span class="number">0xc0400000UL</span><span class="special">,</span> 
                                     <span class="number">0xc008000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -470,7 +482,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630850"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mtwo</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 2<span class="special">,</span> <span class="number">0xc0000000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376745"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mtwo</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="special">-</span> 2<span class="special">,</span> <span class="number">0xc0000000UL</span><span class="special">,</span> 
                                     <span class="number">0xc000000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -482,7 +494,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630898"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mzero</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x80000000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376792"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Mzero</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x80000000</span><span class="special">,</span> 
                                     <span class="number">0x8000000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -494,7 +506,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2630946"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Nan</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0xFFFFFFFF</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id376839"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Nan</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0xFFFFFFFF</span><span class="special">,</span> 
                                     <span class="number">0xFFFFFFFFFFFFFFFFULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -539,7 +551,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631196"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Nine</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">9</span><span class="special">,</span> <span class="number">0x41100000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377087"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Nine</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">9</span><span class="special">,</span> <span class="number">0x41100000UL</span><span class="special">,</span> 
                                     <span class="number">0x4022000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -551,7 +563,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631244"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">One</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3f800000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377134"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">One</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3f800000UL</span><span class="special">,</span> 
                                     <span class="number">0x3ff0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -563,7 +575,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631292"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Pi</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x40490FDB</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377180"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Pi</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x40490FDB</span><span class="special">,</span> 
                                     <span class="number">0x400921FB54442D18ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -575,7 +587,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631340"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Quarter</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3E800000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377227"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Quarter</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3E800000</span><span class="special">,</span> 
                                     <span class="number">0x3FD0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -607,7 +619,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631560"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Seven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">7</span><span class="special">,</span> <span class="number">0x40e00000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377444"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Seven</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">7</span><span class="special">,</span> <span class="number">0x40e00000UL</span><span class="special">,</span> 
                                     <span class="number">0x401c000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -630,7 +642,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631741"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Six</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">6</span><span class="special">,</span> <span class="number">0x40c00000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377623"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Six</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">6</span><span class="special">,</span> <span class="number">0x40c00000UL</span><span class="special">,</span> 
                                     <span class="number">0x4018000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -642,7 +654,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631789"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Smallestposval</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x00800000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377670"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Smallestposval</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x00800000</span><span class="special">,</span> 
                                     <span class="number">0x0010000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -654,7 +666,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631837"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Splitfactor</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x46000000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377716"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Splitfactor</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x46000000</span><span class="special">,</span> 
                                     <span class="number">0x41A0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -666,7 +678,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631885"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrt_2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3FB504F3</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377763"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrt_2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3FB504F3</span><span class="special">,</span> 
                                     <span class="number">0x3ff6A09E667F3BCCULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -678,7 +690,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631933"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrt_2o_2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3F3504F3</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377810"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrt_2o_2</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3F3504F3</span><span class="special">,</span> 
                                     <span class="number">0x3FE6A09E667F3BCDULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -690,7 +702,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2631980"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x39B504F3</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377857"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Sqrteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x39B504F3</span><span class="special">,</span> 
                                     <span class="number">0x3E50000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -702,7 +714,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632028"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Ten</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="number">0x41200000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377904"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Ten</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">10</span><span class="special">,</span> <span class="number">0x41200000UL</span><span class="special">,</span> 
                                     <span class="number">0x4024000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -714,7 +726,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632076"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Third</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3EAAAAAB</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377950"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Third</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3EAAAAAB</span><span class="special">,</span> 
                                     <span class="number">0x3FD5555555555555ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -726,7 +738,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632124"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Thirdrooteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3BA14518</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id377997"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Thirdrooteps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3BA14518</span><span class="special">,</span> 
                                     <span class="number">0x3ED965FEA53D6E42ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -740,7 +752,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632186"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Three</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x40400000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378058"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Three</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x40400000UL</span><span class="special">,</span> 
                                     <span class="number">0x4008000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -752,7 +764,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632234"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Threeeps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x34C00000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378104"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Threeeps</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">3</span><span class="special">,</span> <span class="number">0x34C00000</span><span class="special">,</span> 
                                     <span class="number">0x3CC8000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -761,13 +773,10 @@
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.simd.toolbox.constant.constants.true_hpp"></a>Header &lt;<a href="../../boost/simd/toolbox/constant/constants/true.hpp" target="_top">boost/simd/toolbox/constant/constants/true.hpp</a>&gt;</h3></div></div></div>
-<pre class="synopsis">
-
-<a class="link" href="BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_TRUE_HPP_INCLUDED.html" title="Macro BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_TRUE_HPP_INCLUDED">BOOST_SIMD_TOOLBOX_CONSTANT_CONSTANTS_TRUE_HPP_INCLUDED</a></pre>
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632281"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">True</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3F800000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378151"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">True</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">1</span><span class="special">,</span> <span class="number">0x3F800000UL</span><span class="special">,</span> 
                                     <span class="number">0x3FF0000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -779,7 +788,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632333"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twelve</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">12</span><span class="special">,</span> <span class="number">0x41400000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378198"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twelve</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">12</span><span class="special">,</span> <span class="number">0x41400000</span><span class="special">,</span> 
                                     <span class="number">0x4028000000000000ll</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -793,7 +802,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632395"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Two</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">0x40000000UL</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378258"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Two</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">0x40000000UL</span><span class="special">,</span> 
                                     <span class="number">0x4000000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -805,7 +814,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632443"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twotom10</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3A800000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378305"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twotom10</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x3A800000</span><span class="special">,</span> 
                                     <span class="number">0x3F50000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -817,7 +826,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632491"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twotonmb</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x4B000000</span><span class="special">,</span> 
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378352"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Twotonmb</span><span class="special">,</span> <span class="keyword">double</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0x4B000000</span><span class="special">,</span> 
                                     <span class="number">0x4330000000000000ULL</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
@@ -851,7 +860,7 @@
 <pre class="synopsis"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
   <span class="keyword">namespace</span> <span class="identifier">simd</span> <span class="special">{</span>
     <span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="special">{</span>
-       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id2632883"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Zero</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+       <a name="boost.simd.tag.BOOST_SIMD_CONSTANT_REG_id378739"></a><span class="identifier">BOOST_SIMD_CONSTANT_REGISTER</span><span class="special">(</span><span class="identifier">Zero</span><span class="special">,</span> <span class="keyword">int</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
     <span class="special">}</span>
   <span class="special">}</span>
 <span class="special">}</span></pre>
@@ -869,7 +878,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="BOOST_SIMD_BITWISE_INCLUDE.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/Inf.html"><img src="images/next.png" alt="Next"></a>
+<a accesskey="p" href="boost/simd/tag/twopower_.html"><img src="images/prev.png" alt="Prev"></a><a accesskey="u" href="simd.html"><img src="images/up.png" alt="Up"></a><a accesskey="h" href="index.html"><img src="images/home.png" alt="Home"></a><a accesskey="n" href="boost/simd/tag/Allbits.html"><img src="images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

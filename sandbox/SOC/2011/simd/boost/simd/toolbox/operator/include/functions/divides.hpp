@@ -3,6 +3,8 @@
 
 #include <boost/simd/toolbox/operator/functions/divides.hpp>
 #include <boost/simd/toolbox/operator/functions/scalar/divides.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/common/divides.hpp>
+#include <boost/simd/toolbox/operator/functions/simd/sse/avx/divides.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/sse/sse2/divides.hpp>
 #include <boost/simd/toolbox/operator/functions/simd/vmx/altivec/divides.hpp>
 

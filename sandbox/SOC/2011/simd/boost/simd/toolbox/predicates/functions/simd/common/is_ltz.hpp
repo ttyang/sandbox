@@ -8,7 +8,6 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SIMD_COMMON_IS_LTZ_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SIMD_COMMON_IS_LTZ_HPP_INCLUDED
-
 #include <boost/simd/toolbox/predicates/functions/is_ltz.hpp>
 #include <boost/simd/include/functions/is_less.hpp>
 #include <boost/simd/include/constants/zero.hpp>
@@ -24,9 +23,7 @@ namespace boost { namespace simd { namespace ext
                             , ((simd_<signed_<A0>,X>))
                             )
   {
-
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       return lt(a0, Zero<A0>());
@@ -45,12 +42,10 @@ namespace boost { namespace simd { namespace ext
                             , ((simd_<unsigned_<A0>,X>))
                             )
   {
-
     typedef A0 result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(1)
+    inline result_type operator()(const A0&)const
     {
-      return boost::simd::False<A0>();
+     return boost::simd::False<A0>();
     }
   };
 } } }

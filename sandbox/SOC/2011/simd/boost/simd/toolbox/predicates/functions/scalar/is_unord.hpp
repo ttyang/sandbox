@@ -8,10 +8,8 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SCALAR_IS_UNORD_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_SCALAR_IS_UNORD_HPP_INCLUDED
-#include <boost/simd/include/functions/boolean.hpp>
-#include <boost/dispatch/details/ignore_unused.hpp>
 #include <boost/simd/include/functions/is_nan.hpp>
-
+#include <boost/simd/include/constants/false.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is arithmetic_
@@ -19,17 +17,14 @@
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::is_unord_, tag::cpu_
-                            , (A0)(A1)
-                            , (scalar_< arithmetic_<A0> >)(scalar_< arithmetic_<A1> >)
+                            , (A0)
+                            , (scalar_< arithmetic_<A0> >)(scalar_< arithmetic_<A0> >)
                             )
   {
 
     typedef bool result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    inline result_type operator()(A0 const&, A0 const&)const 
     {
-      ignore_unused(a0);
-      ignore_unused(a1);
       return boost::simd::False<A0>();
     }
   };
@@ -37,19 +32,17 @@ namespace boost { namespace simd { namespace ext
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is real_
+// Implementation when type A0 is floating_
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::is_unord_, tag::cpu_
-                            , (A0)(A1)
-                            , (scalar_< real_<A0> >)(scalar_< real_<A1> >)
+                                     , (A0)
+                            , (scalar_< floating_<A0> >)(scalar_< floating_<A0> >)
                             )
   {
-
     typedef bool result_type;
-
-    BOOST_SIMD_FUNCTOR_CALL(2)
+    BOOST_SIMD_FUNCTOR_CALL_REPEAT(2)
     {
       using  boost::simd::is_nan;
       return is_nan(a0) || is_nan(a1);

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
 <link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
-<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch 1.0">
+<link rel="up" href="../dispatch.html" title="Chapter&#160;1.&#160;Dispatch">
 <link rel="prev" href="motivation.html" title="Motivation">
 <link rel="next" href="associating_types_to_hierarchies.html" title="Associating types to hierarchies">
 </head>
@@ -15,9 +15,214 @@
 <div class="spirit-nav">
 <a accesskey="p" href="motivation.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../dispatch.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="associating_types_to_hierarchies.html"><img src="../images/next.png" alt="Next"></a>
 </div>
-<div class="section"><div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dispatch.defining_hierarchies"></a><a class="link" href="defining_hierarchies.html" title="Defining hierarchies">Defining hierarchies</a>
-</h2></div></div></div></div>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="defining_hierarchies.html#dispatch.defining_hierarchies.hierarchy_concept">Hierarchy
+      Concept</a></span></dt>
+<dt><span class="section"><a href="defining_hierarchies.html#dispatch.defining_hierarchies.example__simplified_arithmetic_hierarchy">Example:
+      simplified arithmetic hierarchy</a></span></dt>
+<dt><span class="section"><a href="defining_hierarchies.html#dispatch.defining_hierarchies.example__the__target___composite_hierarchy">Example:
+      the <code class="computeroutput"><span class="identifier">target_</span></code> composite hierarchy</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="dispatch.defining_hierarchies.hierarchy_concept"></a><a class="link" href="defining_hierarchies.html#dispatch.defining_hierarchies.hierarchy_concept" title="Hierarchy Concept">Hierarchy
+      Concept</a>
+</h3></div></div></div>
+<p>
+        Synopsis:
+      </p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">H</span> <span class="special">:</span> <span class="identifier">P</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">P</span> <span class="identifier">parent</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+        with <code class="computeroutput"><span class="identifier">H</span></code> and <code class="computeroutput"><span class="identifier">P</span></code> models of <code class="computeroutput"><span class="identifier">Hierarchy</span></code>.
+      </p>
+<p>
+        A model <code class="computeroutput"><span class="identifier">H</span></code> of <code class="computeroutput"><span class="identifier">Hierarchy</span></code> is nothing more than an empty
+        type used to identify a category of types. It must inherit from one other
+        model of <code class="computeroutput"><span class="identifier">Hierarchy</span></code> <code class="computeroutput"><span class="identifier">P</span></code>; multiple inheritance is discouraged
+        as it easily leads to ambiguities.
+      </p>
+<p>
+        It must also provide a <code class="computeroutput"><span class="identifier">parent</span></code>
+        typedef in order to allow composite hierarchies to be built around it.
+      </p>
+<p>
+        All hierarchies must inherit directly or indirectly from <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dispatch</span><span class="special">::</span><span class="identifier">meta</span><span class="special">::</span><span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>,
+        with <code class="computeroutput"><span class="identifier">T</span></code> any concrete type
+        (preferably the one being hierarchized).
+      </p>
+<p>
+        The choice that Boost.Dispatch makes for its built-in hierarchies is to make
+        them templates, with the actual type being hierarchized as the template parameter.
+      </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">H</span> <span class="special">:</span> <span class="identifier">P</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="identifier">P</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="identifier">parent</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+        This allows to select the parent hierarchy according ot what the type is,
+        removing some of the limitations of single inheritance. Embedding the type
+        inside the hierarchy also enables to use them directly for declaring template
+        overloads in place of the real arguments.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="dispatch.defining_hierarchies.example__simplified_arithmetic_hierarchy"></a><a class="link" href="defining_hierarchies.html#dispatch.defining_hierarchies.example__simplified_arithmetic_hierarchy" title="Example: simplified arithmetic hierarchy">Example:
+      simplified arithmetic hierarchy</a>
+</h3></div></div></div>
+<p>
+        In this example, we're going to define hierarchies for the built-in arithmetic
+        types, to categorize them along two axes:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            signed / unsigned
+          </li>
+<li class="listitem">
+            integer / floating-point
+          </li>
+</ul></div>
+<p>
+        To do this, we're going to categorize the following types:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            float, double
+          </li>
+<li class="listitem">
+            short, int unsigned short
+          </li>
+<li class="listitem">
+            unsigned short, unsigned int
+          </li>
+</ul></div>
+<p>
+        The <code class="computeroutput"><span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span></code><em class="replaceable"><code>a</code></em><code class="computeroutput"><span class="special">,</span> </code><em class="replaceable"><code>b</code></em><code class="computeroutput"><span class="special">)</span></code> macro can be used to define template hierarchies
+        of of the form
+      </p>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <em class="replaceable"><code>a</code></em> <span class="special">:</span> <em class="replaceable"><code>b</code></em>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <em class="replaceable"><code>b</code></em> <span class="identifier">parent</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+        We're going to use it to avoid code repetition.
+      </p>
+<p>
+        The tricky part in that hierarchy is that there are two axes to work with:
+        all floating-point are signed, but some integers are and some are not.
+      </p>
+<p>
+        Let's start by defining the obvious:
+      </p>
+<pre class="programlisting"><span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">arithmetic_</span>      <span class="special">,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>     <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">integer_</span>         <span class="special">,</span> <span class="identifier">arithmetic_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>      <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">signed_</span>          <span class="special">,</span> <em class="replaceable"><code>???</code></em>                 <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">unsigned_</span>        <span class="special">,</span> <span class="identifier">integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>         <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">floating_</span>        <span class="special">,</span> <span class="identifier">signed_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>          <span class="special">);</span>
+
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">signed_integer_</span>  <span class="special">,</span> <span class="identifier">signed_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>          <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">unsigned_integer_</span><span class="special">,</span> <span class="identifier">unsigned_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>        <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">short_</span>           <span class="special">,</span> <span class="identifier">signed_integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>  <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">unsigned_short_</span>  <span class="special">,</span> <span class="identifier">unsigned_integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">int_</span>             <span class="special">,</span> <span class="identifier">signed_integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>  <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">unsigned_int_</span>    <span class="special">,</span> <span class="identifier">unsigned_integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;);</span>
+
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">single_</span>          <span class="special">,</span> <span class="identifier">floating_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>        <span class="special">);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">double_</span>          <span class="special">,</span> <span class="identifier">floating_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>        <span class="special">);</span>
+</pre>
+<p>
+        Notice there is a problem here. All unsigned types are integers, but signed
+        types are either integers or floating-point. All floating-point, however,
+        are signed. <br> We can't make <code class="computeroutput"><span class="identifier">signed_</span></code>
+        inherit from <code class="computeroutput"><span class="identifier">integer_</span></code>, since
+        that would mean <code class="computeroutput"><span class="identifier">floating_</span></code>
+        would inherit from <code class="computeroutput"><span class="identifier">integer_</span></code>.
+        And if we made it inherit from <code class="computeroutput"><span class="identifier">arithmetic_</span></code>,
+        then <code class="computeroutput"><span class="identifier">int_</span></code> would never inherit
+        from <code class="computeroutput"><span class="identifier">integer_</span></code>.
+      </p>
+<p>
+        The solution is for <code class="computeroutput"><span class="identifier">signed_</span></code>
+        to inherit from <code class="computeroutput"><span class="identifier">integer_</span></code>
+        if <code class="computeroutput"><span class="identifier">T</span></code> is integral, and from
+        <code class="computeroutput"><span class="identifier">arithmetic_</span></code> otherwise:
+      </p>
+<pre class="programlisting"><span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL_META</span><span class="special">(</span>
+    <span class="identifier">signed_</span><span class="special">,</span>
+    <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">if_</span><span class="special">&lt;</span> <span class="identifier">is_integral</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">meta</span><span class="special">::</span><span class="identifier">primitive_of</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="identifier">integer_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+                      <span class="special">,</span> <span class="identifier">arithmetic_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>
+                      <span class="special">&gt;::</span><span class="identifier">type</span><span class="special">)</span>
+<span class="special">)</span>
+</pre>
+<p>
+        We need to use <code class="computeroutput"><span class="identifier">meta</span><span class="special">::</span><span class="identifier">primitive_of</span></code> here because <code class="computeroutput"><span class="identifier">T</span></code> might be an arbitrary type hierachized
+        from an outer composite hierarchy: its innermost type must be extracted,
+        which is what <code class="computeroutput"><span class="identifier">meta</span><span class="special">::</span><span class="identifier">primitive_of</span></code> is for (by default, it's the
+        identity).
+      </p>
+<p>
+        Let's look at the resulting hierarchy for <code class="computeroutput"><span class="keyword">double</span></code>,
+        <code class="computeroutput"><span class="keyword">int</span></code>, and <code class="computeroutput"><span class="keyword">unsigned</span>
+        <span class="keyword">short</span></code>:
+      </p>
+<pre class="programlisting"><span class="identifier">double_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">floating_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">signed_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span>
+                <span class="special">-&gt;</span> <span class="identifier">arithmetic_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span>
+
+<span class="identifier">int_</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">signed_integer_</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">signed_</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>
+          <span class="special">-&gt;</span> <span class="identifier">integer_</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">arithmetic_</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span>
+          <span class="special">-&gt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span>
+
+<span class="identifier">unsigned_short_</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">unsigned_integer_</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">&gt;</span>
+                                <span class="special">-&gt;</span> <span class="identifier">unsigned_</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">&gt;</span>
+                                <span class="special">-&gt;</span> <span class="identifier">integer_</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">&gt;</span>
+                                <span class="special">-&gt;</span> <span class="identifier">arithmetic_</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">&gt;</span>
+                                <span class="special">-&gt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">short</span><span class="special">&gt;</span>
+</pre>
+<p>
+        All that's left to do is to associate <code class="computeroutput"><span class="keyword">double</span></code>
+        with <code class="computeroutput"><span class="identifier">double_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span></code>,
+        <code class="computeroutput"><span class="keyword">int</span></code> with <code class="computeroutput"><span class="identifier">int_</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span></code>
+        etc.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="dispatch.defining_hierarchies.example__the__target___composite_hierarchy"></a><a class="link" href="defining_hierarchies.html#dispatch.defining_hierarchies.example__the__target___composite_hierarchy" title="Example: the target_ composite hierarchy">Example:
+      the <code class="computeroutput"><span class="identifier">target_</span></code> composite hierarchy</a>
+</h3></div></div></div>
+<p>
+        A composite hierarchy is a hierarchy that merely wraps another hierarchy.
+        An example of this is the <code class="computeroutput"><span class="identifier">target_</span></code>
+        hierarchy, associated to the <code class="computeroutput"><span class="identifier">as_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span></code>
+        type.
+      </p>
+<pre class="programlisting"><span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">target_</span>                   <span class="special">,</span> <span class="identifier">target_</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">::</span><span class="identifier">parent</span><span class="special">&gt;);</span>
+<span class="identifier">BOOST_DISPATCH_HIERARCHY_CLASS_TPL</span><span class="special">(</span><span class="identifier">target_</span><span class="special">&lt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;,</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span>            <span class="special">);</span> <span class="comment">// stop recursion</span>
+</pre>
+<p>
+        In effect, the hierarchy of <code class="computeroutput"><span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span></code> is the following:
+      </p>
+<pre class="programlisting"><span class="identifier">target_</span><span class="special">&lt;</span> <span class="identifier">double_</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">-&gt;</span> <span class="identifier">target_</span><span class="special">&lt;</span> <span class="identifier">floating_</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
+                                  <span class="special">-&gt;</span> <span class="identifier">target_</span><span class="special">&lt;</span> <span class="identifier">signed_</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
+                                  <span class="special">-&gt;</span> <span class="identifier">target_</span><span class="special">&lt;</span> <span class="identifier">arithmetic_</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
+                                  <span class="special">-&gt;</span> <span class="identifier">target_</span><span class="special">&lt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span>
+                                  <span class="special">-&gt;</span> <span class="identifier">unspecified_</span><span class="special">&lt;</span> <span class="identifier">as_</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="special">&gt;</span>
+</pre>
+</div>
+</div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2003-2011 LASMEA

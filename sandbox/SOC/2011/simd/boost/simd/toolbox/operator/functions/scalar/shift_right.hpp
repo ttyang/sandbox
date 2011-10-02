@@ -15,7 +15,7 @@ namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::shift_right_, tag::cpu_
                             , (A0)(A1)
-                            , (scalar_< real_<A0> >)(scalar_< integer_<A1> >)
+                            , (scalar_< floating_<A0> >)(scalar_< integer_<A1> >)
                             )
   {
     typedef A0 result_type;
@@ -35,7 +35,7 @@ namespace boost { namespace simd { namespace ext
                               (scalar_< integer_<A1> >)
                             )
   {
-    typedef typename dispatch::meta::result_of<dispatch::meta::arithmetic(A0, A1)>::type result_type;
+    typedef A0 result_type;
     BOOST_SIMD_FUNCTOR_CALL(2) { return a0 >> a1; }
   };
 } } }

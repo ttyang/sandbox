@@ -10,13 +10,14 @@
 #define BOOST_SIMD_TOOLBOX_PREDICATES_FUNCTIONS_IS_EQZ_HPP_INCLUDED
 #include <boost/simd/include/simd.hpp>
 #include <boost/dispatch/include/functor.hpp>
-#include <boost/simd/toolbox/predicates/include.hpp>
+
 
 namespace boost { namespace simd { namespace tag
   {         
     struct is_eqz_ {};
   }
-  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::is_eqz_, is_eqz, 1)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::is_eqz_, is_eqz,   1)
+  BOOST_DISPATCH_FUNCTION_IMPLEMENTATION(tag::is_eqz_, is_false, 1)
 } }
  
 #endif

@@ -3,6 +3,7 @@
 
 #include <boost/simd/toolbox/predicates/functions/is_less_equal.hpp>
 #include <boost/simd/toolbox/predicates/functions/scalar/is_less_equal.hpp>
+#include <boost/simd/toolbox/predicates/functions/simd/sse/avx/is_less_equal.hpp>
 #include <boost/simd/toolbox/predicates/functions/simd/sse/sse2/is_less_equal.hpp>
 #include <boost/simd/toolbox/predicates/functions/simd/vmx/altivec/is_less_equal.hpp>
 

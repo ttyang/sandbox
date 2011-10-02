@@ -8,11 +8,13 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_SWAR_FUNCTIONS_SIMD_SSE_SSE2_GROUP_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_SWAR_FUNCTIONS_SIMD_SSE_SSE2_GROUP_HPP_INCLUDED
+
 #ifdef BOOST_SIMD_HAS_SSE2_SUPPORT
 #include <boost/simd/sdk/meta/templatize.hpp>
 #include <boost/dispatch/meta/downgrade.hpp>
 #include <boost/dispatch/meta/as_integer.hpp>
-#include <boost/dispatch/meta/strip.hpp>
+#include <boost/simd/sdk/meta/scalar_of.hpp>
+#include <boost/simd/sdk/simd/native_cast.hpp>
 
 // TODO no float no int8_
 #define BOOST_SIMD_SH(a, b, c, d) (_MM_SHUFFLE(d, c, b, a))
@@ -67,8 +69,8 @@ namespace boost { namespace simd { namespace ext
 /////////////////////////////////////////////////////////////////////////////
 // BOOST_SIMD_REGISTER_DISPATCH(boost::simd::tag::group_, boost::simd::tag::sse2_,
 //                         (A0),
-//                         ((simd_<float_<A0>,boost::simd::tag::sse_>))
-//                         ((simd_<float_<A0>,boost::simd::tag::sse_>))
+//                         ((simd_<single_<A0>,boost::simd::tag::sse_>))
+//                         ((simd_<single_<A0>,boost::simd::tag::sse_>))
 //                        );
 // namespace boost { namespace ext
 // {
@@ -84,7 +86,7 @@ namespace boost { namespace simd { namespace ext
 //       typedef typename meta::scalar_of<A0>::type                                      stype;
 //       typedef typename dispatch::meta::downgrade<stype>::type                                   utype;
 //       typedef simd::native<utype,boost::simd::tag::sse_>                                           type1;
-//       typedef simd::native<typename meta::float_<A0>::type,boost::simd::tag::sse_>                 type2;
+//       typedef simd::native<typename meta::single_<A0>::type,boost::simd::tag::sse_>                 type2;
 //       typedef typename boost::mpl::if_c < boost::is_same<stype,double>::value
 //                                         , type2
 //                                         , type1
