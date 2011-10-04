@@ -144,9 +144,11 @@ Or using __Boost_Phoenix__:
 
 [add_using_boost_phoenix_cpp]
 
-[h5 Profiling]
+[endsect]
 
-The following tables compare run-time, binary size, and compile-time for the different alternatives presented for local functions.
+[section Local Function Benchmarking]
+
+The following tables compare run-times, compile-times, and binary sizes for the different alternatives presented so far for local functions.
 
 Overall, this library has compile-times and generates binary sizes similar to the ones of the other approaches.
 This library run-times on __CPP03__ compliant compilers (see "__Boost_Local__ Compliant" below) were measured to be larger than other approaches when compiler optimization is enabled (using `bjam release ...`).
