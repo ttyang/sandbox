@@ -72,7 +72,7 @@ For example, let's program a function `ten` which takes no parameter and returns
         return 10;
     }
 
-The ISO C++ standard does not allow pass empty parameters to a macro so the macro `__BOOST_LOCAL_FUNCTION_PARAMS__` cannot be invoked with an empty set of parenthesis `()` unless programmers use compiler extensions that support empty macro parameters (e.g., C99 and other modern compilers).
+The __CPP03__ standard does not allow pass empty parameters to a macro so the macro `__BOOST_LOCAL_FUNCTION_PARAMS__` cannot be invoked with an empty set of parenthesis `()` unless programmers use compiler extensions that support empty macro parameters (e.g., __C99__ standard and most modern compilers).
 However, C++ also allows to specify an empty parameter list using the keyword `void`:
 
     int ten(void) {

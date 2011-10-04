@@ -70,13 +70,14 @@
         templates with partial specializations and function pointers (similarly to
         <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>).
         As a consequence, this library is fairly demanding on compilers' compliance
-        with the ISO C++ standard. At present, this library has been successfully
-        compiled and tested on the following compilers and platforms:
+        with the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+        standard. At present, this library has been successfully compiled and tested
+        on the following compilers and platforms:
       </p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-            GNU Compiler Collection (GCC) 4.5.1 (with and without C++0x features
-            enabled) on Ubuntu Linux 10.
+            GNU Compiler Collection (GCC) 4.5.1 (with and without <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+            features enabled) on Ubuntu Linux 10.
           </li>
 <li class="listitem">
             GCC 4.3.4 on Cygwin.
@@ -123,7 +124,7 @@
 </pre>
 <p>
         The followings are part of the library private API, they are not documented,
-        and they should not be directly used by programmers: <sup>[<a name="id866215" href="#ftn.id866215" class="footnote">2</a>]</sup>
+        and they should not be directly used by programmers: <sup>[<a name="id866234" href="#ftn.id866234" class="footnote">2</a>]</sup>
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -161,7 +162,7 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id866215" href="#id866215" class="para">2</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id866234" href="#id866234" class="para">2</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This library concatenates symbols
           specified by the programmers (e.g., the local function name) with other
           symbols (e.g., special prefixes or preprocessor line numbers) to make internal

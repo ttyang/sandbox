@@ -285,20 +285,20 @@ A local function is declared inlined by prefixing the local function name passed
         ...
     } __BOOST_LOCAL_FUNCTION_NAME__(inline ``/name/``)
 
-On ISO C++ compliant compilers, inlined local functions always have a run-time comparable to their equivalent implementation that uses local functors (see the __Alternatives__ section).
+On __CPP03__ compliant compilers, inlined local functions always have a run-time comparable to their equivalent implementation that uses local functors (see the __Alternatives__ section).
 However, inlined local functions have the limitation that they cannot be assigned to other functors (like `__boost__function__`) and they cannot be passed as template parameters.
 [footnote
 *Rationale.*
 This library uses an indirect function call via a function pointer in order to pass the local function as a template parameter (see the __Implementation__ section).
 No compiler has yet been observed to be able to inline function calls when they use such indirect function pointer calls.
 Therefore, inlined local functions do not use such indirect function pointer call (so they are more likely to be optimized) but because of that they cannot be passed as template parameters.
-The indirect function pointer call is needed on ISO C++ but it is not needed on C++0x (see __N2657__) thus this library automatically generates local function calls that can be inlined on C++0x compilers (even when the local function is not declared inlined).
+The indirect function pointer call is needed on __CPP03__ but it is not needed on __CPP11__ (see __N2657__) thus this library automatically generates local function calls that can be inlined on __CPP11__ compilers (even when the local function is not declared inlined).
 ]
-On C++0x compilers, `inline` has no effect because this library will automatically generate code that uses C++0x specific features to inline the local function calls whenever possible even if the local function is not declared inlined (unless the `__BOOST_LOCAL_CONFIG_COMPLIANT__` configuration macro is defined).
-Furthermore, non C++0x local functions can always be passes as template parameters even when they are declared inlined.
+On __CPP11__ compilers, `inline` has no effect because this library will automatically generate code that uses __CPP11__ specific features to inline the local function calls whenever possible even if the local function is not declared inlined (unless the `__BOOST_LOCAL_CONFIG_COMPLIANT__` configuration macro is defined).
+Furthermore, non __CPP11__ local functions can always be passes as template parameters even when they are declared inlined.
 
 [important
-It is recommended to not declare a local function inlined unless it is strictly necessary for optimizing pure ISO C++ compliant code (because in all other cases this library will automatically take advantage of C++0x features to optimize the local function calls while always allowing to pass the local function as a template parameter).
+It is recommended to not declare a local function inlined unless it is strictly necessary for optimizing pure __CPP03__ compliant code (because in all other cases this library will automatically take advantage of __CPP11__ features to optimize the local function calls while always allowing to pass the local function as a template parameter).
 ]
 
 For example, the following local function is declared inlined (thus a for-loop needs to be used for portability instead of passing the local function as a template parameter to the `std::for_each` algorithm):
@@ -414,12 +414,12 @@ For example:
 
 [section Storage Classifiers (`auto` and `register`)]
 
-Local function parameters support the storage classifiers as usual in ISO C++.
+Local function parameters support the storage classifiers as usual in __CPP03__.
 The `auto` storage classifier is specified as:
 [footnote
-The `auto` storage classifier is part of the ISO C++ standard and therefore supported by this library.
-However, the meaning and usage of the `auto` keyword changed in C++0x.
-Therefore, use the `auto` storage classifier with the usual care in order to avoid writing ISO C++ code that might not work on C++0x.
+The `auto` storage classifier is part of the __CPP03__ standard and therefore supported by this library.
+However, the meaning and usage of the `auto` keyword changed in __CPP11__.
+Therefore, use the `auto` storage classifier with the usual care in order to avoid writing __CPP03__ code that might not work on __CPP11__.
 ]
 
 	auto ``/parameter-type parameter-name/``
@@ -455,7 +455,7 @@ The following table summarizes all C++ function features indicating those featur
 [
     [ `template<`/template-parameter-list/`>` ]
     [ No ]
-    [ This is not supported because local functions are implemented using local classes and ISO C++ local classes cannot be templates. ]
+    [ This is not supported because local functions are implemented using local classes and __CPP03__ local classes cannot be templates. ]
 ]
 [
     [ `explicit` ]
@@ -465,7 +465,7 @@ The following table summarizes all C++ function features indicating those featur
 [
     [ `inline` ]
     [ Yes ]
-    [ Local functions can be specified `inline` to improve the chances that ISO C++ standard compilers can optimize the local function call run-time (but `inline` local functions cannot be passes as template parameters on ISO C++ standard compilers). ]
+    [ Local functions can be specified `inline` to improve the chances that __CPP03__ standard compilers can optimize the local function call run-time (but `inline` local functions cannot be passes as template parameters on __CPP03__ standard compilers). ]
 ]
 [
     [ `extern` ]

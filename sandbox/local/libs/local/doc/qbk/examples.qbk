@@ -40,9 +40,9 @@ Or similarly but using exceptions:
 
 [endsect]
 
-[section STL Find (C++0x Lambdas)]
+[section STL Find (__CPP11__ Lambdas)]
 
-This example is adapted from __N2550__ (C++0x lambda functions).
+This example is adapted from __N2550__ (__CPP11__ lambda functions).
 This example passes a local function to the STL algorithm `std::find_if`.
 
 [table
@@ -52,9 +52,9 @@ This example passes a local function to the STL algorithm `std::find_if`.
 
 [endsect]
 
-[section Binding `this` (C++0x Lambdas)]
+[section Binding `this` (__CPP11__ Lambdas)]
 
-This example is adapted from __N2529__ (C++0x lambda functions).
+This example is adapted from __N2529__ (__CPP11__ lambda functions).
 This example binds the object in scope `this` to a local function.
 
 [table
@@ -67,7 +67,7 @@ This example binds the object in scope `this` to a local function.
 [section GCC Nested Functions]
 
 The GCC compiler supports local functions under the name of [@http://gcc.gnu.org/onlinedocs/gcc/Nested-Functions.html nested functions].
-Nested functions are exclusively a C extension of the GCC compiler, they are not supported for C++ not even by the GCC compiler, and they are not part of any C or C++ standard (ISO C++, C99, C++0x, etc) nor they are supported by other compilers like MSVC.
+Nested functions are exclusively a C extension of the GCC compiler, they are not supported for C++ not even by the GCC compiler, and they are not part of any C or C++ standard (__CPP03__, __C99__, __CPP11__, etc) nor they are supported by other compilers like MSVC.
 
 The following examples implement the examples from the GCC nested function documentation using this library local functions.
 

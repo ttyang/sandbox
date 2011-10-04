@@ -9,7 +9,7 @@
 /Local functions/ are a form of /information hiding/ and are useful for dividing procedural tasks into subtasks which are only meaningful locally, avoiding cluttering other parts of the program with functions, variables, etc unrelated to those parts.
 Local functions therefore complement other structuring possibilities such as namespaces and classes.
 Local functions are a feature of many programming languages, notably [@http://en.wikipedia.org/wiki/Nested_function#An_example Pascal] and [@http://en.wikipedia.org/wiki/Nesting_(computing)#In_programming Ada], yet lacking from C++ (see also __N2511__).
-This library supports the following features for local functions (see the __Alternatives__ section for a comparison between this library and the features offered by other C++ libraries and constructs):
+This library supports the following features for local functions:
 
 * Local functions can access, or better [@http://en.wikipedia.org/wiki/Name_binding /bind/], any of the variables from the enclosing scope.
 Furthermore, local functions defined within a member function can bind the enclosing object `this`.
@@ -23,14 +23,16 @@ In addition to local functions, this library also supports the following feature
 Local blocks allow programmers to bind variables as constants (/constant binding/) to prevent local chunks of code from modifying selected variables.
 * /Local exits/ which define blocks of code that are executed when the enclosing scope is exited (again with support for binding variables in scope including the object `this`).
 
+See the __Alternatives__ section for a comparison between this library, __CPP0x_lambda__ functions, __Boost_Lambda__, __Boost_Phoenix__, and other C++ libraries offering similar features.
+
 [h5 Two Syntaxes]
 
 This library uses macros to declare the local functions, local blocks, and local exits.
 These macros support two different syntaxes:
 
-* The /sequencing macro syntax/ is fully compliant with the ISO C++ standard and supported on all C++ compilers.
+* The /sequencing macro syntax/ is fully compliant with the __CPP03__ standard and supported on all C++ compilers.
 This syntax requires to wrap the local function parameters and bound variables between round parenthesis `()`.
-* The /variadic macro synstax/ is available only on C++ compilers that support [@http://en.wikipedia.org/wiki/Variadic_macro variadic macros] (variadic macros were first introduced by the C99 standard and they are now supported by essentially all modern C++ compilers including GCC and MSVC).
+* The /variadic macro synstax/ is available only on C++ compilers that support [@http://en.wikipedia.org/wiki/Variadic_macro variadic macros] (variadic macros were first introduced by the __C99__ standard and they are now supported by essentially all modern C++ compilers including GCC and MSVC).
 This syntax allows to use commas `,` to separate macro parameters therefore resembling the usual C++ syntax for function parameter declaration.
 
 The same library macros accept both syntaxes on compilers that support variadic macros and only the sequencing macro syntax on compilers that do not support variadic macros.
@@ -45,15 +47,15 @@ A local block is used to assert the correct final value of the summation in a co
 See the __Tutorial__ section for more details.
 
 [table
-[ [Notes] [__Variadic_Macro_Syntax__] [__Sequencing_Macro_Syntax__] ]
+[ [#] [__Variadic_Macro_Syntax__] [__Sequencing_Macro_Syntax__] ]
 [ [ [add_function_block_exit_callouts_cpp] ] [ [add_function_block_exit_va_cpp] ] [ [add_function_block_exit_cpp] ] ]
 ]
 
-Notes:
+Comments (see respective line number "#" of above example):
 
 # Include the header files for this library local functions, local blocks, and local exits.
 # The *local function* parameter macro takes a __Boost_Preprocessor__ sequence of tokens listing each parameter type and name wrapped within round parenthesis [^(['parameter-type parameter-name])['...]] (default parameter values can also be specified using a special syntax, see the __Tutorial__ section).
-On C99 and later preprocessors which support variadic macros, the same parameter macro also allows to specify the parameters separated by commas instead than wrapped within parenthesis [^['parameter-type parameter-name],['...]] thus supporting a syntax similar to the usual C++ syntax for function parameter lists.
+On __C99__ and later preprocessors which support variadic macros, the same parameter macro also allows to specify the parameters separated by commas instead than wrapped within parenthesis [^['parameter-type parameter-name],['...]] thus supporting a syntax similar to the usual C++ syntax for function parameter lists.
 The local function result type is specified just before the parameter macro.
 # The library macros introduce the special "keyword" `bind` which can be used instead of the parameter type to bind variables in scope.
 Variables can be bound by value, by reference, by constant value, and by constant reference.

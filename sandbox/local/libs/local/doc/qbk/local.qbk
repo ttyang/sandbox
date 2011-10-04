@@ -19,6 +19,9 @@
     ]
 ]
 
+[def __CPP03__ [@http://www.open-std.org/JTC1/SC22/WG21/docs/standards C++03]]
+[def __CPP11__ [@http://www.open-std.org/JTC1/SC22/WG21/ C++11]]
+[def __C99__ [@http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899 C99]]
 [def __Boost__ [@http://www.boost.org/ Boost]]
 [def __Boost_Local__ [@http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html Boost.Local]]
 [def __Boost_ScopeExit__ [@http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html Boost.ScopeExit]]
@@ -33,8 +36,8 @@
 [def __boost__function__ [@http://www.boost.org/doc/libs/release/doc/html/function.html boost::function]]
 [def __Boost_TypeTraits__ [@http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html Boost.TypeTraits]]
 [def __Boost_Chrono__ [@http://www.boost.org/doc/libs/release/libs/chrono/doc/html/index.html Boost.Chrono]]
-[def __CPP0x_lambda__ [@http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions C++0x lambda]]
-[def __CPP0x_Lambda__ [@http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions C++0x Lambda]]
+[def __CPP0x_lambda__ [@http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions C++11 lambda]]
+[def __CPP0x_Lambda__ [@http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions C++11 Lambda]]
 [def __LISP__ [@http://en.wikipedia.org/wiki/Lisp_(programming_language) LISP]]
 [def __Contractpp__ [@http://sourceforge.net/projects/contractpp Contract++]]
 [def __D_Programming_Language__ [@http://d.digitalmars.com D Programming Language]]
@@ -79,9 +82,9 @@
 [def __BOOST_IDENTITY_VALUE__ [macroref BOOST_IDENTITY_VALUE]]
 [def __boost__local__function__overload__ [classref boost::local::function::overload]]
 
-[def __Variadic_Macro_Syntax__ Variadic Macro Syntax (C99 and later compilers)]
+[def __Variadic_Macro_Syntax__ Variadic Macro Syntax (__C99__ and later compilers)]
 [def __Sequencing_Macro_Syntax__ Sequencing Macro Syntax (all C++ compilers)]
-[def __Empty_Macro_Syntax__ Empty Macro Syntax (C99 and other modern compilers)]
+[def __Empty_Macro_Syntax__ Empty Macro Syntax (__C99__ and other modern compilers)]
 
 [import ../../example/add_function_block_exit_callouts.cpp]
 [import ../../example/add_function_block_exit.cpp]

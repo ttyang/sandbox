@@ -51,10 +51,11 @@
 </h3></div></div></div>
 <p>
         This library uses a local class to implement the local function object. However,
-        in ISO C++ a local class (and therefore the local function object that it
-        implements) cannot be passed as template parameter (e.g., to the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span></code>
-        algorithm), this is instead possible on C++0x, MSVC, and some other compilers
-        (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>).
+        in <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+        a local class (and therefore the local function object that it implements)
+        cannot be passed as template parameter (e.g., to the <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span></code>
+        algorithm), this is instead possible on <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>,
+        MSVC, and some other compilers (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>).
         To work around this limitation, this library investigated the following two
         "tricks" (both tricks can be extended to support eventual function
         default parameters):
@@ -153,7 +154,8 @@
         call (via either a function pointer or a virtual function respectively) that
         has been observed to be resolved only at run-time by all analyzed compilers.
         Therefore, on compilers that accept local types as template parameters (MSVC,
-        C++0x, etc, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>),
+        <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>, etc,
+        see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>),
         this library generates code that passes the local class type directly as
         template parameter without using neither one of these two tricks in order
         to take full advantage of compiler optimizations that inline the local function

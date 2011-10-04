@@ -14,7 +14,7 @@ There is absolutely no guarantee that the library implementation uses the exact 
 [section Local Classes as Template Parameters]
 
 This library uses a local class to implement the local function object.
-However, in ISO C++ a local class (and therefore the local function object that it implements) cannot be passed as template parameter (e.g., to the `std::for_each` algorithm), this is instead possible on C++0x, MSVC, and some other compilers (see __N2657__).
+However, in __CPP03__ a local class (and therefore the local function object that it implements) cannot be passed as template parameter (e.g., to the `std::for_each` algorithm), this is instead possible on __CPP11__, MSVC, and some other compilers (see __N2657__).
 To work around this limitation, this library investigated the following two "tricks" (both tricks can be extended to support eventual function default parameters):
 
 # The /casting functor trick/ uses a non-local functor that calls a static member function of the local class via a function pointer.
@@ -27,7 +27,7 @@ The correct overridden implementation of the virtual `operator()` is called via 
 
 The casting functor trick measured slightly better run-time performances than the virtual functor trick so the current implementation of this library uses the casting functor trick (probably because in addition to the indirect function call, the virtual functor trick also requires accessing the [@http://en.wikipedia.org/wiki/Virtual_method_table virtual function table]).
 However, both tricks do not allow for compiler optimizations that inline the local function calls because they rely on one indirect function call (via either a function pointer or a virtual function respectively) that has been observed to be resolved only at run-time by all analyzed compilers.
-Therefore, on compilers that accept local types as template parameters (MSVC, C++0x, etc, see __N2657__), this library generates code that passes the local class type directly as template parameter without using neither one of these two tricks in order to take full advantage of compiler optimizations that inline the local function calls.
+Therefore, on compilers that accept local types as template parameters (MSVC, __CPP11__, etc, see __N2657__), this library generates code that passes the local class type directly as template parameter without using neither one of these two tricks in order to take full advantage of compiler optimizations that inline the local function calls.
 
 [endsect]
 

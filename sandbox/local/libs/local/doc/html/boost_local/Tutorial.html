@@ -46,7 +46,7 @@
 <p>
         Local functions are defined using the following macros (see the <a href="../reference.html" target="_top">Reference</a>
         section) from within a declarative context (this is a limitation with respect
-        to <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+        to <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
         lambda</a> functions which can instead be declared within expressions):
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -82,7 +82,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -115,12 +116,12 @@
         <span class="special">...</span> <span class="special">}</span></code>
         using the usual C++ syntax. The body is specified outside any of the macros
         so eventual compiler error messages and related line numbers retain their
-        usual meaning and format. <sup>[<a name="id866916" href="#ftn.id866916" class="footnote">3</a>]</sup>
+        usual meaning and format. <sup>[<a name="id866948" href="#ftn.id866948" class="footnote">3</a>]</sup>
       </p>
 <p>
         The macro <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_NAME.html" title="Macro BOOST_LOCAL_FUNCTION_NAME">BOOST_LOCAL_FUNCTION_NAME</a></code>
         is used to end the local function definition and to specify the local function
-        name. <sup>[<a name="id866952" href="#ftn.id866952" class="footnote">4</a>]</sup>
+        name. <sup>[<a name="id866984" href="#ftn.id866984" class="footnote">4</a>]</sup>
       </p>
 <p>
         For example, let's program a local function named <code class="computeroutput"><span class="identifier">add</span></code>
@@ -137,7 +138,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -211,11 +213,12 @@
 <span class="special">}</span>
 </pre>
 <p>
-        The ISO C++ standard does not allow pass empty parameters to a macro so the
-        macro <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_PARAMS.html" title="Macro BOOST_LOCAL_FUNCTION_PARAMS">BOOST_LOCAL_FUNCTION_PARAMS</a></code>
+        The <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+        standard does not allow pass empty parameters to a macro so the macro <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_PARAMS.html" title="Macro BOOST_LOCAL_FUNCTION_PARAMS">BOOST_LOCAL_FUNCTION_PARAMS</a></code>
         cannot be invoked with an empty set of parenthesis <code class="computeroutput"><span class="special">()</span></code>
         unless programmers use compiler extensions that support empty macro parameters
-        (e.g., C99 and other modern compilers). However, C++ also allows to specify
+        (e.g., <a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+        standard and most modern compilers). However, C++ also allows to specify
         an empty parameter list using the keyword <code class="computeroutput"><span class="keyword">void</span></code>:
       </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">ten</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="special">{</span>
@@ -241,12 +244,14 @@
 <thead><tr>
 <th>
                 <p>
-                  Empty Macro Syntax (C99 and other modern compilers)
+                  Empty Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and other modern compilers)
                 </p>
               </th>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -287,12 +292,14 @@
 <thead><tr>
 <th>
                 <p>
-                  Empty Macro Syntax (C99 and other modern compilers)
+                  Empty Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and other modern compilers)
                 </p>
               </th>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -376,7 +383,7 @@
         This library also allows to specify default values for the local function
         parameters. However, the usual C++ syntax for default parameters that uses
         the assignment symbol <code class="computeroutput"><span class="special">=</span></code> cannot
-        be used. <sup>[<a name="id869064" href="#ftn.id869064" class="footnote">5</a>]</sup> The keyword <code class="computeroutput"><span class="keyword">default</span></code>
+        be used. <sup>[<a name="id869144" href="#ftn.id869144" class="footnote">5</a>]</sup> The keyword <code class="computeroutput"><span class="keyword">default</span></code>
         is used instead:
       </p>
 <div class="informaltable"><table class="table">
@@ -387,7 +394,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -425,7 +433,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -478,7 +487,7 @@
 <p>
         Programmers can define a <code class="computeroutput"><span class="identifier">WITH_DEFAULT</span></code>
         macro similar to the following if they think it improves readability over
-        the syntax above: <sup>[<a name="id870041" href="#ftn.id870041" class="footnote">6</a>]</sup>
+        the syntax above: <sup>[<a name="id870135" href="#ftn.id870135" class="footnote">6</a>]</sup>
       </p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -488,7 +497,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -552,7 +562,7 @@
         variables, the object <code class="computeroutput"><span class="keyword">this</span></code>,
         etc) can be bound to a local function declaration. The types of bound variables
         are automatically deduced by this library using <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>.
-        <sup>[<a name="id870842" href="#ftn.id870842" class="footnote">7</a>]</sup>
+        <sup>[<a name="id870944" href="#ftn.id870944" class="footnote">7</a>]</sup>
       </p>
 <div class="important"><table border="0" summary="Important">
 <tr>
@@ -569,7 +579,7 @@
 </table></div>
 <p>
         This library introduces the new "keyword" <code class="computeroutput"><span class="identifier">bind</span></code>
-        <sup>[<a name="id870924" href="#ftn.id870924" class="footnote">8</a>]</sup> which is used in place of the parameter type to specify the name
+        <sup>[<a name="id871026" href="#ftn.id871026" class="footnote">8</a>]</sup> which is used in place of the parameter type to specify the name
         of a variable in scope to bind. The variable can be bound by value:
       </p>
 <pre class="programlisting"><span class="identifier">bind</span> <span class="emphasis"><em>variable-name</em></span> <span class="comment">// Bind by value.</span>
@@ -594,7 +604,7 @@
 <p>
         Note that when <code class="computeroutput"><span class="keyword">const</span></code> is used,
         it must always precede <code class="computeroutput"><span class="identifier">bind</span></code>.
-        <sup>[<a name="id871152" href="#ftn.id871152" class="footnote">9</a>]</sup>
+        <sup>[<a name="id871253" href="#ftn.id871253" class="footnote">9</a>]</sup>
       </p>
 <p>
         If a variable is bound by value, then a copy of the variable value is taken
@@ -620,8 +630,8 @@
             scope then it will not be bound as constant unless constant binding is
             forced using <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">bind</span>
             <span class="special">...</span></code>. (Note that binding by constant
-            reference is not supported by <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
-            lambda</a> functions but it is supported by this library.) <sup>[<a name="id871339" href="#ftn.id871339" class="footnote">10</a>]</sup>
+            reference is not supported by <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+            lambda</a> functions but it is supported by this library.) <sup>[<a name="id871440" href="#ftn.id871440" class="footnote">10</a>]</sup>
           </li>
 <li class="listitem">
             If a bound variable was declared as a reference in the enclosing scope,
@@ -629,7 +639,7 @@
             using <code class="computeroutput"><span class="identifier">bind</span><span class="special">&amp;</span>
             <span class="special">...</span></code> or <code class="computeroutput"><span class="keyword">const</span>
             <span class="identifier">bind</span><span class="special">&amp;</span>
-            <span class="special">...</span></code>. <sup>[<a name="id871462" href="#ftn.id871462" class="footnote">11</a>]</sup>
+            <span class="special">...</span></code>. <sup>[<a name="id871559" href="#ftn.id871559" class="footnote">11</a>]</sup>
           </li>
 </ul></div>
 <p>
@@ -653,7 +663,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -723,7 +734,7 @@
         when it is in scope (e.g., from an enclosing member function). This is done
         by using <code class="computeroutput"><span class="keyword">this</span></code> as the name of
         the variable to bind in the local function declaration and by using the special
-        symbol <code class="computeroutput"><span class="identifier">this_</span></code> <sup>[<a name="id872632" href="#ftn.id872632" class="footnote">12</a>]</sup> (instead of <code class="computeroutput"><span class="keyword">this</span></code>)
+        symbol <code class="computeroutput"><span class="identifier">this_</span></code> <sup>[<a name="id872736" href="#ftn.id872736" class="footnote">12</a>]</sup> (instead of <code class="computeroutput"><span class="keyword">this</span></code>)
         to access the object within the local function body.
       </p>
 <p>
@@ -766,12 +777,12 @@
 <p>
           When the object <code class="computeroutput"><span class="keyword">this</span></code> is bound
           to a local function, the local function body must use the special symbol
-          <code class="computeroutput"><span class="identifier">this_</span></code> (instead of <code class="computeroutput"><span class="keyword">this</span></code>) to access the bound object. <sup>[<a name="id872961" href="#ftn.id872961" class="footnote">13</a>]</sup>
+          <code class="computeroutput"><span class="identifier">this_</span></code> (instead of <code class="computeroutput"><span class="keyword">this</span></code>) to access the bound object. <sup>[<a name="id873066" href="#ftn.id873066" class="footnote">13</a>]</sup>
         </p>
 <p>
           Unfortunately, mistakenly using <code class="computeroutput"><span class="keyword">this</span></code>
           within the local function body instead of <code class="computeroutput"><span class="identifier">this_</span></code>
-          will not necessarily generate a compile-time error. <sup>[<a name="id873062" href="#ftn.id873062" class="footnote">14</a>]</sup> Programmers are responsible to make sure that <code class="computeroutput"><span class="keyword">this</span></code> is never used within a local function
+          will not necessarily generate a compile-time error. <sup>[<a name="id873167" href="#ftn.id873167" class="footnote">14</a>]</sup> Programmers are responsible to make sure that <code class="computeroutput"><span class="keyword">this</span></code> is never used within a local function
           body which should only use the special symbol <code class="computeroutput"><span class="identifier">this_</span></code>.
         </p>
 </td></tr>
@@ -790,7 +801,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -958,7 +970,7 @@
 <tr><td align="left" valign="top"><p>
           A <code class="computeroutput"><span class="keyword">return</span><span class="special">;</span></code>
           instruction from within a local block jumps to the end of the local block
-          body and it does not return the enclosing function. <sup>[<a name="id876475" href="#ftn.id876475" class="footnote">15</a>]</sup>
+          body and it does not return the enclosing function. <sup>[<a name="id876588" href="#ftn.id876588" class="footnote">15</a>]</sup>
         </p></td></tr>
 </table></div>
 <p>
@@ -973,7 +985,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -1070,7 +1083,7 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           The execution of the local exit body code is guaranteed only if the program
-          does not terminate because of an uncaught exception. <sup>[<a name="id877714" href="#ftn.id877714" class="footnote">16</a>]</sup>
+          does not terminate because of an uncaught exception. <sup>[<a name="id877834" href="#ftn.id877834" class="footnote">16</a>]</sup>
         </p></td></tr>
 </table></div>
 <p>
@@ -1107,7 +1120,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -1175,7 +1189,7 @@
         Local exits are very similar to the <span class="emphasis"><em>scope exits</em></span> provided
         by <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
         with the addition that they also support constant binding and binding of
-        the object <code class="computeroutput"><span class="keyword">this</span></code>. <sup>[<a name="id878995" href="#ftn.id878995" class="footnote">17</a>]</sup> Local exits can be used to emulate the <a href="http://d.digitalmars.com" target="_top">D
+        the object <code class="computeroutput"><span class="keyword">this</span></code>. <sup>[<a name="id879124" href="#ftn.id879124" class="footnote">17</a>]</sup> Local exits can be used to emulate the <a href="http://d.digitalmars.com" target="_top">D
         Programming Language</a> <span class="emphasis"><em>scope guards</em></span> (see the
         <a class="link" href="Examples.html#boost_local.Examples.Emulating_Ds_Scope_Guards" title="Emulating D's Scope Guards">Emulating
         D's Scope Guards</a> example).
@@ -1189,7 +1203,7 @@
         When local functions, local blocks, and local exits are programmed within
         templates, they need to be declared using the following special macros ending
         with the <code class="computeroutput"><span class="identifier">TPL</span></code> postfix (see
-        the <a href="../reference.html" target="_top">Reference</a> section): <sup>[<a name="id879307" href="#ftn.id879307" class="footnote">18</a>]</sup>
+        the <a href="../reference.html" target="_top">Reference</a> section): <sup>[<a name="id879438" href="#ftn.id879438" class="footnote">18</a>]</sup>
       </p>
 <pre class="programlisting"><code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_PARAMS_TPL.html" title="Macro BOOST_LOCAL_FUNCTION_PARAMS_TPL">BOOST_LOCAL_FUNCTION_PARAMS_TPL</a></code><span class="special">(</span><span class="emphasis"><em>parameters</em></span><span class="special">)</span>
 <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_BLOCK_TPL.html" title="Macro BOOST_LOCAL_BLOCK_TPL">BOOST_LOCAL_BLOCK_TPL</a></code><span class="special">(</span><span class="emphasis"><em>bindings</em></span><span class="special">)</span>
@@ -1213,7 +1227,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -1324,20 +1339,20 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id866916" href="#id866916" class="para">3</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id866948" href="#id866948" class="para">3</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> If the local function body
           were instead passed as a macro parameter, it would be expanded on a single
           line of code (because macros always expand as a single line of code). Therefore,
           eventual compiler error line numbers would all report the same value and
           would no longer be useful to pinpoint the error.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id866952" href="#id866952" class="para">4</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id866984" href="#id866984" class="para">4</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> The local function name must
           be passed to the macro <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_NAME.html" title="Macro BOOST_LOCAL_FUNCTION_NAME">BOOST_LOCAL_FUNCTION_NAME</a></code>
           ending the function definition so this macro can declare a local variable
           with the local function name to hold the local function object.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id869064" href="#id869064" class="para">5</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id869144" href="#id869144" class="para">5</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> The assignment symbol <code class="computeroutput"><span class="special">=</span></code> cannot be used to specify default parameter
           values because default values are not part of the parameter type so they
           cannot be handled using template metaprogamming. Default parameter values
@@ -1350,12 +1365,12 @@
           symbol cannot be detected by preprocessor metaprogramming because it cannot
           be concatenated by the preprocessor).
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id870041" href="#id870041" class="para">6</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id870135" href="#id870135" class="para">6</a>] </sup>
           The authors do not personally find the use of the <code class="computeroutput"><span class="identifier">WITH_DEFAULT</span></code>
           macro more readable and they prefer to use the <code class="computeroutput"><span class="keyword">default</span></code>
           "keyword" directly.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id870842" href="#id870842" class="para">7</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id870944" href="#id870944" class="para">7</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> By binding a variable in scope,
           the local function declaration is specifying that such a variable should
           be accessible within the local function body regardless of its type. Semantically,
@@ -1368,7 +1383,7 @@
           For example, this is useful for maintenance because if a bound variable
           type is changed, the local function declaration does not have to change.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id870924" href="#id870924" class="para">8</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id871026" href="#id871026" class="para">8</a>] </sup>
           Obviously, the token <code class="computeroutput"><span class="identifier">bind</span></code>
           is not a keyword of the C++ language. This library parses the token <code class="computeroutput"><span class="identifier">bind</span></code> during macro expansion using preprocessor
           metaprogramming (see the <a class="link" href="Implementation.html" title="Appendix: Implementation">Implementation</a>
@@ -1377,7 +1392,7 @@
           level within the syntax defined by the macros of this library -- thus it
           is referred to as a "keyword" only within quotes.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id871152" href="#id871152" class="para">9</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id871253" href="#id871253" class="para">9</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> The library macros could have
           been implemented to accept both syntaxes <code class="computeroutput"><span class="keyword">const</span>
           <span class="identifier">bind</span> <span class="special">...</span></code>
@@ -1388,7 +1403,7 @@
           <span class="identifier">bind</span> <span class="special">...</span></code>)
           is supported.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id871339" href="#id871339" class="para">10</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id871440" href="#id871440" class="para">10</a>] </sup>
               An historical note: Constant binding of variables in scope was the
               main use case that originally motivated the authors in developing this
               library. The authors needed to locally create a chuck of code to assert
@@ -1403,7 +1418,7 @@
               correctly generates an error because the bound variable is of <code class="computeroutput"><span class="keyword">const</span></code> type within the local function
               body.
             </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id871462" href="#id871462" class="para">11</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id871559" href="#id871559" class="para">11</a>] </sup>
               <span class="bold"><strong>Rationale.</strong></span> Variables originally declared
               as references are bound by value unless <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span> <span class="identifier">bind</span><span class="special">&amp;</span></code>
               is used so that references can be bound by both value <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span> <span class="identifier">bind</span></code>
@@ -1416,13 +1431,13 @@
               even if <code class="computeroutput"><span class="identifier">bind</span><span class="special">[&amp;]</span></code>
               is used instead of <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">[&amp;]</span></code>.
             </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id872632" href="#id872632" class="para">12</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id872736" href="#id872736" class="para">12</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> The special name <code class="computeroutput"><span class="identifier">this_</span></code> was chosen following <a href="http://boost.2283326.n4.nabble.com/local-this-or-this-td3423912.html" target="_top">Boost
           practises</a> which postfix with an underscore identifiers that are
           named after keywords (the C++ keyword <code class="computeroutput"><span class="keyword">this</span></code>
           in this case).
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id872961" href="#id872961" class="para">13</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id873066" href="#id873066" class="para">13</a>] </sup>
             <span class="bold"><strong>Rationale.</strong></span> This limitation comes from
             the fact that <code class="computeroutput"><span class="keyword">this</span></code> is a
             reserved C++ keyword so it cannot be used as the name of the internal
@@ -1436,7 +1451,7 @@
             behaviour of <code class="computeroutput"><span class="keyword">static_cast</span></code></a>
             (which might not work on all platforms at the cost of portability).
           </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id873062" href="#id873062" class="para">14</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id873167" href="#id873167" class="para">14</a>] </sup>
             <span class="bold"><strong>Rationale.</strong></span> The local function body cannot
             be a static member function of the local functor object in order to support
             recursion (because the local function name is specified by the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_NAME.html" title="Macro BOOST_LOCAL_FUNCTION_NAME">BOOST_LOCAL_FUNCTION_NAME</a></code>
@@ -1449,7 +1464,7 @@
             Therefore, from within the local function body the variable <code class="computeroutput"><span class="keyword">this</span></code> is visible but it refers to the local
             functor and not to the bound object.
           </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id876475" href="#id876475" class="para">15</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id876588" href="#id876588" class="para">15</a>] </sup>
             <span class="bold"><strong>Rationale.</strong></span> Programmers might expect
             <code class="computeroutput"><span class="keyword">return</span><span class="special">;</span></code>
             to exit the enclosing function instead of the local block (or local exit),
@@ -1467,7 +1482,7 @@
             <code class="computeroutput"><span class="identifier">BOOST_LOCAL_RETURN</span><span class="special">;</span></code>)
             to exit local blocks (and local exits).
           </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id877714" href="#id877714" class="para">16</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id877834" href="#id877834" class="para">16</a>] </sup>
             <span class="bold"><strong>Rationale.</strong></span> This library (as well as
             <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>)
             uses the destructor of a local variable to automatically execute the
@@ -1478,7 +1493,7 @@
             scope exit code even if the main program terminates because of an uncaught
             exception.)
           </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id878995" href="#id878995" class="para">17</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id879124" href="#id879124" class="para">17</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This library could be merged
           together with <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
           into a new library named Boost.Scope (from the meaning of the word "<a href="http://en.wikipedia.org/wiki/Scope_(programming)" target="_top">scope</a>"
@@ -1507,7 +1522,7 @@
           name of "<a href="http://gcc.gnu.org/onlinedocs/gcc/Nested-Functions.html" target="_top">nested
           functions</a>" (GCC compiler extension).
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id879307" href="#id879307" class="para">18</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id879438" href="#id879438" class="para">18</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> Within templates, this library
           needs to use <code class="computeroutput"><span class="keyword">typename</span></code> to explicitly
           indicate that some expressions evaluate to a type. Because C++ does not

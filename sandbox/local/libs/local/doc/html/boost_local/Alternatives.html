@@ -33,7 +33,8 @@
 </dl></div>
 <p>
       This section compares the features offered by this library with similar features
-      offered by other libraries and by the new C++0x standard.
+      offered by other libraries and by the new <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+      standard.
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -75,8 +76,8 @@
               </th>
 <th>
                 <p>
-                  <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
-                  Lambda</a> (not ISO C++)
+                  <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+                  Lambda</a> (not <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>)
                 </p>
               </th>
 <th>
@@ -217,8 +218,9 @@
               </td>
 <td>
                 <p>
-                  Yes. The ISO C++ standard does not allow to pass local types as
-                  template parameters (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>)
+                  Yes. The <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+                  standard does not allow to pass local types as template parameters
+                  (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>)
                   but this library implements a "trick" to get around this
                   limitation (see the <a class="link" href="Implementation.html" title="Appendix: Implementation">Implementation</a>
                   section).
@@ -226,8 +228,9 @@
               </td>
 <td>
                 <p>
-                  No on ISO C++ compilers (but yes on C++0x compilers and some compilers
-                  like MSVC 8.0, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>).
+                  No on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+                  compilers (but yes on <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+                  compilers and some compilers like MSVC 8.0, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>).
                 </p>
               </td>
 <td>
@@ -324,7 +327,8 @@
               </td>
 <td>
                 <p>
-                  No (C++0x lambdas cannot be function templates).
+                  No (<a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+                  lambdas cannot be function templates).
                 </p>
               </td>
 <td>
@@ -340,35 +344,35 @@
 </tr>
 </tbody>
 </table></div>
-<a name="boost_local.Alternatives.local_functions.comparison_with__ulink_url__http___en_wikipedia_org_wiki_c_2b_2b0x_lambda_functions_and_expressions__c__0x_lambda__ulink__functions"></a><h6>
-<a name="boost_local.Alternatives.local_functions.comparison_with__ulink_url__http___en_wikipedia_org_wiki_c_2b_2b0x_lambda_functions_and_expressions__c__0x_lambda__ulink__functions-heading"></a>
-        <a class="link" href="Alternatives.html#boost_local.Alternatives.local_functions.comparison_with__ulink_url__http___en_wikipedia_org_wiki_c_2b_2b0x_lambda_functions_and_expressions__c__0x_lambda__ulink__functions">Comparison
-        with <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+<a name="boost_local.Alternatives.local_functions.comparison_with__ulink_url__http___en_wikipedia_org_wiki_c_2b_2b0x_lambda_functions_and_expressions__c__11_lambda__ulink__functions"></a><h6>
+<a name="boost_local.Alternatives.local_functions.comparison_with__ulink_url__http___en_wikipedia_org_wiki_c_2b_2b0x_lambda_functions_and_expressions__c__11_lambda__ulink__functions-heading"></a>
+        <a class="link" href="Alternatives.html#boost_local.Alternatives.local_functions.comparison_with__ulink_url__http___en_wikipedia_org_wiki_c_2b_2b0x_lambda_functions_and_expressions__c__11_lambda__ulink__functions">Comparison
+        with <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
         Lambda</a> Functions</a>
       </h6>
 <p>
-        <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+        <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
         lambda</a> functions have most of the features that <a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
         local functions have, key pro and cons of the two approaches are:
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+            <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
             lambda</a> functions can be defined within expressions while <a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
             local functions can only be defined within declarations.
           </li>
 <li class="listitem">
-            <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
-            lambda</a> functions are only supported by the C++0x standard so
-            they are not supported by all C++ compilers. <a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
-            local functions use only ISO C++ compliant features so they are supported
-            on all C++ compliant compilers.
+            <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+            lambda</a> functions are only supported by the <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+            standard so they are not supported by all C++ compilers. <a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
+            local functions use only <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+            compliant features so they are supported on all C++ compliant compilers.
           </li>
 <li class="listitem">
-            <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+            <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
             lambda</a> do not allow to bind variables in scope by constant reference
             or by non-constant value. Because a variable cannot be bound by constant
-            reference, <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+            reference, <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
             lambda</a> functions can bind a variable by constant only if the
             variable is copyable and the binding requires a (potentially expensive)
             extra copy operation. Both constant reference and non-constant value
@@ -387,14 +391,15 @@
 <thead><tr>
 <th>
                 <p>
-                  <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+                  <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
                   Lambda</a>
                 </p>
               </th>
 <th>
                 <p>
                   <a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -500,14 +505,15 @@
 <thead><tr>
 <th>
                 <p>
-                  <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
+                  <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
                   Lambda</a>
                 </p>
               </th>
 <th>
                 <p>
                   <a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -625,7 +631,8 @@
 <thead><tr>
 <th>
                 <p>
-                  Variadic Macro Syntax (C99 and later compilers)
+                  Variadic Macro Syntax (<a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+                  and later compilers)
                 </p>
               </th>
 <th>
@@ -790,8 +797,9 @@
 <p>
       </p>
 <p>
-        Or using <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++0x
-        lambda</a> functions (but not part of the ISO C++ standard):
+        Or using <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions (but not part of the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+        standard):
       </p>
 <p>
         
@@ -907,13 +915,14 @@
       </p>
 <p>
         Overall, this library has compile-times and generates binary sizes similar
-        to the ones of the other approaches. This library run-times on ISO C++ compliant
-        compilers (see "<a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
+        to the ones of the other approaches. This library run-times on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+        compliant compilers (see "<a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>
         Compliant" below) were measured to be larger than other approaches when
         compiler optimization is enabled (using <code class="computeroutput"><span class="identifier">bjam</span>
         <span class="identifier">release</span> <span class="special">...</span></code>).
         However, on compilers that allow to pass local types as template parameters
-        (e.g., MSVC 8.0 or GCC 4.5.1 with C++0x features enabled, see also <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>)
+        (e.g., MSVC 8.0 or GCC 4.5.1 with <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+        features enabled, see also <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>)
         this library automatically generates optimized code that runs as fast as
         the fastest of the other approaches (see "<a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>"
         below). When this library local function is specified <code class="computeroutput"><span class="keyword">inline</span></code>
@@ -935,9 +944,10 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           The run-time performances of this library local functions are explained
-          because on ISO C++ compliant compilers (e.g., GCC 4.3.4) this library needs
-          to use a function pointer in order to pass the local function class as
-          a template parameter (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>
+          because on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+          compliant compilers (e.g., GCC 4.3.4) this library needs to use a function
+          pointer in order to pass the local function class as a template parameter
+          (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>
           and the <a class="link" href="Implementation.html" title="Appendix: Implementation">Implementation</a>
           section). For all tested compilers, this function pointer prevents the
           compiler optimization algorithms from inlining the local function calls.
@@ -946,18 +956,20 @@
           have been observed to allow all tested compilers to inline all the function
           calls for optimization. This run-time performance cost is not present on
           compilers that allow to pass local types as template parameters (e.g.,
-          MSVC 8.0 or GCC 4.5.1 with C++0x features enabled) because this library
-          does not have to use the extra function pointer to implement the local
-          function call (it directly passes the local class type as template parameter).
+          MSVC 8.0 or GCC 4.5.1 with <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+          features enabled) because this library does not have to use the extra function
+          pointer to implement the local function call (it directly passes the local
+          class type as template parameter).
         </p></td></tr>
 </table></div>
 <p>
-        This run-time performance cost on ISO C++ compliant compilers might or might
-        not be an issue depending on the performance requirements of specific applications.
-        For example, an application might already be using a number of indirect function
-        calls (function pointers, virtual functions, etc) for which the overhead
-        added by using the one extra function pointer required by the local function
-        call might not be noticeable within the overall program run-time.
+        This run-time performance cost on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+        compliant compilers might or might not be an issue depending on the performance
+        requirements of specific applications. For example, an application might
+        already be using a number of indirect function calls (function pointers,
+        virtual functions, etc) for which the overhead added by using the one extra
+        function pointer required by the local function call might not be noticeable
+        within the overall program run-time.
       </p>
 <p>
         Finally, note that only a very simple local function body with just a single
@@ -1019,9 +1031,9 @@
 <colgroup><col></colgroup>
 <thead><tr><th>
                 <p>
-                  GCC 4.5.1 With C++0x Lambdas and "Local Types as Template
-                  Parameters" (<code class="literal">bjam cxxflags=-std=c++0x ...</code>)
-                  on Ubuntu Linux 10
+                  GCC 4.5.1 With <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+                  Lambdas and "Local Types as Template Parameters" (<code class="literal">bjam
+                  cxxflags=-std=c++0x ...</code>) on Ubuntu Linux 10
                 </p>
               </th></tr></thead>
 <tbody>
@@ -1046,7 +1058,8 @@
 <thead><tr><th>
                 <p>
                   MSVC 8.0 With "Local Types as Template Parameters" (Without
-                  C++0x Lambdas) on Windows XP
+                  <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+                  Lambdas) on Windows XP
                 </p>
               </th></tr></thead>
 <tbody>
@@ -1069,8 +1082,10 @@
 <colgroup><col></colgroup>
 <thead><tr><th>
                 <p>
-                  GCC 4.3.4 With ISO C++ Only (Without C++0x Lambdas and Without
-                  "Local Types as Template Parameters) on Cygwin
+                  GCC 4.3.4 With <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+                  Only (Without <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+                  Lambdas and Without "Local Types as Template Parameters) on
+                  Cygwin
                 </p>
               </th></tr></thead>
 <tbody>
