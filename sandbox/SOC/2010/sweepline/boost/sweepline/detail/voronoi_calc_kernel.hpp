@@ -554,18 +554,18 @@ public:
             static mpt_type mpz_dif_x[3], mpz_dif_y[3], mpz_sum_x[2], mpz_sum_y[2],
                             mpz_numerator[3], mpz_c_x, mpz_c_y, mpz_sqr_r, denom,
                             cA[2], cB[2];
-            mpz_dif_x[0] = static_cast<double>(site1.x()) - static_cast<double>(site2.x());
-            mpz_dif_x[1] = static_cast<double>(site2.x()) - static_cast<double>(site3.x());
-            mpz_dif_x[2] = static_cast<double>(site1.x()) - static_cast<double>(site3.x());
-            mpz_dif_y[0] = static_cast<double>(site1.y()) - static_cast<double>(site2.y());
-            mpz_dif_y[1] = static_cast<double>(site2.y()) - static_cast<double>(site3.y());
-            mpz_dif_y[2] = static_cast<double>(site1.y()) - static_cast<double>(site3.y());
+            mpz_dif_x[0] = site1.x() - site2.x();
+            mpz_dif_x[1] = site2.x() - site3.x();
+            mpz_dif_x[2] = site1.x() - site3.x();
+            mpz_dif_y[0] = site1.y() - site2.y();
+            mpz_dif_y[1] = site2.y() - site3.y();
+            mpz_dif_y[2] = site1.y() - site3.y();
+            mpz_sum_x[0] = site1.x() + site2.x();
+            mpz_sum_x[1] = site2.x() + site3.x();
+            mpz_sum_y[0] = site1.y() + site2.y();
+            mpz_sum_y[1] = site2.y() + site3.y();
+
             denom = (mpz_dif_x[0] * mpz_dif_y[1] - mpz_dif_x[1] * mpz_dif_y[0]) * 2.0;
-            mpz_sum_x[0] = static_cast<double>(site1.x()) + static_cast<double>(site2.x());
-            mpz_sum_x[1] = static_cast<double>(site2.x()) + static_cast<double>(site3.x());
-            mpz_sum_y[0] = static_cast<double>(site1.y()) + static_cast<double>(site2.y());
-            mpz_sum_y[1] = static_cast<double>(site2.y()) + static_cast<double>(site3.y());
-        
             mpz_numerator[1] = mpz_dif_x[0] * mpz_sum_x[0] + mpz_dif_y[0] * mpz_sum_y[0];
             mpz_numerator[2] = mpz_dif_x[1] * mpz_sum_x[1] + mpz_dif_y[1] * mpz_sum_y[1];
 
@@ -1315,7 +1315,7 @@ private:
     // Return true if the value is positive, else false.
     template <typename T>
     static bool convert_to_65_bit(T value, ulong_long_type &res) {
-        if (value >= static_cast<T>(0.0)) {
+        if (value >= static_cast<T>(0)) {
             res = static_cast<ulong_long_type>(value);
             return true;
         } else {

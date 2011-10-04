@@ -1,0 +1,2 @@
+Further development of this project is moving to https://svn.boost.org/svn/boost/sandbox/gtl.
+This project will be a part of the Boost.Polygon library.
