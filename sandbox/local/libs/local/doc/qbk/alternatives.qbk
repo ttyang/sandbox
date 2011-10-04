@@ -96,7 +96,7 @@ __CPP0x_lambda__ functions have most of the features that __Boost_Local__ local 
 * __CPP0x_lambda__ functions can be defined within expressions while __Boost_Local__ local functions can only be defined within declarations.
 * __CPP0x_lambda__ functions are only supported by the __CPP11__ standard so they are not supported by all C++ compilers.
 __Boost_Local__ local functions use only __CPP03__ compliant features so they are supported on all C++ compliant compilers.
-* __CPP0x_lambda__ do not allow to bind variables in scope by constant reference or by non-constant value.
+* __CPP0x_lambda__ functions do not allow to bind variables in scope by constant reference or by non-constant value.
 Because a variable cannot be bound by constant reference, __CPP0x_lambda__ functions can bind a variable by constant only if the variable is copyable and the binding requires a (potentially expensive) extra copy operation.
 Both constant reference and non-constant value binding are instead supported by __Boost_Local__.
 
