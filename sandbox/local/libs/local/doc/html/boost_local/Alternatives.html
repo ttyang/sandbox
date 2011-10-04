@@ -222,7 +222,7 @@
                 <p>
                   Yes. The <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
                   standard does not allow to pass local types as template parameters
-                  (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>)
+                  (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>)
                   but this library implements a "trick" to get around this
                   limitation (see the <a class="link" href="Implementation.html" title="Appendix: Implementation">Implementation</a>
                   section).
@@ -232,7 +232,7 @@
                 <p>
                   No on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
                   compilers (but yes on <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
-                  compilers and some compilers like MSVC 8.0, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>).
+                  compilers and some compilers like MSVC 8.0, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>).
                 </p>
               </td>
 <td>
@@ -926,7 +926,7 @@
         <span class="identifier">release</span> <span class="special">...</span></code>).
         However, on compilers that allow to pass local types as template parameters
         (e.g., MSVC 8.0 or GCC 4.5.1 with <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
-        features enabled, see also <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>)
+        features enabled, see also <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>)
         this library automatically generates optimized code that runs as fast as
         the fastest of the other approaches (see "<a href="http://www.boost.org/doc/libs/release/libs/local/doc/html/index.html" target="_top">Boost.Local</a>"
         below). When this library local function is specified <code class="computeroutput"><span class="keyword">inline</span></code>
@@ -935,7 +935,7 @@
         Topics</a> section) its run-times are always comparable to both the "Local
         Functor" and "Global Functor" approaches (but in this case
         the local function cannot be portably passed as template parameter, see
-        <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>,
+        <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>,
         so <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span></code> is replaced by a for-loop). Finally,
         this library run-times are always among the fastest when no compiler optimization
         is enabled (using <code class="computeroutput"><span class="identifier">bjam</span> <span class="identifier">debug</span>
@@ -951,7 +951,7 @@
           because on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
           compliant compilers (e.g., GCC 4.3.4) this library needs to use a function
           pointer in order to pass the local function class as a template parameter
-          (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.html" target="_top">[N2657]</a>
+          (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>
           and the <a class="link" href="Implementation.html" title="Appendix: Implementation">Implementation</a>
           section). For all tested compilers, this function pointer prevents the
           compiler optimization algorithms from inlining the local function calls.
