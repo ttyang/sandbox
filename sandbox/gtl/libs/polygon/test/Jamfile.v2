@@ -13,10 +13,17 @@ project polygon-test
     requirements
         <include>.
         <toolset>msvc:<asynch-exceptions>on
+        <library>$(BOOST_ROOT)/libs/test/build//boost_unit_test_framework
     ;
 
-test-suite polygon-unit
+alias "polygon-unit"
     :
     [ run gtl_boost_unit_test.cpp ]
     ;
+
+alias "benchmark"
+    :
+        [ run voronoi_benchmark_test.cpp ]
+    ;
+
 
