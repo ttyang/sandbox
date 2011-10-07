@@ -17,7 +17,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_typetraits.category.transform"></a><a class="link" href="transform.html" title="Type Traits that Transform One Type to Another"> Type Traits that
+<a name="boost_typetraits.category.transform"></a><a class="link" href="transform.html" title="Type Traits that Transform One Type to Another">Type Traits that
       Transform One Type to Another</a>
 </h3></div></div></div>
 <p>
@@ -60,7 +60,7 @@
 <span class="keyword">struct</span> <a class="link" href="../reference/make_unsigned.html" title="make_unsigned">make_unsigned</a><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <a class="link" href="../reference/member_object.html" title="member_object">member_object</a><span class="special">;</span>
+<span class="keyword">struct</span> <span class="identifier">__member_object</span><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <a class="link" href="../reference/promote.html" title="promote">promote</a><span class="special">;</span>
@@ -81,7 +81,7 @@
 <span class="keyword">struct</span> <a class="link" href="../reference/remove_pointer.html" title="remove_pointer">remove_pointer</a><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
-<span class="keyword">struct</span> <a class="link" href="../reference/remove_member_pointer.html" title="remove_member_pointer">remove_member_pointer</a><span class="special">;</span>
+<span class="keyword">struct</span> <span class="identifier">__remove_member_pointer</span><span class="special">;</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span>
 <span class="keyword">struct</span> <a class="link" href="../reference/remove_reference.html" title="remove_reference">remove_reference</a><span class="special">;</span>
@@ -90,7 +90,7 @@
 <span class="keyword">struct</span> <a class="link" href="../reference/remove_volatile.html" title="remove_volatile">remove_volatile</a><span class="special">;</span>
 </pre>
 <a name="boost_typetraits.category.transform.broken_compiler_workarounds_"></a><h5>
-<a name="id3318508"></a>
+<a name="boost_typetraits.category.transform.broken_compiler_workarounds_-heading"></a>
         <a class="link" href="transform.html#boost_typetraits.category.transform.broken_compiler_workarounds_">Broken
         Compiler Workarounds:</a>
       </h5>
@@ -133,13 +133,13 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">myspace</span><span class="special">{</span>
    <span class="keyword">struct</span> <span class="identifier">MyClass</span> <span class="special">{};</span>
 <span class="special">}</span>
-<span class="comment">// declare this at global scope:
-</span><span class="identifier">BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION</span><span class="special">(</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">)</span>
-<span class="comment">// transformations on myspace::MyClass now work:
-</span><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">remove_reference</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">&amp;&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
+<span class="comment">// declare this at global scope:</span>
+<span class="identifier">BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION</span><span class="special">(</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">)</span>
+<span class="comment">// transformations on myspace::MyClass now work:</span>
+<span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">remove_reference</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">&amp;&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
 <span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">((</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span><span class="special">,</span> <span class="identifier">remove_const</span><span class="special">&lt;</span><span class="identifier">myspace</span><span class="special">::</span><span class="identifier">MyClass</span> <span class="keyword">const</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">));</span>
-<span class="comment">// etc.
-</span></pre>
+<span class="comment">// etc.</span>
+</pre>
 <p>
         Note that the macro BOOST_BROKEN_COMPILER_TYPE_TRAITS_SPECIALIZATION evaluates
         to nothing on those compilers that <span class="bold"><strong>do</strong></span> support
