@@ -18,7 +18,7 @@ typedef site_event<int> site_type;
 typedef circle_event<int> circle_type;
 typedef ordered_queue<int, std::greater<int> > ordered_queue_type;
 typedef beach_line_node_key<int> node_key_type;
-typedef beach_line_node_data<int> node_data_type;
+typedef beach_line_node_data<int, int> node_data_type;
 
 BOOST_AUTO_TEST_CASE(point_2d_test) {
     point_type p(1, 2);
