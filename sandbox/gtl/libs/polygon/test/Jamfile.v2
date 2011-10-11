@@ -26,4 +26,9 @@ alias "benchmark"
         [ run voronoi_benchmark_test.cpp ]
     ;
 
+alias "voronoi-unit"
+    :
+    [ run voronoi_internal_structures_test.cpp ]
+    ;
+
 

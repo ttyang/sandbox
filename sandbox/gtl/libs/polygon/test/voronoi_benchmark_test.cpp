@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_benchmark_test.cpp file
 
-//          Copyright Andrii Sydorchuk 2010.
+//          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -103,7 +103,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_points, T, test_types) {
     }
     std::sort(periods.begin(), periods.end());
     // Using olympic system to evaluate average time.
-    double elapsed_time = std::accumulate(periods.begin() + 2, periods.end() - 2, 0.0) / (periods.size() - 4);
+    double elapsed_time = std::accumulate(periods.begin() + 2, periods.end() - 2, 0.0);
+    elapsed_time /= (periods.size() - 4);
 
     std::ofstream bench_file(BENCHMARK_FILE, std::ios_base::out | std::ios_base::app);
     bench_file << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);
@@ -142,7 +143,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
     }
     std::sort(periods.begin(), periods.end());
     // Using olympic system to evaluate average time.
-    double elapsed_time = std::accumulate(periods.begin() + 2, periods.end() - 2, 0.0) / (periods.size() - 4);
+    double elapsed_time = std::accumulate(periods.begin() + 2, periods.end() - 2, 0.0);
+    elapsed_time /= (periods.size() - 4);
 
     std::ofstream bench_file(BENCHMARK_FILE, std::ios_base::out | std::ios_base::app);
     bench_file << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);

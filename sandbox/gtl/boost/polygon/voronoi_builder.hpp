@@ -26,7 +26,7 @@
 #include "detail/mpt_wrapper.hpp"
 #include "detail/voronoi_calc_kernel.hpp"
 #include "detail/voronoi_fpt_kernel.hpp"
-#include "detail/voronoi_formation.hpp"
+#include "detail/voronoi_internal_structures.hpp"
 
 namespace boost {
 namespace polygon {
@@ -196,8 +196,9 @@ namespace polygon {
             event_comparison_predicate;
         typedef calc_kernel_type::circle_formation_predicate<site_event_type, circle_event_type>
             circle_formation_predicate_type;
+        typedef typename output_type::voronoi_edge_type edge_type;
         typedef detail::beach_line_node_key<site_event_type> key_type;
-        typedef detail::beach_line_node_data<circle_event_type> value_type;
+        typedef detail::beach_line_node_data<edge_type, circle_event_type> value_type;
         typedef calc_kernel_type::node_comparison_predicate<key_type> node_comparer_type;
         typedef std::map< key_type, value_type, node_comparer_type > beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
@@ -210,7 +211,6 @@ namespace polygon {
         } event_comparison_type;
         typedef detail::ordered_queue<event_type, event_comparison_type>
             circle_event_queue_type;
-        typedef typename output_type::voronoi_edge_type edge_type;
         typedef std::pair<point_type, beach_line_iterator> end_point_type;
 
         // Create site events.
@@ -300,6 +300,13 @@ namespace polygon {
              }
         }
 
+        void deactivate_circle_event(value_type &value) {
+            if (value.circle_event()) {
+                value.circle_event()->deactivate();
+                value.circle_event(NULL);
+            }
+        }
+
         // Process a single site.
         void process_site_event() {
             // Get the site event to process.
@@ -379,7 +386,7 @@ namespace polygon {
                     const site_event_type &site3 = it->first.right_site();
 
                     // Remove the candidate circle from the event queue.
-                    it->second.deactivate_circle_event();
+                    deactivate_circle_event(it->second);
                     --it;
                     const site_event_type &site_arc1 = it->first.right_site();
                     const site_event_type &site1 = it->first.left_site();
@@ -427,11 +434,11 @@ namespace polygon {
             site_event_type site3 = it_first->first.right_site();
 
             // Get the half-edge corresponding to the second bisector - (B, C).
-            edge_type *bisector2 = static_cast<edge_type *>(it_first->second.edge());
+            edge_type *bisector2 = it_first->second.edge();
 
             // Get the half-edge corresponding to the first bisector - (A, B).
             --it_first;
-            edge_type *bisector1 = static_cast<edge_type *>(it_first->second.edge());
+            edge_type *bisector1 = it_first->second.edge();
 
             // Get the A site.
             site_event_type site1 = it_first->first.left_site();
@@ -458,7 +465,7 @@ namespace polygon {
             // Check new triplets formed by the neighboring arcs
             // to the left for potential circle events.
             if (it_first != beach_line_.begin()) {
-                it_first->second.deactivate_circle_event();
+                deactivate_circle_event(it_first->second);
                 --it_first;
                 const site_event_type &site_l1 = it_first->first.left_site();
                 activate_circle_event(site_l1, site1, site3, it_last);
@@ -468,7 +475,7 @@ namespace polygon {
             // to the right for potential circle events.
             ++it_last;
             if (it_last != beach_line_.end()) {
-                it_last->second.deactivate_circle_event();
+                deactivate_circle_event(it_last->second);
                 const site_event_type &site_r1 = it_last->first.right_site();
                 activate_circle_event(site1, site3, site_r1, it_last);
             }
@@ -485,7 +492,7 @@ namespace polygon {
 
             // Set correct orientation for the first site of the second node.
             if (site_event.is_segment()) {
-                new_right_node.inverse_left_site();
+                new_right_node.left_site().inverse();
             }
 
             // Update the output.
@@ -500,7 +507,7 @@ namespace polygon {
                 // disappear after processing site event going through the
                 // endpoint of the segment site.
                 key_type new_node(site_event, site_event);
-                new_node.inverse_right_site();
+                new_node.right_site().inverse();
                 beach_line_iterator temp_it = beach_line_.insert(position,
                     typename beach_line_type::value_type(new_node, value_type(NULL)));
 
@@ -528,7 +535,7 @@ namespace polygon {
                 // new circle event in the circle event queue.
                 event_type &e = circle_events_.push(
                     std::pair<circle_event_type, beach_line_iterator>(c_event, bisector_node));
-                bisector_node->second.activate_circle_event(&e.first);
+                bisector_node->second.circle_event(&e.first);
             }
         }
 

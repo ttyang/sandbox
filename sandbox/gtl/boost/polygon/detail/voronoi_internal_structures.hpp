@@ -1,4 +1,4 @@
-// Boost polygon/detail/voronoi_formation.hpp header file
+// Boost.Polygon detail/voronoi_internal_structures.hpp header file
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,26 +7,16 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_FORMATION
-#define BOOST_POLYGON_VORONOI_FORMATION
+#ifndef BOOST_POLYGON_VORONOI_INTERNAL_STRUCTURES
+#define BOOST_POLYGON_VORONOI_INTERNAL_STRUCTURES
 
-#include "mpt_wrapper.hpp"
-#include "voronoi_fpt_kernel.hpp"
+#include <list>
+#include <queue>
+#include <vector>
 
 namespace boost {
 namespace polygon {
 namespace detail {
-
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI EVENT TYPES ////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-
-    // Represents the result of the orientation test.
-    enum kOrientation {
-        RIGHT_ORIENTATION = -1,
-        COLLINEAR = 0,
-        LEFT_ORIENTATION = 1,
-    };
 
     // Cartesian 2D point data structure.
     template <typename T>
@@ -36,10 +26,9 @@ namespace detail {
 
         point_2d() {}
 
-        point_2d(coordinate_type x, coordinate_type y) {
-            x_ = x;
-            y_ = y;
-        }
+        point_2d(coordinate_type x, coordinate_type y) :
+            x_(x),
+            y_(y) {}
 
         bool operator==(const point_2d &that) const {
             return (this->x_ == that.x()) && (this->y_ == that.y());
@@ -122,24 +111,18 @@ namespace detail {
         site_event() :
             point0_(0, 0),
             point1_(0, 0),
-            is_segment_(false),
-            is_vertical_(true),
             is_inverse_(false) {}
 
         site_event(coordinate_type x, coordinate_type y, int index) :
             point0_(x, y),
             point1_(x, y),
             site_index_(index),
-            is_segment_(false),
-            is_vertical_(true),
             is_inverse_(false) {}
 
         site_event(const point_type &point, int index) :
             point0_(point),
             point1_(point),
             site_index_(index),
-            is_segment_(false),
-            is_vertical_(true),
             is_inverse_(false) {}
 
         // Segment site constructors.
@@ -148,11 +131,9 @@ namespace detail {
             point0_(x1, y1),
             point1_(x2, y2),
             site_index_(index),
-            is_segment_(true),
             is_inverse_(false) {
             if (point0_ > point1_)
                 (std::swap)(point0_, point1_);
-            is_vertical_ = (point0_.x() == point1_.x());
         }
 
         site_event(const point_type &point1,
@@ -160,11 +141,9 @@ namespace detail {
             point0_(point1),
             point1_(point2),
             site_index_(index),
-            is_segment_(true),
             is_inverse_(false) {
             if (point0_ > point1_)
                 (std::swap)(point0_, point1_);
-            is_vertical_ = (point0_.x() == point1_.x());
         }
 
         coordinate_type x(bool oriented = false) const {
@@ -238,11 +217,11 @@ namespace detail {
         }
 
         bool is_segment() const {
-            return is_segment_;
+            return point0_.x() != point1_.x() || point0_.y() != point1_.y();
         }
 
         bool is_vertical() const {
-            return is_vertical_;
+            return point0_.x() == point1_.x();
         }
 
         bool is_inverse() const {
@@ -253,8 +232,6 @@ namespace detail {
         point_type point0_;
         point_type point1_;
         int site_index_;
-        bool is_segment_;
-        bool is_vertical_;
         bool is_inverse_;
     };
 
@@ -341,10 +318,6 @@ namespace detail {
         bool is_active_;
     };
 
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI CIRCLE EVENTS QUEUE ////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-
     // Event queue data structure, holds circle events.
     // During algorithm run, some of the circle events disappear(become
     // inactive). Priority queue data structure by itself doesn't support
@@ -398,10 +371,6 @@ namespace detail {
         void operator=(const ordered_queue&);
     };
 
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI BEACH LINE DATA TYPES //////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-
     // Represents a bisector node made by two arcs that correspond to the left
     // and right sites. Arc is defined as a curve with points equidistant from
     // the site and from the sweepline. If the site is a point then the arc is
@@ -411,89 +380,82 @@ namespace detail {
     // why the order of the sites is important to define the unique bisector.
     // The one site is considered to be newer than the other in case it was
     // processed by the algorithm later.
-    template <typename SEvent>
+    template <typename Site>
     class beach_line_node_key {
     public:
-        typedef SEvent site_event_type;
-        typedef typename site_event_type::coordinate_type coordinate_type;
-        typedef typename site_event_type::point_type point_type;
-
-        beach_line_node_key() {}
+        typedef Site site_type;
 
         // Constructs degenerate bisector, used to search an arc that is above
         // the given site. The input to the constructor is the new site point.
-        explicit beach_line_node_key(const site_event_type &new_site) :
+        explicit beach_line_node_key(const site_type &new_site) :
               left_site_(new_site),
               right_site_(new_site) {}
 
         // Constructs a new bisector. The input to the constructor is the two
         // sites that create the bisector. The order of sites is important.
-        beach_line_node_key(const site_event_type &left_site, const site_event_type &right_site) :
+        beach_line_node_key(const site_type &left_site, const site_type &right_site) :
             left_site_(left_site),
             right_site_(right_site) {}
 
-        const site_event_type &left_site() const {
+        const site_type &left_site() const {
             return left_site_;
         }
 
-        const site_event_type &right_site() const {
-            return right_site_;
+        site_type &left_site() {
+            return left_site_;
         }
 
-        void left_site(const site_event_type &site) {
+        void left_site(const site_type &site) {
             left_site_ = site;
         }
 
-        void right_site(const site_event_type &site) {
+        const site_type &right_site() const {
+            return right_site_;
+        }
+
+        site_type &right_site() {
+            return right_site_;
+        }
+
+        void right_site(const site_type &site) {
             right_site_ = site;
         }
 
-        void inverse_left_site() {
-            left_site_.inverse();
-        }
-
-        void inverse_right_site() {
-            right_site_.inverse();
-        }
-
     private:
-        site_event_type left_site_;
-        site_event_type right_site_;
+        site_type left_site_;
+        site_type right_site_;
     };
 
     // Represents edge data sturcture from the voronoi output, that is
     // associated as a value with beach line bisector as a key in the beach
     // line. Contains iterator to the circle event in the circle event
     // queue in case it's the second bisector that forms a circle event.
-    template <typename CEvent>
+    template <typename Edge, typename Circle>
     class beach_line_node_data {
     public:
-        explicit beach_line_node_data(void *new_edge) :
-            circle_event_(0),
+        explicit beach_line_node_data(Edge *new_edge) :
+            circle_event_(NULL),
             edge_(new_edge) {}
 
-        void activate_circle_event(CEvent *circle_event) {
+        Circle *circle_event() const {
+            return circle_event_;
+        }
+
+        void circle_event(Circle *circle_event) {
             circle_event_ = circle_event;
         }
 
-        void deactivate_circle_event() {
-            if (circle_event_) {
-                circle_event_->deactivate();
-                circle_event_ = 0;
-            }
-        }
-
-        void *edge() const {
+        Edge *edge() const {
             return edge_;
         }
 
-        void edge(void *new_edge) {
+        void edge(Edge *new_edge) {
             edge_ = new_edge;
         }
 
     private:
-        CEvent *circle_event_;
-        void *edge_;
+        Circle *circle_event_;
+        Edge *edge_;
     };
 
 } // detail

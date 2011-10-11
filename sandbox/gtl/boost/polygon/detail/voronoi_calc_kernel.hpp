@@ -381,8 +381,8 @@ public:
     class node_comparison_predicate {
     public:
         typedef Node node_type;
-        typedef typename Node::coordinate_type coordinate_type;
-        typedef typename Node::site_event_type site_type;
+        typedef typename Node::site_type site_type;
+        typedef typename site_type::coordinate_type coordinate_type;
         typedef distance_predicate<site_type> distance_predicate_type;
 
         // Compares nodes in the balanced binary search tree. Nodes are
