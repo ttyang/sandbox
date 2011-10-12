@@ -52,15 +52,17 @@ typedef boost::mpl::list<int> test_types;
     BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(output, \
         voronoi_test_helper::NO_HALF_EDGE_INTERSECTIONS), true)
 
+typedef voronoi_diagram<double> vd_type;
+typedef vd_type::coordinate_type coordinate_type;
+typedef vd_type::voronoi_edge_type voronoi_edge_type;
+typedef vd_type::voronoi_cell_const_iterator_type voronoi_cell_const_iterator_type;
+typedef vd_type::voronoi_vertex_const_iterator_type voronoi_vertex_const_iterator_type;
+
 // Sites: (0, 0).
 BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
-    typedef double coordinate_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_cell_const_iterator_type
-        voronoi_cell_const_iterator_type;
-
     std::vector< point_data<T> > points;
     points.push_back(point_data<T>(0, 0));
-    voronoi_diagram<coordinate_type> test_output;
+    vd_type test_output;
     construct_voronoi_points<T>(points, test_output);
     VERIFY_OUTPUT(test_output);
 
@@ -74,15 +76,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
 
 // Sites: (0, 0), (0, 1).
 BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
-    typedef double coordinate_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_edge_type voronoi_edge_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_cell_const_iterator_type
-        voronoi_cell_const_iterator_type;
-
     std::vector< point_data<T> > points;
     points.push_back(point_data<T>(0, 0));
     points.push_back(point_data<T>(0, 1));
-    voronoi_diagram<coordinate_type> test_output;
+    vd_type test_output;
     construct_voronoi_points<T>(points, test_output);
     VERIFY_OUTPUT(test_output);
 
@@ -113,16 +110,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
 
 // Sites: (0, 0), (1, 1), (2, 2).
 BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
-    typedef double coordinate_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_edge_type voronoi_edge_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_cell_const_iterator_type
-        voronoi_cell_const_iterator_type;
-
     std::vector< point_data<T> > points;
     points.push_back(point_data<T>(0, 0));
     points.push_back(point_data<T>(1, 1));
     points.push_back(point_data<T>(2, 2));
-    voronoi_diagram<coordinate_type> test_output;
+    vd_type test_output;
     construct_voronoi_points<T>(points, test_output);
     VERIFY_OUTPUT(test_output);
 
@@ -156,11 +148,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
 
 // Sites: (0, 0), (0, 4), (2, 1).
 BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
-    typedef double coordinate_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_edge_type voronoi_edge_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_vertex_const_iterator_type
-        voronoi_vertex_const_iterator_type;
-
     point_data<T> point1(0, 0);
     point_data<T> point2(0, 4);
     point_data<T> point3(2, 1);
@@ -168,7 +155,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
     points.push_back(point1);
     points.push_back(point2);
     points.push_back(point3);
-    voronoi_diagram<coordinate_type> test_output;
+    vd_type test_output;
     construct_voronoi_points<T>(points, test_output);
     VERIFY_OUTPUT(test_output);
 
@@ -213,11 +200,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
 
 // Sites: (0, 1), (2, 0), (2, 4).
 BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
-    typedef double coordinate_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_edge_type voronoi_edge_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_vertex_const_iterator_type
-        voronoi_vertex_const_iterator_type;
-
     point_data<T> point1(0, 1);
     point_data<T> point2(2, 0);
     point_data<T> point3(2, 4);
@@ -225,7 +207,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
     points.push_back(point1);
     points.push_back(point2);
     points.push_back(point3);
-    voronoi_diagram<coordinate_type> test_output;
+    vd_type test_output;
     construct_voronoi_points<T>(points, test_output);
     VERIFY_OUTPUT(test_output);
 
@@ -270,11 +252,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
 
 // Sites: (0, 0), (0, 1), (1, 0), (1, 1).
 BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
-    typedef double coordinate_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_edge_type voronoi_edge_type;
-    typedef typename voronoi_diagram<coordinate_type>::voronoi_vertex_const_iterator_type
-        voronoi_vertex_const_iterator_type;
-
     point_data<T> point1(0, 0);
     point_data<T> point2(0, 1);
     point_data<T> point3(1, 0);
@@ -284,7 +261,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
     points.push_back(point2);
     points.push_back(point3);
     points.push_back(point4);
-    voronoi_diagram<coordinate_type> test_output;
+    vd_type test_output;
     construct_voronoi_points<T>(points, test_output);
     VERIFY_OUTPUT(test_output);
 
@@ -340,7 +317,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
 
 #ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test, T, test_types) {
-    voronoi_diagram<double> test_output_small, test_output_large;
+    vd_type test_output_small, test_output_large;
     std::vector< point_data<T> > point_vec_small, point_vec_large;
     int grid_size[4] = {10, 33, 101, 163};
     int max_value[4] = {10, 33, 101, 163};
@@ -370,7 +347,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test, T, test_types) {
 #ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(random_test, T, test_types) {
     boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
-    voronoi_diagram<double> test_output_small, test_output_large;
+    vd_type test_output_small, test_output_large;
     std::vector< point_data<T> > point_vec_small, point_vec_large;
     int num_points[] = {5, 100, 1000, 10000, 100000};
     int num_runs[] = {10000, 1000, 100, 10, 1};
@@ -406,7 +383,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test, T, test_types) {
 #ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(enormous_random_test, T, test_types) {
     boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > point_vec;
     for (int i = 0; i < 1000000; i++)
         point_vec.push_back(point_data<T>(gen() % 10000 - 5000, gen() % 10000 - 5000));
@@ -417,8 +394,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(enormous_random_test, T, test_types) {
 #endif
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test1, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(0, 0);
     point_data<T> point2(1, 1);
@@ -429,8 +405,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test1, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test2, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > points;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(0, 0);
@@ -446,8 +421,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test2, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test3, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > points;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(4, 0);
@@ -463,8 +437,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test3, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test4, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > points;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(4, 0);
@@ -480,8 +453,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_sites_test4, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test5, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > points;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(0, 0);
@@ -499,8 +471,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test5, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test6, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > points;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(-1, 1);
@@ -514,8 +485,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test6, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test7, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(0, 0);
     point_data<T> point2(4, 0);
@@ -530,8 +500,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test7, T, test_types) {
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test8, T, test_types) {
-    typedef T coordinate_type;
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     directed_line_segment_set_data<T> segments;
     point_data<T> point1(0, 0);
     point_data<T> point2(4, 0);
@@ -548,7 +517,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test8, T, test_types) {
 
 #ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_grid_test, T, test_types) {
-    voronoi_diagram<double> test_output_small, test_output_large;
+    vd_type test_output_small, test_output_large;
     directed_line_segment_set_data<T> segments_small, segments_large;
     int grid_size[] = {10, 33, 100};
     int max_value[] = {100, 330, 1000};
@@ -587,7 +556,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_grid_test, T, test_types) {
 #ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_random_test1, T, test_types) {
     boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
-    voronoi_diagram<double> test_output;
+    vd_type test_output;
     std::vector< point_data<T> > points;
     directed_line_segment_set_data<T> segments;
     int num_runs = 1000;
@@ -620,7 +589,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_random_test1, T, test_types) {
 #ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_random_test2, T, test_types) {
     boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
-    voronoi_diagram<double> test_output_small, test_output_large;
+    vd_type test_output_small, test_output_large;
     directed_line_segment_set_data<T> segments_small, segments_large;
     int num_segments[] = {5, 25, 125, 625};
     int num_runs[] = {1000, 100, 10, 1};

@@ -221,6 +221,6 @@ void save_voronoi_input(const directed_line_segment_set_data<T> &segments, const
     ofs.close();
 }
 
-}
+} // voronoi_test_helper
 
 #endif

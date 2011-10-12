@@ -50,10 +50,14 @@ namespace polygon {
 
         template <typename P>
         BRect(const P &p1, const P &p2) {
-            x_min_ = (std::min)(static_cast<coordinate_type>(p1.x()), static_cast<coordinate_type>(p2.x()));
-            y_min_ = (std::min)(static_cast<coordinate_type>(p1.y()), static_cast<coordinate_type>(p2.y()));
-            x_max_ = (std::max)(static_cast<coordinate_type>(p1.x()), static_cast<coordinate_type>(p2.x()));
-            y_max_ = (std::max)(static_cast<coordinate_type>(p1.y()), static_cast<coordinate_type>(p2.y()));
+            x_min_ = (std::min)(static_cast<coordinate_type>(p1.x()),
+                                static_cast<coordinate_type>(p2.x()));
+            y_min_ = (std::min)(static_cast<coordinate_type>(p1.y()),
+                                static_cast<coordinate_type>(p2.y()));
+            x_max_ = (std::max)(static_cast<coordinate_type>(p1.x()),
+                                static_cast<coordinate_type>(p2.x()));
+            y_max_ = (std::max)(static_cast<coordinate_type>(p1.y()),
+                                static_cast<coordinate_type>(p2.y()));
         }
 
         BRect(coordinate_type x_mn, coordinate_type y_mn,
@@ -120,14 +124,15 @@ namespace polygon {
     };
 
     // Voronoi output postprocessing tools.
-    template <typename T>
+    template <typename fpt_>
     class voronoi_helper {
     public:
-        typedef T coordinate_type;
-        typedef point_data<coordinate_type> point_type;
-        typedef directed_line_segment_data<coordinate_type> segment_type;
-        typedef directed_line_segment_set_data<coordinate_type> segment_set_type;
-        typedef BRect<coordinate_type> brect_type;
+        typedef fpt_ fpt_type;
+        typedef point_data<fpt_type> point_type;
+        typedef std::vector<point_type> point_set_type;
+        typedef directed_line_segment_data<fpt_type> segment_type;
+        typedef directed_line_segment_set_data<fpt_type> segment_set_type;
+        typedef BRect<fpt_type> brect_type;
 
         // There are three different types of edges:
         //   1) Segment edge - has both endpoints;
@@ -141,19 +146,25 @@ namespace polygon {
         };
 
         // Get a view rectangle based on the voronoi bounding rectangle.
-        static BRect<coordinate_type> get_view_rectangle(
-                const BRect<coordinate_type> &brect) {
-            coordinate_type x_len = (brect.x_max() - brect.x_min());
-            coordinate_type y_len = (brect.y_max() - brect.y_min());
-            coordinate_type x_mid = (brect.x_max() + brect.x_min()) * 0.5;
-            coordinate_type y_mid = (brect.y_max() + brect.y_min()) * 0.5;
-            coordinate_type offset = x_len;
+        template <typename T>
+        static brect_type get_view_rectangle(const BRect<T> &brect) {
+            fpt_type x_len = static_cast<fpt_type>(brect.x_max()) -
+                             static_cast<fpt_type>(brect.x_min());
+            fpt_type y_len = static_cast<fpt_type>(brect.y_max()) -
+                             static_cast<fpt_type>(brect.y_min());
+            fpt_type x_mid = static_cast<fpt_type>(brect.x_max()) +
+                             static_cast<fpt_type>(brect.x_min());
+            fpt_type y_mid = static_cast<fpt_type>(brect.y_max()) +
+                             static_cast<fpt_type>(brect.y_min());
+            x_mid /= 2;
+            y_mid /= 2;
+            fpt_type offset = x_len;
             if (offset < y_len)
                 offset = y_len;
-            if (offset == 0.0)
-                offset = 0.5;
-            BRect<coordinate_type> new_brect(x_mid - offset, y_mid - offset,
-                                             x_mid + offset, y_mid + offset);
+            if (offset == static_cast<fpt_type>(0))
+                offset = static_cast<fpt_type>(1);
+            brect_type new_brect(x_mid - offset, y_mid - offset,
+                                 x_mid + offset, y_mid + offset);
             return new_brect;
         }
 
@@ -163,71 +174,76 @@ namespace polygon {
         // Max_error is the maximum distance (relative to the minor of two
         // rectangle sides) allowed between the parabola and line segments
         // that interpolate it.
-        static std::vector<point_type> get_point_interpolation(
-                const voronoi_edge<coordinate_type> *edge,
-                const BRect<coordinate_type> &brect,
-                double max_error) {
+        template <typename T>
+        static point_set_type get_point_interpolation(
+            const voronoi_edge<T> *edge,
+            const BRect<T> &brect,
+            fpt_type max_error) {
             // Retrieve the cell to the left of the current edge.
-            const voronoi_cell<coordinate_type> *cell1 = edge->cell();
+            const voronoi_cell<T> *cell1 = edge->cell();
 
             // Retrieve the cell to the right of the current edge.
-            const voronoi_cell<coordinate_type> *cell2 = edge->twin()->cell();
+            const voronoi_cell<T> *cell2 = edge->twin()->cell();
 
             // edge_points - contains intermediate points.
-            std::vector<point_type> edge_points;
+            point_set_type edge_points;
             if (!(cell1->contains_segment() ^ cell2->contains_segment())) {
                 // Edge is a segment, ray, or line.
                 if (edge->vertex0() != NULL && edge->vertex1() != NULL) {
                     // Edge is a segment. No further processing is required.
-                    edge_points.push_back(edge->vertex0()->vertex());
-                    edge_points.push_back(edge->vertex1()->vertex());
+                    edge_points.push_back(
+                        get_point(edge->vertex0()->vertex()));
+                    edge_points.push_back(
+                        get_point(edge->vertex1()->vertex()));
                 } else {
                     // Edge is a ray or line.
                     // Clip it with the bounding rectangle.
-                    const point_type &site1 = cell1->point0();
-                    const point_type &site2 = cell2->point0();
-                    point_type origin((site1.x() + site2.x()) * 0.5,
-                                      (site1.y() + site2.y()) * 0.5);
+                    const point_type &site1 = get_point(cell1->point0());
+                    const point_type &site2 = get_point(cell2->point0());
+                    point_type origin((site1.x() + site2.x()) / 2,
+                                      (site1.y() + site2.y()) / 2);
                     point_type direction(site1.y() - site2.y(),
                                          site2.x() - site1.x());
-
+                    
                     // Find intersection points.
                     find_intersections(origin, direction, LINE,
                                        brect, edge_points);
-
+                    
                     // Update endpoints in case edge is a ray.
                     if (edge->vertex1() != NULL)
-                        edge_points[1] = edge->vertex1()->vertex();
+                        edge_points[1] = get_point(edge->vertex1()->vertex());
                     if (edge->vertex0() != NULL)
-                        edge_points[0] = edge->vertex0()->vertex();
+                        edge_points[0] = get_point(edge->vertex0()->vertex());
                 }
             } else {
                 // point1 - site point;
                 const point_type &point1 = (cell1->contains_segment()) ?
-                    cell2->point0() : cell1->point0();
+                    get_point(cell2->point0()) : get_point(cell1->point0());
 
                 // point2 - startpoint of the segment site;
                 const point_type &point2 = (cell1->contains_segment()) ?
-                    cell1->point0() : cell2->point0();
+                    get_point(cell1->point0()) : get_point(cell2->point0());
 
                 // point3 - endpoint of the segment site;
                 const point_type &point3 = (cell1->contains_segment()) ?
-                    cell1->point1() : cell2->point1();
+                    get_point(cell1->point1()) : get_point(cell2->point1());
 
                 if (edge->vertex0() != NULL && edge->vertex1() != NULL) {
                     // Edge is a segment or parabolic arc.
-                    edge_points.push_back(edge->vertex0()->vertex());
-                    edge_points.push_back(edge->vertex1()->vertex());
-                    double max_dist = max_error * brect.min_len();
+                    edge_points.push_back(
+                        get_point(edge->vertex0()->vertex()));
+                    edge_points.push_back(
+                        get_point(edge->vertex1()->vertex()));
+                    fpt_type max_dist = max_error * brect.min_len();
                     fill_intermediate_points(point1, point2, point3,
                                              edge_points, max_dist);
                 } else {
                     // Edge is a ray or line.
                     // Clip it with the bounding rectangle.
-                    coordinate_type dir_x =
+                    fpt_type dir_x =
                         (cell1->contains_segment() ^ (point1 == point3)) ?
                         point3.y() - point2.y() : point2.y() - point3.y();
-                    coordinate_type dir_y =
+                    fpt_type dir_y =
                         (cell1->contains_segment() ^ (point1 == point3)) ?
                         point2.x() - point3.x() : point3.x() - point2.x();
                     point_type direction(dir_x, dir_y);
@@ -235,12 +251,12 @@ namespace polygon {
                     // Find intersection points.
                     find_intersections(point1, direction, LINE,
                                        brect, edge_points);
-
+                    
                     // Update endpoints in case edge is a ray.
                     if (edge->vertex1() != NULL)
-                        edge_points[1] = edge->vertex1()->vertex();
+                        edge_points[1] = get_point(edge->vertex1()->vertex());
                     if (edge->vertex0() != NULL)
-                        edge_points[0] = edge->vertex0()->vertex();
+                        edge_points[0] = get_point(edge->vertex0()->vertex());
                 }
             }
             return edge_points;
@@ -248,16 +264,18 @@ namespace polygon {
 
         // Interpolate voronoi edge with a set of segments to satisfy maximal
         // error requirement.
+        template <typename T>
         static segment_set_type get_segment_interpolation(
-            const voronoi_edge<coordinate_type> *edge,
-            const BRect<coordinate_type> &brect,
-            double max_error) {
-                std::vector<point_type> point_interpolation = 
-                    get_point_interpolcation(edge, brect, max_error);
-                segment_set_type ret_val;
-                for (size_t i = 1; i < point_interpolation.size(); ++i)
-                    ret_val.insert(segment_type(point_interpolation[i-1], point_interpolation[i]));
-                return ret_val;
+            const voronoi_edge<T> *edge,
+            const BRect<T> &brect,
+            fpt_type max_error) {
+            point_set_type point_interpolation =
+                get_point_interpolcation(edge, brect, max_error);
+            segment_set_type ret_val;
+            for (size_t i = 1; i < point_interpolation.size(); ++i)
+                ret_val.insert(segment_type(point_interpolation[i-1],
+                                            point_interpolation[i]));
+            return ret_val;
         }
 
         // Find edge-rectangle intersection points.
@@ -265,33 +283,32 @@ namespace polygon {
         static void find_intersections(
                 const point_type &origin, const point_type &direction,
                 kEdgeType edge_type, const brect_type &brect,
-                std::vector<point_type> &intersections) {
+                point_set_type &intersections) {
             // Find the center of the rectangle.
-            coordinate_type center_x = (brect.x_min() + brect.x_max()) * 0.5;
-            coordinate_type center_y = (brect.y_min() + brect.y_max()) * 0.5;
+            fpt_type center_x = (brect.x_min() + brect.x_max()) / 2;
+            fpt_type center_y = (brect.y_min() + brect.y_max()) / 2;
 
             // Find the half-diagonal vector of the rectangle.
-            coordinate_type len_x = brect.x_max() - center_x;
-            coordinate_type len_y = brect.y_max() - center_y;
+            fpt_type len_x = brect.x_max() - center_x;
+            fpt_type len_y = brect.y_max() - center_y;
 
             // Find the vector between the origin and the center of the
             // rectangle.
-            coordinate_type diff_x = origin.x() - center_x;
-            coordinate_type diff_y = origin.y() - center_y;
+            fpt_type diff_x = origin.x() - center_x;
+            fpt_type diff_y = origin.y() - center_y;
 
             // Find the vector perpendicular to the direction vector.
-            coordinate_type perp_x = direction.y();
-            coordinate_type perp_y = -direction.x();
+            fpt_type perp_x = direction.y();
+            fpt_type perp_y = -direction.x();
 
             // Projection of the vector between the origin and the center of
             // the rectangle on the line perpendicular to the direction vector.
-            coordinate_type lexpr = magnitude(perp_x * diff_x +
-                                              perp_y * diff_y);
+            fpt_type lexpr = magnitude(perp_x * diff_x + perp_y * diff_y);
 
             // Maximum projection among any of the half-diagonals of the
             // rectangle on the line perpendicular to the direction vector.
-            coordinate_type rexpr = magnitude(perp_x * len_x) +
-                                    magnitude(perp_y * len_y);
+            fpt_type rexpr = magnitude(perp_x * len_x) +
+                             magnitude(perp_y * len_y);
 
             // Intersection check. Compare projections.
             if (lexpr > rexpr)
@@ -305,8 +322,8 @@ namespace polygon {
             // Line: [-infinity; infinity].
             bool fT0_used = false;
             bool fT1_used = false;
-            coordinate_type fT0 = 0;
-            coordinate_type fT1 = 0;
+            fpt_type fT0 = 0;
+            fpt_type fT1 = 0;
 
             // Check for the intersections with the lines
             // going through the sides of the bounding rectangle.
@@ -333,6 +350,13 @@ namespace polygon {
     private:
         voronoi_helper();
 
+        template <typename P>
+        static point_type get_point(const P &point) {
+            fpt_type x = static_cast<fpt_type>(point.x());
+            fpt_type y = static_cast<fpt_type>(point.y());
+            return point_type(x, y);
+        }
+
         // Find intermediate points of the parabola. Number of points
         // is defined by the value of max_dist parameter - maximum distance
         // between parabola and line segments that interpolate it.
@@ -346,8 +370,8 @@ namespace polygon {
                 point_type point_site,
                 point_type segment_site_start,
                 point_type segment_site_end,
-                std::vector<point_type> &intermediate_points,
-                double max_dist) {
+                point_set_type &intermediate_points,
+                fpt_type max_dist) {
             // Check if bisector is a segment.
             if (point_site == segment_site_start ||
                 point_site == segment_site_end)
@@ -356,20 +380,20 @@ namespace polygon {
             // Apply the linear transformation to move start point of the
             // segment to the point with coordinates (0, 0) and the direction
             // of the segment to coincide the positive direction of the x-axis.
-            coordinate_type segm_vec_x = segment_site_end.x() -
-                                         segment_site_start.x();
-            coordinate_type segm_vec_y = segment_site_end.y() -
-                                         segment_site_start.y();
-            coordinate_type sqr_segment_length = segm_vec_x * segm_vec_x +
-                                                 segm_vec_y * segm_vec_y;
+            fpt_type segm_vec_x = segment_site_end.x() -
+                                  segment_site_start.x();
+            fpt_type segm_vec_y = segment_site_end.y() -
+                                  segment_site_start.y();
+            fpt_type sqr_segment_length = segm_vec_x * segm_vec_x +
+                                          segm_vec_y * segm_vec_y;
 
             // Compute x-coordinates of the endpoints of the edge
             // in the transformed space.
-            coordinate_type projection_start = sqr_segment_length *
+            fpt_type projection_start = sqr_segment_length *
                 get_point_projection(intermediate_points[0],
                                      segment_site_start,
                                      segment_site_end);
-            coordinate_type projection_end = sqr_segment_length *
+            fpt_type projection_end = sqr_segment_length *
                 get_point_projection(intermediate_points[1],
                                      segment_site_start,
                                      segment_site_end);
@@ -377,52 +401,50 @@ namespace polygon {
             // Compute parabola parameterers in the transformed space.
             // Parabola has next representation:
             // f(x) = ((x-rot_x)^2 + rot_y^2) / (2.0*rot_y).
-            coordinate_type point_vec_x = point_site.x() -
-                                          segment_site_start.x();
-            coordinate_type point_vec_y = point_site.y() -
-                                          segment_site_start.y();
-            coordinate_type rot_x = segm_vec_x * point_vec_x +
-                                    segm_vec_y * point_vec_y;
-            coordinate_type rot_y = segm_vec_x * point_vec_y -
-                                    segm_vec_y * point_vec_x;
+            fpt_type point_vec_x = point_site.x() - segment_site_start.x();
+            fpt_type point_vec_y = point_site.y() - segment_site_start.y();
+            fpt_type rot_x = segm_vec_x * point_vec_x +
+                             segm_vec_y * point_vec_y;
+            fpt_type rot_y = segm_vec_x * point_vec_y -
+                             segm_vec_y * point_vec_x;
 
             // Save the last point.
             point_type last_point = intermediate_points[1];
             intermediate_points.pop_back();
 
             // Use stack to avoid recursion.
-            std::stack< coordinate_type > point_stack;
+            std::stack<fpt_type> point_stack;
             point_stack.push(projection_end);
-            coordinate_type cur_x = projection_start;
-            coordinate_type cur_y = parabola_y(cur_x, rot_x, rot_y);
+            fpt_type cur_x = projection_start;
+            fpt_type cur_y = parabola_y(cur_x, rot_x, rot_y);
 
             // Adjust max_dist parameter in the transformed space.
             max_dist *= max_dist * sqr_segment_length;
 
             while (!point_stack.empty()) {
-                coordinate_type new_x = point_stack.top();
-                coordinate_type new_y = parabola_y(new_x, rot_x, rot_y);
+                fpt_type new_x = point_stack.top();
+                fpt_type new_y = parabola_y(new_x, rot_x, rot_y);
 
                 // Compute coordinates of the point of the parabola that is
                 // furthest from the current line segment.
-                coordinate_type mid_x = (new_y - cur_y) / (new_x - cur_x) *
-                                        rot_y + rot_x;
-                coordinate_type mid_y = parabola_y(mid_x, rot_x, rot_y);
+                fpt_type mid_x = (new_y - cur_y) / (new_x - cur_x) * rot_y +
+                                 rot_x;
+                fpt_type mid_y = parabola_y(mid_x, rot_x, rot_y);
 
                 // Compute maximum distance between the given parabolic arc
                 // and line segment that interpolates it.
-                double dist = (new_y - cur_y) * (mid_x - cur_x) -
-                              (new_x - cur_x) * (mid_y - cur_y);
+                fpt_type dist = (new_y - cur_y) * (mid_x - cur_x) -
+                                (new_x - cur_x) * (mid_y - cur_y);
                 dist = dist * dist / ((new_y - cur_y) * (new_y - cur_y) +
                                       (new_x - cur_x) * (new_x - cur_x));
                 if (dist <= max_dist) {
                     // Distance between parabola and line segment is
                     // not greater than max_dist.
                     point_stack.pop();
-                    coordinate_type inter_x =
+                    fpt_type inter_x =
                         (segm_vec_x * new_x - segm_vec_y * new_y) /
                         sqr_segment_length + segment_site_start.x();
-                    coordinate_type inter_y =
+                    fpt_type inter_y =
                         (segm_vec_x * new_y + segm_vec_y * new_x) /
                         sqr_segment_length + segment_site_start.y();
                     intermediate_points.push_back(
@@ -439,43 +461,41 @@ namespace polygon {
         }
 
         // Compute y(x) = ((x - a) * (x - a) + b * b) / (2 * b).
-        static coordinate_type parabola_y(coordinate_type x,
-                                          coordinate_type a,
-                                          coordinate_type b) {
+        static fpt_type parabola_y(fpt_type x, fpt_type a, fpt_type b) {
             return ((x - a) * (x - a) + b * b) / (2.0 * b);
         }
 
         // Check whether extent is compatible with the edge type.
-        static bool check_extent(coordinate_type extent, kEdgeType etype) {
+        static bool check_extent(fpt_type extent, kEdgeType etype) {
             switch (etype) {
                 case SEGMENT:
-                    return extent >= static_cast<coordinate_type>(0.0) &&
-                           extent <= static_cast<coordinate_type>(1.0);
-                case RAY: return extent >= static_cast<coordinate_type>(0.0);
+                    return extent >= static_cast<fpt_type>(0) &&
+                           extent <= static_cast<fpt_type>(1);
+                case RAY: return extent >= static_cast<fpt_type>(0);
                 case LINE: return true;
             }
             return true;
         }
 
         // Compute the absolute value.
-        static inline coordinate_type magnitude(coordinate_type value) {
-            if (value >= static_cast<coordinate_type>(0.0))
+        static inline fpt_type magnitude(fpt_type value) {
+            if (value >= static_cast<fpt_type>(0))
                 return value;
             return -value;
         }
 
         // Find fT min and max values: fT = numer / denom.
-        static void clip_line(coordinate_type denom, coordinate_type numer,
+        static void clip_line(fpt_type denom, fpt_type numer,
                               bool &fT0_used, bool &fT1_used,
-                              coordinate_type &fT0, coordinate_type &fT1) {
-            if (denom > static_cast<coordinate_type>(0.0)) {
+                              fpt_type &fT0, fpt_type &fT1) {
+            if (denom > static_cast<fpt_type>(0)) {
                 if (fT1_used && numer > denom * fT1)
                     return;
                 if (!fT0_used || numer > denom * fT0) {
                     fT0_used = true;
                     fT0 = numer / denom;
                 }
-            } else if (denom < static_cast<coordinate_type>(0.0)) {
+            } else if (denom < static_cast<fpt_type>(0)) {
                 if (fT0_used && numer > denom * fT0)
                     return;
                 if (!fT1_used || numer > denom * fT1) {
@@ -493,20 +513,18 @@ namespace polygon {
         // the initial space to the transformed one and vice versa.
         // Assumption is made that projection of the point lies
         // between the startpoint and endpoint of the segment.
-        static coordinate_type get_point_projection(
+        static fpt_type get_point_projection(
                 const point_type &point,
                 const point_type &segment_start,
                 const point_type &segment_end) {
-            coordinate_type segment_vec_x = segment_end.x() -
-                                            segment_start.x();
-            coordinate_type segment_vec_y = segment_end.y() -
-                                            segment_start.y();
-            coordinate_type point_vec_x = point.x() - segment_start.x();
-            coordinate_type point_vec_y = point.y() - segment_start.y();
-            coordinate_type sqr_segment_length =
-                segment_vec_x * segment_vec_x + segment_vec_y * segment_vec_y;
-            coordinate_type vec_dot = segment_vec_x * point_vec_x +
-                                      segment_vec_y * point_vec_y;
+            fpt_type segment_vec_x = segment_end.x() - segment_start.x();
+            fpt_type segment_vec_y = segment_end.y() - segment_start.y();
+            fpt_type point_vec_x = point.x() - segment_start.x();
+            fpt_type point_vec_y = point.y() - segment_start.y();
+            fpt_type sqr_segment_length = segment_vec_x * segment_vec_x +
+                                          segment_vec_y * segment_vec_y;
+            fpt_type vec_dot = segment_vec_x * point_vec_x +
+                               segment_vec_y * point_vec_y;
             return vec_dot / sqr_segment_length;
         }
     };
@@ -526,8 +544,10 @@ namespace polygon {
         template <typename P>
         voronoi_cell(const P &p1, const P &p2,
                      bool contains_segment, voronoi_edge_type *edge) :
-            point0_(static_cast<coordinate_type>(p1.x()), static_cast<coordinate_type>(p1.y())),
-            point1_(static_cast<coordinate_type>(p2.x()), static_cast<coordinate_type>(p2.y())),
+            point0_(static_cast<coordinate_type>(p1.x()),
+                    static_cast<coordinate_type>(p1.y())),
+            point1_(static_cast<coordinate_type>(p2.x()),
+                    static_cast<coordinate_type>(p2.y())),
             contains_segment_(contains_segment),
             incident_edge_(edge),
             num_incident_edges_(0) {}
@@ -574,14 +594,17 @@ namespace polygon {
 
         template <typename P>
         voronoi_vertex(const P &vertex, voronoi_edge_type *edge) :
-            vertex_(static_cast<coordinate_type>(vertex.x()), static_cast<coordinate_type>(vertex.y())),
+            vertex_(static_cast<coordinate_type>(vertex.x()),
+                    static_cast<coordinate_type>(vertex.y())),
             incident_edge_(edge),
             num_incident_edges_(3) {}
 
         const point_type &vertex() const { return vertex_; }
 
         voronoi_edge_type *incident_edge() { return incident_edge_; }
-        const voronoi_edge_type *incident_edge() const { return incident_edge_; }
+        const voronoi_edge_type *incident_edge() const { 
+            return incident_edge_;
+        }
         void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
         int num_incident_edges() const { return num_incident_edges_; }
@@ -641,13 +664,21 @@ namespace polygon {
 
         // Return a pointer to the rotation next edge
         // over the starting point of the half-edge.
-        voronoi_edge_type *rot_next() { return (vertex_) ? prev_->twin() : NULL; }
-        const voronoi_edge_type *rot_next() const { return (vertex_) ? prev_->twin() : NULL; }
+        voronoi_edge_type *rot_next() {
+            return (vertex_) ? prev_->twin() : NULL;
+        }
+        const voronoi_edge_type *rot_next() const {
+            return (vertex_) ? prev_->twin() : NULL;
+        }
 
         // Return a pointer to the rotation prev edge
         // over the starting point of the half-edge.
-        voronoi_edge_type *rot_prev() { return (vertex_) ? twin_->next() : NULL; }
-        const voronoi_edge_type *rot_prev() const { return (vertex_) ? twin_->next() : NULL; }
+        voronoi_edge_type *rot_prev() {
+            return (vertex_) ? twin_->next() : NULL;
+        }
+        const voronoi_edge_type *rot_prev() const {
+            return (vertex_) ? twin_->next() : NULL;
+        }
 
         // Return true if the edge is finite (segment, parabolic arc).
         // Return false if the edge is infinite (ray, line).
@@ -656,13 +687,15 @@ namespace polygon {
         // Return true if the edge is linear.
         // Return false if the edge is curved (parabolic arc).
         bool is_linear() const {
-            return !(cell()->contains_segment() ^ twin()->cell()->contains_segment());
+            return !(cell()->contains_segment() ^
+                     twin()->cell()->contains_segment());
         }
 
         // Returns true if the edge is curved (parabolic arc).
         // Returns false if the edge is linear.
         bool is_curved() const {
-            return (cell()->contains_segment() ^ twin()->cell()->contains_segment());
+            return (cell()->contains_segment() ^
+                    twin()->cell()->contains_segment());
         }
 
         // Return false if edge goes through the endpoint of the segment.
@@ -814,7 +847,8 @@ namespace polygon {
         // Takes as input left and right sites that form a new bisector.
         // Returns a pointer to a new half-edge.
         template <typename SEvent>
-        voronoi_edge_type *insert_new_edge(const SEvent &site1, const SEvent &site2) {
+        voronoi_edge_type *insert_new_edge(const SEvent &site1,
+                                           const SEvent &site2) {
             // Get sites' indices.
             int site_index1 = site1.index();
             int site_index2 = site2.index();
@@ -976,8 +1010,10 @@ namespace polygon {
                 const voronoi_vertex_type *v2 = edge_it1->vertex1();
 
                 // Make epsilon robust check.
-                if (detail::almost_equal(v1->vertex().x(), v2->vertex().x(), 256) &&
-                    detail::almost_equal(v1->vertex().y(), v2->vertex().y(), 256)) {
+                if (detail::almost_equal(v1->vertex().x(),
+                                         v2->vertex().x(), 256) &&
+                    detail::almost_equal(v1->vertex().y(),
+                                         v2->vertex().y(), 256)) {
                     // Decrease number of cell's incident edges.
                     edge_it1->cell()->dec_num_incident_edges();
                     edge_it1->twin()->cell()->dec_num_incident_edges();
