@@ -17,6 +17,8 @@ typedef voronoi_helper<double> VH;
 typedef VH::brect_type rect_type;
 typedef VH::point_type point_type;
 
+#define SZ(st) static_cast<int>(st.size())
+
 // Test segment clipping.
 BOOST_AUTO_TEST_CASE(segment_clipping_test1) {
     rect_type rect(0, -1, 4, 2);
@@ -31,13 +33,13 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test1) {
     std::vector<point_type> intersections;
 
     VH::find_intersections(origin, direction1_1, VH::SEGMENT, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 2, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 3 && intersections[1].y() == -1, true);
     intersections.clear();
     
     VH::find_intersections(origin, direction1_2, VH::SEGMENT, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 2, true);
     intersections.clear();
 
@@ -46,23 +48,23 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test1) {
     intersections.clear();
 
     VH::find_intersections(origin, direction2, VH::SEGMENT, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 1 && intersections[1].y() == -1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction3, VH::SEGMENT, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 1 && intersections[0].y() == 2, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction4, VH::SEGMENT, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == -1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction5, VH::SEGMENT, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 2, true);
     intersections.clear();
 }
@@ -78,9 +80,9 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test2) {
             point_type direction(i, j);
             VH::find_intersections(origin, direction, VH::SEGMENT, rect, intersections);
             if (abs(i) >= 2 || abs(j) >= 2)
-                BOOST_CHECK_EQUAL(intersections.size(), 1);
+                BOOST_CHECK_EQUAL(SZ(intersections), 1);
             else
-                BOOST_CHECK_EQUAL(intersections.size(), 0);
+                BOOST_CHECK_EQUAL(SZ(intersections), 0);
         }
 }
 
@@ -96,7 +98,7 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test3) {
             double y = 1.0 * j / 26;
             point_type direction(x, y);
             VH::find_intersections(origin, direction, VH::SEGMENT, rect, intersections);
-            BOOST_CHECK_EQUAL(intersections.size(), 0);
+            BOOST_CHECK_EQUAL(SZ(intersections), 0);
         }
 }
 
@@ -112,30 +114,30 @@ BOOST_AUTO_TEST_CASE(ray_clipping_test1) {
     std::vector<point_type> intersections;
 
     VH::find_intersections(origin, direction1, VH::RAY, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 2, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 3 && intersections[1].y() == -1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction2, VH::RAY, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 1 && intersections[1].y() == -1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction3, VH::RAY, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 1 && intersections[0].y() == 2, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 4 && intersections[1].y() == 0.5, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction4, VH::RAY, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == -1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction5, VH::RAY, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 2, true);
     intersections.clear();
 }
@@ -153,7 +155,7 @@ BOOST_AUTO_TEST_CASE(ray_clipping_test2) {
             double y = 1.0 * j / 26;
             point_type direction(x, y);
             VH::find_intersections(origin, direction, VH::RAY, rect, intersections);
-            BOOST_CHECK_EQUAL(intersections.size(), 1);
+            BOOST_CHECK_EQUAL(SZ(intersections), 1);
         }
 }
 
@@ -169,30 +171,30 @@ BOOST_AUTO_TEST_CASE(line_clipping_test1) {
     std::vector<point_type> intersections;
     
     VH::find_intersections(origin, direction1, VH::LINE, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 3 && intersections[0].y() == -1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 0 && intersections[1].y() == 2, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction2, VH::LINE, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 1 && intersections[0].y() == -1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 0 && intersections[1].y() == 1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction3, VH::LINE, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 2);
+    BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 0.5, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 1 && intersections[1].y() == 2, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction4, VH::LINE, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == -1, true);
     intersections.clear();
 
     VH::find_intersections(origin, direction5, VH::LINE, rect, intersections);
-    BOOST_CHECK_EQUAL(intersections.size(), 1);
+    BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 2, true);
     intersections.clear();
 }
@@ -210,6 +212,6 @@ BOOST_AUTO_TEST_CASE(line_clipping_test2) {
             double y = 1.0 * j / 26;
             point_type direction(x, y);
             VH::find_intersections(origin, direction, VH::LINE, rect, intersections);
-            BOOST_CHECK_EQUAL(intersections.size(), 2);
+            BOOST_CHECK_EQUAL(SZ(intersections), 2);
         }
 }

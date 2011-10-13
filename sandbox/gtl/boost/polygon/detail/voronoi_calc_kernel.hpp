@@ -10,6 +10,10 @@
 #ifndef BOOST_POLYGON_VORONOI_CALC_KERNEL
 #define BOOST_POLYGON_VORONOI_CALC_KERNEL
 
+#pragma warning(disable:4800)
+#include <gmpxx.h>
+
+#include "mpt_wrapper.hpp"
 #include "voronoi_fpt_kernel.hpp"
 
 namespace boost {
@@ -61,7 +65,7 @@ template <>
 class voronoi_calc_kernel<int> {
 public:
     typedef double fpt_type;
-    typedef polygon_ulong_long_type ulong_long_type;
+    typedef unsigned long long ulong_long_type;
 
     enum kOrientation {
         RIGHT = -1,
@@ -543,6 +547,10 @@ public:
         typedef Site site_type;
         typedef Circle circle_type;
 
+        typedef mpt_wrapper<mpz_class, 8> mpt_type;
+        typedef mpt_wrapper<mpf_class, 2> mpf_type;
+        typedef robust_sqrt_expr<mpt_type, mpf_type> robust_sqrt_expr_type;
+
         bool ppp(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3,
@@ -649,7 +657,7 @@ public:
                     c_event.y(0.25 * cA[2].get_d() / denom.get_d());
                 }
                 if (recompute_lower_x) {
-                    c_event.lower_x(0.25 * sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
+                    c_event.lower_x(0.25 * sqrt_expr_.eval2(cA, cB).get_d() /
                                     (denom.get_d() * std::sqrt(segm_len.get_d())));
                 }
                 return true;
@@ -664,8 +672,7 @@ public:
                 cA[1] = (segment_index == 2) ? -vec_x : vec_x;
                 cB[1] = det;
                 if (recompute_c_x) {
-                    c_event.x(0.5 * sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
-                              denom_sqr);
+                    c_event.x(0.5 * sqrt_expr_.eval2(cA, cB).get_d() / denom_sqr);
                 }
             }
             
@@ -675,7 +682,7 @@ public:
                 cA[3] = (segment_index == 2) ? -vec_y : vec_y;
                 cB[3] = det;
                 if (recompute_c_y) {
-                    c_event.y(0.5 * sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(&cA[2], &cB[2]).get_d() /
+                    c_event.y(0.5 * sqrt_expr_.eval2(&cA[2], &cB[2]).get_d() /
                               denom_sqr);
                 }
             }
@@ -687,7 +694,7 @@ public:
                 cB[2] = 1;
                 cA[3] = (segment_index == 2) ? -teta : teta;
                 cB[3] = det;
-                c_event.lower_x(0.5 * sqrt_expr_evaluator<4>::eval<mpt_type, mpf_type>(cA, cB).get_d() /
+                c_event.lower_x(0.5 * sqrt_expr_.eval4(cA, cB).get_d() /
                                 (denom_sqr * std::sqrt(segm_len.get_d())));
             }
             
@@ -733,7 +740,7 @@ public:
                     cA[1] = a[0] * a[0] * (segm_start1.y() + segm_start2.y()) -
                             a[0] * b[0] * (segm_start1.x() + segm_start2.x() - 2.0 * site1.x()) +
                             b[0] * b[0] * (2.0 * site1.y());
-                    double c_y = sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d();
+                    double c_y = sqrt_expr_.eval2(cA, cB).get_d();
                     c_event.y(c_y / denom);
                 }
 
@@ -744,14 +751,14 @@ public:
                             a[0] * a[0] * (2.0 * site1.x());
 
                     if (recompute_c_x) {
-                        double c_x = sqrt_expr_evaluator<2>::eval<mpt_type, mpf_type>(cA, cB).get_d();
+                        double c_x = sqrt_expr_.eval2(cA, cB).get_d();
                         c_event.x(c_x / denom);
                     }
 
                     if (recompute_lower_x) {
                         cA[2] = (c[0] < 0) ? -c[0] : c[0];
                         cB[2] = a[0] * a[0] + b[0] * b[0];
-                        double lower_x = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cA, cB).get_d();
+                        double lower_x = sqrt_expr_.eval3(cA, cB).get_d();
                         c_event.lower_x(lower_x / denom);
                     }
                 }
@@ -844,7 +851,7 @@ public:
                 int k = (i+2) % 3;
                 cross[i] = a[j] * b[k] - a[k] * b[j];
             }
-            double denom = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+            double denom = sqrt_expr_.eval3(cross, sqr_len).get_d();
 
             if (recompute_c_y) {
                 for (int i = 0; i < 3; ++i) {
@@ -852,7 +859,7 @@ public:
                     int k = (i+2) % 3;
                     cross[i] = b[j] * c[k] - b[k] * c[j];
                 }
-                double c_y = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+                double c_y = sqrt_expr_.eval3(cross, sqr_len).get_d();
                 c_event.y(c_y / denom);
             }
 
@@ -868,13 +875,13 @@ public:
                 }
 
                 if (recompute_c_x) {
-                    double c_x = sqrt_expr_evaluator<3>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+                    double c_x = sqrt_expr_.eval3(cross, sqr_len).get_d();
                     c_event.x(c_x / denom);
                 }
                 
                 if (recompute_lower_x) {
                     sqr_len[3] = 1;
-                    double lower_x = sqrt_expr_evaluator<4>::eval<mpt_type, mpf_type>(cross, sqr_len).get_d();
+                    double lower_x = sqrt_expr_.eval4(cross, sqr_len).get_d();
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -901,13 +908,13 @@ public:
             static mpt cA[4], cB[4];
             static mpf lh, rh, numer;
             if (A[3] == 0) {
-                lh = sqrt_expr_evaluator<2>::eval<mpt, mpf>(A, B);
+                lh = sqrt_expr_.eval2(A, B);
                 cA[0] = 1;
                 cB[0] = B[0] * B[1];
                 cA[1] = B[2];
                 cB[1] = 1;
                 rh = A[2].get_d() * std::sqrt(B[3].get_d() *
-                    sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB).get_d());
+                    sqrt_expr_.eval2(cA, cB).get_d());
                 if (((lh >= 0) && (rh >= 0)) || ((lh <= 0) && (rh <= 0))) {
                     return lh + rh;
                 }
@@ -916,7 +923,7 @@ public:
                 cB[0] = 1;
                 cA[1] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
                 cB[1] = B[0] * B[1];
-                numer = sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB);
+                numer = sqrt_expr_.eval2(cA, cB);
                 return numer / (lh - rh);
             }
             cA[0] = A[3];
@@ -925,13 +932,13 @@ public:
             cB[1] = B[0];
             cA[2] = A[1];
             cB[2] = B[1];
-            lh = sqrt_expr_evaluator<3>::eval<mpt, mpf>(cA, cB);
+            lh = sqrt_expr_.eval3(cA, cB);
             cA[0] = 1;
             cB[0] = B[0] * B[1];
             cA[1] = B[2];
             cB[1] = 1;
             rh = A[2].get_d() * std::sqrt(B[3].get_d() *
-                sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB).get_d());
+                sqrt_expr_.eval2(cA, cB).get_d());
             if (((lh >= 0) && (rh >= 0)) || ((lh <= 0) && (rh <= 0))) {
                 return lh + rh;
             }
@@ -944,9 +951,12 @@ public:
             cB[2] = B[1];
             cA[3] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
             cB[3] = B[0] * B[1];
-            numer = sqrt_expr_evaluator<4>::eval<mpt, mpf>(cA, cB);
+            numer = sqrt_expr_.eval4(cA, cB);
             return numer / (lh - rh);
         }
+
+    private:
+        robust_sqrt_expr_type sqrt_expr_;
     };
 
     template <typename Site, typename Circle>
@@ -976,7 +986,7 @@ public:
             double sum_y2 = site2.y() + site3.y();
             double dif_x3 = site1.x() - site3.x();
             double dif_y3 = site1.y() - site3.y();
-            epsilon_robust_comparator< robust_fpt<double> > c_x, c_y;
+            robust_dif< robust_fpt<double> > c_x, c_y;
             c_x += robust_fpt<double>(dif_x1 * sum_x1 * dif_y2, 2.0);
             c_x += robust_fpt<double>(dif_y1 * sum_y1 * dif_y2, 2.0);
             c_x -= robust_fpt<double>(dif_x2 * sum_x2 * dif_y1, 2.0);
@@ -985,7 +995,7 @@ public:
             c_y += robust_fpt<double>(dif_y2 * sum_y2 * dif_x1, 2.0);
             c_y -= robust_fpt<double>(dif_x1 * sum_x1 * dif_x2, 2.0);
             c_y -= robust_fpt<double>(dif_y1 * sum_y1 * dif_x2, 2.0);
-            epsilon_robust_comparator< robust_fpt<double> > lower_x(c_x);
+            robust_dif< robust_fpt<double> > lower_x(c_x);
             lower_x -= robust_fpt<double>(std::sqrt(sqr_distance(dif_x1, dif_y1) *
                                                     sqr_distance(dif_x2, dif_y2) *
                                                     sqr_distance(dif_x3, dif_y3)), 5.0);
@@ -1022,7 +1032,7 @@ public:
                                                  site2.x() - site3.point1().x()), 2.0);
             robust_fpt<double> denom(robust_cross_product(vec_x, vec_y, line_a, line_b), 2.0);
             robust_fpt<double> inv_segm_len(1.0 / std::sqrt(sqr_distance(line_a, line_b)), 3.0);
-            epsilon_robust_comparator< robust_fpt<double> > t;
+            robust_dif< robust_fpt<double> > t;
             if (get_orientation(denom) == COLLINEAR) {
                 t += teta / (robust_fpt<double>(8.0) * A);
                 t -= A / (robust_fpt<double>(2.0) * teta);
@@ -1035,12 +1045,12 @@ public:
                 }
                 t += teta * (A + B) / (robust_fpt<double>(2.0) * denom * denom);
             }
-            epsilon_robust_comparator< robust_fpt<double> > c_x, c_y;
+            robust_dif< robust_fpt<double> > c_x, c_y;
             c_x += robust_fpt<double>(0.5 * (site1.x() + site2.x()));
             c_x += robust_fpt<double>(vec_x) * t;
             c_y += robust_fpt<double>(0.5 * (site1.y() + site2.y()));
             c_y += robust_fpt<double>(vec_y) * t;
-            epsilon_robust_comparator< robust_fpt<double> > r, lower_x(c_x);
+            robust_dif< robust_fpt<double> > r, lower_x(c_x);
             r -= robust_fpt<double>(line_a) * robust_fpt<double>(site3.x0());
             r -= robust_fpt<double>(line_b) * robust_fpt<double>(site3.y0());
             r += robust_fpt<double>(line_a) * c_x;
@@ -1084,7 +1094,7 @@ public:
                                                        site1.y() - segm_start1.y()) *
                                   robust_cross_product(b1, a1, site1.y() - segm_start2.y(),
                                                        site1.x() - segm_start2.x()), 5.0);
-                epsilon_robust_comparator< robust_fpt<double> > t;
+                robust_dif< robust_fpt<double> > t;
                 t -= robust_fpt<double>(a1) * robust_fpt<double>((segm_start1.x() + segm_start2.x()) * 0.5 - site1.x());
                 t -= robust_fpt<double>(b1) * robust_fpt<double>((segm_start1.y() + segm_start2.y()) * 0.5 - site1.y());
                 if (point_index == 2) {
@@ -1093,12 +1103,12 @@ public:
                     t -= det.sqrt();
                 }
                 t /= a;
-                epsilon_robust_comparator< robust_fpt<double> > c_x, c_y;
+                robust_dif< robust_fpt<double> > c_x, c_y;
                 c_x += robust_fpt<double>(0.5 * (segm_start1.x() + segm_start2.x()));
                 c_x += robust_fpt<double>(a1) * t;
                 c_y += robust_fpt<double>(0.5 * (segm_start1.y() + segm_start2.y()));
                 c_y += robust_fpt<double>(b1) * t;
-                epsilon_robust_comparator< robust_fpt<double> > lower_x(c_x);
+                robust_dif< robust_fpt<double> > lower_x(c_x);
                 lower_x += robust_fpt<double>(0.5) * c.fabs() / a.sqrt();
                 recompute_c_x = c_x.dif().ulp() > 128;
                 recompute_c_y = c_y.dif().ulp() > 128;
@@ -1121,7 +1131,7 @@ public:
                 robust_fpt<double> c1(robust_cross_product(b1, a1, segm_end1.y(), segm_end1.x()), 2.0);
                 robust_fpt<double> c2(robust_cross_product(a2, b2, segm_end2.x(), segm_end2.y()), 2.0);
                 robust_fpt<double> inv_orientation = robust_fpt<double>(1.0) / orientation;
-                epsilon_robust_comparator< robust_fpt<double> > t, b, ix, iy;
+                robust_dif< robust_fpt<double> > t, b, ix, iy;
                 ix += robust_fpt<double>(a2) * c1 * inv_orientation;
                 ix += robust_fpt<double>(a1) * c2 * inv_orientation;
                 iy += robust_fpt<double>(b1) * c2 * inv_orientation;
@@ -1140,13 +1150,13 @@ public:
                     t -= det.sqrt();
                 }
                 t /= (a * a);
-                epsilon_robust_comparator< robust_fpt<double> > c_x(ix), c_y(iy);
+                robust_dif< robust_fpt<double> > c_x(ix), c_y(iy);
                 c_x += t * (robust_fpt<double>(a1) * sqr_sum2);
                 c_x += t * (robust_fpt<double>(a2) * sqr_sum1);
                 c_y += t * (robust_fpt<double>(b1) * sqr_sum2);
                 c_y += t * (robust_fpt<double>(b2) * sqr_sum1);
                 t.abs();
-                epsilon_robust_comparator< robust_fpt<double> > lower_x(c_x);
+                robust_dif< robust_fpt<double> > lower_x(c_x);
                 lower_x += t * orientation.fabs();
                 recompute_c_x = c_x.dif().ulp() > 128;
                 recompute_c_y = c_y.dif().ulp() > 128;
@@ -1185,7 +1195,7 @@ public:
             robust_fpt<double> cross_12(robust_cross_product(a1.fpv(), b1.fpv(), a2.fpv(), b2.fpv()), 2.0);
             robust_fpt<double> cross_23(robust_cross_product(a2.fpv(), b2.fpv(), a3.fpv(), b3.fpv()), 2.0);
             robust_fpt<double> cross_31(robust_cross_product(a3.fpv(), b3.fpv(), a1.fpv(), b1.fpv()), 2.0);
-            epsilon_robust_comparator< robust_fpt<double> > denom, c_x, c_y, r;
+            robust_dif< robust_fpt<double> > denom, c_x, c_y, r;
 
             // denom = cross_12 * len3 + cross_23 * len1 + cross_31 * len2.
             denom += cross_12 * len3;
@@ -1209,7 +1219,7 @@ public:
             c_y -= b3 * c2 * len1;
             c_y += b3 * c1 * len2;
             c_y -= b1 * c3 * len2;
-            epsilon_robust_comparator< robust_fpt<double> > lower_x(c_x + r);
+            robust_dif< robust_fpt<double> > lower_x(c_x + r);
             bool recompute_c_x = c_x.dif().ulp() > 128;
             bool recompute_c_y = c_y.dif().ulp() > 128;
             bool recompute_lower_x = lower_x.dif().ulp() > 128;

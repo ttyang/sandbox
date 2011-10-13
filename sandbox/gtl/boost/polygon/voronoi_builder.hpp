@@ -18,12 +18,8 @@
 #include <queue>
 #include <vector>
 
-#pragma warning(disable:4800)
-#include <gmpxx.h>
-
 #include "polygon.hpp"
 
-#include "detail/mpt_wrapper.hpp"
 #include "detail/voronoi_calc_kernel.hpp"
 #include "detail/voronoi_fpt_kernel.hpp"
 #include "detail/voronoi_internal_structures.hpp"

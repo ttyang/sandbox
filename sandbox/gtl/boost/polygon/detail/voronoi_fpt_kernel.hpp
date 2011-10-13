@@ -14,9 +14,6 @@ namespace boost {
 namespace polygon {
 namespace detail {
 
-    template <typename T>
-    class epsilon_robust_comparator;
-
     // Represents the result of the epsilon robust predicate.
     // If the result is undefined some further processing is usually required.
     enum kPredicateResult {
@@ -90,17 +87,22 @@ namespace detail {
         return value;
     }
 
+    template <>
+    double get_d(const long double& value) {
+        return static_cast<double>(value);
+    }
+
     template <typename FPT>
     class robust_fpt {
     public:
-	    typedef FPT floating_point_type;
-	    typedef double relative_error_type;
+        typedef FPT floating_point_type;
+        typedef double relative_error_type;
 
-	    // Rounding error is at most 1 EPS.
-	    static const relative_error_type ROUNDING_ERROR;
+        // Rounding error is at most 1 EPS.
+        static const relative_error_type ROUNDING_ERROR;
 
-	    // Constructors.
-	    robust_fpt() : fpv_(0.0), re_(0) {}
+        // Constructors.
+        robust_fpt() : fpv_(0.0), re_(0) {}
         explicit robust_fpt(int fpv) : fpv_(fpv), re_(0) {}
         explicit robust_fpt(floating_point_type fpv, bool rounded = true) : fpv_(fpv) {
             re_ = rounded ? ROUNDING_ERROR : 0;
@@ -147,44 +149,44 @@ namespace detail {
             return this->fpv_ > static_cast<floating_point_type>(that);
         }
 
-	    bool operator==(const robust_fpt &that) const {
-		    unsigned int ulp = static_cast<unsigned int>(ceil(this->re_ + that.re_));
-		    return almost_equal(this->fpv_, that.fpv_, ulp);	
-	    }
+        bool operator==(const robust_fpt &that) const {
+    	    unsigned int ulp = static_cast<unsigned int>(ceil(this->re_ + that.re_));
+    	    return almost_equal(this->fpv_, that.fpv_, ulp);	
+        }
 
-	    bool operator!=(const robust_fpt &that) const {
-		    return !(*this == that);
-	    }
+        bool operator!=(const robust_fpt &that) const {
+    	    return !(*this == that);
+        }
 
-	    bool operator<(const robust_fpt &that) const {
-		    if (*this == that)
-			    return false;
-		    return this->fpv_ < that.fpv_;
-	    }
+        bool operator<(const robust_fpt &that) const {
+    	    if (*this == that)
+    		    return false;
+    	    return this->fpv_ < that.fpv_;
+        }
 
-	    bool operator>(const robust_fpt &that) const {
-		    return that < *this;
-	    }
+        bool operator>(const robust_fpt &that) const {
+    	    return that < *this;
+        }
 
-	    bool operator<=(const robust_fpt &that) const {
-		    return !(that < *this);
-	    }
+        bool operator<=(const robust_fpt &that) const {
+    	    return !(that < *this);
+        }
 
-	    bool operator>=(const robust_fpt &that) const {
-		    return !(*this < that);
-	    }
+        bool operator>=(const robust_fpt &that) const {
+    	    return !(*this < that);
+        }
 
-	    robust_fpt operator-() const {
-		    return robust_fpt(-fpv_, re_);
-	    }
+        robust_fpt operator-() const {
+    	    return robust_fpt(-fpv_, re_);
+        }
 
-	    robust_fpt& operator=(const robust_fpt &that) {
-		    this->fpv_ = that.fpv_;
-		    this->re_ = that.re_;
-		    return *this;
-	    }
+        robust_fpt& operator=(const robust_fpt &that) {
+    	    this->fpv_ = that.fpv_;
+    	    this->re_ = that.re_;
+    	    return *this;
+        }
 
-	    robust_fpt& operator+=(const robust_fpt &that) {
+        robust_fpt& operator+=(const robust_fpt &that) {
             floating_point_type fpv = this->fpv_ + that.fpv_;
             if ((this->fpv_ >= 0 && that.fpv_ >= 0) ||
                 (this->fpv_ <= 0 && that.fpv_ <= 0))
@@ -194,10 +196,10 @@ namespace detail {
                 this->re_ = std::fabs(get_d(temp)) + ROUNDING_ERROR;
             }
             this->fpv_ = fpv;
-		    return *this;
-	    }
+    	    return *this;
+        }
 
-	    robust_fpt& operator-=(const robust_fpt &that) {
+        robust_fpt& operator-=(const robust_fpt &that) {
             floating_point_type fpv = this->fpv_ - that.fpv_;
             if ((this->fpv_ >= 0 && that.fpv_ <= 0) ||
                 (this->fpv_ <= 0 && that.fpv_ >= 0))
@@ -207,20 +209,20 @@ namespace detail {
                 this->re_ = std::fabs(get_d(temp)) + ROUNDING_ERROR;
             }
             this->fpv_ = fpv;
-		    return *this;
-	    }
+    	    return *this;
+        }
 
-	    robust_fpt& operator*=(const robust_fpt &that) {
-		    this->re_ += that.re_ + ROUNDING_ERROR;
-		    this->fpv_ *= that.fpv_;
+        robust_fpt& operator*=(const robust_fpt &that) {
+    	    this->re_ += that.re_ + ROUNDING_ERROR;
+    	    this->fpv_ *= that.fpv_;
             return *this;
-	    }
+        }
 
-	    robust_fpt& operator/=(const robust_fpt &that) {
-	        this->re_ += that.re_ + ROUNDING_ERROR;
-		    this->fpv_ /= that.fpv_;
+        robust_fpt& operator/=(const robust_fpt &that) {
+            this->re_ += that.re_ + ROUNDING_ERROR;
+    	    this->fpv_ /= that.fpv_;
             return *this;
-	    }
+        }
 
         robust_fpt operator+(const robust_fpt &that) const {
             floating_point_type fpv = this->fpv_ + that.fpv_;
@@ -296,17 +298,17 @@ namespace detail {
     // Solution: Use ERCs in case of defined comparison results and use
     //           high-precision libraries for undefined results.
     template <typename T>
-    class epsilon_robust_comparator {
+    class robust_dif {
     public:
-        epsilon_robust_comparator() :
+        robust_dif() :
           positive_sum_(0),
           negative_sum_(0) {}
 
-        epsilon_robust_comparator(const T &value) :
+        robust_dif(const T &value) :
           positive_sum_((value>0)?value:0),
           negative_sum_((value<0)?-value:0) {}
 
-        epsilon_robust_comparator(const T &pos, const T &neg) :
+        robust_dif(const T &pos, const T &neg) :
           positive_sum_(pos),
           negative_sum_(neg) {}
 
@@ -335,7 +337,11 @@ namespace detail {
             return false;
         }
 
-        epsilon_robust_comparator<T> &operator+=(const T &val) {
+        robust_dif<T> operator-() const {
+            return robust_dif(negative_sum_, positive_sum_);
+        }
+
+        robust_dif<T> &operator+=(const T &val) {
             if (val >= 0)
                 positive_sum_ += val;
             else
@@ -343,14 +349,14 @@ namespace detail {
             return *this;
         }
 
-        epsilon_robust_comparator<T> &operator+=(
-            const epsilon_robust_comparator<T> &erc) {
-            positive_sum_ += erc.positive_sum_;
-            negative_sum_ += erc.negative_sum_;
+        robust_dif<T> &operator+=(
+            const robust_dif<T> &that) {
+            positive_sum_ += that.positive_sum_;
+            negative_sum_ += that.negative_sum_;
             return *this;
         }
 
-        epsilon_robust_comparator<T> &operator-=(const T &val) {
+        robust_dif<T> &operator-=(const T &val) {
             if (val >= 0)
                 negative_sum_ += val;
             else
@@ -358,14 +364,14 @@ namespace detail {
             return *this;
         }
 
-        epsilon_robust_comparator<T> &operator-=(
-            const epsilon_robust_comparator<T> &erc) {
-            positive_sum_ += erc.negative_sum_;
-            negative_sum_ += erc.positive_sum_;
+        robust_dif<T> &operator-=(
+            const robust_dif<T> &that) {
+            positive_sum_ += that.negative_sum_;
+            negative_sum_ += that.positive_sum_;
             return *this;
         }
 
-        epsilon_robust_comparator<T> &operator*=(const T &val) {
+        robust_dif<T> &operator*=(const T &val) {
             if (val >= 0) {
                 positive_sum_ *= val;
                 negative_sum_ *= val;
@@ -377,7 +383,18 @@ namespace detail {
             return *this;
         }
 
-        epsilon_robust_comparator<T> &operator/=(const T &val) {
+        robust_dif<T> &operator*=(
+            const robust_dif<T> &that) {
+            T positive_sum = this->positive_sum_ * that.positive_sum_ +
+                             this->negative_sum_ * that.negative_sum_;
+            T negative_sum = this->positive_sum_ * that.negative_sum_ +
+                             this->negative_sum_ * that.positive_sum_;
+            positive_sum_ = positive_sum;
+            negative_sum_ = negative_sum;
+            return *this;
+        }
+
+        robust_dif<T> &operator/=(const T &val) {
             if (val >= 0) {
                 positive_sum_ /= val;
                 negative_sum_ /= val;
@@ -389,129 +406,145 @@ namespace detail {
             return *this;
         }
 
-        // Compare predicate with value using ulp precision.
-        kPredicateResult compare(T value, int ulp = 0) const {
-            T lhs = positive_sum_ - ((value < 0) ? value : 0);
-            T rhs = negative_sum_ + ((value > 0) ? value : 0);
-            if (almost_equal(lhs, rhs, ulp))
-                return UNDEFINED;
-            return (lhs < rhs) ? LESS : MORE;
-        }
-
-        // Compare two predicats using ulp precision.
-        kPredicateResult compare(const epsilon_robust_comparator &rc,
-                                 int ulp = 0) const {
-            T lhs = positive_sum_ + rc.neg();
-            T rhs = negative_sum_ + rc.pos();
-            if (almost_equal(lhs, rhs, ulp))
-                return UNDEFINED;
-            return (lhs < rhs) ? LESS : MORE;
-        }
-
     private:
         T positive_sum_;
         T negative_sum_;
     };
 
     template<typename T>
-    inline epsilon_robust_comparator<T> operator+(
-        const epsilon_robust_comparator<T>& lhs,
-        const epsilon_robust_comparator<T>& rhs) {
-        return epsilon_robust_comparator<T>(lhs.pos() + rhs.pos(),
-                                            lhs.neg() + rhs.neg());
+    robust_dif<T> operator+(
+        const robust_dif<T>& lhs,
+        const robust_dif<T>& rhs) {
+        return robust_dif<T>(lhs.pos() + rhs.pos(),
+                             lhs.neg() + rhs.neg());
     }
 
     template<typename T>
-    inline epsilon_robust_comparator<T> operator-(
-        const epsilon_robust_comparator<T>& lhs,
-        const epsilon_robust_comparator<T>& rhs) {
-        return epsilon_robust_comparator<T>(lhs.pos() - rhs.neg(),
-                                            lhs.neg() + rhs.pos());
+    robust_dif<T> operator+(
+        const robust_dif<T>& lhs, const T& rhs) {
+        if (rhs >= 0) {
+            return robust_dif<T>(lhs.pos() + rhs, lhs.neg());
+        } else {
+            return robust_dif<T>(lhs.pos(), lhs.neg() - rhs);
+        }
     }
 
     template<typename T>
-    inline epsilon_robust_comparator<T> operator*(
-        const epsilon_robust_comparator<T>& lhs,
-        const epsilon_robust_comparator<T>& rhs) {
-        double res_pos = lhs.pos() * rhs.pos() + lhs.neg() * rhs.neg();
-        double res_neg = lhs.pos() * rhs.neg() + lhs.neg() * rhs.pos();
-        return epsilon_robust_comparator<T>(res_pos, res_neg);
+    robust_dif<T> operator+(
+        const T& lhs, const robust_dif<T>& rhs) {
+        if (lhs >= 0) { 
+            return robust_dif<T>(lhs + rhs.pos(), rhs.neg());
+        } else {
+            return robust_dif<T>(rhs.pos(), rhs.neg() - lhs);
+        }
     }
 
     template<typename T>
-    inline epsilon_robust_comparator<T> operator*(
-        const epsilon_robust_comparator<T>& lhs, const T& val) {
-        if (val >= 0)
-            return epsilon_robust_comparator<T>(lhs.pos() * val,
-                                                lhs.neg() * val);
-        return epsilon_robust_comparator<T>(-lhs.neg() * val,
-                                            -lhs.pos() * val);
+    robust_dif<T> operator-(
+        const robust_dif<T>& lhs,
+        const robust_dif<T>& rhs) {
+        return robust_dif<T>(lhs.pos() + rhs.neg(), lhs.neg() + rhs.pos());
     }
 
     template<typename T>
-    inline epsilon_robust_comparator<T> operator*(
-        const T& val, const epsilon_robust_comparator<T>& rhs) {
-        if (val >= 0)
-            return epsilon_robust_comparator<T>(val * rhs.pos(),
-                                                val * rhs.neg());
-        return epsilon_robust_comparator<T>(-val * rhs.neg(),
-                                            -val * rhs.pos());
+    robust_dif<T> operator-(
+        const robust_dif<T>& lhs, const T& rhs) {
+        if (rhs >= 0) {
+            return robust_dif<T>(lhs.pos(), lhs.neg() + rhs);
+        } else {
+            return robust_dif<T>(lhs.pos() - rhs, lhs.neg());
+        }
+    }
+
+    template<typename T>
+    robust_dif<T> operator-(
+        const T& lhs, const robust_dif<T>& rhs) {
+        if (lhs >= 0) { 
+            return robust_dif<T>(lhs + rhs.neg(), rhs.pos());
+        } else {
+            return robust_dif<T>(rhs.neg(), rhs.pos() - lhs);
+        }
+    }
+
+    template<typename T>
+    robust_dif<T> operator*(
+        const robust_dif<T>& lhs,
+        const robust_dif<T>& rhs) {
+        T res_pos = lhs.pos() * rhs.pos() + lhs.neg() * rhs.neg();
+        T res_neg = lhs.pos() * rhs.neg() + lhs.neg() * rhs.pos();
+        return robust_dif<T>(res_pos, res_neg);
+    }
+
+    template<typename T>
+    robust_dif<T> operator*(
+        const robust_dif<T>& lhs, const T& val) {
+        if (val >= 0) {
+            return robust_dif<T>(lhs.pos() * val, lhs.neg() * val);
+        } else {
+            return robust_dif<T>(-lhs.neg() * val, -lhs.pos() * val);
+        }
+    }
+
+    template<typename T>
+    robust_dif<T> operator*(
+        const T& val, const robust_dif<T>& rhs) {
+        if (val >= 0) {
+            return robust_dif<T>(val * rhs.pos(), val * rhs.neg());
+        } else {
+            return robust_dif<T>(-val * rhs.neg(), -val * rhs.pos());
+        }
+    }
+
+    template<typename T>
+    robust_dif<T> operator/(
+        const robust_dif<T>& lhs, const T& val) {
+        if (val >= 0) {
+            return robust_dif<T>(lhs.pos() / val, lhs.neg() / val);
+        } else {
+            return robust_dif<T>(-lhs.neg() / val, -lhs.pos() / val);
+        }
     }
 
     
     ///////////////////////////////////////////////////////////////////////////
-    // VORONOI SQRT EXPR EVALUATOR ////////////////////////////////////////////
+    // VORONOI ROBUST SQRT EXPRESSION  ////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    template <int N>
-    struct sqrt_expr_evaluator {
-        template <typename mpt, typename mpf>
-        static mpf eval(mpt *A, mpt *B);
-    };
-
-    // Evaluates expression:
-    // A[0] * sqrt(B[0]).
-    template <>
-    struct sqrt_expr_evaluator<1> {
-        template <typename mpt, typename mpf>
-        static mpf eval(mpt *A, mpt *B) {
+    template <typename mpt, typename mpf>
+    class robust_sqrt_expr {
+    public:
+        // Evaluates expression:
+        // A[0] * sqrt(B[0]).
+        mpf eval1(mpt *A, mpt *B) {
 #ifndef THREAD_SAFETY
             static
 #endif
-            mpf a, b, ret_val;
-            a = A[0];
-            b = B[0];
-            ret_val = a * sqrt(b);
-            return ret_val;
+            mpf lhs, rhs, numer;
+            lhs = A[0];
+            rhs = B[0];
+            numer = lhs * sqrt(rhs);
+            return numer;            
         }
-    };
 
-    // Evaluates expression:
-    // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) with
-    // 7 * EPS relative error in the worst case.
-    template <>
-    struct sqrt_expr_evaluator<2> {
-        template <typename mpt, typename mpf>
-        static mpf eval(mpt *A, mpt *B) {
+        // Evaluates expression:
+        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) with
+        // 7 * EPS relative error in the worst case.
+        mpf eval2(mpt *A, mpt *B) {
 #ifndef THREAD_SAFETY
             static
 #endif
-            mpf lhs, rhs, numerator;
-            lhs = sqrt_expr_evaluator<1>::eval<mpt, mpf>(A, B);
-            rhs = sqrt_expr_evaluator<1>::eval<mpt, mpf>(A + 1, B + 1);
+            mpf lhs, rhs, numer;
+            lhs = eval1(A, B);
+            rhs = eval1(A + 1, B + 1);
             if ((lhs >= 0 && rhs >= 0) || (lhs <= 0 && rhs <= 0))
                 return lhs + rhs;
-            numerator = A[0] * A[0] * B[0] - A[1] * A[1] * B[1];
-            return numerator / (lhs - rhs);
+            numer = A[0] * A[0] * B[0] - A[1] * A[1] * B[1];
+            return numer / (lhs - rhs);
         }
-    };
 
-    // Evaluates expression:
-    // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2])
-    // with 16 * EPS relative error in the worst case.
-    template <>
-    struct sqrt_expr_evaluator<3> {
-        template <typename mpt, typename mpf>
-        static mpf eval(mpt *A, mpt *B) {
+        // Evaluates expression:
+        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2])
+        // with 16 * EPS relative error in the worst case.
+        mpf eval3(mpt *A, mpt *B) {
 #ifndef THREAD_SAFETY
             static
 #endif
@@ -520,8 +553,8 @@ namespace detail {
             static
 #endif
             mpf lhs, rhs, numer;
-            lhs = sqrt_expr_evaluator<2>::eval<mpt, mpf>(A, B);
-            rhs = sqrt_expr_evaluator<1>::eval<mpt, mpf>(A + 2, B + 2);
+            lhs = eval2(A, B);
+            rhs = eval1(A + 2, B + 2);
             if ((lhs >= 0 && rhs >= 0) || (lhs <= 0 && rhs <= 0))
                 return lhs + rhs;
             cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
@@ -529,18 +562,15 @@ namespace detail {
             cB[0] = 1;
             cA[1] = A[0] * A[1] * 2;
             cB[1] = B[0] * B[1];
-            numer = sqrt_expr_evaluator<2>::eval<mpt, mpf>(cA, cB);
+            numer = eval2(cA, cB);
             return numer / (lhs - rhs);
         }
-    };
 
-    // Evaluates expression:
-    // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2]) + A[3] * sqrt(B[3])
-    // with 25 * EPS relative error in the worst case.
-    template <>
-    struct sqrt_expr_evaluator<4> {
-        template <typename mpt, typename mpf>
-        static mpf eval(mpt *A, mpt *B) {
+        
+        // Evaluates expression:
+        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2]) + A[3] * sqrt(B[3])
+        // with 25 * EPS relative error in the worst case.
+        mpf eval4(mpt *A, mpt *B) {
 #ifndef THREAD_SAFETY
             static
 #endif
@@ -549,8 +579,8 @@ namespace detail {
             static
 #endif
             mpf lhs, rhs, numer;
-            lhs = sqrt_expr_evaluator<2>::eval<mpt, mpf>(A, B);
-            rhs = sqrt_expr_evaluator<2>::eval<mpt, mpf>(A + 2, B + 2);
+            lhs = eval2(A, B);
+            rhs = eval2(A + 2, B + 2);
             if ((lhs >= 0 && rhs >= 0) || (lhs <= 0 && rhs <= 0))
                 return lhs + rhs;
             cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
@@ -560,9 +590,11 @@ namespace detail {
             cB[1] = B[0] * B[1];
             cA[2] = A[2] * A[3] * -2;
             cB[2] = B[2] * B[3];
-            numer = sqrt_expr_evaluator<3>::eval<mpt, mpf>(cA, cB);
+            numer = eval3(cA, cB);
             return numer / (lhs - rhs);
         }
+
+    private:
     };
 
 } // detail
