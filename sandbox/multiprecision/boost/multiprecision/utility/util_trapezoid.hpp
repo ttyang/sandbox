@@ -11,9 +11,9 @@
 #ifndef _UTIL_TRAPEZOID_2008_09_06_HPP_
   #define _UTIL_TRAPEZOID_2008_09_06_HPP_
 
-  #include <boost/cstdint.hpp>
-  #include "util_ranged_function_operation.hpp"
+  //#include "util_ranged_function_operation.hpp"
 
+#include <boost/multiprecision/utility/util_ranged_function_operation.hpp>
 
   namespace boost
   {
@@ -21,24 +21,26 @@
     {
       namespace utility
       {
-        template<typename T>
-        class recursive_trapezoid_rule : public ranged_function_operation<T>
+        template<typename T> class recursive_trapezoid_rule : public ranged_function_operation<T>
         {
-        public:
-          virtual ~recursive_trapezoid_rule() { }
-
         protected:
+
           recursive_trapezoid_rule(const T& lo, const T& hi, const T& tol) : ranged_function_operation<T>(lo, hi, tol) { }
 
+        public:
+
+          virtual ~recursive_trapezoid_rule() { }
+
         private:
+
           virtual T my_operation(void) const
           {
-            boost::int_fast32_t n = static_cast<boost::int_fast32_t>(1);
+            boost::int32_t n = static_cast<boost::int32_t>(1);
 
             T a = ranged_function_operation<T>::xlo;
             T b = ranged_function_operation<T>::xhi;
             T h = (b - a) / T(n);
-        
+
             static const T one  = T(1);
             static const T half = T(0.5);
 
@@ -52,8 +54,9 @@
 
               T sum(0);
 
-              for(boost::int_fast32_t j = static_cast<boost::int_fast32_t>(1); j <= n; j++)
+              for(boost::int32_t j = static_cast<boost::int32_t>(1); j <= n; j++)
               {
+                //sum += function_base<T>::function(a + (T((j * 2) - 1) * h));
                 sum += function(a + (T((j * 2) - 1) * h));
               }
 
@@ -68,7 +71,7 @@
                 break;
               }
 
-              n = n * static_cast<boost::int_fast32_t>(2);
+              n = n * 2;
             }
 
             return I;
