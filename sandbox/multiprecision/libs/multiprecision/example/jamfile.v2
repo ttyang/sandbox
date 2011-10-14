@@ -1,0 +1,90 @@
+# multiprecision/libs/multiprecision/test/jamfile.v2
+
+# Runs original multiprecision examples from Christopher Kormanyos using bjam.
+
+# Copyright Paul A. Bristow 2011
+# Copyright Christopher Kormanyos 2011
+
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+
+project
+  : requirements
+		#<library>/boost/test//boost_test_exec_monitor/<link>static
+		# But this original version does not use Boost.Test.
+		# (See elsewhere for tests using Boost.Test)
+		<include>../../..
+		<include>../../../boost/
+		<define>BOOST_ALL_NO_LIB=1 # Why?
+		<define>BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_EFX # Could also be BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_GMP or BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_MFPR.
+		<define>BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10=50 # Overriding the default of 100 for testing purposes.
+		# But has no effect without bjam -a option?
+		
+		<toolset>gcc:<cxxflags>-Wextra
+		<toolset>gcc:<cxxflags>-Wshadow
+		<toolset>gcc:<warnings-as-errors>on
+		<toolset>gcc:<cxxflags>-Wno-long-long
+		<toolset>gcc:<cxxflags>-Wcast-align
+		<toolset>intel:<warnings-as-errors>on
+		
+		-<toolset>msvc:<cxxflags>/Za # Requires MS extensions, so explictly cancel /Za to *enable extensions*.
+		<toolset>msvc:<asynch-exceptions>on # Needed for Boost.Test
+		<toolset>msvc:<warnings>all
+		<toolset>msvc:<warnings-as-errors>on
+		<toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
+		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
+		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+		<toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
+		# <toolset>msvc:<define>BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10=100 # Overriding the default of 50 (for testing MSVC only)?
+		
+		# Warning suppression:
+		<toolset>msvc:<cxxflags>/wd4224 # nonstandard extension used : formal parameter 'arg' was previously defined as a type.
+		<toolset>msvc:<cxxflags>/wd4127 # expression is constant.
+  ;
+
+    # Original examples basic real and imag, recursive_trapezoid_integral, and gauss_laguerre
+    # from Christopher Kormanyos.
+ test-suite "multiprecision examples" :
+		[
+		  run ./examples.cpp
+		      ./example_001_basic_usage_real.cpp
+		      ./example_002_basic_usage_imag.cpp
+		      ./example_005_recursive_trapezoid_integral.cpp
+		      ./example_008_gauss_laguerre.cpp
+		      
+		      # Source files required .
+		      ../src/backends/float/mp_float.cpp
+		      ../src/backends/float/mp_float_base.cpp
+		      ../src/backends/float/efx/mp_float_efx.cpp
+		      ../src/functions/constants/constants.cpp
+		      ../src/functions/elementary/elementary_complex.cpp
+		      ../src/functions/elementary/elementary_math.cpp
+		      ../src/functions/elementary/elementary_hyper_g.cpp
+		      ../src/functions/elementary/elementary_trans.cpp
+		      ../src/functions/elementary/elementary_trig.cpp
+		      ../src/functions/gamma/factorial.cpp
+		      ../src/functions/gamma/factorial2.cpp
+		      ../src/functions/gamma/gamma.cpp
+		      ../src/functions/gamma/gamma_util.cpp
+		      ../src/functions/gamma/pochhammer.cpp
+		      ../src/functions/integer/prime.cpp
+		      ../src/functions/integer/prime_factor.cpp
+		      ../src/functions/integer/bernoulli_b.cpp
+		      ../src/functions/zeta/zeta.cpp
+		      
+		      ../src/functions/tables/A000142.cpp
+		      ../src/functions/tables/A000367.cpp
+		      ../src/functions/tables/A002445.cpp
+		      ../src/functions/tables/A006882.cpp
+		      ../src/functions/tables/A007318.cpp
+		      
+		      ../src/utility/util_power_j_pow_x.cpp
+		      ../src/utility/util_timer.cpp
+		      ../src/utility/util_digit_scale.cpp
+		      
+		]
+  ;
+  
+# Output is at \boost-sandbox\multiprecision\libs\multiprecision\example\bin\examples.test\msvc-10.0\debug\asynch-exceptions-on\threading-multi\examples.output
