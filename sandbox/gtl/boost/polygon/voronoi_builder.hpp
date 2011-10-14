@@ -179,17 +179,13 @@ namespace polygon {
 
         typedef detail::point_2d<coordinate_type> point_type;
         typedef detail::site_event<coordinate_type> site_event_type;
-        typedef calc_kernel_type::site_comparison_predicate<site_event_type>
-            site_comparison_predicate;
-        typedef calc_kernel_type::site_equality_predicate<site_event_type>
-            site_equality_predicate;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
         typedef detail::circle_event<coordinate_type> circle_event_type;
-        typedef calc_kernel_type::circle_comparison_predicate<circle_event_type>
-            circle_comparison_predicate;
         typedef calc_kernel_type::event_comparison_predicate<site_event_type, circle_event_type>
             event_comparison_predicate;
+        typedef calc_kernel_type::event_equality_predicate<site_event_type, circle_event_type>
+            event_equality_predicate;
         typedef calc_kernel_type::circle_formation_predicate<site_event_type, circle_event_type>
             circle_formation_predicate_type;
         typedef typename output_type::voronoi_edge_type edge_type;
@@ -203,7 +199,7 @@ namespace polygon {
             bool operator()(const event_type &lhs, const event_type &rhs) const {
                 return predicate(rhs.first, lhs.first);
             }
-            circle_comparison_predicate predicate;
+            event_comparison_predicate predicate;
         } event_comparison_type;
         typedef detail::ordered_queue<event_type, event_comparison_type>
             circle_event_queue_type;
@@ -215,11 +211,11 @@ namespace polygon {
         // segment itself).
         void init_sites_queue() {
             // Sort the site events.
-            sort(site_events_.begin(), site_events_.end(), site_comparison_predicate());
+            sort(site_events_.begin(), site_events_.end(), event_comparison_predicate());
 
             // Remove duplicates.
             site_events_.erase(unique(
-                site_events_.begin(), site_events_.end(), site_equality_predicate()), site_events_.end());
+                site_events_.begin(), site_events_.end(), event_equality_predicate()), site_events_.end());
 
             // Number the sites.
             for (size_t cur = 0; cur < site_events_.size(); ++cur)

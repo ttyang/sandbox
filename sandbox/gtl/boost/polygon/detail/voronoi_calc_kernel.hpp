@@ -143,15 +143,25 @@ public:
     static kOrientation get_orientation(const Point &point1,
                                         const Point &point2,
                                         const Point &point3) {
-        return get_orientation(robust_cross_product(point1.x() - point2.x(),
-                                                    point1.y() - point2.y(),
-                                                    point2.x() - point3.x(),
-                                                    point2.y() - point3.y()));
+        fpt_type dx1 = static_cast<fpt_type>(point1.x()) -
+                       static_cast<fpt_type>(point2.x());
+        fpt_type dx2 = static_cast<fpt_type>(point2.x()) -
+                       static_cast<fpt_type>(point3.x());
+        fpt_type dy1 = static_cast<fpt_type>(point1.y()) -
+                       static_cast<fpt_type>(point2.y());
+        fpt_type dy2 = static_cast<fpt_type>(point2.y()) -
+                       static_cast<fpt_type>(point3.y());
+        return get_orientation(robust_cross_product(dx1, dy1, dx2, dy2));
     }
 
-    template <typename Site>
-    struct site_comparison_predicate {
+    template <typename Site, typename Circle>
+    class event_comparison_predicate {
+    public:
         typedef Site site_type;
+        typedef Circle circle_type;
+
+        static const unsigned int ULPS = 64;
+        static const unsigned int ULPSx2 = (ULPS << 1);
 
         bool operator()(const site_type &lhs, const site_type &rhs) const {
             if (lhs.x0() != rhs.x0()) return lhs.x0() < rhs.x0();
@@ -169,27 +179,36 @@ public:
                 return get_orientation(lhs.point1(), lhs.point0(), rhs.point1()) == LEFT;
             }
         }
-    };
 
-    template <typename Site>
-    struct site_equality_predicate {
-        typedef Site site_type;
-
-        bool operator()(const site_type &lhs, const site_type &rhs) const {
-            return lhs.point0() == rhs.point0() &&
-                   lhs.point1() == rhs.point1();
+        bool operator()(const site_type &lhs, const circle_type &rhs) const {
+            if (almost_equal(static_cast<fpt_type>(lhs.x()),
+                             static_cast<fpt_type>(rhs.lower_x()), ULPS)) {
+                if (almost_equal(static_cast<fpt_type>(lhs.y()),
+                                 static_cast<fpt_type>(rhs.lower_y()), ULPS)) return false;
+                return static_cast<fpt_type>(lhs.y()) <
+                       static_cast<fpt_type>(rhs.lower_y());
+            }
+            return static_cast<fpt_type>(lhs.x()) <
+                   static_cast<fpt_type>(rhs.lower_x());
         }
-    };
 
-    template <typename Circle>
-    struct circle_comparison_predicate {
-        typedef Circle circle_type;
-
-        static const unsigned int ULPS = 128;
+        bool operator()(const circle_type &lhs, const site_type &rhs) const {
+            if (almost_equal(static_cast<fpt_type>(lhs.lower_x()),
+                             static_cast<fpt_type>(rhs.x()), ULPS)) {
+                if (almost_equal(static_cast<fpt_type>(lhs.lower_y()),
+                                 static_cast<fpt_type>(rhs.y()), ULPS)) return false;
+                return static_cast<fpt_type>(lhs.lower_y()) <
+                       static_cast<fpt_type>(rhs.y());
+            }
+            return static_cast<fpt_type>(lhs.lower_x()) <
+                   static_cast<fpt_type>(rhs.x());    
+        }
 
         bool operator()(const circle_type &lhs, const circle_type &rhs) const {
-            if (almost_equal(lhs.lower_x(), rhs.lower_x(), ULPS)) {
-                if (almost_equal(lhs.lower_y(), rhs.lower_y(), ULPS)) {
+            if (almost_equal(static_cast<fpt_type>(lhs.lower_x()),
+                             static_cast<fpt_type>(rhs.lower_x()), ULPSx2)) {
+                if (almost_equal(static_cast<fpt_type>(lhs.lower_y()),
+                                 static_cast<fpt_type>(rhs.lower_y()), ULPSx2)) {
                     return false;
                 }
                 return lhs.lower_y() < rhs.lower_y();
@@ -199,19 +218,17 @@ public:
     };
 
     template <typename Site, typename Circle>
-    struct event_comparison_predicate {
+    class event_equality_predicate {
+    public:
         typedef Site site_type;
         typedef Circle circle_type;
 
-        static const unsigned int ULPS = 64;
-
-        bool operator()(const site_type &lhs, const circle_type &rhs) const {
-            if (almost_equal(lhs.x(), rhs.lower_x(), ULPS)) {
-                if (almost_equal(lhs.y(), rhs.lower_y(), ULPS)) return false;
-                return lhs.y() < rhs.lower_y();
-            }
-            return lhs.x() < rhs.lower_x();
+        template <typename T1, typename T2>
+        bool operator()(const T1 &lhs, const T2 &rhs) {
+            return !comparison_predicate_(lhs, rhs) && !comparison_predicate_(rhs, lhs);
         }
+    private:
+        event_comparison_predicate<Site, Circle> comparison_predicate_;
     };
 
     template <typename Site>

@@ -112,5 +112,4 @@ BOOST_AUTO_TEST_CASE(beach_line_node_data_test) {
     node_data.edge(&data);
     BOOST_CHECK_EQUAL(node_data.edge() == &data, true);
     BOOST_CHECK_EQUAL(node_data.circle_event() == &data, true);
-    BOOST_CHECK_EQUAL(&data != NULL, true);
 }
