@@ -31,7 +31,7 @@ alias "voronoi-unit"
         [ run voronoi_builder_test.cpp ]
         [ run voronoi_clipping_test.cpp ]
         [ run voronoi_fpt_kernel_test.cpp ]
-        [ run voronoi_internal_structures_test.cpp ]
+        [ run voronoi_structures_test.cpp ]
     ;
 
 

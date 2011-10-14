@@ -1,4 +1,4 @@
-// Boost.Polygon detail/voronoi_internal_structures.hpp header file
+// Boost.Polygon detail/voronoi_structures.hpp header file
 
 //          Copyright Andrii Sydorchuk 2010.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,8 +7,8 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_INTERNAL_STRUCTURES
-#define BOOST_POLYGON_VORONOI_INTERNAL_STRUCTURES
+#ifndef BOOST_POLYGON_VORONOI_STRUCTURES
+#define BOOST_POLYGON_VORONOI_STRUCTURES
 
 #include <list>
 #include <queue>

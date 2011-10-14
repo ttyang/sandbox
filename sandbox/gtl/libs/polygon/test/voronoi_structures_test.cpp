@@ -1,4 +1,4 @@
-// Boost.Polygon library voronoi_internal_structures_test.cpp file
+// Boost.Polygon library voronoi_structures_test.cpp file
 
 //          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,10 +7,10 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#define BOOST_TEST_MODULE internal_structures_test
+#define BOOST_TEST_MODULE voronoi_structures_test
 
 #include <boost/test/test_case_template.hpp>
-#include "boost/polygon/detail/voronoi_internal_structures.hpp"
+#include "boost/polygon/detail/voronoi_structures.hpp"
 using namespace boost::polygon::detail;
 
 typedef point_2d<int> point_type;
