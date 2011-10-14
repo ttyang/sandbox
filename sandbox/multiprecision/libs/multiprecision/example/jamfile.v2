@@ -1,4 +1,4 @@
-# multiprecision/libs/multiprecision/test/jamfile.v2
+# multiprecision/libs/multiprecision/example/jamfile.v2
 
 # Runs original multiprecision examples from Christopher Kormanyos using bjam.
 
