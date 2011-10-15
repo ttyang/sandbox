@@ -1277,14 +1277,16 @@ public:
         exact_circle_formation_functor_type exact_circle_formation_functor_; 
     };
 
-    template <typename Site, typename Circle>
+    template <typename Site,
+              typename Circle,
+              typename CEP = circle_existence_predicate<Site>,
+              typename CFF = lazy_circle_formation_functor<Site, Circle> >
     class circle_formation_predicate {
     public:
         typedef Site site_type;
         typedef Circle circle_type;
-        typedef circle_existence_predicate<site_type> circle_existence_predicate_type;
-        typedef lazy_circle_formation_functor<site_type, circle_type>
-            circle_formation_functor_type;
+        typedef CEP circle_existence_predicate_type;
+        typedef CFF circle_formation_functor_type;
 
         // Create a circle event from the given three sites.
         // Returns true if the circle event exists, else false.
