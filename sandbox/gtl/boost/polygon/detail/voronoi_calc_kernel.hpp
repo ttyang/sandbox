@@ -234,9 +234,29 @@ public:
     template <typename Site>
     class distance_predicate {
     public:
-        typedef typename Site::point_type point_type;
         typedef Site site_type;
         
+        bool operator()(const site_type& left_site,
+                        const site_type& right_site,
+                        const site_type& new_site) const {
+            if (!left_site.is_segment()) {
+                if (!right_site.is_segment()) {
+                    return pp(left_site, right_site, new_site);
+                } else {
+                    return ps(left_site, right_site, new_site, false);
+                }
+            } else {
+                if (!right_site.is_segment()) {
+                    return ps(right_site, left_site, new_site, true);
+                } else {
+                    return ss(left_site, right_site, new_site);
+                }
+            }
+        }
+
+    private:
+        typedef typename Site::point_type point_type;
+
         // Robust predicate, avoids using high-precision libraries.
         // Returns true if a horizontal line going through the new point site
         // intersects right arc at first, else returns false. If horizontal line
@@ -264,7 +284,10 @@ public:
             } else {
                 // If x-coordinates of the sites are equal, we may produce the
                 // result without any further computations.
-                return left_point.y() + right_point.y() < 2.0 * new_point.y();
+                return static_cast<fpt_type>(left_point.y()) +
+                       static_cast<fpt_type>(right_point.y()) <
+                       static_cast<fpt_type>(2) *
+                       static_cast<fpt_type>(new_point.y());
             }
 
             fpt_type dist1 = find_distance_to_point_arc(left_site, new_point);
@@ -318,7 +341,6 @@ public:
             return dist1 < dist2;
         }
 
-    private:
         // Find the x-coordinate (relative to the sweepline position) of the point
         // of the intersection of the horizontal line going through the new site
         // with the arc corresponding to the point site.
@@ -327,7 +349,7 @@ public:
                                             const point_type &point) const {
             fpt_type dx = site.x() - point.x();
             fpt_type dy = site.y() - point.y();
-            return (dx * dx + dy * dy) / (2.0 * dx);
+            return (dx * dx + dy * dy) / (static_cast<fpt_type>(2.0) * dx);
         }
 
         // Find the x-coordinate (relative to the sweepline position) of the point
@@ -342,14 +364,21 @@ public:
             } else {
                 const point_type &segment0 = site.point0(true);
                 const point_type &segment1 = site.point1(true);
-                fpt_type a1 = segment1.x() - segment0.x();
-                fpt_type b1 = segment1.y() - segment0.y();
-                fpt_type a3 = point.x() - segment0.x();
-                fpt_type b3 = point.y() - segment0.y();
+                fpt_type a1 = static_cast<fpt_type>(segment1.x()) -
+                              static_cast<fpt_type>(segment0.x());
+                fpt_type b1 = static_cast<fpt_type>(segment1.y()) -
+                              static_cast<fpt_type>(segment0.y());
+                fpt_type a3 = static_cast<fpt_type>(point.x()) -
+                              static_cast<fpt_type>(segment0.x());
+                fpt_type b3 = static_cast<fpt_type>(point.y()) -
+                              static_cast<fpt_type>(segment0.y());
                 fpt_type k = std::sqrt(a1 * a1 + b1 * b1);
                 // Avoid substraction while computing k.
-                if (b1 >= 0.0) k = 1.0 / (b1 + k);
-                else k = (k - b1) / (a1 * a1);
+                if (b1 >= static_cast<fpt_type>(0)) {
+                    k = static_cast<fpt_type>(1) / (b1 + k);
+                } else {
+                    k = (k - b1) / (a1 * a1);
+                }
                 // Relative error of the robust cross product is 2EPS.
                 // Relative error of the k is atmost 5EPS.
                 // The resulting relative error is atmost 8EPS.
@@ -367,10 +396,14 @@ public:
                 return (!right_site.is_inverse()) ? LESS : MORE;
             }
 
-            fpt_type dif_x = new_point.x() - site_point.x();
-            fpt_type dif_y = new_point.y() - site_point.y();
-            fpt_type a = segment_end.x() - segment_start.x();
-            fpt_type b = segment_end.y() - segment_start.y();
+            fpt_type dif_x = static_cast<fpt_type>(new_point.x()) -
+                             static_cast<fpt_type>(site_point.x());
+            fpt_type dif_y = static_cast<fpt_type>(new_point.y()) -
+                             static_cast<fpt_type>(site_point.y());
+            fpt_type a = static_cast<fpt_type>(segment_end.x()) -
+                         static_cast<fpt_type>(segment_start.x());
+            fpt_type b = static_cast<fpt_type>(segment_end.y()) -
+                         static_cast<fpt_type>(segment_start.y());
 
             if (right_site.is_vertical()) {
                 if (new_point.y() < site_point.y() && !reverse_order)
@@ -388,7 +421,7 @@ public:
             }
 
             fpt_type fast_left_expr = a * (dif_y + dif_x) * (dif_y - dif_x);
-            fpt_type fast_right_expr = (2.0 * b) * dif_x * dif_y;
+            fpt_type fast_right_expr = (static_cast<fpt_type>(2) * b) * dif_x * dif_y;
             if (!(almost_equal(fast_left_expr, fast_right_expr, 4))) {
                 if ((fast_left_expr > fast_right_expr) ^ reverse_order)
                     return reverse_order ? LESS : MORE;
@@ -420,10 +453,10 @@ public:
 
             if (site1.x() < site2.x()) {
                 // The second node contains a new site.
-                return less(node1.left_site(), node1.right_site(), site2);
+                return predicate_(node1.left_site(), node1.right_site(), site2);
             } else if (site1.x() > site2.x()) {
                 // The first node contains a new site.
-                return !less(node2.left_site(), node2.right_site(), site1);
+                return !predicate_(node2.left_site(), node2.right_site(), site1);
             } else {
                 // This checks were evaluated experimentally.
                 if (site1.index() == site2.index()) {
@@ -467,24 +500,6 @@ public:
                 return std::make_pair(node.left_site().y(), 1);
             }
             return std::make_pair(node.right_site().y(), -1);
-        }
-
-        bool less(const site_type& left_site,
-                  const site_type& right_site,
-                  const site_type& new_site) const {
-            if (!left_site.is_segment()) {
-                if (!right_site.is_segment()) {
-                    return predicate_.pp(left_site, right_site, new_site);
-                } else {
-                    return predicate_.ps(left_site, right_site, new_site, false);
-                }
-            } else {
-                if (!right_site.is_segment()) {
-                    return predicate_.ps(right_site, left_site, new_site, true);
-                } else {
-                    return predicate_.ss(left_site, right_site, new_site);
-                }
-            }
         }
 
     private:
