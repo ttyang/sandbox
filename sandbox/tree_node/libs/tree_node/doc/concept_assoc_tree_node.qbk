@@ -1,0 +1,171 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:associative_tree_node Associative Tree Node]
+
+[section Description]
+Models of this concept provide key-based access to their child nodes.
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [[`Node`][A type that models the [*Associative Tree Node] concept.]]
+    [[`node`][An object of type `Node::pointer`.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+    [[`Key`][The key type of `Node`.]]
+    [[`key`][An object of type `Key const&`.]]
+    [[`Data`][The data type of `Node`.]]
+    [[`data`][An object of type `Data const&`.]]
+]
+
+[section:types Associated Types]
+One new type is introduced.
+
+[table
+    [[Name][Expression][Description][Requirements]]
+    [
+        [Key type]
+        [`Node::key_type`]
+        [The type of a key that a tree node will associate with a child node.]
+        []
+    ]
+]
+
+In addition, the requirements for the child iterator types are strengthened:
+
+  * The value type of `Node::child_iterator` must be
+    _std_pair_<Node::key_type const&,Node::pointer>.
+  * The value type of `Node::const_child_iterator` must be
+    _std_pair_<Node::key_type const&,Node::const_pointer>.
+
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Tree_Node__ concept, the
+following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Type requirements]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Child creation with data]
+        [`node->add_child(key, data);`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be associated with the specified
+            key in the range of children of the invoking node.  The node
+            returned will store the specified data.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Child creation]
+        [`node->add_child(key)`]
+        [`Data` must model the __Default_Constructible__ concept.]
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be associated with the specified
+            key in the range of children of the invoking node.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Child copy creation]
+        [`node->add_child_copy(key, const_node)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a deep copy of `const_node` to be associated
+            with the specified key in the range of children of the invoking
+            node.
+        ]
+        [Linear with respect to the number of descendants of `const_node`]
+    ]
+    [
+        [Child search]
+        [`const_node->find_child(key)`]
+        []
+        [`Node::const_child_iterator`]
+        [
+            Returns an iterator pointing to a child node associated with the
+            specified key, or `const_node->get_child_end()` if no such child
+            exists.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child search]
+        [`node->find_child(key)`]
+        []
+        [`Node::child_iterator`]
+        [
+            Returns an iterator pointing to a child node associated with the
+            specified key, or `node->get_child_end()` if no such child exists.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child search range]
+        [`const_node->find_children(key)`]
+        []
+        [[^_std_pair_<Node::const_child_iterator,Node::const_child_iterator>]]
+        [
+            Returns a pair `p` such that `[p.first, p.second)` is a range
+            of all child nodes associated with the specified key.  If no such
+            children exist, then the range will be empty.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child search range]
+        [`node->find_children(key)`]
+        []
+        [[^_std_pair_<Node::child_iterator,Node::child_iterator>]]
+        [
+            Returns a pair `p` such that `[p.first, p.second)` is a range
+            of all child nodes associated with the specified key.  If no such
+            children exist, then the range will be empty.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Remove children]
+        [`const_node->remove_children(key)`]
+        []
+        [`std::size_t`]
+        [
+            Removes all child nodes associated with the specified key from the
+            tree node.  Returns the number of children removed.
+        ]
+        [
+            Linear with respect to the number of children and their descendants
+            in the range to be removed, plus logarithmic
+        ]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __raw_associative_node__
+  * __simple_associative_node__
+
+[endsect]
+
+[endsect] [/ Associative Tree Node]
+

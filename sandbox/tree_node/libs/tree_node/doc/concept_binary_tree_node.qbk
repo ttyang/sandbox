@@ -1,0 +1,224 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:binary_tree_node Binary Tree Node]
+
+[section Description]
+Models of this concept store at most two child nodes: left and right.  The
+operations that this concept defines include access to these children and
+rotations that use the appropriate child as a pivot node.
+[endsect]
+
+[section Refinement of]
+__Non_Associative_Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [
+        [`Node`]
+        [A type that models the [*Binary Tree Node] concept.]
+    ]
+    [
+        [`node`]
+        [An object of type `Node::pointer`.]
+    ]
+    [
+        [`const_node`]
+        [An object of type `Node::const_pointer`.]
+    ]
+    [
+        [`Data`]
+        [The data type of `Node`.]
+    ]
+    [
+        [`data`]
+        [An object of type `Data const&`.]
+    ]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Non_Associative_Tree_Node__
+concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Non_Associative_Tree_Node__
+concept, the following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Type requirements]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Left child creation with data]
+        [`node->add_left_child(data)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be stored as the left child of
+            the invoking node.  The node returned will store the specified
+            data.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Left child creation]
+        [`node->add_left_child()`]
+        [`Data` must model the __Default_Constructible__ concept.]
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be stored as the left child of
+            the invoking node.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Left child copy creation]
+        [`node->add_left_child_copy(const_node)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a deep copy of `const_node` to be stored as the
+            left child of the invoking node.
+        ]
+        [Linear with respect to the number of descendants of `const_node`]
+    ]
+    [
+        [Right child creation with data]
+        [`node->add_right_child(data)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be stored as the right child of
+            the invoking node.  The node returned will store the specified
+            data.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Right child creation]
+        [`node->add_right_child()`]
+        [`Data` must model the __Default_Constructible__ concept.]
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be stored as the right child of
+            the invoking node.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Right child copy creation]
+        [`node->add_right_child_copy(const_node)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a deep copy of `const_node` to be stored as the
+            right child of the invoking node.
+        ]
+        [Linear with respect to the number of descendants of `const_node`]
+    ]
+    [
+        [Left child access]
+        [`const_node->get_left_child()`]
+        []
+        [`Node::const_pointer`]
+        [
+            Returns the left child of the tree node, or a null pointer if no
+            such tree node exists.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Left child access]
+        [`node->get_left_child()`]
+        []
+        [`Node::pointer`]
+        [
+            Returns the left child of the tree node, or a null pointer if no
+            such tree node exists.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Right child access]
+        [`const_node->get_right_child()`]
+        []
+        [`Node::const_pointer`]
+        [
+            Returns the right child of the tree node, or a null pointer if no
+            such tree node exists.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Right child access]
+        [`node->get_right_child()`]
+        []
+        [`Node::pointer`]
+        [
+            Returns the right child of the tree node, or a null pointer if no
+            such tree node exists.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Rotate left]
+        [`node->rotate_left()`]
+        []
+        [`Node::pointer`]
+        [
+            Rotates the tree node in its hierarchy so that its right child, the
+            pivot node, becomes its parent.  The left child of the pivot node
+            becomes the right child of the tree node.  Returns the pivot node.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Rotate right]
+        [`node->rotate_right()`]
+        []
+        [`Node::pointer`]
+        [
+            Rotates the tree node in its hierarchy so that its left child, the
+            pivot node, becomes its parent.  The right child of the pivot node
+            becomes the left child of the tree node.  Returns the pivot node.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Remove left child]
+        [`node->remove_left_child()`]
+        []
+        [`void`]
+        [Removes the left child from the tree node.]
+        [Linear with respect to the number of descendants of the left child]
+    ]
+    [
+        [Remove right child]
+        [`node->remove_right_child()`]
+        []
+        [`void`]
+        [Removes the right child from the tree node.]
+        [Linear with respect to the number of descendants of the right child]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __raw_binary_node__
+
+[endsect]
+
+[endsect] [/ Binary Tree Node]
+

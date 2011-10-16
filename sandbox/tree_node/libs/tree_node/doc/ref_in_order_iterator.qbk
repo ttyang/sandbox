@@ -1,0 +1,226 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:in_order_iterator `in_order_iterator`]
+
+[section Synopsis]
+[reference__in_order_iterator]
+[endsect]
+
+[section Description]
+This iterator traverses the specified root node and all its descendants in
+in-order fashion, e.g. given the following tree representation:
+
+``
+      A
+      |
+  C---+---B
+  |       |
++-+-+   +-+-+
+|   |   |   |
+D   E   F   G
+``
+
+The tree nodes will be traversed forward in the following order:
+
+``
+D C E A F B G
+``
+
+This iterator can also be used to traverse the tree nodes /backwards/:
+
+``
+G B F A E C D
+``
+
+[important
+    This iterator works only on __Binary_Tree_Node__ models.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_in_order_iterator_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`NodePointer`]
+        [The type of a pointer to a tree node.]
+        [
+            It must model the __Trivial_Iterator__ concept, and its value type
+            must model the __Binary_Tree_Node__ concept.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Full_Tree_Node_Iterator__
+  * __Bidirectional_Iterator__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Value type]
+        [`value_type`]
+        [__Tree_Node_Iterator__]
+    ]
+    [
+        [Reference type]
+        [`reference`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pointer type]
+        [`pointer`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Distance type]
+        [`difference_type`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Iterator category]
+        [`iterator_category`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Default constructor]
+        [`in_order_iterator();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Constructor from im/mutable node]
+        [`in_order_iterator(NodePointer const&);`]
+        [__Tree_Node_Iterator__]
+    ]
+    [
+        [Conversion constructor]
+        [``
+            template <typename NP>
+            in_order_iterator(in_order_iterator<NP> const&);
+        ``]
+        [`in_order_iterator`]
+    ]
+    [
+        [Copy constructor]
+        [`in_order_iterator(in_order_iterator const&);`]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [`in_order_iterator& operator=(in_order_iterator const&);`]
+        [__Assignable__]
+    ]
+    [
+        [Dereference operator]
+        [`reference operator*() const;`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Indirection operator]
+        [`pointer operator->() const;`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pre-increment operator]
+        [`in_order_iterator& operator++();`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Post-increment operator]
+        [`in_order_iterator operator++(int);`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pre-decrement operator]
+        [`in_order_iterator& operator--();`]
+        [__Reverse_Iterator__]
+    ]
+    [
+        [Post-decrement operator]
+        [`in_order_iterator operator--(int);`]
+        [__Reverse_Iterator__]
+    ]
+    [
+        [Traversal state conversion operator]
+        [`operator _traversal_state_() const;`]
+        [__Tree_Node_Iterator__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Forward Iterator creation]
+        [[reference__make_in_order_forward_iterator]]
+        [
+            Constructs and returns a `in_order_iterator` that will iterate
+            forward through the specified node and its descendants.
+        ]
+    ]
+    [
+        [Reverse iterator creation]
+        [[reference__make_in_order_reverse_iterator]]
+        [
+            Constructs and returns a `in_order_iterator` that will iterate
+            in reverse through the specified node and its descendants.
+        ]
+    ]
+    [
+        [Forward iteration]
+        [[reference__in_order_iterate_forward]]
+        [
+            Iterates through the specified node and its descendants in forward
+            in-order fashion, passing each node pointer dereferenced to
+            the specified __Unary_Function__ object.
+        ]
+    ]
+    [
+        [Reverse iteration]
+        [[reference__in_order_iterate_reverse]]
+        [
+            Iterates through the specified node and its descendants in reverse
+            in-order fashion, passing each element dereferenced to
+            the specified __Unary_Function__ object.
+        ]
+    ]
+    [
+        [Equality]
+        [[reference__in_order_iterator__operator_equals]]
+        [Defined by the __Input_Iterator__ concept.]
+    ]
+    [
+        [Inequality]
+        [[reference__in_order_iterator__operator_not_equal]]
+        [Defined by the __Input_Iterator__ concept.]
+    ]
+]
+[endsect] [/ Non-members]
+
+[endsect] [/ in_order_iterator]
+

@@ -1,0 +1,249 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:simple_associative_node `simple_associative_node`]
+
+[section Synopsis]
+[reference__simple_associative_node]
+[endsect]
+
+[section Description]
+This class template is suitable for classes or algorithms that need to map keys
+to child nodes in a tree node data structure that must be exposed to external
+code.  Objects of this type must be stored by
+`simple_associative_node::pointer` and can only be instantiated through
+the `static` creation methods that this class template provides.  Their
+children can be accessed by their associated keys for fast lookup.
+
+[important
+    This component depends on __Boost_Utility_ContainerGen__, which is not yet
+    a part of Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_simple_associative_node_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Key`]
+        [
+            The type of a key object to be associated with a child of a
+            `simple_associative_node`.
+        ]
+        []
+        []
+    ]
+    [
+        [`Data`]
+        [The type of the object to be stored in a `simple_associative_node`.]
+        []
+        []
+    ]
+    [
+        [`AssociativeContainerSelector`]
+        [
+            The type that determines the internal map types whose mapped types
+            are the same as the pointer type.
+        ]
+        [
+            It must be a type for which __associative_container_gen__ returns
+            a valid container.
+        ]
+        [`mapS`]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+__Associative_Tree_Node__
+[endsect]
+
+[section:public_bases Public Base Classes]
+__tr1_enable_shared_from_this__
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Key type]
+        [`key_type`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Data type]
+        [`data_type`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Pointer type]
+        [`pointer`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Pointer-to-const type]
+        [`const_pointer`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Child iterator type]
+        [`child_iterator`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Immutable child iterator type]
+        [`const_child_iterator`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Node creation with data]
+        [`static pointer create(data_type const&);`]
+        [
+            Creates a `simple_associative_node` object with the specified data
+            and returns a pointer to it.
+        ]
+    ]
+    [
+        [Node creation]
+        [`static pointer create();`]
+        [
+            Creates a `simple_associative_node` object and returns a pointer to
+            it.
+        ]
+    ]
+    [
+        [Node copy creation]
+        [`static pointer create_copy(const_pointer const&);`]
+        [
+            Creates a deep copy of the specified node.  Returns a pointer to
+            the new node.
+        ]
+    ]
+    [
+        [Data access]
+        [`data_type const& get_data() const;`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Data access]
+        [`data_type& get_data();`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Parent access]
+        [`const_pointer get_parent() const;`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Parent access]
+        [`pointer get_parent();`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Child creation with data]
+        [`pointer add_child(key_type const&, data_type const&);`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Child creation]
+        [`pointer add_child(key_type const&);`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Child copy creation]
+        [`pointer add_child_copy(key_type const&, const_pointer const&);`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Children range begin access]
+        [`const_child_iterator get_child_begin() const;`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Children range begin access]
+        [`child_iterator get_child_begin();`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Children range past-the-end access]
+        [`const_child_iterator get_child_end() const;`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Children range past-the-end access]
+        [`child_iterator get_child_end();`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Children range]
+        [
+            [^_std_pair_<const_child_iterator,const_child_iterator>
+            get_children() const;]
+        ]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Children range]
+        [
+            [^_std_pair_<child_iterator,child_iterator>
+            get_children();]
+        ]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Child search]
+        [`const_child_iterator find_child(key_type const&) const;`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Child search]
+        [`child_iterator find_child(key_type const&);`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Child search range]
+        [
+            [^_std_pair_<const_child_iterator,const_child_iterator>
+            find_children(key_type const&) const;]
+        ]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Child search range]
+        [
+            [^_std_pair_<child_iterator,child_iterator>
+            find_children(key_type const&);]
+        ]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Remove children]
+        [`std::size_t remove_children(key_type const&);`]
+        [Defined by the __Associative_Tree_Node__ concept.]
+    ]
+    [
+        [Remove all children]
+        [`void remove_all_children();`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+]
+[endsect] [/ Members]
+
+[section Example]
+<__example_simple_associative_node_cpp__>
+[endsect]
+
+[endsect] [/ simple_associative_node]
+

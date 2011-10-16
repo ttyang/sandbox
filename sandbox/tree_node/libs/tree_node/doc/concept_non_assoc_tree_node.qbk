@@ -1,0 +1,42 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:non_assoc_tree_node Non-Associative Tree Node]
+
+[section Description]
+Models of this concept provide access to their child nodes via iterator
+dereferencing.
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+[endsect]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Tree_Node__ concept; however,
+the requirements for the child iterator types are strengthened:
+
+  * The value type of `Node::child_iterator` must be `Node::pointer`.
+  * The value type of `Node::const_child_iterator` must be
+    `Node::const_pointer`.
+
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+None beyond those defined in the __Tree_Node__ concept.
+[endsect]
+
+[section Models]
+
+  * All models of the __Binary_Tree_Node__ concept.
+  * All models of the __N_ary_Tree_Node__ concept.
+
+[endsect]
+
+[endsect] [/ Non-Associative Tree Node]
+

@@ -1,0 +1,106 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:nary_tree_node N-ary Tree Node]
+
+[section Description]
+Models of this concept store arbitrary numbers of children and provide simple
+child insertion expressions.
+[endsect]
+
+[section Refinement of]
+__Non_Associative_Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [
+        [`Node`]
+        [A type that models the [*N-ary Tree Node] concept.]
+    ]
+    [
+        [`node`]
+        [An object of type `Node::pointer`.]
+    ]
+    [
+        [`const_node`]
+        [An object of type `Node::const_pointer`.]
+    ]
+    [
+        [`Data`]
+        [The data type of `Node`.]
+    ]
+    [
+        [`data`]
+        [An object of type `Data const&`.]
+    ]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Non_Associative_Tree_Node__
+concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Non_Associative_Tree_Node__
+concept, the following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Type requirements]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Child creation with data]
+        [`node->add_child(data)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be stored in the range of
+            children of the invoking node.  The node returned will store
+            the specified data.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child creation]
+        [`node->add_child()`]
+        [`Data` must model the __Default_Constructible__ concept.]
+        [`Node::pointer`]
+        [
+            Creates and returns a tree node to be stored in the range of
+            children of the invoking node.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child copy creation]
+        [`node->add_child_copy(const_node)`]
+        []
+        [`Node::pointer`]
+        [
+            Creates and returns a deep copy of `const_node` to be stored in the
+            range of children of the invoking node.
+        ]
+        [Linear with respect to the number of descendants of `const_node`]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __raw_node__
+  * __simple_node__
+
+[endsect]
+
+[endsect] [/ N-ary Tree Node]
+
