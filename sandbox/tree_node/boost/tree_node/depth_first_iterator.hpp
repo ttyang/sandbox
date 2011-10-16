@@ -73,7 +73,7 @@ namespace boost { namespace tree_node {
                 //->
                 pointer;
         typedef ::std::ptrdiff_t
-                distance_type;
+                difference_type;
         typedef ::std::forward_iterator_tag
                 iterator_category;
 

@@ -6,14 +6,14 @@
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
 <link rel="up" href="../concepts.html" title="Concepts">
-<link rel="prev" href="raci_tree_node.html" title="Random Access Child Iterator Tree Node">
-<link rel="next" href="tree_node_iterator.html" title="Tree Node Iterator">
+<link rel="prev" href="tree_node.html" title="Tree Node">
+<link rel="next" href="non_assoc_tree_node.html" title="Non-Associative Tree Node">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="raci_tree_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="tree_node_iterator.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tree_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="non_assoc_tree_node.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -134,9 +134,9 @@
           In addition, the requirements for the child iterator types are strengthened:
         </p>
 <pre class="programlisting"><span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">child_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span>
-  <span class="special">[^</span><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;,</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span><span class="special">&gt;].</span>
+  <a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;,</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span><span class="special">&gt;.</span>
 <span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_child_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span>
-  <span class="special">[^</span><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;,</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span><span class="special">&gt;].</span>
+  <a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;,</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span><span class="special">&gt;.</span>
 </pre>
 </div>
 <div class="section">
@@ -236,8 +236,8 @@
                 </td>
 <td>
                   <p>
-                    The data type of <code class="computeroutput"><span class="identifier">Node</span></code>
-                    must model the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
+                    <code class="computeroutput"><span class="identifier">Data</span></code> must model
+                    the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
                   </p>
                 </td>
 <td>
@@ -265,7 +265,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key</span><span class="special">,</span>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">key</span><span class="special">,</span>
                     <span class="identifier">const_node</span><span class="special">)</span></code>
                   </p>
                 </td>
@@ -466,7 +466,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="raci_tree_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="tree_node_iterator.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="tree_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="non_assoc_tree_node.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

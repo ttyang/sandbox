@@ -79,7 +79,7 @@ namespace boost { namespace tree_node {
                 //->
                 pointer;
         typedef ::std::ptrdiff_t
-                distance_type;
+                difference_type;
         typedef ::std::forward_iterator_tag
                 iterator_category;
 
@@ -198,6 +198,7 @@ namespace boost { namespace tree_node {
     template <typename NP2, typename MCI2>
     breadth_first_iterator<NP1,MCI1>::breadth_first_iterator(
         breadth_first_iterator<NP2,MCI2> const& other
+#ifndef BOOST_NO_SFINAE
       , typename ::boost::enable_if<
             typename ::boost::mpl::if_<
                 ::std::tr1::is_convertible<NP2,NP1>
@@ -206,6 +207,7 @@ namespace boost { namespace tree_node {
             >::type
           , enabler
         >::type
+#endif
     ) : _queue(other._queue.begin(), other._queue.end())
       , _current(other._current)
       , _state(other._state)

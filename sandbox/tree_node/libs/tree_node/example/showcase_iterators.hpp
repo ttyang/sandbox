@@ -11,6 +11,7 @@
 #include <boost/tree_node/pre_order_iterator.hpp>
 #include <boost/tree_node/post_order_iterator.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
+#include <boost/tree_node/in_order_iterator.hpp>
 
 //[example__showcase_iterators
 template <typename NodePointer, typename Function1, typename Function2>
@@ -37,6 +38,18 @@ void
     boost::tree_node::depth_first_iterate(root, show2);
     std::cout << std::endl << "    sans root:" << std::endl;
     boost::tree_node::depth_first_iterate_descendants(root, show2);
+    std::cout << std::endl;
+}
+//]
+
+//[example__showcase_in_order_iterator
+template <typename NodePointer, typename Function>
+void showcase_in_order_iterator(NodePointer const& node, Function show)
+{
+    std::cout << "  In-order fwd:  ";
+    boost::tree_node::in_order_iterate_forward(node, show);
+    std::cout << std::endl << "  In-order bck:  ";
+    boost::tree_node::in_order_iterate_reverse(node, show);
     std::cout << std::endl;
 }
 //]

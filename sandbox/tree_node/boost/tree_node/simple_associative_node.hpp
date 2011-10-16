@@ -12,8 +12,10 @@
 #include <boost/noncopyable.hpp>
 #include <boost/tr1/memory.hpp>
 #include <boost/tr1/tuple.hpp>
+#include <boost/iterator/transform_iterator.hpp>
 #include <boost/utility/associative_container_gen.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
+#include <boost/detail/function/add_const_to_2nd_sh_ptee.hpp>
 
 //[reference__simple_associative_node
 namespace boost { namespace tree_node {
@@ -21,7 +23,7 @@ namespace boost { namespace tree_node {
     template <
         typename Key
       , typename Data
-      , typename AssociativeContainerSelector = mapS
+      , typename AssociativeContainerSelector = ::boost::mapS
     >
     class simple_associative_node
       : public ::std::tr1::enable_shared_from_this<
@@ -59,7 +61,13 @@ namespace boost { namespace tree_node {
                 child_iterator;
         typedef // implementation_defined
                 //<-
-                typename children::const_iterator
+                ::boost::transform_iterator<
+                    ::boost::detail::add_const_to_2nd_shared_pointee<
+                        Key
+                      , simple_associative_node
+                    >
+                  , typename children::const_iterator
+                >
                 //->
                 const_child_iterator;
 
@@ -98,6 +106,12 @@ namespace boost { namespace tree_node {
         const_child_iterator get_child_end() const;
 
         child_iterator get_child_end();
+
+        std::pair<const_child_iterator,const_child_iterator>
+            get_children() const;
+
+        std::pair<child_iterator,child_iterator>
+            get_children();
 
         const_child_iterator find_child(key_type const& key) const;
 
@@ -169,7 +183,7 @@ namespace boost { namespace tree_node {
     }
 
     template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::pointer
+    typename simple_associative_node<K,D,A>::pointer
         simple_associative_node<K,D,A>::add_child(
             key_type const& key
           , data_type const& data
@@ -183,7 +197,7 @@ namespace boost { namespace tree_node {
     }
 
     template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::pointer
+    typename simple_associative_node<K,D,A>::pointer
         simple_associative_node<K,D,A>::add_child(key_type const& key)
     {
         pointer child(new simple_associative_node());
@@ -194,7 +208,7 @@ namespace boost { namespace tree_node {
     }
 
     template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::pointer
+    typename simple_associative_node<K,D,A>::pointer
         simple_associative_node<K,D,A>::add_child_copy(
             key_type const& key
           , const_pointer const& copy
@@ -211,7 +225,7 @@ namespace boost { namespace tree_node {
     inline typename simple_associative_node<K,D,A>::const_child_iterator
         simple_associative_node<K,D,A>::get_child_begin() const
     {
-        return _children.begin();
+        return const_child_iterator(_children.begin());
     }
 
     template <typename K, typename D, typename A>
@@ -225,7 +239,7 @@ namespace boost { namespace tree_node {
     inline typename simple_associative_node<K,D,A>::const_child_iterator
         simple_associative_node<K,D,A>::get_child_end() const
     {
-        return _children.end();
+        return const_child_iterator(_children.end());
     }
 
     template <typename K, typename D, typename A>
@@ -236,10 +250,36 @@ namespace boost { namespace tree_node {
     }
 
     template <typename K, typename D, typename A>
+    inline ::std::pair<
+        typename simple_associative_node<K,D,A>::const_child_iterator
+      , typename simple_associative_node<K,D,A>::const_child_iterator
+    >
+        simple_associative_node<K,D,A>::get_children() const
+    {
+        return ::std::pair<const_child_iterator,const_child_iterator>(
+            get_child_begin()
+          , get_child_end()
+        );
+    }
+
+    template <typename K, typename D, typename A>
+    inline ::std::pair<
+        typename simple_associative_node<K,D,A>::child_iterator
+      , typename simple_associative_node<K,D,A>::child_iterator
+    >
+        simple_associative_node<K,D,A>::get_children()
+    {
+        return ::std::pair<child_iterator,child_iterator>(
+            get_child_begin()
+          , get_child_end()
+        );
+    }
+
+    template <typename K, typename D, typename A>
     inline typename simple_associative_node<K,D,A>::const_child_iterator
         simple_associative_node<K,D,A>::find_child(key_type const& key) const
     {
-        return _children.find(key);
+        return const_child_iterator(_children.find(key));
     }
 
     template <typename K, typename D, typename A>
@@ -258,7 +298,15 @@ namespace boost { namespace tree_node {
             key_type const& key
         ) const
     {
-        return _children.equal_range(key);
+        ::std::pair<
+            typename children::const_iterator
+          , typename children::const_iterator
+        > p(_children.equal_range(key));
+
+        return ::std::pair<const_child_iterator,const_child_iterator>(
+            const_child_iterator(p.first)
+          , const_child_iterator(p.second)
+        );
     }
 
     template <typename K, typename D, typename A>

@@ -1,58 +1,57 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>raw_node</title>
+<title>raw_binary_node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
 <link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="raw_binary_node.html" title="raw_binary_node">
-<link rel="next" href="simple_node.html" title="simple_node">
+<link rel="prev" href="../reference.html" title="Reference">
+<link rel="next" href="raw_node.html" title="raw_node">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="raw_binary_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="simple_node.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="raw_node.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="tree_node.reference.raw_node"></a><a class="link" href="raw_node.html" title="raw_node"><code class="computeroutput"><span class="identifier">raw_node</span></code></a>
+<a name="tree_node.reference.raw_binary_node"></a><a class="link" href="raw_binary_node.html" title="raw_binary_node"><code class="computeroutput"><span class="identifier">raw_binary_node</span></code></a>
 </h3></div></div></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.synopsis"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.synopsis" title="Synopsis">Synopsis</a>
+<a name="tree_node.reference.raw_binary_node.synopsis"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.synopsis" title="Synopsis">Synopsis</a>
 </h4></div></div></div>
 <p>
           
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Selector</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span><span class="special">&gt;</span>
-    <span class="keyword">class</span> <span class="identifier">raw_node</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">raw_binary_node</span>
     <span class="special">{</span>
      <span class="keyword">public</span><span class="special">:</span>
         <span class="keyword">typedef</span> <span class="identifier">T</span>
                 <span class="identifier">data_type</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="identifier">raw_node</span><span class="special">*</span>
+        <span class="keyword">typedef</span> <span class="identifier">raw_binary_node</span><span class="special">*</span>
                 <span class="identifier">pointer</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">*</span>
+        <span class="keyword">typedef</span> <span class="identifier">raw_binary_node</span> <span class="keyword">const</span><span class="special">*</span>
                 <span class="identifier">const_pointer</span><span class="special">;</span>
-
         <span class="keyword">typedef</span> <span class="comment">// implementation_defined
 </span>                <span class="identifier">child_iterator</span><span class="special">;</span>
         <span class="keyword">typedef</span> <span class="comment">// implementation_defined
 </span>                <span class="identifier">const_child_iterator</span><span class="special">;</span>
 
-        <span class="identifier">raw_node</span><span class="special">();</span>
+        <span class="identifier">raw_binary_node</span><span class="special">();</span>
 
-        <span class="keyword">explicit</span> <span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+        <span class="keyword">explicit</span> <span class="identifier">raw_binary_node</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
 
-        <span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+        <span class="identifier">raw_binary_node</span><span class="special">(</span><span class="identifier">raw_binary_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
 
-        <span class="identifier">raw_node</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+        <span class="identifier">raw_binary_node</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">raw_binary_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
 
-        <span class="special">~</span><span class="identifier">raw_node</span><span class="special">();</span>
+        <span class="special">~</span><span class="identifier">raw_binary_node</span><span class="special">();</span>
 
         <span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
 
@@ -62,11 +61,25 @@
 
         <span class="identifier">pointer</span> <span class="identifier">get_parent</span><span class="special">();</span>
 
-        <span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+        <span class="identifier">pointer</span> <span class="identifier">add_left_child</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
 
-        <span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">();</span>
+        <span class="identifier">pointer</span> <span class="identifier">add_left_child</span><span class="special">();</span>
 
-        <span class="identifier">pointer</span> <span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+        <span class="identifier">pointer</span> <span class="identifier">add_left_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">add_right_child</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">add_right_child</span><span class="special">();</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">add_right_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+
+        <span class="identifier">const_pointer</span> <span class="identifier">get_left_child</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">get_left_child</span><span class="special">();</span>
+
+        <span class="identifier">const_pointer</span> <span class="identifier">get_right_child</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">pointer</span> <span class="identifier">get_right_child</span><span class="special">();</span>
 
         <span class="identifier">const_child_iterator</span> <span class="identifier">get_child_begin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
 
@@ -82,8 +95,15 @@
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">child_iterator</span><span class="special">,</span><span class="identifier">child_iterator</span><span class="special">&gt;</span>
             <span class="identifier">get_children</span><span class="special">();</span>
 
-        <span class="keyword">void</span> <span class="identifier">remove_all_children</span><span class="special">();</span>
+        <span class="identifier">pointer</span> <span class="identifier">rotate_left</span><span class="special">();</span>
 
+        <span class="identifier">pointer</span> <span class="identifier">rotate_right</span><span class="special">();</span>
+
+        <span class="keyword">void</span> <span class="identifier">remove_left_child</span><span class="special">();</span>
+
+        <span class="keyword">void</span> <span class="identifier">remove_right_child</span><span class="special">();</span>
+
+        <span class="keyword">void</span> <span class="identifier">remove_all_children</span><span class="special">();</span>
     <span class="special">};</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
@@ -93,41 +113,31 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.description"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.description" title="Description">Description</a>
+<a name="tree_node.reference.raw_binary_node.description"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.description" title="Description">Description</a>
 </h4></div></div></div>
 <p>
           This class template is suitable for classes or algorithms that require
-          a tree node data structure that can handle an arbitrary number of children
-          but does not need to be exposed to external code. Objects of this type
-          can be stored by value.
+          a binary tree node data structure but do not need to expose it to external
+          code. Objects of this type can be stored by value.
         </p>
-<div class="important"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../images/important.png"></td>
-<th align="left">Important</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-            This component depends on <a href="http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Utility.ContainerGen</strong></span></a>, which is not
-            yet a part of Boost. For now, you must perform a Subversion checkout
-            from the <a href="http://svn.boost.org/" target="_top">SVN Trac</a>.
-          </p></td></tr>
-</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.definition"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.definition" title="Where defined">Where defined</a>
+<a name="tree_node.reference.raw_binary_node.definition"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.definition" title="Where defined">Where
+        defined</a>
 </h4></div></div></div>
 <p>
           
 </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/raw_node.hpp" target="_top">boost/tree_node/raw_node.hpp</a><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/raw_binary_node.hpp" target="_top">boost/tree_node/raw_binary_node.hpp</a><span class="special">&gt;</span>
 </pre>
 <p>
         </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.tpl_param"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.tpl_param" title="Template Parameters">Template Parameters</a>
+<a name="tree_node.reference.raw_binary_node.tpl_param"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.tpl_param" title="Template Parameters">Template
+        Parameters</a>
 </h4></div></div></div>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -158,8 +168,7 @@
                   </p>
                 </th>
 </tr></thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>
                   <p>
                     <code class="computeroutput"><span class="identifier">T</span></code>
@@ -167,46 +176,22 @@
                 </td>
 <td>
                   <p>
-                    The type of the object to be stored in a <code class="computeroutput"><span class="identifier">raw_node</span></code>.
+                    The type of the object to be stored in a <code class="computeroutput"><span class="identifier">raw_binary_node</span></code>.
                   </p>
                 </td>
 <td>
                 </td>
 <td>
                 </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">Selector</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    The type that determines the internal container types whose value
-                    types are the same as the pointer type.
-                  </p>
-                </td>
-<td>
-                  <p>
-                    It must be a type for which <a href="http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/container_gen/reference/container_gen.html" target="_top"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> returns
-                    a valid container.
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">dequeS</span></code>
-                  </p>
-                </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.model_of"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.model_of" title="Model of">Model of</a>
+<a name="tree_node.reference.raw_binary_node.model_of"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.model_of" title="Model of">Model
+        of</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary Tree Node</strong></span></a>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
 <span class="special">*</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>
 <span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
 <span class="special">*</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
@@ -214,8 +199,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.public_bases"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.public_bases" title="Public Base Classes">Public Base
-        Classes</a>
+<a name="tree_node.reference.raw_binary_node.public_bases"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.public_bases" title="Public Base Classes">Public
+        Base Classes</a>
 </h4></div></div></div>
 <p>
           None.
@@ -223,7 +208,7 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.members"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.members" title="Members">Members</a>
+<a name="tree_node.reference.raw_binary_node.members"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.members" title="Members">Members</a>
 </h4></div></div></div>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -345,7 +330,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">raw_node</span><span class="special">();</span></code>
+                    <code class="computeroutput"><span class="identifier">raw_binary_node</span><span class="special">();</span></code>
                   </p>
                 </td>
 <td>
@@ -362,13 +347,13 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="keyword">explicit</span> <span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">data_type</span>
+                    <code class="computeroutput"><span class="keyword">explicit</span> <span class="identifier">raw_binary_node</span><span class="special">(</span><span class="identifier">data_type</span>
                     <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">raw_node</span></code>
+                    <code class="computeroutput"><span class="identifier">raw_binary_node</span></code>
                   </p>
                 </td>
 </tr>
@@ -380,7 +365,8 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                    <code class="computeroutput"><span class="identifier">raw_binary_node</span><span class="special">(</span><span class="identifier">raw_binary_node</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
@@ -397,8 +383,8 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">raw_node</span><span class="special">&amp;</span>
-                    <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                    <code class="computeroutput"><span class="identifier">raw_binary_node</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">raw_binary_node</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
@@ -484,56 +470,176 @@
 <tr>
 <td>
                   <p>
-                    Child creation with data
+                    Left child creation with data
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">data_type</span>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_left_child</span><span class="special">(</span><span class="identifier">data_type</span>
                     <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary
-                    Tree Node</strong></span></a>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
                   </p>
                 </td>
 </tr>
 <tr>
 <td>
                   <p>
-                    Child creation
+                    Left child creation
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">();</span></code>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_left_child</span><span class="special">();</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary
-                    Tree Node</strong></span></a>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
                   </p>
                 </td>
 </tr>
 <tr>
 <td>
                   <p>
-                    Child copy creation
+                    Left child copy creation
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_left_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span>
                     <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary
-                    Tree Node</strong></span></a>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child creation with data
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_right_child</span><span class="special">(</span><span class="identifier">data_type</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_right_child</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child copy creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_right_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left child access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_pointer</span> <span class="identifier">get_left_child</span><span class="special">()</span>
+                    <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left child access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">get_left_child</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_pointer</span> <span class="identifier">get_right_child</span><span class="special">()</span>
+                    <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right child access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">get_right_child</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
                   </p>
                 </td>
 </tr>
@@ -654,6 +760,74 @@
 <tr>
 <td>
                   <p>
+                    Rotate left
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">rotate_left</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Rotate right
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">rotate_right</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove left child
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">remove_left_child</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove right child
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">remove_right_child</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     Remove all children
                   </p>
                 </td>
@@ -674,10 +848,10 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.example"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.example" title="Example">Example</a>
+<a name="tree_node.reference.raw_binary_node.example"></a><a class="link" href="raw_binary_node.html#tree_node.reference.raw_binary_node.example" title="Example">Example</a>
 </h4></div></div></div>
 <p>
-          &lt;<a href="../../../../example/raw_node.cpp" target="_top">example/raw_node.cpp</a>&gt;
+          &lt;<a href="../../../../example/raw_binary_node.cpp" target="_top">example/raw_binary_node.cpp</a>&gt;
         </p>
 </div>
 </div>
@@ -691,7 +865,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="raw_binary_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="simple_node.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="raw_node.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

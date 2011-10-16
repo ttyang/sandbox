@@ -31,7 +31,7 @@
     <span class="keyword">template</span> <span class="special">&lt;</span>
         <span class="keyword">typename</span> <span class="identifier">Key</span>
       <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Data</span>
-      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AssociativeContainerSelector</span> <span class="special">=</span> <span class="identifier">mapS</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">AssociativeContainerSelector</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mapS</span>
     <span class="special">&gt;</span>
     <span class="keyword">class</span> <span class="identifier">raw_associative_node</span>
     <span class="special">{</span>
@@ -82,6 +82,12 @@
         <span class="identifier">const_child_iterator</span> <span class="identifier">get_child_end</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
 
         <span class="identifier">child_iterator</span> <span class="identifier">get_child_end</span><span class="special">();</span>
+
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">const_child_iterator</span><span class="special">,</span><span class="identifier">const_child_iterator</span><span class="special">&gt;</span>
+            <span class="identifier">get_children</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">child_iterator</span><span class="special">,</span><span class="identifier">child_iterator</span><span class="special">&gt;</span>
+            <span class="identifier">get_children</span><span class="special">();</span>
 
         <span class="identifier">const_child_iterator</span> <span class="identifier">find_child</span><span class="special">(</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">key</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
 
@@ -294,8 +300,7 @@
                 </td>
 <td>
                   <p>
-                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
-                    Node</strong></span></a>
+                    <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a>
                   </p>
                 </td>
 </tr>
@@ -577,7 +582,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">key_type</span>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">key_type</span>
                     <span class="keyword">const</span><span class="special">&amp;,</span>
                     <span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
@@ -667,6 +672,44 @@
 <tr>
 <td>
                   <p>
+                    Children range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;const_child_iterator,const_child_iterator&gt;
+                    get_children() const;</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;child_iterator,child_iterator&gt;
+                    get_children();</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+                    Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     Child search
                   </p>
                 </td>
@@ -707,7 +750,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;Node::const_child_iterator,Node::const_child_iterator&gt;
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;const_child_iterator,const_child_iterator&gt;
                     find_children(key_type const&amp;) const;</code>
                   </p>
                 </td>
@@ -725,7 +768,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;Node::child_iterator,Node::child_iterator&gt;
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;child_iterator,child_iterator&gt;
                     find_children(key_type const&amp;);</code>
                   </p>
                 </td>

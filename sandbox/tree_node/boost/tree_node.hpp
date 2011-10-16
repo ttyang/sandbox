@@ -11,6 +11,8 @@
 #include <boost/tree_node/pre_order_iterator.hpp>
 #include <boost/tree_node/post_order_iterator.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
+#include <boost/tree_node/in_order_iterator.hpp>
+#include <boost/tree_node/raw_binary_node.hpp>
 #include <boost/tree_node/raw_node.hpp>
 #include <boost/tree_node/simple_node.hpp>
 #include <boost/tree_node/raw_associative_node.hpp>

@@ -15,6 +15,7 @@ namespace boost { namespace tree_node {
       , pre_order_traversal
       , post_order_traversal
       , breadth_first_traversal
+      , in_order_traversal
     };
 }}  // namespace boost::tree_node
 //]

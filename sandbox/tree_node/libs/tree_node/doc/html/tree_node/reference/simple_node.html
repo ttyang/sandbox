@@ -28,7 +28,7 @@
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Selector</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span><span class="special">&gt;</span>
     <span class="keyword">class</span> <span class="identifier">simple_node</span>
       <span class="special">:</span> <span class="keyword">public</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">enable_shared_from_this</span><span class="special">&lt;</span><span class="identifier">simple_node</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&gt;</span>
       <span class="special">,</span> <span class="keyword">private</span> <span class="identifier">noncopyable</span>
@@ -70,6 +70,12 @@
 
         <span class="identifier">child_iterator</span> <span class="identifier">get_child_end</span><span class="special">();</span>
 
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">const_child_iterator</span><span class="special">,</span><span class="identifier">const_child_iterator</span><span class="special">&gt;</span>
+            <span class="identifier">get_children</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">child_iterator</span><span class="special">,</span><span class="identifier">child_iterator</span><span class="special">&gt;</span>
+            <span class="identifier">get_children</span><span class="special">();</span>
+
         <span class="keyword">void</span> <span class="identifier">remove_all_children</span><span class="special">();</span>
 
         <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">create</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
@@ -77,6 +83,7 @@
         <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">create</span><span class="special">();</span>
 
         <span class="keyword">static</span> <span class="identifier">pointer</span> <span class="identifier">create_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">);</span>
+
     <span class="special">};</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
@@ -90,13 +97,23 @@
 </h4></div></div></div>
 <p>
           This class template is suitable for classes or algorithms that require
-          a tree node data structure that must be exposed to external code. Objects
-          of this type must be stored by <code class="computeroutput"><span class="identifier">simple_node</span><span class="special">::</span><span class="identifier">pointer</span></code>
-          and can only be instantiated through the <code class="computeroutput"><span class="keyword">static</span></code>
-          creation methods that this class template provides. Their children can
-          be accessed by offsetting the start of the range with a numerical index
-          for fast lookup.
+          a tree node data structure that can handle an arbitrary number of children
+          and must be exposed to external code. Objects of this type must be stored
+          by <code class="computeroutput"><span class="identifier">simple_node</span><span class="special">::</span><span class="identifier">pointer</span></code> and can only be instantiated
+          through the <code class="computeroutput"><span class="keyword">static</span></code> creation
+          methods that this class template provides.
         </p>
+<div class="important"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+            This component depends on <a href="http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Utility.ContainerGen</strong></span></a>, which is not
+            yet a part of Boost. For now, you must perform a Subversion checkout
+            from the <a href="http://svn.boost.org/" target="_top">SVN Trac</a>.
+          </p></td></tr>
+</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -144,7 +161,8 @@
                   </p>
                 </th>
 </tr></thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>
                   <p>
                     <code class="computeroutput"><span class="identifier">T</span></code>
@@ -159,7 +177,32 @@
                 </td>
 <td>
                 </td>
-</tr></tbody>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Selector</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type that determines the internal container types whose value
+                    types are the same as the pointer type.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    It must be a type for which <a href="http://svn.boost.org/svn/boost/sandbox/utility-container_gen/libs/utility/container_gen/doc/html/container_gen/reference/container_gen.html" target="_top"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> returns
+                    a valid container.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">dequeS</span></code>
+                  </p>
+                </td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="section">
@@ -167,8 +210,8 @@
 <a name="tree_node.reference.simple_node.model_of"></a><a class="link" href="simple_node.html#tree_node.reference.simple_node.model_of" title="Model of">Model of</a>
 </h4></div></div></div>
 <p>
-          <a class="link" href="../concepts/raci_tree_node.html" title="Random Access Child Iterator Tree Node"><span class="bold"><strong>Random
-          Access Child Iterator Tree Node</strong></span></a>
+          <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary
+          Tree Node</strong></span></a>
         </p>
 </div>
 <div class="section">
@@ -272,8 +315,7 @@
                 </td>
 <td>
                   <p>
-                    Defined by the <a class="link" href="../concepts/raci_tree_node.html" title="Random Access Child Iterator Tree Node"><span class="bold"><strong>Random Access Child Iterator Tree Node</strong></span></a>
-                    concept.
+                    Defined by the <a class="link" href="../concepts/non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a> concept.
                   </p>
                 </td>
 </tr>
@@ -290,8 +332,7 @@
                 </td>
 <td>
                   <p>
-                    Defined by the <a class="link" href="../concepts/raci_tree_node.html" title="Random Access Child Iterator Tree Node"><span class="bold"><strong>Random Access Child Iterator Tree Node</strong></span></a>
-                    concept.
+                    Defined by the <a class="link" href="../concepts/non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a> concept.
                   </p>
                 </td>
 </tr>
@@ -436,8 +477,7 @@
                 </td>
 <td>
                   <p>
-                    Defined by the <a class="link" href="../concepts/raci_tree_node.html" title="Random Access Child Iterator Tree Node"><span class="bold"><strong>Random Access Child Iterator Tree Node</strong></span></a>
-                    concept.
+                    Defined by the <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary Tree Node</strong></span></a> concept.
                   </p>
                 </td>
 </tr>
@@ -454,8 +494,7 @@
                 </td>
 <td>
                   <p>
-                    Defined by the <a class="link" href="../concepts/raci_tree_node.html" title="Random Access Child Iterator Tree Node"><span class="bold"><strong>Random Access Child Iterator Tree Node</strong></span></a>
-                    concept.
+                    Defined by the <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary Tree Node</strong></span></a> concept.
                   </p>
                 </td>
 </tr>
@@ -467,14 +506,13 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">const_pointer</span>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span>
                     <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    Defined by the <a class="link" href="../concepts/raci_tree_node.html" title="Random Access Child Iterator Tree Node"><span class="bold"><strong>Random Access Child Iterator Tree Node</strong></span></a>
-                    concept.
+                    Defined by the <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary Tree Node</strong></span></a> concept.
                   </p>
                 </td>
 </tr>
@@ -542,6 +580,42 @@
 <td>
                   <p>
                     <code class="computeroutput"><span class="identifier">child_iterator</span> <span class="identifier">get_child_end</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;const_child_iterator,const_child_iterator&gt;
+                    get_children() const;</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Children range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;child_iterator,child_iterator&gt;
+                    get_children();</code>
                   </p>
                 </td>
 <td>
