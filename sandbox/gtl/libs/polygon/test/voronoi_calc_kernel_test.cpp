@@ -31,7 +31,11 @@ typedef beach_line_type::iterator bieach_line_iterator;
 distance_predicate_type distance_predicate;
 node_comparison_type node_comparison;
 
-//typedef VCK::circle_formation_predicate lazy_predicate
+typedef VCK::circle_existence_predicate<site_type> CEP_type;
+typedef VCK::gmp_circle_formation_functor<site_type, circle_type> GMP_CFF_type;
+typedef VCK::lazy_circle_formation_functor<site_type, circle_type> lazy_CFF_type;
+VCK::circle_formation_predicate<site_type, circle_type, CEP_type, GMP_CFF_type> gmp_predicate;
+VCK::circle_formation_predicate<site_type, circle_type, CEP_type, lazy_CFF_type> lazy_predicate;
 
 #define CHECK_ORIENTATION(P1, P2, P3, R1, R2) \
     BOOST_CHECK_EQUAL(VCK::get_orientation(P1, P2, P3) == R1, true); \
@@ -54,6 +58,22 @@ node_comparison_type node_comparison;
         BOOST_CHECK_EQUAL(node_comparison(node, nodes[i]), res[i]); \
         BOOST_CHECK_EQUAL(node_comparison(nodes[i], node), !res[i]); \
     }
+
+#define CHECK_CIRCLE(circle, c_x, c_y, l_x) \
+    BOOST_CHECK_EQUAL(almost_equal(c1.x(), c_x, 10), true); \
+    BOOST_CHECK_EQUAL(almost_equal(c1.y(), c_y, 10), true); \
+    BOOST_CHECK_EQUAL(almost_equal(c1.lower_x(), l_x, 10), true)
+
+#define CHECK_CIRCLE_EXISTENCE(s1, s2, s3, RES) \
+  { circle_type c1; \
+    BOOST_CHECK_EQUAL(lazy_predicate(s1, s2, s3, c1), RES); }
+
+#define CHECK_CIRCLE_FORMATION_PREDICATE(s1, s2, s3, c_x, c_y, l_x) \
+  { circle_type c1, c2; \
+    BOOST_CHECK_EQUAL(gmp_predicate(s1, s2, s3, c1), true); \
+    BOOST_CHECK_EQUAL(lazy_predicate(s1, s2, s3, c2), true); \
+    CHECK_CIRCLE(c1, c_x, c_y, l_x); \
+    CHECK_CIRCLE(c2, c_x, c_y, l_x); }
 
 BOOST_AUTO_TEST_CASE(orientation_test) {
     int min_int = std::numeric_limits<int>::min();
@@ -342,4 +362,91 @@ BOOST_AUTO_TEST_CASE(node_comparison_test8) {
     };
     bool res[] = {false, true, true, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 4);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test1) {
+    site_type site1(0, 0, 0);
+    site_type site2(-8, 0, 1);
+    site_type site3(0, 6, 2);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, -4.0, 3.0, 1.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test2) {
+    int min_int = std::numeric_limits<int>::min();
+    int max_int = std::numeric_limits<int>::max();
+    site_type site1(min_int, min_int, 0);
+    site_type site2(min_int, max_int, 1);
+    site_type site3(max_int-1, max_int-1, 2);
+    site_type site4(max_int, max_int, 3);
+    CHECK_CIRCLE_EXISTENCE(site1, site2, site4, true);
+    CHECK_CIRCLE_EXISTENCE(site1, site3, site4, false);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test3) {
+    site_type site1(-4, 0, 0);
+    site_type site2(0, 4, 1);
+    site_type site3(site1.point0(), site2.point0(), 2);
+    CHECK_CIRCLE_EXISTENCE(site1, site3, site2, false);
+    site_type site4(-2, 0, 3);
+    site_type site5(0, 2, 4);
+    CHECK_CIRCLE_EXISTENCE(site3, site4, site5, false);
+    CHECK_CIRCLE_EXISTENCE(site4, site5, site3, false);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test5) {
+    site_type site1(-4, 0, -4, 20, 0);
+    site_type site2(-2, 10, 1);
+    site_type site3(4, 10, 0);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, 1.0, 6.0, 6.0);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 14.0, 6.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test6) {
+    site_type site1(1, 0, 7, 0, 0);
+    site1.inverse();
+    site_type site2(-2, 4, 10, 4, 1);
+    site_type site3(6, 2, 2);
+    site_type site4(1, 0, 2);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site3, site1, site2, 4.0, 2.0, 6.0);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site4, site2, site1, 1.0, 2.0, 3.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test7) {
+    site_type site1(-1, 2, 8, -10, 0);
+    site1.inverse();
+    site_type site2(-1, 0, 8, 12, 1);
+    site_type site3(1, 1, 2);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 6.0, 1.0, 11.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test8) {
+    site_type site1(1, 0, 6, 0, 0);
+    site1.inverse();
+    site_type site2(-6, 4, 0, 12, 1);
+    site_type site3(1, 0, 2);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 5.0, 6.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test9) {
+    site_type site1(1, 0, 5, 0, 0);
+    site1.inverse();
+    site_type site2(8, 6, 0, 12, 1);
+    site_type site3(1, 0, 2);
+    CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 5.0, 6.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test10) {
+    site_type site1(4, 0, 0, 0, 0);
+    site_type site2(0, 0, 0, 4, 1);
+    site_type site3(0, 4, 4, 4, 2);
+    site1.inverse();
+    CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, 2.0, 2.0, 4.0);
+}
+
+BOOST_AUTO_TEST_CASE(circle_formation_predicate_test11) {
+    site_type site1(41, 30, 1, 0, 0);
+    site_type site2(-39, 30, 1, 60, 1);
+    site_type site3(1, 60, 41, 30, 2);
+    site1.inverse();
+    CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, 1.0, 30.0, 25.0);
 }

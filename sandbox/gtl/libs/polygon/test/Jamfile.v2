@@ -21,7 +21,7 @@ alias "polygon-unit"
         [ run gtl_boost_unit_test.cpp ]
     ;
 
-alias "benchmark"
+alias "voronoi-benchmark"
     :
         [ run voronoi_benchmark_test.cpp ]
     ;
