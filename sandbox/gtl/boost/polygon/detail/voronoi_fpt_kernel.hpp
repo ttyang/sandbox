@@ -515,55 +515,39 @@ namespace detail {
         // Evaluates expression:
         // A[0] * sqrt(B[0]).
         mpf eval1(mpt *A, mpt *B) {
-#ifndef THREAD_SAFETY
-            static
-#endif
-            mpf lhs, rhs, numer;
-            lhs = A[0];
-            rhs = B[0];
-            numer = lhs * sqrt(rhs);
-            return numer;            
+            lhs[0] = A[0];
+            rhs[0] = B[0];
+            numer[0] = lhs[0] * sqrt(rhs[0]);
+            return numer[0];
         }
 
         // Evaluates expression:
         // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) with
         // 7 * EPS relative error in the worst case.
         mpf eval2(mpt *A, mpt *B) {
-#ifndef THREAD_SAFETY
-            static
-#endif
-            mpf lhs, rhs, numer;
-            lhs = eval1(A, B);
-            rhs = eval1(A + 1, B + 1);
-            if ((lhs >= 0 && rhs >= 0) || (lhs <= 0 && rhs <= 0))
-                return lhs + rhs;
-            numer = A[0] * A[0] * B[0] - A[1] * A[1] * B[1];
-            return numer / (lhs - rhs);
+            lhs[1] = eval1(A, B);
+            rhs[1] = eval1(A + 1, B + 1);
+            if ((lhs[1] >= 0 && rhs[1] >= 0) || (lhs[1] <= 0 && rhs[1] <= 0))
+                return lhs[1] + rhs[1];
+            numer[1] = A[0] * A[0] * B[0] - A[1] * A[1] * B[1];
+            return numer[1] / (lhs[1] - rhs[1]);
         }
 
         // Evaluates expression:
         // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2])
         // with 16 * EPS relative error in the worst case.
         mpf eval3(mpt *A, mpt *B) {
-#ifndef THREAD_SAFETY
-            static
-#endif
-            mpt cA[2], cB[2];
-#ifndef THREAD_SAFETY
-            static
-#endif
-            mpf lhs, rhs, numer;
-            lhs = eval2(A, B);
-            rhs = eval1(A + 2, B + 2);
-            if ((lhs >= 0 && rhs >= 0) || (lhs <= 0 && rhs <= 0))
-                return lhs + rhs;
+            lhs[2] = eval2(A, B);
+            rhs[2] = eval1(A + 2, B + 2);
+            if ((lhs[2] >= 0 && rhs[2] >= 0) || (lhs[2] <= 0 && rhs[2] <= 0))
+                return lhs[2] + rhs[2];
             cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
             cA[0] -= A[2] * A[2] * B[2];
             cB[0] = 1;
             cA[1] = A[0] * A[1] * 2;
             cB[1] = B[0] * B[1];
-            numer = eval2(cA, cB);
-            return numer / (lhs - rhs);
+            numer[2] = eval2(cA, cB);
+            return numer[2] / (lhs[2] - rhs[2]);
         }
 
         
@@ -571,30 +555,29 @@ namespace detail {
         // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2]) + A[3] * sqrt(B[3])
         // with 25 * EPS relative error in the worst case.
         mpf eval4(mpt *A, mpt *B) {
-#ifndef THREAD_SAFETY
-            static
-#endif
-            mpt cA[3], cB[3];
-#ifndef THREAD_SAFETY
-            static
-#endif
-            mpf lhs, rhs, numer;
-            lhs = eval2(A, B);
-            rhs = eval2(A + 2, B + 2);
-            if ((lhs >= 0 && rhs >= 0) || (lhs <= 0 && rhs <= 0))
-                return lhs + rhs;
-            cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
-            cA[0] -= A[2] * A[2] * B[2] + A[3] * A[3] * B[3];
-            cB[0] = 1;
-            cA[1] = A[0] * A[1] * 2;
-            cB[1] = B[0] * B[1];
-            cA[2] = A[2] * A[3] * -2;
-            cB[2] = B[2] * B[3];
-            numer = eval3(cA, cB);
-            return numer / (lhs - rhs);
+            lhs[3] = eval2(A, B);
+            rhs[3] = eval2(A + 2, B + 2);
+            if ((lhs[3] >= 0 && rhs[3] >= 0) || (lhs[3] <= 0 && rhs[3] <= 0))
+                return lhs[3] + rhs[3];
+            dA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
+            dA[0] -= A[2] * A[2] * B[2] + A[3] * A[3] * B[3];
+            dB[0] = 1;
+            dA[1] = A[0] * A[1] * 2;
+            dB[1] = B[0] * B[1];
+            dA[2] = A[2] * A[3] * -2;
+            dB[2] = B[2] * B[3];
+            numer[3] = eval3(dA, dB);
+            return numer[3] / (lhs[3] - rhs[3]);
         }
 
     private:
+        mpf lhs[4];
+        mpf rhs[4];
+        mpf numer[4];
+        mpt cA[2];
+        mpt cB[2];
+        mpt dA[3];
+        mpt dB[3];
     };
 
 } // detail

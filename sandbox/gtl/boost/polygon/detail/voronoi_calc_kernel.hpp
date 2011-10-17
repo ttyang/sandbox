@@ -1457,9 +1457,9 @@ private:
     }
 };
 
-const voronoi_calc_kernel<int>::fpt_type fpt_type voronoi_calc_kernel<int>::fULPS =
+const voronoi_calc_kernel<int>::fpt_type voronoi_calc_kernel<int>::fULPS =
     voronoi_calc_kernel<int>::ULPS;
-const voronoi_calc_kernel<int>::fpt_type fpt_type voronoi_calc_kernel<int>::fULPSx2 =
+const voronoi_calc_kernel<int>::fpt_type voronoi_calc_kernel<int>::fULPSx2 =
     voronoi_calc_kernel<int>::ULPSx2;
 
 } // detail
