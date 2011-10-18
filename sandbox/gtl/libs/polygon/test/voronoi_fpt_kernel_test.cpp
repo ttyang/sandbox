@@ -260,8 +260,8 @@ public:
                     expected_val -= a[j] * sqrt(b[j]);
                 }
             }
-            mpf received_val = (sqrt_expr_.eval4(A, B));
-            ret_val &= almost_equal(expected_val, received_val.get_d(), 1);
+            double received_val = get_d(sqrt_expr_.eval4(A, B));
+            ret_val &= almost_equal(expected_val, received_val, 1);
         }
         return ret_val;
     }
