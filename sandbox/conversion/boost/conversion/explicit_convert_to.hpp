@@ -184,6 +184,17 @@ namespace boost {
       return explicit_convert_to(from, dummy::type_tag<Target>());
     }
 
+    template <typename Target, typename Source>
+    typename enable_if_c<
+        is_extrinsically_explicitly_convertible_tagged<const Source*,Target>::value
+    , Target>::type
+    explicit_convert_to(const Source * from)
+    {
+      using namespace boost::conversion::impl_2;
+      //use boost::conversion::impl_2::explicit_convert_to if ADL fails
+      return explicit_convert_to(from, dummy::type_tag<Target>());
+    }
+
     //! @brief @c explicit converter specialization to try to convert the source
     //! to @c Target when the target type is @c optional<Target>.
     //!

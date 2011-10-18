@@ -253,14 +253,14 @@ namespace boost {
     //      Array types are default constructible if their element type
     //      is default constructible
 
-    template <typename A, size_t N>
+    template <typename A, std::size_t N>
     struct imp<false, A[N]>
         : public ::boost::is_constructible<typename remove_all_extents<A>::type>
         {};
 
     //      Otherwise array types are not constructible by this syntax
 
-    template <typename A, size_t N, typename ...Args>
+    template <typename A, std::size_t N, typename ...Args>
     struct imp<false, A[N], Args...>
         : public false_type
         {};
