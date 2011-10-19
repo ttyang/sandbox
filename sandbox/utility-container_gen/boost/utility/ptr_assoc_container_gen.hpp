@@ -6,17 +6,17 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
-#ifndef BOOST_UTILITY_ASSOCIATIVE_CONTAINER_GEN_HPP_INCLUDED
-#define BOOST_UTILITY_ASSOCIATIVE_CONTAINER_GEN_HPP_INCLUDED
+#ifndef BOOST_UTILITY_PTR_ASSOC_CONTAINER_GEN_HPP_INCLUDED
+#define BOOST_UTILITY_PTR_ASSOC_CONTAINER_GEN_HPP_INCLUDED
 
 #include <boost/config.hpp>
-#include <set>
-#include <map>
 #include <boost/mpl/if.hpp>
 #include <boost/tr1/type_traits.hpp>
-#include <boost/tr1/unordered_set.hpp>
-#include <boost/tr1/unordered_map.hpp>
 #include <boost/functional/hash.hpp>
+#include <boost/ptr_container/ptr_set.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
+#include <boost/ptr_container/ptr_unordered_set.hpp>
+#include <boost/ptr_container/ptr_unordered_map.hpp>
 #include <boost/utility/container_selector.hpp>
 
 #if !defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS && BOOST_VERSION >= 104800
@@ -30,11 +30,11 @@
 #include <boost/detail/function/range_less.hpp>
 #endif
 
-//[reference__associative_container_gen
+//[reference__ptr_associative_container_gen
 namespace boost {
 
     template <typename Selector>
-    struct associative_container_gen
+    struct ptr_associative_container_gen
     {
 //<-
 #if 0
@@ -51,7 +51,7 @@ namespace boost {
 
     //<-
     template <>
-    struct associative_container_gen<setS>
+    struct ptr_associative_container_gen<setS>
     {
         template <typename Key, typename Mapped = void>
         struct apply
@@ -61,72 +61,8 @@ namespace boost {
                         ::boost::detail::is_container<Key>
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::set<Key,::boost::detail::range_less>
-                          , ::std::map<Key,Mapped,::boost::detail::range_less>
-                        >
-                      , ::boost::mpl::if_<
-                            ::std::tr1::is_same<Mapped,void>
-                          , ::std::set<Key>
-                          , ::std::map<Key,Mapped>
-                        >
-                    >::type
-                    type;
-#else
-            typedef typename ::boost::mpl::if_<
-                        ::std::tr1::is_same<Mapped,void>
-                      , ::std::set<Key>
-                      , ::std::map<Key,Mapped>
-                    >::type
-                    type;
-#endif
-        };
-    };
-
-    template <>
-    struct associative_container_gen<mapS>
-    {
-        template <typename Key, typename Mapped = void>
-        struct apply
-        {
-#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
-            typedef typename ::boost::mpl::eval_if<
-                        ::boost::detail::is_container<Key>
-                      , ::boost::mpl::if_<
-                            ::std::tr1::is_same<Mapped,void>
-                          , ::std::set<Key,::boost::detail::range_less>
-                          , ::std::map<Key,Mapped,::boost::detail::range_less>
-                        >
-                      , ::boost::mpl::if_<
-                            ::std::tr1::is_same<Mapped,void>
-                          , ::std::set<Key>
-                          , ::std::map<Key,Mapped>
-                        >
-                    >::type
-                    type;
-#else
-            typedef typename ::boost::mpl::if_<
-                        ::std::tr1::is_same<Mapped,void>
-                      , ::std::set<Key>
-                      , ::std::map<Key,Mapped>
-                    >::type
-                    type;
-#endif
-        };
-    };
-
-    template <>
-    struct associative_container_gen<multisetS>
-    {
-        template <typename Key, typename Mapped = void>
-        struct apply
-        {
-#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
-            typedef typename ::boost::mpl::eval_if<
-                        ::boost::detail::is_container<Key>
-                      , ::boost::mpl::if_<
-                            ::std::tr1::is_same<Mapped,void>
-                          , ::std::multiset<Key,::boost::detail::range_less>
-                          , ::std::multimap<
+                          , ::boost::ptr_set<Key,::boost::detail::range_less>
+                          , ::boost::ptr_map<
                                 Key
                               , Mapped
                               , ::boost::detail::range_less
@@ -134,16 +70,16 @@ namespace boost {
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::multiset<Key>
-                          , ::std::multimap<Key,Mapped>
+                          , ::boost::ptr_set<Key>
+                          , ::boost::ptr_map<Key,Mapped>
                         >
                     >::type
                     type;
 #else
             typedef typename ::boost::mpl::if_<
                         ::std::tr1::is_same<Mapped,void>
-                      , ::std::multiset<Key>
-                      , ::std::multimap<Key,Mapped>
+                      , ::boost::ptr_set<Key>
+                      , ::boost::ptr_map<Key,Mapped>
                     >::type
                     type;
 #endif
@@ -151,7 +87,7 @@ namespace boost {
     };
 
     template <>
-    struct associative_container_gen<multimapS>
+    struct ptr_associative_container_gen<mapS>
     {
         template <typename Key, typename Mapped = void>
         struct apply
@@ -161,8 +97,8 @@ namespace boost {
                         ::boost::detail::is_container<Key>
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::multiset<Key,::boost::detail::range_less>
-                          , ::std::multimap<
+                          , ::boost::ptr_set<Key,::boost::detail::range_less>
+                          , ::boost::ptr_map<
                                 Key
                               , Mapped
                               , ::boost::detail::range_less
@@ -170,16 +106,16 @@ namespace boost {
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::multiset<Key>
-                          , ::std::multimap<Key,Mapped>
+                          , ::boost::ptr_set<Key>
+                          , ::boost::ptr_map<Key,Mapped>
                         >
                     >::type
                     type;
 #else
             typedef typename ::boost::mpl::if_<
                         ::std::tr1::is_same<Mapped,void>
-                      , ::std::multiset<Key>
-                      , ::std::multimap<Key,Mapped>
+                      , ::boost::ptr_set<Key>
+                      , ::boost::ptr_map<Key,Mapped>
                     >::type
                     type;
 #endif
@@ -187,7 +123,7 @@ namespace boost {
     };
 
     template <>
-    struct associative_container_gen<hash_setS>
+    struct ptr_associative_container_gen<multisetS>
     {
         template <typename Key, typename Mapped = void>
         struct apply
@@ -197,12 +133,90 @@ namespace boost {
                         ::boost::detail::is_container<Key>
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_set<
+                          , ::boost::ptr_multiset<
+                                Key
+                              , ::boost::detail::range_less
+                            >
+                          , ::boost::ptr_multimap<
+                                Key
+                              , Mapped
+                              , ::boost::detail::range_less
+                            >
+                        >
+                      , ::boost::mpl::if_<
+                            ::std::tr1::is_same<Mapped,void>
+                          , ::boost::ptr_multiset<Key>
+                          , ::boost::ptr_multimap<Key,Mapped>
+                        >
+                    >::type
+                    type;
+#else
+            typedef typename ::boost::mpl::if_<
+                        ::std::tr1::is_same<Mapped,void>
+                      , ::boost::ptr_multiset<Key>
+                      , ::boost::ptr_multimap<Key,Mapped>
+                    >::type
+                    type;
+#endif
+        };
+    };
+
+    template <>
+    struct ptr_associative_container_gen<multimapS>
+    {
+        template <typename Key, typename Mapped = void>
+        struct apply
+        {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
+            typedef typename ::boost::mpl::eval_if<
+                        ::boost::detail::is_container<Key>
+                      , ::boost::mpl::if_<
+                            ::std::tr1::is_same<Mapped,void>
+                          , ::boost::ptr_multiset<
+                                Key
+                              , ::boost::detail::range_less
+                            >
+                          , ::boost::ptr_multimap<
+                                Key
+                              , Mapped
+                              , ::boost::detail::range_less
+                            >
+                        >
+                      , ::boost::mpl::if_<
+                            ::std::tr1::is_same<Mapped,void>
+                          , ::boost::ptr_multiset<Key>
+                          , ::boost::ptr_multimap<Key,Mapped>
+                        >
+                    >::type
+                    type;
+#else
+            typedef typename ::boost::mpl::if_<
+                        ::std::tr1::is_same<Mapped,void>
+                      , ::boost::ptr_multiset<Key>
+                      , ::boost::ptr_multimap<Key,Mapped>
+                    >::type
+                    type;
+#endif
+        };
+    };
+
+    template <>
+    struct ptr_associative_container_gen<hash_setS>
+    {
+        template <typename Key, typename Mapped = void>
+        struct apply
+        {
+#if defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
+            typedef typename ::boost::mpl::eval_if<
+                        ::boost::detail::is_container<Key>
+                      , ::boost::mpl::if_<
+                            ::std::tr1::is_same<Mapped,void>
+                          , ::boost::ptr_unordered_set<
                                 Key
                               , ::boost::hash<Key>
                               , ::boost::detail::range_equal
                             >
-                          , ::std::tr1::unordered_map<
+                          , ::boost::ptr_unordered_map<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -211,8 +225,8 @@ namespace boost {
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_set<Key,::boost::hash<Key> >
-                          , ::std::tr1::unordered_map<
+                          , ::boost::ptr_unordered_set<Key,::boost::hash<Key> >
+                          , ::boost::ptr_unordered_map<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -223,8 +237,8 @@ namespace boost {
 #else
             typedef typename ::boost::mpl::if_<
                         ::std::tr1::is_same<Mapped,void>
-                      , ::std::tr1::unordered_set<Key,::boost::hash<Key> >
-                      , ::std::tr1::unordered_map<
+                      , ::boost::ptr_unordered_set<Key,::boost::hash<Key> >
+                      , ::boost::ptr_unordered_map<
                             Key
                           , Mapped
                           , ::boost::hash<Key>
@@ -236,7 +250,7 @@ namespace boost {
     };
 
     template <>
-    struct associative_container_gen<hash_mapS>
+    struct ptr_associative_container_gen<hash_mapS>
     {
         template <typename Key, typename Mapped = void>
         struct apply
@@ -246,12 +260,12 @@ namespace boost {
                         ::boost::detail::is_container<Key>
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_set<
+                          , ::boost::ptr_unordered_set<
                                 Key
                               , ::boost::hash<Key>
                               , ::boost::detail::range_equal
                             >
-                          , ::std::tr1::unordered_map<
+                          , ::boost::ptr_unordered_map<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -260,8 +274,8 @@ namespace boost {
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_set<Key,::boost::hash<Key> >
-                          , ::std::tr1::unordered_map<
+                          , ::boost::ptr_unordered_set<Key,::boost::hash<Key> >
+                          , ::boost::ptr_unordered_map<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -272,8 +286,8 @@ namespace boost {
 #else
             typedef typename ::boost::mpl::if_<
                         ::std::tr1::is_same<Mapped,void>
-                      , ::std::tr1::unordered_set<Key,::boost::hash<Key> >
-                      , ::std::tr1::unordered_map<
+                      , ::boost::ptr_unordered_set<Key,::boost::hash<Key> >
+                      , ::boost::ptr_unordered_map<
                             Key
                           , Mapped
                           , ::boost::hash<Key>
@@ -285,7 +299,7 @@ namespace boost {
     };
 
     template <>
-    struct associative_container_gen<hash_multisetS>
+    struct ptr_associative_container_gen<hash_multisetS>
     {
         template <typename Key, typename Mapped = void>
         struct apply
@@ -295,12 +309,12 @@ namespace boost {
                         ::boost::detail::is_container<Key>
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_multiset<
+                          , ::boost::ptr_unordered_multiset<
                                 Key
                               , ::boost::hash<Key>
                               , ::boost::detail::range_equal
                             >
-                          , ::std::tr1::unordered_multimap<
+                          , ::boost::ptr_unordered_multimap<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -309,11 +323,11 @@ namespace boost {
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_multiset<
+                          , ::boost::ptr_unordered_multiset<
                                 Key
                               , ::boost::hash<Key>
                             >
-                          , ::std::tr1::unordered_multimap<
+                          , ::boost::ptr_unordered_multimap<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -324,8 +338,11 @@ namespace boost {
 #else
             typedef typename ::boost::mpl::if_<
                         ::std::tr1::is_same<Mapped,void>
-                      , ::std::tr1::unordered_multiset<Key,::boost::hash<Key> >
-                      , ::std::tr1::unordered_multimap<
+                      , ::boost::ptr_unordered_multiset<
+                            Key
+                          , ::boost::hash<Key>
+                        >
+                      , ::boost::ptr_unordered_multimap<
                             Key
                           , Mapped
                           , ::boost::hash<Key>
@@ -337,7 +354,7 @@ namespace boost {
     };
 
     template <>
-    struct associative_container_gen<hash_multimapS>
+    struct ptr_associative_container_gen<hash_multimapS>
     {
         template <typename Key, typename Mapped = void>
         struct apply
@@ -347,12 +364,12 @@ namespace boost {
                         ::boost::detail::is_container<Key>
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_multiset<
+                          , ::boost::ptr_unordered_multiset<
                                 Key
                               , ::boost::hash<Key>
                               , ::boost::detail::range_equal
                             >
-                          , ::std::tr1::unordered_multimap<
+                          , ::boost::ptr_unordered_multimap<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -361,11 +378,11 @@ namespace boost {
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_multiset<
+                          , ::boost::ptr_unordered_multiset<
                                 Key
                               , ::boost::hash<Key>
                             >
-                          , ::std::tr1::unordered_multimap<
+                          , ::boost::ptr_unordered_multimap<
                                 Key
                               , Mapped
                               , ::boost::hash<Key>
@@ -376,8 +393,11 @@ namespace boost {
 #else
             typedef typename ::boost::mpl::if_<
                         ::std::tr1::is_same<Mapped,void>
-                      , ::std::tr1::unordered_multiset<Key,::boost::hash<Key> >
-                      , ::std::tr1::unordered_multimap<
+                      , ::boost::ptr_unordered_multiset<
+                            Key
+                          , ::boost::hash<Key>
+                        >
+                      , ::boost::ptr_unordered_multimap<
                             Key
                           , Mapped
                           , ::boost::hash<Key>
@@ -391,5 +411,5 @@ namespace boost {
 }  // namespace boost
 //]
 
-#endif  // BOOST_UTILITY_ASSOCIATIVE_CONTAINER_GEN_HPP_INCLUDED
+#endif  // BOOST_UTILITY_PTR_ASSOC_CONTAINER_GEN_HPP_INCLUDED
 

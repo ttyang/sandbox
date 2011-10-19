@@ -9,12 +9,16 @@
 [section Reference]
 
 [include ref_container_gen.qbk]
+[include ref_ptr_container_gen.qbk]
 [include ref_assoc_container_gen.qbk]
+[include ref_ptr_assoc_container_gen.qbk]
 [include ref_is_rand_access_selector.qbk]
 [include ref_is_unique_assoc_sel.qbk]
 
   * __container_gen__
+  * __ptr_container_gen__
   * __associative_container_gen__
+  * __ptr_associative_container_gen__
   * __is_random_access_selector__
   * __is_unique_associative_selector__
 

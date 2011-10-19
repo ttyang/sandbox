@@ -63,6 +63,14 @@ namespace boost {
 #include <boost/tr1/unordered_set.hpp>
 #include <boost/functional/hash.hpp>
 
+#include <boost/ptr_container/ptr_vector.hpp>
+#include <boost/ptr_container/ptr_deque.hpp>
+#include <boost/ptr_container/ptr_list.hpp>
+#include <boost/ptr_container/ptr_set.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
+#include <boost/ptr_container/ptr_unordered_set.hpp>
+#include <boost/ptr_container/ptr_unordered_map.hpp>
+
 #if !defined BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS && BOOST_VERSION >= 104800
 #define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS
 #endif
@@ -93,6 +101,7 @@ namespace boost {
         struct bind_
         {
             typedef ::std::vector<T> type;
+            typedef ::boost::ptr_vector<T> ptr_type;
         };
     };
 
@@ -102,6 +111,7 @@ namespace boost {
         struct bind_
         {
             typedef ::std::deque<T> type;
+            typedef ::boost::ptr_deque<T> ptr_type;
         };
     };
 
@@ -111,6 +121,7 @@ namespace boost {
         struct bind_
         {
             typedef ::std::list<T> type;
+            typedef ::boost::ptr_list<T> ptr_type;
         };
     };
 
@@ -126,8 +137,15 @@ namespace boost {
                       , ::std::set<T>
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_set<T,::boost::detail::range_less>
+                      , ::boost::ptr_set<T>
+                    >::type
+                    ptr_type;
 #else
             typedef ::std::set<T> type;
+            typedef ::boost::ptr_set<T> ptr_type;
 #endif
         };
     };
@@ -144,8 +162,15 @@ namespace boost {
                       , ::std::set<T>
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_set<T,::boost::detail::range_less>
+                      , ::boost::ptr_set<T>
+                    >::type
+                    ptr_type;
 #else
             typedef ::std::set<T> type;
+            typedef ::boost::ptr_set<T> ptr_type;
 #endif
         };
     };
@@ -162,8 +187,15 @@ namespace boost {
                       , ::std::multiset<T>
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_multiset<T,::boost::detail::range_less>
+                      , ::boost::ptr_multiset<T>
+                    >::type
+                    ptr_type;
 #else
             typedef ::std::multiset<T> type;
+            typedef ::boost::ptr_multiset<T> ptr_type;
 #endif
         };
     };
@@ -180,8 +212,15 @@ namespace boost {
                       , ::std::multiset<T>
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_multiset<T,::boost::detail::range_less>
+                      , ::boost::ptr_multiset<T>
+                    >::type
+                    ptr_type;
 #else
             typedef ::std::multiset<T> type;
+            typedef ::boost::ptr_multiset<T> ptr_type;
 #endif
         };
     };
@@ -202,8 +241,19 @@ namespace boost {
                       , ::std::tr1::unordered_set<T,::boost::hash<T> >
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_unordered_set<
+                            T
+                          , ::boost::hash<T>
+                          , ::boost::detail::range_equal
+                        >
+                      , ::boost::ptr_unordered_set<T,::boost::hash<T> >
+                    >::type
+                    ptr_type;
 #else
             typedef ::std::tr1::unordered_set<T,::boost::hash<T> > type;
+            typedef ::boost::ptr_unordered_set<T,::boost::hash<T> > ptr_type;
 #endif
         };
     };
@@ -224,8 +274,19 @@ namespace boost {
                       , ::std::tr1::unordered_set<T,::boost::hash<T> >
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_unordered_set<
+                            T
+                          , ::boost::hash<T>
+                          , ::boost::detail::range_equal
+                        >
+                      , ::boost::ptr_unordered_set<T,::boost::hash<T> >
+                    >::type
+                    ptr_type;
 #else
             typedef ::std::tr1::unordered_set<T,::boost::hash<T> > type;
+            typedef ::boost::ptr_unordered_set<T,::boost::hash<T> > ptr_type;
 #endif
         };
     };
@@ -246,8 +307,21 @@ namespace boost {
                       , ::std::tr1::unordered_multiset<T,::boost::hash<T> >
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_unordered_multiset<
+                            T
+                          , ::boost::hash<T>
+                          , ::boost::detail::range_equal
+                        >
+                      , ::boost::ptr_unordered_multiset<T,::boost::hash<T> >
+                    >::type
+                    ptr_type;
 #else
-            typedef ::std::tr1::unordered_multiset<T,::boost::hash<T> > type;
+            typedef ::std::tr1::unordered_multiset<T,::boost::hash<T> >
+                    type;
+            typedef ::boost::ptr_unordered_multiset<T,::boost::hash<T> >
+                    ptr_type;
 #endif
         };
     };
@@ -268,8 +342,21 @@ namespace boost {
                       , ::std::tr1::unordered_multiset<T,::boost::hash<T> >
                     >::type
                     type;
+            typedef typename ::boost::mpl::if_<
+                        ::boost::detail::is_container<T>
+                      , ::boost::ptr_unordered_multiset<
+                            T
+                          , ::boost::hash<T>
+                          , ::boost::detail::range_equal
+                        >
+                      , ::boost::ptr_unordered_multiset<T,::boost::hash<T> >
+                    >::type
+                    ptr_type;
 #else
-            typedef ::std::tr1::unordered_multiset<T,::boost::hash<T> > type;
+            typedef ::std::tr1::unordered_multiset<T,::boost::hash<T> >
+                    type;
+            typedef ::boost::ptr_unordered_multiset<T,::boost::hash<T> >
+                    ptr_type;
 #endif
         };
     };

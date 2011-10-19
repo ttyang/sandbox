@@ -1,0 +1,68 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:ptr_container_gen `ptr_container_gen`]
+
+[section Synopsis]
+[reference__ptr_container_gen]
+[endsect]
+
+[section Description]
+Analagous to the __container_gen__ metafunction, you can use this one to easily
+select an appropriate __Boost_Pointer_Container__ type.  Pointer containers are
+ideal for storing heterogeneous items with a common base type, e.g. shapes:
+
+[example__output_shape_stats__type_definitions]
+
+Algorithms that work on the standard containers also work on pointer containers
+out of the box.
+
+[example__output_shape_stats__functions]
+
+The `ptr_container_gen` metafunction allows you to programmatically swap out
+different pointer container types using type selectors.
+
+[example__output_shape_stats__usage]
+
+This library provides specializations of the `ptr_container_gen` metafunction
+for each selector it defines.  Here are the selector definitions:
+
+[reference__container_selectors]
+
+The specialization for the `listS` selector is shown here.
+
+[reference__ptr_container_gen__list_specialization]
+
+It is possible to nest associative containers via `ptr_container_gen`, e.g.:
+
+``
+typedef ptr_container_gen<setS,ptr_container_gen<setS,int>::type>::type
+        SetOfSetsOfIntegers;
+``
+
+[important
+    This last capability depends on __Boost_Type_Traits_Operators__, which has
+    been recently accepted into Boost but is currently not part of an official
+    release.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__, add the `type_traits` module to your list of header
+    directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
+    to obtain this capability.
+
+    If you do not need this capability, then you do not need
+    __Boost_Type_Traits_Operators__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_ptr_container_gen_hpp__>
+``
+[endsect]
+
+[endsect] [/ ptr_container_gen]
+

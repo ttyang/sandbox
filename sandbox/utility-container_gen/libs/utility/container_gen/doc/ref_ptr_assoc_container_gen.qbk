@@ -1,0 +1,49 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:ptr_assoc_cont_gen `ptr_associative_container_gen`]
+
+[section Synopsis]
+[reference__ptr_associative_container_gen]
+[endsect]
+
+[section Description]
+TODO
+
+It is possible to nest containers via `ptr_associative_container_gen`, e.g.:
+
+``
+typedef _mpl_apply_wrap2_<
+            ptr_associative_container_gen<mapS>
+          , _mpl_apply_wrap1_<ptr_associative_container_gen<setS>,char>::type
+          , _std_string_
+        >::type
+        MapOfCharSets2Strings;
+``
+
+[important
+    This last capability depends on __Boost_Type_Traits_Operators__, which has
+    been recently accepted into Boost but is currently not part of an official
+    release.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__, add the `type_traits` module to your list of header
+    directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
+    to obtain this capability.
+
+    If you do not need this capability, then you do not need
+    __Boost_Type_Traits_Operators__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_ptr_assoc_container_gen_hpp__>
+``
+[endsect]
+
+[endsect] [/ ptr_associative_container_gen]
+
