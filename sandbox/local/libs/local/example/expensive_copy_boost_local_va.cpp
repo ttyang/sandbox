@@ -21,7 +21,7 @@ struct x_t {
     int i;
     x_t(int _i): i(_i) {}
     x_t(x_t const& o): i(o.i) { // Some time consuming copy.
-        for (unsigned long i = 0; i < 10000000000; ++i); 
+        for (unsigned i = 0; i < 10000; ++i) std::cout << '.';
     }
 };
 

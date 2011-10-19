@@ -11,7 +11,7 @@
  * @Note The only way (at least as far as the authors know) to pass an
  *  arbitrary number of commas within macro parameters without explicitly
  *  indicating the number of commas (and without using variadic macros which
- *  are not part of the ISO C++ standard) is to wrap the expression within round
+ *  are not part of the C++03 standard) is to wrap the expression within round
  *  parenthesis that are not replaced by macro expansion and then to remove the
  *  extra parenthesis at compile-time (for type expressions) or at run-time
  *  (for value expressions).
@@ -53,6 +53,16 @@ inline typename boost::add_reference<T>::type identity_value(
  * contains a comma not wrapped by round parenthesis so it will be interpreted
  * as two separate macro parameters by the preprocessor).
  *
+ * In many cases it might be possible to use alternatives to this macro that
+ * will make the code more readable.
+ * For example, it might be possible to use define a new type
+ * <c>typedef std::map<int, duble> map_type</c> prior to the macro and then
+ * pass the newly defined type <c>map_type</c> which contains no comma as the
+ * macro parameter.
+ *
+ * This macro must be prefixed by <c>typename</c> when used within a
+ * type-dependant context (for example, within a template).
+ *
  * On some compilers (like GCC), using this macro on abstract types (classes
  * with one or more pure virtual functions) generate a compile-time error.
  * This can be worked around by manipulating the type adding and removing a
@@ -71,9 +81,18 @@ inline typename boost::add_reference<T>::type identity_value(
  * }
  * @EndParams
  *
- * @Note This macro works on ISO C++ compilers (it does not require variadic
+ * @Note This macro works on C++03 compilers (it does not require variadic
  *  macros). It expands to code equivalent to
  *  <c>boost::function_traits<void parenthesized_type>::arg1_type</c>.
+ *
+ * @Warning The compiler will not be able to automatically deduce any template
+ *  parameter type part of the type expression specified by this macro.
+ *  For example, if this macro is used to wrap the type <c>std::map<T, V></c>
+ *  where <c>T</c> and <c>V</c> are template parameters, the compiler will not
+ *  be able to automatically deduce <c>T</c> and <c>V</c> which will have to be
+ *  explicitly specified when invoking the template expression.
+ *  (This is never a concern for local functions because they cannot be
+ *  templates.)
  *
  * @See @RefSect2{Advanced_Topics, Advanced Topics} section.
  */
@@ -98,6 +117,12 @@ inline typename boost::add_reference<T>::type identity_value(
  * parenthesis so it will be interpreted as two separate macro parameters by
  * the preprocessor).
  *
+ * In many cases it might be possible to use alternatives to this macro that
+ * will make the code more readable.
+ * For example, if the expression type is know (and contains no commas) the
+ * type constructor can be used to wrap the expression command within
+ * parenthesis <c>size_type(key_sizeof<int, double>::value)</c>.
+ *
  * @Params
  * @Param{parenthesize_value,
  *  The value expression to be passed as macro parameter wrapped by a single
@@ -106,7 +131,7 @@ inline typename boost::add_reference<T>::type identity_value(
  * }
  * @EndParams
  *
- * @Note This macro works on ISO C++ compilers (it does not require variadic
+ * @Note This macro works on C++03 compilers (it does not require variadic
  *  macros). This macro expands to code equivalent to
  *  <c>boost::aux::identity_value parenthesized_value</c> where:
  * @code

@@ -86,7 +86,7 @@
 <p>
         In addition, local function parameter types cannot start with non-alphanumeric
         symbols (alphanumeric symbols are <code class="computeroutput"><span class="identifier">A</span><span class="special">-</span><span class="identifier">Z</span></code>, <code class="computeroutput"><span class="identifier">a</span><span class="special">-</span><span class="identifier">z</span></code>,
-        and <code class="computeroutput"><span class="number">0</span><span class="special">-</span><span class="number">9</span></code>). <sup>[<a name="id882590" href="#ftn.id882590" class="footnote">19</a>]</sup> The library will generate (cryptic) preprocessor errors if a
+        and <code class="computeroutput"><span class="number">0</span><span class="special">-</span><span class="number">9</span></code>). <sup>[<a name="id882775" href="#ftn.id882775" class="footnote">19</a>]</sup> The library will generate (cryptic) preprocessor errors if a
         parameter type starts with a non-alphanumeric symbol.
       </p>
 <p>
@@ -227,7 +227,7 @@
 <li class="listitem">
             Parenthesis to wrap the type expression (and therefore any commas <code class="computeroutput"><span class="special">,</span></code> that it contains) passed as parameter
             to the <code class="computeroutput"><a class="link" href="../BOOST_IDENTITY_TYPE.html" title="Macro BOOST_IDENTITY_TYPE">BOOST_IDENTITY_TYPE</a></code>
-            macro. <sup>[<a name="id884041" href="#ftn.id884041" class="footnote">20</a>]</sup>
+            macro. <sup>[<a name="id884226" href="#ftn.id884226" class="footnote">20</a>]</sup>
           </li>
 </ol></div>
 <div class="note"><table border="0" summary="Note">
@@ -1370,7 +1370,7 @@
         to their equivalent implementation that uses local functors (see the <a class="link" href="Alternatives.html" title="Appendix: Alternatives">Alternatives</a> section). However,
         inlined local functions have the limitation that they cannot be assigned
         to other functors (like <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">boost::function</a></code>)
-        and they cannot be passed as template parameters. <sup>[<a name="id904734" href="#ftn.id904734" class="footnote">21</a>]</sup> On <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+        and they cannot be passed as template parameters. <sup>[<a name="id904920" href="#ftn.id904920" class="footnote">21</a>]</sup> On <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
         compilers, <code class="computeroutput"><span class="keyword">inline</span></code> has no effect
         because this library will automatically generate code that uses <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
         specific features to inline the local function calls whenever possible even
@@ -1439,11 +1439,11 @@
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1000000</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">fill</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="number">1.0</span><span class="special">);</span>
 
-    <span class="comment">// On some ISO C++ compilers (e.g., GCC 4.3.4) inlined local functions are</span>
+    <span class="comment">// On some C++03 compilers (e.g., GCC 4.3.4) inlined local functions are</span>
     <span class="comment">// more likely to be optimized for faster run-times. However, inlined local</span>
     <span class="comment">// functions cannot be passed at template parameters (i.e., `std::for_each`</span>
     <span class="comment">// cannot be used here).</span>
-    <span class="comment">// On C++0x compilers (e.g., MSVC 8.0 or GCC 4.5.1) linining has no effect</span>
+    <span class="comment">// On C++11 compilers (e.g., MSVC 8.0 or GCC 4.5.1) linining has no effect</span>
     <span class="comment">// because the local function can always be optimized even if not</span>
     <span class="comment">// explicitly specified inline and inlined local functions can always be</span>
     <span class="comment">// passed as template parameters.</span>
@@ -1479,11 +1479,11 @@
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">1000000</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">fill</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="number">1.0</span><span class="special">);</span>
 
-    <span class="comment">// On some ISO C++ compilers (e.g., GCC 4.3.4) inlined local functions are</span>
+    <span class="comment">// On some C++03 compilers (e.g., GCC 4.3.4) inlined local functions are</span>
     <span class="comment">// more likely to be optimized for faster run-times. However, inlined local</span>
     <span class="comment">// functions cannot be passed at template parameters (i.e., `std::for_each`</span>
     <span class="comment">// cannot be used here).</span>
-    <span class="comment">// On C++0x compilers (e.g., MSVC 8.0 and GCC 4.5.1) linining has no effect</span>
+    <span class="comment">// On C++11 compilers (e.g., MSVC 8.0 and GCC 4.5.1) linining has no effect</span>
     <span class="comment">// because the local function can always be optimized even if not</span>
     <span class="comment">// explicitly specified inline and inlined local functions can always be</span>
     <span class="comment">// passed as template parameters.</span>
@@ -1635,6 +1635,7 @@
 <p>
         Compilers have not been observed to be able to inline recursive local function
         calls (not even when the recursive local function is also declared inlined).
+        <sup>[<a name="id909349" href="#ftn.id909349" class="footnote">22</a>]</sup>
       </p>
 </div>
 <div class="section">
@@ -1817,7 +1818,7 @@
         functor can be constructed from any function type that can be converted to
         a <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">boost::function</a></code>
         type (i.e., local functions but also function pointers and other function
-        objects). <sup>[<a name="id913840" href="#ftn.id913840" class="footnote">22</a>]</sup> The <code class="computeroutput"><a class="link" href="../boost/local/function/overload.html" title="Class template overload">boost::local::function::overload</a></code>
+        objects). <sup>[<a name="id913906" href="#ftn.id913906" class="footnote">23</a>]</sup> The <code class="computeroutput"><a class="link" href="../boost/local/function/overload.html" title="Class template overload">boost::local::function::overload</a></code>
         functor provides overloaded call operators <code class="computeroutput"><span class="keyword">operator</span><span class="special">()</span></code> that match the signatures of all the specified
         function types.
       </p>
@@ -2099,7 +2100,7 @@
 <p>
         Local function parameters support the storage classifiers as usual in <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>.
         The <code class="computeroutput"><span class="keyword">auto</span></code> storage classifier
-        is specified as: <sup>[<a name="id918474" href="#ftn.id918474" class="footnote">23</a>]</sup>
+        is specified as: <sup>[<a name="id918540" href="#ftn.id918540" class="footnote">24</a>]</sup>
       </p>
 <pre class="programlisting"><span class="keyword">auto</span> <span class="emphasis"><em>parameter-type parameter-name</em></span>
 </pre>
@@ -2332,7 +2333,7 @@
 <td>
                 <p>
                   This is not supported because local functions are not member functions.
-                  <sup>[<a name="id919784" href="#ftn.id919784" class="footnote">a</a>]</sup>
+                  <sup>[<a name="id919849" href="#ftn.id919849" class="footnote">a</a>]</sup>
                 </p>
               </td>
 </tr>
@@ -2431,7 +2432,7 @@
               </td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a id="ftn.id919784" href="#id919784" class="para">a</a>] </sup>
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a id="ftn.id919849" href="#id919849" class="para">a</a>] </sup>
                     <span class="bold"><strong>Rationale.</strong></span> It would be possible
                     to make a local function class inherit from another local function
                     class. However, this "inheritance" feature is not implemented
@@ -2447,7 +2448,7 @@
       </h6>
 <p>
         Local functions cannot be operators. Naming a local function <code class="computeroutput"><span class="keyword">operator</span><span class="special">...</span></code>
-        will generate a compile-time error. <sup>[<a name="id920131" href="#ftn.id920131" class="footnote">24</a>]</sup>
+        will generate a compile-time error. <sup>[<a name="id920197" href="#ftn.id920197" class="footnote">25</a>]</sup>
       </p>
 <p>
         For example, the following code will <span class="bold"><strong>not</strong></span>
@@ -2499,21 +2500,21 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id882590" href="#id882590" class="para">19</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id882775" href="#id882775" class="para">19</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This limitation derives from
           the fact that <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_PARAMS.html" title="Macro BOOST_LOCAL_FUNCTION_PARAMS">BOOST_LOCAL_FUNCTION_PARAMS</a></code>
           uses preprocessor token concatenation to inspect the parameter type token
           to see if the token is a parameter or a bound variable. The C++ preprocessor
           does not allow to concatenate non-alphanumeric tokens.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id884041" href="#id884041" class="para">20</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id884226" href="#id884226" class="para">20</a>] </sup>
               <span class="bold"><strong>Rationale.</strong></span> Using variadic macros,
               this extra set of parenthesis could be eliminated requiring only the
               parenthesis to invoke the <code class="computeroutput"><a class="link" href="../BOOST_IDENTITY_TYPE.html" title="Macro BOOST_IDENTITY_TYPE">BOOST_IDENTITY_TYPE</a></code>
               macro. However, this feature is currently not implemented and the double
               parenthesis are always needed when invoking this macro.
             </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id904734" href="#id904734" class="para">21</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id904920" href="#id904920" class="para">21</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This library uses an indirect
           function call via a function pointer in order to pass the local function
           as a template parameter (see the <a class="link" href="Implementation.html" title="Appendix: Implementation">Implementation</a>
@@ -2529,7 +2530,12 @@
           be inlined on <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
           compilers (even when the local function is not declared inlined).
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id913840" href="#id913840" class="para">22</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id909349" href="#id909349" class="para">22</a>] </sup>
+          <span class="bold"><strong>Ratinale.</strong></span> Local functions are not declared
+          recursive by default because recursion seems to always prevent the possibility
+          for inlining optimization.
+        </p></div>
+<div class="footnote"><p><sup>[<a id="ftn.id913906" href="#id913906" class="para">23</a>] </sup>
           The <code class="computeroutput"><a class="link" href="../boost/local/function/overload.html" title="Class template overload">boost::local::function::overload</a></code>
           functor can aggregate any functor and it is not at all specific to local
           functions. Therefore, it might be preferable to move <code class="computeroutput"><a class="link" href="../boost/local/function/overload.html" title="Class template overload">boost::local::function::overload</a></code>
@@ -2537,7 +2543,7 @@
           to <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>
           and to rename it as <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">::</span><span class="identifier">overload</span></code>.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id918474" href="#id918474" class="para">23</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id918540" href="#id918540" class="para">24</a>] </sup>
           The <code class="computeroutput"><span class="keyword">auto</span></code> storage classifier
           is part of the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
           standard and therefore supported by this library. However, the meaning
@@ -2547,7 +2553,7 @@
           classifier with the usual care in order to avoid writing <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
           code that might not work on <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.id920131" href="#id920131" class="para">24</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id920197" href="#id920197" class="para">25</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This is the because a local
           function name must be a valid local variable name (the local variable to
           hold the local functor) and operators cannot be used as local variable

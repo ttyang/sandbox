@@ -327,6 +327,10 @@ For example, the following local function is used to recursively calculate and p
 ]
 
 Compilers have not been observed to be able to inline recursive local function calls (not even when the recursive local function is also declared inlined).
+[footnote
+[*Ratinale.]
+Local functions are not declared recursive by default because recursion seems to always prevent the possibility for inlining optimization.
+]
 
 [endsect]
 

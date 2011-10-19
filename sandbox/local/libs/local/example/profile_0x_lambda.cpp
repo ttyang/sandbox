@@ -8,7 +8,7 @@
 #ifdef BOOST_NO_LAMBDAS
 #include <iostream>
 int main() {
-    std::cerr << "Error: This program requires C++0x lambdas" << std::endl;
+    std::cerr << "Error: This program requires C++11 lambdas" << std::endl;
     return 0;
 }
 #else

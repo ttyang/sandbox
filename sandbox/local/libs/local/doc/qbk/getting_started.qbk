@@ -60,7 +60,7 @@ The underscore character "`_`" could not be used instead of the letter "`X`" bec
 ]
 
 * Any symbol defined by files within the `"boost/local/aux_/"` directory (these header files should not be directly included by programmers).
-* Any symbol prefixed by `BOOST_LOCAL_AUX_...`.
+* Any symbol prefixed by `BOOST_LOCAL_AUX_...` (regardless of its namespace).
 * Any symbol within the `boost::local::aux` namespace.
 * Any symbol prefixed by `boost_local_aux...` (regardless of its namespace).
 

@@ -22,11 +22,11 @@ int main() {
     std::vector<double> v(1000000);
     std::fill(v.begin(), v.end(), 1.0);
 
-    // On some ISO C++ compilers (e.g., GCC 4.3.4) inlined local functions are
+    // On some C++03 compilers (e.g., GCC 4.3.4) inlined local functions are
     // more likely to be optimized for faster run-times. However, inlined local
     // functions cannot be passed at template parameters (i.e., `std::for_each`
     // cannot be used here).
-    // On C++0x compilers (e.g., MSVC 8.0 and GCC 4.5.1) linining has no effect
+    // On C++11 compilers (e.g., MSVC 8.0 and GCC 4.5.1) linining has no effect
     // because the local function can always be optimized even if not
     // explicitly specified inline and inlined local functions can always be
     // passed as template parameters.

@@ -238,7 +238,8 @@ GCC 4.3.4 With __CPP03__ Only (Without __CPP11__ Lambdas and Without "Local Type
 
 [section Local Blocks]
 
-The authors know of no other library or C++ language feature that supports local blocks (i.e., with the ability to bind by constant value or constant reference).
+The authors know of no other library or C++ standard feature that fully supports local blocks.
+For example, even using __CPP0x_lambda__ functions does not allow binding by constant reference and non-constant value.
 
 [endsect]
 

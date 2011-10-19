@@ -137,6 +137,7 @@ For example, let's program a local function `add(x, y)` similar to the one progr
 Programmers can define a `WITH_DEFAULT` macro similar to the following if they think it improves readability over the syntax above:
 [footnote
 The authors do not personally find the use of the `WITH_DEFAULT` macro more readable and they prefer to use the `default` "keyword" directly.
+Furthermore, `WITH_DEFAULT` need to be defined differently for the sequencing and variadic macro syntax so it can only be defined by programmers based on the syntax they decide to use.
 ]
 
 [table
@@ -146,7 +147,7 @@ The authors do not personally find the use of the `WITH_DEFAULT` macro more read
 
 [endsect]
 
-[section:Binding Binding]
+[section:Binding Variable Binding]
 
 Variables in scope (local variables, enclosing function parameters, member variables, the object `this`, etc) can be bound to a local function declaration.
 The types of bound variables are automatically deduced by this library using __Boost_Typeof__.
@@ -196,7 +197,7 @@ If a variable is bound by value, then a copy of the variable value is taken at t
 If a variable is bound by reference instead, the variable will refer to the value it has at the point of the local function call.
 Furthermore, it is the programmers' responsibility to ensure that variables bound by reference survive the declaration scope of the local function otherwise the bound references will be invalid causing run-time errors (in other words, the usual care in using C++ references must be taken for variables bound by reference).
 
-The type of a bound variable is automatically deduced and it is the exact same type used to declare such a variable in the enclosing scope.
+The type of a bound variable is automatically deduced and it is the exact same type used to declare such a variable in the enclosing scope with the following notes:
 
 * If a bound variable was declared constant in the enclosing scope, it will be always bound by constant value or constant reference even if `bind ...` is used instead of `const bind ...` .
 However, if a bound variable was not declared constant in the enclosing scope then it will not be bound as constant unless constant binding is forced using `const bind ...`. (Note that binding by constant reference is not supported by __CPP0x_lambda__ functions but it is supported by this library.)
@@ -225,7 +226,7 @@ We bind the local variable `factor` by constant value, the local variable `sum` 
 
 [h5 Binding the Object `this`]
 
-It is also possible to bind the object `this` when it is in scope (e.g., from an enclosing member function).
+It is also possible to bind the object `this` when it is in scope (e.g., from an enclosing non-static member function).
 This is done by using `this` as the name of the variable to bind in the local function declaration and by using the special symbol `this_`
 [footnote
 *Rationale.*
@@ -237,7 +238,7 @@ The object `this` can be bound by value:
 
     bind this // Bind the object `this` by value.
 
-In this case the local function will be able to modify the object when the enclosing scope is not a constant member, or it will not be able to modify the object when the enclosing scope is a constant member.
+In this case the local function will be able to modify the object when the enclosing scope is not a constant member and it will not be able to modify the object when the enclosing scope is a constant member.
 Otherwise, the object `this` can be bound by constant value:
 
     const bind this // Bind the object `this` by constant value.
@@ -271,7 +272,7 @@ For example, let's program a local function `add` similar to the one in the exam
 [ [ [add_this_va_cpp] ] [ [add_this_cpp] ] ]
 ]
 
-The special name `this_` used to replace the bound object name `this` is controlled at compile-time by the configuration macro `__BOOST_LOCAL_CONFIG_THIS_PARAM_NAME__`.
+(The special symbol `this_` to be used to refer to the object `this` from within the local function can be changed at compile-time using the configuration macro `__BOOST_LOCAL_CONFIG_THIS_PARAM_NAME__`.)
 
 [endsect]
 

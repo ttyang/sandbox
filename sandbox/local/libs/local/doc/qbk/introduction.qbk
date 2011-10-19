@@ -14,8 +14,8 @@ This library supports the following features for local functions:
 * Local functions can access, or better [@http://en.wikipedia.org/wiki/Name_binding /bind/], any of the variables from the enclosing scope.
 Furthermore, local functions defined within a member function can bind the enclosing object `this`.
 * The local function body is programmed using the usual C++ statement syntax (as a consequence, compiler error messages retain their usual meaning and format).
-* Local functions can be passed as template parameters (e.g., they can be conveniently passed to STL algorithms, this is in contrast to functors implemented using local classes see __N2657__ and the __Alternatives__ section).
-* However, local functions must be defined within a declarative context (e.g., at a point in the code where local variables can be declared) thus they cannot be defined within an expression.
+* Local functions can be passed as template parameters so they can be conveniently passed to STL algorithms, etc (this is a strength with respect to __CPP03__ functors implemented using local classes, see __N2657__ and the __Alternatives__ section).
+* However, local functions must be defined within a declarative context (e.g., at a point in the code where local variables can be declared) thus they cannot be defined within expressions (this is a weakness with respect to __CPP0x_lambda__ functions, see the __Alternatives__ section).
 
 In addition to local functions, this library also supports the following features:
 
@@ -23,14 +23,14 @@ In addition to local functions, this library also supports the following feature
 Local blocks allow programmers to bind variables as constants (/constant binding/) to prevent local chunks of code from modifying selected variables.
 * /Local exits/ which define blocks of code that are executed when the enclosing scope is exited (again with support for binding variables in scope including the object `this`).
 
-See the __Alternatives__ section for a comparison between this library, __CPP0x_lambda__ functions, __Boost_Lambda__, __Boost_Phoenix__, and other C++ libraries offering similar features.
+See the __Alternatives__ section for a comparison between this library, __CPP0x_lambda__ functions, __Boost_Lambda__, __Boost_Phoenix__, and other C++ libraries offering related features.
 
 [h5 Two Syntaxes]
 
 This library uses macros to declare the local functions, local blocks, and local exits.
 These macros support two different syntaxes:
 
-* The /sequencing macro syntax/ is fully compliant with the __CPP03__ standard and supported on all C++ compilers.
+* The /sequencing macro syntax/ is fully compliant with the __CPP03__ standard and supported on all C++ compliant compilers.
 This syntax requires to wrap the local function parameters and bound variables between round parenthesis `()`.
 * The /variadic macro synstax/ is available only on C++ compilers that support [@http://en.wikipedia.org/wiki/Variadic_macro variadic macros] (variadic macros were first introduced by the __C99__ standard and they are now supported by essentially all modern C++ compilers including GCC and MSVC).
 This syntax allows to use commas `,` to separate macro parameters therefore resembling the usual C++ syntax for function parameter declaration.

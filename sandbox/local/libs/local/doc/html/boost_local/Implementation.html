@@ -35,14 +35,13 @@
 <dt><span class="section"><a href="Implementation.html#boost_local.Implementation.local_functions">Local Functions</a></span></dt>
 </dl></div>
 <p>
-      This section lists source code that should provide a general idea on how this
-      library is implemented.
+      This section gives an overview of the key programming techniques used to implement
+      this library.
     </p>
 <p>
       The code listed here can be used by curious readers and library maintainers
       as a reference in trying to understand this library source files at <code class="computeroutput"><span class="string">"boost/local/..."</span></code>. There is absolutely
-      no guarantee that the library implementation uses the exact the code listed
-      here.
+      no guarantee that the library implementation uses the exact code listed here.
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -69,9 +68,9 @@
             type casting).
           </li>
 <li class="listitem">
-            The <span class="emphasis"><em>virtual functor trick</em></span> uses a non-local base
-            class for the local functor class. The correct overridden implementation
-            of the virtual <code class="computeroutput"><span class="keyword">operator</span><span class="special">()</span></code> is called via polymorphism.
+            The <span class="emphasis"><em>virtual functor trick</em></span> derives the local functor
+            class from a non-local base class. The correct overridden implementation
+            of the virtual <code class="computeroutput"><span class="keyword">operator</span><span class="special">()</span></code> is then called via polymorphism.
           </li>
 </ol></div>
 <p>
@@ -134,7 +133,7 @@
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;</span> <span class="identifier">v</span><span class="special">(</span><span class="number">10</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">fill</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="number">1.0</span><span class="special">);</span>
     
-<span class="comment">//  std::for_each(v.begin(), v.end(), add_local); // Error but OK on C++0x.</span>
+<span class="comment">//  std::for_each(v.begin(), v.end(), add_local); // Error but OK on C++11.</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">add_casting</span><span class="special">);</span> <span class="comment">// OK.</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span><span class="special">(</span><span class="identifier">v</span><span class="special">.</span><span class="identifier">begin</span><span class="special">(),</span> <span class="identifier">v</span><span class="special">.</span><span class="identifier">end</span><span class="special">(),</span> <span class="identifier">add_virtual</span><span class="special">);</span> <span class="comment">// OK.</span>
 
@@ -156,10 +155,10 @@
         Therefore, on compilers that accept local types as template parameters (MSVC,
         <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>, etc,
         see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>),
-        this library generates code that passes the local class type directly as
-        template parameter without using neither one of these two tricks in order
-        to take full advantage of compiler optimizations that inline the local function
-        calls.
+        this library automatically generates code that passes the local class type
+        directly as template parameter without using neither one of these two tricks
+        in order to take full advantage of compiler optimizations that inline the
+        local function calls.
       </p>
 </div>
 <div class="section">
@@ -207,9 +206,8 @@
 <a name="boost_local.Implementation.local_blocks"></a><a class="link" href="Implementation.html#boost_local.Implementation.local_blocks" title="Local Blocks">Local Blocks</a>
 </h3></div></div></div>
 <p>
-        The expansion of the local block macros for the main local block example
-        presented in the <a class="link" href="Tutorial.html" title="Tutorial">Tutorial</a> section
-        generates code equivalent to the following:
+        The local block macros presented in the example of the <a class="link" href="Tutorial.html" title="Tutorial">Tutorial</a>
+        section expand to code equivalent to the following:
       </p>
 <p>
         
@@ -249,9 +247,8 @@
 <a name="boost_local.Implementation.local_exits"></a><a class="link" href="Implementation.html#boost_local.Implementation.local_exits" title="Local Exits">Local Exits</a>
 </h3></div></div></div>
 <p>
-        The expansion of the local exit macros for the main local exit example presented
-        in the <a class="link" href="Tutorial.html" title="Tutorial">Tutorial</a> section generates
-        code equivalent to the following:
+        The local exit macros presented in the example of the <a class="link" href="Tutorial.html" title="Tutorial">Tutorial</a>
+        section expand to code equivalent to the following:
       </p>
 <p>
         
@@ -294,9 +291,9 @@
 <a name="boost_local.Implementation.local_functions"></a><a class="link" href="Implementation.html#boost_local.Implementation.local_functions" title="Local Functions">Local Functions</a>
 </h3></div></div></div>
 <p>
-        The expansion of the local function macros of the <code class="computeroutput"><span class="identifier">factorial</span></code>
+        The local function macros of the <code class="computeroutput"><span class="identifier">factorial</span></code>
         example presented in the <a class="link" href="Advanced_Topics.html" title="Advanced Topics">Advanced
-        Topics</a> section generates code equivalent to the following:
+        Topics</a> section expand to code equivalent to the following:
       </p>
 <p>
         

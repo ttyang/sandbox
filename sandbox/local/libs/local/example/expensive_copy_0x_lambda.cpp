@@ -8,7 +8,7 @@
 #ifdef BOOST_NO_LAMBDAS
 #include <iostream>
 int main() {
-    std::cerr << "Error: This program requires C++0x lambdas" << std::endl;
+    std::cerr << "Error: This program requires C++11 lambdas" << std::endl;
     return 0;
 }
 #else
@@ -20,7 +20,7 @@ struct x_t {
     int i;
     x_t(int _i): i(_i) {}
     x_t(x_t const& o): i(o.i) { // Some time consuming copy.
-        for (unsigned long i = 0; i < 10000000000; ++i); 
+        for (unsigned i = 0; i < 10000; ++i) std::cout << '.';
     }
 };
 

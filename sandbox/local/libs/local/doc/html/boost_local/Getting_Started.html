@@ -124,7 +124,7 @@
 </pre>
 <p>
         The followings are part of the library private API, they are not documented,
-        and they should not be directly used by programmers: <sup>[<a name="id866234" href="#ftn.id866234" class="footnote">2</a>]</sup>
+        and they should not be directly used by programmers: <sup>[<a name="id866387" href="#ftn.id866387" class="footnote">2</a>]</sup>
       </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -132,7 +132,7 @@
             directory (these header files should not be directly included by programmers).
           </li>
 <li class="listitem">
-            Any symbol prefixed by <code class="computeroutput"><span class="identifier">BOOST_LOCAL_AUX_</span><span class="special">...</span></code>.
+            Any symbol prefixed by <code class="computeroutput"><span class="identifier">BOOST_LOCAL_AUX_</span><span class="special">...</span></code> (regardless of its namespace).
           </li>
 <li class="listitem">
             Any symbol within the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">local</span><span class="special">::</span><span class="identifier">aux</span></code>
@@ -162,7 +162,7 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id866234" href="#id866234" class="para">2</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id866387" href="#id866387" class="para">2</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This library concatenates symbols
           specified by the programmers (e.g., the local function name) with other
           symbols (e.g., special prefixes or preprocessor line numbers) to make internal

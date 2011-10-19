@@ -13,7 +13,7 @@
 #define BOOST_LOCAL_CONFIG_HPP_
 
 /**
- * @brief Force to use ISO C++ standard features only.
+ * @brief Force to use only pure C++03 standard features.
  *
  * If programmers leave this configuration macro undefined, its default
  * value is to be left not defined.
@@ -33,14 +33,14 @@
  *  (and this configuration macro can be defined to disable them).
  *  Variadic macros, are supported by most recent compilers (like MSVC and
  *  GCC), they were first introduced by the C99 standard, they are part of the
- *  C++0x standard, but they are not part of the official ISO C++ standard.
+ *  C++11 standard, but they are not part of the C++03 standard.
  *  Empty macro parameters are also supported by the C99 standards and they are
- *  part of the C++0x standard, but they are not supported by all modern
+ *  part of the C++11 standard, but they are not supported by all modern
  *  compilers (for example, they are not supported by MSVC).
  *
  * Furthermore, if this macro is defined then the library will not take advantage of
  * compilers that allow to pass local types as template parameters (e.g., MSVC
- * and C++0x compilers) in order to generate code that has more chances to be
+ * and C++11 compilers) in order to generate code that has more chances to be
  * optimized by the compiler for faster run-times (i.e., inlining the local
  * function calls, see the @RefSect2{Advanced_Topics, Advanced Topics}
  * section).
@@ -48,7 +48,7 @@
  * @Note This library internally uses Boost.Typeof to automatically deduce
  *  the bound variable types. The macro symbol <a href='http://www.boost.org/doc/libs/1_46_1/doc/html/typeof/refe.html#typeof.compl'><c>BOOST_TYPEOF_COMPLIANT</c></a>
  *  needs to be defined separately from this configuration macro if programmers
- *  do not want to use non ISO C++ standard support for type deduction
+ *  do not want to use non C++03 standard support for type deduction
  *  operations.
  * 
  * @See @RefSect{Tutorial} section, @RefSect2{Advanced_Topics, Advanced Topics}

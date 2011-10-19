@@ -64,7 +64,7 @@ int main() {
     std::vector<double> v(10);
     std::fill(v.begin(), v.end(), 1.0);
     
-//  std::for_each(v.begin(), v.end(), add_local); // Error but OK on C++0x.
+//  std::for_each(v.begin(), v.end(), add_local); // Error but OK on C++11.
     std::for_each(v.begin(), v.end(), add_casting); // OK.
     std::for_each(v.begin(), v.end(), add_virtual); // OK.
 

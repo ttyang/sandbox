@@ -33,9 +33,10 @@
 
 </span>BOOST_IDENTITY_VALUE(parenthesized_value)</pre></div>
 <div class="refsect1">
-<a name="id927167"></a><h2>Description</h2>
+<a name="id927307"></a><h2>Description</h2>
 <p>This macro expands to an expression that can be passed as a single macro parameter even if it contains commas and that evaluates to the specified value at run-time (see the  <a class="link" href="boost_local/Advanced_Topics.html" title="Advanced Topics"> Advanced Topics</a> section).</p>
 <p>For example <code class="computeroutput">BOOST_IDENTITY_VALUE((key_sizeof&lt;int, double&gt;::value))</code> can be passed as a single macro parameter when instead <code class="computeroutput">key_sizeof&lt;int, double&gt;::value</code> cannot (because <code class="computeroutput">key_sizeof&lt;int, double&gt;::value</code> contains a comma not wrapped by round parenthesis so it will be interpreted as two separate macro parameters by the preprocessor).</p>
+<p>In many cases it might be possible to use alternatives to this macro that will make the code more readable. For example, if the expression type is know (and contains no commas) the type constructor can be used to wrap the expression command within parenthesis <code class="computeroutput">size_type(key_sizeof&lt;int, double&gt;::value)</code>.</p>
 <p><span class="bold"><strong>Parameters:</strong></span> </p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -49,7 +50,7 @@
 </table></div>
 <p>
 </p>
-<p><span class="bold"><strong>Note:</strong></span> This macro works on ISO C++ compilers (it does not require variadic macros). This macro expands to code equivalent to <code class="computeroutput">boost::aux::identity_value parenthesized_value</code> where: </p>
+<p><span class="bold"><strong>Note:</strong></span> This macro works on C++03 compilers (it does not require variadic macros). This macro expands to code equivalent to <code class="computeroutput">boost::aux::identity_value parenthesized_value</code> where: </p>
 <pre class="programlisting">  <span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">aux</span> <span class="special">{</span>
 
   <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>

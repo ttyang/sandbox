@@ -313,7 +313,7 @@
         /* or using a casted object local variable here to call body */ \
         /* directly from here without passing via `operator()`) */ \
         /* compliance: passing local class type to `static_cast` is fully */ \
-        /* ISO C++ compliant because `static_cast` is not a template (even */ \
+        /* C++03 compliant because `static_cast` is not a template (even */ \
         /* if its syntax resembles a function template call) in fact even */ \
         /* in C is legal to cast to a local struct (using C-style casting) */ \
         return static_cast< BOOST_LOCAL_AUX_SYMBOL_FUNCTOR_CLASS_NAME(id)* >( \
@@ -482,7 +482,7 @@
             , has_bind_this, id, typename_keyword ) \
         ) \
         /* compliance: trick to pass this local class as a template param */ \
-        /* on ISO C++ without non C++03 extension */ \
+        /* on pure C++03 without non C++03 extension */ \
         /* performance: this trick introduced _one_ indirect function call */ \
         /* via a function pointer that cannot be inlined by the complier */ \
         /* thus increasing run-time (also another trick using a base */ \

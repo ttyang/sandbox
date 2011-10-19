@@ -99,7 +99,7 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="header.boost.utility.identity_hpp"></a>Header &lt;<a href="../../../../boost/utility/identity.hpp" target="_top">boost/utility/identity.hpp</a>&gt;</h3></div></div></div>
 <p>Identity macros are used to pass expressions with commas (not already wrapped within round parenthesis) as macros parameters. </p>
-<p><span class="bold"><strong>Note:</strong></span> The only way (at least as far as the authors know) to pass an arbitrary number of commas within macro parameters without explicitly indicating the number of commas (and without using variadic macros which are not part of the ISO C++ standard) is to wrap the expression within round parenthesis that are not replaced by macro expansion and then to remove the extra parenthesis at compile-time (for type expressions) or at run-time (for value expressions). This is what these macros do. </p>
+<p><span class="bold"><strong>Note:</strong></span> The only way (at least as far as the authors know) to pass an arbitrary number of commas within macro parameters without explicitly indicating the number of commas (and without using variadic macros which are not part of the C++03 standard) is to wrap the expression within round parenthesis that are not replaced by macro expansion and then to remove the extra parenthesis at compile-time (for type expressions) or at run-time (for value expressions). This is what these macros do. </p>
 <pre class="synopsis">
 
 <a class="link" href="BOOST_IDENTITY_TYPE.html" title="Macro BOOST_IDENTITY_TYPE">BOOST_IDENTITY_TYPE</a>(parenthesized_type)

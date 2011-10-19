@@ -52,7 +52,7 @@
 [def __Getting_Started__ [link boost_local.Getting_Started Getting Started]]
 [def __Tutorial__ [link boost_local.Tutorial Tutorial]]
 [def __Tutorial_Empty_Parameters__ [link boost_local.Tutorial.Empty_Parameters Empty Parameters]]
-[def __Tutorial_Binding__ [link boost_local.Tutorial.Binding Binding]]
+[def __Tutorial_Binding__ [link boost_local.Tutorial.Binding Variable Binding]]
 [def __Advanced_Topics__ [link boost_local.Advanced_Topics Advanced Topics]]
 [def __Reference__ [@reference.html Reference]]
 [def __Examples__ [link boost_local.Examples Examples]]

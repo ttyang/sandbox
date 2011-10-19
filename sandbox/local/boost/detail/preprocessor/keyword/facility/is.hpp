@@ -27,7 +27,7 @@
 #define BOOST_DETAIL_PP_KEYWORD_FACILITY_IS_FRONT(tokens, checking_prefix) \
     BOOST_PP_IIF(BOOST_PP_IS_UNARY(tokens), \
         /* on MSVC this check works even if tokens already unary but on */ \
-        /* ISO C++ (including GCC) this check on non-unary tokens gives */ \
+        /* C++03 (including GCC) this check on non-unary tokens gives */ \
         /* a concatenation error -- so return false is tokens is not unary */ \
         0 BOOST_PP_TUPLE_EAT(2) \
     , \

@@ -27,7 +27,7 @@
 </h3></div></div></div>
 <div><p class="copyright">Copyright &#169; 2009-2011 Lorenzo Caminiti</p></div>
 <div><div class="legalnotice">
-<a name="id808762"></a><p>
+<a name="id863704"></a><p>
         Use, modification, and distribution is subject to the Boost Software License,
         Version 1.0 (see accompanying file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>).
       </p>
@@ -80,15 +80,18 @@
           format).
         </li>
 <li class="listitem">
-          Local functions can be passed as template parameters (e.g., they can be
-          conveniently passed to STL algorithms, this is in contrast to functors
-          implemented using local classes see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>
+          Local functions can be passed as template parameters so they can be conveniently
+          passed to STL algorithms, etc (this is a strength with respect to <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+          functors implemented using local classes, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>
           and the <a class="link" href="boost_local/Alternatives.html" title="Appendix: Alternatives">Alternatives</a> section).
         </li>
 <li class="listitem">
           However, local functions must be defined within a declarative context (e.g.,
           at a point in the code where local variables can be declared) thus they
-          cannot be defined within an expression.
+          cannot be defined within expressions (this is a weakness with respect to
+          <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+          lambda</a> functions, see the <a class="link" href="boost_local/Alternatives.html" title="Appendix: Alternatives">Alternatives</a>
+          section).
         </li>
 </ul></div>
 <p>
@@ -112,7 +115,7 @@
       for a comparison between this library, <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
       lambda</a> functions, <a href="http://www.boost.org/doc/libs/release/doc/html/lambda.html" target="_top">Boost.Lambda</a>,
       <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>,
-      and other C++ libraries offering similar features.
+      and other C++ libraries offering related features.
     </p>
 <a name="boost_local.Introduction.two_syntaxes"></a><h6>
 <a name="boost_local.Introduction.two_syntaxes-heading"></a>
@@ -126,9 +129,9 @@
 <li class="listitem">
           The <span class="emphasis"><em>sequencing macro syntax</em></span> is fully compliant with
           the <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
-          standard and supported on all C++ compilers. This syntax requires to wrap
-          the local function parameters and bound variables between round parenthesis
-          <code class="computeroutput"><span class="special">()</span></code>.
+          standard and supported on all C++ compliant compilers. This syntax requires
+          to wrap the local function parameters and bound variables between round
+          parenthesis <code class="computeroutput"><span class="special">()</span></code>.
         </li>
 <li class="listitem">
           The <span class="emphasis"><em>variadic macro synstax</em></span> is available only on C++
@@ -350,7 +353,7 @@
           by reference, by constant value, and by constant reference. In addition,
           the object <code class="computeroutput"><span class="keyword">this</span></code> can be bound
           (eventually by constant value but never by reference or constant reference
-          <sup>[<a name="id865452" href="#ftn.id865452" class="footnote">1</a>]</sup> ) from within a non-static member function (see the <a class="link" href="boost_local/Tutorial.html" title="Tutorial">Tutorial</a>
+          <sup>[<a name="id865608" href="#ftn.id865608" class="footnote">1</a>]</sup> ) from within a non-static member function (see the <a class="link" href="boost_local/Tutorial.html" title="Tutorial">Tutorial</a>
           section). For example, the variable <code class="computeroutput"><span class="identifier">factor</span></code>
           is bound by constant value so it cannot be mistakenly modified by the local
           function body. The variable <code class="computeroutput"><span class="identifier">sum</span></code>
@@ -426,13 +429,13 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id865452" href="#id865452" class="para">1</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.id865608" href="#id865608" class="para">1</a>] </sup>
             C++ does not allow to obtain a reference to the pointer <code class="computeroutput"><span class="keyword">this</span></code>.
           </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: October 04, 2011 at 16:21:48 GMT</small></p></td>
+<td align="left"><p><small>Last revised: October 18, 2011 at 20:36:32 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

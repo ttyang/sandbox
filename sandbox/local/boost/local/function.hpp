@@ -185,12 +185,12 @@
  * This increases the chances that the compiler will be able to inline the
  * local function calls (thus reducing their run-time).
  * However, inlined local functions cannot be passed as template parameters or
- * assigned to other functors like <c>boost::function</c> (that is true on ISO
- * C++ compilers, see @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}, but inlined
- * local functions can instead be passed as template parameters on C++0x
+ * assigned to other functors like <c>boost::function</c> (that is true on
+ * C++03 compilers, see @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}, but inlined
+ * local functions can instead be passed as template parameters on C++11
  * compilers).
- * On C++0x compilers, there is no need to declare a local function lined
- * because this library will automatically use C++0x specific features to
+ * On C++11 compilers, there is no need to declare a local function lined
+ * because this library will automatically use C++11 specific features to
  * inline the local function while always allowing to pass it as a template
  * parameter.
  *
