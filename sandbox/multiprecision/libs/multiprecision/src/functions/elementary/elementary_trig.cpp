@@ -185,7 +185,7 @@ mp_float boost::multiprecision::cos(const mp_float& x)
 
   // Check if the reduced argument is very close to 0 or pi/2.
   const bool    b_near_zero    = boost::multiprecision::small_arg(xx);
-  const mp_float delta_pi_half  = boost::multiprecision::pi_half() - xx;
+  const mp_float delta_pi_half = boost::multiprecision::pi_half() - xx;
   const bool    b_near_pi_half = boost::multiprecision::small_arg(delta_pi_half);
   
   mp_float cos_val;
@@ -290,7 +290,7 @@ mp_float boost::multiprecision::asin(const mp_float& x)
   {
     return boost::multiprecision::zero();
   }
-  
+
   if(boost::multiprecision::isone(xx))
   {
     return ((!b_neg) ? boost::multiprecision::pi_half() : -boost::multiprecision::pi_half());
@@ -299,23 +299,21 @@ mp_float boost::multiprecision::asin(const mp_float& x)
   if(boost::multiprecision::small_arg(xx))
   {
     // http://functions.wolfram.com/ElementaryFunctions/ArcSin/26/01/01/
-    const mp_float asin_value = x * boost::multiprecision::hyp2F1(boost::multiprecision::half(),
-                                              boost::multiprecision::half(),
-                                              boost::multiprecision::three_half(),
-                                              (x * x));
-
-    return !b_neg ? asin_value : -asin_value;
+    return x * boost::multiprecision::hyp2F1(boost::multiprecision::half(),
+                                             boost::multiprecision::half(),
+                                             boost::multiprecision::three_half(),
+                                             (x * x));
   }
   else if(boost::multiprecision::near_one(xx))
   {
     const mp_float dx1 = boost::multiprecision::one() - xx;
 
-    const mp_float asin_value =    boost::multiprecision::pi_half()
+    const mp_float asin_value =     boost::multiprecision::pi_half()
                                - (  boost::multiprecision::sqrt(dx1 * static_cast<boost::int32_t>(2))
                                   * boost::multiprecision::hyp2F1(boost::multiprecision::half(),
-                                               boost::multiprecision::half(),
-                                               boost::multiprecision::three_half(),
-                                               dx1 / static_cast<boost::int32_t>(2)));
+                                    boost::multiprecision::half(),
+                                    boost::multiprecision::three_half(),
+                                    dx1 / static_cast<boost::int32_t>(2)));
 
     return ((!b_neg) ? asin_value : -asin_value);
   }
@@ -329,7 +327,7 @@ mp_float boost::multiprecision::asin(const mp_float& x)
   static const boost::int64_t p10_max = static_cast<boost::int64_t>(std::numeric_limits<double>::max_exponent10);
 
   const double de = static_cast<double>(ne < static_cast<boost::int64_t>(0) ? static_cast<boost::int32_t>((std::max)(ne, p10_min))
-                                                                   : static_cast<boost::int32_t>((std::min)(ne, p10_max)));
+                                                                            : static_cast<boost::int32_t>((std::min)(ne, p10_max)));
 
   mp_float value = mp_float(::asin(dd * ::pow(10.0, de)));
 
@@ -361,7 +359,8 @@ mp_float boost::multiprecision::acos(const mp_float& x)
 
   if(boost::multiprecision::fabs(x) > boost::multiprecision::one()) { return std::numeric_limits<mp_float>::quiet_NaN(); }
 
-  return boost::multiprecision::iszero(x) ? boost::multiprecision::pi_half() : boost::multiprecision::pi_half() - boost::multiprecision::asin(x);
+  return (boost::multiprecision::iszero(x) ?  boost::multiprecision::pi_half()
+                                           : (boost::multiprecision::pi_half() - boost::multiprecision::asin(x)));
 }
 
 namespace
@@ -401,7 +400,7 @@ mp_float boost::multiprecision::atan(const mp_float& x)
 
   if(x.isinf() || order > boost::multiprecision::tol())
   {
-    return boost::multiprecision::ispos(x) ? boost::multiprecision::pi_half() : -boost::multiprecision::pi_half();
+    return (boost::multiprecision::ispos(x) ? boost::multiprecision::pi_half() : -boost::multiprecision::pi_half());
   }
   else if(boost::multiprecision::iszero(x))
   {
@@ -432,7 +431,7 @@ mp_float boost::multiprecision::atan(const mp_float& x)
   static const boost::int64_t p10_max = static_cast<boost::int64_t>(std::numeric_limits<double>::max_exponent10);
 
   const double de = static_cast<double>(ne < static_cast<boost::int64_t>(0) ? static_cast<boost::int32_t>((std::max)(ne, p10_min))
-                                                                   : static_cast<boost::int32_t>((std::min)(ne, p10_max)));
+                                                                            : static_cast<boost::int32_t>((std::min)(ne, p10_max)));
 
   mp_float value = order < static_cast<boost::int64_t>(2) ? mp_float(::atan(dd * ::pow(10.0, de)))
                                                           : ::my_atan_series_at_infinity(xx);
@@ -452,7 +451,7 @@ mp_float boost::multiprecision::atan(const mp_float& x)
 
 mp_float boost::multiprecision::atan2(const mp_float& y, const mp_float& x)
 {
-  if(!boost::multiprecision::isfinite(x) || !boost::multiprecision::isfinite(y))
+  if((!boost::multiprecision::isfinite(x)) || (!boost::multiprecision::isfinite(y)))
   {
     return x;
   }

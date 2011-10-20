@@ -676,18 +676,16 @@ mp_float boost::multiprecision::pow(const mp_float& x, const mp_float& a)
     return boost::multiprecision::one() / boost::multiprecision::pow(x, -a);
   }
 
-  const mp_float a_int = boost::multiprecision::integer_part(a);
-  const boost::int64_t   an    = boost::multiprecision::to_int64(a_int);
-  const mp_float da    = a - a_int;
+  const mp_float a_int    = boost::multiprecision::integer_part(a);
+  const boost::int64_t an = boost::multiprecision::to_int64(a_int);
+  const mp_float da       = a - a_int;
 
   if(bo_a_isint)
   {
     return boost::multiprecision::pown(x, an);
   }
 
-  static const mp_float nine_tenths = boost::multiprecision::nine() / static_cast<boost::int32_t>(10);
-
-  if(boost::multiprecision::ispos(x) && (x > boost::multiprecision::tenth()) && (x < nine_tenths))
+  if(boost::multiprecision::ispos(x) && (x > boost::multiprecision::tenth()) && (x < boost::multiprecision::half()))
   {
     if(boost::multiprecision::small_arg(a))
     {
@@ -699,7 +697,7 @@ mp_float boost::multiprecision::pow(const mp_float& x, const mp_float& a)
       // Series expansion for moderately sized x. Note that for large power of a,
       // the power of the integer part of a is calculated using the pown function.
       return ((an != static_cast<boost::int64_t>(0)) ? boost::multiprecision::hyp1F0(-da, boost::multiprecision::one() - x) * boost::multiprecision::pown(x, an)
-                                            : boost::multiprecision::hyp1F0( -a, boost::multiprecision::one() - x));
+                                                     : boost::multiprecision::hyp1F0( -a, boost::multiprecision::one() - x));
     }
   }
   else

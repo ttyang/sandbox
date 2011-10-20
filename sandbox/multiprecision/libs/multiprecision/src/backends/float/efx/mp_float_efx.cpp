@@ -123,10 +123,10 @@ mp_float_efx::mp_float_efx(const unsigned long n) : data     (),
 }
 
 mp_float_efx::mp_float_efx(const signed long long n) : data     (),
-                                                  exp      (static_cast<boost::int64_t>(0)),
-                                                  neg      (n < static_cast<signed long long>(0)),
-                                                  fpclass  (mp_finite),
-                                                  prec_elem(mp_elem_number)
+                                                       exp      (static_cast<boost::int64_t>(0)),
+                                                       neg      (n < static_cast<signed long long>(0)),
+                                                       fpclass  (mp_finite),
+                                                       prec_elem(mp_elem_number)
 {
   from_unsigned_long_long((!neg) ? static_cast<unsigned long long>(n) : static_cast<unsigned long long>(-n));
 }
@@ -176,10 +176,10 @@ mp_float_efx::mp_float_efx(const float f) : data     (),
 }
 
 mp_float_efx::mp_float_efx(const double d) : data     (),
-                                        exp      (static_cast<boost::int64_t>(0)),
-                                        neg      (false),
-                                        fpclass  (mp_finite),
-                                        prec_elem(mp_elem_number)
+                                             exp      (static_cast<boost::int64_t>(0)),
+                                             neg      (false),
+                                             fpclass  (mp_finite),
+                                             prec_elem(mp_elem_number)
 {
   const bool b_neg = (d < 0.0);
 
@@ -211,10 +211,10 @@ mp_float_efx::mp_float_efx(const double d) : data     (),
 }
 
 mp_float_efx::mp_float_efx(const long double ld) : data     (),
-                                              exp      (static_cast<boost::int64_t>(0)),
-                                              neg      (false),
-                                              fpclass  (mp_finite),
-                                              prec_elem(mp_elem_number)
+                                                   exp      (static_cast<boost::int64_t>(0)),
+                                                   neg      (false),
+                                                   fpclass  (mp_finite),
+                                                   prec_elem(mp_elem_number)
 {
   const bool b_neg = (ld < static_cast<long double>(0.0));
 
@@ -246,10 +246,10 @@ mp_float_efx::mp_float_efx(const long double ld) : data     (),
 }
 
 mp_float_efx::mp_float_efx(const char* const s) : data     (),
-                                             exp      (static_cast<boost::int64_t>(0)),
-                                             neg      (false),
-                                             fpclass  (mp_finite),
-                                             prec_elem(mp_elem_number)
+                                                  exp      (static_cast<boost::int64_t>(0)),
+                                                  neg      (false),
+                                                  fpclass  (mp_finite),
+                                                  prec_elem(mp_elem_number)
 {
   if(!rd_string(s))
   {
@@ -261,10 +261,10 @@ mp_float_efx::mp_float_efx(const char* const s) : data     (),
 }
 
 mp_float_efx::mp_float_efx(const std::string& str) : data     (),
-                                                exp      (static_cast<boost::int64_t>(0)),
-                                                neg      (false),
-                                                fpclass  (mp_finite),
-                                                prec_elem(mp_elem_number)
+                                                     exp      (static_cast<boost::int64_t>(0)),
+                                                     neg      (false),
+                                                     fpclass  (mp_finite),
+                                                     prec_elem(mp_elem_number)
 {
   if(!rd_string(str.c_str()))
   {
@@ -276,11 +276,11 @@ mp_float_efx::mp_float_efx(const std::string& str) : data     (),
 }
 
 mp_float_efx::mp_float_efx(const double mantissa,
-                      const boost::int64_t exponent) : data     (),
-                                              exp      (static_cast<boost::int64_t>(0)),
-                                              neg      (false),
-                                              fpclass  (mp_finite),
-                                              prec_elem(mp_elem_number)
+                           const boost::int64_t exponent) : data     (),
+                                                            exp      (static_cast<boost::int64_t>(0)),
+                                                            neg      (false),
+                                                            fpclass  (mp_finite),
+                                                            prec_elem(mp_elem_number)
 {
   // Create an mp_float_efx from mantissa and exponent.
   // This ctor does not maintain the full precision of double.
@@ -410,8 +410,8 @@ boost::uint32_t mp_float_efx::mul_loop_n(boost::uint32_t* const u, boost::uint32
   for(boost::int32_t j = p - 1; j >= static_cast<boost::int32_t>(0); j--)
   {
     const boost::uint64_t t = static_cast<boost::uint64_t>(carry + static_cast<boost::uint64_t>(u[j] * static_cast<boost::uint64_t>(n)));
-    carry          = static_cast<boost::uint64_t>(t / static_cast<boost::uint32_t>(mp_elem_mask));
-    u[j]           = static_cast<boost::uint32_t>(t - static_cast<boost::uint64_t>(static_cast<boost::uint32_t>(mp_elem_mask) * static_cast<boost::uint64_t>(carry)));
+    carry                   = static_cast<boost::uint64_t>(t / static_cast<boost::uint32_t>(mp_elem_mask));
+    u[j]                    = static_cast<boost::uint32_t>(t - static_cast<boost::uint64_t>(static_cast<boost::uint32_t>(mp_elem_mask) * static_cast<boost::uint64_t>(carry)));
   }
   
   return static_cast<boost::uint32_t>(carry);
@@ -424,8 +424,8 @@ boost::uint32_t mp_float_efx::div_loop_n(boost::uint32_t* const u, boost::uint32
   for(boost::int32_t j = static_cast<boost::int32_t>(0); j < p; j++)
   {
     const boost::uint64_t t = static_cast<boost::uint64_t>(u[j] + static_cast<boost::uint64_t>(prev * static_cast<boost::uint32_t>(mp_elem_mask)));
-    u[j]           = static_cast<boost::uint32_t>(t / n);
-    prev           = static_cast<boost::uint64_t>(t - static_cast<boost::uint64_t>(n * static_cast<boost::uint64_t>(u[j])));
+    u[j]                    = static_cast<boost::uint32_t>(t / n);
+    prev                    = static_cast<boost::uint64_t>(t - static_cast<boost::uint64_t>(n * static_cast<boost::uint64_t>(u[j])));
   }
 
   return static_cast<boost::uint32_t>(prev);
@@ -440,7 +440,7 @@ void mp_float_efx::precision(const boost::int32_t prec_digits)
   else
   {
     const boost::int32_t elems = static_cast<boost::int32_t>(  static_cast<boost::int32_t>( (prec_digits + (mp_elem_digits10 / 2)) / mp_elem_digits10)
-                                           + static_cast<boost::int32_t>(((prec_digits %  mp_elem_digits10) != 0) ? 1 : 0));
+                                                             + static_cast<boost::int32_t>(((prec_digits %  mp_elem_digits10) != 0) ? 1 : 0));
 
     prec_elem = (std::min)(mp_elem_number, (std::max)(elems, static_cast<boost::int32_t>(2)));
   }
@@ -501,7 +501,7 @@ mp_float_efx& mp_float_efx::operator+=(const mp_float_efx& v)
   array_type::iterator       p_u    =   data.begin();
   array_type::const_iterator p_v    = v.data.begin();
   bool                       b_copy = false;
-  const boost::int32_t                ofs    = static_cast<boost::int32_t>(static_cast<boost::int32_t>(ofs_exp) / mp_elem_digits10);
+  const boost::int32_t       ofs    = static_cast<boost::int32_t>(static_cast<boost::int32_t>(ofs_exp) / mp_elem_digits10);
   array_type                 n_data;
 
   if(neg == v.neg)
