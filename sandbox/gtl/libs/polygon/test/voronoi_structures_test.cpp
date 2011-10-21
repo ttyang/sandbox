@@ -36,7 +36,6 @@ BOOST_AUTO_TEST_CASE(site_event_test1) {
     BOOST_CHECK_EQUAL(s.y0() == s.y1() && s.y1() == 2, true);
     BOOST_CHECK_EQUAL(s.index() == 0, true);
     BOOST_CHECK_EQUAL(s.is_segment(), false);
-    BOOST_CHECK_EQUAL(s.is_vertical(), true);
     BOOST_CHECK_EQUAL(s.is_inverse(), false);
 }
 
@@ -48,7 +47,6 @@ BOOST_AUTO_TEST_CASE(site_event_test2) {
     BOOST_CHECK_EQUAL(s.y1(true) == 4 && s.y1() == 4, true);
     BOOST_CHECK_EQUAL(s.index() == 0, true);
     BOOST_CHECK_EQUAL(s.is_segment(), true);
-    BOOST_CHECK_EQUAL(s.is_vertical(), false);
     BOOST_CHECK_EQUAL(s.is_inverse(), false);
     s.inverse();
     BOOST_CHECK_EQUAL(s.x1(true) == 1 && s.x0() == 1, true);

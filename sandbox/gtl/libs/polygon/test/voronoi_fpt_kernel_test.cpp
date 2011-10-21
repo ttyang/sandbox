@@ -20,131 +20,121 @@
 #include "boost/polygon/detail/voronoi_calc_kernel.hpp"
 using namespace boost::polygon::detail;
 
-typedef boost::mpl::list<double, mpf_class, mpt_wrapper<mpf_class, 8> > test_types;
+typedef robust_fpt<double> rfpt_type;
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_constructors_test1, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
+BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test1) {
     rfpt_type a = rfpt_type();
-    BOOST_CHECK_EQUAL(a.fpv() == static_cast<T>(0), true);
+    BOOST_CHECK_EQUAL(a.fpv() == 0.0, true);
     BOOST_CHECK_EQUAL(a.re() == 0.0, true);
     BOOST_CHECK_EQUAL(a.ulp() == 0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_constructors_test2, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(10));
-    BOOST_CHECK_EQUAL(a.fpv() == static_cast<T>(10), true);
+BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test2) {
+    rfpt_type a(10.0);
+    BOOST_CHECK_EQUAL(a.fpv() == 10.0, true);
     BOOST_CHECK_EQUAL(a.re() == 1.0, true);
     BOOST_CHECK_EQUAL(a.ulp() == 1.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_constructors_test3, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(10), false);
-    BOOST_CHECK_EQUAL(a.fpv() == static_cast<T>(10), true);
+BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test3) {
+    rfpt_type a(10.0, false);
+    BOOST_CHECK_EQUAL(a.fpv() == 10.0, true);
     BOOST_CHECK_EQUAL(a.re() == 0.0, true);
     BOOST_CHECK_EQUAL(a.ulp() == 0.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_constructors_test4, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(10), 3.0);
-    BOOST_CHECK_EQUAL(a.fpv() == static_cast<T>(10), true);
+BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test4) {
+    rfpt_type a(10.0, 3.0);
+    BOOST_CHECK_EQUAL(a.fpv() == 10.0, true);
     BOOST_CHECK_EQUAL(a.re() == 3.0, true);
     BOOST_CHECK_EQUAL(a.ulp() == 3.0, true);
 
-    rfpt_type b(static_cast<T>(10), 2.75);
-    BOOST_CHECK_EQUAL(b.fpv() == static_cast<T>(10), true);
+    rfpt_type b(10.0, 2.75);
+    BOOST_CHECK_EQUAL(b.fpv() == 10.0, true);
     BOOST_CHECK_EQUAL(b.re() == 2.75, true);
     BOOST_CHECK_EQUAL(b.ulp() == 2.75, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_sum_test1, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(2), 5.0);
-    rfpt_type b(static_cast<T>(3), 4.0);
+BOOST_AUTO_TEST_CASE(robust_fpt_sum_test1) {
+    rfpt_type a(2.0, 5.0);
+    rfpt_type b(3.0, 4.0);
     rfpt_type c = a + b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(5), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 5.0, true);
     BOOST_CHECK_EQUAL(c.re() == 6.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 6.0, true);
 
     c += b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(8), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 8.0, true);
     BOOST_CHECK_EQUAL(c.re() == 7.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 7.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_sum_test2, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(3), 2.0);
-    rfpt_type b(static_cast<T>(-2), 3.0);
+BOOST_AUTO_TEST_CASE(robust_fpt_sum_test2) {
+    rfpt_type a(3.0, 2.0);
+    rfpt_type b(-2.0, 3.0);
     rfpt_type c = a + b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(1), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 1.0, true);
     BOOST_CHECK_EQUAL(c.re() == 13.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 13.0, true);
 
     c += b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(-1), true);
+    BOOST_CHECK_EQUAL(c.fpv() == -1.0, true);
     BOOST_CHECK_EQUAL(c.re() == 20.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 20.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_dif_test1, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(2), 5.0);
-    rfpt_type b(static_cast<T>(-3), 4.0);
+BOOST_AUTO_TEST_CASE(robust_fpt_dif_test1) {
+    rfpt_type a(2.0, 5.0);
+    rfpt_type b(-3.0, 4.0);
     rfpt_type c = a - b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(5), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 5.0, true);
     BOOST_CHECK_EQUAL(c.re() == 6.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 6.0, true);
 
     c -= b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(8), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 8.0, true);
     BOOST_CHECK_EQUAL(c.re() == 7.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 7.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_dif_test2, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(3), 2.0);
-    rfpt_type b(static_cast<T>(2), 3.0);
+BOOST_AUTO_TEST_CASE(robust_fpt_dif_test2) {
+    rfpt_type a(3.0, 2.0);
+    rfpt_type b(2.0, 3.0);
     rfpt_type c = a - b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(1), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 1.0, true);
     BOOST_CHECK_EQUAL(c.re() == 13.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 13.0, true);
 
     c -= b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(-1), true);
+    BOOST_CHECK_EQUAL(c.fpv() == -1.0, true);
     BOOST_CHECK_EQUAL(c.re() == 20.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 20.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_mult_test3, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(2), 3.0);
-    rfpt_type b(static_cast<T>(4));
+BOOST_AUTO_TEST_CASE(robust_fpt_mult_test3) {
+    rfpt_type a(2.0, 3.0);
+    rfpt_type b(4.0);
     rfpt_type c = a * b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(8), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 8.0, true);
     BOOST_CHECK_EQUAL(c.re() == 5.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 5.0, true);
 
     c *= b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(32), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 32.0, true);
     BOOST_CHECK_EQUAL(c.re() == 7.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 7.0, true);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(robust_fpt_div_test1, T, test_types) {
-    typedef robust_fpt<T> rfpt_type;
-    rfpt_type a(static_cast<T>(2), 3.0);
-    rfpt_type b(static_cast<T>(4));
+BOOST_AUTO_TEST_CASE(robust_fpt_div_test1) {
+    rfpt_type a(2.0, 3.0);
+    rfpt_type b(4.0);
     rfpt_type c = a / b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(0.5), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 0.5, true);
     BOOST_CHECK_EQUAL(c.re() == 5.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 5.0, true);
 
     c /= b;
-    BOOST_CHECK_EQUAL(c.fpv() == static_cast<T>(0.125), true);
+    BOOST_CHECK_EQUAL(c.fpv() == 0.125, true);
     BOOST_CHECK_EQUAL(c.re() == 7.0, true);
     BOOST_CHECK_EQUAL(c.ulp() == 7.0, true);
 }

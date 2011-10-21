@@ -1,6 +1,6 @@
-// Boost.Polygon detail/voronoi_structures.hpp header file
+// Boost.Polygon library detail/voronoi_structures.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010.
+//          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -38,8 +38,6 @@ namespace detail {
             return (this->x_ != that.x()) || (this->y_ != that.y());
         }
 
-        // Comparison function.
-        // Defines ordering of the points on the 2D plane.
         bool operator<(const point_2d &that) const {
             if (this->x_ != that.x_)
                 return this->x_ < that.x_;
@@ -96,18 +94,14 @@ namespace detail {
     // Variables: point0_ - point site or segment's startpoint;
     //            point1_ - segment's endpoint if site is a segment;
     //            index_ - site event index among other sites;
-    //            is_segment_ - flag whether site is a segment;
-    //            is_vertical_ - flag whether site is vertical;
     //            is_inverse_ - defines type of the segment site.
-    // Note: for all the point sites is_vertical_ flag is true,
-    //       is_inverse_ flag is false.
+    // Note: for all the sites is_inverse_ flag is equal to false by default.
     template <typename T>
     class site_event {
     public:
         typedef T coordinate_type;
         typedef point_2d<T> point_type;
 
-        // Point site contructors.
         site_event() :
             point0_(0, 0),
             point1_(0, 0),
@@ -125,7 +119,6 @@ namespace detail {
             site_index_(index),
             is_inverse_(false) {}
 
-        // Segment site constructors.
         site_event(coordinate_type x1, coordinate_type y1,
                    coordinate_type x2, coordinate_type y2, int index):
             point0_(x1, y1),
@@ -154,60 +147,46 @@ namespace detail {
             return y0(oriented);
         }
 
-        // Return x-coordinate of the point for the point sites.
-        // Return x-coordinate of the startpoint for the segment sites.
         coordinate_type x0(bool oriented = false) const {
             if (!oriented)
                 return point0_.x();
             return is_inverse_ ? point1_.x() : point0_.x();
         }
 
-        // Return y-coordinate of the point for the point sites.
-        // Return y-coordinate of the startpoint for the segment sites.
         coordinate_type y0(bool oriented = false) const {
             if (!oriented)
                 return point0_.y();
             return is_inverse_ ? point1_.y() : point0_.y();
         }
 
-        // Return x-coordinate of the endpoint of the segment sites.
-        // Doesn't make sense for the point sites.
         coordinate_type x1(bool oriented = false) const {
             if (!oriented)
                 return point1_.x();
             return is_inverse_ ? point0_.x() : point1_.x();
         }
 
-        // Return y-coordinate of the endpoint of the segment sites.
-        // Doesn't make sense for the point sites.
         coordinate_type y1(bool oriented = false) const {
             if (!oriented)
                 return point1_.y();
             return is_inverse_ ? point0_.y() : point1_.y();
         }
 
-        // Return point for the point sites.
-        // Return startpoint for the segment sites.
         const point_type &point0(bool oriented = false) const {
             if (!oriented)
                 return point0_;
             return is_inverse_ ? point1_ : point0_;
         }
 
-        // Return endpoint of the segment sites.
-        // Doesn't make sense for the point sites.
         const point_type &point1(bool oriented = false) const {
             if (!oriented)
                 return point1_;
             return is_inverse_ ? point0_ : point1_;
         }
 
-        // Return index of the site among all the other sites.
         void index(int index) {
             site_index_ = index;
         }
 
-        // Change segment site orientation to the opposite one.
         void inverse() {
             is_inverse_ ^= true;
         }
@@ -216,12 +195,12 @@ namespace detail {
             return site_index_;
         }
 
-        bool is_segment() const {
-            return point0_.x() != point1_.x() || point0_.y() != point1_.y();
+        bool is_point() const {
+            return point0_.x() == point1_.x() && point0_.y() == point1_.y();
         }
 
-        bool is_vertical() const {
-            return point0_.x() == point1_.x();
+        bool is_segment() const {
+            return point0_.x() != point1_.x() || point0_.y() != point1_.y();
         }
 
         bool is_inverse() const {
@@ -241,22 +220,11 @@ namespace detail {
     // Circle event is made by the two consequtive nodes in the beach line data
     // structure. In case another node was inserted during algorithm execution
     // between the given two nodes circle event becomes inactive.
-    // Circle events order is based on the comparison of the rightmost points
-    // of the circles. The order is the same like for the point_2d class.
-    // However as coordinates of the circle events might be not integers extra
-    // comparison checks are required to make the comparison robust.
-    // Next representation is used to store parameters of the circle:
-    //     each of the parameters is represented as fraction
-    //     numerator / denominator. Denominator is common for each of the
-    //     three parameters. Epsilon robust comparator class is used
-    //     to represent parameters of the circle events.
     // Variables: center_x_ - numerator of the center's x-coordinate.
     //            center_y_ - numerator of the center's y-coordinate.
     //            lower_x_ - numerator of the bottom point's x-coordinate.
-    //            denom_ - positive denominator for the previous three values.
-    //            bisector_node_ - iterator to the second bisector's node.
     //            is_active_ - flag whether circle event is still active.
-    // lower_y coordinate is always equal to center_y.
+    // NOTE: lower_y coordinate is always equal to center_y.
     template <typename T>
     class circle_event {
     public:
@@ -272,7 +240,6 @@ namespace detail {
             lower_x_(lower_x),
             is_active_(true) {}
 
-        // Evaluate x-coordinate of the center of the circle.
         coordinate_type x() const {
             return center_x_;
         }
@@ -281,7 +248,6 @@ namespace detail {
             center_x_ = center_x;
         }
 
-        // Evaluate y-coordinate of the center of the circle.
         coordinate_type y() const {
             return center_y_;
         }
@@ -290,17 +256,16 @@ namespace detail {
             center_y_ = center_y;
         }
 
-        // Evaluate x-coordinate of the rightmost point of the circle.
         coordinate_type lower_x() const {
             return lower_x_;
         }
 
-        coordinate_type lower_y() const {
-            return center_y_;
-        }
-
         void lower_x(coordinate_type lower_x) {
             lower_x_ = lower_x;
+        }
+
+        coordinate_type lower_y() const {
+            return center_y_;
         }
 
         bool is_active() const {
@@ -319,8 +284,8 @@ namespace detail {
     };
 
     // Event queue data structure, holds circle events.
-    // During algorithm run, some of the circle events disappear(become
-    // inactive). Priority queue data structure by itself doesn't support
+    // During algorithm run, some of the circle events disappear (become
+    // inactive). Priority queue data structure doesn't support
     // iterators (there is no direct ability to modify its elements).
     // Instead list is used to store all the circle events and priority queue
     // of the iterators to the list elements is used to keep the correct circle
@@ -373,13 +338,13 @@ namespace detail {
 
     // Represents a bisector node made by two arcs that correspond to the left
     // and right sites. Arc is defined as a curve with points equidistant from
-    // the site and from the sweepline. If the site is a point then the arc is
+    // the site and from the sweepline. If the site is a point then arc is
     // a parabola, otherwise it's a line segment. A segment site event will
-    // produce different bisectors depending on its direction.
+    // produce different bisectors based on its direction.
     // In the general case two sites will create two opposite bisectors. That's
     // why the order of the sites is important to define the unique bisector.
-    // The one site is considered to be newer than the other in case it was
-    // processed by the algorithm later.
+    // The one site is considered to be newer than the other one if it was
+    // processed by the algorithm later (e.g. has greater index).
     template <typename Site>
     class beach_line_node_key {
     public:
@@ -393,7 +358,8 @@ namespace detail {
 
         // Constructs a new bisector. The input to the constructor is the two
         // sites that create the bisector. The order of sites is important.
-        beach_line_node_key(const site_type &left_site, const site_type &right_site) :
+        beach_line_node_key(const site_type &left_site,
+                            const site_type &right_site) :
             left_site_(left_site),
             right_site_(right_site) {}
 
@@ -427,9 +393,9 @@ namespace detail {
     };
 
     // Represents edge data sturcture from the voronoi output, that is
-    // associated as a value with beach line bisector as a key in the beach
-    // line. Contains iterator to the circle event in the circle event
-    // queue in case it's the second bisector that forms a circle event.
+    // associated as a value with beach line bisector in the beach
+    // line. Contains pointer to the circle event in the circle event
+    // queue if the edge corresponds to the right bisector of the circle event.
     template <typename Edge, typename Circle>
     class beach_line_node_data {
     public:
@@ -437,7 +403,7 @@ namespace detail {
             circle_event_(NULL),
             edge_(new_edge) {}
 
-        Circle *circle_event() const {
+        Circle *circle_event() {
             return circle_event_;
         }
 
@@ -445,7 +411,7 @@ namespace detail {
             circle_event_ = circle_event;
         }
 
-        Edge *edge() const {
+        Edge *edge() {
             return edge_;
         }
 

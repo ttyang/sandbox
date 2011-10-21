@@ -1,4 +1,4 @@
-// Boost polygon/detail/voronoi_calc_kernel.hpp header file
+// Boost.Polygon library detail/voronoi_calc_kernel.hpp header file
 
 //          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
@@ -23,44 +23,8 @@ namespace detail {
 template <typename T>
 class voronoi_calc_kernel;
 
-// Geometry predicates with floating-point variables usually require
-// high-precision predicates to retrieve the correct result.
-// Epsilon robust predicates give the result within some epsilon relative
-// error, but are a lot faster than high-precision predicates.
-// To make algorithm robust and efficient epsilon robust predicates are
-// used at the first step. In case of the undefined result high-precision
-// arithmetic is used to produce required robustness. This approach
-// requires exact computation of epsilon intervals within which epsilon
-// robust predicates have undefined value.
-// There are two ways to measure an error of floating-point calculations:
-// relative error and ULPs(units in the last place).
-// Let EPS be machine epsilon, then next inequalities have place:
-// 1 EPS <= 1 ULP <= 2 EPS (1), 0.5 ULP <= 1 EPS <= 1 ULP (2).
-// ULPs are good for measuring rounding errors and comparing values.
-// Relative erros are good for computation of general relative
-// errors of formulas or expressions. So to calculate epsilon
-// intervals within which epsilon robust predicates have undefined result
-// next schema is used:
-//     1) Compute rounding errors of initial variables using ULPs;
-//     2) Transform ULPs to epsilons using upper bound of the (1);
-//     3) Compute relative error of the formula using epsilon arithmetic;
-//     4) Transform epsilon to ULPs using upper bound of the (2);
-// In case two values are inside undefined ULP range use high-precision
-// arithmetic to produce the correct result, else output the result.
-// Look at almost_equal function to see how two floating-point variables
-// are checked to fit in the ULP range.
-// If A has relative error of r(A) and B has relative error of r(B) then:
-//     1) r(A + B) <= max(r(A), r(B)), for A * B >= 0;
-//     2) r(A - B) <= B*r(A)+A*r(B)/(A-B), for A * B >= 0;
-//     2) r(A * B) <= r(A) + r(B);
-//     3) r(A / B) <= r(A) + r(B);
-// In addition rounding error should be added, that is always equal to
-// 0.5 ULP or atmost 1 epsilon. As you might see from the above formulas
-// substraction relative error may be extremely large, that's why
-// epsilon robust comparator class is used to store floating point values
-// and avoid substraction.
-// For further information about relative errors and ULPs try this link:
-// http://docs.sun.com/source/806-3568/ncg_goldberg.html
+// Predicates kernel. Operates with the types that could
+// be converted to the int32 without precision loss.
 template <>
 class voronoi_calc_kernel<int> {
 public:
@@ -78,7 +42,7 @@ public:
         LEFT = 1,
     };
 
-    // Value is a determinant of two vectors.
+    // Value is a determinant of two vectors (e.g. x1 * y2 - x2 * y1).
     // Return orientation based on the sign of the determinant.
     template <typename T>
     static kOrientation get_orientation(T value) {
@@ -108,7 +72,6 @@ public:
         if ((expr_l_plus == expr_r_plus) && (expr_l == expr_r))
             return static_cast<fpt_type>(0.0);
 
-        // Produce the result with epsilon relative error.
         if (!expr_l_plus) {
             if (expr_r_plus)
                 return -static_cast<fpt_type>(expr_l) -
@@ -127,23 +90,11 @@ public:
         }
     }
 
-    // Robust orientation test. Works correctly for any input type that
-    // can be casted without lose of data to the integer type within a range
-    // [-2^32, 2^32-1].
-    // Arguments: dif_x1_, dif_y1 - coordinates of the first vector.
-    //            dif_x2_, dif_y2 - coordinates of the second vector.
-    // Returns orientation test result for input vectors.
     template <typename T>
     static kOrientation get_orientation(T dif_x1_, T dif_y1_, T dif_x2_, T dif_y2_) {
         return get_orientation(robust_cross_product(dif_x1_, dif_y1_, dif_x2_, dif_y2_));
     }
 
-    // Robust orientation test. Works correctly for any input coordinate type
-    // that can be casted without lose of data to integer type within a range
-    // [-2^31, 2^31 - 1] - signed integer type.
-    // Arguments: point1, point2 - represent the first vector;
-    //            point2, point3 - represent the second vector;
-    // Returns orientation test result for input vectors.
     template <typename Point>
     static kOrientation get_orientation(const Point &point1,
                                         const Point &point2,
@@ -159,6 +110,21 @@ public:
         return get_orientation(robust_cross_product(dx1, dy1, dx2, dy2));
     }
 
+    template <typename Point>
+    static bool is_vertical(const Point &point1, const Point &point2) {
+        return point1.x() == point2.x();
+    }
+
+    template <typename Site>
+    static bool is_vertical(const Site &site) {
+        return is_vertical(site.point0(), site.point1());
+    }
+
+    template <typename Site>
+    static bool is_segment(const Site &site) {
+        return site.point0() != site.point1();
+    }
+
     template <typename Site, typename Circle>
     class event_comparison_predicate {
     public:
@@ -166,18 +132,30 @@ public:
         typedef Circle circle_type;
 
         bool operator()(const site_type &lhs, const site_type &rhs) const {
-            if (lhs.x0() != rhs.x0()) return lhs.x0() < rhs.x0();
+            if (lhs.x0() != rhs.x0()) {
+                return lhs.x0() < rhs.x0();
+            }
             if (!lhs.is_segment()) {
-                if (!rhs.is_segment()) return lhs.y0() < rhs.y0();
-                if (rhs.is_vertical()) return lhs.y0() <= rhs.y0();
+                if (!rhs.is_segment()) {
+                    return lhs.y0() < rhs.y0();
+                }
+                if (is_vertical(rhs)) {
+                    return lhs.y0() <= rhs.y0();
+                }
                 return true;
             } else {
-                if (rhs.is_vertical()) {
-                    if(lhs.is_vertical()) return lhs.y0() < rhs.y0();
+                if (is_vertical(rhs)) {
+                    if(is_vertical(lhs)) {
+                        return lhs.y0() < rhs.y0();
+                    }
                     return false;
                 }
-                if (lhs.is_vertical()) return true;
-                if (lhs.y0() != rhs.y0()) return lhs.y0() < rhs.y0();
+                if (is_vertical(lhs)) {
+                    return true;
+                }
+                if (lhs.y0() != rhs.y0()) {
+                    return lhs.y0() < rhs.y0();
+                }
                 return get_orientation(lhs.point1(), lhs.point0(), rhs.point1()) == LEFT;
             }
         }
@@ -186,7 +164,9 @@ public:
             if (almost_equal(static_cast<fpt_type>(lhs.x()),
                              static_cast<fpt_type>(rhs.lower_x()), ULPS)) {
                 if (almost_equal(static_cast<fpt_type>(lhs.y()),
-                                 static_cast<fpt_type>(rhs.lower_y()), ULPS)) return false;
+                                 static_cast<fpt_type>(rhs.lower_y()), ULPS)) {
+                    return false;
+                }
                 return static_cast<fpt_type>(lhs.y()) <
                        static_cast<fpt_type>(rhs.lower_y());
             }
@@ -198,7 +178,9 @@ public:
             if (almost_equal(static_cast<fpt_type>(lhs.lower_x()),
                              static_cast<fpt_type>(rhs.x()), ULPS)) {
                 if (almost_equal(static_cast<fpt_type>(lhs.lower_y()),
-                                 static_cast<fpt_type>(rhs.y()), ULPS)) return false;
+                                 static_cast<fpt_type>(rhs.y()), ULPS)) {
+                    return false;
+                }
                 return static_cast<fpt_type>(lhs.lower_y()) <
                        static_cast<fpt_type>(rhs.y());
             }
@@ -238,6 +220,9 @@ public:
     public:
         typedef Site site_type;
         
+        // Returns true if a horizontal line going through a new site intersects
+        // right arc at first, else returns false. If horizontal line goes
+        // through intersection point of the given two arcs returns false also.
         bool operator()(const site_type& left_site,
                         const site_type& right_site,
                         const site_type& new_site) const {
@@ -263,17 +248,9 @@ public:
         // Returns true if a horizontal line going through the new point site
         // intersects right arc at first, else returns false. If horizontal line
         // goes through intersection point of the given two arcs returns false.
-        // Works correctly for any input coordinate type that can be casted without
-        // lose of data to the integer type within a range [-2^31, 2^31-1].
         bool pp(const site_type &left_site,
                 const site_type &right_site,
                 const site_type &new_site) const {
-            // Any two point sites with different x-coordinates create two
-            // bisectors. Each bisector is defined by the order the sites
-            // appear in its representation. Predicates used in this function
-            // won't produce the correct result for the any arrangment of the
-            // input sites. That's why some preprocessing is required to handle
-            // such cases.
             const point_type &left_point = left_site.point0();
             const point_type &right_point = right_site.point0();
             const point_type &new_point = new_site.point0();
@@ -284,8 +261,6 @@ public:
                 if (new_point.y() >= right_point.y())
                     return true;
             } else {
-                // If x-coordinates of the sites are equal, we may produce the
-                // result without any further computations.
                 return static_cast<fpt_type>(left_point.y()) +
                        static_cast<fpt_type>(right_point.y()) <
                        2.0 * static_cast<fpt_type>(new_point.y());
@@ -298,11 +273,6 @@ public:
             return dist1 < dist2;
         }
         
-        // Returns true if a horizontal line going through a new site intersects
-        // right arc at first, else returns false. If horizontal line goes
-        // through intersection point of the given two arcs returns false also.
-        // reverse_order flag defines arrangement of the sites. If it's false
-        // the order is (point, segment), else - (segment, point).
         bool ps(const site_type &left_site, const site_type &right_site,
                 const site_type &new_site, bool reverse_order) const {
             kPredicateResult fast_res = fast_ps(
@@ -318,9 +288,6 @@ public:
             return reverse_order ^ (dist1 < dist2);
         }
 
-        // Returns true if a horizontal line going through a new site intersects
-        // right arc at first, else returns false. If horizontal line goes
-        // through intersection point of the given two arcs returns false also.
         bool ss(const site_type &left_site,
                 const site_type &right_site,
                 const site_type &new_site) const {
@@ -331,10 +298,6 @@ public:
                                        new_site.point0()) == LEFT;
             }
 
-            // Distances between the x-coordinate of the sweepline and
-            // the x-coordinates of the points of the intersections of the
-            // horizontal line going through the new site with arcs corresponding
-            // to the first and to the second segment sites respectively.
             fpt_type dist1 = find_distance_to_segment_arc(left_site, new_site.point0());
             fpt_type dist2 = find_distance_to_segment_arc(right_site, new_site.point0());
 
@@ -342,24 +305,17 @@ public:
             return dist1 < dist2;
         }
 
-        // Find the x-coordinate (relative to the sweepline position) of the point
-        // of the intersection of the horizontal line going through the new site
-        // with the arc corresponding to the point site.
-        // The relative error is atmost 3EPS.
         fpt_type find_distance_to_point_arc(const site_type &site,
                                             const point_type &point) const {
             fpt_type dx = site.x() - point.x();
             fpt_type dy = site.y() - point.y();
+            // The relative error is atmost 3EPS.                    
             return (dx * dx + dy * dy) / (static_cast<fpt_type>(2.0) * dx);
         }
 
-        // Find the x-coordinate (relative to the sweepline position) of the point
-        // of the intersection of the horizontal line going through the new site
-        // with the arc corresponding to the segment site.
-        // The relative error is atmost 8EPS.
         fpt_type find_distance_to_segment_arc(const site_type &site,
                                               const point_type &point) const {
-            if (site.is_vertical()) {
+            if (is_vertical(site)) {
                 return (static_cast<fpt_type>(site.x()) - static_cast<fpt_type>(point.x())) *
                        static_cast<fpt_type>(0.5);
             } else {
@@ -380,9 +336,7 @@ public:
                 } else {
                     k = (k - b1) / (a1 * a1);
                 }
-                // Relative error of the robust cross product is 2EPS.
-                // Relative error of the k is atmost 5EPS.
-                // The resulting relative error is atmost 8EPS.
+                // The relative error is atmost 8EPS.            
                 return robust_cross_product(a1, b1, a3, b3) * k;
             }
         }
@@ -406,7 +360,7 @@ public:
             fpt_type b = static_cast<fpt_type>(segment_end.y()) -
                          static_cast<fpt_type>(segment_start.y());
 
-            if (right_site.is_vertical()) {
+            if (is_vertical(right_site)) {
                 if (new_point.y() < site_point.y() && !reverse_order)
                     return MORE;
                 else if (new_point.y() > site_point.y() && reverse_order)
@@ -487,15 +441,15 @@ public:
         }
         
         // Get comparison pair: y coordinate and direction of the newer site.
-        std::pair<coordinate_type, int> get_comparison_y(const node_type &node,
-                                                         bool is_new_node = true) const {
+        std::pair<coordinate_type, int> get_comparison_y(
+            const node_type &node, bool is_new_node = true) const {
             if (node.left_site().index() == node.right_site().index()) {
                 return std::make_pair(node.left_site().y(), 0);
             }
             if (node.left_site().index() > node.right_site().index()) {
                 if (!is_new_node &&
                     node.left_site().is_segment() &&
-                    node.left_site().is_vertical()) {
+                    is_vertical(node.left_site())) {
                     return std::make_pair(node.left_site().y1(), 1);
                 }
                 return std::make_pair(node.left_site().y(), 1);
@@ -882,7 +836,9 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            static mpt_type a[3], b[3], c[3], sqr_len[4], cross[4];
+            static mpt_type a[3], b[3], c[3], cA[4], cB[4];
+            // cA - corresponds to the cross product.
+            // cB - corresponds to the squared length.
             a[0] = static_cast<fpt_type>(site1.x1(true)) -
                    static_cast<fpt_type>(site1.x0(true));
             a[1] = static_cast<fpt_type>(site2.x1(true)) -
@@ -902,45 +858,45 @@ public:
             c[2] = mpt_cross(site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true));
 
             for (int i = 0; i < 3; ++i) {
-                sqr_len[i] = a[i] * a[i] + b[i] * b[i];
+                cB[i] = a[i] * a[i] + b[i] * b[i];
             }
 
             for (int i = 0; i < 3; ++i) {
                 int j = (i+1) % 3;
                 int k = (i+2) % 3;
-                cross[i] = a[j] * b[k] - a[k] * b[j];
+                cA[i] = a[j] * b[k] - a[k] * b[j];
             }
-            fpt_type denom = sqrt_expr_.eval3(cross, sqr_len).get_d();
+            fpt_type denom = sqrt_expr_.eval3(cA, cB).get_d();
 
             if (recompute_c_y) {
                 for (int i = 0; i < 3; ++i) {
                     int j = (i+1) % 3;
                     int k = (i+2) % 3;
-                    cross[i] = b[j] * c[k] - b[k] * c[j];
+                    cA[i] = b[j] * c[k] - b[k] * c[j];
                 }
-                fpt_type c_y = sqrt_expr_.eval3(cross, sqr_len).get_d();
+                fpt_type c_y = sqrt_expr_.eval3(cA, cB).get_d();
                 c_event.y(c_y / denom);
             }
 
             if (recompute_c_x || recompute_lower_x) {
-                cross[3] = 0;
+                cA[3] = 0;
                 for (int i = 0; i < 3; ++i) {
                     int j = (i+1) % 3;
                     int k = (i+2) % 3;
-                    cross[i] = a[j] * c[k] - a[k] * c[j];
+                    cA[i] = a[j] * c[k] - a[k] * c[j];
                     if (recompute_lower_x) {
-                        cross[3] += cross[i] * b[i];
+                        cA[3] += cA[i] * b[i];
                     }
                 }
 
                 if (recompute_c_x) {
-                    fpt_type c_x = sqrt_expr_.eval3(cross, sqr_len).get_d();
+                    fpt_type c_x = sqrt_expr_.eval3(cA, cB).get_d();
                     c_event.x(c_x / denom);
                 }
                 
                 if (recompute_lower_x) {
-                    sqr_len[3] = 1;
-                    fpt_type lower_x = sqrt_expr_.eval4(cross, sqr_len).get_d();
+                    cB[3] = 1;
+                    fpt_type lower_x = sqrt_expr_.eval4(cA, cB).get_d();
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -1027,8 +983,6 @@ public:
         typedef gmp_circle_formation_functor<site_type, circle_type>
             exact_circle_formation_functor_type;
 
-        // Find parameters of the inscribed circle that is tangent to three
-        // point sites.
         void ppp(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3,
@@ -1080,8 +1034,6 @@ public:
             }
         }
 
-        // Find parameters of the inscribed circle that is tangent to two
-        // point sites and on segment site.
         void pps(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3,
@@ -1148,8 +1100,6 @@ public:
             }
         }
 
-        // Find parameters of the inscribed circle that is tangent to one
-        // point site and two segment sites.
         void pss(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3,
@@ -1286,8 +1236,6 @@ public:
             }
         }
 
-        // Find parameters of the inscribed circle that is tangent to three
-        // segment sites.
         void sss(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3,

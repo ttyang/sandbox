@@ -236,8 +236,9 @@ namespace polygon {
 
                 // Count the number of the sites to init the beach line.
                 while(site_event_iterator_ != site_events_.end() &&
-                      site_event_iterator_->x() == site_events_.begin()->x() &&
-                      site_event_iterator_->is_vertical()) {
+                      calc_kernel_type::is_vertical(site_event_iterator_->point0(),
+                                                    site_events_.begin()->point0()) &&
+                      calc_kernel_type::is_vertical(*site_event_iterator_)) {
                     ++site_event_iterator_;
                     ++skip;
                 }

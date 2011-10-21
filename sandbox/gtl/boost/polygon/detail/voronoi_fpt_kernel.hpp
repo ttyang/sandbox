@@ -1,6 +1,6 @@
-// Boost polygon/detail/voronoi_fpt_kernel.hpp header file
+// Boost.Polygon library detail/voronoi_fpt_kernel.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010.
+//          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -9,6 +9,45 @@
 
 #ifndef BOOST_POLYGON_VORONOI_FPT_KERNEL
 #define BOOST_POLYGON_VORONOI_FPT_KERNEL
+
+// Geometry predicates with floating-point variables usually require
+// high-precision predicates to retrieve the correct result.
+// Epsilon robust predicates give the result within some epsilon relative
+// error, but are a lot faster than high-precision predicates.
+// To make algorithm robust and efficient epsilon robust predicates are
+// used at the first step. In case of the undefined result high-precision
+// arithmetic is used to produce required robustness. This approach
+// requires exact computation of epsilon intervals within which epsilon
+// robust predicates have undefined value.
+// There are two ways to measure an error of floating-point calculations:
+// relative error and ULPs (units in the last place).
+// Let EPS be machine epsilon, then next inequalities have place:
+// 1 EPS <= 1 ULP <= 2 EPS (1), 0.5 ULP <= 1 EPS <= 1 ULP (2).
+// ULPs are good for measuring rounding errors and comparing values.
+// Relative erros are good for computation of general relative
+// errors of formulas or expressions. So to calculate epsilon
+// intervals within which epsilon robust predicates have undefined result
+// next schema is used:
+//     1) Compute rounding errors of initial variables using ULPs;
+//     2) Transform ULPs to epsilons using upper bound of the (1);
+//     3) Compute relative error of the formula using epsilon arithmetic;
+//     4) Transform epsilon to ULPs using upper bound of the (2);
+// In case two values are inside undefined ULP range use high-precision
+// arithmetic to produce the correct result, else output the result.
+// Look at almost_equal function to see how two floating-point variables
+// are checked to fit in the ULP range.
+// If A has relative error of r(A) and B has relative error of r(B) then:
+//     1) r(A + B) <= max(r(A), r(B)), for A * B >= 0;
+//     2) r(A - B) <= B*r(A)+A*r(B)/(A-B), for A * B >= 0;
+//     2) r(A * B) <= r(A) + r(B);
+//     3) r(A / B) <= r(A) + r(B);
+// In addition rounding error should be added, that is always equal to
+// 0.5 ULP or atmost 1 epsilon. As you might see from the above formulas
+// substraction relative error may be extremely large, that's why
+// epsilon robust comparator class is used to store floating point values
+// and avoid substraction.
+// For further information about relative errors and ULPs try this link:
+// http://docs.sun.com/source/806-3568/ncg_goldberg.html
 
 namespace boost {
 namespace polygon {
@@ -25,7 +64,7 @@ namespace detail {
     // If two floating-point numbers in the same format are ordered (x < y),
     // then they are ordered the same way when their bits are reinterpreted as
     // sign-magnitude integers. Values are considered to be almost equal if
-    // their integer reinterpretatoins differ in not more than maxUlps units.
+    // their integer reinterpretations differ in not more than maxUlps units.
     template <typename T>
     bool almost_equal(T a, T b, unsigned int ulps);
 
@@ -96,15 +135,15 @@ namespace detail {
     class robust_fpt {
     public:
         typedef FPT floating_point_type;
-        typedef double relative_error_type;
+        typedef FPT relative_error_type;
 
         // Rounding error is at most 1 EPS.
         static const relative_error_type ROUNDING_ERROR;
 
-        // Constructors.
         robust_fpt() : fpv_(0.0), re_(0) {}
         explicit robust_fpt(int fpv) : fpv_(fpv), re_(0) {}
-        explicit robust_fpt(floating_point_type fpv, bool rounded = true) : fpv_(fpv) {
+        explicit robust_fpt(floating_point_type fpv,
+                            bool rounded = true) : fpv_(fpv) {
             re_ = rounded ? ROUNDING_ERROR : 0;
         }
         robust_fpt(floating_point_type fpv, relative_error_type error) :
@@ -117,7 +156,9 @@ namespace detail {
         template <typename T>
         bool operator==(T that) const {
             floating_point_type value = static_cast<floating_point_type>(that);
-            return almost_equal(this->fpv_, value, static_cast<unsigned int>(this->ulp()));
+            return almost_equal(this->fpv_,
+                                value,
+                                static_cast<unsigned int>(this->ulp()));
         }
 
         template <typename T>
@@ -150,7 +191,7 @@ namespace detail {
         }
 
         bool operator==(const robust_fpt &that) const {
-    	    unsigned int ulp = static_cast<unsigned int>(ceil(this->re_ + that.re_));
+    	    unsigned int ulp = static_cast<unsigned int>(this->re_ + that.re_);
     	    return almost_equal(this->fpv_, that.fpv_, ulp);	
         }
 
@@ -192,8 +233,9 @@ namespace detail {
                 (this->fpv_ <= 0 && that.fpv_ <= 0))
                 this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {            
-                floating_point_type temp = (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
-                this->re_ = std::fabs(get_d(temp)) + ROUNDING_ERROR;
+                floating_point_type temp =
+                    (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
+                this->re_ = std::fabs(temp) + ROUNDING_ERROR;
             }
             this->fpv_ = fpv;
     	    return *this;
@@ -205,8 +247,9 @@ namespace detail {
                 (this->fpv_ <= 0 && that.fpv_ >= 0))
                 this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
-                floating_point_type temp = (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
-                this->re_ = std::fabs(get_d(temp)) + ROUNDING_ERROR;
+                floating_point_type temp =
+                    (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
+                this->re_ = std::fabs(temp) + ROUNDING_ERROR;
             }
             this->fpv_ = fpv;
     	    return *this;
@@ -231,8 +274,9 @@ namespace detail {
                 (this->fpv_ <= 0 && that.fpv_ <= 0))
                 re = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
-                floating_point_type temp = (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
-                re = std::fabs(get_d(temp)) + ROUNDING_ERROR;
+                floating_point_type temp =
+                    (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
+                re = std::fabs(temp) + ROUNDING_ERROR;
             }
             return robust_fpt(fpv, re);
         }
@@ -244,8 +288,9 @@ namespace detail {
                 (this->fpv_ <= 0 && that.fpv_ >= 0))
                 re = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
-                floating_point_type temp = (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
-                re = std::fabs(get_d(temp)) + ROUNDING_ERROR;
+                floating_point_type temp =
+                    (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
+                re = std::fabs(temp) + ROUNDING_ERROR;
             }
             return robust_fpt(fpv, re);
         }
@@ -276,27 +321,14 @@ namespace detail {
     };
 
     template <typename T>
-    const typename robust_fpt<T>::relative_error_type robust_fpt<T>::ROUNDING_ERROR = 1;
+    const typename robust_fpt<T>::relative_error_type
+        robust_fpt<T>::ROUNDING_ERROR = 1;
 
-    // Class used to make computations with epsilon relative error.
-    // ERC consists of two values: value1 and value2, both positive.
+    // robust_dif consists of two not negative values: value1 and value2.
     // The resulting expression is equal to the value1 - value2.
-    // The main idea is to represent any expression that consists of
-    // addition, substraction, multiplication and division operations
-    // to avoid using substraction. Substraction of a positive value
-    // is equivalent to the addition to value2 and substraction of
-    // a negative value is equivalent to the addition to value1.
-    // Cons: ERC gives error relative not to the resulting value,
-    //       but relative to some expression instead. Example:
-    //       center_x = 100, ERC's value1 = 10^20, value2 = 10^20,
-    //       center_x = 1000, ERC's value3 = 10^21, value4 = 10^21,
-    //       such two centers are considered equal(
-    //       value1 + value4 = value2 + value3), while they are not.
-    // Pros: ERC is much faster then approaches based on the use
-    //       of high-precision libraries. However this will give correct
-    //       answer for the previous example.
-    // Solution: Use ERCs in case of defined comparison results and use
-    //           high-precision libraries for undefined results.
+    // Substraction of a positive value is equivalent to the addition to value2
+    // and substraction of a negative value is equivalent to the addition to
+    // value1. The structure implicitly avoids difference computation.
     template <typename T>
     class robust_dif {
     public:
@@ -349,8 +381,7 @@ namespace detail {
             return *this;
         }
 
-        robust_dif<T> &operator+=(
-            const robust_dif<T> &that) {
+        robust_dif<T> &operator+=(const robust_dif<T> &that) {
             positive_sum_ += that.positive_sum_;
             negative_sum_ += that.negative_sum_;
             return *this;
@@ -364,8 +395,7 @@ namespace detail {
             return *this;
         }
 
-        robust_dif<T> &operator-=(
-            const robust_dif<T> &that) {
+        robust_dif<T> &operator-=(const robust_dif<T> &that) {
             positive_sum_ += that.negative_sum_;
             negative_sum_ += that.positive_sum_;
             return *this;
@@ -383,8 +413,7 @@ namespace detail {
             return *this;
         }
 
-        robust_dif<T> &operator*=(
-            const robust_dif<T> &that) {
+        robust_dif<T> &operator*=(const robust_dif<T> &that) {
             T positive_sum = this->positive_sum_ * that.positive_sum_ +
                              this->negative_sum_ * that.negative_sum_;
             T negative_sum = this->positive_sum_ * that.negative_sum_ +
@@ -412,16 +441,14 @@ namespace detail {
     };
 
     template<typename T>
-    robust_dif<T> operator+(
-        const robust_dif<T>& lhs,
-        const robust_dif<T>& rhs) {
+    robust_dif<T> operator+(const robust_dif<T>& lhs,
+                            const robust_dif<T>& rhs) {
         return robust_dif<T>(lhs.pos() + rhs.pos(),
                              lhs.neg() + rhs.neg());
     }
 
     template<typename T>
-    robust_dif<T> operator+(
-        const robust_dif<T>& lhs, const T& rhs) {
+    robust_dif<T> operator+(const robust_dif<T>& lhs, const T& rhs) {
         if (rhs >= 0) {
             return robust_dif<T>(lhs.pos() + rhs, lhs.neg());
         } else {
@@ -430,8 +457,7 @@ namespace detail {
     }
 
     template<typename T>
-    robust_dif<T> operator+(
-        const T& lhs, const robust_dif<T>& rhs) {
+    robust_dif<T> operator+(const T& lhs, const robust_dif<T>& rhs) {
         if (lhs >= 0) { 
             return robust_dif<T>(lhs + rhs.pos(), rhs.neg());
         } else {
@@ -440,15 +466,13 @@ namespace detail {
     }
 
     template<typename T>
-    robust_dif<T> operator-(
-        const robust_dif<T>& lhs,
-        const robust_dif<T>& rhs) {
+    robust_dif<T> operator-(const robust_dif<T>& lhs,
+                            const robust_dif<T>& rhs) {
         return robust_dif<T>(lhs.pos() + rhs.neg(), lhs.neg() + rhs.pos());
     }
 
     template<typename T>
-    robust_dif<T> operator-(
-        const robust_dif<T>& lhs, const T& rhs) {
+    robust_dif<T> operator-(const robust_dif<T>& lhs, const T& rhs) {
         if (rhs >= 0) {
             return robust_dif<T>(lhs.pos(), lhs.neg() + rhs);
         } else {
@@ -457,8 +481,7 @@ namespace detail {
     }
 
     template<typename T>
-    robust_dif<T> operator-(
-        const T& lhs, const robust_dif<T>& rhs) {
+    robust_dif<T> operator-(const T& lhs, const robust_dif<T>& rhs) {
         if (lhs >= 0) { 
             return robust_dif<T>(lhs + rhs.neg(), rhs.pos());
         } else {
@@ -467,17 +490,15 @@ namespace detail {
     }
 
     template<typename T>
-    robust_dif<T> operator*(
-        const robust_dif<T>& lhs,
-        const robust_dif<T>& rhs) {
+    robust_dif<T> operator*(const robust_dif<T>& lhs,
+                            const robust_dif<T>& rhs) {
         T res_pos = lhs.pos() * rhs.pos() + lhs.neg() * rhs.neg();
         T res_neg = lhs.pos() * rhs.neg() + lhs.neg() * rhs.pos();
         return robust_dif<T>(res_pos, res_neg);
     }
 
     template<typename T>
-    robust_dif<T> operator*(
-        const robust_dif<T>& lhs, const T& val) {
+    robust_dif<T> operator*(const robust_dif<T>& lhs, const T& val) {
         if (val >= 0) {
             return robust_dif<T>(lhs.pos() * val, lhs.neg() * val);
         } else {
@@ -486,8 +507,7 @@ namespace detail {
     }
 
     template<typename T>
-    robust_dif<T> operator*(
-        const T& val, const robust_dif<T>& rhs) {
+    robust_dif<T> operator*(const T& val, const robust_dif<T>& rhs) {
         if (val >= 0) {
             return robust_dif<T>(val * rhs.pos(), val * rhs.neg());
         } else {
@@ -496,23 +516,21 @@ namespace detail {
     }
 
     template<typename T>
-    robust_dif<T> operator/(
-        const robust_dif<T>& lhs, const T& val) {
+    robust_dif<T> operator/(const robust_dif<T>& lhs, const T& val) {
         if (val >= 0) {
             return robust_dif<T>(lhs.pos() / val, lhs.neg() / val);
         } else {
             return robust_dif<T>(-lhs.neg() / val, -lhs.pos() / val);
         }
     }
-
     
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI ROBUST SQRT EXPRESSION  ////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
+    // Used to compute expressions that operate with sqrts with predefined
+    // relative error. Evaluates expressions of the next type:
+    // sum(i = 1 .. n)(A[i] * sqrt(B[i])), 1 <= n <= 4.
     template <typename mpt, typename mpf>
     class robust_sqrt_expr {
     public:
-        // Evaluates expression:
+        // Evaluates expression (re = 4 EPS):
         // A[0] * sqrt(B[0]).
         mpf& eval1(mpt *A, mpt *B) {
             a[0] = A[0];
@@ -521,9 +539,8 @@ namespace detail {
             return b[0] *= a[0];
         }
 
-        // Evaluates expression:
-        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) with
-        // 7 * EPS relative error in the worst case.
+        // Evaluates expression (re = 7 EPS):
+        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]).
         mpf& eval2(mpt *A, mpt *B) {
             a[1] = eval1(A, B);
             b[1] = eval1(A + 1, B + 1);
@@ -538,9 +555,8 @@ namespace detail {
             return b[1] /= a[1];
         }
 
-        // Evaluates expression:
-        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2])
-        // with 16 * EPS relative error in the worst case.
+        // Evaluates expression (re = 16 EPS):
+        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2]).
         mpf& eval3(mpt *A, mpt *B) {
             a[2] = eval2(A, B);
             b[2] = eval1(A + 2, B + 2);
@@ -562,9 +578,9 @@ namespace detail {
         }
 
         
-        // Evaluates expression:
-        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) + A[2] * sqrt(B[2]) + A[3] * sqrt(B[3])
-        // with 25 * EPS relative error in the worst case.
+        // Evaluates expression (re = 25 EPS):
+        // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) +
+        // A[2] * sqrt(B[2]) + A[3] * sqrt(B[3]).
         mpf& eval4(mpt *A, mpt *B) {
             a[3] = eval2(A, B);
             b[3] = eval2(A + 2, B + 2);
