@@ -368,19 +368,19 @@ namespace
   mp_float my_atan_series_at_zero(const mp_float& x)
   {
     // http://functions.wolfram.com/ElementaryFunctions/ArcTan/26/01/01/
-    return x * boost::multiprecision::hyp2F1( boost::multiprecision::one(),
-                           boost::multiprecision::half(),
-                           boost::multiprecision::three_half(),
-                          -(x * x));
+    return x * boost::multiprecision::hyp2F1(boost::multiprecision::one(),
+                                             boost::multiprecision::half(),
+                                             boost::multiprecision::three_half(),
+                                             -(x * x));
   }
 
   mp_float my_atan_series_at_infinity(const mp_float& x)
   {
     // http://functions.wolfram.com/ElementaryFunctions/ArcTan/26/01/01/
     return boost::multiprecision::pi_half() - boost::multiprecision::hyp2F1( boost::multiprecision::half(),
-                                       boost::multiprecision::one(),
-                                       boost::multiprecision::three_half(),
-                                      -boost::multiprecision::one() / (x * x)) / x;
+                                                                             boost::multiprecision::one(),
+                                                                             boost::multiprecision::three_half(),
+                                                                            -boost::multiprecision::one() / (x * x)) / x;
   }
 }
 
