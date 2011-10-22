@@ -451,47 +451,64 @@ mp_float boost::multiprecision::atan(const mp_float& x)
 
 mp_float boost::multiprecision::atan2(const mp_float& y, const mp_float& x)
 {
-  if((!boost::multiprecision::isfinite(x)) || (!boost::multiprecision::isfinite(y)))
+  // Either x or y is NaN, or both are.
+  if(boost::multiprecision::isnan(x) || boost::multiprecision::isnan(y))
   {
-    return x;
+    return std::numeric_limits<mp_float>::quiet_NaN();
   }
 
-  // y is zero
-  if(boost::multiprecision::iszero(y))
+ const bool x_is_neg = boost::multiprecision::isneg(x);
+ const bool y_is_neg = boost::multiprecision::isneg(y);
+
+  // Both x and y are infinite.
+  if(boost::multiprecision::isinf(x) && boost::multiprecision::isinf(y))
   {
-    return (boost::multiprecision::isneg(x) ? boost::multiprecision::pi() : boost::multiprecision::zero());
+    if(x_is_neg)
+    {
+      static const mp_float three_pi_quarter = boost::multiprecision::pi_quarter() * static_cast<boost::int32_t>(3);
+      return ((!y_is_neg) ? three_pi_quarter : -three_pi_quarter);
+    }
+    else
+    {
+      return ((!y_is_neg) ? boost::multiprecision::pi_quarter() : -boost::multiprecision::pi_quarter());
+    }
   }
 
-  // x is zero
-  if(boost::multiprecision::iszero(x))
+  if(boost::multiprecision::isinf(y)) // AND !isinf(x) and neither x nor y isnan...
   {
-    return boost::multiprecision::sgn(y) * boost::multiprecision::pi_half();
-  }
-  
-  // y is infinite
-  if(y.isinf())
-  {
-    const bool b_pos = ((boost::multiprecision::ispos(x) && boost::multiprecision::ispos(y)) || (boost::multiprecision::isneg(x) && boost::multiprecision::isneg(y)));
-
-    return (b_pos ?  std::numeric_limits<mp_float>::infinity()
-                  : -std::numeric_limits<mp_float>::infinity());
+    return ((!y_is_neg) ? boost::multiprecision::pi_half() : -boost::multiprecision::pi_half());
   }
 
-  // Compute atan(y / x), ignoring sign.
-  mp_float atan_term(boost::multiprecision::atan(y / x));
-
-  // Determine quadrant (sign) based on signs of x, y
-  const bool y_neg = boost::multiprecision::isneg(y);
-  const bool x_neg = boost::multiprecision::isneg(x);
-  
-  if(y_neg == x_neg)
+  if(boost::multiprecision::isinf(x)) // AND !isinf(y) and neither x nor y isnan...
   {
-    // Both negative or both positive
-    return (x_neg ? atan_term - boost::multiprecision::pi() : atan_term);
+    return ((!x_is_neg) ? boost::multiprecision::zero() : boost::multiprecision::pi());
+  }
+
+  if(boost::multiprecision::iszero(x)) // AND !isnan(y)...
+  {
+    return (boost::multiprecision::iszero(y) ? boost::multiprecision::zero()
+                                             : ((!y_is_neg) ? boost::multiprecision::pi_half() : -boost::multiprecision::pi_half()));
+  }
+
+  if(boost::multiprecision::iszero(y)) // AND !iszero(x)...
+  {
+    return ((!x_is_neg) ? boost::multiprecision::zero() : boost::multiprecision::pi());
+  }
+
+  // And finally after all these checks... Compute atan(y / x).
+  // Disregard the signs of x and y at the moment.
+  const mp_float atan_term(boost::multiprecision::atan(y / x));
+
+  // Determine the quadrant and the corresponding sign of the
+  // result based on the signs of x and y.
+  if(y_is_neg == x_is_neg)
+  {
+    // Both y and y are negative or both are positive.
+    return (x_is_neg ? (atan_term - boost::multiprecision::pi()) : atan_term);
   }
   else
   {
-    // Different signs of x, y
-    return (x_neg ? atan_term + boost::multiprecision::pi() : atan_term);
+    // There signs of x and y differ.
+    return (x_is_neg ? (atan_term + boost::multiprecision::pi()) : atan_term);
   }
 }
