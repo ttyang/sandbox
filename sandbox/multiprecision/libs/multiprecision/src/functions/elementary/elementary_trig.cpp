@@ -109,7 +109,7 @@ mp_float boost::multiprecision::sin(const mp_float& x)
 
     static const boost::int32_t n_scale           = static_cast<boost::int32_t>(9);
     static const boost::int32_t n_three_pow_scale = static_cast<boost::int32_t>(static_cast<boost::int64_t>(::pow(3.0, static_cast<double>(n_scale)) + 0.5));
-    
+
     if(b_scale)
     {
       xx /= n_three_pow_scale;
@@ -279,7 +279,7 @@ mp_float boost::multiprecision::asin(const mp_float& x)
 
   const bool b_neg = boost::multiprecision::isneg(x);
 
-  const mp_float xx = !b_neg ? x : -x;
+  const mp_float xx = ((!b_neg) ? x : -x);
 
   if(xx > boost::multiprecision::one())
   {
@@ -377,45 +377,37 @@ namespace
   mp_float my_atan_series_at_infinity(const mp_float& x)
   {
     // http://functions.wolfram.com/ElementaryFunctions/ArcTan/26/01/01/
-    return boost::multiprecision::pi_half() - boost::multiprecision::hyp2F1( boost::multiprecision::half(),
-                                                                             boost::multiprecision::one(),
-                                                                             boost::multiprecision::three_half(),
-                                                                            -boost::multiprecision::one() / (x * x)) / x;
+    return boost::multiprecision::pi_half() - (boost::multiprecision::hyp2F1( boost::multiprecision::half(),
+                                                                              boost::multiprecision::one(),
+                                                                              boost::multiprecision::three_half(),
+                                                                             -boost::multiprecision::one() / (x * x)) / x);
   }
 }
 
 mp_float boost::multiprecision::atan(const mp_float& x)
 {
-  if(!boost::multiprecision::isfinite(x))
+  if(boost::multiprecision::isnan(x))
   {
     return std::numeric_limits<mp_float>::quiet_NaN();
   }
 
-  if(x.has_its_own_atan())
-  {
-    return mp_float::my_atan(x);
-  }
-
   const boost::int64_t order = x.order();
 
-  if(x.isinf() || order > boost::multiprecision::tol())
+  if(x.isinf() || (order > boost::multiprecision::tol()))
   {
     return (boost::multiprecision::ispos(x) ? boost::multiprecision::pi_half() : -boost::multiprecision::pi_half());
   }
-  else if(boost::multiprecision::iszero(x))
+
+  if(boost::multiprecision::iszero(x))
   {
     return boost::multiprecision::zero();
   }
-  
-  if(boost::multiprecision::small_arg(x))
-  {
-    return ::my_atan_series_at_zero(x);
-  }
 
-  if(boost::multiprecision::large_arg(x))
-  {
-    return ::my_atan_series_at_infinity(x);
-  }
+  if(x.has_its_own_atan()) { return mp_float::my_atan(x); }
+
+  // Use special handling for small and large arguments.
+  if(boost::multiprecision::small_arg(x)) { return ::my_atan_series_at_zero(x); }
+  if(boost::multiprecision::large_arg(x)) { return ::my_atan_series_at_infinity(x); }
 
   const bool b_neg = boost::multiprecision::isneg(x);
 
@@ -430,11 +422,11 @@ mp_float boost::multiprecision::atan(const mp_float& x)
   static const boost::int64_t p10_min = static_cast<boost::int64_t>(std::numeric_limits<double>::min_exponent10);
   static const boost::int64_t p10_max = static_cast<boost::int64_t>(std::numeric_limits<double>::max_exponent10);
 
-  const double de = static_cast<double>(ne < static_cast<boost::int64_t>(0) ? static_cast<boost::int32_t>((std::max)(ne, p10_min))
-                                                                            : static_cast<boost::int32_t>((std::min)(ne, p10_max)));
+  const double de = ((ne < static_cast<boost::int64_t>(0)) ? static_cast<double>(static_cast<boost::int32_t>((std::max)(ne, p10_min)))
+                                                           : static_cast<double>(static_cast<boost::int32_t>((std::min)(ne, p10_max))));
 
-  mp_float value = order < static_cast<boost::int64_t>(2) ? mp_float(::atan(dd * ::pow(10.0, de)))
-                                                          : ::my_atan_series_at_infinity(xx);
+  mp_float value = ((order < static_cast<boost::int64_t>(2)) ? mp_float(::atan(dd * ::pow(10.0, de)))
+                                                             : ::my_atan_series_at_infinity(xx));
 
   // Newton-Raphson iteration
   static const boost::int32_t double_digits10_minus_one = static_cast<boost::int32_t>(static_cast<boost::int32_t>(std::numeric_limits<double>::digits10) - static_cast<boost::int32_t>(1));
@@ -501,7 +493,10 @@ mp_float boost::multiprecision::atan2(const mp_float& y, const mp_float& x)
 
   // Determine the quadrant and the corresponding sign of the
   // result based on the signs of x and y.
-  if(y_is_neg == x_is_neg)
+
+  const bool x_and_y_have_the_same_sign = (y_is_neg == x_is_neg);
+
+  if(x_and_y_have_the_same_sign)
   {
     // Both y and y are negative or both are positive.
     return (x_is_neg ? (atan_term - boost::multiprecision::pi()) : atan_term);
