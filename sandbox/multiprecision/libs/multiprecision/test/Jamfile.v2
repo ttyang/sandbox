@@ -43,9 +43,9 @@ project
     ;
 
     
- test-suite "multiprecision EFX numerical" :
+ test-suite "multiprecision EFX" :
 		[
-		  run ./numerical_test/multiprecision_test.cpp 
+		  run ./test.cpp 
 		      ../src/backends/float/mp_float.cpp
 		      ../src/backends/float/mp_float_base.cpp
 		      ../src/backends/float/efx/mp_float_efx.cpp
@@ -58,7 +58,7 @@ project
 		      ../src/functions/gamma/factorial.cpp
 		      ../src/functions/gamma/factorial2.cpp
 		      ../src/functions/gamma/gamma.cpp
-		      ../src/functions/gamma/gamma_util.cpp
+		     # ../src/functions/gamma/gamma_util.cpp
 		      ../src/functions/gamma/pochhammer.cpp
 		      ../src/functions/integer/prime.cpp
 		      ../src/functions/integer/prime_factor.cpp
@@ -77,6 +77,7 @@ project
 		      
 		      ./test_case_base.cpp
 		      ./real/test_real.cpp
+		      ./imag/test_imag.cpp
 		      		      
 		      ./real/cases/test_case_0000x_overflow_underflow.cpp
 		      ./real/cases/test_case_0000y_write_to_ostream.cpp
@@ -114,7 +115,32 @@ project
 		      ./real/cases/test_case_00021_bernoulli.cpp
 		      ./real/cases/test_case_00051_factorial.cpp
 		      ./real/cases/test_case_00052_factorial2.cpp
-	      
+		      
+		      ./imag/cases/test_case_02101_z_sin.cpp
+		      ./imag/cases/test_case_02102_z_cos.cpp		      
+				  ./imag/cases/test_case_02103_z_exp.cpp		      
+		      ./imag/cases/test_case_02104_z_log.cpp		      
+		      ./imag/cases/test_case_02105_z_sqrt.cpp		      
+		      ./imag/cases/test_case_02106_z_rootn.cpp		      
+		      ./imag/cases/test_case_02111_z_asin.cpp		      
+		      ./imag/cases/test_case_02112_z_acos.cpp		      
+		      ./imag/cases/test_case_02113_z_atan.cpp		      
+		      ./imag/cases/test_case_02114_z_various_trig.cpp
+		      ./imag/cases/test_case_02115_z_various_elem_trans_log.cpp							      
+		      ./imag/cases/test_case_02116_z_various_elem.cpp		      
+		      ./imag/cases/test_case_02121_z_sinh.cpp		      
+		      ./imag/cases/test_case_02122_z_cosh.cpp		      
+		      ./imag/cases/test_case_02123_z_tanh.cpp		      
+		      ./imag/cases/test_case_02124_z_asinh.cpp		      
+		      ./imag/cases/test_case_02125_z_acosh.cpp
+			    ./imag/cases/test_case_02126_z_atanh.cpp
+			    ./imag/cases/test_case_02201_z_gamma.cpp
+			    ./imag/cases/test_case_02202_z_gamma_medium_x.cpp
+			    ./imag/cases/test_case_02901_z_zeta_small_x.cpp
+			    ./imag/cases/test_case_02902_z_zeta_all_x.cpp
+			    ./imag/cases/test_case_02903_z_zeta_neg_x.cpp
+			    ./imag/cases/test_case_02911_z_zeta_crit_strip.cpp
+        
 		]
   ;
   
