@@ -1,6 +1,8 @@
 # multiprecision/libs/multiprecision/example/jamfile.v2
 
-# Runs original multiprecision examples from Christopher Kormanyos using bjam.
+# Runs original multiprecision examples,
+# basic real and imag, recursive_trapezoid_integral, and gauss_laguerre from Christopher Kormanyos
+# using bjam.
 
 # Copyright Paul A. Bristow 2011
 # Copyright Christopher Kormanyos 2011
@@ -8,12 +10,10 @@
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-import testing ;
+# import testing ;
 
 project
   : requirements
-		#<library>/boost/test//boost_test_exec_monitor/<link>static
-		# But this original version does not use Boost.Test.
 		# (See elsewhere for tests using Boost.Test)
 		<include>../../..
 		<include>../../../boost/
@@ -67,7 +67,7 @@ project
 		      ../src/functions/gamma/factorial.cpp
 		      ../src/functions/gamma/factorial2.cpp
 		      ../src/functions/gamma/gamma.cpp
-		      ../src/functions/gamma/gamma_util.cpp
+		     # ../src/functions/gamma/gamma_util.cpp
 		      ../src/functions/gamma/pochhammer.cpp
 		      ../src/functions/integer/prime.cpp
 		      ../src/functions/integer/prime_factor.cpp
