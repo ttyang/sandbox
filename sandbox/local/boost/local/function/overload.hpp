@@ -150,11 +150,11 @@ namespace boost { namespace local { namespace function {
  * @brief Functor to overload local functions and other functors.
  *
  * This functor aggregates together calls to functions of all the specified
- * function types <c>F0</c>, <c>F1</c>, etc.
+ * function types <c>F1</c>, <c>F2</c>, etc.
  * Each function type must be specified following the Boost.Function preferred
  * syntax:
  * @code
- *  ResultType (ArgumentType0, ArgumgnetType1, ...)
+ *  ResultType (ArgumentType1, ArgumgnetType2, ...)
  * @endcode
  *
  * The maximum number of overloaded function types is specified by the
@@ -167,7 +167,7 @@ namespace boost { namespace local { namespace function {
  *  @RefMacro{BOOST_LOCAL_CONFIG_OVERLOAD_MAX},
  *  @RefMacro{BOOST_LOCAL_CONFIG_OVERLOAD_MAX}, Boost.Function.
  */
-template<typename F0, typename F1, ...>
+template<typename F1, typename F2, ...>
 class overload {
 public:
     /**
@@ -177,7 +177,7 @@ public:
      * can be specified (local functions, function pointers, other functors,
      * etc).
      */
-    overload(const boost::function<F0>&, const boost::function<F1>&, ...);
+    overload(const boost::function<F1>&, const boost::function<F2>&, ...);
 
     /**
      * @brief Call operator matching the signature of the function type
@@ -186,7 +186,10 @@ public:
      * This will in turn invoke the call operator of the first functor that was
      * passed to the constructor.
      */
-    result_type<F0> operator()(arg0_type<F0>, arg1_type<F0>, ...) const;
+    typename boost::function_traits<F1>::result_type operator()(
+            typename boost::function_traits<F1>::arg1_type,
+            typename boost::function_traits<F1>::arg2_type,
+            ...) const;
 
     /**
      * @brief Call operator matching the signature of the function type
@@ -195,7 +198,10 @@ public:
      * This will in turn invoke the call operator of the second functor that
      * was passed to the constructor.
      */
-    result_type<F1> operator()(arg0_type<F1>, arg1_type<F1>, ...) const;
+    typename boost::function_traits<F2>::result_type operator()(
+            typename boost::function_traits<F2>::arg1_type,
+            typename boost::function_traits<F2>::arg2_type,
+            ...) const;
 };
 
 }}} // namespace boost::local::function
