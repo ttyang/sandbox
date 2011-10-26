@@ -771,6 +771,7 @@
     <ClCompile Include="..\example\example_002_basic_usage_imag.cpp" />
     <ClCompile Include="..\example\example_005_recursive_trapezoid_integral.cpp" />
     <ClCompile Include="..\example\example_008_gauss_laguerre.cpp" />
+    <ClCompile Include="..\example\example_010_orthogonal_polynomials.cpp" />
     <ClCompile Include="..\src\backends\float\efx\mp_float_efx.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-gmp|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='debug-mpfr|Win32'">true</ExcludedFromBuild>

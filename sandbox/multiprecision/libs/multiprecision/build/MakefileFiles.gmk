@@ -50,7 +50,9 @@ FILES_FUNCTIONS = ../src/functions/constants/constants \
 FILES_EXAMPLES  = ../example/example_001_basic_usage_real                       \
                   ../example/example_002_basic_usage_imag                       \
                   ../example/example_005_recursive_trapezoid_integral           \
-                  ../example/example_008_gauss_laguerre
+                  ../example/example_008_gauss_laguerre                         \
+                  ../example/example_010_orthogonal_polynomials
+
 
 #
 # Test files

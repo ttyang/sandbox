@@ -388,6 +388,9 @@
     <ClCompile Include="..\src\utility\util_timer.cpp">
       <Filter>libs\multiprecision\src\utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\example\example_010_orthogonal_polynomials.cpp">
+      <Filter>libs\multiprecision\example</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\functions\tables\tables.h">
