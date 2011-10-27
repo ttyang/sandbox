@@ -118,6 +118,7 @@ index_stack_length_stride_crtp_types
         offset_index_bounds
           (
           )
+      #ifndef __clang__
         : super_t
           ({{ 0
             , 0
@@ -125,6 +126,7 @@ index_stack_length_stride_crtp_types
             }
            }
           )
+      #endif
         {}
           template
           < index_bounds_value_enum IBV
@@ -239,7 +241,7 @@ index_stack_length_stride_crtp_types
           stride_t
         stride_val()const
         {
-            my_ls.stride();
+            return my_ls.stride();
         }
           stride_t
         length_val()const
@@ -265,16 +267,23 @@ index_stack_length_stride_crtp_types
           length_stride_iter_t
         my_lsi
         ;
+          axis_t
+        my_rotation
+        ;
      public:
         indices_bounds_strides
           ( axis_t a_rank
           , length_stride_iter_t const& a_lsi
+          , axis_t a_rotation=0
           )
         : my_oib
           ( a_rank
           )
         , my_lsi
           ( a_lsi
+          )
+        , my_rotation
+          ( a_rotation
           )
         {}
         
@@ -283,20 +292,69 @@ index_stack_length_stride_crtp_types
         {
             return my_oib.size();
         }
-
+          axis_t
+        axis_rotated(axis_t a_axis)const
+        {
+            return (my_rotation+a_axis)%rank();
+        }
+          axis_t
+        rotate(axis_t a_rotation)
+          /**@brief
+           *  Rotate axes to the left by a_rotation positions.
+           */
+        {
+            my_rotation=axis_rotated(a_rotation);
+            return my_rotation;
+        }
+          axis_t
+        rotation()const
+        {
+            return my_rotation;
+        }
           index_bound_stride<mutable_yes>
         operator[](axis_t a_axis)
         {
-            offset_index_bounds&oib=my_oib[a_axis];
-            length_stride_t const&ls=my_lsi[a_axis];
+            axis_t const r_axis=axis_rotated(a_axis);
+            offset_index_bounds&oib=my_oib[r_axis];
+            length_stride_t const&ls=my_lsi[r_axis];
             return index_bound_stride<mutable_yes>( oib, ls);
         }
           index_bound_stride<mutable_not>
         operator[](axis_t a_axis)const
         {
-            offset_index_bounds const&oib=my_oib[a_axis];
-            length_stride_t const&ls=my_lsi[a_axis];
+            axis_t const r_axis=axis_rotated(a_axis);
+            offset_index_bounds const&oib=my_oib[r_axis];
+            length_stride_t const&ls=my_lsi[r_axis];
             return index_bound_stride<mutable_not>( oib, ls);
+        }
+            typedef
+          std::vector<index_t>
+        indices_t
+        ;
+          indices_t
+        indices()const
+        {
+            axis_t const n_axis=rank();
+            indices_t indices_v(n_axis);
+            for(axis_t i_axis=0; i_axis<n_axis; ++i_axis)
+            {
+                offset_index_bounds const&oib=my_oib[i_axis];
+                indices_v[i_axis]=oib.template val<index_value>();
+            }
+            return indices_v;
+        }
+          indices_t
+        indices_rotated()const
+        {
+            axis_t const n_axis=rank();
+            indices_t indices_v(n_axis);
+            for(axis_t i_axis=0; i_axis<n_axis; ++i_axis)
+            {
+                axis_t const r_axis=axis_rotated(i_axis);
+                offset_index_bounds const&oib=my_oib[r_axis];
+                indices_v[i_axis]=oib.template val<index_value>();
+            }
+            return indices_v;
         }
     };
 };
@@ -407,45 +465,65 @@ index_stack_length_stride_crtp_abstract
       index_stack_concrete_t&
     derived()
     {
-        *static_cast<index_stack_concrete_t*>(this);
+        return static_cast<index_stack_concrete_t&>(*this);
     }
       index_stack_concrete_t const&
     derived()const
     {
-        *static_cast<index_stack_concrete_t const*>(this);
+        return static_cast<index_stack_concrete_t const&>(*this);
+    }
+        typedef
+      unsigned
+    axis_depth_t
+    ;
+        static
+      axis_depth_t const
+    axis_end=0
+      /**@brief
+       *  The value returned from inc_dec_ator indicating
+       *  all indices changed.
+       */
+    ;
+      axis_depth_t
+    axis_begin()const
+    {
+        return derived().rank();
     }
       template
       < inc_dec_enum ID
       >
-      int
+      axis_depth_t
     inc_dec_ator()
       /**@brief
        *  increment (if ID==inc_ator) or decrement(if ID==dec_ator) the indices
        *  1 at a time, from rightmost to leftmost.
        *  IOW, the rightmost index increments fastest, and 
        *  the leftmost index increments slowest.
+       *  Rightmost corresponds to top of stack.
+       *  Leftmost corresponds to bottom of stack.
+       *  Returns the depth of the stack containing unchanged
+       *  indices.
        */
     {
         index_stack_concrete_t&der=derived();
         typedef inc_dec_concrete<ID> conc_t;
         auto& offset_space=der.offset_space_ref();
-        int const n=der.rank();
-        int axis=n-1;//increment 1st rightmost index.
+        axis_depth_t axis_depth_v=axis_begin();//change 1st rightmost index.
       //#define TRACE_INC_DEC_ATOR
-        while( 0<=axis)
+        while( axis_end<axis_depth_v)
         {
-            auto ibs=der[axis];
+            auto ibs=der[axis_depth_v-1];
             auto& index_axis=ibs.template get<index_value>();
             auto bound_limit_axis=ibs.template bound<conc_t::bound_limit>();
             auto stride_axis=ibs.stride_val();
           #ifdef TRACE_INC_DEC_ATOR
             std::cout
-              <<"inc_dec_ator::before:axis="<<axis
+              <<"inc_dec_ator::before:axis_depth_v="<<axis_depth_v
               <<":index_axis="<<index_axis
               <<":bound_limit_axis="<<bound_limit_axis
               <<"\n";
           #endif
-            if( index_axis == bound_limit_axis)//if axis-th index at triggeer bound, then
+            if( index_axis == bound_limit_axis)//if axis_depth_v-th index at trigger bound, then
             {
                 { //reset index_axis to bound opposite to bound_limit_axis:
                     auto bound_reset_axis=ibs.template bound<conc_t::bound_reset>();
@@ -456,7 +534,7 @@ index_stack_length_stride_crtp_abstract
                     index_axis=bound_reset_axis;
                 }
                   //then proceed to increment/decrement next (in left direction) index in loop.
-                --axis;
+                --axis_depth_v;
             }
             else
             { //just cnahge index_axis, offset_space, and exit loop.
@@ -465,19 +543,19 @@ index_stack_length_stride_crtp_abstract
             }
           #ifdef TRACE_INC_DEC_ATOR
             std::cout
-              <<"inc_dec_ator::after:axis="<<axis
+              <<"inc_dec_ator::after:axis_depth_v="<<axis_depth_v
               <<":index_axis="<<index_axis
               <<"\n";
           #endif
         }
-        return axis;
+        return axis_depth_v;
     }
-      int
+      axis_depth_t
     operator++()
     {
         return inc_dec_ator<inc_ator>();
     }
-      int
+      axis_depth_t
     operator--()
     {
         return inc_dec_ator<dec_ator>();
@@ -548,11 +626,14 @@ indices_space
     }
 
       void
-    axis_offset_put
+    axis_offsets_put
       ( axis_t a_axis
-      , index_t a_offset_lower
-      , index_t a_offset_upper
+      , index_t a_offset_lower=0
+      , index_t a_offset_upper=0
       )
+    /**@brief
+     *  Reset the boundary offsets for given axis.
+     */
     {
         derived_t&der=derived();
         auto ibs=der[a_axis];
@@ -567,6 +648,24 @@ indices_space
         my_space*=l_new;
     }
 
+      void 
+    axes_offsets_put
+      ( index_t offset_lower=0
+      , index_t offset_upper=0
+      )
+    {//call axis_offset_put for each axis.
+          axis_t const 
+        n_axis=derived().rank();
+        for
+          ( axis_t i_axis=0
+          ; i_axis<n_axis
+          ; ++i_axis
+          )
+        {
+            axis_offsets_put( i_axis, offset_lower, offset_upper);
+        }
+    }
+      
       derived_t&
     derived()
     {
@@ -701,16 +800,9 @@ operator<<
   )
   {
       sout<<"{ offset="<<std::setw(2)<<lsos_v.offset_space_val();
-      sout<<", indices=";
-      sout<<"{ ";
-      for(unsigned axis=0; axis<lsos_v.rank(); ++axis)
-      {
-          if(0<axis)sout<<", ";
-          auto ibs=lsos_v[axis];
-          auto index=ibs.template get<boost::array_stepper::index_value>();
-          sout<<std::setw(2)<<index;
-      }
-      sout<<"} ";
+      sout<<", rotation="<<lsos_v.rotation();
+      sout<<", rotated indices=";
+      sout<<lsos_v.indices_rotated();
       sout<<"}";
       return sout;
   }
