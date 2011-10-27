@@ -28,9 +28,9 @@ namespace detail {
         mpt_wrapper() {}
 
         explicit mpt_wrapper(int input) : m_(input) {}
-        
+
         explicit mpt_wrapper(double input) : m_(input) {}
-        
+
         mpt_wrapper(const mpt& input) : m_(input) {}
 
         mpt_wrapper(const mpt_wrapper& w) : m_(w.m_) {}
@@ -47,7 +47,7 @@ namespace detail {
             m_ = that;
             return *this;
         }
-        
+
         mpt_wrapper& operator=(const mpt_wrapper& that) {
             m_ = that.m_;
             return *this;
@@ -205,7 +205,7 @@ namespace detail {
 
     template <typename mpt, int N>
     int mpt_wrapper<mpt, N>::cur_ = 0;
-    
+
     template <typename mpt, int N>
     mpt_wrapper<mpt, N> mpt_wrapper<mpt, N>::temp_[N];
 

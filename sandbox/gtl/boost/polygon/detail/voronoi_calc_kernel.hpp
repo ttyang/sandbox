@@ -30,7 +30,7 @@ class voronoi_calc_kernel<int> {
 public:
     typedef double fpt_type;
     typedef unsigned long long ulong_long_type;
-    
+
     static const unsigned int ULPS = 64;
     static const unsigned int ULPSx2 = (ULPS << 1);
     static const fpt_type fULPS;
@@ -185,7 +185,7 @@ public:
                        static_cast<fpt_type>(rhs.y());
             }
             return static_cast<fpt_type>(lhs.lower_x()) <
-                   static_cast<fpt_type>(rhs.x());    
+                   static_cast<fpt_type>(rhs.x());
         }
 
         bool operator()(const circle_type &lhs, const circle_type &rhs) const {
@@ -219,7 +219,7 @@ public:
     class distance_predicate {
     public:
         typedef Site site_type;
-        
+
         // Returns true if a horizontal line going through a new site intersects
         // right arc at first, else returns false. If horizontal line goes
         // through intersection point of the given two arcs returns false also.
@@ -240,7 +240,6 @@ public:
                 }
             }
         }
-
     private:
         typedef typename Site::point_type point_type;
 
@@ -272,7 +271,7 @@ public:
             // The undefined ulp range is equal to 3EPS + 3EPS <= 6ULP.
             return dist1 < dist2;
         }
-        
+
         bool ps(const site_type &left_site, const site_type &right_site,
                 const site_type &new_site, bool reverse_order) const {
             kPredicateResult fast_res = fast_ps(
@@ -309,7 +308,7 @@ public:
                                             const point_type &point) const {
             fpt_type dx = site.x() - point.x();
             fpt_type dy = site.y() - point.y();
-            // The relative error is atmost 3EPS.                    
+            // The relative error is atmost 3EPS.
             return (dx * dx + dy * dy) / (static_cast<fpt_type>(2.0) * dx);
         }
 
@@ -336,7 +335,7 @@ public:
                 } else {
                     k = (k - b1) / (a1 * a1);
                 }
-                // The relative error is atmost 8EPS.            
+                // The relative error is atmost 8EPS.
                 return robust_cross_product(a1, b1, a3, b3) * k;
             }
         }
@@ -430,7 +429,6 @@ public:
                 }
             }
         }
-
     private:
         // Get the newer site.
         const site_type &get_comparison_site(const node_type &node) const {
@@ -439,7 +437,7 @@ public:
             }
             return node.right_site();
         }
-        
+
         // Get comparison pair: y coordinate and direction of the newer site.
         std::pair<coordinate_type, int> get_comparison_y(
             const node_type &node, bool is_new_node = true) const {
@@ -456,7 +454,6 @@ public:
             }
             return std::make_pair(node.right_site().y(), -1);
         }
-
     private:
         distance_predicate_type predicate_;
     };
@@ -466,7 +463,7 @@ public:
     public:
         typedef typename Site::point_type point_type;
         typedef Site site_type;
-        
+
         bool ppp(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3) const {
@@ -630,7 +627,7 @@ public:
                     static_cast<fpt_type>(site2.y());
             teta = line_a * vec_x + line_b * vec_y;
             denom = vec_x * line_b - vec_y * line_a;
-            
+
             dif[0] = static_cast<fpt_type>(site3.point1().y()) -
                      static_cast<fpt_type>(site1.y());
             dif[1] = static_cast<fpt_type>(site1.x()) -
@@ -676,7 +673,7 @@ public:
                     c_event.x(0.5 * sqrt_expr_.eval2(cA, cB).get_d() / denom_sqr);
                 }
             }
-            
+
             if (recompute_c_y || recompute_lower_x) {
                 cA[2] = sum_y * denom * denom + teta * sum_AB * vec_y;
                 cB[2] = 1;
@@ -687,7 +684,7 @@ public:
                               denom_sqr);
                 }
             }
-            
+
             if (recompute_lower_x) {
                 cB[0] *= segm_len;
                 cB[1] *= segm_len;
@@ -699,7 +696,7 @@ public:
                                 (denom_sqr * std::sqrt(segm_len.get_d())));
             }
         }
-        
+
         // Recompute parameters of the circle event using high-precision library.
         void pss(const site_type &site1,
                  const site_type &site2,
@@ -845,7 +842,7 @@ public:
                    static_cast<fpt_type>(site2.x0(true));
             a[2] = static_cast<fpt_type>(site3.x1(true)) -
                    static_cast<fpt_type>(site3.x0(true));
-        
+
             b[0] = static_cast<fpt_type>(site1.y1(true)) -
                    static_cast<fpt_type>(site1.y0(true));
             b[1] = static_cast<fpt_type>(site2.y1(true)) -
@@ -893,7 +890,7 @@ public:
                     fpt_type c_x = sqrt_expr_.eval3(cA, cB).get_d();
                     c_event.x(c_x / denom);
                 }
-                
+
                 if (recompute_lower_x) {
                     cB[3] = 1;
                     fpt_type lower_x = sqrt_expr_.eval4(cA, cB).get_d();
@@ -901,7 +898,6 @@ public:
                 }
             }
         }
-
     private:
         template <typename T>
         mpt_wrapper<mpz_class, 8> &mpt_cross(T a0, T b0, T a1, T b1) {
@@ -967,7 +963,6 @@ public:
             numer = sqrt_expr_.eval4(cA, cB);
             return numer / (lh - rh);
         }
-
     private:
         robust_sqrt_expr_type sqrt_expr_;
     };
@@ -1245,19 +1240,19 @@ public:
             robust_fpt_type b1(static_cast<fpt_type>(site1.y1(true)) -
                                static_cast<fpt_type>(site1.y0(true)), 0.0);
             robust_fpt_type c1(robust_cross_product(site1.x0(true), site1.y0(true), site1.x1(true), site1.y1(true)), 2.0);
-            
+
             robust_fpt_type a2(static_cast<fpt_type>(site2.x1(true)) -
                                static_cast<fpt_type>(site2.x0(true)), 0.0);
             robust_fpt_type b2(static_cast<fpt_type>(site2.y1(true)) -
                                static_cast<fpt_type>(site2.y0(true)), 0.0);
             robust_fpt_type c2(robust_cross_product(site2.x0(true), site2.y0(true), site2.x1(true), site2.y1(true)), 2.0);
-            
+
             robust_fpt_type a3(static_cast<fpt_type>(site3.x1(true)) -
                                static_cast<fpt_type>(site3.x0(true)), 0.0);
             robust_fpt_type b3(static_cast<fpt_type>(site3.y1(true)) -
                                static_cast<fpt_type>(site3.y0(true)), 0.0);
             robust_fpt_type c3(robust_cross_product(site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true)), 2.0);
-            
+
             robust_fpt_type len1 = (a1 * a1 + b1 * b1).sqrt();
             robust_fpt_type len2 = (a2 * a2 + b2 * b2).sqrt();
             robust_fpt_type len3 = (a3 * a3 + b3 * b3).sqrt();
@@ -1302,15 +1297,13 @@ public:
                     recompute_c_x, recompute_c_y, recompute_lower_x);
             }
         }
-
     private:
         template <typename T>
         T sqr_distance(T dif_x, T dif_y) {
             return dif_x * dif_x + dif_y * dif_y;
         }
-
     private:
-        exact_circle_formation_functor_type exact_circle_formation_functor_; 
+        exact_circle_formation_functor_type exact_circle_formation_functor_;
     };
 
     template <typename Site,
@@ -1384,12 +1377,10 @@ public:
             }
             return true;
         }
-
     private:
         circle_existence_predicate_type circle_existence_predicate_;
         circle_formation_functor_type circle_formation_functor_;
     };
-
 private:
     // Convert value to 64-bit unsigned integer.
     // Return true if the value is positive, else false.

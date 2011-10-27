@@ -1,6 +1,6 @@
-// Boost polygon/voronoi_builder.hpp header file
+// Boost.Polygon library voronoi_builder.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010.
+//          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -26,33 +26,18 @@
 
 namespace boost {
 namespace polygon {
-
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI TRAITS /////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    
-    template <typename T>
-    struct voronoi_builder_traits;
-
-    template <>
-    struct voronoi_builder_traits<int> {
-        typedef detail::voronoi_calc_kernel<int> calc_kernel_type;
-        typedef calc_kernel_type::fpt_type coordinate_type;
-    };
-
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI BUILDER ////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-
+    // GENERAL INFO:
     // The sweepline algorithm implementation to compute voronoi diagram of
     // input data sets of points and segments (Fortune's algorithm).
     // Complexity - O(N*logN), memory usage - O(N), where N is the total
     // number of input objects.
+    //
+    // ALGORITHM OVERVIEW:
     // Sweepline is a vertical line that sweeps from the left to the right
     // along the x-axis positive direction. Each of the input objects is
     // wrapped into the site event. Each event is characterized by its
-    // coordinates: the point site is defined by the point itself,
-    // the segment site is defined by its startpoint. At any moment we
+    // coordinates: the point site event is defined by the point itself,
+    // the segment site event is defined by its startpoint. At any moment we
     // consider only the sites that lie to the left of the sweepline. Beach
     // line is a curve formed by the parabolic arcs and line segments, that
     // consists of the points equidistant from the sweepline and the nearest
@@ -66,35 +51,24 @@ namespace polygon {
     // and processes it appropriately. This is made until there are no events.
     // At the end output data structure holds the voronoi diagram of the
     // initial set of objects.
+    //
+    // DATA STRUCTURES OVERVIEW:
     // Each point creates one site event. Each segment creates three site
     // events: two for its endpoints and one for the segment itself (this is
     // made to simplify output construction). All the site events are
-    // constructed at the algorithm initialization step. After that they
-    // are ordered using quicksort algorithm.
+    // constructed and sorted at the algorithm initialization step.
     // Priority queue is used to dynamically hold circle events. At each step
     // of the algorithm the leftmost event is retrieved by comparing the
     // current site event and the topmost element from the circle event queue.
     // Standard map container was chosen to hold state of the beach line. The
-    // keys of the map correspond to the bisectors and values to the
-    // corresponding edges from the output data structure. Specially defined
-    // comparison functor is used to make the beach line correctly ordered.
-    // Epsilon-based and high-precision approaches are used to guarantee
+    // keys of the map correspond to the neighboring bisectors and values to
+    // the corresponding edges from the output data structure. Specially
+    // defined comparison functor is used to make the beach line correctly
+    // ordered. Epsilon-based and high-precision approaches are used to guarantee
     // efficiency and robustness of the algorithm implementation.
-    // Member data: 1) site_events_ - vector of the site events;
-    //              2) site_event_iterator_ - iterator to the next
-    //                 site event;
-    //              3) circle_events_ - priority queue of circle events,
-    //                 allows to retrieve topmost event in O(logN) time;
-    //              4) beach_line_ - contains current state of the beach line;
-    //              5) end_points_ - maps endpoints of the segment sites with
-    //                 temporary nodes from the beach line. While sweepline
-    //                 sweeps over the second endpoint of the segments
-    //                 temporary nodes are being removed;
-    //              6) output_ - contains voronoi diagram itself.
     template <typename T, typename VD>
     class voronoi_builder {
     public:
-        typedef typename voronoi_builder_traits<T>::coordinate_type coordinate_type;
         typedef VD output_type;
 
         voronoi_builder() {}
@@ -121,8 +95,11 @@ namespace polygon {
                 coordinate_type x2 = static_cast<coordinate_type>(it->high().x());
                 coordinate_type y2 = static_cast<coordinate_type>(it->high().y());
                 site_events_.push_back(detail::site_event<coordinate_type>(x1, y1, 0));
-                site_events_.push_back(detail::site_event<coordinate_type>(x2, y2, 0));
-                site_events_.push_back(detail::site_event<coordinate_type>(x1, y1, x2, y2, 0));
+                // Process degenerate segments correctly.
+                if (x1 != x2 || y1 != y2) {
+                    site_events_.push_back(detail::site_event<coordinate_type>(x2, y2, 0));
+                    site_events_.push_back(detail::site_event<coordinate_type>(x1, y1, x2, y2, 0));
+                }
             }
         }
 
@@ -173,28 +150,28 @@ namespace polygon {
         void clear() {
             site_events_.clear();
         }
-
     private:
-        typedef voronoi_builder_traits<int>::calc_kernel_type calc_kernel_type;
+        typedef detail::voronoi_calc_kernel<T> CKT;
+        typedef typename CKT::fpt_type coordinate_type;
 
         typedef detail::point_2d<coordinate_type> point_type;
         typedef detail::site_event<coordinate_type> site_event_type;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
         typedef detail::circle_event<coordinate_type> circle_event_type;
-        typedef calc_kernel_type::event_comparison_predicate<site_event_type, circle_event_type>
+        typedef typename CKT::event_comparison_predicate<site_event_type, circle_event_type>
             event_comparison_predicate;
-        typedef calc_kernel_type::event_equality_predicate<site_event_type, circle_event_type>
+        typedef typename CKT::event_equality_predicate<site_event_type, circle_event_type>
             event_equality_predicate;
-        typedef calc_kernel_type::circle_formation_predicate<site_event_type, circle_event_type>
+        typedef typename CKT::circle_formation_predicate<site_event_type, circle_event_type>
             circle_formation_predicate_type;
         typedef typename output_type::voronoi_edge_type edge_type;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<edge_type, circle_event_type> value_type;
-        typedef calc_kernel_type::node_comparison_predicate<key_type> node_comparer_type;
+        typedef typename CKT::node_comparison_predicate<key_type> node_comparer_type;
         typedef std::map< key_type, value_type, node_comparer_type > beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
-        typedef std::pair<circle_event_type, beach_line_iterator> event_type; 
+        typedef std::pair<circle_event_type, beach_line_iterator> event_type;
         typedef struct {
             bool operator()(const event_type &lhs, const event_type &rhs) const {
                 return predicate(rhs.first, lhs.first);
@@ -210,18 +187,19 @@ namespace polygon {
         // events for each input segment (both endpoints of a segment and the
         // segment itself).
         void init_sites_queue() {
-            // Sort the site events.
+            // Sort site events.
             sort(site_events_.begin(), site_events_.end(), event_comparison_predicate());
 
             // Remove duplicates.
-            site_events_.erase(unique(
-                site_events_.begin(), site_events_.end(), event_equality_predicate()), site_events_.end());
+            site_events_.erase(unique(site_events_.begin(),
+                                      site_events_.end(),
+                                      event_equality_predicate()), site_events_.end());
 
-            // Number the sites.
+            // Index sites.
             for (size_t cur = 0; cur < site_events_.size(); ++cur)
                 site_events_[cur].index(cur);
 
-            // Init the site's iterator.
+            // Init site iterator.
             site_event_iterator_ = site_events_.begin();
         }
 
@@ -236,9 +214,9 @@ namespace polygon {
 
                 // Count the number of the sites to init the beach line.
                 while(site_event_iterator_ != site_events_.end() &&
-                      calc_kernel_type::is_vertical(site_event_iterator_->point0(),
-                                                    site_events_.begin()->point0()) &&
-                      calc_kernel_type::is_vertical(*site_event_iterator_)) {
+                      CKT::is_vertical(site_event_iterator_->point0(),
+                                       site_events_.begin()->point0()) &&
+                      CKT::is_vertical(*site_event_iterator_)) {
                     ++site_event_iterator_;
                     ++skip;
                 }
@@ -300,12 +278,11 @@ namespace polygon {
             }
         }
 
-        // Process a single site.
         void process_site_event() {
             // Get the site event to process.
             site_event_type site_event = *site_event_iterator_;
 
-            // Move the site's iterator.
+            // Move site iterator.
             site_event_iterator_type last = site_event_iterator_ + 1;
 
             // If a new site is an end point of some segment,
@@ -335,7 +312,7 @@ namespace polygon {
 
                 // Do further processing depending on the above node position.
                 // For any two neighbouring nodes the second site of the first node
-                // is the same as the first site of the second arc.
+                // is the same as the first site of the second node.
                 if (it == beach_line_.end()) {
                     // The above arc corresponds to the second arc of the last node.
                     // Move the iterator to the last node.
@@ -406,11 +383,10 @@ namespace polygon {
             }
         }
 
-        // Process a single circle event.
         // In general case circle event is made of the three consequtive sites
         // that form two bisector nodes in the beach line data structure.
         // Let circle event sites be A, B, C, two bisectors that define
-        // circle event be (A, B), (B, C). During circle event processing
+        // circle event are (A, B), (B, C). During circle event processing
         // we remove (A, B), (B, C) and insert (A, C). As beach line comparer
         // works correctly only if one of the nodes is a new one we remove
         // (B, C) bisector and change (A, B) bisector to the (A, C). That's
@@ -490,8 +466,6 @@ namespace polygon {
 
             // Update the output.
             edge_type *edge = output_->insert_new_edge(site_arc2, site_event);
-
-            // Update the beach line with the (site_arc1, site_event) bisector.
             beach_line_iterator it = beach_line_.insert(position,
                 typename beach_line_type::value_type(new_right_node, value_type(edge->twin())));
 
@@ -508,7 +482,6 @@ namespace polygon {
                 end_points_.push(std::make_pair(site_event.point1(), temp_it));
             }
 
-            // Update the beach line with the (site_event, site_arc2) bisector.
             beach_line_.insert(position,
                 typename beach_line_type::value_type(new_left_node, value_type(edge)));
             return it;
@@ -531,7 +504,6 @@ namespace polygon {
                 bisector_node->second.circle_event(&e.first);
             }
         }
-
     private:
         struct end_point_comparison {
             bool operator() (const end_point_type &end1, const end_point_type &end2) const {
@@ -552,7 +524,6 @@ namespace polygon {
         voronoi_builder(const voronoi_builder&);
         void operator=(const voronoi_builder&);
     };
-
 } // polygon
 } // boost
 

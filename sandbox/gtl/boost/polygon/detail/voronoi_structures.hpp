@@ -17,7 +17,6 @@
 namespace boost {
 namespace polygon {
 namespace detail {
-
     // Cartesian 2D point data structure.
     template <typename T>
     class point_2d {
@@ -71,7 +70,6 @@ namespace detail {
         void y(coordinate_type y) {
             y_ = y;
         }
-
     private:
         coordinate_type x_;
         coordinate_type y_;
@@ -206,7 +204,6 @@ namespace detail {
         bool is_inverse() const {
             return is_inverse_;
         }
-
     private:
         point_type point0_;
         point_type point1_;
@@ -275,7 +272,6 @@ namespace detail {
         void deactivate() {
             is_active_ = false;
         }
-
     private:
         coordinate_type center_x_;
         coordinate_type center_y_;
@@ -314,7 +310,6 @@ namespace detail {
             c_.push(c_list_.begin());
             return c_list_.front();
         }
-
     private:
         typedef typename std::list<T>::iterator list_iterator_type;
 
@@ -386,7 +381,6 @@ namespace detail {
         void right_site(const site_type &site) {
             right_site_ = site;
         }
-
     private:
         site_type left_site_;
         site_type right_site_;
@@ -418,12 +412,10 @@ namespace detail {
         void edge(Edge *new_edge) {
             edge_ = new_edge;
         }
-
     private:
         Circle *circle_event_;
         Edge *edge_;
     };
-
 } // detail
 } // polygon
 } // boost

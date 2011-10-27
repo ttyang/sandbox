@@ -1,6 +1,6 @@
-// Boost polygon/voronoi_diagram.hpp header file
+// Boost.Polygon library voronoi_diagram.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010.
+//          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -20,10 +20,6 @@
 
 namespace boost {
 namespace polygon {
-
-    ///////////////////////////////////////////////////////////////////////////
-    // VORONOI OUTPUT TYPES ///////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
 
     // Forward declarations.
     template <typename T>
@@ -60,12 +56,16 @@ namespace polygon {
                                 static_cast<coordinate_type>(p2.y()));
         }
 
-        BRect(coordinate_type x_mn, coordinate_type y_mn,
-              coordinate_type x_mx, coordinate_type y_mx) {
-             x_min_ = (std::min)(x_mn, x_mx);
-             y_min_ = (std::min)(y_mn, y_mx);
-             x_max_ = (std::max)(x_mn, x_mx);
-             y_max_ = (std::max)(y_mn, y_mx);
+        template <typename C>
+        BRect(C x_mn, C y_mn, C x_mx, C y_mx) {
+            x_min_ = (std::min)(static_cast<coordinate_type>(x_mn),
+                                static_cast<coordinate_type>(x_mx));
+            y_min_ = (std::min)(static_cast<coordinate_type>(y_mn),
+                                static_cast<coordinate_type>(y_mx));
+            x_max_ = (std::max)(static_cast<coordinate_type>(x_mn),
+                                static_cast<coordinate_type>(x_mx));
+            y_max_ = (std::max)(static_cast<coordinate_type>(y_mn),
+                                static_cast<coordinate_type>(y_mx));
         }
 
         // Extend the rectangle with a new point.
@@ -78,9 +78,12 @@ namespace polygon {
         }
 
         // Check whether a point is situated inside the bounding rectangle.
-        bool contains(const point_type &p) const {
-            return p.x() >= x_min_ && p.x() <= x_max_ &&
-                   p.y() >= y_min_ && p.y() <= y_max_;
+        template <typename P>
+        bool contains(const P &p) const {
+            return static_cast<coordinate_type>(p.x()) >= x_min_ &&
+                   static_cast<coordinate_type>(p.x()) <= x_max_ &&
+                   static_cast<coordinate_type>(p.y()) >= y_min_ &&
+                   static_cast<coordinate_type>(p.y()) <= y_max_;
         }
 
         // Check whether the bounding rectangle has a non-zero area.
@@ -204,11 +207,11 @@ namespace polygon {
                                       (site1.y() + site2.y()) / 2);
                     point_type direction(site1.y() - site2.y(),
                                          site2.x() - site1.x());
-                    
+
                     // Find intersection points.
                     find_intersections(origin, direction, LINE,
                                        brect, edge_points);
-                    
+
                     // Update endpoints in case edge is a ray.
                     if (edge->vertex1() != NULL)
                         edge_points[1] = get_point(edge->vertex1()->vertex());
@@ -251,7 +254,7 @@ namespace polygon {
                     // Find intersection points.
                     find_intersections(point1, direction, LINE,
                                        brect, edge_points);
-                    
+
                     // Update endpoints in case edge is a ray.
                     if (edge->vertex1() != NULL)
                         edge_points[1] = get_point(edge->vertex1()->vertex());
@@ -346,7 +349,6 @@ namespace polygon {
                     origin.x() + fT1 * direction.x(),
                     origin.y() + fT1 * direction.y()));
         }
-
     private:
         voronoi_helper();
 
@@ -572,7 +574,6 @@ namespace polygon {
         int num_incident_edges() const { return num_incident_edges_; }
         void inc_num_incident_edges() { ++num_incident_edges_; }
         void dec_num_incident_edges() { --num_incident_edges_; }
-
     private:
         point_type point0_;
         point_type point1_;
@@ -602,14 +603,13 @@ namespace polygon {
         const point_type &vertex() const { return vertex_; }
 
         voronoi_edge_type *incident_edge() { return incident_edge_; }
-        const voronoi_edge_type *incident_edge() const { 
+        const voronoi_edge_type *incident_edge() const {
             return incident_edge_;
         }
         void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
         int num_incident_edges() const { return num_incident_edges_; }
         void num_incident_edges(int n) { num_incident_edges_ = n; }
-
     private:
         point_type vertex_;
         voronoi_edge_type *incident_edge_;
@@ -715,7 +715,6 @@ namespace polygon {
             }
             return true;
         }
-
     private:
         voronoi_cell_type *cell_;
         voronoi_vertex_type *vertex_;
@@ -1103,7 +1102,6 @@ namespace polygon {
                 }
             }
         }
-
     private:
         // Remove degenerate edge.
         void remove_edge(voronoi_edge_type *edge) {
@@ -1162,7 +1160,6 @@ namespace polygon {
         voronoi_diagram(const voronoi_diagram&);
         void operator=(const voronoi_diagram&);
     };
-
 } // polygon
 } // boost
 

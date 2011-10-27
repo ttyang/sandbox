@@ -5,7 +5,7 @@
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
-// See http://www.boost.org for updates, documentation, and revision history.    
+// See http://www.boost.org for updates, documentation, and revision history.
 
 #ifndef BOOST_POLYGON_VORONOI_FPT_KERNEL
 #define BOOST_POLYGON_VORONOI_FPT_KERNEL
@@ -52,7 +52,6 @@
 namespace boost {
 namespace polygon {
 namespace detail {
-
     // Represents the result of the epsilon robust predicate.
     // If the result is undefined some further processing is usually required.
     enum kPredicateResult {
@@ -232,7 +231,7 @@ namespace detail {
             if ((this->fpv_ >= 0 && that.fpv_ >= 0) ||
                 (this->fpv_ <= 0 && that.fpv_ <= 0))
                 this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
-            else {            
+            else {
                 floating_point_type temp =
                     (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
                 this->re_ = std::fabs(temp) + ROUNDING_ERROR;
@@ -314,7 +313,6 @@ namespace detail {
         robust_fpt fabs() const {
             return (fpv_ >= 0) ? *this : -(*this);
         }
-
     private:
         floating_point_type fpv_;
         relative_error_type re_;
@@ -434,7 +432,6 @@ namespace detail {
             }
             return *this;
         }
-
     private:
         T positive_sum_;
         T negative_sum_;
@@ -458,7 +455,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator+(const T& lhs, const robust_dif<T>& rhs) {
-        if (lhs >= 0) { 
+        if (lhs >= 0) {
             return robust_dif<T>(lhs + rhs.pos(), rhs.neg());
         } else {
             return robust_dif<T>(rhs.pos(), rhs.neg() - lhs);
@@ -482,7 +479,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator-(const T& lhs, const robust_dif<T>& rhs) {
-        if (lhs >= 0) { 
+        if (lhs >= 0) {
             return robust_dif<T>(lhs + rhs.neg(), rhs.pos());
         } else {
             return robust_dif<T>(rhs.neg(), rhs.pos() - lhs);
@@ -523,7 +520,7 @@ namespace detail {
             return robust_dif<T>(-lhs.neg() / val, -lhs.pos() / val);
         }
     }
-    
+
     // Used to compute expressions that operate with sqrts with predefined
     // relative error. Evaluates expressions of the next type:
     // sum(i = 1 .. n)(A[i] * sqrt(B[i])), 1 <= n <= 4.
@@ -577,7 +574,7 @@ namespace detail {
             return b[2] /= a[2];
         }
 
-        
+
         // Evaluates expression (re = 25 EPS):
         // A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) +
         // A[2] * sqrt(B[2]) + A[3] * sqrt(B[3]).
@@ -605,7 +602,6 @@ namespace detail {
             b[3] = eval3(dA, dB);
             return b[3] /= a[3];
         }
-
     private:
         mpf a[4];
         mpf b[4];
@@ -615,7 +611,6 @@ namespace detail {
         mpt dB[3];
         mpt temp[4];
     };
-
 } // detail
 } // polygon
 } // boost
