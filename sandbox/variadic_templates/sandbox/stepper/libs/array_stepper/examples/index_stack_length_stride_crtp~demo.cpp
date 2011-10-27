@@ -43,6 +43,11 @@ int main()
     lsos_t lsos_v( lss_v.begin(), lss_v.end());
     test_inc_dec<inc_ator>(lsos_v);
     test_inc_dec<dec_ator>(lsos_v);
+    std::cout<<"rotatate:\n";
+    unsigned rotate=2;
+    unsigned rotation=lsos_v.rotate(rotate);
+    std::cout<<":rotate("<<rotate<<")="<<rotation<<":rotation="<<lsos_v.rotation()<<"\n";
+    test_inc_dec<inc_ator>(lsos_v);
   #if 1
     typedef types_t::axis_t axis_t;
     axis_t axis_v=2;
