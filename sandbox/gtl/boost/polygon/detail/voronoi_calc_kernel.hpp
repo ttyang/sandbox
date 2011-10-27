@@ -120,10 +120,18 @@ public:
         return is_vertical(site.point0(), site.point1());
     }
 
-    template <typename Site>
-    static bool is_segment(const Site &site) {
-        return site.point0() != site.point1();
-    }
+    template <typename Point>
+    class point_comparison_predicate {
+    public:
+        typedef Point point_type;
+        
+        bool operator()(const point_type &lhs, const point_type &rhs) const {
+            if (lhs.x() == rhs.x()) {
+                return lhs.y() < rhs.y();
+            }
+            return lhs.x() < rhs.x(); 
+        }
+    };
 
     template <typename Site, typename Circle>
     class event_comparison_predicate {
@@ -199,20 +207,6 @@ public:
             }
             return lhs.lower_x() < rhs.lower_x();
         }
-    };
-
-    template <typename Site, typename Circle>
-    class event_equality_predicate {
-    public:
-        typedef Site site_type;
-        typedef Circle circle_type;
-
-        template <typename T1, typename T2>
-        bool operator()(const T1 &lhs, const T2 &rhs) {
-            return !comparison_predicate_(lhs, rhs) && !comparison_predicate_(rhs, lhs);
-        }
-    private:
-        event_comparison_predicate<Site, Circle> comparison_predicate_;
     };
 
     template <typename Site>

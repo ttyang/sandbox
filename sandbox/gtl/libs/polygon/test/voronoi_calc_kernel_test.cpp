@@ -21,7 +21,6 @@ typedef point_2d<int> point_type;
 typedef site_event<int> site_type;
 typedef circle_event<double> circle_type;
 VCK::event_comparison_predicate<site_type, circle_type> event_comparison;
-VCK::event_equality_predicate<site_type, circle_type> event_equality;
 
 typedef beach_line_node_key<site_type> key_type;
 typedef VCK::distance_predicate<site_type> distance_predicate_type;
@@ -47,8 +46,7 @@ VCK::circle_formation_predicate<site_type, circle_type, CEP_type, lazy_CFF_type>
 
 #define CHECK_EVENT_COMPARISON(A, B, R1, R2) \
     BOOST_CHECK_EQUAL(event_comparison(A, B), R1); \
-    BOOST_CHECK_EQUAL(event_comparison(B, A), R2); \
-    BOOST_CHECK_EQUAL(event_equality(A, B), !R1 && !R2)
+    BOOST_CHECK_EQUAL(event_comparison(B, A), R2)
 
 #define CHECK_DISTANCE_PREDICATE(S1, S2, S3, RES) \
     BOOST_CHECK_EQUAL(distance_predicate(S1, S2, S3), RES)
@@ -96,7 +94,7 @@ BOOST_AUTO_TEST_CASE(event_comparison_test1) {
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test2) {
-    site_type site(0, 2, 0, 0, 0);
+    site_type site(0, 0, 0, 2, 0);
     CHECK_EVENT_COMPARISON(site, site_type(0, 2, 1), true, false);
     CHECK_EVENT_COMPARISON(site, site_type(0, 0, 2), false, true);
     CHECK_EVENT_COMPARISON(site, site_type(0, -2, 0, -1, 3), false, true);
@@ -105,7 +103,7 @@ BOOST_AUTO_TEST_CASE(event_comparison_test2) {
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test3) {
-    site_type site(10, 10, 0, 0, 0);
+    site_type site(0, 0, 10, 10, 0);
     CHECK_EVENT_COMPARISON(site, site_type(0, 0, 1), false, true);
     CHECK_EVENT_COMPARISON(site, site_type(0, -1, 2), false, true);
     CHECK_EVENT_COMPARISON(site, site_type(0, 1, 3), false, true);
@@ -430,13 +428,13 @@ BOOST_AUTO_TEST_CASE(circle_formation_predicate_test8) {
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test9) {
     site_type site1(1, 0, 5, 0, 0);
     site1.inverse();
-    site_type site2(8, 6, 0, 12, 1);
+    site_type site2(0, 12, 8, 6, 1);
     site_type site3(1, 0, 2);
     CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 5.0, 6.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test10) {
-    site_type site1(4, 0, 0, 0, 0);
+    site_type site1(0, 0, 4, 0, 0);
     site_type site2(0, 0, 0, 4, 1);
     site_type site3(0, 4, 4, 4, 2);
     site1.inverse();
@@ -444,7 +442,7 @@ BOOST_AUTO_TEST_CASE(circle_formation_predicate_test10) {
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test11) {
-    site_type site1(41, 30, 1, 0, 0);
+    site_type site1(1, 0, 41, 30, 0);
     site_type site2(-39, 30, 1, 60, 1);
     site_type site3(1, 60, 41, 30, 2);
     site1.inverse();

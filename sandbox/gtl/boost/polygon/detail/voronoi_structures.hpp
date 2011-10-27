@@ -37,24 +37,6 @@ namespace detail {
             return (this->x_ != that.x()) || (this->y_ != that.y());
         }
 
-        bool operator<(const point_2d &that) const {
-            if (this->x_ != that.x_)
-                return this->x_ < that.x_;
-            return this->y_ < that.y_;
-        }
-
-        bool operator<=(const point_2d &that) const {
-            return !(that < (*this));
-        }
-
-        bool operator>(const point_2d &that) const {
-            return that < (*this);
-        }
-
-        bool operator>=(const point_2d &that) const {
-            return !((*this) < that);
-        }
-
         coordinate_type x() const {
             return x_;
         }
@@ -122,19 +104,27 @@ namespace detail {
             point0_(x1, y1),
             point1_(x2, y2),
             site_index_(index),
-            is_inverse_(false) {
-            if (point0_ > point1_)
-                (std::swap)(point0_, point1_);
-        }
+            is_inverse_(false) {}
 
         site_event(const point_type &point1,
                    const point_type &point2, int index) :
             point0_(point1),
             point1_(point2),
             site_index_(index),
-            is_inverse_(false) {
-            if (point0_ > point1_)
-                (std::swap)(point0_, point1_);
+            is_inverse_(false) {}
+
+        bool operator==(const site_event &that) const {
+            return (this->point0_ == that.point0_) &&
+                   (this->point1_ == that.point1_) &&
+                   (this->site_index_ == that.site_index_) &&
+                   (this->is_inverse_ == that.is_inverse_);
+        }
+
+        bool operator!=(const site_event &that) const {
+            return (this->point0_ != that.point0_) ||
+                   (this->point1_ != that.point1_) ||
+                   (this->site_index_ != that.site_index_) ||
+                   (this->is_inverse_ != that.is_inverse_);
         }
 
         coordinate_type x(bool oriented = false) const {
