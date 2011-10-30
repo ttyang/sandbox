@@ -20,35 +20,36 @@ namespace
   {
     static const T& value(void)
     {
-      static const T t(N);
-      return t;
+      static const T the_value(N);
+      return the_value;
     }
   };
 
-  inline std::complex<double> operator+(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(x.real() + n, x.imag()); }
-  inline std::complex<double> operator-(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(n - x.real(), x.imag()); }
-  inline std::complex<double> operator*(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(x.real() * n, x.imag() * n); }
-  inline std::complex<double> operator/(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(x.real() * n, -x.imag() * n) / ((x.real() * x.real()) + (x.imag() * x.imag())); }
+  std::complex<double> operator+(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(n + x.real(),  x.imag()); }
+  std::complex<double> operator-(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(n - x.real(),  x.imag()); }
+  std::complex<double> operator*(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(n * x.real(),  n * x.imag()); }
+  std::complex<double> operator/(const boost::int32_t n, const std::complex<double>& x) { return std::complex<double>(n * x.real(), -n * x.imag()) / std::norm(x); }
 
-  inline std::complex<double> operator+(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() + n, x.imag()); }
-  inline std::complex<double> operator-(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() - n, x.imag()); }
-  inline std::complex<double> operator*(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() * n, x.imag() * n); }
-  inline std::complex<double> operator/(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() / n, x.imag() / n); }
+  std::complex<double> operator+(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() + n, x.imag()); }
+  std::complex<double> operator-(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() - n, x.imag()); }
+  std::complex<double> operator*(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() * n, x.imag() * n); }
+  std::complex<double> operator/(const std::complex<double>& x, const boost::int32_t n) { return std::complex<double>(x.real() / n, x.imag() / n); }
 
   typedef enum enum_orthogonal_polynomial_type
   {
-    orthogonal_polynomial_type_chebyshev_t = 1,
-    orthogonal_polynomial_type_chebyshev_u = 2,
-    orthogonal_polynomial_type_laguerre_l  = 3,
-    orthogonal_polynomial_type_hermite_h   = 4
+    orthogonal_polynomial_type_undefined,
+    orthogonal_polynomial_type_chebyshev_t,
+    orthogonal_polynomial_type_chebyshev_u,
+    orthogonal_polynomial_type_laguerre_l,
+    orthogonal_polynomial_type_hermite_h
   }
   orthogonal_polynomial_type;
 
   template<typename T>
-  static inline void orthogonal_polynomial_template(const T& x,
-                                                    const boost::uint32_t n,
-                                                    const orthogonal_polynomial_type polynomial_type,
-                                                    std::vector<T>& results)
+  void orthogonal_polynomial_template(const T& x,
+                                      const boost::uint32_t n,
+                                      const orthogonal_polynomial_type polynomial_type,
+                                      std::vector<T>& results)
   {
     // Compute the value of an orthogonal polynomial of one of the following types:
     // Chebyshev 1st, Chebyshev 2nd, Laguerre, or Hermite
