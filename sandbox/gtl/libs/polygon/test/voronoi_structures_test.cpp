@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(point_2d_test) {
 }
 
 BOOST_AUTO_TEST_CASE(site_event_test1) {
-    site_type s(1, 2, 0);
+    site_type s(1, 2);
     BOOST_CHECK_EQUAL(s.x0() == s.x1() && s.x1() == 1, true);
     BOOST_CHECK_EQUAL(s.y0() == s.y1() && s.y1() == 2, true);
     BOOST_CHECK_EQUAL(s.index() == 0, true);
@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(site_event_test1) {
 }
 
 BOOST_AUTO_TEST_CASE(site_event_test2) {
-    site_type s(1, 2, 3, 4, 0);
+    site_type s(1, 2, 3, 4);
     BOOST_CHECK_EQUAL(s.x0(true) == 1 && s.x0() == 1, true);
     BOOST_CHECK_EQUAL(s.y0(true) == 2 && s.y0() == 2, true);
     BOOST_CHECK_EQUAL(s.x1(true) == 3 && s.x1() == 3, true);

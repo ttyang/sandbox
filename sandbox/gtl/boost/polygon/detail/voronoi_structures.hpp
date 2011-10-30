@@ -45,12 +45,14 @@ namespace detail {
             return y_;
         }
 
-        void x(coordinate_type x) {
+        point_2d& x(coordinate_type x) {
             x_ = x;
+            return *this;
         }
 
-        void y(coordinate_type y) {
+        point_2d& y(coordinate_type y) {
             y_ = y;
+            return *this;
         }
     private:
         coordinate_type x_;
@@ -85,32 +87,33 @@ namespace detail {
         site_event() :
             point0_(0, 0),
             point1_(0, 0),
+            site_index_(0),
             is_inverse_(false) {}
 
-        site_event(coordinate_type x, coordinate_type y, int index) :
+        site_event(coordinate_type x, coordinate_type y) :
             point0_(x, y),
             point1_(x, y),
-            site_index_(index),
+            site_index_(0),
             is_inverse_(false) {}
 
-        site_event(const point_type &point, int index) :
+        site_event(const point_type &point) :
             point0_(point),
             point1_(point),
-            site_index_(index),
+            site_index_(0),
             is_inverse_(false) {}
 
         site_event(coordinate_type x1, coordinate_type y1,
-                   coordinate_type x2, coordinate_type y2, int index):
+                   coordinate_type x2, coordinate_type y2):
             point0_(x1, y1),
             point1_(x2, y2),
-            site_index_(index),
+            site_index_(0),
             is_inverse_(false) {}
 
         site_event(const point_type &point1,
-                   const point_type &point2, int index) :
+                   const point_type &point2) :
             point0_(point1),
             point1_(point2),
-            site_index_(index),
+            site_index_(0),
             is_inverse_(false) {}
 
         bool operator==(const site_event &that) const {
@@ -171,12 +174,14 @@ namespace detail {
             return is_inverse_ ? point0_ : point1_;
         }
 
-        void index(int index) {
+        site_event& index(int index) {
             site_index_ = index;
+            return *this;
         }
 
-        void inverse() {
+        site_event& inverse() {
             is_inverse_ ^= true;
+            return *this;
         }
 
         int index() const {
@@ -231,24 +236,27 @@ namespace detail {
             return center_x_;
         }
 
-        void x(coordinate_type center_x) {
+        circle_event& x(coordinate_type center_x) {
             center_x_ = center_x;
+            return *this;
         }
 
         coordinate_type y() const {
             return center_y_;
         }
 
-        void y(coordinate_type center_y) {
+        circle_event& y(coordinate_type center_y) {
             center_y_ = center_y;
+            return *this;
         }
 
         coordinate_type lower_x() const {
             return lower_x_;
         }
 
-        void lower_x(coordinate_type lower_x) {
+        circle_event& lower_x(coordinate_type lower_x) {
             lower_x_ = lower_x;
+            return *this;
         }
 
         coordinate_type lower_y() const {
@@ -259,8 +267,9 @@ namespace detail {
             return is_active_;
         }
 
-        void deactivate() {
+        circle_event& deactivate() {
             is_active_ = false;
+            return *this;
         }
     private:
         coordinate_type center_x_;
@@ -356,8 +365,9 @@ namespace detail {
             return left_site_;
         }
 
-        void left_site(const site_type &site) {
+        beach_line_node_key& left_site(const site_type &site) {
             left_site_ = site;
+            return *this;
         }
 
         const site_type &right_site() const {
@@ -368,8 +378,9 @@ namespace detail {
             return right_site_;
         }
 
-        void right_site(const site_type &site) {
+        beach_line_node_key& right_site(const site_type &site) {
             right_site_ = site;
+            return *this;
         }
     private:
         site_type left_site_;
@@ -391,16 +402,18 @@ namespace detail {
             return circle_event_;
         }
 
-        void circle_event(Circle *circle_event) {
+        beach_line_node_data& circle_event(Circle *circle_event) {
             circle_event_ = circle_event;
+            return *this;
         }
 
         Edge *edge() {
             return edge_;
         }
 
-        void edge(Edge *new_edge) {
+        beach_line_node_data& edge(Edge *new_edge) {
             edge_ = new_edge;
+            return *this;
         }
     private:
         Circle *circle_event_;

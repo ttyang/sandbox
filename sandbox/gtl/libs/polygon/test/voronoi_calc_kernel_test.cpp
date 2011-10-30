@@ -87,30 +87,30 @@ BOOST_AUTO_TEST_CASE(orientation_test) {
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test1) {
-    site_type site(1, 2, 0);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 2, 1), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(1, 3, 2), true, false);
-    CHECK_EVENT_COMPARISON(site, site_type(1, 2, 3), false, false);
+    site_type site(1, 2);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 2), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(1, 3), true, false);
+    CHECK_EVENT_COMPARISON(site, site_type(1, 2), false, false);
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test2) {
-    site_type site(0, 0, 0, 2, 0);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 2, 1), true, false);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 2), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, -2, 0, -1, 3), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, -2, 1, 1, 4), true, false);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 1, 1, 5), true, false);
+    site_type site(0, 0, 0, 2);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 2), true, false);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 0), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, -2, 0, -1), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, -2, 1, 1), true, false);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 1, 1), true, false);
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test3) {
-    site_type site(0, 0, 10, 10, 0);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 1), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, -1, 2), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 1, 3), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 1, 0, 10, 4), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, -10, 0, -1, 5), false, true);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 10, 9, 6), true, false);
-    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 9, 10, 7), false, true);
+    site_type site(0, 0, 10, 10);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 0), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, -1), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 1), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 1, 0, 10), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, -10, 0, -1), false, true);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 10, 9), true, false);
+    CHECK_EVENT_COMPARISON(site, site_type(0, 0, 9, 10), false, true);
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test4) {
@@ -124,111 +124,111 @@ BOOST_AUTO_TEST_CASE(event_comparison_test4) {
 
 BOOST_AUTO_TEST_CASE(event_comparison_test5) {
     circle_type circle(1, 2, 3);
-    CHECK_EVENT_COMPARISON(circle, site_type(0, 100, 1), false, true);
-    CHECK_EVENT_COMPARISON(circle, site_type(3, 0, 2), false, true);
-    CHECK_EVENT_COMPARISON(circle, site_type(3, 2, 3), false, false);
-    CHECK_EVENT_COMPARISON(circle, site_type(3, 3, 4), true, false);
-    CHECK_EVENT_COMPARISON(circle, site_type(4, 2, 5), true, false);
+    CHECK_EVENT_COMPARISON(circle, site_type(0, 100), false, true);
+    CHECK_EVENT_COMPARISON(circle, site_type(3, 0), false, true);
+    CHECK_EVENT_COMPARISON(circle, site_type(3, 2), false, false);
+    CHECK_EVENT_COMPARISON(circle, site_type(3, 3), true, false);
+    CHECK_EVENT_COMPARISON(circle, site_type(4, 2), true, false);
 }
 
 BOOST_AUTO_TEST_CASE(distance_predicate_test1) {
-    site_type site1(-5, 0, 0);
-    site_type site2(-8, 9, 1);
-    site_type site3(-2, 1, 2);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 5, 3), false);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 5, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 4, 3), false);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 4, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 6, 3), true);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 6, 3), true);
+    site_type site1(-5, 0);
+    site_type site2(-8, 9);
+    site_type site3(-2, 1);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 5), false);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 5), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 4), false);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 4), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 6), true);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 6), true);
 }
 
 BOOST_AUTO_TEST_CASE(distance_predicate_test2) {
-    site_type site1(-4, 0, -4, 20, 0);
-    site_type site2(-2, 10, 1);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 11, 2), false);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 9, 2), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 11, 2), true);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 9, 2), true);
+    site_type site1(-4, 0, -4, 20);
+    site_type site2(-2, 10);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 11), false);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 9), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 11), true);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 9), true);
 }
 
 BOOST_AUTO_TEST_CASE(disntace_predicate_test3) {
-    site_type site1(-5, 5, 2, -2, 0);
+    site_type site1(-5, 5, 2, -2);
     site1.inverse();
-    site_type site2(-2, 4, 1);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -1, 2), false);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -1, 2), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 1, 2), false);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 1, 2), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 4, 2), true);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 4, 2), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 5, 2), true);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 5, 2), false);
+    site_type site2(-2, 4);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -1), false);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -1), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 1), false);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 1), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 4), true);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 4), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 5), true);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 5), false);
 }
 
 BOOST_AUTO_TEST_CASE(distance_predicate_test4) {
-    site_type site1(-5, 5, 2, -2, 0);
-    site_type site2(-2, -4, 1);
-    site_type site3(-4, 1, 0);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 1, 3), true);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 1, 3), true);
-    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, 1, 3), true);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 1, 3), true);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -2, 3), true);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -2, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, -2, 3), true);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, -2, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -8, 3), true);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -8, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, -8, 3), true);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, -8, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -9, 3), true);
-    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -9, 3), false);
-    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, -9, 3), true);
-    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, -9, 3), false);
+    site_type site1(-5, 5, 2, -2);
+    site_type site2(-2, -4);
+    site_type site3(-4, 1);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, 1), true);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, 1), true);
+    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, 1), true);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, 1), true);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -2), true);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -2), false);
+    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, -2), true);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, -2), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -8), true);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -8), false);
+    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, -8), true);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, -8), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(0, -9), true);
+    CHECK_DISTANCE_PREDICATE(site2, site1, site_type(0, -9), false);
+    CHECK_DISTANCE_PREDICATE(site1, site3, site_type(0, -9), true);
+    CHECK_DISTANCE_PREDICATE(site3, site1, site_type(0, -9), false);
 }
 
 BOOST_AUTO_TEST_CASE(disntace_predicate_test5) {
-    site_type site1(-5, 5, 2, -2, 0);
+    site_type site1(-5, 5, 2, -2);
     site_type site2 = site1;
     site2.inverse();
-    site_type site3(-2, 4, 1);
-    site_type site4(-2, -4, 1);
-    site_type site5(-4, 1, 1);
-    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 1, 2), false);
-    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 4, 2), false);
-    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 5, 2), false);
-    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 7, 2), true);
-    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -2, 2), false);
-    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -2, 2), false);
-    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -8, 2), false);
-    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -8, 2), false);
-    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -9, 2), false);
-    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -9, 2), false);
-    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -18, 2), false);
-    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -18, 2), false);
-    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -1, 2), true);
-    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -1, 2), true);
+    site_type site3(-2, 4);
+    site_type site4(-2, -4);
+    site_type site5(-4, 1);
+    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 1), false);
+    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 4), false);
+    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 5), false);
+    CHECK_DISTANCE_PREDICATE(site3, site2, site_type(0, 7), true);
+    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -2), false);
+    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -2), false);
+    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -8), false);
+    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -8), false);
+    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -9), false);
+    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -9), false);
+    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -18), false);
+    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -18), false);
+    CHECK_DISTANCE_PREDICATE(site4, site1, site_type(0, -1), true);
+    CHECK_DISTANCE_PREDICATE(site5, site1, site_type(0, -1), true);
 }
 
 BOOST_AUTO_TEST_CASE(distance_predicate_test6) {
-    site_type site1(-5, 0, 2, 7, 0);
+    site_type site1(-5, 0, 2, 7);
     site_type site2 = site1;
     site2.inverse();
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(2, 7, 1), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(1, 5, 1), false);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(-1, 5, 1), true);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(2, 7), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(1, 5), false);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(-1, 5), true);
 }
 
 BOOST_AUTO_TEST_CASE(distance_predicate_test7) {
-    site_type site1(-5, 5, 2, -2, 0);
+    site_type site1(-5, 5, 2, -2);
     site1.inverse();
-    site_type site2(-5, 5, 0, 6, 1);
-    site_type site3(-2, 4, 0, 4, 2);
-    site_type site4(0, 2, 3);
-    site_type site5(0, 5, 4);
-    site_type site6(0, 6, 5);
-    site_type site7(0, 8, 6);
+    site_type site2(-5, 5, 0, 6);
+    site_type site3(-2, 4, 0, 4);
+    site_type site4(0, 2);
+    site_type site5(0, 5);
+    site_type site6(0, 6);
+    site_type site7(0, 8);
     CHECK_DISTANCE_PREDICATE(site1, site2, site4, false);
     CHECK_DISTANCE_PREDICATE(site1, site2, site5, true);
     CHECK_DISTANCE_PREDICATE(site1, site2, site6, true);
@@ -245,17 +245,20 @@ BOOST_AUTO_TEST_CASE(distance_predicate_test7) {
 }
 
 BOOST_AUTO_TEST_CASE(distatnce_predicate_test8) {
-    site_type site1(-5, 3, -2, 2, 0);
+    site_type site1(-5, 3, -2, 2);
     site1.inverse();
-    site_type site2(-5, 5, -2, 2, 1);
-    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(-4, 2, 2), false);
+    site_type site2(-5, 5, -2, 2);
+    CHECK_DISTANCE_PREDICATE(site1, site2, site_type(-4, 2), false);
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test1) {
     beach_line_type beach_line;
-    site_type site1(0, 0, 0);
-    site_type site2(0, 2, 1);
-    site_type site3(1, 0, 2);
+    site_type site1(0, 0);
+    site1.index(0);
+    site_type site2(0, 2);
+    site2.index(1);
+    site_type site3(1, 0);
+    site3.index(2);
     beach_line[key_type(site1, site2)] = 2;
     beach_line[key_type(site1, site3)] = 0;
     beach_line[key_type(site3, site1)] = 1;
@@ -268,9 +271,12 @@ BOOST_AUTO_TEST_CASE(node_comparison_test1) {
 
 BOOST_AUTO_TEST_CASE(node_comparison_test2) {
     beach_line_type beach_line;
-    site_type site1(0, 1, 0);
-    site_type site2(2, 0, 1);
-    site_type site3(2, 4, 2);
+    site_type site1(0, 1);
+    site1.index(0);
+    site_type site2(2, 0);
+    site2.index(1);
+    site_type site3(2, 4);
+    site3.index(2);
     beach_line[key_type(site1, site2)] = 0;
     beach_line[key_type(site2, site1)] = 1;
     beach_line[key_type(site1, site3)] = 2;
@@ -283,168 +289,168 @@ BOOST_AUTO_TEST_CASE(node_comparison_test2) {
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test3) {
-    key_type node(site_type(1, 0, 0), site_type(0, 2, 1));
+    key_type node(site_type(1, 0).index(1), site_type(0, 2).index(0));
     key_type nodes[] = {
-        key_type(site_type(2, -10, 2)),
-        key_type(site_type(2, -1, 3)),
-        key_type(site_type(2, 0, 4)),
-        key_type(site_type(2, 1, 4)),
-        key_type(site_type(2, 2, 4)),
-        key_type(site_type(2, 3, 4)),
+        key_type(site_type(2, -10).index(2)),
+        key_type(site_type(2, -1).index(2)),
+        key_type(site_type(2, 0).index(2)),
+        key_type(site_type(2, 1).index(2)),
+        key_type(site_type(2, 2).index(2)),
+        key_type(site_type(2, 3).index(2)),
     };
     bool res[] = {false, false, false, false, true, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 6);
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test4) {
-    key_type node(site_type(0, 1, 0), site_type(1, 0, 1));
+    key_type node(site_type(0, 1).index(0), site_type(1, 0).index(1));
     key_type nodes[] = {
-        key_type(site_type(2, -3, 2)),
-        key_type(site_type(2, -2, 2)),
-        key_type(site_type(2, -1, 2)),
-        key_type(site_type(2, 0, 2)),
-        key_type(site_type(2, 1, 2)),
-        key_type(site_type(2, 3, 2)),
+        key_type(site_type(2, -3).index(2)),
+        key_type(site_type(2, -2).index(2)),
+        key_type(site_type(2, -1).index(2)),
+        key_type(site_type(2, 0).index(2)),
+        key_type(site_type(2, 1).index(2)),
+        key_type(site_type(2, 3).index(2)),
     };
     bool res[] = {false, true, true, true, true, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 6);
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test5) {
-    key_type node(site_type(0, 0, 0), site_type(1, 2, 1));
+    key_type node(site_type(0, 0).index(0), site_type(1, 2).index(1));
     key_type nodes[] = {
-        key_type(site_type(2, -10, 2)),
-        key_type(site_type(2, 0, 2)),
-        key_type(site_type(2, 1, 2)),
-        key_type(site_type(2, 2, 2)),
-        key_type(site_type(2, 5, 2)),
-        key_type(site_type(2, 20, 2)),
+        key_type(site_type(2, -10).index(2)),
+        key_type(site_type(2, 0).index(2)),
+        key_type(site_type(2, 1).index(2)),
+        key_type(site_type(2, 2).index(2)),
+        key_type(site_type(2, 5).index(2)),
+        key_type(site_type(2, 20).index(2)),
     };
     bool res[] = {false, false, true, true, true, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 6);
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test6) {
-    key_type node(site_type(1, 1, 0), site_type(0, 0, 1));
+    key_type node(site_type(1, 1).index(1), site_type(0, 0).index(0));
     key_type nodes [] = {
-        key_type(site_type(2, -3, 2)),
-        key_type(site_type(2, -2, 2)),
-        key_type(site_type(2, 0, 2)),
-        key_type(site_type(2, 1, 2)),
-        key_type(site_type(2, 2, 2)),
-        key_type(site_type(2, 3, 2)),
-        key_type(site_type(2, 5, 2)),
+        key_type(site_type(2, -3).index(2)),
+        key_type(site_type(2, -2).index(2)),
+        key_type(site_type(2, 0).index(2)),
+        key_type(site_type(2, 1).index(2)),
+        key_type(site_type(2, 2).index(2)),
+        key_type(site_type(2, 3).index(2)),
+        key_type(site_type(2, 5).index(2)),
     };
     bool res[] = {false, false, false, false, false, false, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 7);
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test7) {
-    key_type node(site_type(0, 0, 0), site_type(0, 2, 1));
+    key_type node(site_type(0, 0).index(0), site_type(0, 2).index(1));
     key_type nodes[] = {
-        key_type(site_type(1, 0, 2)),
-        key_type(site_type(1, 1, 2)),
-        key_type(site_type(1, 2, 2)),
+        key_type(site_type(1, 0).index(2)),
+        key_type(site_type(1, 1).index(2)),
+        key_type(site_type(1, 2).index(2)),
     };
     bool res[] = {false, false, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 3);
 }
 
 BOOST_AUTO_TEST_CASE(node_comparison_test8) {
-    key_type node(site_type(0, 0, 0), site_type(1, 1, 1));
+    key_type node(site_type(0, 0).index(0), site_type(1, 1).index(2));
     key_type nodes[] = {
-        key_type(site_type(1, 0, 2)),
-        key_type(site_type(1, 1, 2)),
-        key_type(site_type(1, 2, 2)),
-        key_type(site_type(1, 1, 1), site_type(0, 0, 0)),
+        key_type(site_type(1, 0).index(1)),
+        key_type(site_type(1, 1).index(2)),
+        key_type(site_type(1, 2).index(3)),
+        key_type(site_type(1, 1).index(2), site_type(0, 0).index(0)),
     };
     bool res[] = {false, true, true, true};
     CHECK_NODE_COMPARISON(node, nodes, res, 4);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test1) {
-    site_type site1(0, 0, 0);
-    site_type site2(-8, 0, 1);
-    site_type site3(0, 6, 2);
+    site_type site1(0, 0);
+    site_type site2(-8, 0);
+    site_type site3(0, 6);
     CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, -4.0, 3.0, 1.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test2) {
     int min_int = std::numeric_limits<int>::min();
     int max_int = std::numeric_limits<int>::max();
-    site_type site1(min_int, min_int, 0);
-    site_type site2(min_int, max_int, 1);
-    site_type site3(max_int-1, max_int-1, 2);
-    site_type site4(max_int, max_int, 3);
+    site_type site1(min_int, min_int);
+    site_type site2(min_int, max_int);
+    site_type site3(max_int-1, max_int-1);
+    site_type site4(max_int, max_int);
     CHECK_CIRCLE_EXISTENCE(site1, site2, site4, true);
     CHECK_CIRCLE_EXISTENCE(site1, site3, site4, false);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test3) {
-    site_type site1(-4, 0, 0);
-    site_type site2(0, 4, 1);
-    site_type site3(site1.point0(), site2.point0(), 2);
+    site_type site1(-4, 0);
+    site_type site2(0, 4);
+    site_type site3(site1.point0(), site2.point0());
     CHECK_CIRCLE_EXISTENCE(site1, site3, site2, false);
-    site_type site4(-2, 0, 3);
-    site_type site5(0, 2, 4);
+    site_type site4(-2, 0);
+    site_type site5(0, 2);
     CHECK_CIRCLE_EXISTENCE(site3, site4, site5, false);
     CHECK_CIRCLE_EXISTENCE(site4, site5, site3, false);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test5) {
-    site_type site1(-4, 0, -4, 20, 0);
-    site_type site2(-2, 10, 1);
-    site_type site3(4, 10, 0);
+    site_type site1(-4, 0, -4, 20);
+    site_type site2(-2, 10);
+    site_type site3(4, 10);
     CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, 1.0, 6.0, 6.0);
     CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 14.0, 6.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test6) {
-    site_type site1(1, 0, 7, 0, 0);
+    site_type site1(1, 0, 7, 0);
     site1.inverse();
-    site_type site2(-2, 4, 10, 4, 1);
-    site_type site3(6, 2, 2);
-    site_type site4(1, 0, 2);
+    site_type site2(-2, 4, 10, 4);
+    site_type site3(6, 2);
+    site_type site4(1, 0);
     CHECK_CIRCLE_FORMATION_PREDICATE(site3, site1, site2, 4.0, 2.0, 6.0);
     CHECK_CIRCLE_FORMATION_PREDICATE(site4, site2, site1, 1.0, 2.0, 3.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test7) {
-    site_type site1(-1, 2, 8, -10, 0);
+    site_type site1(-1, 2, 8, -10);
     site1.inverse();
-    site_type site2(-1, 0, 8, 12, 1);
-    site_type site3(1, 1, 2);
+    site_type site2(-1, 0, 8, 12);
+    site_type site3(1, 1);
     CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 6.0, 1.0, 11.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test8) {
-    site_type site1(1, 0, 6, 0, 0);
+    site_type site1(1, 0, 6, 0);
     site1.inverse();
-    site_type site2(-6, 4, 0, 12, 1);
-    site_type site3(1, 0, 2);
+    site_type site2(-6, 4, 0, 12);
+    site_type site3(1, 0);
     CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 5.0, 6.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test9) {
-    site_type site1(1, 0, 5, 0, 0);
+    site_type site1(1, 0, 5, 0);
     site1.inverse();
-    site_type site2(0, 12, 8, 6, 1);
-    site_type site3(1, 0, 2);
+    site_type site2(0, 12, 8, 6);
+    site_type site3(1, 0);
     CHECK_CIRCLE_FORMATION_PREDICATE(site3, site2, site1, 1.0, 5.0, 6.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test10) {
-    site_type site1(0, 0, 4, 0, 0);
-    site_type site2(0, 0, 0, 4, 1);
-    site_type site3(0, 4, 4, 4, 2);
+    site_type site1(0, 0, 4, 0);
+    site_type site2(0, 0, 0, 4);
+    site_type site3(0, 4, 4, 4);
     site1.inverse();
     CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, 2.0, 2.0, 4.0);
 }
 
 BOOST_AUTO_TEST_CASE(circle_formation_predicate_test11) {
-    site_type site1(1, 0, 41, 30, 0);
-    site_type site2(-39, 30, 1, 60, 1);
-    site_type site3(1, 60, 41, 30, 2);
+    site_type site1(1, 0, 41, 30);
+    site_type site2(-39, 30, 1, 60);
+    site_type site3(1, 60, 41, 30);
     site1.inverse();
     CHECK_CIRCLE_FORMATION_PREDICATE(site1, site2, site3, 1.0, 30.0, 25.0);
 }

@@ -285,7 +285,8 @@ public:
                 const site_type &right_site,
                 const site_type &new_site) const {
             // Handle temporary segment sites.
-            if (left_site.index() == right_site.index()) {
+            if (left_site.point0() == right_site.point0() &&
+                left_site.point1() == right_site.point1()) {
                 return get_orientation(left_site.point0(),
                                        left_site.point1(),
                                        new_site.point0()) == LEFT;
@@ -494,7 +495,8 @@ public:
                  const site_type &site2,
                  const site_type &site3,
                  int point_index) const {
-            if (site2.index() == site3.index()) {
+            if (site2.point0() == site3.point0() &&
+                site2.point1() == site3.point1()) {
                 return false;
             }
             if (point_index == 2) {
@@ -510,9 +512,11 @@ public:
         bool sss(const site_type &site1,
                  const site_type &site2,
                  const site_type &site3) const {
-             if (site1.index() == site2.index())
+             if (site1.point0() == site2.point0() &&
+                 site1.point1() == site2.point1())
                  return false;
-             if (site2.index() == site3.index())
+             if (site2.point0() == site3.point0() &&
+                 site2.point1() == site3.point1())
                  return false;
              return true;
         }

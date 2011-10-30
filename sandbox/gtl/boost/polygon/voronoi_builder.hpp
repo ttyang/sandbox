@@ -79,7 +79,7 @@ namespace polygon {
             for (PointIterator it = first_point; it != last_point; ++it) {
                 site_events_.push_back(detail::site_event<coordinate_type>(
                     static_cast<coordinate_type>(it->x()),
-                    static_cast<coordinate_type>(it->y()), 0));
+                    static_cast<coordinate_type>(it->y())));
             }
         }
 
@@ -97,12 +97,12 @@ namespace polygon {
                 coordinate_type y2 = static_cast<coordinate_type>(it->high().y());
                 point_type p1(x1, y1);
                 point_type p2(x2, y2);
-                site_events_.push_back(detail::site_event<coordinate_type>(p1, 0));
-                site_events_.push_back(detail::site_event<coordinate_type>(p2, 0));
+                site_events_.push_back(detail::site_event<coordinate_type>(p1));
+                site_events_.push_back(detail::site_event<coordinate_type>(p2));
                 if (point_comparison(p1, p2)) {
-                    site_events_.push_back(detail::site_event<coordinate_type>(p1, p2, 0));
+                    site_events_.push_back(detail::site_event<coordinate_type>(p1, p2));
                 } else {
-                    site_events_.push_back(detail::site_event<coordinate_type>(p2, p1, 0));
+                    site_events_.push_back(detail::site_event<coordinate_type>(p2, p1));
                 }
             }
         }
@@ -163,16 +163,19 @@ namespace polygon {
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
         typedef detail::circle_event<coordinate_type> circle_event_type;
-        typedef typename CKT::point_comparison_predicate<point_type>
+        typedef typename CKT::template point_comparison_predicate<point_type>
             point_comparison_predicate;
-        typedef typename CKT::event_comparison_predicate<site_event_type, circle_event_type>
+        typedef typename CKT::
+            template event_comparison_predicate<site_event_type, circle_event_type>
             event_comparison_predicate;
-        typedef typename CKT::circle_formation_predicate<site_event_type, circle_event_type>
+        typedef typename CKT::
+            template circle_formation_predicate<site_event_type, circle_event_type>
             circle_formation_predicate_type;
         typedef typename output_type::voronoi_edge_type edge_type;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<edge_type, circle_event_type> value_type;
-        typedef typename CKT::node_comparison_predicate<key_type> node_comparer_type;
+        typedef typename CKT::
+            template node_comparison_predicate<key_type> node_comparer_type;
         typedef std::map< key_type, value_type, node_comparer_type > beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
         typedef std::pair<circle_event_type, beach_line_iterator> event_type;
@@ -508,12 +511,10 @@ namespace polygon {
             }
         }
     private:
-        class end_point_comparison {
-        public:
+        struct end_point_comparison {
             bool operator() (const end_point_type &end1, const end_point_type &end2) const {
                 return point_comparison(end2.first, end1.first);
             }
-        private:
             point_comparison_predicate point_comparison;
         };
 
