@@ -32,7 +32,8 @@ project
 		-<toolset>msvc:<cxxflags>/Za # Requires MS extensions, so explictly cancel /Za to *enable extensions*.
 		<toolset>msvc:<asynch-exceptions>on # Needed for Boost.Test
 		<toolset>msvc:<warnings>all
-		<toolset>msvc:<warnings-as-errors>on
+		<variant>release:<toolset>msvc:<warnings-as-errors>off # Boost.Test warnings Trac #6074.
+		<variant>debug:<toolset>msvc:<warnings-as-errors>on
 		<toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
 		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
@@ -53,6 +54,7 @@ project
 		      ./example_002_basic_usage_imag.cpp
 		      ./example_005_recursive_trapezoid_integral.cpp
 		      ./example_008_gauss_laguerre.cpp
+		      ./example_010_orthogonal_polynomials.cpp
 		      
 		      # Source files required .
 		      ../src/backends/float/mp_float.cpp
