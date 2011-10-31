@@ -13,8 +13,8 @@ import testing ;
 project
   : requirements
 		<library>/boost/test//boost_test_exec_monitor/<link>static
-		<include>../../..
-		<include>../../../boost/
+		<include>../../.. # /src
+		<include>../../../boost/   # boost-root
 		<define>BOOST_ALL_NO_LIB=1 # Why?
 		<define>BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_EFX # Could also be BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_GMP or BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_MFPR.
 		<define>BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10=50 # Overriding the default of 100 for testing purposes.
@@ -22,15 +22,15 @@ project
 		
 		<toolset>gcc:<cxxflags>-Wextra
 		<toolset>gcc:<cxxflags>-Wshadow
-		<toolset>gcc:<warnings-as-errors>on
+		# <toolset>gcc:<warnings-as-errors>on
 		<toolset>gcc:<cxxflags>-Wno-long-long
 		<toolset>gcc:<cxxflags>-Wcast-align
-		<toolset>intel:<warnings-as-errors>on
+		# <toolset>intel:<warnings-as-errors>on
 		
 		-<toolset>msvc:<cxxflags>/Za # Requires MS extensions, so explictly cancel /Za to enable extensions.
 		<toolset>msvc:<asynch-exceptions>on # Needed for Boost.Test
 		<toolset>msvc:<warnings>all
-		<toolset>msvc:<warnings-as-errors>on
+		# <toolset>msvc:<warnings-as-errors>on
 		<toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
 		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
@@ -40,6 +40,8 @@ project
 		# Warning suppression:
 		<toolset>msvc:<cxxflags>/wd4224 # nonstandard extension used : formal parameter 'arg' was previously defined as a type.
 		<toolset>msvc:<cxxflags>/wd4127 # expression is constant.
+		
+		: default-build release
     ;
 
     
@@ -140,7 +142,6 @@ project
 			    ./imag/cases/test_case_02902_z_zeta_all_x.cpp
 			    ./imag/cases/test_case_02903_z_zeta_neg_x.cpp
 			    ./imag/cases/test_case_02911_z_zeta_crit_strip.cpp
-        
 		]
   ;
   
