@@ -64,4 +64,4 @@ project
   
 # Output is at 
 
-/boost-sandbox/multiprecision/libs/multiprecision/example/simple_example_1/bin/simple_example_1.test/msvc-10.0/debug/asynch-exceptions-on/threading-multi/simple_example_1.output
+# /boost-sandbox/multiprecision/libs/multiprecision/example/simple_example_1/bin/simple_example_1.test/msvc-10.0/debug/asynch-exceptions-on/threading-multi/simple_example_1.output
