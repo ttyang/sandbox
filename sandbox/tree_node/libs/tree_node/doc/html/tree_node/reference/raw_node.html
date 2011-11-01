@@ -4,16 +4,16 @@
 <title>raw_node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="raw_binary_node.html" title="raw_binary_node">
-<link rel="next" href="simple_node.html" title="simple_node">
+<link rel="prev" href="raw_binary_node_gen.html" title="raw_binary_node_gen">
+<link rel="next" href="raw_node_base.html" title="raw_node_base">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="raw_binary_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="simple_node.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="raw_binary_node_gen.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="raw_node_base.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -29,61 +29,20 @@
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
     <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Selector</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">dequeS</span><span class="special">&gt;</span>
-    <span class="keyword">class</span> <span class="identifier">raw_node</span>
+    <span class="keyword">class</span> <span class="identifier">raw_node</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">raw_node_base</span><span class="special">&lt;</span><span class="identifier">raw_node</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">Selector</span><span class="special">&gt;,</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">Selector</span><span class="special">&gt;</span>
     <span class="special">{</span>
-     <span class="keyword">public</span><span class="special">:</span>
-        <span class="keyword">typedef</span> <span class="identifier">T</span>
-                <span class="identifier">data_type</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="identifier">raw_node</span><span class="special">*</span>
-                <span class="identifier">pointer</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">*</span>
-                <span class="identifier">const_pointer</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="identifier">raw_node_base</span><span class="special">&lt;</span><span class="identifier">raw_node</span><span class="special">,</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">Selector</span><span class="special">&gt;</span> <span class="identifier">super_t</span><span class="special">;</span>
 
-        <span class="keyword">typedef</span> <span class="comment">// implementation_defined
-</span>                <span class="identifier">child_iterator</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="comment">// implementation_defined
-</span>                <span class="identifier">const_child_iterator</span><span class="special">;</span>
+     <span class="keyword">public</span><span class="special">:</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">traits</span> <span class="identifier">traits</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">pointer</span> <span class="identifier">pointer</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_pointer</span> <span class="identifier">const_pointer</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">child_iterator</span> <span class="identifier">child_iterator</span><span class="special">;</span>
+        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_child_iterator</span> <span class="identifier">const_child_iterator</span><span class="special">;</span>
 
         <span class="identifier">raw_node</span><span class="special">();</span>
 
-        <span class="keyword">explicit</span> <span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
-
-        <span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
-
-        <span class="identifier">raw_node</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">raw_node</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
-
-        <span class="special">~</span><span class="identifier">raw_node</span><span class="special">();</span>
-
-        <span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">data_type</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">();</span>
-
-        <span class="identifier">const_pointer</span> <span class="identifier">get_parent</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">pointer</span> <span class="identifier">get_parent</span><span class="special">();</span>
-
-        <span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
-
-        <span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">();</span>
-
-        <span class="identifier">pointer</span> <span class="identifier">add_child_copy</span><span class="special">(</span><span class="identifier">const_pointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
-
-        <span class="identifier">const_child_iterator</span> <span class="identifier">get_child_begin</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">child_iterator</span> <span class="identifier">get_child_begin</span><span class="special">();</span>
-
-        <span class="identifier">const_child_iterator</span> <span class="identifier">get_child_end</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">child_iterator</span> <span class="identifier">get_child_end</span><span class="special">();</span>
-
-        <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">const_child_iterator</span><span class="special">,</span><span class="identifier">const_child_iterator</span><span class="special">&gt;</span>
-            <span class="identifier">get_children</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span><span class="identifier">child_iterator</span><span class="special">,</span><span class="identifier">child_iterator</span><span class="special">&gt;</span>
-            <span class="identifier">get_children</span><span class="special">();</span>
-
-        <span class="keyword">void</span> <span class="identifier">remove_all_children</span><span class="special">();</span>
-
+        <span class="keyword">explicit</span> <span class="identifier">raw_node</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
     <span class="special">};</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
@@ -207,6 +166,8 @@
 <a name="tree_node.reference.raw_node.model_of"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.model_of" title="Model of">Model of</a>
 </h4></div></div></div>
 <pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/nary_tree_node.html" title="N-ary Tree Node"><span class="bold"><strong>N-ary Tree Node</strong></span></a>
+<span class="special">*</span> <a class="link" href="../concepts/factory_constructible.html" title="Factory-Constructible Tree Node"><span class="bold"><strong>Factory-Constructible Tree Node</strong></span></a>
+<span class="special">*</span> <a class="link" href="../concepts/cloneable_tree_node.html" title="Cloneable Tree Node"><span class="bold"><strong>Cloneable Tree Node</strong></span></a>
 <span class="special">*</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>
 <span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
 <span class="special">*</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T</span><span class="error">`</span> <span class="identifier">is</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
@@ -218,12 +179,12 @@
         Classes</a>
 </h4></div></div></div>
 <p>
-          None.
+          <a class="link" href="raw_node_base.html" title="raw_node_base"><code class="computeroutput"><span class="identifier">raw_node_base</span></code></a>
         </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.raw_node.members"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.members" title="Members">Members</a>
+<a name="tree_node.reference.raw_node.members"></a><a class="link" href="raw_node.html#tree_node.reference.raw_node.members" title="Public Members">Public Members</a>
 </h4></div></div></div>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -257,7 +218,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">data_type</span></code>
+                    <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span></code>
                   </p>
                 </td>
 <td>
@@ -362,13 +323,13 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="keyword">explicit</span> <span class="identifier">raw_node</span><span class="special">(</span><span class="identifier">data_type</span>
-                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                    <code class="computeroutput"><span class="keyword">explicit</span> <span class="identifier">raw_node</span><span class="special">(</span><span class="keyword">typename</span>
+                    <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">raw_node</span></code>
+                    <a class="link" href="../concepts/factory_constructible.html" title="Factory-Constructible Tree Node"><span class="bold"><strong>Factory-Constructible Tree Node</strong></span></a>
                   </p>
                 </td>
 </tr>
@@ -410,12 +371,32 @@
 <tr>
 <td>
                   <p>
+                    Clone
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">clone</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <a class="link" href="../concepts/cloneable_tree_node.html" title="Cloneable Tree Node"><span class="bold"><strong>Cloneable Tree Node</strong></span></a>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     Data access
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span></code>
+                    <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span>
+                    <span class="keyword">const</span><span class="special">&amp;</span>
+                    <span class="identifier">get_data</span><span class="special">()</span>
+                    <span class="keyword">const</span><span class="special">;</span></code>
                   </p>
                 </td>
 <td>
@@ -433,8 +414,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">data_type</span><span class="special">&amp;</span>
-                    <span class="identifier">get_data</span><span class="special">();</span></code>
+                    <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span><span class="special">&amp;</span> <span class="identifier">get_data</span><span class="special">();</span></code>
                   </p>
                 </td>
 <td>
@@ -489,8 +469,8 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="identifier">data_type</span>
-                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="identifier">add_child</span><span class="special">(</span><span class="keyword">typename</span>
+                    <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
@@ -616,44 +596,6 @@
 <tr>
 <td>
                   <p>
-                    Children range
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;const_child_iterator,const_child_iterator&gt;
-                    get_children() const;</code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
-                    Node</strong></span></a>
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Children range
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;child_iterator,child_iterator&gt;
-                    get_children();</code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
-                    Node</strong></span></a>
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
                     Remove all children
                   </p>
                 </td>
@@ -691,7 +633,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="raw_binary_node.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="simple_node.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="raw_binary_node_gen.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="raw_node_base.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

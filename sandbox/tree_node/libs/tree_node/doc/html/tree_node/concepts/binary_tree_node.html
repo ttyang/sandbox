@@ -4,7 +4,7 @@
 <title>Binary Tree Node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="non_assoc_tree_node.html" title="Non-Associative Tree Node">
 <link rel="next" href="nary_tree_node.html" title="N-ary Tree Node">
@@ -55,13 +55,10 @@
 <dd><p>
               An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span></code>.
             </p></dd>
-<dt><span class="term"><code class="computeroutput"><span class="identifier">Data</span></code></span></dt>
-<dd><p>
-              The data type of <code class="computeroutput"><span class="identifier">Node</span></code>.
-            </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">data</span></code></span></dt>
 <dd><p>
-              An object of type <code class="computeroutput"><span class="identifier">Data</span> <span class="keyword">const</span><span class="special">&amp;</span></code>.
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span>
+              <span class="keyword">const</span><span class="special">&amp;</span></code>.
             </p></dd>
 </dl>
 </div>
@@ -170,8 +167,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Data</span></code> must model
-                    the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span></code> must model the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
                   </p>
                 </td>
 <td>
@@ -265,8 +261,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Data</span></code> must model
-                    the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span></code> must model the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
                   </p>
                 </td>
 <td>
@@ -568,6 +563,7 @@
 <a name="tree_node.concepts.binary_tree_node.models"></a><a class="link" href="binary_tree_node.html#tree_node.concepts.binary_tree_node.models" title="Models">Models</a>
 </h4></div></div></div>
 <pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/raw_binary_node.html" title="raw_binary_node"><code class="computeroutput"><span class="identifier">raw_binary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/raw_binary_node_base.html" title="raw_binary_node_base"><code class="computeroutput"><span class="identifier">raw_binary_node_base</span></code></a>
 </pre>
 </div>
 </div>

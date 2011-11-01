@@ -1,0 +1,74 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:type_generator Type Generator]
+
+[section Description]
+A [*Type Generator] is a __Metafunction_Class__ that returns a
+__Base_Tree_Node__ from which __Tree_Node__ adaptor types can inherit the
+necessary functionality.
+[endsect]
+
+[variablelist Notation
+    [
+        [`Generator`]
+        [A type that models the [*Type Generator] concept.]
+    ]
+    [
+        [`Derived`]
+        [
+            The most descendant type that will inherit from the return type of
+            `Generator`.
+        ]
+    ]
+    [
+        [`Key`]
+        [The key type of the __Associative_Tree_Node__ to be returned.]
+    ]
+    [
+        [`Data`]
+        [The data type of the __Tree_Node__ to be returned.]
+    ]
+]
+
+[section:expressions Valid Expressions and Semantics]
+[table
+    [[Name][Expression][Return Type]]
+    [
+        [Non-associative invocation]
+        [[^_mpl_apply_wrap2_<Generator,Derived,Data>::type]]
+        [
+            A __Non_Associative_Tree_Node__ model whose `traits::data_type` is
+            the same as `Data`.
+        ]
+    ]
+    [
+        [Associative invocation]
+        [[^_mpl_apply_wrap3_<Generator,Derived,Key,Data>::type]]
+        [
+            An __Associative_Tree_Node__ model whose `traits::key_type` is the
+            same as `Key` and whose `traits::data_type` is the same as `Data`.
+        ]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __raw_binary_node_gen__
+  * __raw_node_gen__
+  * __simple_node_gen__
+  * __raw_associative_node_gen__
+  * __simple_associative_node_gen__
+  * __tree_node_with_child_range_access_gen__
+  * __tree_node_with_depth_gen__
+
+[endsect]
+
+[endsect] [/ Type Generator]
+

@@ -58,6 +58,8 @@ value.
 [section:model_of Model of]
 
   * __N_ary_Tree_Node__
+  * __Factory_Constructible_Tree_Node__
+  * __Cloneable_Tree_Node__
   * __Default_Constructible__ if `T` is __Default_Constructible__
   * __Copy_Constructible__
   * __Assignable__ if `T` is __Assignable__
@@ -65,15 +67,15 @@ value.
 [endsect]
 
 [section:public_bases Public Base Classes]
-None.
+__raw_node_base__
 [endsect]
 
-[section Members]
+[section:members Public Members]
 [table
     [[Name][Expression][Where defined]]
     [
         [Data type]
-        [`data_type`]
+        [`typename traits::data_type`]
         [__Tree_Node__]
     ]
     [
@@ -103,8 +105,8 @@ None.
     ]
     [
         [Constructor with data]
-        [`explicit raw_node(data_type const&);`]
-        [`raw_node`]
+        [`explicit raw_node(typename traits::data_type const&);`]
+        [__Factory_Constructible_Tree_Node__]
     ]
     [
         [Copy constructor]
@@ -117,13 +119,18 @@ None.
         [__Assignable__]
     ]
     [
+        [Clone]
+        [`pointer clone() const;`]
+        [__Cloneable_Tree_Node__]
+    ]
+    [
         [Data access]
-        [`data_type const& get_data() const;`]
+        [`typename traits::data_type const& get_data() const;`]
         [__Tree_Node__]
     ]
     [
         [Data access]
-        [`data_type& get_data();`]
+        [`typename traits::data_type& get_data();`]
         [__Tree_Node__]
     ]
     [
@@ -138,7 +145,7 @@ None.
     ]
     [
         [Child creation with data]
-        [`pointer add_child(data_type const&);`]
+        [`pointer add_child(typename traits::data_type const&);`]
         [__N_ary_Tree_Node__]
     ]
     [
@@ -169,22 +176,6 @@ None.
     [
         [Children range past-the-end access]
         [`child_iterator get_child_end();`]
-        [__Tree_Node__]
-    ]
-    [
-        [Children range]
-        [
-            [^_std_pair_<const_child_iterator,const_child_iterator>
-            get_children() const;]
-        ]
-        [__Tree_Node__]
-    ]
-    [
-        [Children range]
-        [
-            [^_std_pair_<child_iterator,child_iterator>
-            get_children();]
-        ]
         [__Tree_Node__]
     ]
     [

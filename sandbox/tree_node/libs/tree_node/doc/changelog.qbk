@@ -1,0 +1,26 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Changelog]
+
+[heading From 0.1 to 0.2]
+
+  * Added __Base_Tree_Node__, __Factory_Constructible_Tree_Node__, and
+    __Cloneable_Tree_Node__ concepts.
+  * Added __tree_node_factory__ facade.
+  * Added __tree_node_base__ and __shared_tree_node_base__ `struct` templates;
+    each __Tree_Node__ model that is not a __Base_Tree_Node__ now inherits from
+    a corresponding __Base_Tree_Node__ which, in turn, inherits from one of
+    these two types.
+  * Added __tree_node_with_child_range_access__ and __tree_node_with_depth__
+    adaptor class templates.
+  * All __Tree_Node__ models now use CRTP so that adaptor classes can inherit
+    from the base types.
+
+[endsect] [/ Changelog]
+

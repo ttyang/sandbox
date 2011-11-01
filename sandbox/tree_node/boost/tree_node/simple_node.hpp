@@ -12,23 +12,28 @@
 #include <boost/tr1/memory.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/utility/container_gen.hpp>
+#include <boost/tree_node/shared_base.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
+#include <boost/tree_node/factory.hpp>
 #include <boost/detail/function/add_const_to_sh_ptee.hpp>
 
-//[reference__simple_node
+//[reference__simple_node_base
 namespace boost { namespace tree_node {
 
-    template <typename T, typename Selector = ::boost::dequeS>
-    class simple_node
-      : public ::std::tr1::enable_shared_from_this<simple_node<T> >
+    template <typename Derived, typename T, typename Selector>
+    class simple_node_base
+      : public shared_tree_node_base<Derived>
       , private noncopyable
     {
      public:
-        typedef T
-                data_type;
-        typedef ::std::tr1::shared_ptr<simple_node>
+        struct traits
+        {
+            typedef T data_type;
+        };
+
+        typedef typename shared_tree_node_base<Derived>::pointer
                 pointer;
-        typedef ::std::tr1::shared_ptr<simple_node const>
+        typedef typename shared_tree_node_base<Derived>::const_pointer
                 const_pointer;
 
         //<-
@@ -45,36 +50,46 @@ namespace boost { namespace tree_node {
                 child_iterator;
         typedef // implementation_defined
                 //<-
+#if 0
+// TODO:
+// Fix compiler error that occurs when this code is used
+// by the with_depth adaptor.
                 ::boost::transform_iterator<
-                    ::boost::detail::add_const_to_shared_pointee<simple_node>
+                    ::boost::detail::add_const_to_shared_pointee<Derived>
                   , typename children::const_iterator
                 >
+#else
+                typename children::const_iterator
+#endif
                 //->
                 const_child_iterator;
 
         //<-
      private:
-        children                          _children;
-        ::std::tr1::weak_ptr<simple_node> _parent;
-        data_type                         _data;
+        children                      _children;
+        ::std::tr1::weak_ptr<Derived> _parent;
+        typename traits::data_type    _data;
+        //->
 
-        simple_node();
+     protected:
+        simple_node_base();
 
-        explicit simple_node(data_type const& data);
+        explicit simple_node_base(typename traits::data_type const& data);
 
      public:
-        //->
-        ~simple_node();
+        ~simple_node_base();
 
-        data_type const& get_data() const;
+        pointer clone() const;
 
-        data_type& get_data();
+        typename traits::data_type const& get_data() const;
+
+        typename traits::data_type& get_data();
 
         const_pointer get_parent() const;
 
         pointer get_parent();
 
-        pointer add_child(data_type const& data);
+        pointer add_child(typename traits::data_type const& data);
 
         pointer add_child();
 
@@ -88,162 +103,185 @@ namespace boost { namespace tree_node {
 
         child_iterator get_child_end();
 
-        std::pair<const_child_iterator,const_child_iterator>
-            get_children() const;
-
-        std::pair<child_iterator,child_iterator>
-            get_children();
-
         void remove_all_children();
-
-        static pointer create(data_type const& data);
-
-        static pointer create();
-
-        static pointer create_copy(const_pointer const& p);
 
         //<-
      private:
+        void _remove_all_children();
+
         void _add_child(pointer const& child);
         //->
     };
 
     //<-
-    template <typename T, typename Selector>
-    simple_node<T,Selector>::simple_node() : _children(), _parent(), _data()
+    template <typename Derived, typename T, typename Selector>
+    simple_node_base<Derived,T,Selector>::simple_node_base()
+      : _children(), _parent(), _data()
     {
     }
 
-    template <typename T, typename Selector>
-    simple_node<T,Selector>::simple_node(data_type const& data)
-      : _children(), _parent(), _data(data)
+    template <typename Derived, typename T, typename Selector>
+    simple_node_base<Derived,T,Selector>::simple_node_base(
+        typename traits::data_type const& data
+    ) : _children(), _parent(), _data(data)
     {
     }
 
-    template <typename T, typename Selector>
-    simple_node<T,Selector>::~simple_node()
+    template <typename Derived, typename T, typename Selector>
+    simple_node_base<Derived,T,Selector>::~simple_node_base()
     {
-        remove_all_children();
+        _remove_all_children();
         _parent.reset();
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::data_type const&
-        simple_node<T,Selector>::get_data() const
+    template <typename Derived, typename T, typename Selector>
+    typename simple_node_base<Derived,T,Selector>::pointer
+        simple_node_base<Derived,T,Selector>::clone() const
+    {
+        pointer result(::boost::tree_node::factory<Derived>::create(_data));
+        pointer p(result);
+
+        for (
+            depth_first_iterator<const_pointer,::boost::mpl::true_> copy_itr(
+                this->get_derived()
+            );
+            copy_itr;
+            ++copy_itr
+        )
+        {
+            switch (traversal_state(copy_itr))
+            {
+                case pre_order_traversal:
+                {
+                    pointer child(
+                        ::boost::tree_node::factory<Derived>::create(
+                            (*copy_itr)->get_data()
+                        )
+                    );
+
+                    p->_add_child(child);
+                    p = child;
+                    break;
+                }
+
+                case post_order_traversal:
+                {
+                    p = p->get_parent();
+                    break;
+                }
+            }
+        }
+
+        result->deep_update_derived();
+        return result;
+    }
+
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<
+        Derived
+      , T
+      , Selector
+    >::traits::data_type const&
+        simple_node_base<Derived,T,Selector>::get_data() const
     {
         return _data;
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::data_type&
-        simple_node<T,Selector>::get_data()
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::traits::data_type&
+        simple_node_base<Derived,T,Selector>::get_data()
     {
         return _data;
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::const_pointer
-        simple_node<T,Selector>::get_parent() const
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::const_pointer
+        simple_node_base<Derived,T,Selector>::get_parent() const
     {
         return const_pointer(_parent.lock());
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::get_parent()
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::pointer
+        simple_node_base<Derived,T,Selector>::get_parent()
     {
         return pointer(_parent.lock());
     }
 
-    template <typename T, typename Selector>
-    typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::add_child(data_type const& data)
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::pointer
+        simple_node_base<Derived,T,Selector>::add_child(
+            typename traits::data_type const& data
+        )
     {
-        pointer child(new simple_node(data));
+        pointer child(::boost::tree_node::factory<Derived>::create(data));
 
-        child->_parent = this->shared_from_this();
         _add_child(child);
+        this->shallow_update_derived();
         return child;
     }
 
-    template <typename T, typename Selector>
-    typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::add_child()
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::pointer
+        simple_node_base<Derived,T,Selector>::add_child()
     {
-        pointer child(new simple_node<T>());
+        pointer child(::boost::tree_node::factory<Derived>::create());
 
-        child->_parent = this->shared_from_this();
         _add_child(child);
+        this->shallow_update_derived();
         return child;
     }
 
-    template <typename T, typename Selector>
-    typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::add_child_copy(const_pointer const& copy)
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::pointer
+        simple_node_base<Derived,T,Selector>::add_child_copy(
+            const_pointer const& copy
+        )
     {
-        pointer child(create_copy(copy));
+        pointer child(copy->clone());
 
-        child->_parent = this->shared_from_this();
         _add_child(child);
+        this->shallow_update_derived();
         return child;
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::const_child_iterator
-        simple_node<T,Selector>::get_child_begin() const
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::const_child_iterator
+        simple_node_base<Derived,T,Selector>::get_child_begin() const
     {
         return const_child_iterator(_children.begin());
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::child_iterator
-        simple_node<T,Selector>::get_child_begin()
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::child_iterator
+        simple_node_base<Derived,T,Selector>::get_child_begin()
     {
         return _children.begin();
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::const_child_iterator
-        simple_node<T,Selector>::get_child_end() const
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::const_child_iterator
+        simple_node_base<Derived,T,Selector>::get_child_end() const
     {
         return const_child_iterator(_children.end());
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::child_iterator
-        simple_node<T,Selector>::get_child_end()
+    template <typename Derived, typename T, typename Selector>
+    inline typename simple_node_base<Derived,T,Selector>::child_iterator
+        simple_node_base<Derived,T,Selector>::get_child_end()
     {
         return _children.end();
     }
 
-    template <typename T, typename Selector>
-    inline ::std::pair<
-        typename simple_node<T,Selector>::const_child_iterator
-      , typename simple_node<T,Selector>::const_child_iterator
-    >
-        simple_node<T,Selector>::get_children() const
+    template <typename Derived, typename T, typename Selector>
+    inline void simple_node_base<Derived,T,Selector>::remove_all_children()
     {
-        return ::std::pair<const_child_iterator,const_child_iterator>(
-            get_child_begin()
-          , get_child_end()
-        );
+        _remove_all_children();
+        this->shallow_update_derived();
     }
 
-    template <typename T, typename Selector>
-    inline ::std::pair<
-        typename simple_node<T,Selector>::child_iterator
-      , typename simple_node<T,Selector>::child_iterator
-    >
-        simple_node<T,Selector>::get_children()
-    {
-        return ::std::pair<child_iterator,child_iterator>(
-            get_child_begin()
-          , get_child_end()
-        );
-    }
-
-    template <typename T, typename Selector>
-    void simple_node<T,Selector>::remove_all_children()
+    template <typename Derived, typename T, typename Selector>
+    void simple_node_base<Derived,T,Selector>::_remove_all_children()
     {
         child_iterator itr_end = get_child_end();
 
@@ -256,60 +294,72 @@ namespace boost { namespace tree_node {
         _children.clear();
     }
 
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::create(data_type const& data)
+    template <typename Derived, typename T, typename Selector>
+    inline void
+        simple_node_base<Derived,T,Selector>::_add_child(pointer const& child)
     {
-        return pointer(new simple_node(data));
-    }
-
-    template <typename T, typename Selector>
-    inline typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::create()
-    {
-        return pointer(new simple_node());
-    }
-
-    template <typename T, typename Selector>
-    typename simple_node<T,Selector>::pointer
-        simple_node<T,Selector>::create_copy(const_pointer const& copy)
-    {
-        pointer result(new simple_node(copy->get_data()));
-        pointer p(result);
-
-        for (
-            depth_first_iterator<const_pointer,::boost::mpl::true_> copy_itr(
-                copy
-            );
-            copy_itr;
-            ++copy_itr
-        )
-        {
-            switch (traversal_state(copy_itr))
-            {
-                case pre_order_traversal:
-                {
-                    p = p->add_child((*copy_itr)->get_data());
-                    break;
-                }
-
-                case post_order_traversal:
-                {
-                    p = p->get_parent();
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    template <typename T, typename Selector>
-    inline void simple_node<T,Selector>::_add_child(pointer const& child)
-    {
+        child->_parent = this->get_derived();
         _children.insert(_children.end(), child);
     }
     //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__simple_node
+namespace boost { namespace tree_node {
+
+    template <typename T, typename Selector = ::boost::dequeS>
+    class simple_node
+      : public simple_node_base<simple_node<T>,T,Selector>
+    {
+        typedef simple_node_base<simple_node,T,Selector> super_t;
+
+     public:
+        typedef typename super_t::traits traits;
+        typedef typename super_t::pointer pointer;
+        typedef typename super_t::const_pointer const_pointer;
+        typedef typename super_t::child_iterator child_iterator;
+        typedef typename super_t::const_child_iterator const_child_iterator;
+
+        //<-
+     private:
+        simple_node();
+
+        explicit simple_node(typename traits::data_type const& data);
+
+        friend struct ::boost::tree_node::factory<simple_node>;
+        //->
+    };
+
+    //<-
+    template <typename T, typename Selector>
+    simple_node<T,Selector>::simple_node() : super_t()
+    {
+    }
+
+    template <typename T, typename Selector>
+    simple_node<T,Selector>::simple_node(
+        typename traits::data_type const& data
+    ) : super_t(data)
+    {
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__simple_node_gen
+namespace boost { namespace tree_node {
+
+    template <typename Selector = ::boost::dequeS>
+    struct simple_node_gen
+    {
+        template <typename Derived, typename T>
+        struct apply
+        {
+            typedef simple_node_base<Derived,T,Selector> type;
+        };
+    };
+//]
 }}  // namespace boost::tree_node
 //]
 

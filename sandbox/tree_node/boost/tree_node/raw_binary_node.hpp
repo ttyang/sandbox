@@ -15,11 +15,11 @@
 #include <boost/mpl/if.hpp>
 #include <boost/utility/enable_if.hpp>
 #endif
-#include <boost/array.hpp>
+#include <boost/tree_node/base.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
-#include <boost/detail/function/add_const_to_pointee.hpp>
+#include <boost/tree_node/factory.hpp>
 
-//[reference__raw_binary_node
+//[reference__raw_binary_node_base
 namespace boost { namespace tree_node {
   //<-
   namespace _detail {
@@ -98,7 +98,7 @@ namespace boost { namespace tree_node {
           , enabler
         >::type
 #endif
-    ) : _child(other._child)
+    ) : _child(*other)
     {
     }
 
@@ -156,15 +156,18 @@ namespace boost { namespace tree_node {
   }  // namespace _detail
   //->
 
-    template <typename T>
-    class raw_binary_node
+    template <typename Derived, typename T>
+    class raw_binary_node_base : public tree_node_base<Derived>
     {
      public:
-        typedef T
-                data_type;
-        typedef raw_binary_node*
+        struct traits
+        {
+            typedef T data_type;
+        };
+
+        typedef typename tree_node_base<Derived>::pointer
                 pointer;
-        typedef raw_binary_node const*
+        typedef typename tree_node_base<Derived>::const_pointer
                 const_pointer;
         typedef // implementation_defined
                 //<-
@@ -179,38 +182,40 @@ namespace boost { namespace tree_node {
 
         //<-
      private:
-        pointer   _left_child;
-        pointer   _right_child;
-        pointer   _parent;
-        data_type _data;
+        pointer                    _left_child;
+        pointer                    _right_child;
+        pointer                    _parent;
+        typename traits::data_type _data;
 
      public:
         //->
-        raw_binary_node();
+        raw_binary_node_base();
 
-        explicit raw_binary_node(data_type const& data);
+        explicit raw_binary_node_base(typename traits::data_type const& data);
 
-        raw_binary_node(raw_binary_node const& copy);
+        raw_binary_node_base(raw_binary_node_base const& copy);
 
-        raw_binary_node& operator=(raw_binary_node const& copy);
+        raw_binary_node_base& operator=(raw_binary_node_base const& copy);
 
-        ~raw_binary_node();
+        virtual ~raw_binary_node_base();
 
-        data_type const& get_data() const;
+        pointer clone() const;
 
-        data_type& get_data();
+        typename traits::data_type const& get_data() const;
+
+        typename traits::data_type& get_data();
 
         const_pointer get_parent() const;
 
         pointer get_parent();
 
-        pointer add_left_child(data_type const& data);
+        pointer add_left_child(typename traits::data_type const& data);
 
         pointer add_left_child();
 
         pointer add_left_child_copy(const_pointer const& copy);
 
-        pointer add_right_child(data_type const& data);
+        pointer add_right_child(typename traits::data_type const& data);
 
         pointer add_right_child();
 
@@ -232,12 +237,6 @@ namespace boost { namespace tree_node {
 
         child_iterator get_child_end();
 
-        std::pair<const_child_iterator,const_child_iterator>
-            get_children() const;
-
-        std::pair<child_iterator,child_iterator>
-            get_children();
-
         pointer rotate_left();
 
         pointer rotate_right();
@@ -250,27 +249,29 @@ namespace boost { namespace tree_node {
     };
 
     //<-
-    template <typename T>
-    raw_binary_node<T>::raw_binary_node()
+    template <typename Derived, typename T>
+    raw_binary_node_base<Derived,T>::raw_binary_node_base()
       : _left_child(), _right_child(), _parent(), _data()
     {
     }
 
-    template <typename T>
-    raw_binary_node<T>::raw_binary_node(data_type const& data)
-      : _left_child(), _right_child(), _parent(), _data(data)
+    template <typename Derived, typename T>
+    raw_binary_node_base<Derived,T>::raw_binary_node_base(
+        typename traits::data_type const& data
+    ) : _left_child(), _right_child(), _parent(), _data(data)
     {
     }
 
-    template <typename T>
-    raw_binary_node<T>::raw_binary_node(raw_binary_node const& copy)
-      : _left_child(), _right_child(), _parent(), _data(copy._data)
+    template <typename Derived, typename T>
+    raw_binary_node_base<Derived,T>::raw_binary_node_base(
+        raw_binary_node_base const& copy
+    ) : _left_child(), _right_child(), _parent(), _data(copy._data)
     {
-        pointer p = this;
+        pointer p = this->get_derived();
 
         for (
             depth_first_iterator<const_pointer,::boost::mpl::true_> copy_itr(
-                &copy
+                copy.get_derived()
             );
             copy_itr;
             ++copy_itr
@@ -284,11 +285,19 @@ namespace boost { namespace tree_node {
 
                     if (c_p->_parent->_left_child == c_p)
                     {
-                        p = p->add_left_child(c_p->get_data());
+                        p->_left_child = ::boost::tree_node::factory<
+                            Derived
+                        >::create(c_p->get_data());
+                        p->_left_child->_parent = p;
+                        p = p->_left_child;
                     }
                     else // if (c_p->_parent->_right_child == c_p)
                     {
-                        p = p->add_right_child(c_p->get_data());
+                        p->_right_child = ::boost::tree_node::factory<
+                            Derived
+                        >::create(c_p->get_data());
+                        p->_right_child->_parent = p;
+                        p = p->_right_child;
                     }
 
                     break;
@@ -301,15 +310,19 @@ namespace boost { namespace tree_node {
                 }
             }
         }
+
+        this->deep_update_derived();
     }
 
-    template <typename T>
-    raw_binary_node<T>&
-        raw_binary_node<T>::operator=(raw_binary_node const& copy)
+    template <typename Derived, typename T>
+    raw_binary_node_base<Derived,T>&
+        raw_binary_node_base<Derived,T>::operator=(
+            raw_binary_node_base const& copy
+        )
     {
         if (this != &copy)
         {
-            raw_binary_node temp_copy(copy);
+            raw_binary_node_base temp_copy(copy);
 
             delete _left_child;
             delete _right_child;
@@ -317,251 +330,353 @@ namespace boost { namespace tree_node {
             _right_child = temp_copy._right_child;
             _data = temp_copy._data;
             temp_copy._left_child = temp_copy._right_child = 0;
-            _left_child->_parent = _right_child->_parent = this;
+            _left_child->_parent = _right_child->_parent = this->get_derived();
+            this->shallow_update_derived();
         }
 
         return *this;
     }
 
-    template <typename T>
-    raw_binary_node<T>::~raw_binary_node()
+    template <typename Derived, typename T>
+    raw_binary_node_base<Derived,T>::~raw_binary_node_base()
     {
-        remove_all_children();
+        delete _left_child;
+        delete _right_child;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::data_type const&
-        raw_binary_node<T>::get_data() const
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::clone() const
+    {
+        pointer result = ::boost::tree_node::factory<Derived>::create(_data);
+        pointer p = result;
+
+        for (
+            depth_first_iterator<const_pointer,::boost::mpl::true_> copy_itr(
+                this->get_derived()
+            );
+            copy_itr;
+            ++copy_itr
+        )
+        {
+            switch (traversal_state(copy_itr))
+            {
+                case pre_order_traversal:
+                {
+                    const_pointer c_p = *copy_itr;
+
+                    if (c_p->_parent->_left_child == c_p)
+                    {
+                        p->_left_child = ::boost::tree_node::factory<
+                            Derived
+                        >::create(c_p->get_data());
+                        p->_left_child->_parent = p;
+                        p = p->_left_child;
+                    }
+                    else // if (c_p->_parent->_right_child == c_p)
+                    {
+                        p->_right_child = ::boost::tree_node::factory<
+                            Derived
+                        >::create(c_p->get_data());
+                        p->_right_child->_parent = p;
+                        p = p->_right_child;
+                    }
+
+                    break;
+                }
+
+                case post_order_traversal:
+                {
+                    p = p->_parent;
+                    break;
+                }
+            }
+        }
+
+        result->deep_update_derived();
+        return result;
+    }
+
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::traits::data_type const&
+        raw_binary_node_base<Derived,T>::get_data() const
     {
         return _data;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::data_type&
-        raw_binary_node<T>::get_data()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::traits::data_type&
+        raw_binary_node_base<Derived,T>::get_data()
     {
         return _data;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::const_pointer
-        raw_binary_node<T>::get_parent() const
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::const_pointer
+        raw_binary_node_base<Derived,T>::get_parent() const
     {
         return _parent;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::get_parent()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::get_parent()
     {
         return _parent;
     }
 
-    template <typename T>
-    typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::add_left_child(data_type const& data)
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::add_left_child(
+            typename traits::data_type const& data
+        )
     {
-        _left_child = new raw_binary_node(data);
-        _left_child->_parent = this;
+        _left_child = ::boost::tree_node::factory<Derived>::create(data);
+        _left_child->_parent = this->get_derived();
+        this->shallow_update_derived();
         return _left_child;
     }
 
-    template <typename T>
-    typename raw_binary_node<T>::pointer raw_binary_node<T>::add_left_child()
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::add_left_child()
     {
-        _left_child = new raw_binary_node();
-        _left_child->_parent = this;
+        _left_child = ::boost::tree_node::factory<Derived>::create();
+        _left_child->_parent = this->get_derived();
+        this->shallow_update_derived();
         return _left_child;
     }
 
-    template <typename T>
-    typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::add_left_child_copy(const_pointer const& copy)
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::add_left_child_copy(
+            const_pointer const& copy
+        )
     {
-        _left_child = new raw_binary_node(*copy);
-        _left_child->_parent = this;
+        _left_child = copy->clone();
+        _left_child->_parent = this->get_derived();
+        this->shallow_update_derived();
         return _left_child;
     }
 
-    template <typename T>
-    typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::add_right_child(data_type const& data)
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::add_right_child(
+            typename traits::data_type const& data
+        )
     {
-        _right_child = new raw_binary_node(data);
-        _right_child->_parent = this;
+        _right_child = ::boost::tree_node::factory<Derived>::create(data);
+        _right_child->_parent = this->get_derived();
+        this->shallow_update_derived();
         return _right_child;
     }
 
-    template <typename T>
-    typename raw_binary_node<T>::pointer raw_binary_node<T>::add_right_child()
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::add_right_child()
     {
-        _right_child = new raw_binary_node();
-        _right_child->_parent = this;
+        _right_child = ::boost::tree_node::factory<Derived>::create();
+        _right_child->_parent = this->get_derived();
+        this->shallow_update_derived();
         return _right_child;
     }
 
-    template <typename T>
-    typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::add_right_child_copy(const_pointer const& copy)
+    template <typename Derived, typename T>
+    typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::add_right_child_copy(
+            const_pointer const& copy
+        )
     {
-        _right_child = new raw_binary_node(*copy);
-        _right_child->_parent = this;
+        _right_child = copy->clone();
+        _right_child->_parent = this->get_derived();
+        this->shallow_update_derived();
         return _right_child;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::const_pointer
-        raw_binary_node<T>::get_left_child() const
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::const_pointer
+        raw_binary_node_base<Derived,T>::get_left_child() const
     {
         return _left_child;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::get_left_child()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::get_left_child()
     {
         return _left_child;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::const_pointer
-        raw_binary_node<T>::get_right_child() const
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::const_pointer
+        raw_binary_node_base<Derived,T>::get_right_child() const
     {
         return _right_child;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::get_right_child()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::get_right_child()
     {
         return _right_child;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::const_child_iterator
-        raw_binary_node<T>::get_child_begin() const
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::const_child_iterator
+        raw_binary_node_base<Derived,T>::get_child_begin() const
     {
-        return const_child_iterator(this);
+        return const_child_iterator(this->get_derived());
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::child_iterator
-        raw_binary_node<T>::get_child_begin()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::child_iterator
+        raw_binary_node_base<Derived,T>::get_child_begin()
     {
-        return child_iterator(this);
+        return child_iterator(this->get_derived());
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::const_child_iterator
-        raw_binary_node<T>::get_child_end() const
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::const_child_iterator
+        raw_binary_node_base<Derived,T>::get_child_end() const
     {
         return const_child_iterator();
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::child_iterator
-        raw_binary_node<T>::get_child_end()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::child_iterator
+        raw_binary_node_base<Derived,T>::get_child_end()
     {
         return child_iterator();
     }
 
-    template <typename T>
-    inline ::std::pair<
-        typename raw_binary_node<T>::const_child_iterator
-      , typename raw_binary_node<T>::const_child_iterator
-    >
-        raw_binary_node<T>::get_children() const
-    {
-        return ::std::pair<const_child_iterator,const_child_iterator>(
-            get_child_begin()
-          , get_child_end()
-        );
-    }
-
-    template <typename T>
-    inline ::std::pair<
-        typename raw_binary_node<T>::child_iterator
-      , typename raw_binary_node<T>::child_iterator
-    >
-        raw_binary_node<T>::get_children()
-    {
-        return ::std::pair<child_iterator,child_iterator>(
-            get_child_begin()
-          , get_child_end()
-        );
-    }
-
-    template <typename T>
-    inline typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::rotate_left()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::rotate_left()
     {
         pointer pivot = _right_child;
 
         pivot->_parent = _parent;
         _right_child = pivot->_left_child;
-        _right_child->_parent = pivot->_left_child = this;
+        _right_child->_parent = pivot->_left_child = this->get_derived();
 
         if (_parent)
         {
-            if (_parent->_left_child == this)
+            if (_parent->_left_child == this->get_derived())
             {
                 _parent->_left_child = pivot;
             }
-            else // if (_parent->_right_child == this)
+            else // if (_parent->_right_child == this->get_derived())
             {
                 _parent->_right_child = pivot;
             }
         }
 
-        return _parent = pivot;
+        _parent = pivot;
+        this->shallow_update_derived();
+        return pivot;
     }
 
-    template <typename T>
-    inline typename raw_binary_node<T>::pointer
-        raw_binary_node<T>::rotate_right()
+    template <typename Derived, typename T>
+    inline typename raw_binary_node_base<Derived,T>::pointer
+        raw_binary_node_base<Derived,T>::rotate_right()
     {
         pointer pivot = _left_child;
 
         pivot->_parent = _parent;
         _left_child = pivot->_right_child;
-        _left_child->_parent = pivot->_right_child = this;
+        _left_child->_parent = pivot->_right_child = this->get_derived();
 
         if (_parent)
         {
-            if (_parent->_right_child == this)
+            if (_parent->_right_child == this->get_derived())
             {
                 _parent->_right_child = pivot;
             }
-            else // if (_parent->_left_child == this)
+            else // if (_parent->_left_child == this->get_derived())
             {
                 _parent->_left_child = pivot;
             }
         }
 
-        return _parent = pivot;
+        _parent = pivot;
+        this->shallow_update_derived();
+        return pivot;
     }
 
-    template <typename T>
-    void raw_binary_node<T>::remove_left_child()
+    template <typename Derived, typename T>
+    void raw_binary_node_base<Derived,T>::remove_left_child()
     {
         delete _left_child;
         _left_child = 0;
+        this->shallow_update_derived();
     }
 
-    template <typename T>
-    void raw_binary_node<T>::remove_right_child()
+    template <typename Derived, typename T>
+    void raw_binary_node_base<Derived,T>::remove_right_child()
     {
         delete _right_child;
         _right_child = 0;
+        this->shallow_update_derived();
+    }
+
+    template <typename Derived, typename T>
+    void raw_binary_node_base<Derived,T>::remove_all_children()
+    {
+        delete _left_child;
+        delete _right_child;
+        _left_child = _right_child = 0;
+        this->shallow_update_derived();
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__raw_binary_node
+namespace boost { namespace tree_node {
+
+    template <typename T>
+    class raw_binary_node : public raw_binary_node_base<raw_binary_node<T>,T>
+    {
+        typedef raw_binary_node_base<raw_binary_node<T>,T> super_t;
+
+     public:
+        typedef typename super_t::traits traits;
+        typedef typename super_t::pointer pointer;
+        typedef typename super_t::const_pointer const_pointer;
+        typedef typename super_t::child_iterator child_iterator;
+        typedef typename super_t::const_child_iterator const_child_iterator;
+
+        raw_binary_node();
+
+        explicit raw_binary_node(typename traits::data_type const& data);
+    };
+
+    //<-
+    template <typename T>
+    raw_binary_node<T>::raw_binary_node() : super_t()
+    {
     }
 
     template <typename T>
-    inline void raw_binary_node<T>::remove_all_children()
+    raw_binary_node<T>::raw_binary_node(typename traits::data_type const& data)
+      : super_t(data)
     {
-        remove_left_child();
-        remove_right_child();
     }
     //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__raw_binary_node_gen
+namespace boost { namespace tree_node {
+
+    struct raw_binary_node_gen
+    {
+        template <typename Derived, typename T>
+        struct apply
+        {
+            typedef raw_binary_node_base<Derived,T> type;
+        };
+    };
 }}  // namespace boost::tree_node
 //]
 

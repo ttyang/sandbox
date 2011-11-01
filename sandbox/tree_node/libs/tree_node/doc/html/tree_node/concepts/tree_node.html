@@ -4,16 +4,16 @@
 <title>Tree Node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="../concepts.html" title="Concepts">
-<link rel="next" href="associative_tree_node.html" title="Associative Tree Node">
+<link rel="next" href="base_tree_node.html" title="Base Tree Node">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../concepts.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="associative_tree_node.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../concepts.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="base_tree_node.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -26,7 +26,11 @@
 <p>
           All tree node implementations that this library provides model this concept:
           a structure that maintains information about its data and its immediate
-          parent-child relationships.
+          parent-child relationships. However, in practice, a full-fledged tree node
+          data structure or adaptor consists of three components: a <a class="link" href="base_tree_node.html" title="Base Tree Node"><span class="bold"><strong>Base Tree Node</strong></span></a> model that defines the functionality,
+          a <span class="bold"><strong>Tree Node</strong></span> model that inherits from the
+          base type and is better suited for external usage, and a <a class="link" href="type_generator.html" title="Type Generator"><span class="bold"><strong>Type Generator</strong></span></a> that returns the <a class="link" href="base_tree_node.html" title="Base Tree Node"><span class="bold"><strong>Base Tree Node</strong></span></a> model from which adaptor types
+          can also inherit.
         </p>
 </div>
 <div class="variablelist">
@@ -88,7 +92,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">data_type</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span></code>
                   </p>
                 </td>
 <td>
@@ -258,7 +262,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Data</span> <span class="keyword">const</span><span class="special">&amp;</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span></code>
                   </p>
                 </td>
 <td>
@@ -285,7 +289,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Data</span><span class="special">&amp;</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span><span class="special">&amp;</span></code>
                   </p>
                 </td>
 <td>
@@ -561,8 +565,20 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.concepts.tree_node.models"></a><a class="link" href="tree_node.html#tree_node.concepts.tree_node.models" title="Models">Models</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <span class="identifier">All</span> <span class="identifier">models</span> <span class="identifier">of</span> <span class="identifier">the</span> <a class="link" href="associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">All</span> <span class="identifier">models</span> <span class="identifier">of</span> <span class="identifier">the</span> <a class="link" href="non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/raw_binary_node.html" title="raw_binary_node"><code class="computeroutput"><span class="identifier">raw_binary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/raw_binary_node_base.html" title="raw_binary_node_base"><code class="computeroutput"><span class="identifier">raw_binary_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/raw_node.html" title="raw_node"><code class="computeroutput"><span class="identifier">raw_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/raw_node_base.html" title="raw_node_base"><code class="computeroutput"><span class="identifier">raw_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/simple_node.html" title="simple_node"><code class="computeroutput"><span class="identifier">simple_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/simple_node_base.html" title="simple_node_base"><code class="computeroutput"><span class="identifier">simple_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/raw_associative_node.html" title="raw_associative_node"><code class="computeroutput"><span class="identifier">raw_associative_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/raw_associative_node_base.html" title="raw_associative_node_base"><code class="computeroutput"><span class="identifier">raw_associative_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/simple_associative_node.html" title="simple_associative_node"><code class="computeroutput"><span class="identifier">simple_associative_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/simple_assoc_node_base.html" title="simple_associative_node_base"><code class="computeroutput"><span class="identifier">simple_associative_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_child_range_access.html" title="with_child_range_access"><code class="computeroutput"><span class="identifier">with_child_range_access</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_child_range_acc_base.html" title="with_child_range_access_base"><code class="computeroutput"><span class="identifier">with_child_range_access_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_depth.html" title="with_depth"><code class="computeroutput"><span class="identifier">with_depth</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_depth_base.html" title="with_depth_base"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a>
 </pre>
 </div>
 </div>
@@ -576,7 +592,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../concepts.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="associative_tree_node.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../concepts.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="base_tree_node.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

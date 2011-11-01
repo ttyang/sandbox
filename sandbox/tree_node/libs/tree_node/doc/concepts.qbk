@@ -9,10 +9,14 @@
 [section Concepts]
 
 [include concept_tree_node.qbk]
+[include concept_base_tree_node.qbk]
+[include concept_factory_construct.qbk]
+[include concept_cloneable_tree_node.qbk]
 [include concept_assoc_tree_node.qbk]
 [include concept_non_assoc_tree_node.qbk]
 [include concept_binary_tree_node.qbk]
 [include concept_nary_tree_node.qbk]
+[include concept_type_generator.qbk]
 [include concept_iterator.qbk]
 [include concept_full_iterator.qbk]
 [include concept_descendant_iterator.qbk]
@@ -20,10 +24,14 @@
 [heading Core Concepts]
 
   * __Tree_Node__
+      * __Base_Tree_Node__
+      * __Factory_Constructible_Tree_Node__
+      * __Cloneable_Tree_Node__
       * __Associative_Tree_Node__
       * __Non_Associative_Tree_Node__
           * __Binary_Tree_Node__
           * __N_ary_Tree_Node__
+  * __Type_Generator__
   * __Tree_Node_Iterator__
       * __Full_Tree_Node_Iterator__
       * __Tree_Node_Descendant_Iterator__

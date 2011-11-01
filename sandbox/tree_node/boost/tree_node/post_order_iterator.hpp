@@ -6,21 +6,20 @@
 #ifndef BOOST_TREE_NODE_POST_ORDER_ITERATOR_HPP_INCLUDED
 #define BOOST_TREE_NODE_POST_ORDER_ITERATOR_HPP_INCLUDED
 
-#include <iterator>
 #include <deque>
 #include <boost/config.hpp>
 #include <boost/tr1/type_traits.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/mpl/equal_to.hpp>
 #ifndef BOOST_NO_SFINAE
+#include <boost/mpl/equal_to.hpp>
 #include <boost/utility/enable_if.hpp>
 #endif
-#include <boost/fusion/adapted/std_pair.hpp>
-#include <boost/fusion/support/is_sequence.hpp>
-#include <boost/detail/metafunction/element_type.hpp>
+#include <boost/iterator/iterator_traits.hpp>
 #include <boost/tree_node/traversal_state.hpp>
+#include <boost/tree_node/dereference_iterator.hpp>
+#include <boost/detail/metafunction/element_type.hpp>
 
 //[reference__post_order_iterator
 namespace boost { namespace tree_node {
@@ -43,12 +42,8 @@ namespace boost { namespace tree_node {
                   , typename node_type::child_iterator
                 >::type
                 child_iterator;
-        typedef typename ::std::iterator_traits<child_iterator>::value_type
+        typedef typename ::boost::iterator_value<child_iterator>::type
                 child_value;
-        typedef typename ::boost::fusion::traits::is_sequence<
-                    child_value
-                >::type
-                is_associative;
         typedef typename ::boost::mpl::if_<
                     MimicsChildIterator
                   , child_iterator
@@ -128,12 +123,6 @@ namespace boost { namespace tree_node {
 
         //<-
      private:
-        static NodePointer
-            _deref(child_iterator const&, ::boost::mpl::true_);
-
-        static NodePointer
-            _deref(child_iterator const&, ::boost::mpl::false_);
-
         reference _deref(::boost::mpl::true_) const;
 
         reference _deref(::boost::mpl::false_) const;
@@ -145,10 +134,6 @@ namespace boost { namespace tree_node {
         NodePointer _current_node(::boost::mpl::true_) const;
 
         NodePointer const& _current_node(::boost::mpl::false_) const;
-
-        void _push_child(child_iterator const&, ::boost::mpl::true_);
-
-        void _push_child(child_iterator const&, ::boost::mpl::false_);
 
         void _push_child_itr(child_iterator const&, ::boost::mpl::true_);
 
@@ -259,29 +244,9 @@ namespace boost { namespace tree_node {
 
     template <typename NP, typename MCI>
     inline NP
-        post_order_iterator<NP,MCI>::_deref(
-            child_iterator const& itr
-          , ::boost::mpl::true_
-        )
-    {
-        return itr->second;
-    }
-
-    template <typename NP, typename MCI>
-    inline NP
-        post_order_iterator<NP,MCI>::_deref(
-            child_iterator const& itr
-          , ::boost::mpl::false_
-        )
-    {
-        return *itr;
-    }
-
-    template <typename NP, typename MCI>
-    inline NP
         post_order_iterator<NP,MCI>::_current_node(::boost::mpl::true_) const
     {
-        return _deref(_current, is_associative());
+        return dereference_iterator(_current);
     }
 
     template <typename NP, typename MCI>
@@ -289,26 +254,6 @@ namespace boost { namespace tree_node {
         post_order_iterator<NP,MCI>::_current_node(::boost::mpl::false_) const
     {
         return _current;
-    }
-
-    template <typename NP, typename MCI>
-    inline void
-        post_order_iterator<NP,MCI>::_push_child(
-            child_iterator const& itr
-          , ::boost::mpl::true_
-        )
-    {
-        _stack.push_back(itr->second);
-    }
-
-    template <typename NP, typename MCI>
-    inline void
-        post_order_iterator<NP,MCI>::_push_child(
-            child_iterator const& itr
-          , ::boost::mpl::false_
-        )
-    {
-        _stack.push_back(*itr);
     }
 
     template <typename NP, typename MCI>
@@ -328,7 +273,7 @@ namespace boost { namespace tree_node {
           , boost::mpl::false_
         )
     {
-        _push_child(itr, is_associative());
+        _stack.push_back(dereference_iterator(itr));
     }
 
     template <typename NP, typename MCI>
@@ -351,7 +296,7 @@ namespace boost { namespace tree_node {
                 }
 
                 _push_child_itr(pre_order_stack.back(), MCI());
-                node = _deref(pre_order_stack.back(), is_associative());
+                node = dereference_iterator(pre_order_stack.back());
                 pre_order_stack.pop_back();
 
                 if (pre_order_stack.empty())

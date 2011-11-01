@@ -14,31 +14,34 @@
 #include <boost/tr1/tuple.hpp>
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/utility/associative_container_gen.hpp>
+#include <boost/tree_node/shared_base.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
+#include <boost/tree_node/factory.hpp>
 #include <boost/detail/function/add_const_to_2nd_sh_ptee.hpp>
 
-//[reference__simple_associative_node
+//[reference__simple_associative_node_base
 namespace boost { namespace tree_node {
 
     template <
-        typename Key
+        typename Derived
+      , typename Key
       , typename Data
-      , typename AssociativeContainerSelector = ::boost::mapS
+      , typename AssociativeContainerSelector
     >
-    class simple_associative_node
-      : public ::std::tr1::enable_shared_from_this<
-            simple_associative_node<Key,Data,AssociativeContainerSelector>
-        >
+    class simple_associative_node_base
+      : public shared_tree_node_base<Derived>
       , private noncopyable
     {
      public:
-        typedef Key
-                key_type;
-        typedef Data
-                data_type;
-        typedef ::std::tr1::shared_ptr<simple_associative_node>
+        struct traits
+        {
+            typedef Key key_type;
+            typedef Data data_type;
+        };
+
+        typedef typename shared_tree_node_base<Derived>::pointer
                 pointer;
-        typedef ::std::tr1::shared_ptr<simple_associative_node const>
+        typedef typename shared_tree_node_base<Derived>::const_pointer
                 const_pointer;
 
         //<-
@@ -47,7 +50,7 @@ namespace boost { namespace tree_node {
                     associative_container_gen<
                         AssociativeContainerSelector
                     >
-                  , key_type
+                  , typename traits::key_type
                   , pointer
                 >::type
                 children;
@@ -61,43 +64,60 @@ namespace boost { namespace tree_node {
                 child_iterator;
         typedef // implementation_defined
                 //<-
+#if 0
                 ::boost::transform_iterator<
                     ::boost::detail::add_const_to_2nd_shared_pointee<
                         Key
-                      , simple_associative_node
+                      , Derived
                     >
                   , typename children::const_iterator
                 >
+#else
+                typename children::const_iterator
+#endif
                 //->
                 const_child_iterator;
 
         //<-
      private:
-        children                                      _children;
-        ::std::tr1::weak_ptr<simple_associative_node> _parent;
-        data_type                                     _data;
+        children                      _children;
+        ::std::tr1::weak_ptr<Derived> _parent;
+        typename traits::data_type    _data;
+        //->
 
-        simple_associative_node();
+     protected:
+        simple_associative_node_base();
 
-        explicit simple_associative_node(data_type const& data);
+        explicit simple_associative_node_base(
+            typename traits::data_type const& data
+        );
 
      public:
-        //->
-        ~simple_associative_node();
+        ~simple_associative_node_base();
 
-        data_type const& get_data() const;
+        pointer clone() const;
 
-        data_type& get_data();
+        typename traits::data_type const& get_data() const;
+
+        typename traits::data_type& get_data();
 
         const_pointer get_parent() const;
 
         pointer get_parent();
 
-        pointer add_child(key_type const& key, data_type const& data);
+        pointer
+            add_child(
+                typename traits::key_type const& key
+              , typename traits::data_type const& data
+            );
 
-        pointer add_child(key_type const& key);
+        pointer add_child(typename traits::key_type const& key);
 
-        pointer add_child_copy(key_type const& key, const_pointer const& copy);
+        pointer
+            add_child_copy(
+                typename traits::key_type const& key
+              , const_pointer const& copy
+            );
 
         const_child_iterator get_child_begin() const;
 
@@ -107,195 +127,258 @@ namespace boost { namespace tree_node {
 
         child_iterator get_child_end();
 
-        std::pair<const_child_iterator,const_child_iterator>
-            get_children() const;
+        const_child_iterator
+            find_child(typename traits::key_type const& key) const;
 
-        std::pair<child_iterator,child_iterator>
-            get_children();
-
-        const_child_iterator find_child(key_type const& key) const;
-
-        child_iterator find_child(key_type const& key);
+        child_iterator find_child(typename traits::key_type const& key);
 
         ::std::pair<const_child_iterator,const_child_iterator>
-            find_children(key_type const& key) const;
+            find_children(typename traits::key_type const& key) const;
 
         ::std::pair<child_iterator,child_iterator>
-            find_children(key_type const& key);
+            find_children(typename traits::key_type const& key);
 
-        ::std::size_t remove_children(Key const& key);
+        ::std::size_t remove_children(typename traits::key_type const& key);
 
         void remove_all_children();
 
-        static pointer create(data_type const& data);
+        //<-
+     private:
+        void _remove_all_children();
 
-        static pointer create();
-
-        static pointer create_copy(const_pointer const& p);
+        void
+            _add_child(
+                typename traits::key_type const& key
+              , pointer const& child
+            );
+        //->
     };
 
     //<-
-    template <typename K, typename D, typename A>
-    simple_associative_node<K,D,A>::simple_associative_node()
+    template <typename Derived, typename K, typename D, typename A>
+    simple_associative_node_base<Derived,K,D,A>::simple_associative_node_base()
       : _children(), _parent(), _data()
     {
     }
 
-    template <typename K, typename D, typename A>
-    simple_associative_node<K,D,A>::simple_associative_node(data_type const& d)
-      : _children(), _parent(), _data(d)
+    template <typename Derived, typename K, typename D, typename A>
+    simple_associative_node_base<Derived,K,D,A>::simple_associative_node_base(
+        typename traits::data_type const& d
+    ) : _children(), _parent(), _data(d)
     {
     }
 
-    template <typename K, typename D, typename A>
-    simple_associative_node<K,D,A>::~simple_associative_node()
+    template <typename Derived, typename K, typename D, typename A>
+    simple_associative_node_base<
+        Derived
+      , K
+      , D
+      , A
+    >::~simple_associative_node_base()
     {
-        remove_all_children();
+        _remove_all_children();
         _parent.reset();
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::data_type const&
-        simple_associative_node<K,D,A>::get_data() const
+    template <typename Derived, typename K, typename D, typename A>
+    typename simple_associative_node_base<Derived,K,D,A>::pointer
+        simple_associative_node_base<Derived,K,D,A>::clone() const
+    {
+        pointer result(::boost::tree_node::factory<Derived>::create(_data));
+        pointer p(result);
+
+        for (
+            depth_first_iterator<const_pointer,::boost::mpl::true_> copy_itr(
+                this->get_derived()
+            );
+            copy_itr;
+            ++copy_itr
+        )
+        {
+            switch (traversal_state(copy_itr))
+            {
+                case pre_order_traversal:
+                {
+                    pointer child(
+                        ::boost::tree_node::factory<Derived>::create(
+                            copy_itr->second->get_data()
+                        )
+                    );
+
+                    p->_add_child(copy_itr->first, child);
+                    p = child;
+                    break;
+                }
+
+                case post_order_traversal:
+                {
+                    p = p->get_parent();
+                    break;
+                }
+            }
+        }
+
+        result->deep_update_derived();
+        return result;
+    }
+
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<
+        Derived
+      , K
+      , D
+      , A
+    >::traits::data_type const&
+        simple_associative_node_base<Derived,K,D,A>::get_data() const
     {
         return _data;
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::data_type&
-        simple_associative_node<K,D,A>::get_data()
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<
+        Derived
+      , K
+      , D
+      , A
+    >::traits::data_type&
+        simple_associative_node_base<Derived,K,D,A>::get_data()
     {
         return _data;
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::const_pointer
-        simple_associative_node<K,D,A>::get_parent() const
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<Derived,K,D,A>::const_pointer
+        simple_associative_node_base<Derived,K,D,A>::get_parent() const
     {
         return const_pointer(_parent.lock());
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::get_parent()
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<Derived,K,D,A>::pointer
+        simple_associative_node_base<Derived,K,D,A>::get_parent()
     {
         return pointer(_parent.lock());
     }
 
-    template <typename K, typename D, typename A>
-    typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::add_child(
-            key_type const& key
-          , data_type const& data
+    template <typename Derived, typename K, typename D, typename A>
+    typename simple_associative_node_base<Derived,K,D,A>::pointer
+        simple_associative_node_base<Derived,K,D,A>::add_child(
+            typename traits::key_type const& key
+          , typename traits::data_type const& data
         )
     {
-        pointer child(new simple_associative_node(data));
+        pointer child(::boost::tree_node::factory<Derived>::create(data));
 
-        child->_parent = this->shared_from_this();
-        _children.insert(typename children::value_type(key, child));
+        _add_child(key, child);
+        this->shallow_update_derived();
         return child;
     }
 
-    template <typename K, typename D, typename A>
-    typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::add_child(key_type const& key)
+    template <typename Derived, typename K, typename D, typename A>
+    typename simple_associative_node_base<Derived,K,D,A>::pointer
+        simple_associative_node_base<Derived,K,D,A>::add_child(
+            typename traits::key_type const& key
+        )
     {
-        pointer child(new simple_associative_node());
+        pointer child(::boost::tree_node::factory<Derived>::create());
 
-        child->_parent = this->shared_from_this();
-        _children.insert(typename children::value_type(key, child));
+        _add_child(key, child);
+        this->shallow_update_derived();
         return child;
     }
 
-    template <typename K, typename D, typename A>
-    typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::add_child_copy(
-            key_type const& key
+    template <typename Derived, typename K, typename D, typename A>
+    typename simple_associative_node_base<Derived,K,D,A>::pointer
+        simple_associative_node_base<Derived,K,D,A>::add_child_copy(
+            typename traits::key_type const& key
           , const_pointer const& copy
         )
     {
-        pointer child(create_copy(copy));
+        pointer child(copy->clone());
 
-        child->_parent = this->shared_from_this();
-        _children.insert(typename children::value_type(key, child));
+        _add_child(key, child);
+        this->shallow_update_derived();
         return child;
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::const_child_iterator
-        simple_associative_node<K,D,A>::get_child_begin() const
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<
+        Derived
+      , K
+      , D
+      , A
+    >::const_child_iterator
+        simple_associative_node_base<Derived,K,D,A>::get_child_begin() const
     {
         return const_child_iterator(_children.begin());
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::child_iterator
-        simple_associative_node<K,D,A>::get_child_begin()
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<Derived,K,D,A>::child_iterator
+        simple_associative_node_base<Derived,K,D,A>::get_child_begin()
     {
         return _children.begin();
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::const_child_iterator
-        simple_associative_node<K,D,A>::get_child_end() const
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<
+        Derived
+      , K
+      , D
+      , A
+    >::const_child_iterator
+        simple_associative_node_base<Derived,K,D,A>::get_child_end() const
     {
         return const_child_iterator(_children.end());
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::child_iterator
-        simple_associative_node<K,D,A>::get_child_end()
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<Derived,K,D,A>::child_iterator
+        simple_associative_node_base<Derived,K,D,A>::get_child_end()
     {
         return _children.end();
     }
 
-    template <typename K, typename D, typename A>
-    inline ::std::pair<
-        typename simple_associative_node<K,D,A>::const_child_iterator
-      , typename simple_associative_node<K,D,A>::const_child_iterator
-    >
-        simple_associative_node<K,D,A>::get_children() const
-    {
-        return ::std::pair<const_child_iterator,const_child_iterator>(
-            get_child_begin()
-          , get_child_end()
-        );
-    }
-
-    template <typename K, typename D, typename A>
-    inline ::std::pair<
-        typename simple_associative_node<K,D,A>::child_iterator
-      , typename simple_associative_node<K,D,A>::child_iterator
-    >
-        simple_associative_node<K,D,A>::get_children()
-    {
-        return ::std::pair<child_iterator,child_iterator>(
-            get_child_begin()
-          , get_child_end()
-        );
-    }
-
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::const_child_iterator
-        simple_associative_node<K,D,A>::find_child(key_type const& key) const
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<
+        Derived
+      , K
+      , D
+      , A
+    >::const_child_iterator
+        simple_associative_node_base<Derived,K,D,A>::find_child(
+            typename traits::key_type const& key
+        ) const
     {
         return const_child_iterator(_children.find(key));
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::child_iterator
-        simple_associative_node<K,D,A>::find_child(key_type const& key)
+    template <typename Derived, typename K, typename D, typename A>
+    inline typename simple_associative_node_base<Derived,K,D,A>::child_iterator
+        simple_associative_node_base<Derived,K,D,A>::find_child(
+            typename traits::key_type const& key
+        )
     {
         return _children.find(key);
     }
 
-    template <typename K, typename D, typename A>
+    template <typename Derived, typename K, typename D, typename A>
     inline ::std::pair<
-        typename simple_associative_node<K,D,A>::const_child_iterator
-      , typename simple_associative_node<K,D,A>::const_child_iterator
+        typename simple_associative_node_base<
+            Derived
+          , K
+          , D
+          , A
+        >::const_child_iterator
+      , typename simple_associative_node_base<
+            Derived
+          , K
+          , D
+          , A
+        >::const_child_iterator
     >
-        simple_associative_node<K,D,A>::find_children(
-            key_type const& key
+        simple_associative_node_base<Derived,K,D,A>::find_children(
+            typename traits::key_type const& key
         ) const
     {
         ::std::pair<
@@ -309,19 +392,23 @@ namespace boost { namespace tree_node {
         );
     }
 
-    template <typename K, typename D, typename A>
+    template <typename Derived, typename K, typename D, typename A>
     inline ::std::pair<
-        typename simple_associative_node<K,D,A>::child_iterator
-      , typename simple_associative_node<K,D,A>::child_iterator
+        typename simple_associative_node_base<Derived,K,D,A>::child_iterator
+      , typename simple_associative_node_base<Derived,K,D,A>::child_iterator
     >
-        simple_associative_node<K,D,A>::find_children(key_type const& key)
+        simple_associative_node_base<Derived,K,D,A>::find_children(
+            typename traits::key_type const& key
+        )
     {
         return _children.equal_range(key);
     }
 
-    template <typename K, typename D, typename A>
+    template <typename Derived, typename K, typename D, typename A>
     ::std::size_t
-        simple_associative_node<K,D,A>::remove_children(key_type const& key)
+        simple_associative_node_base<Derived,K,D,A>::remove_children(
+            typename traits::key_type const& key
+        )
     {
         child_iterator itr, itr_end;
 
@@ -335,11 +422,20 @@ namespace boost { namespace tree_node {
             itr->second->_parent.reset();
         }
 
+        this->shallow_update_derived();
         return _children.erase(key);
     }
 
-    template <typename K, typename D, typename A>
-    void simple_associative_node<K,D,A>::remove_all_children()
+    template <typename Derived, typename K, typename D, typename A>
+    inline void
+        simple_associative_node_base<Derived,K,D,A>::remove_all_children()
+    {
+        _remove_all_children();
+        this->shallow_update_derived();
+    }
+
+    template <typename Derived, typename K, typename D, typename A>
+    void simple_associative_node_base<Derived,K,D,A>::_remove_all_children()
     {
         child_iterator itr_end = get_child_end();
 
@@ -352,57 +448,97 @@ namespace boost { namespace tree_node {
         _children.clear();
     }
 
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::create(data_type const& data)
-    {
-        return pointer(new simple_associative_node(data));
-    }
-
-    template <typename K, typename D, typename A>
-    inline typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::create()
-    {
-        return pointer(new simple_associative_node());
-    }
-
-    template <typename K, typename D, typename A>
-    typename simple_associative_node<K,D,A>::pointer
-        simple_associative_node<K,D,A>::create_copy(const_pointer const& copy)
-    {
-        pointer result(new simple_associative_node(copy->get_data()));
-        pointer p(result);
-
-        for (
-            depth_first_iterator<const_pointer,::boost::mpl::true_> copy_itr(
-                copy
-            );
-            copy_itr;
-            ++copy_itr
+    template <typename Derived, typename K, typename D, typename A>
+    void
+        simple_associative_node_base<Derived,K,D,A>::_add_child(
+            typename traits::key_type const& key
+          , pointer const& child
         )
-        {
-            switch (traversal_state(copy_itr))
-            {
-                case pre_order_traversal:
-                {
-                    p = p->add_child(
-                        copy_itr->first
-                      , copy_itr->second->get_data()
-                    );
-                    break;
-                }
-
-                case post_order_traversal:
-                {
-                    p = p->get_parent();
-                    break;
-                }
-            }
-        }
-
-        return result;
+    {
+        child->_parent = this->get_derived();
+        _children.insert(typename children::value_type(key, child));
     }
     //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__simple_associative_node
+namespace boost { namespace tree_node {
+
+    template <
+        typename Key
+      , typename Data
+      , typename AssociativeContainerSelector = ::boost::mapS
+    >
+    class simple_associative_node
+      : public simple_associative_node_base<
+            simple_associative_node<Key,Data,AssociativeContainerSelector>
+          , Key
+          , Data
+          , AssociativeContainerSelector
+        >
+    {
+        typedef simple_associative_node_base<
+                    simple_associative_node
+                  , Key
+                  , Data
+                  , AssociativeContainerSelector
+                >
+                super_t;
+
+     public:
+        typedef typename super_t::traits
+                traits;
+        typedef typename super_t::pointer
+                pointer;
+        typedef typename super_t::const_pointer
+                const_pointer;
+        typedef typename super_t::child_iterator
+                child_iterator;
+        typedef typename super_t::const_child_iterator
+                const_child_iterator;
+
+        //<-
+     private:
+        simple_associative_node();
+
+        explicit simple_associative_node(
+            typename traits::data_type const& data
+        );
+
+        friend struct ::boost::tree_node::factory<simple_associative_node>;
+        //->
+    };
+
+    //<-
+    template <typename K, typename D, typename A>
+    simple_associative_node<K,D,A>::simple_associative_node() : super_t()
+    {
+    }
+
+    template <typename K, typename D, typename A>
+    simple_associative_node<K,D,A>::simple_associative_node(
+        typename traits::data_type const& data
+    ) : super_t(data)
+    {
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__simple_associative_node_gen
+namespace boost { namespace tree_node {
+
+    template <typename Selector = ::boost::mapS>
+    struct simple_associative_node_gen
+    {
+        template <typename Derived, typename Key, typename Data>
+        struct apply
+        {
+            typedef simple_associative_node_base<Derived,Key,Data,Selector>
+                    type;
+        };
+    };
 }}  // namespace boost::tree_node
 //]
 

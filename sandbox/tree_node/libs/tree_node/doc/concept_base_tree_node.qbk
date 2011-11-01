@@ -1,0 +1,127 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:base_tree_node Base Tree Node]
+
+[section Description]
+Models of this concept allow both the __Factory_Constructible_Tree_Node__
+models and the __Tree_Node__ adaptor types to parameterically inherit their
+functionality for greater reuse.
+
+In practice, each [*Base Tree Node] model must do the following:
+
+  * Inherit from either __tree_node_base__, __shared_tree_node_base__, or
+    the return type of a __Type_Generator__.
+  * Take in the derived type and the data type as template parameters.
+  * Define the requisite constructors in `protected` or `public` scope.
+
+
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [[`Base`][A type that models the [*Base Tree Node] concept.]]
+    [[`base`][An object of type `Base*`.]]
+    [[`const_base`][An object of type `Base const*`.]]
+    [[`Node`][A __Tree_Node__ model that inherits from `Base`.]]
+    [[`data`][An object of type `Node::traits::data_type const&`.]]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Tree_Node__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Tree_Node__ concept, the
+following expressions must be valid.
+
+[table
+    [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
+    [
+        [Derived access]
+        [`base->get_derived()`]
+        [`Node::pointer`]
+        [Returns a pointer to the same `Node` object.]
+        [Constant]
+    ]
+    [
+        [Derived access]
+        [`const_base->get_derived()`]
+        [`Node::const_pointer`]
+        [Returns a pointer to the same immutable `Node` object.]
+        [Constant]
+    ]
+]
+
+Also, the following expressions must be valid from within any `Node` member
+function.
+
+[table
+    [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
+    [
+        [Default constructor]
+        [`Base()`]
+        []
+        [Default-constructs a `Base` object.]
+        [Constant]
+    ]
+    [
+        [Constructor with data]
+        [`Base(data)`]
+        []
+        [Constructs a `Base` object that stores the specified data.]
+        [Constant]
+    ]
+    [
+        [Shallow update]
+        [`base->shallow_update_derived()`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that structurally modify only a few nodes, e.g. adding a single
+            child, removing children and their descendants, or simple
+            rotations.
+        ]
+        [
+            Linear with respect to the number of children plus the number of
+            ancestors.
+        ]
+    ]
+    [
+        [Deep update]
+        [`base->deep_update_derived()`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that structurally modify all descendants, e.g. cloning.
+        ]
+        [
+            Linear with respect to the number of descendants plus the number of
+            ancestors.
+        ]
+    ]
+]
+[endsect] [/ Valid Expressions and Semantics]
+
+[section Models]
+
+  * __raw_binary_node_base__
+  * __raw_node_base__
+  * __simple_node_base__
+  * __raw_associative_node_base__
+  * __simple_associative_node_base__
+  * __tree_node_with_child_range_access_base__
+  * __tree_node_with_depth_base__
+
+[endsect]
+
+[endsect] [/ Base Tree Node]
+

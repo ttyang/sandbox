@@ -20,10 +20,8 @@ __Tree_Node__
     [[`Node`][A type that models the [*Associative Tree Node] concept.]]
     [[`node`][An object of type `Node::pointer`.]]
     [[`const_node`][An object of type `Node::const_pointer`.]]
-    [[`Key`][The key type of `Node`.]]
-    [[`key`][An object of type `Key const&`.]]
-    [[`Data`][The data type of `Node`.]]
-    [[`data`][An object of type `Data const&`.]]
+    [[`key`][An object of type `Node::traits::key_type const&`.]]
+    [[`data`][An object of type `Node::traits::data_type const&`.]]
 ]
 
 [section:types Associated Types]
@@ -33,7 +31,7 @@ One new type is introduced.
     [[Name][Expression][Description][Requirements]]
     [
         [Key type]
-        [`Node::key_type`]
+        [`Node::traits::key_type`]
         [The type of a key that a tree node will associate with a child node.]
         []
     ]
@@ -42,9 +40,9 @@ One new type is introduced.
 In addition, the requirements for the child iterator types are strengthened:
 
   * The value type of `Node::child_iterator` must be
-    _std_pair_<Node::key_type const&,Node::pointer>.
+    _std_pair_<Node::traits::key_type const&,Node::pointer>.
   * The value type of `Node::const_child_iterator` must be
-    _std_pair_<Node::key_type const&,Node::const_pointer>.
+    _std_pair_<Node::traits::key_type const&,Node::const_pointer>.
 
 [endsect]
 
@@ -76,7 +74,10 @@ following expressions must be valid.
     [
         [Child creation]
         [`node->add_child(key)`]
-        [`Data` must model the __Default_Constructible__ concept.]
+        [
+            `Node::traits::data_type` must model the __Default_Constructible__
+            concept.
+        ]
         [`Node::pointer`]
         [
             Creates and returns a tree node to be associated with the specified
@@ -145,7 +146,7 @@ following expressions must be valid.
     ]
     [
         [Remove children]
-        [`const_node->remove_children(key)`]
+        [`node->remove_children(key)`]
         []
         [`std::size_t`]
         [
@@ -163,7 +164,9 @@ following expressions must be valid.
 [section Models]
 
   * __raw_associative_node__
+  * __raw_associative_node_base__
   * __simple_associative_node__
+  * __simple_associative_node_base__
 
 [endsect]
 

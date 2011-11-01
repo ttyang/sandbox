@@ -1,0 +1,61 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:factory `factory`]
+
+[section Synopsis]
+[reference__factory]
+[endsect]
+
+[section Description]
+This facade type provides a uniform interface for creating __Tree_Node__
+objects.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_factory_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`T`]
+        [The type of object that the `factory` methods will create.]
+        [It must model the __Tree_Node__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section:members Public Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Depth access]
+        [`static typename T::pointer create();`]
+        [Default-constructs an instance of type `T` on the heap.]
+    ]
+    [
+        [Depth access]
+        [``
+            static typename T::pointer
+                create(typename T::traits::data_type data);
+        ``]
+        [
+            Heap-allocates an instance of type `T` that will store the
+            specified data.
+        ]
+    ]
+]
+[endsect] [/ Members]
+
+[endsect] [/ factory]
+

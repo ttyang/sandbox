@@ -6,21 +6,20 @@
 #ifndef BOOST_TREE_NODE_DEPTH_FIRST_ITERATOR_HPP_INCLUDED
 #define BOOST_TREE_NODE_DEPTH_FIRST_ITERATOR_HPP_INCLUDED
 
-#include <iterator>
 #include <deque>
 #include <boost/config.hpp>
 #include <boost/tr1/type_traits.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/if.hpp>
-#include <boost/mpl/equal_to.hpp>
 #ifndef BOOST_NO_SFINAE
+#include <boost/mpl/equal_to.hpp>
 #include <boost/utility/enable_if.hpp>
 #endif
-#include <boost/fusion/adapted/std_pair.hpp>
-#include <boost/fusion/support/is_sequence.hpp>
-#include <boost/detail/metafunction/element_type.hpp>
+#include <boost/iterator/iterator_traits.hpp>
 #include <boost/tree_node/traversal_state.hpp>
+#include <boost/tree_node/dereference_iterator.hpp>
+#include <boost/detail/metafunction/element_type.hpp>
 
 //[reference__depth_first_iterator
 namespace boost { namespace tree_node {
@@ -43,12 +42,8 @@ namespace boost { namespace tree_node {
                   , typename node_type::child_iterator
                 >::type
                 child_iterator;
-        typedef typename ::std::iterator_traits<child_iterator>::value_type
+        typedef typename ::boost::iterator_value<child_iterator>::type
                 child_value;
-        typedef typename ::boost::fusion::traits::is_sequence<
-                    child_value
-                >::type
-                is_associative;
         //->
 
      public:
@@ -126,12 +121,6 @@ namespace boost { namespace tree_node {
 
         //<-
      private:
-        static NodePointer
-            _deref(child_iterator const&, ::boost::mpl::true_);
-
-        static NodePointer
-            _deref(child_iterator const&, ::boost::mpl::false_);
-
         reference _deref(::boost::mpl::true_) const;
 
         reference _deref(::boost::mpl::false_) const;
@@ -268,26 +257,6 @@ namespace boost { namespace tree_node {
     }
 
     template <typename NP, typename MCI>
-    inline NP
-        depth_first_iterator<NP,MCI>::_deref(
-            child_iterator const& itr
-          , ::boost::mpl::true_
-        )
-    {
-        return itr->second;
-    }
-
-    template <typename NP, typename MCI>
-    inline NP
-        depth_first_iterator<NP,MCI>::_deref(
-            child_iterator const& itr
-          , ::boost::mpl::false_
-        )
-    {
-        return *itr;
-    }
-
-    template <typename NP, typename MCI>
     inline void depth_first_iterator<NP,MCI>::_set_state(::boost::mpl::true_)
     {
         _state = _node_stack.empty() ? no_traversal : post_order_traversal;
@@ -351,7 +320,7 @@ namespace boost { namespace tree_node {
                     _itr_stack.pop_back();
                     _node_stack.push_back(_current_node);
                     _itr_stack.push_back(_current_itr);
-                    _current_node = _deref(_current_itr, is_associative());
+                    _current_node = dereference_iterator(_current_itr);
                     _state = pre_order_traversal;
                     _itr_stack.push_back(_current_node->get_child_begin());
                 }
@@ -368,8 +337,7 @@ namespace boost { namespace tree_node {
             else
             {
                 _node_stack.push_back(_current_node);
-                _current_itr = itr;
-                _current_node = _deref(itr, is_associative());
+                _current_node = dereference_iterator(_current_itr = itr);
                 _state = pre_order_traversal;
                 _itr_stack.push_back(_current_node->get_child_begin());
             }

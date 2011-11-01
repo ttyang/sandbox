@@ -17,25 +17,28 @@ typedef boost::tree_node::raw_associative_node<
           , boost::multimapS
         >
         DNode;
-typedef boost::tree_node::raw_associative_node<
-            char const*
+typedef boost::tree_node::with_depth<
+            boost::tree_node::raw_associative_node_gen<boost::hash_multimapS>
+            >
+          , char const*
           , char*
-          , boost::hash_multimapS
         >
         ANode;
+typedef boost::tree_node::factory<ANode>
+        ANodeFactory;
 
 int main()
 {
     char const* names[] = {"able", "baker", "charlie", "dog", "easy", "fox"};
     DNode d_root(create_instance(5));
-    ANode a_root;
+    ANode::pointer a_root(ANodeFactory::create());
 
     BOOST_ASSERT(
         !d_root.get_parent()
      && "Parent member uninitialized."
     );
     BOOST_ASSERT(
-        !a_root.get_data()
+        !a_root->get_data()
      && "Data member not default-constructed."
     );
 
@@ -120,13 +123,13 @@ int main()
 
         root_data[0] = '5';
         root_data[1] = '\0';
-        a_root.get_data() = root_data;
+        a_root->get_data() = root_data;
     }
 
     for (
         BOOST_AUTO(
             itr
-          , boost::tree_node::make_breadth_first_iterator(&a_root)
+          , boost::tree_node::make_breadth_first_iterator(a_root)
         );
         itr;
         ++itr
@@ -165,14 +168,14 @@ int main()
 
     std::cout << "After a_root tree construction," << std::endl;
     showcase_descendant_iterators(
-        ANode::const_pointer(&a_root)
+        ANode::const_pointer(a_root)
       , show_key_and_data<char const*,ANode::const_pointer>
       , show_key_and_data_tree()
     );
 
     {
         ANode::pointer a_child(
-            a_root.find_child(names[2])->second->add_child(names[5])
+            a_root->find_child(names[2])->second->add_child(names[5])
         );
 
         a_child->get_data() = new char[2];
@@ -180,14 +183,14 @@ int main()
         a_child->get_data()[1] = '\0';
         std::cout << "After a_child construction," << std::endl;
         showcase_descendant_iterators(
-            ANode::const_pointer(&a_root)
+            ANode::const_pointer(a_root)
           , show_key_and_data<char const*,ANode::const_pointer>
           , show_key_and_data_tree()
         );
     }
 
     {
-        ANode::pointer to_be_pruned = a_root.get_child_begin()->second;
+        ANode::pointer to_be_pruned = a_root->get_child_begin()->second;
         ANode::child_iterator c_itr, c_end;
 
         for (
@@ -214,14 +217,14 @@ int main()
         to_be_pruned->remove_children(names[1]);
         std::cout << "After remove_children call," << std::endl;
         showcase_descendant_iterators(
-            ANode::const_pointer(&a_root)
+            ANode::const_pointer(a_root)
           , show_key_and_data<char const*,ANode::const_pointer>
           , show_key_and_data_tree()
         );
     }
 
     for (
-        BOOST_AUTO(itr, boost::tree_node::make_post_order_iterator(&a_root));
+        BOOST_AUTO(itr, boost::tree_node::make_post_order_iterator(a_root));
         itr;
         ++itr
     )
@@ -229,6 +232,7 @@ int main()
         delete[] (*itr)->get_data();
     }
 
+    delete a_root;
     return 0;
 }
 

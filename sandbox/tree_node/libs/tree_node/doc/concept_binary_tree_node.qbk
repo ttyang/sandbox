@@ -32,12 +32,8 @@ __Non_Associative_Tree_Node__
         [An object of type `Node::const_pointer`.]
     ]
     [
-        [`Data`]
-        [The data type of `Node`.]
-    ]
-    [
         [`data`]
-        [An object of type `Data const&`.]
+        [An object of type `Node::traits::data_type const&`.]
     ]
 ]
 
@@ -74,7 +70,10 @@ concept, the following expressions must be valid.
     [
         [Left child creation]
         [`node->add_left_child()`]
-        [`Data` must model the __Default_Constructible__ concept.]
+        [
+            `Node::traits::data_type` must model the __Default_Constructible__
+            concept.
+        ]
         [`Node::pointer`]
         [
             Creates and returns a tree node to be stored as the left child of
@@ -108,7 +107,10 @@ concept, the following expressions must be valid.
     [
         [Right child creation]
         [`node->add_right_child()`]
-        [`Data` must model the __Default_Constructible__ concept.]
+        [
+            `Node::traits::data_type` must model the __Default_Constructible__
+            concept.
+        ]
         [`Node::pointer`]
         [
             Creates and returns a tree node to be stored as the right child of
@@ -217,6 +219,7 @@ concept, the following expressions must be valid.
 [section Models]
 
   * __raw_binary_node__
+  * __raw_binary_node_base__
 
 [endsect]
 

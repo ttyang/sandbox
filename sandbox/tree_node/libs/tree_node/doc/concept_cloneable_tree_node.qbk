@@ -1,0 +1,55 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:cloneable_tree_node Cloneable Tree Node]
+
+[section Description]
+Models of this concept provide a simple, uniform deep-copying interface.
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [[`Node`][A type that models the [*Cloneable Tree Node] concept.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Tree_Node__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Tree_Node__ concept, the
+following expressions must be valid.
+
+[table
+    [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
+    [
+        [Clone]
+        [`const_node->clone()`]
+        [`Node::pointer`]
+        [Constructs and returns a deep copy of the invoking node.]
+        [Linear with respect to the number of descendants]
+    ]
+]
+[endsect] [/ Valid Expressions and Semantics]
+
+[section Models]
+
+  * __raw_binary_node__
+  * __raw_node__
+  * __simple_node__
+  * __raw_associative_node__
+  * __simple_associative_node__
+
+[endsect]
+
+[endsect] [/ Cloneable Tree Node]
+

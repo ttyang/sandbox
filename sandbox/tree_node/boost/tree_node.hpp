@@ -12,11 +12,16 @@
 #include <boost/tree_node/post_order_iterator.hpp>
 #include <boost/tree_node/depth_first_iterator.hpp>
 #include <boost/tree_node/in_order_iterator.hpp>
+#include <boost/tree_node/factory.hpp>
+#include <boost/tree_node/base.hpp>
+#include <boost/tree_node/shared_base.hpp>
 #include <boost/tree_node/raw_binary_node.hpp>
 #include <boost/tree_node/raw_node.hpp>
 #include <boost/tree_node/simple_node.hpp>
 #include <boost/tree_node/raw_associative_node.hpp>
 #include <boost/tree_node/simple_associative_node.hpp>
+#include <boost/tree_node/with_child_range_access.hpp>
+#include <boost/tree_node/with_depth.hpp>
 
 #endif  // BOOST_TREE_NODE_HPP_INCLUDED
 

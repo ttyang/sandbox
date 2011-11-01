@@ -6,7 +6,6 @@
 #ifndef BOOST_TREE_NODE_PRE_ORDER_ITERATOR_HPP_INCLUDED
 #define BOOST_TREE_NODE_PRE_ORDER_ITERATOR_HPP_INCLUDED
 
-#include <iterator>
 #include <deque>
 #include <boost/config.hpp>
 #include <boost/tr1/type_traits.hpp>
@@ -14,13 +13,13 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/if.hpp>
 #ifndef BOOST_NO_SFINAE
+#include <boost/mpl/equal_to.hpp>
 #include <boost/utility/enable_if.hpp>
 #endif
-#include <boost/utility/enable_if.hpp>
-#include <boost/fusion/adapted/std_pair.hpp>
-#include <boost/fusion/support/is_sequence.hpp>
-#include <boost/detail/metafunction/element_type.hpp>
+#include <boost/iterator/iterator_traits.hpp>
 #include <boost/tree_node/traversal_state.hpp>
+#include <boost/tree_node/dereference_iterator.hpp>
+#include <boost/detail/metafunction/element_type.hpp>
 
 //[reference__pre_order_iterator
 namespace boost { namespace tree_node {
@@ -43,12 +42,8 @@ namespace boost { namespace tree_node {
                   , typename node_type::child_iterator
                 >::type
                 child_iterator;
-        typedef typename ::std::iterator_traits<child_iterator>::value_type
+        typedef typename ::boost::iterator_value<child_iterator>::type
                 child_value;
-        typedef typename ::boost::fusion::traits::is_sequence<
-                    child_value
-                >::type
-                is_associative;
         //->
 
      public:
@@ -126,12 +121,6 @@ namespace boost { namespace tree_node {
 
         //<-
      private:
-        static NodePointer
-            _deref(child_iterator const&, ::boost::mpl::true_);
-
-        static NodePointer
-            _deref(child_iterator const&, ::boost::mpl::false_);
-
         reference _deref(::boost::mpl::true_) const;
 
         reference _deref(::boost::mpl::false_) const;
@@ -190,6 +179,7 @@ namespace boost { namespace tree_node {
     template <typename NP2, typename MCI2>
     pre_order_iterator<NP1,MCI1>::pre_order_iterator(
         pre_order_iterator<NP2,MCI2> const& other
+//<-
 #ifndef BOOST_NO_SFINAE
       , typename ::boost::enable_if<
             typename ::boost::mpl::if_<
@@ -200,6 +190,7 @@ namespace boost { namespace tree_node {
           , enabler
         >::type
 #endif
+//->
     ) : _node_stack(other._node_stack.begin(), other._node_stack.end())
       , _itr_stack(other._itr_stack.begin(), other._itr_stack.end())
       , _current_node(other._current_node)
@@ -264,26 +255,6 @@ namespace boost { namespace tree_node {
     }
 
     template <typename NP, typename MCI>
-    inline NP
-        pre_order_iterator<NP,MCI>::_deref(
-            child_iterator const& itr
-          , ::boost::mpl::true_
-        )
-    {
-        return itr->second;
-    }
-
-    template <typename NP, typename MCI>
-    inline NP
-        pre_order_iterator<NP,MCI>::_deref(
-            child_iterator const& itr
-          , ::boost::mpl::false_
-        )
-    {
-        return *itr;
-    }
-
-    template <typename NP, typename MCI>
     inline pre_order_iterator<NP,MCI>& pre_order_iterator<NP,MCI>::operator++()
     {
         if (_itr_stack.back() == _current_node->get_child_end())
@@ -328,7 +299,7 @@ namespace boost { namespace tree_node {
                         _itr_stack.pop_back();
                         _node_stack.push_back(_current_node);
                         _itr_stack.push_back(_current_itr);
-                        _current_node = _deref(_current_itr, is_associative());
+                        _current_node = dereference_iterator(_current_itr);
                         _itr_stack.push_back(
                             _current_node->get_child_begin()
                         );
@@ -340,9 +311,8 @@ namespace boost { namespace tree_node {
         else
         {
             _node_stack.push_back(_current_node);
-            _current_node = _deref(
+            _current_node = dereference_iterator(
                 _current_itr = _itr_stack.back()
-              , is_associative()
             );
             _itr_stack.push_back(_current_node->get_child_begin());
         }

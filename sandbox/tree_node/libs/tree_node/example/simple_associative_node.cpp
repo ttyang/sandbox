@@ -17,18 +17,24 @@ typedef boost::tree_node::simple_associative_node<
           , boost::multimapS
         >
         DNode;
-typedef boost::tree_node::simple_associative_node<
-            char const*
+typedef boost::tree_node::with_depth<
+            boost::tree_node::simple_associative_node_gen<
+                boost::hash_multimapS
+            >
+          , char const*
           , char*
-          , boost::hash_multimapS
         >
         ANode;
+typedef boost::tree_node::factory<DNode>
+        DNodeFactory;
+typedef boost::tree_node::factory<ANode>
+        ANodeFactory;
 
 int main()
 {
     char const* names[] = {"able", "baker", "charlie", "dog", "easy", "fox"};
-    DNode::pointer d_root(DNode::create(create_instance(5)));
-    ANode::pointer a_root(ANode::create());
+    DNode::pointer d_root(DNodeFactory::create(create_instance(5)));
+    ANode::pointer a_root(ANodeFactory::create());
 
     BOOST_ASSERT(
         !d_root->get_parent()

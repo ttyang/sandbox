@@ -1,0 +1,81 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_depth_gen `with_depth_gen`]
+
+[section Synopsis]
+[reference__with_depth_gen]
+[endsect]
+
+[section Description]
+TODO.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_with_depth_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+__Type_Generator__
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`BaseGenerator`]
+        [
+            The __Metafunction_Class__ from whose return type
+            __tree_node_with_depth_base__ will inherit.
+        ]
+        [It must model the __Type_Generator__ concept.]
+        []
+    ]
+]
+[endsect]
+
+[section:expressions Expression Semantics]
+Let `Derived` be the type that will inherit from
+__tree_node_with_depth_base__.
+Let `Key` be the key type.
+Let `Data` be the data type.
+Let `Selector` be a valid `with_child_range_access_gen` template argument.
+
+``
+    typedef _mpl_apply_wrap3_<
+        with_depth_gen<BaseGenerator>
+      , Derived
+      , Key
+      , Data
+    >::type r;
+``
+
+[*Return type:]
+[^_tree_node_with_depth_base_<Derived,BaseGenerator,Key,Data>]
+
+``
+    typedef _mpl_apply_wrap2_<
+        with_depth_gen<BaseGenerator>
+      , Derived
+      , Data
+    >::type r;
+``
+
+[*Return type:]
+[^_tree_node_with_depth_base_<Derived,BaseGenerator,Data>]
+
+[endsect]
+
+[section Complexity]
+Compile time.
+[endsect]
+
+[endsect] [/ with_depth_gen]
+

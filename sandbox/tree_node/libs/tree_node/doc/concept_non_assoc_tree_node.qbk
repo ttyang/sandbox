@@ -33,8 +33,12 @@ None beyond those defined in the __Tree_Node__ concept.
 
 [section Models]
 
-  * All models of the __Binary_Tree_Node__ concept.
-  * All models of the __N_ary_Tree_Node__ concept.
+  * __raw_binary_node__
+  * __raw_binary_node_base__
+  * __raw_node__
+  * __raw_node_base__
+  * __simple_node__
+  * __simple_node_base__
 
 [endsect]
 

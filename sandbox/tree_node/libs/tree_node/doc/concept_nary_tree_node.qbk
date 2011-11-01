@@ -31,12 +31,8 @@ __Non_Associative_Tree_Node__
         [An object of type `Node::const_pointer`.]
     ]
     [
-        [`Data`]
-        [The data type of `Node`.]
-    ]
-    [
         [`data`]
-        [An object of type `Data const&`.]
+        [An object of type `Node::traits::data_type const&`.]
     ]
 ]
 
@@ -73,7 +69,10 @@ concept, the following expressions must be valid.
     [
         [Child creation]
         [`node->add_child()`]
-        [`Data` must model the __Default_Constructible__ concept.]
+        [
+            `Node::traits::data_type` must model the __Default_Constructible__
+            concept.
+        ]
         [`Node::pointer`]
         [
             Creates and returns a tree node to be stored in the range of
@@ -98,7 +97,9 @@ concept, the following expressions must be valid.
 [section Models]
 
   * __raw_node__
+  * __raw_node_base__
   * __simple_node__
+  * __simple_node_base__
 
 [endsect]
 

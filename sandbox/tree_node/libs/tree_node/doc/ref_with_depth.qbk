@@ -1,0 +1,110 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_depth `with_depth`]
+
+[section Synopsis]
+[reference__with_depth]
+[endsect]
+
+[section Description]
+The [*depth] of a tree node can be defined as the magnitude of the difference
+between its ply and that of its deepest descendant.  In addition to the
+operations it inherits, this __Tree_Node__ adaptor provides constant-time
+access to the depth of the node by updating this information after structural
+modifications have been performed.
+
+Objects of this type must be stored by `with_depth::pointer` and can only be
+instantiated through the __tree_node_factory__ facade or the `clone()` method
+if the base type models the __Cloneable_Tree_Node__ concept.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_with_depth_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`BaseGenerator`]
+        [
+            The __Metafunction_Class__ from whose return type `with_depth`
+            will ultimately inherit.
+        ]
+        [It must model the __Type_Generator__ concept.]
+        []
+    ]
+    [
+        [`T1`]
+        [The key type if `T2` is specified; the data type otherwise.]
+        []
+        []
+    ]
+    [
+        [`T2`]
+        [The data type if specified; ignored otherwise.]
+        []
+        [`void`]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Associative_Tree_Node__ if `T2` is specified;
+    __Non_Associative_Tree_Node__ otherwise
+  * __Factory_Constructible_Tree_Node__
+  * any other concept that the return type of `BaseGenerator` models
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+__with_depth_base__
+[endsect]
+
+[section:members Public Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Traits type]
+        [`traits`]
+        [Same as the traits type of the return type of `BaseGenerator`.]
+    ]
+    [
+        [Pointer type]
+        [`pointer`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Pointer-to-const type]
+        [`const_pointer`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Child iterator type]
+        [`child_iterator`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Immutable child iterator type]
+        [`const_child_iterator`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Depth access]
+        [`std::size_t get_depth() const`]
+        [Returns the depth of this tree node.]
+    ]
+]
+[endsect] [/ Members]
+
+[endsect] [/ with_depth]
+

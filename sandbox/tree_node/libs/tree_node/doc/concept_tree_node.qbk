@@ -11,7 +11,12 @@
 [section Description]
 All tree node implementations that this library provides model this concept:
 a structure that maintains information about its data and its immediate
-parent-child relationships.
+parent-child relationships.  However, in practice, a full-fledged tree node
+data structure or adaptor consists of three components: a __Base_Tree_Node__
+model that defines the functionality, a [*Tree Node] model that inherits from
+the base type and is better suited for external usage, and a __Type_Generator__
+that returns the __Base_Tree_Node__ model from which adaptor types can also
+inherit.
 [endsect]
 
 [variablelist Notation
@@ -25,7 +30,7 @@ parent-child relationships.
     [[Name][Expression][Description][Requirements]]
     [
         [Data type]
-        [`Node::data_type`]
+        [`Node::traits::data_type`]
         [The type of the object stored in a tree node.]
         [
             It must model the __Copy_Constructible__ concept, but need not
@@ -83,14 +88,14 @@ parent-child relationships.
     [
         [Data access]
         [`const_node->get_data()`]
-        [`Data const&`]
+        [`Node::traits::data_type const&`]
         [Returns the object stored in the tree node.]
         [Constant]
     ]
     [
         [Data access]
         [`node->get_data()`]
-        [`Data&`]
+        [`Node::traits::data_type&`]
         [Returns the object stored in the tree node.]
         [Constant]
     ]
@@ -188,8 +193,20 @@ parent-child relationships.
 
 [section Models]
 
-  * All models of the __Associative_Tree_Node__ concept.
-  * All models of the __Non_Associative_Tree_Node__ concept.
+  * __raw_binary_node__
+  * __raw_binary_node_base__
+  * __raw_node__
+  * __raw_node_base__
+  * __simple_node__
+  * __simple_node_base__
+  * __raw_associative_node__
+  * __raw_associative_node_base__
+  * __simple_associative_node__
+  * __simple_associative_node_base__
+  * __tree_node_with_child_range_access__
+  * __tree_node_with_child_range_access_base__
+  * __tree_node_with_depth__
+  * __tree_node_with_depth_base__
 
 [endsect]
 

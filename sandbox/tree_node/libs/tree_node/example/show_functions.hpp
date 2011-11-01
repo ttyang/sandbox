@@ -12,7 +12,7 @@
 void
     show_tabs(
         boost::tree_node::traversal_state state
-      , unsigned int& depth_limit
+      , unsigned int& ply_limit
     );
 
 //[example__show_number
@@ -26,7 +26,7 @@ void show_number(NodePointer const& node)
 //[example__show_number_tree
 class show_number_tree
 {
-    unsigned int depth_limit;
+    unsigned int ply_limit;
 
  public:
     show_number_tree();
@@ -38,7 +38,7 @@ class show_number_tree
           , boost::tree_node::traversal_state state
         )
     {
-        show_tabs(state, depth_limit);
+        show_tabs(state, ply_limit);
         std::cout << node->get_data().number << std::endl;
     }
 };
@@ -55,7 +55,7 @@ void show_key_and_number(Key const& key, NodePointer const& node)
 //[example__show_key_and_number_tree
 class show_key_and_number_tree
 {
-    unsigned int depth_limit;
+    unsigned int ply_limit;
 
  public:
     show_key_and_number_tree();
@@ -67,7 +67,7 @@ class show_key_and_number_tree
           , boost::tree_node::traversal_state state
         )
     {
-        show_tabs(state, depth_limit);
+        show_tabs(state, ply_limit);
         show_key_and_number(itr->first, itr->second);
         std::cout << std::endl;
     }
@@ -85,7 +85,7 @@ void show_data(NodePointer const& node)
 //[example__show_data_tree
 class show_data_tree
 {
-    unsigned int depth_limit;
+    unsigned int ply_limit;
 
  public:
     show_data_tree();
@@ -97,8 +97,10 @@ class show_data_tree
           , boost::tree_node::traversal_state state
         )
     {
-        show_tabs(state, depth_limit);
-        std::cout << node->get_data() << std::endl;
+        show_tabs(state, ply_limit);
+        std::cout << node->get_data() << "  (Depth = ";
+        std::cout << node->get_depth() << ')' << std::endl;
+//        std::cout << node->get_data() << std::endl;
     }
 };
 //]
@@ -114,7 +116,7 @@ void show_key_and_data(Key const& key, NodePointer const& node)
 //[example__show_key_and_data_tree
 class show_key_and_data_tree
 {
-    unsigned int depth_limit;
+    unsigned int ply_limit;
 
  public:
     show_key_and_data_tree();
@@ -126,8 +128,9 @@ class show_key_and_data_tree
           , boost::tree_node::traversal_state state
         )
     {
-        show_tabs(state, depth_limit);
+        show_tabs(state, ply_limit);
         show_key_and_data(itr->first, itr->second);
+        std::cout << "  (Depth = " << itr->second->get_depth() << ')';
         std::cout << std::endl;
     }
 };

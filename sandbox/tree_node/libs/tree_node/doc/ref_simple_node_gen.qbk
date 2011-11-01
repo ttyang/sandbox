@@ -1,0 +1,71 @@
+[/=============================================================================
+    Copyright (C) 2011 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:simple_node_gen `simple_node_gen`]
+
+[section Synopsis]
+[reference__simple_node_gen]
+[endsect]
+
+[section Description]
+TODO.
+
+[important
+    This component depends on __Boost_Utility_ContainerGen__, which is not yet
+    a part of Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_simple_node_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+__Type_Generator__
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Selector`]
+        [
+            The type that determines the internal container types of
+            __simple_node_base__.
+        ]
+        [
+            It must be a type for which __container_gen__ returns a valid
+            container.
+        ]
+        [`dequeS`]
+    ]
+]
+[endsect]
+
+[section:expressions Expression Semantics]
+Let `Derived` be the type that will inherit from __simple_node_base__.
+Let `T` be the data type.
+Let `Selector` be a valid `simple_node_gen` template argument.
+
+``
+    typedef _mpl_apply_wrap2_<simple_node_gen<Selector>,Derived,T>::type r;
+``
+
+[*Return type:] [^_simple_node_base_<Derived,T,Selector>]
+
+[endsect]
+
+[section Complexity]
+Compile time.
+[endsect]
+
+[endsect] [/ simple_node_gen]
+
