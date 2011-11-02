@@ -99,7 +99,6 @@ A PDF version of this manual that is printer-friendly is also available.
 [/ It is a good idea to give *all* sections an id - which must follow section: with *no* space(s).]
 [/ Perhaps also useful to use this text for the Doxygen standalone documentation.]
 
-
 [section:about About multiprecision]
 
 There are many multiple precision (MP) packages available to the scientific and engineering community.
@@ -436,65 +435,81 @@ The full example source is at [@../../example/evaluate_examples/evaluate_example
 
 [section:rationale  Design Rationale]
 
-[ordered_list
-[ [/ 1st item]
-[*Precision - Compile-time versus Run-time.]
-
+# [*Precision - Compile-time versus Run-time.][br]
 After consultation on the Boost list,
 it was decided that the best compromise was to fix precision compile-time,
-rather than allow the choice to be made at run-time.
-
+rather than allow the choice to be made at run-time.[br]
 A major factor was the sheer difficulty of achieving a run-time solution,
 but also the risk of performance penalty, longer compile times,
 risk of errors from complexity, greater difficulty of testing.
-]
 
-[ [/2nd item]
-[*Choice of backend]
+# [*Choice of backend.][br]
 It was considered important to permit a choice of backend.
-Although GMP/MPFR is the ['Gold Standard], the restricted licence terms make it
-useless for any commercial applications, so it was deemed essential to provide
-a Boost license backend, even if its performance was not quite as good.
-]
-] [/end of ordered_list]
+Although GMP/MPFR is the ['Gold Standard], the restricted licence terms
+prohibit its use for any commercial applications, so it was deemed essential to provide
+a Boost license backend, even if its performance might not be not quite as good.
 
-# [*Mechanism of choosing backend]
+# [*Mechanism of choosing backend][br]
 It was decided that using a macro BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_xxx
-was the best way to achieve this, where xxx is a three letter acronym for the backend, for example, EFX.
+was the best way to achieve this,
+where xxx is a three letter acronym for the backend, for example, EFX.
 
 # [*Default precision of 50] was chosen to be greater than any floating-point hardware,
 but not so big that printing a single value would overflow typical line length.
-(
 
 # [*Upper limit of 300 decimal digits]
 was chosen TODO.
 
 # [*Base-10 radix]
-was chosen over base-2 radix because TODO.
+was chosen over base-2 radix because ???? TODO.
 
 # [*Automatic Conversions and Construction].[br]
-It was initially planned to enforce explicit conversions, for example,
-conversion from integer and floating-point to mp_float.
+In e_float, it was decided to enforce explicit conversions, for example,
+conversion from integer and floating-point to `mp_float`.
 However, integer conversions are exact unless they cause overflow,
-a separate issue. Floating-point conversion carries a risk of loss of precision.
+a separate issue. Floating-point conversion always carries a risk of loss of precision.
 However, in practice, it was found that the burden on the user in providing
-explicit conversion, for example by [^static_cast]ing was too great for the benefit in safety.
+explicit conversion, for example by [^static_cast]ing
+ was too great for the benefit in safety.
 A specific example was that, for conformance with Boost.Math,
-boost::multiprecision::mp_float required automatic conversion to/from any and all built-in types,
+`boost::multiprecision::mp_float` required
+automatic conversion to/from any and all built-in types,
 including in association with add, sub, mul, div.
 So it was decided to rely on documentation to warning (loudly and repeatedly)
-and the danger of construction and conversion from built-in `float`, `double` and `long double`.
+and the danger of construction and conversion
+from built-in `float`, `double` and `long double`.
 
-#[*Separation of definitions from declarations]
+#[*Separation of definitions from declarations][br]
 Definitions are all placed in source files of type `.cpp` in a subdirectory `/src`.
 Header files containing declarations are placed as usual in `boost/multiprecision/*.hpp`.
 This makes it possible to use header-only
-(if slightly less convenient, because the .cpp files have to included as well)
-or with building a multiprecision library. Separating source may reduce compile time.
-
-
+(if slightly less convenient, because the .cpp files have to \#included as well)
+or with building a multiprecision library.
+Separating source may reduce compile time.
 
 [endsect] [/section:rationale  Design Rationale]
+
+[section:testing Testing Multiprecision]
+An extensive suite of tests devised for testing e_float has been refactored and reused.
+
+The tests are organised in groups of cases at
+`..\test\real\cases\` and `..\test\image\cases\`. 
+
+Each individual test case has a signature like
+
+  bool test_case_00001_overflow_mul_x (const bool b_write_output);
+
+These can be run in a harness in test.cpp, for example using Visual Studio.
+Other tests can be added as foudn necessary or desirable. 
+
+Or a jamfile is provided to run all these tests portably using Boost.Test,
+for example:
+
+    BOOST_CHECK(test::real::test_case_00001_overflow_mul_x (false));
+
+This test harness allows other Boost.Test style tests to be added, if required.
+
+[endsect] [/section:testing Testing Multiprecision]
 
 
 [section:tickets  Appendix: Tickets]
