@@ -30,7 +30,9 @@ project
 		-<toolset>msvc:<cxxflags>/Za # Requires MS extensions, so explictly cancel /Za to enable extensions.
 		<toolset>msvc:<asynch-exceptions>on # Needed for Boost.Test
 		<toolset>msvc:<warnings>all
-		<toolset>msvc:<warnings-as-errors>on
+		<variant>release:<toolset>msvc:<warnings-as-errors>off # Boost.Test warnings Trac #6074.
+		<variant>debug:<toolset>msvc:<warnings-as-errors>on
+
 		<toolset>msvc:<define>_SCL_SECURE_NO_WARNINGS
 		<toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
 		<toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
@@ -50,9 +52,7 @@ project
 
  test-suite "multiprecision EFX numerical test" :
 		[
-		  run numerical_test.cpp
-		  :  --log_level="message"
-		  :
+		  run numerical_test.cpp # sources
 					../real/cases/test_case_0000x_overflow_underflow.cpp
 					../real/cases/test_case_0000y_write_to_ostream.cpp
 					../real/cases/test_case_0000z_global_ops_pod.cpp
@@ -103,7 +103,7 @@ project
 		      ../../src/functions/gamma/factorial.cpp
 		      ../../src/functions/gamma/factorial2.cpp
 		      ../../src/functions/gamma/gamma.cpp
-		      ../../src/functions/gamma/gamma_util.cpp
+		      # ../../src/functions/gamma/gamma_util.cpp
 		      ../../src/functions/gamma/pochhammer.cpp
 		      ../../src/functions/integer/prime.cpp
 		      ../../src/functions/integer/prime_factor.cpp
@@ -118,8 +118,15 @@ project
 		      ../../src/utility/util_timer.cpp
 		      ../../src/utility/util_digit_scale.cpp
 		      ../test_case_base.cpp
-		      		      
-	      
+		      
+		    : # args*
+		       --log_level="message" 
+		    : # input_files*
+		    : # requirements*
+		    : # target-name?
+		    : # default build
+		      multiprecision_EFX_numerical
+      
 		]
   ;
   
