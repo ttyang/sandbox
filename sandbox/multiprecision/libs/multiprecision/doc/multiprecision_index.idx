@@ -71,6 +71,8 @@ warning
 # Mentioned in Doxygen \details comment in my_library_example.cpp
 
 pitfalls  \<pit\w*\>
+# Riemann zeta
+riemann  \<riemann\w*\> 
 
 # Two word index term, allowing plurals.
 "side effect" \<side effect\w*\>
@@ -78,6 +80,8 @@ pitfalls  \<pit\w*\>
 text \<text\w*\>
 
 URL URL 
+
+zeta
 
 !exclude junk
 # Exclude the index term junk from the index,
