@@ -50,6 +50,7 @@ int main()
   using boost::multiprecision::mp_float;
   using boost::multiprecision::one;
   using boost::multiprecision::pi;
+  using boost::multiprecision::exp1;
 
   cout.precision(std::numeric_limits<mp_float>::max_digits10);
   // Show all potentially significant digits (default 58).
@@ -155,7 +156,33 @@ So if we want `pi/2`, here are some ways to get the wrong (or at least inaccurat
   const mp_float half_pi2 = pi()/2;
   cout << "half_pi2 =     " << half_pi2 << endl;
 
-//` Of course, one could argue that the constant `pi/2` should be provided to avoid a run-time computation.
+/*`Of course, one could argue that the constant [^pi/2] should be provided to avoid a run-time computation.
+
+and there are other pits awaiting. One might be tempted to get Euler's number ['e] by writing
+
+  mp_float e(exp(1));
+
+but discover that it doesn't compile because exp is not defined for integer arguments,
+and so alter '1' to '1.' 
+*/
+
+  mp_float e(exp(1.)); 
+  
+ /*` getting 2.7182818284590450907955982984276488423347473144531
+ 
+ which is close to the expected  .7182818284590452353602874713526624977572470937,
+ but is only accurate to 17 decimal digits!
+
+ [warning Be very careful to ensure that the right function is called by, for example,
+ using [^static_cast<mp_float>(1)], and using an int 1, not double 1.0!]
+ */
+  mp_float eok(exp(static_cast<mp_float>(1))); 
+  cout << "mp_float e(exp(static_cast<mp_float>(1)); " << eok << endl;
+  // 2.7182818284590452353602874713526624977572470937
+
+//`Of course, the real answer is to use the mp_float constant function thoughtfully provided.
+
+  cout << "e = " << exp1() << endl;
 
 //] [/dragons_example_1]    
   return 0;
@@ -164,7 +191,9 @@ So if we want `pi/2`, here are some ways to get the wrong (or at least inaccurat
 
 /*
 //[dragons_example_output
-
+dragons_example.cpp(100): warning C4189: 'seventh' : local variable is initialized but not referenced
+  Generating code
+  Finished generating code
   dragons_example.vcxproj -> I:\boost-sandbox\multiprecision\libs\multiprecision\build\Release\dragons_example.exe
   mp_float i(12345); = 12345
   mp_float i("12345"); = 12345
@@ -180,7 +209,9 @@ So if we want `pi/2`, here are some ways to get the wrong (or at least inaccurat
   not_half_pi4 = 1.5707963267948965579989817342720925807952880859375
   half_pi1 =     1.570796326794896619231321691639751442098584699687552910487
   half_pi2 =     1.570796326794896619231321691639751442098584699687552910487
-
+  mp_float e(exp(static_cast<mp_float>(1)); 2.718281828459045235360287471352662497757247093699959574967
+   e = 2.718281828459045235360287471352662497757247093699959574967
+  
 //] [/dragons_example_output]
 
 */
