@@ -1,0 +1,561 @@
+[article multiprecision Users Manual.
+    [quickbook 1.6]
+    [id multiprecision]
+    [copyright 2011 Christopher Kormanyos]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+    [authors [ Kormanyos, Christopher]]
+    [source-mode c++]
+]
+
+[/ Images]
+[/ $images is a reference to a sub-folder where images are held.]
+
+[/ Links - by (most common) convention, prefixed with double underscore so not confused with other names.]
+[def __alert      [$./images/alert.png]] [/ Examples of your own images (in doc/html/images/ .]
+[def __tip        [$./images/tip.png]]
+[def __smiley     [$./images/smiley.svg]] 
+[/ If you provide a file type like .png, you may (probably) find that the file is missing in the pdf version.]
+[/ This is because the default file type specified is .png in html, but .svg for pdf version.]
+[/ You can easily interconvert between these types using Inkscape.]
+
+[/ Some links to external sources.]
+[def __boost [@http://www.boost.org/ Boost]]
+[/Note the custom url schema for linking to files within the Boost distribution.]
+[/def __boostroot [@boost: Boost root] does NOT work withe PDF, so avoid.]
+[/Note too that it can't be used for images.]
+[def __boostlicense [@http://www.boost.org/LICENSE_1_0.txt Boost License]]
+
+[def __boostbook [@http://www.boost.org/doc/html/boostbook.html BoostBook]]
+[def __boostbook_docs [@http://www.boost.org/doc/libs/1_46_0/doc/html/boostbook.html BoostBook documentation]]
+
+[def __quickbook  [@http://www.boost.org/doc/tools/quickbook/index.html Quickbook]]
+[def __quickbook_syntax [@http://www.boost.org/doc/libs/1_46_0/doc/html/quickbook/ref.html Quickbook Syntax Compendium]]
+[def __quickbook_phrase_syntax  [@http://boost-sandbox.sourceforge.net/doc/html/quickbook/syntax.html#quickbook.syntax.phrase Quickbook phrase level syntax]]
+
+[def __autoindex [@https://svn.boost.org/svn/boost/sandbox/tools/auto_index/doc/html/index.html AutoIndex]]
+
+[def __docbook [@http://www.docbook.org/ DocBook]]
+[def __doxygen [@http://www.doxygen.org/ Doxygen]]
+[def __pdf [@http://www.adobe.com/products/acrobat/adobepdf.html PDF]]
+[def __inkscape [@http://www.inkscape.org Inkscape]]
+[def __svg [@http://http://www.w3.org/TR/SVG/ SVG]]
+
+[def __todo [link multiprecision.todo TODO]]
+
+[def __renderx [@http://www.renderx.com/tools/xep.html  Render XEP]]
+
+[/ multiprecision References]
+
+[def __Coplien James O. Coplien. Advanced C++ Programming Styles and Idioms. Addison Wesley, Reading
+Massachusetts, 1992.]
+
+[def __MISRA MISRA. MISRA-C++ 2008: Guidelines for the Use of the C++ Language in Critical Systems.
+MISRA Consortium, [@http://www.misra-cpp.org/ MISRA-C++], 2008.]
+
+[include html4_symbols.qbk]
+[include latin1_symbols.qbk]
+
+[/ Some composite templates]
+[template super[x]'''<superscript>'''[x]'''</superscript>''']
+[template sub[x]'''<subscript>'''[x]'''</subscript>''']
+[template floor[x]'''&#x230A;'''[x]'''&#x230B;''']
+[template floorlr[x][lfloor][x][rfloor]]
+[template ceil[x] '''&#x2308;'''[x]'''&#x2309;''']
+
+[template header_file[file] [@../../../../../[file] [file]]]
+
+[/ template to switch equations and graphs to use PNG for display but SVG for PDF]
+[template equation[name]  '''<inlinemediaobject>
+<imageobject role="html">
+<imagedata fileref="../equations/'''[name]'''.png"></imagedata>
+</imageobject>
+<imageobject role="print">
+<imagedata fileref="../equations/'''[name]'''.svg"></imagedata>
+</imageobject>
+</inlinemediaobject>''']
+
+[template graph[name]  '''<inlinemediaobject>
+<imageobject role="html">
+<imagedata align="center" fileref="../graphs/'''[name]'''.png"></imagedata>
+</imageobject>
+<imageobject role="print">
+<imagedata align="center" fileref="../graphs/'''[name]'''.svg"></imagedata>
+</imageobject>
+</inlinemediaobject>''']
+
+[warning This documentation is very much under construction!]
+
+[important This is NOT yet an official Boost library.]
+
+[note Comments and suggestions (even bugs!) to Christopher Kormanyos (at) e_float (dot) yahoo (dot) com]
+
+A PDF version of this manual that is printer-friendly is also available.
+
+[section:intro Introduction]
+[/ It is a good idea to give *all* sections an id - which must follow section: with *no* space(s).]
+[/ Perhaps also useful to use this text for the Doxygen standalone documentation.]
+
+
+[section:about About multiprecision]
+
+There are many multiple precision (MP) packages available to the scientific and engineering community.
+Each package has individual strengths within its range of application. However, most MP
+packages lack a uniform interface for high precision algorithm design. They also offer little or no
+special function support. Also, many MP packages have limited portability. There is no portable
+standalone C++ system which offers a wide variety of high precision special functions and handles
+large function parameters.
+
+The multiprecision system (previously called extended float) not only addresses these weaknesses
+but also significantly advances MP technology.
+It uses several MP packages and provides a uniform C++ interface for high
+precision algorithm design, independent of the underlying MP implementation. In addition, multiprecision
+supports a large collection of high performance MP functions which are entirely portable, solidly
+designed and can be used with any suitably prepared MP type. Furthermore, the multiprecision system
+provides software interfaces for seamless interoperability with other high level languages. No MP
+system other than multiprecision offers such a high degree of portability, such a wide range of functions,
+and such a rich selection of powerful interoperabilities. The multiprecision library can be used for a variety
+of purposes such as high precision function evaluation, numerical verification of compilers, function
+libraries or other computational systems as well as investigations of compiler quality, optimization
+methods and computer hardware.
+
+Multiprecision is unique because it is designed from the ground up utilizing generic and object oriented
+design methods to create an efficient and flexible numerical software architecture [footnote __Coplien], [footnote __MISRA], [super 36].
+[/TODO deal with all the references as macros and add to references section.]
+
+The standard containers and algorithms of the C++ STL and TR1 are consistently used to reduce
+programmatic complexity [super 3], [super 14], [super 15], [super 20]. Static and dynamic polymorphism are used to implement
+a standardized interface to MP types allowing for the interchangeable use of different MP
+implementations.
+
+Multiprecision is written in the C++ language making broad use of the C++ core language, much of the
+STL and some of TR1, as specified in ISO/IEC 14882:2003 and ISO/IEC 19768:2007 [super 14, super 15]. It
+is emphasized that the C++ compiler must closely adhere to these standards in order to successfully
+compile and link multiprecision. The source codes have been implemented according to safe programming
+and reliability standards originating from the automotive industry [super 26, 27]. A great
+effort has been invested in advanced C++ optimization techniques in order to improve system performance.
+Generic and object oriented programming methods have been used to create an efficient
+and flexible numerical software architecture. In addition, consistent use of standard containers and
+algorithms of the STL and TR1 [super 20, 3] has significantly reduced and evenly distributed the computational
+complexities of the entire program.
+
+...
+
+[endsect] [/section:about About Multiprecision]
+
+[section:config Configurations]
+
+The multiprecision system supports a variety of configurations using several multiprecision classes as well
+as other libraries and systems. These are shown in Table 1. Details about the capabilities and
+dependencies of the configurations are also included in the table below.
+
+[endsect] [/section:config Configurations]
+
+[section:architecture The Multiprecision System Architecture]
+
+The multiprecision system architecture is robust and flexible. With this architecture, both the integration
+of other MP types as well as the addition of more functions and interoperabilities can be done with
+ease. The system architecture is shown in Figure 1. It has four layers and two additional blocks, the
+test block and the tools block. Layers 1-4 have successively increasing levels of abstraction. They
+build up very high level functionalities in a stable, stepwise fashion.
+
+[note that ['multiprecision] is not only the name of the system but also the name of several multiprecision classes.]
+
+* Layer 1, the low level MP layer, ensures that each implementation-dependent, possibly nonportable
+MP implementation is suitably prepared to conform with the C++ class requirements of
+Layer 2. Each individual MP type is encapsulated within a specific multiprecision C++ class, each one
+of which defined within its own unique namespace. For example, classes such as efx::multiprecision,
+gmp::multiprecision and others are implemented. Each of these classes is derived from a common abstract
+base class called ::multiprecision base. The abstract base class defines public and pure virtual
+functions which implement arithmetic primitives such as self-multiplication, self-compare, special
+numbers like NaN, and string operations. These arithmetic primitives fulfill the requirements necessary
+for elementary mathematics. They simultaneously conform with Layer 2. Thus, via inheritance
+and implementation of virtual functions, each individual multiprecision class supports elementary mathematics
+and also complies with Layer 2.
+
+Some MP types include their own versions of various functions. Layer 1 accommodates this with
+the "has-its-own"-mechanism. This mechanism allows the C++ interface of a given MP type to use
+the MP s own algorithm for a particular function. It uses virtual Boolean functions prefixed with
+"has its own". For example, has its own sin returns true in order to use the MPs
+own implementation of sin(x), x2R. The performance of a specific MP class can be optimized by
+selectively activating these functions. MPFR [super 11] has its own implementations of most elementary
+functions and several higher transcendental functions. The elementary functions are quite efficient
+and these are, in fact, used to optimize the performance of mpfr::multiprecision.
+
+* Layer 2 implements the uniform C++ interface. The multiprecision type from layer 1, which will
+be used in the project configuration, is selected with a compile-time option. The functions of this
+multiprecision class are used to implement all arithmetic operations, numeric limits and basic I/O mechanisms.
+Thus, layer 2 provides a uniform C++ interface which is generic and fully equipped with
+all the basic functions necessary for high level MP algorithm design in a C++ environment.
+
+* Layer 3 is the C++ mathematical layer. It adds the class ef complex, i.e. the complex data
+type. This layer uses both the selected multiprecision type as well as ef complex to implement
+multiprecision's rich collection of elementary functions and higher transcendental functions.
+
+* Layer 4, the interoperability user layer, exposes all of the functions and capabilities of layers 2
+and 3 to other high level languages. Marshaling techniques [super 34] are used to create managed C++
+classes and wrapper functions which embody the full functionality of layers 2 and 3. These are
+compiled to a single CLR assembly which can be used with all Microsoft[reg] CLR languages including
+C#, managed C++/CLI, IronPython, etc. Compatibility with the Microsoft[reg].NET Framework 3.5
+has been tested. Another interoperability employs the boost.python library [super 1] to expose the
+functionality of layers 2 and 3 to Python. Compatibilities with Python 2.6.4 and boost 1.39 have
+been tested.
+
+Another layer 4 interoperability targets Mathematica [reg]. A sparse architecture has been developed
+to create a generic interface for interacting with computer algebra systems. The compatibility of this
+interface with Mathematica[reg] 7.1 has been tested. The interoperabilities of layer 4 are very powerful
+mechanisms based on highly advanced programming techniques. They can be used for very high
+level designs such as scripting, rapid algorithm prototyping and result visualization.
+
+diagram
+
+The test block contains several hundred automatically generated test files which have been specifically
+designed to test all algorithms and convergence regions of the entire multiprecision system. The test
+block includes an automatic test execution system and an automatic test case generator. This block
+allows for fully reproducible automated testing of the system.
+
+The tool block contains a variety of utilities and examples. The utilities predominantly consist
+of generic templates for standard mathematical operations such as numerical differentiation, root
+finding, recursive quadrature, etc. The examples show practical, non-trivial uses of the multiprecision
+system involving both high level algorithm design as well as interoperability.
+
+The multiprecision architecture exemplifies how layered design can be leveraged to find the right granularity
+to distribute a very large computational complexity among smaller constituents which have
+manageable software scope. For example, there are vast software distances between the handoptimized
+assembler routines of GNU MP [super 15] and, for example, the Hurwitz zeta function, or a
+high level GUI in C#. The multiprecision architecture elegantly navigates these distances to build up high
+level functionalities in a controlled, stepwise fashion.
+
+The multiprecision system architecture is a significant technological milestone in MP programming technology.
+While other MP packages do sometimes provide a specialized C++ interface for their own
+specific implementations, they are mostly incompatible with each other. However, multiprecision's uniform
+C++ layer creates a generic interface which can be used with any underlying MP type. Assuming
+that a given MP type can be brought into conformance with layer 2, it can be used in a portable fashion
+with all of multiprecision's capabilities including arithmetic, elementary functions, special functions,
+interoperabilities, automatic tests, utilities, and additional user-created extensions.
+
+[endsect] [/section:architecture The multiprecision System Architecture]
+
+
+[endsect] [/section:intro Introduction]
+
+[/ Now follow the main sections of your documentation.
+These .qbk files can of course many sections, and may include other .qbk files (examples.qbk perhaps?),
+links to other files of any type and location,
+and import C++ file snippets that may turn one or more sections into templates that can be included.]
+
+[section:example Examples]
+
+[section:use_library Using Multiprecision with a pre-built library]
+
+[section:building_library Building Multiprecision Library]
+
+To build a multiprecision library, see folder
+
+[@../../build/build_libraries/]
+
+and use the jamfile.v2 therein, by changing directory to your version of
+[^/multiprecision/libs/multiprecision/build/build_libraries/]
+
+and run the jamfile using 
+
+  b2 > multiprecision_lib_build.log 
+
+This will create a static library in that directory
+(you can copy or install it elsewhere if you prefer, for example boost-1.nnn/stage/lib).
+
+Whereever you place it, the library must be visible to the example programs.
+(For Microsoft Visual, either add the folder to to the VC++ Directories,  Library Directories
+and add [^libboost_multiprecision] to the an Linker, Input, Additional Dependencies).
+
+[endsect] [/section:building_library Building multiprecision Library]
+
+[section:using_lib Using a Library]
+
+This section shows a few simple aspects of using multiprecision with a pre-built library.
+
+[import ../example/using_library_example/using_library_example.cpp]
+
+[using_library_example_1]
+
+[note It may seem (and be) simplest to declare global use of the namespace [^boost::multiprecision]
+but this risks conflicts with names that appear in other namespaces, like std.
+So it is safer to limit the scope to within user classes and functions,
+or to specify explicitly the functions, either with a using statement,
+or, more verbosely, at the point of use, as various shown below.]
+
+To start, we display the precision currently available (a compile-time constant),
+and the number of possibly significant and guaranteed digits from 
+`std::numeric_limits` (which is fully specified for `mp_float`).
+
+[using_library_example_2]
+
+We then construct an mp_float from an integer (10),
+and also another mp_float using a constant function `boost::multiprecision::hundred();`
+and use it to calculate a [@http://en.wikipedia.org/wiki/Googol googol].
+We then try (but fail) to calculate a [@http://en.wikipedia.org/wiki/Googolplex googleplex],
+but the result is correctly reported as infinity because is exceeds even the monster range of multiprecision
+(at default precision), shown by using numeric_limits
+
+  std::numeric_limits<mp_float>::max() 
+  = 1.000000000000000000000000000000000000000000000000000000000e+003063937869882635617
+
+[using_library_example_3]
+
+Many other constants are available as functions. 
+It would be verbose and inconvenient to have to fully specify each use fully,
+so `using` statements are sensible.
+
+[using_library_example_4]
+
+Other constants can be derived with no loss of precision,
+but as the next examples show, there are dragons awaiting the unwary!
+
+The first is a  C++ danger, familiar using integers and built-in floating-point types.
+
+  double r = 41/47; // zero!
+
+We [*must] use a floating-point type constant (41.0) for the numerator
+
+  double r = 41.0/47; 
+
+but there are further dangers using multiprecision and builtin floating-point types double...
+from the risk of often silent but catastrophic loss of precision converting from the much lower precision built-in type.
+So if we innocently write
+
+  mp_float r = 41./47; 
+
+[warning It [*appears] to get the right result, but in fact loses precision from converting from double to mp_float,
+typically near the the 17th decimal digit.]
+
+So one needs to be very careful to always work with `mp_float`, for example by static_casting.
+
+  mp_float r = static_cast<mp_float>(41)/47; 
+
+[using_library_example_4]
+ 
+The full output from this example is
+
+[library_eg_output]
+
+The full source code of this examples is at [@../../example/using_library_example/using_library_example.cpp using_library_example.cpp].
+
+[endsect] [/section:using_lib Using a Library]
+
+
+[endsect] [/section:use_library Using multiprecision with a pre-built library]
+
+
+[section:use_headeronly Using multiprecision ['headeronly]]
+
+Some users like to avoid pre-built libraries (static .LIB or synamic shared .DLL.
+
+Since Boost.Multiprecision has separate declarations in header files and definitions in sources files,
+at [@../src/  Header files], it is necessary include many [^.cpp] source files as well [^.hpp] files.
+
+The header files needed in the user program are
+
+  #include <boost/multiprecision/mp_float.hpp>
+  #include <boost/multiprecision/mp_float_functions.hpp> // for constants.
+
+The full set of source files is
+
+    backends/float/mp_float.cpp
+    backends/float/mp_float_base.cpp
+    backends/float/efx/mp_float_efx.cpp
+    
+    functions/constants/constants.cpp
+    functions/elementary/elementary_complex.cpp
+    functions/elementary/elementary_hyper_g.cpp
+    functions/elementary/elementary_math.cpp
+    functions/elementary/elementary_trans.cpp
+    functions/elementary/elementary_trig.cpp
+    functions/gamma/factorial.cpp
+    functions/gamma/factorial2.cpp
+    functions/gamma/gamma.cpp
+    functions/gamma/pochhammer.cpp
+    functions/integer/bernoulli_b.cpp
+    functions/integer/prime.cpp
+    functions/integer/prime_factor.cpp
+    functions/zeta/zeta.cpp
+    utility/util_digit_scale.cpp
+    utility/util_power_j_pow_x.cpp
+    utility/util_timer.cpp    
+
+These need to be added to the MS Project Files.
+
+[endsect] [/section:use_headeronly Using multiprecision ['headeronly]]
+
+
+[section:dragons Here Be Dragons]
+
+[import ../example/dragons_example/dragons_example.cpp]
+
+[dragons_example_1]
+
+The full output from this example is
+
+[dragons_example_output]
+
+The full example source is at [@../../example/dragons_example/dragons_example.cpp dragons_example.cpp].
+
+[endsect] [/section:dragons Here Be Dragons]
+
+
+[section:functions Functions and Constants]
+
+[import ../example/evaluate_examples/evaluate_examples.cpp]
+
+[evaluate_examples]
+
+The full output from this example is
+
+[evaluate_examples_output]
+
+The full example source is at [@../../example/evaluate_examples/evaluate_examples.cpp evaluate_examples.cpp].
+
+[endsect] [/section:functions Functions and constants]
+
+[endsect] [/section:example Examples]
+
+[include conventions.qbk] [/If thought useful?]
+
+[include acknowledgements.qbk]  [/ Who deserves credit for what.]
+
+
+[section: references References]
+[/references perhaps in references.qbk] [/ references to academic papers, patents, prior art...]
+
+* __Coplien
+* __MISRA
+
+[endsect] [/section: references References]
+
+[section:rationale  Design Rationale]
+
+[ordered_list
+[ [/ 1st item]
+[*Precision - Compile-time versus Run-time.]
+
+After consultation on the Boost list,
+it was decided that the best compromise was to fix precision compile-time,
+rather than allow the choice to be made at run-time.
+
+A major factor was the sheer difficulty of achieving a run-time solution,
+but also the risk of performance penalty, longer compile times,
+risk of errors from complexity, greater difficulty of testing.
+]
+
+[ [/2nd item]
+[*Choice of backend]
+It was considered important to permit a choice of backend.
+Although GMP/MPFR is the ['Gold Standard], the restricted licence terms make it
+useless for any commercial applications, so it was deemed essential to provide
+a Boost license backend, even if its performance was not quite as good.
+]
+] [/end of ordered_list]
+
+# [*Mechanism of choosing backend]
+It was decided that using a macro BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_xxx
+was the best way to achieve this, where xxx is a three letter acronym for the backend, for example, EFX.
+
+# [*Default precision of 50] was chosen to be greater than any floating-point hardware,
+but not so big that printing a single value would overflow typical line length.
+(
+
+# [*Upper limit of 300 decimal digits]
+was chosen TODO.
+
+# [*Base-10 radix]
+was chosen over base-2 radix because TODO.
+
+# [*Automatic Conversions and Construction].[br]
+It was initially planned to enforce explicit conversions, for example,
+conversion from integer and floating-point to mp_float.
+However, integer conversions are exact unless they cause overflow,
+a separate issue. Floating-point conversion carries a risk of loss of precision.
+However, in practice, it was found that the burden on the user in providing
+explicit conversion, for example by [^static_cast]ing was too great for the benefit in safety.
+A specific example was that, for conformance with Boost.Math,
+boost::multiprecision::mp_float required automatic conversion to/from any and all built-in types,
+including in association with add, sub, mul, div.
+So it was decided to rely on documentation to warning (loudly and repeatedly)
+and the danger of construction and conversion from built-in `float`, `double` and `long double`.
+
+#[*Separation of definitions from declarations]
+Definitions are all placed in source files of type `.cpp` in a subdirectory `/src`.
+Header files containing declarations are placed as usual in `boost/multiprecision/*.hpp`.
+This makes it possible to use header-only
+(if slightly less convenient, because the .cpp files have to included as well)
+or with building a multiprecision library. Separating source may reduce compile time.
+
+
+
+[endsect] [/section:rationale  Design Rationale]
+
+
+[section:tickets  Appendix: Tickets]
+[/ This will not work until Trac bug list is actually in use!]
+
+Report and view bugs and features by adding a ticket at [@https://svn.boost.org/trac/boost Boost.Trac].
+
+Existing open tickets for this library alone can be viewed 
+[@https://svn.boost.org/trac/boost/query?status=assigned&status=new&status=reopened&component=multiprecision&col=id&col=summary&col=status&col=owner&col=type&col=milestone&order=priority here].
+Existing tickets for this library - including closed ones - can be viewed 
+[@https://svn.boost.org/trac/boost/query?status=assigned&status=closed&status=new&status=reopened&component=multiprecision&col=id&col=summary&col=status&col=owner&col=type&col=milestone&order=priority here].
+
+[endsect] [/section:tickets  Appendix: Tickets]
+
+[section:version_id Version Info]
+
+Last edit to Quickbook file __FILENAME__ was at __TIME__ on __DATE__.
+
+[tip This version information should appear on the pdf version
+ (but is redundant on html where the last revised date is on the bottom line of the home page).]
+[warning Home page "Last revised" is GMT, not local time.  Last edit date is local time.]
+[/See also Adobe Reader pdf File Properties for creation date, and PDF producer, version and page count.]
+
+[caution It does not give the last edit date of other included .qbk files, so may mislead!]
+[/See also Adobe Reader pdf File Properties for creation date, and PDF producer, version and page count.]
+
+[endsect] [/section:version_id Version Info]
+
+[xinclude autodoc.xml] [/ Using Doxygen reference documentation.]
+[/ The position of this command in the Quickbook determines the location of the Doxygen references section.]
+
+[/This (if enabled) creates an Index section that include the class, function ... indexes, and also a full index with <index/>]
+
+[? enable_index
+'''
+  <index type="class_name">
+   <title>Class Index</title>
+  </index>
+  
+  <index type="typedef_name">
+  <title>Typedef Index</title>
+  </index>
+  
+  <index type="function_name">
+   <title>Function Index</title>
+  </index>
+
+    
+  <index type="macro_name">
+  <title>Macro Index</title>
+  </index>
+
+  <index/>
+
+'''
+] 
+[/if enable_index]
+
+[/ multiprecision.qbk
+  Copyright 2011 Christopher Kormanyos.
+  Distributed under the Boost Software License, Version 1.0.
+  (See accompanying file LICENSE_1_0.txt or copy at
+  http://www.boost.org/LICENSE_1_0.txt).
+]
