@@ -1,0 +1,345 @@
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float_efx.hpp:13: warning: the name `Provides' supplied as the second argument in the \file statement is not an input file
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float.hpp:34: warning: documentation for unknown define BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_EFX found.
+
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float.hpp:36: warning: documentation for unknown define BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_GMP found.
+
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float.hpp:38: warning: documentation for unknown define BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_MPFR found.
+
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float_efx.hpp:16: warning: documentation for unknown define BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_EFX found.
+
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float_efx.hpp:18: warning: documentation for unknown define BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_GMP found.
+
+I:/boost-sandbox/multiprecision/boost/multiprecision/mp_float_efx.hpp:20: warning: documentation for unknown define BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_TYPE_MPFR found.
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/backends/float/mp_float_base.cpp:58: warning: no matching file member found for 
+std::ostream & boost::multiprecision::operator<<(std::ostream &os, const mp_float_base &f)Possible candidates:
+  std::basic_ostream< char, std::char_traits< char > > & operator<<(std::basic_ostream< char, std::char_traits< char > > &, const mp_complex &)
+  std::basic_ostream< char, std::char_traits< char > > & operator<<(std::basic_ostream< char, std::char_traits< char > > &, const mp_float_base &)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/backends/float/mp_float_base.cpp:65: warning: no matching file member found for 
+std::istream & boost::multiprecision::operator>>(std::istream &is, mp_float_base &f)Possible candidates:
+  std::basic_istream< char, std::char_traits< char > > & operator>>(std::basic_istream< char, std::char_traits< char > > &, mp_complex &)
+  std::basic_istream< char, std::char_traits< char > > & operator>>(std::basic_istream< char, std::char_traits< char > > &, mp_float_base &)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_complex.cpp:23: warning: no matching file member found for 
+std::ostream & boost::multiprecision::operator<<(std::ostream &os, const mp_complex &z)Possible candidates:
+  std::basic_ostream< char, std::char_traits< char > > & operator<<(std::basic_ostream< char, std::char_traits< char > > &, const mp_complex &)
+  std::basic_ostream< char, std::char_traits< char > > & operator<<(std::basic_ostream< char, std::char_traits< char > > &, const mp_float_base &)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_complex.cpp:29: warning: no matching file member found for 
+mp_complex boost::multiprecision::polar(const mp_float &mod, const mp_float &arg)Possible candidates:
+  boost::multiprecision::mp_complex polar(const boost::multiprecision::mp_float &mod, const boost::multiprecision::mp_float &arg)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:20: warning: no matching file member found for 
+mp_float boost::multiprecision::hyp0F0(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hyp0F0(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:54: warning: no matching file member found for 
+mp_float boost::multiprecision::hyp0F1(const mp_float &b, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hyp0F1(const boost::multiprecision::mp_float &b, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:94: warning: no matching file member found for 
+mp_float boost::multiprecision::hyp1F0(const mp_float &a, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hyp1F0(const boost::multiprecision::mp_float &a, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:135: warning: no matching file member found for 
+mp_float boost::multiprecision::hyp1F1(const mp_float &a, const mp_float &b, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hyp1F1(const boost::multiprecision::mp_float &a, const boost::multiprecision::mp_float &b, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:178: warning: no matching file member found for 
+mp_float boost::multiprecision::hyp2F0(const mp_float &a, const mp_float &b, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hyp2F0(const boost::multiprecision::mp_float &a, const boost::multiprecision::mp_float &b, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:220: warning: no matching file member found for 
+mp_float boost::multiprecision::hyp2F1(const mp_float &a, const mp_float &b, const mp_float &c, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hyp2F1(const boost::multiprecision::mp_float &a, const boost::multiprecision::mp_float &b, const boost::multiprecision::mp_float &c, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_hyper_g.cpp:266: warning: no matching file member found for 
+mp_float boost::multiprecision::hypPFQ(const std::deque< mp_float > &a, const std::deque< mp_float > &b, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float hypPFQ(const std::deque< boost::multiprecision::mp_float > &a, const std::deque< boost::multiprecision::mp_float > &b, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:21: warning: no matching file member found for 
+mp_float boost::multiprecision::floor(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float floor(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:29: warning: no matching file member found for 
+mp_float boost::multiprecision::ceil(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float ceil(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:37: warning: no matching file member found for 
+boost::int32_t boost::multiprecision::sgn(const mp_float &x)Possible candidates:
+  boost::int32_t sgn(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:54: warning: no matching file member found for 
+mp_float boost::multiprecision::frexp(const mp_float &v, int *expon)Possible candidates:
+  boost::multiprecision::mp_float frexp(const boost::multiprecision::mp_float &v, int *expon)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:66: warning: no matching file member found for 
+mp_float boost::multiprecision::fmod(const mp_float &v1, const mp_float &v2)Possible candidates:
+  boost::multiprecision::mp_float fmod(const boost::multiprecision::mp_float &v1, const boost::multiprecision::mp_float &v2)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:75: warning: no matching file member found for 
+double boost::multiprecision::to_double(const mp_float &x)Possible candidates:
+  double to_double(const double &x)
+  double to_double(const boost::multiprecision::mp_float &x)
+  double to_double(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:79: warning: no matching file member found for 
+boost::int64_t boost::multiprecision::to_int64(const mp_float &x)Possible candidates:
+  boost::int64_t to_int64(const double x)
+  boost::int64_t to_int64(const boost::multiprecision::mp_float &x)
+  boost::int64_t to_int64(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:113: warning: no matching file member found for 
+boost::int32_t boost::multiprecision::to_int32(const mp_float &x)Possible candidates:
+  boost::int32_t to_int32(const double x)
+  boost::int32_t to_int32(const boost::multiprecision::mp_float &x)
+  boost::int32_t to_int32(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:128: warning: no matching file member found for 
+void boost::multiprecision::to_parts(const mp_float &x, double &mantissa, boost::int64_t &exponent)Possible candidates:
+  void to_parts(const boost::multiprecision::mp_float &x, double &mantissa, boost::int64_t &exponent)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:133: warning: no matching file member found for 
+mp_float boost::multiprecision::integer_part(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float integer_part(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:138: warning: no matching file member found for 
+mp_float boost::multiprecision::decimal_part(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float decimal_part(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:151: warning: no matching file member found for 
+bool boost::multiprecision::small_arg(const mp_float &x)Possible candidates:
+  bool small_arg(const double x)
+  bool small_arg(const boost::multiprecision::mp_float &x)
+  bool small_arg(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:173: warning: no matching file member found for 
+bool boost::multiprecision::large_arg(const mp_float &x)Possible candidates:
+  bool large_arg(const double x)
+  bool large_arg(const boost::multiprecision::mp_float &x)
+  bool large_arg(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:183: warning: no matching file member found for 
+bool boost::multiprecision::near_one(const mp_float &x)Possible candidates:
+  bool near_one(const double x)
+  bool near_one(const boost::multiprecision::mp_float &x)
+  bool near_one(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_math.cpp:212: warning: no matching file member found for 
+bool boost::multiprecision::near_int(const mp_float &x)Possible candidates:
+  bool near_int(const double x)
+  bool near_int(const boost::multiprecision::mp_float &x)
+  bool near_int(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:23: warning: no matching file member found for 
+mp_float boost::multiprecision::pown(const mp_float &x, const boost::int64_t p)Possible candidates:
+  boost::multiprecision::mp_float pown(const boost::multiprecision::mp_float &x, const boost::int64_t p)
+  boost::multiprecision::mp_complex pown(const boost::multiprecision::mp_complex &z, const boost::int64_t p)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:312: warning: no matching file member found for 
+mp_float boost::multiprecision::inv(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float inv(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex inv(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:313: warning: no matching file member found for 
+mp_float boost::multiprecision::sqrt(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float sqrt(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex sqrt(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:316: warning: no matching file member found for 
+mp_float boost::multiprecision::cbrt(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float cbrt(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:369: warning: no matching file member found for 
+mp_float boost::multiprecision::rootn(const mp_float &x, const boost::int32_t p)Possible candidates:
+  boost::multiprecision::mp_float rootn(const boost::multiprecision::mp_float &x, const boost::int32_t p)
+  boost::multiprecision::mp_complex rootn(const boost::multiprecision::mp_complex &z, const boost::int32_t p)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:404: warning: no matching file member found for 
+mp_float boost::multiprecision::exp(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float exp(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex exp(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:493: warning: no matching file member found for 
+mp_float boost::multiprecision::log(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float log(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex log(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:600: warning: no matching file member found for 
+mp_float boost::multiprecision::log10(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float log10(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex log10(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:601: warning: no matching file member found for 
+mp_float boost::multiprecision::loga(const mp_float &a, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float loga(const boost::multiprecision::mp_float &a, const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex loga(const boost::multiprecision::mp_complex &a, const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:602: warning: no matching file member found for 
+mp_float boost::multiprecision::log1p(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float log1p(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:605: warning: no matching file member found for 
+mp_float boost::multiprecision::log1p1m2(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float log1p1m2(const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:651: warning: no matching file member found for 
+mp_float boost::multiprecision::pow(const mp_float &x, const mp_float &a)Possible candidates:
+  boost::multiprecision::mp_float pow(const boost::multiprecision::mp_float &x, const boost::multiprecision::mp_float &a)
+  boost::multiprecision::mp_complex pow(const boost::multiprecision::mp_complex &z, const boost::multiprecision::mp_complex &a)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:713: warning: no matching file member found for 
+mp_float boost::multiprecision::sinh(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float sinh(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex sinh(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:730: warning: no matching file member found for 
+mp_float boost::multiprecision::cosh(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float cosh(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex cosh(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:747: warning: no matching file member found for 
+void boost::multiprecision::sinhcosh(const mp_float &x, mp_float *const p_sinh, mp_float *const p_cosh)Possible candidates:
+  void sinhcosh(const boost::multiprecision::mp_float &x, boost::multiprecision::mp_float *const p_sin, boost::multiprecision::mp_float *const p_cos)
+  void sinhcosh(const boost::multiprecision::mp_complex &z, boost::multiprecision::mp_complex *const p_sinh, boost::multiprecision::mp_complex *const p_cosh)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:776: warning: no matching file member found for 
+mp_float boost::multiprecision::tanh(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float tanh(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex tanh(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:788: warning: no matching file member found for 
+mp_float boost::multiprecision::asinh(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float asinh(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex asinh(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:812: warning: no matching file member found for 
+mp_float boost::multiprecision::acosh(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float acosh(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex acosh(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trans.cpp:850: warning: no matching file member found for 
+mp_float boost::multiprecision::atanh(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float atanh(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex atanh(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:27: warning: no matching file member found for 
+mp_float boost::multiprecision::sin(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float sin(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex sin(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:137: warning: no matching file member found for 
+mp_float boost::multiprecision::cos(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float cos(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex cos(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:247: warning: no matching file member found for 
+void boost::multiprecision::sincos(const mp_float &x, mp_float *const p_sin, mp_float *const p_cos)Possible candidates:
+  void sincos(const boost::multiprecision::mp_float &x, boost::multiprecision::mp_float *const p_sin, boost::multiprecision::mp_float *const p_cos)
+  void sincos(const boost::multiprecision::mp_complex &z, boost::multiprecision::mp_complex *const p_sin, boost::multiprecision::mp_complex *const p_cos)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:253: warning: no matching file member found for 
+mp_float boost::multiprecision::tan(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float tan(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex tan(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:264: warning: no matching file member found for 
+mp_float boost::multiprecision::csc(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float csc(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex csc(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:265: warning: no matching file member found for 
+mp_float boost::multiprecision::sec(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float sec(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex sec(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:266: warning: no matching file member found for 
+mp_float boost::multiprecision::cot(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float cot(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex cot(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:269: warning: no matching file member found for 
+mp_float boost::multiprecision::asin(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float asin(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex asin(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:349: warning: no matching file member found for 
+mp_float boost::multiprecision::acos(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float acos(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex acos(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:388: warning: no matching file member found for 
+mp_float boost::multiprecision::atan(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float atan(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex atan(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/elementary/elementary_trig.cpp:445: warning: no matching file member found for 
+mp_float boost::multiprecision::atan2(const mp_float &y, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float atan2(const boost::multiprecision::mp_float &y, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/factorial.cpp:95: warning: no matching file member found for 
+mp_float boost::multiprecision::binomial(boost::uint32_t n, const mp_float &y)Possible candidates:
+  boost::multiprecision::mp_float binomial(const boost::uint32_t n, const boost::uint32_t k)
+  boost::multiprecision::mp_float binomial(const boost::uint32_t n, const boost::multiprecision::mp_float &y)
+  boost::multiprecision::mp_float binomial(const boost::multiprecision::mp_float &x, const boost::uint32_t k)
+  boost::multiprecision::mp_float binomial(const boost::multiprecision::mp_float &x, const boost::multiprecision::mp_float &y)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/factorial.cpp:100: warning: no matching file member found for 
+mp_float boost::multiprecision::binomial(const mp_float &x, const boost::uint32_t k)Possible candidates:
+  boost::multiprecision::mp_float binomial(const boost::uint32_t n, const boost::uint32_t k)
+  boost::multiprecision::mp_float binomial(const boost::uint32_t n, const boost::multiprecision::mp_float &y)
+  boost::multiprecision::mp_float binomial(const boost::multiprecision::mp_float &x, const boost::uint32_t k)
+  boost::multiprecision::mp_float binomial(const boost::multiprecision::mp_float &x, const boost::multiprecision::mp_float &y)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/factorial.cpp:105: warning: no matching file member found for 
+mp_float boost::multiprecision::binomial(const mp_float &x, const mp_float &y)Possible candidates:
+  boost::multiprecision::mp_float binomial(const boost::uint32_t n, const boost::uint32_t k)
+  boost::multiprecision::mp_float binomial(const boost::uint32_t n, const boost::multiprecision::mp_float &y)
+  boost::multiprecision::mp_float binomial(const boost::multiprecision::mp_float &x, const boost::uint32_t k)
+  boost::multiprecision::mp_float binomial(const boost::multiprecision::mp_float &x, const boost::multiprecision::mp_float &y)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/gamma.cpp:229: warning: no matching file member found for 
+mp_float boost::multiprecision::gamma(const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float gamma(const boost::multiprecision::mp_float &x)
+  boost::multiprecision::mp_complex gamma(const boost::multiprecision::mp_complex &z)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/gamma.cpp:253: warning: no matching file member found for 
+mp_float boost::multiprecision::gamma_near_n(boost::int32_t n, const mp_float &x)Possible candidates:
+  boost::multiprecision::mp_float gamma_near_n(const boost::int32_t n, const boost::multiprecision::mp_float &x)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/pochhammer.cpp:67: warning: no matching file member found for 
+mp_float boost::multiprecision::pochhammer(const mp_float &x, const boost::uint32_t n)Possible candidates:
+  boost::multiprecision::mp_float pochhammer(const boost::multiprecision::mp_float &x, const boost::uint32_t n)
+  boost::multiprecision::mp_float pochhammer(const boost::multiprecision::mp_float &x, const boost::multiprecision::mp_float &a)
+  boost::multiprecision::mp_complex pochhammer(const boost::multiprecision::mp_complex &z, const boost::uint32_t n)
+  boost::multiprecision::mp_complex pochhammer(const boost::multiprecision::mp_complex &z, const boost::multiprecision::mp_complex &a)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/gamma/pochhammer.cpp:77: warning: no matching file member found for 
+mp_float boost::multiprecision::pochhammer(const mp_float &x, const mp_float &a)Possible candidates:
+  boost::multiprecision::mp_float pochhammer(const boost::multiprecision::mp_float &x, const boost::uint32_t n)
+  boost::multiprecision::mp_float pochhammer(const boost::multiprecision::mp_float &x, const boost::multiprecision::mp_float &a)
+  boost::multiprecision::mp_complex pochhammer(const boost::multiprecision::mp_complex &z, const boost::uint32_t n)
+  boost::multiprecision::mp_complex pochhammer(const boost::multiprecision::mp_complex &z, const boost::multiprecision::mp_complex &a)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/integer/bernoulli_b.cpp:70: warning: no matching file member found for 
+void boost::multiprecision::bernoulli_table(std::vector< mp_float > &bn, const boost::uint32_t n)Possible candidates:
+  void bernoulli_table(std::vector< boost::multiprecision::mp_float > &bn, const boost::uint32_t n)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/integer/prime_factor.cpp:86: warning: documented function `void boost::multiprecision::prime_factors' was not declared or defined.
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/functions/zeta/zeta.cpp:292: warning: no matching file member found for 
+mp_float boost::multiprecision::riemann_zeta(const mp_float &s)Possible candidates:
+  boost::multiprecision::mp_float riemann_zeta(const boost::int32_t n)
+  boost::multiprecision::mp_float riemann_zeta(const boost::multiprecision::mp_float &s)
+  boost::multiprecision::mp_complex riemann_zeta(const boost::multiprecision::mp_complex &s)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/utility/util_power_j_pow_x.cpp:109: warning: no matching file member found for 
+mp_float boost::multiprecision::utility::j_pow_x(boost::uint_fast32_t j, const mp_float &x, std::map< boost::uint_fast32_t, mp_float > &n_pow_x_prime_factor_map)Possible candidates:
+  boost::multiprecision::mp_float j_pow_x(const boost::uint_fast32_t j, const boost::multiprecision::mp_float &x, std::map< boost::uint_fast32_t, boost::multiprecision::mp_float > &n_pow_x_prime_factor_map)
+  boost::multiprecision::mp_complex j_pow_x(const boost::uint_fast32_t j, const boost::multiprecision::mp_complex &x, std::map< boost::uint_fast32_t, boost::multiprecision::mp_complex > &n_pow_x_prime_factor_map)
+
+I:/boost-sandbox/multiprecision/libs/multiprecision/src/utility/util_power_j_pow_x.cpp:110: warning: no matching file member found for 
+mp_complex boost::multiprecision::utility::j_pow_x(boost::uint_fast32_t j, const boost::multiprecision::mp_complex &x, std::map< boost::uint_fast32_t, boost::multiprecision::mp_complex > &n_pow_x_prime_factor_map)Possible candidates:
+  boost::multiprecision::mp_float j_pow_x(const boost::uint_fast32_t j, const boost::multiprecision::mp_float &x, std::map< boost::uint_fast32_t, boost::multiprecision::mp_float > &n_pow_x_prime_factor_map)
+  boost::multiprecision::mp_complex j_pow_x(const boost::uint_fast32_t j, const boost::multiprecision::mp_complex &x, std::map< boost::uint_fast32_t, boost::multiprecision::mp_complex > &n_pow_x_prime_factor_map)
+
