@@ -281,7 +281,7 @@ This section shows a few simple aspects of using multiprecision with a pre-built
 [using_library_example_1]
 
 [note It may seem (and be) simplest to declare global use of the namespace [^boost::multiprecision]
-but this risks conflicts with names that appear in other namespaces, like std.
+but this risks clashes with names that appear in other namespaces, especially std.
 So it is safer to limit the scope to within user classes and functions,
 or to specify explicitly the functions, either with a using statement,
 or, more verbosely, at the point of use, as various shown below.]
@@ -408,7 +408,7 @@ The full example source is at [@../../example/dragons_example/dragons_example.cp
 
 [import ../example/evaluate_examples/evaluate_examples.cpp]
 
-[evaluate_examples]
+[evaluate_examples] [/Quickbook is embedded as comments in the source code.]
 
 The full output from this example is
 
@@ -426,7 +426,11 @@ The full example source is at [@../../example/evaluate_examples/evaluate_example
 
 
 [section: references References]
-[/references perhaps in references.qbk] [/ references to academic papers, patents, prior art...]
+[/references perhaps taken out into references.qbk]
+[/ references to academic papers, patents, prior art...]
+[/I have yet to find a way to put the references as numbered footnotes *and* a complete list.
+Or to put the numbered references at the end of the 'paper'.
+So a simple sequentially numbered list is the best I can do for now.]
 
 * __Coplien
 * __MISRA
