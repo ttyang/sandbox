@@ -65,13 +65,13 @@ int main()
 {
   using std::cout;
   using std::endl;
-  
+
   using boost::multiprecision::mp_float;
   using boost::multiprecision::one;
   using boost::multiprecision::pi;
 
 //[evaluate_examples
-  
+
 /*`For these examples, we could set the stream precision to show all potentially significant digits.
 `using std::numeric_limits<mp_float>::max_digits10`
 but some of these digits are 'noisy' and not exact, so we could also chose to show only those
@@ -80,7 +80,7 @@ The default is 50 if the macro `BOOST_MULTIPRECISION_BACKEND_MP_FLOAT_DIGITS10` 
 the precision not overridden.
 */
   cout.precision(std::numeric_limits<mp_float>::digits10);
- 
+
 /*`[h4 Examples of evaluating [^mp_float] variables]
 
 Shows examples of evaluating constants and evaluating mathematical functions using mp_float.
@@ -90,7 +90,7 @@ Shows examples of evaluating constants and evaluating mathematical functions usi
 Construction of `mp_float` from all integer types is always exact
 (unless they overflow `std::numeric_limits<mp_float>::digits10` digits).
 */
-  mp_float i(12345); 
+  mp_float i(12345);
   cout << "mp_float i(12345); = " << i << endl; // mp_float i(12345); = 12345
 
 //` And much large integers can be stored (exactly).
@@ -102,7 +102,7 @@ Construction of `mp_float` from all integer types is always exact
 
 //` So ensure that you always construct or assign from an mp_float, for example:
 
-  mp_float i64 = mp_float(i32max); // 
+  mp_float i64 = mp_float(i32max); //
   cout << "mp_float i32max = " << i64 << endl; // 2147483647
   i64 *= i32max;
   cout << "mp_float i32max * i32max = " << i64 << endl; // 4611686014132420609
@@ -136,7 +136,7 @@ Many of the usual suspects are available quickly and conveniently.
   mp_float my_pi(pi());
   cout << " pi() = " << my_pi << endl; // 3.1415926535897932384626433832795028841971693993751
 
- 
+
 //`  Or most simply, use a built-in constant.
   const mp_float half_pi2 = pi()/2;
   cout << "half_pi2 =     " << half_pi2 << endl; // 1.5707963267948966192313216916397514420985846996876
@@ -163,7 +163,7 @@ But `exp(static_cast<mp_float>(1))` will give full accuracy.]
 However, the right way is to use the `mp_float` function `exp1` to get `e`.
 
 */
-  mp_float e(exp1()); 
+  mp_float e(exp1());
   cout << "Euler's number e = " << e << endl;
 
   cout << "Euler-Mascheroni gamma = " << boost::multiprecision::euler_gamma() << endl;
@@ -172,11 +172,11 @@ However, the right way is to use the `mp_float` function `exp1` to get `e`.
 
   cout << "sqrt(3) = " << sqrt_3 << endl; // 1.7320508075688772935274463415058723669428052538104
 
-//`But there is also a function sqrt3() provided for [radic]3 
+//`But there is also a function sqrt3() provided for [radic]3
 
   cout << "sqrt3() = " << sqrt3() << endl; // 1.7320508075688772935274463415058723669428052538104
 
-//`There are not just plain vanilla functions, for example the gamma function 
+//`There are not just plain vanilla functions, for example the gamma function
 
   cout << "gamma(mp_float(1993)/733) = " << gamma(mp_float(1993)/733) << endl;
   // 1.5683282929651009293238041703928088537599945734689
@@ -184,12 +184,12 @@ However, the right way is to use the `mp_float` function `exp1` to get `e`.
 /*`And the zeta [zeta] function, for example used to compute the
 [@http://en.wikipedia.org/wiki/Riemann_zeta_function Riemann zeta function]
 of the prime number 3, [zeta](3),
-(also known as [@http://en.wikipedia.org/wiki/Ap%C3%A9ry Apery's] constant).
+(also known as [@http://en.wikipedia.org/wiki/Ap%C3%A9ry Aperys] constant).
  */
   cout << "zeta(3) = " << riemann_zeta(mp_float(3)) << endl;
     //  1.2020569031595942853997381615114499907649862923405
 
-//] [/evaluate_examples]    
+//] [/evaluate_examples]
   return 0;
 } // int main()
 
@@ -209,7 +209,7 @@ of the prime number 3, [zeta](3),
   is = 1.234567890123456789012345678901234567890123456789e+119
    pi() = 3.1415926535897932384626433832795028841971693993751
   half_pi2 =     1.5707963267948966192313216916397514420985846996876
-  Euler's number e = 2.7182818284590452353602874713526624977572470937
+  Euler number e = 2.7182818284590452353602874713526624977572470937
   Euler-Mascheroni gamma = 0.57721566490153286060651209008240243104215933593992
   sqrt(3) = 1.7320508075688772935274463415058723669428052538104
   sqrt3() = 1.7320508075688772935274463415058723669428052538104
