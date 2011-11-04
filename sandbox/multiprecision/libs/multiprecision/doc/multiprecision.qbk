@@ -93,7 +93,14 @@ MISRA Consortium, [@http://www.misra-cpp.org/ MISRA-C++], 2008.]
 
 [note Comments and suggestions (even bugs!) to Christopher Kormanyos (at) e_float (dot) yahoo (dot) com]
 
-A PDF version of this manual that is printer-friendly is also available.
+A PDF version of this manual that is printer-friendly is also available at
+
+[@http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/multiprecision.pdf  multiprecision.pdf].
+
+The
+[@http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/Doxygen/html/index.html multiprecision documentation in Doxygen format]
+is also available.
+
 
 [section:intro Introduction]
 [/ It is a good idea to give *all* sections an id - which must follow section: with *no* space(s).]
@@ -343,6 +350,51 @@ The full output from this example is
 The full source code of this examples is at [@../../example/using_library_example/using_library_example.cpp using_library_example.cpp].
 
 [endsect] [/section:using_lib Using a Library]
+
+
+[section:basic_usage_real Basic Usage Example - Real values]
+
+Some introduction to your real examples...  TODO
+
+The full source code of this examples is at
+[@../../example/example_001_basic_usage_real.cpp  example_001_basic_usage_real.cpp]
+
+[endsect] [/section:basic_usage_real Basic Usage Example]
+
+
+[section:basic_usage_imag Basic Usage Example - Imaginary values]
+
+Some introduction to your imag examples...  TODO
+
+The full source code of this examples is at [@../../example/example_002_basic_usage_imag.cpp  example_002_basic_usage_imag.cpp]
+
+[endsect] [/section:basic_usage_imag Basic Usage Example]
+
+
+[section:recursive_trapezoid_integral recursive_trapezoid_integral]
+
+Some introduction to your imag examples...  TODO
+
+The full source code of this examples is at [@../../example/example_005_recursive_trapezoid_integral.cpp  example_005_recursive_trapezoid_integral.cpp]
+
+[endsect] [/section:recursive_trapezoid_integral recursive_trapezoid_integral Example]
+
+
+[section:gauss_laguerre  example_008 gauss_laguerre]
+
+Some introduction to your gauess lagueer examples...  TODO
+
+The full source code of this examples is at [@../../example/example_008_gauss_laguerre.cpp  example_008_gauss_laguerre.cpp]
+
+[endsect] [/section:gauss_laguerre  example_008 gauss_laguerre]
+
+[section:orthogonal_polynomials  example  10 orthogonal_polynomials]
+
+Some introduction to your orthogonal_polynomials examples...  TODO
+
+The full source code of this examples is at [@../../example/example_010_orthogonal_polynomials.cpp  example_010_orthogonal_polynomials.cpp]
+
+[endsect] [/section:orthogonal_polynomials  example  10 orthogonal_polynomials]
 
 
 [endsect] [/section:use_library Using multiprecision with a pre-built library]
