@@ -57,7 +57,7 @@
       static const bool                    is_iec559         = false;
       static const int                     digits            = boost::multiprecision::mp_float::mp_float_digits;
       static const int                     digits10          = boost::multiprecision::mp_float::mp_float_digits10;
-      static const int                     max_digits10      = boost::multiprecision::mp_float::mp_float_max_digits10;
+      static const int                     max_digits10      = boost::multiprecision::mp_float::mp_float_digits10 + 1;
       static const boost::int64_t          min_exponent      = boost::multiprecision::mp_float::mp_float_min_exp;      // Type differs from int.
       static const boost::int64_t          min_exponent10    = boost::multiprecision::mp_float::mp_float_min_exp10;    // Type differs from int.
       static const boost::int64_t          max_exponent      = boost::multiprecision::mp_float::mp_float_max_exp;      // Type differs from int.
