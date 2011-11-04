@@ -41,23 +41,20 @@ and the run tab, and "run doxygen' in Step 2 should generate an html in the /dox
 This mainpage gives a hyperlink to the full html and pdf versions
 that provide the full Quickbook/Doxygen generated information, for example:
 
-Locally
-
-file:///I:/boost-sandbox/multiprecision/libs/multiprecision/doc/html/index.html  multiprecision html Manual.
-
-file:///I:/boost-sandbox/multiprecision/libs/multiprecision/doc/multiprecision.pdf multiprecision PDF Manual.
-
-file:///I:/boost-sandbox/multiprecision/libs/multiprecision/doc/Doxygen/html/index.html multiprecision Standalone Doxygen html Manual.
-
-and from Boost SVN site
+from Boost SVN site
 
 https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/multiprecision.pdf multiprecision PDF Manual.
-https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/index.html  multiprecision html Manual.
-(This may be a redirection to boost-sandbox.sourceforge.net)
 
-And also to the Standalone Doxygen documentation that includes this mainpage.
-https://svn.boost.org/svn/boost-sandbox/multiprecision/libs/multiprecision/doc/Doxygen/index.html multiprecision Doxygen html Manual.
-(This may be a redirection to boost-sandbox.sourceforge.net)
+or
+
+https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/index.html  multiprecision html Manual.
+(Thisredirect to boost-sandbox.sourceforge.net).
+http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/multiprecision.pdf multiprecision PDF Manual.
+
+and also to the Standalone Doxygen documentation that includes this mainpage.
+
+http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/doxygen/html/index.html Doxygen html Manual.
+
 
 */
 
