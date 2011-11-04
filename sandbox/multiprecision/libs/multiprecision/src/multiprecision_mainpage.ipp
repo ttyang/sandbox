@@ -47,13 +47,18 @@ https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/m
 
 or
 
-https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/index.html  multiprecision html Manual.
-(Thisredirect to boost-sandbox.sourceforge.net).
+https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/index.html  multiprecision HTML Manual.
+
+This redirect to boost-sandbox.sourceforge.net.
 http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/multiprecision.pdf multiprecision PDF Manual.
 
-and also to the Standalone Doxygen documentation that includes this mainpage.
+and also
 
-http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/doxygen/html/index.html Doxygen html Manual.
+https://svn.boost.org/svn/boost/sandbox/multiprecision/libs/multiprecision/doc/doxygen/index.html
+
+redirects to the Standalone Doxygen documentation that includes this mainpage.
+
+http://boost-sandbox.sourceforge.net/libs/multiprecision/doc/doxygen/html/index.html Doxygen HTML Manual
 
 
 */
