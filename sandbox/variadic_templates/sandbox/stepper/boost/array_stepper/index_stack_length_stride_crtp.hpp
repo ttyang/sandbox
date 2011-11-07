@@ -356,6 +356,23 @@ index_stack_length_stride_crtp_types
             }
             return indices_v;
         }
+          indices_t
+        indices_at_offset
+          ( typename length_strides_offset_t::offset_t a_offset
+          )const
+          /**@brief
+           *  Indices corresponding to offset, a_offset.
+           */
+        {
+            return ::boost::array_stepper::indices_at_offset
+              < indices_t
+              >
+              ( my_lsi
+              , my_lsi+rank()
+              , typename length_strides_offset_t::get_length_stride()
+              , a_offset
+              );
+        }
     };
 };
 
@@ -644,8 +661,15 @@ indices_space
         auto index_lower=ibs.template bound<index_bound_lower>();
         axis_index_put(a_axis,index_lower);
         if(l_old==l_new)return;
-        my_space/=l_old;
-        my_space*=l_new;
+        if(my_space==0)
+        {
+            my_space=this->ctor_space();
+        }
+        else
+        {
+            my_space/=l_old;
+            my_space*=l_new;
+        }
     }
 
       void 
