@@ -1,11 +1,9 @@
 #ifndef BOOST_ARRAY_STEPPER_LENGTH_STRIDES_OFFSET_HPP_INCLUDED
 #define BOOST_ARRAY_STEPPER_LENGTH_STRIDES_OFFSET_HPP_INCLUDED
-#if 0
-#include <boost/array_stepper/length_strides_axis_offset.hpp>
-#include <boost/array_stepper/length_strides_val.hpp>
-#endif
-#include <boost/array_stepper/length_stride_compose.hpp>
-#include <boost/array_stepper/scan_first_iter.hpp>
+#include <boost/array_stepper/length_strides_make.hpp>
+#include <boost/array_stepper/offset_at_indices.hpp>
+#include <boost/array_stepper/indices_at_offset.hpp>
+#include <boost/array_stepper/length_stride.hpp>
 #include <boost/array_stepper/permutation.hpp>
 #include <boost/array.hpp>
 #include <boost/iterator/permutation_iterator.hpp>
@@ -99,7 +97,7 @@ length_strides_offset
     ;
         typedef
       std::vector<index_t>
-    indexs_t
+    indices_t
     ;
         typedef
       std::vector<unsigned>
@@ -170,33 +168,6 @@ length_strides_offset
      *  The length & strides for each axis in a multidimensional array.
      */
     ;
-      template
-      < typename InpIter
-      , typename OutIter
-      >
-      OutIter
-    init_iter_strides
-      ( InpIter lengths_beg
-      , InpIter lengths_end
-      , OutIter strides_beg
-      )
-      /**@brief
-       *  1) Helper function for init_strides( Lengths...)
-       *  2) Initializes my_offset.
-       */
-    {
-        comp_t comp_v;
-        OutIter strides_end=
-          scan_first_iter
-            ( comp_v
-            , lengths_beg
-            , lengths_end
-            , strides_beg
-            );
-        my_offset=comp_v.offset();
-        return strides_end;
-    }
-    
  protected:
  
       template
@@ -237,11 +208,13 @@ length_strides_offset
           >
         plss_t;
         plss_t lss_beg( my_length_strides.begin(), a_permute.begin());
+        my_offset=0;
         plss_t lss_end=
-          init_iter_strides
+          length_strides_make
             ( len_beg
             , len_end
             , lss_beg
+            , my_offset
             );
         return lss_end->space();
     }
@@ -405,8 +378,8 @@ length_strides_offset
     }
         static
       offset_t
-    offset_at_indexs_seq
-      ( indexs_t const& a_indexs_seq
+    offset_at_indices_seq
+      ( indices_t const& a_indices_seq
       , typename length_strides_t::const_iterator beg_ls
       , offset_t a_offset
       )
@@ -417,29 +390,31 @@ length_strides_offset
        *  This corresponds to equation (5.2) of the @reference.
        */
     {
-        typename indexs_t::const_iterator beg_i=a_indexs_seq.begin();
-        typename indexs_t::const_iterator end_i=a_indexs_seq.end();
-        typedef stride_t(*get_stride_t)(length_stride_t const&);
-          transform_iterator
-          < get_stride_t
-          , typename length_strides_t::const_iterator
-          > 
-        beg_s
-          ( beg_ls
-          , stride< length_stride_t>
+        typename indices_t::const_iterator beg_i=a_indices_seq.begin();
+        typename indices_t::const_iterator end_i=a_indices_seq.end();
+        struct get_stride
+        {
+                typedef 
+              stride_t 
+            result_type
+            ;
+              result_type
+            operator()(length_stride_t const&ls)const
+            {
+                return ls.stride();
+            }
+        };
+        return boost::array_stepper::offset_at_indices
+          ( beg_i
+          , end_i
+          , beg_ls
+          , get_stride()
+          , a_offset
           );
-        offset_t const r_offset
-          = std::inner_product
-            ( beg_i
-            , end_i
-            , beg_s
-            , a_offset
-            );
-        return r_offset;
     }
       offset_t
-    offset_at_indexs_seq
-      ( indexs_t const& a_indexs_seq
+    offset_at_indices_seq
+      ( indices_t const& a_indices_seq
       )const
       /**@brief
        *  The offset of element in an array
@@ -449,50 +424,29 @@ length_strides_offset
        */
     {
         typename length_strides_t::const_iterator beg_ls=my_length_strides.begin();
-        return offset_at_indexs_seq( a_indexs_seq, beg_ls, my_offset);
+        return offset_at_indices_seq( a_indices_seq, beg_ls, my_offset);
     }
     
-    struct index_at_offset
-    /**@brief
-     *  Functor used by indexs_at_offset.
-     */
+    struct get_length_stride
     {
-          offset_t 
-        my_offset
-          /**@brief
-           *  offset in multitimensional array.
-           *  from beginning of array.
-           */
-        ;
-        index_at_offset( offset_t a_offset)
-        : my_offset(a_offset)
-        {}
-            typedef 
-          index_t 
-        result_type
-          /**@brief
-           *  required by make_transform_iterator
-           *  used in indexs_at_offset.
-           */
-        ;
-          index_t
-        operator()( length_stride_t const& ls)const
-          /**@brief
-           *  this is equation (5.7) in @reference
-           *  for an axis described by ls.
-           */
-        { 
-            index_t div_v=my_offset/ls.stride();
-            index_t index_v=div_v%ls.length();
-            return index_v;
+          typename length_stride_t::stride_t
+        stride(length_stride_t const&ls)const
+        {
+            return ls.stride();
+        }
+          typename length_stride_t::length_t
+        length(length_stride_t const&ls)const
+        {
+            return ls.length();
         }
     };
-      indexs_t
-    indexs_at_offset
+        
+      indices_t
+    indices_at_offset
       ( offset_t a_offset
       )const
       /**@brief
-       *  The inverse of offset_at_indexs_seq.
+       *  The inverse of offset_at_indices_seq.
        *
        *  This corresponds to equation (5.7) in @reference
        *  for each axis.
@@ -501,18 +455,14 @@ length_strides_offset
         typedef typename length_strides_t::const_iterator citer;
         citer beg_ls=my_length_strides.begin();
         citer end_ls=my_length_strides.end();
-        index_at_offset iao(a_offset);
-        typedef transform_iterator<index_at_offset,citer> xiter;
-        xiter beg_index( beg_ls, iao);
-        xiter end_index( end_ls, iao);
-        indexs_t a_indexs_seq(rank());
-        typename indexs_t::iterator beg_is=a_indexs_seq.begin();
-        std::copy
-          ( beg_index
-          , end_index
-          , beg_is
+        return ::boost::array_stepper::indices_at_offset
+          < indices_t
+          >
+          ( beg_ls
+          , end_ls
+          , get_length_stride()
+          , a_offset
           );
-        return a_indexs_seq;
     }
     
 };

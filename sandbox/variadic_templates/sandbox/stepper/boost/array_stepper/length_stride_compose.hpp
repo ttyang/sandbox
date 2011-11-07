@@ -1,8 +1,6 @@
 #ifndef BOOST_ARRAY_STEPPER_LENGTH_STRIDE_COMPOSE_HPP_INCLUDED
 #define BOOST_ARRAY_STEPPER_LENGTH_STRIDE_COMPOSE_HPP_INCLUDED
-#include <boost/array_stepper/length_stride.hpp>
-#include <cstddef>
-#include <numeric>
+#include <cstdlib>
 namespace boost
 {
 namespace array_stepper
@@ -15,7 +13,7 @@ sign_val
 };
 
   template
-  < typename LengthStride //instance of length_stride.
+  < typename LengthStride
   , typename Offset=std::size_t
   >
   struct
@@ -52,7 +50,7 @@ length_stride_compose
     offset_t
     ;
  private:    
-      offset_t
+      offset_t&
     my_offset
       /**@brief
        *  Modified by negative length_t arguments.
@@ -71,9 +69,10 @@ length_stride_compose
        */
     ;
  public:    
-    length_stride_compose()
-    : my_offset(0)
-    {}
+    length_stride_compose( offset_t&a_offset)
+    : my_offset(a_offset)
+    {
+    }
       offset_t
     offset()const
     {
@@ -98,7 +97,7 @@ length_stride_compose
       )
     {
         sign_val sv=isign(a_length);
-        length_t ex=abs(a_length);
+        length_t ex=std::abs(a_length);
         /**
          *  The comment preceding the similar statment
          *  in binary operator() applies here also.
@@ -120,7 +119,7 @@ length_stride_compose
        */
     {
         sign_val sv=isign(a_length);
-        length_t ex=abs(a_length);
+        length_t ex=std::abs(a_length);
         /**
          * The following 3 statements, when applied to all
          * the axes, do, essentially, what's done by the:

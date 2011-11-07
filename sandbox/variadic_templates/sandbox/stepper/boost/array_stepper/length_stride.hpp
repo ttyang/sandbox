@@ -41,6 +41,10 @@ length_stride
       typename make_unsigned<stride_t>::type
     length_t
       ;
+        typedef
+      length_t
+    space_t
+      ;
  private:    
       length_t
     my_length
@@ -108,7 +112,7 @@ length_stride
   template
   < typename LengthStride
   >
-  typename LengthStride::space_t
+  typename LengthStride::length_t
 length
   ( LengthStride const& ls
   )
@@ -125,6 +129,17 @@ stride
   )
   {
     return ls.stride();
+  }
+  
+  template
+  < typename LengthStride
+  >
+  typename LengthStride::space_t
+space
+  ( LengthStride const& ls
+  )
+  {
+    return ls.space();
   }
   
 }//exit array_stepper namespace
