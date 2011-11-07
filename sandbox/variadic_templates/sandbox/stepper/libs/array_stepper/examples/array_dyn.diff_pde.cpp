@@ -3,11 +3,11 @@
 //  numerical solution of diffusion differential equation.
 //References:
 //==============================
-//  The "Alternating Directions Explicit(ADE)" method is
-//  described here:
 /*
   [DuffyAde2011]
-    http://www.datasimfinancial.com/forum/download.php?id=351
+    http://www.datasimfinancial.com/forum/files/pdeade_344.pdf
+    downloadable from:
+      http://www.datasimfinancial.com/forum/viewtopic.php?t=289
  */
 //==============================
 /*
@@ -18,7 +18,6 @@
     John Wiley & Sons, Ltd(2006)
  */
 //==============================
-//  The limits on del_t are from page 3 of:
 /*
   [Hor05]
     http://www.cosy.sbg.ac.at/events/parnum05/book/horak1.pdf
@@ -33,7 +32,7 @@
 #include <iomanip>
 #include <initializer_list>
 #include <deque>
-#include <boost/array_stepper/solve_tridiag.hpp>
+#include <boost/array_stepper/numeric/solve_tridiag.hpp>
 
     typedef 
   double 
@@ -207,7 +206,7 @@ struct grid_axis_size_bounds
        */
     ;
     grid_axis_size_bounds
-    ( unsigned a_size=2
+    ( unsigned a_size=3
     , value_t  a_lower=0.1
     , value_t  a_upper=1.0
     )
@@ -230,8 +229,25 @@ operator<<
         <<"( size="<<a.size
         <<", lower="<<a.lower
         <<", upper="<<a.upper
-        <<"}";
+        <<")\n";
       return sout;
+  }
+  
+  template
+  < typename Value
+  >
+  std::istream&
+operator>>
+  ( std::istream& sinp
+  , grid_axis_size_bounds<Value>& a
+  )
+  {
+      sinp
+        >>a.size
+        >>a.lower
+        >>a.upper
+        ;
+      return sinp;
   }
   
 
@@ -240,6 +256,7 @@ operator<<
   >
 struct grid_axis_points
 {
+  //#define GRID_AXIS_POINTS_TRACE_DEL
         typedef
       Value
     value_t
@@ -294,6 +311,9 @@ struct grid_axis_points
     del_put(value_t a_del)
       {
           my_del=a_del;
+        #ifdef GRID_AXIS_POINTS_TRACE_DEL
+          std::cout<<"del_put="<<my_del<<"\n";
+        #endif
       }
       grid_axis_points const&
     operator=
@@ -334,8 +354,17 @@ struct grid_axis_points
       {
             value_t
           result=(a_upper-my_lower)/value_t(my_size-1);
+        #ifdef GRID_AXIS_POINTS_TRACE_DEL
+          std::cout
+            <<"mk_del:a_upper="<<a_upper
+            <<":my_lower="<<my_lower
+            <<":my_size="<<my_size
+            <<":result="<<result
+            <<"\n";
+        #endif
           return result;
       }
+  #undef GRID_AXIS_POINTS_TRACE_DEL
 };
   
   template
@@ -348,10 +377,21 @@ operator<<
   )
   {
       sout
-        <<"( size="<<a.size()
+        <<"grid_axis_points"
+        <<"{ size="<<a.size()
         <<", lower="<<a.lower()
         <<", del="<<a.del()
-        <<"}";
+        ;
+    #if 0        
+      sout<<", points={ ";
+      for(unsigned i=0; i<a.size(); ++i)
+      {
+          if(0<i)sout<<", ";
+          sout<<a[i];
+      }
+      sout<<"} ";  
+    #endif
+      sout<<"}";
       return sout;
   }
   
@@ -384,15 +424,33 @@ struct grid_axes_diff
             )
           {
               my_axes[i]=a_iter[i];
+              auto const axis_size=my_axes[i].size();
+              if(axis_size<3)
+              {
+                //In this case, either a boundary is missing (axis_size<2)
+                //or there are no interior points (axis_size==2), and if
+                //there are no interior points, then all points are set by
+                //boundary conditions; hence, there's no need to solve the
+                //pde.
+                  std::cerr<<"space axes mus have size>2.  space axis "<<i<<" size="<<axis_size<<".\n";
+                  std::exit(1);
+              }
               if(my_axes[i].del()<del_s_min) 
                   del_s_min=my_axes[i].del();
           } 
             value_t 
           del_t=(del_s_min*del_s_min)/(4.0*diffusivity)
-            //time increment, from page 6 of [Hor05].
+            //time increment, from page 6(numbered as 52)
+            //of [Hor05]
             //*except* min del_s is chosen instead
             //of a single space delta since there's a 
             //n-1 space deltas.
+            //If diffusivity==1.0, this is same as the constraint:
+            //  k/h^2 <= 1/4
+            //on page 203 of [DuffyFdm2006].  Of course this is
+            //for the explicit Euler scheme shown in equation(18.30)
+            //on previous page and is probably more stringent
+            //than it needs to be for some other FDM schems.
             ;
           del_t/=10.0
             //reduce for extra insurance.
@@ -419,7 +477,11 @@ struct grid_axes_diff
     grid_axes_size_bounds_t
       ;
         typedef
-      std::vector<grid_axis_points<value_t> >
+      grid_axis_points<value_t>
+    grid_axis_points_t
+      ;
+        typedef
+      std::vector<grid_axis_points_t>
     grid_axes_points_t
       ;
     grid_axes_diff
@@ -474,13 +536,7 @@ operator<<
       {
           if(0<i)sout<<", ";
           auto const&axis=axes[i];
-          sout<<"{ ";
-          for(unsigned j=0; j<axis.size(); ++j)
-          {
-              if(0<j)sout<<", ";
-              sout<<axis[j];
-          }
-          sout<<"}\n";
+          sout<<"axis["<<i<<"]="<<axis<<"\n";
       }
       sout<<"}\n";
       return sout;
@@ -643,7 +699,7 @@ struct funcs_grid_iters
       void
     boundary_conditions( value_t t_val, arr_data_iter_t& u_iter, istk_indices_t& s_iter)
       {
-        #define TRACE_BOUNDARY_CONDITIONS
+        //#define TRACE_BOUNDARY_CONDITIONS
               typedef
             typename istk_indices_t::axis_t
           axis_t
@@ -817,7 +873,9 @@ struct funcs_grid_iters
         
         std::ios_base::fmtflags fmtflags0=std::cout.flags();
         unsigned precision0=std::cout.precision();
+      #if 0
         std::cout<<"estim_exact=\n"<<estim_exact_arr<<"\n.";
+      #endif
         std::cout<<"hot_spots=\n";
         std::cout<<"{ ";
         for( int i_time=0; i_time<t_space; ++i_time)
@@ -853,7 +911,9 @@ struct funcs_grid_iters
   >
 struct diff_alt_dir_explicit
   /**@brief
-   *  Solves diffusion eq with method described in [DuffyAde2011].
+   *  Solves diffusion eq with the 
+   *    Alternating Directions Explicit(ADE)
+   *  method described in [DuffyAde2011].
    */
 ;
   template
@@ -949,6 +1009,11 @@ struct diff_alt_dir_explicit
       #ifdef TRACE_SOLN_DIFF_EQ
         ::boost::trace_scope ts("diff_alt_dir_explicit::solve()");
       #endif
+          value_t const
+        del_t=this->axes()[0].del()
+          //the delta t in equations(9,10,11) of
+          //[DuffyAde2011].
+          ;
           std::vector<value_t>
         t_div_s2(s_rank)
           //These are the lambda's in equation(11) of [DuffyAde2011] 
@@ -957,14 +1022,18 @@ struct diff_alt_dir_explicit
           ;
           value_t
         sum_tds=0.0
-          //This is the sigma of equation(11) of [DuffyAde2011] 
+          //This is the lower case sigma of equation(11) of [DuffyAde2011] 
           ;
         for( unsigned s_axis=0; s_axis<s_rank; ++s_axis)
         {
-            value_t del_s_axis=this->axes()[s_axis+1].del();
+              value_t 
+            del_s_axis=this->axes()[s_axis+1].del()
+              //This is h[j], where j corresponds to s_axis, 
+              //in [DuffyAde2011], equation(11).
+              ;
             t_div_s2[s_axis]
-              = ( this->axes()[0].del()
-                * this->diffusivity //in [DuffyAde201], this was 1.0
+              = ( del_t
+                * this->diffusivity //in [DuffyAde2011], this was 1.0
                 )/
                 ( del_s_axis
                 * del_s_axis
@@ -984,25 +1053,13 @@ struct diff_alt_dir_explicit
           value_t const
         one_minus_sum_tds=1.0-sum_tds
           ;
-          value_t const
-        one_minus_div_one_plus_sum_tds=one_minus_sum_tds/one_plus_sum_tds
-          ;
       #ifdef TRACE_SOLN_DIFF_EQ
         std::cout
           <<"sum_tds="<<sum_tds<<"\n"
           <<"one_plus_sum_tds="<<one_plus_sum_tds<<"\n"
           <<"one_minus_sum_tds="<<one_minus_sum_tds<<"\n"
-          <<"one_minus_div_one_plus_sum_tds="<<one_minus_div_one_plus_sum_tds<<"\n"
           ;
       #endif
-          std::vector<value_t>
-        t_div_s2_div_one_plus_sum_tds(s_rank)
-          ;
-        for( unsigned s_axis=0; s_axis<s_rank; ++s_axis)
-        {
-            t_div_s2_div_one_plus_sum_tds[s_axis]
-              =t_div_s2[s_axis]/one_plus_sum_tds;
-        }
           unsigned const
         n_time=this->axes()[0].size();
         for
@@ -1097,16 +1154,22 @@ struct diff_alt_dir_explicit
                     incdec_v=incdecs[i_sweep];
                       array_t&
                     sweep_i_arr=sweeps[i_sweep];
-                    std::copy_n
-                      ( ut_now_iter-u.offset()
-                      , sweep_i_arr.data().size()
-                      , sweep_i_arr.data().begin()
-                      );
+                    {//MAINTENANCE_NOTE:2011-11-03
+                     //  This really needs to only copy
+                     //  boundary values; however, since there's
+                     //  (as yet) no function to do just that,
+                     //  copy all the data.
+                        std::copy_n
+                          ( ut_now_iter-u.offset()
+                          , sweep_i_arr.data().size()
+                          , sweep_i_arr.data().begin()
+                          );
+                    }
                       arr_data_iter_t
                     sweep_i_iter=sweep_i_arr.data().begin()+sweep_i_arr.offset();
                     enum
-                    { u_stride_index
-                    , s_stride_index
+                    { old_stride_index
+                    , sweep_stride_index
                     };
                       unsigned const
                     stride_indices[sweeps_size]=
@@ -1126,26 +1189,36 @@ struct diff_alt_dir_explicit
                       #ifdef TRACE_UPDATE_INNER_MESH
                         ::boost::trace_scope ts("s_node");
                         std::cout<<"s_node="<<s_node<<"\n";
-                        std::cout<<"space_istk_is="<<space_istk_is<<"\n";
                       #endif
                           auto const 
                         space_offset=space_istk_is.offset_space_val();
                           arr_data_iter_t
-                        uts_node_iter=ut_now_iter+space_offset;
+                        old_iter=ut_now_iter+space_offset;
                           arr_data_iter_t
-                        sweep_node_iter=sweep_i_iter+space_offset;
+                        sweep_iter=sweep_i_iter+space_offset;
                           value_t&
-                        sweep_node0=sweep_node_iter[0]
+                        sweep0=sweep_iter[0]
                           //The lhs of equation(9 or 10) of [DuffyAde2011]
                           //divided by (1+lower case sigma).
-                        ;
-                        sweep_node0=uts_node_iter[0]*one_minus_div_one_plus_sum_tds
+                          ;
+                        sweep0
+                          = one_minus_sum_tds
+                          * old_iter[0]
                           //The rhs of this assignment is
                           //1st term on rhs of equation(9 or 10)of [DuffyAde2011]
-                          //divided by (1+lower case sigma)[in [DuffyAde2011]]
-                          //[or one_plus_sum_tds here].
-                        ;
-                        { //add to sweep_node0, the rhs of equation( 9 or 10)
+                          ;
+                      #ifdef TRACE_UPDATE_INNER_MESH
+                        std::cout
+                          <<":old_iter[0]="<<old_iter[0]
+                          <<":sweep0=(1-sigma)*old_iter[0]="<<sweep0
+                          <<":sweep0 indices="
+                          <<sweep_i_arr.indices_at_offset
+                            ( space_offset
+                            )
+                          <<"\n"
+                          ;
+                      #endif
+                        { //add to sweep0, the rhs of equation( 9 or 10)
                           //except for 1st term.
                             for
                               ( unsigned s_axis=0
@@ -1165,27 +1238,28 @@ struct diff_alt_dir_explicit
                                   , -stride_v
                                   };
                                   stride_t const
-                                stride_u=stride_plus_minus[stride_indices[u_stride_index]]
+                                old_stride_value=stride_plus_minus[stride_indices[old_stride_index]]
                                   ;
                                   value_t
-                                uts_node_stride=
-                                  uts_node_iter
-                                  [ stride_u
+                                old_stride_iter=
+                                  old_iter
+                                  [ old_stride_value
                                     // ==+stride_v if i_sweep==0
                                     // ==-stride_v if i_sweep==1
                                   ]
                                   //this expresssion corresponds to
                                   //the U(if i_sweep==0) or V(if i_sweep==1)
-                                  //with n superscript of rhs of equation(9 or 10)
+                                  //with n superscript of rhs of 
+                                  //equation(9, if i_sweep==0 or 10, if i_sweep=1)
                                   //in [DuffyAde2011].
                                   ;
                                   stride_t const
-                                stride_s=stride_plus_minus[stride_indices[s_stride_index]]
+                                sweep_stride_value=stride_plus_minus[stride_indices[sweep_stride_index]]
                                   ;
                                   value_t
-                                sweep_node_stride=
-                                  sweep_node_iter
-                                  [ stride_s
+                                sweep_stride_iter=
+                                  sweep_iter
+                                  [ sweep_stride_value
                                     // ==-stride_v if i_sweep==0
                                     // ==+stride_v if i_sweep==1
                                   ]
@@ -1195,32 +1269,47 @@ struct diff_alt_dir_explicit
                                   //in [DuffyAde2011].
                                   ;
                                   value_t
-                                sum_uts_sweep_node=uts_node_stride+sweep_node_stride;
-                                sweep_node0+=
-                                    t_div_s2_div_one_plus_sum_tds[s_axis]
-                                  * sum_uts_sweep_node
-                                  //This is one of the terms on rhs of equation(9)
+                                sum_old_sweep=old_stride_iter+sweep_stride_iter;
+                                sweep0
+                                  += t_div_s2[s_axis]
+                                  *  sum_old_sweep
+                                  //This is one of the terms on rhs of equation(9 or 10)
                                   //of [DuffyAde2011] which are multiplied
                                   //by one of the lambda's(s_axis corresponds to
-                                  //the lambda subscript in equation(9)) 
-                                  //then divided by (1+lower case sigma)
+                                  //the lambda subscript in equation(9 or 10)).
                                   ;
                               #ifdef TRACE_UPDATE_INNER_MESH
                                 std::cout
-                                  <<":stride_index_s="<<stride_indices[s_stride_index]
-                                  <<":stride_u="<<stride_u
-                                  <<":stride_s="<<stride_s
-                                  <<":uts_node_stride="<<uts_node_stride
-                                  <<":sweep_node_stride="<<sweep_node_stride
-                                  <<":indices_s="
-                                  <<sweep_i_arr.indexs_at_offset
+                                  <<":old_stride_iter="<<old_stride_iter
+                                  <<":sweep_stride_iter="<<sweep_stride_iter
+                                  <<":old_indices="
+                                  <<sweep_i_arr.indices_at_offset
                                     ( space_offset
-                                    + stride_s
+                                    + old_stride_value
+                                    )
+                                  <<":sweep_indices="
+                                  <<sweep_i_arr.indices_at_offset
+                                    ( space_offset
+                                    + sweep_stride_value
                                     )
                                   <<"\n";
                               #endif
                             }//for stride_iter_v
-                        } //add to sweep_node0
+                            {//TODO: add forcing term here to sweep0.
+                             //This is the del_t*F^(n+1)[i,j,k]
+                             //in equations(9 and 10) of [DuffyAde2011].
+                            }
+                            sweep0/=one_plus_sum_tds
+                              //divide by factor of U or V on lhs
+                              //in equations(9 and 10) of [DuffyAde2011].
+                              ;
+                          #ifdef TRACE_UPDATE_INNER_MESH
+                            std::cout
+                              <<":sweep0/="<<sweep0
+                              <<"\n"
+                              ;
+                          #endif
+                        } //add to sweep0
                     }//for(s_node, for sweeps
                 }//for(i_sweep
                 for//each node in inner mesh, calculate next u value.
@@ -1259,15 +1348,13 @@ struct diff_alt_dir_explicit
                     uts_nxt_node/=value_t(sweeps_size);//average sweeps
                   #if defined(TRACE_UPDATE_INNER_MESH) || 0
                     std::cout
-                      <<":exact="<<uts_nxt_node.exact
-                      <<":%err="<<uts_nxt_node.err_percent()
+                      <<":uts_nxt_node(average@s_node="<<s_node<<")="<<uts_nxt_node
                       <<"\n";
                   #endif
                 }//for(s_node
               #undef TRACE_UPDATE_INNER_MESH
             } //update inner nodes in mesh
         }//for(i_time=...)
-        std::cout<<"u["<<n_time<<"]=\n"<<u<<".\n";
       #undef TRACE_SOLN_DIFF_EQ
       #endif
     }
@@ -1275,12 +1362,13 @@ struct diff_alt_dir_explicit
 #endif
 #define DIFF_ALT_DIR_IMPLICIT_INNOCENT
 #ifdef DIFF_ALT_DIR_IMPLICIT_INNOCENT
+#define TRACE_ALT_DIR_IMPLICIT_INNOCENT 1
   template
   < typename FunctionsDerived
   >
 struct diff_alt_dir_implicit_innocent
   /**@brief
-   *  Solves diffusion eq with "innocent-looking" implicit method 
+   *  Solves diffusion eq with the "innocent-looking" implicit method 
    *  described in [DuffyFdm2006] in section 19.5 on page 217
    *  in equations(19.34).
    */
@@ -1381,59 +1469,33 @@ struct diff_alt_dir_implicit_innocent
           unsigned const
         s_rank=space_istk_is.rank();
         initial_conditions( u_iter, space_istk_is);
-      #if 1
-      //#define TRACE_SOLN_DIFF_EQ
-      #ifdef TRACE_SOLN_DIFF_EQ
+      #define TRACE_SOLN_DIFF_EQ (1 && TRACE_ALT_DIR_IMPLICIT_INNOCENT)
+      #if TRACE_SOLN_DIFF_EQ
         ::boost::trace_scope ts("diff_alt_dir_implicit_innocent::solve()");
       #endif
+          typename super_t::grid_axes_points_t const&
+        grid_axes_points=this->axes();
+          typename super_t::grid_axis_points_t const&
+        time_axis=grid_axes_points[0];
           value_t const
-        dt_div_s_rank
+        del_t_frac
           //time delta divided by space rank.
           //This is the k/3 (where s_rank replaces the 3) 
           //in [DuffyFdm2006] equaiton(19.34).
-          = this->axes()[0].del()/value_t(s_rank)
-          ;
-            typedef
-          std::vector<value_t>
-        del_s2_t
-          ;
-          struct
-        del_s2_mk
-          {
-                  typedef
-                typename grid_axes_diff<value_t>::grid_axes_points_t
-              axes_t
-              ;
-                  static
-                del_s2_t
-              _
-                ( axes_t const& a_axes
-                )
-              {
-                  auto const rank=a_axes.size();
-                  del_s2_t result(rank-1);
-                  for(unsigned s_axis=1; s_axis<rank; ++s_axis)
-                  {
-                      value_t del_axis=a_axes[s_axis].del();
-                      result[s_axis-1]=del_axis*del_axis;
-                  }
-                  return result;
-              }
-          };
-          del_s2_t const
-        del_s2_v
-          = del_s2_mk::_( this->axes() )
-          ;
+          = time_axis.del()/value_t(s_rank);
+          typename super_t::grid_axes_points_t
+        space_axes( grid_axes_points.begin()+1, grid_axes_points.end());
           value_t
-        t_nxt=this->axes()[0][0];
-      #ifdef TRACE_SOLN_DIFF_EQ
+        t_nxt=time_axis[0];
+      #if TRACE_SOLN_DIFF_EQ
         std::cout
-          <<":dt_div_s_rank="<<dt_div_s_rank
+          <<":del_t_frac="<<del_t_frac
+          <<":space_axes(unrotated)="<<space_axes
           <<"\n"
           ;
       #endif
           unsigned const
-        n_time=this->axes()[0].size();
+        n_time=time_axis.size();
         for
           ( unsigned i_time=0
           ; i_time<n_time-1
@@ -1445,12 +1507,12 @@ struct diff_alt_dir_implicit_innocent
         {
               value_t
             t_now=t_nxt;
-            t_nxt=this->axes()[0][i_time+1];
-          #ifdef TRACE_SOLN_DIFF_EQ
+            t_nxt=time_axis[i_time+1];
+          #if TRACE_SOLN_DIFF_EQ
             ::boost::trace_scope ts("trace_soln_diff_eq");
-            std::cout<<"i_time.{="<<i_time<<"\n";
-            std::cout<<"t_now="<<t_now<<"\n";
-            std::cout<<"u["<<i_time<<"]=\n"<<u<<".\n";
+            std::cout<<":i_time.{="<<i_time<<"\n";
+            std::cout<<":t_now="<<t_now<<"\n";
+            std::cout<<":u["<<i_time<<"]=\n"<<u<<".\n";
           #endif
               arr_data_iter_t
             ut_now_iter=u_iter+time_istk_is.offset_space_val()
@@ -1463,14 +1525,11 @@ struct diff_alt_dir_implicit_innocent
             ut_nxt_iter=u_iter+time_istk_is.offset_space_val()
               //u at (i_time+1)-th time.
               ;
-              auto const
-            s_rank=space_istk_is.rank()
-              ;
             {//EQUATIONS_19_34
              //  This block implements equations(19.34) of
              //  [DuffyFdm2006] for time step, i_time.
-              #define TRACE_EQUATIONS_19_34
-              #ifdef TRACE_EQUATIONS_19_34
+              #define TRACE_EQUATIONS_19_34 (1 && TRACE_ALT_DIR_IMPLICIT_INNOCENT)
+              #if TRACE_EQUATIONS_19_34
                 ::boost::trace_scope ts("EQUATIONS_19_34");
               #endif
                   std::vector<array_t>
@@ -1500,7 +1559,7 @@ struct diff_alt_dir_implicit_innocent
                   //This will have its axes rotated during each
                   //iteration of the following loop so that
                   //solve_tridiag, which solves for the
-                  //last axis, will solve for each axes in
+                  //last axis, will solve for each axes
                   //in turn.
                   ;
                 for
@@ -1510,12 +1569,14 @@ struct diff_alt_dir_implicit_innocent
                   )
                 {
                     space_istk_rotated.rotate(1);
-                  #define TRACE_FRACTIONAL_STEPS
-                  #ifdef TRACE_FRACTIONAL_STEPS
+                    std::rotate( space_axes.begin(), space_axes.begin()+1, space_axes.end());
+                  #define TRACE_FRACTIONAL_STEPS (1 && TRACE_ALT_DIR_IMPLICIT_INNOCENT)
+                  #if TRACE_FRACTIONAL_STEPS
                     ::boost::trace_scope ts("fractional step");
                     std::cout
                       <<":i_step="<<i_step
                       <<":rotation="<<space_istk_rotated.rotation()
+                      <<":space_axes="<<space_axes
                       <<"\n";
                   #endif
                       array_t
@@ -1535,7 +1596,8 @@ struct diff_alt_dir_implicit_innocent
                       //the current fractional step.
                       //IOW, the U on lhs of equations(19.41).
                       ;
-                    t_frac+=dt_div_s_rank;
+                    t_frac+=del_t_frac;
+                  #if 1
                     space_istk_is.axes_offsets_put(1,1);
                     space_istk_is.axis_offsets_put(i_step,0,0);
                     boundary_conditions_axis
@@ -1544,28 +1606,46 @@ struct diff_alt_dir_implicit_innocent
                       , space_istk_is
                       , i_step
                       )
+                  #else
+                    boundary_conditions
+                      ( t_frac
+                      , rhs_iter
+                      , space_istk_is
+                      )
+                  #endif
                       //This stores into rhs_iter i_step axis boundaries
                       //the rhs of equations(19.44) of [DuffyFdm2006].
                       ;
-                  #ifdef TRACE_FRACTIONAL_STEPS
+                  #if TRACE_FRACTIONAL_STEPS
                     {
                         std::cout
-                          <<":t_frac="<<t_frac
+                          <<":t_frac["<<i_time<<","<<(i_step+1)<<"]="<<t_frac<<"\n";
+                        std::cout
                           <<":rhs["<<i_time<<","<<(i_step+1)<<"](after boundary_conditions)=\n"<<rhs
                           <<".\n";
                     }
                   #endif
                     {//interior_rhs
-                      //#define TRACE_INTERIOR_RHS
-                      #ifdef TRACE_INTERIOR_RHS
-                          ::boost::trace_scope
-                        ts("interior_rhs");
-                      #endif
                         space_istk_rotated.axes_offsets_put(1,1)
                           //restrict to interior nodes.
                           ;
                           auto const
                         s_space_inner=space_istk_rotated.space();
+                      #define TRACE_INTERIOR_RHS (1 && TRACE_ALT_DIR_IMPLICIT_INNOCENT)
+                      #if TRACE_INTERIOR_RHS
+                          ::boost::trace_scope
+                        ts("interior_rhs");
+                        {
+                            std::cout
+                              <<":space_istk_rotated="<<space_istk_rotated<<"\n"
+                              <<":s_space_inner="<<s_space_inner<<"\n"
+                              <<":old_rotated["<<i_time<<","<<(i_step)<<"]=\n";
+                            istk_indices_t space_istk_border(space_istk_rotated);
+                            space_istk_border.axes_offsets_put(0,0);
+                            array_iter_wrap<value_t> oldw(old_iter,space_istk_border);
+                            std::cout<<oldw;
+                        }
+                      #endif
                         for
                           ( int s_node=0
                           ; s_node<s_space_inner
@@ -1584,11 +1664,12 @@ struct diff_alt_dir_implicit_innocent
                               //the rhs of equation(19.41) 
                               //of [DuffyFdm2006]
                               ;
-                          #ifdef TRACE_INTERIOR_RHS
+                          #if TRACE_INTERIOR_RHS
+                              ::boost::trace_scope
+                            ts("rhs equations(19.41)");
                             std::cout
-                              <<":offset="<<offset
-                              <<":indices="<<space_istk_rotated.indices()
-                              <<":rhs_iter[offset]=old_iter[offset]="<<old_iter[offset]
+                              <<":s_node="<<s_node<<"\n"
+                              <<":rhs_iter=old_iter"<<space_istk_rotated.indices()<<"="<<old_iter[offset]
                               <<"\n"
                               ;
                           #endif
@@ -1599,39 +1680,60 @@ struct diff_alt_dir_implicit_innocent
                               ; r_axis<s_rank-1
                               ; ++r_axis
                               )
-                            {//For axes whose derivatives appear on rhs of
+                            {//For axes whose 2nd derivatives appear on rhs of
                              //equations(19.41) of [DuffyFdm2006]
-                             //sum those those derivatives into d2_sum.
+                             //sum those derivatives into d2_sum.
                                   stride_t
                                 stride_v=space_istk_rotated[r_axis].stride_val();
-                                  value_t 
+                                  value_t
+                                del_s_axis=space_axes[r_axis].del();
+                                  value_t
                                 d2_axis
                                   = (   old_iter[offset-stride_v]
                                     - 2*old_iter[offset]
                                     +   old_iter[offset+stride_v]
                                     )
-                                  / ( del_s2_v[r_axis]
-                                    )
-                                  ; //rhs of equation(18.13) of [DuffyFdm2006]
-                                    //for axis, r_axis, at node, s_node.
+                                  / (del_s_axis*del_s_axis)
+                                  //rhs of equation(18.13) on page 197
+                                  //of [DuffyFdm2006]
+                                  //for axis, r_axis, at node, s_node.
+                                  ;
                                 d2_sum+=d2_axis;
+                              #define TRACE_DERIV2_RHS (1 && TRACE_ALT_DIR_IMPLICIT_INNOCENT)
+                              #if TRACE_DERIV2_RHS
+                                  ::boost::indent_scope<>
+                                ts;//("deriv^2");
+                                std::cout
+                                  <<":r_axis="<<r_axis
+                                  <<" :del_s_axis="<<del_s_axis
+                                  <<" :old_iter"
+                                  <<space_istk_rotated.indices_at_offset(offset-stride_v)
+                                  <<"="<<old_iter[offset-stride_v]
+                                  <<" :old_iter"
+                                  <<space_istk_rotated.indices_at_offset(offset+stride_v)
+                                  <<"="<<old_iter[offset+stride_v]
+                                  <<" :d2_axis="<<d2_axis
+                                  <<"\n"
+                                  ;
+                              #endif
+                              #undef TRACE_DERIV2_RHS
                             }//for(r_axis)
-                            rhs_iter[offset]+=dt_div_s_rank*d2_sum
+                            rhs_iter[offset]+=del_t_frac*d2_sum
                               //This adds to rhs_iter
                               //the 2nd summand of
                               //the rhs of equations(19.41)
                               //of [DuffyFdm2006].
                               ;
-                          #ifdef TRACE_INTERIOR_RHS
+                          #if TRACE_INTERIOR_RHS
                             std::cout
-                              <<":d2_sum="<<d2_sum
-                              <<":rhs_iter[offset]="<<rhs_iter[offset]
+                              <<":d2_sum="<<d2_sum<<"\n"
+                              <<":rhs_iter+=del_t_frac*d2_sum"<<space_istk_rotated.indices()<<"="<<rhs_iter[offset]
                               <<"\n"
                               ;
                           #endif
                         }//for(s_node)
                     }//interior_rhs
-                  #ifdef TRACE_FRACTIONAL_STEPS
+                  #if TRACE_FRACTIONAL_STEPS
                     std::cout<<"rhs(after equations(19.41))=\n"<<rhs;
                   #endif
                     {//solve tridiagonal system.
@@ -1645,8 +1747,9 @@ struct diff_alt_dir_implicit_innocent
                           struct
                         mk_tridiag
                         {
+                          #define TRACE_MK_TRIDIAG (1 && TRACE_ALT_DIR_IMPLICIT_INNOCENT)
                                 typedef
-                              tridiag<value_t>
+                              numeric::tridiag<value_t>
                             tridiag_t
                             ;
                                 static
@@ -1659,12 +1762,17 @@ struct diff_alt_dir_implicit_innocent
                             {
                                   tridiag_t
                                 result=tridiag_t(std::size_t(n));
-                                  value_t
+                                  value_t const
                                 dt_div_ds2=
                                   del_fract_t
                                   / 
                                   ( del_s*del_s
                                   )
+                                  //this is the lambda of equation(19.4)
+                                  //of [DuffyFdm2006].
+                                  ;
+                                  value_t const
+                                on_diag=1.0+2.0*dt_div_ds2
                                   ;
                                 for
                                   ( unsigned i=1
@@ -1677,9 +1785,9 @@ struct diff_alt_dir_implicit_innocent
                                    *  of [DuffyFdm2006].
                                    */
                                 {
-                                    if(0<i)result.l(i)=-dt_div_ds2;
-                                    result.d(i)=1.0+2*dt_div_ds2;
-                                    if(i<n-1)result.u(i)=-dt_div_ds2;
+                                    if(0<i    )result.l(i)=-dt_div_ds2;
+                                    result.d(i)=on_diag;
+                                    if(  i<n-1)result.u(i)=-dt_div_ds2;
                                 }
                                 for
                                   ( unsigned i=0
@@ -1692,25 +1800,32 @@ struct diff_alt_dir_implicit_innocent
                                    *  of [DuffyFdm2006].
                                    */
                                 {
-                                    if(0<i)result.l(i)=0.0;
+                                    if(0<i    )result.l(i)=0.0;
                                     result.d(i)=1.0;//copy boundary condition from rhs.
-                                    if(i<n-1)result.u(i)=0.0;
+                                    if(  i<n-1)result.u(i)=0.0;
                                 }
+                              #if TRACE_MK_TRIDIAG
+                                std::cout
+                                  <<":del_fract_t="<<del_fract_t
+                                  <<":del_s="<<del_s
+                                  <<":dt_div_ds2="<<dt_div_ds2
+                                  <<":on_diag="<<on_diag
+                                  <<"\n:the_tridiag=\n"<<result
+                                  <<"\n";
+                              #endif
                                 return result;
                             }
+                          #undef TRACE_MK_TRIDIAG
                         };
-                          tridiag<value_t>
+                          numeric::tridiag<value_t>
                         a_tridiag
                           = mk_tridiag::make
                             ( l_last
-                            , dt_div_s_rank
-                            , this->axes()[s_rank].del()
+                            , del_t_frac
+                            , space_axes[s_rank-1].del()
                             )
                           ;
-                      #ifdef TRACE_FRACTIONAL_STEPS
-                        std::cout<<"a_tridiag=\n"<<a_tridiag;
-                      #endif
-                          solve_tridiag<value_t>
+                          numeric::solve_tridiag<value_t>
                         a_solver
                           ( space_istk_rotated
                           , a_tridiag
@@ -1721,12 +1836,12 @@ struct diff_alt_dir_implicit_innocent
                         {
                             a_solver.upper_triangulate_rhs();
                             a_solver.back_substitute();
-                          #ifdef TRACE_FRACTIONAL_STEPS
-                            istk_indices_t space_istk_border(space_istk_is);
-                            space_istk_border.axes_offsets_put(0,0);
+                          #if TRACE_FRACTIONAL_STEPS
                             //std::cout<<"rhs(after solve_tridiag)=\n"<<rhs<<".\n";
+                            istk_indices_t space_istk_border(space_istk_rotated);
+                            space_istk_border.axes_offsets_put(0,0);
                             array_iter_wrap<value_t> lhsw(lhs_iter,space_istk_border);
-                            std::cout<<"lhsw["<<i_time<<","<<(i_step+1)<<"](after solve_tridiag)=\n"
+                            std::cout<<"lhsw_rotated["<<i_time<<","<<(i_step+1)<<"](after solve_tridiag)=\n"
                               <<lhsw<<".\n";
                           #endif
                         }
@@ -1740,7 +1855,7 @@ struct diff_alt_dir_implicit_innocent
                         space_istk_rotated.axis_offsets_put(s_rank-1,1,1);
                     }//solve tridiagonal system.
                 }//for(i_step=0)
-              #ifdef TRACE_EQUATIONS_19_34
+              #if TRACE_EQUATIONS_19_34
                 std::cout
                   <<":t_nxt="<<t_nxt
                   <<":t_frac="<<t_frac
@@ -1771,9 +1886,11 @@ struct diff_alt_dir_implicit_innocent
                 }
             }//boundary_conditions_lhs
         }//for(i_time=...)
-        std::cout<<"u["<<n_time<<"]=\n"<<u<<".\n";
-      #undef TRACE_SOLN_DIFF_EQ
+      #if TRACE_SOLN_DIFF_EQ
+        std::cout<<":t_last="<<t_nxt<<"\n";
+        std::cout<<":u["<<(n_time-1)<<"]=\n"<<u<<".\n";
       #endif
+      #undef TRACE_SOLN_DIFF_EQ
     }
 };//exit diff_alt_dir_implicit_innocent
 #endif
@@ -1827,54 +1944,28 @@ struct soln
     funcs_t
       ;
       value_t
-    exact_indices
-      ( value_t t_val
-      , istk_indices_t const& s_iter
-      )
-      /**@brief
-       *  The fundamental solution to heat equation:
-       *  References:
-       *    [Churchill72]
-       *      problem 8, page 150 of:
-       *      _Operational Mathematics_
-       *      Ruel V. Churchill
-       *      McGraw-Hill, 1972.
-       *    [Wiki2011]
-       *      http:  *  en.wikipedia.org/wiki/Heat_equation#Fundamental_solutions
-       *  However:
-       *    [Wiki2011] differs from [Churchill72] slightly:
-       *      [Wiki2011] has pow( 4*Pi*k*t, n/2) whereas
-       *      [Churchill72] has sqrt(t).
-       *    Since, in [Churchill72], the dimensionality, n=1,
-       *    that's almost the same, the only difference being
-       *    a constant factor, pow(4*Pi*k, n/2), both solution functions
-       *    satisfy the homogeneous equation if either does.
-       **@requires
-       *  WHAT:
-       *    t_zero<=t_val, for some "large enough" t_zero.
-       *  WHY:
-       *    See ss_divisor comments below.
-       */
+    exact_values
+      ( std::vector<value_t>const& a_vals
+      ) 
       {
-        //#define TRACE_EXACT_INDICES
-        #ifdef TRACE_EXACT_INDICES
+        //#define TRACE_EXACT_VALUES
+        #ifdef TRACE_EXACT_VALUES
           ::boost::trace_scope ts("exact_indices");
           std::cout<<":t_val="<<t_val<<":s_iter="<<s_iter<<"\n";
         #endif
             value_t
           sumsq=0.0;
             unsigned
-          s_rank=s_iter.rank();
+          s_rank=a_vals.size()-1;
           for(unsigned s_axis=0; s_axis<s_rank; ++s_axis) 
           {
                 value_t const 
               s_val
-                = this->axes()
+                = a_vals
                   [ s_axis+1]
-                  [ s_iter[s_axis].template get<index_value>() ]
                 ;
               sumsq+=s_val*s_val;
-            #ifdef TRACE_EXACT_INDICES
+            #ifdef TRACE_EXACT_VALUES
               std::cout<<":s_val="<<s_val<<":sumsq="<<sumsq<<"\n";
             #endif
           }
@@ -1886,24 +1977,47 @@ struct soln
             //in [Wiki2011].
             ;
             value_t
+          t_val=a_vals[0];
+            value_t
           ss_divisor=4.0*(this->diffusivity)*t_val
             //sum squares divisor.
-            //  t_val must be not be 0; otherwise, divide by zero occurs
+            //  t_val must not be 0; otherwise, divide by zero occurs
             //  in next statement, in 2 places.
             //  To avoid rounding errors, it must be greater than 0.0
             //  by some unknown amount(0.1 seems to work when
             //  diffusivity==1.0).
             ;
-        #ifdef TRACE_EXACT_INDICES
+        #ifdef TRACE_EXACT_VALUES
           std::cout<<":ss_divisor="<<ss_divisor<<"\n";
         #endif
             value_t
-          u_val=exp(-sumsq/ss_divisor)/pow(t_val,s_rank_div_2);
-        #ifdef TRACE_EXACT_INDICES
-          std::cout<<":u_val="<<u_val<<"\n";
+          result=exp(-sumsq/ss_divisor)/pow(t_val,s_rank_div_2);
+        #ifdef TRACE_EXACT_VALUES
+          std::cout<<":result="<<result<<"\n";
         #endif
-          return u_val;
+          return result;
+        #undef TRACE_EXACT_VALUES
       }
+      
+     value_t
+    exact_indices
+      ( value_t t_val
+      , istk_indices_t const& s_iter
+      )
+      {
+          unsigned const s_rank=s_iter.rank();
+          std::vector<value_t> vals(s_rank+1);
+          vals[0]=t_val;
+          for(unsigned s_axis=0; s_axis<s_rank; ++s_axis) 
+          {
+              vals[s_axis+1]
+                = this->axes()
+                  [ s_axis+1]
+                  [ s_iter[s_axis].template get<index_value>() ]
+                ;
+          }
+          return exact_values(vals);
+    }
       
       value_t 
     ic_indices( istk_indices_t const& s_iter)
@@ -1967,26 +2081,41 @@ solve_problem_method
     solver.solve_estim_err();
 };
 
+#include <fstream>
+
 int main()
 {  
     boost::iostreams::indent_scoped_ostreambuf<char> indent_outbuf(std::cout,2);
         typedef
       grid_axis_size_bounds<value_t>
     grid_bounds_t;
-      grid_axes_diff<value_t>
-    grid_axes
-      ({ grid_bounds_t(  3, 0.1, 1.0)
-     #if 1
-       , grid_bounds_t( 10, 0.0, 1.0)
-       , grid_bounds_t(  9, 0.0, 1.0)
-     #else
-       , grid_bounds_t(  3, 0.0, 1.0)
-       , grid_bounds_t(  4, 0.0, 1.0)
-       , grid_bounds_t(  5, 0.0, 1.0)
-     #endif
-       }
-      )
+    
+      char const*
+    axes_file_name="diff_pde.inp";    
+      std::ifstream
+    axes_file_strm(axes_file_name);
+    if(!axes_file_strm)
+    {
+        std::cerr<<"cannot open "<<axes_file_name<<"\n";
+        std::exit(1);
+    }
+      std::vector<grid_bounds_t>
+    axes_vec
       ;
+    for
+      ( unsigned i_axis
+      ; i_axis<10
+      ; ++i_axis
+      )
+    {
+        grid_bounds_t a_axes;
+        axes_file_strm>>a_axes;
+        if(axes_file_strm.eof())break;
+        axes_vec.push_back(a_axes);
+    }; 
+    std::cout<<":axes_vec=\n"<<axes_vec<<"\n";
+      grid_axes_diff<value_t>
+    grid_axes( axes_vec);
     std::cout<<grid_axes;
     #ifdef DIFF_ALT_DIR_EXPLICIT
     {

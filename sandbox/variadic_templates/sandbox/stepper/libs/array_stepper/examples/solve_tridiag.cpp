@@ -1,5 +1,5 @@
 #include <boost/utility/trace_scope.hpp>
-#include <boost/array_stepper/solve_tridiag.hpp>
+#include <boost/array_stepper/numeric/solve_tridiag.hpp>
 #include <boost/array_stepper/array_dyn.hpp>
 #include <boost/array_stepper/array_store_print.hpp>
 using namespace boost::array_stepper;
@@ -17,10 +17,10 @@ void test_tridiag()
   {
       std::size_t const n=4;
       typedef double value_t;
-      typedef tridiag<value_t> trid_t;
+      typedef numeric::tridiag<value_t> trid_t;
       typedef std::vector<value_t> vv_t;
         trid_t 
-      a( tridiag_seq_seq_tag()
+      a( numeric::tridiag_seq_seq_tag()
        , std::vector< vv_t>
          ( { { -3.0, -2.0, 1.0} //upper
            , {  5.0,  4.0, 3.0, 5.0} //diagonal
@@ -122,7 +122,7 @@ void test_tridiag()
           trid_t la(a);
           array_t lr(r);
           array_t x(lengths_soln);
-          solve_tridiag<value_t> tds( istk_v, la, lr.data().begin(), x.data().begin());
+          numeric::solve_tridiag<value_t> tds( istk_v, la, lr.data().begin(), x.data().begin());
           if( tds.upper_triangulate_trid(zero_tol))
           {
               tds.upper_triangulate_rhs();

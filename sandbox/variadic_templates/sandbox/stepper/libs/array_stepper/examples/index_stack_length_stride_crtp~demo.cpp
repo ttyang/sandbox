@@ -22,7 +22,10 @@ void test_inc_dec(lsos_t& lsos_v)
         for(unsigned node=0; node<space; ++node, lsos_v.template inc_dec_ator<ID>())
         {
             std::cout<<"node["<<std::setw(2)<<node<<"]=";
-            std::cout<<lsos_v<<"\n";
+            std::cout<<lsos_v;
+            auto offset=lsos_v.offset_space_val();
+            std::cout<<", indices_at_offset="<<lsos_v.indices_at_offset(offset);
+            std::cout<<"\n";
         }
     }
 }
@@ -52,20 +55,20 @@ int main()
     typedef types_t::axis_t axis_t;
     axis_t axis_v=2;
     index_t offset_v=1;
-    lsos_v.axis_offset_put(axis_v,offset_v,offset_v);
-    std::cout<<"axis_offset_put("<<axis_v<<","<<offset_v<<","<<offset_v<<"):\n";
+    lsos_v.axis_offsets_put(axis_v,offset_v,offset_v);
+    std::cout<<"axis_offsets_put("<<axis_v<<","<<offset_v<<","<<offset_v<<"):\n";
     lsos_v.axis_index_put(axis_v,lsos_v[axis_v].get<index_bound_lower>());
     std::cout<<"axis_index_put("<<axis_v<<",index_bound_lower["<<axis_v<<"]):\n";
     test_inc_dec<inc_ator>(lsos_v);
     offset_v=0;
-    lsos_v.axis_offset_put(axis_v,offset_v,offset_v);
-    std::cout<<"axis_offset_put("<<axis_v<<","<<offset_v<<","<<offset_v<<"):\n";
+    lsos_v.axis_offsets_put(axis_v,offset_v,offset_v);
+    std::cout<<"axis_offsets_put("<<axis_v<<","<<offset_v<<","<<offset_v<<"):\n";
     lsos_v.axis_index_put(axis_v,lsos_v[axis_v].get<index_bound_lower>());
     std::cout<<"axis_index_put("<<axis_v<<",index_bound_lower["<<axis_v<<"]):\n";
     test_inc_dec<inc_ator>(lsos_v);
     auto offset_l=lsos_v[axis_v].length_val()-1;
-    lsos_v.axis_offset_put(axis_v,offset_l,offset_v);
-    std::cout<<"axis_offset_put("<<axis_v<<","<<offset_l<<","<<offset_v<<"):\n";
+    lsos_v.axis_offsets_put(axis_v,offset_l,offset_v);
+    std::cout<<"axis_offsets_put("<<axis_v<<","<<offset_l<<","<<offset_v<<"):\n";
     lsos_v.axis_index_put(axis_v,lsos_v[axis_v].get<index_bound_lower>());
     std::cout<<"axis_index_put("<<axis_v<<",index_bound_lower["<<axis_v<<"]):\n";
     test_inc_dec<inc_ator>(lsos_v);
