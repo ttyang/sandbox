@@ -1947,6 +1947,11 @@ struct soln
     exact_values
       ( std::vector<value_t>const& a_vals
       ) 
+      /**@brief
+       *  Fundamental solution to heat or diffusion equation:
+       *    [WikiFundDiff2011]
+       *      http://en.wikipedia.org/wiki/Heat_equation#Fundamental_solutions
+       */
       {
         //#define TRACE_EXACT_VALUES
         #ifdef TRACE_EXACT_VALUES
@@ -1974,7 +1979,7 @@ struct soln
             //This is the n/2 in equation following sentence:
             //  The n-variable fundamental solution is the product of the
             //  fundamental solutions in each variable; i.e.,
-            //in [Wiki2011].
+            //in [WikifundDiff2011].
             ;
             value_t
           t_val=a_vals[0];
