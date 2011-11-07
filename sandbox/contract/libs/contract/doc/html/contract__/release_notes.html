@@ -1,0 +1,93 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Release Notes</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="Contract++ 0.4.x">
+<link rel="up" href="../index.html" title="Contract++ 0.4.x">
+<link rel="prev" href="bibliography.html" title="Bibliography">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="bibliography.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="contract__.release_notes"></a><a class="link" href="release_notes.html" title="Release Notes">Release Notes</a>
+</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="release_notes.html#contract__.release_notes.to_do">To-Do</a></span></dt></dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="contract__.release_notes.to_do"></a><a class="link" href="release_notes.html#contract__.release_notes.to_do" title="To-Do">To-Do</a>
+</h3></div></div></div>
+<p>
+        Remaining open items:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            Replace all PP_NOT with PP_COMPL when no bool conversion is needed.
+          </li>
+<li class="listitem">
+            Include all necessary headers for all files.
+          </li>
+<li class="listitem">
+            Can the syntax handle <code class="computeroutput"><span class="special">(</span><span class="keyword">float</span><span class="special">[</span><span class="number">2</span><span class="special">][</span><span class="number">3</span><span class="special">])</span> <span class="special">(</span><span class="identifier">transpose</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">float</span>
+            <span class="identifier">m</span><span class="special">[</span><span class="number">2</span><span class="special">][</span><span class="number">3</span><span class="special">]</span> <span class="special">)</span> <span class="special">...</span></code>
+            and similar uses of <code class="computeroutput"><span class="special">[]</span></code>?
+          </li>
+<li class="listitem">
+            Change all examples to use not/etc keywords instead of bool(!...) or
+            ... == false.
+          </li>
+<li class="listitem">
+            Support template template parameters <code class="computeroutput"><span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">template</span><span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">V</span> <span class="special">)</span> <span class="identifier">C</span> <span class="special">)</span></code>.
+          </li>
+<li class="listitem">
+            Implement named parameters.
+          </li>
+<li class="listitem">
+            To reduce compilation time, can I combine the template function for pre/post/inv
+            and the other template function for subcontracting pre/post/inv?
+          </li>
+<li class="listitem">
+            Can I avoid requiring the CONTRACT_CLASS_INVARIANT macro when no invariants
+            are given? For example, given that the class name is unique, I can generate
+            a template outside the class declaration contract_signature_##class_name##_
+            that contains the typedefs for class_type, base_type0, etc. If so then
+            I don't need the CONTRACT_CLASS macro to open the class <code class="computeroutput"><span class="special">{</span></code> so I don't need the CONTRACT_CLASS_INVARIANT
+            macro to close the artificail <code class="computeroutput"><span class="special">{</span></code>
+            opened by the user. Then I could use a base class contract_invariant&lt;class_type&gt;
+            that defines some default class-invariant virtual functions that the
+            CONTRACT_CLASS_INVARIANT will override but only when specified.
+          </li>
+<li class="listitem">
+            Improve pp-error reporting.
+          </li>
+</ul></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2008-2012 Lorenzo Caminiti<p>
+        Use, modification, and distribution is subject to the Boost Software License,
+        Version 1.0 (see accompanying file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>).
+        Documentation at <a href="http://contractpp.sourceforge.net" target="_top">http://contractpp.sourceforge.net</a>.
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="bibliography.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a>
+</div>
+</body>
+</html>
