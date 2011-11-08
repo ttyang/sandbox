@@ -27,7 +27,7 @@
 </h3></div></div></div>
 <div><p class="copyright">Copyright &#169; 2009-2011 Lorenzo Caminiti</p></div>
 <div><div class="legalnotice">
-<a name="id808762"></a><p>
+<a name="boost_local.legal"></a><p>
         Use, modification, and distribution is subject to the Boost Software License,
         Version 1.0 (see accompanying file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -117,9 +117,10 @@
       <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>,
       and other C++ libraries offering related features.
     </p>
-<a name="boost_local.Introduction.two_syntaxes"></a><h6>
-<a name="boost_local.Introduction.two_syntaxes-heading"></a>
-      <a class="link" href="index.html#boost_local.Introduction.two_syntaxes">Two Syntaxes</a>
+<h6>
+<a name="boost_local.Introduction.h0"></a>
+      <span><a name="boost_local.Introduction.two_syntaxes"></a></span><a class="link" href="index.html#boost_local.Introduction.two_syntaxes">Two
+      Syntaxes</a>
     </h6>
 <p>
       This library uses macros to declare the local functions, local blocks, and
@@ -151,9 +152,10 @@
       Most of the examples presented in this documentation provide a side-by-side
       comparison of the two syntaxes.
     </p>
-<a name="boost_local.Introduction.an_example"></a><h6>
-<a name="boost_local.Introduction.an_example-heading"></a>
-      <a class="link" href="index.html#boost_local.Introduction.an_example">An Example</a>
+<h6>
+<a name="boost_local.Introduction.h1"></a>
+      <span><a name="boost_local.Introduction.an_example"></a></span><a class="link" href="index.html#boost_local.Introduction.an_example">An
+      Example</a>
     </h6>
 <p>
       In the following example, a local function is passed to the STL <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span></code>
@@ -192,51 +194,49 @@
 <tbody><tr>
 <td>
               <p>
-                
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"> <span class="number">1.</span>
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
+
+
+
+
  <span class="number">2.</span>
  <span class="number">3.</span>
  <span class="number">4.</span>
- 
+
  <span class="number">5.</span>
  <span class="number">6.</span>
- 
- 
- 
+
+
+
  <span class="number">7.</span>
  <span class="number">8.</span>
- 
+
  <span class="number">9.</span>
- 
- 
+
+
 <span class="number">10.</span>
- 
+
 <span class="number">11.</span>
 <span class="number">12.</span>
- 
+
 <span class="number">13.</span>
- 
- 
- 
+
+
+
 </pre>
 <p>
               </p>
             </td>
 <td>
               <p>
-                
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">block</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -271,7 +271,7 @@
         <span class="identifier">assert</span><span class="special">(</span><span class="identifier">sum</span> <span class="special">==</span> <span class="number">1975.0</span><span class="special">);</span> <span class="comment">// so far `sum` is 10*100+10*90.5+10*7=1975</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Asserted summation: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">sum</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_BLOCK_END</span>
-    
+
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -280,7 +280,6 @@
             </td>
 <td>
               <p>
-                
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">block</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -315,7 +314,7 @@
         <span class="identifier">assert</span><span class="special">(</span><span class="identifier">sum</span> <span class="special">==</span> <span class="number">1975.0</span><span class="special">);</span> <span class="comment">// so far `sum` is 10*100+10*90.5+10*7=1975</span>
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Asserted summation: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">sum</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_BLOCK_END</span>
-    
+
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -353,7 +352,7 @@
           by reference, by constant value, and by constant reference. In addition,
           the object <code class="computeroutput"><span class="keyword">this</span></code> can be bound
           (eventually by constant value but never by reference or constant reference
-          <sup>[<a name="id865619" href="#ftn.id865619" class="footnote">1</a>]</sup> ) from within a non-static member function (see the <a class="link" href="boost_local/Tutorial.html" title="Tutorial">Tutorial</a>
+          <sup>[<a name="boost_local.Introduction.f0" href="#ftn.boost_local.Introduction.f0" class="footnote">1</a>]</sup> ) from within a non-static member function (see the <a class="link" href="boost_local/Tutorial.html" title="Tutorial">Tutorial</a>
           section). For example, the variable <code class="computeroutput"><span class="identifier">factor</span></code>
           is bound by constant value so it cannot be mistakenly modified by the local
           function body. The variable <code class="computeroutput"><span class="identifier">sum</span></code>
@@ -429,13 +428,13 @@
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.id865619" href="#id865619" class="para">1</a>] </sup>
+<div class="footnote"><p><sup>[<a id="ftn.boost_local.Introduction.f0" href="#boost_local.Introduction.f0" class="para">1</a>] </sup>
             C++ does not allow to obtain a reference to the pointer <code class="computeroutput"><span class="keyword">this</span></code>.
           </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: October 26, 2011 at 13:30:43 GMT</small></p></td>
+<td align="left"><p><small>Last revised: November 08, 2011 at 12:18:47 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

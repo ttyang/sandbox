@@ -77,7 +77,6 @@
 <tbody><tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">exit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">foreach</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -181,7 +180,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">exit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">foreach</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -322,7 +320,6 @@
 <tbody><tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">exit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -337,7 +334,7 @@
     BOOST_LOCAL_EXIT(const bind&amp; error) { // Sane as D's `scope(success)`.
         if (!error) std::cout &lt;&lt; "success" &lt;&lt; std::endl;
     } BOOST_LOCAL_EXIT_END
-    
+
     BOOST_LOCAL_EXIT(const bind&amp; error) { // Same as D's `scope(failure)`.
         if (error) std::cout &lt;&lt; "failure" &lt;&lt; std::endl;
     } BOOST_LOCAL_EXIT_END
@@ -354,7 +351,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">exit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -369,11 +365,11 @@
     <span class="identifier">BOOST_LOCAL_EXIT</span><span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// Sane as D's `scope(success)`.</span>
         <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"success"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_EXIT_END</span>
-    
+
     <span class="identifier">BOOST_LOCAL_EXIT</span><span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// Same as D's `scope(failure)`.</span>
         <span class="keyword">if</span> <span class="special">(</span><span class="identifier">error</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"failure"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_EXIT_END</span>
-    
+
     <span class="keyword">return</span> <span class="identifier">error</span> <span class="special">=</span> <span class="special">-</span><span class="number">1</span><span class="special">;</span> <span class="comment">// Must set error.</span>
 <span class="special">}</span>
 
@@ -410,7 +406,6 @@
 <tbody><tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">exit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -426,11 +421,11 @@
     <span class="identifier">BOOST_LOCAL_EXIT</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Same as D's `scope(success)`.</span>
         <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"success"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_EXIT_END</span>
-    
+
     <span class="identifier">BOOST_LOCAL_EXIT</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Same as D's `scope(failure)`.</span>
         <span class="keyword">if</span> <span class="special">(</span><span class="identifier">error</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"failure"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_EXIT_END</span>
-    
+
     <span class="identifier">error</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span> <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"some error"</span><span class="special">);</span> <span class="comment">// Must set error.</span>
 <span class="special">}</span>
 
@@ -450,7 +445,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">exit</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -466,11 +460,11 @@
     <span class="identifier">BOOST_LOCAL_EXIT</span><span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// Same as D's `scope(success)`.</span>
         <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">error</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"success"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_EXIT_END</span>
-    
+
     <span class="identifier">BOOST_LOCAL_EXIT</span><span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">error</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// Same as D's `scope(failure)`.</span>
         <span class="keyword">if</span> <span class="special">(</span><span class="identifier">error</span><span class="special">)</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"failure"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_EXIT_END</span>
-    
+
     <span class="identifier">error</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">;</span> <span class="keyword">throw</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">runtime_error</span><span class="special">(</span><span class="string">"some error"</span><span class="special">);</span> <span class="comment">// Must set error.</span>
 <span class="special">}</span>
 
@@ -522,7 +516,6 @@
 <tbody><tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
@@ -550,7 +543,7 @@
             <span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">min_salary</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">u_limit</span><span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">salary</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">min_salary</span> <span class="special">&amp;&amp;</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">salary</span><span class="special">()</span> <span class="special">&lt;</span> <span class="identifier">u_limit</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">between</span><span class="special">)</span>
-    
+
     <span class="comment">// Pass local function to an STL algorithm as a template paramter (this</span>
     <span class="comment">// cannot be done with plain member funcitons of local classes).</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">find_if</span><span class="special">(</span>
@@ -565,7 +558,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
@@ -593,7 +585,7 @@
             <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">min_salary</span><span class="special">)</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">u_limit</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
         <span class="keyword">return</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">salary</span><span class="special">()</span> <span class="special">&gt;=</span> <span class="identifier">min_salary</span> <span class="special">&amp;&amp;</span> <span class="identifier">e</span><span class="special">.</span><span class="identifier">salary</span><span class="special">()</span> <span class="special">&lt;</span> <span class="identifier">u_limit</span><span class="special">;</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">between</span><span class="special">)</span>
-    
+
     <span class="comment">// Pass local function to an STL algorithm as a template paramter (this</span>
     <span class="comment">// cannot be done with plain member funcitons of local classes).</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="identifier">employee</span><span class="special">&gt;::</span><span class="identifier">iterator</span> <span class="identifier">i</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">find_if</span><span class="special">(</span>
@@ -642,7 +634,6 @@
 <tbody><tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -679,11 +670,11 @@
 
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">i</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
     <span class="identifier">i</span><span class="special">[</span><span class="number">0</span><span class="special">]</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">[</span><span class="number">1</span><span class="special">]</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
-    
+
     <span class="identifier">a</span> <span class="identifier">an</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
     <span class="identifier">an</span><span class="special">.</span><span class="identifier">change_sign_all</span><span class="special">(</span><span class="identifier">i</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">an</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-    
+
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -692,7 +683,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
@@ -729,11 +719,11 @@
 
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;</span> <span class="identifier">i</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
     <span class="identifier">i</span><span class="special">[</span><span class="number">0</span><span class="special">]</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="identifier">i</span><span class="special">[</span><span class="number">1</span><span class="special">]</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
-    
+
     <span class="identifier">a</span> <span class="identifier">an</span><span class="special">(</span><span class="identifier">n</span><span class="special">);</span>
     <span class="identifier">an</span><span class="special">.</span><span class="identifier">change_sign_all</span><span class="special">(</span><span class="identifier">i</span><span class="special">);</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">an</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-    
+
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -783,7 +773,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -806,7 +795,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -831,7 +819,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -858,7 +845,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -887,7 +873,6 @@
 <tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -913,7 +898,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -971,7 +955,6 @@
 <tbody><tr>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -1056,7 +1039,7 @@
                     <span class="identifier">bind</span> <span class="keyword">this</span><span class="special">)</span> <span class="special">{</span>
             <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span>
             <span class="identifier">t</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
-            
+
             <span class="keyword">void</span> <span class="identifier">BOOST_LOCAL_FUNCTION_PARAMS</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">y</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">0</span><span class="special">,</span>
                     <span class="identifier">bind</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">d</span><span class="special">,</span>
                     <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">bind</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">bind</span> <span class="identifier">q</span><span class="special">)</span> <span class="special">{</span>
@@ -1093,7 +1076,7 @@
 
         <span class="special">{</span> <span class="comment">// All params, const binds, and plain binds.</span>
             <span class="keyword">int</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">d</span><span class="special">;</span>
-            
+
             <span class="keyword">void</span> <span class="identifier">BOOST_LOCAL_FUNCTION_PARAMS</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">y</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">0</span><span class="special">,</span>
                     <span class="keyword">const</span> <span class="identifier">bind</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">,</span>
                     <span class="identifier">bind</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">d</span><span class="special">,</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">q</span><span class="special">)</span> <span class="special">{</span>
@@ -1123,7 +1106,7 @@
         <span class="special">}</span>
     <span class="special">}</span>
 <span class="special">};</span>
-    
+
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
     <span class="identifier">s</span><span class="special">().</span><span class="identifier">f</span><span class="special">();</span>
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
@@ -1134,7 +1117,6 @@
               </td>
 <td>
                 <p>
-                  
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local</span><span class="special">/</span><span class="identifier">function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -1219,7 +1201,7 @@
                     <span class="special">(</span><span class="identifier">bind</span> <span class="keyword">this</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
             <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span>
             <span class="identifier">t</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>
-            
+
             <span class="keyword">void</span> <span class="identifier">BOOST_LOCAL_FUNCTION_PARAMS</span><span class="special">(</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">y</span><span class="special">)(</span><span class="keyword">default</span> <span class="number">0</span><span class="special">)</span>
                     <span class="special">(</span><span class="identifier">bind</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">d</span><span class="special">)</span>
                     <span class="special">(</span><span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span> <span class="keyword">this</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span> <span class="identifier">q</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
@@ -1256,7 +1238,7 @@
 
         <span class="special">{</span> <span class="comment">// All params, const binds, and plain binds.</span>
             <span class="keyword">int</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">,</span> <span class="identifier">d</span><span class="special">;</span>
-            
+
             <span class="keyword">void</span> <span class="identifier">BOOST_LOCAL_FUNCTION_PARAMS</span><span class="special">(</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">y</span><span class="special">)(</span><span class="keyword">default</span> <span class="number">0</span><span class="special">)</span>
                     <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span> <span class="identifier">a</span><span class="special">)</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">)</span>
                     <span class="special">(</span><span class="identifier">bind</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">d</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">q</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
@@ -1286,7 +1268,7 @@
         <span class="special">}</span>
     <span class="special">}</span>
 <span class="special">};</span>
-    
+
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span> <span class="special">{</span>
     <span class="identifier">s</span><span class="special">().</span><span class="identifier">f</span><span class="special">();</span>
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>

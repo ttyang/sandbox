@@ -33,7 +33,7 @@
 
 </span>BOOST_IDENTITY_TYPE(parenthesized_type)</pre></div>
 <div class="refsect1">
-<a name="id927210"></a><h2>Description</h2>
+<a name="id928560"></a><h2>Description</h2>
 <p>This macro expands to an expression that can be passed as a single macro parameter even if it contains commas and that evaluates to the specified type at compile-time (see the  <a class="link" href="boost_local/Advanced_Topics.html" title="Advanced Topics"> Advanced Topics</a> section).</p>
 <p>For example <code class="computeroutput">BOOST_IDENTITY_TYPE((std::map&lt;int, double&gt;))</code> can be passed as a single macro parameter when instead <code class="computeroutput">std::map&lt;int, double&gt;</code> cannot (because <code class="computeroutput">std::map&lt;int, double&gt;</code> contains a comma not wrapped by round parenthesis so it will be interpreted as two separate macro parameters by the preprocessor).</p>
 <p>In many cases it might be possible to use alternatives to this macro that will make the code more readable. For example, it might be possible to use define a new type <code class="computeroutput">typedef std::map&lt;int, duble&gt; map_type</code> prior to the macro and then pass the newly defined type <code class="computeroutput">map_type</code> which contains no comma as the macro parameter.</p>

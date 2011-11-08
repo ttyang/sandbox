@@ -93,22 +93,22 @@ exe parsing_macros_impl : parsing_macros_impl.cpp ;
 exe print_map : print_map.cpp ;
 exe print_map_va : print_map_va.cpp ;
 
-exe profile_boost_local : profile_boost_local.cpp
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_boost_local_inline : profile_boost_local_inline.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_boost_local_for_loop : profile_boost_local_for_loop.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_local_functor : profile_local_functor.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_global_functor : profile_global_functor.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_0x_lambda : profile_0x_lambda.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_boost_lambda : profile_boost_lambda.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
-exe profile_boost_phoenix : profile_boost_phoenix.cpp 
-        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_boost_local : profile_boost_local.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_boost_local_inline : profile_boost_local_inline.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_boost_local_for_loop : profile_boost_local_for_loop.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_local_functor : profile_local_functor.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_global_functor : profile_global_functor.cpp ; 
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_0x_lambda : profile_0x_lambda.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_boost_lambda : profile_boost_lambda.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
+#exe profile_boost_phoenix : profile_boost_phoenix.cpp ;
+#        ../../..//libboost_chrono ../../..//libboost_system ;
 
 exe scope_guards_errno : scope_guards_errno.cpp ;
 exe scope_guards_errno_va : scope_guards_errno_va.cpp ;
