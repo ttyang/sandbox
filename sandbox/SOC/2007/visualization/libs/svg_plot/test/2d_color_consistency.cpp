@@ -21,8 +21,9 @@
 #endif
 
 #define BOOST_TEST_MAIN
+
 // Must come BEFORE this include.
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
 
 #include <boost/svg_plot/svg_2d_plot.hpp>

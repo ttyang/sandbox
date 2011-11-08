@@ -1,6 +1,6 @@
 [section:fonts Fonts]
 
-[import ..\example\demo_2d_fonts.cpp]
+[import ../example/demo_2d_fonts.cpp]
 
 Examples of fonts are at [@../../../svg_plot/example/demo_2d_fonts.cpp demo_2d_fonts.cpp].
 

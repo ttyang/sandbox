@@ -1,4 +1,6 @@
-/*! \file uncertain.hpp
+//  uncertain.hpp
+
+/*! \file
   \brief Class for storing Uncertainties and simple propagation according to a pure Gaussian model.
   \details
     This simplifed version assuming uncorrelated uncertainties (the common case)
@@ -15,7 +17,7 @@
   \author Paul A. Bristow
   \date Mar 2009
 */
-// Copyright Paul A. Bristow 2009
+// Copyright Paul A. Bristow 2009, 2011
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -31,7 +33,8 @@
 //using std::ostream;
 #include <limits>
 //using std::numeric_limits;
-#include <utility> // using std::pair;
+#include <utility>
+// using std::pair;
 
 namespace boost
 {
@@ -53,7 +56,7 @@ namespace svg
 class unc
 {
 public:
-  unc(); // Default constructor.
+  unc(); //!< Default constructor with value .
   unc(double v, float u, short unsigned df, short unsigned ty);
    /*! \brief Output an value with (if defined) uncertainty and degrees of freedom (and type).
        For example: "1.23 +/- 0.01 (13)".\n
@@ -72,18 +75,19 @@ public:
   unc& operator=(const unc& rhs);
 
   // Get and set member functions.
-  double value() const; // return most likely value, typically the mean.
-  float uncertainty() const; // returnestimate of uncertainty, typically one standard deviation.
-  short unsigned deg_free() const; // return degrees of freedom, usually = number of observations -1;
-  short unsigned types() const; // return other information about the value.
+  double value() const; //!< \return most likely value, typically the mean.
+  float uncertainty() const; //!< \return estimate of uncertainty, typically one standard deviation.
+  short unsigned deg_free() const; //! \return degrees of freedom, usually = number of observations -1;
+  short unsigned types() const; //! \return other information about the value.
 
-  void value(double); // Set most likely value, typically the mean.
-  void uncertainty(float); // Set estimate of uncertainty, typically standard deviation.
-  void deg_free(short unsigned); // Set degrees of freedom, usually = number of observations -1;
-  void types(short unsigned); // Set other information about the value.
+  void value(double); //!< Set most likely value, typically the mean.
+  void uncertainty(float); //!< Set estimate of uncertainty, typically standard deviation.
+  void deg_free(short unsigned); //!< Set degrees of freedom, usually = number of observations -1;
+  void types(short unsigned); //!< Set other information about the value.
 
 private:
-  // Note that this class should fit into 128 bytes, same as two 64 bit doubles, so it only doubles the memory required.
+  // Note that this class should fit into 128 bytes, same as two 64 bit doubles,
+  // so it only doubles the memory required.
   double value_; //!< Most likely value, typically the mean.
   float uncertainty_; //!< Estimate of uncertainty, typically one standard deviation.
   //! Negative values mean that uncertainty is not defined.
@@ -253,17 +257,17 @@ float unc_of(T)
 
 template<>
 float unc_of(unc v)
-{ //! \return unc.uncertainty() as a float.
+{ //! \return unc.uncertainty() as a float. (Can be cast or converted to double without loss of accuracy).
   return v.uncertainty();
 }
 
 // Two helper functions to provide values and uncertainties as pairs.
 // Note names plural valueS_of
 
-template <class T> //! \tparam T Builtin-floating point type or unc.
-std::pair<double, double> values_of(T); //!< Get values of a pair of values.
+template <class T> //! \tparam T Built-infloating-point type, float, double, long double or unc.
+std::pair<double, double> values_of(T); //!< Get double values of a pair of values.
 
-template <class T> //! \tparam T Builtin-floating point type or unc.
+template <class T> //! \tparam T Built-infloating-point type, float, double, long double or unc.
 std::pair<double, double> values_of(std::pair<const T, T> vp)
 { //!< \return values of a pair of double values.
   return std::make_pair(value_of(vp.first), value_of(vp.second));
@@ -272,9 +276,10 @@ std::pair<double, double> values_of(std::pair<const T, T> vp)
 template <class T> //! \tparam T Builtin-floating point type or unc.
 std::pair<double, double> values_of(std::pair<const unc, unc> up)
 { //! \return value (part) as a pair of doubles.
-  // so can write
-  // std::pair<const double, double> minmax = value_of(*result.first); // x min & max
-  // whether T is double or unc.
+  /* \noteso can write
+     @c std::pair<const double, double> minmax = value_of(*result.first); // x min & max
+     whether T is double or unc.
+  */
 
   double vp1 = up.first.value();
   double vp2 = up.second.value();
@@ -291,18 +296,19 @@ std::pair<double, double> values_of(std::pair<T, T> vp)
 template <class T>
 std::pair<double, double> values_of(std::pair<unc, unc> up)
 { //! \return value (part) as a pair of doubles.
-  // so can write
-  // std::pair<const double, double> minmax = value_of(*result.first); // x min & max
-  // whether T is double or unc.
+  /* \note so can write
+  @c std::pair<const double, double> minmax = value_of(*result.first); // x min & max
+  whether T is @c double or @c unc.
+  */
   return std::make_pair<double, double>(up.first.value(), up.second.value());
 }
 
 //! Get uncertainties (standard deviation) of a pair of values.
-template <class T> //! \tparam T Builtin-floating point type or unc.
+template <class T> //! \tparam T Built-infloating-point type or unc.
 std::pair<float, float> uncs_of(T); // Declaration.
 
 //! Get uncertainties (standard deviation) of a pair of values.
-template <class T> //! \tparam T Builtin-floating point type or unc.
+template <class T> //! \tparam T Built-in floating-point type or unc.
 std::pair<float, float> uncs_of(std::pair<T, T> vp)
 {
   return std::make_pair<float, float>(unc_of(vp.first), unc_of(vp.second));

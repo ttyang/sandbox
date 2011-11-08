@@ -117,7 +117,7 @@ This is only to show their use and is intended to be visible, if totally tastele
     .y_minor_tick_length(2)
     .y_major_interval(20);
 
-/*`Many attributes of boxplots can be changed from the 'builtin' defaults, for example: */
+/*`Many attributes of boxplots can be changed from the 'built-in' defaults, for example: */
 
    my_boxplot.whisker_length(25.).box_width(10)
      .box_fill(lime)

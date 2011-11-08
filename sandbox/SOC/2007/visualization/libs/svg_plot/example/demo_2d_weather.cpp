@@ -55,7 +55,7 @@ using namespace boost::svg;
 #include <map>
   using std::map; // 2D data container.
 #include <fstream> // for file streaming, ifstream & ofstream.
-	using std::ifstream;
+  using std::ifstream;
 #include <string>
   using std::string;
   using std::getline;

@@ -2,15 +2,16 @@
     [quickbook 1.5]
     [id svg_plot]
     [authors [Voytko, Jake], [Bristow, Paul A.]]
-    [copyright 2007 to 2010 Jake Voytko and Paul A. Bristow]
+    [copyright 2007 to 2011 Jake Voytko and Paul A. Bristow]
     [license
         Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
     [source-mode c++]
-    [purpose Plot STL containers of data series onto graphs in SVG format.]
 ]
+
+[/purpose Plot STL containers of data series onto graphs in SVG format.]
 
 [/ Images]
 [/ $images is reference to a folder where images are held.]
@@ -154,6 +155,7 @@ may still be changed without notice.  The current version is available at
 [*https://svn.boost.org/svn/boost/sandbox/SOC/2007/visualization/libs/svg_plot/doc/pdf/svg_plot.pdf PDF documentation]
 
 [*https://svn.boost.org/svn/boost/sandbox/SOC/2007/visualization Boost Sandbox source code]
+]
 
 [note Comments and suggestions (even bugs!) to Paul.A.Bristow (at) hetp (dot) u-net (dot) com
 or Jake Voytko at jakevoytko (at) gmail (dot) com]

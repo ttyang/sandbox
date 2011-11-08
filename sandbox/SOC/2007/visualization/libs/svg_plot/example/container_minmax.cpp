@@ -62,7 +62,7 @@
 
   std::ostream& operator<< (std::ostream& os, const std::pair<double, double>& p)
   { // Output a pair of double values.
-      int precision = os.precision(3); // Save & use rather than default precision(6)
+      std::streamsize precision = os.precision(3); // Save & use rather than default precision(6)
       os << p.first << ", " << p.second;
       // Outputs:  1.2, 3.4
       os.precision(precision); // Restore.

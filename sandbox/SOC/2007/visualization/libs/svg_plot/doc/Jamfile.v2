@@ -18,7 +18,6 @@
 
 using quickbook ;
 using doxygen ;
-using auto-index ;
 
 import os ; # Needed to get environment variables.
 local BOOST_ROOT = [ os.environ BOOST ] ; #  Assumes you have set an environment variable $BOOST_ROOT.
@@ -67,7 +66,7 @@ if --enable-index in  [ modules.peek : ARGV ]
         <format>pdf:<xsl:param>index.on.type=1 # For the native stylesheets to generate the different indexes.
         # PDF native index support is probably better for PDFs as then you actually get page numbers.
 
-        <auto-index-script>index.idx # Specifies the name of the script to load. 
+        <auto-index-script>svg_plot.idx # Specifies the name of the script to load. 
         # <auto-index-prefix>../../../ # OK for Boost /boost and /libs normal directory layout 
         # using scan-path in index.idx, for example:
         
@@ -82,7 +81,7 @@ if --enable-index in  [ modules.peek : ARGV ]
 }
 else
 {
-   ECHO "Building the Quickdox docs with automatic index generation disabled. To get an auto-index, try building with --enable-index." ;
+   ECHO "Building the Quickdox docs with automatic index generation disabled. To get an AutoIndex, try building with --enable-index." ;
 }
 
 
@@ -95,7 +94,7 @@ xml svg_plot
 doxygen autodoc
   :
     [ glob ../../../boost/svg_plot/*.hpp ]
-    [ glob ../../../boost/svg_plot/detail/*.hpp ]
+    # [ glob ../../../boost/svg_plot/detail/*.hpp ]
   :
     #<doxygen:param>INPUT="filename1 directoryname2" # Separate with spaces.
     # But also see paths specified above.
@@ -117,8 +116,8 @@ doxygen autodoc
     # If the EXTRACT_STATIC tag is set to YES all static members of a file
     # will be included in the documentation.
     # <doxygen:param>EXTRACT_LOCAL_STATIC=YES # ? Not supported.
-    <doxygen:param>EXTRACT_LOCAL_METHODS=YES # Only useful for Objective C?
-    <doxygen:param>EXTRACT_LOCAL_CLASSES=YES # If the EXTRACT_LOCAL_CLASSES tag is set to YES classes (and structs)
+    <doxygen:param>EXTRACT_LOCAL_METHODS=NO # Only useful for Objective C?
+    <doxygen:param>EXTRACT_LOCAL_CLASSES=NO # If the EXTRACT_LOCAL_CLASSES tag is set to YES classes (and structs)
     # defined locally in source files will be included in the documentation.
     # If set to NO only classes defined in header files are included.
     <doxygen:param>ENABLE_PREPROCESSING=YES # Doxygen will expand all macro names in the source code.
@@ -264,4 +263,5 @@ boostbook standalone
 
 # install pdf-install : standalone : <location>. <install-type>PDF ; #
 
+install pdf-install : standalone : <install-type>PDF <location>. <name>SVG_plot.pdf ;
 

@@ -30,6 +30,11 @@
 #include <boost/svg_plot/svg_1d_plot.hpp>
   using namespace boost::svg;
 
+  
+#include <boost/svg_plot/show_1d_settings.hpp>
+ void boost::svg::show_1d_plot_settings(svg_1d_plot&);
+
+
 #include <iostream>
   using std::cout;
   using std::endl;
@@ -74,12 +79,12 @@ the order of data values is not important.
  and also sets all the very many defaults for axes, width, colors, etc.
 */
   svg_1d_plot my_plot;
-/*`A few (member) functions that set are fairly self-explanatory:
+/*`A few (member) functions that are set should be fairly self-explanatory:
 
 * title provides a title at the top for the whole plot,
 * `legend_on(true)` will mean that titles of data series and markers will display in the legend box.
 * `x_range(-1, 11)` sets the axis limits from -1 to +11 (instead of the default -10 to +10).
-* `background_border_color(blue)` sets just one of the very many options.
+* `background_border_color(blue)` sets just one of the very many other options.
 */
   my_plot.autoscale_check_limits(false); // default is true.
   my_plot.autoscale_plusminus(3); // default is 3.
@@ -89,9 +94,9 @@ the order of data values is not important.
     .background_border_color(blue)
     .plot_border_color(yellow)
     .plot_border_width(1)
-    //.x_ticks_on_window_or_axis(0) // now the default
+    //.x_ticks_on_window_or_axis(0) // now the default.
     .legend_on(false)
-    .title("Times")
+    .title("A, B and C Times")
     .x_range(0, 10)
     .x_label("times (sec)")
     .x_values_on(true)
@@ -101,7 +106,7 @@ the order of data values is not important.
     .x_plusminus_on(true)
     .x_df_on(true)
     .x_df_color(green)
-    .x_autoscale(B_times) // Note that this might not be right for A and C_times.
+    .x_autoscale(B_times) // Note that this might not be right scaling for A_times and/or C_times.
     ;
 /*`
 Then we add our data series,
@@ -110,7 +115,8 @@ and add optional data series titles
 
 The A_times mark data points with a red border circle with a green fill,
 The B_times use a blue vertical line,
-while C_times use an ellipse whose width (x radius) is from the uncertainty.
+while C_times use an ellipse whose width (x radius) is from the uncertainty,
+1st standard deviation shows as ellipse in magenta, and 2nd as yellow.
 All the data points are also labelled with their value,
 and uncertainty and degrees of freedom if known.
 */
@@ -118,11 +124,14 @@ and uncertainty and degrees of freedom if known.
   my_plot.plot(A_times, "A").shape(round).size(10).stroke_color(red).fill_color(green);
   my_plot.plot(B_times, "B").shape(vertical_line).stroke_color(blue);
   my_plot.plot(C_times, "C").shape(unc_ellipse).fill_color(lightyellow).stroke_color(magenta);
-
-/*`Finally, we can write the SVG to a file of our choice.
+/*`
+Finally, we can write the SVG to a file of our choice.
 */
-  my_plot.write("./demo_1d_uncertainty.svg");
+  //my_plot.write("./demo_1d_uncertainty.svg");
+  my_plot.write("./demo_1d_uncertainty_legend.svg");
+
 //] [/demo_1d_uncertainty_2]
+  // show_1d_plot_settings(my_plot);
 
   return 0;
 } // int main()
@@ -153,4 +162,4 @@ of volunteers as control and a second suffering from rhematoid arthritis.
   map<pair<unc, unc> > rheumatoid;
   control.push_back(unc(3.456, 0.44F, 6));
 
-  */
+*/

@@ -39,15 +39,15 @@
 
 #include <boost/iterator/transform_iterator.hpp>
 
-#include "svg.hpp"
-#include "svg_style.hpp"
-#include "detail/numeric_limits_handling.hpp"
-#include "detail/svg_boxplot_detail.hpp"
-#include "detail/functors.hpp"
-#include "detail/axis_plot_frame.hpp"
-#include "detail/auto_axes.hpp" //
-#include "quantile.hpp"
-#include "uncertain.hpp"
+#include <boost/svg_plot/svg.hpp>
+#include  <boost/svg_plot/svg_style.hpp>
+#include  <boost/svg_plot/detail/numeric_limits_handling.hpp>
+#include  <boost/svg_plot/detail/svg_boxplot_detail.hpp>
+#include  <boost/svg_plot/detail/functors.hpp>
+#include  <boost/svg_plot/detail/axis_plot_frame.hpp>
+#include  <boost/svg_plot/detail/auto_axes.hpp>
+#include  <boost/svg_plot/quantile.hpp>
+#include  <boost/svg_plot/uncertain.hpp>
 
 #include <vector>
 #include <string>
@@ -95,7 +95,7 @@ namespace svg
   // For example, string title_, but set with title("my title") and get with title().
 
   /*! boost::svg::svg_boxplot_series
-     Information about a data series to be box plotted.
+     Information about a data series to be dsiplayed as a Box Plot.
      A Box Plot that can contain several boxplot data series.
      Median, whiskers and outliers are computed for each series.
      \see http://en.wikipedia.org/wiki/Boxplot
@@ -189,8 +189,10 @@ namespace svg
     } // svg_boxplot_series constructor.
 
     void calculate_quantiles()
-    { /*! \brief Divide sorted data set into four equal parts, called quartiles,
+    { /*!
+       \brief Divide sorted data set into four equal parts, called quartiles,
         so each part represent 1/4th of the sampled population.
+
        \details
          Michael Frigge, David C. Hoaglin and Boris Iglewicz
         The American Statistician, Vol. 43, No. 1 (Feb., 1989), pp. 50-54
@@ -871,7 +873,9 @@ public:
 
   // Clear Functions.
   void clear_all()
-  { /*! Clear all the previous information and rebuild the SVG image.
+  { /*! \brief Clear all the previous information and rebuild the SVG image.
+
+    \details
        When writing to multiple documents, the contents of the plot
        may change significantly between. Rather than figuring out what
        has and has not changed, just erase the contents of the
@@ -1630,10 +1634,10 @@ public:
 
   } // draw_y_axis_label
 
-  void draw_box(double q1, double q3, // Quartiles
+  void draw_box(double q1, double q3, // Quartiles.
   double x, double width,
   const svg_style& box_styl)
-  { //! Draw the box border and any fill.
+  { //! Draw the box border and any fill color.
     g_element& g_ptr = image_.g(boxplot::MEDIAN).add_g_element();
 
     g_ptr.style().stroke_color(box_styl.stroke_color())
@@ -1674,7 +1678,7 @@ public:
   void draw_whiskers(double min, double max, double length, double x,
     const svg_style& min_whisker, const svg_style& max_whisker,
     const svg_style& axis_whisker)
-  { //! Draw the whiskers.
+  { //! Draw the whiskers for the boxplot.
     // Set up document structure for whiskers:
     g_element& g_whisk_ptr = image_.g(boxplot::WHISKER).add_g_element();
 
@@ -1738,6 +1742,7 @@ public:
         { // Show the value of the data point too.
           draw_plot_point_value(x, y, image_.g(boxplot::DATA_VALUE_LABELS).add_g_element(), const_cast<value_style&>(values_style), mild_outlier_, value);
         }
+        // Label the (outlier) data point with a name here?
       } // In window OK.
     }
     g_element& g_ext_ptr = image_.g(boxplot::EXTREME_OUTLIERS).add_g_element();
@@ -1769,7 +1774,7 @@ public:
   { //! Draw a whole boxplot, box, median line, axis whiskers, and outliers.
 
     // const here causes trouble
-    // Need to calculate quartiles here to permit individual plot quartile_definition.
+    // Need to calculate quartiles here to permit custom plot quartile definition.
     series.calculate_quantiles();
 
     draw_whiskers(series.whisker_min_, series.whisker_max_,

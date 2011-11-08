@@ -1,10 +1,6 @@
 /*! \file show_1d_settings.hpp
-  \author Jacob Voytko & Paul A. Bristow
 
   \brief Shows settings and options for 1D Plot.
-  \details Outputs a full list of all settings and options for 1D Plot to std::cout.
-  This is useful for diagnosing why your plot doesn't look as you hoped!
-  \warning This creates about 100 lines of output, so should be used sparingly!
 
   \author Paul A. Bristow
   \date Mar 2009
@@ -12,7 +8,7 @@
  */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2008, 2009
+// Copyright Paul A. Bristow 2008, 2009, 2011
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -71,12 +67,11 @@ const char* fmtFlagWords[16] =
 void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char* term)
 { //! Output strings describing all bits in std::ios_base::fmtflags.
   /*! Usage: outFmtFlags();
-     for example, outputs to cerr: "FormatFlags: skipws showbase right dec"
-     Default parameter values are:
-     void outFmtFlags(fmtflags fmtFlags = cout.flags(), ostream& os = cerr, const char* term = ".\n");
+     for example, outputs to @c cerr: "FormatFlags: skipws showbase right dec"
+     Default parameter values are: @c void outFmtFlags(fmtflags fmtFlags = cout.flags(), ostream& os = cerr, const char* term = ".\n");
    */
   const int up = 16; // Words across page.
-  const int count = 16;  // cos using unsigned short int.
+  const int count = 16;  // because using unsigned short int.
   int const flags = os.flags(); // save to restore.
   fmtFlags &= 0x7FFF;  // _Fmtmask // clear un-used bits.
   os << "IOS format flags (" << std::showbase << std::hex << fmtFlags << std::dec << ")" ; // hex value.
@@ -155,12 +150,11 @@ const std::string t_or_b(int i)
  return ((i < 0) ? "bottom" : ((i == 0) ? "none" : "top"));
 }
 
-  // Declaration, defined below.
 void show_1d_plot_settings(svg_1d_plot&);
 
 void show_1d_plot_settings(svg_1d_plot& plot)
-{ //! Diagnostic display to std::cout of all of a 1D plot's settings.
-  /*! Outputs to cout, a long list of about hundred of plot parameter settings,
+{ /*! \brief Diagnostic display to std::cout of all of a 1D plot's settings.
+     Outputs a long list of about hundred of plot parameter settings to @c cout:
     invaluable if the plot does not look as expected.
     \warning This creates about 100 lines of output, so should be used sparingly!
   */
@@ -306,7 +300,7 @@ void show_1d_plot_settings(svg_1d_plot& plot)
   cout.flags(iostate); // Restore.
 } // void show_plot_settings(svg_1d_plot& plot)
 
-} // svg
-} // boost
+} // namespace svg
+} // namespace boost
 
 #endif // BOOST_SVG_SHOW_1D_SETTINGS_HPP

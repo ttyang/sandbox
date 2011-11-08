@@ -16,16 +16,16 @@
 #ifndef BOOST_SVG_AXIS_PLOT_FRAME_HPP
 #define BOOST_SVG_AXIS_PLOT_FRAME_HPP
 
-#include "../svg_style.hpp"
-#include "../svg.hpp"
-#include "svg_tag.hpp"
-#include "numeric_limits_handling.hpp"
+#include <boost/svg_plot/svg_style.hpp>
+#include <boost/svg_plot/svg.hpp>
+#include <boost/svg_plot/detail/svg_tag.hpp>
+#include <boost/svg_plot/detail/numeric_limits_handling.hpp>
 // using boost::math::fpclassify for
 // boost::math::
 // template <class T>bool isfinite (T);
 // template <class T>bool isinf (T);
 // template <class T> bool isnan (T);
-#include "uncertain.hpp"
+#include <boost/svg_plot/uncertain.hpp>
 // using boost::svg::unc;
 
 #include <limits>
@@ -999,9 +999,9 @@ namespace boost
             g_inner_ptr = &(derived().image_.g(PLOT_LEGEND_TEXT));
 
             for(unsigned int i = 0; i < derived().serieses_.size(); ++i)
-            { // Show point marker, perhaps line, & text info for all the data series.
+            { // Show point marker, perhaps line, & text info for each of the data series.
 
-              //cout << "Series " << i << endl;
+              // cout << "Series " << i << endl;
               // derived().serieses_[i].point_style_ << endl;
               // cout << derived().serieses_[i].line_style_ << endl;
 
@@ -1015,16 +1015,32 @@ namespace boost
               g_inner_ptr->style().stroke_width(derived().serieses_[i].line_style_.width_);
 
               //cout << "g_inner_ptr.style().stroke_color() " << g_inner_ptr->style() << endl;
-              if(derived().serieses_[i].point_style_.shape_ != none)
-              { // Is some data marker shape to show.
-                draw_plot_point( // Plot point like circle, square, vertical bar...
+              plot_point_style& sty = derived().serieses_[i].point_style_;
+
+              if(sty.shape_ != none)
+              { // Is some data point marker shape to show in legend box.
+                bool was_unc_ellipse = false;
+                if (sty.shape_ == unc_ellipse)
+                {  // Problem here with unc_ellipse with calculation of a suitable size
+                   // and also, more fundamentally, the legend box overwrites the PLOT_DATA_UNC layers.
+                   // so as a hack, use a round instead.
+                  sty.shape_ =  round;
+                  was_unc_ellipse = true; // Note so restore after showing circle.
+                }
+
+                draw_plot_point( // Show a plot point like circle (==round), square, vertical bar...
                   legend_x_pos,
                   legend_y_pos,
                   *g_inner_ptr,
-                  derived().serieses_[i].point_style_, 0, 0);
+                  sty, unc(0.), unc(0.));
+                  //was derived().serieses_[i].point_style_, unc(0.), unc(0.));
                 legend_x_pos += 1.5 * spacing;
+                if (was_unc_ellipse)
+                { // Restore (or the data points won't use the unc_ellipse!
+                  sty.shape_ = unc_ellipse;
+                }
               }
-
+              
               // Line markers are only really useful for 2-D lines and curves showing functions.
               if (derived().legend_lines_)
               { // Need to draw a short line to show color for that data series.
@@ -1064,12 +1080,13 @@ namespace boost
             g_element& g_ptr,
             plot_point_style& sty,
             unc ux, unc uy) // Default unc ux = 0.? and uy = 0.
-          { //! Draw a plot data point marker shape whose size and stroke and fill colors are specified in plot_point_style.
+          { /*! Draw a plot data point marker shape 
+              whose size and stroke and fill colors are specified in plot_point_style.
+            */
             /*
               For 1-D plots, the points do not *need* to be centered on the X-axis,
               and putting them just above, or sitting on, the X-axis is much clearer.
-              For 2-D plots, the symbol center should, of course,
-              be centered exactly on x, y.
+              For 2-D plots, the symbol center should, of course, be centered exactly on x, y.
               circle and ellipse are naturally centered on the point.
               for rect x and y half_size offset centers square on the point.
               But symbols are in a rectangular box and the offset is different for x & y
@@ -1104,20 +1121,29 @@ namespace boost
               break;
 
             case unc_ellipse:
-              { // Uncertainty ellipses for one, two and three standard deviations.
-                double xu = ux.uncertainty() + ux.value(); //
-                transform_x(xu);
+              { // Uncertainty horizontal (and, for 2D, vertical) ellipses for one, two and three standard deviations.
+                double xu = ux.value(); // 
+                if (ux.uncertainty() > 0)
+                { // uncertainty is meaningful.
+                  xu +=  ux.uncertainty();
+                }
+                transform_x(xu); // To SVG coordinates.
                 double x_radius = abs(xu - x);
-                if (x_radius <= 0.)
-                {
+                if (x_radius <= 0.) 
+                { // Make sure something is visible.
                   x_radius = 1.; // Or size?
                 }
 
-                double yu = uy.uncertainty() + uy.value();
+                double yu = uy.value();
+                if (uy.uncertainty() > 0)
+                { // uncertainty is meaningful.
+                   yu += uy.uncertainty();
+                }
+
                 transform_y(yu);
                 double y_radius = abs(yu - y);
                 if (y_radius <= 0.)
-                {
+                { // Make sure something is visible.
                   y_radius = 1.;
                 }
                 //image_.g(PLOT_DATA_UNC).style().stroke_color(magenta).fill_color(pink).stroke_width(1);

@@ -58,7 +58,7 @@ namespace boost
   /*!
     \brief If a floating-point value is finite, return true.
     \param[in] t floating-point value.
-    \tparam FPT floating-point type (float, double, long double, or user-defined)
+    \tparam FPT floating-point type (float, double, long double, or user-defined).
     \return true if is finite, false if + or - infinite or any NaN.
   */
   template <class FPT> bool isfinite(FPT t);

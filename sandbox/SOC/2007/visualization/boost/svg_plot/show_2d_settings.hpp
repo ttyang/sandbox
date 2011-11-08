@@ -1,11 +1,8 @@
 /*! \file show_2d_settings.hpp
-  \author Jacob Voytko & Paul A. Bristow
 
   \brief Shows settings and options for 2D Plot.
-  \details Outputs a full list of all settings and options for 2D Plot to std::cout.
-  This is useful for diagnosing why your plot doesn't look as you hoped!
-  (See also show_1d_settings.cpp for 1D plot).
-  \warning This creates over 100 lines of output, so should be used sparingly!
+
+    \see show_1d_settings.cpp for 1-D plot.
 */
 
 // Copyright Jacob Voytko 2007
@@ -109,7 +106,7 @@ void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char*
 
 void show_2d_plot_settings(svg_2d_plot& plot)
 { /*! Diagnostic display of all of a 2D plot's settings.
-     Outputs to cout, a long list of about hundred of plot parameter settings,
+    Outputs  a long list of about hundred of plot parameter settings to @c cout:
     invaluable if the plot does not look as expected.
    \warning This creates about 100 lines of output, so should be used sparingly!
   */

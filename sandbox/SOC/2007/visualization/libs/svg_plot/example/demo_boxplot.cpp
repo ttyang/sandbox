@@ -126,8 +126,7 @@ int main()
  cout << "my_boxplot.plot_border_color " << my_boxplot.plot_border_color() << endl;
 */ 
 
-/*`Finally write the SVG plot to a file.
-*/
+//`Finally write the SVG plot to a file.
   my_boxplot.write("demo_boxplot.svg");
 /*`You can view the plot at demo_boxplot.svg."
 */

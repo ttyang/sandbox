@@ -26,7 +26,7 @@
 #  pragma warning (disable : 4244)
 #endif
 
-#include "..\uncertain.hpp"
+#include <boost/svg_plot/uncertain.hpp>
 //using boost::svg::unc;
 
 namespace boost {
@@ -41,11 +41,11 @@ class double_1d_convert
 public:
     typedef double result_type; //!< result type is double.
 
-    //! \tparam T type convertable to double.
+    //! \tparam T Any type convertible to double.
     template <class T>
-    double operator()(T val) const //! Convert a single data value to double.
-    {
-        return (double)val;
+    double operator()(T val) const //! To convert a single data value to double.
+    { 
+        return (double)val; //! \return Value that has been converted to double.
     }
 }; // class double_1d_convert
 
@@ -98,7 +98,7 @@ public:
        return std::pair<unc, unc>((unc)(a.first), (unc)(a.second));
     }
 
-    template <class T>    //!< \tparam T type convertible to double.
+    template <class T>    //!< \tparam T Any type convertible to double.
     std::pair<unc, unc> operator()(T a)
     {  //!< Convert a pair of X and Y uncertain type values to a pair of unc.
         return std::pair<unc, unc>(i++, (unc)a); //! \return pair of unc.
@@ -109,19 +109,22 @@ class unc_1d_convert
 { /*! \class boost::svg::detail::unc_1d_convert
       \brief This functor allows any 1D data convertible to unc (uncertain doubles) to be plotted.
       \details Defaults provided by the unc class constructor ensure that
-      uncertainty, degrees of freedom information, and type are set too.
+      uncertainty, degrees of freedom information, and type are suitably set too.
 */
 public:
     typedef unc result_type; //!< result type is an uncertain floating-point type.
 
+    //! \tparam T  Any type convertible to double.
     template <class T>
     unc operator()(T val) const /*!< Convert to uncertain type, providing defaults for uncertainty,
-    degrees of freedom information, and type meaning undefined.
-    \return uncertain.*/
+    degrees of freedom information, and type (meaning undefined).
+    \return value including uncertainty information.
+    */
     {
       return (unc)val; //! \return uncertain type (uncertainty, degrees of freedom information, and type meaning undefined).
       // warning C4244: 'argument' : conversion from 'long double' to 'double', possible loss of data.
-      // because unc only holds double precision.  Suppressed by pragma for MSVC above. Need similar for other compilers.
+      // because unc only holds values to double precision. 
+      // Suppressed by pragma for MSVC above. Need similar for other compilers.
     }
 }; // class default_1d_convert
 

@@ -793,25 +793,25 @@ my_plot.background_color(ghostwhite) // Whole image.
         // Check if the axes will intersect.
         // X axis position is determined by the range of Y min and max label values.
         x_axis_position_ = x_intersects_y;  // Assume X-axis will intersect Y-axis (range of Y values includes zero).
-        if (y_axis_.min_ > std::numeric_limits<double>::min()) // All Y values definitely > zero.
+        if (y_axis_.min_ > (std::numeric_limits<double>::min)()) // All Y values definitely > zero.
         { // y_min_ > 0, so X-axis will not intersect Y-axis, so put X axis line on bottom plot window.
           x_axis_position_ = bottom; // X-axis to bottom.
           x_ticks_.ticks_on_window_or_on_axis_ = -1; //  X-axis ticks to bottom of plot window.
         }
-        else if(y_axis_.max_ < -std::numeric_limits<double>::min())  // all Y values definitely < zero.
+        else if(y_axis_.max_ < -(std::numeric_limits<double>::min)())  // all Y values definitely < zero.
         { // // y_max_ < 0, so X-axis will not intersect Y-axis, so put X axis line on top plot window.
           x_axis_position_ = top; // X-axis to top of plot window.
           x_ticks_.ticks_on_window_or_on_axis_ = +1; // X-axis ticks to top of plot window.
         }
         // Y axis position is determined by the range of X values.
         y_axis_position_ = y_intersects_x;  // Assume Y-axis will intersect X-axis (X range includes zero).
-        if (x_axis_.min_ > std::numeric_limits<double>::min()) // X values all definitely > zero.
+        if (x_axis_.min_ > (std::numeric_limits<double>::min)()) // X values all definitely > zero.
         { // Y-axis > 0, so will not intersect X-axis.
           y_axis_position_ = left; // Y-axis free to left of end of X-axis.
            // Need to put the labels on the plot window instead of the X-axis.
          y_ticks_.ticks_on_window_or_on_axis_ = -1; // Y axis ticks to left of window (because floating off end of X-axis).
         }
-        else if (x_axis_.max_ < -std::numeric_limits<double>::min()) // X all definitely < zero.
+        else if (x_axis_.max_ < -(std::numeric_limits<double>::min)()) // X all definitely < zero.
         { // Y-axis < 0, so will not intersect X-axis.
           y_axis_position_ = right; // Y-axis to right of plot window.
           y_ticks_.ticks_on_window_or_on_axis_ = +1; // Y-axis ticks to right of plot window.
@@ -2822,20 +2822,20 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
 
       svg_2d_plot& svg_2d_plot::x_ticks_on_window_or_axis(int side)
       { // Set if ticks on the plot window or on the X axis.
-        // \param side -1 ticks downward.
-        // \param side 0 no ticks.
-        // \param side +1 ticks upward.
+        //! \param side -1 ticks downward.
+        //! \param side 0 no ticks.
+        //! \param side +1 ticks upward.
         x_ticks_.ticks_on_window_or_on_axis_ = side;
         return *this; //! \return reference to svg_2d_plot to make chainable.
       }
 
       int svg_2d_plot::x_ticks_on_window_or_axis()
-      { // \return if ticks on the plot window or on the X axis.
+      { //! \return if ticks on the plot window or on the X axis.
         return x_ticks_.ticks_on_window_or_on_axis_;
       }
 
       svg_2d_plot& svg_2d_plot::x_major_labels_side(int side)
-      { /* Side for major ticks label values:
+      { /*! Side for major ticks label values:
          \param side -1 labels downward.
          \param side 0 no labels.
          \param side +1 labels upward.
@@ -2845,7 +2845,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
       }
 
       int svg_2d_plot::x_major_labels_side()
-      { // \return side for label values for major ticks.
+      { //! \return side for label values for major ticks.
         return x_ticks_.major_value_labels_side_;
       }
 

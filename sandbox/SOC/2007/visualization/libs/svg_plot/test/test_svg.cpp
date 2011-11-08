@@ -24,7 +24,7 @@
 
 #define BOOST_TEST_MAIN
 // NB define BOOST_TEST_MAIN must come BEFORE this include.
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include <boost/svg_plot/svg.hpp>
   using boost::svg::svg;

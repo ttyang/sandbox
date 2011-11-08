@@ -201,7 +201,7 @@ for full source code.
 
 [h4 X-Axis Tick value labels precision, iosflags, font family and size]
 
-[import ..\example\demo_1d_tick_values.cpp]
+[import ../example/demo_1d_tick_values.cpp]
 
 [demo_1d_tick_values_1]
 [demo_1d_tick_values_2]
@@ -228,7 +228,7 @@ This will produce the following plot image:
 
 [$images/2d_y_grid.svg]
 
-The source of this examples is at [@..\..\example\2d_y_grid.cpp]
+The source of this examples is at [@../../example\2d_y_grid.cpp]
 
 Similarly you can have horizontal and/or vertical lines:
 
@@ -259,7 +259,7 @@ This produces the following images:
 [$images/2d_area_fill_1.svg]
 [$images/2d_area_fill_2.svg]
 
-from source at [@..\..\example\2d_area_fill.cpp]
+from source at [@../../example\2d_area_fill.cpp]
 
 [h4 Curve Interpolation]
 
@@ -288,7 +288,7 @@ but will increase svg file sizes.]
 
 [h4 Showing 2d Data Values Examples]
 
-[import ..\example\demo_2d_values.cpp]
+[import ../example/demo_2d_values.cpp]
 
 [demo_2d_values_1]
 [demo_2d_values_2]
@@ -303,7 +303,7 @@ And the plot:
 Some values are 'at limit' - infinite, NotANumber (NaN) or near the maximum possible for the floating-point type.
 These values are displayed differently (and not used for autoscaling).
 
-[import ..\example\demo_2d_limits.cpp]
+[import ../example/demo_2d_limits.cpp]
 
 [demo_2d_limits_1]
 [demo_2d_limits_2]
@@ -320,7 +320,7 @@ And the plot:
 
 [h4 Autoscale 2D Examples]
 
-[import ..\example\auto_2d_plot.cpp]
+[import ../example/auto_2d_plot.cpp]
 
 [auto_2d_plot_1]
 [auto_2d_plot_2]
@@ -335,7 +335,7 @@ The plot is:
 [section:demo_2d_uncertainty Demonstration of using 2D data that includes information about its uncertainty]
  [/Caution XML doesn't like 8-bit codepage +- symbol so don't use in .?pp or in output or .qbk, Only Unicode is OK.]
 
-[import ..\example\demo_2d_uncertainty.cpp]
+[import ../example/demo_2d_uncertainty.cpp]
 
 [demo_2d_uncertainty_1]
 [demo_2d_uncertainty_2]
@@ -352,7 +352,7 @@ for full source code and sample output.
 
 [section:fit_lines Demonstration of adding lines and curves, typically a least squares fit]
 
-[import ..\example\demo_2d_lines.cpp]
+[import ../example/demo_2d_lines.cpp]
 [demo_2d_lines_1]
 [demo_2d_lines_2]
 
