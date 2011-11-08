@@ -1,4 +1,4 @@
-// Boost.Polygon library detail/voronoi_calc_kernel.hpp header file
+// Boost.Polygon library detail/voronoi_calc_utils.hpp header file
 
 //          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,26 +7,26 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_CALC_KERNEL
-#define BOOST_POLYGON_VORONOI_CALC_KERNEL
+#ifndef BOOST_POLYGON_VORONOI_CALC_UTILS
+#define BOOST_POLYGON_VORONOI_CALC_UTILS
 
 #pragma warning(disable:4800)
 #include <gmpxx.h>
 
 #include "mpt_wrapper.hpp"
-#include "voronoi_fpt_kernel.hpp"
+#include "voronoi_robust_fpt.hpp"
 
 namespace boost {
 namespace polygon {
 namespace detail {
 
 template <typename T>
-class voronoi_calc_kernel;
+class voronoi_calc_utils;
 
-// Predicates kernel. Operates with the types that could
+// Predicate utils. Operates with the types that could
 // be converted to the int32 without precision loss.
 template <>
-class voronoi_calc_kernel<int> {
+class voronoi_calc_utils<int> {
 public:
     typedef double fpt_type;
     typedef unsigned long long ulong_long_type;
@@ -1394,10 +1394,10 @@ private:
     }
 };
 
-const voronoi_calc_kernel<int>::fpt_type voronoi_calc_kernel<int>::fULPS =
-    voronoi_calc_kernel<int>::ULPS;
-const voronoi_calc_kernel<int>::fpt_type voronoi_calc_kernel<int>::fULPSx2 =
-    voronoi_calc_kernel<int>::ULPSx2;
+const voronoi_calc_utils<int>::fpt_type voronoi_calc_utils<int>::fULPS =
+    voronoi_calc_utils<int>::ULPS;
+const voronoi_calc_utils<int>::fpt_type voronoi_calc_utils<int>::fULPSx2 =
+    voronoi_calc_utils<int>::ULPSx2;
 
 } // detail
 } // polygon

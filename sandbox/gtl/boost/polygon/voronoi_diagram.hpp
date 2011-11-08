@@ -16,7 +16,7 @@
 #include <vector>
 
 #include "polygon.hpp"
-#include "detail/voronoi_fpt_kernel.hpp"
+#include "detail/voronoi_robust_fpt.hpp"
 
 namespace boost {
 namespace polygon {

@@ -1,4 +1,4 @@
-// Boost.Polygon library voronoi_fpt_kernel_test.cpp file
+// Boost.Polygon library voronoi_robust_fpt_test.cpp file
 
 //          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
@@ -11,13 +11,13 @@
 #include <ctime>
 #include <vector>
 
-#define BOOST_TEST_MODULE voronoi_fpt_kernel_test
+#define BOOST_TEST_MODULE voronoi_robust_fpt_test
 #include <boost/mpl/list.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "boost/polygon/detail/voronoi_fpt_kernel.hpp"
-#include "boost/polygon/detail/voronoi_calc_kernel.hpp"
+#include "boost/polygon/detail/voronoi_robust_fpt.hpp"
+#include "boost/polygon/detail/voronoi_calc_utils.hpp"
 using namespace boost::polygon::detail;
 
 typedef robust_fpt<double> rfpt_type;

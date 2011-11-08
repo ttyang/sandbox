@@ -1,4 +1,4 @@
-// Boost.Polygon library detail/voronoi_fpt_kernel.hpp header file
+// Boost.Polygon library detail/voronoi_robust_fpt.hpp header file
 
 //          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
@@ -7,8 +7,8 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_FPT_KERNEL
-#define BOOST_POLYGON_VORONOI_FPT_KERNEL
+#ifndef BOOST_POLYGON_VORONOI_ROBUST_FPT
+#define BOOST_POLYGON_VORONOI_ROBUST_FPT
 
 // Geometry predicates with floating-point variables usually require
 // high-precision predicates to retrieve the correct result.
@@ -25,8 +25,8 @@
 // 1 EPS <= 1 ULP <= 2 EPS (1), 0.5 ULP <= 1 EPS <= 1 ULP (2).
 // ULPs are good for measuring rounding errors and comparing values.
 // Relative erros are good for computation of general relative
-// errors of formulas or expressions. So to calculate epsilon
-// intervals within which epsilon robust predicates have undefined result
+// error of formulas or expressions. So to calculate epsilon
+// interval within which epsilon robust predicates have undefined result
 // next schema is used:
 //     1) Compute rounding errors of initial variables using ULPs;
 //     2) Transform ULPs to epsilons using upper bound of the (1);
@@ -45,7 +45,7 @@
 // 0.5 ULP or atmost 1 epsilon. As you might see from the above formulas
 // substraction relative error may be extremely large, that's why
 // epsilon robust comparator class is used to store floating point values
-// and avoid substraction.
+// and compute substraction as the final step of the evaluation.
 // For further information about relative errors and ULPs try this link:
 // http://docs.sun.com/source/806-3568/ncg_goldberg.html
 
@@ -139,8 +139,8 @@ namespace detail {
         // Rounding error is at most 1 EPS.
         static const relative_error_type ROUNDING_ERROR;
 
-        robust_fpt() : fpv_(0.0), re_(0) {}
-        explicit robust_fpt(int fpv) : fpv_(fpv), re_(0) {}
+        robust_fpt() : fpv_(0.0), re_(0.0) {}
+        explicit robust_fpt(int fpv) : fpv_(fpv), re_(0.0) {}
         explicit robust_fpt(floating_point_type fpv,
                             bool rounded = true) : fpv_(fpv) {
             re_ = rounded ? ROUNDING_ERROR : 0;
@@ -313,6 +313,7 @@ namespace detail {
         robust_fpt fabs() const {
             return (fpv_ >= 0) ? *this : -(*this);
         }
+
     private:
         floating_point_type fpv_;
         relative_error_type re_;
@@ -432,6 +433,7 @@ namespace detail {
             }
             return *this;
         }
+
     private:
         T positive_sum_;
         T negative_sum_;
@@ -602,6 +604,7 @@ namespace detail {
             b[3] = eval3(dA, dB);
             return b[3] /= a[3];
         }
+
     private:
         mpf a[4];
         mpf b[4];

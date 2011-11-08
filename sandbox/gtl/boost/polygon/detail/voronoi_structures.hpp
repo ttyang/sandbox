@@ -54,6 +54,7 @@ namespace detail {
             y_ = y;
             return *this;
         }
+
     private:
         coordinate_type x_;
         coordinate_type y_;
@@ -199,6 +200,7 @@ namespace detail {
         bool is_inverse() const {
             return is_inverse_;
         }
+
     private:
         point_type point0_;
         point_type point1_;
@@ -215,7 +217,7 @@ namespace detail {
     // Variables: center_x_ - numerator of the center's x-coordinate.
     //            center_y_ - numerator of the center's y-coordinate.
     //            lower_x_ - numerator of the bottom point's x-coordinate.
-    //            is_active_ - flag whether circle event is still active.
+    //            is_active_ - states whether circle event is still active.
     // NOTE: lower_y coordinate is always equal to center_y.
     template <typename T>
     class circle_event {
@@ -271,6 +273,7 @@ namespace detail {
             is_active_ = false;
             return *this;
         }
+
     private:
         coordinate_type center_x_;
         coordinate_type center_y_;
@@ -309,15 +312,16 @@ namespace detail {
             c_.push(c_list_.begin());
             return c_list_.front();
         }
+
     private:
         typedef typename std::list<T>::iterator list_iterator_type;
 
         struct comparison {
-            Predicate cmp_;
             bool operator() (const list_iterator_type &it1,
                              const list_iterator_type &it2) const {
                 return cmp_(*it1, *it2);
             }
+            Predicate cmp_;
         };
 
         std::priority_queue< list_iterator_type,
@@ -338,7 +342,7 @@ namespace detail {
     // In the general case two sites will create two opposite bisectors. That's
     // why the order of the sites is important to define the unique bisector.
     // The one site is considered to be newer than the other one if it was
-    // processed by the algorithm later (e.g. has greater index).
+    // processed by the algorithm later (has greater index).
     template <typename Site>
     class beach_line_node_key {
     public:
@@ -382,6 +386,7 @@ namespace detail {
             right_site_ = site;
             return *this;
         }
+
     private:
         site_type left_site_;
         site_type right_site_;
@@ -415,6 +420,7 @@ namespace detail {
             edge_ = new_edge;
             return *this;
         }
+
     private:
         Circle *circle_event_;
         Edge *edge_;

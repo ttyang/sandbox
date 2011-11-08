@@ -20,8 +20,7 @@
 
 #include "polygon.hpp"
 
-#include "detail/voronoi_calc_kernel.hpp"
-#include "detail/voronoi_fpt_kernel.hpp"
+#include "detail/voronoi_calc_utils.hpp"
 #include "detail/voronoi_structures.hpp"
 
 namespace boost {
@@ -155,26 +154,26 @@ namespace polygon {
             site_events_.clear();
         }
     private:
-        typedef detail::voronoi_calc_kernel<T> CKT;
-        typedef typename CKT::fpt_type coordinate_type;
+        typedef detail::voronoi_calc_utils<T> VCU;
+        typedef typename VCU::fpt_type coordinate_type;
 
         typedef detail::point_2d<coordinate_type> point_type;
         typedef detail::site_event<coordinate_type> site_event_type;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
         typedef detail::circle_event<coordinate_type> circle_event_type;
-        typedef typename CKT::template point_comparison_predicate<point_type>
+        typedef typename VCU::template point_comparison_predicate<point_type>
             point_comparison_predicate;
-        typedef typename CKT::
+        typedef typename VCU::
             template event_comparison_predicate<site_event_type, circle_event_type>
             event_comparison_predicate;
-        typedef typename CKT::
+        typedef typename VCU::
             template circle_formation_predicate<site_event_type, circle_event_type>
             circle_formation_predicate_type;
         typedef typename output_type::voronoi_edge_type edge_type;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<edge_type, circle_event_type> value_type;
-        typedef typename CKT::
+        typedef typename VCU::
             template node_comparison_predicate<key_type> node_comparer_type;
         typedef std::map< key_type, value_type, node_comparer_type > beach_line_type;
         typedef typename beach_line_type::iterator beach_line_iterator;
@@ -220,9 +219,9 @@ namespace polygon {
 
                 // Count the number of the sites to init the beach line.
                 while(site_event_iterator_ != site_events_.end() &&
-                      CKT::is_vertical(site_event_iterator_->point0(),
+                      VCU::is_vertical(site_event_iterator_->point0(),
                                        site_events_.begin()->point0()) &&
-                      CKT::is_vertical(*site_event_iterator_)) {
+                      VCU::is_vertical(*site_event_iterator_)) {
                     ++site_event_iterator_;
                     ++skip;
                 }

@@ -1,4 +1,4 @@
-// Boost.Polygon library voronoi_calc_kernel_test.cpp file
+// Boost.Polygon library voronoi_calc_utils_test.cpp file
 
 //          Copyright Andrii Sydorchuk 2010-2011.
 // Distributed under the Boost Software License, Version 1.0.
@@ -9,40 +9,40 @@
 
 #include <map>
 
-#define BOOST_TEST_MODULE voronoi_calc_kernel_test
+#define BOOST_TEST_MODULE voronoi_calc_utils_test
 #include <boost/test/test_case_template.hpp>
 
 #include "boost/polygon/detail/voronoi_structures.hpp"
-#include "boost/polygon/detail/voronoi_calc_kernel.hpp"
+#include "boost/polygon/detail/voronoi_calc_utils.hpp"
 using namespace boost::polygon::detail;
 
-typedef voronoi_calc_kernel<int> VCK;
+typedef voronoi_calc_utils<int> VCU;
 typedef point_2d<int> point_type;
 typedef site_event<int> site_type;
 typedef circle_event<double> circle_type;
-VCK::event_comparison_predicate<site_type, circle_type> event_comparison;
+VCU::event_comparison_predicate<site_type, circle_type> event_comparison;
 
 typedef beach_line_node_key<site_type> key_type;
-typedef VCK::distance_predicate<site_type> distance_predicate_type;
-typedef VCK::node_comparison_predicate<key_type> node_comparison_type;
+typedef VCU::distance_predicate<site_type> distance_predicate_type;
+typedef VCU::node_comparison_predicate<key_type> node_comparison_type;
 typedef std::map<key_type, int, node_comparison_type> beach_line_type;
 typedef beach_line_type::iterator bieach_line_iterator;
 distance_predicate_type distance_predicate;
 node_comparison_type node_comparison;
 
-typedef VCK::circle_existence_predicate<site_type> CEP_type;
-typedef VCK::gmp_circle_formation_functor<site_type, circle_type> GMP_CFF_type;
-typedef VCK::lazy_circle_formation_functor<site_type, circle_type> lazy_CFF_type;
-VCK::circle_formation_predicate<site_type, circle_type, CEP_type, GMP_CFF_type> gmp_predicate;
-VCK::circle_formation_predicate<site_type, circle_type, CEP_type, lazy_CFF_type> lazy_predicate;
+typedef VCU::circle_existence_predicate<site_type> CEP_type;
+typedef VCU::gmp_circle_formation_functor<site_type, circle_type> GMP_CFF_type;
+typedef VCU::lazy_circle_formation_functor<site_type, circle_type> lazy_CFF_type;
+VCU::circle_formation_predicate<site_type, circle_type, CEP_type, GMP_CFF_type> gmp_predicate;
+VCU::circle_formation_predicate<site_type, circle_type, CEP_type, lazy_CFF_type> lazy_predicate;
 
 #define CHECK_ORIENTATION(P1, P2, P3, R1, R2) \
-    BOOST_CHECK_EQUAL(VCK::get_orientation(P1, P2, P3) == R1, true); \
-    BOOST_CHECK_EQUAL(VCK::get_orientation(P1, P3, P2) == R2, true); \
-    BOOST_CHECK_EQUAL(VCK::get_orientation(P2, P1, P3) == R2, true); \
-    BOOST_CHECK_EQUAL(VCK::get_orientation(P2, P3, P1) == R1, true); \
-    BOOST_CHECK_EQUAL(VCK::get_orientation(P3, P1, P2) == R1, true); \
-    BOOST_CHECK_EQUAL(VCK::get_orientation(P3, P2, P1) == R2, true)
+    BOOST_CHECK_EQUAL(VCU::get_orientation(P1, P2, P3) == R1, true); \
+    BOOST_CHECK_EQUAL(VCU::get_orientation(P1, P3, P2) == R2, true); \
+    BOOST_CHECK_EQUAL(VCU::get_orientation(P2, P1, P3) == R2, true); \
+    BOOST_CHECK_EQUAL(VCU::get_orientation(P2, P3, P1) == R1, true); \
+    BOOST_CHECK_EQUAL(VCU::get_orientation(P3, P1, P2) == R1, true); \
+    BOOST_CHECK_EQUAL(VCU::get_orientation(P3, P2, P1) == R2, true)
 
 #define CHECK_EVENT_COMPARISON(A, B, R1, R2) \
     BOOST_CHECK_EQUAL(event_comparison(A, B), R1); \
@@ -81,9 +81,9 @@ BOOST_AUTO_TEST_CASE(orientation_test) {
     point_type point3(max_int, max_int);
     point_type point4(min_int, max_int);
     point_type point5(max_int-1, max_int);
-    CHECK_ORIENTATION(point1, point2, point3, VCK::COLLINEAR, VCK::COLLINEAR);
-    CHECK_ORIENTATION(point1, point4, point3, VCK::RIGHT, VCK::LEFT);
-    CHECK_ORIENTATION(point1, point5, point3, VCK::RIGHT, VCK::LEFT);
+    CHECK_ORIENTATION(point1, point2, point3, VCU::COLLINEAR, VCU::COLLINEAR);
+    CHECK_ORIENTATION(point1, point4, point3, VCU::RIGHT, VCU::LEFT);
+    CHECK_ORIENTATION(point1, point5, point3, VCU::RIGHT, VCU::LEFT);
 }
 
 BOOST_AUTO_TEST_CASE(event_comparison_test1) {
