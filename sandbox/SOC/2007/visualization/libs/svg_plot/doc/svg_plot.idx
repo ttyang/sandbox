@@ -24,6 +24,8 @@ grid  \<grid\w*\>
 quartile \<quartile\w*\>
 histogram
 intersect <\w*\intersect\w*\>
+Inkscape
+Inkview
 ioflags
 origin
 outlier

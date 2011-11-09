@@ -45,9 +45,9 @@ efficient if lots of images are being produced. This hasn't been found to be a p
 for example, label axes with names of months (Jan, Feb, Mar...)
 instead of integer representations of months (1, 2, 3...).
 
-*Logarithmic Axes*.  This does not look simple.  Meanwhile you can take the log of the data.
+* [*Logarithmic Axes].  This does not look simple.  Meanwhile you can take the log of the data.
 
-* Allow an *external stylesheet* to be loaded to style the graph. External
+* Allow an [*External stylesheet] to be loaded to style the graph. External
 stylesheets will allow a standard and easy way to style the document
 so that users don't have to come up with their own home-grown solutions.
 This was sketched out, but seemed much more complicated now that very may more
@@ -57,7 +57,7 @@ options to control features have been added.
 [endsect] [/section:todo To Do]
 
 [/ todo.qbk
-  Copyright 2007, 2008, 2009 Jake Voytko and Paul A. Bristow.
+  Copyright 2007, 2008, 2009, 2011 Jake Voytko and Paul A. Bristow.
   Distributed under the Boost Software License, Version 1.0.
   (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).

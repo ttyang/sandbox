@@ -1,0 +1,7 @@
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:283: warning: member `detail::axis_plot_frame<svg_1d_plot>' of class `svg_1d_plot' cannot be found
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:831: warning: Member plot(const T &container, const std::string &title="") (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:833: warning: Member plot(const T &begin, const T &end, const std::string &title="") (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:835: warning: Member plot(const T &begin, const T &end, const std::string &title="", U functor=double_1d_convert) (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:837: warning: Member plot(const T &container, const std::string &title="", U functor=double_1d_convert) (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:826: warning: Member write(const std::string &file) (function) of class boost::svg::svg_1d_plot is not documented.
+I:/boost-sandbox/SOC/2007/visualization/boost/svg_plot/svg_1d_plot_dud.hpp:827: warning: Member write(std::ostream &s_out) (function) of class boost::svg::svg_1d_plot is not documented.
