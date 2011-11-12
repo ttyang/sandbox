@@ -53,6 +53,10 @@ index_stack_length_stride_crtp_types
     length_stride_t
     ;
         typedef
+      typename length_stride_t::length_t
+    length_t
+    ;
+        typedef
       typename length_strides_offset_t::length_strides_t
     length_strides_t
     ;
@@ -170,6 +174,18 @@ index_stack_length_stride_crtp_types
         {
             return ref<IBV>();
         }
+        
+          std::ostream&
+        print
+          ( std::ostream& sout
+          )const
+        {
+            sout<<"{ lower="<<get<index_bound_lower>();
+            sout<<", upper="<<get<index_bound_upper>();
+            sout<<", value="<<get<index_value>();
+            sout<<"}";
+            return sout;
+        }  
     };
     
       template
@@ -249,6 +265,11 @@ index_stack_length_stride_crtp_types
             index_t index_upper=bound<index_bound_upper>();
             index_t index_lower=bound<index_bound_lower>();
             return index_upper-index_lower+1;
+        }
+          length_t
+        length_outer()const
+        {
+            return my_ls.length();
         }
     };
     
@@ -373,7 +394,23 @@ index_stack_length_stride_crtp_types
               , a_offset
               );
         }
+          std::ostream&
+        print
+          ( std::ostream& sout
+          )const
+        {
+            axis_t const n_axis=rank();
+            sout<<"{ ";
+            for(axis_t i_axis=0; i_axis<n_axis; ++i_axis)
+            {
+                if(0<i_axis)sout<<", ";
+                my_oib[i_axis].print(sout);
+            }
+            sout<<"}";
+            return sout;
+        }
     };
+    
 };
 
 enum inc_dec_enum
@@ -615,6 +652,10 @@ indices_space
       typename types_t::index_t
     index_t
     ;
+        typedef
+      typename types_t::length_t
+    length_t
+    ;
     indices_space()
     : my_space(this->ctor_space())
     {
@@ -642,7 +683,7 @@ indices_space
         index_ref=a_index;
     }
 
-      void
+      derived_t const&
     axis_offsets_put
       ( axis_t a_axis
       , index_t a_offset_lower=0
@@ -660,7 +701,7 @@ indices_space
         auto l_new=ibs.length_val();
         auto index_lower=ibs.template bound<index_bound_lower>();
         axis_index_put(a_axis,index_lower);
-        if(l_old==l_new)return;
+        if(l_old==l_new)return der;
         if(my_space==0)
         {
             my_space=this->ctor_space();
@@ -670,16 +711,18 @@ indices_space
             my_space/=l_old;
             my_space*=l_new;
         }
+        return der;
     }
 
-      void 
+      derived_t const&
     axes_offsets_put
       ( index_t offset_lower=0
       , index_t offset_upper=0
       )
     {//call axis_offset_put for each axis.
+        derived_t&der=derived();
           axis_t const 
-        n_axis=derived().rank();
+        n_axis=der.rank();
         for
           ( axis_t i_axis=0
           ; i_axis<n_axis
@@ -688,12 +731,40 @@ indices_space
         {
             axis_offsets_put( i_axis, offset_lower, offset_upper);
         }
+        return der;
     }
       
       derived_t&
     derived()
     {
         return *static_cast<derived_t*>(this);
+    }
+      derived_t const&
+    derived()const
+    {
+        return static_cast<derived_t const&>(*this);
+    }
+      length_t
+    space_outer()const
+    {
+            typedef
+          typename derived_t::axis_t
+        axis_t;
+        derived_t const&der=derived();
+        length_t s=1;
+        axis_t const rank=der.rank();
+        for
+          ( axis_t axis=0
+          ; axis<rank
+          ; ++axis
+          )
+        {
+            auto ibs=der[axis];
+            length_t l=ibs.length_outer();
+            if(l<=0)return 0;
+            s*=l;
+        }
+        return s;
     }
  private:
       stride_t
@@ -823,11 +894,13 @@ operator<<
   , boost::array_stepper::index_stack_length_stride_crtp_indices<Stride>const& lsos_v
   )
   {
-      sout<<"{ offset="<<std::setw(2)<<lsos_v.offset_space_val();
-      sout<<", rotation="<<lsos_v.rotation();
-      sout<<", rotated indices=";
+      sout<<"\n{ offset="<<std::setw(2)<<lsos_v.offset_space_val();
+      sout<<"\n, space="<<std::setw(2)<<lsos_v.space();
+      sout<<"\n, rotation="<<lsos_v.rotation();
+      sout<<"\n, luvs="; lsos_v.print(sout);
+      sout<<"\n, rotated indices=";
       sout<<lsos_v.indices_rotated();
-      sout<<"}";
+      sout<<"\n}";
       return sout;
   }
 
