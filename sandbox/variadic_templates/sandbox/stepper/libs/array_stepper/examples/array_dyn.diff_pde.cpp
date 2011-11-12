@@ -389,9 +389,11 @@ operator<<
           if(0<i)sout<<", ";
           sout<<a[i];
       }
-      sout<<"} ";  
+      sout<<"} ";
+    #else
+      sout<<" upper="<<(a.lower()+(a.size()-1)*a.del());
     #endif
-      sout<<"}";
+      sout<<"} ";  
       return sout;
   }
   
@@ -439,9 +441,9 @@ struct grid_axes_diff
                   del_s_min=my_axes[i].del();
           } 
             value_t 
-          del_t=(del_s_min*del_s_min)/(4.0*diffusivity)
-            //time increment, from page 6(numbered as 52)
-            //of [Hor05]
+          del_t_stable=(del_s_min*del_s_min)/(4.0*diffusivity)
+            //time increment to achieve stability, 
+            //from page 6(numbered as 52) of [Hor05]
             //*except* min del_s is chosen instead
             //of a single space delta since there's a 
             //n-1 space deltas.
@@ -452,20 +454,23 @@ struct grid_axes_diff
             //on previous page and is probably more stringent
             //than it needs to be for some other FDM schems.
             ;
-          del_t/=10.0
+          del_t_stable/=10.0
             //reduce for extra insurance.
             ;
-          if(a_iter[0].size==0) 
+            value_t
+          del_t_inp=a_iter[0].upper
+            ;
+          if(del_t_inp<=std::numeric_limits<value_t>::epsilon()) 
           {
-              value_t const diff_t=a_iter[0].upper-a_iter[0].lower;
-              my_axes[0].size_put(diff_t/del_t);
+              del_t_inp=del_t_stable;
           }
           else
           {
-              my_axes[0].size_put(a_iter[0].size);
+              std::cout<<"del_t_stable="<<del_t_stable<<"\n";
           }
+          my_axes[0].size_put(a_iter[0].size);
           my_axes[0].lower_put(a_iter[0].lower);
-          my_axes[0].del_put(del_t);
+          my_axes[0].del_put(del_t_inp);
       }
  public:
         typedef
@@ -1362,7 +1367,7 @@ struct diff_alt_dir_explicit
 #endif
 #define DIFF_ALT_DIR_IMPLICIT_INNOCENT
 #ifdef DIFF_ALT_DIR_IMPLICIT_INNOCENT
-#define TRACE_ALT_DIR_IMPLICIT_INNOCENT 1
+#define TRACE_ALT_DIR_IMPLICIT_INNOCENT 0
   template
   < typename FunctionsDerived
   >
@@ -1734,7 +1739,10 @@ struct diff_alt_dir_implicit_innocent
                         }//for(s_node)
                     }//interior_rhs
                   #if TRACE_FRACTIONAL_STEPS
-                    std::cout<<"rhs(after equations(19.41))=\n"<<rhs;
+                    std::cout
+                      <<":space_istk_rotated="<<space_istk_rotated
+                      <<":rhs(after equations(19.41))=\n"<<rhs
+                      ;
                   #endif
                     {//solve tridiagonal system.
                         space_istk_rotated.axis_offsets_put(s_rank-1,0,0)
@@ -2088,7 +2096,7 @@ solve_problem_method
 
 #include <fstream>
 
-int main()
+int main( int argc, char* argv[])
 {  
     boost::iostreams::indent_scoped_ostreambuf<char> indent_outbuf(std::cout,2);
         typedef
@@ -2096,7 +2104,8 @@ int main()
     grid_bounds_t;
     
       char const*
-    axes_file_name="diff_pde.inp";    
+    axes_file_name=(2==argc)?argv[1]:"diff_pde.inp";  
+    std::cout<<":axes_file_name="<<axes_file_name<<".\n";  
       std::ifstream
     axes_file_strm(axes_file_name);
     if(!axes_file_strm)
