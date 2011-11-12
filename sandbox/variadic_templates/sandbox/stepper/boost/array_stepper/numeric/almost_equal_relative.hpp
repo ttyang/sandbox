@@ -18,7 +18,7 @@ namespace numeric
       almost_equal_relative
         ( Value value_a
         , Value value_b
-        , Value eps_factor=Value(2.25)
+        , Value eps_factor=Value(30.0)
         )
        /**@brief
         *  Are value_a and value_b almost equal?
@@ -27,9 +27,10 @@ namespace numeric
         //  http://www.cygnus-software.com/papers/comparingfloats/comparingfloats.htm
         //
         {
-            Value max_error=eps_factor*std::numeric_limits<Value>::epsilon();
-            Value abs_diff=std::abs(value_a - value_b);
-            bool abs_lt_max=abs_diff < max_error;
+            Value const eps_val=eps_factor*std::numeric_limits<Value>::epsilon();
+            Value const max_error=eps_factor*eps_val;
+            Value const abs_diff=std::abs(value_a - value_b);
+            bool const abs_lt_max=abs_diff < max_error;
             if (abs_lt_max)
                 return true;
             Value abs_a=std::abs(value_a);
@@ -44,6 +45,8 @@ namespace numeric
               <<"almost_equal_relative:"
               <<"\n:value_a="<<value_a
               <<"\n:value_b="<<value_b
+              <<"\n:eps_factor="<<eps_factor
+              <<"\n:eps_val="<<eps_val
               <<"\n:max_error="<<max_error
               <<"\n:abs_diff="<<abs_diff
               <<"\n:rel_error="<<rel_error
