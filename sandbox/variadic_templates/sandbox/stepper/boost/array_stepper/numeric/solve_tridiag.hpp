@@ -10,6 +10,7 @@
 #ifdef  SOLVE_TRIDIAG_VERIFY
 #include <boost/assert.hpp>
 #include <boost/array_stepper/numeric/almost_equal_relative.hpp>
+#include <boost/array_stepper/array_store_print.hpp>
 #endif
 
 namespace boost
@@ -249,7 +250,7 @@ solve_tridiag
       istk_t
         ;
       solve_tridiag
-        ( istk_t& a_istk
+        ( istk_t const& a_istk
         , tridiag_t& a_trid//the matrix
         , arr_data_iter_t a_r//rhs
         , arr_data_iter_t a_x//unknown
@@ -259,12 +260,13 @@ solve_tridiag
         , my_r(a_r)
         , my_x(a_x)
       #ifdef SOLVE_TRIDIAG_VERIFY
-        , o_r(my_istk.space())
+        , o_r( my_istk.space_outer())
         , o_trid(my_trid)
       #endif
         {
           #ifdef SOLVE_TRIDIAG_VERIFY
-            unsigned const n_node=o_r.size();
+          //Save the original rhs in o_r to verify solution later.
+            unsigned const n_node=my_istk.space();
             for
               ( unsigned i_node=0
               ; i_node<n_node
@@ -272,7 +274,7 @@ solve_tridiag
               )
             {
                 int offset_istk=my_istk.offset_space_val();
-                o_r[i_node]=my_r[offset_istk];
+                o_r[offset_istk]=my_r[offset_istk];
             }
           #endif
         }
@@ -443,7 +445,10 @@ solve_tridiag
          */
         {
               auto const
-            ibs=my_istk[my_istk.rank()-1]
+            axis_last=my_istk.rank()-1
+              ;
+              auto const
+            ibs=my_istk[axis_last]
               ;
               auto const
             stride_last=ibs.stride_val()
@@ -453,76 +458,77 @@ solve_tridiag
             n_last=ibs.length_val()
               //length of last axis
               ;
-              unsigned const 
-            n_node=my_istk.space()
-              //number of nodes in mesh.
-              ;
             --my_istk
+              //Assuming all indices are at min values,
               //put all indices at max values.
               ;
-              int 
-            offset_istk=my_istk.offset_space_val();
+            my_istk.axis_offsets_put
+              ( axis_last
+              , n_last-1
+              , 0
+              )
+              //Fix last index at it's max.
+              ;
           //#define TRACE_BACK_SUBSTITUTE
           #ifdef TRACE_BACK_SUBSTITUTE
             ::boost::trace_scope ts("back_substitute");
+            using ::operator<<;
             std::cout
-              <<":n_node="<<n_node
               <<":n_last="<<n_last
               <<":stride_last="<<stride_last
-              <<":rotation="<<my_istk.rotation()
+              <<"\n:my_istk="<<my_istk
               <<"\n"
               <<"{ "
               ;
           #endif
-            unsigned i_node;
+              unsigned const 
+            n_outer=my_istk.space();
             for
-              ( i_node=n_node
-              ; 0<i_node
-              ;
+              ( unsigned i_outer=0
+              ; i_outer<n_outer
+              ; ++i_outer
+                , --my_istk
               )
              /*MAINTENANCE_NOTE:2011-10-22:Larry Evans:
               *  I *think* there's no data dependence between
-              *  iterations of this i_node loop; hence, this loop
+              *  iterations of this i_outer loop; hence, this loop
               *  could be made parallel, somewhat like the MATLAB
               *  parfor loop:
               *    http: *www.mathworks.com/help/toolbox/distcomp/brb2x2l-1.html
               */
             {
                 int i_last=n_last-1;
-                my_x[offset_istk]=my_r[offset_istk]/my_trid.d(i_last);
+                auto offset_inner=my_istk.offset_space_val();
+                my_x[offset_inner]=my_r[offset_inner]/my_trid.d(i_last);
               #ifdef TRACE_BACK_SUBSTITUTE
                 using ::operator<<;
-                if(i_node<n_node)std::cout<<", ";
+                if(0<i_outer)std::cout<<", ";
                 std::cout<<indent_buf_in;
                 std::cout<<"{ ";
                 std::cout
-                  <<":x"<<my_istk.indices()
-                  <<"="<<my_x[offset_istk]
+                  <<":x"<<my_istk.indices_at_offset(offset_inner)
+                  <<"="<<my_x[offset_inner]
                   <<"\n"
                   ;
               #endif
                 for
                   ( --i_last
-                    , --my_istk
-                    , --i_node
-                    , offset_istk=my_istk.offset_space_val()
+                    , offset_inner-=stride_last
                   ; -1<i_last
                   ; --i_last
-                    , --my_istk
-                    , --i_node
-                    , offset_istk=my_istk.offset_space_val()
+                    , offset_inner-=stride_last
                   )
                 {
-                    my_x[offset_istk]=
-                      ( my_r[offset_istk]
-                      - my_trid.u(i_last)*my_x[offset_istk+stride_last]
+                    my_x[offset_inner]=
+                      ( my_r[offset_inner]
+                      - my_trid.u(i_last)*my_x[offset_inner+stride_last]
                       )
                       / my_trid.d(i_last)
                       ;
                   #ifdef TRACE_BACK_SUBSTITUTE
                     std::cout<<", ";
                     std::cout
-                      <<":x"<<my_istk.indices()<<"="<<my_x[offset_istk]
+                      <<":x"<<my_istk.indices_at_offset(offset_inner)<<"="<<my_x[offset_inner]
                       <<"\n"
                       ;
                   #endif
@@ -536,29 +542,47 @@ solve_tridiag
             std::cout<<"}\n";
           #endif
           #ifdef SOLVE_TRIDIAG_VERIFY
-            BOOST_ASSERT_MSG(0==i_node,"0!=i_node");
-            i_node=n_node;
             for
-              ( i_node=n_node
-              ; 0<i_node
-              ;
+              ( unsigned i_outer=0
+              ; i_outer<n_outer
+              ; ++i_outer
+                , --my_istk
               )
             {
                   int 
                 i_last=n_last-1;
+                auto offset_inner=my_istk.offset_space_val();
+                auto indices=my_istk.indices_at_offset(offset_inner);
                   value_t
-                rhs=o_r[i_node-1]
+                rhs=o_r[offset_inner]
                   ;
                   value_t
                 lhs
-                  = my_x[offset_istk-stride_last]*o_trid.l(i_last)
-                  + my_x[offset_istk            ]*o_trid.d(i_last)
+                  = my_x[offset_inner-stride_last]*o_trid.l(i_last)
+                  + my_x[offset_inner            ]*o_trid.d(i_last)
                   ;
+              #if 0
+                {
+                    istk_t istk_border(my_istk);
+                    istk_border.axes_offsets_put(0,0);
+                    array_iter_wrap<value_t> o_rw(o_r.begin(),istk_border);
+                    std::cout
+                      <<"**SOLVE_TRIDIAG_VERIFY(outer)**\n"
+                      <<":my_istk="<<my_istk<<"\n"
+                      <<":istk_border="<<istk_border<<"\n"
+                      <<":offset_inner="<<offset_inner
+                      <<":indices="<<indices
+                      <<"\n";
+                    std::cout<<":o_rw=\n"
+                      <<o_rw<<".\n";
+                }
+              #endif
                   bool
                 solved=almost_equal_relative(lhs,rhs)
                   ;
               #define TRACE_TRIDIAG_VERIFY 0
               #define TRACE_LONG_TRIDIAG_VERIFY 1
+              #if TRACE_TRIDIAG_VERIFY
                   auto
                 trace_verify=
                   [ &i_last
@@ -566,9 +590,8 @@ solve_tridiag
                 #if TRACE_LONG_TRIDIAG_VERIFY
                   , &my_x
                   , &o_trid
-                  , &offset_istk
+                  , &offset_inner
                   , &stride_last
-                  , &i_node
                   , &o_r
                   , &lhs
                   , &rhs
@@ -585,71 +608,70 @@ solve_tridiag
                             <<":i_last="<<i_last;
                         #if TRACE_LONG_TRIDIAG_VERIFY
                           std::cout
-                            <<":my_x["<<offset_istk-stride_last<<"]="<<my_x[offset_istk-stride_last]
+                            <<":my_x["<<offset_inner-stride_last<<"]="<<my_x[offset_inner-stride_last]
                             <<":l="<<o_trid.l(i_last)
-                            <<":my_x["<<offset_istk<<"]="<<my_x[offset_istk]
+                            <<":my_x["<<offset_inner<<"]="<<my_x[offset_inner]
                             <<":d="<<o_trid.d(i_last)
-                            <<":r["<<i_node-1<<"]="<<o_r[i_node-1]
+                            <<":r["<<offset_inner<<"]="<<o_r[offset_inner]
                             <<"\n:lhs="<<lhs
                             <<"\n:rhs="<<rhs
                             ;
-                          std::cout<<"\n:my_istk=";
-                          ::operator<<(std::cout,my_istk);
                         #endif
                           std::cout<<"\n"<<std::flush;
                       }
                   };
-              #if TRACE_TRIDIAG_VERIFY
-                std::cout<<":i_node="<<i_node<<":solved="<<solved<<"\n";
                 ::boost::indent_scope<> is();
                 trace_verify();
               #endif
                 BOOST_ASSERT_MSG(solved,"equation not solved");
                 for
                   ( --i_last
-                    , --my_istk
-                    , --i_node
-                    , offset_istk=my_istk.offset_space_val()
+                    , offset_inner-=stride_last
                   ; -1<i_last
                   ; --i_last
-                    , --my_istk
-                    , --i_node
-                    , offset_istk=my_istk.offset_space_val()
+                    , offset_inner-=stride_last
                   )
                 {
-                    rhs=o_r[i_node-1];
+                    rhs=o_r[offset_inner];
+                    indices=my_istk.indices_at_offset(offset_inner);
+                   #if 0
+                    {
+                        std::cout
+                          <<"**SOLVE_TRIDIAG_VERIFY(inner)**\n"
+                          <<":offset_inner="<<offset_inner
+                          <<":indices="<<indices
+                          <<"\n";
+                    }
+                  #endif
                     lhs
                       = 0.0
-                      + my_x[offset_istk            ]*o_trid.d(i_last)
-                      + my_x[offset_istk+stride_last]*o_trid.u(i_last)
+                      + my_x[offset_inner            ]*o_trid.d(i_last)
+                      + my_x[offset_inner+stride_last]*o_trid.u(i_last)
                       ;
                     if(0<i_last)
                     {
                         lhs
-                         +=my_x[offset_istk-stride_last]*o_trid.l(i_last)
+                         +=my_x[offset_inner-stride_last]*o_trid.l(i_last)
                           ;
                     }
                     solved=almost_equal_relative(lhs,rhs);
                   #if TRACE_TRIDIAG_VERIFY
                     ::boost::indent_scope<> is;
-                  #endif
                     trace_verify();
+                  #endif
                     BOOST_ASSERT_MSG(solved,"equation not solved");
                 }
             }
         #endif
-            ++my_istk
-              //restore all indices to min values.
-              ;
           #ifdef TRACE_BACK_SUBSTITUTE
             std::cout
-              <<":my_istk.offset_space_val()="<<my_istk.offset_space_val()
+              <<":my_istk="<<my_istk
               <<"\n";
           #endif
           #undef TRACE_BACK_SUBSTITUTE
         }
    private:
-      istk_t& my_istk;
+      istk_t my_istk;
       tridiag_t& my_trid;
       arr_data_iter_t my_r;
       arr_data_iter_t my_x;
