@@ -9,19 +9,19 @@
 #ifndef BOOST_CHRONO_DETAIL_TO_STRING_HPP
 #define BOOST_CHRONO_DETAIL_TO_STRING_HPP
 
-#include <boost/lexical_cast.hpp>
+#include <boost/chrono/io/utility/to_string.hpp>
 
-namespace boost
-{
-  namespace chrono
-  {
-    template <typename T>
-    std::string to_string(T const&v) {
-      return lexical_cast<std::string>(v);
-    }
-
-  } // chrono
-
-} // boost
+//namespace boost
+//{
+//  namespace chrono
+//  {
+//    template <typename T>
+//    std::string to_string(T const&v) {
+//      return lexical_cast<std::string>(v);
+//    }
+//
+//  } // chrono
+//
+//} // boost
 
 #endif  // header
