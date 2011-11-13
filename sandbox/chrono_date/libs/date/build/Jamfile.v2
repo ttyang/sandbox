@@ -21,7 +21,7 @@ project boost/chrono/date
 
         <define>BOOST_CHRONO_DONT_PROVIDE_DEPRECATED_IO_V1
         <define>BOOST_CHRONO_DONT_PROVIDE_HYBRID_ERROR_HANDLING
-        #<define>BOOST_CHRONO_HEADER_ONLY
+        <define>BOOST_CHRONO_HEADER_ONLY
 
         #<define>BOOST_COMMON_TYPE_USES_STATIC_ASSERT
         #<define>BOOST_RATIO_USES_STATIC_ASSERT
@@ -65,7 +65,7 @@ project boost/chrono/date
 
         <define>BOOST_CHRONO_DONT_PROVIDE_DEPRECATED_IO_V1
         <define>BOOST_CHRONO_DONT_PROVIDE_HYBRID_ERROR_HANDLING
-        #<define>BOOST_CHRONO_HEADER_ONLY
+        <define>BOOST_CHRONO_HEADER_ONLY
 
         <library>/boost/system//boost_system
         #<define>BOOST_SYSTEM_INLINED

@@ -15,7 +15,7 @@ project
 
         <define>BOOST_CHRONO_DONT_PROVIDE_DEPRECATED_IO_V1
         <define>BOOST_CHRONO_DONT_PROVIDE_HYBRID_ERROR_HANDLING
-        #<define>BOOST_CHRONO_HEADER_ONLY
+        <define>BOOST_CHRONO_HEADER_ONLY
 
         <target-os>freebsd:<linkflags>"-lrt" 
         <target-os>linux:<linkflags>"-lrt" 
