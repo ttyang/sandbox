@@ -28,8 +28,8 @@
       class mp_float_efx : public mp_float_base
       {
       public:
-        static const boost::int32_t mp_radix        = static_cast<boost::int32_t>(10);
         static const boost::int32_t mp_float_digits = mp_float_digits10;
+        static const boost::int32_t mp_radix        = static_cast<boost::int32_t>(10);
 
         static const boost::int64_t mp_float_max_exp   = static_cast<boost::int64_t>(+9223372036854775795LL);
         static const boost::int64_t mp_float_min_exp   = static_cast<boost::int64_t>(-9223372036854775795LL);

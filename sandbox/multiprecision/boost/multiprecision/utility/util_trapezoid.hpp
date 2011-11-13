@@ -61,7 +61,7 @@
               const T ratio = I0 / I;
               const T delta = ((ratio > one) ? (ratio - one) : (one - ratio));
 
-              if((k > static_cast<boost::int32_t>(2)) && delta < ranged_function_operation<T>::eps)
+              if((k > static_cast<boost::int32_t>(2)) && (delta < ranged_function_operation<T>::eps))
               {
                 function_operation<T>::op_ok = true;
                 break;
