@@ -8,6 +8,8 @@
 #include <boost/math/constants/info.hpp>
 #include <boost/math/concepts/real_concept.hpp>
 
+#include <boost/multiprecision/cpp_float.hpp>
+
 
 int main()
 {

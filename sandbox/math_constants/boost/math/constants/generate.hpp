@@ -16,6 +16,8 @@
 #include <boost/math/bindings/mpfr.hpp>
 #elif defined(USE_MPREAL)
 #include <boost/math/bindings/mpreal.hpp>
+#elif defined(USE_CPP_FLOAT)
+#include <boost/multiprecision/cpp_float.hpp>
 #else
 #include <boost/math/bindings/rr.hpp>
 #endif
@@ -26,6 +28,8 @@ namespace boost{ namespace math{ namespace constants{
 typedef mpfr_class generator_type;
 #elif defined(USE_MPREAL)
 typedef mpfr::mpreal generator_type;
+#elif defined(USE_CPP_FLOAT)
+typedef boost::multiprecision::mp_number<boost::multiprecision::cpp_float<500> > generator_type;
 #else
 typedef ntl::RR generator_type;
 #endif
@@ -36,13 +40,15 @@ inline void print_constant(const char* name, generator_type(*f)(const mpl::int_<
    mpfr_class::set_dprec(((200 + 1) * 1000L) / 301L);
 #elif defined(USE_MPREAL)
    mpfr::mpreal::set_default_prec(((200 + 1) * 1000L) / 301L);
+#elif defined(USE_CPP_FLOAT)
+   // Nothing to do, precision is already set.
 #else
    ntl::RR::SetPrecision(((200 + 1) * 1000L) / 301L);
    ntl::RR::SetOutputPrecision(102);
 #endif
    generator_type value = f(boost::mpl::int_<0>());
    std::stringstream os;
-   os << std::setprecision(102) << std::scientific;
+   os << std::setprecision(110) << std::scientific;
    os << value;
    std::string s = os.str();
    static const regex e("([+-]?\\d+(?:\\.\\d{0,36})?)(\\d*)(?:e([+-]?\\d+))?");

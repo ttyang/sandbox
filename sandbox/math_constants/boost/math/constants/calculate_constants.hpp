@@ -12,7 +12,54 @@ template <class T, int N>
 inline T calculate_pi(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 {
    BOOST_MATH_STD_USING
-   return 2 * acos(static_cast<T>(0));
+
+   return ldexp(acos(T(0)), 1);
+
+   /*
+   // Although this code works well, it's usually more accurate to just call acos
+   // and access the numner types own representation of PI which is usually calculated
+   // at slightly higher precision...
+
+   T result;
+   T a = 1;
+   T b;
+   T A(a);
+   T B = 0.5f;
+   T D = 0.25f;
+
+   T lim;
+   lim = boost::math::tools::epsilon<T>();
+
+   unsigned k = 1;
+
+   do
+   {
+      result = A + B;
+      result = ldexp(result, -2);
+      b = sqrt(B);
+      a += b;
+      a = ldexp(a, -1);
+      A = a * a;
+      B = A - result;
+      B = ldexp(B, 1);
+      result = A - B;
+      bool neg = boost::math::sign(result) < 0;
+      if(neg)
+         result = -result;
+      if(result <= lim)
+         break;
+      if(neg)
+         result = -result;
+      result = ldexp(result, k - 1);
+      D -= result;
+      ++k;
+      lim = ldexp(lim, 1);
+   }
+   while(true);
+
+   result = B / D;
+   return result;
+   */
 }
 
 template <class T, int N> 
@@ -58,6 +105,11 @@ inline T calculate_root_ln_four(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TE
 template <class T, int N> 
 inline T calculate_e(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 {
+   //
+   // Although we can clearly calculate this from first principles, this hooks into
+   // T's own notion of e, which hopefully will more accurate than one calculated to
+   // a few epsilon:
+   //
    BOOST_MATH_STD_USING
    return exp(static_cast<T>(1));
 }
@@ -71,8 +123,33 @@ inline T calculate_half(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_T
 template <class T, int N> 
 inline T calculate_euler(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 {
-   throw std::runtime_error("A true arbitrary precision Euler's constant is not available - it's too expensive to calculate on the fly - this constant is only supported up to 100 decimal digits.");
-   return 0;
+   //
+   // This is the method described in:
+   // "Some New Algorithms for High-Precision Computation of Euler's Constant"
+   // Richard P Brent and Edwin M McMillan.
+   // Mathematics of Comnputation, Volume 34, Number 149, Jan 1980, pages 305-312.
+   // See equation 17 with p = 2.
+   //
+   T n = 3 + boost::math::tools::digits<T>() / 4;
+   T lnn = log(n);
+   T term = 1;
+   T N = -lnn;
+   T D = 1;
+   T Hk = 0;
+   T one = 1;
+
+   for(unsigned k = 1;; ++k)
+   {
+      term *= n * n;
+      term /= k * k;
+      Hk += one / k;
+      N += term * (Hk - lnn);
+      D += term;
+
+      if(term < D * boost::math::tools::epsilon<T>())
+         break;
+   }
+   return N / D;
 }
 
 template <class T, int N> 
@@ -92,6 +169,11 @@ inline T calculate_half_root_two(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_T
 template <class T, int N> 
 inline T calculate_ln_two(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 {
+   //
+   // Although there are good ways to calculate this from scratch, this hooks into
+   // T's own notion of log(2) which will hopefully be accurate to the full precision
+   // of T:
+   //
    BOOST_MATH_STD_USING
    return log(static_cast<T>(2));
 }

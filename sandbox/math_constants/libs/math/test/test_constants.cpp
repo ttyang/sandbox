@@ -8,8 +8,6 @@
 
 // test_constants.cpp
 
-#include <pch.hpp>
-
 #include <boost/math/concepts/real_concept.hpp> // for real_concept
 #include <boost/test/test_exec_monitor.hpp> // Boost.Test
 #include <boost/test/floating_point_comparison.hpp>
@@ -17,6 +15,7 @@
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/tools/test.hpp> 
 #include <boost/static_assert.hpp>
+#include <boost/utility/enable_if.hpp>
 
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<float, boost::math::policies::policy<> >::type, boost::mpl::int_<boost::math::constants::construct_from_float> >::value));
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<double, boost::math::policies::policy<> >::type, boost::mpl::int_<boost::math::constants::construct_from_double> >::value));
@@ -41,7 +40,7 @@ class big_real_concept : public real_concept
 public:
    big_real_concept() {}
    template <class T>
-   big_real_concept(const T& t) : real_concept(t) {}
+   big_real_concept(const T& t, typename enable_if<is_convertible<T, real_concept> >::type* = 0) : real_concept(t) {}
 };
 
 }
@@ -63,7 +62,10 @@ void test_spots(RealType)
    // Actual tolerance is never really smaller than epsilon for long double, even if some of our
    // test types pretend otherwise:
    //
+   typedef typename boost::math::constants::construction_traits<RealType, boost::math::policies::policy<> >::type construction_type;
    RealType tolerance = std::max(static_cast<RealType>(boost::math::tools::epsilon<long double>()), boost::math::tools::epsilon<RealType>()) * 2;  // double
+   if((construction_type::value == 0) && (boost::math::tools::digits<RealType>() > boost::math::constants::max_string_digits))
+      tolerance *= 30;  // allow a little extra tolerance for calculated constants.
    std::cout << "Tolerance for type " << typeid(RealType).name()  << " is " << tolerance << "." << std::endl;
 
    //typedef typename boost::math::policies::precision<RealType, boost::math::policies::policy<> >::type t1;
@@ -73,6 +75,10 @@ void test_spots(RealType)
    using namespace boost::math::constants;
    using namespace std; // Help ADL of std exp, log...
    using std::exp;
+
+   RealType a = pi<RealType>();
+   RealType b = static_cast<RealType>(3.14159265358979323846264338327950288419716939937510L);
+   a = fabs((a-b) / b);
 
    BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(3.14159265358979323846264338327950288419716939937510L), pi<RealType>(), tolerance); 
    BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(3.14159265358979323846264338327950288419716939937510L), (pi<RealType, boost::math::policies::policy<> >)(), tolerance); 

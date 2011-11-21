@@ -108,6 +108,10 @@ void print_info_on_type(std::ostream& os = std::cout BOOST_MATH_APPEND_EXPLICIT_
       os <<
          "The constant will be constructed from a string (and the result cached).\n";
       break;
+   default:
+      os <<
+         "The constant will be calculated (and the result cached).\n";
+      break;
    }
    os << std::endl;
 #ifdef BOOST_MSVC
