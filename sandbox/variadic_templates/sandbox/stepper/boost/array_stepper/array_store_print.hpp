@@ -3,6 +3,7 @@
 
 #include <boost/array_stepper/array_store.hpp>
 #include <boost/array_stepper/index_stack_length_stride_crtp.hpp>
+#include <boost/iostreams/utility/indent_scoped_ostreambuf.hpp>
 #include <iostream>
 #include <iomanip>
 //#define BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE          
@@ -53,95 +54,137 @@ operator<<
     typedef typename arr_iter_t::lsos_t lsos_t;
     typedef typename arr_iter_t::iter_t iter_t;
     typedef typename lsos_t::axis_depth_t axis_depth_t;
-    char const open_delim='{';
-    char const between_delim=',';
-    char const close_delim='}';
-    unsigned const margin=2;
-    auto fmtflags0=sout.flags(std::ios_base::left);
-    auto between_close_width=[]( axis_depth_t ad)->int
+    char const*const open_delim   ="{";
+    char const*const between_delim=",";
+    char const*const close_delim  ="}";
+    auto get_margin=[ &sout]( unsigned defmarg)->unsigned
       {
-          return (ad-1)*margin;
+          typedef boost::iostreams::indent_scoped_ostreambuf<> filt_scoped_type;
+          typedef typename filt_scoped_type::push_filt_strmbuf filt_strmbuf_type;
+          filt_strmbuf_type*buf_ptr = dynamic_cast<filt_strmbuf_type*>(sout.rdbuf());
+          unsigned width=defmarg;
+          if (buf_ptr) 
+          {
+              typedef typename filt_strmbuf_type::filt_type filt_type;
+              filt_type* filt_ptr=buf_ptr->filt_get();
+              int w=filt_ptr->width();
+              if(0<w)width=w;
+          }
+          return width;
       };
+      unsigned 
+    margin=
+      get_margin( 2)
+      //MAINTENANCE_NOTE: 2011-11-25: LJEVANS
+      //  with ftp://gcc.gnu.org/pub/gcc/snapshots/4.7-20111008 compiler
+      //  and with const qualifier, the compiler issues warning saying
+      //  margin may be uninitialized in one of the lambda functions below
+      //  and when run, the program goes into infinite loop.  
+      //
+      //  However, without const qualifier, no warning is issued 
+      //  and program runs to completion.
+      ;
+    auto fmtflags0=sout.flags(std::ios_base::left);
     iter_t data_v(a_arr_iter.my_iter);
     lsos_t lsos_v(a_arr_iter.my_lsos);
     int const n=lsos_v.space();
-    axis_depth_t axis_now= lsos_v.axis_begin();
-  #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE
-    axis_depth_t const axis_max=axis_now;
-  #endif
+    if( 0==n) return sout;
+    axis_depth_t const axis_max= lsos_v.axis_begin();
+    axis_depth_t axis_now=axis_max;
     axis_depth_t axis_pre=lsos_t::axis_end;
-    
-    auto open_delims=[ &]( axis_depth_t ax_beg, axis_depth_t ax_end)
+  #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE
+    std::cout
+      <<":n="<<n
+      <<":axis_max="<<axis_max
+      <<"\n";
+  #endif
+    auto put_open_delims=[ =, &sout]( axis_depth_t ax_beg, axis_depth_t ax_end)
       {
         for(axis_depth_t l=ax_beg; l<ax_end; ++l) 
-        { //open 1st element for axes ax_beg...ax_end-1.
+        {
             sout<<std::setw(margin)<<open_delim;
+            sout<<indent_buf_in;
         }
       };
-    auto close_delims=[ &]( )
+    auto put_close_delims=[ =, &sout]( axis_depth_t ax_beg, axis_depth_t ax_end)
       {
-        for(axis_depth_t l=axis_pre; axis_now<l; --l)
-        {//close axis_pre to axis_now elements.
-            if(l!=axis_pre) 
-                sout<<std::setw(between_close_width(l))<<"";
-            sout<<close_delim<<"\n";
+        for(axis_depth_t l=ax_beg; l<ax_end; ++l)
+        {
+            sout<<indent_buf_out;
+            sout<<std::setw(margin)<<close_delim<<"\n";
         }
       };
-      
-    open_delims( axis_pre, axis_now);
+    auto put_between_delim=[ =, &sout]()
+      {
+        sout<<std::setw(margin)<<between_delim;
+      };
+    auto put_between_delims=[ =, &sout]( axis_depth_t ax_beg, axis_depth_t ax_end)
+      {
+        put_close_delims( ax_beg, ax_end);
+        sout<<indent_buf_out;
+        put_between_delim();
+        sout<<indent_buf_in;
+        put_open_delims ( ax_beg, ax_end);
+      };
+  #if defined(BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE)
+    sout
+      <<"(\n";
+  #endif
+    put_open_delims( axis_pre, axis_now);
     for
       ( int i=0
       ; i<n
       ; ++i
-        , axis_pre=axis_now
+        , axis_pre=axis_max
         , axis_now=++lsos_v
       )
     {
-        if(axis_now<axis_pre)
-        { //exiting one element and starting next.
-            close_delims();
-            sout<<std::setw(between_close_width(axis_now))<<""
-              <<std::setw(margin)<<between_delim;//put delimiter between elements
-            open_delims( axis_now, axis_pre);
-          #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE
-            sout<<"(:axis_now="<<axis_now<<"<"<<"axis_pre="<<axis_pre<<")";
-            BOOST_ASSERT(axis_pre == axis_max);
-          #endif
-        }
-        else if(lsos_t::axis_end<axis_pre)
-        {   sout<<std::setw(margin)<<between_delim;//put delimiter between elements
-          #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE
-            sout<<"(axis_end<axis_pre)";
-            auto ibs=lsos_v[axis_now-1];
-            auto index_now=ibs.template get<boost::array_stepper::index_value>();
-            sout
-              <<":axis_now="<<axis_now
-              <<":axis_max="<<axis_max
-              <<":index_now="<<index_now
-              <<"\n";
-            BOOST_ASSERT( axis_now==axis_max && 0<index_now);
-          #endif
-        }
-        auto const offset=lsos_v.offset_space_val();
-      #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE      
+        auto indices_rotated=lsos_v.indices_rotated();
+      #if defined(BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE)
         sout
           <<":i="<<std::setw(2)<<i
           <<":axis_pre="<<axis_pre
           <<":axis_now="<<axis_now
+          <<":indices_rotated="<<indices_rotated
+          <<";";
+      #endif
+      #if 1
+        if(axis_pre==axis_now)
+        {
+            put_between_delim();
+        }
+        else if(0<axis_pre)
+        {
+            if( axis_pre<axis_now)
+              put_between_delim();
+            else
+              put_between_delims( axis_now, axis_pre);
+        }
+      #endif
+        auto const offset=lsos_v.offset_space_val();
+      #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE      
+        sout
           <<":offset="<<offset
           <<":v="
           ;
+        sout.flush();
       #endif
         sout<<data_v[offset];
     }
-    close_delims();
-    #ifdef BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE          
+  #if defined(BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE)
     sout
       <<":axis_pre="<<axis_pre
       <<":axis_now="<<axis_now
-      <<"\n"
+      <<"."
       ;
-    #endif
+  #endif
+    put_close_delims( axis_now, axis_pre);
+  #if defined(BOOST_ARRAY_STEPPER_ARRAY_STORE_PRINT_TRACE)
+    sout
+      <<")"
+      <<".\n"
+      ;
+  #endif
     sout.flags(fmtflags0);
     return sout;
 }
