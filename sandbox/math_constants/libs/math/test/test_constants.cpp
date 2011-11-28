@@ -76,10 +76,6 @@ void test_spots(RealType)
    using namespace std; // Help ADL of std exp, log...
    using std::exp;
 
-   RealType a = pi<RealType>();
-   RealType b = static_cast<RealType>(3.14159265358979323846264338327950288419716939937510L);
-   a = fabs((a-b) / b);
-
    BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(3.14159265358979323846264338327950288419716939937510L), pi<RealType>(), tolerance); 
    BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(3.14159265358979323846264338327950288419716939937510L), (pi<RealType, boost::math::policies::policy<> >)(), tolerance); 
    BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(sqrt(3.14159265358979323846264338327950288419716939937510L)), root_pi<RealType>(), tolerance); 
