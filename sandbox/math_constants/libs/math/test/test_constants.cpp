@@ -1,5 +1,5 @@
-// Copyright Paul Bristow 2007.
-// Copyright John Maddock 2006.
+// Copyright Paul Bristow 2007, 2011.
+// Copyright John Maddock 2006, 2011.
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -17,22 +17,26 @@
 #include <boost/static_assert.hpp>
 #include <boost/utility/enable_if.hpp>
 
+// Check at compile time that the construction method for constants of type float, is "construct from a float", or "construct from a double", ...
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<float, boost::math::policies::policy<> >::type, boost::mpl::int_<boost::math::constants::construct_from_float> >::value));
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<double, boost::math::policies::policy<> >::type, boost::mpl::int_<boost::math::constants::construct_from_double> >::value));
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<long double, boost::math::policies::policy<> >::type, boost::mpl::int_<(sizeof(double) == sizeof(long double) ? boost::math::constants::construct_from_double : boost::math::constants::construct_from_long_double)> >::value));
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<boost::math::concepts::real_concept, boost::math::policies::policy<> >::type, boost::mpl::int_<0> >::value));
 
+// Policy to set precision at maximum possible using long double.
 typedef boost::math::policies::policy<boost::math::policies::digits2<std::numeric_limits<long double>::digits> > real_concept_policy_1;
+// Policy wiht precision +2 (could be any reasonable value),
+// forces the precision of the policy to be greater than
+// that of a long double, and therefore triggers different code (construct from string).
 typedef boost::math::policies::policy<boost::math::policies::digits2<std::numeric_limits<long double>::digits + 2> > real_concept_policy_2;
 
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<boost::math::concepts::real_concept, real_concept_policy_1 >::type, boost::mpl::int_<(sizeof(double) == sizeof(long double) ? boost::math::constants::construct_from_double : boost::math::constants::construct_from_long_double) > >::value));
 BOOST_STATIC_ASSERT((boost::is_same<boost::math::constants::construction_traits<boost::math::concepts::real_concept, real_concept_policy_2 >::type, boost::mpl::int_<boost::math::constants::construct_from_string> >::value));
 
-//
 // We need to declare a conceptual type whose precision is unknown at
-// compile time, and is so enormous when checked at runtime, that we're
-// forced to calculate the values of the constants ourselves.
-//
+// compile time, and is so enormous when checked at runtime,
+// that we're forced to calculate the values of the constants ourselves.
+
 namespace boost{ namespace math{ namespace concepts{
 
 class big_real_concept : public real_concept
@@ -57,19 +61,27 @@ inline int digits<concepts::big_real_concept>(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_
 template <class RealType>
 void test_spots(RealType)
 {
-   // Basic sanity checks for constants.
+   // Basic sanity checks for constants,
+   // where template parameter RealType can be float, double, long double,
+   // or real_concept, a prototype for user-defined floating-point types.
+
+   // Parameter RealType is only used to communicate the RealType,
+  //  and is an arbitrary zero for all tests.
    //
-   // Actual tolerance is never really smaller than epsilon for long double, even if some of our
-   // test types pretend otherwise:
-   //
-   typedef typename boost::math::constants::construction_traits<RealType, boost::math::policies::policy<> >::type construction_type;
+   // Actual tolerance is never really smaller than epsilon for long double,
+   // because it's just a wrapper around a long double,
+   // so although it's pretending to be something else (in order to exercise our code),
+   // it can never really have precision greater than a long double.
+
+  typedef typename boost::math::constants::construction_traits<RealType, boost::math::policies::policy<> >::type construction_type;
    RealType tolerance = std::max(static_cast<RealType>(boost::math::tools::epsilon<long double>()), boost::math::tools::epsilon<RealType>()) * 2;  // double
    if((construction_type::value == 0) && (boost::math::tools::digits<RealType>() > boost::math::constants::max_string_digits))
-      tolerance *= 30;  // allow a little extra tolerance for calculated constants.
+      tolerance *= 30;  // Allow a little extra tolerance
+   // for calculated (perhaps using a series representation) constants.
    std::cout << "Tolerance for type " << typeid(RealType).name()  << " is " << tolerance << "." << std::endl;
 
    //typedef typename boost::math::policies::precision<RealType, boost::math::policies::policy<> >::type t1;
-
+   // A precision of zero means we don't know what the precision of this type is until runtime.
    //std::cout << "Precision for type " << typeid(RealType).name()  << " is " << t1::value << "." << std::endl;
 
    using namespace boost::math::constants;
@@ -103,7 +115,7 @@ void test_spots(RealType)
    //
    if(boost::math::tools::digits<RealType>() > boost::math::constants::max_string_digits)
    {
-      // This suffers from cancelation error:
+      // This suffers from cancellation error, so increased tolerance:
       BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(4. - 3.14159265358979323846264338327950288419716939937510L), four_minus_pi<RealType>(), tolerance * 3); 
       BOOST_CHECK_CLOSE_FRACTION(static_cast<RealType>(0.14159265358979323846264338327950288419716939937510L), pi_minus_three<RealType>(), tolerance * 3); 
    }
@@ -116,7 +128,9 @@ void test_spots(RealType)
 
 void test_float_spots()
 {
-   // Basic sanity checks for constants in boost::math::float_constants::
+   // Basic sanity checks for constants in boost::math::float_constants:: 
+   // for example: boost::math::float_constants::pi 
+   // (rather than boost::math::constants::pi<float>() ).
 
    float tolerance = boost::math::tools::epsilon<float>() * 2;
 
@@ -151,6 +165,8 @@ void test_float_spots()
 void test_double_spots()
 {
    // Basic sanity checks for constants in boost::math::double_constants::
+   // for example: boost::math::double_constants::pi 
+   // (rather than boost::math::constants::pi<double>() ).
 
    double tolerance = boost::math::tools::epsilon<double>() * 2;
 
@@ -185,6 +201,8 @@ void test_double_spots()
 void test_long_double_spots()
 {
    // Basic sanity checks for constants in boost::math::long double_constants::
+   // for example: boost::math::long_double_constants::pi 
+   // (rather than boost::math::constants::pi<long double>() ).
 
    long double tolerance = boost::math::tools::epsilon<long double>() * 2;
 
@@ -219,13 +237,14 @@ void test_long_double_spots()
 template <class Policy>
 void test_real_concept_policy(const Policy&)
 {
-   // Basic sanity checks for constants.
+   // Basic sanity checks for constants using real_concept.
+   // Parameter Policy is used to control precision. 
 
    boost::math::concepts::real_concept tolerance = boost::math::tools::epsilon<boost::math::concepts::real_concept>() * 2;  // double
    std::cout << "Tolerance for type " << typeid(boost::math::concepts::real_concept).name()  << " is " << tolerance << "." << std::endl;
 
    //typedef typename boost::math::policies::precision<boost::math::concepts::real_concept, boost::math::policies::policy<> >::type t1;
-
+   // A precision of zero means we don't know what the precision of this type is until runtime.
    //std::cout << "Precision for type " << typeid(boost::math::concepts::real_concept).name()  << " is " << t1::value << "." << std::endl;
 
    using namespace boost::math::constants;
@@ -261,17 +280,17 @@ int test_main(int, char* [])
 {
    // Basic sanity-check spot values.
 
-   test_float_spots();
-   test_double_spots();
-   test_long_double_spots();
+   test_float_spots(); // Test float_constants, like boost::math::float_constants::pi;
+   test_double_spots(); // Test double_constants.
+   test_long_double_spots(); // Test long_double_constants.
 
    test_real_concept_policy(real_concept_policy_1());
-   test_real_concept_policy(real_concept_policy_2());
-   test_real_concept_policy(boost::math::policies::policy<>());
+   test_real_concept_policy(real_concept_policy_2()); // Increased precision forcing construction from string.
+   test_real_concept_policy(boost::math::policies::policy<>()); // Default.
 
-   // (Parameter value, arbitrarily zero, only communicates the floating point type).
-   test_spots(0.0F); // Test float. OK at decdigits = 0 tolerance = 0.0001 %
-   test_spots(0.0); // Test double. OK at decdigits 7, tolerance = 1e07 %
+   // (Parameter value, arbitrarily zero, only communicates the floating-point type).
+   test_spots(0.0F); // Test float.
+   test_spots(0.0); // Test double. 
 #ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
    test_spots(0.0L); // Test long double.
 #if !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x0582))
@@ -292,9 +311,21 @@ int test_main(int, char* [])
 
 Output:
 
-Autorun "i:\boost-06-05-03-1300\libs\math\test\Math_test\debug\test_constants.exe"
-Running 1 test case...
-*** No errors detected
+test_constants.cpp
+  Generating code
+  Finished generating code
+  test_constants.vcxproj -> J:\Cpp\math_constants\Release\test_constants.exe
+  Running 1 test case...
+  Tolerance for type class boost::math::concepts::real_concept is 4.44089e-016.
+  Tolerance for type class boost::math::concepts::real_concept is 4.44089e-016.
+  Tolerance for type class boost::math::concepts::real_concept is 4.44089e-016.
+  Tolerance for type float is 2.38419e-007.
+  Tolerance for type double is 4.44089e-016.
+  Tolerance for type long double is 4.44089e-016.
+  Tolerance for type class boost::math::concepts::real_concept is 4.44089e-016.
+  Tolerance for type class boost::math::concepts::big_real_concept is 1.33227e-014.
+  
+  *** No errors detected
 
 */
 
