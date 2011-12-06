@@ -3,6 +3,10 @@
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+#ifdef _MSC_VER
+#  pragma once
+#endif
+
 #ifndef BOOST_MATH_CONSTANTS_INFO_INCLUDED
 #define BOOST_MATH_CONSTANTS_INFO_INCLUDED
 
@@ -11,7 +15,7 @@
 #include <iomanip>
 #include <typeinfo>
 
-namespace boost{ namespace math{ namespace constants{ 
+namespace boost{ namespace math{ namespace constants{
 
    namespace detail{
 
@@ -46,7 +50,7 @@ void print_info_on_type(std::ostream& os = std::cout BOOST_MATH_APPEND_EXPLICIT_
 #pragma warning(push)
 #pragma warning(disable:4127)
 #endif
-   os << 
+   os <<
       "Information on the Implementation and Handling of \n"
       "Mathematical Constants for Type " << nameof<T>() <<
       "\n\n"
@@ -55,21 +59,50 @@ void print_info_on_type(std::ostream& os = std::cout BOOST_MATH_APPEND_EXPLICIT_
    if(std::numeric_limits<T>::is_specialized)
    {
       os <<
+         "std::numeric_limits<" << nameof<T>() << ">::digits reports that the radix is " << std::numeric_limits<T>::radix << ".\n";
+      if (std::numeric_limits<T>::radix == 2)
+      {
+      os <<
          "std::numeric_limits<" << nameof<T>() << ">::digits reports that the precision is \n" << std::numeric_limits<T>::digits << " binary digits.\n";
+      }
+      else if (std::numeric_limits<T>::radix == 10)
+      {
+         os <<
+         "std::numeric_limits<" << nameof<T>() << ">::digits reports that the precision is \n" << std::numeric_limits<T>::digits10 << " decimal digits.\n";
+         os <<
+         "std::numeric_limits<" << nameof<T>() << ">::digits reports that the precision is \n"
+         << std::numeric_limits<T>::digits * 1000L /301L << " binary digits.\n";  // divide by log2(10) - about 3 bits per decimal digit.
+      }
+      else
+      {
+        os << "Unknown radix = " << std::numeric_limits<T>::radix << "\n";
+      }
    }
    typedef typename boost::math::policies::precision<T, Policy>::type precision_type;
    if(precision_type::value)
    {
-      os <<
-         "boost::math::policies::precision<" << nameof<T>() << ", Policy> reports that the compile time precision is \n" << precision_type::value << " binary digits.\n";
+      if (std::numeric_limits<T>::radix == 2)
+      {
+       os <<
+       "boost::math::policies::precision<" << nameof<T>() << ", " << nameof<Policy>() << " reports that the compile time precision is \n" << precision_type::value << " binary digits.\n";
+      }
+      else if (std::numeric_limits<T>::radix == 10)
+      {
+         os <<
+         "boost::math::policies::precision<" << nameof<T>() << ", " << nameof<Policy>() << " reports that the compile time precision is \n" << precision_type::value << " binary digits.\n";
+      }
+      else
+      {
+        os << "Unknown radix = " << std::numeric_limits<T>::radix <<  "\n";
+      }
    }
    else
    {
       os <<
          "boost::math::policies::precision<" << nameof<T>() << ", Policy> \n"
-         "reports that there is no compile type precision available.\n" 
+         "reports that there is no compile type precision available.\n"
          "boost::math::tools::digits<" << nameof<T>() << ">() \n"
-         "reports that the current runtime precision is \n" << 
+         "reports that the current runtime precision is \n" <<
          boost::math::tools::digits<T>() << " binary digits.\n";
    }
 
