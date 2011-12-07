@@ -1,12 +1,23 @@
-// cpp_float_test.cpp : Defines the entry point for the console application.
-//
+// Copyright John Maddock 2011.
 
-#include "stdafx.h"
+// Use, modification and distribution are subject to the
+// Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt
+// or copy at http://www.boost.org/LICENSE_1_0.txt)
+
+#ifdef _MSC_VER 
+#  pragma once
+#  pragma warning (disable :4127) // expression is constant
+#  pragma warning (disable :4996) // use -D_SCL_SECURE_NO_WARNINGS
+#  define _SCL_SECURE_NO_WARNINGS
+#endif
 
 #include <boost/math/constants/constants.hpp>
 #include <boost/math/constants/info.hpp>
 #include <boost/multiprecision/cpp_float.hpp>
 #include <boost/detail/lightweight_test.hpp>
+
+
 
 template <class T>
 T brent_gamma()
@@ -133,8 +144,7 @@ void test()
    BOOST_TEST(error < 30);
 }
 
-
-int _tmain(int argc, _TCHAR* argv[])
+int main()
 {
    boost::math::constants::print_info_on_type<boost::multiprecision::cpp_float_50>();
    boost::math::constants::print_info_on_type<boost::multiprecision::cpp_float_100>();
@@ -148,6 +158,57 @@ int _tmain(int argc, _TCHAR* argv[])
    test<300>();
    test<500>();
 
-	return boost::report_errors();
-}
+  return boost::report_errors();
+} //int main()
+
+
+/*
+
+Output:
+
+  Information on the Implementation and Handling of 
+  Mathematical Constants for Type class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<50> >
+  
+  Checking for std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<50> >> specialisation: yes
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<50> >>::digits reports that the radix is 10.
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<50> >>::digits reports that the precision is 
+  50 decimal digits.
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<50> >>::digits reports that the precision is 
+  166 binary digits.
+  boost::math::policies::precision<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<50> >, struct boost::math::policies::policy<struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy> reports that the compile time precision is 
+  169 binary digits.
+  The constant will be constructed from a string (and the result cached).
+  
+  Information on the Implementation and Handling of 
+  Mathematical Constants for Type class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<100> >
+  
+  Checking for std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<100> >> specialisation: yes
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<100> >>::digits reports that the radix is 10.
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<100> >>::digits reports that the precision is 
+  100 decimal digits.
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<100> >>::digits reports that the precision is 
+  332 binary digits.
+  boost::math::policies::precision<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<100> >, struct boost::math::policies::policy<struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy> reports that the compile time precision is 
+  335 binary digits.
+  The constant will be constructed from a string (and the result cached).
+  
+  Information on the Implementation and Handling of 
+  Mathematical Constants for Type class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<300> >
+  
+  Checking for std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<300> >> specialisation: yes
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<300> >>::digits reports that the radix is 10.
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<300> >>::digits reports that the precision is 
+  300 decimal digits.
+  std::numeric_limits<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<300> >>::digits reports that the precision is 
+  996 binary digits.
+  boost::math::policies::precision<class boost::multiprecision::mp_number<class boost::multiprecision::cpp_float<300> >, struct boost::math::policies::policy<struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy,struct boost::math::policies::default_policy> reports that the compile time precision is 
+  1000 binary digits.
+  No errors detected.
+  The constant will be calculated (and the result cached).
+
+
+
+*/
+
+
 
