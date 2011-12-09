@@ -25,7 +25,7 @@
 </div></div>
 <div><p class="copyright">Copyright &#169; 2010 John Maddock, Paul A. Bristow</p></div>
 <div><div class="legalnotice">
-<a name="id978745"></a><p>
+<a name="math_constants.legal"></a><p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -36,39 +36,115 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="index.html#math_constants.tutorial"> Tutorial</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.intro">Introduction</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.tutorial">Tutorial</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="index.html#math_constants.tutorial.non_templ"> Use in non-template
+<dt><span class="section"><a href="index.html#math_constants.tutorial.non_templ">Use in non-template
       code</a></span></dt>
-<dt><span class="section"><a href="index.html#math_constants.tutorial.templ"> Use in template code</a></span></dt>
-<dt><span class="section"><a href="index.html#math_constants.tutorial.user_def"> Use With User Defined
+<dt><span class="section"><a href="index.html#math_constants.tutorial.templ">Use in template code</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.tutorial.user_def">Use With User Defined
       Types</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="index.html#math_constants.constants"> The constants</a></span></dt>
-<dt><span class="section"><a href="index.html#math_constants.new_const"> Defining New Constants</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.constants">The Mathematical Constants</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.new_const">Defining New Constants</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.FAQ">FAQs</a></span></dt>
 </dl>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="math_constants.tutorial"></a><a class="link" href="index.html#math_constants.tutorial" title="Tutorial"> Tutorial</a>
+<a name="math_constants.intro"></a><a class="link" href="index.html#math_constants.intro" title="Introduction">Introduction</a>
+</h2></div></div></div>
+<p>
+      Boost.Math provides a collection of mathematical constants.
+    </p>
+<h5>
+<a name="math_constants.intro.h0"></a>
+      <span><a name="math_constants.intro.why_use_boost_math_mathematical_constants_"></a></span><a class="link" href="index.html#math_constants.intro.why_use_boost_math_mathematical_constants_">Why
+      use Boost.Math mathematical constants?</a>
+    </h5>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          Readable. For the very many jobs just using built-in like <code class="computeroutput"><span class="keyword">double</span></code>, you can just write expressions like
+<pre class="programlisting"><span class="keyword">double</span> <span class="identifier">area</span> <span class="special">=</span> <span class="identifier">pi</span> <span class="special">*</span> <span class="identifier">r</span> <span class="special">*</span> <span class="identifier">r</span><span class="special">;</span></pre>
+          (If that's all you want, jump direct to <a class="link" href="index.html#math_constants.tutorial.non_templ" title="Use in non-template code">use
+          in non-template code</a>!)
+        </li>
+<li>
+          Effortless - avoiding a search of reference sources.
+        </li>
+<li>
+          Accurate - ensuring that the values are as accurate as possible for the
+          chosen floating-point type (both built-in and multiprecision user-defined
+          type (UDT) floating-point like NTL, MPFR/GMP, mp_float).
+          <div class="itemizedlist"><ul type="circle">
+<li>
+                No loss of accuracy from repeated rounding of intermediate computations.
+              </li>
+<li>
+                Result is computed with higher precision and only rounded once.
+              </li>
+<li>
+                Less risk of inaccurate result from functions pow, trig and log at
+                <a href="http://en.wikipedia.org/wiki/Corner_case" target="_top">corner cases</a>.
+              </li>
+<li>
+                Less risk of <a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html" target="_top">cancellation
+                error</a>.
+              </li>
+</ul></div>
+        </li>
+<li>
+          Faster - can avoid (re-)calculation at runtime. This can be significant
+          if:
+          <div class="itemizedlist"><ul type="circle">
+<li>
+                Functions pow, trig or log are used.
+              </li>
+<li>
+                Inside an inner loop.
+              </li>
+<li>
+                Using a high-precision UDT.
+              </li>
+<li>
+                Compiler optimizations possible with built-in types, especially
+                <code class="computeroutput"><span class="keyword">double</span></code>, are not available.
+              </li>
+</ul></div>
+        </li>
+<li>
+          Portable - as possible between different systems using different floating-point
+          precisions: see <a class="link" href="index.html#math_constants.tutorial.templ" title="Use in template code">use in template
+          code</a>.
+        </li>
+<li>
+          Tested - by comparison with other published sources, or separately computed
+          at long double precision.
+        </li>
+</ul></div>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="math_constants.tutorial"></a><a class="link" href="index.html#math_constants.tutorial" title="Tutorial">Tutorial</a>
 </h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="index.html#math_constants.tutorial.non_templ"> Use in non-template
+<dt><span class="section"><a href="index.html#math_constants.tutorial.non_templ">Use in non-template
       code</a></span></dt>
-<dt><span class="section"><a href="index.html#math_constants.tutorial.templ"> Use in template code</a></span></dt>
-<dt><span class="section"><a href="index.html#math_constants.tutorial.user_def"> Use With User Defined
+<dt><span class="section"><a href="index.html#math_constants.tutorial.templ">Use in template code</a></span></dt>
+<dt><span class="section"><a href="index.html#math_constants.tutorial.user_def">Use With User Defined
       Types</a></span></dt>
 </dl></div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="math_constants.tutorial.non_templ"></a><a class="link" href="index.html#math_constants.tutorial.non_templ" title="Use in non-template code"> Use in non-template
+<a name="math_constants.tutorial.non_templ"></a><a class="link" href="index.html#math_constants.tutorial.non_templ" title="Use in non-template code">Use in non-template
       code</a>
 </h3></div></div></div>
 <p>
-        When using the constants at fixed precision in non-template code, you can
-        simply add a using declaration to make the constants of the correct precision
-        for your code visible in the current scope, and then use each constant as
-        a simple variable:
+        When using the math constants at your chosen fixed precision in non-template
+        code, you can simply add a <code class="computeroutput"><span class="keyword">using</span></code>
+        declaration, for example, <code class="computeroutput"><span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">double_constants</span></code>, to make the constants
+        of the correct precision for your code visible in the current scope, and
+        then use each constant <span class="emphasis"><em>as a simple variable</em></span>:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -80,7 +156,7 @@
 </pre>
 <p>
         Had our function been written as taking a <code class="computeroutput"><span class="keyword">float</span></code>
-        rather than a <code class="computeroutput"><span class="keyword">double</span></code> we could
+        rather than a <code class="computeroutput"><span class="keyword">double</span></code>, we could
         have written instead:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -92,20 +168,22 @@
 <span class="special">}</span>
 </pre>
 <p>
-        Likewise constants that are suitable for use at <code class="computeroutput"><span class="keyword">long</span>
+        Likewise, constants that are suitable for use at <code class="computeroutput"><span class="keyword">long</span>
         <span class="keyword">double</span></code> precision are available in
         the namespace <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">long_double_constants</span></code>.
+      </p>
+<p>
+        You can see the full list of available constants at <a class="link" href="index.html#math_constants.constants" title="The Mathematical Constants">math_constants.constants</a>.
       </p>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="math_constants.tutorial.templ"></a><a class="link" href="index.html#math_constants.tutorial.templ" title="Use in template code"> Use in template code</a>
+<a name="math_constants.tutorial.templ"></a><a class="link" href="index.html#math_constants.tutorial.templ" title="Use in template code">Use in template code</a>
 </h3></div></div></div>
 <p>
         When using the constants inside a function template, we need to ensure that
-        we use the a constant of the correct precision for our template parameters.
-        We can do this by calling the function-template versions of the constants
-        like this:
+        we use a constant of the correct precision for our template parameters. We
+        can do this by calling the function-template versions, <code class="computeroutput"><span class="identifier">pi</span><span class="special">&lt;</span><span class="identifier">FPType</span><span class="special">&gt;()</span></code>, of the constants like this:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -118,22 +196,118 @@
 </pre>
 <p>
         Although this syntax is a little less "cute" than the non-template
-        version the code is no less efficient (at least for the builtin types float,
-        double and long double) - the function template versions of the constants
-        are simple inline functions that return a constant of the correct precision
-        for the type used. In addition these functions are declared <code class="computeroutput"><span class="identifier">constexp</span></code> for those compilers that support
-        this, allowing the result to be used in constant-expressions provided the
-        template argument is a literal type.
+        version, the code is no less efficient (at least for the built-in types
+        <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>
+        and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>)
+        : the function template versions of the constants are simple inline functions
+        that return a constant of the correct precision for the type used. In addition,
+        these functions are declared <code class="computeroutput"><span class="identifier">constexp</span></code>
+        for those compilers that support this, allowing the result to be used in
+        constant-expressions provided the template argument is a literal type.
       </p>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Keep in mind the difference between the variable version, just <code class="computeroutput"><span class="identifier">pi</span></code>, and the template-function version:
+          the template-function requires both a &lt;<em class="replaceable"><code>floating-point-type</code></em>&gt;
+          and function call <code class="computeroutput"><span class="special">()</span></code> brackets,
+          for example: <code class="computeroutput"><span class="identifier">pi</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;()</span></code>.
+          You cannot write <code class="computeroutput"><span class="keyword">double</span> <span class="identifier">p</span>
+          <span class="special">=</span> <span class="identifier">pi</span><span class="special">&lt;&gt;()</span></code>, nor <code class="computeroutput"><span class="keyword">double</span>
+          <span class="identifier">p</span> <span class="special">=</span>
+          <span class="identifier">pi</span><span class="special">()</span></code>.
+        </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          You can always use <span class="bold"><strong>both</strong></span> variable and template-function
+          versions <span class="bold"><strong>provided calls are fully qualified</strong></span>,
+          for example:
+</p>
+<pre class="programlisting"><span class="keyword">double</span> <span class="identifier">my_pi1</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">constants</span><span class="special">::</span><span class="identifier">pi</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;();</span>
+<span class="keyword">double</span> <span class="identifier">my_pi2</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">double_constants</span><span class="special">::</span><span class="identifier">pi</span><span class="special">;</span>
+</pre>
+<p>
+        </p>
+</td></tr>
+</table></div>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          It may be tempting to simply define
+</p>
+<pre class="programlisting"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">double_constants</span><span class="special">;</span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">constants</span><span class="special">;</span>
+</pre>
+<p>
+          but if you do define two namespaces, this will, of course, create ambiguity!
+</p>
+<pre class="programlisting"><span class="keyword">double</span> <span class="identifier">my_pi</span> <span class="special">=</span> <span class="identifier">pi</span><span class="special">();</span> <span class="comment">// error C2872: 'pi' : ambiguous symbol</span>
+<span class="keyword">double</span> <span class="identifier">my_pi2</span> <span class="special">=</span> <span class="identifier">pi</span><span class="special">;</span> <span class="comment">// Context does not allow for disambiguation of overloaded function</span>
+</pre>
+<p>
+          Although the mistake above is fairly obvious, it is also not too difficult
+          to do this accidentally, or worse, create it in someone elses code.
+        </p>
+<p>
+          Therefore is it prudent to avoid this risk by <span class="bold"><strong>localising
+          the scope of such definitions</strong></span>, as shown above.
+        </p>
+</td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>
+          Be very careful with the type provided as parameter. For example, providing
+          an <span class="bold"><strong>integer</strong></span> instead of a floating-point
+          type can be disastrous (a C++ feature).
+        </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Area = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">area</span><span class="special">(</span><span class="number">2</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Area = 12!!!</span></pre>
+<p>
+        </p>
+<p>
+          You should get a compiler warning
+        </p>
+<pre class="programlisting">warning : 'return' : conversion from 'double' to 'int', possible loss of data
+</pre>
+<p>
+          Failure to heed this warning can lead to very wrong answers!
+        </p>
+<p>
+          You can also avoid this by being explicit about the type of <code class="computeroutput"><span class="identifier">Area</span></code>.
+</p>
+<pre class="programlisting"><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Area = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">area</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;(</span><span class="number">2</span><span class="special">)</span> <span class="special">&lt;&lt;</span> <span class="identifier">endl</span><span class="special">;</span> <span class="comment">// Area = 12.566371</span></pre>
+<p>
+        </p>
+</td></tr>
+</table></div>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="math_constants.tutorial.user_def"></a><a class="link" href="index.html#math_constants.tutorial.user_def" title="Use With User Defined Types"> Use With User Defined
+<a name="math_constants.tutorial.user_def"></a><a class="link" href="index.html#math_constants.tutorial.user_def" title="Use With User Defined Types">Use With User Defined
       Types</a>
 </h3></div></div></div>
 <p>
-        The syntax for using the constants with user-defined types is the same as
-        it is in the template clase, which is to say we use:
+        The syntax for using the function-call constants with user-defined types
+        is the same as it is in the template class, which is to say we use:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -141,8 +315,8 @@
 </pre>
 <p>
         However, since the precision of the user-defined type may be much greater
-        than that of the builtin floating pointer types, how the value returned is
-        created is as follows:
+        than that of the built-in floating pointer types, how the value returned
+        is created is as follows:
       </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -172,12 +346,12 @@
                 </li>
 <li>
                   If the precision is less than 100 decimal digits, then the constant
-                  will be constructed (just the once, then cached in a thread safe
+                  will be constructed (just the once, then cached in a thread-safe
                   manner) from a string representation of the constant.
                 </li>
 <li>
-                  Otherwise the value is computed (just once, then cached in a thread
-                  safe manner).
+                  Otherwise the value is computed (just once, then cached in a thread-safe
+                  manner).
                 </li>
 </ul></div>
           </li>
@@ -199,20 +373,25 @@
           </li>
 </ul></div>
 <p>
-        In addition, it is possible to pass a "Policy" type as a second
-        template argument, and use this to control the precision:
+        In addition, it is possible to pass a <code class="computeroutput"><span class="identifier">Policy</span></code>
+        type as a second template argument, and use this to control the precision:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">policy</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">digits2</span><span class="special">&lt;</span><span class="number">80</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">my_policy_type</span><span class="special">;</span>
 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">constants</span><span class="special">::</span><span class="identifier">pi</span><span class="special">&lt;</span><span class="identifier">MyType</span><span class="special">,</span> <span class="identifier">my_policy_type</span><span class="special">&gt;();</span>
 </pre>
-<p>
-        Note that Boost.Math doesn't know how to control the internal precision of
-        <code class="computeroutput"><span class="identifier">MyType</span></code>, the policy just controls
-        how the selection process above is carried out, and the calculation precision
-        if the result is computed.
-      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Boost.Math doesn't know how to control the internal precision of <code class="computeroutput"><span class="identifier">MyType</span></code>, the policy just controls how
+          the selection process above is carried out, and the calculation precision
+          if the result is computed.
+        </p></td></tr>
+</table></div>
 <p>
         It is also possible to control which method is used to construct the constant
         by specialising the traits class <code class="computeroutput"><span class="identifier">construction_traits</span></code>:
@@ -225,8 +404,8 @@
    <span class="keyword">typedef</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="special">}}}</span> <span class="comment">// namespaces
-</span></pre>
+<span class="special">}}}</span> <span class="comment">// namespaces</span>
+</pre>
 <p>
         Where <span class="emphasis"><em>N</em></span> takes one of the following values:
       </p>
@@ -238,7 +417,7 @@
 <thead><tr>
 <th>
                 <p>
-                  N
+                  <span class="emphasis"><em>N</em></span>
                 </p>
               </th>
 <th>
@@ -256,9 +435,9 @@
               </td>
 <td>
                 <p>
-                  The precision is unavailable at compile time, either construct
-                  from a string or calculate on the fly depending upon the runtime
-                  precision.
+                  The precision is unavailable at compile time; either construct
+                  from a decimal digit string or calculate on the fly depending upon
+                  the runtime precision.
                 </p>
               </td>
 </tr>
@@ -314,21 +493,21 @@
 <tr>
 <td>
                 <p>
-                  Any other value N
+                  Any other value <span class="emphasis"><em>N</em></span>
                 </p>
               </td>
 <td>
                 <p>
-                  Sets the compile time precision to N bits.
+                  Sets the compile time precision to <span class="emphasis"><em>N</em></span> bits.
                 </p>
               </td>
 </tr>
 </tbody>
 </table></div>
 <p>
-        Finally, sice it can be tricky to diagnose what meta-programmed code is doing,
-        there is a diagnostic routine that prints information about how this library
-        will handle a specific type, it can be used like this:
+        Finally, since it can be tricky to diagnose what meta-programmed code is
+        doing, there is a diagnostic routine that prints information about how this
+        library will handle a specific type, it can be used like this:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">info</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -338,8 +517,9 @@
 <span class="special">}</span>
 </pre>
 <p>
-        If you wish you can also pass an optional std::ostream argument to the <code class="computeroutput"><span class="identifier">print_info_on_type</span></code> function. Typical output
-        for a user-defined type looks like this:
+        If you wish, you can also pass an optional std::ostream argument to the
+        <code class="computeroutput"><span class="identifier">print_info_on_type</span></code> function.
+        Typical output for a user-defined type looks like this:
       </p>
 <pre class="programlisting">Information on the Implementation and Handling of
 Mathematical Constants for Type class boost::math::concepts::real_concept
@@ -360,70 +540,1882 @@ the constant will be constructed from a string on each call.
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="math_constants.constants"></a><a class="link" href="index.html#math_constants.constants" title="The constants"> The constants</a>
+<a name="math_constants.constants"></a><a class="link" href="index.html#math_constants.constants" title="The Mathematical Constants">The Mathematical Constants</a>
 </h2></div></div></div>
 <p>
-      TODO!!
+      This section lists the mathematical constants, their use(s) (and sometimes
+      rationale for their inclusion).
     </p>
+<div class="table">
+<a name="math_constants.constants.mathematical_constants"></a><p class="title"><b>Table&#160;1.&#160;Mathematical Constants</b></p>
+<div class="table-contents"><table class="table" summary="Mathematical Constants">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                name
+              </p>
+            </th>
+<th>
+              <p>
+                formula
+              </p>
+            </th>
+<th>
+              <p>
+                Value (6 decimals)
+              </p>
+            </th>
+<th>
+              <p>
+                Uses and Rationale
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>Rational fractions</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                half
+              </p>
+            </td>
+<td>
+              <p>
+                1/2
+              </p>
+            </td>
+<td>
+              <p>
+                0.5
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                third
+              </p>
+            </td>
+<td>
+              <p>
+                1/3
+              </p>
+            </td>
+<td>
+              <p>
+                0.333333
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                two_thirds
+              </p>
+            </td>
+<td>
+              <p>
+                2/3
+              </p>
+            </td>
+<td>
+              <p>
+                0.66667
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                three_quarters
+              </p>
+            </td>
+<td>
+              <p>
+                3/4
+              </p>
+            </td>
+<td>
+              <p>
+                0.75
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>two and related</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_two
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;2
+              </p>
+            </td>
+<td>
+              <p>
+                1.41421
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_three
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;3
+              </p>
+            </td>
+<td>
+              <p>
+                1.73205
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                half_root_two
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;2 /2
+              </p>
+            </td>
+<td>
+              <p>
+                0.707106
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                ln_two
+              </p>
+            </td>
+<td>
+              <p>
+                ln(2)
+              </p>
+            </td>
+<td>
+              <p>
+                6.93147
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                ln_ln_two
+              </p>
+            </td>
+<td>
+              <p>
+                ln(ln(2))
+              </p>
+            </td>
+<td>
+              <p>
+                -3.66512
+              </p>
+            </td>
+<td>
+              <p>
+                Gumbel distribution median
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_ln_four
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;ln(4)
+              </p>
+            </td>
+<td>
+              <p>
+                1.177410
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_root_two
+              </p>
+            </td>
+<td>
+              <p>
+                1/&#8730;2
+              </p>
+            </td>
+<td>
+              <p>
+                0.707106
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>&#960; and related</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pi
+              </p>
+            </td>
+<td>
+              <p>
+                pi
+              </p>
+            </td>
+<td>
+              <p>
+                3.14159
+              </p>
+            </td>
+<td>
+              <p>
+                Ubiquitous. Archimedes constant <a href="http://en.wikipedia.org/wiki/Pi" target="_top">&#960;</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                half_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;/2
+              </p>
+            </td>
+<td>
+              <p>
+                1.570796
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                third_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;/3
+              </p>
+            </td>
+<td>
+              <p>
+                1.04719
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                sixth_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;/6
+              </p>
+            </td>
+<td>
+              <p>
+                0.523598
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                two_pi
+              </p>
+            </td>
+<td>
+              <p>
+                2&#960;
+              </p>
+            </td>
+<td>
+              <p>
+                6.28318
+              </p>
+            </td>
+<td>
+              <p>
+                Many uses, most simply, circumference of a circle
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                two_thirds_pi
+              </p>
+            </td>
+<td>
+              <p>
+                2/3 &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                2.09439
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Sphere#Volume_of_a_sphere" target="_top">volume
+                of a hemi-sphere</a> = 4/3 &#960; r&#179;
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                three_quarters_pi
+              </p>
+            </td>
+<td>
+              <p>
+                3/4 &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                2.35619
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Sphere#Volume_of_a_sphere" target="_top">volume
+                of a hemi-sphere</a> = 4/3 &#960; r&#179;
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                four_thirds_pi
+              </p>
+            </td>
+<td>
+              <p>
+                4/3 &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                4.18879
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Sphere#Volume_of_a_sphere" target="_top">volume
+                of a sphere</a> = 4/3 &#960; r&#179;
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_two_pi
+              </p>
+            </td>
+<td>
+              <p>
+                1/(2&#960;)
+              </p>
+            </td>
+<td>
+              <p>
+                1.59155
+              </p>
+            </td>
+<td>
+              <p>
+                Widely used
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_root_two_pi
+              </p>
+            </td>
+<td>
+              <p>
+                1/(&#8730;2 &#960;)
+              </p>
+            </td>
+<td>
+              <p>
+                0.398942
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;&#960;
+              </p>
+            </td>
+<td>
+              <p>
+                1.77245
+              </p>
+            </td>
+<td>
+              <p>
+                Widely used
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_half_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730; &#960;/2
+              </p>
+            </td>
+<td>
+              <p>
+                1.25331
+              </p>
+            </td>
+<td>
+              <p>
+                Widely used
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_two_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730; &#960;*2
+              </p>
+            </td>
+<td>
+              <p>
+                2.50662
+              </p>
+            </td>
+<td>
+              <p>
+                Widely used
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_root_pi
+              </p>
+            </td>
+<td>
+              <p>
+                1/&#8730;&#960;
+              </p>
+            </td>
+<td>
+              <p>
+                0.564189
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_root_two_pi
+              </p>
+            </td>
+<td>
+              <p>
+                1/&#8730;(2&#960;)
+              </p>
+            </td>
+<td>
+              <p>
+                0.398942
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_one_div_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;(1/&#960;
+              </p>
+            </td>
+<td>
+              <p>
+                0.564189
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pi_minus_three
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;-3
+              </p>
+            </td>
+<td>
+              <p>
+                1.41593
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                four_minus_pi
+              </p>
+            </td>
+<td>
+              <p>
+                4 -&#960;
+              </p>
+            </td>
+<td>
+              <p>
+                0.858407
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pow23_four_minus_pi
+              </p>
+            </td>
+<td>
+              <p>
+                4<sup>2/3</sup> - &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                0.795316
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pi_pow_e
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;<sup>e</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                22.4591
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pi_sqr
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;<sup>2</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                9.86960
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pi_sqr_div_six
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;<sup>2</sup>/6
+              </p>
+            </td>
+<td>
+              <p>
+                1.64493
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                pi_cubed
+              </p>
+            </td>
+<td>
+              <p>
+                &#960;<sup>3</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                31.00627
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                cbrt_pi
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730;<sup>3</sup> &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                1.46459
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_cbrt_pi
+              </p>
+            </td>
+<td>
+              <p>
+                1/&#8730;<sup>3</sup> &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                0.682784
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>Euler's e and related</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                e
+              </p>
+            </td>
+<td>
+              <p>
+                e
+              </p>
+            </td>
+<td>
+              <p>
+                2.71828
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/E_(mathematical_constant)" target="_top">Euler's
+                constant e</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                exp_minus_half
+              </p>
+            </td>
+<td>
+              <p>
+                e <sup>-1/2</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                0.606530
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                e_pow_pi
+              </p>
+            </td>
+<td>
+              <p>
+                e <sup>&#960;</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                23.14069
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                root_e
+              </p>
+            </td>
+<td>
+              <p>
+                &#8730; e
+              </p>
+            </td>
+<td>
+              <p>
+                1.64872
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                log10_e
+              </p>
+            </td>
+<td>
+              <p>
+                ln(e)
+              </p>
+            </td>
+<td>
+              <p>
+                0.434294
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_log10_e
+              </p>
+            </td>
+<td>
+              <p>
+                1/ln(e)
+              </p>
+            </td>
+<td>
+              <p>
+                2.30258
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>Trigonometric</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                degree
+              </p>
+            </td>
+<td>
+              <p>
+                radians = &#960; / 180
+              </p>
+            </td>
+<td>
+              <p>
+                0.017453
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                radian
+              </p>
+            </td>
+<td>
+              <p>
+                degrees = 180 / &#960;
+              </p>
+            </td>
+<td>
+              <p>
+                57.2957
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                sin_one
+              </p>
+            </td>
+<td>
+              <p>
+                sin(1)
+              </p>
+            </td>
+<td>
+              <p>
+                0.841470
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                cos_one
+              </p>
+            </td>
+<td>
+              <p>
+                cos(1)
+              </p>
+            </td>
+<td>
+              <p>
+                0.54030
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                sinh_one
+              </p>
+            </td>
+<td>
+              <p>
+                sinh(1)
+              </p>
+            </td>
+<td>
+              <p>
+                1.17520
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                cosh_one
+              </p>
+            </td>
+<td>
+              <p>
+                cosh(1)
+              </p>
+            </td>
+<td>
+              <p>
+                1.54308
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>Phi</strong></span>
+              </p>
+            </td>
+<td>
+              <p>
+                Phidias golden ratio
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Golden_ratio" target="_top">Phidias golden
+                ratio</a>
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                phi
+              </p>
+            </td>
+<td>
+              <p>
+                (1 + &#8730;5) /2
+              </p>
+            </td>
+<td>
+              <p>
+                1.61803
+              </p>
+            </td>
+<td>
+              <p>
+                finance
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                log_phi
+              </p>
+            </td>
+<td>
+              <p>
+                ln(&#966;)
+              </p>
+            </td>
+<td>
+              <p>
+                0.48121
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_log_phi
+              </p>
+            </td>
+<td>
+              <p>
+                1/ln(&#966;)
+              </p>
+            </td>
+<td>
+              <p>
+                2.07808
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>Euler's Gamma</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                gamma
+              </p>
+            </td>
+<td>
+              <p>
+                &#915;
+              </p>
+            </td>
+<td>
+              <p>
+                0.577215
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant" target="_top">Euler-Mascheroni
+                gamma constant</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                one_div_gamma
+              </p>
+            </td>
+<td>
+              <p>
+                1/&#915;
+              </p>
+            </td>
+<td>
+              <p>
+                1.73245
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                gamma_sqr
+              </p>
+            </td>
+<td>
+              <p>
+                &#915;<sup>2</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                0.333177
+              </p>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <span class="bold"><strong>Misc</strong></span>
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+<td>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                cf10
+              </p>
+            </td>
+<td>
+              <p>
+                1/10 ...
+              </p>
+            </td>
+<td>
+              <p>
+                1.03064
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Continued_fraction" target="_top">Continued
+                fraction</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                zeta_two
+              </p>
+            </td>
+<td>
+              <p>
+                &#950;(2)
+              </p>
+            </td>
+<td>
+              <p>
+                1.64493
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Riemann_zeta_function" target="_top">Riemann
+                zeta function</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                zeta_three
+              </p>
+            </td>
+<td>
+              <p>
+                &#950;(3)
+              </p>
+            </td>
+<td>
+              <p>
+                1.20205
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Riemann_zeta_function" target="_top">Riemann
+                zeta function</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                catalan
+              </p>
+            </td>
+<td>
+              <p>
+                <span class="emphasis"><em>K</em></span>
+              </p>
+            </td>
+<td>
+              <p>
+                0.915965
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://mathworld.wolfram.com/CatalansConstant.html" target="_top">Catalan
+                (or Glaisher) combinatorial constant</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                extreme_skewness
+              </p>
+            </td>
+<td>
+              <p>
+                12&#8730;6 &#950;(3)/ &#960;<sup>3</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                1.139547
+              </p>
+            </td>
+<td>
+              <p>
+                Extreme value distribution
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                rayleigh_skewness
+              </p>
+            </td>
+<td>
+              <p>
+                2&#8730;&#960;(&#960;-3)/(4 - &#960;)<sup>3/2</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                0.631110
+              </p>
+            </td>
+<td>
+              <p>
+                Rayleigh distribution skewness
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                rayleigh_kurtosis_excess
+              </p>
+            </td>
+<td>
+              <p>
+                -(6&#960;<sup>2</sup>-24&#960;+16)/(4-&#960;)<sup>2</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                0.245089
+              </p>
+            </td>
+<td>
+              <p>
+                <a href="http://en.wikipedia.org/wiki/Rayleigh_distribution" target="_top">Rayleigh
+                distribution kurtosis excess</a>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                rayleigh_kurtosis
+              </p>
+            </td>
+<td>
+              <p>
+                3+(6&#960;<sup>2</sup>-24&#960;+16)/(4-&#960;)<sup>2</sup>
+              </p>
+            </td>
+<td>
+              <p>
+                3.245089
+              </p>
+            </td>
+<td>
+              <p>
+                Rayleigh distribution kurtosis
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<br class="table-break"><div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Integer values are <span class="bold"><strong>not included</strong></span> in this
+        list of math constants, however interesting, because they can be so easily
+        and exactly constructed, even for UDT, for example: <code class="computeroutput"><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">cpp_float</span><span class="special">&gt;(</span><span class="number">42</span><span class="special">)</span></code>.
+      </p></td></tr>
+</table></div>
+<div class="tip"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        If you know the approximate value of the constant, you can search for the
+        value to find Boost.Math chosen name in this table.
+      </p></td></tr>
+</table></div>
 </div>
 <div class="section" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="math_constants.new_const"></a><a class="link" href="index.html#math_constants.new_const" title="Defining New Constants"> Defining New Constants</a>
+<a name="math_constants.new_const"></a><a class="link" href="index.html#math_constants.new_const" title="Defining New Constants">Defining New Constants</a>
 </h2></div></div></div>
 <p>
-      The library provides some helper code to assist in defining new constants,
-      the process for defining a constant called "boost" goes like this:
+      The library provides some helper code to assist in defining new constants;
+      the process for defining a constant called <code class="computeroutput"><span class="identifier">my_constant</span></code>
+      goes like this:
     </p>
 <p>
-      1. Define a function that calculates the value of the constant, this should
-      be a template function, and be placed in boost/math/constants/calculate_constants.hpp
-      if the constant is to be added to this library, or else defined at the top
-      of your source file if not. The function should look like this:
+      1. <span class="bold"><strong>Define a function that calculates the value of the
+      constant</strong></span>. This should be a template function, and be placed in
+      <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">calculate_constants</span><span class="special">.</span><span class="identifier">hpp</span></code> if the
+      constant is to be added to this library, or else defined at the top of your
+      source file if not.
+    </p>
+<p>
+      The function should look like this:
     </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">math</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">constants</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">detail</span><span class="special">{</span>
 
 <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">Real</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">N</span><span class="special">&gt;</span>
-<span class="identifier">Real</span> <span class="identifier">calculate_boost</span><span class="special">((</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC</span><span class="special">(</span><span class="identifier">T</span><span class="special">))</span>
+<span class="identifier">Real</span> <span class="identifier">calculate_my_constant</span><span class="special">((</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC</span><span class="special">(</span><span class="identifier">T</span><span class="special">))</span>
 <span class="special">{</span>
-   <span class="keyword">int</span> <span class="identifier">required_precision</span> <span class="special">=</span> <span class="identifier">N</span> <span class="special">?</span> <span class="identifier">N</span> <span class="special">:</span> <span class="identifier">tools</span><span class="special">::</span><span class="identifier">digits</span><span class="special">&lt;</span><span class="identifier">Real</span><span class="special">&gt;();</span>
-   <span class="identifier">Real</span> <span class="identifier">result</span> <span class="special">=</span> <span class="comment">/* value computed to required_precision bits */</span> <span class="special">;</span>
-   <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
+  <span class="keyword">int</span> <span class="identifier">required_precision</span> <span class="special">=</span> <span class="identifier">N</span> <span class="special">?</span> <span class="identifier">N</span> <span class="special">:</span> <span class="identifier">tools</span><span class="special">::</span><span class="identifier">digits</span><span class="special">&lt;</span><span class="identifier">Real</span><span class="special">&gt;();</span>
+  <span class="identifier">Real</span> <span class="identifier">result</span> <span class="special">=</span> <span class="comment">/* value computed to required_precision bits */</span> <span class="special">;</span>
+  <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
 <span class="special">}</span>
 
-<span class="special">}}}}</span> <span class="comment">// namespaces
-</span></pre>
+<span class="special">}}}}</span> <span class="comment">// namespaces</span>
+</pre>
 <p>
-      2. You will need an arbitary precision type to use to calculate the value -
-      this library currently supports either NTL::RR or mpfr_class used via the bindings
-      in boost/math/bindings. The default is to use NTL::RR unles you define <code class="computeroutput"><span class="identifier">USE_MPFR</span></code> at the start of your program.
+      For example, to calculate &#960;/2, add to <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">calculate_constants</span><span class="special">.</span><span class="identifier">hpp</span></code>
+    </p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">N</span><span class="special">&gt;</span>
+<span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">calculate_half_pi</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;&amp;</span><span class="identifier">BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC</span><span class="special">(</span><span class="identifier">T</span><span class="special">))</span>
+<span class="special">{</span>
+   <span class="identifier">BOOST_MATH_STD_USING</span>
+   <span class="keyword">return</span> <span class="identifier">pi</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">policies</span><span class="special">::</span><span class="identifier">policy</span><span class="special">&lt;</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">digits2</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;()</span> <span class="special">/</span> <span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;(</span><span class="number">2</span><span class="special">);</span>
+<span class="special">}</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Previously defined constants like pi and e can be used, but by not simply
+        calling <code class="computeroutput"><span class="identifier">pi</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span></code>;
+        specifying the precision via the policy is essential to ensure full accuracy.
+      </p></td></tr>
+</table></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        Newly defined constants can only be used once they are included in <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span></code>. So
+        if you add <code class="computeroutput"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="identifier">T</span> <span class="identifier">calculate_new_constant</span><span class="special">{...}</span></code>,
+        then you cannot define <code class="computeroutput"><span class="identifier">calculate_one_div_new_constant</span></code>
+        until you add the <code class="computeroutput"><span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">new_constant</span><span class="special">,</span> <span class="number">1.234</span><span class="special">...)</span></code>.
+      </p></td></tr>
+</table></div>
+<p>
+      2. <span class="bold"><strong>You will need an arbitary precision type to use to
+      calculate the value</strong></span>. This library currently supports either <code class="computeroutput"><span class="identifier">cpp_float</span></code>, <code class="computeroutput"><span class="identifier">NTL</span><span class="special">::</span><span class="identifier">RR</span></code> or
+      <code class="computeroutput"><span class="identifier">mpfr_class</span></code> used via the bindings
+      in <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">bindings</span></code>.
+      The default is to use <code class="computeroutput"><span class="identifier">NTL</span><span class="special">::</span><span class="identifier">RR</span></code> unless you define an alternate macro,
+      for example, <code class="computeroutput"><span class="identifier">USE_MPFR</span></code> or <code class="computeroutput"><span class="identifier">USE_CPP_FLOAT</span></code> at the start of your program.
     </p>
 <p>
-      3. The complete program to calculate the constant is then:
+      3. The complete program to generate the constant <code class="computeroutput"><span class="identifier">half_pi</span></code>
+      using function <code class="computeroutput"><span class="identifier">calculate_half_pi</span></code>
+      is then:
     </p>
-<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">USE_MPFR</span> <span class="comment">// if required
-</span><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">generate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">USE_CPP_FLOAT</span> <span class="comment">// If required.</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">generate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
 <span class="special">{</span>
-   <span class="identifier">BOOST_CONSTANTS_GENERATE</span><span class="special">(</span><span class="identifier">boost</span><span class="special">);</span>
+   <span class="identifier">BOOST_CONSTANTS_GENERATE</span><span class="special">(</span><span class="identifier">half_pi</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
       The output from the program is a snippet of C++ code (actually a macro call)
-      that can be cut and pasted into boost/math/constants/constants.hpp or else
-      into your own code:
+      that can be cut and pasted into <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span></code> or else into your own code, for example:
     </p>
-<pre class="programlisting">BOOST_DEFINE_MATH_CONSTANT(boost, 3.141592653589793238462643383279502884, 19716939937510582097494459230781640628620899862803482534211706798, 0);
+<pre class="programlisting">BOOST_DEFINE_MATH_CONSTANT(half_pi, 1.570796326794896619231321691639751442, 09858469968755291048747229615390820314310449931401741267105853399107404326, +00);
 </pre>
 <p>
-      This code snippet declares the float, double and long double versions of the
-      constant, plus a string representation correct to 100 decimal digits, and all
-      the meta-programming machinary needed to select between them.
+      This macro BOOST_DEFINE_MATH_CONSTANT inserts a code snippet that declares
+      the <code class="computeroutput"><span class="keyword">float</span></code>, <code class="computeroutput"><span class="keyword">double</span></code>
+      and <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      versions of the constant, plus a decimal digit string representation correct
+      to 100 decimal digits, and all the meta-programming machinary needed to select
+      between them.
+    </p>
+</div>
+<div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="math_constants.FAQ"></a><a class="link" href="index.html#math_constants.FAQ" title="FAQs">FAQs</a>
+</h2></div></div></div>
+<h5>
+<a name="math_constants.FAQ.h0"></a>
+      <span><a name="math_constants.FAQ.why_are__emphasis_these__emphasis__constants_chosen_"></a></span><a class="link" href="index.html#math_constants.FAQ.why_are__emphasis_these__emphasis__constants_chosen_">Why
+      are <span class="emphasis"><em>these</em></span> Constants Chosen?</a>
+    </h5>
+<p>
+      It is, of course, impossible to please everyone with a list like this.
+    </p>
+<p>
+      Some of the criteria we have used are:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          Used in Boost.Math.
+        </li>
+<li>
+          Commonly used.
+        </li>
+<li>
+          Expensive to compute.
+        </li>
+<li>
+          Requested by users.
+        </li>
+<li>
+          No integer values (because so cheap to construct).<br> (You can easily
+          define your own if found convenient, for example: <code class="computeroutput"><span class="identifier">FPT</span>
+          <span class="identifier">one</span> <span class="special">=</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">FPT</span><span class="special">&gt;(</span><span class="number">42</span><span class="special">);</span></code>).
+        </li>
+</ul></div>
+<h5>
+<a name="math_constants.FAQ.h1"></a>
+      <span><a name="math_constants.FAQ.how_are_constants_named_"></a></span><a class="link" href="index.html#math_constants.FAQ.how_are_constants_named_">How
+      are constants named?</a>
+    </h5>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          Not macros, so no upper case.
+        </li>
+<li>
+          All lower case (following C++ standard names).
+        </li>
+<li>
+          No CamelCase.
+        </li>
+<li>
+          Underscore as _ delimiter between words.
+        </li>
+<li>
+          Numbers spelt as words rather than decimal digits (except following pow).
+        </li>
+<li>
+          Abbreviation words:
+          <div class="itemizedlist"><ul type="circle">
+<li>
+                root for square root.
+              </li>
+<li>
+                cbrt for cube root.
+              </li>
+<li>
+                pow for pow function using decimal digits like pow23 for n<sup>2/3</sup>.
+              </li>
+<li>
+                div for divided by or operator /.
+              </li>
+<li>
+                minus for operator -, plus for operator +.
+              </li>
+<li>
+                sqr for squared.
+              </li>
+<li>
+                cubed for cubed n<sup>3</sup>.
+              </li>
+<li>
+                words for greek, like &#960;, &#950; and &#915;.
+              </li>
+<li>
+                words like half, third, three_quarters, sixth for fractions. (Digit(s)
+                can get muddled).
+              </li>
+<li>
+                log10 for log<sub>10</sub>
+              </li>
+<li>
+                ln for log<sub>e</sub>
+              </li>
+</ul></div>
+        </li>
+</ul></div>
+<h5>
+<a name="math_constants.FAQ.h2"></a>
+      <span><a name="math_constants.FAQ.how_are_the_constants_derived_"></a></span><a class="link" href="index.html#math_constants.FAQ.how_are_the_constants_derived_">How
+      are the constants derived?</a>
+    </h5>
+<p>
+      The constants have all been calculated using high-precision software working
+      with up to 300-bit precision giving about 100 decimal digits. (The precision
+      can be arbitrarily chosen and is limited only by compute time).
+    </p>
+<h5>
+<a name="math_constants.FAQ.h3"></a>
+      <span><a name="math_constants.FAQ.how_accurate_are_the_constants_"></a></span><a class="link" href="index.html#math_constants.FAQ.how_accurate_are_the_constants_">How
+      Accurate are the constants?</a>
+    </h5>
+<p>
+      The minimum accuracy chosen (100 decimal digits) exceeds the accuracy of reasonably-foreseeable
+      floating-point hardware (256-bit) and should meet most high_precision computations.
+    </p>
+<h5>
+<a name="math_constants.FAQ.h4"></a>
+      <span><a name="math_constants.FAQ.why_is_portability_important_"></a></span><a class="link" href="index.html#math_constants.FAQ.why_is_portability_important_">Why
+      is Portability important?</a>
+    </h5>
+<p>
+      Code written using math constants is easily portable even when using different
+      floating-point types with differing precision.
+    </p>
+<p>
+      It is a mistake to expect that results of computations will be <span class="bold"><strong>identical</strong></span>,
+      but you can achieve the <span class="bold"><strong>best accuracy possible for the
+      floating-point type in use</strong></span>.
+    </p>
+<p>
+      This has no extra cost to the user, but reduces irritating, and often confusing
+      and very hard-to-trace effects, caused by the intrinsically limited precision
+      of floating-point calculations.
+    </p>
+<p>
+      A harmless symptom of this limit is a spurious least-significant digit; at
+      worst, slightly inaccurate constants sometimes cause iterating algorithms to
+      diverge wildly because internal comparisons just fail.
+    </p>
+<h5>
+<a name="math_constants.FAQ.h5"></a>
+      <span><a name="math_constants.FAQ.what_is_the_internal_format_of_the_constants__and_why_"></a></span><a class="link" href="index.html#math_constants.FAQ.what_is_the_internal_format_of_the_constants__and_why_">What
+      is the Internal Format of the constants, and why?</a>
+    </h5>
+<p>
+      See <a class="link" href="index.html#math_constants.tutorial" title="Tutorial">tutorial</a> above for normal
+      use, but this FAQ explains the internal details used for the constants.
+    </p>
+<p>
+      Constants are stored as 100 decimal digit values. However, some compilers do
+      not accept decimal digits strings as long as this. So the constant is split
+      into two parts, with the 1st containing at least long double precision, and
+      the 2nd zero if not needed or known. The 3rd part permits an exponent to be
+      provided if necessary (use zero if none) - the other two parameters may only
+      contain decimal digits (and sign and decimal point), and may NOT include an
+      exponent like 1.234E99. The second digit string is only used if T is a User-Defined
+      Type, when the constant is converted to a long string literal. If <code class="computeroutput"><span class="identifier">T</span> </code>is constructible from a <code class="computeroutput"><span class="keyword">const</span>
+      <span class="keyword">char</span><span class="special">*</span></code>
+      then it's directly constructed from the string, otherwise we fall back on lexical_cast
+      to convert to type <code class="computeroutput"><span class="identifier">T</span></code>. (This
+      is necessary because you can't use a numeric constant since even a <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      might not have enough digits).
+    </p>
+<p>
+      So, for example, a constant like pi is internally defined as
+    </p>
+<pre class="programlisting"><span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">pi</span><span class="special">,</span> <span class="number">3.141592653589793238462643383279502884</span><span class="special">,</span> <span class="number">19716939937510582097494459230781640628620899862803482534211706798214808651</span><span class="special">,</span> <span class="special">+</span><span class="number">00</span><span class="special">);</span>
+</pre>
+<p>
+      In this case the significand is 109 decimal digits, ensuring 100 decimal digits
+      are exact, and exponent is zero.
+    </p>
+<p>
+      See <a class="link" href="index.html#math_constants.new_const" title="Defining New Constants">defining new constants</a>
+      to calculate new constants.
+    </p>
+<p>
+      A macro definition like this can be pasted into user code where convenient,
+      or into <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span></code> if it
+      is to be added to the Boost.Math library.
+    </p>
+<h5>
+<a name="math_constants.FAQ.h6"></a>
+      <span><a name="math_constants.FAQ.what_floating_point_types_could_i_use_"></a></span><a class="link" href="index.html#math_constants.FAQ.what_floating_point_types_could_i_use_">What Floating-point
+      Types could I use?</a>
+    </h5>
+<p>
+      Apart from the built-in floating-point types <code class="computeroutput"><span class="keyword">float</span></code>,
+      <code class="computeroutput"><span class="keyword">double</span></code>, <code class="computeroutput"><span class="keyword">long</span>
+      <span class="keyword">double</span></code>, there are several arbitrary
+      precision floating-point classes available, but most are not licensed for commercial
+      use.
+    </p>
+<h6>
+<a name="math_constants.FAQ.h7"></a>
+      <span><a name="math_constants.FAQ.boost_multiprecision_by_christopher_kormanyos"></a></span><a class="link" href="index.html#math_constants.FAQ.boost_multiprecision_by_christopher_kormanyos">Boost.Multiprecision
+      by Christopher Kormanyos</a>
+    </h6>
+<p>
+      This work is based on an earlier work called e-float: Algorithm 910: A Portable
+      C++ Multiple-Precision System for Special-Function Calculations, in ACM TOMS,
+      {VOL 37, ISSUE 4, (February 2011)} (C) ACM, 2011. <a href="http://doi.acm.org/10.1145/1916461.1916469" target="_top">http://doi.acm.org/10.1145/1916461.1916469</a>
+      <a href="https://svn.boost.org/svn/boost/sandbox/e_float/" target="_top">e_float</a>
+      but is now re-factored and available under the Boost license in the Boost-sandbox
+      at <a href="https://svn.boost.org/svn/boost/sandbox/multiprecision/" target="_top">multiprecision</a>
+      where it is being refined and prepared for review.
+    </p>
+<h6>
+<a name="math_constants.FAQ.h8"></a>
+      <span><a name="math_constants.FAQ.boost_cpp_float_by_john_maddock_using_expression_templates"></a></span><a class="link" href="index.html#math_constants.FAQ.boost_cpp_float_by_john_maddock_using_expression_templates">Boost.cpp_float
+      by John Maddock using Expression Templates</a>
+    </h6>
+<p>
+      <a href="https://svn.boost.org/svn/boost/sandbox/big_number/" target="_top">Big Number</a>
+      which is a reworking of <a href="https://svn.boost.org/svn/boost/sandbox/e_float/" target="_top">e_float</a>
+      by Christopher Kormanyos to use expression templates for faster execution.
+    </p>
+<h6>
+<a name="math_constants.FAQ.h9"></a>
+      <span><a name="math_constants.FAQ.ntl_class_quad_float"></a></span><a class="link" href="index.html#math_constants.FAQ.ntl_class_quad_float">NTL
+      class quad_float</a>
+    </h6>
+<p>
+      <a href="http://shoup.net/ntl/" target="_top">NTL</a> by Victor Shoup has fixed and
+      arbitrary high precision fixed and floating-point types. However none of these
+      are licenced for commercial use.
+    </p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">NTL</span><span class="special">/</span><span class="identifier">quad_float</span><span class="special">.</span><span class="identifier">h</span><span class="special">&gt;</span> <span class="comment">// quad precision 106-bit, about 32 decimal digits.</span>
+<span class="keyword">using</span> <span class="identifier">NTL</span><span class="special">::</span><span class="identifier">to_quad_float</span><span class="special">;</span> <span class="comment">// Less precise than arbitrary precision NTL::RR.</span>
+</pre>
+<p>
+      NTL class <code class="computeroutput"><span class="identifier">quad_float</span></code>, which
+      gives a form of quadruple precision, 106-bit significand (but without an extended
+      exponent range.) With an IEC559/IEEE 754 compatible processor, for example
+      Intel X86 family, with 64-bit double, and 53-bit significand, using the significands
+      of <span class="bold"><strong>two</strong></span> 64-bit doubles, if <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="keyword">double</span><span class="special">&gt;::</span><span class="identifier">digits10</span></code> is 16, then we get about twice the
+      precision, so <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">quad_float</span><span class="special">&gt;::</span><span class="identifier">digits10</span><span class="special">()</span></code>
+      should be 32. (the default <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">RR</span><span class="special">&gt;::</span><span class="identifier">digits10</span><span class="special">()</span></code>
+      should be about 40). (which seems to agree with experiments). We output constants
+      (including some noisy bits, an approximation to <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">numeric_limits</span><span class="special">&lt;</span><span class="identifier">RR</span><span class="special">&gt;::</span><span class="identifier">max_digits10</span><span class="special">()</span></code>)
+      by adding 2 extra decimal digits, so using <code class="computeroutput"><span class="identifier">quad_float</span><span class="special">::</span><span class="identifier">SetOutputPrecision</span><span class="special">(</span><span class="number">32</span> <span class="special">+</span>
+      <span class="number">2</span><span class="special">);</span></code>
+    </p>
+<p>
+      Apple Mac/Darwin uses a similar <span class="emphasis"><em>doubledouble</em></span> 106-bit for
+      its built-in <code class="computeroutput"><span class="keyword">long</span> <span class="keyword">double</span></code>
+      type.
+    </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        The precision of all <code class="computeroutput"><span class="identifier">doubledouble</span></code>
+        floating-point types is rather odd and values given are only approximate.
+      </p></td></tr>
+</table></div>
+<h6>
+<a name="math_constants.FAQ.h10"></a>
+      <span><a name="math_constants.FAQ.ntl_class_rr"></a></span><a class="link" href="index.html#math_constants.FAQ.ntl_class_rr">NTL
+      class RR</a>
+    </h6>
+<p>
+      Arbitrary precision floating point with NTL class RR, default is 150 bit (about
+      50 decimal digits) used here with 300 bit to output 100 decimal digits, enough
+      for many practical non-'number-theoretic' C++ applications.
+    </p>
+<p>
+      NTL is <span class="bold"><strong>not licenced for commercial use</strong></span>.
+    </p>
+<p>
+      This class is used in Boost.Math and an option when using big_number projects
+      to calculate new math constants.
+    </p>
+<h6>
+<a name="math_constants.FAQ.h11"></a>
+      <span><a name="math_constants.FAQ.gmp_and_mpfr"></a></span><a class="link" href="index.html#math_constants.FAQ.gmp_and_mpfr">GMP
+      and MPFR</a>
+    </h6>
+<p>
+      <a href="gmplib.org" target="_top">GMP</a> and <a href="http://www.mpfr.org/" target="_top">MPFR</a>
+      have also been used to compute constants, but are licensed under the <a href="http://www.gnu.org/copyleft/lesser.html" target="_top">Lesser GPL license</a> and
+      are <span class="bold"><strong>not licensed for commercial use</strong></span>.
+    </p>
+<h6>
+<a name="math_constants.FAQ.h12"></a>
+      <span><a name="math_constants.FAQ.where_can_i_find_other_high_precision_constants_"></a></span><a class="link" href="index.html#math_constants.FAQ.where_can_i_find_other_high_precision_constants_">Where
+      can I find other high precision constants?</a>
+    </h6>
+<div class="orderedlist"><ol type="1">
+<li>
+          Constants with very high precision and good accuracy (&gt;40 decimal digits)
+          from Simon Plouffe's web based collection <a href="http://pi.lacim.uqam.ca/eng/" target="_top">http://pi.lacim.uqam.ca/eng/</a>.
+        </li>
+<li>
+          Checks using printed text optically scanned values and converted from:
+          D. E. Knuth, Art of Computer Programming, Appendix A, Table 1, Vol 1, ISBN
+          0 201 89683 4 (1997)
+        </li>
+<li>
+          M. Abrahamovitz &amp; I. E. Stegun, National Bureau of Standards, Handbook
+          of Mathematical Functions, a reference source for formulae now superceded
+          by
+        </li>
+<li>
+          Frank W. Olver, Daniel W. Lozier, Ronald F. Boisvert, Charles W. Clark,
+          NIST Handbook of Mathemetical Functions, Cambridge University Press, ISBN
+          978-0-521-14063-8, 2010.
+        </li>
+<li>
+          John F Hart, Computer Approximations, Kreiger (1978) ISBN 0 88275 642 7.
+        </li>
+<li>
+          Some values from Cephes Mathematical Library, Stephen L. Moshier and CALC100
+          100 decimal digit Complex Variable Calculator Program, a DOS utility.
+        </li>
+<li>
+          Xavier Gourdon, Pascal Sebah, 50 decimal digits constants at <a href="http://numbers.computation.free.fr/Constants/constants.html" target="_top">Number,
+          constants and computation</a>.
+        </li>
+</ol></div>
+<h5>
+<a name="math_constants.FAQ.h13"></a>
+      <span><a name="math_constants.FAQ.where_are_physical_constants_"></a></span><a class="link" href="index.html#math_constants.FAQ.where_are_physical_constants_">Where
+      are Physical Constants?</a>
+    </h5>
+<p>
+      Not here in this Boost.Math collection because physical constants:
+    </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+          Are measurements.
+        </li>
+<li>
+          Are not truly constant and keeping changing as mensuration technology improves.
+        </li>
+<li>
+          Have a instrinsic uncertainty.
+        </li>
+<li>
+          Mathematical constants are stored and represented at varying precision,
+          but should never be inaccurate.
+        </li>
+</ul></div>
+<p>
+      Some physical constants may be available in Boost.Units.
     </p>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: December 01, 2010 at 13:39:54 GMT</small></p></td>
+<td align="left"><p><small>Last revised: December 07, 2011 at 15:22:16 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
