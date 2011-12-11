@@ -106,15 +106,13 @@
 <dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___python__def___deduced_named_parameters">[Named
       Parameters] Python <code class="computeroutput"><span class="identifier">def</span></code>: Deduced
       named parameters</a></span></dt>
+<dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___calls__member_functions_with_named_parameters">[Named
+      Parameters] Calls: Member functions with named parameters</a></span></dt>
+<dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___family__constructors_with_named_parameters">[Named
+      Parameters] Family: Constructors with named parameters</a></span></dt>
 <dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___python__class___named_template_parameters">[Named
       Parameters] Python <code class="computeroutput"><span class="keyword">class</span></code>: Named
       template parameters</a></span></dt>
-<dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___calls__member_functions_with_named_parameters">[Named
-      Parameters] Calls: Member functions with named parameters</a></span></dt>
-<dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___my_class__constructors_with_named_parameters">[Named
-      Parameters] My Class: Constructors with named parameters</a></span></dt>
-<dt><span class="section"><a href="examples.html#contract__.examples.__named_parameters___positive_number__fine_grained_parameter_name_control">[Named
-      Parameters] Positive Number: Fine-grained parameter name control</a></span></dt>
 </dl></div>
 <p>
       This section lists quite a few examples programmed using this library and taken
@@ -638,7 +636,7 @@
             <span class="keyword">auto</span> <span class="identifier">old_self</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="special">*</span><span class="keyword">this</span><span class="special">,</span>
             <span class="keyword">auto</span> <span class="identifier">old_right</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">right</span><span class="special">,</span>
             <span class="identifier">right</span> <span class="special">==</span> <span class="identifier">old_self</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>
-            <span class="identifier">old_right</span> <span class="special">==</span> <span class="special">*</span> <span class="keyword">this</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>
+            <span class="identifier">old_right</span> <span class="special">==</span> <span class="special">*</span><span class="keyword">this</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>
         <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
         <span class="identifier">vect_</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">right</span><span class="special">);</span>
@@ -1402,18 +1400,18 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">&gt;</span>
-<span class="keyword">class</span> <span class="identifier">Addable</span> <span class="special">{</span> <span class="comment">// User-defined concept.</span>
-    <span class="identifier">T</span> <span class="identifier">x</span><span class="special">;</span>
-    <span class="identifier">T</span> <span class="identifier">y</span><span class="special">;</span>
-    <span class="keyword">void</span> <span class="identifier">return_type</span> <span class="special">(</span> <span class="identifier">T</span> <span class="special">);</span> <span class="comment">// Used to check addition returns type `T`.</span>
-<span class="keyword">public</span><span class="special">:</span>
+<span class="keyword">struct</span> <span class="identifier">Addable</span> <span class="special">{</span> <span class="comment">// User-defined concept.</span>
     <span class="identifier">BOOST_CONCEPT_USAGE</span><span class="special">(</span><span class="identifier">Addable</span><span class="special">)</span> <span class="special">{</span>
         <span class="identifier">return_type</span><span class="special">(</span><span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">);</span> <span class="comment">// Check addition `T operator+(T x, T y)`.</span>
     <span class="special">}</span>
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">T</span> <span class="identifier">x</span><span class="special">;</span>
+    <span class="identifier">T</span> <span class="identifier">y</span><span class="special">;</span>
+    <span class="keyword">void</span> <span class="identifier">return_type</span> <span class="special">(</span> <span class="identifier">T</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="special">);</span> <span class="comment">// Used to check addition returns type `T`.</span>
 <span class="special">};</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
@@ -1421,7 +1419,7 @@
 <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="special">(</span><span class="identifier">add</span><span class="special">)</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">x</span><span class="special">,</span> <span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="identifier">y</span> <span class="special">)</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
         <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-        <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>
+        <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">;</span>
@@ -1438,7 +1436,6 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">bool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">list</span><span class="special">&gt;</span>
@@ -1558,7 +1555,7 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="comment">// Use assertion requirements to model assertion computational complexity.</span>
@@ -1577,9 +1574,9 @@
         <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
         <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">op</span><span class="special">(</span><span class="identifier">arg0</span><span class="special">),</span>
                 <span class="identifier">requires</span> <span class="identifier">O_BODY</span> <span class="special">&lt;=</span> <span class="identifier">COMPLEXITY_MAX</span> <span class="special">&amp;&amp;</span>
-                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>
+                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>
         <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span><span class="special">,</span>
-                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span>
+                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">result</span> <span class="special">=</span> <span class="identifier">op</span><span class="special">(</span><span class="identifier">arg0</span><span class="special">);</span>
@@ -1596,9 +1593,9 @@
         <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
         <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">op</span><span class="special">(</span><span class="identifier">arg0</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">),</span>
                 <span class="identifier">requires</span> <span class="identifier">O_BODY</span> <span class="special">&lt;=</span> <span class="identifier">COMPLEXITY_MAX</span> <span class="special">&amp;&amp;</span>
-                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>
+                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span>
         <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span><span class="special">,</span>
-                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span>
+                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">Result</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">result</span> <span class="special">=</span> <span class="identifier">op</span><span class="special">(</span><span class="identifier">arg0</span><span class="special">,</span> <span class="identifier">arg1</span><span class="special">);</span>
@@ -1615,7 +1612,7 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
@@ -1629,7 +1626,7 @@
     <span class="comment">// Precondition: Range [first, last) is valid.</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
         <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-        <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">func</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">Func</span><span class="special">&gt;::</span><span class="identifier">value</span>
+        <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">func</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">Func</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">CONTRACT_LOOP</span><span class="special">(</span> <span class="keyword">while</span><span class="special">(</span><span class="identifier">first</span> <span class="special">&lt;</span> <span class="identifier">last</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span> <span class="comment">// OK: Iter is InputIterator.</span>
@@ -1655,7 +1652,7 @@
 <span class="preprocessor">#define</span> <span class="identifier">CONTRACT_CONFIG_FUNCTION_ARITY_MAX</span> <span class="number">6</span>
 
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">algorithm</span><span class="special">&gt;</span>
 
@@ -1676,7 +1673,7 @@
     <span class="comment">// Precondition: Range [first1, last1) is valid.</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
         <span class="keyword">auto</span> <span class="identifier">return_value</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-        <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">OutIter</span><span class="special">&gt;::</span><span class="identifier">value</span>
+        <span class="identifier">return_value</span> <span class="special">==</span> <span class="identifier">result</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">OutIter</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">transform</span><span class="special">(</span><span class="identifier">first1</span><span class="special">,</span> <span class="identifier">last1</span><span class="special">,</span> <span class="identifier">first2</span><span class="special">,</span> <span class="identifier">result</span><span class="special">,</span> <span class="identifier">op</span><span class="special">);</span>
@@ -1801,7 +1798,7 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
@@ -1815,7 +1812,7 @@
     <span class="comment">// Precondition: Iterator i is non-singular.</span>
     <span class="identifier">postcondition</span><span class="special">(</span>
         <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
-        <span class="identifier">result</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="keyword">typename</span>
+        <span class="identifier">result</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">i</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="keyword">typename</span>
                 <span class="identifier">boost</span><span class="special">::</span><span class="identifier">InputIterator</span><span class="special">&lt;</span><span class="identifier">Iter</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
@@ -1833,7 +1830,7 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
@@ -1842,7 +1839,7 @@
     <span class="identifier">postcondition</span><span class="special">(</span>
         <span class="keyword">auto</span> <span class="identifier">result</span> <span class="special">=</span> <span class="keyword">return</span><span class="special">,</span>
         <span class="identifier">x</span> <span class="special">&lt;</span> <span class="identifier">y</span> <span class="special">?</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">x</span> <span class="special">:</span> <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">y</span><span class="special">,</span>
-                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>
+                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">&lt;</span> <span class="identifier">y</span> <span class="special">?</span> <span class="identifier">x</span> <span class="special">:</span> <span class="identifier">y</span><span class="special">;</span> <span class="comment">// OK: T is less than comparable `&lt;`.</span>
@@ -4462,8 +4459,8 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_equal</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">can_call_greater</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_greater</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">utility</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
@@ -4488,9 +4485,9 @@
         <span class="comment">// skip this assertion if `has_oldof&lt;T&gt;::value` is false</span>
         <span class="identifier">value</span> <span class="special">&gt;</span> <span class="identifier">old_value</span><span class="special">,</span> <span class="comment">// also skip if T has no operator&gt;</span>
                 <span class="identifier">requires</span> <span class="identifier">contract</span><span class="special">::</span><span class="identifier">has_oldof</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">&amp;&amp;</span>   <span class="comment">// need old-of</span>
-                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_greater</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span> <span class="comment">// need &gt;</span>
+                         <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_greater</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">,</span> <span class="comment">// need &gt;</span>
         <span class="identifier">result</span> <span class="special">==</span> <span class="identifier">value</span><span class="special">,</span> <span class="comment">// skip this assertion if T has no operator==</span>
-                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">can_call_equal</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>    <span class="comment">// need ==</span>
+                <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_equal_to</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span>    <span class="comment">// need ==</span>
     <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">return</span> <span class="special">++</span><span class="identifier">value</span><span class="special">;</span>
@@ -4536,6 +4533,7 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">parameter</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For named parameters.</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">utility</span><span class="special">/</span><span class="identifier">identity</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">graph</span><span class="special">/</span><span class="identifier">adjacency_list</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">graph</span><span class="special">/</span><span class="identifier">depth_first_search</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
@@ -4545,14 +4543,21 @@
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_convertible</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_integral</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_same</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">placeholders</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">property_map</span><span class="special">/</span><span class="identifier">property_map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">property_map</span><span class="special">/</span><span class="identifier">shared_array_property_map</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">and</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">placeholders</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
-<span class="keyword">namespace</span> <span class="identifier">graphs</span>
-<span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">graphs</span> <span class="special">{</span>
 
-<span class="comment">// Some helper graph metafunctions.</span>
+<span class="comment">// Helpers.</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">G</span> <span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">vertex_descriptor</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">G</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">};</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">is_incidence_and_vertex_list_graph</span> <span class="special">:</span>
@@ -4577,18 +4582,19 @@
 <span class="keyword">struct</span> <span class="identifier">is_integral_property_map_of_key</span> <span class="special">:</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">and_</span><span class="special">&lt;</span>
           <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_integral</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">&gt;</span>
-        <span class="special">,</span> <span class="identifier">is_property_map_of_key</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Key</span><span class="special">&gt;</span>
+        <span class="special">,</span> <span class="identifier">is_property_map_of_key</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Key</span><span class="special">::</span><span class="identifier">type</span><span class="special">&gt;</span>
     <span class="special">&gt;</span>
 <span class="special">{};</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Size</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">IndexMap</span> <span class="special">&gt;</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_property_map</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_color_type</span><span class="special">*,</span> <span class="identifier">IndexMap</span><span class="special">,</span>
-        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_color_type</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_color_type</span><span class="special">&amp;&gt;</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_array_property_map</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_color_type</span><span class="special">,</span> <span class="identifier">IndexMap</span><span class="special">&gt;</span>
 <span class="identifier">default_color_map</span> <span class="special">(</span> <span class="identifier">Size</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">num_vertices</span><span class="special">,</span> <span class="identifier">IndexMap</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">index_map</span> <span class="special">)</span>
 <span class="special">{</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_color_type</span><span class="special">&gt;</span> <span class="identifier">colors</span><span class="special">(</span><span class="identifier">num_vertices</span><span class="special">);</span>
-    <span class="keyword">return</span> <span class="special">&amp;</span><span class="identifier">colors</span><span class="special">[</span><span class="number">0</span><span class="special">];</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_shared_array_property_map</span><span class="special">(</span><span class="identifier">num_vertices</span><span class="special">,</span>
+            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_color_type</span><span class="special">(),</span> <span class="identifier">index_map</span><span class="special">);</span>
 <span class="special">}</span>
+
+<span class="comment">// Function with named parameters.</span>
 
 <span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)</span>
 <span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">visitor</span><span class="special">)</span>
@@ -4598,31 +4604,27 @@
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
 <span class="keyword">void</span> <span class="special">(</span><span class="identifier">depth_first_search</span><span class="special">)</span> <span class="special">(</span>
-        <span class="comment">// Required named parameter (no default value) with type requirement.</span>
+        <span class="comment">// Required parameter (no default value) with requirement predicate.</span>
         <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">is_incidence_and_vertex_list_graph</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)</span> <span class="identifier">graph</span><span class="special">,</span>
-        <span class="comment">// Optional named parameter (with default values) of any type (auto).</span>
+        <span class="comment">// Optional (default value) of any type (auto).</span>
         <span class="identifier">in</span> <span class="keyword">auto</span> <span class="identifier">visitor</span><span class="special">,</span> <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">dfs_visitor</span><span class="special">&lt;&gt;(),</span>
-        <span class="comment">// Optional named parameter (default value) with specific type.</span>
-        <span class="identifier">in</span> <span class="special">(</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;::</span>
-                <span class="identifier">vertex_descriptor</span><span class="special">)</span> <span class="identifier">root_vertex</span><span class="special">,</span>
-                <span class="keyword">default</span> <span class="special">*</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertices</span><span class="special">(</span><span class="identifier">graph</span><span class="special">).</span><span class="identifier">first</span><span class="special">,</span>
-        <span class="comment">// Optional named parameter (default value) with type requirement.</span>
-        <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
-                <span class="identifier">is_integral_property_map_of_key</span><span class="special">&lt;</span>
+        <span class="comment">// Exact type specified.</span>
+        <span class="identifier">in</span> <span class="special">(</span><span class="identifier">vertex_descriptor</span><span class="special">&lt;</span><span class="identifier">CONTRACT_PARAMETER_TYPEOF</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)&gt;)</span> <span class="identifier">root_vertex</span><span class="special">,</span>
+                <span class="keyword">default</span> <span class="identifier">BOOST_IDENTITY_VALUE</span><span class="special">((*</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertices</span><span class="special">(</span><span class="identifier">graph</span><span class="special">).</span><span class="identifier">first</span><span class="special">)),</span>
+        <span class="comment">// Any type matching requirement predicate (unary meta-function).</span>
+        <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">is_integral_property_map_of_key</span><span class="special">&lt;</span>
                       <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span>
-                    <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;::</span>
-                            <span class="identifier">vertex_descriptor</span>
+                    <span class="special">,</span> <span class="identifier">vertex_descriptor</span><span class="special">&lt;</span><span class="identifier">CONTRACT_PARAMETER_TYPEOF</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)&gt;</span>
                 <span class="special">&gt;)))</span> <span class="identifier">index_map</span><span class="special">,</span>
                 <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_index</span><span class="special">,</span> <span class="identifier">graph</span><span class="special">),</span>
-        <span class="comment">// Optional output named parameter (default value) with type req.</span>
-        <span class="identifier">in</span> <span class="identifier">out</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
-                <span class="identifier">is_property_map_of_key</span><span class="special">&lt;</span>
+        <span class="comment">// In-out parameter.</span>
+        <span class="identifier">in</span> <span class="identifier">out</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">is_property_map_of_key</span><span class="special">&lt;</span>
                       <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span>
-                    <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">tag</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;::</span>
-                            <span class="identifier">vertex_descriptor</span>
+                    <span class="special">,</span> <span class="identifier">vertex_descriptor</span><span class="special">&lt;</span><span class="identifier">CONTRACT_PARAMETER_TYPEOF</span><span class="special">(</span><span class="identifier">graph</span><span class="special">)&gt;</span>
                 <span class="special">&gt;)))</span> <span class="identifier">color_map</span><span class="special">,</span>
                 <span class="keyword">default</span> <span class="identifier">default_color_map</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">num_vertices</span><span class="special">(</span><span class="identifier">graph</span><span class="special">),</span> <span class="identifier">index_map</span><span class="special">)</span>
     <span class="special">)</span>
+    <span class="comment">// No `precondition(...)` or `postcondition(...)` in this example.</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">depth_first_search</span><span class="special">(</span><span class="identifier">graph</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">visitor</span><span class="special">(</span><span class="identifier">visitor</span><span class="special">).</span>
             <span class="identifier">color_map</span><span class="special">(</span><span class="identifier">color_map</span><span class="special">).</span><span class="identifier">root_vertex</span><span class="special">(</span><span class="identifier">root_vertex</span><span class="special">).</span>
@@ -4631,21 +4633,20 @@
 
 <span class="special">}</span> <span class="comment">// namespace graphs</span>
 
+<span class="comment">// Main program.</span>
+
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">TimeMap</span> <span class="special">&gt;</span>
 <span class="keyword">class</span> <span class="identifier">dfs_time_visitor</span> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">default_dfs_visitor</span>
 <span class="special">{</span>
-    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_traits</span><span class="special">&lt;</span> <span class="identifier">TimeMap</span> <span class="special">&gt;::</span><span class="identifier">value_type</span> <span class="identifier">T</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_traits</span><span class="special">&lt;</span><span class="identifier">TimeMap</span><span class="special">&gt;::</span><span class="identifier">value_type</span> <span class="identifier">T</span><span class="special">;</span>
 <span class="keyword">public</span><span class="special">:</span>
-    <span class="identifier">dfs_time_visitor</span><span class="special">(</span><span class="identifier">TimeMap</span> <span class="identifier">dmap</span><span class="special">,</span> <span class="identifier">TimeMap</span> <span class="identifier">fmap</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">t</span><span class="special">)</span>
-        <span class="special">:</span> <span class="identifier">dmap_</span><span class="special">(</span><span class="identifier">dmap</span><span class="special">),</span> <span class="identifier">fmap_</span><span class="special">(</span><span class="identifier">fmap</span><span class="special">),</span> <span class="identifier">time_</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span>
-    <span class="special">{}</span>
-
+    <span class="identifier">dfs_time_visitor</span> <span class="special">(</span> <span class="identifier">TimeMap</span> <span class="identifier">dmap</span><span class="special">,</span> <span class="identifier">TimeMap</span> <span class="identifier">fmap</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">t</span> <span class="special">)</span> <span class="special">:</span>
+            <span class="identifier">dmap_</span><span class="special">(</span><span class="identifier">dmap</span><span class="special">),</span> <span class="identifier">fmap_</span><span class="special">(</span><span class="identifier">fmap</span><span class="special">),</span> <span class="identifier">time_</span><span class="special">(</span><span class="identifier">t</span><span class="special">)</span> <span class="special">{}</span>
     <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">V</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">G</span> <span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">discover_vertex</span> <span class="special">(</span> <span class="identifier">V</span> <span class="identifier">u</span><span class="special">,</span> <span class="identifier">G</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span> <span class="special">)</span> <span class="keyword">const</span> <span class="special">{</span> <span class="identifier">put</span><span class="special">(</span><span class="identifier">dmap_</span><span class="special">,</span> <span class="identifier">u</span><span class="special">,</span> <span class="identifier">time_</span><span class="special">++);</span> <span class="special">}</span>
-
     <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">V</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">G</span> <span class="special">&gt;</span>
     <span class="keyword">void</span> <span class="identifier">finish_vertex</span> <span class="special">(</span> <span class="identifier">V</span> <span class="identifier">u</span><span class="special">,</span> <span class="identifier">G</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span> <span class="special">)</span> <span class="keyword">const</span> <span class="special">{</span> <span class="identifier">put</span><span class="special">(</span><span class="identifier">fmap_</span><span class="special">,</span> <span class="identifier">u</span><span class="special">,</span> <span class="identifier">time_</span><span class="special">++);</span> <span class="special">}</span>
-
+<span class="keyword">private</span><span class="special">:</span>
     <span class="identifier">TimeMap</span> <span class="identifier">dmap_</span><span class="special">;</span>
     <span class="identifier">TimeMap</span> <span class="identifier">fmap_</span><span class="special">;</span>
     <span class="identifier">T</span><span class="special">&amp;</span> <span class="identifier">time_</span><span class="special">;</span>
@@ -4668,7 +4669,8 @@
     <span class="identifier">size_type</span> <span class="identifier">t</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
     <span class="identifier">dfs_time_visitor</span><span class="special">&lt;</span><span class="identifier">size_type</span><span class="special">*&gt;</span> <span class="identifier">vis</span><span class="special">(&amp;</span><span class="identifier">dtime</span><span class="special">[</span><span class="number">0</span><span class="special">],</span> <span class="special">&amp;</span><span class="identifier">ftime</span><span class="special">[</span><span class="number">0</span><span class="special">],</span> <span class="identifier">t</span><span class="special">);</span>
 
-    <span class="identifier">graphs</span><span class="special">::</span><span class="identifier">depth_first_search</span><span class="special">(</span><span class="identifier">g</span><span class="special">,</span> <span class="identifier">vis</span><span class="special">);</span>
+    <span class="comment">// Named parameter call.</span>
+    <span class="identifier">graphs</span><span class="special">::</span><span class="identifier">depth_first_search</span><span class="special">(</span><span class="identifier">graphs</span><span class="special">::</span><span class="identifier">_visitor</span> <span class="special">=</span> <span class="identifier">vis</span><span class="special">,</span> <span class="identifier">graphs</span><span class="special">::</span><span class="identifier">_graph</span> <span class="special">=</span> <span class="identifier">g</span><span class="special">);</span>
 
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">size_type</span><span class="special">&gt;</span> <span class="identifier">dorder</span><span class="special">(</span><span class="identifier">N</span><span class="special">);</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">integer_range</span><span class="special">&lt;</span><span class="identifier">size_type</span><span class="special">&gt;</span> <span class="identifier">r</span><span class="special">(</span><span class="number">0</span><span class="special">,</span> <span class="identifier">N</span><span class="special">);</span>
@@ -4701,20 +4703,54 @@
 </h3></div></div></div>
 <p>
 </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">utility</span><span class="special">/</span><span class="identifier">identity</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">python</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">python</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">parameter</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For named parameters.</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">concept</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For concepts.</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">not</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">or</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">placeholders</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_convertible</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">regex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
-<span class="keyword">namespace</span> <span class="identifier">py</span>
+<span class="keyword">namespace</span> <span class="identifier">py</span> <span class="special">{</span>
+
+<span class="comment">// Helpers.</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">P</span><span class="special">&gt;</span>
+<span class="keyword">struct</span> <span class="identifier">CallPolicies</span>
 <span class="special">{</span>
+    <span class="comment">// BOOST_CONCEPT_ASSERT((ResultConverterGenerator&lt;P::result_converter&gt;));</span>
+    <span class="comment">// BOOST_CONCEPT_ASSERT((Metafunction&lt;P::extract_return_type&gt;));</span>
 
-<span class="comment">// For simplicity, trivial helper implementations.</span>
-<span class="keyword">bool</span> <span class="identifier">is_valid_identifier</span> <span class="special">(</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">name</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="keyword">true</span><span class="special">;</span> <span class="special">}</span>
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_keyword_expression</span> <span class="special">:</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span> <span class="special">{};</span>
+    <span class="identifier">BOOST_CONCEPT_USAGE</span><span class="special">(</span><span class="identifier">CallPolicies</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="keyword">bool</span> <span class="identifier">b</span> <span class="special">=</span> <span class="identifier">x</span><span class="special">.</span><span class="identifier">precall</span><span class="special">(</span><span class="identifier">a</span><span class="special">);</span> <span class="comment">// convertible to bool</span>
+        <span class="identifier">PyObject</span><span class="special">*</span> <span class="identifier">o</span> <span class="special">=</span> <span class="identifier">x</span><span class="special">.</span><span class="identifier">postcall</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">r</span><span class="special">);</span> <span class="comment">// convertible to PyObject*</span>
+    <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">P</span> <span class="identifier">x</span><span class="special">;</span>
+    <span class="identifier">PyObject</span><span class="special">*</span> <span class="identifier">a</span><span class="special">;</span>
+    <span class="identifier">PyObject</span><span class="special">*</span> <span class="identifier">r</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="keyword">bool</span> <span class="identifier">is_identifier</span> <span class="special">(</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">name</span> <span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">regex</span> <span class="identifier">re</span><span class="special">(</span><span class="string">"(\\l|\\u|_)(\\l|\\u|\\d|_)*"</span><span class="special">);</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">regex_match</span><span class="special">(</span><span class="identifier">name</span><span class="special">,</span> <span class="identifier">re</span><span class="special">);</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">T</span> <span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">is_keyword_expression</span> <span class="special">:</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">bool_</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">is_keywords</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">value</span> <span class="special">&gt;</span>
+<span class="special">{};</span>
+
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span> <span class="identifier">no_keywords</span><span class="special">()</span>
+    <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;();</span> <span class="special">}</span>
+
+<span class="comment">// Function with named parameters.</span>
 
 <span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span>
 <span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">func</span><span class="special">)</span>
@@ -4724,153 +4760,43 @@
 
 <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
 <span class="keyword">void</span> <span class="special">(</span><span class="identifier">def</span><span class="special">)</span> <span class="special">(</span>
-    <span class="comment">// Non-deduced and required named parameters.</span>
-    <span class="identifier">in</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*)</span> <span class="identifier">name</span><span class="special">,</span> <span class="comment">// Specified type.</span>
-    <span class="identifier">in</span> <span class="keyword">auto</span> <span class="identifier">func</span><span class="special">,</span> <span class="comment">// Any type (auto).</span>
-    <span class="comment">// Deduced and optional (with default value) named parameters.</span>
-    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span> <span class="special">*)</span> <span class="identifier">docstring</span><span class="special">,</span> <span class="keyword">default</span> <span class="string">""</span><span class="special">,</span> <span class="comment">// Specified type.</span>
-    <span class="comment">// Type requirements also used to uniquely deduce parameters.</span>
-    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">is_keyword_expression</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)</span> <span class="identifier">keywords</span><span class="special">,</span>
-            <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">keyword_range</span><span class="special">(),</span>
-    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENITITY_TYPE</span><span class="special">((</span>
-            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">not_</span><span class="special">&lt;</span>
-                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span>
-                      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*&gt;</span>
-                    <span class="special">,</span> <span class="identifier">is_keyword_expression</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
-                <span class="special">&gt;</span>
-            <span class="special">&gt;)))</span> <span class="identifier">policies</span><span class="special">,</span>
-            <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">default_call_policies</span><span class="special">()</span>
-    <span class="special">)</span>
-    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">is_valid_identifier</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span> <span class="special">)</span> <span class="comment">// Also with contract.</span>
+        <span class="comment">// Non-deduced (and also required) named parameters.</span>
+        <span class="identifier">in</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*)</span> <span class="identifier">name</span><span class="special">,</span>
+        <span class="identifier">in</span> <span class="keyword">auto</span> <span class="identifier">func</span><span class="special">,</span>
+        <span class="comment">// Deduced (and also optional) named parameters.</span>
+        <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*)</span> <span class="identifier">docstring</span><span class="special">,</span> <span class="keyword">default</span> <span class="string">""</span><span class="special">,</span>
+        <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">is_keyword_expression</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)</span> <span class="identifier">keywords</span><span class="special">,</span>
+                <span class="keyword">default</span> <span class="identifier">no_keywords</span><span class="special">(),</span>
+        <span class="comment">// Type requirements also used to </span>
+        <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
+                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">not_</span><span class="special">&lt;</span>
+                    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span>
+                          <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*&gt;</span>
+                        <span class="special">,</span> <span class="identifier">is_keyword_expression</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
+                    <span class="special">&gt;</span>
+                <span class="special">&gt;)))</span> <span class="identifier">policies</span><span class="special">,</span>
+                <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">default_call_policies</span><span class="special">()</span>
+    <span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">CallPolicies</span><span class="special">&lt;</span><span class="identifier">CONTRACT_PARAMETER_TYPEOF</span><span class="special">(</span><span class="identifier">policies</span><span class="special">)&gt;</span> <span class="special">)</span> <span class="comment">// Concepts.</span>
+    <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">is_identifier</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span> <span class="special">)</span> <span class="comment">// Contracts.</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="identifier">name</span><span class="special">,</span> <span class="identifier">func</span><span class="special">,</span> <span class="identifier">docstring</span><span class="special">,</span> <span class="identifier">keywords</span><span class="special">,</span> <span class="identifier">policies</span><span class="special">);</span>
 <span class="special">}</span>
 
 <span class="special">}</span> <span class="comment">// namespace py</span>
 
-<span class="keyword">void</span> <span class="identifier">f</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="special">{}</span>
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">char</span> <span class="identifier">Name</span> <span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">print</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="special">{</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"called "</span> <span class="special">&lt;&lt;</span> <span class="identifier">Name</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span> <span class="special">}</span>
 
-<span class="keyword">int</span> <span class="identifier">main</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
+<span class="comment">// Python module, in a Python shell from this directory run:</span>
+<span class="comment">// &gt;&gt;&gt; import pydef    # This will check contracts (preconditions, etc).</span>
+<span class="comment">// &gt;&gt;&gt; help("pydef"), pydef.f(), pydef.g(), pydef.h()</span>
+<span class="identifier">BOOST_PYTHON_MODULE</span><span class="special">(</span><span class="identifier">pydef</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="keyword">int</span> <span class="identifier">some_policies</span> <span class="special">=</span> <span class="number">123</span><span class="special">;</span>
-    <span class="identifier">py</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="string">"f"</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">some_policies</span><span class="special">,</span> <span class="string">"Documentation for f"</span><span class="special">);</span>
-    <span class="identifier">py</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="string">"f"</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">f</span><span class="special">,</span> <span class="string">"Documentation for f"</span><span class="special">,</span> <span class="identifier">some_policies</span><span class="special">);</span>
-
-    <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">other_policies</span> <span class="special">=</span> <span class="string">"abc"</span><span class="special">;</span>
-    <span class="identifier">py</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="string">"f"</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_policies</span> <span class="special">=</span> <span class="identifier">other_policies</span><span class="special">,</span> <span class="string">"Documentation for f"</span><span class="special">);</span>
-
-    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
-<span class="special">}</span>
-</pre>
-<p>
-      </p>
-</div>
-<div class="section">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="contract__.examples.__named_parameters___python__class___named_template_parameters"></a><a class="link" href="examples.html#contract__.examples.__named_parameters___python__class___named_template_parameters" title="[Named Parameters] Python class: Named template parameters">[Named
-      Parameters] Python <code class="computeroutput"><span class="keyword">class</span></code>: Named
-      template parameters</a>
-</h3></div></div></div>
-<p>
-</p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">utility</span><span class="special">/</span><span class="identifier">identity</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">python</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_class</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_base_and_derived</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">assert</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">placeholders</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">not</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">and</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">noncopyable</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">shared_ptr</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-
-<span class="keyword">namespace</span> <span class="identifier">py</span>
-<span class="special">{</span>
-
-<span class="keyword">namespace</span> <span class="identifier">detail</span> <span class="special">{</span> <span class="keyword">struct</span> <span class="identifier">bases_tag</span> <span class="special">{};</span> <span class="special">}</span>
-
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">B0</span> <span class="special">=</span> <span class="keyword">void</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">B1</span> <span class="special">=</span> <span class="keyword">void</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">B2</span> <span class="special">=</span> <span class="keyword">void</span> <span class="special">&gt;</span>
-<span class="keyword">struct</span> <span class="identifier">bases</span> <span class="special">:</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">bases_tag</span> <span class="special">{};</span>
-
-<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">ClassType</span><span class="special">)</span>
-<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">BaseList</span><span class="special">)</span>
-<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">HeldType</span><span class="special">)</span>
-<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">Copyable</span><span class="special">)</span>
-
-<span class="identifier">CONTRACT_CLASS</span><span class="special">(</span>
-<span class="keyword">template</span><span class="special">(</span>
-    <span class="comment">// Required named template parameter with type requirement.</span>
-    <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_class</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)</span> <span class="identifier">ClassType</span><span class="special">,</span>
-    <span class="comment">// Deduced and optional named template parameters with type requirements.</span>
-    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_base_and_derived</span><span class="special">&lt;</span>
-            <span class="identifier">detail</span><span class="special">::</span><span class="identifier">bases_tag</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)))</span> <span class="identifier">BaseList</span><span class="special">,</span>
-            <span class="keyword">default</span> <span class="identifier">bases</span><span class="special">&lt;&gt;,</span>
-    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
-            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span>
-                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span>
-                      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_base_and_derived</span><span class="special">&lt;</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">bases_tag</span><span class="special">,</span>
-                            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
-                    <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
-                <span class="special">&gt;</span>
-            <span class="special">&gt;)))</span> <span class="identifier">HeldType</span><span class="special">,</span>
-            <span class="keyword">default</span> <span class="identifier">ClassType</span><span class="special">,</span>
-    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span>
-            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)))</span> <span class="identifier">Copyable</span><span class="special">,</span>
-            <span class="keyword">default</span> <span class="keyword">void</span>
-    <span class="comment">// NOTE: Named template params do not directly support non-type params.</span>
-<span class="special">)</span>
-<span class="keyword">class</span> <span class="special">(</span><span class="identifier">class_</span><span class="special">)</span>
-    <span class="identifier">extends</span><span class="special">(</span>
-        <span class="keyword">public</span> <span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">ClassType</span><span class="special">,</span> <span class="identifier">BaseList</span><span class="special">,</span>
-                <span class="identifier">HeldType</span><span class="special">,</span> <span class="identifier">Copyable</span><span class="special">&gt;))</span>
-    <span class="special">)</span>
-<span class="special">)</span> <span class="special">{</span>
-    <span class="identifier">CONTRACT_CLASS_INVARIANT</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-
-<span class="keyword">public</span><span class="special">:</span>
-    <span class="keyword">typedef</span> <span class="identifier">ClassType</span> <span class="identifier">class_type</span><span class="special">;</span>
-    <span class="keyword">typedef</span> <span class="identifier">BaseList</span> <span class="identifier">base_list</span><span class="special">;</span>
-    <span class="keyword">typedef</span> <span class="identifier">HeldType</span> <span class="identifier">held_type</span><span class="special">;</span>
-    <span class="keyword">typedef</span> <span class="identifier">Copyable</span> <span class="identifier">copyable</span><span class="special">;</span>
-<span class="special">};</span>
-
-<span class="special">}</span> <span class="comment">// namespace py</span>
-
-<span class="keyword">struct</span> <span class="identifier">b</span> <span class="special">{</span> <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">b</span><span class="special">()</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span> <span class="special">};</span>
-<span class="keyword">struct</span> <span class="identifier">d</span> <span class="special">:</span> <span class="identifier">b</span> <span class="special">{</span> <span class="special">~</span><span class="identifier">d</span><span class="special">()</span> <span class="special">{}</span> <span class="special">};</span>
-
-<span class="comment">// Named parameters.</span>
-<span class="keyword">typedef</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_ClassType</span><span class="special">&lt;</span><span class="identifier">b</span><span class="special">&gt;,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_Copyable</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">x1</span><span class="special">;</span>
-<span class="keyword">typedef</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span> <span class="identifier">d</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_HeldType</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">d</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
-        <span class="identifier">py</span><span class="special">::</span><span class="identifier">BaseList</span><span class="special">&lt;</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;</span><span class="identifier">b</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">x2</span><span class="special">;</span>
-<span class="comment">// Deduced parameters.</span>
-<span class="keyword">typedef</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span> <span class="identifier">b</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span> <span class="special">&gt;</span> <span class="identifier">y1</span><span class="special">;</span>
-<span class="keyword">typedef</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span> <span class="identifier">d</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">d</span><span class="special">&gt;,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;</span><span class="identifier">b</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">y2</span><span class="special">;</span>
-
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x1</span><span class="special">::</span><span class="identifier">class_type</span><span class="special">,</span> <span class="identifier">b</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x1</span><span class="special">::</span><span class="identifier">base_list</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x1</span><span class="special">::</span><span class="identifier">held_type</span><span class="special">,</span> <span class="identifier">b</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x1</span><span class="special">::</span><span class="identifier">copyable</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span> <span class="special">&gt;</span> <span class="special">));</span>
-
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x2</span><span class="special">::</span><span class="identifier">class_type</span><span class="special">,</span> <span class="identifier">d</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x2</span><span class="special">::</span><span class="identifier">base_list</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;</span><span class="identifier">b</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x2</span><span class="special">::</span><span class="identifier">held_type</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">d</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">x2</span><span class="special">::</span><span class="identifier">copyable</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">&gt;</span> <span class="special">));</span>
-
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y1</span><span class="special">::</span><span class="identifier">class_type</span><span class="special">,</span> <span class="identifier">b</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y1</span><span class="special">::</span><span class="identifier">base_list</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;&gt;</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y1</span><span class="special">::</span><span class="identifier">held_type</span><span class="special">,</span> <span class="identifier">b</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y1</span><span class="special">::</span><span class="identifier">copyable</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span> <span class="special">&gt;</span> <span class="special">));</span>
-
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y2</span><span class="special">::</span><span class="identifier">class_type</span><span class="special">,</span> <span class="identifier">d</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y2</span><span class="special">::</span><span class="identifier">base_list</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;</span><span class="identifier">b</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y2</span><span class="special">::</span><span class="identifier">held_type</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">d</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">));</span>
-<span class="identifier">BOOST_MPL_ASSERT</span><span class="special">((</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span> <span class="identifier">y2</span><span class="special">::</span><span class="identifier">copyable</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">&gt;</span> <span class="special">));</span>
-
-<span class="keyword">int</span> <span class="identifier">main</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-<span class="special">{</span>
-    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">default_call_policies</span> <span class="identifier">some_policies</span><span class="special">;</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="string">"f"</span><span class="special">,</span> <span class="identifier">print</span><span class="special">&lt;</span><span class="char">'f'</span><span class="special">&gt;,</span> <span class="identifier">some_policies</span><span class="special">,</span> <span class="string">"Documentation for f"</span><span class="special">);</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="string">"g"</span><span class="special">,</span> <span class="identifier">print</span><span class="special">&lt;</span><span class="char">'g'</span><span class="special">&gt;,</span> <span class="string">"Documentation for g"</span><span class="special">,</span> <span class="identifier">some_policies</span><span class="special">);</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">def</span><span class="special">(</span><span class="string">"h"</span><span class="special">,</span> <span class="identifier">print</span><span class="special">&lt;</span><span class="char">'h'</span><span class="special">&gt;,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_policies</span> <span class="special">=</span> <span class="identifier">some_policies</span><span class="special">,</span>
+            <span class="string">"Documentation for h"</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
@@ -4884,10 +4810,10 @@
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">parameter</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
-<span class="keyword">namespace</span> <span class="identifier">calls</span>
-<span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">calls</span> <span class="special">{</span>
 
 <span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">arg1</span><span class="special">)</span>
 <span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">arg2</span><span class="special">)</span>
@@ -4899,30 +4825,26 @@
 
     <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span> <span class="comment">// Member function with named parameters.</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">call</span><span class="special">)</span> <span class="special">(</span> <span class="identifier">in</span> <span class="keyword">int</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">in</span> <span class="keyword">int</span> <span class="identifier">arg2</span> <span class="special">)</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">call_impl</span><span class="special">(</span><span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span><span class="special">,</span> <span class="string">""</span><span class="special">);</span>
-    <span class="special">}</span>
+    <span class="special">)</span> <span class="special">;</span> <span class="comment">// Body definition can be separated as usual...</span>
 
     <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span> <span class="comment">// Constant member with named parameters.</span>
     <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">call</span><span class="special">)</span> <span class="special">(</span> <span class="identifier">in</span> <span class="keyword">int</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">in</span> <span class="keyword">int</span> <span class="identifier">arg2</span> <span class="special">)</span> <span class="keyword">const</span>
     <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">call_impl</span><span class="special">(</span><span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span><span class="special">,</span> <span class="string">"const"</span><span class="special">);</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"const: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg1</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg2</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span>
 
     <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span> <span class="comment">// Static member with named parameters.</span>
     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">scall</span><span class="special">)</span> <span class="special">(</span> <span class="identifier">in</span> <span class="keyword">int</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">in</span> <span class="keyword">int</span> <span class="identifier">arg2</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">call_impl</span><span class="special">(</span><span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">arg2</span><span class="special">,</span> <span class="string">"static"</span><span class="special">);</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"static: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg1</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg2</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
     <span class="special">}</span>
-
-<span class="keyword">private</span><span class="special">:</span>
-    <span class="comment">// NOTE: Function definition with named params cannot be directly separated.</span>
-    <span class="keyword">static</span> <span class="keyword">void</span> <span class="identifier">call_impl</span> <span class="special">(</span> <span class="keyword">int</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">arg2</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">qualifier</span> <span class="special">)</span> <span class="special">;</span>
 <span class="special">};</span>
 
-<span class="keyword">void</span> <span class="identifier">callable2</span><span class="special">::</span><span class="identifier">call_impl</span><span class="special">(</span> <span class="keyword">int</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">arg2</span><span class="special">,</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">what</span> <span class="special">)</span>
+<span class="comment">// ... but separated body definition uses generic template parameters.</span>
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Arg1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Arg2</span> <span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">callable2</span><span class="special">::</span><span class="identifier">CONTRACT_MEMBER_BODY</span><span class="special">(</span><span class="identifier">call</span><span class="special">)(</span> <span class="identifier">Arg1</span> <span class="identifier">arg1</span><span class="special">,</span> <span class="identifier">Arg2</span> <span class="identifier">arg2</span> <span class="special">)</span>
 <span class="special">{</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg1</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg2</span> <span class="special">&lt;&lt;</span> <span class="string">" ("</span> <span class="special">&lt;&lt;</span> <span class="identifier">what</span> <span class="special">&lt;&lt;</span> <span class="string">")"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"member: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg1</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">arg2</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
 <span class="special">}</span>
 
 <span class="special">}</span> <span class="comment">// namespace calls</span>
@@ -4945,49 +4867,96 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="contract__.examples.__named_parameters___my_class__constructors_with_named_parameters"></a><a class="link" href="examples.html#contract__.examples.__named_parameters___my_class__constructors_with_named_parameters" title="[Named Parameters] My Class: Constructors with named parameters">[Named
-      Parameters] My Class: Constructors with named parameters</a>
+<a name="contract__.examples.__named_parameters___family__constructors_with_named_parameters"></a><a class="link" href="examples.html#contract__.examples.__named_parameters___family__constructors_with_named_parameters" title="[Named Parameters] Family: Constructors with named parameters">[Named
+      Parameters] Family: Constructors with named parameters</a>
 </h3></div></div></div>
 <p>
 </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">parameter</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For named parameters.</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_convertible</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">placeholders</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">vector</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
 
-<span class="keyword">namespace</span> <span class="identifier">mine</span> <span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">family</span> <span class="special">{</span>
 
-<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span>
-<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">index</span><span class="special">)</span>
-
-<span class="comment">// NOTE: Constructors with named parameters need to be implement in bases.</span>
-<span class="keyword">struct</span> <span class="identifier">myclass_params</span>
+<span class="keyword">struct</span> <span class="identifier">person</span>
 <span class="special">{</span>
-    <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Name</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Index</span> <span class="special">&gt;</span>
-    <span class="identifier">myclass_params</span> <span class="special">(</span> <span class="identifier">Name</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">Index</span> <span class="identifier">index</span> <span class="special">)</span>
-    <span class="special">{</span>
-        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"name = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">name</span> <span class="special">&lt;&lt;</span> <span class="string">"; index = "</span> <span class="special">&lt;&lt;</span> <span class="identifier">index</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">name_</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">age_</span><span class="special">;</span>
+    <span class="keyword">double</span> <span class="identifier">weight_</span><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Name</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Age</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Weight</span> <span class="special">&gt;</span>
+    <span class="identifier">person</span> <span class="special">(</span> <span class="identifier">Name</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">Age</span> <span class="identifier">age</span><span class="special">,</span> <span class="identifier">Weight</span> <span class="identifier">weight</span> <span class="special">)</span>
+            <span class="special">:</span> <span class="identifier">name_</span><span class="special">(</span><span class="identifier">name</span><span class="special">),</span> <span class="identifier">age_</span><span class="special">(</span><span class="identifier">age</span><span class="special">),</span> <span class="identifier">weight_</span><span class="special">(</span><span class="identifier">weight</span><span class="special">)</span> <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">name</span> <span class="special">&lt;&lt;</span> <span class="string">": "</span> <span class="special">&lt;&lt;</span> <span class="identifier">age</span> <span class="special">&lt;&lt;</span> <span class="string">" year(s), "</span> <span class="special">&lt;&lt;</span> <span class="identifier">weight</span> <span class="special">&lt;&lt;</span> <span class="string">" Kg"</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="identifier">person</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=</span> <span class="special">(</span> <span class="identifier">person</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">right</span> <span class="special">)</span> <span class="special">{</span>
+        <span class="identifier">name_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">name_</span><span class="special">;</span> <span class="identifier">age_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">age_</span><span class="special">;</span> <span class="identifier">weight_</span> <span class="special">=</span> <span class="identifier">right</span><span class="special">.</span><span class="identifier">weight_</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>
     <span class="special">}</span>
 <span class="special">};</span>
 
+<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span>
+<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">age</span><span class="special">)</span>
+<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">relatives</span><span class="special">)</span>
+<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">weight</span><span class="special">)</span>
+
 <span class="identifier">CONTRACT_CLASS</span><span class="special">(</span>
-<span class="keyword">struct</span> <span class="special">(</span><span class="identifier">myclass</span><span class="special">)</span> <span class="identifier">extends</span><span class="special">(</span> <span class="identifier">myclass_params</span> <span class="special">)</span>
+<span class="keyword">struct</span> <span class="special">(</span><span class="identifier">member</span><span class="special">)</span> <span class="identifier">extends</span><span class="special">(</span> <span class="keyword">public</span> <span class="identifier">person</span> <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
     <span class="identifier">CONTRACT_CLASS_INVARIANT</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
 
     <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">explicit</span> <span class="special">(</span><span class="identifier">myclass</span><span class="special">)</span> <span class="special">(</span> <span class="identifier">in</span> <span class="keyword">auto</span> <span class="identifier">name</span><span class="special">,</span> <span class="identifier">in</span> <span class="keyword">auto</span> <span class="identifier">index</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">42</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">myclass_params</span><span class="special">(</span><span class="identifier">CONTRACT_CONSTRUCTOR_PARAMETERS</span><span class="special">)</span> <span class="special">)</span>
-        <span class="comment">/** @todo are contracts still checked pre &gt; inv &gt; body &gt; post &gt; inv? */</span>
-        <span class="comment">/* or pre &gt; body &gt; inv &gt; post &gt; inv which is incorrect! */</span>
-    <span class="special">)</span> <span class="special">{}</span>
+    <span class="keyword">public</span> <span class="special">(</span><span class="identifier">member</span><span class="special">)</span> <span class="special">(</span>
+            <span class="identifier">in</span> <span class="keyword">auto</span> <span class="identifier">name</span><span class="special">,</span>
+            <span class="identifier">in</span> <span class="identifier">out</span> <span class="keyword">auto</span> <span class="identifier">age</span><span class="special">,</span> <span class="keyword">default</span> <span class="number">32</span><span class="special">,</span>
+            <span class="identifier">deduce</span> <span class="identifier">out</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">person</span><span class="special">&gt;)</span> <span class="identifier">relatives</span><span class="special">,</span>
+            <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
+                    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">,</span> <span class="keyword">double</span><span class="special">&gt;)))</span> <span class="identifier">weight</span><span class="special">,</span>
+                    <span class="keyword">default</span> <span class="keyword">double</span><span class="special">(</span><span class="number">78.9</span><span class="special">)</span>
+        <span class="special">)</span> <span class="comment">// Preconditions, body, etc access arguments as usual...</span>
+        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span> <span class="special">!=</span> <span class="string">""</span><span class="special">,</span> <span class="identifier">age</span> <span class="special">&gt;=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">weight</span> <span class="special">&gt;=</span> <span class="number">0.0</span> <span class="special">)</span>
+        <span class="identifier">postcondition</span><span class="special">(</span>
+            <span class="keyword">auto</span> <span class="identifier">old_relatives_size</span> <span class="special">=</span> <span class="identifier">CONTRACT_OLDOF</span> <span class="identifier">relatives</span><span class="special">.</span><span class="identifier">size</span><span class="special">(),</span>
+            <span class="identifier">relatives</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">old_relatives_size</span> <span class="special">+</span> <span class="number">1</span>
+        <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="comment">// ... but initializers must use the _ARG macro.</span>
+            <span class="identifier">person</span><span class="special">(</span><span class="identifier">CONTRACT_CONSTRUCTOR_ARG</span><span class="special">(</span><span class="identifier">name</span><span class="special">),</span>
+                    <span class="identifier">CONTRACT_CONSTRUCTOR_ARG</span><span class="special">(</span><span class="identifier">age</span><span class="special">),</span>
+                    <span class="identifier">CONTRACT_CONSTRUCTOR_ARG</span><span class="special">(</span><span class="identifier">weight</span><span class="special">)),</span>
+            <span class="identifier">family_</span><span class="special">(</span><span class="identifier">CONTRACT_CONSTRUCTOR_ARG</span><span class="special">(</span><span class="identifier">relatives</span><span class="special">))</span>
+        <span class="special">)</span>
+    <span class="special">)</span> <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">", "</span> <span class="special">&lt;&lt;</span> <span class="identifier">relatives</span><span class="special">.</span><span class="identifier">size</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="string">" relative(s)"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="identifier">relatives</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(*</span><span class="keyword">this</span><span class="special">);</span>
+    <span class="special">}</span>
+
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">person</span><span class="special">&gt;&amp;</span> <span class="identifier">family_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="special">}</span> <span class="comment">// namespace mine</span>
+<span class="special">}</span> <span class="comment">// namespace family</span>
 
 <span class="keyword">int</span> <span class="identifier">main</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
 <span class="special">{</span>
-    <span class="identifier">mine</span><span class="special">::</span><span class="identifier">myclass</span> <span class="identifier">x</span><span class="special">(</span><span class="string">"bob"</span><span class="special">,</span> <span class="number">3</span><span class="special">);</span>
-    <span class="identifier">mine</span><span class="special">::</span><span class="identifier">myclass</span> <span class="identifier">y</span><span class="special">(</span><span class="identifier">mine</span><span class="special">::</span><span class="identifier">_index</span> <span class="special">=</span> <span class="number">12</span><span class="special">,</span> <span class="identifier">mine</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"sally"</span><span class="special">);</span>
-    <span class="identifier">mine</span><span class="special">::</span><span class="identifier">myclass</span> <span class="identifier">z</span><span class="special">(</span><span class="string">"june"</span><span class="special">);</span>
+    <span class="keyword">int</span> <span class="identifier">a</span> <span class="special">=</span> <span class="number">23</span><span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">vector</span><span class="special">&lt;</span><span class="identifier">family</span><span class="special">::</span><span class="identifier">person</span><span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
+
+    <span class="identifier">family</span><span class="special">::</span><span class="identifier">member</span> <span class="identifier">m1</span><span class="special">(</span><span class="identifier">family</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"Mary"</span><span class="special">,</span> <span class="identifier">family</span><span class="special">::</span><span class="identifier">_relatives</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">);</span>
+    <span class="identifier">family</span><span class="special">::</span><span class="identifier">member</span> <span class="identifier">m2</span><span class="special">(</span><span class="identifier">family</span><span class="special">::</span><span class="identifier">_relatives</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">family</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"Mike"</span><span class="special">);</span>
+
+    <span class="identifier">family</span><span class="special">::</span><span class="identifier">member</span> <span class="identifier">m3</span><span class="special">(</span><span class="identifier">family</span><span class="special">::</span><span class="identifier">_relatives</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">family</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"Lisa"</span><span class="special">,</span>
+            <span class="identifier">family</span><span class="special">::</span><span class="identifier">_age</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">);</span>
+    <span class="identifier">family</span><span class="special">::</span><span class="identifier">member</span> <span class="identifier">m4</span><span class="special">(</span><span class="identifier">family</span><span class="special">::</span><span class="identifier">_relatives</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">family</span><span class="special">::</span><span class="identifier">_weight</span> <span class="special">=</span> <span class="number">65.4</span><span class="special">,</span>
+            <span class="identifier">family</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"John"</span><span class="special">);</span>
+
+    <span class="identifier">family</span><span class="special">::</span><span class="identifier">member</span> <span class="identifier">m5</span><span class="special">(</span><span class="identifier">family</span><span class="special">::</span><span class="identifier">_age</span> <span class="special">=</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">family</span><span class="special">::</span><span class="identifier">_relatives</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">,</span>
+            <span class="identifier">family</span><span class="special">::</span><span class="identifier">_weight</span> <span class="special">=</span> <span class="number">65.4</span><span class="special">,</span> <span class="identifier">family</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"July"</span><span class="special">);</span>
+    <span class="identifier">family</span><span class="special">::</span><span class="identifier">member</span> <span class="identifier">m6</span><span class="special">(</span><span class="string">"Paul"</span><span class="special">,</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">p</span><span class="special">,</span> <span class="number">65.4</span><span class="special">);</span>
+
     <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
 <span class="special">}</span>
 </pre>
@@ -4996,92 +4965,102 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="contract__.examples.__named_parameters___positive_number__fine_grained_parameter_name_control"></a><a class="link" href="examples.html#contract__.examples.__named_parameters___positive_number__fine_grained_parameter_name_control" title="[Named Parameters] Positive Number: Fine-grained parameter name control">[Named
-      Parameters] Positive Number: Fine-grained parameter name control</a>
+<a name="contract__.examples.__named_parameters___python__class___named_template_parameters"></a><a class="link" href="examples.html#contract__.examples.__named_parameters___python__class___named_template_parameters" title="[Named Parameters] Python class: Named template parameters">[Named
+      Parameters] Python <code class="computeroutput"><span class="keyword">class</span></code>: Named
+      template parameters</a>
 </h3></div></div></div>
 <p>
 </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">has_equal_to</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">python</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">parameter</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For named parameters.</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">contract</span><span class="special">/</span><span class="identifier">parameter</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// For concepts.</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">concept_check</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_same</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="identifier">placeholders</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">int</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">long</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">char</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
-<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">iostream</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">not</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">or</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">shared_ptr</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">noncopyable</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">regex</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
-<span class="keyword">namespace</span> <span class="identifier">num</span>
-<span class="special">{</span>
+<span class="keyword">namespace</span> <span class="identifier">py</span> <span class="special">{</span>
 
-<span class="keyword">namespace</span> <span class="identifier">tag</span> <span class="comment">// Namespace `tag` already used here, use `keywords` instead.</span>
+<span class="comment">// Helpers.</span>
+
+<span class="keyword">bool</span> <span class="identifier">is_identifier</span> <span class="special">(</span> <span class="keyword">char</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">name</span> <span class="special">)</span>
 <span class="special">{</span>
-    <span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">Value</span><span class="special">;</span> <span class="comment">// Dummy declarations...</span>
-    <span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">Default</span><span class="special">;</span>
-    <span class="identifier">Value</span> <span class="identifier">value</span> <span class="special">=</span> <span class="identifier">Default</span><span class="special">();</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">regex</span> <span class="identifier">re</span><span class="special">(</span><span class="string">"(\\l|\\u|_)(\\l|\\u|\\d|_)*"</span><span class="special">);</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">regex_match</span><span class="special">(</span><span class="identifier">name</span><span class="special">,</span> <span class="identifier">re</span><span class="special">);</span>
 <span class="special">}</span>
 
-<span class="comment">// Also use `Param` and `_param` postfixes instead of `_` prefix.</span>
-<span class="identifier">CONTRACT_PARAMETER_TEMPLATE</span><span class="special">((</span><span class="identifier">ValueParam</span><span class="special">,</span> <span class="identifier">keywords</span><span class="special">)</span> <span class="identifier">Value</span><span class="special">)</span>
-<span class="identifier">CONTRACT_PARAMETER_TEMPLATE</span><span class="special">((</span><span class="identifier">DefaultParam</span><span class="special">,</span> <span class="identifier">keywords</span><span class="special">)</span> <span class="identifier">Default</span><span class="special">)</span>
-<span class="identifier">CONTRACT_PARAMETER</span><span class="special">((</span><span class="identifier">value_param</span><span class="special">,</span> <span class="identifier">keywords</span><span class="special">)</span> <span class="identifier">value</span><span class="special">)</span>
+<span class="comment">// Class template with named parameters.</span>
+
+<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">ClassType</span><span class="special">)</span>
+<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">Bases</span><span class="special">)</span>
+<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">HeldType</span><span class="special">)</span>
+<span class="identifier">CONTRACT_TEMPLATE_PARAMETER</span><span class="special">(</span><span class="identifier">Copyable</span><span class="special">)</span>
+<span class="identifier">CONTRACT_PARAMETER</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span>
 
 <span class="identifier">CONTRACT_CLASS</span><span class="special">(</span>
 <span class="keyword">template</span><span class="special">(</span>
-    <span class="keyword">namespace</span> <span class="identifier">keywords</span><span class="special">,</span> <span class="comment">// Use namespace `keywords` instead of `tag`.</span>
-    <span class="identifier">in</span> <span class="keyword">typename</span> <span class="identifier">Value</span><span class="special">,</span> <span class="keyword">default</span> <span class="keyword">int</span><span class="special">,</span>
-    <span class="identifier">in</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">::</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">Value</span><span class="special">&gt;)</span> <span class="identifier">Default</span><span class="special">,</span>
-            <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;</span>
-<span class="special">)</span>
-<span class="keyword">struct</span> <span class="special">(</span><span class="identifier">positive</span><span class="special">)</span>
+    <span class="comment">// Required named template parameter.</span>
+    <span class="identifier">in</span> <span class="keyword">typename</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_class</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)</span> <span class="identifier">ClassType</span><span class="special">,</span>
+    <span class="comment">// Deduced and optional named template parameters with type requirements.</span>
+    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="keyword">typename</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">specifies_bases</span><span class="special">&lt;</span>
+            <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;)</span> <span class="identifier">Bases</span><span class="special">,</span>
+            <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;&gt;,</span>
+    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="keyword">typename</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">not_</span><span class="special">&lt;</span>
+                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">or_</span><span class="special">&lt;</span>
+                      <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">specifies_bases</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
+                    <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
+                <span class="special">&gt;</span>
+            <span class="special">&gt;)))</span> <span class="identifier">HeldType</span><span class="special">,</span>
+            <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">not_specified</span><span class="special">,</span>
+    <span class="identifier">deduce</span> <span class="identifier">in</span> <span class="keyword">typename</span> <span class="identifier">requires</span><span class="special">(</span><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
+                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_same</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">_</span><span class="special">&gt;</span>
+            <span class="special">)))</span> <span class="identifier">Copyable</span><span class="special">,</span>
+            <span class="keyword">default</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">not_specified</span>
+    <span class="comment">// Note: Non-type template parameters are not supported by named parameters.</span>
+<span class="special">)</span> <span class="identifier">requires</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">DefaultConstructible</span><span class="special">&lt;</span><span class="identifier">ClassType</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="keyword">class</span> <span class="special">(</span><span class="identifier">class_</span><span class="special">)</span> <span class="identifier">extends</span><span class="special">(</span> <span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((</span>
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">ClassType</span><span class="special">,</span> <span class="identifier">Bases</span><span class="special">,</span> <span class="identifier">HeldType</span><span class="special">,</span> <span class="identifier">Copyable</span><span class="special">&gt;))</span> <span class="special">)</span>
 <span class="special">)</span> <span class="special">{</span>
-    <span class="identifier">CONTRACT_CLASS_INVARIANT</span><span class="special">(</span>
-        <span class="keyword">static</span> <span class="keyword">class</span><span class="special">(</span> <span class="identifier">Default</span><span class="special">::</span><span class="identifier">value</span> <span class="special">&gt;</span> <span class="number">0</span> <span class="special">),</span>
-        <span class="identifier">get</span><span class="special">()</span> <span class="special">&gt;</span> <span class="number">0</span>
-    <span class="special">)</span>
+    <span class="identifier">CONTRACT_CLASS_INVARIANT_TPL</span><span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
 
-    <span class="identifier">CONTRACT_CONSTRUCTOR</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="special">(</span><span class="identifier">positive</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span>
-        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">value_</span><span class="special">(</span><span class="identifier">Default</span><span class="special">::</span><span class="identifier">value</span><span class="special">)</span> <span class="special">)</span>
+    <span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">ClassType</span><span class="special">,</span> <span class="identifier">Bases</span><span class="special">,</span> <span class="identifier">HeldType</span><span class="special">,</span> <span class="identifier">Copyable</span><span class="special">&gt;</span>
+            <span class="identifier">boost_python_class</span><span class="special">;</span>
+
+<span class="keyword">public</span><span class="special">:</span>
+
+    <span class="identifier">CONTRACT_CONSTRUCTOR_TPL</span><span class="special">(</span>
+    <span class="keyword">public</span> <span class="special">(</span><span class="identifier">class_</span><span class="special">)</span> <span class="special">(</span> <span class="identifier">in</span> <span class="special">(</span><span class="keyword">char</span> <span class="keyword">const</span><span class="special">*)</span> <span class="identifier">name</span> <span class="special">)</span>
+        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">is_identifier</span><span class="special">(</span><span class="identifier">name</span><span class="special">)</span> <span class="special">)</span>
+        <span class="identifier">initialize</span><span class="special">(</span> <span class="identifier">boost_python_class</span><span class="special">(</span><span class="identifier">CONTRACT_CONSTRUCTOR_ARG</span><span class="special">(</span><span class="identifier">name</span><span class="special">))</span> <span class="special">)</span>
     <span class="special">)</span> <span class="special">{}</span>
-
-    <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="special">(</span><span class="identifier">set</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">keywords</span><span class="special">,</span> <span class="identifier">in</span> <span class="special">(</span><span class="identifier">Value</span><span class="special">)</span> <span class="identifier">value</span> <span class="special">)</span>
-        <span class="identifier">precondition</span><span class="special">(</span> <span class="identifier">value</span> <span class="special">&gt;</span> <span class="number">0</span> <span class="special">)</span>
-        <span class="identifier">postcondition</span><span class="special">(</span>
-            <span class="identifier">get</span><span class="special">()</span> <span class="special">==</span> <span class="identifier">value</span><span class="special">,</span> <span class="identifier">requires</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_euql_to</span><span class="special">&lt;</span><span class="identifier">Value</span><span class="special">&gt;::</span><span class="identifier">value</span>
-        <span class="special">)</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="identifier">value_</span> <span class="special">=</span> <span class="identifier">value</span><span class="special">;</span>
-    <span class="special">}</span>
-
-    <span class="identifier">CONTRACT_FUNCTION</span><span class="special">(</span>
-    <span class="keyword">public</span> <span class="special">(</span><span class="identifier">Value</span> <span class="keyword">const</span><span class="special">&amp;)</span> <span class="special">(</span><span class="identifier">get</span><span class="special">)</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="keyword">const</span>
-    <span class="special">)</span> <span class="special">{</span>
-        <span class="keyword">return</span> <span class="identifier">value_</span><span class="special">;</span>
-    <span class="special">}</span>
-
-<span class="keyword">private</span><span class="special">:</span>
-    <span class="identifier">Value</span> <span class="identifier">value_</span><span class="special">;</span>
 <span class="special">};</span>
 
-<span class="special">}</span> <span class="comment">// namespace num</span>
+<span class="special">}</span> <span class="comment">// namespace py</span>
 
-<span class="keyword">int</span> <span class="identifier">main</span> <span class="special">(</span> <span class="identifier">value</span> <span class="special">)</span>
+<span class="keyword">struct</span> <span class="identifier">bx</span> <span class="special">{</span> <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">bx</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="special">{}</span> <span class="special">};</span>
+<span class="keyword">struct</span> <span class="identifier">x</span> <span class="special">:</span> <span class="identifier">bx</span> <span class="special">{};</span>
+
+<span class="keyword">struct</span> <span class="identifier">by</span> <span class="special">{</span> <span class="keyword">virtual</span> <span class="special">~</span><span class="identifier">by</span> <span class="special">(</span> <span class="keyword">void</span> <span class="special">)</span> <span class="special">{}</span> <span class="special">};</span>
+<span class="keyword">struct</span> <span class="identifier">y</span> <span class="special">:</span> <span class="identifier">by</span> <span class="special">{</span> <span class="special">};</span>
+
+<span class="comment">// Python module, in a Python shell from this directory run:</span>
+<span class="comment">// &gt;&gt;&gt; import pyclass    # This will check contracts (preconditions, etc).</span>
+<span class="comment">// &gt;&gt;&gt; help("pyclass"), xx = pyclass.x(), yy = pyclass.x()</span>
+<span class="identifier">BOOST_PYTHON_MODULE</span><span class="special">(</span><span class="identifier">pyclass</span><span class="special">)</span>
 <span class="special">{</span>
-    <span class="identifier">num</span><span class="special">::</span><span class="identifier">positive</span><span class="special">&lt;</span> <span class="keyword">char</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">char_</span><span class="special">&lt;</span><span class="char">'z'</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">p</span><span class="special">;</span>
-    <span class="identifier">num</span><span class="special">::</span><span class="identifier">positive</span><span class="special">&lt;</span> <span class="special">&gt;</span> <span class="identifier">q</span><span class="special">;</span>
-
-    <span class="comment">// Use `...Param` instead of `_...`.</span>
-    <span class="identifier">num</span><span class="special">::</span><span class="identifier">positive</span><span class="special">&lt;</span> <span class="identifier">num</span><span class="special">::</span><span class="identifier">DefaultParam</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="number">10</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;</span> <span class="identifier">r</span><span class="special">;</span>
-    <span class="identifier">num</span><span class="special">::</span><span class="identifier">positive</span><span class="special">&lt;</span>
-          <span class="identifier">num</span><span class="special">::</span><span class="identifier">DefaultParam</span><span class="special">&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">long_</span><span class="special">&lt;</span><span class="number">10</span><span class="special">&gt;</span> <span class="special">&gt;</span>
-        <span class="special">,</span> <span class="identifier">num</span><span class="special">::</span><span class="identifier">ValueParam</span><span class="special">&lt;</span><span class="keyword">long</span><span class="special">&gt;</span>
-    <span class="special">&gt;</span> <span class="identifier">s</span><span class="special">;</span>
-
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">s</span><span class="special">.</span><span class="identifier">get</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-    <span class="identifier">s</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">num</span><span class="special">::</span><span class="identifier">value_param</span> <span class="special">=</span> <span class="number">123</span><span class="special">);</span> <span class="comment">// Use `..._param` instead of `_...`.</span>
-    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">s</span><span class="special">.</span><span class="identifier">get</span><span class="special">()</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
-
-    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+    <span class="comment">// Named parameters.</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">py</span><span class="special">::</span><span class="identifier">_ClassType</span><span class="special">&lt;</span><span class="identifier">bx</span><span class="special">&gt;,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_Copyable</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">&gt;</span> <span class="special">&gt;(</span><span class="string">"bx"</span><span class="special">);</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">x</span><span class="special">,</span> <span class="identifier">py</span><span class="special">::</span><span class="identifier">_HeldType</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">x</span><span class="special">&gt;</span> <span class="special">&gt;,</span>
+            <span class="identifier">py</span><span class="special">::</span><span class="identifier">_Bases</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;</span><span class="identifier">bx</span><span class="special">&gt;</span> <span class="special">&gt;</span> <span class="special">&gt;(</span><span class="string">"x"</span><span class="special">);</span>
+    <span class="comment">// Deduced parameters.</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">by</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">noncopyable</span><span class="special">&gt;(</span><span class="string">"by"</span><span class="special">);</span>
+    <span class="identifier">py</span><span class="special">::</span><span class="identifier">class_</span><span class="special">&lt;</span><span class="identifier">y</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">shared_ptr</span><span class="special">&lt;</span><span class="identifier">y</span><span class="special">&gt;,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">python</span><span class="special">::</span><span class="identifier">bases</span><span class="special">&lt;</span><span class="identifier">by</span><span class="special">&gt;</span> <span class="special">&gt;(</span>
+            <span class="identifier">py</span><span class="special">::</span><span class="identifier">_name</span> <span class="special">=</span> <span class="string">"y"</span><span class="special">);</span>
 <span class="special">}</span>
 </pre>
 <p>
