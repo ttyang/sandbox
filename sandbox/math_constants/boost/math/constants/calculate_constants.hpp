@@ -498,6 +498,8 @@ inline T calculate_gamma(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_
 );
  //    T gamma("0.57721566490153286060651209008240243104215933593992");
      return gamma;
+       // TODO calculate this - JM has code.
+
 }
 
 template <class T, int N> 
@@ -523,6 +525,7 @@ inline T calculate_gamma_sqr(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPL
 template <class T, int N> 
 inline T calculate_cf10(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 {
+    // TODO calculate this.
    BOOST_MATH_STD_USING
      T cf10("1.030640834100712935881776094116936840925");
      return cf10;
@@ -543,26 +546,101 @@ inline T calculate_zeta_two(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLA
 template <class T, int N> 
 inline T calculate_zeta_three(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 {
+   // http://mathworld.wolfram.com/AperysConstant.html
+   // http://en.wikipedia.org/wiki/Mathematical_constant
+
    // http://oeis.org/A002117/constant
-    T zeta3("1.20205690315959428539973816151144999076"
-     "4986292340498881792271555341838205786313"
-     "09018645587360933525814619915");
-     return zeta3;
+   //T zeta3("1.20205690315959428539973816151144999076"
+   // "4986292340498881792271555341838205786313"
+   // "09018645587360933525814619915");
+
+  //"1.202056903159594285399738161511449990, 76498629234049888179227155534183820578631309018645587360933525814619915"  A002117
+  // 1.202056903159594285399738161511449990, 76498629234049888179227155534183820578631309018645587360933525814619915780, +00);
+  //"1.2020569031595942 double
+  // http://www.spaennare.se/SSPROG/ssnum.pdf  // section 11, Algorithmfor Apery’s constant zeta(3).
+  // Programs to Calculate some Mathematical Constants to Large Precision, Document Version 1.50
+ 
+  // by Stefan Spannare  September 19, 2007
+  // zeta(3) = 1/64 * sum 
+   T n_fact=static_cast<T>(1); // build n! for n = 0.
+   T sum = static_cast<double>(77); // Start with n = 0 case.
+   // for n = 0, (77/1) /64 = 1.203125
+   //double lim = std::numeric_limits<double>::epsilon();
+   T lim = boost::math::tools::epsilon<T>();
+   for(unsigned int n = 1; n < 40; ++n)
+   { // three to five decimal digits per term, so 40 should be plenty for 100 decimal digits.
+      //cout << "n = " << n << endl;
+      n_fact *= n; // n!
+      T n_fact_p10 = n_fact * n_fact * n_fact * n_fact * n_fact * n_fact * n_fact * n_fact * n_fact * n_fact; // (n!)^10
+      T num = ((205 * n * n) + (250 * n) + 77) * n_fact_p10; // 205n^2 + 250n + 77
+      // int nn = (2 * n + 1);
+      // T d = factorial(nn); // inline factorial.
+      T d = 1;
+      for(unsigned int i = 1; i <= (n+n + 1); ++i) // (2n + 1)
+      {
+        d *= i;
+      }
+      T den = d * d * d * d * d; // [(2n+1)!]^5
+      //cout << "den = " << den << endl;
+      T term = num/den;
+      if (n % 2 != 0)
+      { //term *= -1;
+        sum -= term;
+      }
+      else
+      {
+        sum += term;
+      }
+      //cout << "term = " << term << endl;
+      //cout << "sum/64  = " << sum/64 << endl;
+      if(abs(term) < lim)
+      {
+         break;
+      }
+   }
+   return sum / 64;
 }
 
 template <class T, int N> 
 inline T calculate_catalan(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 { // http://oeis.org/A006752/constant
-  T c("0.915965594177219015054603514932384110774"
- "1493742816721342664981196217630197762547"
- "69479356512926115106248574");
- return c;
+  //T c("0.915965594177219015054603514932384110774"
+ //"149374281672134266498119621763019776254769479356512926115106248574");
+
+  // 9.159655941772190150546035149323841107, 74149374281672134266498119621763019776254769479356512926115106248574422619, -01);
+
+   // This is equation (entry) 31 from
+   // http://www-2.cs.cmu.edu/~adamchik/articles/catalan/catalan.htm
+   // See also http://www.mpfr.org/algorithms.pdf
+   T k_fact = 1;
+   T tk_fact = 1;
+   T sum = 1;
+   T term;
+   T lim = boost::math::tools::epsilon<T>();
+
+   for(unsigned k = 1;; ++k)
+   {
+      k_fact *= k;
+      tk_fact *= (2 * k) * (2 * k - 1);
+      term = k_fact * k_fact / (tk_fact * (2 * k + 1) * (2 * k + 1));
+      sum += term;
+      if(term < lim)
+      {
+         break;
+      }
+   }
+   return boost::math::constants::pi<T, boost::math::policies::policy<> >()
+      * log(2 + boost::math::constants::root_three<T, boost::math::policies::policy<> >())
+       / 8
+      + 3 * sum / 8;
 }
 
 
 template <class T, int N> 
 inline T calculate_khinchin(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 { // from e_float constants.cpp
+  // http://mathworld.wolfram.com/KhinchinsConstant.html
+  // TODO calculate this.
   T k( "2.6854520010653064453097148354817956938203822939944629530511523455572188595371520028011411749318476979"
 "9515346590528809008289767771641096305179253348325966838185231542133211949962603932852204481940961806"
 "8664166428930847788062036073705350103367263357728904990427070272345170262523702354581068631850103237"
@@ -581,6 +659,7 @@ template <class T, int N>
 inline T calculate_extreme_value_skewness(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 { // from e_float constants.cpp
   // Mathematica: N[12 Sqrt[6]  Zeta[3]/Pi^3, 1101]
+  // TODO Calculate this.
 
 T ev(
 "1.1395470994046486574927930193898461120875997958365518247216557100852480077060706857071875468869385150"
@@ -602,8 +681,9 @@ template <class T, int N>
 inline T calculate_glaisher(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 { // from http://mpmath.googlecode.com/svn/data/glaisher.txt
   // 20,000 digits of the Glaisher-Kinkelin constant A = exp(1/2 - zeta'(-1))
-  // Computed using A = exp((6 (-zeta'(2))/pi^2 + log 2 pi + gamma)/12)
+  // Computed using A = exp((6 (-zeta(2))/pi^2 + log 2 pi + gamma)/12)
   // with Euler-Maclaurin summation for zeta'(2).
+  // TODO calculate this.
 
   T g(
 "1.282427129100622636875342568869791727767688927325001192063740021740406308858826"
@@ -628,7 +708,7 @@ inline T calculate_rayleigh_skewness(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLIC
 {  // From e_float
   // 1100 digits of the Rayleigh distribution skewness
   // Mathematica: N[2 Sqrt[Pi] (Pi - 3)/((4 - Pi)^(3/2)), 1100]
-
+  // TODO Calculate this using pi_minus_three etc.
 
 T rs(  
   "0.6311106578189371381918993515442277798440422031347194976580945856929268196174737254599050270325373067"
@@ -648,6 +728,7 @@ T rs(
 template <class T, int N> 
 inline T calculate_rayleigh_kurtosis_excess(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 { // - (6 Pi^2 - 24 Pi + 16)/((Pi - 4)^2)
+    // TODO Calculate this using pi_minus_four etc.
    return - (((static_cast<T>(6) * pi<T, policies::policy<policies::digits2<N> > >()
         * pi<T, policies::policy<policies::digits2<N> > >())
    - (static_cast<T>(24) * pi<T, policies::policy<policies::digits2<N> > >()) + static_cast<T>(16) )
@@ -660,6 +741,7 @@ inline T calculate_rayleigh_kurtosis_excess(const mpl::int_<N>&BOOST_MATH_APPEND
 template <class T, int N> 
 inline T calculate_rayleigh_kurtosis(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
 { // 3 - (6 Pi^2 - 24 Pi + 16)/((Pi - 4)^2)
+   // TODO Calculate this using pi_minus_four etc.
    return static_cast<T>(3) - (((static_cast<T>(6) * pi<T, policies::policy<policies::digits2<N> > >()
         * pi<T, policies::policy<policies::digits2<N> > >())
    - (static_cast<T>(24) * pi<T, policies::policy<policies::digits2<N> > >()) + static_cast<T>(16) )
