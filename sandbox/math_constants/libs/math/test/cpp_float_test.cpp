@@ -17,58 +17,6 @@
 #include <boost/multiprecision/cpp_float.hpp>
 #include <boost/detail/lightweight_test.hpp>
 
-
-
-template <class T>
-T brent_gamma()
-{
-   T n = 3 + boost::math::tools::digits<T>() / 4;
-   T lnn = log(n);
-   T term = 1;
-   T N = -lnn;
-   T D = 1;
-   T Hk = 0;
-   T one = 1;
-
-   for(unsigned k = 1;; ++k)
-   {
-      term *= n * n;
-      term /= k * k;
-      Hk += one / k;
-      N += term * (Hk - lnn);
-      D += term;
-
-      if(term < D * boost::math::tools::epsilon<T>())
-         break;
-   }
-   return N / D;
-}
-
-template <class T>
-T eg()
-{
-   T n = boost::math::tools::digits<T>() * 4;
-   T k_fact = 1;
-   T A = 0;
-   T B = 1;
-   T H = 0;
-   T n_k = 1;
-
-   for(unsigned k = 1;; ++k)
-   {
-      H += T(1) / k;
-      k_fact *= k;
-      n_k *= n;
-      T term = n_k / (k_fact * k_fact);
-      A += term * H;
-      B += term;
-
-      if((term < B * boost::math::tools::epsilon<T>()) && (term * H < A * boost::math::tools::epsilon<T>()))
-         break;
-   }
-   return A / B - log(n) / 2;
-}
-
 boost::multiprecision::mp_number<boost::multiprecision::cpp_float<1000> > log2 = 
    "6.931471805599453094172321214581765680755001343602552541206800094933936219696947"
    "15605863326996418687542001481020570685733685520235758130557032670751635075961930"
@@ -114,16 +62,6 @@ boost::multiprecision::mp_number<boost::multiprecision::cpp_float<1000> > euler 
    "06546931429992977795693031005030863034185698032310836916400258929708909854868257"
    "77364288253954925873629596133298574739302e-1";
 
-/*
-template <class T>
-void test()
-{
-   T p = boost::math::constants::pi<T>();
-   T err = fabs((p - T(pi)) / T(pi)) / boost::math::tools::epsilon<T>();
-   unsigned e = err.template convert_to<unsigned>();
-   BOOST_TEST(e < 30);
-}
-*/
 template <unsigned N>
 void test()
 {
