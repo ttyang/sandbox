@@ -58,7 +58,7 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="editDatabase">
         <property name="text">
-         <string>xperiment.db</string>
+         <string>../sqlbrowser/media1.db</string>
         </property>
        </widget>
       </item>
