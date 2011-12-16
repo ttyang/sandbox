@@ -15,6 +15,8 @@
 #include <boost/preprocessor/variadic/to_seq.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/control/if.hpp>
+#include <boost/preprocessor/tuple/rem.hpp> // For PP_REM.
+#include <boost/preprocessor/tuple/eat.hpp> // For PP_EAT.
 
 // PRIVATE //
 
