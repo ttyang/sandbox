@@ -68,7 +68,7 @@ inline void print_constant(const char* name, generator_type(*f)(const mpl::int_<
 
 #define BOOST_CONSTANTS_GENERATE(name) \
    boost::math::constants::print_constant(#name, \
-   & boost::math::constants::detail::BOOST_JOIN(calculate_, name)<boost::math::constants::generator_type>)
+   & boost::math::constants::detail::BOOST_JOIN(constant_, name)<boost::math::constants::generator_type>::get)
 
 }}} // namespaces
 

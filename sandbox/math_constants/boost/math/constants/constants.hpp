@@ -160,43 +160,44 @@ namespace boost{ namespace math
 
    #define BOOST_DEFINE_MATH_CONSTANT(name, x, y, exp)\
    namespace detail{\
-   /* Forward declaration of the calculation method, just in case it's not been provided yet */ \
-   template <class T, int N> T BOOST_JOIN(calculate_, name)(const mpl::int_<N>& BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T)); \
-   \
+   template <class T> struct BOOST_JOIN(constant_, name){\
+   private:\
    /* The default implementations come next: */ \
-   template <class T> inline T BOOST_JOIN(string_get_, name)(BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE(T))\
+   static inline T get_from_string()\
    {\
       static const T result = detail::convert_from_string<T>(BOOST_STRINGIZE(BOOST_JOIN(BOOST_JOIN(x, y), BOOST_JOIN(e, exp))), boost::is_convertible<const char*, T>());\
       return result;\
    }\
-   template <class T> inline T BOOST_JOIN(get_, name)(const mpl::int_<construct_from_string>& BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE(T))\
-   {\
-      constant_initializer<T, & BOOST_JOIN(string_get_, name)<T> >::do_nothing();\
-      return BOOST_JOIN(string_get_, name)<T>();\
-   }\
-   template <class T> inline BOOST_CONSTEXPR T BOOST_JOIN(get_, name)(const mpl::int_<construct_from_float>& BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
-   { return BOOST_JOIN(BOOST_JOIN(x, BOOST_JOIN(e, exp)), F); }\
-   template <class T> inline BOOST_CONSTEXPR T BOOST_JOIN(get_, name)(const mpl::int_<construct_from_double>& BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
-   { return BOOST_JOIN(x, BOOST_JOIN(e, exp)); }\
-   template <class T> inline BOOST_CONSTEXPR T BOOST_JOIN(get_, name)(const mpl::int_<construct_from_long_double>& BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
-   { return BOOST_JOIN(BOOST_JOIN(x, BOOST_JOIN(e, exp)), L); }\
    /* This one is for very high precision that is none the less known at compile time: */ \
-   template <class T, int N> inline T BOOST_JOIN(compute_get_, name)(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>) BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
-   { static const T result = BOOST_JOIN(calculate_, name)<T>(mpl::int_<N>()); return result; }\
-   template <class T, int N> inline T BOOST_JOIN(get_, name)(const mpl::int_<N>& n BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
+   template <int N> static T compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>));\
+   /* public getters come next */\
+   public:\
+   static inline T get(const mpl::int_<construct_from_string>&)\
    {\
-      constant_initializer2<T, N, & BOOST_JOIN(compute_get_, name)<T, N> >::do_nothing();\
-      return BOOST_JOIN(compute_get_, name)<T, N>(); \
+      constant_initializer<T, & BOOST_JOIN(constant_, name)<T>::get_from_string >::do_nothing();\
+      return get_from_string();\
+   }\
+   static inline BOOST_CONSTEXPR T get(const mpl::int_<construct_from_float>)\
+   { return BOOST_JOIN(BOOST_JOIN(x, BOOST_JOIN(e, exp)), F); }\
+   static inline BOOST_CONSTEXPR T get(const mpl::int_<construct_from_double>&)\
+   { return BOOST_JOIN(x, BOOST_JOIN(e, exp)); }\
+   static inline BOOST_CONSTEXPR T get(const mpl::int_<construct_from_long_double>&)\
+   { return BOOST_JOIN(BOOST_JOIN(x, BOOST_JOIN(e, exp)), L); }\
+   template <int N> static inline T get(const mpl::int_<N>& n)\
+   {\
+      constant_initializer2<T, N, & BOOST_JOIN(constant_, name)<T>::template compute<N> >::do_nothing();\
+      return compute<N>(); \
    }\
    /* This one is for true arbitary precision, which may well vary at runtime: */ \
-   template <class T> inline T BOOST_JOIN(get_, name)(const mpl::int_<0>& n BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
-   { return tools::digits<T>() > max_string_digits ? BOOST_JOIN(calculate_, name)<T>(n) : BOOST_JOIN(get_, name)<T>(mpl::int_<construct_from_string>()); }\
+   static inline T get(const mpl::int_<0>&)\
+   { return tools::digits<T>() > max_string_digits ? compute<0>() : get(mpl::int_<construct_from_string>()); }\
+   }; /* end of struct */\
    } /* namespace detail */ \
    \
    \
    /* The actual forwarding function: */ \
    template <class T, class Policy> inline BOOST_CONSTEXPR T name(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(T) BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(Policy))\
-   { return detail:: BOOST_JOIN(get_, name)<T>(typename construction_traits<T, Policy>::type()); }\
+   { return detail:: BOOST_JOIN(constant_, name)<T>::get(typename construction_traits<T, Policy>::type()); }\
    template <class T> inline BOOST_CONSTEXPR T name(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(T))\
    { return name<T, boost::math::policies::policy<> >(); }\
    \
