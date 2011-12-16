@@ -223,9 +223,11 @@ either construct from a decimal digit string or calculate on the fly depending u
 [[Any other value ['N]][Sets the compile time precision to ['N] bits.]]
 ]
 
-In addition, for user defined types that need special handling, it's possible to \[partially-\] specialize
-the internal structure used by each constant.  For example suppose we're using the C++ wrapper around MPFR
-`mpfr_class`: this has it's own representation of Pi which we may well wish to use in place of the above
+[h5 Custom Specializing a constant]
+
+In addition, for user-defined types that need special handling, it's possible to \[partially-\] specialize
+the internal structure used by each constant.  For example, suppose we're using the C++ wrapper around MPFR
+`mpfr_class`: this has its own representation of Pi which we may well wish to use in place of the above
 mechanism.  We can achieve this by specialising the class template `boost::math::constants::detail::constant_pi`:
 
    namespace boost{ namespace math{ namespace constants{ namespace detail{
@@ -236,9 +238,9 @@ mechanism.  We can achieve this by specialising the class template `boost::math:
       template<int N>
       inline T get(const mpl::int_<N>&)
       {
-         // The tempate param N is one of the values in the table above,
-         // we can either handle all cases in one as is the case here, or
-         // overload "get" for the different options.
+         // The template param N is one of the values in the table above,
+         // we can either handle all cases in one as is the case here,
+         // or overload "get" for the different options.
          mpfr_class result;
          mpfr_const_pi(result.get_mpfr_t(), GMP_RNDN);
          return result;
@@ -246,6 +248,8 @@ mechanism.  We can achieve this by specialising the class template `boost::math:
    };
 
    }}}} // namespaces
+
+[h5 Diagnosing what meta-programmed code is doing]
 
 Finally, since it can be tricky to diagnose what meta-programmed code is doing, there is a
 diagnostic routine that prints information about how this library will handle a specific type,
@@ -352,12 +356,11 @@ This section lists the mathematical constants, their use(s) (and sometimes ratio
 [[one_div_log_phi] [1/ln([phi])] [2.07808] [] ]
 
 [[[*Euler's Gamma]] [] [] [] ]
-[[gamma] [[Gamma]] [0.577215] [[@http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant Euler-Mascheroni gamma constant]] ]
-[[one_div_gamma] [1/[Gamma]] [1.73245] [] ]
-[[gamma_sqr] [[Gamma][super 2]] [0.333177] [] ]
+[[euler] [euler] [0.577215] [[@http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant Euler-Mascheroni gamma constant]] ]
+[[one_div_euler] [1/euler] [1.73245] [] ]
+[[euler_sqr] [euler[super 2]] [0.333177] [] ]
 
 [[[*Misc]] [] [] [] ]
-[[cf10] [1/10 ...] [1.03064] [[@http://en.wikipedia.org/wiki/Continued_fraction Continued fraction]] ]
 
 [[zeta_two] [[zeta](2)] [1.64493] [[@http://en.wikipedia.org/wiki/Riemann_zeta_function Riemann zeta function]] ]
 [[zeta_three] [[zeta](3)] [1.20205] [[@http://en.wikipedia.org/wiki/Riemann_zeta_function Riemann zeta function]] ]
@@ -462,6 +465,13 @@ declares the `float`, `double` and `long double` versions of the constant,
 plus a decimal digit string representation correct to 100 decimal
 digits, and all the meta-programming machinary needed to select between them.
 
+The result of an expanded macro for Pi is shown below.
+
+[import ./pp_pi.hpp]
+
+[preprocessed_pi]
+
+
 [endsect] [/section:new_const Defining New Constants]
 
 [section:FAQ FAQs]
@@ -475,6 +485,7 @@ Some of the criteria we have used are:
 * Commonly used.
 * Expensive to compute.
 * Requested by users.
+* [@http://en.wikipedia.org/wiki/Mathematical_constant Used in science and mathematics.]
 * No integer values (because so cheap to construct).[br] 
 (You can easily define your own if found convenient, for example: `FPT one =static_cast<FPT>(42);`).
 
@@ -620,6 +631,26 @@ This class is used in Boost.Math and an option when using big_number projects to
 but are licensed under the [@http://www.gnu.org/copyleft/lesser.html Lesser GPL license]
 and are [*not licensed for commercial use].
 
+[h5 What happened to a previous collection of constants proposed for Boost?]
+
+A review concluded that the way in which the constants were presented did not meet many peoples needs.
+None of the methods proposed met many users' essential requirement to allow writing simply `pi` rather than `pi()`.
+Many science and engineering equations look difficult to read when because function call brackets can be confused
+with the many other brackets often needed.  All the methods then proposed of avoiding the brackets failed to meet all needs,
+often on grounds of complexity and lack of applicability to various realistic scenarios.
+
+So the simple namespace method, proposed on its own, but rejected at the first review,
+has been added to allow users to have convenient access to float, double and long double values,
+but combined with template struct and functions to allow simultaneous use
+with other non-built-in floating-point types.
+
+[h5 Why do the constants (internally) have a struct rather than a simple function?]
+
+A function mechanism was provided by in previous versions of Boost.Math.
+
+The new mechanism is to permit partial specialization. See Custom Specializing a constant above.
+It should also allow use with other packages like [@http://www.ttmath.org/ ttmath Bignum C++ library.]
+
 [h5 Where can I find other high precision constants?]
 
 # Constants with very high precision and good accuracy (>40 decimal digits)
@@ -636,7 +667,7 @@ and CALC100 100 decimal digit Complex Variable Calculator Program, a DOS utility
 
 [h4 Where are Physical Constants?]
 
-Not here in this Boost.Math collection because physical constants:
+Not here in this Boost.Math collection, because physical constants:
 
 * Are measurements.
 * Are not truly constant and keeping changing as mensuration technology improves.
