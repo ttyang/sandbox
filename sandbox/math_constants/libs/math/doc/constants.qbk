@@ -223,6 +223,30 @@ either construct from a decimal digit string or calculate on the fly depending u
 [[Any other value ['N]][Sets the compile time precision to ['N] bits.]]
 ]
 
+In addition, for user defined types that need special handling, it's possible to \[partially-\] specialize
+the internal structure used by each constant.  For example suppose we're using the C++ wrapper around MPFR
+`mpfr_class`: this has it's own representation of Pi which we may well wish to use in place of the above
+mechanism.  We can achieve this by specialising the class template `boost::math::constants::detail::constant_pi`:
+
+   namespace boost{ namespace math{ namespace constants{ namespace detail{
+
+   template<>
+   struct constant_pi<mpfr_class>
+   {
+      template<int N>
+      inline T get(const mpl::int_<N>&)
+      {
+         // The tempate param N is one of the values in the table above,
+         // we can either handle all cases in one as is the case here, or
+         // overload "get" for the different options.
+         mpfr_class result;
+         mpfr_const_pi(result.get_mpfr_t(), GMP_RNDN);
+         return result;
+      }
+   };
+
+   }}}} // namespaces
+
 Finally, since it can be tricky to diagnose what meta-programmed code is doing, there is a
 diagnostic routine that prints information about how this library will handle a specific type,
 it can be used like this:
@@ -367,8 +391,9 @@ The function should look like this:
 
   namespace boost{ namespace math{ namespace constants{ namespace detail{
 
-  template <class Real, int N>
-  Real calculate_my_constant((const mpl::int_<N>& BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
+  template <class Real>
+  template <int N>
+  Real constant_my_constant<Real>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
   {
     int required_precision = N ? N : tools::digits<Real>();
     Real result = /* value computed to required_precision bits */ ;
@@ -376,15 +401,29 @@ The function should look like this:
   }
 
   }}}} // namespaces
+  
+Then define a placeholder for the constant itself:
+
+   namespace boost{ namespace math{ namespace constants{
+
+   BOOST_DEFINE_MATH_CONSTANT(my_constant, 0, 0, 0);
+
+   }}}
+
 
 For example, to calculate [pi]/2, add to `boost/math/constants/calculate_constants.hpp`
 
-  template <class T, int N> 
-  inline T calculate_half_pi(const mpl::int_<N>&BOOST_MATH_APPEND_EXPLICIT_TEMPLATE_TYPE_SPEC(T))
+  template <class T>
+  template<int N> 
+  inline T constant_half_pi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
   {
      BOOST_MATH_STD_USING
      return pi<T, policies::policy<policies::digits2<N> > >() / static_cast<T>(2);
   }
+
+Then to `boost/math/constants/constants.hpp` add:
+
+   BOOST_DEFINE_MATH_CONSTANT(half_pi, 0, 0, 0);  // actual values are temporary, we'll replace them later
 
 [note Previously defined constants like pi and e can be used, but by not simply calling `pi<T>()`;
 specifying the precision via the policy is essential to ensure full accuracy.]
