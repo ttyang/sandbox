@@ -15,10 +15,11 @@
 
 // PUBLIC //
 
-// declaration_seq can be empty ``, or `void`, or `(void)` for no params.
-// Or, `{([auto | register] param_type param_name)[(default default_value)] 
-// | ([const] bind [&] bind_name)}+ [(return result_type)]` where `bind_name`
-// can be `this_` (but not `&this_` as usual in C++).
+// Expand: decl_traits (see DECL_TRAITS macros to inspect these traits).
+// declaration_seq: empty ``, or `void`, or `(void)` for no params; or,
+// `{ ([auto | register] type_ name_)[(default value_)] |
+// ([const] bind[(type_)] [&] var_) }+ [(return result_type)]` where `var_` can
+// be `this_` (but not `&this_` allowed as usual in C++).
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS(declaration_seq) \
     BOOST_PP_IIF(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID( \
             declaration_seq), \

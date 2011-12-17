@@ -9,8 +9,6 @@
 
 #include <boost/closure/aux_/preprocessor/traits/decl_/index.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
-#include <boost/preprocessor/facilities/is_empty.hpp>
-#include <boost/preprocessor/logical/compl.hpp>
 
 // PUBLIC //
 
@@ -22,11 +20,6 @@
 // Expand: `[ERROR_message_text]`, EMPTY iff no pp-parsing error.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR(decl_traits)(/* expand EMPTY */)
-
-// Expand: 1 iff pp-parsing error, 0 otherwise.
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_ERROR(decl_traits) \
-    BOOST_PP_COMPL(BOOST_PP_IS_EMPTY( \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits)))
 
 #endif // #include guard
 

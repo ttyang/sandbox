@@ -7,12 +7,15 @@
 #ifndef BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_HPP_
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_HPP_
 
-#include <boost/closure/aux_/preprocessor/traits/decl_return.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_param.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_bind.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_const_bind.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_returns.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_params.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_const_binds.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_binds.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_error.hpp>
+#include <boost/closure/aux_/preprocessor/traits/param.hpp>
 #include <boost/closure/detail/preprocessor/keyword/return.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>
+#include <boost/preprocessor/arithmetic/dec.hpp>
 #include <boost/preprocessor/list/append.hpp>
 #include <boost/preprocessor/list/size.hpp>
 #include <boost/preprocessor/list/at.hpp>
@@ -29,7 +32,7 @@
     , \
         ( /* list 2-tuple */ \
             ( /* (param_decl, default) 2-tuple */ \
-                BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_DECL( \
+                BOOST_CLOSURE_AUX_PP_PARAM_TRAITS_DECL( \
                         BOOST_PP_LIST_AT(params, BOOST_PP_DEC( \
                                 BOOST_PP_LIST_SIZE(params)))) \
             , \
@@ -185,7 +188,7 @@
     , /* const-bind `this` types */ \
         BOOST_PP_LIST_APPEND( \
                 BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES( \
-                        decl_trait), \
+                        decl_traits), \
                 ( (this_type), BOOST_PP_NIL ) ) \
     , /* bind vars */ \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS(decl_traits) \

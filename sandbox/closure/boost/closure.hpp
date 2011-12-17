@@ -9,24 +9,24 @@
  *  where they are needed.
  */
 
-#ifndef BOOST_LOCAL_FUNCTION_HPP_
-#define BOOST_LOCAL_FUNCTION_HPP_
+#ifndef BOOST_CLOSURE_HPP_
+#define BOOST_CLOSURE_HPP_
 
-#include "config.hpp"
+#include <boost/closure/config.hpp>
 #include <boost/closure/aux_/symbol.hpp>
-#include "aux_/function_macros/params.hpp"
-#include "aux_/function_macros/name.hpp"
+#include <boost/closure/aux_/macro/closure.hpp>
+#include <boost/closure/aux_/macro/closure_end.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>
 #include <boost/config.hpp> // For variadic macros.
 
 // Pass a parenthesized params seq `()()...` on C++. If variadic macros (C99, 
 // GCC, MVSC, etc) you can also pass a variable length tuple `..., ...` for
 // params and nothing `` for no params.
-#if defined(BOOST_NO_VARIADIC_MACROS) || defined(BOOST_LOCAL_CONFIG_COMPLIANT)
+#if defined(BOOST_NO_VARIADIC_MACROS)
 
 /** @cond */
-#define BOOST_LOCAL_FUNCTION_PARAMS_(id, is_template, parameters) \
-    BOOST_LOCAL_AUX_FUNCTION_PARAMS(parameters, id, is_template)
+#define BOOST_CLOSURE_(id, is_template, decl_seq) \
+    BOOST_CLOSURE_AUX_CLOSURE(decl_seq, id, is_template)
 /** @endcond */
 
 /**
@@ -143,8 +143,8 @@
  *  @RefMacro{BOOST_LOCAL_CONFIG_FUNCTION_ARITY_MAX},
  *  @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}, Boost.Function.
  */
-#define BOOST_LOCAL_FUNCTION_PARAMS(parameters) \
-    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 0 /* no template */, parameters)
+#define BOOST_CLOSURE(declarations) \
+    BOOST_CLOSURE_(__LINE__, 0 /* no template */, declarations)
 
 /**
  * @brief This macro is the same as @RefMacro{BOOST_LOCAL_FUNCTION_PARAMS} but
@@ -152,23 +152,23 @@
  *
  * @See @RefMacro{BOOST_LOCAL_FUNCTION_PARAMS}, @RefSect{Tutorial} section.
  */
-#define BOOST_LOCAL_FUNCTION_PARAMS_TPL(parameters) \
-    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 1 /* template */, parameters)
+#define BOOST_CLOSURE_TPL(declarations) \
+    BOOST_CLOSURE_(__LINE__, 1 /* template */, declarations)
 
 #else // BOOST_NO_VARIADIC_MACROS
 
-#include "aux_/preprocessor/variadic/to_seq.hpp"
+#include <boost/closure/aux_/preprocessor/variadic/to_seq.hpp>
 
-#define BOOST_LOCAL_FUNCTION_PARAMS_(id, is_template, ...) \
-    BOOST_LOCAL_AUX_FUNCTION_PARAMS(BOOST_LOCAL_AUX_PP_VARIADIC_TO_SEQ( \
+#define BOOST_CLOSURE_(id, is_template, ...) \
+    BOOST_CLOSURES_AUX_CLOSURE(BOOST_CLOSURE_AUX_PP_VARIADIC_TO_SEQ( \
             (void) /* for empty seq */, __VA_ARGS__), \
             id, is_template)
 
-#define BOOST_LOCAL_FUNCTION_PARAMS(...) \
-    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 0 /* no template */, __VA_ARGS__)
+#define BOOST_CLOSURE(...) \
+    BOOST_CLOSURE_(__LINE__, 0 /* no template */, __VA_ARGS__)
 
-#define BOOST_LOCAL_FUNCTION_PARAMS_TPL(...) \
-    BOOST_LOCAL_FUNCTION_PARAMS_(__LINE__, 1 /* template */, __VA_ARGS__)
+#define BOOST_CLOSURE_TPL(...) \
+    BOOST_CLOSURE_(__LINE__, 1 /* template */, __VA_ARGS__)
 
 #endif // BOOST_NO_VARIADIC_MACROS
 
@@ -226,8 +226,8 @@
  *  @RefSect2{Advanced_Topics, Advanced Topics} section,
  *  @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}.
  */
-#define BOOST_LOCAL_FUNCTION_NAME(name) \
-    BOOST_LOCAL_AUX_FUNCTION_NAME(name)
+#define BOOST_CLOSURE_END(name) \
+    BOOST_CLOSURE_AUX_CLOSURE_END(name)
 
 /** @todo make this accept this_ and error on this */
 // Bound variable name. Expand to qualified bound type (i.e., bound variable
@@ -265,8 +265,8 @@
  *  @RefMacro{BOOST_LOCAL_EXIT}, @RefSect2{Advanced_Topics, Advanced Topics}
  *  section.
  */
-#define BOOST_LOCAL_TYPEOF(bound_variable_name) \
-    BOOST_LOCAL_AUX_SYMBOL_TYPEOF_TYPE(bound_variable_name)
+#define BOOST_CLOSURE_TYPEOF(bound_variable_name) \
+    BOOST_CLOSURE_AUX_SYMBOL_TYPEOF_TYPE(bound_variable_name)
 
 #endif // #include guard
 

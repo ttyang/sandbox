@@ -7,9 +7,9 @@
 #ifndef BOOST_CLOSURE_DETAIL_PP_KEYWORD_CONST_HPP_
 #define BOOST_CLOSURE_DETAIL_PP_KEYWORD_CONST_HPP_
 
-#include <boost/closure/detail/preprocessor/facility/is.hpp>
-#include <boost/closure/detail/preprocessor/facility/add.hpp>
-#include <boost/closure/detail/preprocessor/facility/remove.hpp>
+#include <boost/closure/detail/preprocessor/keyword/facility/is.hpp>
+#include <boost/closure/detail/preprocessor/keyword/facility/add.hpp>
+#include <boost/closure/detail/preprocessor/keyword/facility/remove.hpp>
 
 // PRIVATE //
 

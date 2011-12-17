@@ -8,35 +8,28 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT_HPP_
 
 #include <boost/closure/aux_/preprocessor/traits/decl_/set_error.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_error.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_const_bind.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_bind.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_const_binds.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_binds.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
-#include <boost/preprocessor/logical/bitand.hpp>
-
-// PRIVATE //
-
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT_(decl_traits) \
-    BOOST_PP_IIF(BOOST_PP_BITAND( \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_CONST_BIND_THIS( \
-                    decl_traits), \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_BIND_THIS(decl_traits)), \
-        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SET_ERROR \
-    , \
-        decl_traits BOOST_PP_TUPLE_EAT(2) \
-    )(decl_traits, /* trailing `EMPTY` because error might not be present */ \
-            ERROR_cannot_bind_object_this_multiple_times BOOST_PP_EMPTY)
+#include <boost/preprocessor/comparison/greater.hpp>
+#include <boost/preprocessor/list/append.hpp>
+#include <boost/preprocessor/list/size.hpp>
 
 // PUBLIC //
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT(decl_traits) \
-    BOOST_PP_IIF(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_ERROR(decl_traits), \
-        decl_traits BOOST_PP_TUPLE_EAT(1) /* fwd existing error */ \
-    , \
-        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT_ \
-    )(decl_traits)
+    BOOST_PP_IIF(BOOST_PP_GREATER(BOOST_PP_LIST_SIZE(BOOST_PP_LIST_APPEND( \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES( \
+                    decl_traits), \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES(decl_traits))), \
+            1), \
+        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SET_ERROR \
+    , /* do nothing (keeping previous error, if any) */ \
+        decl_traits BOOST_PP_TUPLE_EAT(2) \
+    )(decl_traits, /* trailing `EMPTY` because error might not be present */ \
+            ERROR_cannot_bind_object_this_multiple_times BOOST_PP_EMPTY)
 
 #endif // #include guard
 
