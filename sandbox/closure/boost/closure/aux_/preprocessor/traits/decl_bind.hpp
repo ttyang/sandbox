@@ -20,27 +20,33 @@
 
 // PUBLIC //
 
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND(decl_traits) \
+// Expand: pp-list of non-const binds.
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_BIND, decl_traits)
 
+// Expand: 1 iff at least 1 non-const bind, 0 otherwise.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_BIND(decl_traits) \
     BOOST_PP_LIST_IS_CONS(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND(decl_traits))
 
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_WITHOUT_TYPE(decl_traits) \
+// Expand: pp-list of non-const binds without explicit types.
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS_WITHOUT_TYPE(decl_traits) \
     BOOST_PP_LIST_TRANSFORM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_TYPED_, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_WITHOUT_TYPE, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND(params))
-        
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_WITH_TYPE(decl_traits) \
+
+// Expand: pp-list of non-const binds with explicit types.
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS_WITH_TYPE(decl_traits) \
     BOOST_PP_LIST_TRANSFORM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_TYPED_, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_WITH_TYPE, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND(decl_traits))
 
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPE(decl_traits) \
+// Expand: pp-list of types for bound this (size <= 1 only after validation).
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_BIND_THIS_TYPE, decl_traits)
 
+// Expand: 1 iff this was bound, 0 otherwise.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_BIND_THIS(decl_traits) \
     BOOST_PP_LIST_IS_CONS(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPE( \
             decl_traits))

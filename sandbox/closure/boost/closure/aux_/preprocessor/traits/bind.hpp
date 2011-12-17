@@ -20,27 +20,31 @@
 
 // PUBLIC //
 
-// Bind non-this (const or not).
+// Bind variable (const or not).
 
-#define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_WITHOUT_TYPE(bind_traits) \
+// Expand: `[&] var_`.
+#define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_BIND_TRAITS_INDEX_MAX_, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_INDEX_WITHOUT_TYPE_, bind_traits)
 
-// Could be empty (if no type was explicitly specified).
-#define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_WITH_TYPE(bind_traits) \
+// Expand: `[(type_) [&] var_]` (EMPTY if no type_ specified).
+#define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITH_TYPE(bind_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_BIND_TRAITS_INDEX_MAX_, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_INDEX_WITH_TYPE_, bind_traits) \
             (/* expand EMPTY */)
 
-#define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_HAVE_TYPE(bind_traits) \
+// Expand: 1 iff type_ specified, 0 otherwise.
+#define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_HAS_TYPE(bind_traits) \
     BOOST_PP_COMPL(BOOST_PP_IS_EMPTY( \
-            BOOST_CLOSURE_AUX_PP_BIND_TRAITS_WITH_TYPE(any_bind)))
+            BOOST_CLOSURE_AUX_PP_BIND_TRAITS_WITH_TYPE(bind_traits)))
 
-// Bind this (const or not).
+// Bind object this (const or not).
 
+// Expand: `[(type_)]` (EMPTY if no type_ specified).
 #define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_THIS_TYPE(bind_this_type) \
     BOOST_PP_TUPLE_ELEM(1, 0, bind_this_type)(/* expand EMPTY */)
 
+// Expand: 1 iff type_ specified, 0 otherwise.
 #define BOOST_CLOSURE_AUX_PP_BIND_TRAITS_THIS_HAS_TYPE(bind_this_type) \
     BOOST_PP_COMPL(BOOST_PP_IS_EMPTY( \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_THIS_TYPE(bind_this_type)))

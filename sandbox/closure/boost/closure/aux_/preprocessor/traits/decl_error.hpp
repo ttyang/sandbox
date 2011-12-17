@@ -14,14 +14,16 @@
 
 // PUBLIC //
 
-// Expand to `EMPTY` if no error, to `ERROR_message_text EMPTY` otherwise.
+// Expand: `[ERROR_message_text] EMPTY`, EMPTY iff no pp-parsing error.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_ERROR, decl_traits)
 
+// Expand: `[ERROR_message_text]`, EMPTY iff no pp-parsing error.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR(decl_traits)(/* expand EMPTY */)
 
+// Expand: 1 iff pp-parsing error, 0 otherwise.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_ERROR(decl_traits) \
     BOOST_PP_COMPL(BOOST_PP_IS_EMPTY( \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits)))

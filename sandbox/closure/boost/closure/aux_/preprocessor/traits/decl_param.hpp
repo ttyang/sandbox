@@ -4,8 +4,8 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS_HPP_
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS_HPP_
+#ifndef BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_HPP_
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_HPP_
 
 #include <boost/closure/aux_/preprocessor/traits/decl_/index.hpp>
 #include <boost/closure/detail/preprocessor/keyword/default.hpp>
@@ -50,30 +50,36 @@
 
 // PUBLIC //
 
-// Expand to param declaration: [auto | register] type name.
+// Single parameter.
+
+// Expand: `[auto | register] type_ name_` (parameter declaration).
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_DECL(param) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_INDEX_MAX_, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_INDEX_DECL_, param)
 
-// Expand to param default value (empty if none).
+// Expand: `[default_value_]`, EMPTY if no parameter default value.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_DEFAULT(param) \
     BOOST_CLOSURE_DETAIL_PP_KEYWORD_DEFAULT_REMOVE_FRONT( \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_DEFAULT_(param))
 
-// Expand to 1 if param has default value, 0 otherwise.
+// Expand: 1 iff parameter has default value, 0 otherwise.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_HAS_DEFAULT(param) \
     BOOST_PP_COMPL(BOOST_PP_IS_EMPTY( \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAM_DEFAULT_(param)))
 
-// Expand to pp-list of ALL unbind params.
+// All parameters.
+
+// Expand: pp-list of parameters (bound variables excluded).
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_PARAMS, decl_traits)
 
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_PARAMS(decl_traits) \
+// Expand: 1 iff at least 1 parameter (bound variables excluded).
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_PARAM(decl_traits) \
     BOOST_PP_LIST_IS_CONS(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS(decl_traits))
 
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS_COUNT_DEFAULTS(decl_traits) \
+// Expand: number of parameters with default values (0 if no default).
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_COUNT_DEFAULT_PARAMS(decl_traits) \
     BOOST_PP_IIF(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_PARAMS(decl_traits), \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS_COUNT_DEFAULTS_ \
     , \

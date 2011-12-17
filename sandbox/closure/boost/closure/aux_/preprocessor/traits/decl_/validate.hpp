@@ -1,0 +1,19 @@
+
+// Copyright (C) 2009-2011 Lorenzo Caminiti
+// Use, modification, and distribution is subject to the Boost Software
+// License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
+// copy at http://www.boost.org/LICENSE_1_0.txt).
+
+#ifndef BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_HPP_
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_HPP_
+
+#include <boost/closure/aux_/preprocessor/traits/decl_/validate_/this_count.hpp>
+
+// PUBLIC //
+
+// Validate params after they have been parsed.
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE(decl_traits) \
+    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT(decl_traits)
+
+#endif // #include guard
+
