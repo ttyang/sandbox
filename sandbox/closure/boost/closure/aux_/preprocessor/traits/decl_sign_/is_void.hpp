@@ -8,7 +8,7 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_HPP_
 
 #include <boost/closure/config.hpp>
-#include <boost/detail/preprocessor/keyword/void.hpp>
+#include <boost/closure/detail/preprocessor/keyword/void.hpp>
 #include <boost/preprocessor/detail/is_unary.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
@@ -29,8 +29,10 @@
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_TOKEN_ALLOW_EMPTY_ \
         BOOST_PP_EMPTY \
     , \
-        BOOST_DETAIL_PP_KEYWORD_IS_VOID_FRONT \
+        BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_VOID_FRONT \
     )(sign)
+
+/** @todo check that there's no BOOST_DETAIL_PP_KEYWORD anywhere */
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_SEQ_(sign) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_TOKEN_(BOOST_PP_SEQ_HEAD( \
@@ -43,7 +45,7 @@
 // for C++ but similar to unparenthesized sign syntax for C99), or `(void)`
 // (parenthesized sign syntax for C++).
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID(sign) \
-    BOOST_PP_IIF(BOOST_PP_IS_UNARY(parenthesized_params), \
+    BOOST_PP_IIF(BOOST_PP_IS_UNARY(sign), \
         /* it's a pp-seq */ \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_SEQ_ \
     , /* else, it's a token */ \

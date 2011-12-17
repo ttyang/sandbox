@@ -8,7 +8,7 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_ANY_BIND_TYPE_HPP_
 
 #include <boost/closure/detail/preprocessor/keyword/const_bind.hpp>
-#include <boost/detail/preprocessor/keyword/this.hpp>
+#include <boost/closure/detail/preprocessor/keyword/this.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>

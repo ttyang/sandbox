@@ -23,7 +23,7 @@
 // Expand: pp-list of const-binds.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_CONST_BIND, decl_traits)
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_CONST_BINDS, decl_traits)
 
 // Expand: 1 iff at least 1 const-bind, 0 otherwise.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_CONST_BIND(decl_traits) \
@@ -48,11 +48,11 @@
 // Expand: pp-list of type for const-bind of this (size <= 1 after validation).
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
-            BOOST_CLOSURE_AUX_PP_DECL_TRIATS_INDEX_CONST_BIND_THIS_TYPE, \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_CONST_BIND_THIS_TYPES, \
             decl_traits)
 
 // Expand: 1 iff this is const-bind, 0 otherwise.
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_CONST_BIND_THIS(params) \
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HAVE_CONST_BIND_THIS(decl_traits) \
     BOOST_PP_LIST_IS_CONS( \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES(decl_traits))
 

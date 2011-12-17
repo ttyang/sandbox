@@ -7,7 +7,7 @@
 #ifndef BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE_HPP_
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE_HPP_
 
-#include <boost/closure/aux_/preprocessor/traits/decl_sign_/validate/defaults.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_sign_/validate_/defaults.hpp>
 
 // PUBLIC //
 

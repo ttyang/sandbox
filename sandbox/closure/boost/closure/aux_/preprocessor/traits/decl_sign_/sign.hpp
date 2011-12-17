@@ -8,23 +8,19 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_HPP_
 
 #include <boost/closure/aux_/preprocessor/traits/decl_sign_/validate.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_sign_/valid.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_sign_/any_bind_type.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_/nil.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_/set_error.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_/validate.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_/append_unbind.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_/append_unbind_default.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_/append_const_bind.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_/append_const_bind_this_type.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_/append_bind.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_/append_bind_this_type.hpp>
-#include <boost/closure/detail/keyword/const_bind.hpp>
-#include <boost/closure/detail/keyword/bind.hpp>
-#include <boost/detail/preprocessor/keyword/default.hpp>
-#include <boost/detail/preprocessor/keyword/this.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_/append.hpp>
+#include <boost/closure/detail/preprocessor/keyword/const_bind.hpp>
+#include <boost/closure/detail/preprocessor/keyword/bind.hpp>
+#include <boost/closure/detail/preprocessor/keyword/return.hpp>
+#include <boost/closure/detail/preprocessor/keyword/default.hpp>
+#include <boost/closure/detail/preprocessor/keyword/this.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
+#include <boost/preprocessor/seq/fold_left.hpp>
 
 // PRIVATE //
 
@@ -80,20 +76,21 @@
 // Parse all elements.
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_(s, decl_traits, sign) \
-    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_BIND_FRONT(sign), \
+    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_RETURN_FRONT(sign), \
+        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_RETURN \
+    , BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_BIND_FRONT(sign), \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_BIND_ \
     , BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_CONST_BIND_FRONT(sign), \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_CONST_BIND_ \
     , BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_DEFAULT_FRONT(sign), \
-        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_UNBIND_DEFAULT_ \
         /* elem is `default ...` where leading default is kept because */ \
         /* default value might not be alphanumeric (so it fails later CAT */ \
         /* for checks), leading default will be removed later when getting */ \
         /* the default value */ \
-        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_UNBIND_DEFAULT \
-    , \
-        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_UNBIND \
-    )))(decl_traits, sign)
+        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_PARAM_DEFAULT \
+    , /* else, it is a function parameter */ \
+        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_PARAM \
+    ))))(decl_traits, sign)
 
 // Parse param seq after following precondition has been validated by caller.
 // Precondition: If seq contains a default param value `... (default ...) ...`,

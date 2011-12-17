@@ -8,8 +8,8 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_HPP_
 
 #include <boost/closure/aux_/preprocessor/traits/decl_sign_/is_void.hpp>
-#include <boost/closure/aux_/preprocessor/traits/decl_sign_/seq.hpp>
-#include <boost/closure/aux_/preprocessor/triats/decl_/nil.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_sign_/sign.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_/nil.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
 
@@ -25,7 +25,7 @@
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_NIL \
         BOOST_PP_TUPLE_EAT(1) \
     , \
-        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_SEQ \
+        BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN \
     )(declaration_seq)
 
 #endif // #include guard

@@ -8,12 +8,16 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_HPP_
 
 #include <boost/closure/aux_/preprocessor/traits/decl_/validate_/this_count.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_/validate_/return_count.hpp>
 
 // PUBLIC //
 
 // Validate params after they have been parsed.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE(decl_traits) \
-    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT(decl_traits)
+    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_THIS_COUNT( \
+    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE_RETURN_COUNT( \
+        decl_traits \
+    ))
 
 #endif // #include guard
 

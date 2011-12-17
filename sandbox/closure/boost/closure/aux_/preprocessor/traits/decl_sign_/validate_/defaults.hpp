@@ -9,7 +9,7 @@
 
 #include <boost/closure/detail/preprocessor/keyword/const_bind.hpp>
 #include <boost/closure/detail/preprocessor/keyword/bind.hpp>
-#include <boost/detail/preprocessor/keyword/default.hpp>
+#include <boost/closure/detail/preprocessor/keyword/default.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/control/while.hpp>
 #include <boost/preprocessor/control/iif.hpp>
