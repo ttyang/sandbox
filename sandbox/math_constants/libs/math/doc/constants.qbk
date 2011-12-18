@@ -409,7 +409,7 @@ Then define a placeholder for the constant itself:
 
    namespace boost{ namespace math{ namespace constants{
 
-   BOOST_DEFINE_MATH_CONSTANT(my_constant, 0, 0, 0);
+   BOOST_DEFINE_MATH_CONSTANT(my_constant, 0, "0");
 
    }}}
 
@@ -426,7 +426,7 @@ For example, to calculate [pi]/2, add to `boost/math/constants/calculate_constan
 
 Then to `boost/math/constants/constants.hpp` add:
 
-   BOOST_DEFINE_MATH_CONSTANT(half_pi, 0, 0, 0);  // actual values are temporary, we'll replace them later
+   BOOST_DEFINE_MATH_CONSTANT(half_pi, 0, "0");  // actual values are temporary, we'll replace them later
 
 [note Previously defined constants like pi and e can be used, but by not simply calling `pi<T>()`;
 specifying the precision via the policy is essential to ensure full accuracy.]
@@ -457,7 +457,7 @@ The output from the program is a snippet of C++ code
 into `boost/math/constants/constants.hpp` or else into your own code, for example:
 
 [pre
-  BOOST_DEFINE_MATH_CONSTANT(half_pi, 1.570796326794896619231321691639751442, 09858469968755291048747229615390820314310449931401741267105853399107404326, +00);
+  BOOST_DEFINE_MATH_CONSTANT(half_pi, 1.570796326794896619231321691639751442e+00, "1.57079632679489661923132169163975144209858469968755291048747229615390820314310449931401741267105853399107404326e+00");
 ]
 
 This macro BOOST_DEFINE_MATH_CONSTANT  inserts a code snippet that
@@ -556,7 +556,7 @@ since even a `long double` might not have enough digits).
 
 So, for example, a constant like pi is internally defined as
 
-  BOOST_DEFINE_MATH_CONSTANT(pi, 3.141592653589793238462643383279502884, 19716939937510582097494459230781640628620899862803482534211706798214808651, +00);
+  BOOST_DEFINE_MATH_CONSTANT(pi, 3.141592653589793238462643383279502884e+00, "3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651e+00");
 
 In this case the significand is 109 decimal digits, ensuring 100 decimal digits are exact, and exponent is zero.
 

@@ -504,10 +504,15 @@
 </tr>
 </tbody>
 </table></div>
+<h6>
+<a name="math_constants.tutorial.user_def.h0"></a>
+        <span><a name="math_constants.tutorial.user_def.custom_specializing_a_constant"></a></span><a class="link" href="index.html#math_constants.tutorial.user_def.custom_specializing_a_constant">Custom
+        Specializing a constant</a>
+      </h6>
 <p>
-        In addition, for user defined types that need special handling, it's possible
+        In addition, for user-defined types that need special handling, it's possible
         to [partially-] specialize the internal structure used by each constant.
-        For example suppose we're using the C++ wrapper around MPFR <code class="computeroutput"><span class="identifier">mpfr_class</span></code>: this has it's own representation
+        For example, suppose we're using the C++ wrapper around MPFR <code class="computeroutput"><span class="identifier">mpfr_class</span></code>: this has its own representation
         of Pi which we may well wish to use in place of the above mechanism. We can
         achieve this by specialising the class template <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">constants</span><span class="special">::</span><span class="identifier">detail</span><span class="special">::</span><span class="identifier">constant_pi</span></code>:
       </p>
@@ -519,9 +524,9 @@
    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">N</span><span class="special">&gt;</span>
    <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;&amp;)</span>
    <span class="special">{</span>
-      <span class="comment">// The tempate param N is one of the values in the table above,</span>
-      <span class="comment">// we can either handle all cases in one as is the case here, or</span>
-      <span class="comment">// overload "get" for the different options.</span>
+      <span class="comment">// The template param N is one of the values in the table above,</span>
+      <span class="comment">// we can either handle all cases in one as is the case here,</span>
+      <span class="comment">// or overload "get" for the different options.</span>
       <span class="identifier">mpfr_class</span> <span class="identifier">result</span><span class="special">;</span>
       <span class="identifier">mpfr_const_pi</span><span class="special">(</span><span class="identifier">result</span><span class="special">.</span><span class="identifier">get_mpfr_t</span><span class="special">(),</span> <span class="identifier">GMP_RNDN</span><span class="special">);</span>
       <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
@@ -530,6 +535,11 @@
 
 <span class="special">}}}}</span> <span class="comment">// namespaces</span>
 </pre>
+<h6>
+<a name="math_constants.tutorial.user_def.h1"></a>
+        <span><a name="math_constants.tutorial.user_def.diagnosing_what_meta_programmed_code_is_doing"></a></span><a class="link" href="index.html#math_constants.tutorial.user_def.diagnosing_what_meta_programmed_code_is_doing">Diagnosing
+        what meta-programmed code is doing</a>
+      </h6>
 <p>
         Finally, since it can be tricky to diagnose what meta-programmed code is
         doing, there is a diagnostic routine that prints information about how this
@@ -1714,12 +1724,12 @@ the constant will be constructed from a string on each call.
 <tr>
 <td>
               <p>
-                gamma
+                euler
               </p>
             </td>
 <td>
               <p>
-                &#915;
+                euler
               </p>
             </td>
 <td>
@@ -1737,12 +1747,12 @@ the constant will be constructed from a string on each call.
 <tr>
 <td>
               <p>
-                one_div_gamma
+                one_div_euler
               </p>
             </td>
 <td>
               <p>
-                1/&#915;
+                1/euler
               </p>
             </td>
 <td>
@@ -1756,12 +1766,12 @@ the constant will be constructed from a string on each call.
 <tr>
 <td>
               <p>
-                gamma_sqr
+                euler_sqr
               </p>
             </td>
 <td>
               <p>
-                &#915;<sup>2</sup>
+                euler<sup>2</sup>
               </p>
             </td>
 <td>
@@ -1783,29 +1793,6 @@ the constant will be constructed from a string on each call.
 <td>
             </td>
 <td>
-            </td>
-</tr>
-<tr>
-<td>
-              <p>
-                cf10
-              </p>
-            </td>
-<td>
-              <p>
-                1/10 ...
-              </p>
-            </td>
-<td>
-              <p>
-                1.03064
-              </p>
-            </td>
-<td>
-              <p>
-                <a href="http://en.wikipedia.org/wiki/Continued_fraction" target="_top">Continued
-                fraction</a>
-              </p>
             </td>
 </tr>
 <tr>
@@ -2028,7 +2015,7 @@ the constant will be constructed from a string on each call.
     </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">math</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">constants</span><span class="special">{</span>
 
-<span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">my_constant</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>
+<span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">my_constant</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="string">"0"</span><span class="special">);</span>
 
 <span class="special">}}}</span>
 </pre>
@@ -2046,7 +2033,7 @@ the constant will be constructed from a string on each call.
 <p>
       Then to <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span></code> add:
     </p>
-<pre class="programlisting"><span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">half_pi</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="number">0</span><span class="special">);</span>  <span class="comment">// actual values are temporary, we'll replace them later</span>
+<pre class="programlisting"><span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">half_pi</span><span class="special">,</span> <span class="number">0</span><span class="special">,</span> <span class="string">"0"</span><span class="special">);</span>  <span class="comment">// actual values are temporary, we'll replace them later</span>
 </pre>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -2096,7 +2083,7 @@ the constant will be constructed from a string on each call.
       The output from the program is a snippet of C++ code (actually a macro call)
       that can be cut and pasted into <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">math</span><span class="special">/</span><span class="identifier">constants</span><span class="special">/</span><span class="identifier">constants</span><span class="special">.</span><span class="identifier">hpp</span></code> or else into your own code, for example:
     </p>
-<pre class="programlisting">BOOST_DEFINE_MATH_CONSTANT(half_pi, 1.570796326794896619231321691639751442, 09858469968755291048747229615390820314310449931401741267105853399107404326, +00);
+<pre class="programlisting">BOOST_DEFINE_MATH_CONSTANT(half_pi, 1.570796326794896619231321691639751442e+00, "1.57079632679489661923132169163975144209858469968755291048747229615390820314310449931401741267105853399107404326e+00");
 </pre>
 <p>
       This macro BOOST_DEFINE_MATH_CONSTANT inserts a code snippet that declares
@@ -2105,6 +2092,101 @@ the constant will be constructed from a string on each call.
       versions of the constant, plus a decimal digit string representation correct
       to 100 decimal digits, and all the meta-programming machinary needed to select
       between them.
+    </p>
+<p>
+      The result of an expanded macro for Pi is shown below.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="comment">// Preprocessed pi constant, annotated.</span>
+
+<span class="keyword">namespace</span> <span class="identifier">boost</span>
+<span class="special">{</span>
+  <span class="keyword">namespace</span> <span class="identifier">math</span>
+  <span class="special">{</span>
+    <span class="keyword">namespace</span> <span class="identifier">constants</span>
+    <span class="special">{</span>
+      <span class="keyword">namespace</span> <span class="identifier">detail</span>
+      <span class="special">{</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">struct</span> <span class="identifier">constant_pi</span>
+        <span class="special">{</span>
+          <span class="keyword">private</span><span class="special">:</span>
+            <span class="comment">// Default implementations from string of decimal digits:</span>
+            <span class="keyword">static</span> <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">get_from_string</span><span class="special">()</span>
+            <span class="special">{</span>
+            <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">T</span> <span class="identifier">result</span>
+               <span class="special">=</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">convert_from_string</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;(</span><span class="string">"3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651e+00"</span><span class="special">,</span>
+               <span class="identifier">boost</span><span class="special">::</span><span class="identifier">is_convertible</span><span class="special">&lt;</span><span class="keyword">const</span> <span class="keyword">char</span><span class="special">*,</span> <span class="identifier">T</span><span class="special">&gt;());</span>
+              <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
+            <span class="special">}</span>
+            <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">static</span> <span class="identifier">T</span> <span class="identifier">compute</span><span class="special">();</span>
+
+          <span class="keyword">public</span><span class="special">:</span>
+            <span class="comment">// Default implementations from string of decimal digits:</span>
+            <span class="keyword">static</span> <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">construct_from_string</span><span class="special">&gt;&amp;)</span>
+            <span class="special">{</span>
+              <span class="identifier">constant_initializer</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="special">&amp;</span> <span class="identifier">constant_pi</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">get_from_string</span> <span class="special">&gt;::</span><span class="identifier">do_nothing</span><span class="special">();</span>
+              <span class="keyword">return</span> <span class="identifier">get_from_string</span><span class="special">();</span>
+            <span class="special">}</span>
+            <span class="comment">// Float, double and long double versions:</span>
+            <span class="keyword">static</span> <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">construct_from_float</span><span class="special">&gt;)</span>
+            <span class="special">{</span>
+              <span class="keyword">return</span> <span class="number">3.141592653589793238462643383279502884e+00F</span><span class="special">;</span>
+            <span class="special">}</span>
+            <span class="keyword">static</span> <span class="keyword">inline</span>  <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">construct_from_double</span><span class="special">&gt;&amp;)</span>
+            <span class="special">{</span>
+              <span class="keyword">return</span> <span class="number">3.141592653589793238462643383279502884e+00</span><span class="special">;</span>
+            <span class="special">}</span>
+            <span class="keyword">static</span> <span class="keyword">inline</span>  <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">construct_from_long_double</span><span class="special">&gt;&amp;)</span>
+            <span class="special">{</span>
+              <span class="keyword">return</span> <span class="number">3.141592653589793238462643383279502884e+00L</span><span class="special">;</span>
+            <span class="special">}</span>
+            <span class="comment">// For very high precision that is nonetheless can be calculated at compile time:</span>
+            <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">int</span> <span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">static</span> <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;&amp;</span> <span class="identifier">n</span><span class="special">)</span>
+            <span class="special">{</span>
+              <span class="identifier">constant_initializer2</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">N</span><span class="special">,</span> <span class="special">&amp;</span> <span class="identifier">constant_pi</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="keyword">template</span> <span class="identifier">compute</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="special">&gt;::</span><span class="identifier">do_nothing</span><span class="special">();</span>
+              <span class="keyword">return</span> <span class="identifier">compute</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;();</span>
+            <span class="special">}</span>
+            <span class="comment">//For true arbitrary precision, which may well vary at runtime.</span>
+            <span class="keyword">static</span> <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">get</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;&amp;)</span>
+            <span class="special">{</span>
+              <span class="keyword">return</span> <span class="identifier">tools</span><span class="special">::</span><span class="identifier">digits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;()</span> <span class="special">&gt;</span> <span class="identifier">max_string_digits</span> <span class="special">?</span> <span class="identifier">compute</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;()</span> <span class="special">:</span> <span class="identifier">get</span><span class="special">(</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">int_</span><span class="special">&lt;</span><span class="identifier">construct_from_string</span><span class="special">&gt;());</span>
+            <span class="special">}</span>
+         <span class="special">};</span> <span class="comment">// template &lt;class T&gt; struct constant_pi</span>
+      <span class="special">}</span> <span class="comment">//  namespace detail</span>
+
+      <span class="comment">// The actual forwarding function (including policy to control precision).</span>
+      <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="identifier">Policy</span><span class="special">&gt;</span> <span class="keyword">inline</span> <span class="identifier">T</span> <span class="identifier">pi</span><span class="special">(</span> <span class="special">)</span>
+      <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">detail</span><span class="special">::</span> <span class="identifier">constant_pi</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">get</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">construction_traits</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">Policy</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">());</span>
+      <span class="special">}</span>
+      <span class="comment">// The actual forwarding function (using default policy to control precision).</span>
+      <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">class</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">inline</span>  <span class="identifier">T</span> <span class="identifier">pi</span><span class="special">()</span>
+      <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">pi</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">math</span><span class="special">::</span><span class="identifier">policies</span><span class="special">::</span><span class="identifier">policy</span><span class="special">&lt;&gt;</span> <span class="special">&gt;()</span>
+      <span class="special">}</span>
+    <span class="special">}</span> <span class="comment">//     namespace constants</span>
+
+    <span class="comment">// Namespace specific versions, for the three built-in floats:</span>
+    <span class="keyword">namespace</span> <span class="identifier">float_constants</span>
+    <span class="special">{</span>
+      <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">float</span> <span class="identifier">pi</span> <span class="special">=</span> <span class="number">3.141592653589793238462643383279502884e+00F</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">namespace</span> <span class="identifier">double_constants</span>
+    <span class="special">{</span>
+      <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> <span class="identifier">pi</span> <span class="special">=</span> <span class="number">3.141592653589793238462643383279502884e+00</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">namespace</span> <span class="identifier">long_double_constants</span>
+    <span class="special">{</span>
+      <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="identifier">pi</span> <span class="special">=</span> <span class="number">3.141592653589793238462643383279502884e+00L</span><span class="special">;</span>
+    <span class="special">}</span>
+    <span class="keyword">namespace</span> <span class="identifier">constants</span><span class="special">{;</span>
+    <span class="special">}</span> <span class="comment">// namespace constants</span>
+  <span class="special">}</span> <span class="comment">// namespace math</span>
+<span class="special">}</span> <span class="comment">// namespace boost</span>
+
+</pre>
+<p>
     </p>
 </div>
 <div class="section">
@@ -2134,6 +2216,10 @@ the constant will be constructed from a string on each call.
         </li>
 <li class="listitem">
           Requested by users.
+        </li>
+<li class="listitem">
+          <a href="http://en.wikipedia.org/wiki/Mathematical_constant" target="_top">Used in
+          science and mathematics.</a>
         </li>
 <li class="listitem">
           No integer values (because so cheap to construct).<br> (You can easily
@@ -2272,7 +2358,7 @@ the constant will be constructed from a string on each call.
 <p>
       So, for example, a constant like pi is internally defined as
     </p>
-<pre class="programlisting"><span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">pi</span><span class="special">,</span> <span class="number">3.141592653589793238462643383279502884</span><span class="special">,</span> <span class="number">19716939937510582097494459230781640628620899862803482534211706798214808651</span><span class="special">,</span> <span class="special">+</span><span class="number">00</span><span class="special">);</span>
+<pre class="programlisting"><span class="identifier">BOOST_DEFINE_MATH_CONSTANT</span><span class="special">(</span><span class="identifier">pi</span><span class="special">,</span> <span class="number">3.141592653589793238462643383279502884e+00</span><span class="special">,</span> <span class="string">"3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482534211706798214808651e+00"</span><span class="special">);</span>
 </pre>
 <p>
       In this case the significand is 109 decimal digits, ensuring 100 decimal digits
@@ -2393,6 +2479,40 @@ the constant will be constructed from a string on each call.
     </p>
 <h6>
 <a name="math_constants.FAQ.h12"></a>
+      <span><a name="math_constants.FAQ.what_happened_to_a_previous_collection_of_constants_proposed_for_boost_"></a></span><a class="link" href="index.html#math_constants.FAQ.what_happened_to_a_previous_collection_of_constants_proposed_for_boost_">What
+      happened to a previous collection of constants proposed for Boost?</a>
+    </h6>
+<p>
+      A review concluded that the way in which the constants were presented did not
+      meet many peoples needs. None of the methods proposed met many users' essential
+      requirement to allow writing simply <code class="computeroutput"><span class="identifier">pi</span></code>
+      rather than <code class="computeroutput"><span class="identifier">pi</span><span class="special">()</span></code>.
+      Many science and engineering equations look difficult to read when because
+      function call brackets can be confused with the many other brackets often needed.
+      All the methods then proposed of avoiding the brackets failed to meet all needs,
+      often on grounds of complexity and lack of applicability to various realistic
+      scenarios.
+    </p>
+<p>
+      So the simple namespace method, proposed on its own, but rejected at the first
+      review, has been added to allow users to have convenient access to float, double
+      and long double values, but combined with template struct and functions to
+      allow simultaneous use with other non-built-in floating-point types.
+    </p>
+<h6>
+<a name="math_constants.FAQ.h13"></a>
+      <span><a name="math_constants.FAQ.why_do_the_constants__internally__have_a_struct_rather_than_a_simple_function_"></a></span><a class="link" href="index.html#math_constants.FAQ.why_do_the_constants__internally__have_a_struct_rather_than_a_simple_function_">Why
+      do the constants (internally) have a struct rather than a simple function?</a>
+    </h6>
+<p>
+      A function mechanism was provided by in previous versions of Boost.Math.
+    </p>
+<p>
+      The new mechanism is to permit partial specialization. See Custom Specializing
+      a constant above. It should also allow use with other packages like <a href="http://www.ttmath.org/" target="_top">ttmath Bignum C++ library.</a>
+    </p>
+<h6>
+<a name="math_constants.FAQ.h14"></a>
       <span><a name="math_constants.FAQ.where_can_i_find_other_high_precision_constants_"></a></span><a class="link" href="index.html#math_constants.FAQ.where_can_i_find_other_high_precision_constants_">Where
       can I find other high precision constants?</a>
     </h6>
@@ -2429,12 +2549,12 @@ the constant will be constructed from a string on each call.
         </li>
 </ol></div>
 <h5>
-<a name="math_constants.FAQ.h13"></a>
+<a name="math_constants.FAQ.h15"></a>
       <span><a name="math_constants.FAQ.where_are_physical_constants_"></a></span><a class="link" href="index.html#math_constants.FAQ.where_are_physical_constants_">Where
       are Physical Constants?</a>
     </h5>
 <p>
-      Not here in this Boost.Math collection because physical constants:
+      Not here in this Boost.Math collection, because physical constants:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -2457,7 +2577,7 @@ the constant will be constructed from a string on each call.
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: December 16, 2011 at 12:13:48 GMT</small></p></td>
+<td align="left"><p><small>Last revised: December 18, 2011 at 16:33:06 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>
