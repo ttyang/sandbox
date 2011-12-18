@@ -11,11 +11,12 @@
 
 #if !defined(BOOST_NO_VARIADIC_MACROS) // If no variadics then no macros.
 
-#include <boost/closure/aux_/preprocessor/size.hpp>
+#include <boost/closure/aux_/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/logical/compl.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/comparison/equal.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
+#include <boost/preprocessor/tuple/eat.hpp> // For PP_EAT.
 // `IS_UNARY` not working on Borland and other pp which have no variadic anyway.
 #include <boost/preprocessor/detail/is_unary.hpp>
 
@@ -46,7 +47,7 @@
         BOOST_CLOSURE_AUX_PP_IS_VARIADIC_NOT_UNARY2_ \
     , /* size == 0 or size > 1 (it's variadic) */ \
         1 \
-        BOOST_CLOSURE_AUX_PP_VARIADIC_EAT \
+        BOOST_PP_EAT \
     )(__VA_ARGS__)
 
 // PUBLIC //

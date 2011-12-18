@@ -12,11 +12,9 @@
 #ifndef BOOST_CLOSURE_HPP_
 #define BOOST_CLOSURE_HPP_
 
-#include <boost/closure/config.hpp>
-#include <boost/closure/aux_/symbol.hpp>
 #include <boost/closure/aux_/macro/closure.hpp>
 #include <boost/closure/aux_/macro/closure_end.hpp>
-#include <boost/preprocessor/facilities/empty.hpp>
+#include <boost/closure/aux_/macro/closure_typeof.hpp>
 #include <boost/config.hpp> // For variadic macros.
 
 // Pass a parenthesized params seq `()()...` on C++. If variadic macros (C99, 
@@ -160,7 +158,7 @@
 #include <boost/closure/aux_/preprocessor/variadic/to_seq.hpp>
 
 #define BOOST_CLOSURE_(id, is_template, ...) \
-    BOOST_CLOSURES_AUX_CLOSURE(BOOST_CLOSURE_AUX_PP_VARIADIC_TO_SEQ( \
+    BOOST_CLOSURE_AUX_CLOSURE(BOOST_CLOSURE_AUX_PP_VARIADIC_TO_SEQ( \
             (void) /* for empty seq */, __VA_ARGS__), \
             id, is_template)
 
@@ -266,7 +264,7 @@
  *  section.
  */
 #define BOOST_CLOSURE_TYPEOF(bound_variable_name) \
-    BOOST_CLOSURE_AUX_SYMBOL_TYPEOF_TYPE(bound_variable_name)
+    BOOST_CLOSURE_AUX_CLOSURE_TYPEOF(bound_variable_name)
 
 #endif // #include guard
 

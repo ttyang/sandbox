@@ -148,7 +148,7 @@
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS(decl_traits) \
     , /* bind `this` types */ \
         BOOST_PP_LIST_APPEND( \
-                BOOST_CLOUSRE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPE(decl_traits), \
+                BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES(decl_traits), \
                 ( (this_type), BOOST_PP_NIL ) ) \
     , /* error message (if any) */ \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR(decl_traits) \

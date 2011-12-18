@@ -7,9 +7,9 @@
 #ifndef BOOST_CLOSURE_DETAIL_PP_KEYWORD_RECURSIVE_HPP_
 #define BOOST_CLOSURE_DETAIL_PP_KEYWORD_RECURSIVE_HPP_
 
-#include <boost/detail/preprocessor/keyword/facility/is.hpp>
-#include <boost/detail/preprocessor/keyword/facility/add.hpp>
-#include <boost/detail/preprocessor/keyword/facility/remove.hpp>
+#include <boost/closure/detail/preprocessor/keyword/facility/is.hpp>
+#include <boost/closure/detail/preprocessor/keyword/facility/add.hpp>
+#include <boost/closure/detail/preprocessor/keyword/facility/remove.hpp>
 
 // PRIVATE //
 

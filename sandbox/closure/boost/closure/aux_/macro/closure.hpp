@@ -4,185 +4,65 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_LOCAL_AUX_FUNCTION_NAME_HPP_
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_HPP_
+#ifndef BOOST_CLOSURE_AUX_CLOSURE_HPP_
+#define BOOST_CLOSURE_AUX_CLOSURE_HPP_
 
-#include "../preprocessor/keyword/recursive.hpp"
-#include "../symbol.hpp"
-#include "../config.hpp"
-// For BOOST_TYPEOF.
-#include "../scope_exit/scope_exit.hpp" // Use this lib's ScopeExit impl.
-#include <boost/detail/preprocessor/keyword/inline.hpp>
+/** @todo uncomment these includes */
+#include <boost/closure/aux_/macro/code_/result.hpp>
+#include <boost/closure/aux_/macro/code_/bind.hpp>
+#include <boost/closure/aux_/macro/code_/functor.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl.hpp>
+#include <boost/closure/aux_/preprocessor/traits/decl_error.hpp>
+//#include <boost/scope_exit.hpp>
+#include <boost/mpl/assert.hpp>
 #include <boost/preprocessor/control/iif.hpp>
-#include <boost/preprocessor/control/expr_iif.hpp>
-#include <boost/preprocessor/logical/bitor.hpp>
+#include <boost/preprocessor/facilities/is_empty.hpp>
+#include <boost/preprocessor/list/adt.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
+
+// Undefine local function bound args global variable. Actual declaration of
+// this variable is made using SFINAE mechanisms by each local function macro.
+extern boost::scope_exit::aux::undeclared BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR;
 
 // PRIVATE //
 
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_INIT_RECURSION_FUNC_ \
-    BOOST_LOCAL_AUX_INTERNAL_SYMBOL(init_recursion)
+#define BOOST_CLOSURE_AUX_CLOSURE_OK_(decl_traits, id, typename01) \
+    BOOST_CLOSURE_AUX_CODE_RESULT(decl_traits, id, typename01) \
+    BOOST_CLOSURE_AUX_CODE_BIND(decl_traits, id, typename01) \
+    BOOST_CLOSURE_AUX_CODE_FUNCTOR(decl_traits, id, typename01) 
 
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_FUNC_( \
-        is_recursive, local_function_name) \
-    BOOST_PP_IIF(is_recursive, \
-        local_function_name \
-    , \
-        BOOST_LOCAL_AUX_INTERNAL_SYMBOL(nonrecursive_local_function_name) \
-    )
-
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_END_LOCAL_FUNCTOR_(id, \
-        local_function_name, is_recursive, \
-        local_functor_name, nonlocal_functor_name) \
-    /* `PARAMS() { ... }` expandsion here -- still within functor class */ \
-    /* class functor ## __LINE__ { ... */ \
-    public: \
-        /* member var with function name for recursive calls; must be */ \
-        /* `public` because is it also used by this macro but outside */ \
-        /* the functor class to deduce the functor type; it cannot be */ \
-        /* `const` because it is init after construction (because */ \
-        /* constructor doesn't know local function name) */ \
-        /* run-time: even when optimizing, recursive calls cannot be */ \
-        /* optimized (i.e., they must be via the non-local functor) */ \
-        /* because this cannot be a mem ref because its name is not known */ \
-        /* by the constructor so it cannot be set by the mem init list */ \
-        BOOST_LOCAL_AUX_SYMBOL_FUNCTOR_TYPE \
-                BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_FUNC_(is_recursive, \
-                        local_function_name); \
-        BOOST_PP_EXPR_IIF(is_recursive, \
-            /* run-time: the `init_recursion()` function cannot be called */ \
-            /* by the constructor to allow for compiler optimization */ \
-            /* (inlining) so it must be public */ \
-            inline void BOOST_LOCAL_AUX_FUNCTION_NAME_INIT_RECURSION_FUNC_( \
-                    BOOST_LOCAL_AUX_SYMBOL_FUNCTOR_TYPE& functor) { \
-                local_function_name = functor; \
-            } \
-        ) \
-    /* local functor can be passed as tparam only on C++11 (faster) */ \
-    } local_functor_name(BOOST_LOCAL_AUX_SYMBOL_ARGS_VARIABLE_NAME.value); \
-    /* non-local functor can always be passed as tparam (but slower) */ \
-    BOOST_TYPEOF(local_functor_name. \
-            BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_FUNC_(is_recursive, \
-                    local_function_name)) \
-            nonlocal_functor_name; \
-    /* the order of the following 2 function calls cannot be changed */ \
-    /* because init_recursion uses the local_functor so the local_functor */ \
-    /* must be init first */ \
-    local_functor_name.BOOST_LOCAL_AUX_SYMBOL_INIT_CALL_FUNCTION_NAME( \
-            &local_functor_name, nonlocal_functor_name); \
-    BOOST_PP_EXPR_IIF(is_recursive, \
-        /* init recursion causes MSVC to not optimize local function not */ \
-        /* even when local functor is used as template parameter so no */ \
-        /* recursion unless all inlining optimizations are specified off */ \
-        local_functor_name.BOOST_LOCAL_AUX_FUNCTION_NAME_INIT_RECURSION_FUNC_( \
-                nonlocal_functor_name); \
-    )
-
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_FUNCTOR_(local_function_name) \
-    BOOST_LOCAL_AUX_INTERNAL_SYMBOL(local_function_name)
-
-// This can always be passed as a template parameters (on all compilers).
-// However, it is slower because it cannot be inlined.
-// Passed at tparam: Yes (on all C++). Inlineable: No. Recursive: No.
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_(local_function_name) \
-    BOOST_LOCAL_AUX_FUNCTION_NAME_END_LOCAL_FUNCTOR_(__LINE__, \
-            local_function_name, \
-            /* local function is not recursive (because recursion and its */ \
-            /* initialization cannot be inlined even on C++11, */ \
-            /* so this allows optimization at least on C++11) */ \
-            0 /* not recursive */ , \
-            /* local functor */ \
-            BOOST_LOCAL_AUX_FUNCTION_NAME_FUNCTOR_(local_function_name), \
-            /* local function declared as non-local functor -- but it can */ \
-            /* be inlined only by C++11 and it cannot be recursive */ \
-            local_function_name)
-
-// This is faster on some compilers but not all (e.g., it is faster on GCC
-// because its optimization inlines it but not on MSVC). However, it cannot be
-// passed as a template parameter on non C++11 compilers.
-// Passed at tparam: Only on C++11. Inlineable: Yes. Recursive: No.
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_INLINE_(local_function_name) \
-    BOOST_LOCAL_AUX_FUNCTION_NAME_END_LOCAL_FUNCTOR_(__LINE__, \
-            local_function_name, \
-            /* inlined local function is never recursive (because recursion */ \
-            /* and its initialization cannot be inlined)*/ \
-            0 /* not recursive */ , \
-            /* inlined local function declared as local functor (maybe */ \
-            /* inlined even by non C++11 -- but it can be passed as */ \
-            /* template parameter only on C++11 */ \
-            local_function_name, \
-            /* non-local functor */ \
-            BOOST_LOCAL_AUX_FUNCTION_NAME_FUNCTOR_(local_function_name))
-
-// This is slower on all compilers (C++11 and non) because recursion and its
-// initialization can never be inlined.
-// Passed at tparam: Yes. Inlineable: No. Recursive: Yes.
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_(local_function_name) \
-    BOOST_LOCAL_AUX_FUNCTION_NAME_END_LOCAL_FUNCTOR_(__LINE__, \
-            local_function_name, \
-            /* recursive local function -- but it cannot be inlined */ \
-            1 /* recursive */ , \
-            /* local functor */ \
-            BOOST_LOCAL_AUX_FUNCTION_NAME_FUNCTOR_(local_function_name), \
-            /* local function declared as non-local functor -- but it can */ \
-            /* be inlined only by C++11 */ \
-            local_function_name)
-
-// Inlined local functions are specified by `..._NAME(inline name)`.
-// They have more chances to be inlined for faster run-times by some compilers
-// (for example by GCC but not by MSVC). C++11 compilers can always inline
-// local functions even if they are not explicitly specified inline.
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_PARSE_INLINE_(qualified_name) \
-    BOOST_PP_IIF(BOOST_PP_BITOR( \
-            BOOST_LOCAL_AUX_CONFIG_LOCAL_TYPES_AS_TPARAMS_01, \
-            BOOST_DETAIL_PP_KEYWORD_IS_INLINE_FRONT(qualified_name)), \
-        /* on C++11 always use inlining because compilers might optimize */ \
-        /* it to be faster and it can also be passed as tparam */ \
-        BOOST_LOCAL_AUX_FUNCTION_NAME_INLINE_ \
-    , \
-        /* on non C++11 don't use liniling unless explicitly specified by */ \
-        /* programmers `inline name` the inlined local function cannot be */ \
-        /* passed as tparam */ \
-        BOOST_LOCAL_AUX_FUNCTION_NAME_ \
-    )(BOOST_DETAIL_PP_KEYWORD_INLINE_REMOVE_FRONT(qualified_name))
-
-// Expand to 1 iff `recursive name` or `recursive inline name` or
-// `inline recursive name`.
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_IS_RECURSIVE_(qualified_name) \
-    BOOST_LOCAL_AUX_PP_KEYWORD_IS_RECURSIVE_FRONT( \
-            BOOST_DETAIL_PP_KEYWORD_INLINE_REMOVE_FRONT(qualified_name))
-
-// Revmoes `recursive`, `inline recursive`, and `recursive inline` from front.
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_REMOVE_RECURSIVE_AND_INLINE_( \
-        qualified_name) \
-    BOOST_LOCAL_AUX_PP_KEYWORD_RECURSIVE_REMOVE_FRONT( \
-    BOOST_DETAIL_PP_KEYWORD_INLINE_REMOVE_FRONT( \
-    BOOST_LOCAL_AUX_PP_KEYWORD_RECURSIVE_REMOVE_FRONT( \
-        qualified_name \
-    )))
-
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_REMOVE_(qualified_name) \
-    BOOST_PP_IIF(BOOST_LOCAL_AUX_FUNCTION_NAME_IS_RECURSIVE_(qualified_name), \
-        BOOST_LOCAL_AUX_FUNCTION_NAME_REMOVE_RECURSIVE_AND_INLINE_ \
-    , \
-        qualified_name /* might be `name` or `inline name` */ \
+#define BOOST_CLOSURE_AUX_CLOSURE_ERROR_(decl_traits, id, typename01) \
+    BOOST_PP_IIF(BOOST_PP_LIST_IS_CONS( \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_RETURNS(decl_traits)), \
+        /* return specified, so no result type before this macro expansion */ \
         BOOST_PP_TUPLE_EAT(1) \
-    )(qualified_name)
-
-// Recursive local function are specified by `..._NAME(recursive name)`. 
-// They can never be inlined for faster run-time (not even by C++11 compilers).
-#define BOOST_LOCAL_AUX_FUNCTION_NAME_PARSE_RECURSIVE_(qualified_name) \
-    BOOST_PP_IIF(BOOST_LOCAL_AUX_FUNCTION_NAME_IS_RECURSIVE_(qualified_name), \
-        /* recursion can never be inlined (not even on C++11) */ \
-        BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_ \
     , \
-        BOOST_LOCAL_AUX_FUNCTION_NAME_PARSE_INLINE_ \
-    )(BOOST_LOCAL_AUX_FUNCTION_NAME_RECURSIVE_REMOVE_(qualified_name))
+        /* even if error, must declare result type to prevent additional */ \
+        /* error due to result type appearing before this macro expansion */ \
+        BOOST_CLOSURE_AUX_CODE_RESULT_DECL \
+    )(id) \
+    ; /* close eventual previous statements, otherwise it has no effect */ \
+    BOOST_MPL_ASSERT_MSG(false, /* always fails (there's an error) */ \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits), ()) \
+    ; /* must close ASSERT macro for eventual use within class scope */
+
+// sign_params: parsed parenthesized params.
+#define BOOST_CLOSURE_AUX_CLOSURE_(decl_traits, id, typename01) \
+    BOOST_PP_IIF(BOOST_PP_IS_EMPTY(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG( \
+            decl_traits)), \
+        BOOST_CLOSURE_AUX_CLOSURE_OK_ \
+    , \
+        BOOST_CLOSURE_AUX_CLOSURE_ERROR_ \
+    )(decl_traits, id, typename01)
 
 // PUBLIC //
 
-#define BOOST_LOCAL_AUX_FUNCTION_NAME(qualified_name) \
-    BOOST_LOCAL_AUX_FUNCTION_NAME_PARSE_RECURSIVE_(qualified_name)
+#define BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR \
+    BOOST_CLOSURE_AUX_SYMBOL( (args) )
+
+#define BOOST_CLOSURE_AUX_CLOSURE(decl_seq, id, typename01) \
+    BOOST_CLOSURE_AUX_CLOSURE_(BOOST_CLOSURE_AUX_PP_DECL_TRAITS(decl_seq), \
+            id, typename01)
 
 #endif // #include guard
 
