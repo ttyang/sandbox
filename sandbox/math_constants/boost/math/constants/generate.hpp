@@ -56,9 +56,10 @@ inline void print_constant(const char* name, generator_type(*f)(const mpl::int_<
    if(regex_match(s, what, e))
    {
       std::cout << 
-         "BOOST_DEFINE_MATH_CONSTANT(" << name << ", " << what[1]
-      << ", " << (what[2].length() ? what[2].str() : std::string("0")) << ", "
-         << (what[3].length() ? what[3].str() : std::string("0")) << ");" << std::endl;
+         "BOOST_DEFINE_MATH_CONSTANT(" << name << ", " 
+         << what[1] << "e" << (what[3].length() ? what[3].str() : std::string("0")) << ", " 
+         << "\"" << what[1] << what[2] << "e" << (what[3].length() ? what[3].str() : std::string("0")) 
+         << "\");" << std::endl;
    }
    else
    {
