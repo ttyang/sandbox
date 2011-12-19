@@ -7,9 +7,8 @@
 #ifndef BOOST_CLOSURE_AUX_CODE_FUNCTOR_HPP_
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_HPP_
 
-/** @todo uncomment these includes */
 #include <boost/closure/aux_/symbol.hpp>
-//#include <boost/closure/aux_/function.hpp>
+#include <boost/closure/aux_/function.hpp>
 #include <boost/closure/aux_/add_pointed_const.hpp>
 #include <boost/closure/aux_/macro/closure.hpp>
 #include <boost/closure/aux_/macro/closure_typeof.hpp>
@@ -22,7 +21,7 @@
 #include <boost/closure/detail/preprocessor/keyword/register.hpp>
 #include <boost/closure/detail/preprocessor/keyword/this.hpp>
 #include <boost/utility/identity.hpp>
-//#include <boost/scope_exit.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/type_traits/add_const.hpp>
 #include <boost/preprocessor/cat.hpp>
 #include <boost/preprocessor/punctuation/comma_if.hpp>
@@ -30,6 +29,8 @@
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/expand.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
+#include <boost/preprocessor/facilities/empty.hpp>
+#include <boost/preprocessor/facilities/identity.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
 #include <boost/preprocessor/arithmetic/inc.hpp>
@@ -40,6 +41,7 @@
 #include <boost/preprocessor/logical/compl.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
+#include <boost/preprocessor/tuple/rem.hpp>
 #include <boost/preprocessor/list/adt.hpp>
 #include <boost/preprocessor/list/size.hpp>
 #include <boost/preprocessor/list/for_each_i.hpp>
@@ -124,14 +126,11 @@
     BOOST_CLOSURE_AUX_SYMBOL( (bind_this) )
 
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_TYPE_( \
-        id_typename_offset, i, bind_traits) \
-    BOOST_PP_EXPR_IIF(BOOST_PP_TUPLE_ELEM(3, 1, id_typename_offset), typename) \
-    BOOST_SCOPE_EXIT_AUX_PARAMS_T( \
-            BOOST_PP_TUPLE_ELEM(3, 0, id_typename_offset)):: \
-    BOOST_SCOPE_EXIT_AUX_PARAM_T( \
-            BOOST_PP_TUPLE_ELEM(3, 0, id_typename_offset), \
-            BOOST_PP_ADD(i, BOOST_PP_TUPLE_ELEM(3, 2, id_typename_offset)),\
-            BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits))
+        id, typename01, offset, i, bind_var_without_type) \
+    BOOST_PP_EXPR_IIF(typename01, typename) \
+    BOOST_SCOPE_EXIT_AUX_PARAMS_T(id):: \
+    BOOST_SCOPE_EXIT_AUX_PARAM_T(id, BOOST_PP_ADD(i, offset), \
+            bind_var_without_type) \
 
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_MEMBER_BIND_( \
         r, offset, i, bind_traits) \
@@ -141,68 +140,56 @@
 
 // Adapted from `BOOST_SCOPE_EXIT_AUX_ARG_DECL()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_( \
-        r, id_typename_offset, i, bind_traits, is_const) \
+        r, id_typename_offset_const, i, bind_var_without_type) \
     /* IMPORTANT: here can't use `PP_KEYWORD_IS_THIS_FRONT()` because some */ \
     /* `param_name` might start with non-alphanumeric symbol `&` (but that */ \
     /* is never the case for `this`) */ \
-    BOOST_PP_EXPR_IIF(BOOST_PP_TUPLE_ELEM(3, 1, id_typename_offset), typename) \
-    BOOST_PP_EXPR_IF(is_const, \
-        BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THIS_BACK( \
-                BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE( \
-                        bind_traits)), \
-            ::boost::local::aux::add_pointed_const< /* pointed obj const */ \
-        , \
-            ::boost::add_const< /* outer type const */ \
-        ) \
+    BOOST_PP_EXPR_IIF(BOOST_PP_TUPLE_ELEM(4, 1, id_typename_offset_const), \
+        typename \
     ) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_TYPE_(id_typename_offset, \
-            i, bind_traits) \
-    BOOST_PP_EXPR_IF(is_const, >::type) \
-    BOOST_PP_IIF(BOOST_DETAIL_PP_KEYWORD_IS_THIS_BACK( \
-                BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE( \
-                        bind_traits)), \
+    BOOST_PP_IIF(BOOST_PP_COMPL(BOOST_PP_TUPLE_ELEM(4, 3, \
+            id_typename_offset_const)), \
+        BOOST_PP_EMPTY \
+    , BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THIS_BACK( \
+            bind_var_without_type), \
+        /* pointed obj const */ \
+        BOOST_PP_IDENTITY( ::boost::local::aux::add_pointed_const< ) \
+    , \
+        BOOST_PP_IDENTITY( ::boost::add_const< ) /* outer type const */ \
+    ))() \
+    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_TYPE_( \
+            BOOST_PP_TUPLE_ELEM(4, 0, id_typename_offset_const), \
+            BOOST_PP_TUPLE_ELEM(4, 1, id_typename_offset_const), \
+            BOOST_PP_TUPLE_ELEM(4, 2, id_typename_offset_const), \
+            i, bind_var_without_type) \
+    BOOST_PP_EXPR_IIF(BOOST_PP_TUPLE_ELEM(4, 3, id_typename_offset_const), \
+        >::type \
+    ) \
+    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THIS_BACK( \
+            BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE( \
+                    bind_var_without_type)), \
         this_ BOOST_PP_TUPLE_EAT(1) \
     , \
-        BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE \
-    )(bind_traits)
+        BOOST_PP_TUPLE_REM(1) \
+    )(bind_var_without_type)
 
 // Adapted from `BOOST_SCOPE_EXIT_AUX_ARG_DECL()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_ENUM_( \
-        r, id_typename_offset, i, bind_traits, is_const) \
+        r, id_typename_offset_const, i, bind_traits) \
     BOOST_PP_COMMA_IF(i) /* enumeration commas */ \
     BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_( \
-            r, id_typename_offset, i, bind_traits, is_const)
-    
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_BIND_DECL_ENUM_( \
-        r, id_typename_offset, i, bind_traits) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_ENUM_( \
-            r, id_typename_offset, i, bind_traits, 0 /* do not force const */)
-
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_CONST_BIND_DECL_ENUM_( \
-        r, id_typename_offset, i, bind_traits) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_ENUM_( \
-            r, id_typename_offset, i, bind_traits, 1 /* force const */)
+            r, id_typename_offset_const, i, \
+            BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits))
 
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_DECL_( \
-        r, id_typename_offset, i, bind_traits, is_const) \
+        r, id_typename_offset_const, i, bind_traits) \
     BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_( \
-            r, id_typename_offset, i, \
+            r, id_typename_offset_const, i, \
             & /* all bind member vars are refs to ScopeExit struct members */ \
             BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_VAR_( \
-                    BOOST_PP_ADD(i, BOOST_PP_TUPLE_ELEM(3, 2, \
-                            id_typename_offset))), \
-            is_const) \
+                    BOOST_PP_ADD(i, BOOST_PP_TUPLE_ELEM(4, 2, \
+                            id_typename_offset_const)))) \
     ; /* end member variable declaration */
-
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_BIND_MEMBER_DECL_( \
-        r, id_typename_offset, i, bind_traits) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_DECL_( \
-            r, id_typename_offset, i, bind_traits, 0 /* do not force const */)
-
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_CONST_BIND_MEMBER_DECL_( \
-        r, id_typename_offset, i, bind_traits) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_DECL_( \
-            r, id_typename_offset, i, bind_traits, 1 /* force const */)
 
 // Adapted from `BOOST_SCOPE_EXIT_AUX_ARG()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_INIT_ENUM_( \
@@ -225,23 +212,15 @@
 // Typeof type-definitions.
 
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_TYPEDEF_( \
-        r, id_typename_offset, i, bind_traits, is_const) \
+        r, id_typename_offset_const, i, bind_traits) \
     typedef /* the type with the special typeof name */ \
         BOOST_CLOSURE_AUX_CLOSURE_TYPEOF_TYPE( \
             BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_( \
-                    r, id_typename_offset, i, bind_traits, is_const) \
+                    r, id_typename_offset_const, i, \
+                    BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE( \
+                            bind_traits)) \
         ) \
     ; /* end typedef */
-
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_TYPEDEF_( \
-        r, id_typename_offset, i, bind_traits) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_TYPEDEF_( \
-            r, id_typename_offset, i, bind_traits, 0 /* do not add const */)
-
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_CONST_TYPEDEF_( \
-        r, id_typename_offset, i, bind_traits) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_TYPEDEF_( \
-            r, id_typename_offset, i, bind_traits, 1 /* add const */)
 
 // Expand to the function type `R (A1, ...)`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_F_( \
@@ -429,7 +408,7 @@
     /* run-time: do not use base class to allow for compiler optimizations */ \
     { \
         /* function type */ \
-        typedef BOOST_CLOSURE_AUX_CODE_FUNCTOR_F_(sign_params, id, \
+        typedef BOOST_CLOSURE_AUX_CODE_FUNCTOR_F_(decl_traits, id, \
                 1 /* has type */, BOOST_CLOSURE_AUX_CODE_FUNCTOR_F_TYPE_); \
         /* functor type -- this type cannot have ID postfix because it is */ \
         /* used the `NAME` macro (this symbol is within functor class so */ \
@@ -449,12 +428,16 @@
         /* given that the var name is always attached to the & symbol plus */ \
         /* programmers can always remove const& using type traits) */ \
         /* const bind typeof types */ \
-        BOOST_PP_LIST_FOR_EACH_I(BOOST_CLOSURE_AUX_CODE_FUNCTOR_CONST_TYPEDEF_,\
-                (id, typename01, 0 /* no offset */), const_binds) \
+        BOOST_PP_LIST_FOR_EACH_I( \
+                BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_TYPEDEF_,\
+                (id, typename01, 0 /* no offset */, 1 /* const-bind */ ), \
+                const_binds) \
         /* bind typeof types */ \
-        BOOST_PP_LIST_FOR_EACH_I(BOOST_CLOSURE_AUX_CODE_FUNCTOR_TYPEDEF_, \
+        BOOST_PP_LIST_FOR_EACH_I( \
+                BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_TYPEDEF_, \
                 /* offset index with # of preceding const-binds (if any) */ \
-                ( id, typename01, BOOST_PP_LIST_SIZE(const_binds) ), binds) \
+                ( id, typename01, BOOST_PP_LIST_SIZE(const_binds), \
+                  0 /* not const-bind */ ), binds) \
         /* const this... */ \
         BOOST_PP_EXPR_IIF(has_const_bind_this, \
             typedef BOOST_CLOSURE_AUX_CLOSURE_TYPEOF_TYPE( \
@@ -510,9 +493,9 @@
             , params, const_binds, has_const_bind_this, binds, has_bind_this \
             , id, typename01 ) \
         ) \
-        inline static void BOOST_CLOSURE_AUX_CODE_FUNCTOR_INIT_CALL_FUNC( \
+        inline static void BOOST_CLOSURE_AUX_FUNCTION_INIT_CALL_FUNC( \
                 void* object, BOOST_CLOSURE_AUX_CODE_FUNCTOR_TYPE& functor) { \
-            functor.BOOST_CLOSURE_AUX_CODE_FUNCTOR_INIT_CALL_FUNC(object, \
+            functor.BOOST_CLOSURE_AUX_FUNCTION_INIT_CALL_FUNC(object, \
                 BOOST_PP_ENUM( \
                         /* PP_INC to handle no dflt (EXPAND for MVSC) */ \
                         BOOST_PP_EXPAND(BOOST_PP_INC(default_count)), \
@@ -525,12 +508,14 @@
         /* references to the ScopeExit struct instead of accessing the bind */ \
         /* struct at each call (these mem refs are init by the constructor) */ \
         BOOST_PP_LIST_FOR_EACH_I( /* const bind member references */ \
-                BOOST_CLOSURE_AUX_CODE_FUNCTOR_CONST_BIND_MEMBER_DECL_,\
-                ( id, typename01, 0 /* no offset */ ), const_binds) \
+                BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_DECL_,\
+                ( id, typename01, 0 /* no offset */, 1 /* const */ ), \
+                const_binds) \
         BOOST_PP_LIST_FOR_EACH_I( /* bind member references */ \
-                BOOST_CLOSURE_AUX_CODE_FUNCTOR_BIND_MEMBER_DECL_, \
+                BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_DECL_, \
                 /* offset index of # of const-binds (could be 0) */ \
-                ( id, typename01, BOOST_PP_LIST_SIZE(const_binds) ), binds) \
+                ( id, typename01, BOOST_PP_LIST_SIZE(const_binds), \
+                  0 /* no const */ ), binds) \
         /* bind this const or not (pointed-const is not added here because */ \
         /* this is a reference, it is added to the this_ body param instead */ \
         BOOST_PP_EXPR_IIF(BOOST_PP_BITOR(has_bind_this, has_const_bind_this), \
@@ -551,8 +536,9 @@
         BOOST_CLOSURE_AUX_CODE_FUNCTOR_BODY_FUNC_( \
                 /* const binds */ \
                 BOOST_PP_LIST_FOR_EACH_I( \
-                        BOOST_CLOSURE_AUX_CODE_FUNCTOR_CONST_BIND_DECL_ENUM_,\
-                        ( id, typename01, 0 /* no offset */ ), const_binds) \
+                    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_ENUM_, \
+                        ( id, typename01, 0 /* no offset */, 1 /* const */ ), \
+                        const_binds) \
                 /* plain binds */ \
                 BOOST_PP_COMMA_IF( \
                     BOOST_PP_BITAND( \
@@ -561,10 +547,10 @@
                     ) \
                 ) \
                 BOOST_PP_LIST_FOR_EACH_I( \
-                        BOOST_CLOSURE_AUX_CODE_FUNCTOR_BIND_DECL_ENUM_, \
+                    BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_ENUM_, \
                         /* offset index of # of const-binds (could be 0) */ \
-                        ( id, typename01, BOOST_PP_LIST_SIZE(const_binds) ), \
-                        binds) \
+                        ( id, typename01, BOOST_PP_LIST_SIZE(const_binds), \
+                          0 /* not const-bind */ ), binds) \
                 /* `this` bind */ \
                 BOOST_PP_COMMA_IF( \
                     BOOST_PP_BITAND( \
@@ -617,23 +603,19 @@
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_TYPE \
     BOOST_CLOSURE_AUX_SYMBOL( (functor_type) )
 
-#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_INIT_CALL_FUNC \
-    BOOST_CLOSURE_AUX_SYMBOL( (init_call) )
-
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR(decl_traits, id, typename01) \
     BOOST_CLOSURE_AUX_CODE_FUNCTOR_(decl_traits, \
             /* params (might have defaults) */ \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS(decl_traits), \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_PARAMS_DEFAULT_COUNT(decl_traits),\
             /* const bind vars (`this` excluded) */ \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS_WITHOUT_TYPE( \
-                    decl_traits), \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS(decl_traits), \
             /* if const bind `this` is present */ \
             BOOST_PP_LIST_IS_CONS( \
                     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES( \
                     decl_traits)), \
             /* bind (non-const) vars (`this` excluded) */ \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS_WITHOUT_TYPE(decl_traits), \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS(decl_traits), \
             /* if (non-const) bind `this` is present */ \
             BOOST_PP_LIST_IS_CONS( \
                     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES( \

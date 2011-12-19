@@ -4,8 +4,8 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_CONFIG_HPP_
-#define BOOST_CONFIG_HPP_
+#ifndef BOOST_CONFIG_EXT_HPP_
+#define BOOST_CONFIG_EXT_HPP_
 
 #include <boost/config.hpp>
 

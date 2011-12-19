@@ -20,10 +20,6 @@
 #include <boost/preprocessor/list/adt.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
 
-// Undefine local function bound args global variable. Actual declaration of
-// this variable is made using SFINAE mechanisms by each local function macro.
-extern boost::scope_exit::aux::undeclared BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR;
-
 // PRIVATE //
 
 #define BOOST_CLOSURE_AUX_CLOSURE_OK_(decl_traits, id, typename01) \
@@ -59,6 +55,10 @@ extern boost::scope_exit::aux::undeclared BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR;
 
 #define BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR \
     BOOST_CLOSURE_AUX_SYMBOL( (args) )
+
+// Undefine local function bound args global variable. Actual declaration of
+// this variable is made using SFINAE mechanisms by each local function macro.
+extern boost::scope_exit::aux::undeclared BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR;
 
 #define BOOST_CLOSURE_AUX_CLOSURE(decl_seq, id, typename01) \
     BOOST_CLOSURE_AUX_CLOSURE_(BOOST_CLOSURE_AUX_PP_DECL_TRAITS(decl_seq), \

@@ -1,0 +1,49 @@
+
+// Copyright (C) 2009-2011 Lorenzo Caminiti
+// Use, modification, and distribution is subject to the Boost Software
+// License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
+// copy at http://www.boost.org/LICENSE_1_0.txt).
+
+/** @file
+ * @brief Configuration macros allow to change the behaviour of this library
+ *  at compile-time.
+ */
+
+#ifndef BOOST_CLOSURE_CONFIG_HPP_
+#define BOOST_CLOSURE_CONFIG_HPP_
+
+#include <boost/config_ext.hpp>
+
+// User defined.
+
+/**
+ * @brief Maximum number of function parameters supported for the local
+ *  functions.
+ *
+ * If programmers leave this configuration macro undefined, its default
+ * value is <c>5</c>.
+ * 
+ * This only applies to the number of local function parameters and not to the
+ * number of bound variables in scope (the limit on the number of bound
+ * variables is instead the maximum size allowed for a Boost.Preprocessor
+ * sequence).
+ *
+ * @Warning Increasing this number will increase compilation time.
+ *
+ * @See @RefSect{Tutorial} section, @RefSect2{Getting_Started, Getting Started}
+ *  section.
+ */
+#ifndef BOOST_CLOSURE_CONFIG_FUNCTION_ARITY_MAX
+#   define BOOST_CLOSURE_CONFIG_FUNCTION_ARITY_MAX 5
+#endif
+
+// For internal library use.
+
+#if defined(BOOST_LOCAL_TYPES_AS_TEMPLATE_PARAMS)
+#   define BOOST_CLOSURE_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01 1
+#else
+#   define BOOST_CLOSURE_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01 0
+#endif
+
+#endif // #include guard
+

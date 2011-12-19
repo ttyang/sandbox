@@ -25,19 +25,6 @@
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_CONST_BINDS, decl_traits)
 
-// Expand: pp-list of const bind-traits without explicit type.
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS_WITHOUT_TYPE( \
-        decl_traits) \
-    BOOST_PP_LIST_TRANSFORM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_APPLY_,\
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ANY_BIND_WITHOUT_TYPE, \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND(decl_traits))
-        
-// Expand: pp-list of const bind-traits with explicit type.
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS_WITH_TYPE(decl_traits) \
-    BOOST_PP_LIST_TRANSFORM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_APPLY_,\
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ANY_BIND_WITH_TYPE, \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND(decl_traits))
-
 // Expand: pp-list of const bind-this-traits (size <= 1 after validation).
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES(decl_traits) \
     BOOST_PP_TUPLE_ELEM(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_INDEX_MAX, \

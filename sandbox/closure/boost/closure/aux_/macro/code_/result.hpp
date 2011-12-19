@@ -7,11 +7,10 @@
 #ifndef BOOST_CLOSURE_AUX_CODE_RESULT_HPP_
 #define BOOST_CLOSURE_AUX_CODE_RESULT_HPP_
 
-/** @todo uncomment these includes */
 #include <boost/closure/aux_/symbol.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_returns.hpp>
-//#include <boost/scope_exit.hpp>
-//#include <boost/typeof/typeof.hpp>
+#include <boost/scope_exit.hpp>
+#include <boost/typeof/typeof.hpp>
 #include <boost/type_traits/remove_pointer.hpp>
 #include <boost/type_traits/function_traits.hpp>
 #include <boost/preprocessor/control/iif.hpp>

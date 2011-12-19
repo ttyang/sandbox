@@ -7,13 +7,12 @@
 #ifndef BOOST_CLOSURE_AUX_CODE_BIND_HPP_
 #define BOOST_CLOSURE_AUX_CODE_BIND_HPP_
 
-/** @todo uncomment these includes */
 #include <boost/closure/aux_/symbol.hpp>
 #include <boost/closure/aux_/preprocessor/traits/bind.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_binds.hpp>
 #include <boost/closure/aux_/preprocessor/traits/decl_const_binds.hpp>
 #include <boost/utility/identity.hpp>
-//#include <boost/scope_exit.hpp>
+#include <boost/scope_exit.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <boost/type_traits/function_traits.hpp>
 #include <boost/preprocessor/control/expr_iif.hpp>
@@ -21,6 +20,7 @@
 #include <boost/preprocessor/facilities/empty.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
 #include <boost/preprocessor/facilities/identity.hpp>
+#include <boost/preprocessor/logical/bitand.hpp>
 #include <boost/preprocessor/punctuation/comma_if.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
@@ -169,22 +169,26 @@
         /* initialize the struct with param values to bind */ \
         BOOST_PP_EXPR_IIF(BOOST_PP_LIST_IS_CONS(all_bind_this_types), \
                 this) /* here name `this` access object at enclosing scope */ \
-        BOOST_PP_COMMA_IF(BOOST_PP_LIST_IS_CONS(BOOST_PP_LIST_APPEND( \
-                all_bind_this_types, all_binds))) \
-        BOOST_PP_LIST_FOR_EACH_I(BOOST_CLOSURE_AUX_CODE_BIND_PARAM_INIT_, \
-                id, all_binds) \
+        BOOST_PP_COMMA_IF(BOOST_PP_BITAND( \
+              BOOST_PP_LIST_IS_CONS(all_bind_this_types) \
+            , BOOST_PP_LIST_IS_CONS(all_binds) \
+        )) \
+        BOOST_PP_LIST_FOR_EACH_I(BOOST_CLOSURE_AUX_CODE_BIND_PARAM_INIT_, id, \
+                all_binds) \
     };
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_(decl_traits, id, typename01) \
-    /* has some bind param then all bind names is never empty nil-seq */ \
+    /* IMPORTANT: the order of these appends is important, it must follow */ \
+    /* the indexing order used by the functor code which starts */ \
+    /* enumerating const binds and then non-const binds */ \
     BOOST_CLOSURE_AUX_CODE_BIND_ALL_( \
             BOOST_PP_LIST_APPEND( \
-                    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS(decl_traits), \
-                    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS(decl_traits)),\
+                    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BINDS(decl_traits),\
+                    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BINDS(decl_traits)), \
             BOOST_PP_LIST_APPEND( \
-                    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES( \
-                            decl_traits), \
                     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_CONST_BIND_THIS_TYPES( \
+                            decl_traits), \
+                    BOOST_CLOSURE_AUX_PP_DECL_TRAITS_BIND_THIS_TYPES( \
                             decl_traits)), \
             id, typename01)
 

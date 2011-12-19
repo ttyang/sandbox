@@ -7,14 +7,14 @@
 #ifndef BOOST_CLOSURE_AUX_CODE_END_HPP_
 #define BOOST_CLOSURE_AUX_CODE_END_HPP_
 
-/** @todo uncomment these includes */
-#include <boost/closure/aux_/config.hpp>
+#include <boost/closure/config.hpp>
 #include <boost/closure/aux_/symbol.hpp>
+#include <boost/closure/aux_/function.hpp>
 #include <boost/closure/aux_/macro/closure.hpp>
 #include <boost/closure/aux_/macro/code_/functor.hpp>
 #include <boost/closure/detail/preprocessor/keyword/recursive.hpp>
 #include <boost/closure/detail/preprocessor/keyword/inline.hpp>
-//#include <boost/typeof/typeof.hpp>
+#include <boost/typeof/typeof.hpp>
 #include <boost/preprocessor/logical/bitor.hpp>
 #include <boost/preprocessor/control/expr_iif.hpp>
 #include <boost/preprocessor/control/iif.hpp>
@@ -72,7 +72,7 @@
     /* the order of the following 2 function calls cannot be changed */ \
     /* because init_recursion uses the local_functor so the local_functor */ \
     /* must be init first */ \
-    local_functor_name.BOOST_CLOSURE_AUX_CODE_FUNCTOR_INIT_CALL_FUNC( \
+    local_functor_name.BOOST_CLOSURE_AUX_FUNCTION_INIT_CALL_FUNC( \
             &local_functor_name, nonlocal_functor_name); \
     BOOST_PP_EXPR_IIF(is_recursive, \
         /* init recursion causes MSVC to not optimize local function not */ \
@@ -137,7 +137,7 @@
 // local functions even if they are not explicitly specified inline.
 #define BOOST_CLOSURE_AUX_CODE_END_MAYBE_INLINE_(qualified_name) \
     BOOST_PP_IIF(BOOST_PP_BITOR( \
-            BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01, \
+            BOOST_CLOSURE_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01, \
             BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_INLINE_FRONT(qualified_name)), \
         /* on C++11 always use inlining because compilers might optimize */ \
         /* it to be faster and it can also be passed as tparam */ \
