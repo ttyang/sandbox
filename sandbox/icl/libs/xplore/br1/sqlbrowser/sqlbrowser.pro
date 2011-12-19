@@ -3,8 +3,10 @@ TARGET          = sqlbrowser
 
 QT              += sql
 
-HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h
-SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp
+HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
+    exttableview.h
+SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
+    exttableview.cpp
 
 FORMS           = browserwidget.ui qsqlconnectiondialog.ui
 build_all:!build_pass {
@@ -23,3 +25,9 @@ symbian: include($$QT_SOURCE_TREE/demos/symbianpkgrules.pri)
 wince*: {
     DEPLOYMENT_PLUGIN += qsqlite
 }
+
+
+
+
+
+

@@ -39,6 +39,7 @@
 **
 ****************************************************************************/
 
+#include "exttableview.h"
 #include "browser.h"
 #include "qsqlconnectiondialog.h"
 
@@ -70,7 +71,17 @@ void Browser::exec()
 {
     QSqlQueryModel *model = new QSqlQueryModel(table);
     model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
+
     table->setModel(model);
+
+    //JOFA additions ----------------------------------------------------------
+    table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+
+    table->setSortingEnabled(true);
+    table->setAlternatingRowColors(true);
+    table->resizeColumnsToContents();
+    //JOFA additions ----------------------------------------------------------
+
 
     if (model->lastError().type() != QSqlError::NoError)
         emit statusMessage(model->lastError().text());
@@ -190,8 +201,9 @@ void Browser::showTable(const QString &t)
     table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------
 
-    connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)),
-            this, SLOT(currentChanged()));
+    //connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
+    connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged2()));
+
     updateActions();
 }
 
@@ -269,11 +281,21 @@ void Browser::deleteRow()
 
 void Browser::updateActions()
 {
+    emit statusMessage(tr("udateActions()"));
     bool enableIns = qobject_cast<QSqlTableModel *>(table->model());
     bool enableDel = enableIns && table->currentIndex().isValid();
 
     insertRowAction->setEnabled(enableIns);
     deleteRowAction->setEnabled(enableDel);
+}
+
+void Browser::updateActions2()
+{
+    QModelIndexList currentSelection = table->selectionModel()->selectedIndexes();
+    int selCount = currentSelection.count();
+    int firstRow = selCount > 0 ? currentSelection.at(1).row() : 0;
+
+    emit statusMessage(QString("Row %1 of %2 selected").arg(firstRow).arg(selCount));
 }
 
 void Browser::about()
@@ -282,3 +304,5 @@ void Browser::about()
         "shows how a data browser can be used to visualize the results of SQL"
         "statements on a live database"));
 }
+
+

@@ -32,13 +32,23 @@ where AlbumsByTracks.Album = Albums.Id and AlbumsByTracks.Track = Tracks.Id
 
 -- ----------------------------------------------------------------------------
 select Albums.Title, Albums.Genre, Tracks.Title, Tracks.Duration, Tracks.Artist
-from AlbumsByTracks, Albums, Tracks
+from AlbumsByTracks
 inner join Albums on AlbumsByTracks.Album = Albums.Id
 inner join Tracks on AlbumsByTracks.Track = Tracks.Id
 where AlbumsByTracks.Album = Albums.Id and AlbumsByTracks.Track = Tracks.Id
 
 
+-- ----------------------------------------------------------------------------
+-- Grouping
+select AlbumsByTracks.Album, Albums.Title, Albums.Genre, Tracks.Title, Tracks.Artist, 
+    sum(Tracks.Duration) as SumDur
+from AlbumsByTracks
+inner join Albums on AlbumsByTracks.Album = Albums.Id
+inner join Tracks on AlbumsByTracks.Track = Tracks.Id
+where AlbumsByTracks.Album = Albums.Id and AlbumsByTracks.Track = Tracks.Id
+group by AlbumsByTracks.Album
 
+-- ----------------------------------------------------------------------------
 -- ----------------------------------------------------------------------------
 -- select .. from Refering inner join Target on Refering.Pointer = Target.Id
 -- ----------------------------------------------------------------------------

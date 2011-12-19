@@ -39,66 +39,29 @@
 **
 ****************************************************************************/
 
-#ifndef BROWSER_H
-#define BROWSER_H
+#ifndef EXTTABLEVIEW_H
+#define EXTTABLEVIEW_H
 
-#include <QWidget>
-#include "exttableview.h"
-#include "ui_browserwidget.h"
+#include <QTableView>
 
-class ConnectionWidget;
 QT_FORWARD_DECLARE_CLASS(QTableView)
-QT_FORWARD_DECLARE_CLASS(QPushButton)
-QT_FORWARD_DECLARE_CLASS(QTextEdit)
-QT_FORWARD_DECLARE_CLASS(QSqlError)
+QT_FORWARD_DECLARE_CLASS(ExtTableView)
 
-class Browser: public QWidget, private Ui::Browser
+class ExtTableView: public QTableView
 {
     Q_OBJECT
 public:
-    Browser(QWidget *parent = 0);
-    virtual ~Browser();
+    ExtTableView(QWidget* parent = 0);
+    ~ExtTableView();
 
-    QSqlError addConnection(const QString &driver, const QString &dbName, const QString &host,
-                  const QString &user, const QString &passwd, int port = -1);
-
-    void insertRow();
-    void deleteRow();
-    void updateActions();
-    void updateActions2();
+    /*CL
+signals:
+    void cellClicked(int row, int column);
 
 public slots:
-    void exec();
-    void showTable(const QString &table);
-    void showMetaData(const QString &table);
-    void addConnection();
-    void openFile();
-    void currentChanged() { updateActions(); }
-    void currentChanged2() { updateActions2(); }
-    void about();
+    void hideNextRow();
+    */
 
-    void on_insertRowAction_triggered()
-    { insertRow(); }
-    void on_deleteRowAction_triggered()
-    { deleteRow(); }
-    void on_connectionWidget_tableActivated(const QString &table)
-    { showTable(table); }
-    void on_connectionWidget_metaDataRequested(const QString &table)
-    { showMetaData(table); }
-    void on_submitButton_clicked()
-    {
-        exec();
-        sqlEdit->setFocus();
-    }
-    void on_clearButton_clicked()
-    {
-        sqlEdit->clear();
-        sqlEdit->setFocus();
-    }
-
-
-signals:
-    void statusMessage(const QString &message);
 };
 
 #endif

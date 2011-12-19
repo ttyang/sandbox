@@ -86,7 +86,7 @@ QTableView
        </sizepolicy>
       </property>
      </widget>
-     <widget class="QTableView" name="table">
+     <widget class="ExtTableView" name="table">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>2</horstretch>
@@ -713,6 +713,11 @@ QTableView
    <class>ConnectionWidget</class>
    <extends>QTreeView</extends>
    <header>connectionwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ExtTableView</class>
+   <extends>QTableView</extends>
+   <header>exttableview.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
