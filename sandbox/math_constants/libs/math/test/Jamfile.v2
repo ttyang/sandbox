@@ -15,7 +15,7 @@ import modules ;
 import path ;
 
 local ntl-path = [ modules.peek : NTL_PATH ] ;
-local gmp_path = [ modules.peek : GMP_PATH ] ;
+# local gmp_path = [ modules.peek : GMP_PATH ] ;
 
 local boost-path = [ modules.peek : BOOST ] ;
 

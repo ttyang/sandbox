@@ -166,6 +166,25 @@ inline T constant_euler<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::
 
 template <class T>
 template<int N>
+inline T constant_euler_sqr<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
+{
+  BOOST_MATH_STD_USING
+  return euler<T, policies::policy<policies::digits2<N> > >()
+     * euler<T, policies::policy<policies::digits2<N> > >();
+}
+
+template <class T>
+template<int N>
+inline T constant_one_div_euler<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
+{
+  BOOST_MATH_STD_USING
+  return static_cast<T>(1) 
+     / euler<T, policies::policy<policies::digits2<N> > >();
+}
+
+
+template <class T>
+template<int N>
 inline T constant_root_two<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
@@ -395,7 +414,7 @@ template<int N>
 inline T constant_cbrt_pi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return pow(pi<T, policies::policy<policies::digits2<N> > >(), static_cast<T>(-3));
+   return pow(pi<T, policies::policy<policies::digits2<N> > >(), static_cast<T>(1)/ static_cast<T>(3));
 }
 
 template <class T>
@@ -404,7 +423,7 @@ inline T constant_one_div_cbrt_pi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_
 {
    BOOST_MATH_STD_USING
    return static_cast<T>(1)
-   / pow(pi<T, policies::policy<policies::digits2<N> > >(), static_cast<T>(-3));
+   / pow(pi<T, policies::policy<policies::digits2<N> > >(), static_cast<T>(1)/ static_cast<T>(3));
 }
 
 // Euler's e
@@ -506,7 +525,7 @@ inline T constant_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::in
 
 template <class T>
 template<int N>
-inline T constant_log_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
+inline T constant_ln_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
    //return  log(phi<T, policies::policy<policies::digits2<N> > >()); // ???
@@ -514,13 +533,15 @@ inline T constant_log_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl
 }
 template <class T>
 template<int N>
-inline T constant_one_div_log_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
+inline T constant_one_div_ln_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
    return static_cast<T>(1) /
      log((static_cast<T>(1) + sqrt(static_cast<T>(5)) )/static_cast<T>(2) );
 }
 
+/*
+Gamma now deprecated, so now see euler above
 // Euler-Mascheroni's Gamma Constant
 
 //http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant
@@ -565,6 +586,8 @@ inline T constant_one_div_gamma<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SP
      / gamma<T, policies::policy<policies::digits2<N> > >();
 }
 
+
+
 template <class T>
 template<int N>
 inline T constant_gamma_sqr<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
@@ -574,7 +597,7 @@ inline T constant_gamma_sqr<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(m
      return gamma<T, policies::policy<policies::digits2<N> > >()
      * gamma<T, policies::policy<policies::digits2<N> > >();
 }
-
+*/
 // Zeta
 
 template <class T>

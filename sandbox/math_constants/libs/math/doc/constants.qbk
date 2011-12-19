@@ -316,7 +316,6 @@ This section lists the mathematical constants, their use(s) (and sometimes ratio
 [[three_quarters_pi] [3/4 [pi]] [2.35619] [[@http://en.wikipedia.org/wiki/Sphere#Volume_of_a_sphere volume of a hemi-sphere] = 4/3 [pi] r[cubed]]]
 [[four_thirds_pi] [4/3 [pi]] [4.18879] [[@http://en.wikipedia.org/wiki/Sphere#Volume_of_a_sphere volume of a sphere] = 4/3 [pi] r[cubed]]]
 [[one_div_two_pi] [1/(2[pi])] [1.59155] [Widely used]]
-[[one_div_root_two_pi] [1/([radic]2 [pi])] [0.398942] [] ]
 [[root_pi] [[radic][pi]][1.77245] [Widely used]]
 [[root_half_pi] [[radic] [pi]/2] [1.25331] [Widely used]]
 [[root_two_pi][[radic] [pi]*2] [2.50662] [Widely used]]
@@ -352,8 +351,8 @@ This section lists the mathematical constants, their use(s) (and sometimes ratio
 
 [[[*Phi]] [ Phidias golden ratio] [[@http://en.wikipedia.org/wiki/Golden_ratio Phidias golden ratio]] [] ]
 [[phi] [(1 + [radic]5) /2] [1.61803] [finance] ]
-[[log_phi] [ln([phi])] [0.48121] [] ]
-[[one_div_log_phi] [1/ln([phi])] [2.07808] [] ]
+[[ln_phi] [ln([phi])] [0.48121] [] ]
+[[one_div_ln_phi] [1/ln([phi])] [2.07808] [] ]
 
 [[[*Euler's Gamma]] [] [] [] ]
 [[euler] [euler] [0.577215] [[@http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant Euler-Mascheroni gamma constant]] ]
@@ -361,11 +360,13 @@ This section lists the mathematical constants, their use(s) (and sometimes ratio
 [[euler_sqr] [euler[super 2]] [0.333177] [] ]
 
 [[[*Misc]] [] [] [] ]
-
 [[zeta_two] [[zeta](2)] [1.64493] [[@http://en.wikipedia.org/wiki/Riemann_zeta_function Riemann zeta function]] ]
 [[zeta_three] [[zeta](3)] [1.20205] [[@http://en.wikipedia.org/wiki/Riemann_zeta_function Riemann zeta function]] ]
 [[catalan] [['K]] [0.915965] [[@http://mathworld.wolfram.com/CatalansConstant.html Catalan (or Glaisher) combinatorial constant] ]]
-[[extreme_skewness] [12[radic]6 [zeta](3)/ [pi][super 3]] [1.139547] [Extreme value distribution] ]
+[[glaisher] [['A]] [1.28242] [[@https://oeis.org/A074962/constant Decimal expansion of Glaisher-Kinkelin constant] ]]
+[[khinchin] [['k]] [2.685452] [[@https://oeis.org/A002210/constant Decimal expansion of Khinchin constant] ]]
+
+[[extreme_value_skewness] [12[radic]6 [zeta](3)/ [pi][super 3]] [1.139547] [Extreme value distribution] ]
 [[rayleigh_skewness] [2[radic][pi]([pi]-3)/(4 - [pi])[super 3/2]] [0.631110] [Rayleigh distribution skewness] ]
 [[rayleigh_kurtosis_excess] [-(6[pi][super 2]-24[pi]+16)/(4-[pi])[super 2]] [0.245089] [[@http://en.wikipedia.org/wiki/Rayleigh_distribution Rayleigh distribution kurtosis excess]] ]
 [[rayleigh_kurtosis] [3+(6[pi][super 2]-24[pi]+16)/(4-[pi])[super 2]] [3.245089] [Rayleigh distribution kurtosis] ]
@@ -460,10 +461,10 @@ into `boost/math/constants/constants.hpp` or else into your own code, for exampl
   BOOST_DEFINE_MATH_CONSTANT(half_pi, 1.570796326794896619231321691639751442e+00, "1.57079632679489661923132169163975144209858469968755291048747229615390820314310449931401741267105853399107404326e+00");
 ]
 
-This macro BOOST_DEFINE_MATH_CONSTANT  inserts a code snippet that
+This macro BOOST_DEFINE_MATH_CONSTANT  inserts a C++ struct code snippet that
 declares the `float`, `double` and `long double` versions of the constant,
 plus a decimal digit string representation correct to 100 decimal
-digits, and all the meta-programming machinary needed to select between them.
+digits, and all the meta-programming machinery needed to select between them.
 
 The result of an expanded macro for Pi is shown below.
 
@@ -495,7 +496,7 @@ Some of the criteria we have used are:
 * No CamelCase.
 * Underscore as _ delimiter between words.
 * Numbers spelt as words rather than decimal digits (except following pow).
-* Abbreviation words: 
+* Abbreviation conventions: 
   * root for square root.
   * cbrt for cube root.
   * pow for pow function using decimal digits like pow23 for n[super 2/3].
@@ -517,7 +518,32 @@ with up to 300-bit precision giving about 100 decimal digits.
 [h4 How Accurate are the constants?]
 The minimum accuracy chosen (100 decimal digits) exceeds the
 accuracy of reasonably-foreseeable floating-point hardware (256-bit)
-and should meet most high_precision computations.
+and should meet most high-precision computations.
+
+[h4 How are the constants tested?]
+
+# Comparison using Boost.Test BOOST_CHECK_CLOSE_FRACTION using long double literals,
+with at least 35 decimal digits, enough to be accurate for all long double implementations.
+The tolerance is usually twice `long double epsilon`.
+
+# Comparison with calculation at long double precision. 
+This often requires a slightly higher tolerance than two epsilon
+because of computational noise from round-off etc,
+especially when trig and other functions are called.
+
+# Comparison with independent published values,
+for example, using [@http://oeis.org/ The On-Line Encyclopedia of Integer Sequences (OEIS)]
+again using at least 35 decimal digits strings.
+
+# Comparison with independely calculated values using arbitrary precision tools like
+[@http://www.wolfram.com/mathematica/ Mathematica], again using at least 35 decimal digits literal strings.
+
+[warning We have not yet been able to [*check] that
+[*all] constants are accurate at the full arbitrary precision,
+at present 100 decimal digits.
+But certain key values like `e` and `pi` appear to be accurate
+and internal consistencies suggest that others are this accurate too.
+]
 
 [h4 Why is Portability important?]
 
@@ -542,16 +568,19 @@ but this FAQ explains the internal details used for the constants.
 
 Constants are stored as 100 decimal digit values.
 However, some compilers do not accept decimal digits strings as long as this.
-So the constant is split into two parts, with the 1st containing at least
-long double precision, and the 2nd zero if not needed or known.
-The 3rd part permits an exponent to be provided if necessary (use zero if none) -
-the other two parameters may only contain decimal digits (and sign and decimal point),
-and may NOT include an exponent like 1.234E99.
-The second digit string is only used if T is a User-Defined Type,
-when the constant is converted to a long string literal.
-If `T `is constructible from a `const char*` then it's directly constructed from the string,
+So the constant is split into two parts, with the first containing at least 
+128-bit long double precision (35 decimal digits),
+and for consistency should be in scientific format with a signed exponent.
+
+The second part is the value of the constant expressed as a string literal,
+accurate to at least 100 decimal digits (in practice that means at least 102 digits).
+Again for consistency use scientific format with a signed exponent.
+
+For types with precision greater than a long double,
+then if T is constructible `T `is constructible from a `const char*`
+then it's directly constructed from the string,
 otherwise we fall back on lexical_cast to convert to type `T`.
-(This is necessary because you can't use a numeric constant
+(Using a string is necessary because you can't use a numeric constant
 since even a `long double` might not have enough digits).
 
 So, for example, a constant like pi is internally defined as
@@ -655,6 +684,7 @@ It should also allow use with other packages like [@http://www.ttmath.org/ ttmat
 
 # Constants with very high precision and good accuracy (>40 decimal digits)
 from Simon Plouffe's web based collection [@http://pi.lacim.uqam.ca/eng/].
+# [@https://oeis.org/ The On-Line Encyclopedia of Integer Sequences (OEIS)]
 # Checks using  printed text optically scanned values and converted from:
 D. E. Knuth, Art of Computer Programming, Appendix A, Table 1, Vol 1, ISBN 0 201 89683 4 (1997)
 # M. Abrahamovitz & I. E. Stegun, National Bureau of Standards, Handbook of Mathematical Functions,
