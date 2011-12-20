@@ -74,7 +74,6 @@ public slots:
     void addConnection();
     void openFile();
     void currentChanged() { updateActions(); }
-    void currentChanged2() { updateActions2(); }
     void about();
 
     void on_insertRowAction_triggered()
@@ -96,6 +95,9 @@ public slots:
         sqlEdit->setFocus();
     }
 
+    //JOFA TMP some checks
+    void on_cellClicked(int row, int col);
+    void on_rowSelectChanged();
 
 signals:
     void statusMessage(const QString &message);

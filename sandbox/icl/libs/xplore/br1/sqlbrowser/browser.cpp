@@ -201,8 +201,8 @@ void Browser::showTable(const QString &t)
     table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------
 
-    //connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
-    connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged2()));
+    //REV connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
+    connect(table->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
 
     updateActions();
 }
@@ -281,21 +281,12 @@ void Browser::deleteRow()
 
 void Browser::updateActions()
 {
-    emit statusMessage(tr("udateActions()"));
+    //CL emit statusMessage(tr("updateActions()"));
     bool enableIns = qobject_cast<QSqlTableModel *>(table->model());
     bool enableDel = enableIns && table->currentIndex().isValid();
 
     insertRowAction->setEnabled(enableIns);
     deleteRowAction->setEnabled(enableDel);
-}
-
-void Browser::updateActions2()
-{
-    QModelIndexList currentSelection = table->selectionModel()->selectedIndexes();
-    int selCount = currentSelection.count();
-    int firstRow = selCount > 0 ? currentSelection.at(1).row() : 0;
-
-    emit statusMessage(QString("Row %1 of %2 selected").arg(firstRow).arg(selCount));
 }
 
 void Browser::about()
@@ -305,4 +296,30 @@ void Browser::about()
         "statements on a live database"));
 }
 
+
+//JOFA TMP some checks
+
+void Browser::on_cellClicked(int row, int col)
+{
+    QString clickedCellInfo = QString("Row %1 Col %2 selected").arg(row).arg(col);
+    emit statusMessage(clickedCellInfo);
+}
+
+void Browser::on_rowSelectChanged()
+{
+    QModelIndexList currentSelection = table->selectionModel()->selectedIndexes();
+    int selCount    = currentSelection.count();
+    int firstRow    = selCount > 0 ? currentSelection.at(1).row() : -1;
+    int firstColumn = selCount > 0 ? currentSelection.at(1).column() : -1;
+
+    // Alway the last selection is found, not the current one.
+    QString selectedRowInfo = QString("Row %1 of %2 selected").arg(firstRow).arg(selCount);
+    emit statusMessage(selectedRowInfo);
+
+    int nextRow = firstRow + 1;
+    if     (firstRow > -1 && !table->isRowHidden(nextRow))
+        table->hideRow(nextRow);
+    else if(firstRow > -1 &&  table->isRowHidden(nextRow))
+        table->showRow(nextRow);
+}
 
