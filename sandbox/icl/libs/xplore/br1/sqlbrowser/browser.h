@@ -101,6 +101,9 @@ public slots:
 
 signals:
     void statusMessage(const QString &message);
+
+private:
+    void deselectFirstCell(int selectedRow);
 };
 
 #endif

@@ -35,7 +35,13 @@ select Albums.Title, Albums.Genre, Tracks.Title, Tracks.Duration, Tracks.Artist
 from AlbumsByTracks
 inner join Albums on AlbumsByTracks.Album = Albums.Id
 inner join Tracks on AlbumsByTracks.Track = Tracks.Id
-where AlbumsByTracks.Album = Albums.Id and AlbumsByTracks.Track = Tracks.Id
+
+-- ----------------------------------------------------------------------------
+create view TracksInAlbums as
+  select Albums.Title, Albums.Genre, Tracks.Title, Tracks.Duration, Tracks.Artist
+  from AlbumsByTracks
+    inner join Albums on AlbumsByTracks.Album = Albums.Id
+    inner join Tracks on AlbumsByTracks.Track = Tracks.Id
 
 
 -- ----------------------------------------------------------------------------

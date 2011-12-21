@@ -99,6 +99,11 @@ void ConnectionWidget::refresh()
                 QTreeWidgetItem *table = new QTreeWidgetItem(root);
                 table->setText(0, tables.at(t));
             }
+            QStringList dbViews = db.tables(QSql::Views);
+            for (int v = 0; v < dbViews.count(); ++v) {
+                QTreeWidgetItem *dbView = new QTreeWidgetItem(root);
+                dbView->setText(0, dbViews.at(v));
+            }
         }
     }
     if (!gotActiveDb) {

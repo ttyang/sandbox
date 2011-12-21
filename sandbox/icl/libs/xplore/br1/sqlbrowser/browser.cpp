@@ -305,6 +305,18 @@ void Browser::on_cellClicked(int row, int col)
     emit statusMessage(clickedCellInfo);
 }
 
+
+void Browser::deselectFirstCell(int selectedRow)
+{
+    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(table->model());
+    QModelIndex firstCell;
+    const int firstCol = 0;
+    firstCell = model->index(selectedRow, firstCol, QModelIndex());
+    QItemSelection toggleSelection;
+    toggleSelection.select(firstCell, firstCell);
+    table->selectionModel()->select(toggleSelection, QItemSelectionModel::Toggle);
+}
+
 void Browser::on_rowSelectChanged()
 {
     QModelIndexList currentSelection = table->selectionModel()->selectedIndexes();
@@ -313,13 +325,19 @@ void Browser::on_rowSelectChanged()
     int firstColumn = selCount > 0 ? currentSelection.at(1).column() : -1;
 
     // Alway the last selection is found, not the current one.
-    QString selectedRowInfo = QString("Row %1 of %2 selected").arg(firstRow).arg(selCount);
+    QString selectedRowInfo = QString("Row %1 Col %2 of %3 selected").arg(firstRow).arg(firstColumn).arg(selCount);
     emit statusMessage(selectedRowInfo);
 
     int nextRow = firstRow + 1;
-    if     (firstRow > -1 && !table->isRowHidden(nextRow))
+    if     (firstRow > -1 && firstColumn == 1 && !table->isRowHidden(nextRow))
+    {
+        deselectFirstCell(firstRow);
         table->hideRow(nextRow);
-    else if(firstRow > -1 &&  table->isRowHidden(nextRow))
+    }
+    else if(firstRow > -1 && firstColumn == 1 &&  table->isRowHidden(nextRow))
+    {
+        deselectFirstCell(firstRow);
         table->showRow(nextRow);
+    }
 }
 
