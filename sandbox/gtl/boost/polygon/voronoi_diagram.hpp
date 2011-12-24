@@ -145,7 +145,7 @@ namespace polygon {
         enum kEdgeType {
             SEGMENT = 0,
             RAY = 1,
-            LINE = 2,
+            LINE = 2
         };
 
         // Get a view rectangle based on the voronoi bounding rectangle.

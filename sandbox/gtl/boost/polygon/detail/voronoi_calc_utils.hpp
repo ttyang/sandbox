@@ -10,10 +10,6 @@
 #ifndef BOOST_POLYGON_VORONOI_CALC_UTILS
 #define BOOST_POLYGON_VORONOI_CALC_UTILS
 
-#pragma warning(disable:4800)
-#include <gmpxx.h>
-
-#include "mpt_wrapper.hpp"
 #include "voronoi_robust_fpt.hpp"
 
 namespace boost {
@@ -23,23 +19,31 @@ namespace detail {
 template <typename T>
 class voronoi_calc_utils;
 
-// Predicate utils. Operates with the types that could
-// be converted to the int32 without precision loss.
+// Predicate utils. Operates with the coordinate types that could
+// be converted to the 32-bit signed integer without precision loss.
 template <>
-class voronoi_calc_utils<int> {
+class voronoi_calc_utils<int32> {
 public:
-    typedef double fpt_type;
-    typedef unsigned long long ulong_long_type;
+    typedef fpt64 fpt_type;
 
-    static const unsigned int ULPS = 64;
-    static const unsigned int ULPSx2 = (ULPS << 1);
+    static const uint32 ULPS;
+    static const uint32 ULPSx2;
     static const fpt_type fULPS;
     static const fpt_type fULPSx2;
 
+    // Represents the result of the epsilon robust predicate.
+    // If the result is undefined some further processing is usually required.
+    enum kPredicateResult {
+        LESS = -1,
+        UNDEFINED = 0,
+        MORE = 1
+    };
+
+    // Represents orientation test result.
     enum kOrientation {
         RIGHT = -1,
         COLLINEAR = 0,
-        LEFT = 1,
+        LEFT = 1
     };
 
     // Value is a determinant of two vectors (e.g. x1 * y2 - x2 * y1).
@@ -51,19 +55,19 @@ public:
     }
 
     // Compute robust cross_product: a1 * b2 - b1 * a2.
-    // The result is correct with epsilon relative error equal to 2EPS.
+    // The result is correct with epsilon relative error equal to 1EPS.
     template <typename T>
     static fpt_type robust_cross_product(T a1_, T b1_, T a2_, T b2_) {
-        ulong_long_type a1, b1, a2, b2;
+        uint64 a1, b1, a2, b2;
         bool a1_plus, a2_plus, b1_plus, b2_plus;
         a1_plus = convert_to_65_bit(a1_, a1);
         b1_plus = convert_to_65_bit(b1_, b1);
         a2_plus = convert_to_65_bit(a2_, a2);
         b2_plus = convert_to_65_bit(b2_, b2);
 
-        ulong_long_type expr_l = a1 * b2;
+        uint64 expr_l = a1 * b2;
         bool expr_l_plus = (a1_plus == b2_plus) ? true : false;
-        ulong_long_type expr_r = b1 * a2;
+        uint64 expr_r = b1 * a2;
         bool expr_r_plus = (a2_plus == b1_plus) ? true : false;
 
         if (expr_l == 0) expr_l_plus = true;
@@ -234,6 +238,7 @@ public:
                 }
             }
         }
+
     private:
         typedef typename Site::point_type point_type;
 
@@ -424,6 +429,7 @@ public:
                 }
             }
         }
+
     private:
         // Get the newer site.
         const site_type &get_comparison_site(const node_type &node) const {
@@ -449,7 +455,7 @@ public:
             }
             return std::make_pair(node.right_site().y(), -1);
         }
-    private:
+
         distance_predicate_type predicate_;
     };
 
@@ -523,15 +529,12 @@ public:
     };
 
     template <typename Site, typename Circle>
-    class gmp_circle_formation_functor {
+    class mp_circle_formation_functor {
     public:
         typedef typename Site::point_type point_type;
         typedef Site site_type;
         typedef Circle circle_type;
-
-        typedef mpt_wrapper<mpz_class, 8> mpt_type;
-        typedef mpt_wrapper<mpf_class, 2> mpf_type;
-        typedef robust_sqrt_expr<mpt_type, mpf_type> robust_sqrt_expr_type;
+        typedef robust_sqrt_expr<eint4096, efpt64> robust_sqrt_expr_type;
 
         void ppp(const site_type &site1,
                  const site_type &site2,
@@ -540,62 +543,60 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            static mpt_type mpz_dif_x[3], mpz_dif_y[3], mpz_sum_x[2], mpz_sum_y[2],
-                            mpz_numerator[3], mpz_c_x, mpz_c_y, mpz_sqr_r, denom,
-                            cA[2], cB[2];
-            mpz_dif_x[0] = static_cast<fpt_type>(site1.x()) -
-                           static_cast<fpt_type>(site2.x());
-            mpz_dif_x[1] = static_cast<fpt_type>(site2.x()) -
-                           static_cast<fpt_type>(site3.x());
-            mpz_dif_x[2] = static_cast<fpt_type>(site1.x()) -
-                           static_cast<fpt_type>(site3.x());
-            mpz_dif_y[0] = static_cast<fpt_type>(site1.y()) -
-                           static_cast<fpt_type>(site2.y());
-            mpz_dif_y[1] = static_cast<fpt_type>(site2.y()) -
-                           static_cast<fpt_type>(site3.y());
-            mpz_dif_y[2] = static_cast<fpt_type>(site1.y()) -
-                           static_cast<fpt_type>(site3.y());
-            mpz_sum_x[0] = static_cast<fpt_type>(site1.x()) +
-                           static_cast<fpt_type>(site2.x());
-            mpz_sum_x[1] = static_cast<fpt_type>(site2.x()) +
-                           static_cast<fpt_type>(site3.x());
-            mpz_sum_y[0] = static_cast<fpt_type>(site1.y()) +
-                           static_cast<fpt_type>(site2.y());
-            mpz_sum_y[1] = static_cast<fpt_type>(site2.y()) +
-                           static_cast<fpt_type>(site3.y());
-
-            denom = (mpz_dif_x[0] * mpz_dif_y[1] - mpz_dif_x[1] * mpz_dif_y[0]) * 2.0;
-            mpz_numerator[1] = mpz_dif_x[0] * mpz_sum_x[0] + mpz_dif_y[0] * mpz_sum_y[0];
-            mpz_numerator[2] = mpz_dif_x[1] * mpz_sum_x[1] + mpz_dif_y[1] * mpz_sum_y[1];
+            typedef eint256 eint;
+            eint dif_x[3], dif_y[3], sum_x[2], sum_y[2];
+            dif_x[0] = static_cast<int64>(site1.x()) -
+                       static_cast<int64>(site2.x());
+            dif_x[1] = static_cast<int64>(site2.x()) -
+                       static_cast<int64>(site3.x());
+            dif_x[2] = static_cast<int64>(site1.x()) -
+                       static_cast<int64>(site3.x());
+            dif_y[0] = static_cast<int64>(site1.y()) -
+                       static_cast<int64>(site2.y());
+            dif_y[1] = static_cast<int64>(site2.y()) -
+                       static_cast<int64>(site3.y());
+            dif_y[2] = static_cast<int64>(site1.y()) -
+                       static_cast<int64>(site3.y());
+            sum_x[0] = static_cast<int64>(site1.x()) +
+                       static_cast<int64>(site2.x());
+            sum_x[1] = static_cast<int64>(site2.x()) +
+                       static_cast<int64>(site3.x());
+            sum_y[0] = static_cast<int64>(site1.y()) +
+                       static_cast<int64>(site2.y());
+            sum_y[1] = static_cast<int64>(site2.y()) +
+                       static_cast<int64>(site3.y());
+            fpt_type denom = get_d(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]) * 2.0;
+            eint numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
+            eint numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
 
             if (recompute_c_x || recompute_lower_x) {
-                mpz_c_x = mpz_numerator[1] * mpz_dif_y[1] - mpz_numerator[2] * mpz_dif_y[0];
-                circle.x(mpz_c_x.get_d() / denom.get_d());
+                eint c_x = numer1 * dif_y[1] - numer2 * dif_y[0];
+                circle.x(get_d(c_x) / denom);
 
                 if (recompute_lower_x) {
                     // Evaluate radius of the circle.
-                    mpz_sqr_r = 1.0;
-                    for (int i = 0; i < 3; ++i)
-                        mpz_sqr_r *= mpz_dif_x[i] * mpz_dif_x[i] + mpz_dif_y[i] * mpz_dif_y[i];
-                    fpt_type r = std::sqrt(mpz_sqr_r.get_d());
+                    eint sqr_r = (dif_x[0] * dif_x[0] + dif_y[0] * dif_y[0]) *
+                                 (dif_x[1] * dif_x[1] + dif_y[1] * dif_y[1]) *
+                                 (dif_x[2] * dif_x[2] + dif_y[2] * dif_y[2]);
+                    fpt_type r = get_sqrt(get_d(sqr_r));
 
                     // If c_x >= 0 then lower_x = c_x + r,
                     // else lower_x = (c_x * c_x - r * r) / (c_x - r).
                     // To guarantee epsilon relative error.
                     if (circle.x() >= static_cast<fpt_type>(0.0)) {
-                        circle.lower_x(circle.x() + r / fabs(denom.get_d()));
+                        circle.lower_x(circle.x() + r / fabs(denom));
                     } else {
-                        mpz_numerator[0] = mpz_c_x * mpz_c_x - mpz_sqr_r;
-                        fpt_type lower_x = mpz_numerator[0].get_d() /
-                                           (denom.get_d() * (mpz_c_x.get_d() + r));
+                        eint numer = c_x * c_x - sqr_r;
+                        fpt_type lower_x = get_d(numer) /
+                                           (denom * (get_d(c_x) + r));
                         circle.lower_x(lower_x);
                     }
                 }
             }
 
             if (recompute_c_y) {
-                mpz_c_y = mpz_numerator[2] * mpz_dif_x[0] - mpz_numerator[1] * mpz_dif_x[1];
-                circle.y(mpz_c_y.get_d() / denom.get_d());
+                eint c_y = numer2 * dif_x[0] - numer1 * dif_x[1];
+                circle.y(get_d(c_y) / denom);
             }
         }
 
@@ -608,59 +609,60 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            static mpt_type line_a, line_b, segm_len, vec_x, vec_y, sum_x, sum_y, teta,
-                            denom, A, B, sum_AB, dif[2], numer, cA[4], cB[4], det;
-            line_a = static_cast<fpt_type>(site3.point1(true).y()) -
-                     static_cast<fpt_type>(site3.point0(true).y());
-            line_b = static_cast<fpt_type>(site3.point0(true).x()) -
-                     static_cast<fpt_type>(site3.point1(true).x());
-            segm_len = line_a * line_a + line_b * line_b;
-            vec_x = static_cast<fpt_type>(site2.y()) -
-                    static_cast<fpt_type>(site1.y());
-            vec_y = static_cast<fpt_type>(site1.x()) -
-                    static_cast<fpt_type>(site2.x());
-            sum_x = static_cast<fpt_type>(site1.x()) +
-                    static_cast<fpt_type>(site2.x());
-            sum_y = static_cast<fpt_type>(site1.y()) +
-                    static_cast<fpt_type>(site2.y());
-            teta = line_a * vec_x + line_b * vec_y;
-            denom = vec_x * line_b - vec_y * line_a;
+            typedef eint4096 eint;
+            eint cA[4], cB[4];
+            eint line_a = static_cast<int64>(site3.point1(true).y()) -
+                          static_cast<int64>(site3.point0(true).y());
+            eint line_b = static_cast<int64>(site3.point0(true).x()) -
+                          static_cast<int64>(site3.point1(true).x());
+            eint segm_len = line_a * line_a + line_b * line_b;
+            eint vec_x = static_cast<int64>(site2.y()) -
+                         static_cast<int64>(site1.y());
+            eint vec_y = static_cast<int64>(site1.x()) -
+                         static_cast<int64>(site2.x());
+            eint sum_x = static_cast<int64>(site1.x()) +
+                         static_cast<int64>(site2.x());
+            eint sum_y = static_cast<int64>(site1.y()) +
+                         static_cast<int64>(site2.y());
+            eint teta = line_a * vec_x + line_b * vec_y;
+            eint denom = vec_x * line_b - vec_y * line_a;
 
-            dif[0] = static_cast<fpt_type>(site3.point1().y()) -
-                     static_cast<fpt_type>(site1.y());
-            dif[1] = static_cast<fpt_type>(site1.x()) -
-                     static_cast<fpt_type>(site3.point1().x());
-            A = line_a * dif[1] - line_b * dif[0];
-            dif[0] = static_cast<fpt_type>(site3.point1().y()) -
-                     static_cast<fpt_type>(site2.y());
-            dif[1] = static_cast<fpt_type>(site2.x()) -
-                     static_cast<fpt_type>(site3.point1().x());
-            B = line_a * dif[1] - line_b * dif[0];
-            sum_AB = A + B;
+            eint dif0 = static_cast<int64>(site3.point1().y()) -
+                        static_cast<int64>(site1.y());
+            eint dif1 = static_cast<int64>(site1.x()) -
+                        static_cast<int64>(site3.point1().x());
+            eint A = line_a * dif1 - line_b * dif0;
+            dif0 = static_cast<int64>(site3.point1().y()) -
+                   static_cast<int64>(site2.y());
+            dif1 = static_cast<int64>(site2.x()) -
+                   static_cast<int64>(site3.point1().x());
+            eint B = line_a * dif1 - line_b * dif0;
+            eint sum_AB = A + B;
 
-            if (denom == 0) {
-                numer = teta * teta - sum_AB * sum_AB;
-                denom = teta * sum_AB;
+            if (is_zero(denom)) {
+                eint numer = teta * teta - sum_AB * sum_AB;
+                eint denom = teta * sum_AB;
                 cA[0] = denom * sum_x * 2 + numer * vec_x;
                 cB[0] = segm_len;
                 cA[1] = denom * sum_AB * 2 + numer * teta;
                 cB[1] = 1;
                 cA[2] = denom * sum_y * 2 + numer * vec_y;
+                fpt_type inv_denom = 1.0 / get_d(denom);
                 if (recompute_c_x) {
-                    c_event.x(0.25 * cA[0].get_d() / denom.get_d());
+                    c_event.x(0.25 * get_d(cA[0]) * inv_denom);
                 }
                 if (recompute_c_y) {
-                    c_event.y(0.25 * cA[2].get_d() / denom.get_d());
+                    c_event.y(0.25 * get_d(cA[2]) * inv_denom);
                 }
                 if (recompute_lower_x) {
-                    c_event.lower_x(0.25 * sqrt_expr_.eval2(cA, cB).get_d() /
-                                    (denom.get_d() * std::sqrt(segm_len.get_d())));
+                    c_event.lower_x(0.25 * get_d(sqrt_expr_.eval2(cA, cB)) * inv_denom /
+                                    get_sqrt(get_d(segm_len)));
                 }
                 return;
             }
 
-            det = (teta * teta + denom * denom) * A * B * 4;
-            fpt_type denom_sqr = denom.get_d() * denom.get_d();
+            eint det = (teta * teta + denom * denom) * A * B * 4;
+            fpt_type inv_denom_sqr = 1.0 / sqr_value(get_d(denom));
 
             if (recompute_c_x || recompute_lower_x) {
                 cA[0] = sum_x * denom * denom + teta * sum_AB * vec_x;
@@ -668,7 +670,7 @@ public:
                 cA[1] = (segment_index == 2) ? -vec_x : vec_x;
                 cB[1] = det;
                 if (recompute_c_x) {
-                    c_event.x(0.5 * sqrt_expr_.eval2(cA, cB).get_d() / denom_sqr);
+                    c_event.x(0.5 * get_d(sqrt_expr_.eval2(cA, cB)) * inv_denom_sqr);
                 }
             }
 
@@ -678,20 +680,20 @@ public:
                 cA[3] = (segment_index == 2) ? -vec_y : vec_y;
                 cB[3] = det;
                 if (recompute_c_y) {
-                    c_event.y(0.5 * sqrt_expr_.eval2(&cA[2], &cB[2]).get_d() /
-                              denom_sqr);
+                    c_event.y(0.5 * get_d(sqrt_expr_.eval2(&cA[2], &cB[2])) *
+                              inv_denom_sqr);
                 }
             }
 
             if (recompute_lower_x) {
-                cB[0] *= segm_len;
-                cB[1] *= segm_len;
+                cB[0] = cB[0] * segm_len;
+                cB[1] = cB[1] * segm_len;
                 cA[2] = sum_AB * (denom * denom + teta * teta);
                 cB[2] = 1;
                 cA[3] = (segment_index == 2) ? -teta : teta;
                 cB[3] = det;
-                c_event.lower_x(0.5 * sqrt_expr_.eval4(cA, cB).get_d() /
-                                (denom_sqr * std::sqrt(segm_len.get_d())));
+                c_event.lower_x(0.5 * get_d(sqrt_expr_.eval4(cA, cB)) * inv_denom_sqr /
+                                get_sqrt(get_d(segm_len)));
             }
         }
 
@@ -704,88 +706,90 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            static mpt_type a[2], b[2], c[2], cA[4], cB[4], orientation, dx, dy, ix, iy;
+            typedef eint4096 eint;
+            eint a[2], b[2], c[2], cA[4], cB[4];
             const point_type &segm_start1 = site2.point1(true);
             const point_type &segm_end1 = site2.point0(true);
             const point_type &segm_start2 = site3.point0(true);
             const point_type &segm_end2 = site3.point1(true);
-
-            a[0] = static_cast<fpt_type>(segm_end1.x()) -
-                   static_cast<fpt_type>(segm_start1.x());
-            b[0] = static_cast<fpt_type>(segm_end1.y()) -
-                   static_cast<fpt_type>(segm_start1.y());
-            a[1] = static_cast<fpt_type>(segm_end2.x()) -
-                   static_cast<fpt_type>(segm_start2.x());
-            b[1] = static_cast<fpt_type>(segm_end2.y()) -
-                   static_cast<fpt_type>(segm_start2.y());
-            orientation = a[1] * b[0] - a[0] * b[1];
-            if (orientation == 0) {
-                fpt_type denom = (a[0] * a[0] + b[0] * b[0]).get_d() * 2.0;
-                c[0] = b[0] * (static_cast<fpt_type>(segm_start2.x()) -
-                               static_cast<fpt_type>(segm_start1.x())) -
-                       a[0] * (static_cast<fpt_type>(segm_start2.y()) -
-                               static_cast<fpt_type>(segm_start1.y()));
-                dx = a[0] * (static_cast<fpt_type>(site1.y()) -
-                             static_cast<fpt_type>(segm_start1.y())) -
-                     b[0] * (static_cast<fpt_type>(site1.x()) -
-                             static_cast<fpt_type>(segm_start1.x()));
-                dy = b[0] * (static_cast<fpt_type>(site1.x()) -
-                             static_cast<fpt_type>(segm_start2.x())) -
-                     a[0] * (static_cast<fpt_type>(site1.y()) -
-                             static_cast<fpt_type>(segm_start2.y()));
+            a[0] = static_cast<int64>(segm_end1.x()) -
+                   static_cast<int64>(segm_start1.x());
+            b[0] = static_cast<int64>(segm_end1.y()) -
+                   static_cast<int64>(segm_start1.y());
+            a[1] = static_cast<int64>(segm_end2.x()) -
+                   static_cast<int64>(segm_start2.x());
+            b[1] = static_cast<int64>(segm_end2.y()) -
+                   static_cast<int64>(segm_start2.y());
+            eint orientation = a[1] * b[0] - a[0] * b[1];
+            if (is_zero(orientation)) {
+                fpt_type denom = get_d(a[0] * a[0] + b[0] * b[0]) * 2;
+                c[0] = b[0] * (static_cast<int64>(segm_start2.x()) -
+                               static_cast<int64>(segm_start1.x())) -
+                       a[0] * (static_cast<int64>(segm_start2.y()) -
+                               static_cast<int64>(segm_start1.y()));
+                eint dx = a[0] * (static_cast<int64>(site1.y()) -
+                                  static_cast<int64>(segm_start1.y())) -
+                          b[0] * (static_cast<int64>(site1.x()) -
+                                  static_cast<int64>(segm_start1.x()));
+                eint dy = b[0] * (static_cast<int64>(site1.x()) -
+                                  static_cast<int64>(segm_start2.x())) -
+                          a[0] * (static_cast<int64>(site1.y()) -
+                                  static_cast<int64>(segm_start2.y()));
                 cB[0] = dx * dy;
                 cB[1] = 1;
 
                 if (recompute_c_y) {
                     cA[0] = b[0] * ((point_index == 2) ? 2 : -2);
-                    cA[1] = a[0] * a[0] * (static_cast<fpt_type>(segm_start1.y()) +
-                                           static_cast<fpt_type>(segm_start2.y())) -
-                            a[0] * b[0] * (static_cast<fpt_type>(segm_start1.x()) +
-                                           static_cast<fpt_type>(segm_start2.x()) -
-                                           2.0 * static_cast<fpt_type>(site1.x())) +
-                            b[0] * b[0] * (2.0 * static_cast<fpt_type>(site1.y()));
-                    fpt_type c_y = sqrt_expr_.eval2(cA, cB).get_d();
+                    cA[1] = a[0] * a[0] * (static_cast<int64>(segm_start1.y()) +
+                                           static_cast<int64>(segm_start2.y())) -
+                            a[0] * b[0] * (static_cast<int64>(segm_start1.x()) +
+                                           static_cast<int64>(segm_start2.x()) -
+                                           static_cast<int64>(site1.x()) * 2) +
+                            b[0] * b[0] * (static_cast<int64>(site1.y()) * 2);
+                    fpt_type c_y = get_d(sqrt_expr_.eval2(cA, cB));
                     c_event.y(c_y / denom);
                 }
 
                 if (recompute_c_x || recompute_lower_x) {
                     cA[0] = a[0] * ((point_index == 2) ? 2 : -2);
-                    cA[1] = b[0] * b[0] * (static_cast<fpt_type>(segm_start1.x()) +
-                                           static_cast<fpt_type>(segm_start2.x())) -
-                            a[0] * b[0] * (static_cast<fpt_type>(segm_start1.y()) +
-                                           static_cast<fpt_type>(segm_start2.y()) -
-                                           2.0 * static_cast<fpt_type>(site1.y())) +
-                            a[0] * a[0] * (2.0 * static_cast<fpt_type>(site1.x()));
+                    cA[1] = b[0] * b[0] * (static_cast<int64>(segm_start1.x()) +
+                                           static_cast<int64>(segm_start2.x())) -
+                            a[0] * b[0] * (static_cast<int64>(segm_start1.y()) +
+                                           static_cast<int64>(segm_start2.y()) -
+                                           static_cast<int64>(site1.y()) * 2) +
+                            a[0] * a[0] * (static_cast<int64>(site1.x()) * 2);
 
                     if (recompute_c_x) {
-                        fpt_type c_x = sqrt_expr_.eval2(cA, cB).get_d();
+                        fpt_type c_x = get_d(sqrt_expr_.eval2(cA, cB));
                         c_event.x(c_x / denom);
                     }
 
                     if (recompute_lower_x) {
-                        cA[2] = (c[0] < 0) ? -c[0] : c[0];
+                        cA[2] = is_neg(c[0]) ? -c[0] : c[0];
                         cB[2] = a[0] * a[0] + b[0] * b[0];
-                        fpt_type lower_x = sqrt_expr_.eval3(cA, cB).get_d();
+                        fpt_type lower_x = get_d(sqrt_expr_.eval3(cA, cB));
                         c_event.lower_x(lower_x / denom);
                     }
                 }
                 return;
             }
-            c[0] = b[0] * segm_end1.x() - a[0] * segm_end1.y();
-            c[1] = a[1] * segm_end2.y() - b[1] * segm_end2.x();
-            ix = a[0] * c[1] + a[1] * c[0];
-            iy = b[0] * c[1] + b[1] * c[0];
-            dx = ix - orientation * site1.x();
-            dy = iy - orientation * site1.y();
-            if ((dx == 0) && (dy == 0)) {
-                fpt_type denom = orientation.get_d();
-                fpt_type c_x = ix.get_d() / denom;
-                fpt_type c_y = iy.get_d() / denom;
+            c[0] = b[0] * static_cast<int32>(segm_end1.x()) -
+                   a[0] * static_cast<int32>(segm_end1.y());
+            c[1] = a[1] * static_cast<int32>(segm_end2.y()) -
+                   b[1] * static_cast<int32>(segm_end2.x());
+            eint ix = a[0] * c[1] + a[1] * c[0];
+            eint iy = b[0] * c[1] + b[1] * c[0];
+            eint dx = ix - orientation * static_cast<int32>(site1.x());
+            eint dy = iy - orientation * static_cast<int32>(site1.y());
+            if (is_zero(dx) && is_zero(dy)) {
+                fpt_type denom = get_d(orientation);
+                fpt_type c_x = get_d(ix) / denom;
+                fpt_type c_y = get_d(iy) / denom;
                 c_event = circle_type(c_x, c_y, c_x);
                 return;
             }
 
-            fpt_type sign = ((point_index == 2) ? 1 : -1) * ((orientation < 0) ? 1 : -1);
+            eint sign = ((point_index == 2) ? 1 : -1) * (is_neg(orientation) ? 1 : -1);
             cA[0] = a[1] * -dx + b[1] * -dy;
             cA[1] = a[0] * -dx + b[0] * -dy;
             cA[2] = sign;
@@ -794,14 +798,14 @@ public:
             cB[1] = a[1] * a[1] + b[1] * b[1];
             cB[2] = a[0] * a[1] + b[0] * b[1];
             cB[3] = (a[0] * dy - b[0] * dx) * (a[1] * dy - b[1] * dx) * -2;
-            fpt_type temp = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
-            fpt_type denom = temp * orientation.get_d();
+            fpt_type temp = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
+            fpt_type denom = temp * get_d(orientation);
 
             if (recompute_c_y) {
                 cA[0] = b[1] * (dx * dx + dy * dy) - iy * (dx * a[1] + dy * b[1]);
                 cA[1] = b[0] * (dx * dx + dy * dy) - iy * (dx * a[0] + dy * b[0]);
                 cA[2] = iy * sign;
-                fpt_type cy = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+                fpt_type cy = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
                 c_event.y(cy / denom);
             }
 
@@ -811,13 +815,13 @@ public:
                 cA[2] = ix * sign;
 
                 if (recompute_c_x) {
-                    fpt_type cx = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+                    fpt_type cx = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
                     c_event.x(cx / denom);
                 }
 
                 if (recompute_lower_x) {
                     cA[3] = orientation * (dx * dx + dy * dy) * (temp < 0 ? -1 : 1);
-                    fpt_type lower_x = sqrt_expr_evaluator_pss<mpt_type, mpf_type>(cA, cB).get_d();
+                    fpt_type lower_x = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -831,26 +835,30 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            static mpt_type a[3], b[3], c[3], cA[4], cB[4];
+            typedef eint4096 eint;
+            eint a[3], b[3], c[3], cA[4], cB[4];
             // cA - corresponds to the cross product.
             // cB - corresponds to the squared length.
-            a[0] = static_cast<fpt_type>(site1.x1(true)) -
-                   static_cast<fpt_type>(site1.x0(true));
-            a[1] = static_cast<fpt_type>(site2.x1(true)) -
-                   static_cast<fpt_type>(site2.x0(true));
-            a[2] = static_cast<fpt_type>(site3.x1(true)) -
-                   static_cast<fpt_type>(site3.x0(true));
+            a[0] = static_cast<int64>(site1.x1(true)) -
+                   static_cast<int64>(site1.x0(true));
+            a[1] = static_cast<int64>(site2.x1(true)) -
+                   static_cast<int64>(site2.x0(true));
+            a[2] = static_cast<int64>(site3.x1(true)) -
+                   static_cast<int64>(site3.x0(true));
 
-            b[0] = static_cast<fpt_type>(site1.y1(true)) -
-                   static_cast<fpt_type>(site1.y0(true));
-            b[1] = static_cast<fpt_type>(site2.y1(true)) -
-                   static_cast<fpt_type>(site2.y0(true));
-            b[2] = static_cast<fpt_type>(site3.y1(true)) -
-                   static_cast<fpt_type>(site3.y0(true));
+            b[0] = static_cast<int64>(site1.y1(true)) -
+                   static_cast<int64>(site1.y0(true));
+            b[1] = static_cast<int64>(site2.y1(true)) -
+                   static_cast<int64>(site2.y0(true));
+            b[2] = static_cast<int64>(site3.y1(true)) -
+                   static_cast<int64>(site3.y0(true));
 
-            c[0] = mpt_cross(site1.x0(true), site1.y0(true), site1.x1(true), site1.y1(true));										
-            c[1] = mpt_cross(site2.x0(true), site2.y0(true), site2.x1(true), site2.y1(true));
-            c[2] = mpt_cross(site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true));
+            c[0] = static_cast<int64>(site1.x0(true)) * static_cast<int64>(site1.y1(true)) -
+                   static_cast<int64>(site1.y0(true)) * static_cast<int64>(site1.x1(true));
+            c[1] = static_cast<int64>(site2.x0(true)) * static_cast<int64>(site2.y1(true)) -
+                   static_cast<int64>(site2.y0(true)) * static_cast<int64>(site2.x1(true));
+            c[2] = static_cast<int64>(site3.x0(true)) * static_cast<int64>(site3.y1(true)) -
+                   static_cast<int64>(site3.y0(true)) * static_cast<int64>(site3.x1(true));
 
             for (int i = 0; i < 3; ++i) {
                 cB[i] = a[i] * a[i] + b[i] * b[i];
@@ -861,7 +869,7 @@ public:
                 int k = (i+2) % 3;
                 cA[i] = a[j] * b[k] - a[k] * b[j];
             }
-            fpt_type denom = sqrt_expr_.eval3(cA, cB).get_d();
+            fpt_type denom = get_d(sqrt_expr_.eval3(cA, cB));
 
             if (recompute_c_y) {
                 for (int i = 0; i < 3; ++i) {
@@ -869,7 +877,7 @@ public:
                     int k = (i+2) % 3;
                     cA[i] = b[j] * c[k] - b[k] * c[j];
                 }
-                fpt_type c_y = sqrt_expr_.eval3(cA, cB).get_d();
+                fpt_type c_y = get_d(sqrt_expr_.eval3(cA, cB));
                 c_event.y(c_y / denom);
             }
 
@@ -880,57 +888,45 @@ public:
                     int k = (i+2) % 3;
                     cA[i] = a[j] * c[k] - a[k] * c[j];
                     if (recompute_lower_x) {
-                        cA[3] += cA[i] * b[i];
+                        cA[3] = cA[3] + cA[i] * b[i];
                     }
                 }
 
                 if (recompute_c_x) {
-                    fpt_type c_x = sqrt_expr_.eval3(cA, cB).get_d();
+                    fpt_type c_x = get_d(sqrt_expr_.eval3(cA, cB));
                     c_event.x(c_x / denom);
                 }
 
                 if (recompute_lower_x) {
                     cB[3] = 1;
-                    fpt_type lower_x = sqrt_expr_.eval4(cA, cB).get_d();
+                    fpt_type lower_x = get_d(sqrt_expr_.eval4(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }
             }
         }
-    private:
-        template <typename T>
-        mpt_wrapper<mpz_class, 8> &mpt_cross(T a0, T b0, T a1, T b1) {
-            static mpt_type temp[2];
-            temp[0] = a0;
-            temp[1] = b0;
-            temp[0] = temp[0] * b1;
-            temp[1] = temp[1] * a1;
-            temp[0] -= temp[1];
-            return temp[0];
-        }
 
+    private:
         // Evaluates A[3] + A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) +
         //           A[2] * sqrt(B[3] * (sqrt(B[0] * B[1]) + B[2]));
-        template <typename mpt, typename mpf>
-        mpf sqrt_expr_evaluator_pss(mpt *A, mpt *B) {
-            static mpt cA[4], cB[4];
-            static mpf lh, rh, numer;
-            if (A[3] == 0) {
-                lh = sqrt_expr_.eval2(A, B);
+        template <typename _int, typename _fpt>
+        _fpt sqrt_expr_evaluator_pss(_int *A, _int *B) {
+            _int cA[4], cB[4];
+            if (is_zero(A[3])) {
+                _fpt lh = sqrt_expr_.eval2(A, B);
                 cA[0] = 1;
                 cB[0] = B[0] * B[1];
                 cA[1] = B[2];
                 cB[1] = 1;
-                rh = A[2].get_d() * std::sqrt(B[3].get_d() *
-                    sqrt_expr_.eval2(cA, cB).get_d());
-                if (((lh >= 0) && (rh >= 0)) || ((lh <= 0) && (rh <= 0))) {
+                _fpt rh = sqrt_expr_.eval1(A+2, B+3) * get_sqrt(sqrt_expr_.eval2(cA, cB));
+                if ((!is_neg(lh) && !is_neg(rh)) || (!is_pos(lh) && !is_pos(rh))) {
                     return lh + rh;
                 }
-                cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
-                cA[0] -= A[2] * A[2] * B[3] * B[2];
+                cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1] -
+                        A[2] * A[2] * B[3] * B[2];
                 cB[0] = 1;
                 cA[1] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
                 cB[1] = B[0] * B[1];
-                numer = sqrt_expr_.eval2(cA, cB);
+                _fpt numer = sqrt_expr_.eval2(cA, cB);
                 return numer / (lh - rh);
             }
             cA[0] = A[3];
@@ -939,18 +935,17 @@ public:
             cB[1] = B[0];
             cA[2] = A[1];
             cB[2] = B[1];
-            lh = sqrt_expr_.eval3(cA, cB);
+            _fpt lh = sqrt_expr_.eval3(cA, cB);
             cA[0] = 1;
             cB[0] = B[0] * B[1];
             cA[1] = B[2];
             cB[1] = 1;
-            rh = A[2].get_d() * std::sqrt(B[3].get_d() *
-                sqrt_expr_.eval2(cA, cB).get_d());
-            if (((lh >= 0) && (rh >= 0)) || ((lh <= 0) && (rh <= 0))) {
+            _fpt rh = sqrt_expr_.eval1(A+2, B+3) * get_sqrt(sqrt_expr_.eval2(cA, cB));
+            if ((!is_neg(lh) && !is_neg(rh)) || (!is_pos(lh) && !is_pos(rh))) {
                 return lh + rh;
             }
-            cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1];
-            cA[0] += A[3] * A[3] - A[2] * A[2] * B[2] * B[3];
+            cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1] +
+                    A[3] * A[3] - A[2] * A[2] * B[2] * B[3];
             cB[0] = 1;
             cA[1] = A[3] * A[0] * 2;
             cB[1] = B[0];
@@ -958,10 +953,10 @@ public:
             cB[2] = B[1];
             cA[3] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
             cB[3] = B[0] * B[1];
-            numer = sqrt_expr_.eval4(cA, cB);
+            _fpt numer = sqrt_expr_.eval4(cA, cB);
             return numer / (lh - rh);
         }
-    private:
+
         robust_sqrt_expr_type sqrt_expr_;
     };
 
@@ -973,7 +968,7 @@ public:
         typedef typename Site::point_type point_type;
         typedef Site site_type;
         typedef Circle circle_type;
-        typedef gmp_circle_formation_functor<site_type, circle_type>
+        typedef mp_circle_formation_functor<site_type, circle_type>
             exact_circle_formation_functor_type;
 
         void ppp(const site_type &site1,
@@ -1295,11 +1290,7 @@ public:
                     recompute_c_x, recompute_c_y, recompute_lower_x);
             }
         }
-    private:
-        template <typename T>
-        T sqr_distance(T dif_x, T dif_y) {
-            return dif_x * dif_x + dif_y * dif_y;
-        }
+
     private:
         exact_circle_formation_functor_type exact_circle_formation_functor_;
     };
@@ -1379,21 +1370,34 @@ public:
         circle_existence_predicate_type circle_existence_predicate_;
         circle_formation_functor_type circle_formation_functor_;
     };
+
 private:
     // Convert value to 64-bit unsigned integer.
     // Return true if the value is positive, else false.
     template <typename T>
-    static bool convert_to_65_bit(T value, ulong_long_type &res) {
+    static bool convert_to_65_bit(T value, uint64 &res) {
         if (value >= static_cast<T>(0)) {
-            res = static_cast<ulong_long_type>(value);
+            res = static_cast<uint64>(value);
             return true;
         } else {
-            res = static_cast<ulong_long_type>(-value);
+            res = static_cast<uint64>(-value);
             return false;
         }
     }
+
+    template <typename T>
+    static T sqr_value(T value) {
+        return value * value;
+    }
+
+    template <typename T>
+    static T sqr_distance(T dif_x, T dif_y) {
+        return dif_x * dif_x + dif_y * dif_y;
+    }
 };
 
+const uint32 voronoi_calc_utils<int>::ULPS = 64;
+const uint32 voronoi_calc_utils<int>::ULPSx2 = 128;
 const voronoi_calc_utils<int>::fpt_type voronoi_calc_utils<int>::fULPS =
     voronoi_calc_utils<int>::ULPS;
 const voronoi_calc_utils<int>::fpt_type voronoi_calc_utils<int>::fULPSx2 =

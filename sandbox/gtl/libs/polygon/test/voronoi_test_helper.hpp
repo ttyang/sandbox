@@ -20,7 +20,7 @@ namespace voronoi_test_helper {
 enum kOrientation {
     RIGHT = -1,
     COLLINEAR = 0,
-    LEFT = 1,
+    LEFT = 1
 };
 
 template <typename Point2D>
@@ -204,8 +204,10 @@ template <typename T>
 void save_voronoi_input(const std::vector< point_data<T> > &points, const char *file_name) {
     std::ofstream ofs(file_name);
     ofs << points.size() << std::endl;
-    for (int i = 0; i < (int)points.size(); ++i)
-        ofs << points[i].x() << " " << points[i].y() << std::endl;
+    for (typename std::vector< point_data<T> >::iterator it = points.begin();
+         it != points.end(); ++it) {
+        ofs << it->x() << " " << it->y() << std::endl;
+    }
     ofs.close();
 }
 

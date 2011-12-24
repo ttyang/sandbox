@@ -257,7 +257,7 @@ namespace boost { namespace polygon{
       typename std::vector<Point>::iterator new_end = std::unique(tmp_points.begin(), tmp_points.end());
       output_points.insert(output_points.end(), tmp_points.begin(), new_end);
       return std::distance(tmp_points.begin(), new_end);
-    };
+    }
 
 
 private:
