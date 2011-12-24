@@ -214,9 +214,9 @@ namespace detail {
     // Circle event is made by the two consequtive nodes in the beach line data
     // structure. In case another node was inserted during algorithm execution
     // between the given two nodes circle event becomes inactive.
-    // Variables: center_x_ - numerator of the center's x-coordinate.
-    //            center_y_ - numerator of the center's y-coordinate.
-    //            lower_x_ - numerator of the bottom point's x-coordinate.
+    // Variables: center_x_ - center x-coordinate.
+    //            center_y_ - center y-coordinate.
+    //            lower_x_ - leftmost x-coordinate.
     //            is_active_ - states whether circle event is still active.
     // NOTE: lower_y coordinate is always equal to center_y.
     template <typename T>
@@ -339,7 +339,7 @@ namespace detail {
     // the site and from the sweepline. If the site is a point then arc is
     // a parabola, otherwise it's a line segment. A segment site event will
     // produce different bisectors based on its direction.
-    // In the general case two sites will create two opposite bisectors. That's
+    // In general case two sites will create two opposite bisectors. That's
     // why the order of the sites is important to define the unique bisector.
     // The one site is considered to be newer than the other one if it was
     // processed by the algorithm later (has greater index).
