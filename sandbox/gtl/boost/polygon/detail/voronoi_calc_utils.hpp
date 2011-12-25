@@ -59,37 +59,26 @@ public:
     // with epsilon relative error equal to 1EPS.
     template <typename T>
     static fpt_type robust_cross_product(T a1_, T b1_, T a2_, T b2_) {
-        uint64 a1, b1, a2, b2;
-        bool a1_plus, a2_plus, b1_plus, b2_plus;
-        a1_plus = convert_to_65_bit(a1_, a1);
-        b1_plus = convert_to_65_bit(b1_, b1);
-        a2_plus = convert_to_65_bit(a2_, a2);
-        b2_plus = convert_to_65_bit(b2_, b2);
+        uint64 a1 = static_cast<uint64>((a1_ < 0) ? -a1_ : a1_);
+        uint64 b1 = static_cast<uint64>((b1_ < 0) ? -b1_ : b1_);
+        uint64 a2 = static_cast<uint64>((a2_ < 0) ? -a2_ : a2_);
+        uint64 b2 = static_cast<uint64>((b2_ < 0) ? -b2_ : b2_);
 
-        uint64 expr_l = a1 * b2;
-        bool expr_l_plus = (a1_plus == b2_plus) ? true : false;
-        uint64 expr_r = b1 * a2;
-        bool expr_r_plus = (a2_plus == b1_plus) ? true : false;
+        uint64 l = a1 * b2;
+        uint64 r = b1 * a2;
 
-        if (expr_l == 0) expr_l_plus = true;
-        if (expr_r == 0) expr_r_plus = true;
-
-        if ((expr_l_plus == expr_r_plus) && (expr_l == expr_r))
-            return static_cast<fpt_type>(0.0);
-
-        if (!expr_l_plus) {
-            if (expr_r_plus)
-                return -static_cast<fpt_type>(expr_l - expr_r);
-            else return (expr_l > expr_r) ?
-                        -static_cast<fpt_type>(expr_l - expr_r) :
-                         static_cast<fpt_type>(expr_r - expr_l);
-        } else {
-            if (!expr_r_plus)
-                return static_cast<fpt_type>(expr_l + expr_r);
+        if ((a1_ > 0) ^ (b2_ > 0)) {
+            if ((a2_ > 0) ^ (b1_ > 0))
+                return (l > r) ? -static_cast<fpt_type>(l - r) :
+                                  static_cast<fpt_type>(r - l);
             else
-                return (expr_l < expr_r) ?
-                       -static_cast<fpt_type>(expr_r - expr_l) :
-                        static_cast<fpt_type>(expr_l - expr_r);
+                return -static_cast<fpt_type>(l + r);
+        } else {
+            if ((a2_ > 0) ^ (b1_ > 0))
+                return static_cast<fpt_type>(l + r);
+            else
+                return (l < r) ? -static_cast<fpt_type>(r - l) :
+                                  static_cast<fpt_type>(l - r);
         }
     }
 
@@ -305,8 +294,10 @@ public:
 
         fpt_type find_distance_to_point_arc(const site_type &site,
                                             const point_type &point) const {
-            fpt_type dx = site.x() - point.x();
-            fpt_type dy = site.y() - point.y();
+            fpt_type dx = static_cast<fpt_type>(site.x()) -
+                          static_cast<fpt_type>(point.x());
+            fpt_type dy = static_cast<fpt_type>(site.y()) -
+                          static_cast<fpt_type>(point.y());
             // The relative error is atmost 3EPS.
             return (dx * dx + dy * dy) / (static_cast<fpt_type>(2.0) * dx);
         }
@@ -661,7 +652,8 @@ public:
             }
 
             eint det = (teta * teta + denom * denom) * A * B * 4;
-            fpt_type inv_denom_sqr = 1.0 / sqr_value(get_d(denom));
+            fpt_type inv_denom_sqr = 1.0 / get_d(denom);
+            inv_denom_sqr *= inv_denom_sqr;
 
             if (recompute_c_x || recompute_lower_x) {
                 cA[0] = sum_x * denom * denom + teta * sum_AB * vec_x;
@@ -1371,24 +1363,6 @@ public:
     };
 
 private:
-    // Convert value to 64-bit unsigned integer.
-    // Return true if the value is positive, else false.
-    template <typename T>
-    static bool convert_to_65_bit(T value, uint64 &res) {
-        if (value >= static_cast<T>(0)) {
-            res = static_cast<uint64>(value);
-            return true;
-        } else {
-            res = static_cast<uint64>(-value);
-            return false;
-        }
-    }
-
-    template <typename T>
-    static T sqr_value(T value) {
-        return value * value;
-    }
-
     template <typename T>
     static T sqr_distance(T dif_x, T dif_y) {
         return dif_x * dif_x + dif_y * dif_y;
