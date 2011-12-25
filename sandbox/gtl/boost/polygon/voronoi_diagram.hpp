@@ -544,25 +544,23 @@ namespace polygon {
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
 
         template <typename P>
-        voronoi_cell(const P &p1, const P &p2,
-                     bool contains_segment, voronoi_edge_type *edge) :
+        voronoi_cell(const P &p1, const P &p2, voronoi_edge_type *edge) :
             point0_(static_cast<coordinate_type>(p1.x()),
                     static_cast<coordinate_type>(p1.y())),
             point1_(static_cast<coordinate_type>(p2.x()),
                     static_cast<coordinate_type>(p2.y())),
-            contains_segment_(contains_segment),
             incident_edge_(edge),
             num_incident_edges_(0) {}
 
         // Returns true if the cell contains segment site, false else.
-        bool contains_segment() const { return contains_segment_; }
+        bool contains_segment() const { return point0_ != point1_; }
 
         // Returns site point in case cell contains point site,
         // the first point of the segment site else.
         const point_type &point0() const { return point0_; }
 
-        // Returns the second site of the segment site.
-        // Don't use with the point sites.
+        // Returns site point in case cell contains point site,
+        // the second point of the segment site else.
         const point_type &point1() const { return point1_; }
 
         voronoi_edge_type *incident_edge() { return incident_edge_; }
@@ -577,7 +575,6 @@ namespace polygon {
     private:
         point_type point0_;
         point_type point1_;
-        bool contains_segment_;
         voronoi_edge_type *incident_edge_;
         int num_incident_edges_;
     };
@@ -838,7 +835,6 @@ namespace polygon {
             // Update cell records.
             cell_records_.push_back(voronoi_cell_type(site.point0(),
                                                       site.point1(),
-                                                      site.is_segment(),
                                                       NULL));
         }
 
@@ -864,7 +860,6 @@ namespace polygon {
             if (cell_records_.empty()) {
                 cell_records_.push_back(voronoi_cell_type(site1.point0(),
                                                           site1.point1(),
-                                                          site1.is_segment(),
                                                           &edge1));
                 voronoi_rect_ = BRect<coordinate_type>(site1.point0(),
                                                        site1.point0());
@@ -881,7 +876,6 @@ namespace polygon {
             // processing. Add a new cell to the cell records.
             cell_records_.push_back(voronoi_cell_type(site2.point0(),
                                                       site2.point1(),
-                                                      site2.is_segment(),
                                                       &edge2));
             cell_records_.back().inc_num_incident_edges();
 
