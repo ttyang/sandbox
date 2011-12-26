@@ -76,8 +76,9 @@ namespace detail {
     // type preceed sites of the second type for the same segment.
     // Variables: point0_ - point site or segment's startpoint;
     //            point1_ - segment's endpoint if site is a segment;
-    //            index_ - site event index among other sites;
-    //            is_inverse_ - defines type of the segment site.
+    //            index_ - the last bit encodes if the site is inverse,
+    //                     all the other bits encode site event index among
+    //                     the other site events.
     // Note: for all the sites is_inverse_ flag is equal to false by default.
     template <typename T>
     class site_event {
@@ -88,47 +89,40 @@ namespace detail {
         site_event() :
             point0_(0, 0),
             point1_(0, 0),
-            site_index_(0),
-            is_inverse_(false) {}
+            site_index_(0) {}
 
         site_event(coordinate_type x, coordinate_type y) :
             point0_(x, y),
             point1_(x, y),
-            site_index_(0),
-            is_inverse_(false) {}
+            site_index_(0) {}
 
         site_event(const point_type &point) :
             point0_(point),
             point1_(point),
-            site_index_(0),
-            is_inverse_(false) {}
+            site_index_(0) {}
 
         site_event(coordinate_type x1, coordinate_type y1,
                    coordinate_type x2, coordinate_type y2):
             point0_(x1, y1),
             point1_(x2, y2),
-            site_index_(0),
-            is_inverse_(false) {}
+            site_index_(0) {}
 
         site_event(const point_type &point1,
                    const point_type &point2) :
             point0_(point1),
             point1_(point2),
-            site_index_(0),
-            is_inverse_(false) {}
+            site_index_(0) {}
 
         bool operator==(const site_event &that) const {
             return (this->point0_ == that.point0_) &&
                    (this->point1_ == that.point1_) &&
-                   (this->site_index_ == that.site_index_) &&
-                   (this->is_inverse_ == that.is_inverse_);
+                   (this->site_index_ == that.site_index_);
         }
 
         bool operator!=(const site_event &that) const {
             return (this->point0_ != that.point0_) ||
                    (this->point1_ != that.point1_) ||
-                   (this->site_index_ != that.site_index_) ||
-                   (this->is_inverse_ != that.is_inverse_);
+                   (this->site_index_ != that.site_index_);
         }
 
         coordinate_type x(bool oriented = false) const {
@@ -142,51 +136,51 @@ namespace detail {
         coordinate_type x0(bool oriented = false) const {
             if (!oriented)
                 return point0_.x();
-            return is_inverse_ ? point1_.x() : point0_.x();
+            return is_inverse() ? point1_.x() : point0_.x();
         }
 
         coordinate_type y0(bool oriented = false) const {
             if (!oriented)
                 return point0_.y();
-            return is_inverse_ ? point1_.y() : point0_.y();
+            return is_inverse() ? point1_.y() : point0_.y();
         }
 
         coordinate_type x1(bool oriented = false) const {
             if (!oriented)
                 return point1_.x();
-            return is_inverse_ ? point0_.x() : point1_.x();
+            return is_inverse() ? point0_.x() : point1_.x();
         }
 
         coordinate_type y1(bool oriented = false) const {
             if (!oriented)
                 return point1_.y();
-            return is_inverse_ ? point0_.y() : point1_.y();
+            return is_inverse() ? point0_.y() : point1_.y();
         }
 
         const point_type &point0(bool oriented = false) const {
             if (!oriented)
                 return point0_;
-            return is_inverse_ ? point1_ : point0_;
+            return is_inverse() ? point1_ : point0_;
         }
 
         const point_type &point1(bool oriented = false) const {
             if (!oriented)
                 return point1_;
-            return is_inverse_ ? point0_ : point1_;
+            return is_inverse() ? point0_ : point1_;
         }
 
         site_event& index(int index) {
-            site_index_ = index;
+            site_index_ = index << 1;
             return *this;
         }
 
         site_event& inverse() {
-            is_inverse_ ^= true;
+            site_index_ ^= IS_INVERSE;
             return *this;
         }
 
-        int index() const {
-            return site_index_;
+        size_t index() const {
+            return site_index_ >> 1;
         }
 
         bool is_point() const {
@@ -198,14 +192,17 @@ namespace detail {
         }
 
         bool is_inverse() const {
-            return is_inverse_;
+            return site_index_ & IS_INVERSE;
         }
 
     private:
+        enum kBits {
+            IS_INVERSE = 1
+        };
+
         point_type point0_;
         point_type point1_;
-        int site_index_;
-        bool is_inverse_;
+        unsigned int site_index_;
     };
 
     // Circle event type.
