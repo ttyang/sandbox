@@ -555,13 +555,13 @@ public:
                        static_cast<int64>(site2.y());
             sum_y[1] = static_cast<int64>(site2.y()) +
                        static_cast<int64>(site3.y());
-            fpt_type denom = get_d(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]) * 2.0;
+            fpt_type inv_denom = 0.5 / get_d(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]);
             eint numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
             eint numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
 
             if (recompute_c_x || recompute_lower_x) {
                 eint c_x = numer1 * dif_y[1] - numer2 * dif_y[0];
-                circle.x(get_d(c_x) / denom);
+                circle.x(get_d(c_x) * inv_denom);
 
                 if (recompute_lower_x) {
                     // Evaluate radius of the circle.
@@ -574,11 +574,11 @@ public:
                     // else lower_x = (c_x * c_x - r * r) / (c_x - r).
                     // To guarantee epsilon relative error.
                     if (circle.x() >= static_cast<fpt_type>(0.0)) {
-                        circle.lower_x(circle.x() + r / fabs(denom));
+                        circle.lower_x(circle.x() + r * fabs(inv_denom));
                     } else {
                         eint numer = c_x * c_x - sqr_r;
-                        fpt_type lower_x = get_d(numer) /
-                                           (denom * (get_d(c_x) + r));
+                        fpt_type lower_x = get_d(numer) * inv_denom /
+                                           (get_d(c_x) + r);
                         circle.lower_x(lower_x);
                     }
                 }
@@ -586,7 +586,7 @@ public:
 
             if (recompute_c_y) {
                 eint c_y = numer2 * dif_x[0] - numer1 * dif_x[1];
-                circle.y(get_d(c_y) / denom);
+                circle.y(get_d(c_y) * inv_denom);
             }
         }
 
@@ -789,14 +789,14 @@ public:
             cB[1] = a[1] * a[1] + b[1] * b[1];
             cB[2] = a[0] * a[1] + b[0] * b[1];
             cB[3] = (a[0] * dy - b[0] * dx) * (a[1] * dy - b[1] * dx) * -2;
-            fpt_type temp = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
+            fpt_type temp = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
             fpt_type denom = temp * get_d(orientation);
 
             if (recompute_c_y) {
                 cA[0] = b[1] * (dx * dx + dy * dy) - iy * (dx * a[1] + dy * b[1]);
                 cA[1] = b[0] * (dx * dx + dy * dy) - iy * (dx * a[0] + dy * b[0]);
                 cA[2] = iy * sign;
-                fpt_type cy = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
+                fpt_type cy = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                 c_event.y(cy / denom);
             }
 
@@ -806,13 +806,13 @@ public:
                 cA[2] = ix * sign;
 
                 if (recompute_c_x) {
-                    fpt_type cx = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
+                    fpt_type cx = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                     c_event.x(cx / denom);
                 }
 
                 if (recompute_lower_x) {
                     cA[3] = orientation * (dx * dx + dy * dy) * (temp < 0 ? -1 : 1);
-                    fpt_type lower_x = get_d(sqrt_expr_evaluator_pss<eint, efpt64>(cA, cB));
+                    fpt_type lower_x = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -898,9 +898,9 @@ public:
 
     private:
         // Evaluates A[3] + A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) +
-        //           A[2] * sqrt(B[3] * (sqrt(B[0] * B[1]) + B[2]));
+        //           A[2] * sqrt(B[3] * (sqrt(B[0] * B[1]) + B[2])).
         template <typename _int, typename _fpt>
-        _fpt sqrt_expr_evaluator_pss(_int *A, _int *B) {
+        _fpt sqrt_expr_evaluator_pss4(_int *A, _int *B) {
             _int cA[4], cB[4];
             if (is_zero(A[3])) {
                 _fpt lh = sqrt_expr_.eval2(A, B);
@@ -920,31 +920,48 @@ public:
                 _fpt numer = sqrt_expr_.eval2(cA, cB);
                 return numer / (lh - rh);
             }
-            cA[0] = A[3];
-            cB[0] = 1;
-            cA[1] = A[0];
-            cB[1] = B[0];
-            cA[2] = A[1];
-            cB[2] = B[1];
-            _fpt lh = sqrt_expr_.eval3(cA, cB);
             cA[0] = 1;
             cB[0] = B[0] * B[1];
             cA[1] = B[2];
             cB[1] = 1;
             _fpt rh = sqrt_expr_.eval1(A+2, B+3) * get_sqrt(sqrt_expr_.eval2(cA, cB));
+            cA[0] = A[0];
+            cB[0] = B[0];
+            cA[1] = A[1];
+            cB[1] = B[1];
+            cA[2] = A[3];
+            cB[2] = 1;
+            _fpt lh = sqrt_expr_.eval3(cA, cB);
             if ((!is_neg(lh) && !is_neg(rh)) || (!is_pos(lh) && !is_pos(rh))) {
                 return lh + rh;
             }
-            cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1] +
+            cA[0] = A[3] * A[0] * 2;
+            cA[1] = A[3] * A[1] * 2;
+            cA[2] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1] +
                     A[3] * A[3] - A[2] * A[2] * B[2] * B[3];
-            cB[0] = 1;
-            cA[1] = A[3] * A[0] * 2;
-            cB[1] = B[0];
-            cA[2] = A[3] * A[1] * 2;
-            cB[2] = B[1];
             cA[3] = A[0] * A[1] * 2 - A[2] * A[2] * B[3];
             cB[3] = B[0] * B[1];
-            _fpt numer = sqrt_expr_.eval4(cA, cB);
+            _fpt numer = sqrt_expr_evaluator_pss3<_int, _fpt>(cA, cB);
+            return numer / (lh - rh);
+        }
+
+        template <typename _int, typename _fpt>
+        // Evaluates A[0] * sqrt(B[0]) + A[1] * sqrt(B[1]) +
+        //           A[2] + A[3] * sqrt(B[0] * B[1]).
+        // B[3] = B[0] * B[1].
+        _fpt sqrt_expr_evaluator_pss3(_int *A, _int *B) {
+            _int cA[2], cB[2];
+            _fpt lh = sqrt_expr_.eval2(A, B);
+            _fpt rh = sqrt_expr_.eval2(A+2, B+2);
+            if ((!is_neg(lh) && !is_neg(rh)) || (!is_pos(lh) && !is_pos(rh))) {
+                return lh + rh;
+            }
+            cA[0] = A[0] * A[0] * B[0] + A[1] * A[1] * B[1] -
+                    A[2] * A[2] - A[3] * A[3] * B[0] * B[1];
+            cB[0] = 1;
+            cA[1] = (A[0] * A[1] - A[2] * A[3]) * 2;
+            cB[1] = B[3];
+            _fpt numer = sqrt_expr_.eval2(cA, cB);
             return numer / (lh - rh);
         }
 
