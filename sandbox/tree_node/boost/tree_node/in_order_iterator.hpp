@@ -3,8 +3,8 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_TREE_IN_ORDER_ITERATOR_HPP_INCLUDED
-#define BOOST_TREE_IN_ORDER_ITERATOR_HPP_INCLUDED
+#ifndef BOOST_TREE_NODE_IN_ORDER_ITERATOR_HPP_INCLUDED
+#define BOOST_TREE_NODE_IN_ORDER_ITERATOR_HPP_INCLUDED
 
 #include <iterator>
 #include <boost/config.hpp>
@@ -12,235 +12,203 @@
 #include <boost/tr1/type_traits.hpp>
 #include <boost/utility/enable_if.hpp>
 #endif
+#include <boost/iterator/iterator_categories.hpp>
+#include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/tree_node/traversal_state.hpp>
 
 //[reference__in_order_iterator
 namespace boost { namespace tree_node {
 
-    template <typename NodePointer>
+    template <typename Node>
     class in_order_iterator
+      : public ::boost::iterator_adaptor<
+            in_order_iterator<Node>
+          , Node*
+          , ::boost::use_default
+          , ::boost::bidirectional_traversal_tag
+        >
     {
-     public:
-        typedef NodePointer                       value_type;
-        typedef value_type const&                 reference;
-        typedef value_type const*                 pointer;
-        typedef ::std::ptrdiff_t                  difference_type;
-        typedef ::std::bidirectional_iterator_tag iterator_category;
-
         //<-
-     private:
+        typedef ::boost::iterator_adaptor<
+                    in_order_iterator<Node>
+                  , Node*
+                  , ::boost::use_default
+                  , ::boost::bidirectional_traversal_tag
+                >
+                super_t;
+
 #ifndef BOOST_NO_SFINAE
         struct enabler
         {
         };
 #endif
 
-        value_type      _current;
-        value_type      _root_parent;
+        Node* _root_parent_ptr;
         traversal_state _state;
+        //->
 
      public:
-        //->
         in_order_iterator();
 
-        in_order_iterator(NodePointer const& node, bool start_left = true);
+        explicit in_order_iterator(Node& node, bool start_left = true);
 
-        template <typename NP>
+        template <typename N>
         in_order_iterator(
-            in_order_iterator<NP> const& other
+            in_order_iterator<N> const& other
 //<-
 #ifndef BOOST_NO_SFINAE
           , typename ::boost::enable_if<
-                ::std::tr1::is_convertible<NP,NodePointer>
+                ::std::tr1::is_convertible<N,Node>
               , enabler
             >::type = enabler()
 #endif
 //->
         );
 
-        reference operator*() const;
-
-        pointer operator->() const;
-
-        in_order_iterator& operator++();
-
-        in_order_iterator operator++(int);
-
-        in_order_iterator& operator--();
-
-        in_order_iterator operator--(int);
-
         operator traversal_state() const;
 
         //<-
+#if !BOOST_WORKAROUND(__GNUC__, == 2)
      private:
-        template <typename NP1, typename NP2>
+        friend class ::boost::iterator_core_access;
+#endif
+
+        void increment();
+
+        void decrement();
+
+        template <typename N1, typename N2>
         friend bool
             operator==(
-                in_order_iterator<NP1> const& lhs
-              , in_order_iterator<NP2> const& rhs
+                in_order_iterator<N1> const& lhs
+              , in_order_iterator<N2> const& rhs
             );
         //->
     };
 
     //<-
-    template <typename NP>
-    in_order_iterator<NP>::in_order_iterator()
-      : _current(), _root_parent(), _state(no_traversal)
+    template <typename Node>
+    in_order_iterator<Node>::in_order_iterator()
+      : super_t(), _root_parent_ptr(), _state(no_traversal)
     {
     }
 
-    template <typename NP>
-    in_order_iterator<NP>::in_order_iterator(NP const& node, bool start_left)
-      : _current(node)
-      , _root_parent(node ? node->get_parent() : 0)
-      , _state(node ? in_order_traversal : no_traversal)
+    template <typename Node>
+    in_order_iterator<Node>::in_order_iterator(Node& node, bool start_left)
+      : super_t(&node)
+      , _root_parent_ptr(node.get_parent_ptr())
+      , _state(in_order_traversal)
     {
-        if (node)
+        if (start_left)
         {
-            if (start_left)
+            while (this->base()->get_left_child_ptr())
             {
-                while (_current->get_left_child())
-                {
-                    _current = _current->get_left_child();
-                }
+                this->base_reference() = this->base()->get_left_child_ptr();
             }
-            else
+        }
+        else
+        {
+            while (this->base()->get_right_child_ptr())
             {
-                while (_current->get_right_child())
-                {
-                    _current = _current->get_right_child();
-                }
+                this->base_reference() = this->base()->get_right_child_ptr();
             }
         }
     }
 
-    template <typename NP1>
-    template <typename NP2>
-    in_order_iterator<NP1>::in_order_iterator(
-        in_order_iterator<NP2> const& other
+    template <typename Node>
+    template <typename N>
+    in_order_iterator<Node>::in_order_iterator(
+        in_order_iterator<N> const& other
 #ifndef BOOST_NO_SFINAE
       , typename ::boost::enable_if<
-            ::std::tr1::is_convertible<NP2,NP1>
+            ::std::tr1::is_convertible<N,Node>
           , enabler
         >::type
 #endif
-    ) : _current(other._current)
-      , _root_parent(other._root_parent)
+    ) : super_t(other.base())
+      , _root_parent_ptr(other._root_parent_ptr)
       , _state(other._state)
     {
     }
 
-    template <typename NP>
-    inline typename in_order_iterator<NP>::reference
-        in_order_iterator<NP>::operator*() const
-    {
-        return _current;
-    }
-
-    template <typename NP>
-    inline typename in_order_iterator<NP>::pointer
-        in_order_iterator<NP>::operator->() const
-    {
-        return &_current;
-    }
-
-    template <typename NP>
-    in_order_iterator<NP>& in_order_iterator<NP>::operator++()
-    {
-        value_type node = _current->get_right_child();
-
-        if (node)
-        {
-            while (node->get_left_child())
-            {
-                node = node->get_left_child();
-            }
-
-            _current = node;
-            return *this;
-        }
-
-        node = _current;
-
-        for (
-            value_type next = node->get_parent();
-            next != _root_parent;
-            next = next->get_parent()
-        )
-        {
-            if (node == next->get_left_child())
-            {
-                _current = next;
-                return *this;
-            }
-
-            node = next;
-        }
-
-        _current = _root_parent = 0;
-        _state = no_traversal;
-        return *this;
-    }
-
-    template <typename NP>
-    inline in_order_iterator<NP> in_order_iterator<NP>::operator++(int)
-    {
-        in_order_iterator<NP> itr(*this);
-        ++(*this);
-        return itr;
-    }
-
-    template <typename NP>
-    inline in_order_iterator<NP>& in_order_iterator<NP>::operator--()
-    {
-        value_type node = _current->get_left_child();
-
-        if (node)
-        {
-            while (node->get_right_child())
-            {
-                node = node->get_right_child();
-            }
-
-            _current = node;
-            return *this;
-        }
-
-        node = _current;
-
-        for (
-            value_type next = node->get_parent();
-            next != _root_parent;
-            next = next->get_parent()
-        )
-        {
-            if (node == next->get_right_child())
-            {
-                _current = next;
-                return *this;
-            }
-
-            node = next;
-        }
-
-        _current = _root_parent = 0;
-        _state = no_traversal;
-        return *this;
-    }
-
-    template <typename NP>
-    inline in_order_iterator<NP> in_order_iterator<NP>::operator--(int)
-    {
-        in_order_iterator<NP> itr(*this);
-        --(*this);
-        return itr;
-    }
-
-    template <typename NP>
-    inline in_order_iterator<NP>::operator traversal_state() const
+    template <typename Node>
+    inline in_order_iterator<Node>::operator traversal_state() const
     {
         return _state;
+    }
+
+    template <typename Node>
+    void in_order_iterator<Node>::increment()
+    {
+        Node* node_ptr = this->base()->get_right_child_ptr();
+
+        if (node_ptr)
+        {
+            while (node_ptr->get_left_child_ptr())
+            {
+                node_ptr = node_ptr->get_left_child_ptr();
+            }
+
+            this->base_reference() = node_ptr;
+            return;
+        }
+
+        node_ptr = this->base();
+
+        for (
+            Node* next_ptr = node_ptr->get_parent_ptr();
+            next_ptr != _root_parent_ptr;
+            next_ptr = next_ptr->get_parent_ptr()
+        )
+        {
+            if (node_ptr == next_ptr->get_left_child_ptr())
+            {
+                this->base_reference() = next_ptr;
+                return;
+            }
+
+            node_ptr = next_ptr;
+        }
+
+        this->base_reference() = _root_parent_ptr = 0;
+        _state = no_traversal;
+    }
+
+    template <typename Node>
+    void in_order_iterator<Node>::decrement()
+    {
+        Node* node_ptr = this->base()->get_left_child_ptr();
+
+        if (node_ptr)
+        {
+            while (node_ptr->get_right_child_ptr())
+            {
+                node_ptr = node_ptr->get_right_child_ptr();
+            }
+
+            this->base_reference() = node_ptr;
+            return;
+        }
+
+        node_ptr = this->base();
+
+        for (
+            Node* next_ptr = node_ptr->get_parent_ptr();
+            next_ptr != _root_parent_ptr;
+            next_ptr = next_ptr->get_parent_ptr()
+        )
+        {
+            if (node_ptr == next_ptr->get_right_child_ptr())
+            {
+                this->base_reference() = next_ptr;
+                return;
+            }
+
+            node_ptr = next_ptr;
+        }
+
+        this->base_reference() = _root_parent_ptr = 0;
+        _state = no_traversal;
     }
     //->
 }}  // namespace boost::tree_node
@@ -249,24 +217,24 @@ namespace boost { namespace tree_node {
 //[reference__in_order_iterator__operator_equals
 namespace boost { namespace tree_node {
 
-    template <typename NP1, typename NP2>
+    template <typename N1, typename N2>
     bool
         operator==(
-            in_order_iterator<NP1> const& lhs
-          , in_order_iterator<NP2> const& rhs
+            in_order_iterator<N1> const& lhs
+          , in_order_iterator<N2> const& rhs
         );
 
     //<-
-    template <typename NP1, typename NP2>
+    template <typename N1, typename N2>
     inline bool
         operator==(
-            in_order_iterator<NP1> const& lhs
-          , in_order_iterator<NP2> const& rhs
+            in_order_iterator<N1> const& lhs
+          , in_order_iterator<N2> const& rhs
         )
     {
         if (lhs._state == rhs._state)
         {
-            return lhs._state ? (lhs._current == rhs._current) : !rhs._state;
+            return lhs._state ? (lhs.base() == rhs.base()) : !rhs._state;
         }
         else
         {
@@ -280,19 +248,19 @@ namespace boost { namespace tree_node {
 //[reference__in_order_iterator__operator_not_equal
 namespace boost { namespace tree_node {
 
-    template <typename NP1, typename NP2>
+    template <typename N1, typename N2>
     bool
         operator!=(
-            in_order_iterator<NP1> const& lhs
-          , in_order_iterator<NP2> const& rhs
+            in_order_iterator<N1> const& lhs
+          , in_order_iterator<N2> const& rhs
         );
 
     //<-
-    template <typename NP1, typename NP2>
+    template <typename N1, typename N2>
     inline bool
         operator!=(
-            in_order_iterator<NP1> const& lhs
-          , in_order_iterator<NP2> const& rhs
+            in_order_iterator<N1> const& lhs
+          , in_order_iterator<N2> const& rhs
         )
     {
         return !(lhs == rhs);
@@ -304,16 +272,15 @@ namespace boost { namespace tree_node {
 //[reference__make_in_order_forward_iterator
 namespace boost { namespace tree_node {
 
-    template <typename NodePointer>
-    in_order_iterator<NodePointer>
-        make_in_order_forward_iterator(NodePointer const& node);
+    template <typename Node>
+    in_order_iterator<Node> make_in_order_forward_iterator(Node& node);
 
     //<-
-    template <typename NodePointer>
-    inline in_order_iterator<NodePointer>
-        make_in_order_forward_iterator(NodePointer const& node)
+    template <typename Node>
+    inline in_order_iterator<Node>
+        make_in_order_forward_iterator(Node& node)
     {
-        return in_order_iterator<NodePointer>(node, true);
+        return in_order_iterator<Node>(node, true);
     }
     //->
 }}  // namespace boost::tree_node
@@ -322,16 +289,15 @@ namespace boost { namespace tree_node {
 //[reference__make_in_order_reverse_iterator
 namespace boost { namespace tree_node {
 
-    template <typename NodePointer>
-    in_order_iterator<NodePointer>
-        make_in_order_reverse_iterator(NodePointer const& node);
+    template <typename Node>
+    in_order_iterator<Node> make_in_order_reverse_iterator(Node& node);
 
     //<-
-    template <typename NodePointer>
-    inline in_order_iterator<NodePointer>
-        make_in_order_reverse_iterator(NodePointer const& node)
+    template <typename Node>
+    inline in_order_iterator<Node>
+        make_in_order_reverse_iterator(Node& node)
     {
-        return in_order_iterator<NodePointer>(node, false);
+        return in_order_iterator<Node>(node, false);
     }
     //->
 }}  // namespace boost::tree_node
@@ -340,22 +306,14 @@ namespace boost { namespace tree_node {
 //[reference__in_order_iterate_forward
 namespace boost { namespace tree_node {
 
-    template <typename NodePointer, typename UnaryFunction>
-    void
-        in_order_iterate_forward(
-            NodePointer const& node
-          , UnaryFunction function
-        );
+    template <typename Node, typename UnaryFunction>
+    void in_order_iterate_forward(Node& node, UnaryFunction function);
 
     //<-
-    template <typename NodePointer, typename UnaryFunction>
-    void
-        in_order_iterate_forward(
-            NodePointer const& node
-          , UnaryFunction function
-        )
+    template <typename Node, typename UnaryFunction>
+    void in_order_iterate_forward(Node& node, UnaryFunction function)
     {
-        for (in_order_iterator<NodePointer> itr(node, true); itr; ++itr)
+        for (in_order_iterator<Node> itr(node, true); itr; ++itr)
         {
             function(*itr);
         }
@@ -367,22 +325,14 @@ namespace boost { namespace tree_node {
 //[reference__in_order_iterate_reverse
 namespace boost { namespace tree_node {
 
-    template <typename NodePointer, typename UnaryFunction>
-    void
-        in_order_iterate_reverse(
-            NodePointer const& node
-          , UnaryFunction function
-        );
+    template <typename Node, typename UnaryFunction>
+    void in_order_iterate_reverse(Node& node, UnaryFunction function);
 
     //<-
-    template <typename NodePointer, typename UnaryFunction>
-    void
-        in_order_iterate_reverse(
-            NodePointer const& node
-          , UnaryFunction function
-        )
+    template <typename Node, typename UnaryFunction>
+    void in_order_iterate_reverse(Node& node, UnaryFunction function)
     {
-        for (in_order_iterator<NodePointer> itr(node, false); itr; --itr)
+        for (in_order_iterator<Node> itr(node, false); itr; --itr)
         {
             function(*itr);
         }
@@ -391,5 +341,5 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-#endif  // BOOST_TREE_IN_ORDER_ITERATOR_HPP_INCLUDED
+#endif  // BOOST_TREE_NODE_IN_ORDER_ITERATOR_HPP_INCLUDED
 

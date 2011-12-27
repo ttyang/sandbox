@@ -14,10 +14,10 @@
 #include <boost/tree_node/in_order_iterator.hpp>
 
 //[example__showcase_iterators
-template <typename NodePointer, typename Function1, typename Function2>
+template <typename Node, typename Function1, typename Function2>
 void
     showcase_iterators(
-        NodePointer const& root
+        Node const& root
       , Function1 show1
       , Function2 show2
     )
@@ -43,8 +43,8 @@ void
 //]
 
 //[example__showcase_in_order_iterator
-template <typename NodePointer, typename Function>
-void showcase_in_order_iterator(NodePointer const& node, Function show)
+template <typename Node, typename Function>
+void showcase_in_order_iterator(Node const& node, Function show)
 {
     std::cout << "  In-order fwd:  ";
     boost::tree_node::in_order_iterate_forward(node, show);

@@ -7,51 +7,52 @@
 #include <boost/assert.hpp>
 #include <boost/tr1/tuple.hpp>
 #include <boost/tree_node/typeof.hpp>
-#include "default_unconstructible_type.hpp"
+#include "default_unconstruct_type.hpp"
 #include "show_functions.hpp"
-#include "showcase_descendant_iterators.hpp"
+#include "showcase_desc_iterators.hpp"
 
-typedef boost::tree_node::simple_associative_node<
+typedef boost::tree_node::associative_node<
             char const*
           , default_unconstructible_example_type
           , boost::multimapS
         >
         DNode;
 typedef boost::tree_node::with_depth<
-            boost::tree_node::simple_associative_node_gen<
-                boost::hash_multimapS
+            boost::tree_node::with_position_gen<
+                boost::tree_node::associative_node_gen<
+                    boost::hash_multimapS
+                >
             >
           , char const*
           , char*
         >
         ANode;
-typedef boost::tree_node::factory<DNode>
-        DNodeFactory;
-typedef boost::tree_node::factory<ANode>
-        ANodeFactory;
 
 int main()
 {
     char const* names[] = {"able", "baker", "charlie", "dog", "easy", "fox"};
-    DNode::pointer d_root(DNodeFactory::create(create_instance(5)));
-    ANode::pointer a_root(ANodeFactory::create());
+    DNode d_root(create_instance(5));
+    ANode a_root;
 
     BOOST_ASSERT(
-        !d_root->get_parent()
+        !d_root.get_parent_ptr()
      && "Parent member uninitialized."
     );
     BOOST_ASSERT(
-        !a_root->get_data()
+        !a_root.get_data()
      && "Data member not default-constructed."
     );
 
     for (
-        BOOST_AUTO(itr, boost::tree_node::make_breadth_first_iterator(d_root));
+        BOOST_AUTO(
+            itr
+          , boost::tree_node::make_breadth_first_iterator(d_root)
+        );
         itr;
         ++itr
     )
     {
-        std::size_t const count = (*itr)->get_data().number;
+        std::size_t const count = itr->get_data().number;
 
         if (1 < count)
         {
@@ -59,17 +60,20 @@ int main()
             {
                 for (std::size_t j = 0; j + i < count; ++j)
                 {
-                    DNode::pointer child(
-                        (*itr)->add_child(names[j], create_instance(i))
+                    DNode::iterator child_itr(
+                        itr->add_child(names[j], create_instance(i))
                     );
-                    DNode::const_pointer const_child(child);
+                    DNode const& const_child(child_itr->second);
 
                     BOOST_ASSERT(
-                        (child->get_parent() == *itr)
+                        (child_itr->second.get_parent_ptr() == &*itr)
                          && "Ctor not linking child to parent."
                     );
                     BOOST_ASSERT(
-                        (child->get_parent() == const_child->get_parent())
+                        (
+                            child_itr->second.get_parent_ptr()
+                         == const_child.get_parent_ptr()
+                        )
                      && "Why are these pointers different?"
                     );
                 }
@@ -84,38 +88,58 @@ int main()
 
     std::cout << "After d_root tree construction," << std::endl;
     showcase_descendant_iterators(
-        DNode::const_pointer(d_root)
-      , show_key_and_number<char const*,DNode::const_pointer>
+        d_root
+      , show_key_and_number<char const*,DNode>
       , show_key_and_number_tree()
     );
 
     {
-        d_root->find_child(
+        DNode::iterator d_child_itr = d_root.find_child(
             names[2]
-        )->second->add_child_copy(names[5], d_root);
+        )->second.add_child_copy(names[5], d_root);
+
         std::cout << "After add_child_copy call," << std::endl;
         showcase_descendant_iterators(
-            DNode::const_pointer(d_root)
-          , show_key_and_number<char const*,DNode::const_pointer>
+            d_root
+          , show_key_and_number<char const*,DNode>
+          , show_key_and_number_tree()
+        );
+
+        d_root = d_child_itr->second;
+        std::cout << "After assignment to descendant," << std::endl;
+        showcase_descendant_iterators(
+            d_root
+          , show_key_and_number<char const*,DNode>
           , show_key_and_number_tree()
         );
     }
+
+    d_root.find_child(names[4])->second = d_root;
+    std::cout << "After assignment to ancestor," << std::endl;
+    showcase_descendant_iterators(
+        d_root
+      , show_key_and_number<char const*,DNode>
+      , show_key_and_number_tree()
+    );
 
     {
         char* root_data = new char[2];
 
         root_data[0] = '5';
         root_data[1] = '\0';
-        a_root->get_data() = root_data;
+        a_root.get_data() = root_data;
     }
 
     for (
-        BOOST_AUTO(itr, boost::tree_node::make_breadth_first_iterator(a_root));
+        BOOST_AUTO(
+            itr
+          , boost::tree_node::make_breadth_first_iterator(a_root)
+        );
         itr;
         ++itr
     )
     {
-        char digit = (*itr)->get_data()[0];
+        char digit = itr->get_data()[0];
 
         if ('1' < digit)
         {
@@ -127,8 +151,8 @@ int main()
 
                 for (char j = 0; numchar + j < digit; ++j)
                 {
-                    ANode::pointer child((*itr)->add_child(names[j]));
-                    char*& data = child->get_data();
+                    ANode::iterator child_itr(itr->add_child(names[j]));
+                    char*& data = child_itr->second.get_data();
 
                     BOOST_ASSERT(
                         !data
@@ -138,8 +162,12 @@ int main()
                     data[0] = numchar;
                     data[1] = '\0';
                     BOOST_ASSERT(
-                        (child->get_parent() == *itr)
+                        (child_itr->second.get_parent_ptr() == &*itr)
                      && "Ctor not linking child to parent."
+                    );
+                    BOOST_ASSERT(
+                        (child_itr->second.get_position() == child_itr)
+                     && "Position iterator incorrect."
                     );
                 }
             }
@@ -148,33 +176,38 @@ int main()
 
     std::cout << "After a_root tree construction," << std::endl;
     showcase_descendant_iterators(
-        ANode::const_pointer(a_root)
-      , show_key_and_data<char const*,ANode::const_pointer>
+        a_root
+      , show_key_and_data<char const*,ANode>
       , show_key_and_data_tree()
     );
 
     {
-        ANode::pointer a_child(
-            a_root->find_child(names[2])->second->add_child(names[5])
+        ANode::iterator a_child_itr(
+            a_root.find_child(names[2])->second.add_child(names[5])
         );
+        ANode& a_child(a_child_itr->second);
 
-        a_child->get_data() = new char[2];
-        a_child->get_data()[0] = '7';
-        a_child->get_data()[1] = '\0';
+        a_child.get_data() = new char[2];
+        a_child.get_data()[0] = '7';
+        a_child.get_data()[1] = '\0';
+        BOOST_ASSERT(
+            (a_child.get_position() == a_child_itr)
+         && "Position iterator incorrect."
+        );
         std::cout << "After a_child construction," << std::endl;
         showcase_descendant_iterators(
-            ANode::const_pointer(a_root)
-          , show_key_and_data<char const*,ANode::const_pointer>
+            a_root
+          , show_key_and_data<char const*,ANode>
           , show_key_and_data_tree()
         );
     }
 
     {
-        ANode::pointer to_be_pruned = a_root->get_child_begin()->second;
-        ANode::child_iterator c_itr, c_end;
+        ANode& to_be_pruned = a_root.begin()->second;
+        ANode::iterator c_itr, c_end;
 
         for (
-            std::tr1::tie(c_itr, c_end) = to_be_pruned->find_children(
+            ::std::tr1::tie(c_itr, c_end) = to_be_pruned.find_children(
                 names[1]
             );
             c_itr != c_end;
@@ -190,15 +223,15 @@ int main()
                 ++itr
             )
             {
-                delete[] (*itr)->get_data();
+                delete[] itr->get_data();
             }
         }
 
-        to_be_pruned->remove_children(names[1]);
+        to_be_pruned.remove_children(names[1]);
         std::cout << "After remove_children call," << std::endl;
         showcase_descendant_iterators(
-            ANode::const_pointer(a_root)
-          , show_key_and_data<char const*,ANode::const_pointer>
+            a_root
+          , show_key_and_data<char const*,ANode>
           , show_key_and_data_tree()
         );
     }
@@ -209,7 +242,7 @@ int main()
         ++itr
     )
     {
-        delete[] (*itr)->get_data();
+        delete[] itr->get_data();
     }
 
     return 0;

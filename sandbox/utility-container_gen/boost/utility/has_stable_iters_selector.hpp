@@ -6,18 +6,18 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //=======================================================================
 
-#ifndef BOOST_UTILITY_IS_UNIQUE_ASSOC_SELECTOR_HPP_INCLUDED
-#define BOOST_UTILITY_IS_UNIQUE_ASSOC_SELECTOR_HPP_INCLUDED
+#ifndef BOOST_UTILITY_HAS_STABLE_ITERS_SELECTOR_HPP_INCLUDED
+#define BOOST_UTILITY_HAS_STABLE_ITERS_SELECTOR_HPP_INCLUDED
 
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/utility/container_selector.hpp>
 
-//[reference__is_unique_associative_selector
+//[reference__has_stable_iterators_selector
 namespace boost {
 
     template <typename Selector>
-    struct is_unique_associative_selector : ::boost::mpl::false_
+    struct has_stable_iterators_selector : ::boost::mpl::true_
     {
         //<-
         BOOST_MPL_AUX_LAMBDA_SUPPORT(
@@ -30,37 +30,39 @@ namespace boost {
 
     //<-
     template <>
-    struct is_unique_associative_selector<setS> : ::boost::mpl::true_
+    struct has_stable_iterators_selector<vecS> : ::boost::mpl::false_
     {
     };
 
     template <>
-    struct is_unique_associative_selector<mapS> : ::boost::mpl::true_
+    struct has_stable_iterators_selector<dequeS> : ::boost::mpl::true_
     {
     };
 
     template <>
-    struct is_unique_associative_selector<hash_setS> : ::boost::mpl::true_
+    struct has_stable_iterators_selector<flat_setS> : ::boost::mpl::false_
     {
     };
 
     template <>
-    struct is_unique_associative_selector<hash_mapS> : ::boost::mpl::true_
+    struct has_stable_iterators_selector<flat_mapS> : ::boost::mpl::false_
     {
     };
 
     template <>
-    struct is_unique_associative_selector<flat_setS> : ::boost::mpl::true_
+    struct has_stable_iterators_selector<flat_multisetS>
+      : ::boost::mpl::false_
     {
     };
 
     template <>
-    struct is_unique_associative_selector<flat_mapS> : ::boost::mpl::true_
+    struct has_stable_iterators_selector<flat_multimapS>
+      : ::boost::mpl::false_
     {
     };
     //->
 }  // namespace boost
 //]
 
-#endif  // BOOST_UTILITY_IS_UNIQUE_ASSOC_SELECTOR_HPP_INCLUDED
+#endif  // BOOST_UTILITY_HAS_STABLE_ITERS_SELECTOR_HPP_INCLUDED
 

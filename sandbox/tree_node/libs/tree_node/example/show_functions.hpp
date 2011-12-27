@@ -16,10 +16,10 @@ void
     );
 
 //[example__show_number
-template <typename NodePointer>
-void show_number(NodePointer const& node)
+template <typename Node>
+void show_number(Node const& node)
 {
-    std::cout << ' ' << node->get_data().number;
+    std::cout << ' ' << node.get_data().number;
 }
 //]
 
@@ -31,24 +31,24 @@ class show_number_tree
  public:
     show_number_tree();
 
-    template <typename NodePointer>
+    template <typename Node>
     void
         operator()(
-            NodePointer const& node
+            Node const& node
           , boost::tree_node::traversal_state state
         )
     {
         show_tabs(state, ply_limit);
-        std::cout << node->get_data().number << std::endl;
+        std::cout << node.get_data().number << std::endl;
     }
 };
 //]
 
 //[example__show_key_and_number
-template <typename Key, typename NodePointer>
-void show_key_and_number(Key const& key, NodePointer const& node)
+template <typename Key, typename Node>
+void show_key_and_number(Key const& key, Node const& node)
 {
-    std::cout << " [" << key << ", " << node->get_data().number << ']';
+    std::cout << " [" << key << ", " << node.get_data().number << ']';
 }
 //]
 
@@ -75,10 +75,10 @@ class show_key_and_number_tree
 //]
 
 //[example__show_data
-template <typename NodePointer>
-void show_data(NodePointer const& node)
+template <typename Node>
+void show_data(Node const& node)
 {
-    std::cout << ' ' << node->get_data();
+    std::cout << ' ' << node.get_data();
 }
 //]
 
@@ -90,26 +90,26 @@ class show_data_tree
  public:
     show_data_tree();
 
-    template <typename NodePointer>
+    template <typename Node>
     void
         operator()(
-            NodePointer const& node
+            Node const& node
           , boost::tree_node::traversal_state state
         )
     {
         show_tabs(state, ply_limit);
-        std::cout << node->get_data() << "  (Depth = ";
-        std::cout << node->get_depth() << ')' << std::endl;
-//        std::cout << node->get_data() << std::endl;
+        std::cout << node.get_data();
+        std::cout << "  (Depth = " << node.get_depth() << ')';
+        std::cout << std::endl;
     }
 };
 //]
 
 //[example__show_key_and_data
-template <typename Key, typename NodePointer>
-void show_key_and_data(Key const& key, NodePointer const& node)
+template <typename Key, typename Node>
+void show_key_and_data(Key const& key, Node const& node)
 {
-    std::cout << " [" << key << ", " << node->get_data() << ']';
+    std::cout << " [" << key << ", " << node.get_data() << ']';
 }
 //]
 
@@ -130,7 +130,7 @@ class show_key_and_data_tree
     {
         show_tabs(state, ply_limit);
         show_key_and_data(itr->first, itr->second);
-        std::cout << "  (Depth = " << itr->second->get_depth() << ')';
+        std::cout << "  (Depth = " << itr->second.get_depth() << ')';
         std::cout << std::endl;
     }
 };

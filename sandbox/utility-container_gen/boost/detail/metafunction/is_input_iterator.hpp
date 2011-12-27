@@ -7,10 +7,10 @@
 #define BOOST_DETAIL_METAFUNCTION_IS_INPUT_ITERATOR_HPP_INCLUDED
 
 #include <boost/type_traits/is_signed.hpp>
-#include <boost/type_traits/can_call_equal.hpp>
-#include <boost/type_traits/can_call_dereference.hpp>
-#include <boost/type_traits/can_call_pre_increment.hpp>
-#include <boost/type_traits/can_call_post_increment.hpp>
+#include <boost/type_traits/has_equal_to.hpp>
+#include <boost/type_traits/has_dereference.hpp>
+#include <boost/type_traits/has_pre_increment.hpp>
+#include <boost/type_traits/has_post_increment.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/and.hpp>
@@ -38,10 +38,10 @@ namespace boost { namespace detail {
               , typename has_reference<T>::type
             >
           , ::boost::mpl::and_<
-                ::boost::can_call_equal<T>
-              , ::boost::can_call_dereference<T>
-              , ::boost::can_call_pre_increment<T>
-              , ::boost::can_call_post_increment<T>
+                ::boost::has_equal_to<T>
+              , ::boost::has_dereference<T>
+              , ::boost::has_pre_increment<T>
+              , ::boost::has_post_increment<T>
               , is_input_iterator_impl<T>
             >
           , ::boost::mpl::false_

@@ -33,9 +33,36 @@ namespace boost {
     };
 
     template <>
+    struct is_random_access_selector<stable_vecS> : ::boost::mpl::true_
+    {
+    };
+
+    template <>
     struct is_random_access_selector<dequeS> : ::boost::mpl::true_
     {
     };
+
+#if 0
+    template <>
+    struct is_random_access_selector<flat_setS> : ::boost::mpl::true_
+    {
+    };
+
+    template <>
+    struct is_random_access_selector<flat_mapS> : ::boost::mpl::true_
+    {
+    };
+
+    template <>
+    struct is_random_access_selector<flat_multisetS> : ::boost::mpl::true_
+    {
+    };
+
+    template <>
+    struct is_random_access_selector<flat_multimapS> : ::boost::mpl::true_
+    {
+    };
+#endif
     //->
 }  // namespace boost
 //]

@@ -3,14 +3,18 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_TREE_NODE_DEREFERENCE_ITERATOR_HPP_INCLUDED
-#define BOOST_TREE_NODE_DEREFERENCE_ITERATOR_HPP_INCLUDED
+#ifndef BOOST_TREE_NODE_ALGORITHM_DEREFERENCE_ITERATOR_HPP_INCLUDED
+#define BOOST_TREE_NODE_ALGORITHM_DEREFERENCE_ITERATOR_HPP_INCLUDED
 
 #include <boost/mpl/bool.hpp>
+#include <boost/mpl/and.hpp>
+#include <boost/mpl/if.hpp>
 #include <boost/mpl/eval_if.hpp>
-#include <boost/fusion/adapted/std_pair.hpp>
-#include <boost/fusion/support/is_sequence.hpp>
 #include <boost/iterator/iterator_traits.hpp>
+#include <boost/ref.hpp>
+#include <boost/typeof/typeof.hpp>
+#include <boost/detail/metafunction/has_first_type.hpp>
+#include <boost/detail/metafunction/has_second_type.hpp>
 
 //[reference__dereference_iterator
 namespace boost { namespace tree_node {
@@ -22,19 +26,20 @@ namespace boost { namespace tree_node {
     {
         typedef typename ::boost::iterator_value<Iterator>::type
                 _value_type;
-        typedef typename ::boost::fusion::traits::is_sequence<
-                    _value_type
+        typedef typename ::boost::mpl::and_<
+                    typename ::boost::detail::has_first_type<_value_type>::type
+                  , typename ::boost::detail::has_second_type<
+                        _value_type
+                    >::type
                 >::type
                 _is_associative;
 
         struct _associative_result
         {
-            typedef typename _value_type::second_type type;
-        };
-
-        struct _non_associative_result
-        {
-            typedef _value_type type;
+            typedef typename ::boost::unwrap_reference<
+                        BOOST_TYPEOF_TPL(::boost::ref(Iterator()->second))
+                    >::type&
+                    type;
         };
 
      public:
@@ -43,7 +48,7 @@ namespace boost { namespace tree_node {
         typedef typename ::boost::mpl::eval_if<
                     _is_associative
                   , _associative_result
-                  , _non_associative_result
+                  , ::boost::iterator_reference<Iterator>
                 >::type
                 result_type;
 
@@ -106,5 +111,5 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-#endif  // BOOST_TREE_NODE_DEREFERENCE_ITERATOR_HPP_INCLUDED
+#endif  // BOOST_TREE_NODE_ALGORITHM_DEREFERENCE_ITERATOR_HPP_INCLUDED
 

@@ -3,8 +3,8 @@
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
-#ifndef BOOST_TREE_NODE_POST_ORDER_ITERATOR_HPP_INCLUDED
-#define BOOST_TREE_NODE_POST_ORDER_ITERATOR_HPP_INCLUDED
+#ifndef BOOST_TREE_NODE_POST_ORDER_DESC_ITERATOR_HPP_INCLUDED
+#define BOOST_TREE_NODE_POST_ORDER_DESC_ITERATOR_HPP_INCLUDED
 
 #include <deque>
 #include <boost/config.hpp>
@@ -18,22 +18,27 @@
 #include <boost/tree_node/algorithm/dereference_iterator.hpp>
 #include <boost/detail/metafunction/container_iterator.hpp>
 
-//[reference__post_order_iterator
+//[reference__post_order_descendant_iterator
 namespace boost { namespace tree_node {
 
     template <typename Node>
-    class post_order_iterator
+    class post_order_descendant_iterator
       : public ::boost::iterator_adaptor<
-            post_order_iterator<Node>
-          , Node*
+            post_order_descendant_iterator<Node>
+        //, typename Node::iterator or typename Node::const_iterator
+            //<-
+          , typename ::boost::detail::container_iterator<Node>::type
+            //->
           , ::boost::use_default
           , ::boost::forward_traversal_tag
         >
     {
         //<-
+        typedef typename ::boost::detail::container_iterator<Node>::type
+                child_iterator;
         typedef ::boost::iterator_adaptor<
-                    post_order_iterator<Node>
-                  , Node*
+                    post_order_descendant_iterator<Node>
+                  , child_iterator
                   , ::boost::use_default
                   , ::boost::forward_traversal_tag
                 >
@@ -45,18 +50,18 @@ namespace boost { namespace tree_node {
         };
 #endif
 
-        std::deque<Node*> _stack;
-        traversal_state   _state;
+        std::deque<child_iterator> _stack;
+        traversal_state            _state;
+        //->
 
      public:
-        //->
-        post_order_iterator();
+        post_order_descendant_iterator();
 
-        explicit post_order_iterator(Node& node);
+        explicit post_order_descendant_iterator(Node& node);
 
         template <typename N>
-        post_order_iterator(
-            post_order_iterator<N> const& other
+        post_order_descendant_iterator(
+            post_order_descendant_iterator<N> const& other
 //<-
 #ifndef BOOST_NO_SFINAE
           , typename ::boost::enable_if<
@@ -80,28 +85,24 @@ namespace boost { namespace tree_node {
         template <typename Node1, typename Node2>
         friend bool
             operator==(
-                post_order_iterator<Node1> const& lhs
-              , post_order_iterator<Node2> const& rhs
+                post_order_descendant_iterator<Node1> const& lhs
+              , post_order_descendant_iterator<Node2> const& rhs
             );
         //->
     };
 
     //<-
     template <typename Node>
-    post_order_iterator<Node>::post_order_iterator()
+    post_order_descendant_iterator<Node>::post_order_descendant_iterator()
       : super_t(), _stack(), _state(no_traversal)
     {
     }
 
     template <typename Node>
-    post_order_iterator<Node>::post_order_iterator(Node& node)
-      : super_t(&node), _stack(), _state(post_order_traversal)
+    post_order_descendant_iterator<Node>::post_order_descendant_iterator(
+        Node& node
+    ) : super_t(), _stack(), _state(post_order_traversal)
     {
-        typedef typename ::boost::detail::container_iterator<Node>::type
-                child_iterator;
-
-        _stack.push_back(&node);
-
         child_iterator itr = node.begin();
         child_iterator itr_end = node.end();
 
@@ -117,17 +118,17 @@ namespace boost { namespace tree_node {
                     ++itr;
                 }
 
-                _stack.push_back(
-                    &dereference_iterator(pre_order_stack.back())
-                );
+                _stack.push_back(pre_order_stack.back());
                 pre_order_stack.pop_back();
 
                 if (pre_order_stack.empty())
                 {
-                    Node* node_ptr = this->base_reference() = _stack.back();
+                    Node& n = dereference_iterator(
+                        this->base_reference() = _stack.back()
+                    );
 
-                    itr = node_ptr->begin();
-                    itr_end = node_ptr->end();
+                    itr = n.begin();
+                    itr_end = n.end();
 
                     if (itr == itr_end)
                     {
@@ -137,19 +138,24 @@ namespace boost { namespace tree_node {
                 }
                 else
                 {
-                    Node* node_ptr = _stack.back();
+                    Node& n = dereference_iterator(_stack.back());
 
-                    itr = node_ptr->begin();
-                    itr_end = node_ptr->end();
+                    itr = n.begin();
+                    itr_end = n.end();
                 }
             }
+        }
+
+        if (_stack.empty())
+        {
+            _state = no_traversal;
         }
     }
 
     template <typename Node>
     template <typename N>
-    post_order_iterator<Node>::post_order_iterator(
-        post_order_iterator<N> const& other
+    post_order_descendant_iterator<Node>::post_order_descendant_iterator(
+        post_order_descendant_iterator<N> const& other
 #ifndef BOOST_NO_SFINAE
       , typename ::boost::enable_if<
             ::std::tr1::is_convertible<N,Node>
@@ -163,13 +169,14 @@ namespace boost { namespace tree_node {
     }
 
     template <typename Node>
-    inline post_order_iterator<Node>::operator traversal_state() const
+    inline post_order_descendant_iterator<Node>::operator
+        traversal_state() const
     {
         return _state;
     }
 
     template <typename Node>
-    inline void post_order_iterator<Node>::increment()
+    inline void post_order_descendant_iterator<Node>::increment()
     {
         if (_stack.empty())
         {
@@ -191,16 +198,16 @@ namespace boost { namespace tree_node {
     template <typename Node1, typename Node2>
     bool
         operator==(
-            post_order_iterator<Node1> const& lhs
-          , post_order_iterator<Node2> const& rhs
+            post_order_descendant_iterator<Node1> const& lhs
+          , post_order_descendant_iterator<Node2> const& rhs
         );
 
     //<-
     template <typename Node1, typename Node2>
     inline bool
         operator==(
-            post_order_iterator<Node1> const& lhs
-          , post_order_iterator<Node2> const& rhs
+            post_order_descendant_iterator<Node1> const& lhs
+          , post_order_descendant_iterator<Node2> const& rhs
         )
     {
         if (lhs._state == rhs._state)
@@ -222,16 +229,16 @@ namespace boost { namespace tree_node {
     template <typename Node1, typename Node2>
     bool
         operator!=(
-            post_order_iterator<Node1> const& lhs
-          , post_order_iterator<Node2> const& rhs
+            post_order_descendant_iterator<Node1> const& lhs
+          , post_order_descendant_iterator<Node2> const& rhs
         );
 
     //<-
     template <typename Node1, typename Node2>
     inline bool
         operator!=(
-            post_order_iterator<Node1> const& lhs
-          , post_order_iterator<Node2> const& rhs
+            post_order_descendant_iterator<Node1> const& lhs
+          , post_order_descendant_iterator<Node2> const& rhs
         )
     {
         return !(lhs == rhs);
@@ -240,33 +247,35 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-//[reference__make_post_order_iterator
+//[reference__make_post_order_descendant_iterator
 namespace boost { namespace tree_node {
 
     template <typename Node>
-    post_order_iterator<Node> make_post_order_iterator(Node& node);
+    post_order_descendant_iterator<Node>
+        make_post_order_descendant_iterator(Node& node);
 
     //<-
     template <typename Node>
-    inline post_order_iterator<Node> make_post_order_iterator(Node& node)
+    inline post_order_descendant_iterator<Node>
+        make_post_order_descendant_iterator(Node& node)
     {
-        return post_order_iterator<Node>(node);
+        return post_order_descendant_iterator<Node>(node);
     }
     //->
 }}  // namespace boost::tree_node
 //]
 
-//[reference__post_order_iterate
+//[reference__post_order_iterate_descendants
 namespace boost { namespace tree_node {
 
     template <typename Node, typename UnaryFunction>
-    void post_order_iterate(Node& node, UnaryFunction function);
+    void post_order_iterate_descendants(Node& node, UnaryFunction function);
 
     //<-
     template <typename Node, typename UnaryFunction>
-    void post_order_iterate(Node& node, UnaryFunction function)
+    void post_order_iterate_descendants(Node& node, UnaryFunction function)
     {
-        for (post_order_iterator<Node> itr(node); itr; ++itr)
+        for (post_order_descendant_iterator<Node> itr(node); itr; ++itr)
         {
             function(*itr);
         }
@@ -275,5 +284,5 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-#endif  // BOOST_TREE_NODE_POST_ORDER_ITERATOR_HPP_INCLUDED
+#endif  // BOOST_TREE_NODE_POST_ORDER_DESC_ITERATOR_HPP_INCLUDED
 
