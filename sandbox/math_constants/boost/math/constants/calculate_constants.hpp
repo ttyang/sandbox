@@ -705,26 +705,75 @@ inline T constant_catalan<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl
       + 3 * sum / 8;
 }
 
+namespace khinchin_detail{
+
+template <class T>
+T zeta_polynomial_series(T s, T sc)
+{
+   BOOST_MATH_STD_USING
+   //
+   // This is algorithm 3 from:
+   // 
+   // "An Efficient Algorithm for the Riemann Zeta Function", P. Borwein, 
+   // Canadian Mathematical Society, Conference Proceedings.
+   // See: http://www.cecm.sfu.ca/personal/pborwein/PAPERS/P155.pdf
+   //
+   BOOST_MATH_STD_USING
+   int n = itrunc(T(log(boost::math::tools::epsilon<T>()) / -2));
+   T sum = 0;
+   T two_n = ldexp(T(1), n);
+   int ej_sign = 1;
+   for(int j = 0; j < n; ++j)
+   {
+      sum += ej_sign * -two_n / pow(T(j + 1), s);
+      ej_sign = -ej_sign; 
+   }
+   T ej_sum = 1;
+   T ej_term = 1;
+   for(int j = n; j <= 2 * n - 1; ++j)
+   {
+      sum += ej_sign * (ej_sum - two_n) / pow(T(j + 1), s);
+      ej_sign = -ej_sign;
+      ej_term *= 2 * n - j;
+      ej_term /= j - n + 1;
+      ej_sum += ej_term;
+   }
+   return -sum / (two_n * (1 - pow(T(2), sc)));
+}
+
+template <class T>
+T khinchin()
+{
+   BOOST_MATH_STD_USING
+   T sum = 0;
+   T term;
+   T lim = boost::math::tools::epsilon<T>();
+   T factor = 0;
+   unsigned last_k = 1;
+   T num = 1;
+   for(unsigned n = 1;; ++n)
+   {
+      for(unsigned k = last_k; k <= 2 * n - 1; ++k)
+      {
+         factor += num / k;
+         num = -num;
+      }
+      last_k = 2 * n;
+      term = (zeta_polynomial_series(T(2 * n), T(1 - T(2 * n))) - 1) * factor / n;
+      sum += term;
+      if(term < lim)
+         break;
+   }
+   return exp(sum / boost::math::constants::ln_two<T, boost::math::policies::policy<> >());
+}
+
+}
 
 template <class T>
 template<int N>
 inline T constant_khinchin<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
-{ // from e_float constants.cpp
-  // http://mathworld.wolfram.com/KhinchinsConstant.html
-  // http://jeremiebourdon.free.fr/data/Khintchine.pdf might help but looks frightening :-(
-  // TODO calculate this?
-  T k( "2.6854520010653064453097148354817956938203822939944629530511523455572188595371520028011411749318476979"
-"9515346590528809008289767771641096305179253348325966838185231542133211949962603932852204481940961806"
-"8664166428930847788062036073705350103367263357728904990427070272345170262523702354581068631850103237"
-"4655803775026442524852869468234189949157306618987207994137235500057935736698933950879021244642075289"
-"7414591476930184490506017934993852254704042033779856398310157090222339100002207725096513324604444391"
-"9169146085968234821283246228292710126906974182348477675457348986254203392662351862086778136650969658"
-"3146995271837448054012195366666049648269890827548115254721177330319675947383719393578106059230401890"
-"7113496246737068412217946810740608918276695667117166837405904739368809534504899970471763904513432323"
-"7715103219651503824698888324870935399469608264781812056634946712578436664579740977848366204977774868"
-"2765697087163192938512899314199518611673792654620563505951385713761697126872299805327673278710513763"
-"9563719023145289003058136910904799672757571385043565050641590820999623402779053834180985121278529455");
- return k;
+{ 
+   return khinchin_detail::khinchin<T>();
 }
 
 template <class T>
