@@ -43,10 +43,12 @@
 #define BROWSER_H
 
 #include <QWidget>
+#include <QSqlTableModel>
 #include "exttableview.h"
 #include "ui_browserwidget.h"
 
 class ConnectionWidget;
+QT_FORWARD_DECLARE_CLASS(QSqlTableModel)
 QT_FORWARD_DECLARE_CLASS(QTableView)
 QT_FORWARD_DECLARE_CLASS(QPushButton)
 QT_FORWARD_DECLARE_CLASS(QTextEdit)
@@ -69,7 +71,8 @@ public:
 
 public slots:
     void exec();
-    void showTable(const QString &table);
+    QSqlTableModel* showTable(const QString &table);
+    void showTree(QSqlTableModel *model);
     void showMetaData(const QString &table);
     void addConnection();
     void openFile();
@@ -80,8 +83,13 @@ public slots:
     { insertRow(); }
     void on_deleteRowAction_triggered()
     { deleteRow(); }
+
     void on_connectionWidget_tableActivated(const QString &table)
-    { showTable(table); }
+    {
+        QSqlTableModel* model = showTable(table);
+        showTree(model);
+    }
+
     void on_connectionWidget_metaDataRequested(const QString &table)
     { showMetaData(table); }
     void on_submitButton_clicked()

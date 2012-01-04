@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>515</height>
+    <width>850</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -86,7 +86,7 @@ QTableView
        </sizepolicy>
       </property>
      </widget>
-     <widget class="ExtTableView" name="table">
+     <widget class="ExtTableView" name="ext_table">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>2</horstretch>
@@ -596,6 +596,7 @@ QTableView
        <enum>QAbstractItemView::SelectRows</enum>
       </property>
      </widget>
+     <widget class="QTreeView" name="ext_tree"/>
     </widget>
    </item>
    <item>
@@ -725,7 +726,7 @@ QTableView
   <tabstop>clearButton</tabstop>
   <tabstop>submitButton</tabstop>
   <tabstop>connectionWidget</tabstop>
-  <tabstop>table</tabstop>
+  <tabstop>ext_table</tabstop>
  </tabstops>
  <resources/>
  <connections/>

@@ -51,8 +51,11 @@ Browser::Browser(QWidget *parent)
 {
     setupUi(this);
 
-    table->addAction(insertRowAction);
-    table->addAction(deleteRowAction);
+    ext_table->addAction(insertRowAction);
+    ext_table->addAction(deleteRowAction);
+
+    ext_tree->addAction(insertRowAction);
+    ext_tree->addAction(deleteRowAction);
 
     if (QSqlDatabase::drivers().isEmpty())
         QMessageBox::information(this, tr("No database drivers found"),
@@ -69,17 +72,18 @@ Browser::~Browser()
 
 void Browser::exec()
 {
-    QSqlQueryModel *model = new QSqlQueryModel(table);
+    QSqlQueryModel *model = new QSqlQueryModel(ext_table);
     model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
 
-    table->setModel(model);
+    ext_table->setModel(model);
+    ext_tree->setModel(model);//JOFA
 
     //JOFA additions ----------------------------------------------------------
-    table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+    ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
-    table->setSortingEnabled(true);
-    table->setAlternatingRowColors(true);
-    table->resizeColumnsToContents();
+    ext_table->setSortingEnabled(true);
+    ext_table->setAlternatingRowColors(true);
+    ext_table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------
 
 
@@ -184,25 +188,37 @@ void Browser::openFile()
     }
 }
 
-void Browser::showTable(const QString &t)
+QSqlTableModel* Browser::showTable(const QString &t)
 {
-    QSqlTableModel *model = new QSqlTableModel(table, connectionWidget->currentDatabase());
+    QSqlTableModel *model = new QSqlTableModel(ext_table, connectionWidget->currentDatabase());
     model->setEditStrategy(QSqlTableModel::OnRowChange);
     model->setTable(connectionWidget->currentDatabase().driver()->escapeIdentifier(t, QSqlDriver::TableName));
     model->select();
     if (model->lastError().type() != QSqlError::NoError)
         emit statusMessage(model->lastError().text());
-    table->setModel(model);
-    table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+    ext_table->setModel(model);
+    ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
     //JOFA additions ----------------------------------------------------------
-    table->setSortingEnabled(true);
-    table->setAlternatingRowColors(true);
-    table->resizeColumnsToContents();
+    ext_table->setSortingEnabled(true);
+    ext_table->setAlternatingRowColors(true);
+    ext_table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------
 
     //REV connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
-    connect(table->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
+    connect(ext_table->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
+
+    updateActions();
+    return model;
+}
+
+void Browser::showTree(QSqlTableModel *model)
+{
+    ext_tree->setModel(model);
+    //JODO? ext_tree->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+
+    //REV connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
+    connect(ext_tree->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
 
     updateActions();
 }
@@ -210,7 +226,7 @@ void Browser::showTable(const QString &t)
 void Browser::showMetaData(const QString &t)
 {
     QSqlRecord rec = connectionWidget->currentDatabase().record(t);
-    QStandardItemModel *model = new QStandardItemModel(table);
+    QStandardItemModel *model = new QStandardItemModel(ext_table);
 
     model->insertRows(0, rec.count());
     model->insertColumns(0, 7);
@@ -238,35 +254,35 @@ void Browser::showMetaData(const QString &t)
         model->setData(model->index(i, 6), fld.defaultValue());
     }
 
-    table->setModel(model);
-    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ext_table->setModel(model);
+    ext_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     updateActions();
 }
 
 void Browser::insertRow()
 {
-    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(table->model());
+    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(ext_table->model());
     if (!model)
         return;
 
-    QModelIndex insertIndex = table->currentIndex();
+    QModelIndex insertIndex = ext_table->currentIndex();
     int row = insertIndex.row() == -1 ? 0 : insertIndex.row();
     model->insertRow(row);
     insertIndex = model->index(row, 0);
-    table->setCurrentIndex(insertIndex);
-    table->edit(insertIndex);
+    ext_table->setCurrentIndex(insertIndex);
+    ext_table->edit(insertIndex);
 }
 
 void Browser::deleteRow()
 {
-    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(table->model());
+    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(ext_table->model());
     if (!model)
         return;
 
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
-    QModelIndexList currentSelection = table->selectionModel()->selectedIndexes();
+    QModelIndexList currentSelection = ext_table->selectionModel()->selectedIndexes();
     for (int i = 0; i < currentSelection.count(); ++i) {
         if (currentSelection.at(i).column() != 0)
             continue;
@@ -282,8 +298,8 @@ void Browser::deleteRow()
 void Browser::updateActions()
 {
     //CL emit statusMessage(tr("updateActions()"));
-    bool enableIns = qobject_cast<QSqlTableModel *>(table->model());
-    bool enableDel = enableIns && table->currentIndex().isValid();
+    bool enableIns = qobject_cast<QSqlTableModel *>(ext_table->model());
+    bool enableDel = enableIns && ext_table->currentIndex().isValid();
 
     insertRowAction->setEnabled(enableIns);
     deleteRowAction->setEnabled(enableDel);
@@ -308,18 +324,18 @@ void Browser::on_cellClicked(int row, int col)
 
 void Browser::deselectFirstCell(int selectedRow)
 {
-    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(table->model());
+    QSqlTableModel *model = qobject_cast<QSqlTableModel *>(ext_table->model());
     QModelIndex firstCell;
     const int firstCol = 0;
     firstCell = model->index(selectedRow, firstCol, QModelIndex());
     QItemSelection toggleSelection;
     toggleSelection.select(firstCell, firstCell);
-    table->selectionModel()->select(toggleSelection, QItemSelectionModel::Toggle);
+    ext_table->selectionModel()->select(toggleSelection, QItemSelectionModel::Toggle);
 }
 
 void Browser::on_rowSelectChanged()
 {
-    QModelIndexList currentSelection = table->selectionModel()->selectedIndexes();
+    QModelIndexList currentSelection = ext_table->selectionModel()->selectedIndexes();
     int selCount    = currentSelection.count();
     int firstRow    = selCount > 0 ? currentSelection.at(1).row() : -1;
     int firstColumn = selCount > 0 ? currentSelection.at(1).column() : -1;
@@ -329,15 +345,15 @@ void Browser::on_rowSelectChanged()
     emit statusMessage(selectedRowInfo);
 
     int nextRow = firstRow + 1;
-    if     (firstRow > -1 && firstColumn == 1 && !table->isRowHidden(nextRow))
+    if     (firstRow > -1 && firstColumn == 1 && !ext_table->isRowHidden(nextRow))
     {
         deselectFirstCell(firstRow);
-        table->hideRow(nextRow);
+        ext_table->hideRow(nextRow);
     }
-    else if(firstRow > -1 && firstColumn == 1 &&  table->isRowHidden(nextRow))
+    else if(firstRow > -1 && firstColumn == 1 &&  ext_table->isRowHidden(nextRow))
     {
         deselectFirstCell(firstRow);
-        table->showRow(nextRow);
+        ext_table->showRow(nextRow);
     }
 }
 
