@@ -217,6 +217,10 @@ void Browser::showTree(QSqlTableModel *model)
     ext_tree->setModel(model);
     //JODO? ext_tree->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
+    //JOFA additions ----------------------------------------------------------
+    ext_tree->setItemsExpandable(true);
+    //JOFA additions ----------------------------------------------------------
+
     //REV connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
     connect(ext_tree->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
 
