@@ -13,8 +13,6 @@
 #  pragma warning (disable : 4996) //To disable this warning, use -D_SCL_SECURE_NO_WARNINGS.
 #endif
 
-#define USE_CPP_FLOAT
-
 // To add new constants, add a function that calculates the value of the constant to
 // boost/math/constants/calculate_constants.hpp
 
@@ -103,8 +101,8 @@ int main()
    BOOST_CONSTANTS_GENERATE(zeta_two);
    BOOST_CONSTANTS_GENERATE(zeta_three);
    BOOST_CONSTANTS_GENERATE(catalan);
-   BOOST_CONSTANTS_GENERATE(khinchin);
    BOOST_CONSTANTS_GENERATE(glaisher);
+   BOOST_CONSTANTS_GENERATE(khinchin);
    BOOST_CONSTANTS_GENERATE(extreme_value_skewness);
    BOOST_CONSTANTS_GENERATE(rayleigh_skewness);
    BOOST_CONSTANTS_GENERATE(rayleigh_kurtosis);

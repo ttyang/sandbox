@@ -8,6 +8,8 @@
 #ifndef BOOST_MATH_CALCULATE_CONSTANTS_CONSTANTS_INCLUDED
 #define BOOST_MATH_CALCULATE_CONSTANTS_CONSTANTS_INCLUDED
 
+#include <boost/math/special_functions/trunc.hpp>
+
 namespace boost{ namespace math{ namespace constants{ namespace detail{
 
 template <class T>
@@ -800,6 +802,88 @@ inline T constant_extreme_value_skewness<T>::compute(BOOST_MATH_EXPLICIT_TEMPLAT
   return ev;
 }
 
+namespace detail{
+//
+// Calculation of the Glaisher constant depends upon calculating the
+// derivative of the zeta function at 2, we can then use the relation:
+// zeta'(2) = 1/6 pi^2 [euler + ln(2pi)-12ln(A)]
+// To get the constant A.
+// See equation 45 at http://mathworld.wolfram.com/RiemannZetaFunction.html.
+//
+// The derivative of the zeta function is computed by direct differentiation
+// of the relation:
+// (1-2^(1-s))zeta(s) = SUM(n=0, INF){ (-n)^n / (n+1)^s  } 
+// Which gives us 2 slowly converging but alternating sums to compute,
+// for this we use Algorithm 1 from "Convergent Acceleration of Alternating Series",
+// Henri Cohen, Fernando Rodriguez Villegas and Don Zagier, Experimental Mathematics 9:1.
+// See http://www.math.utexas.edu/users/villegas/publications/conv-accel.pdf
+//
+template <class T>
+T zeta_series_derivative_2()
+{
+   // Derivative of the series part, evaluated at 2:
+   BOOST_MATH_STD_USING
+   int n = boost::math::itrunc((std::numeric_limits<T>::digits10 + 1) * 1.3);
+   T d = pow(3 + sqrt(T(8)), n);
+   d = (d + 1 / d) / 2;
+   T b = -1;
+   T c = -d;
+   T s = 0;
+   for(int k = 0; k < n; ++k)
+   {
+      T a = -log(T(k+1)) / ((k+1) * (k+1));
+      c = b - c;
+      s = s + c * a;
+      b = (k + n) * (k - n) * b / ((k + T(0.5f)) * (k + 1));
+   }
+   return s / d;
+}
+
+template <class T>
+T zeta_series_2()
+{
+   // Series part of zeta at 2:
+   BOOST_MATH_STD_USING
+   int n = boost::math::itrunc((std::numeric_limits<T>::digits10 + 1) * 1.3);
+   T d = pow(3 + sqrt(T(8)), n);
+   d = (d + 1 / d) / 2;
+   T b = -1;
+   T c = -d;
+   T s = 0;
+   for(int k = 0; k < n; ++k)
+   {
+      T a = T(1) / ((k + 1) * (k + 1));
+      c = b - c;
+      s = s + c * a;
+      b = (k + n) * (k - n) * b / ((k + T(0.5f)) * (k + 1));
+   }
+   return s / d;
+}
+
+template <class T>
+inline T zeta_series_lead_2()
+{
+   // lead part at 2:
+   return 2;
+}
+
+template <class T>
+inline T zeta_series_derivative_lead_2()
+{
+   // derivative of lead part at 2:
+   return -2 * boost::math::constants::ln_two<T>();
+}
+
+template <class T>
+inline T zeta_derivative_2()
+{
+   // zeta derivative at 2:
+   return zeta_series_derivative_2<T>() * zeta_series_lead_2<T>()
+      + zeta_series_derivative_lead_2<T>() * zeta_series_2<T>();
+}
+
+}  // detail
+
 template <class T>
 template<int N>
 inline T constant_glaisher<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
@@ -810,6 +894,17 @@ inline T constant_glaisher<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mp
   // No good references/algorithms for this found yet.
   // TODO calculate this?
 
+   BOOST_MATH_STD_USING
+   typedef policies::policy<policies::digits2<N> > forwarding_policy;
+   T v = detail::zeta_derivative_2<T>();
+   v *= 6;
+   v /= boost::math::constants::pi<T, forwarding_policy>() * boost::math::constants::pi<T, forwarding_policy>();
+   v -= boost::math::constants::euler<T, forwarding_policy>();
+   v -= log(2 * boost::math::constants::pi<T, forwarding_policy>());
+   v /= -12;
+   return exp(v);
+
+   /*
   T g(
 "1.282427129100622636875342568869791727767688927325001192063740021740406308858826"
 "46112973649195820237439420646120399000748933157791362775280404159072573861727522"
@@ -826,6 +921,7 @@ inline T constant_glaisher<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mp
 "69575162841550648585890834128227556209547002918593263079373376942077522290940187");
 
   return g;
+  */
 }
 
 template <class T>
