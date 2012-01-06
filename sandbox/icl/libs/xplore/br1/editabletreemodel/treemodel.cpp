@@ -291,19 +291,23 @@ void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
 //JOFA Iteration example: The container as String
 QString TreeModel::toString()const
 {
-    QString repr;
-    QModelIndex curIndex = QModelIndex();
-    for(int row = 0; row < rowCount(); row++)
-    {
-        repr += tr("(%1").arg(row);
-        //QModelIndex curIndex = QModelIndex(row, curIndex);
-        int colEnd = columnCount();
-
-        if(hasChildren(curIndex))
-            repr += tr(" %1").arg(1);
-
-        repr += ")";
-    }
-
-    return repr;
+    return nodeToString(rootItem, 0);
 }
+
+QString TreeModel::nodeToString(TreeItem* node, int depth)const
+{
+    if(node->childCount()==0)
+        return tr("(%1)").arg(depth); //Print only structure and depth.
+        //return tr("(%1)").arg(node->data(0));
+    else
+    {
+        QString nodeRepr(tr("["));
+        for(int idx=0; idx<node->childCount(); idx++)
+            nodeRepr += nodeToString(node->child(idx), depth+1);
+
+        nodeRepr += tr("]");
+        return nodeRepr;
+    }
+}
+
+

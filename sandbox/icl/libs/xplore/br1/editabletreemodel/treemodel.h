@@ -90,6 +90,9 @@ public:
     //JOFA Iteration example: The container as String
     QString toString()const;
 
+    QString nodeToString(TreeItem* node, int depth)const;
+
+
 private:
     void setupModelData(const QStringList &lines, TreeItem *parent);
     TreeItem *getItem(const QModelIndex &index) const;
