@@ -349,6 +349,7 @@ namespace polygon {
                     origin.x() + fT1 * direction.x(),
                     origin.y() + fT1 * direction.y()));
         }
+
     private:
         voronoi_helper();
 
@@ -572,6 +573,7 @@ namespace polygon {
         int num_incident_edges() const { return num_incident_edges_; }
         void inc_num_incident_edges() { ++num_incident_edges_; }
         void dec_num_incident_edges() { --num_incident_edges_; }
+
     private:
         point_type point0_;
         point_type point1_;
@@ -607,6 +609,7 @@ namespace polygon {
 
         int num_incident_edges() const { return num_incident_edges_; }
         void num_incident_edges(int n) { num_incident_edges_ = n; }
+
     private:
         point_type vertex_;
         voronoi_edge_type *incident_edge_;
@@ -712,6 +715,7 @@ namespace polygon {
             }
             return true;
         }
+
     private:
         voronoi_cell_type *cell_;
         voronoi_vertex_type *vertex_;
@@ -1040,7 +1044,7 @@ namespace polygon {
                     // To guarantee N*lon(N) time we merge vertex with
                     // less incident edges to the one with more.
                     if (v1->num_incident_edges() >= v2->num_incident_edges()) {
-                            remove_edge(&(*edge_it1));
+                        remove_edge(&(*edge_it1));
                     } else {
                         remove_edge(edge_it1->twin());
                     }
@@ -1096,6 +1100,7 @@ namespace polygon {
                 }
             }
         }
+
     private:
         // Remove degenerate edge.
         void remove_edge(voronoi_edge_type *edge) {

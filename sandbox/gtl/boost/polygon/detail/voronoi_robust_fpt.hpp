@@ -60,7 +60,6 @@ namespace detail {
     typedef boost::int64_t int64;
     typedef boost::uint32_t uint32;
     typedef boost::uint64_t uint64;
-    typedef float fpt32;
     typedef double fpt64;
 
     // If two floating-point numbers in the same format are ordered (x < y),
@@ -69,24 +68,6 @@ namespace detail {
     // their integer reinterpretations differ in not more than maxUlps units.
     template <typename _fpt>
     bool almost_equal(_fpt a, _fpt b, uint32 ulps);
-
-    template<>
-    bool almost_equal<fpt32>(fpt32 a, fpt32 b, uint32 maxUlps) {
-	    uint32 ll_a, ll_b;
-
-        // Reinterpret double bits as 32-bit signed integer.
-        memcpy(&ll_a, &a, sizeof(fpt32));
-        memcpy(&ll_b, &b, sizeof(fpt32));
-
-        if (ll_a < 0x80000000)
-            ll_a = 0x80000000 - ll_a;
-        if (ll_b < 0x80000000)
-            ll_b = 0x80000000 - ll_b;
-
-	    if (ll_a > ll_b)
-            return ll_a - ll_b <= maxUlps;
-        return ll_b - ll_a <= maxUlps;
-    }
 
     template<>
     bool almost_equal<fpt64>(fpt64 a, fpt64 b, uint32 maxUlps) {
@@ -160,78 +141,26 @@ namespace detail {
         relative_error_type re() const { return re_; }
         relative_error_type ulp() const { return re_; }
 
-        template <typename T>
-        bool operator==(T that) const {
-            floating_point_type value = static_cast<floating_point_type>(that);
-            return almost_equal(this->fpv_,
-                                value,
-                                static_cast<uint32>(this->ulp()));
-        }
-
-        template <typename T>
-        bool operator!=(T that) const {
-            return !(*this == that);
-        }
-
-        template <typename T>
-        bool operator<(T that) const {
-            if (*this == that) return false;
-            return this->fpv_ < static_cast<floating_point_type>(that);
-        }
-
-        template <typename T>
-        bool operator<=(T that) const {
-            if (*this == that) return true;
-            return this->fpv_ < static_cast<floating_point_type>(that);
-        }
-
-        template <typename T>
-        bool operator>(T that) const {
-            if (*this == that) return false;
-            return this->fpv_ > static_cast<floating_point_type>(that);
-        }
-
-        template <typename T>
-        bool operator>=(T that) const {
-            if (*this == that) return true;
-            return this->fpv_ > static_cast<floating_point_type>(that);
-        }
-
-        bool operator==(const robust_fpt &that) const {
-    	    uint32 ulp = static_cast<uint32>(this->re_ + that.re_);
-    	    return almost_equal(this->fpv_, that.fpv_, ulp);	
-        }
-
-        bool operator!=(const robust_fpt &that) const {
-    	    return !(*this == that);
-        }
-
-        bool operator<(const robust_fpt &that) const {
-    	    if (*this == that)
-    		    return false;
-    	    return this->fpv_ < that.fpv_;
-        }
-
-        bool operator>(const robust_fpt &that) const {
-    	    return that < *this;
-        }
-
-        bool operator<=(const robust_fpt &that) const {
-    	    return !(that < *this);
-        }
-
-        bool operator>=(const robust_fpt &that) const {
-    	    return !(*this < that);
-        }
-
-        robust_fpt operator-() const {
-    	    return robust_fpt(-fpv_, re_);
-        }
-
         robust_fpt& operator=(const robust_fpt &that) {
     	    this->fpv_ = that.fpv_;
     	    this->re_ = that.re_;
     	    return *this;
+        }
+
+        bool is_pos() const {
+            return fpv_ > 0.0;
+        }
+
+        bool is_neg() const {
+            return fpv_ < 0.0;
+        }
+
+        bool is_zero() const {
+            return fpv_ == 0.0;
+        }
+
+        robust_fpt operator-() const {
+    	    return robust_fpt(-fpv_, re_);
         }
 
         robust_fpt& operator+=(const robust_fpt &that) {
@@ -336,6 +265,21 @@ namespace detail {
         return that.sqrt();
     }
 
+    template <typename T>
+    bool is_pos(const robust_fpt<T>& that) {
+        return that.is_pos();
+    }
+
+    template <typename T>
+    bool is_neg(const robust_fpt<T>& that) {
+        return that.is_neg();
+    }
+
+    template <typename T>
+    bool is_zero(const robust_fpt<T>& that) {
+        return that.is_zero();
+    }
+
     // robust_dif consists of two not negative values: value1 and value2.
     // The resulting expression is equal to the value1 - value2.
     // Substraction of a positive value is equivalent to the addition to value2
@@ -368,25 +312,12 @@ namespace detail {
             return negative_sum_;
         }
 
-        // Equivalent to the unary minus.
-        void swap() {
-            (std::swap)(positive_sum_, negative_sum_);
-        }
-
-        bool abs() {
-            if (positive_sum_ < negative_sum_) {
-                swap();
-                return true;
-            }
-            return false;
-        }
-
         robust_dif<T> operator-() const {
             return robust_dif(negative_sum_, positive_sum_);
         }
 
         robust_dif<T> &operator+=(const T &val) {
-            if (val >= 0)
+            if (!is_neg(val))
                 positive_sum_ += val;
             else
                 negative_sum_ -= val;
@@ -400,7 +331,7 @@ namespace detail {
         }
 
         robust_dif<T> &operator-=(const T &val) {
-            if (val >= 0)
+            if (!is_neg(val))
                 negative_sum_ += val;
             else
                 positive_sum_ -= val;
@@ -414,7 +345,7 @@ namespace detail {
         }
 
         robust_dif<T> &operator*=(const T &val) {
-            if (val >= 0) {
+            if (!is_neg(val)) {
                 positive_sum_ *= val;
                 negative_sum_ *= val;
             } else {
@@ -436,7 +367,7 @@ namespace detail {
         }
 
         robust_dif<T> &operator/=(const T &val) {
-            if (val >= 0) {
+            if (!is_neg(val)) {
                 positive_sum_ /= val;
                 negative_sum_ /= val;
             } else {
@@ -448,6 +379,10 @@ namespace detail {
         }
 
     private:
+        void swap() {
+            (std::swap)(positive_sum_, negative_sum_);
+        }
+
         T positive_sum_;
         T negative_sum_;
     };
@@ -461,7 +396,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator+(const robust_dif<T>& lhs, const T& rhs) {
-        if (rhs >= 0) {
+        if (!is_neg(rhs)) {
             return robust_dif<T>(lhs.pos() + rhs, lhs.neg());
         } else {
             return robust_dif<T>(lhs.pos(), lhs.neg() - rhs);
@@ -470,7 +405,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator+(const T& lhs, const robust_dif<T>& rhs) {
-        if (lhs >= 0) {
+        if (!is_neg(lhs)) {
             return robust_dif<T>(lhs + rhs.pos(), rhs.neg());
         } else {
             return robust_dif<T>(rhs.pos(), rhs.neg() - lhs);
@@ -485,7 +420,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator-(const robust_dif<T>& lhs, const T& rhs) {
-        if (rhs >= 0) {
+        if (!is_neg(rhs)) {
             return robust_dif<T>(lhs.pos(), lhs.neg() + rhs);
         } else {
             return robust_dif<T>(lhs.pos() - rhs, lhs.neg());
@@ -494,7 +429,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator-(const T& lhs, const robust_dif<T>& rhs) {
-        if (lhs >= 0) {
+        if (!is_neg(lhs)) {
             return robust_dif<T>(lhs + rhs.neg(), rhs.pos());
         } else {
             return robust_dif<T>(rhs.neg(), rhs.pos() - lhs);
@@ -511,7 +446,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator*(const robust_dif<T>& lhs, const T& val) {
-        if (val >= 0) {
+        if (!is_neg(val)) {
             return robust_dif<T>(lhs.pos() * val, lhs.neg() * val);
         } else {
             return robust_dif<T>(-lhs.neg() * val, -lhs.pos() * val);
@@ -520,7 +455,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator*(const T& val, const robust_dif<T>& rhs) {
-        if (val >= 0) {
+        if (!is_neg(val)) {
             return robust_dif<T>(val * rhs.pos(), val * rhs.neg());
         } else {
             return robust_dif<T>(-val * rhs.neg(), -val * rhs.pos());
@@ -529,7 +464,7 @@ namespace detail {
 
     template<typename T>
     robust_dif<T> operator/(const robust_dif<T>& lhs, const T& val) {
-        if (val >= 0) {
+        if (!is_neg(val)) {
             return robust_dif<T>(lhs.pos() / val, lhs.neg() / val);
         } else {
             return robust_dif<T>(-lhs.neg() / val, -lhs.pos() / val);

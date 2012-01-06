@@ -153,6 +153,7 @@ namespace polygon {
         void clear() {
             site_events_.clear();
         }
+
     private:
         typedef detail::voronoi_calc_utils<T> VCU;
         typedef typename VCU::fpt_type coordinate_type;
@@ -509,6 +510,7 @@ namespace polygon {
                 bisector_node->second.circle_event(&e.first);
             }
         }
+
     private:
         struct end_point_comparison {
             bool operator() (const end_point_type &end1, const end_point_type &end2) const {

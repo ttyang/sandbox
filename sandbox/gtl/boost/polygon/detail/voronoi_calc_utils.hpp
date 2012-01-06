@@ -50,8 +50,8 @@ public:
     // Return orientation based on the sign of the determinant.
     template <typename T>
     static kOrientation get_orientation(T value) {
-        if (value == static_cast<T>(0.0)) return COLLINEAR;
-        return (value < static_cast<T>(0.0)) ? RIGHT : LEFT;
+        if (is_zero(value)) return COLLINEAR;
+        return (is_neg(value)) ? RIGHT : LEFT;
     }
 
     // Compute robust cross_product: a1 * b2 - b1 * a2.
@@ -209,9 +209,9 @@ public:
         // Returns true if a horizontal line going through a new site intersects
         // right arc at first, else returns false. If horizontal line goes
         // through intersection point of the given two arcs returns false also.
-        bool operator()(const site_type& left_site,
-                        const site_type& right_site,
-                        const site_type& new_site) const {
+        bool operator()(const site_type &left_site,
+                        const site_type &right_site,
+                        const site_type &new_site) const {
             if (!left_site.is_segment()) {
                 if (!right_site.is_segment()) {
                     return pp(left_site, right_site, new_site);
@@ -318,9 +318,9 @@ public:
                               static_cast<fpt_type>(segment0.x());
                 fpt_type b3 = static_cast<fpt_type>(point.y()) -
                               static_cast<fpt_type>(segment0.y());
-                fpt_type k = std::sqrt(a1 * a1 + b1 * b1);
+                fpt_type k = get_sqrt(a1 * a1 + b1 * b1);
                 // Avoid substraction while computing k.
-                if (b1 >= static_cast<fpt_type>(0.0)) {
+                if (!is_neg(b1)) {
                     k = static_cast<fpt_type>(1.0) / (b1 + k);
                 } else {
                     k = (k - b1) / (a1 * a1);
@@ -573,8 +573,12 @@ public:
                     // If c_x >= 0 then lower_x = c_x + r,
                     // else lower_x = (c_x * c_x - r * r) / (c_x - r).
                     // To guarantee epsilon relative error.
-                    if (circle.x() >= static_cast<fpt_type>(0.0)) {
-                        circle.lower_x(circle.x() + r * fabs(inv_denom));
+                    if (!is_neg(circle.x())) {
+                        if (!is_neg(inv_denom)) {
+                            circle.lower_x(circle.x() + r * inv_denom);
+                        } else {
+                            circle.lower_x(circle.x() - r * inv_denom);
+                        }
                     } else {
                         eint numer = c_x * c_x - sqr_r;
                         fpt_type lower_x = get_d(numer) * inv_denom /
@@ -1015,9 +1019,9 @@ public:
             c_y -= robust_fpt_type(dif_x1 * sum_x1 * dif_x2, 2.0);
             c_y -= robust_fpt_type(dif_y1 * sum_y1 * dif_x2, 2.0);
             robust_dif_type lower_x(c_x);
-            lower_x -= robust_fpt_type(std::sqrt(sqr_distance(dif_x1, dif_y1) *
-                                                 sqr_distance(dif_x2, dif_y2) *
-                                                 sqr_distance(dif_x3, dif_y3)), 5.0);
+            lower_x -= robust_fpt_type(get_sqrt(sqr_distance(dif_x1, dif_y1) *
+                                                sqr_distance(dif_x2, dif_y2) *
+                                                sqr_distance(dif_x3, dif_y3)), 5.0);
             c_event = circle_type(c_x.dif().fpv() * inv_orientation.fpv(),
                                   c_y.dif().fpv() * inv_orientation.fpv(),
                                   lower_x.dif().fpv() * inv_orientation.fpv());
@@ -1055,7 +1059,7 @@ public:
                                                    static_cast<fpt_type>(site2.x()) -
                                                    static_cast<fpt_type>(site3.point1().x())), 1.0);
             robust_fpt_type denom(robust_cross_product(vec_x, vec_y, line_a, line_b), 1.0);
-            robust_fpt_type inv_segm_len(1.0 / std::sqrt(sqr_distance(line_a, line_b)), 3.0);
+            robust_fpt_type inv_segm_len(1.0 / get_sqrt(sqr_distance(line_a, line_b)), 3.0);
             robust_dif_type t;
             if (get_orientation(denom) == COLLINEAR) {
                 t += teta / (robust_fpt_type(8.0, false) * A);
@@ -1083,7 +1087,9 @@ public:
             r -= robust_fpt_type(line_b, false) * robust_fpt_type(site3.y0(), false);
             r += robust_fpt_type(line_a, false) * c_x;
             r += robust_fpt_type(line_b, false) * c_y;
-            r.abs();
+            if (r.pos().fpv() < r.neg().fpv()) {
+                r = -r;
+            }
             lower_x += r * inv_segm_len;
             c_event = circle_type(c_x.dif().fpv(), c_y.dif().fpv(), lower_x.dif().fpv());
             bool recompute_c_x = c_x.dif().ulp() > fULPS;
@@ -1163,10 +1169,10 @@ public:
                 recompute_lower_x = lower_x.dif().ulp() > fULPS;
                 c_event = circle_type(c_x.dif().fpv(), c_y.dif().fpv(), lower_x.dif().fpv());
             } else {
-                robust_fpt_type sqr_sum1(std::sqrt(a1 * a1 + b1 * b1), 2.0);
-                robust_fpt_type sqr_sum2(std::sqrt(a2 * a2 + b2 * b2), 2.0);
+                robust_fpt_type sqr_sum1(get_sqrt(a1 * a1 + b1 * b1), 2.0);
+                robust_fpt_type sqr_sum2(get_sqrt(a2 * a2 + b2 * b2), 2.0);
                 robust_fpt_type a(robust_cross_product(a1, b1, -b2, a2), 1.0);
-                if (a >= 0) {
+                if (!is_neg(a)) {
                     a += sqr_sum1 * sqr_sum2;
                 } else {
                     a = (orientation * orientation) / (sqr_sum1 * sqr_sum2 - a);
@@ -1217,7 +1223,9 @@ public:
                 c_x += t * (robust_fpt_type(a2, false) * sqr_sum1);
                 c_y += t * (robust_fpt_type(b1, false) * sqr_sum2);
                 c_y += t * (robust_fpt_type(b2, false) * sqr_sum1);
-                t.abs();
+                if (t.pos().fpv() < t.neg().fpv()) {
+                    t = -t;
+                }
                 robust_dif_type lower_x(c_x);
                 lower_x += t * orientation.fabs();
                 recompute_c_x = c_x.dif().ulp() > fULPS;
@@ -1374,6 +1382,7 @@ public:
             }
             return true;
         }
+
     private:
         circle_existence_predicate_type circle_existence_predicate_;
         circle_formation_functor_type circle_formation_functor_;
