@@ -4,6 +4,7 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
+//[example_profile_boost_closure_cpp
 #include <boost/closure.hpp>
 #include <boost/chrono.hpp>
 #include <vector>
@@ -20,7 +21,7 @@ int main(int argc, char* argv[]) {
 
     boost::chrono::system_clock::time_point start =
             boost::chrono::system_clock::now();
-    void BOOST_CLOSURE( (const double& num) (bind& sum) (const bind& factor) ) {
+    void BOOST_CLOSURE(const double& num, bind& sum, const bind& factor) {
         sum += factor * num;
     } BOOST_CLOSURE_END(add)
     boost::chrono::duration<double> decl_sec =
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]) {
     std::fill(v.begin(), v.end(), 1.0);
 
     boost::chrono::duration<double> trials_sec;
-    for (unsigned long i = 0; i < trials; ++i) {
+    for(unsigned long i = 0; i < trials; ++i) {
         boost::chrono::system_clock::time_point start =
                 boost::chrono::system_clock::now();
         std::for_each(v.begin(), v.end(), add);
@@ -40,4 +41,5 @@ int main(int argc, char* argv[]) {
     profile::print(size, trials, sum, trials_sec.count(), decl_sec.count());
     return 0;
 }
+//]
 

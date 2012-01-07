@@ -12,8 +12,6 @@
 #ifndef BOOST_CLOSURE_CONFIG_HPP_
 #define BOOST_CLOSURE_CONFIG_HPP_
 
-#include <boost/config_ext.hpp>
-
 // User defined.
 
 /**
@@ -37,12 +35,8 @@
 #   define BOOST_CLOSURE_CONFIG_FUNCTION_ARITY_MAX 5
 #endif
 
-// For internal library use.
-
-#if defined(BOOST_LOCAL_TYPES_AS_TEMPLATE_PARAMS)
-#   define BOOST_CLOSURE_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01 1
-#else
-#   define BOOST_CLOSURE_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01 0
+#ifndef BOOST_CLOSURE_CONFIG_BIND_MAX
+#   define BOOST_CLOSURE_CONFIG_BIND_MAX 3 /** @todo increase this (to 10?) */
 #endif
 
 #endif // #include guard

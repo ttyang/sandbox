@@ -17,7 +17,7 @@
 #include <boost/closure/detail/preprocessor/keyword/bind.hpp>
 #include <boost/closure/detail/preprocessor/keyword/return.hpp>
 #include <boost/closure/detail/preprocessor/keyword/default.hpp>
-#include <boost/closure/detail/preprocessor/keyword/this.hpp>
+#include <boost/closure/detail/preprocessor/keyword/thisunderscore.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
 #include <boost/preprocessor/seq/fold_left.hpp>
@@ -40,7 +40,7 @@
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_CONST_BIND_( \
         decl_traits, sign) \
     /* check from back because non `this` bounds might have `&` in front */ \
-    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THIS_BACK( \
+    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THISUNDERSCORE_BACK( \
             /* remove all leading symbols `[const] bind [(type)] ...` */ \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_ANY_BIND_WITHOUT_TYPE(sign)),\
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_CONST_BIND_THIS_ \
@@ -64,7 +64,7 @@
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_BIND_(decl_traits, sign) \
     /* check from back because non `this` bounds might have `&` in front */ \
-    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THIS_BACK( \
+    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THISUNDERSCORE_BACK( \
             /* remove all leading symbols `[const] bind [(type)] ...` */ \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_ANY_BIND_WITHOUT_TYPE( \
                     sign)), \

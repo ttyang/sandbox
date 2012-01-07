@@ -8,7 +8,8 @@
 #   ifndef BOOST_CLOSURE_AUX_FUNCTION_HPP_
 #       define BOOST_CLOSURE_AUX_FUNCTION_HPP_
 
-#       include <boost/closure/config.hpp>
+#       include <boost/closure/aux_/config.hpp>
+#       include <boost/closure/aux_/member.hpp>
 #       include <boost/call_traits.hpp>
 #       include <boost/preprocessor/iteration/iterate.hpp>
 #       include <boost/preprocessor/repetition/repeat.hpp>
@@ -31,20 +32,59 @@
 #define BOOST_CLOSURE_AUX_arg_type(z, arg_n, unused) \
     BOOST_PP_CAT(A, arg_n)
 
-#define BOOST_CLOSURE_AUX_arg_param_type(z, arg_n, unused) \
+#define BOOST_CLOSURE_AUX_comma_arg_tparam(z, arg_n, unused) \
+    , typename BOOST_CLOSURE_AUX_arg_type(z, arg_n, ~)
+
+#define BOOST_CLOSURE_AUX_arg_param_type(z, arg_n, comma01) \
+    BOOST_PP_COMMA_IF(comma01) \
     typename ::boost::call_traits< \
-        BOOST_CLOSURE_AUX_arg_type(z, arg_n, unused) \
+        BOOST_CLOSURE_AUX_arg_type(z, arg_n, ~) \
     >::param_type
 
-#define BOOST_CLOSURE_AUX_arg_name(z, arg_n, unused) \
+#define BOOST_CLOSURE_AUX_arg_name(z, arg_n, comma01) \
+    BOOST_PP_COMMA_IF(comma01) \
     BOOST_PP_CAT(a, arg_n)
 
-#define BOOST_CLOSURE_AUX_arg(z, arg_n, unused) \
-    BOOST_CLOSURE_AUX_arg_param_type(z, arg_n, unused) \
-    BOOST_CLOSURE_AUX_arg_name(z, arg_n, unused)
+#define BOOST_CLOSURE_AUX_arg_param_decl(z, arg_n, unused) \
+    BOOST_CLOSURE_AUX_arg_param_type(z, arg_n, 0 /* no leading comma */) \
+    BOOST_CLOSURE_AUX_arg_name(z, arg_n, 0 /* no leading comma */)
 
-#define BOOST_CLOSURE_AUX_arg_tparam(z, arg_n, unused) \
-    typename BOOST_CLOSURE_AUX_arg_type(z, arg_n, unused)
+#define BOOST_CLOSURE_AUX_bind_type(z, bind_n, unused) \
+    BOOST_PP_CAT(B, bind_n)
+
+#define BOOST_CLOSURE_AUX_comma_bind_type(z, bind_n, unused) \
+    , BOOST_CLOSURE_AUX_bind_type(z, bind_n, ~)
+
+#define BOOST_CLOSURE_AUX_comma_bind_ref(z, bind_n, unused) \
+    , BOOST_CLOSURE_AUX_bind_type(z, bind_n, ~) &
+
+#define BOOST_CLOSURE_AUX_comma_bind_tparam(z, bind_n, unused) \
+    , typename BOOST_CLOSURE_AUX_bind_type(z, bind_n, ~)
+
+#define BOOST_CLOSURE_AUX_bind_name(z, bind_n, unused) \
+    BOOST_PP_CAT(b, bind_n)
+
+#define BOOST_CLOSURE_AUX_comma_bind_param_decl(z, bind_n, unused) \
+    , \
+    BOOST_CLOSURE_AUX_bind_type(z, bind_n, ~) & \
+    BOOST_CLOSURE_AUX_bind_name(z, bind_n, ~)
+    
+#define BOOST_CLOSURE_AUX_bind_member(z, bind_n, unsued) \
+    BOOST_PP_CAT(BOOST_CLOSURE_AUX_bind_name(z, bind_n, ~), _)
+
+#define BOOST_CLOSURE_AUX_comma_bind_member_deref(z, bind_n, unsued) \
+    , member_deref<BOOST_CLOSURE_AUX_bind_type(z, bind_n, ~)>( \
+            BOOST_CLOSURE_AUX_bind_member(z, bind_n, ~))
+
+#define BOOST_CLOSURE_AUX_bind_member_init(z, bind_n, unused) \
+    BOOST_CLOSURE_AUX_bind_member(z, bind_n, ~) = member_addr( \
+            BOOST_CLOSURE_AUX_bind_name(z, bind_n, ~));
+
+#define BOOST_CLOSURE_AUX_bind_member_decl(z, bind_n, unused) \
+    /* must be ptr (not ref) so can use default constr */ \
+    typename member_type< BOOST_CLOSURE_AUX_bind_type(z, bind_n, ~) >::pointer \
+    BOOST_CLOSURE_AUX_bind_member(z, bind_n, ~) \
+    ;
 
 #define BOOST_CLOSURE_AUX_call_ptr(z, n, unused) \
     BOOST_PP_CAT(call_ptr, n)
@@ -56,27 +96,37 @@
     BOOST_PP_CAT(BOOST_CLOSURE_AUX_call_name(z, n, unused), _)
 
 #define BOOST_CLOSURE_AUX_call_typedef(z, n, arity) \
-    typedef R (*BOOST_CLOSURE_AUX_call_ptr(z, n, ~))(object_ptr \
-            BOOST_PP_COMMA_IF(BOOST_PP_SUB(arity, n)) \
-            BOOST_PP_ENUM_ ## z(BOOST_PP_SUB(arity, n), \
-                    BOOST_CLOSURE_AUX_arg_param_type, ~));
+    typedef R (*BOOST_CLOSURE_AUX_call_ptr(z, n, ~))( \
+        object_ptr \
+        BOOST_PP_IIF( \
+                BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01, \
+            BOOST_PP_TUPLE_EAT(3) \
+        , \
+            BOOST_PP_REPEAT_ ## z \
+        )(BOOST_CLOSURE_CONFIG_BIND_MAX, BOOST_CLOSURE_AUX_comma_bind_ref, ~) \
+        BOOST_PP_REPEAT_ ## z(BOOST_PP_SUB(arity, n), \
+                BOOST_CLOSURE_AUX_arg_param_type, 1 /* leading comma */) \
+    );
 
-#define BOOST_CLOSURE_AUX_call_param(z, n, unused) \
-    BOOST_CLOSURE_AUX_call_ptr(z, n, unused) \
-    BOOST_CLOSURE_AUX_call_name(z, n, unused)
+#define BOOST_CLOSURE_AUX_comma_call_param_decl(z, n, unused) \
+    , \
+    BOOST_CLOSURE_AUX_call_ptr(z, n, ~) \
+    BOOST_CLOSURE_AUX_call_name(z, n, ~)
 
 #define BOOST_CLOSURE_AUX_call_decl(z, n, unused) \
-    BOOST_CLOSURE_AUX_call_ptr(z, n, unused) \
-    BOOST_CLOSURE_AUX_call_member(z, n, unused);
+    BOOST_CLOSURE_AUX_call_ptr(z, n, ~) \
+    BOOST_CLOSURE_AUX_call_member(z, n, ~);
 
 #define BOOST_CLOSURE_AUX_call_init(z, n, unused) \
-    BOOST_CLOSURE_AUX_call_member(z, n, unused) = \
-            BOOST_CLOSURE_AUX_call_name(z, n, unuzed);
+    BOOST_CLOSURE_AUX_call_member(z, n, ~) = \
+            BOOST_CLOSURE_AUX_call_name(z, n, ~);
                 
 #define BOOST_CLOSURE_AUX_operator_call(z, defaults_n, arity) \
     /* precondition: object_ && call_function_ */ \
-    inline R operator()(BOOST_PP_ENUM_ ## z(BOOST_PP_SUB(arity, defaults_n), \
-                BOOST_CLOSURE_AUX_arg, ~)) const { \
+    inline R operator()( \
+        BOOST_PP_ENUM_ ## z(BOOST_PP_SUB(arity, defaults_n), \
+                BOOST_CLOSURE_AUX_arg_param_decl, ~) \
+    ) /* cannot be const (because of binds) */ { \
         /* run-time: do not assert preconditions here for efficiency */ \
         /* run-time: this function call is done via a function pointer */ \
         /* so unfortunately does not allow for compiler inlining */ \
@@ -84,15 +134,30 @@
         /* investigated but also virtual functions cannot be optimized */ \
         /* plus they require virtual table lookups to the alternative */ \
         /* performed worst) */ \
-        return BOOST_CLOSURE_AUX_call_member(z, defaults_n, ~)(object_ \
-                BOOST_PP_COMMA_IF(BOOST_PP_SUB(arity, defaults_n)) \
-                BOOST_PP_ENUM_ ## z(BOOST_PP_SUB(arity, defaults_n), \
-                        BOOST_CLOSURE_AUX_arg_name, ~)); \
+        return BOOST_CLOSURE_AUX_call_member(z, defaults_n, ~)( \
+            object_ \
+            BOOST_PP_IIF( \
+                    BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01,\
+                BOOST_PP_TUPLE_EAT(3) \
+            , \
+                BOOST_PP_REPEAT_ ## z \
+            )(BOOST_CLOSURE_CONFIG_BIND_MAX, \
+                    BOOST_CLOSURE_AUX_comma_bind_member_deref, ~) \
+            BOOST_PP_REPEAT_ ## z(BOOST_PP_SUB(arity, defaults_n), \
+                    BOOST_CLOSURE_AUX_arg_name, 1 /* leading comma */) \
+        ); \
     }
 
-namespace boost { namespace local { namespace aux {
+namespace boost { namespace closure { namespace aux {
 
-template<typename F, size_t defaults = 0>
+template<
+      typename F
+    , size_t defaults
+#if !BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01
+    BOOST_PP_REPEAT(BOOST_CLOSURE_CONFIG_BIND_MAX,
+            BOOST_CLOSURE_AUX_comma_bind_tparam, ~)
+#endif
+>
 class function {
     // Empty template cannot be used directly (only via its specializations).
 };
@@ -105,11 +170,12 @@ class function {
 
 }}} // namespace boost::loca::aux
 
+/** @todo undef all local macros */
 #undef BOOST_CLOSURE_AUX_arg_type
 #undef BOOST_CLOSURE_AUX_arg_param_type
 #undef BOOST_CLOSURE_AUX_arg_name
-#undef BOOST_CLOSURE_AUX_arg
-#undef BOOST_CLOSURE_AUX_arg_tparam
+#undef BOOST_CLOSURE_AUX_arg_param_decl
+#undef BOOST_CLOSURE_AUX_comma_arg_tparam
 #undef BOOST_CLOSURE_AUX_call_ptr
 #undef BOOST_CLOSURE_AUX_call_name
 #undef BOOST_CLOSURE_AUX_call_member
@@ -132,15 +198,23 @@ class function {
 #elif BOOST_PP_ITERATION_DEPTH() == 2
 #   define BOOST_CLOSURE_AUX_defaults BOOST_PP_FRAME_ITERATION(2)
 
-// Iterating within namespce `boost::closure::aux`.
+// Iterating within namespace `boost::closure::aux`.
 template<
     typename R
-    BOOST_PP_COMMA_IF(BOOST_CLOSURE_AUX_arity)
-    BOOST_PP_ENUM(BOOST_CLOSURE_AUX_arity, BOOST_CLOSURE_AUX_arg_tparam, ~)
+    BOOST_PP_REPEAT(BOOST_CLOSURE_AUX_arity,
+            BOOST_CLOSURE_AUX_comma_arg_tparam, ~)
+#if !BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01
+    BOOST_PP_REPEAT(BOOST_CLOSURE_CONFIG_BIND_MAX,
+            BOOST_CLOSURE_AUX_comma_bind_tparam, ~)
+#endif
 >
 class function<
       R (BOOST_PP_ENUM(BOOST_CLOSURE_AUX_arity, BOOST_CLOSURE_AUX_arg_type, ~))
     , BOOST_CLOSURE_AUX_defaults
+#if !BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01
+    BOOST_PP_REPEAT(BOOST_CLOSURE_CONFIG_BIND_MAX,
+            BOOST_CLOSURE_AUX_comma_bind_type, ~)
+#endif
 > {
     // The object type will actually be a local class which cannot be passed as
     // a template parameter so a generic `void*` pointer is used to hold the
@@ -156,20 +230,27 @@ class function<
     typedef void* object_ptr;
     BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults), // INC so no dflt.
             BOOST_CLOSURE_AUX_call_typedef, BOOST_CLOSURE_AUX_arity)
+
 public:
-    // run-time: use compiler-generated default constructor, copy constructor,
-    // and copy operator (this class only has pointers as member variables and
-    // they only need to be copied shallowly so the compiler-generator
-    // operations work well) to allow for compiler optimization
+    // NOTE: Must have default constructor for init without function name in
+    // function macro expansion.
 
     // Cannot be private but it should never be used by programmers directly
     // so used internal symbol.
     inline void BOOST_CLOSURE_AUX_FUNCTION_INIT_CALL_FUNC(
-        object_ptr object,
-        BOOST_PP_ENUM(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults), // INC no dflt.
-                BOOST_CLOSURE_AUX_call_param, ~)
+        object_ptr object
+#if !BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01
+        BOOST_PP_REPEAT(BOOST_CLOSURE_CONFIG_BIND_MAX,
+                BOOST_CLOSURE_AUX_comma_bind_param_decl, ~)
+#endif
+        BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults),// INC no dflt.
+                BOOST_CLOSURE_AUX_comma_call_param_decl, ~)
     ) {
         object_ = object;
+#if !BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01
+        BOOST_PP_REPEAT(BOOST_CLOSURE_CONFIG_BIND_MAX,
+                BOOST_CLOSURE_AUX_bind_member_init, ~)
+#endif
         BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults),
                 BOOST_CLOSURE_AUX_call_init, ~)
         unused_ = 0; // To avoid a GCC uninitialized variable error.
@@ -183,12 +264,15 @@ public:
 
 private:
     object_ptr object_;
+#if !BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01
+    BOOST_PP_REPEAT(BOOST_CLOSURE_CONFIG_BIND_MAX,
+            BOOST_CLOSURE_AUX_bind_member_decl, ~)
+#endif
     BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults), // INC no dflt.
             BOOST_CLOSURE_AUX_call_decl, ~)
-
     // run-time: this unused void* member variable allows for compiler
     // optimizations (at least on MSVC it reduces invocation time of about 50%)
-    void* unused_;
+    void* unused_; /** @todo do I really need this? */
 };
 
 #   undef BOOST_CLOSURE_AUX_defaults

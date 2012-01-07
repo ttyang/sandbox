@@ -7,8 +7,8 @@
 #ifndef BOOST_CLOSURE_AUX_CODE_END_HPP_
 #define BOOST_CLOSURE_AUX_CODE_END_HPP_
 
-#include <boost/closure/config.hpp>
 #include <boost/closure/aux_/symbol.hpp>
+#include <boost/closure/aux_/config.hpp>
 #include <boost/closure/aux_/function.hpp>
 #include <boost/closure/aux_/macro/closure.hpp>
 #include <boost/closure/aux_/macro/code_/functor.hpp>
@@ -137,7 +137,7 @@
 // local functions even if they are not explicitly specified inline.
 #define BOOST_CLOSURE_AUX_CODE_END_MAYBE_INLINE_(qualified_name) \
     BOOST_PP_IIF(BOOST_PP_BITOR( \
-            BOOST_CLOSURE_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01, \
+            BOOST_CLOSURE_AUX_CONFIG_LOCAL_TYPES_AS_TEMPLATE_PARAMS_01, \
             BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_INLINE_FRONT(qualified_name)), \
         /* on C++11 always use inlining because compilers might optimize */ \
         /* it to be faster and it can also be passed as tparam */ \

@@ -43,8 +43,7 @@
 
 // User did not explicitly specified result type, deduce it (using Typeof).
 #define BOOST_CLOSURE_AUX_CODE_RESULT_DEDUCE_(decl_traits, id, typename01) \
-    BOOST_CLOSURE_AUX_CODE_RESULT_DECL(decl_traits, id, \
-            typename01) \
+    BOOST_CLOSURE_AUX_CODE_RESULT_DECL(id) \
     /* the many tagging, wrapping, etc that follow are taken from ScopeExit */ \
     /* type deduction mechanism and they are necessary within templates */ \
     /* (at least on GCC) to work around an compiler internal error */ \
@@ -99,8 +98,7 @@
 #define BOOST_CLOSURE_AUX_CODE_RESULT_TYPE(id) \
     BOOST_CLOSURE_AUX_SYMBOL( (result_type)(id) )
 
-#define BOOST_CLOSURE_AUX_CODE_RESULT_DECL( \
-        decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CODE_RESULT_DECL(id) \
     /* result type here */ (*BOOST_CLOSURE_AUX_CODE_RESULT_FUNC_(id))();
 
 #define BOOST_CLOSURE_AUX_CODE_RESULT(decl_traits, id, typename01) \

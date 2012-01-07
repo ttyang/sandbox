@@ -4,6 +4,7 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
+//[example_profile_boost_phoenix_cpp
 #include <boost/chrono.hpp>
 #include <boost/spirit/home/phoenix/statement/sequence.hpp>
 #include <boost/spirit/home/phoenix/core/reference.hpp>
@@ -25,7 +26,7 @@ int main(int argc, char* argv[]) {
     std::fill(v.begin(), v.end(), 1.0);
 
     boost::chrono::duration<double> trials_sec;
-    for (unsigned long i = 0; i < trials; ++i) {
+    for(unsigned long i = 0; i < trials; ++i) {
         boost::chrono::system_clock::time_point start =
                 boost::chrono::system_clock::now();
 
@@ -41,4 +42,5 @@ int main(int argc, char* argv[]) {
     profile::print(size, trials, sum, trials_sec.count());
     return 0;
 }
+//]
 
