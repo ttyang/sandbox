@@ -1,0 +1,11 @@
+
+import testing ;
+
+test-suite boost_closure_test :
+    [ run return_inc.cpp /boost//unit_test_framework ]
+    [ run return_this.cpp /boost//unit_test_framework ]
+    [ run return_derivative.cpp /boost//unit_test_framework ]
+    [ run return_setget.cpp /boost//unit_test_framework ]
+    [ run return_factorial.cpp /boost//unit_test_framework ]
+;
+
