@@ -1,5 +1,5 @@
-//  Copyright John Maddock 2010.
-//  Copyright Paul A. Bristow 2011.
+//  Copyright John Maddock 2010, 2012.
+//  Copyright Paul A. Bristow 2011, 2012.
 
 //  Use, modification and distribution are subject to the
 //  Boost Software License, Version 1.0. (See accompanying file
@@ -22,7 +22,7 @@ inline T constant_pi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int
 
    /*
    // Although this code works well, it's usually more accurate to just call acos
-   // and access the numner types own representation of PI which is usually calculated
+   // and access the number types own representation of PI which is usually calculated
    // at slightly higher precision...
 
    T result;
@@ -180,7 +180,7 @@ template<int N>
 inline T constant_one_div_euler<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
   BOOST_MATH_STD_USING
-  return static_cast<T>(1) 
+  return static_cast<T>(1)
      / euler<T, policies::policy<policies::digits2<N> > >();
 }
 
@@ -377,7 +377,7 @@ template<int N>
 inline T constant_pi_pow_e<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return pow(pi<T, policies::policy<policies::digits2<N> > >(), e<T, policies::policy<policies::digits2<N> > >()); // 
+   return pow(pi<T, policies::policy<policies::digits2<N> > >(), e<T, policies::policy<policies::digits2<N> > >()); //
 }
 
 template <class T>
@@ -386,7 +386,7 @@ inline T constant_pi_sqr<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl:
 {
    BOOST_MATH_STD_USING
    return pi<T, policies::policy<policies::digits2<N> > >()
-   *      pi<T, policies::policy<policies::digits2<N> > >() ; // 
+   *      pi<T, policies::policy<policies::digits2<N> > >() ; //
 }
 
 template <class T>
@@ -396,7 +396,7 @@ inline T constant_pi_sqr_div_six<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_S
    BOOST_MATH_STD_USING
    return pi<T, policies::policy<policies::digits2<N> > >()
    *      pi<T, policies::policy<policies::digits2<N> > >()
-   / static_cast<T>(6); // 
+   / static_cast<T>(6); //
 }
 
 
@@ -408,7 +408,7 @@ inline T constant_pi_cubed<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mp
    return pi<T, policies::policy<policies::digits2<N> > >()
    *      pi<T, policies::policy<policies::digits2<N> > >()
    *      pi<T, policies::policy<policies::digits2<N> > >()
-   ; // 
+   ; //
 }
 
 template <class T>
@@ -435,7 +435,7 @@ template<int N>
 inline T constant_e_pow_pi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return pow(e<T, policies::policy<policies::digits2<N> > >(), pi<T, policies::policy<policies::digits2<N> > >()); // 
+   return pow(e<T, policies::policy<policies::digits2<N> > >(), pi<T, policies::policy<policies::digits2<N> > >()); //
 }
 
 template <class T>
@@ -471,8 +471,8 @@ inline T constant_degree<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl:
 {
    BOOST_MATH_STD_USING
    return pi<T, policies::policy<policies::digits2<N> > >()
-   / static_cast<T>(180) 
-   ; // 
+   / static_cast<T>(180)
+   ; //
 }
 
 template <class T>
@@ -482,7 +482,7 @@ inline T constant_radian<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl:
    BOOST_MATH_STD_USING
    return static_cast<T>(180)
    / pi<T, policies::policy<policies::digits2<N> > >()
-   ; // 
+   ; //
 }
 
 template <class T>
@@ -490,7 +490,7 @@ template<int N>
 inline T constant_sin_one<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return sin(static_cast<T>(1)) ; // 
+   return sin(static_cast<T>(1)) ; //
 }
 
 template <class T>
@@ -498,7 +498,7 @@ template<int N>
 inline T constant_cos_one<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return cos(static_cast<T>(1)) ; // 
+   return cos(static_cast<T>(1)) ; //
 }
 
 template <class T>
@@ -506,7 +506,7 @@ template<int N>
 inline T constant_sinh_one<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return sinh(static_cast<T>(1)) ; // 
+   return sinh(static_cast<T>(1)) ; //
 }
 
 template <class T>
@@ -514,7 +514,7 @@ template<int N>
 inline T constant_cosh_one<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return cosh(static_cast<T>(1)) ; // 
+   return cosh(static_cast<T>(1)) ; //
 }
 
 template <class T>
@@ -522,7 +522,7 @@ template<int N>
 inline T constant_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-   return (static_cast<T>(1) + sqrt(static_cast<T>(5)) )/static_cast<T>(2) ; // 
+   return (static_cast<T>(1) + sqrt(static_cast<T>(5)) )/static_cast<T>(2) ; //
 }
 
 template <class T>
@@ -574,7 +574,6 @@ inline T constant_gamma<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::
 );
  //    T gamma("0.57721566490153286060651209008240243104215933593992");
      return gamma;
-       // TODO calculate this - JM has code.
 
 }
 
@@ -584,7 +583,7 @@ inline T constant_one_div_gamma<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SP
 {
    BOOST_MATH_STD_USING
 
-     return static_cast<T>(1) 
+     return static_cast<T>(1)
      / gamma<T, policies::policy<policies::digits2<N> > >();
 }
 
@@ -607,7 +606,7 @@ template<int N>
 inline T constant_zeta_two<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
    BOOST_MATH_STD_USING
-    
+
      return pi<T, policies::policy<policies::digits2<N> > >()
      *  pi<T, policies::policy<policies::digits2<N> > >()
      /static_cast<T>(6);
@@ -630,9 +629,9 @@ inline T constant_zeta_three<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(
   //"1.2020569031595942 double
   // http://www.spaennare.se/SSPROG/ssnum.pdf  // section 11, Algorithmfor Apery’s constant zeta(3).
   // Programs to Calculate some Mathematical Constants to Large Precision, Document Version 1.50
- 
+
   // by Stefan Spannare  September 19, 2007
-  // zeta(3) = 1/64 * sum 
+  // zeta(3) = 1/64 * sum
    T n_fact=static_cast<T>(1); // build n! for n = 0.
    T sum = static_cast<double>(77); // Start with n = 0 case.
    // for n = 0, (77/1) /64 = 1.203125
@@ -715,9 +714,9 @@ T zeta_polynomial_series(T s, T sc)
    BOOST_MATH_STD_USING
    //
    // This is algorithm 3 from:
-   // 
-   // "An Efficient Algorithm for the Riemann Zeta Function", P. Borwein, 
-   // Canadian Mathematical Society, Conference Proceedings.
+   //
+   // "An Efficient Algorithm for the Riemann Zeta Function", P. Borwein,
+   // Canadian Mathematical Society, Conference Proceedings, 2000.
    // See: http://www.cecm.sfu.ca/personal/pborwein/PAPERS/P155.pdf
    //
    BOOST_MATH_STD_USING
@@ -728,7 +727,7 @@ T zeta_polynomial_series(T s, T sc)
    for(int j = 0; j < n; ++j)
    {
       sum += ej_sign * -two_n / pow(T(j + 1), s);
-      ej_sign = -ej_sign; 
+      ej_sign = -ej_sign;
    }
    T ej_sum = 1;
    T ej_term = 1;
@@ -774,7 +773,7 @@ T khinchin()
 template <class T>
 template<int N>
 inline T constant_khinchin<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
-{ 
+{
    return khinchin_detail::khinchin<T>();
 }
 
@@ -812,10 +811,10 @@ namespace detail{
 //
 // The derivative of the zeta function is computed by direct differentiation
 // of the relation:
-// (1-2^(1-s))zeta(s) = SUM(n=0, INF){ (-n)^n / (n+1)^s  } 
+// (1-2^(1-s))zeta(s) = SUM(n=0, INF){ (-n)^n / (n+1)^s  }
 // Which gives us 2 slowly converging but alternating sums to compute,
 // for this we use Algorithm 1 from "Convergent Acceleration of Alternating Series",
-// Henri Cohen, Fernando Rodriguez Villegas and Don Zagier, Experimental Mathematics 9:1.
+// Henri Cohen, Fernando Rodriguez Villegas and Don Zagier, Experimental Mathematics 9:1 (1999).
 // See http://www.math.utexas.edu/users/villegas/publications/conv-accel.pdf
 //
 template <class T>
@@ -882,17 +881,12 @@ inline T zeta_derivative_2()
       + zeta_series_derivative_lead_2<T>() * zeta_series_2<T>();
 }
 
-}  // detail
+}  // namespace detail
 
 template <class T>
 template<int N>
 inline T constant_glaisher<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
-{ // from http://mpmath.googlecode.com/svn/data/glaisher.txt
-  // 20,000 digits of the Glaisher-Kinkelin constant A = exp(1/2 - zeta'(-1))
-  // Computed using A = exp((6 (-zeta'(2))/pi^2 + log 2 pi + gamma)/12)
-  // with Euler-Maclaurin summation for zeta'(2).
-  // No good references/algorithms for this found yet.
-  // TODO calculate this?
+{
 
    BOOST_MATH_STD_USING
    typedef policies::policy<policies::digits2<N> > forwarding_policy;
@@ -904,21 +898,25 @@ inline T constant_glaisher<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mp
    v /= -12;
    return exp(v);
 
-   /*
+ /*
+   // from http://mpmath.googlecode.com/svn/data/glaisher.txt
+     // 20,000 digits of the Glaisher-Kinkelin constant A = exp(1/2 - zeta'(-1))
+     // Computed using A = exp((6 (-zeta'(2))/pi^2 + log 2 pi + gamma)/12)
+  // with Euler-Maclaurin summation for zeta'(2).
   T g(
-"1.282427129100622636875342568869791727767688927325001192063740021740406308858826"
-"46112973649195820237439420646120399000748933157791362775280404159072573861727522"
-"14334327143439787335067915257366856907876561146686449997784962754518174312394652"
-"76128213808180219264516851546143919901083573730703504903888123418813674978133050"
-"93770833682222494115874837348064399978830070125567001286994157705432053927585405"
-"81731588155481762970384743250467775147374600031616023046613296342991558095879293"
-"36343887288701988953460725233184702489001091776941712153569193674967261270398013"
-"52652668868978218897401729375840750167472114895288815996668743164513890306962645"
-"59870469543740253099606800842447417554061490189444139386196089129682173528798629"
-"88434220366989900606980888785849587494085307347117090132667567503310523405221054"
-"14176776156308191919997185237047761312315374135304725819814797451761027540834943"
-"14384965234139453373065832325673954957601692256427736926358821692159870775858274"
-"69575162841550648585890834128227556209547002918593263079373376942077522290940187");
+  "1.282427129100622636875342568869791727767688927325001192063740021740406308858826"
+  "46112973649195820237439420646120399000748933157791362775280404159072573861727522"
+  "14334327143439787335067915257366856907876561146686449997784962754518174312394652"
+  "76128213808180219264516851546143919901083573730703504903888123418813674978133050"
+  "93770833682222494115874837348064399978830070125567001286994157705432053927585405"
+  "81731588155481762970384743250467775147374600031616023046613296342991558095879293"
+  "36343887288701988953460725233184702489001091776941712153569193674967261270398013"
+  "52652668868978218897401729375840750167472114895288815996668743164513890306962645"
+  "59870469543740253099606800842447417554061490189444139386196089129682173528798629"
+  "88434220366989900606980888785849587494085307347117090132667567503310523405221054"
+  "14176776156308191919997185237047761312315374135304725819814797451761027540834943"
+  "14384965234139453373065832325673954957601692256427736926358821692159870775858274"
+  "69575162841550648585890834128227556209547002918593263079373376942077522290940187");
 
   return g;
   */
@@ -931,11 +929,11 @@ inline T constant_rayleigh_skewness<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYP
   // 1100 digits of the Rayleigh distribution skewness
   // Mathematica: N[2 Sqrt[Pi] (Pi - 3)/((4 - Pi)^(3/2)), 1100]
 
-T rs(2 * root_pi<T, policies::policy<policies::digits2<N> > >() 
+T rs(2 * root_pi<T, policies::policy<policies::digits2<N> > >()
    * pi_minus_three<T, policies::policy<policies::digits2<N> > >()
    / pow(four_minus_pi<T, policies::policy<policies::digits2<N> > >(), static_cast<T>(3./2))
    );
- //   6.31110657818937138191899351544227779844042203134719497658094585692926819617473725459905027032537306794400047264, 
+ //   6.31110657818937138191899351544227779844042203134719497658094585692926819617473725459905027032537306794400047264,
 
   //"0.6311106578189371381918993515442277798440422031347194976580945856929268196174737254599050270325373067"
   //"9440004726436754739597525250317640394102954301685809920213808351450851396781817932734836994829371322"
