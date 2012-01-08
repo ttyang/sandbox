@@ -1,0 +1,22 @@
+
+exe profile_boost_closure : profile_boost_closure.cpp :
+    <library>/boost/chrono//boost_chrono
+    <library>/boost/system//boost_system
+    <link>static
+;
+exe profile_boost_closure_inline : profile_boost_closure_inline.cpp :
+    <library>/boost/chrono//boost_chrono
+    <library>/boost/system//boost_system
+    <link>static
+;
+exe profile_local_functor : profile_local_functor.cpp :
+    <library>/boost/chrono//boost_chrono
+    <library>/boost/system//boost_system
+    <link>static
+;
+exe profile_boost_phoenix : profile_boost_phoenix.cpp :
+    <library>/boost/chrono//boost_chrono
+    <library>/boost/system//boost_system
+    <link>static
+;
+

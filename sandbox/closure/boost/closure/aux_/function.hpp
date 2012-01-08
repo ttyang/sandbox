@@ -253,7 +253,6 @@ public:
 #endif
         BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults),
                 BOOST_CLOSURE_AUX_call_init, ~)
-        unused_ = 0; // To avoid a GCC uninitialized variable error.
     }
     
     // Result operator(Arg1, ..., ArgN-1, ArgN) -- iff defaults >= 0
@@ -270,9 +269,6 @@ private:
 #endif
     BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_CLOSURE_AUX_defaults), // INC no dflt.
             BOOST_CLOSURE_AUX_call_decl, ~)
-    // run-time: this unused void* member variable allows for compiler
-    // optimizations (at least on MSVC it reduces invocation time of about 50%)
-    void* unused_; /** @todo do I really need this? */
 };
 
 #   undef BOOST_CLOSURE_AUX_defaults

@@ -4,15 +4,11 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-//[example_profile_boost_phoenix_cpp
-#include <boost/spirit/home/phoenix/statement/sequence.hpp>
-#include <boost/spirit/home/phoenix/core/reference.hpp>
-#include <boost/spirit/home/phoenix/core/argument.hpp>
-#include <boost/spirit/home/phoenix/operator/arithmetic.hpp>
+//[example_profile_local_functor_cpp
 #include <boost/chrono.hpp>
-#include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 #include "profile_helpers.hpp"
 
 int main(int argc, char* argv[]) {
@@ -22,6 +18,21 @@ int main(int argc, char* argv[]) {
     double sum = 0.0;
     int factor = 1;
 
+    boost::chrono::system_clock::time_point start =
+            boost::chrono::system_clock::now();
+    struct local_add {
+        local_add(double& _sum, const int& _factor):
+                sum(_sum), factor(_factor) {}
+        inline void operator()(const double& num) {
+            sum += factor * num;
+        }
+    private:
+        double& sum;
+        const int& factor;
+    } add(sum, factor);
+    boost::chrono::duration<double> decl_sec =
+            boost::chrono::system_clock::now() - start;
+
     std::vector<double> v(size);
     std::fill(v.begin(), v.end(), 1.0);
 
@@ -29,17 +40,11 @@ int main(int argc, char* argv[]) {
     for(unsigned long i = 0; i < trials; ++i) {
         boost::chrono::system_clock::time_point start =
                 boost::chrono::system_clock::now();
-
-        using boost::phoenix::ref;
-        using boost::phoenix::arg_names::_1;
-        std::for_each(v.begin(), v.end(), (
-            ref(sum) += factor * _1
-        ));
-
+        for (unsigned long j = 0; j < v.size(); ++j) add(v[j]); // No for_each.
         trials_sec += boost::chrono::system_clock::now() - start;
     }
 
-    profile::print(size, trials, sum, trials_sec.count());
+    profile::print(size, trials, sum, trials_sec.count(), decl_sec.count());
     return 0;
 }
 //]
