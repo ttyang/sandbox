@@ -144,7 +144,8 @@ inline T constant_euler<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::
    // Mathematics of Comnputation, Volume 34, Number 149, Jan 1980, pages 305-312.
    // See equation 17 with p = 2.
    //
-   T n = 3 + boost::math::tools::digits<T>() / 4;
+   T n = 3 + (M ? (std::min)(M, tools::digits<T>()) : tools::digits<T>()) / 4;
+   T lim = M ? ldexp(T(1), (std::min)(M, tools::digits<T>())) : tools::epsilon<T>();
    T lnn = log(n);
    T term = 1;
    T N = -lnn;
@@ -160,7 +161,7 @@ inline T constant_euler<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::
       N += term * (Hk - lnn);
       D += term;
 
-      if(term < D * boost::math::tools::epsilon<T>())
+      if(term < D * lim)
          break;
    }
    return N / D;
@@ -542,63 +543,6 @@ inline T constant_one_div_ln_phi<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_S
      log((static_cast<T>(1) + sqrt(static_cast<T>(5)) )/static_cast<T>(2) );
 }
 
-/*
-Gamma now deprecated, so now see euler above
-// Euler-Mascheroni's Gamma Constant
-
-//http://en.wikipedia.org/wiki/Euler%E2%80%93Mascheroni_constant
-
-//http://en.wikipedia.org/wiki/Gamma_function
-
-template <class T>
-template<int N>
-inline T constant_gamma<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
-{
-   BOOST_MATH_STD_USING
-     // 1000 digits from http://www.wolframalpha.com
- T gamma(
-  "0.577215664901532860606512090082402431042159335939923598805767234884867726"
- "777664670936947063291746749514631447249807082480960504014486542836224173"
- "997644923536253500333742937337737673942792595258247094916008735203948165"
- "670853233151776611528621199501507984793745085705740029921354786146694029"
- "604325421519058775535267331399254012967420513754139549111685102807984234"
- "877587205038431093997361372553060889331267600172479537836759271351577226"
- "102734929139407984301034177717780881549570661075010161916633401522789358"
- "679654972520362128792265559536696281763887927268013243101047650596370394"
- "739495763890657296792960100901512519595092224350140934987122824794974719"
- "564697631850667612906381105182419744486783638086174945516989279230187739"
- "107294578155431600500218284409605377243420328547836701517739439870030237"
- "033951832869000155819398804270741154222781971652301107356583396734871765"
- "049194181230004065469314299929777956930310050308630341856980323108369164"
- "0025892970890985486825777364288253954925873629596133298574739302"
-);
- //    T gamma("0.57721566490153286060651209008240243104215933593992");
-     return gamma;
-
-}
-
-template <class T>
-template<int N>
-inline T constant_one_div_gamma<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
-{
-   BOOST_MATH_STD_USING
-
-     return static_cast<T>(1)
-     / gamma<T, policies::policy<policies::digits2<N> > >();
-}
-
-
-
-template <class T>
-template<int N>
-inline T constant_gamma_sqr<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
-{
-   BOOST_MATH_STD_USING
-
-     return gamma<T, policies::policy<policies::digits2<N> > >()
-     * gamma<T, policies::policy<policies::digits2<N> > >();
-}
-*/
 // Zeta
 
 template <class T>
@@ -636,7 +580,7 @@ inline T constant_zeta_three<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(
    T sum = static_cast<double>(77); // Start with n = 0 case.
    // for n = 0, (77/1) /64 = 1.203125
    //double lim = std::numeric_limits<double>::epsilon();
-   T lim = boost::math::tools::epsilon<T>();
+   T lim = N ? ldexp(T(1), 1 - (std::min)(N, tools::digits<T>())) : tools::epsilon<T>();
    for(unsigned int n = 1; n < 40; ++n)
    { // three to five decimal digits per term, so 40 should be plenty for 100 decimal digits.
       //cout << "n = " << n << endl;
@@ -687,7 +631,7 @@ inline T constant_catalan<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl
    T tk_fact = 1;
    T sum = 1;
    T term;
-   T lim = boost::math::tools::epsilon<T>();
+   T lim = N ? ldexp(T(1), 1 - (std::min)(N, tools::digits<T>())) : tools::epsilon<T>();
 
    for(unsigned k = 1;; ++k)
    {
@@ -709,7 +653,7 @@ inline T constant_catalan<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl
 namespace khinchin_detail{
 
 template <class T>
-T zeta_polynomial_series(T s, T sc)
+T zeta_polynomial_series(T s, T sc, int digits)
 {
    BOOST_MATH_STD_USING
    //
@@ -720,7 +664,7 @@ T zeta_polynomial_series(T s, T sc)
    // See: http://www.cecm.sfu.ca/personal/pborwein/PAPERS/P155.pdf
    //
    BOOST_MATH_STD_USING
-   int n = itrunc(T(log(boost::math::tools::epsilon<T>()) / -2));
+   int n = (digits * 19) / 53;
    T sum = 0;
    T two_n = ldexp(T(1), n);
    int ej_sign = 1;
@@ -743,12 +687,12 @@ T zeta_polynomial_series(T s, T sc)
 }
 
 template <class T>
-T khinchin()
+T khinchin(int digits)
 {
    BOOST_MATH_STD_USING
    T sum = 0;
    T term;
-   T lim = boost::math::tools::epsilon<T>();
+   T lim = ldexp(T(1), 1-digits);
    T factor = 0;
    unsigned last_k = 1;
    T num = 1;
@@ -760,7 +704,7 @@ T khinchin()
          num = -num;
       }
       last_k = 2 * n;
-      term = (zeta_polynomial_series(T(2 * n), T(1 - T(2 * n))) - 1) * factor / n;
+      term = (zeta_polynomial_series(T(2 * n), T(1 - T(2 * n)), digits) - 1) * factor / n;
       sum += term;
       if(term < lim)
          break;
@@ -774,7 +718,8 @@ template <class T>
 template<int N>
 inline T constant_khinchin<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mpl::int_<N>))
 {
-   return khinchin_detail::khinchin<T>();
+   int n = N ? (std::min)(N, tools::digits<T>()) : tools::digits<T>();
+   return khinchin_detail::khinchin<T>(n);
 }
 
 template <class T>
@@ -818,11 +763,12 @@ namespace detail{
 // See http://www.math.utexas.edu/users/villegas/publications/conv-accel.pdf
 //
 template <class T>
-T zeta_series_derivative_2()
+T zeta_series_derivative_2(unsigned digits)
 {
    // Derivative of the series part, evaluated at 2:
    BOOST_MATH_STD_USING
-   int n = boost::math::itrunc((std::numeric_limits<T>::digits10 + 1) * 1.3);
+   int n = digits * 301 * 13 / 10000;
+   boost::math::itrunc((std::numeric_limits<T>::digits10 + 1) * 1.3);
    T d = pow(3 + sqrt(T(8)), n);
    d = (d + 1 / d) / 2;
    T b = -1;
@@ -839,11 +785,11 @@ T zeta_series_derivative_2()
 }
 
 template <class T>
-T zeta_series_2()
+T zeta_series_2(unsigned digits)
 {
    // Series part of zeta at 2:
    BOOST_MATH_STD_USING
-   int n = boost::math::itrunc((std::numeric_limits<T>::digits10 + 1) * 1.3);
+   int n = digits * 301 * 13 / 10000;
    T d = pow(3 + sqrt(T(8)), n);
    d = (d + 1 / d) / 2;
    T b = -1;
@@ -874,11 +820,11 @@ inline T zeta_series_derivative_lead_2()
 }
 
 template <class T>
-inline T zeta_derivative_2()
+inline T zeta_derivative_2(unsigned n)
 {
    // zeta derivative at 2:
-   return zeta_series_derivative_2<T>() * zeta_series_lead_2<T>()
-      + zeta_series_derivative_lead_2<T>() * zeta_series_2<T>();
+   return zeta_series_derivative_2<T>(n) * zeta_series_lead_2<T>()
+      + zeta_series_derivative_lead_2<T>() * zeta_series_2<T>(n);
 }
 
 }  // namespace detail
@@ -890,7 +836,8 @@ inline T constant_glaisher<T>::compute(BOOST_MATH_EXPLICIT_TEMPLATE_TYPE_SPEC(mp
 
    BOOST_MATH_STD_USING
    typedef policies::policy<policies::digits2<N> > forwarding_policy;
-   T v = detail::zeta_derivative_2<T>();
+   int n = N ? (std::min)(N, tools::digits<T>()) : tools::digits<T>();
+   T v = detail::zeta_derivative_2<T>(n);
    v *= 6;
    v /= boost::math::constants::pi<T, forwarding_policy>() * boost::math::constants::pi<T, forwarding_policy>();
    v -= boost::math::constants::euler<T, forwarding_policy>();
