@@ -117,13 +117,18 @@
     BOOST_SCOPE_EXIT_AUX_PARAM_INIT(r, id, i, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits))
 
+#define BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_DEDUCED_( \
+        id, all_bind_this_types) \
+    BOOST_SCOPE_EXIT_AUX_TYPEDEF_TYPEOF_THIS( \
+            BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPE(id))
+
 #define BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_TYPED_(all_bind_this_types) \
-    typedef BOOST_CLOSURE_AUX_PP_BIND_TRAITS_THIS_TYPE(BOOST_PP_LIST_FIRST( \
-            all_bind_this_types))
-
-#define BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_DEDUCED_(all_bind_this_types) \
-    BOOST_SCOPE_EXIT_TYPEDEF_TYPEOF_THIS()
-
+    typedef \
+        BOOST_CLOSURE_AUX_PP_BIND_TRAITS_THIS_TYPE(BOOST_PP_LIST_FIRST( \
+                all_bind_this_types)) \
+        BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPE(id) \
+    ;
+    
 #define BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_(id, all_bind_this_types) \
     /* typedef type_ */ \
     BOOST_PP_IIF(BOOST_PP_IS_EMPTY(BOOST_CLOSURE_AUX_PP_BIND_TRAITS_THIS_TYPE( \
@@ -133,10 +138,7 @@
         BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_DEDUCED_ \
     , \
         BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_TYPED_ \
-    )(all_bind_this_types) \
-    /* this_type ## id */ \
-    BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPE(id) \
-    ; /* close typedef */
+    )(id, all_bind_this_types)
 
 // Adapted from `BOOST_SCOPE_EXIT_AUX_IMPL()`.
 #define BOOST_CLOSURE_AUX_CODE_BIND_ALL_( \

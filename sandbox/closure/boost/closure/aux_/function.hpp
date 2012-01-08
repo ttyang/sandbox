@@ -32,6 +32,13 @@
 #define BOOST_CLOSURE_AUX_arg_type(z, arg_n, unused) \
     BOOST_PP_CAT(A, arg_n)
 
+#define BOOST_CLOSURE_AUX_arg_typedef(z, arg_n, unused) \
+    typedef \
+        BOOST_CLOSURE_AUX_arg_type(z, arg_n, ~) \
+        /* name must follow Boost.FunctionTraits arg1_type, arg2_type, ... */ \
+        BOOST_PP_CAT(BOOST_PP_CAT(arg, BOOST_PP_INC(arg_n)), _type) \
+    ;
+
 #define BOOST_CLOSURE_AUX_comma_arg_tparam(z, arg_n, unused) \
     , typename BOOST_CLOSURE_AUX_arg_type(z, arg_n, ~)
 
@@ -232,6 +239,12 @@ class function<
             BOOST_CLOSURE_AUX_call_typedef, BOOST_CLOSURE_AUX_arity)
 
 public:
+    // Provide public type interface following Boost.Function names
+    // (traits must be defined in both this and the local functor).
+    enum { arity = BOOST_CLOSURE_AUX_arity }; // More portable than static data.
+    typedef R result_type;
+    BOOST_PP_REPEAT(BOOST_CLOSURE_AUX_arity, BOOST_CLOSURE_AUX_arg_typedef, ~)
+
     // NOTE: Must have default constructor for init without function name in
     // function macro expansion.
 

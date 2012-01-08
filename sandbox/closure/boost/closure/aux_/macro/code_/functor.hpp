@@ -85,6 +85,15 @@
         BOOST_CLOSURE_AUX_CODE_FUNCTOR_F_TYPE_ \
     >::BOOST_PP_CAT(BOOST_PP_CAT(arg, i), _type) \
 
+#define BOOST_CLOSURE_AUX_CODE_FUNCTOR_ARG_TYPEDEF_( \
+        r, typename01, i, param_traits) \
+    typedef \
+        BOOST_CLOSURE_AUX_CODE_FUNCTOR_PARAM_ARG_TYPE_(typename01, \
+                BOOST_PP_INC(i)) \
+        /* name must follow Boost.FunctionTraits arg1_type, arg2_type, ... */ \
+        BOOST_PP_CAT(BOOST_PP_CAT(arg, BOOST_PP_INC(i)), _type) \
+    ;
+
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_PARAM_ARG_DECL_( \
         r, typename01, i, param_traits) \
     BOOST_PP_EXPR_IIF(typename01, typename) \
@@ -697,6 +706,13 @@
                 const_binds, has_const_bind_this, binds, has_bind_this, \
                 id, typename01) \
     public: \
+        /* public trait interface following Boost.FunctionTraits names */ \
+        /* (traits must be defined in both this and the global functor) */ \
+        enum { arity = ::boost::function_traits< /* can't use static data */ \
+                BOOST_CLOSURE_AUX_CODE_FUNCTOR_F_TYPE_ >::arity }; \
+        typedef BOOST_CLOSURE_AUX_CODE_RESULT_TYPE(id) result_type; \
+        BOOST_PP_LIST_FOR_EACH_I(BOOST_CLOSURE_AUX_CODE_FUNCTOR_ARG_TYPEDEF_, \
+                typename01, params) \
         /* constructor */ \
         inline explicit BOOST_CLOSURE_AUX_CODE_FUNCTOR_CLASS_TYPE_(id)( \
                 void* BOOST_CLOSURE_AUX_CODE_FUNCTOR_PARAMS_) \
