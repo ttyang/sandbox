@@ -177,17 +177,27 @@ class function {
 
 }}} // namespace boost::loca::aux
 
-/** @todo undef all local macros */
 #undef BOOST_CLOSURE_AUX_arg_type
+#undef BOOST_CLOSURE_AUX_arg_typedef
+#undef BOOST_CLOSURE_AUX_comma_arg_tparam
 #undef BOOST_CLOSURE_AUX_arg_param_type
 #undef BOOST_CLOSURE_AUX_arg_name
 #undef BOOST_CLOSURE_AUX_arg_param_decl
-#undef BOOST_CLOSURE_AUX_comma_arg_tparam
+#undef BOOST_CLOSURE_AUX_bind_type
+#undef BOOST_CLOSURE_AUX_comma_bind_type
+#undef BOOST_CLOSURE_AUX_comma_bind_ref
+#undef BOOST_CLOSURE_AUX_comma_bind_tparam
+#undef BOOST_CLOSURE_AUX_bind_name
+#undef BOOST_CLOSURE_AUX_comma_bind_param_decl
+#undef BOOST_CLOSURE_AUX_bind_member
+#undef BOOST_CLOSURE_AUX_comma_bind_member_deref
+#undef BOOST_CLOSURE_AUX_bind_member_init
+#undef BOOST_CLOSURE_AUX_bind_member_decl
 #undef BOOST_CLOSURE_AUX_call_ptr
 #undef BOOST_CLOSURE_AUX_call_name
 #undef BOOST_CLOSURE_AUX_call_member
 #undef BOOST_CLOSURE_AUX_call_typedef
-#undef BOOST_CLOSURE_AUX_call_param
+#undef BOOST_CLOSURE_AUX_comma_call_param_decl
 #undef BOOST_CLOSURE_AUX_call_decl
 #undef BOOST_CLOSURE_AUX_call_init
 #undef BOOST_CLOSURE_AUX_operator_call

@@ -34,10 +34,9 @@
     BOOST_CLOSURE_AUX_SYMBOL( (params)(id) )
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_TAG_DECL_(r, id, i, bind_traits) \
-    BOOST_SCOPE_EXIT_AUX_TAG_DECL(r, id, i, \
+    BOOST_SCOPE_EXIT_DETAIL_TAG_DECL(r, id, i, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits))
 
-// Adapted from `BOOST_SCOPE_EXIT_AUX_CAPTURE_DECL()` (not for `this`).
 #define BOOST_CLOSURE_AUX_CODE_BIND_CAPTURE_DECL_TYPED_( \
         r, id, typename01, i, bind_traits) \
     typedef BOOST_PP_EXPR_IIF(typename01, typename) \
@@ -50,14 +49,14 @@
                         bind_traits) ) \
             >::arg1_type \
         >::type \
-        BOOST_SCOPE_EXIT_AUX_CAPTURE_T(id, i, \
+        BOOST_SCOPE_EXIT_DETAIL_CAPTURE_T(id, i, \
                 BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE( \
                         bind_traits)) \
     ; /* close typedef */
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_CAPTURE_DECL_DEDUCED_( \
         r, id, typename01, i, bind_traits) \
-    BOOST_SCOPE_EXIT_AUX_CAPTURE_DECL(r, \
+    BOOST_SCOPE_EXIT_DETAIL_CAPTURE_DECL(r, \
             ( \
                 id \
             , \
@@ -82,7 +81,7 @@
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_PARAM_DECL_( \
         r, id_typename, i, bind_traits) \
-    BOOST_SCOPE_EXIT_AUX_PARAM_DECL(r, \
+    BOOST_SCOPE_EXIT_DETAIL_PARAM_DECL(r, \
             ( \
                 BOOST_PP_TUPLE_ELEM(2, 0, id_typename) \
             , \
@@ -99,12 +98,12 @@
         r, id, typename01, i, var) \
     BOOST_PP_EXPR_IIF(typename01, typename) \
     BOOST_IDENTITY_TYPE(( /* must use IDENTITY because of tparam comma */ \
-        ::boost::scope_exit::aux::member< \
-              BOOST_SCOPE_EXIT_AUX_PARAM_T(id, i, var) \
-            , BOOST_SCOPE_EXIT_AUX_TAG(id, i) \
+        ::boost::scope_exit::detail::member< \
+              BOOST_SCOPE_EXIT_DETAIL_PARAM_T(id, i, var) \
+            , BOOST_SCOPE_EXIT_DETAIL_TAG(id, i) \
         > \
     )) \
-    BOOST_SCOPE_EXIT_AUX_PARAM(id, i, var);
+    BOOST_SCOPE_EXIT_DETAIL_PARAM(id, i, var);
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_MEMBER_DECL_( \
         r, id_typename, i, bind_traits) \
@@ -114,12 +113,12 @@
             i, BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits))
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_PARAM_INIT_(r, id, i, bind_traits) \
-    BOOST_SCOPE_EXIT_AUX_PARAM_INIT(r, id, i, \
+    BOOST_SCOPE_EXIT_DETAIL_PARAM_INIT(r, id, i, \
             BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits))
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_DEDUCED_( \
         id, all_bind_this_types) \
-    BOOST_SCOPE_EXIT_AUX_TYPEDEF_TYPEOF_THIS( \
+    BOOST_SCOPE_EXIT_DETAIL_TYPEDEF_TYPEOF_THIS( \
             BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPE(id))
 
 #define BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_TYPED_(all_bind_this_types) \
@@ -140,7 +139,6 @@
         BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPEDEF_TYPED_ \
     )(id, all_bind_this_types)
 
-// Adapted from `BOOST_SCOPE_EXIT_AUX_IMPL()`.
 #define BOOST_CLOSURE_AUX_CODE_BIND_ALL_( \
         all_binds, all_bind_this_types, id, typename01) \
     /* binding tags */ \
@@ -154,7 +152,7 @@
     BOOST_PP_LIST_FOR_EACH_I(BOOST_CLOSURE_AUX_CODE_BIND_CAPTURE_DECL_, \
             (id, typename01), all_binds) \
     /* binding class */ \
-    struct BOOST_SCOPE_EXIT_AUX_PARAMS_T(id) { \
+    struct BOOST_SCOPE_EXIT_DETAIL_PARAMS_T(id) { \
         BOOST_PP_EXPR_IIF(BOOST_PP_LIST_IS_CONS(all_bind_this_types), \
             BOOST_CLOSURE_AUX_CODE_BIND_THIS_TYPE(id) \
             BOOST_CLOSURE_AUX_CODE_BIND_THIS_VAR; \
@@ -213,10 +211,10 @@
     /* this code takes advantage of the template argument list/comparison */ \
     /* operator ambiguity to declare a variable iff it hasn't already been */ \
     /* declared in that scope; the second occurrence is parsed as: */ \
-    /*  (boost::scope_exit::aux::declared<(boost::scope_exit::aux::resolve< */ \
-    /*  sizeof(boost_local_auxXargs)>::cmp1 < 0)>::cmp2 > ...Xargs); */ \
+    /*  (declared<(resolve<sizeof(boost_local_auxXargs)>::cmp1<0)>::cmp2> */ \
+    /*      ...Xargs); */ \
     /* which is a no-op */ \
-    ::boost::scope_exit::aux::declared< boost::scope_exit::aux::resolve< \
+    ::boost::scope_exit::detail::declared< boost::scope_exit::detail::resolve< \
         /* cannot prefix with `::` as in `sizeof(:: ...` because the name */ \
         /* must refer to the local variable name to allow multiple local */ \
         /* functions (and exits) within the same scope (however this */ \

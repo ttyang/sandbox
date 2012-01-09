@@ -4,14 +4,14 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#ifndef BOOST_CLOSURE_AUX_PP_IS_VARIADIC_HPP_
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC_HPP_
+#ifndef BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_HPP_
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_HPP_
 
 #include <boost/config.hpp>
 
 #if !defined(BOOST_NO_VARIADIC_MACROS) // If no variadics then no macros.
 
-#include <boost/closure/aux_/preprocessor/variadic/size.hpp>
+#include <boost/closure/detail/preprocessor/variadic/size.hpp>
 #include <boost/preprocessor/logical/compl.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/comparison/equal.hpp>
@@ -22,29 +22,29 @@
 
 // PRIVATE //
 
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC_NOT_UNARY1_(tokens) \
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_NOT_UNARY1_(tokens) \
     BOOST_PP_COMPL(BOOST_PP_IS_UNARY(tokens))
     
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC_REMOVE1_(tokens) /* nothing */
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_REMOVE1_(tokens) /* nothing */
         
 // Tokens `(t1) t2`.
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC_SKIP1_(tokens) \
-    BOOST_CLOSURE_AUX_PP_IS_VARIADIC_NOT_UNARY1_( \
-        BOOST_CLOSURE_AUX_PP_IS_VARIADIC_REMOVE1_ tokens \
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_SKIP1_(tokens) \
+    BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_NOT_UNARY1_( \
+        BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_REMOVE1_ tokens \
         (1) /* trailing unary handles empty */ \
     )
 
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC_NOT_UNARY2_(tokens) \
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_NOT_UNARY2_(tokens) \
     BOOST_PP_IIF(BOOST_PP_IS_UNARY(tokens), \
-        BOOST_CLOSURE_AUX_PP_IS_VARIADIC_SKIP1_ \
+        BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_SKIP1_ \
     , \
         1 /* it is not unary */ \
         BOOST_PP_TUPLE_EAT(1) \
     )(tokens)
 
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC_(size, ...) \
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_(size, ...) \
     BOOST_PP_IIF(BOOST_PP_EQUAL(size, 1), \
-        BOOST_CLOSURE_AUX_PP_IS_VARIADIC_NOT_UNARY2_ \
+        BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_NOT_UNARY2_ \
     , /* size == 0 or size > 1 (it's variadic) */ \
         1 \
         BOOST_PP_EAT \
@@ -52,9 +52,9 @@
 
 // PUBLIC //
 
-#define BOOST_CLOSURE_AUX_PP_IS_VARIADIC(...) \
-    BOOST_CLOSURE_AUX_PP_IS_VARIADIC_( \
-            BOOST_CLOSURE_AUX_PP_VARIADIC_SIZE(__VA_ARGS__), __VA_ARGS__)
+#define BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC(...) \
+    BOOST_CLOSURE_DETAIL_PP_IS_VARIADIC_( \
+            BOOST_CLOSURE_DETAIL_PP_VARIADIC_SIZE(__VA_ARGS__), __VA_ARGS__)
 
 #endif // BOOST_NO_VARIADIC_MACROS
 

@@ -54,8 +54,8 @@
     ; \
     typedef \
         BOOST_PP_IIF(typename01, BOOST_TYPEOF_TPL, BOOST_TYPEOF)( \
-            ::boost::scope_exit::aux::wrap( \
-                ::boost::scope_exit::aux::deref( \
+            ::boost::scope_exit::detail::wrap( \
+                ::boost::scope_exit::detail::deref( \
                     BOOST_CLOSURE_AUX_CODE_RESULT_FUNC_(id), \
                     (BOOST_CLOSURE_AUX_CODE_RESULT_TAG_(id))0 \
                 ) \

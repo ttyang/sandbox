@@ -155,10 +155,10 @@
 
 #else // BOOST_NO_VARIADIC_MACROS
 
-#include <boost/closure/aux_/preprocessor/variadic/to_seq.hpp>
+#include <boost/closure/detail/preprocessor/variadic/to_seq.hpp>
 
 #define BOOST_CLOSURE_(id, is_template, ...) \
-    BOOST_CLOSURE_AUX_CLOSURE(BOOST_CLOSURE_AUX_PP_VARIADIC_TO_SEQ( \
+    BOOST_CLOSURE_AUX_CLOSURE(BOOST_CLOSURE_DETAIL_PP_VARIADIC_TO_SEQ( \
             (void) /* for empty seq */, __VA_ARGS__), \
             id, is_template)
 
@@ -227,7 +227,6 @@
 #define BOOST_CLOSURE_END(name) \
     BOOST_CLOSURE_AUX_CLOSURE_END(name)
 
-/** @todo make this accept this_ and error on this */
 // Bound variable name. Expand to qualified bound type (i.e., bound variable
 // type with extra const and/or & for const and/or reference binds).
 // Can be used with local functions, blocks, and exits. It accepts `this`.

@@ -154,8 +154,8 @@
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_BIND_TYPE_( \
         id, typename01, offset, i, bind_var_without_type) \
     BOOST_PP_EXPR_IIF(typename01, typename) \
-    BOOST_SCOPE_EXIT_AUX_PARAMS_T(id):: \
-    BOOST_SCOPE_EXIT_AUX_PARAM_T(id, BOOST_PP_ADD(i, offset), \
+    BOOST_SCOPE_EXIT_DETAIL_PARAMS_T(id):: \
+    BOOST_SCOPE_EXIT_DETAIL_PARAM_T(id, BOOST_PP_ADD(i, offset), \
             bind_var_without_type) \
 
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_MEMBER_BIND_ENUM_( \
@@ -164,7 +164,6 @@
     BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_VAR_( \
             BOOST_PP_ADD(offset, i))
 
-// Adapted from `BOOST_SCOPE_EXIT_AUX_ARG_DECL()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_TYPE_( \
         r, id_typename_offset_const, i, bind_var_without_type) \
     /* IMPORTANT: here can't use `PP_KEYWORD_IS_THISUNDERSCORE_FRONT()` */ \
@@ -246,7 +245,6 @@
     , ::boost::closure::aux::nobind_t & \
     /* param name not needed here because no bind param not used */
 
-// Adapted from `BOOST_SCOPE_EXIT_AUX_ARG_DECL()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_DECL_ENUM_( \
         r, id_typename_offset_const, i, bind_traits) \
     BOOST_PP_COMMA_IF(i) /* enumeration commas */ \
@@ -276,7 +274,6 @@
             BOOST_PP_ADD(i, BOOST_PP_TUPLE_ELEM(4, 2, \
             id_typename_offset_const)))
 
-// Adapted from `BOOST_SCOPE_EXIT_AUX_ARG()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_MAYBECONST_BIND_MEMBER_INIT_ENUM_( \
         r, id_offset, i, bind_traits) \
     BOOST_PP_COMMA_IF(i) \
@@ -284,10 +281,10 @@
             BOOST_PP_ADD(i, BOOST_PP_TUPLE_ELEM(2, 1, id_offset))) \
     ( /* member variable initialization */ \
         static_cast< \
-            BOOST_SCOPE_EXIT_AUX_PARAMS_T( \
+            BOOST_SCOPE_EXIT_DETAIL_PARAMS_T( \
                     BOOST_PP_TUPLE_ELEM(2, 0, id_offset))* \
         >(BOOST_CLOSURE_AUX_CODE_FUNCTOR_PARAMS_)-> \
-        BOOST_SCOPE_EXIT_AUX_PARAM( \
+        BOOST_SCOPE_EXIT_DETAIL_PARAM( \
               BOOST_PP_TUPLE_ELEM(2, 0, id_offset) \
             , BOOST_PP_ADD(i, BOOST_PP_TUPLE_ELEM(2, 1, id_offset)) \
             , BOOST_CLOSURE_AUX_PP_BIND_TRAITS_VAR_WITHOUT_TYPE(bind_traits) \
@@ -665,7 +662,7 @@
     ) \
     BOOST_PP_EXPR_IIF(BOOST_PP_BITOR(has_const_bind_this, has_bind_this), \
         BOOST_CLOSURE_AUX_CODE_FUNCTOR_BIND_MEMBER_THIS_( \
-            static_cast< BOOST_SCOPE_EXIT_AUX_PARAMS_T(id)* >( \
+            static_cast< BOOST_SCOPE_EXIT_DETAIL_PARAMS_T(id)* >( \
                     BOOST_CLOSURE_AUX_CODE_FUNCTOR_PARAMS_)-> \
                     BOOST_CLOSURE_AUX_CODE_BIND_THIS_VAR \
         ) \
@@ -673,7 +670,6 @@
 
 // Functor class.
 
-// Adapted from `BOOST_SCOPE_EXIT_AUX_IMPL()`.
 #define BOOST_CLOSURE_AUX_CODE_FUNCTOR_(decl_traits, params, default_count, \
         const_binds, has_const_bind_this, binds, has_bind_this, \
         id, typename01) \
@@ -775,7 +771,8 @@
         /* it makes the args variable visible within the body code (which */ \
         /* cannot be static); this is for compilation only as the args */ \
         /* variable is actually declared by the 1st enclosing local func */ \
-        boost::scope_exit::aux::undeclared BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR; \
+        boost::scope_exit::detail::undeclared \
+                BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR; \
         /* body function (unfortunately, cannot be static to allow access */ \
         /* to member var with local function name for recursion but doing */ \
         /* so also allows the body to misuse `this` instead of `this_`) */ \

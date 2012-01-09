@@ -32,8 +32,6 @@
         BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_VOID_FRONT \
     )(sign)
 
-/** @todo check that there's no BOOST_DETAIL_PP_KEYWORD anywhere */
-
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_SEQ_(sign) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_IS_VOID_TOKEN_(BOOST_PP_SEQ_HEAD( \
             sign))

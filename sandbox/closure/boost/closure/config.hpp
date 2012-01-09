@@ -36,7 +36,7 @@
 #endif
 
 #ifndef BOOST_CLOSURE_CONFIG_BIND_MAX
-#   define BOOST_CLOSURE_CONFIG_BIND_MAX 3 /** @todo increase this (to 10?) */
+#   define BOOST_CLOSURE_CONFIG_BIND_MAX 10
 #endif
 
 #endif // #include guard
