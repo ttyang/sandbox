@@ -25,10 +25,13 @@ template <>
 class voronoi_calc_utils<int32> {
 public:
     typedef int32 int_type;
+    typedef uint32 uint_type;
+    typedef int64 int_x2_type;
+    typedef uint64 uint_x2_type;
     typedef fpt64 fpt_type;
 
-    static const uint32 ULPS;
-    static const uint32 ULPSx2;
+    static const unsigned int ULPS;
+    static const unsigned int ULPSx2;
     static const fpt_type fULPS;
     static const fpt_type fULPSx2;
 
@@ -60,13 +63,13 @@ public:
     // with epsilon relative error equal to 1EPS.
     template <typename T>
     static fpt_type robust_cross_product(T a1_, T b1_, T a2_, T b2_) {
-        uint64 a1 = static_cast<uint64>((a1_ < 0) ? -a1_ : a1_);
-        uint64 b1 = static_cast<uint64>((b1_ < 0) ? -b1_ : b1_);
-        uint64 a2 = static_cast<uint64>((a2_ < 0) ? -a2_ : a2_);
-        uint64 b2 = static_cast<uint64>((b2_ < 0) ? -b2_ : b2_);
+        uint_x2_type a1 = static_cast<uint_x2_type>((a1_ < 0) ? -a1_ : a1_);
+        uint_x2_type b1 = static_cast<uint_x2_type>((b1_ < 0) ? -b1_ : b1_);
+        uint_x2_type a2 = static_cast<uint_x2_type>((a2_ < 0) ? -a2_ : a2_);
+        uint_x2_type b2 = static_cast<uint_x2_type>((b2_ < 0) ? -b2_ : b2_);
 
-        uint64 l = a1 * b2;
-        uint64 r = b1 * a2;
+        uint_x2_type l = a1 * b2;
+        uint_x2_type r = b1 * a2;
 
         if ((a1_ > 0) ^ (b2_ > 0)) {
             if ((a2_ > 0) ^ (b1_ > 0))
@@ -92,14 +95,14 @@ public:
     static kOrientation get_orientation(const Point &point1,
                                         const Point &point2,
                                         const Point &point3) {
-        int64 dx1 = static_cast<int64>(point1.x()) -
-                    static_cast<int64>(point2.x());
-        int64 dx2 = static_cast<int64>(point2.x()) -
-                    static_cast<int64>(point3.x());
-        int64 dy1 = static_cast<int64>(point1.y()) -
-                    static_cast<int64>(point2.y());
-        int64 dy2 = static_cast<int64>(point2.y()) -
-                    static_cast<int64>(point3.y());
+        int_x2_type dx1 = static_cast<int_x2_type>(point1.x()) -
+                          static_cast<int_x2_type>(point2.x());
+        int_x2_type dx2 = static_cast<int_x2_type>(point2.x()) -
+                          static_cast<int_x2_type>(point3.x());
+        int_x2_type dy1 = static_cast<int_x2_type>(point1.y()) -
+                          static_cast<int_x2_type>(point2.y());
+        int_x2_type dy2 = static_cast<int_x2_type>(point2.y()) -
+                          static_cast<int_x2_type>(point3.y());
         return get_orientation(robust_cross_product(dx1, dy1, dx2, dy2));
     }
 
@@ -536,26 +539,26 @@ public:
                  bool recompute_lower_x = true) {
             typedef eint256 eint;
             eint dif_x[3], dif_y[3], sum_x[2], sum_y[2];
-            dif_x[0] = static_cast<int64>(site1.x()) -
-                       static_cast<int64>(site2.x());
-            dif_x[1] = static_cast<int64>(site2.x()) -
-                       static_cast<int64>(site3.x());
-            dif_x[2] = static_cast<int64>(site1.x()) -
-                       static_cast<int64>(site3.x());
-            dif_y[0] = static_cast<int64>(site1.y()) -
-                       static_cast<int64>(site2.y());
-            dif_y[1] = static_cast<int64>(site2.y()) -
-                       static_cast<int64>(site3.y());
-            dif_y[2] = static_cast<int64>(site1.y()) -
-                       static_cast<int64>(site3.y());
-            sum_x[0] = static_cast<int64>(site1.x()) +
-                       static_cast<int64>(site2.x());
-            sum_x[1] = static_cast<int64>(site2.x()) +
-                       static_cast<int64>(site3.x());
-            sum_y[0] = static_cast<int64>(site1.y()) +
-                       static_cast<int64>(site2.y());
-            sum_y[1] = static_cast<int64>(site2.y()) +
-                       static_cast<int64>(site3.y());
+            dif_x[0] = static_cast<int_x2_type>(site1.x()) -
+                       static_cast<int_x2_type>(site2.x());
+            dif_x[1] = static_cast<int_x2_type>(site2.x()) -
+                       static_cast<int_x2_type>(site3.x());
+            dif_x[2] = static_cast<int_x2_type>(site1.x()) -
+                       static_cast<int_x2_type>(site3.x());
+            dif_y[0] = static_cast<int_x2_type>(site1.y()) -
+                       static_cast<int_x2_type>(site2.y());
+            dif_y[1] = static_cast<int_x2_type>(site2.y()) -
+                       static_cast<int_x2_type>(site3.y());
+            dif_y[2] = static_cast<int_x2_type>(site1.y()) -
+                       static_cast<int_x2_type>(site3.y());
+            sum_x[0] = static_cast<int_x2_type>(site1.x()) +
+                       static_cast<int_x2_type>(site2.x());
+            sum_x[1] = static_cast<int_x2_type>(site2.x()) +
+                       static_cast<int_x2_type>(site3.x());
+            sum_y[0] = static_cast<int_x2_type>(site1.y()) +
+                       static_cast<int_x2_type>(site2.y());
+            sum_y[1] = static_cast<int_x2_type>(site2.y()) +
+                       static_cast<int_x2_type>(site3.y());
             fpt_type inv_denom = 0.5 / get_d(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]);
             eint numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
             eint numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
@@ -606,31 +609,31 @@ public:
                  bool recompute_lower_x = true) {
             typedef eint4096 eint;
             eint cA[4], cB[4];
-            eint line_a = static_cast<int64>(site3.point1(true).y()) -
-                          static_cast<int64>(site3.point0(true).y());
-            eint line_b = static_cast<int64>(site3.point0(true).x()) -
-                          static_cast<int64>(site3.point1(true).x());
+            eint line_a = static_cast<int_x2_type>(site3.point1(true).y()) -
+                          static_cast<int_x2_type>(site3.point0(true).y());
+            eint line_b = static_cast<int_x2_type>(site3.point0(true).x()) -
+                          static_cast<int_x2_type>(site3.point1(true).x());
             eint segm_len = line_a * line_a + line_b * line_b;
-            eint vec_x = static_cast<int64>(site2.y()) -
-                         static_cast<int64>(site1.y());
-            eint vec_y = static_cast<int64>(site1.x()) -
-                         static_cast<int64>(site2.x());
-            eint sum_x = static_cast<int64>(site1.x()) +
-                         static_cast<int64>(site2.x());
-            eint sum_y = static_cast<int64>(site1.y()) +
-                         static_cast<int64>(site2.y());
+            eint vec_x = static_cast<int_x2_type>(site2.y()) -
+                         static_cast<int_x2_type>(site1.y());
+            eint vec_y = static_cast<int_x2_type>(site1.x()) -
+                         static_cast<int_x2_type>(site2.x());
+            eint sum_x = static_cast<int_x2_type>(site1.x()) +
+                         static_cast<int_x2_type>(site2.x());
+            eint sum_y = static_cast<int_x2_type>(site1.y()) +
+                         static_cast<int_x2_type>(site2.y());
             eint teta = line_a * vec_x + line_b * vec_y;
             eint denom = vec_x * line_b - vec_y * line_a;
 
-            eint dif0 = static_cast<int64>(site3.point1().y()) -
-                        static_cast<int64>(site1.y());
-            eint dif1 = static_cast<int64>(site1.x()) -
-                        static_cast<int64>(site3.point1().x());
+            eint dif0 = static_cast<int_x2_type>(site3.point1().y()) -
+                        static_cast<int_x2_type>(site1.y());
+            eint dif1 = static_cast<int_x2_type>(site1.x()) -
+                        static_cast<int_x2_type>(site3.point1().x());
             eint A = line_a * dif1 - line_b * dif0;
-            dif0 = static_cast<int64>(site3.point1().y()) -
-                   static_cast<int64>(site2.y());
-            dif1 = static_cast<int64>(site2.x()) -
-                   static_cast<int64>(site3.point1().x());
+            dif0 = static_cast<int_x2_type>(site3.point1().y()) -
+                   static_cast<int_x2_type>(site2.y());
+            dif1 = static_cast<int_x2_type>(site2.x()) -
+                   static_cast<int_x2_type>(site3.point1().x());
             eint B = line_a * dif1 - line_b * dif0;
             eint sum_AB = A + B;
 
@@ -708,52 +711,52 @@ public:
             const point_type &segm_end1 = site2.point0(true);
             const point_type &segm_start2 = site3.point0(true);
             const point_type &segm_end2 = site3.point1(true);
-            a[0] = static_cast<int64>(segm_end1.x()) -
-                   static_cast<int64>(segm_start1.x());
-            b[0] = static_cast<int64>(segm_end1.y()) -
-                   static_cast<int64>(segm_start1.y());
-            a[1] = static_cast<int64>(segm_end2.x()) -
-                   static_cast<int64>(segm_start2.x());
-            b[1] = static_cast<int64>(segm_end2.y()) -
-                   static_cast<int64>(segm_start2.y());
+            a[0] = static_cast<int_x2_type>(segm_end1.x()) -
+                   static_cast<int_x2_type>(segm_start1.x());
+            b[0] = static_cast<int_x2_type>(segm_end1.y()) -
+                   static_cast<int_x2_type>(segm_start1.y());
+            a[1] = static_cast<int_x2_type>(segm_end2.x()) -
+                   static_cast<int_x2_type>(segm_start2.x());
+            b[1] = static_cast<int_x2_type>(segm_end2.y()) -
+                   static_cast<int_x2_type>(segm_start2.y());
             eint orientation = a[1] * b[0] - a[0] * b[1];
             if (is_zero(orientation)) {
                 fpt_type denom = get_d(a[0] * a[0] + b[0] * b[0]) * 2;
-                c[0] = b[0] * (static_cast<int64>(segm_start2.x()) -
-                               static_cast<int64>(segm_start1.x())) -
-                       a[0] * (static_cast<int64>(segm_start2.y()) -
-                               static_cast<int64>(segm_start1.y()));
-                eint dx = a[0] * (static_cast<int64>(site1.y()) -
-                                  static_cast<int64>(segm_start1.y())) -
-                          b[0] * (static_cast<int64>(site1.x()) -
-                                  static_cast<int64>(segm_start1.x()));
-                eint dy = b[0] * (static_cast<int64>(site1.x()) -
-                                  static_cast<int64>(segm_start2.x())) -
-                          a[0] * (static_cast<int64>(site1.y()) -
-                                  static_cast<int64>(segm_start2.y()));
+                c[0] = b[0] * (static_cast<int_x2_type>(segm_start2.x()) -
+                               static_cast<int_x2_type>(segm_start1.x())) -
+                       a[0] * (static_cast<int_x2_type>(segm_start2.y()) -
+                               static_cast<int_x2_type>(segm_start1.y()));
+                eint dx = a[0] * (static_cast<int_x2_type>(site1.y()) -
+                                  static_cast<int_x2_type>(segm_start1.y())) -
+                          b[0] * (static_cast<int_x2_type>(site1.x()) -
+                                  static_cast<int_x2_type>(segm_start1.x()));
+                eint dy = b[0] * (static_cast<int_x2_type>(site1.x()) -
+                                  static_cast<int_x2_type>(segm_start2.x())) -
+                          a[0] * (static_cast<int_x2_type>(site1.y()) -
+                                  static_cast<int_x2_type>(segm_start2.y()));
                 cB[0] = dx * dy;
                 cB[1] = 1;
 
                 if (recompute_c_y) {
                     cA[0] = b[0] * ((point_index == 2) ? 2 : -2);
-                    cA[1] = a[0] * a[0] * (static_cast<int64>(segm_start1.y()) +
-                                           static_cast<int64>(segm_start2.y())) -
-                            a[0] * b[0] * (static_cast<int64>(segm_start1.x()) +
-                                           static_cast<int64>(segm_start2.x()) -
-                                           static_cast<int64>(site1.x()) * 2) +
-                            b[0] * b[0] * (static_cast<int64>(site1.y()) * 2);
+                    cA[1] = a[0] * a[0] * (static_cast<int_x2_type>(segm_start1.y()) +
+                                           static_cast<int_x2_type>(segm_start2.y())) -
+                            a[0] * b[0] * (static_cast<int_x2_type>(segm_start1.x()) +
+                                           static_cast<int_x2_type>(segm_start2.x()) -
+                                           static_cast<int_x2_type>(site1.x()) * 2) +
+                            b[0] * b[0] * (static_cast<int_x2_type>(site1.y()) * 2);
                     fpt_type c_y = get_d(sqrt_expr_.eval2(cA, cB));
                     c_event.y(c_y / denom);
                 }
 
                 if (recompute_c_x || recompute_lower_x) {
                     cA[0] = a[0] * ((point_index == 2) ? 2 : -2);
-                    cA[1] = b[0] * b[0] * (static_cast<int64>(segm_start1.x()) +
-                                           static_cast<int64>(segm_start2.x())) -
-                            a[0] * b[0] * (static_cast<int64>(segm_start1.y()) +
-                                           static_cast<int64>(segm_start2.y()) -
-                                           static_cast<int64>(site1.y()) * 2) +
-                            a[0] * a[0] * (static_cast<int64>(site1.x()) * 2);
+                    cA[1] = b[0] * b[0] * (static_cast<int_x2_type>(segm_start1.x()) +
+                                           static_cast<int_x2_type>(segm_start2.x())) -
+                            a[0] * b[0] * (static_cast<int_x2_type>(segm_start1.y()) +
+                                           static_cast<int_x2_type>(segm_start2.y()) -
+                                           static_cast<int_x2_type>(site1.y()) * 2) +
+                            a[0] * a[0] * (static_cast<int_x2_type>(site1.x()) * 2);
 
                     if (recompute_c_x) {
                         fpt_type c_x = get_d(sqrt_expr_.eval2(cA, cB));
@@ -769,14 +772,14 @@ public:
                 }
                 return;
             }
-            c[0] = b[0] * static_cast<int32>(segm_end1.x()) -
-                   a[0] * static_cast<int32>(segm_end1.y());
-            c[1] = a[1] * static_cast<int32>(segm_end2.y()) -
-                   b[1] * static_cast<int32>(segm_end2.x());
+            c[0] = b[0] * segm_end1.x() -
+                   a[0] * segm_end1.y();
+            c[1] = a[1] * segm_end2.y() -
+                   b[1] * segm_end2.x();
             eint ix = a[0] * c[1] + a[1] * c[0];
             eint iy = b[0] * c[1] + b[1] * c[0];
-            eint dx = ix - orientation * static_cast<int32>(site1.x());
-            eint dy = iy - orientation * static_cast<int32>(site1.y());
+            eint dx = ix - orientation * site1.x();
+            eint dy = iy - orientation * site1.y();
             if (is_zero(dx) && is_zero(dy)) {
                 fpt_type denom = get_d(orientation);
                 fpt_type c_x = get_d(ix) / denom;
@@ -835,26 +838,32 @@ public:
             eint a[3], b[3], c[3], cA[4], cB[4];
             // cA - corresponds to the cross product.
             // cB - corresponds to the squared length.
-            a[0] = static_cast<int64>(site1.x1(true)) -
-                   static_cast<int64>(site1.x0(true));
-            a[1] = static_cast<int64>(site2.x1(true)) -
-                   static_cast<int64>(site2.x0(true));
-            a[2] = static_cast<int64>(site3.x1(true)) -
-                   static_cast<int64>(site3.x0(true));
+            a[0] = static_cast<int_x2_type>(site1.x1(true)) -
+                   static_cast<int_x2_type>(site1.x0(true));
+            a[1] = static_cast<int_x2_type>(site2.x1(true)) -
+                   static_cast<int_x2_type>(site2.x0(true));
+            a[2] = static_cast<int_x2_type>(site3.x1(true)) -
+                   static_cast<int_x2_type>(site3.x0(true));
 
-            b[0] = static_cast<int64>(site1.y1(true)) -
-                   static_cast<int64>(site1.y0(true));
-            b[1] = static_cast<int64>(site2.y1(true)) -
-                   static_cast<int64>(site2.y0(true));
-            b[2] = static_cast<int64>(site3.y1(true)) -
-                   static_cast<int64>(site3.y0(true));
+            b[0] = static_cast<int_x2_type>(site1.y1(true)) -
+                   static_cast<int_x2_type>(site1.y0(true));
+            b[1] = static_cast<int_x2_type>(site2.y1(true)) -
+                   static_cast<int_x2_type>(site2.y0(true));
+            b[2] = static_cast<int_x2_type>(site3.y1(true)) -
+                   static_cast<int_x2_type>(site3.y0(true));
 
-            c[0] = static_cast<int64>(site1.x0(true)) * static_cast<int64>(site1.y1(true)) -
-                   static_cast<int64>(site1.y0(true)) * static_cast<int64>(site1.x1(true));
-            c[1] = static_cast<int64>(site2.x0(true)) * static_cast<int64>(site2.y1(true)) -
-                   static_cast<int64>(site2.y0(true)) * static_cast<int64>(site2.x1(true));
-            c[2] = static_cast<int64>(site3.x0(true)) * static_cast<int64>(site3.y1(true)) -
-                   static_cast<int64>(site3.y0(true)) * static_cast<int64>(site3.x1(true));
+            c[0] = static_cast<int_x2_type>(site1.x0(true)) *
+                   static_cast<int_x2_type>(site1.y1(true)) -
+                   static_cast<int_x2_type>(site1.y0(true)) *
+                   static_cast<int_x2_type>(site1.x1(true));
+            c[1] = static_cast<int_x2_type>(site2.x0(true)) *
+                   static_cast<int_x2_type>(site2.y1(true)) -
+                   static_cast<int_x2_type>(site2.y0(true)) *
+                   static_cast<int_x2_type>(site2.x1(true));
+            c[2] = static_cast<int_x2_type>(site3.x0(true)) *
+                   static_cast<int_x2_type>(site3.y1(true)) -
+                   static_cast<int_x2_type>(site3.y0(true)) *
+                   static_cast<int_x2_type>(site3.x1(true));
 
             for (int i = 0; i < 3; ++i) {
                 cB[i] = a[i] * a[i] + b[i] * b[i];
@@ -1396,8 +1405,8 @@ private:
     }
 };
 
-const uint32 voronoi_calc_utils<int>::ULPS = 64;
-const uint32 voronoi_calc_utils<int>::ULPSx2 = 128;
+const unsigned int voronoi_calc_utils<int>::ULPS = 64;
+const unsigned int voronoi_calc_utils<int>::ULPSx2 = 128;
 const voronoi_calc_utils<int>::fpt_type voronoi_calc_utils<int>::fULPS =
     voronoi_calc_utils<int>::ULPS;
 const voronoi_calc_utils<int>::fpt_type voronoi_calc_utils<int>::fULPSx2 =
