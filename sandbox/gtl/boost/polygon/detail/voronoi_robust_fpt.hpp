@@ -129,7 +129,6 @@ namespace detail {
         static const relative_error_type ROUNDING_ERROR;
 
         robust_fpt() : fpv_(0.0), re_(0.0) {}
-        explicit robust_fpt(int32 fpv) : fpv_(fpv), re_(0.0) {}
         explicit robust_fpt(floating_point_type fpv,
                             bool rounded = true) : fpv_(fpv) {
             re_ = rounded ? ROUNDING_ERROR : 0;
@@ -543,14 +542,6 @@ namespace detail {
 
         bool is_zero() const {
             return value_ == 0;
-        }
-
-        extended_exponent_fpt abs() const {
-            if (value_ >= 0) {
-                return *this;
-            } else {
-                return extended_exponent_fpt(-value_, exponent_);
-            }
         }
 
         extended_exponent_fpt operator-() const {
@@ -1132,7 +1123,6 @@ namespace detail {
     bool is_zero(const extended_int<N>& that) {
         return !that.count();
     }
-
 
     template <typename typeA, typename typeB>
     struct type_converter {

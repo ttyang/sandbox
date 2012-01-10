@@ -24,6 +24,7 @@ class voronoi_calc_utils;
 template <>
 class voronoi_calc_utils<int32> {
 public:
+    typedef int32 int_type;
     typedef fpt64 fpt_type;
 
     static const uint32 ULPS;
@@ -91,14 +92,14 @@ public:
     static kOrientation get_orientation(const Point &point1,
                                         const Point &point2,
                                         const Point &point3) {
-        fpt_type dx1 = static_cast<fpt_type>(point1.x()) -
-                       static_cast<fpt_type>(point2.x());
-        fpt_type dx2 = static_cast<fpt_type>(point2.x()) -
-                       static_cast<fpt_type>(point3.x());
-        fpt_type dy1 = static_cast<fpt_type>(point1.y()) -
-                       static_cast<fpt_type>(point2.y());
-        fpt_type dy2 = static_cast<fpt_type>(point2.y()) -
-                       static_cast<fpt_type>(point3.y());
+        int64 dx1 = static_cast<int64>(point1.x()) -
+                    static_cast<int64>(point2.x());
+        int64 dx2 = static_cast<int64>(point2.x()) -
+                    static_cast<int64>(point3.x());
+        int64 dy1 = static_cast<int64>(point1.y()) -
+                    static_cast<int64>(point2.y());
+        int64 dy2 = static_cast<int64>(point2.y()) -
+                    static_cast<int64>(point3.y());
         return get_orientation(robust_cross_product(dx1, dy1, dx2, dy2));
     }
 

@@ -11,11 +11,7 @@
 #define BOOST_POLYGON_VORONOI_BUILDER
 
 #include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <list>
 #include <map>
-#include <queue>
 #include <vector>
 
 #include "polygon.hpp"
@@ -76,9 +72,7 @@ namespace polygon {
         void insert_points(PointIterator first_point, PointIterator last_point) {
             // Create a site event from each input point.
             for (PointIterator it = first_point; it != last_point; ++it) {
-                site_events_.push_back(detail::site_event<coordinate_type>(
-                    static_cast<coordinate_type>(it->x()),
-                    static_cast<coordinate_type>(it->y())));
+                site_events_.push_back(site_event_type(it->x(), it->y()));
             }
         }
 
@@ -90,18 +84,18 @@ namespace polygon {
             //   3) the segment itself.
             point_comparison_predicate point_comparison;
             for (SegmentIterator it = first_segment; it != last_segment; ++it) {
-                coordinate_type x1 = static_cast<coordinate_type>(it->low().x());
-                coordinate_type y1 = static_cast<coordinate_type>(it->low().y());
-                coordinate_type x2 = static_cast<coordinate_type>(it->high().x());
-                coordinate_type y2 = static_cast<coordinate_type>(it->high().y());
+                int_type x1 = it->low().x();
+                int_type y1 = it->low().y();
+                int_type x2 = it->high().x();
+                int_type y2 = it->high().y();
                 point_type p1(x1, y1);
                 point_type p2(x2, y2);
-                site_events_.push_back(detail::site_event<coordinate_type>(p1));
-                site_events_.push_back(detail::site_event<coordinate_type>(p2));
+                site_events_.push_back(site_event_type(p1));
+                site_events_.push_back(site_event_type(p2));
                 if (point_comparison(p1, p2)) {
-                    site_events_.push_back(detail::site_event<coordinate_type>(p1, p2));
+                    site_events_.push_back(site_event_type(p1, p2));
                 } else {
-                    site_events_.push_back(detail::site_event<coordinate_type>(p2, p1));
+                    site_events_.push_back(site_event_type(p2, p1));
                 }
             }
         }
@@ -156,13 +150,14 @@ namespace polygon {
 
     private:
         typedef detail::voronoi_calc_utils<T> VCU;
-        typedef typename VCU::fpt_type coordinate_type;
+        typedef typename VCU::int_type int_type;
+        typedef typename VCU::fpt_type fpt_type;
 
-        typedef detail::point_2d<coordinate_type> point_type;
-        typedef detail::site_event<coordinate_type> site_event_type;
+        typedef detail::point_2d<int_type> point_type;
+        typedef detail::site_event<int_type> site_event_type;
         typedef typename std::vector<site_event_type>::const_iterator
             site_event_iterator_type;
-        typedef detail::circle_event<coordinate_type> circle_event_type;
+        typedef detail::circle_event<fpt_type> circle_event_type;
         typedef typename VCU::template point_comparison_predicate<point_type>
             point_comparison_predicate;
         typedef typename VCU::
