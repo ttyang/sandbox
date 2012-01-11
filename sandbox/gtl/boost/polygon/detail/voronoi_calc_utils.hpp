@@ -63,22 +63,22 @@ public:
     // with epsilon relative error equal to 1EPS.
     template <typename T>
     static fpt_type robust_cross_product(T a1_, T b1_, T a2_, T b2_) {
-        uint_x2_type a1 = static_cast<uint_x2_type>((a1_ < 0) ? -a1_ : a1_);
-        uint_x2_type b1 = static_cast<uint_x2_type>((b1_ < 0) ? -b1_ : b1_);
-        uint_x2_type a2 = static_cast<uint_x2_type>((a2_ < 0) ? -a2_ : a2_);
-        uint_x2_type b2 = static_cast<uint_x2_type>((b2_ < 0) ? -b2_ : b2_);
+        uint_x2_type a1 = static_cast<uint_x2_type>(is_neg(a1_) ? -a1_ : a1_);
+        uint_x2_type b1 = static_cast<uint_x2_type>(is_neg(b1_) ? -b1_ : b1_);
+        uint_x2_type a2 = static_cast<uint_x2_type>(is_neg(a2_) ? -a2_ : a2_);
+        uint_x2_type b2 = static_cast<uint_x2_type>(is_neg(b2_) ? -b2_ : b2_);
 
         uint_x2_type l = a1 * b2;
         uint_x2_type r = b1 * a2;
 
-        if ((a1_ > 0) ^ (b2_ > 0)) {
-            if ((a2_ > 0) ^ (b1_ > 0))
+        if (is_neg(a1_) ^ is_neg(b2_)) {
+            if (is_neg(a2_) ^ is_neg(b1_))
                 return (l > r) ? -static_cast<fpt_type>(l - r) :
                                   static_cast<fpt_type>(r - l);
             else
                 return -static_cast<fpt_type>(l + r);
         } else {
-            if ((a2_ > 0) ^ (b1_ > 0))
+            if (is_neg(a2_) ^ is_neg(b1_))
                 return static_cast<fpt_type>(l + r);
             else
                 return (l < r) ? -static_cast<fpt_type>(r - l) :
@@ -251,9 +251,9 @@ public:
                 if (new_point.y() >= right_point.y())
                     return true;
             } else {
-                return static_cast<fpt_type>(left_point.y()) +
-                       static_cast<fpt_type>(right_point.y()) <
-                       2.0 * static_cast<fpt_type>(new_point.y());
+                return static_cast<int_x2_type>(left_point.y()) +
+                       static_cast<int_x2_type>(right_point.y()) <
+                       static_cast<int_x2_type>(new_point.y()) * 2;
             }
 
             fpt_type dist1 = find_distance_to_point_arc(left_site, new_point);
@@ -819,7 +819,7 @@ public:
                 }
 
                 if (recompute_lower_x) {
-                    cA[3] = orientation * (dx * dx + dy * dy) * (temp < 0 ? -1 : 1);
+                    cA[3] = orientation * (dx * dx + dy * dy) * (is_neg(temp) ? -1 : 1);
                     fpt_type lower_x = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }

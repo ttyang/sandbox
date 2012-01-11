@@ -146,16 +146,16 @@ namespace detail {
     	    return *this;
         }
 
-        bool is_pos() const {
-            return fpv_ > 0.0;
+        bool has_pos_value() const {
+            return is_pos(fpv_);
         }
 
-        bool is_neg() const {
-            return fpv_ < 0.0;
+        bool has_neg_value() const {
+            return is_neg(fpv_);
         }
 
-        bool is_zero() const {
-            return fpv_ == 0.0;
+        bool has_zero_value() const {
+            return is_zero(fpv_);
         }
 
         robust_fpt operator-() const {
@@ -164,8 +164,8 @@ namespace detail {
 
         robust_fpt& operator+=(const robust_fpt &that) {
             floating_point_type fpv = this->fpv_ + that.fpv_;
-            if ((this->fpv_ >= 0 && that.fpv_ >= 0) ||
-                (this->fpv_ <= 0 && that.fpv_ <= 0))
+            if ((!is_neg(this->fpv_) && !is_neg(that.fpv_)) ||
+                (!is_pos(this->fpv_) && !is_pos(that.fpv_)))
                 this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
                 floating_point_type temp =
@@ -178,8 +178,8 @@ namespace detail {
 
         robust_fpt& operator-=(const robust_fpt &that) {
             floating_point_type fpv = this->fpv_ - that.fpv_;
-            if ((this->fpv_ >= 0 && that.fpv_ <= 0) ||
-                (this->fpv_ <= 0 && that.fpv_ >= 0))
+            if ((!is_neg(this->fpv_) && !is_pos(that.fpv_)) ||
+                (!is_pos(this->fpv_) && !is_neg(that.fpv_)))
                 this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
                 floating_point_type temp =
@@ -205,8 +205,8 @@ namespace detail {
         robust_fpt operator+(const robust_fpt &that) const {
             floating_point_type fpv = this->fpv_ + that.fpv_;
             relative_error_type re;
-            if ((this->fpv_ >= 0 && that.fpv_ >= 0) ||
-                (this->fpv_ <= 0 && that.fpv_ <= 0))
+            if ((!is_neg(this->fpv_) && !is_neg(that.fpv_)) ||
+                (!is_pos(this->fpv_) && !is_pos(that.fpv_)))
                 re = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
                 floating_point_type temp =
@@ -219,8 +219,8 @@ namespace detail {
         robust_fpt operator-(const robust_fpt &that) const {
             floating_point_type fpv = this->fpv_ - that.fpv_;
             relative_error_type re;
-            if ((this->fpv_ >= 0 && that.fpv_ <= 0) ||
-                (this->fpv_ <= 0 && that.fpv_ >= 0))
+            if ((!is_neg(this->fpv_) && !is_pos(that.fpv_)) ||
+                (!is_pos(this->fpv_) && !is_neg(that.fpv_)))
                 re = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
             else {
                 floating_point_type temp =
@@ -243,11 +243,13 @@ namespace detail {
         }
 
         robust_fpt sqrt() const {
-            return robust_fpt(get_sqrt(fpv_), re_ * 0.5 + ROUNDING_ERROR);
+            return robust_fpt(get_sqrt(fpv_),
+                              re_ * static_cast<relative_error_type>(0.5) +
+                              ROUNDING_ERROR);
         }
 
         robust_fpt fabs() const {
-            return (fpv_ >= 0) ? *this : -(*this);
+            return (!is_neg(fpv_)) ? *this : -(*this);
         }
 
     private:
@@ -266,17 +268,17 @@ namespace detail {
 
     template <typename T>
     bool is_pos(const robust_fpt<T>& that) {
-        return that.is_pos();
+        return that.has_pos_value();
     }
 
     template <typename T>
     bool is_neg(const robust_fpt<T>& that) {
-        return that.is_neg();
+        return that.has_neg_value();
     }
 
     template <typename T>
     bool is_zero(const robust_fpt<T>& that) {
-        return that.is_zero();
+        return that.has_zero_value();
     }
 
     // robust_dif consists of two not negative values: value1 and value2.
