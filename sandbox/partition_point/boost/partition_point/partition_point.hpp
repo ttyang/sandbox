@@ -21,7 +21,9 @@ It partition_point( It itBegin, It itEnd, UnaryPred pred ) {
 		It itMid = itBegin;
 		std::advance(itMid, nCount2);
 		if( pred(*itMid) ) {
-			itBegin = ++itMid;
+			// work-around for functors which are not assignable, e.g., lambdas
+			itBegin.~It();
+			new (boost::addressof(itBegin)) It(++itMid);
 			nCount -= nCount2 + 1;
 		} else {
 			nCount = nCount2;

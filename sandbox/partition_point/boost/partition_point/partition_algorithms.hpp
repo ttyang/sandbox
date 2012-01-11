@@ -45,10 +45,10 @@ namespace boost {
 		template< typename It, typename Val, typename BinPred >
 		std::pair<It,It> equal_range(It itBegin,It itEnd,Val const& x,BinPred pred) {
 			// Construct std::pair<It,It> initialized so that transform_iterator functor
-			// does not have to be default-constructible. This is non-standard conformant,
+			// does have to be neither default-constructible nor assignable. This is non-standard conformant,
 			// but may be practical.
-			itBegin=boost::lower_bound(itBegin,itEnd,x,pred);
-			return std::pair<It,It>( itBegin, boost::upper_bound(itBegin,itEnd,x,pred) );
+			It itEqualBegin=boost::lower_bound(itBegin,itEnd,x,pred);
+			return std::pair<It,It>( itEqualBegin, boost::upper_bound(itEqualBegin,itEnd,x,pred) );
 		}
 
 		// According to http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-defects.html#270

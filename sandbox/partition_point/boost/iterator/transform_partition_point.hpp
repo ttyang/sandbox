@@ -20,7 +20,7 @@ transform_iterator<UnaryFunc, Iterator> partition_point( transform_iterator<Unar
     partition_point(
       itBegin.base(),
       itEnd.base(),
-	  boost::bind( pred, boost::bind( itBegin.functor(), _1 ) )
+	  boost::bind( pred, boost::bind<transform_iterator<UnaryFunc, Iterator>::reference>( itBegin.functor(), _1 ) )
     ),
     itBegin.functor()
   );
