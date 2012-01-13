@@ -1,24 +1,53 @@
 
 import testing ;
 
-test-suite boost_scope_exit_tests :
-    [ run world.cpp /boost//unit_test_framework ]
-    [ run world_seq.cpp /boost//unit_test_framework ]
+project : requirements
+    <library>/boost/test//boost_test_exec_monitor
+    <library>/boost//unit_test_framework
+    <link>static
+;
+
+test-suite world_tests :
+    [ run world.cpp ]
+    [ run world_seq.cpp ]
     
-    [ run world_commit.cpp /boost//unit_test_framework ]
-    [ run world_commit_seq.cpp /boost//unit_test_framework ]
+    [ run world_commit.cpp ]
+    [ run world_commit_seq.cpp ]
     
-    [ run world_commit_this.cpp /boost//unit_test_framework ]
-    [ run world_commit_this_seq.cpp /boost//unit_test_framework ]
+    [ run world_commit_this.cpp ]
+    [ run world_commit_this_seq.cpp ]
     
-    [ run world_commit_void.cpp /boost//unit_test_framework ]
+    [ run world_commit_void.cpp ]
     
-    [ run world_all.cpp /boost//unit_test_framework ]
-    [ run world_all_seq.cpp /boost//unit_test_framework ]
+    [ run world_all.cpp ]
+    [ run world_all_seq.cpp ]
     
-    [ run world_commit_tpl.cpp /boost//unit_test_framework ]
-    [ run world_commit_tpl_seq.cpp /boost//unit_test_framework ]
+    [ run world_commit_tpl.cpp ]
+    [ run world_commit_tpl_seq.cpp ]
     
-    [ run world_commit_lambda.cpp /boost//unit_test_framework ]
+    [ run world_commit_lambda.cpp ]
+;
+
+test-suite native_tests :
+    [ run native.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
+    [ run native_tpl.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
+    [ compile-fail native_const_error.cpp : <define>BOOST_TYPEOF_NATIVE ]
+    [ compile-fail native_cv_error.cpp : <define>BOOST_TYPEOF_NATIVE ]
+    # Following test is known to fail on MSVC 7.1 and 8.0.
+    [ run native_tu_test.cpp native_tu1.cpp native_tu2.cpp : : :
+            <define>BOOST_TYPEOF_NATIVE ]
+;
+
+test-suite emulation_tests :
+    [ run native.cpp : : : <define>BOOST_TYPEOF_EMULATION : emulation : ]
+    [ run native_tpl.cpp : : : <define>BOOST_TYPEOF_EMULATION :
+            emulation_tpl : ]
+    [ compile-fail native_const_error.cpp : <define>BOOST_TYPEOF_EMULATION :
+            emulation_const_error : ]
+    [ compile-fail native_cv_error.cpp : <define>BOOST_TYPEOF_EMULATION :
+            emulation_cv_error : ]
+    # Following test is known to fail on MSVC 7.1 and 8.0.
+    [ run native_tu_test.cpp native_tu1.cpp native_tu2.cpp : : :
+            <define>BOOST_TYPEOF_EMULATION : emulation_tu_test : ]
 ;
 

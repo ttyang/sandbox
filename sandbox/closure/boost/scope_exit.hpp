@@ -30,13 +30,13 @@
 #include <boost/preprocessor/punctuation/comma_if.hpp>
 #include <boost/preprocessor/punctuation/paren_if.hpp>
 #include <boost/preprocessor/seq/cat.hpp>
-#include <boost/preprocessor/seq/enum.hpp>
-#include <boost/preprocessor/seq/for_each_i.hpp>
 #include <boost/preprocessor/tuple/elem.hpp>
+#include <boost/preprocessor/tuple/eat.hpp>
 #include <boost/preprocessor/list/append.hpp>
 #include <boost/preprocessor/list/fold_left.hpp>
 #include <boost/preprocessor/list/enum.hpp>
 #include <boost/preprocessor/list/adt.hpp>
+#include <boost/preprocessor/list/for_each_i.hpp>
 
 // PRIVATE/PROTECTED //
 
@@ -192,7 +192,7 @@ extern boost::scope_exit::detail::undeclared BOOST_SCOPE_EXIT_AUX_ARGS;
 // avoidance strategy implemented below is to make an indirect compile-time
 // constant by assigning an enum and use that as type-index-- this only works
 // with the sizeof() approach and not with the typeid() approach.
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1300)
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1300) && !defined(BOOST_TYPEOF_EMULATION)
 
 namespace boost { namespace scope_exit { namespace aux {
         namespace msvc_typeof_this {
@@ -438,9 +438,12 @@ private:
 
 #define BOOST_SCOPE_EXIT_AUX_IMPL(id, traits, unused) \
     ::boost::scope_exit::aux::guard< \
-        BOOST_PP_EXPR_IIF(BOOST_SCOPE_EXIT_AUX_TRAITS_HAS_THIS(traits), \
-            BOOST_TYPEOF(this) /* no need for TYPEDEF THIS MSVC workaround */ \
-        ) \
+        BOOST_PP_IIF(BOOST_SCOPE_EXIT_AUX_TRAITS_HAS_THIS(traits), \
+            /* no need for TYPEDEF THIS MSVC workaround on C++11 */ \
+            BOOST_TYPEOF /* delay expansion for commas in TYPEOF */ \
+        , \
+            BOOST_PP_TUPLE_EAT(1) \
+        )(this) \
     > BOOST_SCOPE_EXIT_AUX_GUARD(id) \
         BOOST_PP_EXPR_IIF(BOOST_SCOPE_EXIT_AUX_TRAITS_HAS_THIS(traits), \
             (this) \
@@ -449,18 +452,22 @@ private:
     BOOST_SCOPE_EXIT_AUX_GUARD(id) = [ \
         BOOST_PP_LIST_ENUM(BOOST_SCOPE_EXIT_AUX_TRAITS_BINDS(traits)) \
     ]( \
-        BOOST_PP_EXPR_IIF(BOOST_SCOPE_EXIT_AUX_TRAITS_HAS_THIS(traits), \
-            BOOST_TYPEOF(this) this_ \
-        ) \
+        BOOST_PP_IIF(BOOST_SCOPE_EXIT_AUX_TRAITS_HAS_THIS(traits), \
+            /* no need for TYPEDEF THIS MSVC workaround on C++11 */ \
+            BOOST_TYPEOF /* delay expansion for commas in TYPEOF */ \
+        , \
+            BOOST_PP_TUPLE_EAT(1) \
+        )(this) \
+        BOOST_PP_EXPR_IIF(BOOST_SCOPE_EXIT_AUX_TRAITS_HAS_THIS(traits), this_) \
     ) mutable -> void
 
 #else // No lambdas.
 
-/** @todo add this_ */
 /** @todo rename binds/BINDS to captures/CAPTURES */
 /** @todo prefix all boost::... as ::boost::.. within macros */
 /** @todo unjustify the newline within macros */
-/** @todo compile ScopeExit original unit tests */
+/** @todo test capture this_ with TYPEOF_EMULATION */
+/** @todo test capture this_ within template with GCC (_TPL) */
 
 // ty: EMPTY() | typename
 #define BOOST_SCOPE_EXIT_AUX_IMPL(id, traits, ty) \
