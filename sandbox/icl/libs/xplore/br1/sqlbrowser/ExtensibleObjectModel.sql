@@ -34,10 +34,32 @@ insert into Dag values (2, 6); -- (2:Blues, 4:Blue Bossa)
 insert into Dag values (3, 6); -- (3:Latin, 4:Blue Bossa)
 
 -- -----------------------------------------------------------------------------
-select Objects.name as Object, Types.name as Type, Dag.Child as Chld, Dag.Parent as Prnt, 
+select Objects.name as Object, Types.name as Type, Dag.Child as ChildId, Dag.Parent as PatentId, 
   (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent
   from Dag
   inner join Objects on     Dag.Child = Objects.id
   inner join Types   on Objects.TypeOf = Types.id
 
+-- -----------------------------------------------------------------------------
+-- The Dag in orderly fashion (parent->chiled) starting from root
+select Dag.Parent as PatentId, Dag.Child as ChildId, 
+  (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent,
+  Objects.name as Object, Types.name as Type 
+  from Dag
+  inner join Objects on     Dag.Child = Objects.id
+  inner join Types   on Objects.TypeOf = Types.id
+  where Dag.Child <> 0
+  order by Dag.Parent, Dag.Child
+
+
 -- ----------------------------------------------------------------------------
+create view Collections as
+select Dag.Parent as PatentId, Dag.Child as ChildId, 
+  (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent,
+  Objects.name as Object, Types.name as Type 
+  from Dag
+  inner join Objects on     Dag.Child = Objects.id
+  inner join Types   on Objects.TypeOf = Types.id
+  where Dag.Child <> 0
+  order by Dag.Parent, Dag.Child
+

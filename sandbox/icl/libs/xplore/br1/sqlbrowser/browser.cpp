@@ -205,8 +205,9 @@ QSqlTableModel* Browser::showTable(const QString &t)
     ext_table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------
 
-    //REV connect(table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
-    connect(ext_table->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
+    connect(ext_table->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT(currentChanged()));
+    //JOFA experiment. Hiding rows
+    //connect(ext_table->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(on_rowSelectChanged()));
 
     updateActions();
     return model;
@@ -337,6 +338,7 @@ void Browser::deselectFirstCell(int selectedRow)
     ext_table->selectionModel()->select(toggleSelection, QItemSelectionModel::Toggle);
 }
 
+//JOFA: Experiments on row hiding. Currently deactivated.
 void Browser::on_rowSelectChanged()
 {
     QModelIndexList currentSelection = ext_table->selectionModel()->selectedIndexes();
