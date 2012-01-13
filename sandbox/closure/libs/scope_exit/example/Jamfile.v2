@@ -1,0 +1,11 @@
+
+import testing ;
+
+test-suite boost_scope_exit_examples :
+    [ run try_catch.cpp ]
+    [ run try_catch_seq.cpp ]
+
+    [ run scope_guard.cpp ]
+    [ run scope_guard_seq.cpp ]
+;
+

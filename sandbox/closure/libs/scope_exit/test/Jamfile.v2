@@ -1,0 +1,24 @@
+
+import testing ;
+
+test-suite boost_scope_exit_tests :
+    [ run world.cpp /boost//unit_test_framework ]
+    [ run world_seq.cpp /boost//unit_test_framework ]
+    
+    [ run world_commit.cpp /boost//unit_test_framework ]
+    [ run world_commit_seq.cpp /boost//unit_test_framework ]
+    
+    [ run world_commit_this.cpp /boost//unit_test_framework ]
+    [ run world_commit_this_seq.cpp /boost//unit_test_framework ]
+    
+    [ run world_commit_void.cpp /boost//unit_test_framework ]
+    
+    [ run world_all.cpp /boost//unit_test_framework ]
+    [ run world_all_seq.cpp /boost//unit_test_framework ]
+    
+    [ run world_commit_tpl.cpp /boost//unit_test_framework ]
+    [ run world_commit_tpl_seq.cpp /boost//unit_test_framework ]
+    
+    [ run world_commit_lambda.cpp /boost//unit_test_framework ]
+;
+
