@@ -46,11 +46,6 @@
 [import ../example/try_catch.cpp]
 [import ../example/scope_guard.cpp]
 
-['
-Alexander Nasonov is the original author.
-Lorenzo Caminiti added support for variadic macros, capture of `this_`, no captures, and `BOOST_SCOPE_EXIT_ALL`.
-]
-
 This library allows to execute arbitrary code when the enclosing scope exits.
 
 [section:intro Introduction]
@@ -440,6 +435,8 @@ The following is a list of most of the examples presented in this documentation 
 
 ['In chronological order.]
 
+Alexander Nasonov is the original library author.
+
 Maxim Yegorushkin for sharing code where he used a local struct to clean up resources.
 
 Andrei Alexandrescu for pointing out the __D_scope_exit__ construct of the __D__ programming language.
@@ -454,4 +451,7 @@ Richard Webb for testing the library on MSVC compiler.
 
 Adam Butcher for a workaround to error C2355 when deducing the type of `this` on some MSVC versions.
 
+Lorenzo Caminiti for variadic macro support, capture of the object `this_`, empty captures, and `BOOST_SCOPE_EXIT_ALL`.
+
 [endsect]
+
