@@ -31,6 +31,10 @@ void test_non_local()
     // ... and one local variable as well:
     int i = 0;
 
+    BOOST_SCOPE_EXIT(void) {
+        BOOST_CHECK(Holder<>::g_long == 3);
+    } BOOST_SCOPE_EXIT_END
+
     BOOST_SCOPE_EXIT( (i) )
     {
         BOOST_CHECK(i == 0);
@@ -169,13 +173,13 @@ void test_types()
     BOOST_CHECK(results[1] == false);
 }
 
-void test_cxx0x()
+void test_cpp11()
 {
-#if defined(BOOST_SCOPE_EXIT_AUX_CXX0X)
+#if !defined(BOOST_NO_LAMBDAS) && !defined(BOOST_SCOPE_EXIT_CONFIG_NO_CPP11)
     int i = 0, j = 1;
 
     {
-        BOOST_SCOPE_EXIT((=))
+        BOOST_SCOPE_EXIT_ALL(=)
         {
             i = j = 1; // modify copies
         };
@@ -184,7 +188,7 @@ void test_cxx0x()
     BOOST_CHECK(j == 1);
 
     {
-        BOOST_SCOPE_EXIT((&))
+        BOOST_SCOPE_EXIT_ALL(&)
         {
             i = 1;
             j = 2;
@@ -196,7 +200,7 @@ void test_cxx0x()
     BOOST_CHECK(j == 2);
 
     {
-        BOOST_SCOPE_EXIT((=)(&j))
+        BOOST_SCOPE_EXIT_ALL(=, &j)
         {
             i = 2; // modify a copy
             j = 3;
@@ -206,7 +210,6 @@ void test_cxx0x()
     }
     BOOST_CHECK(i == 1);
     BOOST_CHECK(j == 3);
-
 #endif
 }
 
@@ -215,6 +218,6 @@ test_suite* init_unit_test_suite( int, char* [] )
     framework::master_test_suite().p_name.value = "Unit test for ScopeExit";
     framework::master_test_suite().add( BOOST_TEST_CASE( &test_non_local ));
     framework::master_test_suite().add( BOOST_TEST_CASE( &test_types     ));
-    framework::master_test_suite().add( BOOST_TEST_CASE( &test_cxx0x     ));
+    framework::master_test_suite().add( BOOST_TEST_CASE( &test_cpp11     ));
     return 0;
 }

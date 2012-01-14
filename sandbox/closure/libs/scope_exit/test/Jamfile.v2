@@ -25,12 +25,13 @@ test-suite world_tests :
     [ run world_checkpoint_all.cpp ]
     [ run world_checkpoint_all_seq.cpp ]
     
-    [ run world_commit_lambda.cpp ]
+    [ run world_lambda.cpp ]
 ;
 
 test-suite native_tests :
     [ run native.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
     [ run native_tpl.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
+    [ run native_this.cpp : : : <define>BOOST_TYPEOF_NATIVE ]
     [ compile-fail native_const_error.cpp : <define>BOOST_TYPEOF_NATIVE ]
     [ compile-fail native_cv_error.cpp : <define>BOOST_TYPEOF_NATIVE ]
     # Following test is known to fail on MSVC 7.1 and 8.0.
@@ -42,6 +43,8 @@ test-suite emulation_tests :
     [ run native.cpp : : : <define>BOOST_TYPEOF_EMULATION : emulation : ]
     [ run native_tpl.cpp : : : <define>BOOST_TYPEOF_EMULATION :
             emulation_tpl : ]
+    [ run native_this.cpp : : : <define>BOOST_TYPEOF_EMULATION :
+            emulation_this : ]
     [ compile-fail native_const_error.cpp : <define>BOOST_TYPEOF_EMULATION :
             emulation_const_error : ]
     [ compile-fail native_cv_error.cpp : <define>BOOST_TYPEOF_EMULATION :

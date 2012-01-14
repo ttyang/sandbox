@@ -45,10 +45,9 @@
 <a name="scope_exit.Tutorial.capturing_variables"></a><a class="link" href="Tutorial.html#scope_exit.Tutorial.capturing_variables" title="Capturing Variables">Capturing Variables</a>
 </h3></div></div></div>
 <p>
-        Imagine that you want to make many modifications to data members of the
-        <code class="computeroutput"><span class="identifier">world</span></code> class in the <code class="computeroutput"><span class="identifier">world</span><span class="special">::</span><span class="identifier">add_person</span></code> function. You start with adding
-        a new <code class="computeroutput"><span class="identifier">person</span></code> object to a
-        vector of persons:
+        Imagine that we want to make many modifications to data members of the <code class="computeroutput"><span class="identifier">world</span></code> class in the <code class="computeroutput"><span class="identifier">world</span><span class="special">::</span><span class="identifier">add_person</span></code>
+        function. You start with adding a new <code class="computeroutput"><span class="identifier">person</span></code>
+        object to a vector of persons:
       </p>
 <pre class="programlisting"><span class="keyword">void</span> <span class="identifier">world</span><span class="special">::</span><span class="identifier">add_person</span><span class="special">(</span><span class="identifier">person</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">a_person</span><span class="special">)</span> <span class="special">{</span>
     <span class="keyword">bool</span> <span class="identifier">commit</span> <span class="special">=</span> <span class="keyword">false</span><span class="special">;</span>
@@ -64,9 +63,9 @@
       </p>
 <p>
         In particular, the last added person must be deleted from <code class="computeroutput"><span class="identifier">persons_</span></code>
-        if the function throws. All you need is to define a delayed action (release
+        if the function throws. All we need is to define a delayed action (release
         of a resource) right after the direct action (resource acquisition). For
-        example (see also <a href="../../../test/world_commit.cpp" target="_top">"world_commit.cpp"</a>):
+        example (see also <a href="../../../test/world.cpp" target="_top">"world.cpp"</a>):
       </p>
 <p>
 </p>
@@ -91,7 +90,10 @@
         declaration. Unlike point <code class="computeroutput"><span class="special">(</span><span class="number">1</span><span class="special">)</span></code>, an execution
         of the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> body will be delayed until
         the end of the current scope. In this case it will be executed either after
-        point <code class="computeroutput"><span class="special">(</span><span class="number">4</span><span class="special">)</span></code> or on any exception.
+        point <code class="computeroutput"><span class="special">(</span><span class="number">4</span><span class="special">)</span></code> or on any exception. (On various versions
+        of the GCC compiler, it is necessary to use <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_TPL.html" title="Macro BOOST_SCOPE_EXIT_TPL">BOOST_SCOPE_EXIT_TPL</a></code>
+        instead of <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT.html" title="Macro BOOST_SCOPE_EXIT">BOOST_SCOPE_EXIT</a></code>
+        within templates, see later in this section for details.)
       </p>
 <p>
         The <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> declaration starts with the
@@ -104,10 +106,7 @@
         will be available inside the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
         body; otherwise, a copy of the variable will be made after the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
         declaration at point <code class="computeroutput"><span class="special">(</span><span class="number">1</span><span class="special">)</span></code> and only the copy will be available inside
-        the body. On various versions of the GCC compiler, it is necessary to use
-        <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_TPL.html" title="Macro BOOST_SCOPE_EXIT_TPL">BOOST_SCOPE_EXIT_TPL</a></code> instead
-        of <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT.html" title="Macro BOOST_SCOPE_EXIT">BOOST_SCOPE_EXIT</a></code> within
-        templates (see later in this section for more details).
+        the body (in this case, the captured variable's type must be <code class="computeroutput"><span class="identifier">CopyConstructible</span></code>).
       </p>
 <p>
         In the example above, the variables <code class="computeroutput"><span class="identifier">commit</span></code>
@@ -134,7 +133,11 @@
 </tr>
 <tr><td align="left" valign="top"><p>
           In order to comply with the STL exception safety requirements, the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> body must never throw (because the
-          library implementation executes the body within a destructor).
+          library implementation executes the body within a destructor). This is
+          true for all <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> macros (including
+          <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_TPL.html" title="Macro BOOST_SCOPE_EXIT_TPL">BOOST_SCOPE_EXIT_TPL</a></code>
+          and <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_ALL.html" title="Macro BOOST_SCOPE_EXIT_ALL">BOOST_SCOPE_EXIT_ALL</a></code>)
+          on both C++03 and C++11.
         </p></td></tr>
 </table></div>
 <p>
@@ -148,7 +151,7 @@
         body so we can compare it with the final value of <code class="computeroutput"><span class="identifier">evolution_</span></code>.
         If the latter was not incremented since we saved it, the rollback action
         inside the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> body should be executed.
-        For example (see also <a href="../../../test/world.cpp" target="_top">"world.cpp"</a>):
+        For example (see also <a href="../../../test/world_checkpoint.cpp" target="_top">"world_checkpoint.cpp"</a>):
       </p>
 <p>
 </p>
@@ -197,7 +200,7 @@
 <p>
         Within a member function, it is also possible to capture the object <code class="computeroutput"><span class="keyword">this</span></code>. However, the special symbol <code class="computeroutput"><span class="identifier">this_</span></code> must be used instead of <code class="computeroutput"><span class="keyword">this</span></code> in the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
         declaration and body to capture and access the object. For example (see also
-        <a href="../../../test/world_commit_this.cpp" target="_top">"world_commit_this.cpp"</a>):
+        <a href="../../../test/world_this.cpp" target="_top">"world_this.cpp"</a>):
       </p>
 <p>
 </p>
@@ -208,7 +211,7 @@
 <p>
       </p>
 <p>
-        On C++11, it is possible (but not required) to directly use <code class="computeroutput"><span class="keyword">this</span></code> instead of the special symbol <code class="computeroutput"><span class="identifier">this_</span></code>. <sup>[<a name="scope_exit.Tutorial.capturing_the_object__this_.f0" href="#ftn.scope_exit.Tutorial.capturing_the_object__this_.f0" class="footnote">4</a>]</sup> For example (see also <a href="../../../test/world_commit_this.cpp" target="_top">"world_commit_this.cpp"</a>):
+        On C++11, it is possible (but not required) to directly use <code class="computeroutput"><span class="keyword">this</span></code> instead of the special symbol <code class="computeroutput"><span class="identifier">this_</span></code>. <sup>[<a name="scope_exit.Tutorial.capturing_the_object__this_.f0" href="#ftn.scope_exit.Tutorial.capturing_the_object__this_.f0" class="footnote">4</a>]</sup> For example (see also <a href="../../../test/world_this.cpp" target="_top">"world_this.cpp"</a>):
       </p>
 <p>
 </p>
@@ -238,7 +241,7 @@
         (similarly to the C syntax that allows to declare a function with no parameter
         using <code class="computeroutput"><span class="identifier">result_type</span> <span class="identifier">func</span><span class="special">(</span><span class="keyword">void</span><span class="special">);</span></code>).
         <sup>[<a name="scope_exit.Tutorial.capturing_no_variable.f0" href="#ftn.scope_exit.Tutorial.capturing_no_variable.f0" class="footnote">5</a>]</sup> For example, this can be useful when the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
-        body only needs to access global variables (see also <a href="../../../test_world_commit_void.cpp" target="_top">"world_commit_void.cpp"</a>):
+        body only needs to access global variables (see also <a href="../../../test/world_void.cpp" target="_top">"world_void.cpp"</a>):
       </p>
 <p>
 </p>
@@ -286,7 +289,7 @@
         that no variable name is specified by these leading captures). Additional
         captures of specific variables can follow the leading <code class="computeroutput"><span class="special">&amp;</span></code>
         or <code class="computeroutput"><span class="special">=</span></code> and they will override
-        the default reference or value captures. For example (see also <a href="../../../test_world_all.cpp" target="_top">"world_all.cpp"</a>):
+        the default reference or value captures. For example (see also <a href="../../../test/world_checkpoint_all.cpp" target="_top">"world_checkpoint_all.cpp"</a>):
       </p>
 <p>
 </p>
@@ -332,16 +335,6 @@
         which is captured by reference (in particular, <code class="computeroutput"><span class="identifier">checkpoint</span></code>,
         <code class="computeroutput"><span class="identifier">prev_id</span></code>, and <code class="computeroutput"><span class="keyword">this</span></code> are captured by value).
       </p>
-<div class="warning"><table border="0" summary="Warning">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../doc/src/images/warning.png"></td>
-<th align="left">Warning</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-          Again, in order to comply with the STL exception safety requirements, the
-          <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> body must never throw.
-        </p></td></tr>
-</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -377,16 +370,6 @@
         The <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_TPL.html" title="Macro BOOST_SCOPE_EXIT_TPL">BOOST_SCOPE_EXIT_TPL</a></code>
         macro has the exact same syntax of <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT.html" title="Macro BOOST_SCOPE_EXIT">BOOST_SCOPE_EXIT</a></code>.
       </p>
-<div class="warning"><table border="0" summary="Warning">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../doc/src/images/warning.png"></td>
-<th align="left">Warning</th>
-</tr>
-<tr><td align="left" valign="top"><p>
-          Again, in order to comply with the STL exception safety requirements, the
-          <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> body must never throw.
-        </p></td></tr>
-</table></div>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
@@ -414,7 +397,17 @@
 <div class="footnote"><p><sup>[<a id="ftn.scope_exit.Tutorial.capturing_all_variables__c__11_only_.f0" href="#scope_exit.Tutorial.capturing_all_variables__c__11_only_.f0" class="para">6</a>] </sup>
           The <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_ALL.html" title="Macro BOOST_SCOPE_EXIT_ALL">BOOST_SCOPE_EXIT_ALL</a></code>
           macro is only defined on C++11 compilers. Using <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_ALL.html" title="Macro BOOST_SCOPE_EXIT_ALL">BOOST_SCOPE_EXIT_ALL</a></code>
-          on C++03 compilers will generate a (possibly cryptic) compiler error.
+          on C++03 compilers will generate a (possibly cryptic) compiler error. Note
+          that a new macro <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_ALL.html" title="Macro BOOST_SCOPE_EXIT_ALL">BOOST_SCOPE_EXIT_ALL</a></code>
+          needed to be introduced instead of reusing <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT.html" title="Macro BOOST_SCOPE_EXIT">BOOST_SCOPE_EXIT</a></code>
+          because <code class="computeroutput"><span class="identifier">BOOST_SCOPE_EXIT</span><span class="special">(&amp;)</span></code> and <code class="computeroutput"><span class="identifier">BOOST_SCOPE_EXIT</span><span class="special">(=)</span></code> could not be distinguished from <code class="computeroutput"><span class="identifier">BOOST_SCOPE_EXIT</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span></code> or
+          <code class="computeroutput"><span class="identifier">BOOST_SCOPE_EXIT</span><span class="special">(</span><span class="identifier">this_</span><span class="special">)</span></code>
+          using the preprocessor because the symbols <code class="computeroutput"><span class="special">&amp;</span></code>
+          and <code class="computeroutput"><span class="special">=</span></code> are neither prefxied
+          or postfixed by alphanumeric tokens (this is not an issue for <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_ALL.html" title="Macro BOOST_SCOPE_EXIT_ALL">BOOST_SCOPE_EXIT_ALL</a></code> which always
+          has <code class="computeroutput"><span class="special">&amp;</span></code> or <code class="computeroutput"><span class="special">=</span></code> as the first capture so the first capture
+          token is never compared with neither <code class="computeroutput"><span class="keyword">void</span></code>
+          of <code class="computeroutput"><span class="identifier">this_</span></code> for this macro).
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.scope_exit.Tutorial.gcc_template_workaround.f0" href="#scope_exit.Tutorial.gcc_template_workaround.f0" class="para">7</a>] </sup>
           GCC versions compliant with C++11 do not present this issue and given that

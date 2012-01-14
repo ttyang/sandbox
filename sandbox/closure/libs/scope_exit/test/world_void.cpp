@@ -1,11 +1,16 @@
 
 #include <boost/scope_exit.hpp>
+#include <boost/typeof/typeof.hpp>
+#include <boost/typeof/std/vector.hpp>
+#include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
 #define BOOST_TEST_MODULE TestWorldVoid
 #include <boost/test/unit_test.hpp>
 #include <vector>
 
+struct person; BOOST_TYPEOF_REGISTER_TYPE(person)
 struct person {};
 
+struct world_t; BOOST_TYPEOF_REGISTER_TYPE(world_t)
 //[test_world_void
 struct world_t {
     std::vector<person> persons;

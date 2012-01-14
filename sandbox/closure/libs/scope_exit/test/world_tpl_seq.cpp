@@ -1,10 +1,16 @@
 
 #include <boost/scope_exit.hpp>
+#include <boost/typeof/typeof.hpp>
+#include <boost/typeof/std/vector.hpp>
+#include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
 #define BOOST_TEST_MODULE TestWorldTplSeq
 #include <boost/test/unit_test.hpp>
+#include <vector>
 
+struct person; BOOST_TYPEOF_REGISTER_TYPE(person)
 struct person {};
 
+template<typename Person> struct world; BOOST_TYPEOF_REGISTER_TEMPLATE(world, 1)
 template<typename Person>
 struct world {
     void add_person(Person const& a_person);

@@ -14,6 +14,7 @@
 #include <iostream>
 #include <sstream>
 
+class person; BOOST_TYPEOF_REGISTER_TYPE(person)
 class person {
     friend class world;
 public:
@@ -30,8 +31,7 @@ private:
     evolution_t evolution_;
 };
 
-BOOST_TYPEOF_REGISTER_TYPE(person)
-
+class world; BOOST_TYPEOF_REGISTER_TYPE(world)
 class world {
 public:
     typedef unsigned int id_t;
@@ -51,8 +51,6 @@ private:
     id_t next_id_;
     std::vector<person> persons_;
 };
-
-BOOST_TYPEOF_REGISTER_TYPE(world)
 
 //[test_world_checkpoint_all_seq
 void world::add_person(person const& a_person) {

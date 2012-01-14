@@ -32,7 +32,7 @@
 <dt><span class="section"><a href="Getting_Started.html#scope_exit.Getting_Started.installation">Installation</a></span></dt>
 </dl></div>
 <p>
-      This section explains how to setup your system to use this library.
+      This section explains how to setup a system to use this library.
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -46,7 +46,11 @@
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
             MSVC 7.1 and 8.0 fail to link if a function with <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
-            is included by multiple translation units.
+            is included by multiple translation units. Furthermore, on MSVC 7.1 and
+            8.0 it is possible to capture the object <code class="computeroutput"><span class="identifier">this_</span></code>
+            only with native <a href="../../../../../libs/typeof/index.html" target="_top">Boost.Typeof</a>
+            (and not in <a href="../../../../../libs/typeof/index.html" target="_top">Boost.Typeof</a>
+            emulation mode).
           </li>
 <li class="listitem">
             GCC 3.3 cannot compile <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> inside
@@ -84,7 +88,7 @@
         When using comma-separated lists to specify captures (see the <a class="link" href="No_Variadic_Macros.html" title="Annex: No Variadic Macros">No
         Variadic Macros</a> section), make sure that the <code class="computeroutput"><span class="identifier">BOOST_PP_VARIADICS</span></code>
         macro is defined (either automatically by <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor</a>
-        or manually using your compiler options <code class="computeroutput"><span class="special">-</span><span class="identifier">D</span></code>, <code class="computeroutput"><span class="special">/</span><span class="identifier">D</span></code>, etc). <sup>[<a name="scope_exit.Getting_Started.installation.f0" href="#ftn.scope_exit.Getting_Started.installation.f0" class="footnote">2</a>]</sup>
+        or manually using compiler options <code class="computeroutput"><span class="special">-</span><span class="identifier">D</span></code>, <code class="computeroutput"><span class="special">/</span><span class="identifier">D</span></code>, etc). <sup>[<a name="scope_exit.Getting_Started.installation.f0" href="#ftn.scope_exit.Getting_Started.installation.f0" class="footnote">2</a>]</sup>
       </p>
 </div>
 <div class="footnotes">
