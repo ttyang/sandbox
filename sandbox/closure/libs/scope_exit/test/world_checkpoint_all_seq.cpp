@@ -8,7 +8,7 @@
 #include <boost/typeof/typeof.hpp>
 #include <boost/typeof/std/vector.hpp>
 #include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
-#define BOOST_TEST_MODULE TestWorldAllSeq
+#define BOOST_TEST_MODULE TestWorldCheckpointAllSeq
 #include <boost/test/unit_test.hpp>
 #include <vector>
 #include <iostream>
@@ -54,7 +54,7 @@ private:
 
 BOOST_TYPEOF_REGISTER_TYPE(world)
 
-//[test_world_all_seq
+//[test_world_checkpoint_all_seq
 void world::add_person(person const& a_person) {
     persons_.push_back(a_person);
 
@@ -85,7 +85,7 @@ void world::add_person(person const& a_person) {
 }
 //]
 
-BOOST_AUTO_TEST_CASE( test_world_all_seq ) {
+BOOST_AUTO_TEST_CASE( test_world_checkpoint_all_seq ) {
     person adam, eva;
     std::ostringstream oss;
     oss << adam;

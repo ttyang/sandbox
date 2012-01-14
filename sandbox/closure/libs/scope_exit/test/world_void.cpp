@@ -1,12 +1,12 @@
 
 #include <boost/scope_exit.hpp>
-//#define BOOST_TEST_MODULE TestWorldCommitVoid
-//#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_MODULE TestWorldVoid
+#include <boost/test/unit_test.hpp>
 #include <vector>
 
 struct person {};
 
-//[test_world_commit_void
+//[test_world_void
 struct world_t {
     std::vector<person> persons;
     bool commit;
@@ -26,11 +26,9 @@ void add_person(person const& a_person) {
 }
 //]
 
-//BOOST_AUTO_TEST_CASE( test_world_commit_void ) {
-int main() {
+BOOST_AUTO_TEST_CASE( test_world_void ) {
     person p;
     add_person(p);
-//    BOOST_CHECK( world.persons.size() == 1 );
-    return 0;
+    BOOST_CHECK( world.persons.size() == 1 );
 }
 

@@ -1,6 +1,6 @@
 
 #include <boost/scope_exit.hpp>
-#define BOOST_TEST_MODULE TestWorldCommitTplSeq
+#define BOOST_TEST_MODULE TestWorldTplSeq
 #include <boost/test/unit_test.hpp>
 
 struct person {};
@@ -11,7 +11,7 @@ struct world {
     std::vector<Person> persons_;
 };
 
-//[test_world_commit_tpl_seq
+//[test_world_tpl_seq
 template<typename Person>
 void world<Person>::add_person(Person const& a_person) {
     bool commit = false;
@@ -27,7 +27,7 @@ void world<Person>::add_person(Person const& a_person) {
 }
 //]
 
-BOOST_AUTO_TEST_CASE( test_world_commit_tpl_seq ) {
+BOOST_AUTO_TEST_CASE( test_world_tpl_seq ) {
     world<person> w;
     person p;
     w.add_person(p);

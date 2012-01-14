@@ -3,7 +3,7 @@
 
 #ifndef BOOST_NO_LAMBDAS
 
-#define BOOST_TEST_MODULE TestWorldCommitLambda
+#define BOOST_TEST_MODULE TestWorldLambda
 #include <boost/test/unit_test.hpp>
 #include <vector>
 
@@ -14,7 +14,7 @@ struct world {
     std::vector<person> persons_;
 };
 
-//[test_world_commit_lambda
+//[test_world_lambda
 #include <functional>
 
 struct scope_exit {
@@ -38,7 +38,7 @@ void world::add_person(person const& a_person) {
 }
 //]
 
-BOOST_AUTO_TEST_CASE( test_world_commit_lambda ) {
+BOOST_AUTO_TEST_CASE( test_world_lambda ) {
     world w;
     person p;
     w.add_person(p);

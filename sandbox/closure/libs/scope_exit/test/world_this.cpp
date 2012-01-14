@@ -1,7 +1,7 @@
 
 #include <boost/scope_exit.hpp>
 #include <boost/config.hpp>
-#define BOOST_TEST_MODULE TestWorldCommitThis
+#define BOOST_TEST_MODULE TestWorldThis
 #include <boost/test/unit_test.hpp>
 #include <vector>
 
@@ -17,13 +17,13 @@ void world::add_person(person const& a_person) {
 
     persons_.push_back(a_person);
 #ifdef BOOST_NO_LAMBDAS
-    //[test_world_commit_this_
+    //[test_world_this_
     BOOST_SCOPE_EXIT(&commit, this_) { // Capture object `this_`.
         if(!commit) this_->persons_.pop_back();
     } BOOST_SCOPE_EXIT_END
     //]
 #else
-    //[test_world_commit_this
+    //[test_world_this
     BOOST_SCOPE_EXIT(&commit, this) { // Use `this` (C++11).
         if(!commit) this->persons_.pop_back();
     }; // Use `;` instead of `BOOST_SCOPE_EXIT_END` (C++11).
@@ -35,7 +35,7 @@ void world::add_person(person const& a_person) {
     commit = true;
 }
 
-BOOST_AUTO_TEST_CASE( test_world_commit_this ) {
+BOOST_AUTO_TEST_CASE( test_world_this ) {
     world w;
     person p;
     w.add_person(p);
