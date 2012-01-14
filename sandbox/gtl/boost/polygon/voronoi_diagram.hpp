@@ -1007,10 +1007,10 @@ namespace polygon {
                 const voronoi_vertex_type *v2 = edge_it1->vertex1();
 
                 // Make epsilon robust check.
-                if (detail::almost_equal(v1->vertex().x(),
-                                         v2->vertex().x(), 256) &&
-                    detail::almost_equal(v1->vertex().y(),
-                                         v2->vertex().y(), 256)) {
+                if (ulp_cmp(v1->vertex().x(), v2->vertex().x(), 256) ==
+                    detail::ulp_comparison<T>::EQUAL &&
+                    ulp_cmp(v1->vertex().y(), v2->vertex().y(), 256) ==
+                    detail::ulp_comparison<T>::EQUAL) {
                     // Decrease number of cell's incident edges.
                     edge_it1->cell()->dec_num_incident_edges();
                     edge_it1->twin()->cell()->dec_num_incident_edges();
@@ -1154,6 +1154,7 @@ namespace polygon {
         int num_vertex_records_;
 
         BRect<coordinate_type> voronoi_rect_;
+        detail::ulp_comparison<T> ulp_cmp;
 
         // Disallow copy constructor and operator=
         voronoi_diagram(const voronoi_diagram&);

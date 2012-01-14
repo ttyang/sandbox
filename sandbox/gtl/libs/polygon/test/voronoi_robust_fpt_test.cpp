@@ -563,13 +563,15 @@ public:
                 }
             }
             fpt64 received_val = get_d(sqrt_expr_.eval4(A, B));
-            ret_val &= almost_equal(expected_val, received_val, 25);
+            ret_val &= ulp_cmp(expected_val, received_val, 25) ==
+                       ulp_comparison<fpt64>::EQUAL;
         }
         return ret_val;
     }
 
 private:
     robust_sqrt_expr<_int, _fpt> sqrt_expr_;
+    ulp_comparison<fpt64> ulp_cmp;
     _int A[MX_SQRTS];
     _int B[MX_SQRTS];
     int64 a[MX_SQRTS];

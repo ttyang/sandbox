@@ -16,6 +16,8 @@
 #include "boost/polygon/detail/voronoi_calc_utils.hpp"
 using namespace boost::polygon::detail;
 
+ulp_comparison<double> ulp_cmp;
+
 typedef voronoi_calc_utils<int> VCU;
 typedef point_2d<int> point_type;
 typedef site_event<int> site_type;
@@ -58,9 +60,9 @@ VCU::circle_formation_predicate<site_type, circle_type, CEP_type, lazy_CFF_type>
     }
 
 #define CHECK_CIRCLE(circle, c_x, c_y, l_x) \
-    BOOST_CHECK_EQUAL(almost_equal(c1.x(), c_x, 10), true); \
-    BOOST_CHECK_EQUAL(almost_equal(c1.y(), c_y, 10), true); \
-    BOOST_CHECK_EQUAL(almost_equal(c1.lower_x(), l_x, 10), true)
+    BOOST_CHECK_EQUAL(ulp_cmp(c1.x(), c_x, 10), ulp_comparison<double>::EQUAL); \
+    BOOST_CHECK_EQUAL(ulp_cmp(c1.y(), c_y, 10), ulp_comparison<double>::EQUAL); \
+    BOOST_CHECK_EQUAL(ulp_cmp(c1.lower_x(), l_x, 10), ulp_comparison<double>::EQUAL)
 
 #define CHECK_CIRCLE_EXISTENCE(s1, s2, s3, RES) \
   { circle_type c1; \

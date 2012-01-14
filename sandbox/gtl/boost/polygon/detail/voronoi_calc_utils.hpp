@@ -29,6 +29,7 @@ public:
     typedef int64 int_x2_type;
     typedef uint64 uint_x2_type;
     typedef fpt64 fpt_type;
+    typedef ulp_comparison<fpt_type> ulp_cmp_type;
 
     static const unsigned int ULPS;
     static const unsigned int ULPSx2;
@@ -165,44 +166,46 @@ public:
         }
 
         bool operator()(const site_type &lhs, const circle_type &rhs) const {
-            if (almost_equal(static_cast<fpt_type>(lhs.x()),
-                             static_cast<fpt_type>(rhs.lower_x()), ULPS)) {
-                if (almost_equal(static_cast<fpt_type>(lhs.y()),
-                                 static_cast<fpt_type>(rhs.lower_y()), ULPS)) {
-                    return false;
-                }
-                return static_cast<fpt_type>(lhs.y()) <
-                       static_cast<fpt_type>(rhs.lower_y());
+            ulp_cmp_type::kResult xCmp =
+                ulp_cmp(static_cast<fpt_type>(lhs.x()),
+                        static_cast<fpt_type>(rhs.lower_x()), ULPS);
+            if (xCmp != ulp_cmp_type::EQUAL) {
+                return xCmp == ulp_cmp_type::LESS;
             }
-            return static_cast<fpt_type>(lhs.x()) <
-                   static_cast<fpt_type>(rhs.lower_x());
+            ulp_cmp_type::kResult yCmp =
+                ulp_cmp(static_cast<fpt_type>(lhs.y()),
+                        static_cast<fpt_type>(rhs.lower_y()), ULPS);
+            return yCmp == ulp_cmp_type::LESS;
         }
 
         bool operator()(const circle_type &lhs, const site_type &rhs) const {
-            if (almost_equal(static_cast<fpt_type>(lhs.lower_x()),
-                             static_cast<fpt_type>(rhs.x()), ULPS)) {
-                if (almost_equal(static_cast<fpt_type>(lhs.lower_y()),
-                                 static_cast<fpt_type>(rhs.y()), ULPS)) {
-                    return false;
-                }
-                return static_cast<fpt_type>(lhs.lower_y()) <
-                       static_cast<fpt_type>(rhs.y());
+            ulp_cmp_type::kResult xCmp =
+                ulp_cmp(static_cast<fpt_type>(lhs.lower_x()),
+                        static_cast<fpt_type>(rhs.x()), ULPS);
+            if (xCmp != ulp_cmp_type::EQUAL) {
+                return xCmp == ulp_cmp_type::LESS;
             }
-            return static_cast<fpt_type>(lhs.lower_x()) <
-                   static_cast<fpt_type>(rhs.x());
+            ulp_cmp_type::kResult yCmp =
+                ulp_cmp(static_cast<fpt_type>(lhs.lower_y()),
+                        static_cast<fpt_type>(rhs.y()), ULPS);
+            return yCmp == ulp_cmp_type::LESS;
         }
 
         bool operator()(const circle_type &lhs, const circle_type &rhs) const {
-            if (almost_equal(static_cast<fpt_type>(lhs.lower_x()),
-                             static_cast<fpt_type>(rhs.lower_x()), ULPSx2)) {
-                if (almost_equal(static_cast<fpt_type>(lhs.lower_y()),
-                                 static_cast<fpt_type>(rhs.lower_y()), ULPSx2)) {
-                    return false;
-                }
-                return lhs.lower_y() < rhs.lower_y();
+            ulp_cmp_type::kResult xCmp =
+                ulp_cmp(static_cast<fpt_type>(lhs.lower_x()),
+                        static_cast<fpt_type>(rhs.lower_x()), ULPS);
+            if (xCmp != ulp_cmp_type::EQUAL) {
+                return xCmp == ulp_cmp_type::LESS;
             }
-            return lhs.lower_x() < rhs.lower_x();
+            ulp_cmp_type::kResult yCmp =
+                ulp_cmp(static_cast<fpt_type>(lhs.lower_y()),
+                        static_cast<fpt_type>(rhs.lower_y()), ULPS);
+            return yCmp == ulp_cmp_type::LESS;
         }
+
+    private:
+        ulp_cmp_type ulp_cmp;
     };
 
     template <typename Site>
@@ -370,13 +373,17 @@ public:
 
             fpt_type fast_left_expr = a * (dif_y + dif_x) * (dif_y - dif_x);
             fpt_type fast_right_expr = (static_cast<fpt_type>(2) * b) * dif_x * dif_y;
-            if (!(almost_equal(fast_left_expr, fast_right_expr, 4))) {
-                if ((fast_left_expr > fast_right_expr) ^ reverse_order)
+            ulp_cmp_type::kResult expr_cmp = ulp_cmp(fast_left_expr, fast_right_expr, 4);
+            if (expr_cmp != ulp_cmp_type::EQUAL) {
+                if ((expr_cmp == ulp_cmp_type::MORE) ^ reverse_order)
                     return reverse_order ? LESS : MORE;
                 return UNDEFINED;
             }
             return UNDEFINED;
         }
+
+    private:
+        ulp_cmp_type ulp_cmp;
     };
 
     template <typename Node>
@@ -503,7 +510,9 @@ public:
                 if (!site2.is_inverse() && site3.is_inverse())
                     return false;
                 if (site2.is_inverse() == site3.is_inverse() &&
-                    get_orientation(site2.point0(true), site1.point0(), site3.point1(true)) != RIGHT)
+                    get_orientation(site2.point0(true),
+                                    site1.point0(),
+                                    site3.point1(true)) != RIGHT)
                     return false;
             }
             return true;
@@ -1058,16 +1067,18 @@ public:
             fpt_type vec_y = static_cast<fpt_type>(site1.x()) -
                              static_cast<fpt_type>(site2.x());
             robust_fpt_type teta(robust_cross_product(line_a, line_b, -vec_y, vec_x), 1.0);
-            robust_fpt_type A(robust_cross_product(line_a, line_b,
-                                                   static_cast<fpt_type>(site3.point1().y()) -
-                                                   static_cast<fpt_type>(site1.y()),
-                                                   static_cast<fpt_type>(site1.x()) -
-                                                   static_cast<fpt_type>(site3.point1().x())), 1.0);
-            robust_fpt_type B(robust_cross_product(line_a, line_b,
-                                                   static_cast<fpt_type>(site3.point1().y()) -
-                                                   static_cast<fpt_type>(site2.y()),
-                                                   static_cast<fpt_type>(site2.x()) -
-                                                   static_cast<fpt_type>(site3.point1().x())), 1.0);
+            robust_fpt_type A(robust_cross_product(
+                line_a, line_b,
+                static_cast<fpt_type>(site3.point1().y()) -
+                static_cast<fpt_type>(site1.y()),
+                static_cast<fpt_type>(site1.x()) -
+                static_cast<fpt_type>(site3.point1().x())), 1.0);
+            robust_fpt_type B(robust_cross_product(
+                line_a, line_b,
+                static_cast<fpt_type>(site3.point1().y()) -
+                static_cast<fpt_type>(site2.y()),
+                static_cast<fpt_type>(site2.x()) -
+                static_cast<fpt_type>(site3.point1().x())), 1.0);
             robust_fpt_type denom(robust_cross_product(vec_x, vec_y, line_a, line_b), 1.0);
             robust_fpt_type inv_segm_len(1.0 / get_sqrt(sqr_distance(line_a, line_b)), 3.0);
             robust_dif_type t;
@@ -1133,21 +1144,25 @@ public:
             robust_fpt_type orientation(robust_cross_product(b1, a1, b2, a2), 1.0);
             if (get_orientation(orientation) == COLLINEAR) {
                 robust_fpt_type a(a1 * a1 + b1 * b1, 2.0);
-                robust_fpt_type c(robust_cross_product(b1, a1,
-                                                       static_cast<fpt_type>(segm_start2.y()) -
-                                                       static_cast<fpt_type>(segm_start1.y()),
-                                                       static_cast<fpt_type>(segm_start2.x()) -
-                                                       static_cast<fpt_type>(segm_start1.x())), 1.0);
-                robust_fpt_type det(robust_cross_product(a1, b1,
-                                                         static_cast<fpt_type>(site1.x()) -
-                                                         static_cast<fpt_type>(segm_start1.x()),
-                                                         static_cast<fpt_type>(site1.y()) -
-                                                         static_cast<fpt_type>(segm_start1.y())) *
-                                    robust_cross_product(b1, a1,
-                                                         static_cast<fpt_type>(site1.y()) -
-                                                         static_cast<fpt_type>(segm_start2.y()),
-                                                         static_cast<fpt_type>(site1.x()) -
-                                                         static_cast<fpt_type>(segm_start2.x())), 3.0);
+                robust_fpt_type c(robust_cross_product(
+                    b1, a1,
+                    static_cast<fpt_type>(segm_start2.y()) -
+                    static_cast<fpt_type>(segm_start1.y()),
+                    static_cast<fpt_type>(segm_start2.x()) -
+                    static_cast<fpt_type>(segm_start1.x())), 1.0);
+                robust_fpt_type det(
+                    robust_cross_product(
+                        a1, b1,
+                        static_cast<fpt_type>(site1.x()) -
+                        static_cast<fpt_type>(segm_start1.x()),
+                        static_cast<fpt_type>(site1.y()) -
+                        static_cast<fpt_type>(segm_start1.y())) *
+                    robust_cross_product(
+                        b1, a1,
+                        static_cast<fpt_type>(site1.y()) -
+                        static_cast<fpt_type>(segm_start2.y()),
+                        static_cast<fpt_type>(site1.x()) -
+                        static_cast<fpt_type>(segm_start2.x())), 3.0);
                 robust_dif_type t;
                 t -= robust_fpt_type(a1, false) * robust_fpt_type(
                     (static_cast<fpt_type>(segm_start1.x()) +
@@ -1173,7 +1188,11 @@ public:
                     static_cast<fpt_type>(segm_start2.y())), false);
                 c_y += robust_fpt_type(b1, false) * t;
                 robust_dif_type lower_x(c_x);
-                lower_x += robust_fpt_type(0.5, false) * c.fabs() / a.sqrt();
+                if (is_neg(c)) {
+                    lower_x -= robust_fpt_type(0.5, false) * c / a.sqrt();
+                } else {
+                    lower_x += robust_fpt_type(0.5, false) * c / a.sqrt();
+                }
                 recompute_c_x = c_x.dif().ulp() > fULPS;
                 recompute_c_y = c_y.dif().ulp() > fULPS;
                 recompute_lower_x = lower_x.dif().ulp() > fULPS;
@@ -1187,23 +1206,27 @@ public:
                 } else {
                     a = (orientation * orientation) / (sqr_sum1 * sqr_sum2 - a);
                 }
-                robust_fpt_type or1(robust_cross_product(b1, a1,
-                                                         static_cast<fpt_type>(segm_end1.y()) -
-                                                         static_cast<fpt_type>(site1.y()),
-                                                         static_cast<fpt_type>(segm_end1.x()) -
-                                                         static_cast<fpt_type>(site1.x())), 1.0);
-                robust_fpt_type or2(robust_cross_product(a2, b2,
-                                                         static_cast<fpt_type>(segm_end2.x()) -
-                                                         static_cast<fpt_type>(site1.x()),
-                                                         static_cast<fpt_type>(segm_end2.y()) -
-                                                         static_cast<fpt_type>(site1.y())), 1.0);
+                robust_fpt_type or1(robust_cross_product(
+                    b1, a1,
+                    static_cast<fpt_type>(segm_end1.y()) -
+                    static_cast<fpt_type>(site1.y()),
+                    static_cast<fpt_type>(segm_end1.x()) -
+                    static_cast<fpt_type>(site1.x())), 1.0);
+                robust_fpt_type or2(robust_cross_product(
+                    a2, b2,
+                    static_cast<fpt_type>(segm_end2.x()) -
+                    static_cast<fpt_type>(site1.x()),
+                    static_cast<fpt_type>(segm_end2.y()) -
+                    static_cast<fpt_type>(site1.y())), 1.0);
                 robust_fpt_type det = robust_fpt_type(2.0, false) * a * or1 * or2;
-                robust_fpt_type c1(robust_cross_product(b1, a1,
-                                                        static_cast<fpt_type>(segm_end1.y()),
-                                                        static_cast<fpt_type>(segm_end1.x())), 1.0);
-                robust_fpt_type c2(robust_cross_product(a2, b2,
-                                                        static_cast<fpt_type>(segm_end2.x()),
-                                                        static_cast<fpt_type>(segm_end2.y())), 1.0);
+                robust_fpt_type c1(robust_cross_product(
+                    b1, a1,
+                    static_cast<fpt_type>(segm_end1.y()),
+                    static_cast<fpt_type>(segm_end1.x())), 1.0);
+                robust_fpt_type c2(robust_cross_product(
+                    a2, b2,
+                    static_cast<fpt_type>(segm_end2.x()),
+                    static_cast<fpt_type>(segm_end2.y())), 1.0);
                 robust_fpt_type inv_orientation = robust_fpt_type(1.0, false) / orientation;
                 robust_dif_type t, b, ix, iy;
                 ix += robust_fpt_type(a2, false) * c1 * inv_orientation;
@@ -1215,12 +1238,14 @@ public:
                 b += ix * (robust_fpt_type(a2, false) * sqr_sum1);
                 b += iy * (robust_fpt_type(b1, false) * sqr_sum2);
                 b += iy * (robust_fpt_type(b2, false) * sqr_sum1);
-                b -= sqr_sum1 * robust_fpt_type(robust_cross_product(a2, b2,
-                                                                     static_cast<fpt_type>(-site1.y()),
-                                                                     static_cast<fpt_type>(site1.x())), 1.0);
-                b -= sqr_sum2 * robust_fpt_type(robust_cross_product(a1, b1,
-                                                                     static_cast<fpt_type>(-site1.y()),
-                                                                     static_cast<fpt_type>(site1.x())), 1.0);
+                b -= sqr_sum1 * robust_fpt_type(robust_cross_product(
+                    a2, b2,
+                    static_cast<fpt_type>(-site1.y()),
+                    static_cast<fpt_type>(site1.x())), 1.0);
+                b -= sqr_sum2 * robust_fpt_type(robust_cross_product(
+                    a1, b1,
+                    static_cast<fpt_type>(-site1.y()),
+                    static_cast<fpt_type>(site1.x())), 1.0);
                 t -= b;
                 if (point_index == 2) {
                     t += det.sqrt();
@@ -1237,7 +1262,11 @@ public:
                     t = -t;
                 }
                 robust_dif_type lower_x(c_x);
-                lower_x += t * orientation.fabs();
+                if (is_neg(orientation)) {
+                    lower_x -= t * orientation;
+                } else {
+                    lower_x += t * orientation;
+                }
                 recompute_c_x = c_x.dif().ulp() > fULPS;
                 recompute_c_y = c_y.dif().ulp() > fULPS;
                 recompute_lower_x = lower_x.dif().ulp() > fULPS;
@@ -1258,26 +1287,32 @@ public:
                                static_cast<fpt_type>(site1.x0(true)), 0.0);
             robust_fpt_type b1(static_cast<fpt_type>(site1.y1(true)) -
                                static_cast<fpt_type>(site1.y0(true)), 0.0);
-            robust_fpt_type c1(robust_cross_product(site1.x0(true), site1.y0(true), site1.x1(true), site1.y1(true)), 1.0);
+            robust_fpt_type c1(robust_cross_product(
+                site1.x0(true), site1.y0(true), site1.x1(true), site1.y1(true)), 1.0);
 
             robust_fpt_type a2(static_cast<fpt_type>(site2.x1(true)) -
                                static_cast<fpt_type>(site2.x0(true)), 0.0);
             robust_fpt_type b2(static_cast<fpt_type>(site2.y1(true)) -
                                static_cast<fpt_type>(site2.y0(true)), 0.0);
-            robust_fpt_type c2(robust_cross_product(site2.x0(true), site2.y0(true), site2.x1(true), site2.y1(true)), 1.0);
+            robust_fpt_type c2(robust_cross_product(
+                site2.x0(true), site2.y0(true), site2.x1(true), site2.y1(true)), 1.0);
 
             robust_fpt_type a3(static_cast<fpt_type>(site3.x1(true)) -
                                static_cast<fpt_type>(site3.x0(true)), 0.0);
             robust_fpt_type b3(static_cast<fpt_type>(site3.y1(true)) -
                                static_cast<fpt_type>(site3.y0(true)), 0.0);
-            robust_fpt_type c3(robust_cross_product(site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true)), 1.0);
+            robust_fpt_type c3(robust_cross_product(
+                site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true)), 1.0);
 
             robust_fpt_type len1 = (a1 * a1 + b1 * b1).sqrt();
             robust_fpt_type len2 = (a2 * a2 + b2 * b2).sqrt();
             robust_fpt_type len3 = (a3 * a3 + b3 * b3).sqrt();
-            robust_fpt_type cross_12(robust_cross_product(a1.fpv(), b1.fpv(), a2.fpv(), b2.fpv()), 1.0);
-            robust_fpt_type cross_23(robust_cross_product(a2.fpv(), b2.fpv(), a3.fpv(), b3.fpv()), 1.0);
-            robust_fpt_type cross_31(robust_cross_product(a3.fpv(), b3.fpv(), a1.fpv(), b1.fpv()), 1.0);
+            robust_fpt_type cross_12(robust_cross_product(
+                a1.fpv(), b1.fpv(), a2.fpv(), b2.fpv()), 1.0);
+            robust_fpt_type cross_23(robust_cross_product(
+                a2.fpv(), b2.fpv(), a3.fpv(), b3.fpv()), 1.0);
+            robust_fpt_type cross_31(robust_cross_product(
+                a3.fpv(), b3.fpv(), a1.fpv(), b1.fpv()), 1.0);
             robust_dif_type denom, c_x, c_y, r;
 
             // denom = cross_12 * len3 + cross_23 * len1 + cross_31 * len2.

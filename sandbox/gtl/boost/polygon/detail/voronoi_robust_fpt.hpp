@@ -67,32 +67,40 @@ namespace detail {
     // sign-magnitude integers. Values are considered to be almost equal if
     // their integer reinterpretations differ in not more than maxUlps units.
     template <typename _fpt>
-    bool almost_equal(_fpt a, _fpt b, uint32 ulps);
+    struct ulp_comparison;
 
-    template<>
-    bool almost_equal<fpt64>(fpt64 a, fpt64 b, uint32 maxUlps) {
-        uint64 ll_a, ll_b;
+    template <>
+    struct ulp_comparison<fpt64> {
+        enum kResult {
+            LESS = -1,
+            EQUAL = 0,
+            MORE = 1
+        };
 
-        // Reinterpret double bits as 64-bit signed integer.
-        memcpy(&ll_a, &a, sizeof(fpt64));
-        memcpy(&ll_b, &b, sizeof(fpt64));
+        kResult operator()(fpt64 a, fpt64 b, unsigned int maxUlps) const {
+            uint64 ll_a, ll_b;
 
-        // Positive 0.0 is integer zero. Negative 0.0 is 0x8000000000000000.
-        // Map negative zero to an integer zero representation - making it
-        // identical to positive zero - the smallest negative number is
-        // represented by negative one, and downwards from there.
-        if (ll_a < 0x8000000000000000ULL)
-            ll_a = 0x8000000000000000ULL - ll_a;
-        if (ll_b < 0x8000000000000000ULL)
-            ll_b = 0x8000000000000000ULL - ll_b;
+            // Reinterpret double bits as 64-bit signed integer.
+            memcpy(&ll_a, &a, sizeof(fpt64));
+            memcpy(&ll_b, &b, sizeof(fpt64));
 
-        // Compare 64-bit signed integer representations of input values.
-        // Difference in 1 Ulp is equivalent to a relative error of between
-        // 1/4,000,000,000,000,000 and 1/8,000,000,000,000,000.
-        if (ll_a > ll_b)
-            return ll_a - ll_b <= maxUlps;
-        return ll_b - ll_a <= maxUlps;
-    }
+            // Positive 0.0 is integer zero. Negative 0.0 is 0x8000000000000000.
+            // Map negative zero to an integer zero representation - making it
+            // identical to positive zero - the smallest negative number is
+            // represented by negative one, and downwards from there.
+            if (ll_a < 0x8000000000000000ULL)
+                ll_a = 0x8000000000000000ULL - ll_a;
+            if (ll_b < 0x8000000000000000ULL)
+                ll_b = 0x8000000000000000ULL - ll_b;
+
+            // Compare 64-bit signed integer representations of input values.
+            // Difference in 1 Ulp is equivalent to a relative error of between
+            // 1/4,000,000,000,000,000 and 1/8,000,000,000,000,000.
+            if (ll_a > ll_b)
+                return (ll_a - ll_b <= maxUlps) ? EQUAL : LESS;
+            return (ll_b - ll_a <= maxUlps) ? EQUAL : MORE;
+        }
+    };
 
     template <typename T>
     fpt64 get_d(const T& that) {
@@ -170,7 +178,10 @@ namespace detail {
             else {
                 floating_point_type temp =
                     (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
-                this->re_ = std::fabs(temp) + ROUNDING_ERROR;
+                if (is_neg(temp)) {
+                    temp = -temp;
+                }
+                this->re_ = temp + ROUNDING_ERROR;
             }
             this->fpv_ = fpv;
     	    return *this;
@@ -184,7 +195,10 @@ namespace detail {
             else {
                 floating_point_type temp =
                     (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
-                this->re_ = std::fabs(temp) + ROUNDING_ERROR;
+                if (is_neg(temp)) {
+                    temp = -temp;
+                }
+                this->re_ = temp + ROUNDING_ERROR;
             }
             this->fpv_ = fpv;
     	    return *this;
@@ -211,7 +225,10 @@ namespace detail {
             else {
                 floating_point_type temp =
                     (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
-                re = std::fabs(temp) + ROUNDING_ERROR;
+                if (is_neg(temp)) {
+                    temp = -temp;
+                }
+                re = temp + ROUNDING_ERROR;
             }
             return robust_fpt(fpv, re);
         }
@@ -225,7 +242,10 @@ namespace detail {
             else {
                 floating_point_type temp =
                     (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
-                re = std::fabs(temp) + ROUNDING_ERROR;
+                if (is_neg(temp)) {
+                    temp = -temp;
+                }
+                re = temp + ROUNDING_ERROR;
             }
             return robust_fpt(fpv, re);
         }
@@ -246,10 +266,6 @@ namespace detail {
             return robust_fpt(get_sqrt(fpv_),
                               re_ * static_cast<relative_error_type>(0.5) +
                               ROUNDING_ERROR);
-        }
-
-        robust_fpt fabs() const {
-            return (!is_neg(fpv_)) ? *this : -(*this);
         }
 
     private:
@@ -1155,10 +1171,10 @@ namespace detail {
     class robust_sqrt_expr {
     public:
         typedef type_converter<_int, _fpt> converter;
-        static const uint32 EVAL1_MAX_RELATIVE_ERROR;
-        static const uint32 EVAL2_MAX_RELATIVE_ERROR;
-        static const uint32 EVAL3_MAX_RELATIVE_ERROR;
-        static const uint32 EVAL4_MAX_RELATIVE_ERROR;
+        static const unsigned int EVAL1_MAX_RELATIVE_ERROR;
+        static const unsigned int EVAL2_MAX_RELATIVE_ERROR;
+        static const unsigned int EVAL3_MAX_RELATIVE_ERROR;
+        static const unsigned int EVAL4_MAX_RELATIVE_ERROR;
 
         // Evaluates expression (re = 4 EPS):
         // A[0] * sqrt(B[0]).
@@ -1220,13 +1236,13 @@ namespace detail {
     };
 
     template <typename _int, typename _fpt>
-    const uint32 robust_sqrt_expr<_int, _fpt>::EVAL1_MAX_RELATIVE_ERROR = 4;
+    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL1_MAX_RELATIVE_ERROR = 4;
     template <typename _int, typename _fpt>
-    const uint32 robust_sqrt_expr<_int, _fpt>::EVAL2_MAX_RELATIVE_ERROR = 7;
+    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL2_MAX_RELATIVE_ERROR = 7;
     template <typename _int, typename _fpt>
-    const uint32 robust_sqrt_expr<_int, _fpt>::EVAL3_MAX_RELATIVE_ERROR = 16;
+    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL3_MAX_RELATIVE_ERROR = 16;
     template <typename _int, typename _fpt>
-    const uint32 robust_sqrt_expr<_int, _fpt>::EVAL4_MAX_RELATIVE_ERROR = 25;
+    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL4_MAX_RELATIVE_ERROR = 25;
 } // detail
 } // polygon
 } // boost
