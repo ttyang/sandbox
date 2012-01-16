@@ -83,6 +83,11 @@ bool DagItem::insertChildren(int position, int count, int columns)
     return true;
 }
 
+void DagItem::addChild(DagItem* child)
+{
+    childItems.push_back(child);
+}
+
 
 bool DagItem::insertColumns(int position, int columns)
 {

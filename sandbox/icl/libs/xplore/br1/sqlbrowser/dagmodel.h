@@ -22,7 +22,9 @@ class DagModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    DagModel(const QStringList &headers, const QString &data,
+    //DagModel(const QStringList &headers, const QString &data,
+    //          QObject *parent = 0);
+    DagModel(const QStringList &headers, //const QString &data,
               QObject *parent = 0);
     ~DagModel();
 
@@ -54,9 +56,9 @@ public:
 
 
     //JOFA Populating a DAG from an Sql-query
-    void fromSql(const QSqlQuery& query);
+    void fromSql(QSqlQuery& query);
 
-    void fromSql(const QSqlQuery& query, DagItem* node, int depth);
+    DagItem* fromSql(QSqlQuery& query, DagItem* node, int depth);
 
     //JOFA Iteration example: The container as String
     QString toString()const;

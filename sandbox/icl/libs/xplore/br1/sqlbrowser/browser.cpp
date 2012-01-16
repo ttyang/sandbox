@@ -42,6 +42,7 @@
 #include "exttableview.h"
 #include "browser.h"
 #include "qsqlconnectiondialog.h"
+#include "dagmodel.h"
 
 #include <QtGui>
 #include <QtSql>
@@ -73,7 +74,22 @@ Browser::~Browser()
 void Browser::exec()
 {
     QSqlQueryModel *model = new QSqlQueryModel(ext_table);
-    model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
+
+
+    QSqlQuery curQuery = QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase());
+
+    QStringList headers;
+    headers << tr("Title") << tr("Description");
+    DagModel* dagmo = new DagModel(headers);
+
+    QSqlQuery xpQuery = QSqlQuery("", connectionWidget->currentDatabase());
+    QString dbg_query = QString(sqlEdit->toPlainText());
+    xpQuery.exec(sqlEdit->toPlainText());
+    int dbg_size = xpQuery.size();
+    dagmo->fromSql(xpQuery);
+
+    model->setQuery(curQuery);
+    //REV? model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
 
     ext_table->setModel(model);
     ext_tree->setModel(model);//JOFA
@@ -81,7 +97,7 @@ void Browser::exec()
     //JOFA additions ----------------------------------------------------------
     ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
-    ext_table->setSortingEnabled(true);
+    //ext_table->setSortingEnabled(true);
     ext_table->setAlternatingRowColors(true);
     ext_table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------
@@ -200,7 +216,7 @@ QSqlTableModel* Browser::showTable(const QString &t)
     ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
 
     //JOFA additions ----------------------------------------------------------
-    ext_table->setSortingEnabled(true);
+    //ext_table->setSortingEnabled(true);
     ext_table->setAlternatingRowColors(true);
     ext_table->resizeColumnsToContents();
     //JOFA additions ----------------------------------------------------------

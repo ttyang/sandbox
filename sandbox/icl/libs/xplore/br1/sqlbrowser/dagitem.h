@@ -29,6 +29,8 @@ public:
     int childNumber() const;
     bool setData(int column, const QVariant &value);
 
+    void addChild(DagItem* child);
+
 private:
     QList<DagItem*> childItems;
     QVector<QVariant> itemData;

@@ -9,7 +9,19 @@
 #include "dagitem.h"
 #include "dagmodel.h"
 
+DagModel::DagModel(const QStringList &headers, //const QString &data,
+                     QObject *parent)
+    : QAbstractItemModel(parent)
+{
+    QVector<QVariant> rootData;
+    foreach (QString header, headers)
+        rootData << header;
 
+    //rootItem = new DagItem(rootData);
+    //setupModelData(data.split(QString("\n")), rootItem);
+}
+
+/* JODO
 DagModel::DagModel(const QStringList &headers, const QString &data,
                      QObject *parent)
     : QAbstractItemModel(parent)
@@ -21,7 +33,7 @@ DagModel::DagModel(const QStringList &headers, const QString &data,
     rootItem = new DagItem(rootData);
     setupModelData(data.split(QString("\n")), rootItem);
 }
-
+*/
 
 DagModel::~DagModel()
 {
@@ -248,55 +260,76 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
     }
 }
 
-/*
 //JODO Populate a DagModel from an sql-query that provides the DAG as
 // (ParentId -> ChildId), ParentName, ChildName, ChildType
-void DagModel::fromSql(const QSqlQuery& query)
+void DagModel::fromSql(QSqlQuery& query)
 {
-    //JODO create root node
     if(!query.next())
         return;
     else
     {
-        //JODO fill root with info
+        //We skip the first record and its NIL information.
         fromSql(query, rootItem, 0);
     }
 }
 
-void DagModel::fromSql(const QSqlQuery& query, DagItem* parent, int depth)
+
+// The result indicates: False: No more data. True: Data available.
+DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
 {
-    Q_ASSERT(node != NULL);
+    // The function assumes, that the dags "expanded tree" exists in
+    // pre-order (the order, that is finally presented). This makes the
+    // traversal specifically simple.
+    Q_ASSERT(parent != NULL);
 
+    // Get the next record
     if(!query.next())
-        return;
-    else if(query.value(0).toInt() == parent->nodeId())
-    {   //Same node as before. Add a child. Recursing down
-        DagItem* newChild = addChild(parent, query); //Fill Data
-        //Ok, wont work. Building the DAG and traversing order of
-        //the representing order of the db-data must match.
-    }
-    else
-    {   //Next
-
-    }
-}
-*/
-
-/*
-void DagModel::fromSql(const QSqlQuery& query, DagItem* parent, int depth)
-{
-    Q_ASSERT(node != NULL);
-
-    if(!query.next())
-        return;
+        return NULL;
     else
     {
-        create a node
-        if(! the new node is terminal)
-            addChildren(query, newNode, depth+1);
+        //create a node
+        QVector<QVariant> data;
+        //JODO REFA Function
+        int fieldCount = 6; //JODO retrieve from QSql
+        data.resize(fieldCount);
+
+        QSqlRecord rec   = query.record();
+        int parentId     = rec.indexOf("ParentId");
+        int childId      = rec.indexOf("ChildId");
+        int typeId       = rec.indexOf("TypeId");
+        int parentName   = rec.indexOf("Parent");
+        int childName    = rec.indexOf("Child");
+        int childType    = rec.indexOf("Type");
+
+        int dbg_parentId = query.value(parentId).toInt();
+        int dbg_childId  = query.value(childId).toInt();
+        int dbg_typeId   = query.value(typeId).toInt();
+
+        data[parentId]   = query.value(parentId);
+        data[childId]    = query.value(childId);
+        data[typeId]     = query.value(typeId);
+        data[parentName] = query.value(parentName);
+        data[childName]  = query.value(childName);
+        data[childType]  = query.value(childType);
+
+        DagItem* curNode = new DagItem(data, parent);
+        //if the new node is not a leaf, create children.
+        //JODO if(!curNode->IsLeaf())
+        if(data[typeId] != 2)
+        {
+            //While records available: Read children.
+            DagItem* curChild;
+            while((curChild = fromSql(query, curNode, depth+1)) != NULL)
+            {
+                curNode->addChild(curChild);
+            }
+        }
+
+        return curNode;
     }
 }
-*/
+
+
 
 
 //JOFA Iteration example: The container as String

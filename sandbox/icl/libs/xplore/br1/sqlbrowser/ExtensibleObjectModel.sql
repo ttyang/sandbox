@@ -30,10 +30,10 @@ insert into Dag values (0, 0); -- Nil group
 insert into Dag values (0, 1); -- (0:ROOT,  1:Songs)
 insert into Dag values (1, 2); -- (1:Songs, 2:Blues) 
 insert into Dag values (2, 4); -- (2:Blues, 4:St.Louis Blues)
-insert into Dag values (2, 6); -- (2:Blues, 4:Blue Bossa)
+insert into Dag values (2, 6); -- (2:Blues, 6:Blue Bossa)
 insert into Dag values (1, 3); -- (1:Songs, 3:Latin)
-insert into Dag values (3, 5); -- (3:Latin, 4:Oye Come Va)
-insert into Dag values (3, 6); -- (3:Latin, 4:Blue Bossa)
+insert into Dag values (3, 5); -- (3:Latin, 5:Oye Come Va)
+insert into Dag values (3, 6); -- (3:Latin, 6:Blue Bossa)
 
 -- -----------------------------------------------------------------------------
 select Objects.name as Object, Types.name as Type, Dag.Child as ChildId, Dag.Parent as PatentId, 
@@ -44,9 +44,9 @@ select Objects.name as Object, Types.name as Type, Dag.Child as ChildId, Dag.Par
 
 -- -----------------------------------------------------------------------------
 -- The Dag in orderly fashion (parent->chiled) starting from root
-select Dag.Parent as PatentId, Dag.Child as ChildId, 
+select Dag.Parent as ParentId, Dag.Child as ChildId, 
   (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent,
-  Objects.name as Object, Types.name as Type 
+  Objects.name as Child, Types.name as Type 
   from Dag
   inner join Objects on     Dag.Child = Objects.id
   inner join Types   on Objects.TypeOf = Types.id
@@ -55,10 +55,10 @@ select Dag.Parent as PatentId, Dag.Child as ChildId,
 
 -- ----------------------------------------------------------------------------
 create view Collections as
-select Dag.Parent as PatentId, Dag.Child as ChildId, 
+select Dag.Parent as ParentId, Dag.Child as ChildId, Types.Id as TypeId,
   (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent,
-  Objects.name as Object, Types.name as Type 
+  Objects.name as Child, Types.name as Type 
   from Dag
-  inner join Objects on     Dag.Child = Objects.id
+  inner join Objects on      Dag.Child = Objects.id
   inner join Types   on Objects.TypeOf = Types.id
 
