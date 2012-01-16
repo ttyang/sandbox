@@ -10,6 +10,10 @@
 #include <QModelIndex>
 #include <QVariant>
 
+#include <map>
+
+typedef std::map<int, int> daggy;
+
 class QSqlQuery;
 class DagItem;
 
@@ -49,7 +53,7 @@ public:
                     const QModelIndex &parent = QModelIndex());
 
 
-    //JOFA Populationg a DAG from an Sql-query
+    //JOFA Populating a DAG from an Sql-query
     void fromSql(const QSqlQuery& query);
 
     void fromSql(const QSqlQuery& query, DagItem* node, int depth);

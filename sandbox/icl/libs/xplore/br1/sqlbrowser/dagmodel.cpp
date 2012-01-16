@@ -248,7 +248,7 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
     }
 }
 
-
+/*
 //JODO Populate a DagModel from an sql-query that provides the DAG as
 // (ParentId -> ChildId), ParentName, ChildName, ChildType
 void DagModel::fromSql(const QSqlQuery& query)
@@ -280,6 +280,7 @@ void DagModel::fromSql(const QSqlQuery& query, DagItem* parent, int depth)
 
     }
 }
+*/
 
 /*
 void DagModel::fromSql(const QSqlQuery& query, DagItem* parent, int depth)
@@ -289,13 +290,14 @@ void DagModel::fromSql(const QSqlQuery& query, DagItem* parent, int depth)
     if(!query.next())
         return;
     else
-        // Same parent-id
-        while(query.value(0).toInt() == parent->nodeId())
-        {   //Same node as before. Add a child
-            parent->addChild(parent, data)
-        }
+    {
+        create a node
+        if(! the new node is terminal)
+            addChildren(query, newNode, depth+1);
+    }
 }
 */
+
 
 //JOFA Iteration example: The container as String
 QString DagModel::toString()const
