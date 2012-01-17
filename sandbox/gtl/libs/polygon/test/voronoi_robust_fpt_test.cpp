@@ -20,6 +20,9 @@
 using namespace boost::polygon::detail;
 
 typedef robust_fpt<double> rfpt_type;
+typedef type_converter_fpt to_fpt_type;
+typedef type_converter_efpt to_efpt_type;
+type_converter_fpt to_fpt;
 
 BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test1) {
     rfpt_type a = rfpt_type();
@@ -254,10 +257,10 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test1) {
         efpt64 sum = eea + eeb;
         efpt64 dif = eea - eeb;
         efpt64 mul = eea * eeb;
-        BOOST_CHECK_EQUAL(get_d(neg), -a);
-        BOOST_CHECK_EQUAL(get_d(sum), a + b);
-        BOOST_CHECK_EQUAL(get_d(dif), a - b);
-        BOOST_CHECK_EQUAL(get_d(mul), a * b);
+        BOOST_CHECK_EQUAL(to_fpt(neg), -a);
+        BOOST_CHECK_EQUAL(to_fpt(sum), a + b);
+        BOOST_CHECK_EQUAL(to_fpt(dif), a - b);
+        BOOST_CHECK_EQUAL(to_fpt(mul), a * b);
     }
 }
 
@@ -276,11 +279,11 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test2) {
         efpt64 dif = eea - eeb;
         efpt64 mul = eea * eeb;
         efpt64 div = eea / eeb;
-        BOOST_CHECK_EQUAL(get_d(neg), -a);
-        BOOST_CHECK_EQUAL(get_d(sum), a + b);
-        BOOST_CHECK_EQUAL(get_d(dif), a - b);
-        BOOST_CHECK_EQUAL(get_d(mul), a * b);
-        BOOST_CHECK_EQUAL(get_d(div), a / b);
+        BOOST_CHECK_EQUAL(to_fpt(neg), -a);
+        BOOST_CHECK_EQUAL(to_fpt(sum), a + b);
+        BOOST_CHECK_EQUAL(to_fpt(dif), a - b);
+        BOOST_CHECK_EQUAL(to_fpt(mul), a * b);
+        BOOST_CHECK_EQUAL(to_fpt(div), a / b);
     }
 }
 
@@ -299,11 +302,11 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test3) {
         efpt64 dif = eea - eeb;
         efpt64 mul = eea * eeb;
         efpt64 div = eea / eeb;
-        BOOST_CHECK_EQUAL(get_d(neg), -a);
-        BOOST_CHECK_EQUAL(get_d(sum), a + b);
-        BOOST_CHECK_EQUAL(get_d(dif), a - b);
-        BOOST_CHECK_EQUAL(get_d(mul), a * b);
-        BOOST_CHECK_EQUAL(get_d(div), a / b);
+        BOOST_CHECK_EQUAL(to_fpt(neg), -a);
+        BOOST_CHECK_EQUAL(to_fpt(sum), a + b);
+        BOOST_CHECK_EQUAL(to_fpt(dif), a - b);
+        BOOST_CHECK_EQUAL(to_fpt(mul), a * b);
+        BOOST_CHECK_EQUAL(to_fpt(div), a / b);
     }
 }
 
@@ -319,11 +322,11 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test4) {
         efpt64 dif = eea - eeb;
         efpt64 mul = eea * eeb;
         efpt64 div = eea / eeb;
-        BOOST_CHECK_EQUAL(get_d(neg), -a);
-        BOOST_CHECK_EQUAL(get_d(sum), a + b);
-        BOOST_CHECK_EQUAL(get_d(dif), a - b);
-        BOOST_CHECK_EQUAL(get_d(mul), a * b);
-        BOOST_CHECK_EQUAL(get_d(div), a / b);
+        BOOST_CHECK_EQUAL(to_fpt(neg), -a);
+        BOOST_CHECK_EQUAL(to_fpt(sum), a + b);
+        BOOST_CHECK_EQUAL(to_fpt(dif), a - b);
+        BOOST_CHECK_EQUAL(to_fpt(mul), a * b);
+        BOOST_CHECK_EQUAL(to_fpt(div), a / b);
     }
 }
 
@@ -331,32 +334,32 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test5) {
     for (int i = 0; i < 100; ++i) {
         efpt64 a(static_cast<fpt64>(i * i));
         efpt64 b = a.sqrt();
-        BOOST_CHECK_EQUAL(get_d(b), static_cast<fpt64>(i));
+        BOOST_CHECK_EQUAL(to_fpt(b), static_cast<fpt64>(i));
     }
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test1) {
     eint32 e1(0), e2(32), e3(-32);
     BOOST_CHECK_EQUAL(e1.count(), 0);
-    BOOST_CHECK_EQUAL(e1.chunks()[0], 0);
-    BOOST_CHECK_EQUAL(e1.size(), 0);
+    BOOST_CHECK_EQUAL(e1.chunks()[0], 0u);
+    BOOST_CHECK_EQUAL(e1.size(), 0u);
     BOOST_CHECK_EQUAL(e2.count(), 1);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 32);
-    BOOST_CHECK_EQUAL(e2.size(), 1);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 32u);
+    BOOST_CHECK_EQUAL(e2.size(), 1u);
     BOOST_CHECK_EQUAL(e3.count(), -1);
-    BOOST_CHECK_EQUAL(e3.chunks()[0], 32);
-    BOOST_CHECK_EQUAL(e3.size(), 1);
+    BOOST_CHECK_EQUAL(e3.chunks()[0], 32u);
+    BOOST_CHECK_EQUAL(e3.size(), 1u);
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test2) {
     int64 val64 = 0x7fffffffffffffffLL;
     eint64 e1(0LL), e2(32LL), e3(-32LL), e4(val64), e5(-val64);
     BOOST_CHECK_EQUAL(e1.count(), 0);
-    BOOST_CHECK_EQUAL(e1.chunks()[0], 0);
+    BOOST_CHECK_EQUAL(e1.chunks()[0], 0u);
     BOOST_CHECK_EQUAL(e2.count(), 1);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 32);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 32u);
     BOOST_CHECK_EQUAL(e3.count(), -1);
-    BOOST_CHECK_EQUAL(e3.chunks()[0], 32);
+    BOOST_CHECK_EQUAL(e3.chunks()[0], 32u);
     BOOST_CHECK_EQUAL(e4.count(), 2);
     BOOST_CHECK_EQUAL(e4.chunks()[0], 0xffffffff);
     BOOST_CHECK_EQUAL(e4.chunks()[1], val64 >> 32);
@@ -371,11 +374,11 @@ BOOST_AUTO_TEST_CASE(extended_int_test3) {
     chunks.push_back(2);
     eint64 e1(chunks, true), e2(chunks, false);
     BOOST_CHECK_EQUAL(e1.count(), 2);
-    BOOST_CHECK_EQUAL(e1.chunks()[0], 2);
-    BOOST_CHECK_EQUAL(e1.chunks()[1], 1);
+    BOOST_CHECK_EQUAL(e1.chunks()[0], 2u);
+    BOOST_CHECK_EQUAL(e1.chunks()[1], 1u);
     BOOST_CHECK_EQUAL(e2.count(), -2);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 2);
-    BOOST_CHECK_EQUAL(e2.chunks()[1], 1);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 2u);
+    BOOST_CHECK_EQUAL(e2.chunks()[1], 1u);
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test4) {
@@ -416,8 +419,8 @@ BOOST_AUTO_TEST_CASE(extended_int_test6) {
     eint32 e1(32);
     eint32 e2 = -e1;
     BOOST_CHECK_EQUAL(e2.count(), -1);
-    BOOST_CHECK_EQUAL(e2.size(), 1);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 32);
+    BOOST_CHECK_EQUAL(e2.size(), 1u);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 32u);
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test7) {
@@ -458,8 +461,8 @@ BOOST_AUTO_TEST_CASE(extended_int_test10) {
         int64 i1 = static_cast<int64>(gen()) >> 20;
         int64 i2 = i1 >> 32;
         eint64 e1(i1), e2(i2);
-        BOOST_CHECK(get_d(e1) == static_cast<fpt64>(i1));
-        BOOST_CHECK(get_d(e2) == static_cast<fpt64>(i2));
+        BOOST_CHECK(to_fpt(e1) == static_cast<fpt64>(i1));
+        BOOST_CHECK(to_fpt(e2) == static_cast<fpt64>(i2));
     }
 }
 
@@ -473,56 +476,56 @@ BOOST_AUTO_TEST_CASE(extened_int_test11) {
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test1) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[1] = {10};
     int32 B[1] = {100};
     BOOST_CHECK_EQUAL(sqrt_expr.eval1(A, B), 100.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test2) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[2] = {10, 30};
     int32 B[2] = {400, 100};
     BOOST_CHECK_EQUAL(sqrt_expr.eval2(A, B), 500.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test3) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[2] = {10, -30};
     int32 B[2] = {400, 100};
     BOOST_CHECK_EQUAL(sqrt_expr.eval2(A, B), -100.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test4) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[3] = {10, 30, 20};
     int32 B[3] = {4, 1, 9};
     BOOST_CHECK_EQUAL(sqrt_expr.eval3(A, B), 110.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test5) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[3] = {10, 30, -20};
     int32 B[3] = {4, 1, 9};
     BOOST_CHECK_EQUAL(sqrt_expr.eval3(A, B), -10.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test6) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[4] = {10, 30, 20, 5};
     int32 B[4] = {4, 1, 9, 16};
     BOOST_CHECK_EQUAL(sqrt_expr.eval4(A, B), 130.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test7) {
-    robust_sqrt_expr<int32, fpt64> sqrt_expr;
+    robust_sqrt_expr<int32, fpt64, to_fpt_type> sqrt_expr;
     int32 A[4] = {10, 30, -20, -5};
     int32 B[4] = {4, 1, 9, 16};
     BOOST_CHECK_EQUAL(sqrt_expr.eval4(A, B), -30.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test8) {
-    robust_sqrt_expr<eint512, efpt64> sqrt_expr;
+    robust_sqrt_expr<eint512, efpt64, to_efpt_type> sqrt_expr;
     int32 A[4] = {1000, 3000, -2000, -500};
     int32 B[4] = {400, 100, 900, 1600};
     eint512 AA[4], BB[4];
@@ -530,7 +533,7 @@ BOOST_AUTO_TEST_CASE(robust_sqrt_expr_test8) {
         AA[i] = A[i];
         BB[i] = B[i];
     }
-    BOOST_CHECK_EQUAL(get_d(sqrt_expr.eval4(AA, BB)), -30000.0);
+    BOOST_CHECK_EQUAL(to_fpt(sqrt_expr.eval4(AA, BB)), -30000.0);
 }
 
 template <typename _int, typename _fpt>
@@ -562,7 +565,7 @@ public:
                                     sqrt(static_cast<fpt64>(b[j]));
                 }
             }
-            fpt64 received_val = get_d(sqrt_expr_.eval4(A, B));
+            fpt64 received_val = to_fpt(sqrt_expr_.eval4(A, B));
             ret_val &= ulp_cmp(expected_val, received_val, 25) ==
                        ulp_comparison<fpt64>::EQUAL;
         }
@@ -570,7 +573,7 @@ public:
     }
 
 private:
-    robust_sqrt_expr<_int, _fpt> sqrt_expr_;
+    robust_sqrt_expr<_int, _fpt, to_efpt_type> sqrt_expr_;
     ulp_comparison<fpt64> ulp_cmp;
     _int A[MX_SQRTS];
     _int B[MX_SQRTS];

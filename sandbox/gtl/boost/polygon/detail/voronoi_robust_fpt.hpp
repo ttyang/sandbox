@@ -103,11 +103,6 @@ namespace detail {
     };
 
     template <typename T>
-    fpt64 get_d(const T& that) {
-        return static_cast<fpt64>(that);
-    }
-
-    template <typename T>
     T get_sqrt(const T& that) {
         return (std::sqrt)(that);
     }
@@ -666,7 +661,7 @@ namespace detail {
                 exp = fea::kMinExponent;
             }
             fea::set_exponent(ret_val, exp);
-            return get_d(ret_val);
+            return ret_val;
         }
 
     private:
@@ -678,11 +673,6 @@ namespace detail {
     template <typename _fpt>
     extended_exponent_fpt<_fpt> get_sqrt(const extended_exponent_fpt<_fpt>& that) {
         return that.sqrt();
-    }
-
-    template <typename _fpt>
-    fpt64 get_d(const extended_exponent_fpt<_fpt>& that) {
-        return that.d();    
     }
 
     template <typename _fpt>
@@ -1123,11 +1113,6 @@ namespace detail {
     typedef extended_int<1024> eint32768;
 
     template <size_t N>
-    fpt64 get_d(const extended_int<N>& that) {
-        return that.d();
-    }
-
-    template <size_t N>
     bool is_pos(const extended_int<N>& that) {
         return that.count() > 0;
     }
@@ -1142,23 +1127,26 @@ namespace detail {
         return !that.count();
     }
 
-    template <typename typeA, typename typeB>
-    struct type_converter {
-        static typeB convert(const typeA& that) {
-            return static_cast<typeB>(that);
+    struct type_converter_fpt {
+        template <typename T>
+        fpt64 operator()(const T& that) const {
+            return static_cast<fpt64>(that);
+        }
+
+        template <size_t N>
+        fpt64 operator()(const extended_int<N>& that) const {
+            return that.d();
+        }
+
+        template <>
+        fpt64 operator()< extended_exponent_fpt<fpt64> >(const extended_exponent_fpt<fpt64>& that) const {
+            return that.d();
         }
     };
 
-    template <typename typeA>
-    struct type_converter<typeA, fpt64> {
-        static fpt64 convert(const typeA& that) {
-            return get_d(that);
-        }
-    };
-
-    template <size_t N>
-    struct type_converter< extended_int<N>, extended_exponent_fpt<fpt64> > {
-        static extended_exponent_fpt<fpt64> convert(const extended_int<N>& that) {
+    struct type_converter_efpt {
+        template <size_t N>
+        extended_exponent_fpt<fpt64> operator()(const extended_int<N>& that) const {
             std::pair<fpt64, int64> p = that.p();
             return extended_exponent_fpt<fpt64>(p.first, p.second);
         }
@@ -1167,10 +1155,9 @@ namespace detail {
     // Used to compute expressions that operate with sqrts with predefined
     // relative error. Evaluates expressions of the next type:
     // sum(i = 1 .. n)(A[i] * sqrt(B[i])), 1 <= n <= 4.
-    template <typename _int, typename _fpt>
+    template <typename _int, typename _fpt, typename _converter>
     class robust_sqrt_expr {
     public:
-        typedef type_converter<_int, _fpt> converter;
         static const unsigned int EVAL1_MAX_RELATIVE_ERROR;
         static const unsigned int EVAL2_MAX_RELATIVE_ERROR;
         static const unsigned int EVAL3_MAX_RELATIVE_ERROR;
@@ -1179,8 +1166,8 @@ namespace detail {
         // Evaluates expression (re = 4 EPS):
         // A[0] * sqrt(B[0]).
         _fpt eval1(_int *A, _int *B) {
-            _fpt a = converter::convert(A[0]);
-            _fpt b = converter::convert(B[0]);
+            _fpt a = convert(A[0]);
+            _fpt b = convert(B[0]);
             return a * get_sqrt(b);
         }
 
@@ -1192,7 +1179,7 @@ namespace detail {
             if ((!is_neg(a) && !is_neg(b)) ||
                 (!is_pos(a) && !is_pos(b)))
                 return a + b;
-            return converter::convert(A[0] * A[0] * B[0] - A[1] * A[1] * B[1]) / (a - b);
+            return convert(A[0] * A[0] * B[0] - A[1] * A[1] * B[1]) / (a - b);
         }
 
         // Evaluates expression (re = 16 EPS):
@@ -1233,16 +1220,17 @@ namespace detail {
     private:
         _int tA[5];
         _int tB[5];
+        _converter convert;
     };
 
-    template <typename _int, typename _fpt>
-    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL1_MAX_RELATIVE_ERROR = 4;
-    template <typename _int, typename _fpt>
-    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL2_MAX_RELATIVE_ERROR = 7;
-    template <typename _int, typename _fpt>
-    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL3_MAX_RELATIVE_ERROR = 16;
-    template <typename _int, typename _fpt>
-    const unsigned int robust_sqrt_expr<_int, _fpt>::EVAL4_MAX_RELATIVE_ERROR = 25;
+    template <typename _int, typename _fpt, typename _converter>
+    const unsigned int robust_sqrt_expr<_int, _fpt, _converter>::EVAL1_MAX_RELATIVE_ERROR = 4;
+    template <typename _int, typename _fpt, typename _converter>
+    const unsigned int robust_sqrt_expr<_int, _fpt, _converter>::EVAL2_MAX_RELATIVE_ERROR = 7;
+    template <typename _int, typename _fpt, typename _converter>
+    const unsigned int robust_sqrt_expr<_int, _fpt, _converter>::EVAL3_MAX_RELATIVE_ERROR = 16;
+    template <typename _int, typename _fpt, typename _converter>
+    const unsigned int robust_sqrt_expr<_int, _fpt, _converter>::EVAL4_MAX_RELATIVE_ERROR = 25;
 } // detail
 } // polygon
 } // boost

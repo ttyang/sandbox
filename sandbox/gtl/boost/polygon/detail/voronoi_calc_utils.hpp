@@ -30,19 +30,13 @@ public:
     typedef uint64 uint_x2_type;
     typedef fpt64 fpt_type;
     typedef ulp_comparison<fpt_type> ulp_cmp_type;
+    typedef type_converter_fpt to_fpt_converter;
+    typedef type_converter_efpt to_efpt_converter;
 
     static const unsigned int ULPS;
     static const unsigned int ULPSx2;
     static const fpt_type fULPS;
     static const fpt_type fULPSx2;
-
-    // Represents the result of the epsilon robust predicate.
-    // If the result is undefined some further processing is usually required.
-    enum kPredicateResult {
-        LESS = -1,
-        UNDEFINED = 0,
-        MORE = 1
-    };
 
     // Represents orientation test result.
     enum kOrientation {
@@ -167,45 +161,40 @@ public:
 
         bool operator()(const site_type &lhs, const circle_type &rhs) const {
             ulp_cmp_type::kResult xCmp =
-                ulp_cmp(static_cast<fpt_type>(lhs.x()),
-                        static_cast<fpt_type>(rhs.lower_x()), ULPS);
+                ulp_cmp(to_fpt(lhs.x()), to_fpt(rhs.lower_x()), ULPS);
             if (xCmp != ulp_cmp_type::EQUAL) {
                 return xCmp == ulp_cmp_type::LESS;
             }
             ulp_cmp_type::kResult yCmp =
-                ulp_cmp(static_cast<fpt_type>(lhs.y()),
-                        static_cast<fpt_type>(rhs.lower_y()), ULPS);
+                ulp_cmp(to_fpt(lhs.y()), to_fpt(rhs.lower_y()), ULPS);
             return yCmp == ulp_cmp_type::LESS;
         }
 
         bool operator()(const circle_type &lhs, const site_type &rhs) const {
             ulp_cmp_type::kResult xCmp =
-                ulp_cmp(static_cast<fpt_type>(lhs.lower_x()),
-                        static_cast<fpt_type>(rhs.x()), ULPS);
+                ulp_cmp(to_fpt(lhs.lower_x()), to_fpt(rhs.x()), ULPS);
             if (xCmp != ulp_cmp_type::EQUAL) {
                 return xCmp == ulp_cmp_type::LESS;
             }
             ulp_cmp_type::kResult yCmp =
-                ulp_cmp(static_cast<fpt_type>(lhs.lower_y()),
-                        static_cast<fpt_type>(rhs.y()), ULPS);
+                ulp_cmp(to_fpt(lhs.lower_y()), to_fpt(rhs.y()), ULPS);
             return yCmp == ulp_cmp_type::LESS;
         }
 
         bool operator()(const circle_type &lhs, const circle_type &rhs) const {
             ulp_cmp_type::kResult xCmp =
-                ulp_cmp(static_cast<fpt_type>(lhs.lower_x()),
-                        static_cast<fpt_type>(rhs.lower_x()), ULPS);
+                ulp_cmp(to_fpt(lhs.lower_x()), to_fpt(rhs.lower_x()), ULPS);
             if (xCmp != ulp_cmp_type::EQUAL) {
                 return xCmp == ulp_cmp_type::LESS;
             }
             ulp_cmp_type::kResult yCmp =
-                ulp_cmp(static_cast<fpt_type>(lhs.lower_y()),
-                        static_cast<fpt_type>(rhs.lower_y()), ULPS);
+                ulp_cmp(to_fpt(lhs.lower_y()), to_fpt(rhs.lower_y()), ULPS);
             return yCmp == ulp_cmp_type::LESS;
         }
 
     private:
         ulp_cmp_type ulp_cmp;
+        to_fpt_converter to_fpt;
     };
 
     template <typename Site>
@@ -234,7 +223,15 @@ public:
             }
         }
 
-    private:
+    private:    
+        // Represents the result of the epsilon robust predicate. If the
+        // result is undefined some further processing is usually required.
+        enum kPredicateResult {
+            LESS = -1,
+            UNDEFINED = 0,
+            MORE = 1
+        };
+
         typedef typename Site::point_type point_type;
 
         // Robust predicate, avoids using high-precision libraries.
@@ -301,34 +298,27 @@ public:
 
         fpt_type find_distance_to_point_arc(const site_type &site,
                                             const point_type &point) const {
-            fpt_type dx = static_cast<fpt_type>(site.x()) -
-                          static_cast<fpt_type>(point.x());
-            fpt_type dy = static_cast<fpt_type>(site.y()) -
-                          static_cast<fpt_type>(point.y());
+            fpt_type dx = to_fpt(site.x()) - to_fpt(point.x());
+            fpt_type dy = to_fpt(site.y()) - to_fpt(point.y());
             // The relative error is atmost 3EPS.
-            return (dx * dx + dy * dy) / (static_cast<fpt_type>(2.0) * dx);
+            return (dx * dx + dy * dy) / (to_fpt(2.0) * dx);
         }
 
         fpt_type find_distance_to_segment_arc(const site_type &site,
                                               const point_type &point) const {
             if (is_vertical(site)) {
-                return (static_cast<fpt_type>(site.x()) - static_cast<fpt_type>(point.x())) *
-                       static_cast<fpt_type>(0.5);
+                return (to_fpt(site.x()) - to_fpt(point.x())) * to_fpt(0.5);
             } else {
                 const point_type &segment0 = site.point0(true);
                 const point_type &segment1 = site.point1(true);
-                fpt_type a1 = static_cast<fpt_type>(segment1.x()) -
-                              static_cast<fpt_type>(segment0.x());
-                fpt_type b1 = static_cast<fpt_type>(segment1.y()) -
-                              static_cast<fpt_type>(segment0.y());
-                fpt_type a3 = static_cast<fpt_type>(point.x()) -
-                              static_cast<fpt_type>(segment0.x());
-                fpt_type b3 = static_cast<fpt_type>(point.y()) -
-                              static_cast<fpt_type>(segment0.y());
+                fpt_type a1 = to_fpt(segment1.x()) - to_fpt(segment0.x());
+                fpt_type b1 = to_fpt(segment1.y()) - to_fpt(segment0.y());
+                fpt_type a3 = to_fpt(point.x()) - to_fpt(segment0.x());
+                fpt_type b3 = to_fpt(point.y()) - to_fpt(segment0.y());
                 fpt_type k = get_sqrt(a1 * a1 + b1 * b1);
                 // Avoid substraction while computing k.
                 if (!is_neg(b1)) {
-                    k = static_cast<fpt_type>(1.0) / (b1 + k);
+                    k = to_fpt(1.0) / (b1 + k);
                 } else {
                     k = (k - b1) / (a1 * a1);
                 }
@@ -347,14 +337,10 @@ public:
                 return (!right_site.is_inverse()) ? LESS : MORE;
             }
 
-            fpt_type dif_x = static_cast<fpt_type>(new_point.x()) -
-                             static_cast<fpt_type>(site_point.x());
-            fpt_type dif_y = static_cast<fpt_type>(new_point.y()) -
-                             static_cast<fpt_type>(site_point.y());
-            fpt_type a = static_cast<fpt_type>(segment_end.x()) -
-                         static_cast<fpt_type>(segment_start.x());
-            fpt_type b = static_cast<fpt_type>(segment_end.y()) -
-                         static_cast<fpt_type>(segment_start.y());
+            fpt_type dif_x = to_fpt(new_point.x()) - to_fpt(site_point.x());
+            fpt_type dif_y = to_fpt(new_point.y()) - to_fpt(site_point.y());
+            fpt_type a = to_fpt(segment_end.x()) - to_fpt(segment_start.x());
+            fpt_type b = to_fpt(segment_end.y()) - to_fpt(segment_start.y());
 
             if (is_vertical(right_site)) {
                 if (new_point.y() < site_point.y() && !reverse_order)
@@ -372,7 +358,7 @@ public:
             }
 
             fpt_type fast_left_expr = a * (dif_y + dif_x) * (dif_y - dif_x);
-            fpt_type fast_right_expr = (static_cast<fpt_type>(2) * b) * dif_x * dif_y;
+            fpt_type fast_right_expr = (to_fpt(2.0) * b) * dif_x * dif_y;
             ulp_cmp_type::kResult expr_cmp = ulp_cmp(fast_left_expr, fast_right_expr, 4);
             if (expr_cmp != ulp_cmp_type::EQUAL) {
                 if ((expr_cmp == ulp_cmp_type::MORE) ^ reverse_order)
@@ -384,6 +370,7 @@ public:
 
     private:
         ulp_cmp_type ulp_cmp;
+        to_fpt_converter to_fpt;
     };
 
     template <typename Node>
@@ -537,7 +524,7 @@ public:
         typedef typename Site::point_type point_type;
         typedef Site site_type;
         typedef Circle circle_type;
-        typedef robust_sqrt_expr<eint4096, efpt64> robust_sqrt_expr_type;
+        typedef robust_sqrt_expr<eint4096, efpt64, to_efpt_converter> robust_sqrt_expr_type;
 
         void ppp(const site_type &site1,
                  const site_type &site2,
@@ -568,20 +555,20 @@ public:
                        static_cast<int_x2_type>(site2.y());
             sum_y[1] = static_cast<int_x2_type>(site2.y()) +
                        static_cast<int_x2_type>(site3.y());
-            fpt_type inv_denom = 0.5 / get_d(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]);
+            fpt_type inv_denom = 0.5 / to_fpt(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]);
             eint numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
             eint numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
 
             if (recompute_c_x || recompute_lower_x) {
                 eint c_x = numer1 * dif_y[1] - numer2 * dif_y[0];
-                circle.x(get_d(c_x) * inv_denom);
+                circle.x(to_fpt(c_x) * inv_denom);
 
                 if (recompute_lower_x) {
                     // Evaluate radius of the circle.
                     eint sqr_r = (dif_x[0] * dif_x[0] + dif_y[0] * dif_y[0]) *
                                  (dif_x[1] * dif_x[1] + dif_y[1] * dif_y[1]) *
                                  (dif_x[2] * dif_x[2] + dif_y[2] * dif_y[2]);
-                    fpt_type r = get_sqrt(get_d(sqr_r));
+                    fpt_type r = get_sqrt(to_fpt(sqr_r));
 
                     // If c_x >= 0 then lower_x = c_x + r,
                     // else lower_x = (c_x * c_x - r * r) / (c_x - r).
@@ -594,8 +581,8 @@ public:
                         }
                     } else {
                         eint numer = c_x * c_x - sqr_r;
-                        fpt_type lower_x = get_d(numer) * inv_denom /
-                                           (get_d(c_x) + r);
+                        fpt_type lower_x = to_fpt(numer) * inv_denom /
+                                           (to_fpt(c_x) + r);
                         circle.lower_x(lower_x);
                     }
                 }
@@ -603,7 +590,7 @@ public:
 
             if (recompute_c_y) {
                 eint c_y = numer2 * dif_x[0] - numer1 * dif_x[1];
-                circle.y(get_d(c_y) * inv_denom);
+                circle.y(to_fpt(c_y) * inv_denom);
             }
         }
 
@@ -654,22 +641,22 @@ public:
                 cA[1] = denom * sum_AB * 2 + numer * teta;
                 cB[1] = 1;
                 cA[2] = denom * sum_y * 2 + numer * vec_y;
-                fpt_type inv_denom = 1.0 / get_d(denom);
+                fpt_type inv_denom = 1.0 / to_fpt(denom);
                 if (recompute_c_x) {
-                    c_event.x(0.25 * get_d(cA[0]) * inv_denom);
+                    c_event.x(0.25 * to_fpt(cA[0]) * inv_denom);
                 }
                 if (recompute_c_y) {
-                    c_event.y(0.25 * get_d(cA[2]) * inv_denom);
+                    c_event.y(0.25 * to_fpt(cA[2]) * inv_denom);
                 }
                 if (recompute_lower_x) {
-                    c_event.lower_x(0.25 * get_d(sqrt_expr_.eval2(cA, cB)) * inv_denom /
-                                    get_sqrt(get_d(segm_len)));
+                    c_event.lower_x(0.25 * to_fpt(sqrt_expr_.eval2(cA, cB)) * inv_denom /
+                                    get_sqrt(to_fpt(segm_len)));
                 }
                 return;
             }
 
             eint det = (teta * teta + denom * denom) * A * B * 4;
-            fpt_type inv_denom_sqr = 1.0 / get_d(denom);
+            fpt_type inv_denom_sqr = 1.0 / to_fpt(denom);
             inv_denom_sqr *= inv_denom_sqr;
 
             if (recompute_c_x || recompute_lower_x) {
@@ -678,7 +665,7 @@ public:
                 cA[1] = (segment_index == 2) ? -vec_x : vec_x;
                 cB[1] = det;
                 if (recompute_c_x) {
-                    c_event.x(0.5 * get_d(sqrt_expr_.eval2(cA, cB)) * inv_denom_sqr);
+                    c_event.x(0.5 * to_fpt(sqrt_expr_.eval2(cA, cB)) * inv_denom_sqr);
                 }
             }
 
@@ -688,7 +675,7 @@ public:
                 cA[3] = (segment_index == 2) ? -vec_y : vec_y;
                 cB[3] = det;
                 if (recompute_c_y) {
-                    c_event.y(0.5 * get_d(sqrt_expr_.eval2(&cA[2], &cB[2])) *
+                    c_event.y(0.5 * to_fpt(sqrt_expr_.eval2(&cA[2], &cB[2])) *
                               inv_denom_sqr);
                 }
             }
@@ -700,8 +687,8 @@ public:
                 cB[2] = 1;
                 cA[3] = (segment_index == 2) ? -teta : teta;
                 cB[3] = det;
-                c_event.lower_x(0.5 * get_d(sqrt_expr_.eval4(cA, cB)) * inv_denom_sqr /
-                                get_sqrt(get_d(segm_len)));
+                c_event.lower_x(0.5 * to_fpt(sqrt_expr_.eval4(cA, cB)) * inv_denom_sqr /
+                                get_sqrt(to_fpt(segm_len)));
             }
         }
 
@@ -730,7 +717,7 @@ public:
                    static_cast<int_x2_type>(segm_start2.y());
             eint orientation = a[1] * b[0] - a[0] * b[1];
             if (is_zero(orientation)) {
-                fpt_type denom = get_d(a[0] * a[0] + b[0] * b[0]) * 2;
+                fpt_type denom = to_fpt(a[0] * a[0] + b[0] * b[0]) * 2;
                 c[0] = b[0] * (static_cast<int_x2_type>(segm_start2.x()) -
                                static_cast<int_x2_type>(segm_start1.x())) -
                        a[0] * (static_cast<int_x2_type>(segm_start2.y()) -
@@ -754,7 +741,7 @@ public:
                                            static_cast<int_x2_type>(segm_start2.x()) -
                                            static_cast<int_x2_type>(site1.x()) * 2) +
                             b[0] * b[0] * (static_cast<int_x2_type>(site1.y()) * 2);
-                    fpt_type c_y = get_d(sqrt_expr_.eval2(cA, cB));
+                    fpt_type c_y = to_fpt(sqrt_expr_.eval2(cA, cB));
                     c_event.y(c_y / denom);
                 }
 
@@ -768,14 +755,14 @@ public:
                             a[0] * a[0] * (static_cast<int_x2_type>(site1.x()) * 2);
 
                     if (recompute_c_x) {
-                        fpt_type c_x = get_d(sqrt_expr_.eval2(cA, cB));
+                        fpt_type c_x = to_fpt(sqrt_expr_.eval2(cA, cB));
                         c_event.x(c_x / denom);
                     }
 
                     if (recompute_lower_x) {
                         cA[2] = is_neg(c[0]) ? -c[0] : c[0];
                         cB[2] = a[0] * a[0] + b[0] * b[0];
-                        fpt_type lower_x = get_d(sqrt_expr_.eval3(cA, cB));
+                        fpt_type lower_x = to_fpt(sqrt_expr_.eval3(cA, cB));
                         c_event.lower_x(lower_x / denom);
                     }
                 }
@@ -790,9 +777,9 @@ public:
             eint dx = ix - orientation * site1.x();
             eint dy = iy - orientation * site1.y();
             if (is_zero(dx) && is_zero(dy)) {
-                fpt_type denom = get_d(orientation);
-                fpt_type c_x = get_d(ix) / denom;
-                fpt_type c_y = get_d(iy) / denom;
+                fpt_type denom = to_fpt(orientation);
+                fpt_type c_x = to_fpt(ix) / denom;
+                fpt_type c_y = to_fpt(iy) / denom;
                 c_event = circle_type(c_x, c_y, c_x);
                 return;
             }
@@ -806,14 +793,14 @@ public:
             cB[1] = a[1] * a[1] + b[1] * b[1];
             cB[2] = a[0] * a[1] + b[0] * b[1];
             cB[3] = (a[0] * dy - b[0] * dx) * (a[1] * dy - b[1] * dx) * -2;
-            fpt_type temp = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
-            fpt_type denom = temp * get_d(orientation);
+            fpt_type temp = to_fpt(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
+            fpt_type denom = temp * to_fpt(orientation);
 
             if (recompute_c_y) {
                 cA[0] = b[1] * (dx * dx + dy * dy) - iy * (dx * a[1] + dy * b[1]);
                 cA[1] = b[0] * (dx * dx + dy * dy) - iy * (dx * a[0] + dy * b[0]);
                 cA[2] = iy * sign;
-                fpt_type cy = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
+                fpt_type cy = to_fpt(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                 c_event.y(cy / denom);
             }
 
@@ -823,13 +810,13 @@ public:
                 cA[2] = ix * sign;
 
                 if (recompute_c_x) {
-                    fpt_type cx = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
+                    fpt_type cx = to_fpt(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                     c_event.x(cx / denom);
                 }
 
                 if (recompute_lower_x) {
                     cA[3] = orientation * (dx * dx + dy * dy) * (is_neg(temp) ? -1 : 1);
-                    fpt_type lower_x = get_d(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
+                    fpt_type lower_x = to_fpt(sqrt_expr_evaluator_pss4<eint, efpt64>(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -883,7 +870,7 @@ public:
                 int k = (i+2) % 3;
                 cA[i] = a[j] * b[k] - a[k] * b[j];
             }
-            fpt_type denom = get_d(sqrt_expr_.eval3(cA, cB));
+            fpt_type denom = to_fpt(sqrt_expr_.eval3(cA, cB));
 
             if (recompute_c_y) {
                 for (int i = 0; i < 3; ++i) {
@@ -891,7 +878,7 @@ public:
                     int k = (i+2) % 3;
                     cA[i] = b[j] * c[k] - b[k] * c[j];
                 }
-                fpt_type c_y = get_d(sqrt_expr_.eval3(cA, cB));
+                fpt_type c_y = to_fpt(sqrt_expr_.eval3(cA, cB));
                 c_event.y(c_y / denom);
             }
 
@@ -907,13 +894,13 @@ public:
                 }
 
                 if (recompute_c_x) {
-                    fpt_type c_x = get_d(sqrt_expr_.eval3(cA, cB));
+                    fpt_type c_x = to_fpt(sqrt_expr_.eval3(cA, cB));
                     c_event.x(c_x / denom);
                 }
 
                 if (recompute_lower_x) {
                     cB[3] = 1;
-                    fpt_type lower_x = get_d(sqrt_expr_.eval4(cA, cB));
+                    fpt_type lower_x = to_fpt(sqrt_expr_.eval4(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -989,6 +976,7 @@ public:
         }
 
         robust_sqrt_expr_type sqrt_expr_;
+        to_fpt_converter to_fpt;
     };
 
     template <typename Site, typename Circle>
@@ -1006,28 +994,18 @@ public:
                  const site_type &site2,
                  const site_type &site3,
                  circle_type &c_event) {
-            fpt_type dif_x1 = static_cast<fpt_type>(site1.x()) -
-                              static_cast<fpt_type>(site2.x());
-            fpt_type dif_x2 = static_cast<fpt_type>(site2.x()) -
-                              static_cast<fpt_type>(site3.x());
-            fpt_type dif_y1 = static_cast<fpt_type>(site1.y()) -
-                              static_cast<fpt_type>(site2.y());
-            fpt_type dif_y2 = static_cast<fpt_type>(site2.y()) -
-                              static_cast<fpt_type>(site3.y());
+            fpt_type dif_x1 = to_fpt(site1.x()) - to_fpt(site2.x());
+            fpt_type dif_x2 = to_fpt(site2.x()) - to_fpt(site3.x());
+            fpt_type dif_y1 = to_fpt(site1.y()) - to_fpt(site2.y());
+            fpt_type dif_y2 = to_fpt(site2.y()) - to_fpt(site3.y());
             fpt_type orientation = robust_cross_product(dif_x1, dif_y1, dif_x2, dif_y2);
             robust_fpt_type inv_orientation(0.5 / orientation, 2.0);
-            fpt_type sum_x1 = static_cast<fpt_type>(site1.x()) +
-                              static_cast<fpt_type>(site2.x());
-            fpt_type sum_x2 = static_cast<fpt_type>(site2.x()) +
-                              static_cast<fpt_type>(site3.x());
-            fpt_type sum_y1 = static_cast<fpt_type>(site1.y()) +
-                              static_cast<fpt_type>(site2.y());
-            fpt_type sum_y2 = static_cast<fpt_type>(site2.y()) +
-                              static_cast<fpt_type>(site3.y());
-            fpt_type dif_x3 = static_cast<fpt_type>(site1.x()) -
-                              static_cast<fpt_type>(site3.x());
-            fpt_type dif_y3 = static_cast<fpt_type>(site1.y()) -
-                              static_cast<fpt_type>(site3.y());
+            fpt_type sum_x1 = to_fpt(site1.x()) + to_fpt(site2.x());
+            fpt_type sum_x2 = to_fpt(site2.x()) + to_fpt(site3.x());
+            fpt_type sum_y1 = to_fpt(site1.y()) + to_fpt(site2.y());
+            fpt_type sum_y2 = to_fpt(site2.y()) + to_fpt(site3.y());
+            fpt_type dif_x3 = to_fpt(site1.x()) - to_fpt(site3.x());
+            fpt_type dif_y3 = to_fpt(site1.y()) - to_fpt(site3.y());
             robust_dif_type c_x, c_y;
             c_x += robust_fpt_type(dif_x1 * sum_x1 * dif_y2, 2.0);
             c_x += robust_fpt_type(dif_y1 * sum_y1 * dif_y2, 2.0);
@@ -1058,27 +1036,21 @@ public:
                  const site_type &site3,
                  int segment_index,
                  circle_type &c_event) {
-            fpt_type line_a = static_cast<fpt_type>(site3.point1(true).y()) -
-                              static_cast<fpt_type>(site3.point0(true).y());
-            fpt_type line_b = static_cast<fpt_type>(site3.point0(true).x()) -
-                              static_cast<fpt_type>(site3.point1(true).x());
-            fpt_type vec_x = static_cast<fpt_type>(site2.y()) -
-                             static_cast<fpt_type>(site1.y());
-            fpt_type vec_y = static_cast<fpt_type>(site1.x()) -
-                             static_cast<fpt_type>(site2.x());
+            fpt_type line_a = to_fpt(site3.point1(true).y()) - to_fpt(site3.point0(true).y());
+            fpt_type line_b = to_fpt(site3.point0(true).x()) - to_fpt(site3.point1(true).x());
+            fpt_type vec_x = to_fpt(site2.y()) - to_fpt(site1.y());
+            fpt_type vec_y = to_fpt(site1.x()) - to_fpt(site2.x());
             robust_fpt_type teta(robust_cross_product(line_a, line_b, -vec_y, vec_x), 1.0);
             robust_fpt_type A(robust_cross_product(
                 line_a, line_b,
-                static_cast<fpt_type>(site3.point1().y()) -
-                static_cast<fpt_type>(site1.y()),
-                static_cast<fpt_type>(site1.x()) -
-                static_cast<fpt_type>(site3.point1().x())), 1.0);
+                to_fpt(site3.point1().y()) - to_fpt(site1.y()),
+                to_fpt(site1.x()) - to_fpt(site3.point1().x())),
+                1.0);
             robust_fpt_type B(robust_cross_product(
                 line_a, line_b,
-                static_cast<fpt_type>(site3.point1().y()) -
-                static_cast<fpt_type>(site2.y()),
-                static_cast<fpt_type>(site2.x()) -
-                static_cast<fpt_type>(site3.point1().x())), 1.0);
+                to_fpt(site3.point1().y()) - to_fpt(site2.y()),
+                to_fpt(site2.x()) - to_fpt(site3.point1().x())),
+                1.0);
             robust_fpt_type denom(robust_cross_product(vec_x, vec_y, line_a, line_b), 1.0);
             robust_fpt_type inv_segm_len(1.0 / get_sqrt(sqr_distance(line_a, line_b)), 3.0);
             robust_dif_type t;
@@ -1095,13 +1067,9 @@ public:
                 t += teta * (A + B) / (robust_fpt_type(2.0, false) * denom * denom);
             }
             robust_dif_type c_x, c_y;
-            c_x += robust_fpt_type(0.5 * (
-                static_cast<fpt_type>(site1.x()) +
-                static_cast<fpt_type>(site2.x())), false);
+            c_x += robust_fpt_type(0.5 * (to_fpt(site1.x()) + to_fpt(site2.x())), false);
             c_x += robust_fpt_type(vec_x, false) * t;
-            c_y += robust_fpt_type(0.5 * (
-                static_cast<fpt_type>(site1.y()) +
-                static_cast<fpt_type>(site2.y())), false);
+            c_y += robust_fpt_type(0.5 * (to_fpt(site1.y()) + to_fpt(site2.y())), false);
             c_y += robust_fpt_type(vec_y, false) * t;
             robust_dif_type r, lower_x(c_x);
             r -= robust_fpt_type(line_a, false) * robust_fpt_type(site3.x0(), false);
@@ -1132,46 +1100,36 @@ public:
             const point_type &segm_end1 = site2.point0(true);
             const point_type &segm_start2 = site3.point0(true);
             const point_type &segm_end2 = site3.point1(true);
-            fpt_type a1 = static_cast<fpt_type>(segm_end1.x()) -
-                          static_cast<fpt_type>(segm_start1.x());
-            fpt_type b1 = static_cast<fpt_type>(segm_end1.y()) -
-                          static_cast<fpt_type>(segm_start1.y());
-            fpt_type a2 = static_cast<fpt_type>(segm_end2.x()) -
-                          static_cast<fpt_type>(segm_start2.x());
-            fpt_type b2 = static_cast<fpt_type>(segm_end2.y()) -
-                          static_cast<fpt_type>(segm_start2.y());
+            fpt_type a1 = to_fpt(segm_end1.x()) - to_fpt(segm_start1.x());
+            fpt_type b1 = to_fpt(segm_end1.y()) - to_fpt(segm_start1.y());
+            fpt_type a2 = to_fpt(segm_end2.x()) - to_fpt(segm_start2.x());
+            fpt_type b2 = to_fpt(segm_end2.y()) - to_fpt(segm_start2.y());
             bool recompute_c_x, recompute_c_y, recompute_lower_x;
             robust_fpt_type orientation(robust_cross_product(b1, a1, b2, a2), 1.0);
             if (get_orientation(orientation) == COLLINEAR) {
                 robust_fpt_type a(a1 * a1 + b1 * b1, 2.0);
                 robust_fpt_type c(robust_cross_product(
                     b1, a1,
-                    static_cast<fpt_type>(segm_start2.y()) -
-                    static_cast<fpt_type>(segm_start1.y()),
-                    static_cast<fpt_type>(segm_start2.x()) -
-                    static_cast<fpt_type>(segm_start1.x())), 1.0);
+                    to_fpt(segm_start2.y()) - to_fpt(segm_start1.y()),
+                    to_fpt(segm_start2.x()) - to_fpt(segm_start1.x())),
+                    1.0);
                 robust_fpt_type det(
                     robust_cross_product(
                         a1, b1,
-                        static_cast<fpt_type>(site1.x()) -
-                        static_cast<fpt_type>(segm_start1.x()),
-                        static_cast<fpt_type>(site1.y()) -
-                        static_cast<fpt_type>(segm_start1.y())) *
+                        to_fpt(site1.x()) - to_fpt(segm_start1.x()),
+                        to_fpt(site1.y()) - to_fpt(segm_start1.y())) *
                     robust_cross_product(
                         b1, a1,
-                        static_cast<fpt_type>(site1.y()) -
-                        static_cast<fpt_type>(segm_start2.y()),
-                        static_cast<fpt_type>(site1.x()) -
-                        static_cast<fpt_type>(segm_start2.x())), 3.0);
+                        to_fpt(site1.y()) - to_fpt(segm_start2.y()),
+                        to_fpt(site1.x()) - to_fpt(segm_start2.x())),
+                    3.0);
                 robust_dif_type t;
                 t -= robust_fpt_type(a1, false) * robust_fpt_type(
-                    (static_cast<fpt_type>(segm_start1.x()) +
-                     static_cast<fpt_type>(segm_start2.x())) * 0.5 -
-                     static_cast<fpt_type>(site1.x()), false);
+                    (to_fpt(segm_start1.x()) + to_fpt(segm_start2.x())) * 0.5 -
+                     to_fpt(site1.x()), false);
                 t -= robust_fpt_type(b1, false) * robust_fpt_type((
-                     static_cast<fpt_type>(segm_start1.y()) +
-                     static_cast<fpt_type>(segm_start2.y())) * 0.5 -
-                     static_cast<fpt_type>(site1.y()), false);
+                     to_fpt(segm_start1.y()) + to_fpt(segm_start2.y())) * 0.5 -
+                     to_fpt(site1.y()), false);
                 if (point_index == 2) {
                     t += det.sqrt();
                 } else {
@@ -1180,12 +1138,10 @@ public:
                 t /= a;
                 robust_dif_type c_x, c_y;
                 c_x += robust_fpt_type(0.5 * (
-                    static_cast<fpt_type>(segm_start1.x()) +
-                    static_cast<fpt_type>(segm_start2.x())), false);
+                    to_fpt(segm_start1.x()) + to_fpt(segm_start2.x())), false);
                 c_x += robust_fpt_type(a1, false) * t;
                 c_y += robust_fpt_type(0.5 * (
-                    static_cast<fpt_type>(segm_start1.y()) +
-                    static_cast<fpt_type>(segm_start2.y())), false);
+                    to_fpt(segm_start1.y()) + to_fpt(segm_start2.y())), false);
                 c_y += robust_fpt_type(b1, false) * t;
                 robust_dif_type lower_x(c_x);
                 if (is_neg(c)) {
@@ -1208,25 +1164,19 @@ public:
                 }
                 robust_fpt_type or1(robust_cross_product(
                     b1, a1,
-                    static_cast<fpt_type>(segm_end1.y()) -
-                    static_cast<fpt_type>(site1.y()),
-                    static_cast<fpt_type>(segm_end1.x()) -
-                    static_cast<fpt_type>(site1.x())), 1.0);
+                    to_fpt(segm_end1.y()) - to_fpt(site1.y()),
+                    to_fpt(segm_end1.x()) - to_fpt(site1.x())), 1.0);
                 robust_fpt_type or2(robust_cross_product(
                     a2, b2,
-                    static_cast<fpt_type>(segm_end2.x()) -
-                    static_cast<fpt_type>(site1.x()),
-                    static_cast<fpt_type>(segm_end2.y()) -
-                    static_cast<fpt_type>(site1.y())), 1.0);
+                    to_fpt(segm_end2.x()) - to_fpt(site1.x()),
+                    to_fpt(segm_end2.y()) - to_fpt(site1.y())), 1.0);
                 robust_fpt_type det = robust_fpt_type(2.0, false) * a * or1 * or2;
                 robust_fpt_type c1(robust_cross_product(
                     b1, a1,
-                    static_cast<fpt_type>(segm_end1.y()),
-                    static_cast<fpt_type>(segm_end1.x())), 1.0);
+                    to_fpt(segm_end1.y()), to_fpt(segm_end1.x())), 1.0);
                 robust_fpt_type c2(robust_cross_product(
                     a2, b2,
-                    static_cast<fpt_type>(segm_end2.x()),
-                    static_cast<fpt_type>(segm_end2.y())), 1.0);
+                    to_fpt(segm_end2.x()), to_fpt(segm_end2.y())), 1.0);
                 robust_fpt_type inv_orientation = robust_fpt_type(1.0, false) / orientation;
                 robust_dif_type t, b, ix, iy;
                 ix += robust_fpt_type(a2, false) * c1 * inv_orientation;
@@ -1240,12 +1190,10 @@ public:
                 b += iy * (robust_fpt_type(b2, false) * sqr_sum1);
                 b -= sqr_sum1 * robust_fpt_type(robust_cross_product(
                     a2, b2,
-                    static_cast<fpt_type>(-site1.y()),
-                    static_cast<fpt_type>(site1.x())), 1.0);
+                    to_fpt(-site1.y()), to_fpt(site1.x())), 1.0);
                 b -= sqr_sum2 * robust_fpt_type(robust_cross_product(
                     a1, b1,
-                    static_cast<fpt_type>(-site1.y()),
-                    static_cast<fpt_type>(site1.x())), 1.0);
+                    to_fpt(-site1.y()), to_fpt(site1.x())), 1.0);
                 t -= b;
                 if (point_index == 2) {
                     t += det.sqrt();
@@ -1283,24 +1231,18 @@ public:
                  const site_type &site2,
                  const site_type &site3,
                  circle_type &c_event) {
-            robust_fpt_type a1(static_cast<fpt_type>(site1.x1(true)) -
-                               static_cast<fpt_type>(site1.x0(true)), 0.0);
-            robust_fpt_type b1(static_cast<fpt_type>(site1.y1(true)) -
-                               static_cast<fpt_type>(site1.y0(true)), 0.0);
+            robust_fpt_type a1(to_fpt(site1.x1(true)) - to_fpt(site1.x0(true)), 0.0);
+            robust_fpt_type b1(to_fpt(site1.y1(true)) - to_fpt(site1.y0(true)), 0.0);
             robust_fpt_type c1(robust_cross_product(
                 site1.x0(true), site1.y0(true), site1.x1(true), site1.y1(true)), 1.0);
 
-            robust_fpt_type a2(static_cast<fpt_type>(site2.x1(true)) -
-                               static_cast<fpt_type>(site2.x0(true)), 0.0);
-            robust_fpt_type b2(static_cast<fpt_type>(site2.y1(true)) -
-                               static_cast<fpt_type>(site2.y0(true)), 0.0);
+            robust_fpt_type a2(to_fpt(site2.x1(true)) - to_fpt(site2.x0(true)), 0.0);
+            robust_fpt_type b2(to_fpt(site2.y1(true)) - to_fpt(site2.y0(true)), 0.0);
             robust_fpt_type c2(robust_cross_product(
                 site2.x0(true), site2.y0(true), site2.x1(true), site2.y1(true)), 1.0);
 
-            robust_fpt_type a3(static_cast<fpt_type>(site3.x1(true)) -
-                               static_cast<fpt_type>(site3.x0(true)), 0.0);
-            robust_fpt_type b3(static_cast<fpt_type>(site3.y1(true)) -
-                               static_cast<fpt_type>(site3.y0(true)), 0.0);
+            robust_fpt_type a3(to_fpt(site3.x1(true)) - to_fpt(site3.x0(true)), 0.0);
+            robust_fpt_type b3(to_fpt(site3.y1(true)) - to_fpt(site3.y0(true)), 0.0);
             robust_fpt_type c3(robust_cross_product(
                 site3.x0(true), site3.y0(true), site3.x1(true), site3.y1(true)), 1.0);
 
@@ -1354,6 +1296,7 @@ public:
 
     private:
         exact_circle_formation_functor_type exact_circle_formation_functor_;
+        to_fpt_converter to_fpt;
     };
 
     template <typename Site,
