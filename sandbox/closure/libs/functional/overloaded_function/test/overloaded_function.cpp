@@ -1,11 +1,11 @@
 
-#include <boost/functional/overload.hpp>
+#include <boost/functional/overloaded_function.hpp>
 #include <boost/function.hpp>
-#define BOOST_TEST_MODULE TestOverload
+#define BOOST_TEST_MODULE TestOverloadedFunction
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-//[test_overload_make_func
+//[test_make_overloaded_function_check
 template<typename F>
 void check(F identity) {
     BOOST_CHECK( identity("abc") == "abc" );
@@ -14,27 +14,28 @@ void check(F identity) {
 }
 //]
 
-//[test_overload_decls
+//[test_overloaded_function_declarations
 const std::string& identity_s(const std::string& x) { return x; }
 int identity_i(int x) { return x; }
 double identity_d_impl(double x) { return x; }
 boost::function<double (double)> identity_d = identity_d_impl;
 //]
 
-BOOST_AUTO_TEST_CASE( test_overload ) {
-    //[test_overload_funcs
+BOOST_AUTO_TEST_CASE( test_overloaded_function ) {
+    //[test_overloaded_function_calls
     BOOST_CHECK( identity_s("abc") == "abc" );
     BOOST_CHECK( identity_i(123) == 123 );
     BOOST_CHECK( identity_d(1.23) == 1.23 );
     //]
 
     {
-        //[test_overload_tpl
-        boost::functional::overload<
+        //[test_overloaded_function
+        boost::overloaded_function<
               const std::string& (const std::string&)
             , int (int)
             , double (double)
         > identity(identity_s, identity_i, identity_d);
+
         BOOST_CHECK( identity("abc") == "abc" );
         BOOST_CHECK( identity(123) == 123 );
         BOOST_CHECK( identity(1.23) == 1.23 );
@@ -42,17 +43,18 @@ BOOST_AUTO_TEST_CASE( test_overload ) {
     }
     
     {
-        //[test_overload_make_var
-        BOOST_AUTO(identity, boost::functional::make_overload(
+        //[test_make_overloaded_function
+        BOOST_AUTO(identity, boost::make_overloaded_function(
                 identity_s, identity_i, identity_d));
+
         BOOST_CHECK( identity("abc") == "abc" );
         BOOST_CHECK( identity(123) == 123 );
         BOOST_CHECK( identity(1.23) == 1.23 );
         //]
     }
 
-    //[test_overload_make_func_call
-    check(boost::functional::make_overload(identity_s, identity_i, identity_d));
+    //[test_make_overloaded_function_call
+    check(boost::make_overloaded_function(identity_s, identity_i, identity_d));
     //]
 }
 
