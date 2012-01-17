@@ -42,7 +42,7 @@
     BOOST_CLOSURE_AUX_SYMBOL( (deduce_result_function_type)(id) )
 
 // User did not explicitly specified result type, deduce it (using Typeof).
-#define BOOST_CLOSURE_AUX_CODE_RESULT_DEDUCE_(decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CODE_RESULT_DEDUCE_(id, typename01, decl_traits) \
     BOOST_CLOSURE_AUX_CODE_RESULT_DECL(id) \
     /* the many tagging, wrapping, etc that follow are taken from ScopeExit */ \
     /* type deduction mechanism and they are necessary within templates */ \
@@ -85,8 +85,7 @@
     ;
 
 // Use result type as explicitly specified by user (no type deduction needed).
-#define BOOST_CLOSURE_AUX_CODE_RESULT_RETURN_( \
-        decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CODE_RESULT_RETURN_(id, typename01, decl_traits) \
     typedef \
         BOOST_PP_LIST_FIRST(BOOST_CLOSURE_AUX_DECL_TRAITS_RETURNS( \
                 decl_traits)) \
@@ -101,13 +100,13 @@
 #define BOOST_CLOSURE_AUX_CODE_RESULT_DECL(id) \
     /* result type here */ (*BOOST_CLOSURE_AUX_CODE_RESULT_FUNC_(id))();
 
-#define BOOST_CLOSURE_AUX_CODE_RESULT(decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CODE_RESULT(id, typename01, decl_traits) \
     BOOST_PP_IIF(BOOST_PP_LIST_IS_CONS(BOOST_CLOSURE_AUX_DECL_TRAITS_RETURNS( \
             decl_traits)), \
         BOOST_CLOSURE_AUX_CODE_RESULT_RETURN_ \
     , \
         BOOST_CLOSURE_AUX_CODE_RESULT_DEDUCE_ \
-    )(decl_traits, id, typename01)
+    )(id, typename01, decl_traits)
 
 #endif // #include guard
 

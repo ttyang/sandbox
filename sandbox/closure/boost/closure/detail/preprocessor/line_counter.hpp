@@ -6,7 +6,7 @@
 
 // PUBLIC //
 
-// MSVC has problems expanding __LINE__ so used (the non standard) __COUNTER__.
+// MSVC has problems expanding __LINE__ so use (the non standard) __COUNTER__.
 #ifdef BOOST_MSVC
 #   define BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER __COUNTER__
 #else

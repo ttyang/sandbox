@@ -9,7 +9,7 @@
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
 #include <boost/preprocessor/facilities/empty.hpp>
-#include <boost/preprocessor/seq/fold_left.hpp>
+#include <boost/preprocessor/list/fold_left.hpp>
 
 // PRIVATE //
 
@@ -35,7 +35,7 @@
 // PUBLIC //
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE_THIS(sign) \
-    BOOST_PP_SEQ_FOLD_LEFT( \
+    BOOST_PP_LIST_FOLD_LEFT( \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE_THIS_, \
             BOOST_PP_EMPTY, sign)
 

@@ -177,7 +177,7 @@
                 all_binds) \
     };
 
-#define BOOST_CLOSURE_AUX_CODE_BIND_(decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CODE_BIND_(id, typename01, decl_traits) \
     /* IMPORTANT: the order of these appends is important, it must follow */ \
     /* the indexing order used by the functor code which starts */ \
     /* enumerating const binds and then non-const binds */ \
@@ -200,14 +200,14 @@
 #define BOOST_CLOSURE_AUX_CODE_BIND_THIS_VAR \
     BOOST_CLOSURE_AUX_SYMBOL( (this_var) )
 
-#define BOOST_CLOSURE_AUX_CODE_BIND(decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CODE_BIND(id, typename01, decl_traits) \
     /* the binding data structures must be declared and initialized (to */ \
     /* empty structs, so hopefully the compiler will optimize away the */ \
     /* no-op code) even when there is no bound param because these structs */ \
     /* are used to init `...args.value` which is always used by the `END` */ \
     /* macro later because this macro does not know if there are bound */ \
     /* params or not */ \
-    BOOST_CLOSURE_AUX_CODE_BIND_(decl_traits, id, typename01) \
+    BOOST_CLOSURE_AUX_CODE_BIND_(id, typename01, decl_traits) \
     /* this code takes advantage of the template argument list/comparison */ \
     /* operator ambiguity to declare a variable iff it hasn't already been */ \
     /* declared in that scope; the second occurrence is parsed as: */ \

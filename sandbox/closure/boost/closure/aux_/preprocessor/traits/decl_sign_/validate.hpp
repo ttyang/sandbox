@@ -22,7 +22,7 @@
 
 // PUBLIC //
 
-// Validate params seq before starting to parse it.
+// Validate params before starting to parse it.
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE(sign) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE_1_(sign, \
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALIDATE_DEFAULTS(sign))

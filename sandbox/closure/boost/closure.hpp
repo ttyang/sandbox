@@ -5,27 +5,66 @@
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
 /** @file
- * @brief Local functions allows to program functions locally within the scope
- *  where they are needed.
- */
+@brief Local functions allows to program functions locally within the scope
+where they are needed.
+*/
 
 #ifndef BOOST_CLOSURE_HPP_
 #define BOOST_CLOSURE_HPP_
 
+#ifndef DOXY
+
 #include <boost/closure/aux_/macro/closure.hpp>
 #include <boost/closure/aux_/macro/closure_end.hpp>
 #include <boost/closure/aux_/macro/closure_typeof.hpp>
-#include <boost/config.hpp> // For variadic macros.
+#include <boost/closure/aux_/preprocessor/traits/decl.hpp>
+#include <boost/closure/detail/preprocessor/line_counter.hpp>
+#include <boost/closure/detail/preprocessor/void_list.hpp>
+#include <boost/config.hpp>
 
-// Pass a parenthesized params seq `()()...` on C++. If variadic macros (C99, 
-// GCC, MVSC, etc) you can also pass a variable length tuple `..., ...` for
-// params and nothing `` for no params.
-#if defined(BOOST_NO_VARIADIC_MACROS)
+// PUBLIC //
 
-/** @cond */
-#define BOOST_CLOSURE_(id, is_template, decl_seq) \
-    BOOST_CLOSURE_AUX_CLOSURE(decl_seq, id, is_template)
-/** @endcond */
+#ifdef BOOST_NO_VARIADIC_MACROS
+#   define BOOST_CLOSURE(declarations) \
+        BOOST_CLOSURE_AUX_CLOSURE( \
+              BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+            , 0 /* not within template */ \
+            , BOOST_CLOSURE_AUX_PP_DECL_TRAITS( \
+                    BOOST_CLOSURE_DETAIL_PP_VOID_LIST(declarations)) \
+        )
+#   define BOOST_CLOSURE_TPL(declarations) \
+        BOOST_CLOSURE_AUX_CLOSURE( \
+              BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+            , 1 /* within template */ \
+            , BOOST_CLOSURE_AUX_PP_DECL_TRAITS( \
+                    BOOST_CLOSURE_DETAIL_PP_VOID_LIST(declarations)) \
+        )
+#else // VARIADIC
+#   define BOOST_CLOSURE(...) \
+        BOOST_CLOSURE_AUX_CLOSURE( \
+              BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+            , 0 /* not within template */ \
+            , BOOST_CLOSURE_AUX_PP_DECL_TRAITS( \
+                    BOOST_CLOSURE_DETAIL_PP_VOID_LIST(__VA_ARGS__)) \
+        )
+#   define BOOST_CLOSURE_TPL(...) \
+        BOOST_CLOSURE_AUX_CLOSURE( \
+              BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+            , 1 /* within template */ \
+            , BOOST_CLOSURE_AUX_PP_DECL_TRAITS( \
+                    BOOST_CLOSURE_DETAIL_PP_VOID_LIST(__VA_ARGS__)) \
+        )
+#endif // VARIADIC
+
+#define BOOST_CLOSURE_END(function_name) \
+    BOOST_CLOSURE_AUX_CLOSURE_END(function_name)
+
+#define BOOST_CLOSURE_TYPEOF(bound_variable_name) \
+    BOOST_CLOSURE_AUX_CLOSURE_TYPEOF(bound_variable_name)
+
+// DOCUMENTATION //
+
+#else // DOXY
 
 /**
  * @brief This macro is used to declare the local function parameters.
@@ -141,8 +180,7 @@
  *  @RefMacro{BOOST_LOCAL_CONFIG_FUNCTION_ARITY_MAX},
  *  @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}, Boost.Function.
  */
-#define BOOST_CLOSURE(declarations) \
-    BOOST_CLOSURE_(__LINE__, 0 /* no template */, declarations)
+#define BOOST_CLOSURE(declarations)
 
 /**
  * @brief This macro is the same as @RefMacro{BOOST_LOCAL_FUNCTION_PARAMS} but
@@ -150,25 +188,7 @@
  *
  * @See @RefMacro{BOOST_LOCAL_FUNCTION_PARAMS}, @RefSect{Tutorial} section.
  */
-#define BOOST_CLOSURE_TPL(declarations) \
-    BOOST_CLOSURE_(__LINE__, 1 /* template */, declarations)
-
-#else // BOOST_NO_VARIADIC_MACROS
-
-#include <boost/closure/detail/preprocessor/variadic/to_seq.hpp>
-
-#define BOOST_CLOSURE_(id, is_template, ...) \
-    BOOST_CLOSURE_AUX_CLOSURE(BOOST_CLOSURE_DETAIL_PP_VARIADIC_TO_SEQ( \
-            (void) /* for empty seq */, __VA_ARGS__), \
-            id, is_template)
-
-#define BOOST_CLOSURE(...) \
-    BOOST_CLOSURE_(__LINE__, 0 /* no template */, __VA_ARGS__)
-
-#define BOOST_CLOSURE_TPL(...) \
-    BOOST_CLOSURE_(__LINE__, 1 /* template */, __VA_ARGS__)
-
-#endif // BOOST_NO_VARIADIC_MACROS
+#define BOOST_CLOSURE_TPL(declarations)
 
 /**
  * @brief This macro is used to specify the local function name.
@@ -224,12 +244,8 @@
  *  @RefSect2{Advanced_Topics, Advanced Topics} section,
  *  @RefMacro{BOOST_LOCAL_CONFIG_COMPLIANT}.
  */
-#define BOOST_CLOSURE_END(name) \
-    BOOST_CLOSURE_AUX_CLOSURE_END(name)
+#define BOOST_CLOSURE_END(name)
 
-// Bound variable name. Expand to qualified bound type (i.e., bound variable
-// type with extra const and/or & for const and/or reference binds).
-// Can be used with local functions, blocks, and exits. It accepts `this`.
 /**
  * @brief This macro expands to the fully qualified type of a variable bound
  *  to to local functions, local blocks, and local exits.
@@ -262,8 +278,9 @@
  *  @RefMacro{BOOST_LOCAL_EXIT}, @RefSect2{Advanced_Topics, Advanced Topics}
  *  section.
  */
-#define BOOST_CLOSURE_TYPEOF(bound_variable_name) \
-    BOOST_CLOSURE_AUX_CLOSURE_TYPEOF(bound_variable_name)
+#define BOOST_CLOSURE_TYPEOF(bound_variable_name)
+
+#endif // DOXY
 
 #endif // #include guard
 

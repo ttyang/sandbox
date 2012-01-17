@@ -20,7 +20,7 @@
 #include <boost/closure/detail/preprocessor/keyword/thisunderscore.hpp>
 #include <boost/preprocessor/control/iif.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
-#include <boost/preprocessor/seq/fold_left.hpp>
+#include <boost/preprocessor/list/fold_left.hpp>
 
 // PRIVATE //
 
@@ -92,17 +92,17 @@
         BOOST_CLOSURE_AUX_PP_DECL_TRAITS_APPEND_PARAM \
     ))))(decl_traits, sign)
 
-// Parse param seq after following precondition has been validated by caller.
-// Precondition: If seq contains a default param value `... (default ...) ...`,
+// Parse params after following precondition has been validated by caller.
+// Precondition: If list contains a default param value `..., default, ...`,
 // the default value element is never 1st (it always has a previous elem) and
 // its previous element is a unbind param (no const-bind and no bind).
-#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_SEQ_(sign) \
-    BOOST_PP_SEQ_FOLD_LEFT(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_, \
+#define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID(sign) \
+    BOOST_PP_LIST_FOLD_LEFT(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_, \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_NIL, sign)
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_YES_(sign, unused) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_VALIDATE( \
-            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID_SEQ_(sign))
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_VALID(sign))
 
 #define BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SIGN_NO_(unused, error) \
     BOOST_CLOSURE_AUX_PP_DECL_TRAITS_SET_ERROR( \

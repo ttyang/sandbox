@@ -19,14 +19,17 @@
 #include <boost/preprocessor/list/adt.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
 
+/** @todo double check all includes */
+/** @todo add copyright to all files, docs, examples, tests, etc- careful with ScopeExit */
+
 // PRIVATE //
 
-#define BOOST_CLOSURE_AUX_CLOSURE_OK_(decl_traits, id, typename01) \
-    BOOST_CLOSURE_AUX_CODE_RESULT(decl_traits, id, typename01) \
-    BOOST_CLOSURE_AUX_CODE_BIND(decl_traits, id, typename01) \
-    BOOST_CLOSURE_AUX_CODE_FUNCTOR(decl_traits, id, typename01) 
+#define BOOST_CLOSURE_AUX_CLOSURE_OK_(id, typename01, decl_traits) \
+    BOOST_CLOSURE_AUX_CODE_RESULT(id, typename01, decl_traits) \
+    BOOST_CLOSURE_AUX_CODE_BIND(id, typename01, decl_traits) \
+    BOOST_CLOSURE_AUX_CODE_FUNCTOR(id, typename01, decl_traits) 
 
-#define BOOST_CLOSURE_AUX_CLOSURE_ERROR_(decl_traits, id, typename01) \
+#define BOOST_CLOSURE_AUX_CLOSURE_ERROR_(id, typename01, decl_traits) \
     BOOST_PP_IIF(BOOST_PP_LIST_IS_CONS( \
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_RETURNS(decl_traits)), \
         /* return specified, so no result type before this macro expansion */ \
@@ -41,15 +44,6 @@
             BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits), ()) \
     ; /* must close ASSERT macro for eventual use within class scope */
 
-// sign_params: parsed parenthesized params.
-#define BOOST_CLOSURE_AUX_CLOSURE_(decl_traits, id, typename01) \
-    BOOST_PP_IIF(BOOST_PP_IS_EMPTY(BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG( \
-            decl_traits)), \
-        BOOST_CLOSURE_AUX_CLOSURE_OK_ \
-    , \
-        BOOST_CLOSURE_AUX_CLOSURE_ERROR_ \
-    )(decl_traits, id, typename01)
-
 // PUBLIC //
 
 #define BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR \
@@ -59,9 +53,14 @@
 // this variable is made using SFINAE mechanisms by each local function macro.
 extern boost::scope_exit::detail::undeclared BOOST_CLOSURE_AUX_CLOSURE_ARGS_VAR;
 
-#define BOOST_CLOSURE_AUX_CLOSURE(decl_seq, id, typename01) \
-    BOOST_CLOSURE_AUX_CLOSURE_(BOOST_CLOSURE_AUX_PP_DECL_TRAITS(decl_seq), \
-            id, typename01)
+// sign_params: parsed parenthesized params.
+#define BOOST_CLOSURE_AUX_CLOSURE(id, typename01, decl_traits) \
+    BOOST_PP_IIF(BOOST_PP_IS_EMPTY( \
+            BOOST_CLOSURE_AUX_PP_DECL_TRAITS_ERROR_MSG(decl_traits)), \
+        BOOST_CLOSURE_AUX_CLOSURE_OK_ \
+    , \
+        BOOST_CLOSURE_AUX_CLOSURE_ERROR_ \
+    )(id, typename01, decl_traits)
 
 #endif // #include guard
 
