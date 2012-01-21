@@ -46,10 +46,9 @@
 </dl></dd>
 <dt><span class="section"><a href="functional_overloaded_function/Tutorial.html">Tutorial</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="functional_overloaded_function/Tutorial.html#functional_overloaded_function.Tutorial.function_object">Function
-      Object</a></span></dt>
-<dt><span class="section"><a href="functional_overloaded_function/Tutorial.html#functional_overloaded_function.Tutorial.making_the_function_object">Making
-      the Function Object</a></span></dt>
+<dt><span class="section"><a href="functional_overloaded_function/Tutorial.html#functional_overloaded_function.Tutorial.overloading">Overloading</a></span></dt>
+<dt><span class="section"><a href="functional_overloaded_function/Tutorial.html#functional_overloaded_function.Tutorial.without_function_types">Without
+      Function Types</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="reference.html">Reference</a></span></dt>
 <dd><dl>
@@ -60,8 +59,7 @@
 </dl>
 </div>
 <p>
-    This library allows to overload function pointers, function references, and function
-    objects into a single function object.
+    This library allows to overload different functions into a single function object.
   </p>
 <div class="section">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
@@ -72,15 +70,18 @@
     </p>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">identity_s</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span>
-<span class="keyword">int</span> <span class="identifier">identity_i</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span>
+<pre class="programlisting"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">identity_s</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&amp;</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span> <span class="comment">// As pointer.</span>
+
+<span class="keyword">int</span> <span class="identifier">identity_i_impl</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span>
+<span class="keyword">int</span> <span class="special">(&amp;</span><span class="identifier">identity_i</span><span class="special">)(</span><span class="keyword">int</span><span class="special">)</span> <span class="special">=</span> <span class="identifier">identity_i_impl</span><span class="special">;</span> <span class="comment">// Function reference.</span>
+
 <span class="keyword">double</span> <span class="identifier">identity_d_impl</span><span class="special">(</span><span class="keyword">double</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">x</span><span class="special">;</span> <span class="special">}</span>
-<span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">double</span> <span class="special">(</span><span class="keyword">double</span><span class="special">)&gt;</span> <span class="identifier">identity_d</span> <span class="special">=</span> <span class="identifier">identity_d_impl</span><span class="special">;</span>
+<span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">double</span> <span class="special">(</span><span class="keyword">double</span><span class="special">)&gt;</span> <span class="identifier">identity_d</span> <span class="special">=</span> <span class="identifier">identity_d_impl</span><span class="special">;</span> <span class="comment">// Functor.</span>
 </pre>
 <p>
     </p>
 <p>
-      Instead of calling them using their separate names (<code class="computeroutput"><span class="identifier">BOOST_CHECK</span></code>
+      Instead of calling them using their separate names (here <code class="computeroutput"><span class="identifier">BOOST_CHECK</span></code>
       is equivalent to <code class="computeroutput"><span class="identifier">assert</span></code>):
       <sup>[<a name="functional_overloaded_function.Introduction.f0" href="#ftn.functional_overloaded_function.Introduction.f0" class="footnote">1</a>]</sup>
     </p>
@@ -131,7 +132,7 @@
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: January 17, 2012 at 22:13:13 GMT</small></p></td>
+<td align="left"><p><small>Last revised: January 18, 2012 at 15:25:52 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

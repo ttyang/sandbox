@@ -12,6 +12,5 @@ use-project boost : $(BOOST_ROOT) ;
 project : requirements
     <include>"."
     <include>$(BOOST_ROOT)
-    <define>BOOST_PP_VARIADICS # @todo remove this...
 ;
 

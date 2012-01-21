@@ -15,10 +15,13 @@ void check(F identity) {
 //]
 
 //[test_overloaded_function_declarations
-const std::string& identity_s(const std::string& x) { return x; }
-int identity_i(int x) { return x; }
+const std::string& identity_s(const std::string& x) { return x; } // As pointer.
+
+int identity_i_impl(int x) { return x; }
+int (&identity_i)(int) = identity_i_impl; // Function reference.
+
 double identity_d_impl(double x) { return x; }
-boost::function<double (double)> identity_d = identity_d_impl;
+boost::function<double (double)> identity_d = identity_d_impl; // Functor.
 //]
 
 BOOST_AUTO_TEST_CASE( test_overloaded_function ) {

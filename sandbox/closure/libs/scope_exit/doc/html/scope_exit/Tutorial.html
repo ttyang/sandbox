@@ -65,7 +65,7 @@
         In particular, the last added person must be deleted from <code class="computeroutput"><span class="identifier">persons_</span></code>
         if the function throws. All we need is to define a delayed action (release
         of a resource) right after the direct action (resource acquisition). For
-        example (see also <a href="../../../test/world.cpp" target="_top">"world.cpp"</a>):
+        example (see also <a href="../../../test/world.cpp" target="_top"><code class="computeroutput"><span class="string">"world.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -151,7 +151,7 @@
         body so we can compare it with the final value of <code class="computeroutput"><span class="identifier">evolution_</span></code>.
         If the latter was not incremented since we saved it, the rollback action
         inside the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> body should be executed.
-        For example (see also <a href="../../../test/world_checkpoint.cpp" target="_top">"world_checkpoint.cpp"</a>):
+        For example (see also <a href="../../../test/world_checkpoint.cpp" target="_top"><code class="computeroutput"><span class="string">"world_checkpoint.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -200,7 +200,7 @@
 <p>
         Within a member function, it is also possible to capture the object <code class="computeroutput"><span class="keyword">this</span></code>. However, the special symbol <code class="computeroutput"><span class="identifier">this_</span></code> must be used instead of <code class="computeroutput"><span class="keyword">this</span></code> in the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
         declaration and body to capture and access the object. For example (see also
-        <a href="../../../test/world_this.cpp" target="_top">"world_this.cpp"</a>):
+        <a href="../../../test/world_this.cpp" target="_top"><code class="computeroutput"><span class="string">"world_this.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -211,7 +211,7 @@
 <p>
       </p>
 <p>
-        On C++11, it is possible (but not required) to directly use <code class="computeroutput"><span class="keyword">this</span></code> instead of the special symbol <code class="computeroutput"><span class="identifier">this_</span></code>. <sup>[<a name="scope_exit.Tutorial.capturing_the_object__this_.f0" href="#ftn.scope_exit.Tutorial.capturing_the_object__this_.f0" class="footnote">4</a>]</sup> For example (see also <a href="../../../test/world_this.cpp" target="_top">"world_this.cpp"</a>):
+        On C++11, it is possible (but not required) to directly use <code class="computeroutput"><span class="keyword">this</span></code> instead of the special symbol <code class="computeroutput"><span class="identifier">this_</span></code>. <sup>[<a name="scope_exit.Tutorial.capturing_the_object__this_.f0" href="#ftn.scope_exit.Tutorial.capturing_the_object__this_.f0" class="footnote">4</a>]</sup> For example (see also <a href="../../../test/world_this.cpp" target="_top"><code class="computeroutput"><span class="string">"world_this.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -241,7 +241,7 @@
         (similarly to the C syntax that allows to declare a function with no parameter
         using <code class="computeroutput"><span class="identifier">result_type</span> <span class="identifier">func</span><span class="special">(</span><span class="keyword">void</span><span class="special">);</span></code>).
         <sup>[<a name="scope_exit.Tutorial.capturing_no_variable.f0" href="#ftn.scope_exit.Tutorial.capturing_no_variable.f0" class="footnote">5</a>]</sup> For example, this can be useful when the <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a>
-        body only needs to access global variables (see also <a href="../../../test/world_void.cpp" target="_top">"world_void.cpp"</a>):
+        body only needs to access global variables (see also <a href="../../../test/world_void.cpp" target="_top"><code class="computeroutput"><span class="string">"world_void.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -289,7 +289,7 @@
         that no variable name is specified by these leading captures). Additional
         captures of specific variables can follow the leading <code class="computeroutput"><span class="special">&amp;</span></code>
         or <code class="computeroutput"><span class="special">=</span></code> and they will override
-        the default reference or value captures. For example (see also <a href="../../../test/world_checkpoint_all.cpp" target="_top">"world_checkpoint_all.cpp"</a>):
+        the default reference or value captures. For example (see also <a href="../../../test/world_checkpoint_all.cpp" target="_top"><code class="computeroutput"><span class="string">"world_checkpoint_all.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -419,7 +419,7 @@
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2006-2012 Alexander Nasonov, Lorenzo Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0 (see accompanying
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

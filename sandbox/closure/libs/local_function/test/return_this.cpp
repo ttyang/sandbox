@@ -1,17 +1,16 @@
 
-//[test_return_this_cpp
-#include <boost/closure.hpp>
+#include <boost/local_function.hpp>
 #include <boost/function.hpp>
-#define BOOST_TEST_MODULE ReturnThis
+#define BOOST_TEST_MODULE TestReturnThis
 #include <boost/test/unit_test.hpp>
 
 struct number {
     number(int value) : value_(value) {}
 
     boost::function<int (void)> inc(void) {
-        int BOOST_CLOSURE(bind this_) {
+        int BOOST_LOCAL_FUNCTION(bind this_) {
             return ++this_->value_;
-        } BOOST_CLOSURE_END(i)
+        } BOOST_LOCAL_FUNCTION_NAME(i)
         return i;
     }
 
@@ -19,7 +18,7 @@ private:
     int value_;
 };
 
-BOOST_AUTO_TEST_CASE( return_this ) {
+BOOST_AUTO_TEST_CASE( test_return_this ) {
     number n1 = 0; // Object valid in scope where closure is used.
     boost::function<int (void)> inc1 = n1.inc();
     number n2 = 0;
@@ -30,5 +29,4 @@ BOOST_AUTO_TEST_CASE( return_this ) {
     BOOST_CHECK( inc2() == 1 );
     BOOST_CHECK( inc1() == 3 );
 }
-//]
 

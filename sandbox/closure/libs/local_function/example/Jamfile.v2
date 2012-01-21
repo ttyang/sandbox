@@ -1,0 +1,46 @@
+
+import testing ;
+
+project : requirements
+    <library>/boost//unit_test_framework
+;
+
+compile-fail const_block.cpp ;
+run const_block_ok.cpp ;
+run scope_exit.cpp ;
+
+#run gcc_lambda.cpp ;
+#run gcc_lambda_cpp11.cpp ;
+
+run gcc_access.cpp ;
+run gcc_square.cpp ;
+#run gcc_store.cpp ;
+
+#run impl_factorial.cpp ;
+run impl_pp_keyword.cpp ;
+run impl_tparam_tricks.cpp ;
+
+run n2529_this.cpp ;
+run n2550_find_if.cpp ;
+
+#exe profile_boost_closure : profile_boost_closure.cpp :
+#    <library>/boost/chrono//boost_chrono
+#    <library>/boost/system//boost_system
+#    <link>static
+#;
+#exe profile_boost_closure_inline : profile_boost_closure_inline.cpp :
+#    <library>/boost/chrono//boost_chrono
+#    <library>/boost/system//boost_system
+#    <link>static
+#;
+#exe profile_local_functor : profile_local_functor.cpp :
+#    <library>/boost/chrono//boost_chrono
+#    <library>/boost/system//boost_system
+#    <link>static
+#;
+#exe profile_boost_phoenix : profile_boost_phoenix.cpp :
+#    <library>/boost/chrono//boost_chrono
+#    <library>/boost/system//boost_system
+#    <link>static
+#;
+

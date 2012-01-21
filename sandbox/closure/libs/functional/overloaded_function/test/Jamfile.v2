@@ -3,7 +3,6 @@ import testing ;
 
 project : requirements
     <library>/boost//unit_test_framework
-    <link>static
 ;
 
 test-suite world_tests :

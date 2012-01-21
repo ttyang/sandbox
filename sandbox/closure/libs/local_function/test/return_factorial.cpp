@@ -1,24 +1,23 @@
 
-//[test_return_factorial_cpp
-#include <boost/closure.hpp>
+#include <boost/local_function.hpp>
 #include <boost/function.hpp>
-#define BOOST_TEST_MODULE ReturnFactorial
+#define BOOST_TEST_MODULE TestReturnFactorial
 #include <boost/test/unit_test.hpp>
 #include <vector>
 #include <iostream>
 
 boost::function<int (int)> factorial(std::vector<int>& steps) {
-    int BOOST_CLOSURE(bind& steps, int n) {
+    int BOOST_LOCAL_FUNCTION(bind& steps, int n) {
         int result;
         if(n < 2) result = 1;
         else result = n * (*this)(n - 1); // Recursive call.
         steps.push_back(result);
         return result;
-    } BOOST_CLOSURE_END(fact)
+    } BOOST_LOCAL_FUNCTION_NAME(fact)
     return fact;
 }
 
-BOOST_AUTO_TEST_CASE( return_factorial ) {
+BOOST_AUTO_TEST_CASE( test_return_factorial ) {
     std::vector<int> steps;
     boost::function<int (int)> fact = factorial(steps);
 
@@ -28,5 +27,4 @@ BOOST_AUTO_TEST_CASE( return_factorial ) {
     i = steps.at(2); BOOST_CHECK( i == 6 );
     i = steps.at(3); BOOST_CHECK( i == 24 );
 }
-//]
 

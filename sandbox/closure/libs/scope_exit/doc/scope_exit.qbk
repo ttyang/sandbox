@@ -9,7 +9,10 @@
         (See accompanying file LICENSE_1_0.txt or copy at
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
-    [authors [Nasonov, Alexander] [Caminiti, Lorenzo]]
+    [authors
+        [Nasonov, Alexander]
+        [Caminiti <email>lorcaminiti@gmail.com</email>, Lorenzo]
+    ]
     [category utility]
     [id scope_exit]
     [dirname scope_exit]
@@ -384,40 +387,41 @@ This section presents an alternative syntax for compilers without variadic macro
 [section Sequence Syntax]
 
 Most modern compilers support variadic macros (notably, these include GCC, MSVC, and all C++11 compilers).
-However, in the rare case that programmers need to use __scope_exit__ on a complier that does not support variaidc macros, this library also allows to specify the capture list using a __pp_seq__:
+However, in the rare case that programmers need to use this library on a complier without variaidc macros, this library also allows to specify the capture list using a __pp_seq__ where tokens are separated by round parenthesis `()`:
 
-    (capture1) (capture2) ...
+    (capture1) (capture2) ... // All compilers.
 
-Instead of a comma-separated list:
+Instead of a comma-separated list that we have seen so far which requires variadic macros:
 
-    capture1, capture2, ...
+    capture1, capture2, ... // Only compilers with variadic macros.
 
-For example, the following syntax is accepted on all compilers with and without variadic macro support (see also [@../../test/world_seq.cpp `"world_seq.cpp"`]):
+For example, the following syntax is accepted on all compilers with and without variadic macros (see also [@../../test/world_seq.cpp `"world_seq.cpp"`]):
 
 [test_world_seq]
 
 Furthermore, older versions of this library used to only support the __pp_seq__ syntax so the above syntax is also supported for backward compatibility.
-However, in the current version of this library and on compilers with variadic macro support, the following syntax is preferred (see also [@../../test/world.cpp `"world.cpp"`]):
-[footnote
-Note that on compilers with variadic macro support, the same [macroref BOOST_SCOPE_EXIT] macro accepts both a comma-separated list and a __pp_seq__ for specifying the capture list.
-That is true also for [macroref BOOST_SCOPE_EXIT_TPL] and [macroref BOOST_SCOPE_EXIT_ALL].
-]
+However, in the current version of this library and on compilers with variadic macros, the syntax we have seen so far is preferred because more readable (see also [@../../test/world.cpp `"world.cpp"`]):
 
 [test_world]
 
-An empty capture list is always specified using `void` on compilers with and without variaidc macro support.
+Note how the same macros accept both syntaxes on compilers with variadic macros and only the __pp_seq__ syntax on compilers without variadic macros.
+Finally, an empty capture list is always specified using `void` on compilers with and without variaidc macros.
 
 [endsect]
 
 [section Examples]
 
-The following is a list of most of the examples presented in this documentation reprogrammed using the __pp_seq__ syntax instead of comma-separated lists:
-[@../../test/world_checkpoint_seq.cpp "world_checkpoint_seq.cpp"],
-[@../../test/world_this_seq.cpp "world_this_seq.cpp"],
-[@../../test/world_checkpoint_all_seq.cpp "world_checkpoint_all_seq.cpp"],
-[@../../test/world_tpl_seq.cpp "world_tpl_seq.cpp"],
-[@../../example/try_catch_seq.cpp "try_catch_seq.cpp"],
-[@../../example/scope_guard_seq.cpp "scope_guard_seq.cpp"].
+The following is a list of most of the examples presented in this documentation reprogrammed using the __pp_seq__ syntax instead of the comma-separated list:
+
+[table
+    [ [Files] ]
+    [ [[@../../test/world_checkpoint_seq.cpp "world_checkpoint_seq.cpp"]] ]
+    [ [[@../../test/world_this_seq.cpp "world_this_seq.cpp"]] ]
+    [ [[@../../test/world_checkpoint_all_seq.cpp "world_checkpoint_all_seq.cpp"]] ]
+    [ [[@../../test/world_tpl_seq.cpp "world_tpl_seq.cpp"]] ]
+    [ [[@../../example/try_catch_seq.cpp "try_catch_seq.cpp"]] ]
+    [ [[@../../example/scope_guard_seq.cpp "scope_guard_seq.cpp"]] ]
+]
 
 [endsect]
 

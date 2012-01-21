@@ -43,21 +43,21 @@
 <p>
         Most modern compilers support variadic macros (notably, these include GCC,
         MSVC, and all C++11 compilers). However, in the rare case that programmers
-        need to use <a class="link" href="../index.html" title="Chapter&#160;1.&#160;Boost.ScopeExit 1.1.0">ScopeExit</a> on a complier that
-        does not support variaidc macros, this library also allows to specify the
-        capture list using a <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor
-        sequence</a>:
+        need to use this library on a complier without variaidc macros, this library
+        also allows to specify the capture list using a <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor
+        sequence</a> where tokens are separated by round parenthesis <code class="computeroutput"><span class="special">()</span></code>:
       </p>
-<pre class="programlisting"><span class="special">(</span><span class="identifier">capture1</span><span class="special">)</span> <span class="special">(</span><span class="identifier">capture2</span><span class="special">)</span> <span class="special">...</span>
+<pre class="programlisting"><span class="special">(</span><span class="identifier">capture1</span><span class="special">)</span> <span class="special">(</span><span class="identifier">capture2</span><span class="special">)</span> <span class="special">...</span> <span class="comment">// All compilers.</span>
 </pre>
 <p>
-        Instead of a comma-separated list:
+        Instead of a comma-separated list that we have seen so far which requires
+        variadic macros:
       </p>
-<pre class="programlisting"><span class="identifier">capture1</span><span class="special">,</span> <span class="identifier">capture2</span><span class="special">,</span> <span class="special">...</span>
+<pre class="programlisting"><span class="identifier">capture1</span><span class="special">,</span> <span class="identifier">capture2</span><span class="special">,</span> <span class="special">...</span> <span class="comment">// Only compilers with variadic macros.</span>
 </pre>
 <p>
         For example, the following syntax is accepted on all compilers with and without
-        variadic macro support (see also <a href="../../../test/world_seq.cpp" target="_top">"world_seq.cpp"</a>):
+        variadic macros (see also <a href="../../../test/world_seq.cpp" target="_top"><code class="computeroutput"><span class="string">"world_seq.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -80,8 +80,8 @@
         Furthermore, older versions of this library used to only support the <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor sequence</a>
         syntax so the above syntax is also supported for backward compatibility.
         However, in the current version of this library and on compilers with variadic
-        macro support, the following syntax is preferred (see also <a href="../../../test/world.cpp" target="_top">"world.cpp"</a>):
-        <sup>[<a name="scope_exit.No_Variadic_Macros.sequence_syntax.f0" href="#ftn.scope_exit.No_Variadic_Macros.sequence_syntax.f0" class="footnote">8</a>]</sup>
+        macros, the syntax we have seen so far is preferred because more readable
+        (see also <a href="../../../test/world.cpp" target="_top"><code class="computeroutput"><span class="string">"world.cpp"</span></code></a>):
       </p>
 <p>
 </p>
@@ -102,8 +102,11 @@
 <p>
       </p>
 <p>
-        An empty capture list is always specified using <code class="computeroutput"><span class="keyword">void</span></code>
-        on compilers with and without variaidc macro support.
+        Note how the same macros accepts both syntaxes on compilers with variadic
+        macros and only the <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor
+        sequence</a> syntax on compilers without variadic macros. Finally, an
+        empty capture list is always specified using <code class="computeroutput"><span class="keyword">void</span></code>
+        on compilers with and without variaidc macros.
       </p>
 </div>
 <div class="section">
@@ -113,29 +116,54 @@
 <p>
         The following is a list of most of the examples presented in this documentation
         reprogrammed using the <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor
-        sequence</a> syntax instead of comma-separated lists: <a href="../../../test/world_checkpoint_seq.cpp" target="_top">"world_checkpoint_seq.cpp"</a>,
-        <a href="../../../test/world_this_seq.cpp" target="_top">"world_this_seq.cpp"</a>,
-        <a href="../../../test/world_checkpoint_all_seq.cpp" target="_top">"world_checkpoint_all_seq.cpp"</a>,
-        <a href="../../../test/world_tpl_seq.cpp" target="_top">"world_tpl_seq.cpp"</a>,
-        <a href="../../../example/try_catch_seq.cpp" target="_top">"try_catch_seq.cpp"</a>,
-        <a href="../../../example/scope_guard_seq.cpp" target="_top">"scope_guard_seq.cpp"</a>.
+        sequence</a> syntax instead of the comma-separated list:
       </p>
-</div>
-<div class="footnotes">
-<br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a id="ftn.scope_exit.No_Variadic_Macros.sequence_syntax.f0" href="#scope_exit.No_Variadic_Macros.sequence_syntax.f0" class="para">8</a>] </sup>
-          Note that on compilers with variadic macro support, the same <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT.html" title="Macro BOOST_SCOPE_EXIT">BOOST_SCOPE_EXIT</a></code> macro accepts both
-          a comma-separated list and a <a href="../../../../../libs/preprocessor/index.html" target="_top">Boost.Preprocessor
-          sequence</a> for specifying the capture list. That is true also for
-          <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_TPL.html" title="Macro BOOST_SCOPE_EXIT_TPL">BOOST_SCOPE_EXIT_TPL</a></code>
-          and <code class="computeroutput"><a class="link" href="../BOOST_SCOPE_EXIT_ALL.html" title="Macro BOOST_SCOPE_EXIT_ALL">BOOST_SCOPE_EXIT_ALL</a></code>.
-        </p></div>
+<div class="informaltable"><table class="table">
+<colgroup><col></colgroup>
+<thead><tr><th>
+                <p>
+                  Files
+                </p>
+              </th></tr></thead>
+<tbody>
+<tr><td>
+                <p>
+                  <a href="../../../test/world_checkpoint_seq.cpp" target="_top">"world_checkpoint_seq.cpp"</a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../test/world_this_seq.cpp" target="_top">"world_this_seq.cpp"</a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../test/world_checkpoint_all_seq.cpp" target="_top">"world_checkpoint_all_seq.cpp"</a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../test/world_tpl_seq.cpp" target="_top">"world_tpl_seq.cpp"</a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../example/try_catch_seq.cpp" target="_top">"try_catch_seq.cpp"</a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../example/scope_guard_seq.cpp" target="_top">"scope_guard_seq.cpp"</a>
+                </p>
+              </td></tr>
+</tbody>
+</table></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2006-2012 Alexander Nasonov, Lorenzo Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0 (see accompanying
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

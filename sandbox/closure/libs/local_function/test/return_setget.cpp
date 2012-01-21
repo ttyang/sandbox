@@ -1,13 +1,12 @@
 
-//[test_return_setget_cpp
-#include <boost/closure.hpp>
+#include <boost/local_function.hpp>
 #include <boost/function.hpp>
-#define BOOST_TEST_MODULE ReturnSetGet
+#define BOOST_TEST_MODULE TestReturnSetGet
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-boost::function<void (std::string const&)> set;
-boost::function<std::string const& (void)> get;
+boost::function<void (const std::string&)> set;
+boost::function<const std::string& (void)> get;
 
 void action(void) {
     // State `message` hidden behind access functions from here.
@@ -16,20 +15,19 @@ void action(void) {
     BOOST_CHECK( get() == "xyz" );
 }
 
-BOOST_AUTO_TEST_CASE( return_setget ) {
+BOOST_AUTO_TEST_CASE( test_return_setget ) {
     std::string message = "abc"; // Reference valid where closure used.
     
-    void BOOST_CLOSURE(bind& message, std::string const& text) {
+    void BOOST_LOCAL_FUNCTION(bind& message, const std::string& text) {
         message = text;
-    } BOOST_CLOSURE_END(s)
+    } BOOST_LOCAL_FUNCTION_NAME(s)
     set = s;
 
-    std::string const& BOOST_CLOSURE(const bind& message) {
+    const std::string& BOOST_LOCAL_FUNCTION(const bind& message) {
         return message;
-    } BOOST_CLOSURE_END(g)
+    } BOOST_LOCAL_FUNCTION_NAME(g)
     get = g;
     
     action();
 }
-//]
 
