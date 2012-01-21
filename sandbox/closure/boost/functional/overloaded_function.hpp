@@ -182,15 +182,16 @@ namespace boost {
 
 This function object aggregates together calls to functions of all the
 specified function types <c>F1</c>, <c>F2</c>, etc.
-The function types must be distinct from one another and they must be specified
-following the Boost.Function preferred syntax:
+The specified function types must have distinct parameters from one another and
+they must be in the following format (which is the Boost.Function preferred
+syntax):
 @code
     result_type (argument1_type, argumgnet2_type, ...)
 @endcode
 
 In some cases, the @RefFunc{make_overloaded_function} function template can be
-used to construct the overloaded function object without explicitly specifying
-the function types.
+useful to construct the overloaded function object without explicitly
+specifying the function types.
 
 The maximum number of functions to overload is given by the
 @RefMacro{BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_OVERLOAD_MAX}
@@ -212,18 +213,19 @@ class overloaded_function {
 public:
     /**
     @brief Construct the overloaded function object.
-    
+
     Any function pointer, function reference, function object that can be
     converted to a <c>boost::function</c> function object can be specified as
     parameter.
     */
-    overload(const boost::function<F1>&, const boost::function<F2>&, ...);
+    overloaded_function(const boost::function<F1>&,
+            const boost::function<F2>&, ...);
 
     /**
     @brief Call operator matching the signature of the function type specified
-    as first template parameter.
-    
-    This will in turn invoke the call operator of the first function passed to
+    as 1st template parameter.
+
+    This will in turn invoke the call operator of the 1st function passed to
     the constructor.
     */
     typename boost::function_traits<F1>::result_type operator()(
@@ -233,10 +235,14 @@ public:
 
     /**
     @brief Call operator matching the signature of the function type specified
-    as second template parameter.
-    
-    This will in turn invoke the call operator of the second function passed to
+    as 2nd template parameter.
+
+    This will in turn invoke the call operator of the 2nd function passed to
     the constructor.
+
+    @Note Similar call operators are present for all specified function types
+    <c>F1</c>, <c>F2</c>, etc (even if not explicitly listed by this
+    documentation).
     */
     typename boost::function_traits<F2>::result_type operator()(
             typename boost::function_traits<F2>::arg1_type,
@@ -249,21 +255,23 @@ public:
 function types.
 
 This function template creates and returns an @RefClass{overloaded_function}
-function object that overloads all the functions specified by its parameters.
+function object that overloads all the specified functions <c>f1</c>,
+<c>f2</c>, etc.
 
 The function types are internally determined from the template parameter types
 so they do not need to be explicitly specified.
-Therefore, this function template has a more concise syntax when compared to
-@RefClass{overloaded_function}.
+Therefore, this function template usually has a more concise syntax when
+compared with @RefClass{overloaded_function}.
 This is especially useful when the explicit type of the returned
 @RefClass{overloaded_function} does not need to be known (e.g., when used with Boost.Typeof's <c>BOOST_AUTO</c> (or C++11 <c>auto</c>) or when the overloaded
-function object is deduced using a function template parameter).
+function object is deduced using a function template parameter, see the
+@RefSect{Tutorial} section).
 
 The maximum number of functions to overload is given by the
 @RefMacro{BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_OVERLOAD_MAX}
 configuration macro.
 
-@Note <c>__function_type__</c> is a placeholder in this documentation for a
+@Note In this documentation, <c>__function_type__</c> is a placeholder for a
 symbol that is specific to implementation of this library.
 
 @See
