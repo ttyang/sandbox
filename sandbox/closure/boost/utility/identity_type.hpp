@@ -18,8 +18,8 @@
  *  This is what these macros do.
  */
 
-#ifndef BOOST_IDENTITY_HPP_
-#define BOOST_IDENTITY_HPP_
+#ifndef BOOST_IDENTITY_TYPE_HPP_
+#define BOOST_IDENTITY_TYPE_HPP_
 
 #include <boost/type_traits/function_traits.hpp>
 
