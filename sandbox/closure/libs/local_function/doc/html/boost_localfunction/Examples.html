@@ -1,0 +1,461 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Appendix: Examples</title>
+<link rel="stylesheet" href="../../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Boost.LocalFunction 1.0.0">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Boost.LocalFunction 1.0.0">
+<link rel="prev" href="Advanced_Topics.html" title="Advanced Topics">
+<link rel="next" href="Alternatives.html" title="Appendix: Alternatives">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../../boost.png"></td>
+<td align="center"><a href="../../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="Advanced_Topics.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="Alternatives.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_localfunction.Examples"></a><a class="link" href="Examples.html" title="Appendix: Examples">Appendix: Examples</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="Examples.html#boost_localfunction.Examples.gcc_lambdas__without_c__11_">GCC
+      Lambdas (Without C++11)</a></span></dt>
+<dt><span class="section"><a href="Examples.html#boost_localfunction.Examples.constant_blocks">Constant
+      Blocks</a></span></dt>
+<dt><span class="section"><a href="Examples.html#boost_localfunction.Examples.scope_exits">Scope Exits</a></span></dt>
+<dt><span class="section"><a href="Examples.html#boost_localfunction.Examples.gcc_nested_functions">GCC
+      Nested Functions</a></span></dt>
+<dt><span class="section"><a href="Examples.html#boost_localfunction.Examples.n_papers">N-Papers</a></span></dt>
+</dl></div>
+<p>
+      This sections lists some (interesting) examples that use this library features.
+    </p>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_localfunction.Examples.gcc_lambdas__without_c__11_"></a><a class="link" href="Examples.html#boost_localfunction.Examples.gcc_lambdas__without_c__11_" title="GCC Lambdas (Without C++11)">GCC
+      Lambdas (Without C++11)</a>
+</h3></div></div></div>
+<p>
+        Combing local functions with the <a href="http://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html" target="_top">statement
+        expression</a> GCC extension, it is possible to implement lambda functions
+        for GCC compilers even without <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+        support.
+      </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../../../../../doc/src/images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          This code only works on compilers that support the statement expression
+          GCC extension or that support <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+          lambda</a> functions.
+        </p></td></tr>
+</table></div>
+<p>
+        For example (see also <a href="../../../example/gcc_lambda.cpp" target="_top"><code class="computeroutput"><span class="string">"gcc_lambda.cpp"</span></code></a> and <a href="../../../example/gcc_lambda_cpp11.cpp" target="_top"><code class="computeroutput"><span class="string">"gcc_lambda_cpp11.cpp"</span></code></a>):
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  With Local Functions (GCC only)
+                </p>
+              </th>
+<th>
+                <p>
+                  C++11 Lambdas
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">int</span> <span class="identifier">val</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+<span class="keyword">int</span> <span class="identifier">nums</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span><span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">};</span>
+<span class="keyword">int</span><span class="special">*</span> <span class="identifier">end</span> <span class="special">=</span> <span class="identifier">nums</span> <span class="special">+</span> <span class="number">3</span><span class="special">;</span>
+
+<span class="keyword">int</span><span class="special">*</span> <span class="identifier">iter</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">find_if</span><span class="special">(</span><span class="identifier">nums</span><span class="special">,</span> <span class="identifier">end</span><span class="special">,</span>
+    <span class="identifier">GCC_LAMBDA</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span> <span class="identifier">val</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">num</span><span class="special">,</span> <span class="keyword">return</span> <span class="keyword">bool</span><span class="special">)</span> <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">num</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">;</span>
+    <span class="special">}</span> <span class="identifier">GCC_LAMBDA_END</span>
+<span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">int</span> <span class="identifier">val</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+<span class="keyword">int</span> <span class="identifier">nums</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span><span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">};</span>
+<span class="keyword">int</span><span class="special">*</span> <span class="identifier">end</span> <span class="special">=</span> <span class="identifier">nums</span> <span class="special">+</span> <span class="number">3</span><span class="special">;</span>
+
+<span class="keyword">int</span><span class="special">*</span> <span class="identifier">iter</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">find_if</span><span class="special">(</span><span class="identifier">nums</span><span class="special">,</span> <span class="identifier">end</span><span class="special">,</span>
+    <span class="special">[</span><span class="identifier">val</span><span class="special">](</span><span class="keyword">int</span> <span class="identifier">num</span><span class="special">)</span> <span class="special">-&gt;</span> <span class="keyword">bool</span> <span class="special">{</span>
+        <span class="keyword">return</span> <span class="identifier">num</span> <span class="special">==</span> <span class="identifier">val</span><span class="special">;</span>
+    <span class="special">}</span>
+<span class="special">);</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<p>
+        The macros are defined in <a href="../../../example/gcc_lambda.hpp" target="_top"><code class="computeroutput"><span class="string">"gcc_lambda.hpp"</span></code></a>.
+      </p>
+<p>
+        This is possible because GCC statement expressions allow to put declaration
+        statements within expressions and therefore to declare a local function within
+        an expression. The macros automatically detect if the compiler supports
+        <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions in which case the implementation uses native lambdas
+        instead of local functions. However, <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions do not support constant binding so it is best to
+        only use <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">bind</span>
+        <span class="identifier">variable</span></code> (same as <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> <code class="computeroutput"><span class="special">=</span><span class="identifier">variable</span></code>)
+        and <code class="computeroutput"><span class="identifier">bind</span><span class="special">&amp;</span>
+        <span class="identifier">variable</span></code> (same as <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> <code class="computeroutput"><span class="special">&amp;</span><span class="identifier">variable</span></code>)
+        because these have the exact same semantic between the local function and
+        native lambda implementation. Unfortunately, the <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> short-hand binds <code class="computeroutput"><span class="special">&amp;</span></code>
+        and <code class="computeroutput"><span class="special">=</span></code> (which automatically bind
+        all variables in scope either by reference or value) are not supported by
+        the macros because they are not supported by the local function implementation.
+        Finally, the result type <code class="computeroutput"><span class="keyword">return</span> </code><code class="literal"><span class="emphasis"><em>result-type</em></span></code>
+        is optional and it is assumed <code class="computeroutput"><span class="keyword">void</span></code>
+        when it is not specified (as with <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions).
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_localfunction.Examples.constant_blocks"></a><a class="link" href="Examples.html#boost_localfunction.Examples.constant_blocks" title="Constant Blocks">Constant
+      Blocks</a>
+</h3></div></div></div>
+<p>
+        It is possible to use local functions to check assertions between variables
+        that are constant within the assertion expression. This is advantageous because
+        assertions are not supposed to change the state of the program and ideally
+        the compiler will not compile assertions that modify variables.
+      </p>
+<p>
+        For example, consider the following assertion where by mistake we programmed
+        <code class="computeroutput"><span class="keyword">operator</span><span class="special">=</span></code>
+        instead of <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>:
+      </p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">x</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">y</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+<span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span> <span class="special">=</span> <span class="identifier">y</span><span class="special">);</span> <span class="comment">// Mistakenly `=` instead of `==`.</span>
+</pre>
+<p>
+        Ideally this code will not compile instead this example not only compiles
+        but the assertion even passes the run-time check and no error is generated
+        at all. The <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2004/n1613.pdf" target="_top">[N1613]</a>
+        paper introduced the idea of a <span class="emphasis"><em>const-block</em></span> which could
+        be used to wrap the assertion above and catch the mistake at compile-time.
+        Similarly to <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2004/n1613.pdf" target="_top">[N1613]</a>
+        const-blocks, the following code will generate a compile-time error when
+        <code class="computeroutput"><span class="keyword">operator</span><span class="special">=</span></code>
+        is mistakenly used instead of <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code> because both <code class="computeroutput"><span class="identifier">x</span></code>
+        and <code class="computeroutput"><span class="identifier">y</span></code> are constants within
+        the block of code performing the assertion (see also <a href="../../../example/const_block.cpp" target="_top"><code class="computeroutput"><span class="string">"const_block.cpp"</span></code></a>):
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  With Local Functions
+                </p>
+              </th>
+<th>
+                <p>
+                  N1613 Constant Block
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">int</span> <span class="identifier">x</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">y</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+<span class="identifier">CONST_BLOCK</span><span class="special">(</span><span class="identifier">x</span><span class="special">,</span> <span class="identifier">y</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Constant block.</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span> <span class="special">=</span> <span class="identifier">y</span><span class="special">);</span> <span class="comment">// Compiler error.</span>
+<span class="special">}</span> <span class="identifier">CONST_BLOCK_END</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">int</span> <span class="identifier">x</span> <span class="special">=</span> <span class="number">1</span><span class="special">,</span> <span class="identifier">y</span> <span class="special">=</span> <span class="number">2</span><span class="special">;</span>
+<span class="keyword">const</span> <span class="special">{</span> <span class="comment">// Constant block.</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">x</span> <span class="special">=</span> <span class="identifier">y</span><span class="special">);</span> <span class="comment">// Compiler error.</span>
+<span class="special">}</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<p>
+        The macros are defined in <a href="../../../example/const_block.hpp" target="_top"><code class="computeroutput"><span class="string">"const_block.hpp"</span></code></a>.
+      </p>
+<p>
+        The constant block macros are implemented using a local function which binds
+        by constant reference <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span></code>
+        all the specified variables, it executes the <code class="computeroutput"><span class="identifier">assert</span></code>
+        instruction in local function body, and the local function is then called
+        immediately after it is defined. More in general, constant blocks can be
+        used to evaluate any instruction (not just assertions) within a block were
+        all specified variables are constant.
+      </p>
+<p>
+        Unfortunately, constant blocks cannot be implemented with <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions because these do not support constant binding. Ideally,
+        <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions would allow to bind variables also using <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">variable</span></code> (constant reference) and <code class="computeroutput"><span class="keyword">const</span><span class="special">&amp;</span></code>
+        (all variables by constant reference). Variables bound by value using <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        lambda</a> functions (<code class="computeroutput"><span class="identifier">variable</span></code>,
+        <code class="computeroutput"><span class="special">=</span><span class="identifier">variable</span></code>,
+        and <code class="computeroutput"><span class="special">=</span></code>) are constant but they
+        are required to be <code class="computeroutput"><span class="identifier">CopyConstructible</span></code>
+        and they introduce potentially expensive copy operations.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_localfunction.Examples.scope_exits"></a><a class="link" href="Examples.html#boost_localfunction.Examples.scope_exits" title="Scope Exits">Scope Exits</a>
+</h3></div></div></div>
+<p>
+        Scope exits allow to execute arbitrary code at the exit of the enclosing
+        scope and they are provided by the <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        library.
+      </p>
+<p>
+        For curiosity, here we show how to re-implement scope exits using local functions.
+        One small advantage of scope exits that use local functions is that they
+        support constant binding. <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        does not directly support constant binding (however, it is always possible
+        to introduce an extra <code class="computeroutput"><span class="keyword">const</span></code>
+        local variable, assign it to the value to bind, and then bind the <code class="computeroutput"><span class="keyword">const</span></code> variable so to effectively have constant
+        binding with <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        as well). In general, the authors recommend to use <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        instead of the code listed here whenever possible.
+      </p>
+<p>
+        The following example binds <code class="computeroutput"><span class="identifier">p</span></code>
+        by constant reference so this variable cannot be modified within the scope
+        exit body but it is not copied and it will present the value it has at the
+        exit of the enclosing scope and not at the scope exit declaration (see also
+        <a href="../../../example/scope_exit.cpp" target="_top"><code class="computeroutput"><span class="string">"scope_exit.cpp"</span></code></a>):
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  With Local Functions
+                </p>
+              </th>
+<th>
+                <p>
+                  Boost.ScopeExit
+                </p>
+              </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">person</span><span class="special">&amp;</span> <span class="identifier">p</span> <span class="special">=</span> <span class="identifier">persons_</span><span class="special">.</span><span class="identifier">back</span><span class="special">();</span>
+<span class="identifier">person</span><span class="special">::</span><span class="identifier">evolution_t</span> <span class="identifier">checkpoint</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">evolution_</span><span class="special">;</span>
+
+<span class="identifier">SCOPE_EXIT</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span> <span class="identifier">checkpoint</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">p</span><span class="special">,</span> <span class="identifier">bind</span> <span class="identifier">this_</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">checkpoint</span> <span class="special">==</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">evolution_</span><span class="special">)</span> <span class="identifier">this_</span><span class="special">-&gt;</span><span class="identifier">persons_</span><span class="special">.</span><span class="identifier">pop_back</span><span class="special">();</span>
+<span class="special">}</span> <span class="identifier">SCOPE_EXIT_END</span>
+</pre>
+<p>
+                </p>
+              </td>
+<td>
+                <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">person</span><span class="special">&amp;</span> <span class="identifier">p</span> <span class="special">=</span> <span class="identifier">persons_</span><span class="special">.</span><span class="identifier">back</span><span class="special">();</span>
+<span class="identifier">person</span><span class="special">::</span><span class="identifier">evolution_t</span> <span class="identifier">checkpoint</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">evolution_</span><span class="special">;</span>
+
+<span class="identifier">BOOST_SCOPE_EXIT</span><span class="special">(</span><span class="identifier">checkpoint</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">this_</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Or extra variable `const_p`.</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">checkpoint</span> <span class="special">==</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">evolution_</span><span class="special">)</span> <span class="identifier">this_</span><span class="special">-&gt;</span><span class="identifier">persons_</span><span class="special">.</span><span class="identifier">pop_back</span><span class="special">();</span>
+<span class="special">}</span> <span class="identifier">BOOST_SCOPE_EXIT_END</span>
+</pre>
+<p>
+                </p>
+              </td>
+</tr></tbody>
+</table></div>
+<p>
+        The macros are defined in <a href="../../../example/scope_exit.hpp" target="_top"><code class="computeroutput"><span class="string">"scope_exit.hpp"</span></code></a>.
+      </p>
+<p>
+        The scope exit macros are implemented by passing a local function to the
+        constructor of the following object:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">struct</span> <span class="identifier">scope_exit</span> <span class="special">{</span>
+    <span class="identifier">scope_exit</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span> <span class="special">(</span><span class="keyword">void</span><span class="special">)&gt;</span> <span class="identifier">f</span><span class="special">):</span> <span class="identifier">f_</span><span class="special">(</span><span class="identifier">f</span><span class="special">)</span> <span class="special">{}</span>
+    <span class="special">~</span><span class="identifier">scope_exit</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">f_</span><span class="special">();</span> <span class="special">}</span>
+<span class="keyword">private</span><span class="special">:</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="keyword">void</span> <span class="special">(</span><span class="keyword">void</span><span class="special">)&gt;</span> <span class="identifier">f_</span><span class="special">;</span>
+<span class="special">};</span>
+</pre>
+<p>
+      </p>
+<p>
+        The object variable is declared locally within the enclosing scope so the
+        object destructor will be invoked at the exit of the enclosing scope and
+        it will in turn call the local function. The scope exit local function has
+        no parameter and <code class="computeroutput"><span class="keyword">void</span></code> result
+        type but it supports binding and constant binding.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_localfunction.Examples.gcc_nested_functions"></a><a class="link" href="Examples.html#boost_localfunction.Examples.gcc_nested_functions" title="GCC Nested Functions">GCC
+      Nested Functions</a>
+</h3></div></div></div>
+<p>
+        The GCC C compiler supports local functions under the name of <a href="http://gcc.gnu.org/onlinedocs/gcc/Nested-Functions.html" target="_top">nested
+        functions</a>. Nested functions are exclusively a C extension of the
+        GCC compiler (they are not supported for C++ not even by the GCC compiler,
+        and they are not part of any C or C++ standard, nor they are supported by
+        other compilers like MSVC).
+      </p>
+<p>
+        The following examples are taken form the GCC nested function documentation
+        but are programmed using this library:
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup><col></colgroup>
+<thead><tr><th>
+                <p>
+                  Files
+                </p>
+              </th></tr></thead>
+<tbody>
+<tr><td>
+                <p>
+                  <a href="../../../example/gcc_square.cpp" target="_top"><code class="computeroutput"><span class="string">"gcc_square.cpp"</span></code></a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../example/gcc_access.cpp" target="_top"><code class="computeroutput"><span class="string">"gcc_access.cpp"</span></code></a>
+                </p>
+              </td></tr>
+<tr><td>
+                <p>
+                  <a href="../../../example/gcc_store.cpp" target="_top"><code class="computeroutput"><span class="string">"gcc_store.cpp"</span></code></a>
+                </p>
+              </td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_localfunction.Examples.n_papers"></a><a class="link" href="Examples.html#boost_localfunction.Examples.n_papers" title="N-Papers">N-Papers</a>
+</h3></div></div></div>
+<p>
+        The following examples are taken from a number of N-papers and programmed
+        using this library.
+      </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                <p>
+                  Files
+                </p>
+              </th>
+<th>
+                <p>
+                  Notes
+                </p>
+              </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                <p>
+                  <a href="../../../example/n2550_find_if.cpp" target="_top">"n2550_find_if.cpp"</a>
+                </p>
+              </td>
+<td>
+                <p>
+                  This example is adapted from <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2550.pdf" target="_top">[N2550]</a>
+                  (<a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+                  lambda</a> functions): It passes a local function to the STL
+                  algorithm <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">find_if</span></code>.
+                </p>
+              </td>
+</tr>
+<tr>
+<td>
+                <p>
+                  <a href="../../../example/n2529_this.cpp" target="_top">"n2529_this.cpp"</a>
+                </p>
+              </td>
+<td>
+                <p>
+                  This example is adapted from <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2529.pdf" target="_top">[N2529]</a>
+                  (<a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+                  lambda</a> functions): It binds the object in scope <code class="computeroutput"><span class="keyword">this</span></code> to a local function.
+                </p>
+              </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Lorenzo
+      Caminiti<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="Advanced_Topics.html"><img src="../../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="Alternatives.html"><img src="../../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
