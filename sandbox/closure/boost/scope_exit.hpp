@@ -11,9 +11,9 @@
 
 #ifndef DOXY
 
-#include <boost/closure/detail/preprocessor/line_counter.hpp>
-#include <boost/closure/detail/preprocessor/void_list.hpp>
-#include <boost/closure/detail/preprocessor/keyword/thisunderscore.hpp>
+#include <boost/local_function/detail/preprocessor/line_counter.hpp>
+#include <boost/local_function/detail/preprocessor/void_list.hpp>
+#include <boost/local_function/detail/preprocessor/keyword/thisunderscore.hpp>
 #include <boost/config.hpp>
 #include <boost/detail/workaround.hpp>
 #include <boost/mpl/int.hpp>
@@ -399,7 +399,7 @@ boost::type_of::msvc_register_type<T, Organizer> typeof_register_type(const T&,
     (captures, 1 /* has this (note, no error if multiple this_) */)
 
 #define BOOST_SCOPE_EXIT_AUX_TRAITS_OP(d, captures_this, capture) \
-    BOOST_PP_IIF(BOOST_CLOSURE_DETAIL_PP_KEYWORD_IS_THISUNDERSCORE_BACK( \
+    BOOST_PP_IIF(BOOST_LOCAL_FUNCTION_DETAIL_PP_KEYWORD_IS_THISUNDERSCORE_BACK(\
             capture), \
         BOOST_SCOPE_EXIT_AUX_TRAITS_OP_THIS \
     , \
@@ -554,18 +554,18 @@ private:
 #if defined(BOOST_NO_VARIADIC_MACROS) // No variadic macros (sequences only).
 #   define BOOST_SCOPE_EXIT(void_or_seq) \
         BOOST_SCOPE_EXIT_AUX_IMPL( \
-              BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+              BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
             , BOOST_SCOPE_EXIT_AUX_TRAITS( \
-                    BOOST_CLOSURE_DETAIL_PP_VOID_LIST(void_or_seq)) \
+                    BOOST_LOCAL_FUNCTION_DETAIL_PP_VOID_LIST(void_or_seq)) \
             , BOOST_PP_EMPTY() \
         )
 #   if BOOST_SCOPE_EXIT_AUX_TPL_WORKAROUND_01 && \
             !BOOST_SCOPE_EXIT_AUX_LAMBDAS_01
 #       define BOOST_SCOPE_EXIT_TPL(void_or_seq) \
             BOOST_SCOPE_EXIT_AUX_IMPL( \
-                  BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+                  BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
                 , BOOST_SCOPE_EXIT_AUX_TRAITS( \
-                        BOOST_CLOSURE_DETAIL_PP_VOID_LIST(void_or_seq)) \
+                        BOOST_LOCAL_FUNCTION_DETAIL_PP_VOID_LIST(void_or_seq)) \
                 , typename \
             )
 #   else // No TPL workaround or lambdas (for backward compatibility).
@@ -575,27 +575,27 @@ private:
 #   if defined(BOOST_SCOPE_EXIT_AUX_LAMBDAS) /* C++11 only */ \
 #       define BOOST_SCOPE_EXIT_ALL(seq) \
             BOOST_SCOPE_EXIT_AUX_IMPL( \
-                  BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+                  BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
                 , BOOST_SCOPE_EXIT_AUX_TRAITS_ALL( \
-                        BOOST_CLOSURE_DETAIL_PP_NON_VOID_LIST(seq)) \
+                        BOOST_LOCAL_FUNCTION_DETAIL_PP_NON_VOID_LIST(seq)) \
                 , ~ /* unused on C++11 */ \
             )
 #   endif
 #else // Variadic macros (both sequences and variadic tuples).
 #   define BOOST_SCOPE_EXIT(...) \
         BOOST_SCOPE_EXIT_AUX_IMPL( \
-              BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+              BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
             , BOOST_SCOPE_EXIT_AUX_TRAITS( \
-                    BOOST_CLOSURE_DETAIL_PP_VOID_LIST(__VA_ARGS__)) \
+                    BOOST_LOCAL_FUNCTION_DETAIL_PP_VOID_LIST(__VA_ARGS__)) \
             , BOOST_PP_EMPTY() \
         )
 #   if BOOST_SCOPE_EXIT_AUX_TPL_WORKAROUND_01 && \
             !BOOST_SCOPE_EXIT_AUX_LAMBDAS_01
 #       define BOOST_SCOPE_EXIT_TPL(...) \
             BOOST_SCOPE_EXIT_AUX_IMPL( \
-                  BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+                  BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
                 , BOOST_SCOPE_EXIT_AUX_TRAITS( \
-                        BOOST_CLOSURE_DETAIL_PP_VOID_LIST(__VA_ARGS__)) \
+                        BOOST_LOCAL_FUNCTION_DETAIL_PP_VOID_LIST(__VA_ARGS__)) \
                 , typename \
             )
 #   else // No TPL workaround or lambdas (for backward compatibility).
@@ -605,9 +605,10 @@ private:
 #   if BOOST_SCOPE_EXIT_AUX_LAMBDAS_01 /* C++11 only */
 #       define BOOST_SCOPE_EXIT_ALL(...) \
             BOOST_SCOPE_EXIT_AUX_IMPL( \
-                  BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER \
+                  BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
                 , BOOST_SCOPE_EXIT_AUX_TRAITS_ALL( \
-                        BOOST_CLOSURE_DETAIL_PP_NON_VOID_LIST(__VA_ARGS__)) \
+                        BOOST_LOCAL_FUNCTION_DETAIL_PP_NON_VOID_LIST( \
+                                __VA_ARGS__)) \
                 , ~ /* unused on C++11 */ \
             )
 #   endif
@@ -618,8 +619,9 @@ private:
         ; /* for backward compatibility */
 #else // No lambdas.
 #   define BOOST_SCOPE_EXIT_END \
-        } BOOST_SCOPE_EXIT_AUX_GUARD(BOOST_CLOSURE_DETAIL_PP_LINE_COUNTER)( \
-                BOOST_SCOPE_EXIT_AUX_ARGS.value);
+        } BOOST_SCOPE_EXIT_AUX_GUARD( \
+            BOOST_LOCAL_FUNCTION_DETAIL_PP_LINE_COUNTER \
+        )(BOOST_SCOPE_EXIT_AUX_ARGS.value);
 #endif // Lambdas.
 
 // DOCUMENTATION //
