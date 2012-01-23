@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_builder.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -14,8 +14,7 @@
 #include <map>
 #include <vector>
 
-#include "polygon.hpp"
-
+#include "detail/voronoi_ctypes.hpp"
 #include "detail/voronoi_predicates.hpp"
 #include "detail/voronoi_structures.hpp"
 
@@ -61,11 +60,11 @@ namespace polygon {
     // defined comparison functor is used to make the beach line correctly
     // ordered. Epsilon-based and high-precision approaches are used to guarantee
     // efficiency and robustness of the algorithm implementation.
-    template <typename T, typename VD>
+    template <typename T,
+              typename CTT = detail::voronoi_ctype_traits<T>,
+              typename VP = detail::voronoi_predicates<CTT> >
     class voronoi_builder {
     public:
-        typedef VD output_type;
-
         voronoi_builder() {}
 
         template <typename PointIterator>
@@ -108,13 +107,12 @@ namespace polygon {
         }
 
         // Run the sweepline algorithm.
-        void construct(output_type &output) {
+        template <typename OUTPUT>
+        void construct(OUTPUT *output) {
             // Init structures.
-            output_ = &output;
-            output_->clear();
-            output_->reserve(site_events_.size());
+            output->reserve(site_events_.size());
             init_sites_queue();
-            init_beach_line();
+            init_beach_line(output);
 
             // The algorithm stops when there are no events to process.
             // The circle events with the same rightmost point as the next
@@ -123,14 +121,14 @@ namespace polygon {
             while (!circle_events_.empty() ||
                    !(site_event_iterator_ == site_events_.end())) {
                 if (circle_events_.empty()) {
-                    process_site_event();
+                    process_site_event(output);
                 } else if (site_event_iterator_ == site_events_.end()) {
-                    process_circle_event();
+                    process_circle_event(output);
                 } else {
                     if (event_comparison(*site_event_iterator_, circle_events_.top().first)) {
-                        process_site_event();
+                        process_site_event(output);
                     } else {
-                        process_circle_event();
+                        process_circle_event(output);
                     }
                 }
                 while (!circle_events_.empty() && !circle_events_.top().first.is_active()) {
@@ -141,7 +139,7 @@ namespace polygon {
             beach_line_.clear();
 
             // Clean the output (remove zero-length edges).
-            output_->clean();
+            output->clean();
         }
 
         void clear() {
@@ -149,9 +147,8 @@ namespace polygon {
         }
 
     private:
-        typedef detail::voronoi_predicates<T> VP;
-        typedef typename VP::int_type int_type;
-        typedef typename VP::fpt_type fpt_type;
+        typedef typename CTT::int_type int_type;
+        typedef typename CTT::fpt_type fpt_type;
 
         typedef detail::point_2d<int_type> point_type;
         typedef detail::site_event<int_type> site_event_type;
@@ -166,7 +163,7 @@ namespace polygon {
         typedef typename VP::
             template circle_formation_predicate<site_event_type, circle_event_type>
             circle_formation_predicate_type;
-        typedef typename output_type::voronoi_edge_type edge_type;
+        typedef void edge_type;
         typedef detail::beach_line_node_key<site_event_type> key_type;
         typedef detail::beach_line_node_data<edge_type, circle_event_type> value_type;
         typedef typename VP::
@@ -204,11 +201,12 @@ namespace polygon {
             site_event_iterator_ = site_events_.begin();
         }
 
-        void init_beach_line() {
+        template <typename OUTPUT>
+        void init_beach_line(OUTPUT *output) {
             if (site_events_.empty()) return;
             if (site_events_.size() == 1) {
                 // Handle one input site case.
-                output_->process_single_site(site_events_[0]);
+                output->process_single_site(site_events_[0]);
                 ++site_event_iterator_;
             } else {
                 int skip = 0;
@@ -224,26 +222,28 @@ namespace polygon {
 
                 if (skip == 1) {
                     // Init the beach line with the two first sites.
-                    init_beach_line_default();
+                    init_beach_line_default(output);
                 } else {
                     // Init the beach line with the sites situated on the same
                     // vertical line. This could be a set of point and vertical
                     // segment sites.
-                    init_beach_line_collinear_sites();
+                    init_beach_line_collinear_sites(output);
                 }
             }
         }
 
         // Init the beach line with the two first sites.
         // The first site is always a point.
-        void init_beach_line_default() {
+        template <typename OUTPUT>
+        void init_beach_line_default(OUTPUT *output) {
             // Get the first and the second site events.
             site_event_iterator_type it_first = site_events_.begin();
             site_event_iterator_type it_second = site_events_.begin();
             ++it_second;
 
             // Update the beach line.
-            insert_new_arc(*it_first, *it_first, *it_second, beach_line_.begin());
+            insert_new_arc(*it_first, *it_first, *it_second,
+                           beach_line_.begin(), output);
 
             // The second site has been already processed.
             // Move the site's iterator.
@@ -251,7 +251,8 @@ namespace polygon {
         }
 
         // Insert bisectors for all collinear initial sites.
-        void init_beach_line_collinear_sites() {
+        template <typename OUTPUT>
+        void init_beach_line_collinear_sites(OUTPUT *output) {
              site_event_iterator_type it_first = site_events_.begin();
              site_event_iterator_type it_second = site_events_.begin();
              ++it_second;
@@ -260,7 +261,7 @@ namespace polygon {
                  key_type new_node(*it_first, *it_second);
 
                  // Update the output.
-                 edge_type *edge = output_->insert_new_edge(*it_first, *it_second);
+                 edge_type *edge = output->insert_new_edge(*it_first, *it_second).first;
 
                  // Insert a new bisector into the beach line.
                  beach_line_.insert(
@@ -279,7 +280,8 @@ namespace polygon {
             }
         }
 
-        void process_site_event() {
+        template <typename OUTPUT>
+        void process_site_event(OUTPUT *output) {
             // Get the site event to process.
             site_event_type site_event = *site_event_iterator_;
 
@@ -324,7 +326,7 @@ namespace polygon {
 
                     // Insert new nodes into the beach line. Update the output.
                     beach_line_iterator new_node_it =
-                        insert_new_arc(site_arc, site_arc, site_event, it);
+                        insert_new_arc(site_arc, site_arc, site_event, it, output);
 
                     // Add a candidate circle to the circle event queue.
                     // There could be only one new circle event formed by
@@ -338,7 +340,7 @@ namespace polygon {
                     const site_event_type &site_arc = it->first.left_site();
 
                     // Insert new nodes into the beach line. Update the output.
-                    insert_new_arc(site_arc, site_arc, site_event, it);
+                    insert_new_arc(site_arc, site_arc, site_event, it, output);
 
                     // If the site event is a segment, update its direction.
                     if (site_event.is_segment()) {
@@ -364,7 +366,7 @@ namespace polygon {
 
                     // Insert new nodes into the beach line. Update the output.
                     beach_line_iterator new_node_it =
-                        insert_new_arc(site_arc1, site_arc2, site_event, it);
+                        insert_new_arc(site_arc1, site_arc2, site_event, it, output);
 
                     // Add candidate circles to the circle event queue.
                     // There could be up to two circle events formed by
@@ -393,7 +395,8 @@ namespace polygon {
         // (B, C) bisector and change (A, B) bisector to the (A, C). That's
         // why we use const_cast there and take all the responsibility that
         // map data structure keeps correct ordering.
-        void process_circle_event() {
+        template <typename OUTPUT>
+        void process_circle_event(OUTPUT *output) {
             // Get the topmost circle event.
             const event_type &e = circle_events_.top();
             const circle_event_type &circle_event = e.first;
@@ -422,8 +425,8 @@ namespace polygon {
             const_cast<key_type &>(it_first->first).right_site(site3);
 
             // Insert the new bisector into the beach line.
-            it_first->second.edge(output_->insert_new_edge(site1, site3, circle_event,
-                                                           bisector1, bisector2));
+            it_first->second.edge(output->insert_new_edge(site1, site3, circle_event,
+                                                          bisector1, bisector2));
 
             // Remove the (B, C) bisector node from the beach line.
             beach_line_.erase(it_last);
@@ -452,10 +455,12 @@ namespace polygon {
         }
 
         // Insert new nodes into the beach line. Update the output.
+        template <typename OUTPUT>
         beach_line_iterator insert_new_arc(const site_event_type &site_arc1,
                                            const site_event_type &site_arc2,
                                            const site_event_type &site_event,
-                                           const beach_line_iterator &position) {
+                                           const beach_line_iterator &position,
+                                           OUTPUT *output) {
             // Create two new bisectors with opposite directions.
             key_type new_left_node(site_arc1, site_event);
             key_type new_right_node(site_event, site_arc2);
@@ -466,9 +471,10 @@ namespace polygon {
             }
 
             // Update the output.
-            edge_type *edge = output_->insert_new_edge(site_arc2, site_event);
+            std::pair<edge_type*, edge_type*> edges =
+                output->insert_new_edge(site_arc2, site_event);
             beach_line_iterator it = beach_line_.insert(position,
-                typename beach_line_type::value_type(new_right_node, value_type(edge->twin())));
+                beach_line_type::value_type(new_right_node, value_type(edges.second)));
 
             if (site_event.is_segment()) {
                 // Update the beach line with temporary bisector, that will
@@ -484,7 +490,7 @@ namespace polygon {
             }
 
             beach_line_.insert(position,
-                typename beach_line_type::value_type(new_left_node, value_type(edge)));
+                typename beach_line_type::value_type(new_left_node, value_type(edges.first)));
             return it;
         }
 
@@ -520,13 +526,14 @@ namespace polygon {
                              end_point_comparison > end_points_;
         circle_event_queue_type circle_events_;
         beach_line_type beach_line_;
-        output_type *output_;
         circle_formation_predicate_type circle_formation_predicate_;
 
         //Disallow copy constructor and operator=
         voronoi_builder(const voronoi_builder&);
         void operator=(const voronoi_builder&);
     };
+
+    typedef voronoi_builder<detail::int32> default_voronoi_builder;
 } // polygon
 } // boost
 

@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_visualizer.cpp file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -57,7 +57,8 @@ public:
         in_stream.flush();
 
         // Build voronoi diagram.
-        construct_voronoi<int>(point_sites, segment_sites, vd_);
+        vd_.clear();
+        construct_voronoi(point_sites, segment_sites, &vd_);
         brect_ = voronoi_helper<coordinate_type>::get_view_rectangle(
             vd_.bounding_rectangle());
 

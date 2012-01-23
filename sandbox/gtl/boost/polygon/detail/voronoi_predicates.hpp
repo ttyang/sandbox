@@ -1,14 +1,14 @@
 // Boost.Polygon library detail/voronoi_predicates.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_CALC_UTILS
-#define BOOST_POLYGON_VORONOI_CALC_UTILS
+#ifndef BOOST_POLYGON_VORONOI_DETAIL_PREDICATES
+#define BOOST_POLYGON_VORONOI_DETAIL_PREDICATES
 
 #include "voronoi_robust_fpt.hpp"
 
@@ -16,24 +16,21 @@ namespace boost {
 namespace polygon {
 namespace detail {
 
-template <typename T>
-class voronoi_predicates;
-
 // Predicate utilities. Operates with the coordinate types that could
 // be converted to the 32-bit signed integer without precision loss.
-template <>
-class voronoi_predicates<int32> {
+template <typename CTYPE_TRAITS>
+class voronoi_predicates {
 public:
-    typedef int32 int_type;
-    typedef uint32 uint_type;
-    typedef int64 int_x2_type;
-    typedef uint64 uint_x2_type;
-    typedef eint4096 int_x128_type;
-    typedef fpt64 fpt_type;
-    typedef efpt64 efpt_type;
-    typedef ulp_comparison<fpt_type> ulp_cmp_type;
-    typedef type_converter_fpt to_fpt_converter;
-    typedef type_converter_efpt to_efpt_converter;
+    typedef typename CTYPE_TRAITS::int_type int_type;
+    typedef typename CTYPE_TRAITS::uint_type uint_type;
+    typedef typename CTYPE_TRAITS::int_x2_type int_x2_type;
+    typedef typename CTYPE_TRAITS::uint_x2_type uint_x2_type;
+    typedef typename CTYPE_TRAITS::big_int_type big_int_type;
+    typedef typename CTYPE_TRAITS::fpt_type fpt_type;
+    typedef typename CTYPE_TRAITS::efpt_type efpt_type;
+    typedef typename CTYPE_TRAITS::ulp_cmp_type ulp_cmp_type;
+    typedef typename CTYPE_TRAITS::to_fpt_converter_type to_fpt_converter;
+    typedef typename CTYPE_TRAITS::to_efpt_converter_type to_efpt_converter;
 
     static const unsigned int ULPS;
     static const unsigned int ULPSx2;
@@ -529,7 +526,7 @@ public:
         typedef typename Site::point_type point_type;
         typedef Site site_type;
         typedef Circle circle_type;
-        typedef robust_sqrt_expr<int_x128_type, efpt_type, to_efpt_converter> robust_sqrt_expr_type;
+        typedef robust_sqrt_expr<big_int_type, efpt_type, to_efpt_converter> robust_sqrt_expr_type;
 
         void ppp(const site_type &site1,
                  const site_type &site2,
@@ -538,7 +535,7 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            int_x128_type dif_x[3], dif_y[3], sum_x[2], sum_y[2];
+            big_int_type dif_x[3], dif_y[3], sum_x[2], sum_y[2];
             dif_x[0] = static_cast<int_x2_type>(site1.x()) -
                        static_cast<int_x2_type>(site2.x());
             dif_x[1] = static_cast<int_x2_type>(site2.x()) -
@@ -560,16 +557,16 @@ public:
             sum_y[1] = static_cast<int_x2_type>(site2.y()) +
                        static_cast<int_x2_type>(site3.y());
             fpt_type inv_denom = to_fpt(0.5) / to_fpt(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]);
-            int_x128_type numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
-            int_x128_type numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
+            big_int_type numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
+            big_int_type numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
 
             if (recompute_c_x || recompute_lower_x) {
-                int_x128_type c_x = numer1 * dif_y[1] - numer2 * dif_y[0];
+                big_int_type c_x = numer1 * dif_y[1] - numer2 * dif_y[0];
                 circle.x(to_fpt(c_x) * inv_denom);
 
                 if (recompute_lower_x) {
                     // Evaluate radius of the circle.
-                    int_x128_type sqr_r = (dif_x[0] * dif_x[0] + dif_y[0] * dif_y[0]) *
+                    big_int_type sqr_r = (dif_x[0] * dif_x[0] + dif_y[0] * dif_y[0]) *
                                           (dif_x[1] * dif_x[1] + dif_y[1] * dif_y[1]) *
                                           (dif_x[2] * dif_x[2] + dif_y[2] * dif_y[2]);
                     fpt_type r = get_sqrt(to_fpt(sqr_r));
@@ -584,7 +581,7 @@ public:
                             circle.lower_x(circle.x() - r * inv_denom);
                         }
                     } else {
-                        int_x128_type numer = c_x * c_x - sqr_r;
+                        big_int_type numer = c_x * c_x - sqr_r;
                         fpt_type lower_x = to_fpt(numer) * inv_denom /
                                            (to_fpt(c_x) + r);
                         circle.lower_x(lower_x);
@@ -593,7 +590,7 @@ public:
             }
 
             if (recompute_c_y) {
-                int_x128_type c_y = numer2 * dif_x[0] - numer1 * dif_x[1];
+                big_int_type c_y = numer2 * dif_x[0] - numer1 * dif_x[1];
                 circle.y(to_fpt(c_y) * inv_denom);
             }
         }
@@ -607,38 +604,38 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            int_x128_type cA[4], cB[4];
-            int_x128_type line_a = static_cast<int_x2_type>(site3.point1(true).y()) -
+            big_int_type cA[4], cB[4];
+            big_int_type line_a = static_cast<int_x2_type>(site3.point1(true).y()) -
                                    static_cast<int_x2_type>(site3.point0(true).y());
-            int_x128_type line_b = static_cast<int_x2_type>(site3.point0(true).x()) -
+            big_int_type line_b = static_cast<int_x2_type>(site3.point0(true).x()) -
                                    static_cast<int_x2_type>(site3.point1(true).x());
-            int_x128_type segm_len = line_a * line_a + line_b * line_b;
-            int_x128_type vec_x = static_cast<int_x2_type>(site2.y()) -
+            big_int_type segm_len = line_a * line_a + line_b * line_b;
+            big_int_type vec_x = static_cast<int_x2_type>(site2.y()) -
                                   static_cast<int_x2_type>(site1.y());
-            int_x128_type vec_y = static_cast<int_x2_type>(site1.x()) -
+            big_int_type vec_y = static_cast<int_x2_type>(site1.x()) -
                                   static_cast<int_x2_type>(site2.x());
-            int_x128_type sum_x = static_cast<int_x2_type>(site1.x()) +
+            big_int_type sum_x = static_cast<int_x2_type>(site1.x()) +
                                   static_cast<int_x2_type>(site2.x());
-            int_x128_type sum_y = static_cast<int_x2_type>(site1.y()) +
+            big_int_type sum_y = static_cast<int_x2_type>(site1.y()) +
                                   static_cast<int_x2_type>(site2.y());
-            int_x128_type teta = line_a * vec_x + line_b * vec_y;
-            int_x128_type denom = vec_x * line_b - vec_y * line_a;
+            big_int_type teta = line_a * vec_x + line_b * vec_y;
+            big_int_type denom = vec_x * line_b - vec_y * line_a;
 
-            int_x128_type dif0 = static_cast<int_x2_type>(site3.point1().y()) -
+            big_int_type dif0 = static_cast<int_x2_type>(site3.point1().y()) -
                                  static_cast<int_x2_type>(site1.y());
-            int_x128_type dif1 = static_cast<int_x2_type>(site1.x()) -
+            big_int_type dif1 = static_cast<int_x2_type>(site1.x()) -
                                  static_cast<int_x2_type>(site3.point1().x());
-            int_x128_type A = line_a * dif1 - line_b * dif0;
+            big_int_type A = line_a * dif1 - line_b * dif0;
             dif0 = static_cast<int_x2_type>(site3.point1().y()) -
                    static_cast<int_x2_type>(site2.y());
             dif1 = static_cast<int_x2_type>(site2.x()) -
                    static_cast<int_x2_type>(site3.point1().x());
-            int_x128_type B = line_a * dif1 - line_b * dif0;
-            int_x128_type sum_AB = A + B;
+            big_int_type B = line_a * dif1 - line_b * dif0;
+            big_int_type sum_AB = A + B;
 
             if (is_zero(denom)) {
-                int_x128_type numer = teta * teta - sum_AB * sum_AB;
-                int_x128_type denom = teta * sum_AB;
+                big_int_type numer = teta * teta - sum_AB * sum_AB;
+                big_int_type denom = teta * sum_AB;
                 cA[0] = denom * sum_x * 2 + numer * vec_x;
                 cB[0] = segm_len;
                 cA[1] = denom * sum_AB * 2 + numer * teta;
@@ -658,7 +655,7 @@ public:
                 return;
             }
 
-            int_x128_type det = (teta * teta + denom * denom) * A * B * 4;
+            big_int_type det = (teta * teta + denom * denom) * A * B * 4;
             fpt_type inv_denom_sqr = to_fpt(1.0) / to_fpt(denom);
             inv_denom_sqr *= inv_denom_sqr;
 
@@ -704,7 +701,7 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            int_x128_type a[2], b[2], c[2], cA[4], cB[4];
+            big_int_type a[2], b[2], c[2], cA[4], cB[4];
             const point_type &segm_start1 = site2.point1(true);
             const point_type &segm_end1 = site2.point0(true);
             const point_type &segm_start2 = site3.point0(true);
@@ -717,18 +714,18 @@ public:
                    static_cast<int_x2_type>(segm_start2.x());
             b[1] = static_cast<int_x2_type>(segm_end2.y()) -
                    static_cast<int_x2_type>(segm_start2.y());
-            int_x128_type orientation = a[1] * b[0] - a[0] * b[1];
+            big_int_type orientation = a[1] * b[0] - a[0] * b[1];
             if (is_zero(orientation)) {
                 fpt_type denom = to_fpt(2.0) * to_fpt(a[0] * a[0] + b[0] * b[0]);
                 c[0] = b[0] * (static_cast<int_x2_type>(segm_start2.x()) -
                                static_cast<int_x2_type>(segm_start1.x())) -
                        a[0] * (static_cast<int_x2_type>(segm_start2.y()) -
                                static_cast<int_x2_type>(segm_start1.y()));
-                int_x128_type dx = a[0] * (static_cast<int_x2_type>(site1.y()) -
+                big_int_type dx = a[0] * (static_cast<int_x2_type>(site1.y()) -
                                            static_cast<int_x2_type>(segm_start1.y())) -
                                    b[0] * (static_cast<int_x2_type>(site1.x()) -
                                            static_cast<int_x2_type>(segm_start1.x()));
-                int_x128_type dy = b[0] * (static_cast<int_x2_type>(site1.x()) -
+                big_int_type dy = b[0] * (static_cast<int_x2_type>(site1.x()) -
                                            static_cast<int_x2_type>(segm_start2.x())) -
                                    a[0] * (static_cast<int_x2_type>(site1.y()) -
                                            static_cast<int_x2_type>(segm_start2.y()));
@@ -774,10 +771,10 @@ public:
                    a[0] * segm_end1.y();
             c[1] = a[1] * segm_end2.y() -
                    b[1] * segm_end2.x();
-            int_x128_type ix = a[0] * c[1] + a[1] * c[0];
-            int_x128_type iy = b[0] * c[1] + b[1] * c[0];
-            int_x128_type dx = ix - orientation * site1.x();
-            int_x128_type dy = iy - orientation * site1.y();
+            big_int_type ix = a[0] * c[1] + a[1] * c[0];
+            big_int_type iy = b[0] * c[1] + b[1] * c[0];
+            big_int_type dx = ix - orientation * site1.x();
+            big_int_type dy = iy - orientation * site1.y();
             if (is_zero(dx) && is_zero(dy)) {
                 fpt_type denom = to_fpt(orientation);
                 fpt_type c_x = to_fpt(ix) / denom;
@@ -786,7 +783,7 @@ public:
                 return;
             }
 
-            int_x128_type sign = ((point_index == 2) ? 1 : -1) * (is_neg(orientation) ? 1 : -1);
+            big_int_type sign = ((point_index == 2) ? 1 : -1) * (is_neg(orientation) ? 1 : -1);
             cA[0] = a[1] * -dx + b[1] * -dy;
             cA[1] = a[0] * -dx + b[0] * -dy;
             cA[2] = sign;
@@ -795,14 +792,14 @@ public:
             cB[1] = a[1] * a[1] + b[1] * b[1];
             cB[2] = a[0] * a[1] + b[0] * b[1];
             cB[3] = (a[0] * dy - b[0] * dx) * (a[1] * dy - b[1] * dx) * -2;
-            fpt_type temp = to_fpt(sqrt_expr_evaluator_pss4<int_x128_type, efpt_type>(cA, cB));
+            fpt_type temp = to_fpt(sqrt_expr_evaluator_pss4<big_int_type, efpt_type>(cA, cB));
             fpt_type denom = temp * to_fpt(orientation);
 
             if (recompute_c_y) {
                 cA[0] = b[1] * (dx * dx + dy * dy) - iy * (dx * a[1] + dy * b[1]);
                 cA[1] = b[0] * (dx * dx + dy * dy) - iy * (dx * a[0] + dy * b[0]);
                 cA[2] = iy * sign;
-                fpt_type cy = to_fpt(sqrt_expr_evaluator_pss4<int_x128_type, efpt_type>(cA, cB));
+                fpt_type cy = to_fpt(sqrt_expr_evaluator_pss4<big_int_type, efpt_type>(cA, cB));
                 c_event.y(cy / denom);
             }
 
@@ -812,13 +809,13 @@ public:
                 cA[2] = ix * sign;
 
                 if (recompute_c_x) {
-                    fpt_type cx = to_fpt(sqrt_expr_evaluator_pss4<int_x128_type, efpt_type>(cA, cB));
+                    fpt_type cx = to_fpt(sqrt_expr_evaluator_pss4<big_int_type, efpt_type>(cA, cB));
                     c_event.x(cx / denom);
                 }
 
                 if (recompute_lower_x) {
                     cA[3] = orientation * (dx * dx + dy * dy) * (is_neg(temp) ? -1 : 1);
-                    fpt_type lower_x = to_fpt(sqrt_expr_evaluator_pss4<int_x128_type, efpt_type>(cA, cB));
+                    fpt_type lower_x = to_fpt(sqrt_expr_evaluator_pss4<big_int_type, efpt_type>(cA, cB));
                     c_event.lower_x(lower_x / denom);
                 }
             }
@@ -832,7 +829,7 @@ public:
                  bool recompute_c_x = true,
                  bool recompute_c_y = true,
                  bool recompute_lower_x = true) {
-            int_x128_type a[3], b[3], c[3], cA[4], cB[4];
+            big_int_type a[3], b[3], c[3], cA[4], cB[4];
             // cA - corresponds to the cross product.
             // cB - corresponds to the squared length.
             a[0] = static_cast<int_x2_type>(site1.x1(true)) -
@@ -1381,12 +1378,16 @@ private:
     }
 };
 
-const unsigned int voronoi_predicates<int>::ULPS = 64;
-const unsigned int voronoi_predicates<int>::ULPSx2 = 128;
-const voronoi_predicates<int>::fpt_type voronoi_predicates<int>::fULPS =
-    voronoi_predicates<int>::ULPS;
-const voronoi_predicates<int>::fpt_type voronoi_predicates<int>::fULPSx2 =
-    voronoi_predicates<int>::ULPSx2;
+template <typename CTYPE_TRAITS>
+const unsigned int voronoi_predicates<CTYPE_TRAITS>::ULPS = 64;
+template <typename CTYPE_TRAITS>
+const unsigned int voronoi_predicates<CTYPE_TRAITS>::ULPSx2 = 128;
+template <typename CTYPE_TRAITS>
+const typename voronoi_predicates<CTYPE_TRAITS>::fpt_type voronoi_predicates<CTYPE_TRAITS>::fULPS =
+    voronoi_predicates<CTYPE_TRAITS>::ULPS;
+template <typename CTYPE_TRAITS>
+const typename voronoi_predicates<CTYPE_TRAITS>::fpt_type voronoi_predicates<CTYPE_TRAITS>::fULPSx2 =
+    voronoi_predicates<CTYPE_TRAITS>::ULPSx2;
 
 } // detail
 } // polygon

@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_benchmark_test.cpp file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -55,12 +55,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_random, T, test_types) {
         timer.restart();
         int num_tests = max_points / num_points;
         for (int cur = 0; cur < num_tests; cur++) {
+            test_output.clear();
             for (int cur_point = 0; cur_point < num_points; cur_point++) {
                 x = static_cast<coordinate_type>(gen());
                 y = static_cast<coordinate_type>(gen());
                 points[cur_point] = point_type(x, y);
             }
-            construct_voronoi_points<coordinate_type>(points, test_output);
+            construct_voronoi_points(points, &test_output);
         }
         double elapsed_time = timer.elapsed();
         double time_per_test = elapsed_time / num_tests;
@@ -97,7 +98,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_points, T, test_types) {
         for (int i = 0; i < POINT_RUNS; ++i) {
             voronoi_diagram<double> test_output;
             timer.restart();
-            construct_voronoi_points<coordinate_type>(points, test_output);
+            construct_voronoi_points(points, &test_output);
             periods.push_back(timer.elapsed());
         }
     }
@@ -137,7 +138,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
         for (int i = 0; i < SEGMENT_RUNS; ++i) {
             voronoi_diagram<double> test_output;
             timer.restart();
-            construct_voronoi_segments<coordinate_type>(segments, test_output);
+            construct_voronoi_segments(segments, &test_output);
             periods.push_back(timer.elapsed());
         }
     }

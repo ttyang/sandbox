@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_diagram.hpp header file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -846,8 +846,8 @@ namespace polygon {
         // Takes as input left and right sites that form a new bisector.
         // Returns a pointer to a new half-edge.
         template <typename SEvent>
-        voronoi_edge_type *insert_new_edge(const SEvent &site1,
-                                           const SEvent &site2) {
+        std::pair<void*, void*> insert_new_edge(const SEvent &site1,
+                              const SEvent &site2) {
             // Get sites' indices.
             int site_index1 = site1.index();
             int site_index2 = site2.index();
@@ -892,7 +892,7 @@ namespace polygon {
             edge2.twin(&edge1);
 
             // Return a pointer to the new half-edge.
-            return &edge1;
+            return std::make_pair(&edge1, &edge2);
         }
 
         // Insert a new half-edge into the output data structure with the
@@ -902,11 +902,14 @@ namespace polygon {
         // pointers to those half-edges. Half-edges' direction goes out of the
         // new voronoi vertex point. Returns a pointer to the new half-edge.
         template <typename SEvent, typename CEvent>
-        voronoi_edge_type *insert_new_edge(const SEvent &site1,
-                                           const SEvent &site3,
-                                           const CEvent &circle,
-                                           voronoi_edge_type *edge12,
-                                           voronoi_edge_type *edge23) {
+        void *insert_new_edge(const SEvent &site1,
+                              const SEvent &site3,
+                              const CEvent &circle,
+                              void *data12,
+                              void *data23) {
+            voronoi_edge_type *edge12 = static_cast<voronoi_edge_type*>(data12);
+            voronoi_edge_type *edge23 = static_cast<voronoi_edge_type*>(data23);
+
             // Add a new voronoi vertex.
             vertex_records_.push_back(voronoi_vertex_type(
                 point_type(circle.x(), circle.y()), edge12));
