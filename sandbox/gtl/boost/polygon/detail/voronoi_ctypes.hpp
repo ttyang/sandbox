@@ -224,7 +224,7 @@ public:
             val *= 2.0;
             --exp;
         }
-        return extended_exponent_fpt(get_sqrt(val), exp >> 1);
+        return extended_exponent_fpt(std::sqrt(val), exp >> 1);
     }
 
     fpt_type d() const {
@@ -736,7 +736,6 @@ struct voronoi_ctype_traits<int32> {
     typedef type_converter_fpt to_fpt_converter_type;
     typedef type_converter_efpt to_efpt_converter_type;
 };
-
 } // detail
 } // polygon
 } // boost

@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_predicates_test.cpp file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -12,13 +12,14 @@
 #define BOOST_TEST_MODULE voronoi_predicates_test
 #include <boost/test/test_case_template.hpp>
 
+#include "boost/polygon/detail/voronoi_ctypes.hpp"
 #include "boost/polygon/detail/voronoi_predicates.hpp"
 #include "boost/polygon/detail/voronoi_structures.hpp"
 using namespace boost::polygon::detail;
 
 ulp_comparison<double> ulp_cmp;
 
-typedef voronoi_predicates<int> VP;
+typedef voronoi_predicates< voronoi_ctype_traits<int> > VP;
 typedef point_2d<int> point_type;
 typedef site_event<int> site_type;
 typedef circle_event<double> circle_type;
