@@ -52,7 +52,7 @@ public:
     // with epsilon relative error equal to 1EPS.
     template <typename T>
     static fpt_type robust_cross_product(T a1_, T b1_, T a2_, T b2_) {
-        static to_fpt_converter to_fpt; 
+        static to_fpt_converter to_fpt;
         uint_x2_type a1 = static_cast<uint_x2_type>(is_neg(a1_) ? -a1_ : a1_);
         uint_x2_type b1 = static_cast<uint_x2_type>(is_neg(b1_) ? -b1_ : b1_);
         uint_x2_type a2 = static_cast<uint_x2_type>(is_neg(a2_) ? -a2_ : a2_);
@@ -117,12 +117,12 @@ public:
     class point_comparison_predicate {
     public:
         typedef Point point_type;
-        
+
         bool operator()(const point_type &lhs, const point_type &rhs) const {
             if (lhs.x() == rhs.x()) {
                 return lhs.y() < rhs.y();
             }
-            return lhs.x() < rhs.x(); 
+            return lhs.x() < rhs.x();
         }
     };
 
@@ -225,7 +225,7 @@ public:
             }
         }
 
-    private:    
+    private:
         // Represents the result of the epsilon robust predicate. If the
         // result is undefined some further processing is usually required.
         enum kPredicateResult {

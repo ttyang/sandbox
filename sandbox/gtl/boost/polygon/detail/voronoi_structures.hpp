@@ -77,6 +77,7 @@ namespace detail {
     // Variables: point0_ - point site or segment's startpoint;
     //            point1_ - segment's endpoint if site is a segment;
     //            index_ - the last bit encodes if the site is inverse,
+    //                     the last-1 bit encodes initial site direction,
     //                     all the other bits encode site event index among
     //                     the other site events.
     // Note: for all the sites is_inverse_ flag is equal to false by default.
@@ -170,7 +171,7 @@ namespace detail {
         }
 
         site_event& index(int index) {
-            site_index_ = index << 1;
+            site_index_ = index << 2;
             return *this;
         }
 
@@ -179,8 +180,13 @@ namespace detail {
             return *this;
         }
 
+        site_event& change_initial_direction() {
+            site_index_ ^= IS_INITIAL_DIRECTION;
+            return *this;
+        }
+
         size_t index() const {
-            return site_index_ >> 1;
+            return site_index_ >> 2;
         }
 
         bool is_point() const {
@@ -192,12 +198,21 @@ namespace detail {
         }
 
         bool is_inverse() const {
-            return site_index_ & IS_INVERSE;
+            return (site_index_ & IS_INVERSE) ? true : false;
+        }
+
+        bool is_initial() const {
+            return (site_index_ & IS_INITIAL_DIRECTION) ? false : true;
+        }
+
+        bool has_initial_direction() const {
+            return is_inverse() ^ is_initial();
         }
 
     private:
         enum kBits {
-            IS_INVERSE = 1
+            IS_INVERSE = 1,
+            IS_INITIAL_DIRECTION = 2,
         };
 
         point_type point0_;

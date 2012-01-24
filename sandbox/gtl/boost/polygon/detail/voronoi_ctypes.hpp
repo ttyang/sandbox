@@ -469,7 +469,7 @@ public:
             return;
         }
         if ((e1.count() > 0) ^ (e2.count() > 0)) {
-            dif(e1.chunks(), e1.size(), e2.chunks(), e2.size());    
+            dif(e1.chunks(), e1.size(), e2.chunks(), e2.size());
         } else {
             add(e1.chunks(), e1.size(), e2.chunks(), e2.size());
         }
@@ -502,7 +502,7 @@ public:
             dif(e1.chunks(), e1.size(), e2.chunks(), e2.size());
         }
         if (e1.count() < 0) {
-            this->count_ = -this->count_;               
+            this->count_ = -this->count_;
         }
     }
 
