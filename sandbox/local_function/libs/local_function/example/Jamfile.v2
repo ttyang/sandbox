@@ -15,6 +15,9 @@ run scope_exit.cpp ;
 run gcc_lambda.cpp ;
 run gcc_lambda_cpp11.cpp ;
 
+run boost_phoenix_factorial.cpp ;
+run boost_phoenix_local_factorial.cpp ;
+
 run gcc_access.cpp ;
 run gcc_square.cpp ;
 run gcc_store.cpp ;

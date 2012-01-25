@@ -12,12 +12,16 @@
 #       include <boost/local_function/aux_/config.hpp>
 #       include <boost/local_function/aux_/member.hpp>
 #       include <boost/call_traits.hpp>
+#       include <boost/typeof/typeof.hpp>
+#       include <boost/config.hpp>
 #       include <boost/preprocessor/iteration/iterate.hpp>
 #       include <boost/preprocessor/repetition/repeat.hpp>
 #       include <boost/preprocessor/repetition/enum.hpp>
 #       include <boost/preprocessor/punctuation/comma_if.hpp>
+#       include <boost/preprocessor/arithmetic/add.hpp>
 #       include <boost/preprocessor/arithmetic/sub.hpp>
 #       include <boost/preprocessor/arithmetic/inc.hpp>
+#       include <boost/preprocessor/control/iif.hpp>
 #       include <boost/preprocessor/cat.hpp>
 
 // PRIVATE //
@@ -176,6 +180,18 @@ class function {}; // Empty template, only use its specializations.
 
 } } } // namespace
 
+// Register type for type-of emu (NAME use TYPEOF to deduce this fctor type).
+#include BOOST_TYPEOF_INCREMENT_REGISTRATION_GROUP()
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::local_function::aux::function,
+    BOOST_PP_ADD(2, // F and defaults tparams.
+        BOOST_PP_IIF(BOOST_LOCAL_FUNCTION_AUX_CONFIG_LOCALS_AS_TPARAMS_01,
+            0 // No additional tparam.
+        ,
+            BOOST_LOCAL_FUNCTION_CONFIG_BIND_MAX // Bind tparams.
+        )
+    )
+)
+
 #undef BOOST_LOCAL_FUNCTION_AUX_arg_type
 #undef BOOST_LOCAL_FUNCTION_AUX_arg_typedef
 #undef BOOST_LOCAL_FUNCTION_AUX_comma_arg_tparam
@@ -253,8 +269,7 @@ class function<
 public:
     // Provide public type interface following Boost.Function names
     // (traits must be defined in both this and the local functor).
-    /** @todo use BOOST_STATIC_CONST or similar */
-    enum { arity = BOOST_LOCAL_FUNCTION_AUX_arity };
+    BOOST_STATIC_CONSTANT(size_t, arity = BOOST_LOCAL_FUNCTION_AUX_arity);
     typedef R result_type;
     BOOST_PP_REPEAT(BOOST_LOCAL_FUNCTION_AUX_arity,
             BOOST_LOCAL_FUNCTION_AUX_arg_typedef, ~)

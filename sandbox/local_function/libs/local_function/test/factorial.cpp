@@ -19,7 +19,7 @@ struct calculator {
                 bool recursion, default false) {
             int result = 0;
             
-            if (num < 2 ) result = 1;
+            if(num <= 0) result = 1;
             else result = num * factorial(num - 1, true); // Recursive call.
 
             if (!recursion) this_->results.push_back(result);
