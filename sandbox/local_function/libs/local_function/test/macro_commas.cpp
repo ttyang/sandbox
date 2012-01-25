@@ -2,8 +2,8 @@
 #include <boost/local_function.hpp>
 #include <boost/utility/identity_type.hpp>
 #include <boost/config.hpp>
-//#define BOOST_TEST_MODULE TestMacroCommas
-//#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_MODULE TestMacroCommas
+#include <boost/test/unit_test.hpp>
 #include <map>
 #include <string>
 
@@ -16,11 +16,10 @@ struct key_sizeof {
 
 typedef int sign_t;
 
-//BOOST_AUTO_TEST_CASE( test_macro_commas ) {
-int main(void) {
+BOOST_AUTO_TEST_CASE( text_macro_commas ) {
     //[test_macro_commas
     void BOOST_LOCAL_FUNCTION(
-        ((const std::map<std::string, size_t>&)) m,
+        BOOST_IDENTITY_TYPE((const std::map<std::string, size_t>&)) m,
         BOOST_IDENTITY_TYPE((::sign_t)) sign,
         const size_t& factor,
                 default (key_sizeof<std::string, size_t>::value),
@@ -33,6 +32,5 @@ int main(void) {
     std::map<std::string, size_t> m;
     ::sign_t sign = -1;
     f(m, sign);
-    return 0;
 }
 
