@@ -312,6 +312,10 @@ private:
 #endif
     BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_LOCAL_FUNCTION_AUX_defaults),
             BOOST_LOCAL_FUNCTION_AUX_call_decl, ~) // INC for no defaults.
+
+    // run-time: this unused void* member variable allows for compiler
+    // optimizations (at least on MSVC it reduces invocation time of about 50%)
+    void* unused_;
 };
 
 #   undef BOOST_LOCAL_FUNCTION_AUX_defaults

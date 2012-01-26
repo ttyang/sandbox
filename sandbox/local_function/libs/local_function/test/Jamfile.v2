@@ -1,9 +1,7 @@
 
 import testing ;
 
-project : requirements
-    <library>/boost//unit_test_framework
-;
+project : requirements <library>/boost//unit_test_framework ;
 
 run add.cpp ;
 run add_classifiers.cpp ;
