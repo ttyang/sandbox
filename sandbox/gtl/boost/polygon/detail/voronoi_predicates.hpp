@@ -556,7 +556,8 @@ public:
                        static_cast<int_x2_type>(site2.y());
             sum_y[1] = static_cast<int_x2_type>(site2.y()) +
                        static_cast<int_x2_type>(site3.y());
-            fpt_type inv_denom = to_fpt(0.5) / to_fpt(dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]);
+            fpt_type inv_denom = to_fpt(0.5) / to_fpt(static_cast<big_int_type>(
+                dif_x[0] * dif_y[1] - dif_x[1] * dif_y[0]));
             big_int_type numer1 = dif_x[0] * sum_x[0] + dif_y[0] * sum_y[0];
             big_int_type numer2 = dif_x[1] * sum_x[1] + dif_y[1] * sum_y[1];
 
@@ -567,8 +568,8 @@ public:
                 if (recompute_lower_x) {
                     // Evaluate radius of the circle.
                     big_int_type sqr_r = (dif_x[0] * dif_x[0] + dif_y[0] * dif_y[0]) *
-                                          (dif_x[1] * dif_x[1] + dif_y[1] * dif_y[1]) *
-                                          (dif_x[2] * dif_x[2] + dif_y[2] * dif_y[2]);
+                                         (dif_x[1] * dif_x[1] + dif_y[1] * dif_y[1]) *
+                                         (dif_x[2] * dif_x[2] + dif_y[2] * dif_y[2]);
                     fpt_type r = get_sqrt(to_fpt(sqr_r));
 
                     // If c_x >= 0 then lower_x = c_x + r,
@@ -716,7 +717,8 @@ public:
                    static_cast<int_x2_type>(segm_start2.y());
             big_int_type orientation = a[1] * b[0] - a[0] * b[1];
             if (is_zero(orientation)) {
-                fpt_type denom = to_fpt(2.0) * to_fpt(a[0] * a[0] + b[0] * b[0]);
+                fpt_type denom = to_fpt(2.0) * to_fpt(
+                    static_cast<big_int_type>(a[0] * a[0] + b[0] * b[0]));
                 c[0] = b[0] * (static_cast<int_x2_type>(segm_start2.x()) -
                                static_cast<int_x2_type>(segm_start1.x())) -
                        a[0] * (static_cast<int_x2_type>(segm_start2.y()) -

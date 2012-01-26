@@ -26,7 +26,7 @@ typedef double fpt64;
 // If two floating-point numbers in the same format are ordered (x < y),
 // then they are ordered the same way when their bits are reinterpreted as
 // sign-magnitude integers. Values are considered to be almost equal if
-// their integer reinterpretations differ in not more than maxUlps units.
+// their integer bit reinterpretations differ in not more than maxUlps units.
 template <typename _fpt>
 struct ulp_comparison;
 

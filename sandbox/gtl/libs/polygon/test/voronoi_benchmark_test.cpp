@@ -30,7 +30,7 @@ const int POINT_RUNS = 10;
 const int SEGMENT_RUNS = 10;
 
 boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
-boost::timer timer;    
+boost::timer timer;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_random, T, test_types) {
     typedef T coordinate_type;
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_random, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_points, T, test_types) {
     typedef T coordinate_type;
     typedef point_data<coordinate_type> point_type;
-    
+
     std::vector<point_type> points;
     {
         std::ifstream input_file(POINT_INPUT_FILE);
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
     typedef T coordinate_type;
     typedef point_data<coordinate_type> point_type;
     typedef directed_line_segment_data<coordinate_type> segment_type;
-    
+
     directed_line_segment_set_data<coordinate_type> segments;
     {
         std::ifstream input_file(SEGMENT_INPUT_FILE);
