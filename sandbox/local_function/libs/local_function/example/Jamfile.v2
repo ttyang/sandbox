@@ -1,9 +1,7 @@
 
 import testing ;
 
-project : requirements
-    <library>/boost//unit_test_framework
-;
+project : requirements <library>/boost//unit_test_framework ;
 
 # @todo profiling
 # @todo impl_factorial
@@ -29,24 +27,34 @@ run impl_tparam_tricks.cpp ;
 run n2529_this.cpp ;
 run n2550_find_if.cpp ;
 
-#exe profile_boost_closure : profile_boost_closure.cpp :
-#    <library>/boost/chrono//boost_chrono
-#    <library>/boost/system//boost_system
-#    <link>static
-#;
-#exe profile_boost_closure_inline : profile_boost_closure_inline.cpp :
-#    <library>/boost/chrono//boost_chrono
-#    <library>/boost/system//boost_system
-#    <link>static
-#;
-#exe profile_local_functor : profile_local_functor.cpp :
-#    <library>/boost/chrono//boost_chrono
-#    <library>/boost/system//boost_system
-#    <link>static
-#;
-#exe profile_boost_phoenix : profile_boost_phoenix.cpp :
-#    <library>/boost/chrono//boost_chrono
-#    <library>/boost/system//boost_system
-#    <link>static
-#;
+exe profile_local_function : profile_local_function.cpp
+    :   <library>/boost/chrono//boost_chrono
+        <library>/boost/system//boost_system
+        <link>static
+    ;
+exe profile_local_function_inline : profile_local_function_inline.cpp
+    :   <library>/boost/chrono//boost_chrono
+        <library>/boost/system//boost_system
+        <link>static
+    ;
+exe profile_lambda : profile_lambda.cpp
+    :   <library>/boost/chrono//boost_chrono
+        <library>/boost/system//boost_system
+        <link>static
+    ;
+exe profile_local_functor : profile_local_functor.cpp
+    :   <library>/boost/chrono//boost_chrono
+        <library>/boost/system//boost_system
+        <link>static
+    ;
+exe profile_global_functor : profile_global_functor.cpp
+    :   <library>/boost/chrono//boost_chrono
+        <library>/boost/system//boost_system
+        <link>static
+    ;
+exe profile_phoenix : profile_phoenix.cpp
+    :   <library>/boost/chrono//boost_chrono
+        <library>/boost/system//boost_system
+        <link>static
+    ;
 
