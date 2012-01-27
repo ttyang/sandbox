@@ -19,9 +19,6 @@
 #include <boost/preprocessor/list/adt.hpp>
 #include <boost/preprocessor/tuple/eat.hpp>
 
-/** @todo double check all includes */
-/** @todo add copyright to all files, docs, examples, tests, etc- careful with ScopeExit */
-
 // PRIVATE //
 
 #define BOOST_LOCAL_FUNCTION_AUX_DECL_OK_(id, typename01, decl_traits) \
