@@ -1,0 +1,18 @@
+
+# Copyright (C) 2009-2012 Lorenzo Caminiti
+# Distributed under the Boost Software License, Version 1.0
+# (see accompanying file LICENSE_1_0.txt or a copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
+import os ;
+local BOOST_ROOT = [ os.environ BOOST_ROOT ] ;
+
+# Toolset.
+using msvc ;
+ 
+# Boost.QuickBook (and related tools).
+using quickbook : $(BOOST_ROOT)"/bin.v2/tools/quickbook/src/msvc-8.0/release/link-static/threading-multi/quickbook.exe" : ; 
+using xsltproc : "C:/Program Files/boost/xml/bin/xsltproc.exe" ; 
+using boostbook : "C:/Program Files/boost/xml/docbook-xsl" : "C:/Program Files/boost/xml/docbook-xml" ; 
+using doxygen : "C:/Program Files/doxygen/bin/doxygen.exe" ; 
+
