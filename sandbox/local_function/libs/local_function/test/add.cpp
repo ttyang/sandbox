@@ -5,7 +5,7 @@
 #include <algorithm>
 
 BOOST_AUTO_TEST_CASE( test_add )
-//[test_add
+//[add
 {                                           // Some local scope.
     int sum = 0, factor = 10;               // Variables in scope to bind.
     

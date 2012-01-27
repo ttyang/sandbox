@@ -1,11 +1,11 @@
 
 #include <boost/local_function.hpp>
-#define BOOST_TEST_MODULE TestGotoOk
+#define BOOST_TEST_MODULE TestGoto
 #include <boost/test/unit_test.hpp>
 
-//[test_goto_ok
+//[goto
 int error(int x, int y) {
-    bool BOOST_LOCAL_FUNCTION(int x) {
+    int BOOST_LOCAL_FUNCTION(int x) {
         if(x > 0) goto success; // OK: Can jump within local function.
         return -1;
     success:
@@ -16,7 +16,7 @@ int error(int x, int y) {
 }
 //]
 
-BOOST_AUTO_TEST_CASE( test_goto_ok ) {
+BOOST_AUTO_TEST_CASE( test_goto ) {
     error(1, 2);
 }
 

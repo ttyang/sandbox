@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <vector>
 
-//[test_factorial
+//[factorial
 struct calculator {
     std::vector<int> results;
 

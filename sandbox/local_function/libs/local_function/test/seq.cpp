@@ -6,7 +6,7 @@
 
 #include <boost/local_function.hpp>
 
-//[test_seq
+//[seq
 struct s {
     void f(double p = 1.23, double q = -1.23) {
         { // Only params.

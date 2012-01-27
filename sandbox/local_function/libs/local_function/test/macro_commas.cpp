@@ -11,13 +11,13 @@ std::string cat(const std::string& x, const std::string& y) { return x + y; }
 
 template<typename V, typename K>
 struct key_sizeof {
-    BOOST_STATIC_CONSTANT(size_t, value = sizeof(K));
+    BOOST_STATIC_CONSTANT(int, value = sizeof(K));
 };
 
 typedef int sign_t;
 
 BOOST_AUTO_TEST_CASE( text_macro_commas ) {
-    //[test_macro_commas
+    //[macro_commas
     void BOOST_LOCAL_FUNCTION(
         BOOST_IDENTITY_TYPE((const std::map<std::string, size_t>&)) m,
         BOOST_IDENTITY_TYPE((::sign_t)) sign,

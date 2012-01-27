@@ -18,7 +18,7 @@ int main() {
     n x(-1);
 
     void BOOST_LOCAL_FUNCTION(const bind& x) {  // OK: No copy
-        assert( x == -1 );                      // and constant.
+        assert( x.i == -1 );                    // and constant.
     } BOOST_LOCAL_FUNCTION_NAME(f)
     f();
 

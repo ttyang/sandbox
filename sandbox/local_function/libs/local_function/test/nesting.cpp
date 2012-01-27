@@ -9,7 +9,7 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE( test_nesting ) {
-    //[test_nesting
+    //[nesting
     int x = 0;
 
     void BOOST_LOCAL_FUNCTION(bind& x) {

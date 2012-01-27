@@ -4,8 +4,8 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-//[example_impl_tparam_tricks
-#define BOOST_TEST_MODULE ExampleTparamTricks
+//[impl_tparam_tricks
+#define BOOST_TEST_MODULE TestImplTparamTricks
 #include <boost/test/unit_test.hpp>
 #include <vector>
 #include <algorithm>
@@ -33,7 +33,7 @@ private:
     interface* func_;
 };
 
-BOOST_AUTO_TEST_CASE( example_tparam_tricks ) {
+BOOST_AUTO_TEST_CASE( test_impl_tparam_tricks ) {
     int sum = 0, factor = 10;
 
     // Local class for local function.

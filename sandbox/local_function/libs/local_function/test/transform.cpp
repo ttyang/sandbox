@@ -11,7 +11,7 @@
 #include <vector>
 
 BOOST_AUTO_TEST_CASE( test_transform ) {
-    //[test_transform
+    //[transform
     int offset = 5;
     std::vector<int> v;
     std::vector<int> w;

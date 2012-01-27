@@ -1,10 +1,10 @@
 
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/function.hpp>
-#define BOOST_TEST_MODULE ExampleBoostPhoenixFactorial
+#define BOOST_TEST_MODULE TestPhoenixFactorial
 #include <boost/test/unit_test.hpp>
 
-//[example_boost_phoenix_factorial
+//[phoenix_factorial
 struct factorial_impl { // Phoenix function from global functor.
     template<typename Sig>
     struct result;
@@ -21,7 +21,7 @@ struct factorial_impl { // Phoenix function from global functor.
     }
 };
 
-BOOST_AUTO_TEST_CASE( example_boost_phoenix_factorial ) {
+BOOST_AUTO_TEST_CASE( test_phoenix_factorial ) {
     using boost::phoenix::arg_names::arg1;
     
     boost::phoenix::function<factorial_impl> factorial;

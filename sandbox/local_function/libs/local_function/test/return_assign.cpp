@@ -10,7 +10,7 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-//[test_return_assign
+//[return_assign
 void call1(boost::function<int (int) > f) { BOOST_CHECK( f(1) == 5 ); }
 void call0(boost::function<int (void)> f) { BOOST_CHECK( f() == 5 ); }
 

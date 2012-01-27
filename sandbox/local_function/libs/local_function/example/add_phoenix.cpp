@@ -5,18 +5,24 @@
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
 #include <boost/spirit/include/phoenix.hpp>
-#define BOOST_TEST_MODULE AddPhoenix
+#define BOOST_TEST_MODULE TestAddPhoenix
 #include <boost/test/unit_test.hpp>
 #include <algorithm>
+#include <iostream>
     
-BOOST_AUTO_TEST_CASE( add_phoenix )
+BOOST_AUTO_TEST_CASE( test_add_phoenix )
 //[add_phoenix
 {
+    using boost::phoenix::let;
+    using boost::phoenix::local_names::_f;
+    using boost::phoenix::cref;
+    using boost::phoenix::ref;
+    using boost::phoenix::arg_names::_1;
+
     int sum = 0, factor = 10;
     int nums[] = {1, 2, 3};
 
     // Passed to template, `factor` by constant, and defined in expression.
-    using namespace boost::phoenix;
     std::for_each(nums, nums + 3, let(_f = cref(factor))[
         // Unfortunately, body cannot use C++ statement syntax.
         ref(sum) += _f * _1 // Access `sum` by reference.

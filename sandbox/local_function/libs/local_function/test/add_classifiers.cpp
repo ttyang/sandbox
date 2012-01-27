@@ -13,7 +13,7 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE( test_add_classifiers ) {
-    //[test_add_classifiers
+    //[add_classifiers
     int BOOST_LOCAL_FUNCTION(auto int x, register int y) { // Classifers.
         return x + y;
     } BOOST_LOCAL_FUNCTION_NAME(add)

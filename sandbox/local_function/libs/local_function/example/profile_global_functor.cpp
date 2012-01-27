@@ -11,8 +11,7 @@
 #include "profile_helpers.hpp"
 
 struct global_add {
-    global_add(double& _sum, const int& _factor):
-                sum(_sum), factor(_factor) {}
+    global_add(double& _sum, const int& _factor): sum(_sum), factor(_factor) {}
     inline void operator()(const double& num) {
         sum += factor * num;
     }

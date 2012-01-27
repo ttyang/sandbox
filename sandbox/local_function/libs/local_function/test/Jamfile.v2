@@ -16,17 +16,17 @@ run add_typed.cpp ;
 run add_with_default.cpp ;
 
 run factorial.cpp ;
+run goto.cpp ;
+compile-fail goto_err.cpp ;
 run macro_commas.cpp ;
 run nesting.cpp ;
+run operator.cpp ;
+compile-fail operator_err.cpp ;
 run overload.cpp ;
 run ten_void.cpp ;
 run transform.cpp ;
 run typeof.cpp ;
 run typeof_template.cpp ;
-run operator_ok.cpp ;
-compile-fail operator_err.cpp ;
-run goto_ok.cpp ;
-compile-fail goto_err.cpp ;
 
 run return_assign.cpp ;
 run return_derivative.cpp ;
@@ -34,5 +34,6 @@ run return_inc.cpp ;
 run return_setget.cpp ;
 run return_this.cpp ;
 
+run add_seq.cpp ;
 run seq.cpp ;
 

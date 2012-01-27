@@ -3,14 +3,14 @@
 #include <boost/function.hpp>
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/function.hpp>
-#define BOOST_TEST_MODULE ExampleBoostPhoenixFactorialLocal
+#define BOOST_TEST_MODULE TestPhoenixFactorialLocal
 #include <boost/test/unit_test.hpp>
 
-//[example_boost_phoenix_local_factorial
-BOOST_AUTO_TEST_CASE( example_boost_phoenix_factorial_local ) {
+//[phoenix_factorial_local
+BOOST_AUTO_TEST_CASE( test_phoenix_factorial_local ) {
     using boost::phoenix::arg_names::arg1;
     
-    int BOOST_LOCAL_FUNCTION(int n) { // Monomorphic.
+    int BOOST_LOCAL_FUNCTION(int n) { // Unfortunately, monomorphic.
         return (n <= 0) ? 1 : n * factorial_impl(n - 1);
     } BOOST_LOCAL_FUNCTION_NAME(recursive factorial_impl)
 

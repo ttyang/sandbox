@@ -1,0 +1,9 @@
+
+import testing ;
+
+run try_catch.cpp ;
+run try_catch_seq.cpp ;
+
+run scope_guard.cpp ;
+run scope_guard_seq.cpp ;
+

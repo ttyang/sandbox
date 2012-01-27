@@ -4,6 +4,9 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
+#include <boost/config.hpp>
+#ifndef BOOST_NO_LAMBDAS
+
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
@@ -24,4 +27,10 @@ int main(void) {
     return 0;
 }
 //]
+
+#else // NO_LAMBDAS
+
+#error "Trivial failure."
+
+#endif // NO_LAMBDAS
 

@@ -2,7 +2,7 @@
 import testing ;
 
 compile-fail var_err.cpp ;
-run var_ok.cpp ;
+run var.cpp ;
 run template.cpp ;
 run tmp_assert.cpp ;
 

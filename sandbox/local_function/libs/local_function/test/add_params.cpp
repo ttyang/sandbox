@@ -9,7 +9,7 @@
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE( test_add_params ) {
-    //[test_add_params
+    //[add_params
     int BOOST_LOCAL_FUNCTION(int x, int y) { // Local function.
         return x + y;
     } BOOST_LOCAL_FUNCTION_NAME(add)

@@ -3,7 +3,7 @@
 #define BOOST_TEST_MODULE TestOperatorErr
 #include <boost/test/unit_test.hpp>
 
-//[test_operator_err
+//[operator_err
 struct point {
     int x;
     int y;

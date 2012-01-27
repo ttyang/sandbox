@@ -8,6 +8,8 @@ import sys
 import time
 import os
 
+# Usage: python crono.py COMMAND [COMMAND_OPTIONS]
+
 cmd = ""
 for arg in sys.argv[1:]: cmd += str(arg) + " "
 

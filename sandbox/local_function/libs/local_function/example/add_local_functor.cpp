@@ -4,10 +4,10 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#define BOOST_TEST_CASE AddLocalFunctor
+#define BOOST_TEST_MODULE TestAddLocalFunctor
 #include <boost/test/unit_test.hpp>
 
-BOOST_AUTO_TEST_CASE( add_local_functor ) 
+BOOST_AUTO_TEST_CASE( test_add_local_functor ) 
 //[add_local_functor
 {
     int sum = 0, factor = 10;
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE( add_local_functor )
         }
     private: // Unfortunately, cannot bind so repeat variable types.
         int& sum; // Access `sum` by reference.
-        const int& factor; // Make `factor` constant.
+        const int factor; // Make `factor` constant.
     } add(sum, factor);
     
     add(1);

@@ -4,7 +4,7 @@
 // License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a
 // copy at http://www.boost.org/LICENSE_1_0.txt).
 
-#include <boost/local/function.hpp>
+#include <boost/local_function.hpp>
 #include <iostream>
 #include <cassert>
 

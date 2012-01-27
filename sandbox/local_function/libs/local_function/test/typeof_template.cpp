@@ -12,7 +12,7 @@
 #include <boost/test/unit_test.hpp>
 #include <algorithm>
 
-//[test_typeof_template
+//[typeof_template
 template<typename T>
 T calculate(const T& factor) {
     T sum = 0;

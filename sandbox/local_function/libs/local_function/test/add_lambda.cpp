@@ -8,7 +8,7 @@
 #include <algorithm>
 
 BOOST_AUTO_TEST_CASE( test_add_lambda )
-//[test_add_lambda
+//[add_lambda
 {                                           // Some local scope.
     int sum = 0, factor = 10;               // Variables in scope to bind.
     
