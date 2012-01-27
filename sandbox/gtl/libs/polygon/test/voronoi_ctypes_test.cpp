@@ -19,6 +19,31 @@ using namespace boost::polygon::detail;
 
 type_converter_fpt to_fpt;
 
+BOOST_AUTO_TEST_CASE(ulp_comparison_test1) {
+    ulp_comparison<double> ulp_cmp;
+    uint64 a = 22;
+    uint64 b = 27;
+    fpt64 da = *reinterpret_cast<fpt64*>(&a);
+    fpt64 db = *reinterpret_cast<fpt64*>(&b);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 1), ulp_cmp.LESS);
+    BOOST_CHECK_EQUAL(ulp_cmp(db, da, 1), ulp_cmp.MORE);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 4), ulp_cmp.LESS);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 5), ulp_cmp.EQUAL);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 6), ulp_cmp.EQUAL);
+}
+
+BOOST_AUTO_TEST_CASE(ulp_comparison_test2) {
+    ulp_comparison<fpt64> ulp_cmp;
+    uint64 a = 0ULL;
+    uint64 b = 0x8000000000000002ULL;
+    fpt64 da = *reinterpret_cast<fpt64*>(&a);
+    fpt64 db = *reinterpret_cast<fpt64*>(&b);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 1), ulp_cmp.MORE);
+    BOOST_CHECK_EQUAL(ulp_cmp(db, da, 1), ulp_cmp.LESS);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 2), ulp_cmp.EQUAL);
+    BOOST_CHECK_EQUAL(ulp_cmp(da, db, 3), ulp_cmp.EQUAL);
+}
+
 BOOST_AUTO_TEST_CASE(fpt_exponent_accessor_test) {
     typedef fpt_exponent_accessor<fpt64> fpt_ea;
     fpt64 value = 15;
@@ -43,7 +68,7 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test1) {
     fpt64 b = 0.0;
     efpt64 eeb(b);
     for (int i = 0; i < 1000; ++i) {
-        fpt64 a = static_cast<fpt64>(static_cast<int64>(gen()));
+        fpt64 a = to_fpt(static_cast<int64>(gen()));
         efpt64 eea(a);
         efpt64 neg = -eea;
         efpt64 sum = eea + eeb;
@@ -61,7 +86,7 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test2) {
     fpt64 a = 0.0;
     efpt64 eea(a);  
     for (int i = 0; i < 1000; ++i) {
-        fpt64 b = static_cast<fpt64>(static_cast<int64>(gen()));
+        fpt64 b = to_fpt(static_cast<int64>(gen()));
         if (b == 0.0) {
             continue;
         }
@@ -82,8 +107,8 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test2) {
 BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test3) {
     boost::mt19937_64 gen(static_cast<uint32>(time(NULL)));
     for (int i = 0; i < 1000; ++i) {
-        fpt64 a = static_cast<fpt64>(static_cast<int64>(gen()));
-        fpt64 b = static_cast<fpt64>(static_cast<int64>(gen()));
+        fpt64 a = to_fpt(static_cast<int64>(gen()));
+        fpt64 b = to_fpt(static_cast<int64>(gen()));
         if (b == 0.0) {
             continue;
         }
@@ -106,7 +131,7 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test4) {
     for (int exp = 0; exp < 64; ++exp)
     for (int i = 1; i < 100; ++i) {
         fpt64 a = i;
-        fpt64 b = static_cast<fpt64>(1LL << exp);
+        fpt64 b = to_fpt(1LL << exp);
         efpt64 eea(a);
         efpt64 eeb(b);
         efpt64 neg = -eea;
@@ -124,9 +149,18 @@ BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test4) {
 
 BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test5) {
     for (int i = 0; i < 100; ++i) {
-        efpt64 a(static_cast<fpt64>(i * i));
+        efpt64 a(to_fpt(i * i));
         efpt64 b = a.sqrt();
-        BOOST_CHECK_EQUAL(to_fpt(b), static_cast<fpt64>(i));
+        BOOST_CHECK_EQUAL(to_fpt(b), to_fpt(i));
+    }
+}
+
+BOOST_AUTO_TEST_CASE(extended_exponent_fpt_test6) {
+    for (int i = -10; i <= 10; ++i) {
+        efpt64 a(to_fpt(i));
+        BOOST_CHECK_EQUAL(is_pos(a), i > 0);
+        BOOST_CHECK_EQUAL(is_neg(a), i < 0);
+        BOOST_CHECK_EQUAL(is_zero(a), !i);
     }
 }
 
@@ -134,14 +168,13 @@ BOOST_AUTO_TEST_CASE(extended_int_test1) {
     typedef extended_int<1> eint32;
     eint32 e1(0), e2(32), e3(-32);
     BOOST_CHECK_EQUAL(e1.count(), 0);
-    BOOST_CHECK_EQUAL(e1.chunks()[0], 0u);
-    BOOST_CHECK_EQUAL(e1.size(), 0u);
+    BOOST_CHECK_EQUAL(e1.size(), 0U);
     BOOST_CHECK_EQUAL(e2.count(), 1);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 32u);
-    BOOST_CHECK_EQUAL(e2.size(), 1u);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 32U);
+    BOOST_CHECK_EQUAL(e2.size(), 1U);
     BOOST_CHECK_EQUAL(e3.count(), -1);
-    BOOST_CHECK_EQUAL(e3.chunks()[0], 32u);
-    BOOST_CHECK_EQUAL(e3.size(), 1u);
+    BOOST_CHECK_EQUAL(e3.chunks()[0], 32U);
+    BOOST_CHECK_EQUAL(e3.size(), 1U);
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test2) {
@@ -149,11 +182,10 @@ BOOST_AUTO_TEST_CASE(extended_int_test2) {
     int64 val64 = 0x7fffffffffffffffLL;
     eint64 e1(0LL), e2(32LL), e3(-32LL), e4(val64), e5(-val64);
     BOOST_CHECK_EQUAL(e1.count(), 0);
-    BOOST_CHECK_EQUAL(e1.chunks()[0], 0u);
     BOOST_CHECK_EQUAL(e2.count(), 1);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 32u);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 32U);
     BOOST_CHECK_EQUAL(e3.count(), -1);
-    BOOST_CHECK_EQUAL(e3.chunks()[0], 32u);
+    BOOST_CHECK_EQUAL(e3.chunks()[0], 32U);
     BOOST_CHECK_EQUAL(e4.count(), 2);
     BOOST_CHECK_EQUAL(e4.chunks()[0], 0xffffffff);
     BOOST_CHECK_EQUAL(e4.chunks()[1], val64 >> 32);
@@ -169,11 +201,11 @@ BOOST_AUTO_TEST_CASE(extended_int_test3) {
     chunks.push_back(2);
     eint64 e1(chunks, true), e2(chunks, false);
     BOOST_CHECK_EQUAL(e1.count(), 2);
-    BOOST_CHECK_EQUAL(e1.chunks()[0], 2u);
-    BOOST_CHECK_EQUAL(e1.chunks()[1], 1u);
+    BOOST_CHECK_EQUAL(e1.chunks()[0], 2U);
+    BOOST_CHECK_EQUAL(e1.chunks()[1], 1U);
     BOOST_CHECK_EQUAL(e2.count(), -2);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 2u);
-    BOOST_CHECK_EQUAL(e2.chunks()[1], 1u);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 2U);
+    BOOST_CHECK_EQUAL(e2.chunks()[1], 1U);
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test4) {
@@ -199,7 +231,7 @@ BOOST_AUTO_TEST_CASE(extended_int_test4) {
 BOOST_AUTO_TEST_CASE(extended_int_test5) {
     typedef extended_int<2> eint64;
     boost::mt19937_64 gen(static_cast<uint32>(time(NULL)));
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 1000; ++i) {
         int64 i1 = static_cast<int64>(gen());
         int64 i2 = static_cast<int64>(gen());
         eint64 e1(i1), e2(i2);
@@ -217,14 +249,14 @@ BOOST_AUTO_TEST_CASE(extended_int_test6) {
     eint32 e1(32);
     eint32 e2 = -e1;
     BOOST_CHECK_EQUAL(e2.count(), -1);
-    BOOST_CHECK_EQUAL(e2.size(), 1u);
-    BOOST_CHECK_EQUAL(e2.chunks()[0], 32u);
+    BOOST_CHECK_EQUAL(e2.size(), 1U);
+    BOOST_CHECK_EQUAL(e2.chunks()[0], 32U);
 }
 
 BOOST_AUTO_TEST_CASE(extended_int_test7) {
     typedef extended_int<2> eint64;
     boost::mt19937_64 gen(static_cast<uint32>(time(NULL)));
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 1000; ++i) {
         int64 i1 = static_cast<int64>(gen()) >> 2;
         int64 i2 = static_cast<int64>(gen()) >> 2;
         eint64 e1(i1), e2(i2), e3(i1 + i2), e4(i1 - i2);
@@ -236,7 +268,7 @@ BOOST_AUTO_TEST_CASE(extended_int_test7) {
 BOOST_AUTO_TEST_CASE(extended_int_test8) {
     typedef extended_int<2> eint64;
     boost::mt19937 gen(static_cast<uint32>(time(NULL)));
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 1000; ++i) {
         int64 i1 = static_cast<int32>(gen());
         int64 i2 = static_cast<int32>(gen());
         eint64 e1(i1), e2(i2), e3(i1 * i2);
@@ -277,4 +309,8 @@ BOOST_AUTO_TEST_CASE(extened_int_test11) {
         value = value * two;
     }
     BOOST_CHECK_EQUAL(value.count(), 33);
+    for (size_t i = 1; i < value.size(); ++i) {
+        BOOST_CHECK_EQUAL(value.chunks()[i-1], 0U);
+    }
+    BOOST_CHECK_EQUAL(value.chunks()[32], 1U);
 }

@@ -26,7 +26,7 @@ typedef double fpt64;
 // If two floating-point numbers in the same format are ordered (x < y),
 // then they are ordered the same way when their bits are reinterpreted as
 // sign-magnitude integers. Values are considered to be almost equal if
-// their integer bit reinterpretations differ in not more than maxUlps units.
+// their integer bits reinterpretations differ in not more than maxUlps units.
 template <typename _fpt>
 struct ulp_comparison;
 
@@ -95,8 +95,8 @@ const int64 fpt_exponent_accessor<fpt64>::kMinExponent = -1023LL;
 const int64 fpt_exponent_accessor<fpt64>::kMaxExponent = 1024LL;
 const int64 fpt_exponent_accessor<fpt64>::kMaxSignificantExpDif = 54;
 
-// Allows to extend floating-point type exponent boundaries to the 64 bit
-// integer range. This class does not handle division by zero, subnormal
+// Floating point type wrapper. Allows to extend exponent boundaries to the
+// 64 bit integer range. This class does not handle division by zero, subnormal
 // numbers or NaNs.
 template <typename _fpt>
 class extended_exponent_fpt {
@@ -270,6 +270,8 @@ bool is_zero(const extended_exponent_fpt<_fpt>& that) {
     return that.is_zero();
 }
 
+// Very efficient stack allocated big integer class.
+// Supports next set of arithmetic operations: +, -, *.
 template<size_t N>
 class extended_int {
 public:
@@ -286,38 +288,28 @@ public:
             this->chunks_[0] = -that;
             this->count_ = -1;
         } else {
-            this->chunks_[0] = this->count_ = 0;
+            this->count_ = 0;
         }
     }
 
     extended_int(int64 that) {
         if (that > 0) {
             this->chunks_[0] = static_cast<uint32>(that & kUInt64LowMask);
-            uint32 high = (that & kUInt64HighMask) >> 32;
-            if (high) {
-                this->chunks_[1] = high;
-                this->count_ = 2;
-            } else {
-                this->count_ = 1;
-            }
+            this->chunks_[1] = that >> 32;
+            this->count_ = this->chunks_[1] ? 2 : 1;
         } else if (that < 0) {
             that = -that;
             this->chunks_[0] = static_cast<uint32>(that & kUInt64LowMask);
-            uint32 high = (that & kUInt64HighMask) >> 32;
-            if (high) {
-                this->chunks_[1] = high;
-                this->count_ = -2;
-            } else {
-                this->count_ = -1;
-            }
+            this->chunks_[1] = that >> 32;
+            this->count_ = this->chunks_[1] ? -2 : -1;
         } else {
-            this->chunks_[0] = this->count_ = 0;
+            this->count_ = 0;
         }
     }
 
     extended_int(const std::vector<uint32>& chunks, bool plus = true) {
-        this->count_ = static_cast<int32>(chunks.size());
-        for (size_t i = 0; i < chunks.size(); ++i) {
+        this->count_ = static_cast<int32>((std::min)(N, chunks.size()));
+        for (int i = 0; i < this->count_; ++i) {
             this->chunks_[i] = chunks[chunks.size() - i - 1];
         }
         if (!plus) {
@@ -327,11 +319,12 @@ public:
 
     template <size_t M>
     extended_int(const extended_int<M>& that) {
+        if (that.size() > N) return;
         this->count_ = that.count();
         memcpy(this->chunks_, that.chunks(), that.size() * sizeof(uint32));
     }
 
-    extended_int<N>& operator=(int32 that) {
+    extended_int& operator=(int32 that) {
         if (that > 0) {
             this->chunks_[0] = that;
             this->count_ = 1;
@@ -339,42 +332,32 @@ public:
             this->chunks_[0] = -that;
             this->count_ = -1;
         } else {
-            this->chunks_[0] = this->count_ = 0;
+            this->count_ = 0;
         }
         return *this;
     }
 
-    extended_int<N>& operator=(int64 that) {
+    extended_int& operator=(int64 that) {
         if (that > 0) {
             this->chunks_[0] = static_cast<uint32>(that & kUInt64LowMask);
-            uint32 high = (that & kUInt64HighMask) >> 32;
-            if (high) {
-                this->chunks_[1] = high;
-                this->count_ = 2;
-            } else {
-                this->count_ = 1;
-            }
+            this->chunks_[1] = that >> 32;
+            this->count_ = this->chunks_[1] ? 2 : 1;
         } else if (that < 0) {
             that = -that;
             this->chunks_[0] = static_cast<uint32>(that & kUInt64LowMask);
-            uint32 high = (that & kUInt64HighMask) >> 32;
-            if (high) {
-                this->chunks_[1] = high;
-                this->count_ = -2;
-            } else {
-                this->count_ = -1;
-            }
+            this->chunks_[1] = that >> 32;
+            this->count_ = this->chunks_[1] ? -2 : -1;
         } else {
-            this->chunks_[0] = this->count_ = 0;
+            this->count_ = 0;
         }
         return *this;
     }
 
     template <size_t M>
-    extended_int<N>& operator=(const extended_int<M>& that) {
+    extended_int& operator=(const extended_int<M>& that) {
+        if (that.size() > N) return;
         this->count_ = that.count();
-        size_t sz = (std::min)(N, that.size());
-        memcpy(this->chunks_, that.chunks(), sz * sizeof(uint32));
+        memcpy(this->chunks_, that.chunks(), that.size() * sizeof(uint32));
         return *this;
     }
 
@@ -441,8 +424,8 @@ public:
         return !(*this < that);
     }
 
-    extended_int<N> operator-() const {
-        extended_int<N> ret_val = *this;
+    extended_int operator-() const {
+        extended_int ret_val = *this;
         ret_val.neg();
         return ret_val;
     }
@@ -526,7 +509,7 @@ public:
     template <size_t N1, size_t N2>
     void mul(const extended_int<N1>& e1, const extended_int<N2>& e2) {
         if (!e1.count() || !e2.count()) {
-            this->chunks_[0] = this->count_ = 0;
+            this->count_ = 0;
             return;
         }
         mul(e1.chunks(), e1.size(), e2.chunks(), e2.size());
@@ -555,12 +538,10 @@ public:
         } else {
             if (sz == 1) {
                 ret_val.first = static_cast<fpt64>(this->chunks_[0]);
-                ret_val.second = 0;
             } else if (sz == 2) {
                 ret_val.first = static_cast<fpt64>(this->chunks_[1]) *
                                 static_cast<fpt64>(0x100000000LL) +
                                 static_cast<fpt64>(this->chunks_[0]);
-                ret_val.second = 0;
             } else {
                 for (size_t i = 1; i <= 3; ++i) {
                     ret_val.first *= static_cast<fpt64>(0x100000000LL);
@@ -593,12 +574,12 @@ private:
             temp += static_cast<uint64>(c1[i]) +
                     static_cast<uint64>(c2[i]);
             this->chunks_[i] = static_cast<uint32>(temp & kUInt64LowMask);
-            temp = (temp & kUInt64HighMask) >> 32;
+            temp >>= 32;
         }
         for (size_t i = sz2; i < sz1; ++i) {
             temp += static_cast<uint64>(c1[i]);
             this->chunks_[i] = static_cast<uint32>(temp & kUInt64LowMask);
-            temp = (temp & kUInt64HighMask) >> 32;
+            temp >>= 32;
         }
         if (temp && (this->count_ != N)) {
             this->chunks_[this->count_] = static_cast<uint32>(temp & kUInt64LowMask);
@@ -622,11 +603,12 @@ private:
                 } else if (c1[sz1] > c2[sz1]) {
                     ++sz1;
                     break;
-                } else if (!sz1) {
-                    this->chunks_[0] = this->count_ = 0;
-                    return;
                 }
             } while (sz1);
+            if (!sz1) {
+                this->count_ = 0;
+                return;
+            }
             sz2 = sz1;
         }
         this->count_ = sz1-1;
@@ -660,10 +642,10 @@ private:
                 tmp = static_cast<uint64>(c1[first]) *
                       static_cast<uint64>(c2[second]);
                 cur += tmp & kUInt64LowMask;
-                nxt += (tmp & kUInt64HighMask) >> 32;
+                nxt += tmp >> 32;
             }
             this->chunks_[shift] = static_cast<uint32>(cur & kUInt64LowMask);
-            cur = nxt + ((cur & kUInt64HighMask) >> 32);
+            cur = nxt + (cur >> 32);
         }
         if (cur && (this->count_ != N)) {
             this->chunks_[this->count_] = static_cast<uint32>(cur & kUInt64LowMask);
@@ -720,6 +702,9 @@ struct type_converter_efpt {
     }
 };
 
+// Voronoi coordinate type traits make it possible to extend algorithm
+// input coordinate range to any user provided integer and algorithm
+// output coordinate range to any ieee-754 like floating point type.
 template <typename T>
 struct voronoi_ctype_traits;
 
