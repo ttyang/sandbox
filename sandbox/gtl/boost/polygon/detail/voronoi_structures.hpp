@@ -305,11 +305,11 @@ namespace detail {
     public:
         ordered_queue() {}
 
-        bool empty() {
+        bool empty() const {
             return c_.empty();
         }
 
-        const T &top() {
+        const T &top() const {
             return *c_.top();
         }
 
@@ -415,7 +415,7 @@ namespace detail {
             circle_event_(NULL),
             edge_(new_edge) {}
 
-        Circle *circle_event() {
+        Circle *circle_event() const {
             return circle_event_;
         }
 
@@ -424,7 +424,7 @@ namespace detail {
             return *this;
         }
 
-        Edge *edge() {
+        Edge *edge() const {
             return edge_;
         }
 
