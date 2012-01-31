@@ -263,7 +263,7 @@ namespace polygon {
                  edge_type *edge = output->insert_new_edge(*it_first, *it_second).first;
 
                  // Insert a new bisector into the beach line.
-                 beach_line_.insert(
+                 beach_line_.insert(beach_line_.end(),
                      std::pair<key_type, value_type>(new_node, value_type(edge)));
 
                  // Update iterators.
@@ -301,14 +301,14 @@ namespace polygon {
                        last->is_segment() && last->point0() == site_event.point0())
                     ++last;
             }
+
+            // Find the node in the binary search tree with left arc
+            // lying above the new site point.
+            key_type new_key(*site_event_iterator_);
+            beach_line_iterator right_it = beach_line_.lower_bound(new_key);
+
             for (; site_event_iterator_ != last; ++site_event_iterator_) {
                 site_event = *site_event_iterator_;
-                // Create degenerate node.
-                key_type new_key(site_event);
-
-                // Find the node in the binary search tree with left arc
-                // lying above the new site point.
-                beach_line_iterator right_it = beach_line_.lower_bound(new_key);
                 beach_line_iterator left_it = right_it;
 
                 // Do further processing depending on the above node position.
@@ -336,7 +336,7 @@ namespace polygon {
                     const site_event_type &site_arc = right_it->first.left_site();
 
                     // Insert new nodes into the beach line. Update the output.
-                    insert_new_arc(site_arc, site_arc, site_event, right_it, output);
+                    left_it = insert_new_arc(site_arc, site_arc, site_event, right_it, output);
 
                     // If the site event is a segment, update its direction.
                     if (site_event.is_segment()) {
@@ -348,6 +348,7 @@ namespace polygon {
                     // a new bisector and the one on the right.
                     activate_circle_event(site_event, right_it->first.left_site(),
                                           right_it->first.right_site(), right_it);
+                    right_it = left_it;
                 } else {
                     // The above arc corresponds neither to the first,
                     // nor to the last site in the beach line.
@@ -376,6 +377,7 @@ namespace polygon {
                     }
                     activate_circle_event(site_event, site_arc2, site3,
                                           right_it);
+                    right_it = new_node_it;
                 }
             }
         }
@@ -483,8 +485,10 @@ namespace polygon {
                 end_points_.push(std::make_pair(site_event.point1(), position));
             }
 
-            return beach_line_.insert(position,
-                typename beach_line_type::value_type(new_left_node, value_type(edges.first)));
+            position = beach_line_.insert(position,
+                beach_line_type::value_type(new_left_node, value_type(edges.first)));
+
+            return position;
         }
 
         // Add a new circle event to the event queue.
