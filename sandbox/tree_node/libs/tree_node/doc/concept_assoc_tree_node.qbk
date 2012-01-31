@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -37,12 +37,28 @@ One new type is introduced.
     ]
 ]
 
-In addition, the requirements for the child iterator types are strengthened:
+In addition, the requirements for the iterator types are strengthened:
 
-  * The value type of `Node::child_iterator` must be
-    _std_pair_<Node::traits::key_type const&,Node::pointer>.
-  * The value type of `Node::const_child_iterator` must be
-    _std_pair_<Node::traits::key_type const&,Node::const_pointer>.
+  * The value type of `Node::iterator` must define a `first_type` type.
+  * The value type of `Node::iterator` must define a `first` member variable of
+    type `first_type`.
+  * Given an object `itr` of type `Node::iterator`, `itr->first` must be
+    convertible to `Node::traits::key_type const&`.
+  * The value type of `Node::iterator` must define a `second_type` type.
+  * The value type of `Node::iterator` must define a `second` member variable
+    of type `second_type`.
+  * Given an object `itr` of type `Node::iterator`, `itr->second` must be
+    convertible to `Node&`.
+  * The value type of `Node::const_iterator` must define a `first_type` type.
+  * The value type of `Node::const_iterator` must define a `first` member
+    variable of type `first_type`.
+  * Given an object `itr` of type `Node::const_iterator`, `itr->first` must be
+    convertible to `Node::traits::key_type const&`.
+  * The value type of `Node::const_iterator` must define a `second_type` type.
+  * The value type of `Node::const_iterator` must define a `second` member
+    variable of type `second_type`.
+  * Given an object `itr` of type `Node::const_iterator`, `itr->second` must be
+    convertible to `Node const&`.
 
 [endsect]
 
@@ -63,7 +79,7 @@ following expressions must be valid.
         [Child creation with data]
         [`node->add_child(key, data);`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be associated with the specified
             key in the range of children of the invoking node.  The node
@@ -78,7 +94,7 @@ following expressions must be valid.
             `Node::traits::data_type` must model the __Default_Constructible__
             concept.
         ]
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be associated with the specified
             key in the range of children of the invoking node.
@@ -89,7 +105,7 @@ following expressions must be valid.
         [Child copy creation]
         [`node->add_child_copy(key, const_node)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a deep copy of `const_node` to be associated
             with the specified key in the range of children of the invoking
@@ -101,11 +117,10 @@ following expressions must be valid.
         [Child search]
         [`const_node->find_child(key)`]
         []
-        [`Node::const_child_iterator`]
+        [`Node::const_iterator`]
         [
             Returns an iterator pointing to a child node associated with the
-            specified key, or `const_node->get_child_end()` if no such child
-            exists.
+            specified key, or `const_node->end()` if no such child exists.
         ]
         [Logarithmic]
     ]
@@ -113,10 +128,10 @@ following expressions must be valid.
         [Child search]
         [`node->find_child(key)`]
         []
-        [`Node::child_iterator`]
+        [`Node::iterator`]
         [
             Returns an iterator pointing to a child node associated with the
-            specified key, or `node->get_child_end()` if no such child exists.
+            specified key, or `node->end()` if no such child exists.
         ]
         [Logarithmic]
     ]
@@ -124,7 +139,7 @@ following expressions must be valid.
         [Child search range]
         [`const_node->find_children(key)`]
         []
-        [[^_std_pair_<Node::const_child_iterator,Node::const_child_iterator>]]
+        [[^_std_pair_<Node::const_iterator,Node::const_iterator>]]
         [
             Returns a pair `p` such that `[p.first, p.second)` is a range
             of all child nodes associated with the specified key.  If no such
@@ -136,7 +151,7 @@ following expressions must be valid.
         [Child search range]
         [`node->find_children(key)`]
         []
-        [[^_std_pair_<Node::child_iterator,Node::child_iterator>]]
+        [[^_std_pair_<Node::iterator,Node::iterator>]]
         [
             Returns a pair `p` such that `[p.first, p.second)` is a range
             of all child nodes associated with the specified key.  If no such
@@ -163,10 +178,8 @@ following expressions must be valid.
 
 [section Models]
 
-  * __raw_associative_node__
-  * __raw_associative_node_base__
-  * __simple_associative_node__
-  * __simple_associative_node_base__
+  * __associative_node__
+  * __associative_node_base__
 
 [endsect]
 

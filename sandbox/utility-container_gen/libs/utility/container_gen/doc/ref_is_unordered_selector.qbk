@@ -1,0 +1,30 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_unordered_selector `is_unordered_selector`]
+
+[section Synopsis]
+[reference__is_unordered_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the storage type to be returned by __container_gen__ is
+an instantiation of either __tr1_unordered_set__ or __tr1_unordered_multiset__,
+or if the storage type to be returned by __associative_container_gen__ is an
+instantiation of either __tr1_unordered_map__ or __tr1_unordered_multimap__,
+__mpl_false__ otherwise.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_is_unordered_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ is_unordered_selector]
+

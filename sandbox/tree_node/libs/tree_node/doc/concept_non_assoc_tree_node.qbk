@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -21,9 +21,8 @@ __Tree_Node__
 No additional types beyond those defined in the __Tree_Node__ concept; however,
 the requirements for the child iterator types are strengthened:
 
-  * The value type of `Node::child_iterator` must be `Node::pointer`.
-  * The value type of `Node::const_child_iterator` must be
-    `Node::const_pointer`.
+  * The value type of `Node::iterator` must be `Node&`.
+  * The value type of `Node::const_iterator` must be `Node const&`.
 
 [endsect]
 
@@ -33,12 +32,10 @@ None beyond those defined in the __Tree_Node__ concept.
 
 [section Models]
 
-  * __raw_binary_node__
-  * __raw_binary_node_base__
-  * __raw_node__
-  * __raw_node_base__
-  * __simple_node__
-  * __simple_node_base__
+  * __binary_node__
+  * __binary_node_base__
+  * __nary_node__
+  * __nary_node_base__
 
 [endsect]
 

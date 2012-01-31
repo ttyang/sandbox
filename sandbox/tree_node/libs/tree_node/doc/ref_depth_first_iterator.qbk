@@ -1,12 +1,12 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
     [@http://www.boost.org/LICENSE_1_0.txt])
 =============================================================================/]
 
-[section:depth_first_iterator `depth_first_iterator`]
+[section:depth_first_iterator `depth_first_iterator<Node>`]
 
 [section Synopsis]
 [reference__depth_first_iterator]
@@ -26,8 +26,7 @@ depth-first fashion, e.g. given the following tree representation:
 D   E   F   G
 ``
 
-If this iterator is a __Full_Tree_Node_Iterator__, then it will traverse the
-tree nodes in the following order:
+This iterator will traverse the tree nodes in the following order:
 
 ``
 A  pre_order_traversal
@@ -46,30 +45,12 @@ B  post_order_traversal
 A  post_order_traversal
 ``
 
-If this iterator is a __Tree_Node_Descendant_Iterator__, then it will traverse
-the tree nodes in the following order:
-
-``
-C  pre_order_traversal
-D  pre_order_traversal
-D  post_order_traversal
-E  pre_order_traversal
-E  post_order_traversal
-C  post_order_traversal
-B  pre_order_traversal
-F  pre_order_traversal
-F  post_order_traversal
-G  pre_order_traversal
-G  post_order_traversal
-B  post_order_traversal
-``
-
 The traversal state conversion operator of this iterator will yield each value
 in the column on the right at the appropriate iteration.
 
 This iterator is ideal for algorithms that need to perform both preprocessing
 and postprocessing of a tree node, e.g. the copy constructors of the
-__raw_node__ and __raw_associative_node__ implementations.
+__nary_node__ and __associative_node__ implementations.
 [endsect]
 
 [section:definition Where defined]
@@ -82,22 +63,12 @@ __raw_node__ and __raw_associative_node__ implementations.
 [table
     [[Parameter][Description][Requirements][Default]]
     [
-        [`NodePointer`]
-        [The type of a pointer to a tree node.]
+        [`Node`]
+        [The type of a tree node.]
         [
-            It must model the __Trivial_Iterator__ concept, and its value type
-            must model the __Tree_Node__ concept.
+            It must model the __Tree_Node__ concept, but it can be
+            `const`-qualified.
         ]
-        []
-    ]
-    [
-        [`MimicsChildIterator`]
-        [
-            The type that determines whether this `depth_first_iterator` will
-            iterate only through the descendants of a node or will also include
-            the node in its traversal.
-        ]
-        [It must model the __Boolean_Integral_Constant__ concept.]
         []
     ]
 ]
@@ -105,8 +76,7 @@ __raw_node__ and __raw_associative_node__ implementations.
 
 [section:model_of Model of]
 
-  * __Full_Tree_Node_Iterator__ if `MimicsChildIterator::value` is `false`
-  * __Tree_Node_Descendant_Iterator__ if `MimicsChildIterator::value` is `true`
+  * __Full_Tree_Node_Iterator__
   * __Default_Constructible__
   * __Copy_Constructible__
   * __Assignable__
@@ -123,7 +93,7 @@ None.
     [
         [Value type]
         [`value_type`]
-        [Defined in the __Tree_Node_Iterator__ concept.]
+        [Defined in the __Full_Tree_Node_Iterator__ concept.]
     ]
     [
         [Reference type]
@@ -151,15 +121,15 @@ None.
         [Defined in the __Default_Constructible__ concept.]
     ]
     [
-        [Constructor from im/mutable node]
-        [`depth_first_iterator(NodePointer const&);`]
-        [Defined in the __Tree_Node_Iterator__ concept.]
+        [Constructor from node]
+        [`depth_first_iterator(Node&);`]
+        [Defined in the __Full_Tree_Node_Iterator__ concept.]
     ]
     [
         [Conversion constructor]
         [``
-            template <typename NP, typename MCI>
-            depth_first_iterator(depth_first_iterator<NP,MCI> const&);
+            template <typename N>
+            depth_first_iterator(depth_first_iterator<N> const&);
         ``]
         [
             Constructs a `depth_first_iterator` object that will point to the
@@ -198,7 +168,7 @@ None.
     ]
     [
         [Traversal state conversion operator]
-        [`operator _traversal_state_() const;`]
+        [[^operator _traversal_state_() const;]]
         [
             Returns `pre_order_traversal` if this iterator has not yet examined
             the children of the current node, `post_order_traversal` if this
@@ -214,38 +184,15 @@ None.
     [[Name][Expression][Description]]
     [
         [Iterator creation]
-        [``
-            template <typename NodePointer>
-            depth_first_iterator<NodePointer,_mpl_false_>
-                make_depth_first_iterator(NodePointer const& node);
-        ``]
+        [[reference__make_depth_first_iterator]]
         [
             Constructs and returns a `depth_first_iterator` that will iterate
             through the specified node and its descendants.
         ]
     ]
     [
-        [Descendant iterator creation]
-        [``
-            template <typename NodePointer>
-            depth_first_iterator<NodePointer,_mpl_true_>
-                make_depth_first_descendant_iterator(NodePointer const& node);
-        ``]
-        [
-            Constructs and returns a `depth_first_iterator` that will iterate
-            through the descendants of the specified node.
-        ]
-    ]
-    [
         [Iteration]
-        [``
-            template <typename NodePointer, typename UnaryFunction>
-            void
-                depth_first_iterate(
-                    NodePointer const& node
-                  , UnaryFunction function
-                );
-        ``]
+        [[reference__depth_first_iterate]]
         [
             Iterates through the specified node and its descendants in
             depth-first fashion, passing each node pointer dereferenced to
@@ -253,47 +200,17 @@ None.
         ]
     ]
     [
-        [Descendant iteration]
-        [``
-            template <typename NodePointer, typename UnaryFunction>
-            void
-                depth_first_iterate_descendants(
-                    NodePointer const& node
-                  , UnaryFunction function
-                );
-        ``]
-        [
-            Iterates through the descendants of the specified node in
-            depth-first fashion, passing each element dereferenced to
-            the specified __Unary_Function__ object.
-        ]
-    ]
-    [
         [Equality]
-        [``
-            template <typename NP1, typename NP2, typename MCI1, typename MCI2>
-            typename _enable_if_<_mpl_equal_to_<MCI1,MCI2>,bool>::type
-                operator==(
-                    depth_first_iterator<NP1,MCI1> const&
-                  , depth_first_iterator<NP2,MCI2> const&
-                );
-        ``]
+        [[reference__depth_first_iterator__operator_equals]]
         [Defined by the __Input_Iterator__ concept.]
     ]
     [
         [Inequality]
-        [``
-            template <typename NP1, typename NP2, typename MCI1, typename MCI2>
-            typename _enable_if_<_mpl_equal_to_<MCI1,MCI2>,bool>::type
-                operator!=(
-                    depth_first_iterator<NP1,MCI1> const&
-                  , depth_first_iterator<NP2,MCI2> const&
-                );
-        ``]
+        [[reference__depth_first_iterator__operator_not_equal]]
         [Defined by the __Input_Iterator__ concept.]
     ]
 ]
-[endsect] [/ Non-members]
+[endsect]
 
 [endsect] [/ depth_first_iterator]
 

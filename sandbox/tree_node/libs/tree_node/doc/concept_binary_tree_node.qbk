@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -59,7 +59,7 @@ concept, the following expressions must be valid.
         [Left child creation with data]
         [`node->add_left_child(data)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be stored as the left child of
             the invoking node.  The node returned will store the specified
@@ -74,7 +74,7 @@ concept, the following expressions must be valid.
             `Node::traits::data_type` must model the __Default_Constructible__
             concept.
         ]
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be stored as the left child of
             the invoking node.
@@ -85,7 +85,7 @@ concept, the following expressions must be valid.
         [Left child copy creation]
         [`node->add_left_child_copy(const_node)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a deep copy of `const_node` to be stored as the
             left child of the invoking node.
@@ -96,7 +96,7 @@ concept, the following expressions must be valid.
         [Right child creation with data]
         [`node->add_right_child(data)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be stored as the right child of
             the invoking node.  The node returned will store the specified
@@ -111,7 +111,7 @@ concept, the following expressions must be valid.
             `Node::traits::data_type` must model the __Default_Constructible__
             concept.
         ]
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be stored as the right child of
             the invoking node.
@@ -122,7 +122,7 @@ concept, the following expressions must be valid.
         [Right child copy creation]
         [`node->add_right_child_copy(const_node)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a deep copy of `const_node` to be stored as the
             right child of the invoking node.
@@ -131,7 +131,7 @@ concept, the following expressions must be valid.
     ]
     [
         [Left child access]
-        [`const_node->get_left_child()`]
+        [`const_node->get_left_child_ptr()`]
         []
         [`Node::const_pointer`]
         [
@@ -142,7 +142,7 @@ concept, the following expressions must be valid.
     ]
     [
         [Left child access]
-        [`node->get_left_child()`]
+        [`node->get_left_child_ptr()`]
         []
         [`Node::pointer`]
         [
@@ -153,7 +153,7 @@ concept, the following expressions must be valid.
     ]
     [
         [Right child access]
-        [`const_node->get_right_child()`]
+        [`const_node->get_right_child_ptr()`]
         []
         [`Node::const_pointer`]
         [
@@ -164,7 +164,7 @@ concept, the following expressions must be valid.
     ]
     [
         [Right child access]
-        [`node->get_right_child()`]
+        [`node->get_right_child_ptr()`]
         []
         [`Node::pointer`]
         [
@@ -218,8 +218,8 @@ concept, the following expressions must be valid.
 
 [section Models]
 
-  * __raw_binary_node__
-  * __raw_binary_node_base__
+  * __binary_node__
+  * __binary_node_base__
 
 [endsect]
 

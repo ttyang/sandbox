@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -45,6 +45,7 @@ namespace boost { namespace tree_node {
         };
 #endif
 
+     public:  // Should be private, but conversion ctor won't work.
         ::std::deque<Node*> _queue;
         traversal_state     _state;
         //->

@@ -1,12 +1,12 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
     [@http://www.boost.org/LICENSE_1_0.txt])
 =============================================================================/]
 
-[section:post_order_iterator `post_order_iterator`]
+[section:post_order_iterator `post_order_iterator<Node>`]
 
 [section Synopsis]
 [reference__post_order_iterator]
@@ -26,18 +26,10 @@ post-order fashion, e.g. given the following tree representation:
 D   E   F   G
 ``
 
-If this iterator is a __Full_Tree_Node_Iterator__, then it will traverse the
-tree nodes in the following order:
+This iterator will traverse the tree nodes in the following order:
 
 ``
 D E C F G B A
-``
-
-If this iterator is a __Tree_Node_Descendant_Iterator__, then it will traverse
-the tree nodes in the following order:
-
-``
-D E C F G B
 ``
 [endsect]
 
@@ -51,22 +43,12 @@ D E C F G B
 [table
     [[Parameter][Description][Requirements][Default]]
     [
-        [`NodePointer`]
-        [The type of a pointer to a tree node.]
+        [`Node`]
+        [The type of a tree node.]
         [
-            It must model the __Trivial_Iterator__ concept, and its value type
-            must model the __Tree_Node__ concept.
+            It must model the __Tree_Node__ concept, but it can be
+            `const`-qualified.
         ]
-        []
-    ]
-    [
-        [`MimicsChildIterator`]
-        [
-            The type that determines whether this `post_order_iterator` will
-            iterate only through the descendants of a node or will also include
-            the node in its traversal.
-        ]
-        [It must model the __Boolean_Integral_Constant__ concept.]
         []
     ]
 ]
@@ -74,8 +56,7 @@ D E C F G B
 
 [section:model_of Model of]
 
-  * __Full_Tree_Node_Iterator__ if `MimicsChildIterator::value` is `false`
-  * __Tree_Node_Descendant_Iterator__ if `MimicsChildIterator::value` is `true`
+  * __Full_Tree_Node_Iterator__
   * __Default_Constructible__
   * __Copy_Constructible__
   * __Assignable__
@@ -92,7 +73,7 @@ None.
     [
         [Value type]
         [`value_type`]
-        [__Tree_Node_Iterator__]
+        [__Full_Tree_Node_Iterator__]
     ]
     [
         [Reference type]
@@ -120,15 +101,15 @@ None.
         [__Default_Constructible__]
     ]
     [
-        [Constructor from im/mutable node]
-        [`post_order_iterator(NodePointer const&);`]
-        [__Tree_Node_Iterator__]
+        [Constructor from node]
+        [`explicit post_order_iterator(Node&);`]
+        [__Full_Tree_Node_Iterator__]
     ]
     [
         [Conversion constructor]
         [``
-            template <typename NP, typename MCI>
-            post_order_iterator(post_order_iterator<NP,MCI> const&);
+            template <typename N>
+            post_order_iterator(post_order_iterator<N> const&);
         ``]
         [`post_order_iterator`]
     ]
@@ -164,7 +145,7 @@ None.
     ]
     [
         [Traversal state conversion operator]
-        [`operator _traversal_state_() const;`]
+        [[^operator _traversal_state_() const;]]
         [__Tree_Node_Iterator__]
     ]
 ]
@@ -172,7 +153,7 @@ None.
 
 [section:non_members Non-members]
 [table
-    [[Name][Expression][Description]]
+    [[Name][Definition][Description]]
     [
         [Iterator creation]
         [[reference__make_post_order_iterator]]
@@ -182,28 +163,11 @@ None.
         ]
     ]
     [
-        [Descendant iterator creation]
-        [[reference__make_post_order_descendant_iterator]]
-        [
-            Constructs and returns a `post_order_iterator` that will iterate
-            through the descendants of the specified node.
-        ]
-    ]
-    [
         [Iteration]
         [[reference__post_order_iterate]]
         [
             Iterates through the specified node and its descendants in
             post-order fashion, passing each node pointer dereferenced to
-            the specified __Unary_Function__ object.
-        ]
-    ]
-    [
-        [Descendant iteration]
-        [[reference__post_order_iterate_descendants]]
-        [
-            Iterates through the descendants of the specified node in
-            post-order fashion, passing each element dereferenced to
             the specified __Unary_Function__ object.
         ]
     ]
@@ -218,7 +182,7 @@ None.
         [Defined by the __Input_Iterator__ concept.]
     ]
 ]
-[endsect] [/ Non-members]
+[endsect]
 
 [endsect] [/ post_order_iterator]
 

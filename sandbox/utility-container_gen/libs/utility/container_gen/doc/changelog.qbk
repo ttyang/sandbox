@@ -1,0 +1,22 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Changelog]
+
+[heading From 0.1 to 0.2]
+
+  * Added `boost_vecS`, `stable_vecS`, `boost_dequeS`, `boost_listS`,
+    `boost_slistS`, `boost_setS`, `boost_mapS`, `boost_multisetS`,
+    `boost_multimapS`, `flat_setS`, `flat_mapS`, `flat_multisetS`, and
+    `flat_multimapS` selector types.
+  * Added __is_associative_selector__, __is_multiple_associative_selector__,
+    __is_unordered_selector__, and __has_stable_iterators_selector__
+    introspection metafunctions.
+
+[endsect] [/ Changelog]
+

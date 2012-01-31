@@ -1,0 +1,31 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_multiple_assoc_selector `is_multiple_associative_selector`]
+
+[section Synopsis]
+[reference__is_multiple_associative_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the storage type will model the
+__Multiple_Associative_Container__ concept, __mpl_false__ otherwise.
+
+Specialize this metafunction to return __mpl_true__ for your custom selector if
+and only if the storage type to be returned by __container_gen__ models the
+__Multiple_Associative_Container__ concept.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_is_multiple_assoc_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ is_multiple_associative_selector]
+

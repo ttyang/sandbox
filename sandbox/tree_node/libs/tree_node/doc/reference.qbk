@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -8,84 +8,83 @@
 
 [section Reference]
 
-[include ref_raw_binary_node.qbk]
-[include ref_raw_binary_node_base.qbk]
-[include ref_raw_binary_node_gen.qbk]
-[include ref_raw_node.qbk]
-[include ref_raw_node_base.qbk]
-[include ref_raw_node_gen.qbk]
-[include ref_simple_node.qbk]
-[include ref_simple_node_base.qbk]
-[include ref_simple_node_gen.qbk]
-[include ref_raw_associative_node.qbk]
-[include ref_raw_assoc_node_base.qbk]
-[include ref_raw_assoc_node_gen.qbk]
-[include ref_simple_associative_node.qbk]
-[include ref_simple_assoc_node_base.qbk]
-[include ref_simple_assoc_node_gen.qbk]
-[include ref_with_child_range.qbk]
-[include ref_with_child_range_base.qbk]
-[include ref_with_child_range_gen.qbk]
+[include ref_binary_node.qbk]
+[include ref_binary_node_base.qbk]
+[include ref_binary_node_gen.qbk]
+[include ref_nary_node.qbk]
+[include ref_nary_node_base.qbk]
+[include ref_nary_node_gen.qbk]
+[include ref_associative_node.qbk]
+[include ref_associative_node_base.qbk]
+[include ref_associative_node_gen.qbk]
 [include ref_with_depth.qbk]
 [include ref_with_depth_base.qbk]
 [include ref_with_depth_gen.qbk]
+[include ref_with_position.qbk]
+[include ref_with_position_base.qbk]
+[include ref_with_position_gen.qbk]
+[include ref_with_rb_flag.qbk]
+[include ref_with_rb_flag_base.qbk]
+[include ref_with_rb_flag_gen.qbk]
 [include ref_tree_node_base.qbk]
-[include ref_shared_tree_node_base.qbk]
 [include ref_breadth_first_iterator.qbk]
+[include ref_breadth_first_desc_iter.qbk]
 [include ref_pre_order_iterator.qbk]
+[include ref_pre_order_desc_iter.qbk]
 [include ref_post_order_iterator.qbk]
-[include ref_depth_first_iterator.qbk]
+[include ref_post_order_desc_iter.qbk]
 [include ref_in_order_iterator.qbk]
-[include ref_factory.qbk]
+[include ref_depth_first_iterator.qbk]
+[include ref_depth_first_desc_iter.qbk]
 [include ref_traversal_state.qbk]
 [include ref_dereference_iterator.qbk]
+[include ref_equal.qbk]
+[include ref_strictly_equal.qbk]
+[include ref_lexicographical_compare.qbk]
+[include ref_strict_lexicograph_comp.qbk]
 
 [heading Data Structures]
 
-  * __raw_binary_node__
-  * __raw_node__
-  * __simple_node__
-  * __raw_associative_node__
-  * __simple_associative_node__
+  * __binary_node__
+  * __nary_node__
+  * __associative_node__
 
 [heading Adaptor Types]
 
-  * __tree_node_with_child_range_access__
   * __tree_node_with_depth__
+  * __tree_node_with_position__
+  * __tree_node_with_red_black_flag__
 
 [heading Base Types]
 
-  * __raw_binary_node_base__
-  * __raw_node_base__
-  * __simple_node_base__
-  * __raw_associative_node_base__
-  * __simple_associative_node_base__
-  * __tree_node_with_child_range_access_base__
-  * __tree_node_with_depth_base__
   * __tree_node_base__
-  * __shared_tree_node_base__
+  * __binary_node_base__
+  * __nary_node_base__
+  * __associative_node_base__
+  * __tree_node_with_depth_base__
+  * __tree_node_with_position_base__
+  * __tree_node_with_red_black_flag_base__
 
 [heading Type Generators]
 
-  * __raw_binary_node_gen__
-  * __raw_node_gen__
-  * __simple_node_gen__
-  * __raw_associative_node_gen__
-  * __simple_associative_node_gen__
-  * __tree_node_with_child_range_access_gen__
+  * __binary_node_gen__
+  * __nary_node_gen__
+  * __associative_node_gen__
   * __tree_node_with_depth_gen__
+  * __tree_node_with_position_gen__
+  * __tree_node_with_red_black_flag_gen__
 
 [heading Iterator Types]
 
   * __breadth_first_iterator__
+  * __breadth_first_descendant_iterator__
   * __pre_order_iterator__
+  * __pre_order_descendant_iterator__
   * __post_order_iterator__
-  * __depth_first_iterator__
+  * __post_order_descendant_iterator__
   * __in_order_iterator__
-
-[heading Facades]
-
-  * __tree_node_factory__
+  * __depth_first_iterator__
+  * __depth_first_descendant_iterator__
 
 [heading Enum Types]
 
@@ -94,6 +93,10 @@
 [heading Functions]
 
   * __dereference_iterator__
+  * __tree_node_equal__
+  * __tree_node_strictly_equal__
+  * __tree_node_lexicographical_compare__
+  * __tree_node_strict_lexicographical_compare__
 
 [endsect] [/ Reference]
 

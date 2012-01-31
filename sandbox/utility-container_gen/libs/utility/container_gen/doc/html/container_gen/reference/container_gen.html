@@ -4,16 +4,16 @@
 <title>container_gen</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.2">
 <link rel="up" href="../reference.html" title="Reference">
 <link rel="prev" href="../reference.html" title="Reference">
-<link rel="next" href="ptr_container_gen.html" title="ptr_container_gen">
+<link rel="next" href="associative_container_gen.html" title="associative_container_gen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ptr_container_gen.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="associative_container_gen.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -55,21 +55,33 @@
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
 
-<span class="preprocessor">#if</span> <span class="special">!</span><span class="identifier">defined</span> <span class="identifier">BOOST_NO_SLIST</span>
-    <span class="keyword">struct</span> <span class="identifier">slistS</span> <span class="special">{</span> <span class="special">};</span>
-<span class="preprocessor">#endif</span>
-
     <span class="keyword">struct</span> <span class="identifier">vecS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">dequeS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">listS</span> <span class="special">{</span> <span class="special">};</span>
+<span class="preprocessor">#if</span> <span class="special">!</span><span class="identifier">defined</span> <span class="identifier">BOOST_NO_SLIST</span>
+    <span class="keyword">struct</span> <span class="identifier">slistS</span> <span class="special">{</span> <span class="special">};</span>
+<span class="preprocessor">#endif</span>
     <span class="keyword">struct</span> <span class="identifier">setS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">mapS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">multisetS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">multimapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_vecS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">stable_vecS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_dequeS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_listS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_slistS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_setS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_mapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_multisetS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">boost_multimapS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">hash_setS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">hash_mapS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">hash_multisetS</span> <span class="special">{</span> <span class="special">};</span>
     <span class="keyword">struct</span> <span class="identifier">hash_multimapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_setS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_mapS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_multisetS</span> <span class="special">{</span> <span class="special">};</span>
+    <span class="keyword">struct</span> <span class="identifier">flat_multimapS</span> <span class="special">{</span> <span class="special">};</span>
 <span class="special">}</span>  <span class="comment">// namespace boost
 </span></pre>
 <p>
@@ -133,25 +145,6 @@
 </pre>
 <p>
         </p>
-<div class="important"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../../images/important.png"></td>
-<th align="left">Important</th>
-</tr>
-<tr><td align="left" valign="top">
-<p>
-            This last capability depends on <a href="http://svn.boost.org/svn/boost/sandbox/type_traits/libs/type_traits/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.TypeTraitsOperators</strong></span></a>, which has been
-            recently accepted into Boost but is currently not part of an official
-            release. For now, you must perform a Subversion checkout from the <a href="http://svn.boost.org/" target="_top">SVN Trac</a>, add the <code class="computeroutput"><span class="identifier">type_traits</span></code>
-            module to your list of header directories, and <code class="computeroutput"><span class="preprocessor">#define</span>
-            <span class="identifier">BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS</span></code>
-            in order to obtain this capability.
-          </p>
-<p>
-            If you do not need this capability, then you do not need <a href="http://svn.boost.org/svn/boost/sandbox/type_traits/libs/type_traits/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.TypeTraitsOperators</strong></span></a>.
-          </p>
-</td></tr>
-</table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -169,7 +162,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 1997 -2011 Andrew Lumsdaine, Lie-Quan Lee, Thomas Claveirole,
+<td align="right"><div class="copyright-footer">Copyright &#169; 1997 -2012 Andrew Lumsdaine, Lie-Quan Lee, Thomas Claveirole,
       Jeremy G. Siek, Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
@@ -178,7 +171,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="ptr_container_gen.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="../reference.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="associative_container_gen.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

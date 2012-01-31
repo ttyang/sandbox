@@ -4,7 +4,7 @@
 <title>Tree Node Iterator</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="type_generator.html" title="Type Generator">
 <link rel="next" href="full_tree_node_iterator.html" title="Full Tree Node Iterator">
@@ -59,11 +59,7 @@
             </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">node</span></code></span></dt>
 <dd><p>
-              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>.
-            </p></dd>
-<dt><span class="term"><code class="computeroutput"><span class="identifier">const_node</span></code></span></dt>
-<dd><p>
-              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span></code>.
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">&amp;</span></code>.
             </p></dd>
 </dl>
 </div>
@@ -73,8 +69,7 @@
         Types</a>
 </h4></div></div></div>
 <p>
-          No additional types beyond those defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept; however, the requirements
-          for the value type are strengthened: it must model the <a href="http://www.sgi.com/tech/stl/trivial.html" target="_top"><span class="bold"><strong>Trivial Iterator</strong></span></a> concept.
+          No additional types beyond those defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
         </p>
 </div>
 <div class="section">
@@ -155,7 +150,7 @@
 <tr>
 <td>
                   <p>
-                    Constructor from mutable node
+                    Constructor from node
                   </p>
                 </td>
 <td>
@@ -164,35 +159,6 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Iterator</span><span class="special">(</span><span class="identifier">node</span><span class="special">)</span>
 <span class="identifier">Iterator</span> <span class="identifier">itr</span><span class="special">(</span><span class="identifier">node</span><span class="special">)</span>
-</pre>
-<p>
-                  </p>
-                </td>
-<td>
-                </td>
-<td>
-                  <p>
-                    Refinement-specific.
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Amortized constant
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Constructor from immutable node
-                  </p>
-                </td>
-<td>
-                  <p>
-                    
-</p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Iterator</span><span class="special">(</span><span class="identifier">const_node</span><span class="special">)</span>
-<span class="identifier">Iterator</span> <span class="identifier">itr</span><span class="special">(</span><span class="identifier">const_node</span><span class="special">)</span>
 </pre>
 <p>
                   </p>
@@ -260,7 +226,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +14,7 @@
 typedef boost::tree_node::associative_node<
             char const*
           , default_unconstructible_example_type
-          , boost::multimapS
+          , boost::boost_multimapS
         >
         DNode;
 typedef boost::tree_node::with_depth<
@@ -92,6 +92,11 @@ int main()
       , show_key_and_number<char const*,DNode>
       , show_key_and_number_tree()
     );
+
+    {
+        DNode d_copy(d_root);
+        BOOST_ASSERT((d_copy == d_root) && "Clones not equal.");
+    }
 
     {
         DNode::iterator d_child_itr = d_root.find_child(

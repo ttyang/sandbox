@@ -4,7 +4,7 @@
 <title>Full Tree Node Iterator</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="tree_node_iterator.html" title="Tree Node Iterator">
 <link rel="next" href="tree_node_desc_iterator.html" title="Tree Node Descendant Iterator">
@@ -53,15 +53,11 @@
             </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">Node</span></code></span></dt>
 <dd><p>
-              A type that models the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+              The value type of <code class="computeroutput"><span class="identifier">Iterator</span></code>.
             </p></dd>
 <dt><span class="term"><code class="computeroutput"><span class="identifier">node</span></code></span></dt>
 <dd><p>
-              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>.
-            </p></dd>
-<dt><span class="term"><code class="computeroutput"><span class="identifier">const_node</span></code></span></dt>
-<dd><p>
-              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span></code>.
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">&amp;</span></code>.
             </p></dd>
 </dl>
 </div>
@@ -72,8 +68,8 @@
 </h4></div></div></div>
 <p>
           No additional types beyond those defined in the <a class="link" href="tree_node_iterator.html" title="Tree Node Iterator"><span class="bold"><strong>Tree Node Iterator</strong></span></a> concept; however, the
-          requirements for the value type are strengthened: its unqualified value
-          type, in turn, must model the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+          requirements for the value type are strengthened: it must model the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a>
+          concept.
         </p>
 </div>
 <div class="section">
@@ -115,11 +111,10 @@
                   </p>
                 </th>
 </tr></thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>
                   <p>
-                    Constructor from mutable node
+                    Constructor from node
                   </p>
                 </td>
 <td>
@@ -140,55 +135,24 @@
                     node and its descendants.
                   </p>
                 </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Constructor from immutable node
-                  </p>
-                </td>
-<td>
-                  <p>
-                    
-</p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Iterator</span><span class="special">(</span><span class="identifier">const_node</span><span class="special">)</span>
-<span class="identifier">Iterator</span> <span class="identifier">itr</span><span class="special">(</span><span class="identifier">const_node</span><span class="special">)</span>
-</pre>
-<p>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    The value type of <code class="computeroutput"><span class="identifier">Iterator</span><span class="special">::</span><span class="identifier">value_type</span></code>
-                    must be <code class="computeroutput"><span class="keyword">const</span></code>-qualified.
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Constructs an iterator that will iterate through the specified
-                    node and its descendants.
-                  </p>
-                </td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.concepts.full_tree_node_iterator.models"></a><a class="link" href="full_tree_node_iterator.html#tree_node.concepts.full_tree_node_iterator.models" title="Models">Models</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <a class="link" href="../reference/breadth_first_iterator.html" title="breadth_first_iterator"><code class="computeroutput"><span class="identifier">make_breadth_first_iterator</span><span class="special">()</span></code></a><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <a class="link" href="../reference/pre_order_iterator.html" title="pre_order_iterator"><code class="computeroutput"><span class="identifier">make_pre_order_iterator</span><span class="special">()</span></code></a><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <a class="link" href="../reference/post_order_iterator.html" title="post_order_iterator"><code class="computeroutput"><span class="identifier">make_post_order_iterator</span><span class="special">()</span></code></a><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <a class="link" href="../reference/depth_first_iterator.html" title="depth_first_iterator"><code class="computeroutput"><span class="identifier">make_depth_first_iterator</span><span class="special">()</span></code></a><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <a class="link" href="../reference/in_order_iterator.html" title="in_order_iterator"><code class="computeroutput"><span class="identifier">make_in_order_forward_iterator</span><span class="special">()</span></code></a><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">The</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <a class="link" href="../reference/in_order_iterator.html" title="in_order_iterator"><code class="computeroutput"><span class="identifier">make_in_order_reverse_iterator</span><span class="special">()</span></code></a><span class="special">.</span>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/breadth_first_iterator.html" title="breadth_first_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">breadth_first_iterator</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/pre_order_iterator.html" title="pre_order_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">pre_order_iterator</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/post_order_iterator.html" title="post_order_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">post_order_iterator</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/in_order_iterator.html" title="in_order_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">in_order_iterator</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/depth_first_iterator.html" title="depth_first_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">depth_first_iterator</span></code></a>
 </pre>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

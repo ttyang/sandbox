@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -50,6 +50,7 @@ namespace boost { namespace tree_node {
         };
 #endif
 
+     public:  // Should be private, but conversion ctor won't work.
         ::std::deque<Node*>          _node_stack;
         ::std::deque<child_iterator> _itr_stack;
         Node*                        _current_node;
@@ -121,14 +122,12 @@ namespace boost { namespace tree_node {
     template <typename N>
     pre_order_descendant_iterator<Node>::pre_order_descendant_iterator(
         pre_order_descendant_iterator<N> const& other
-//<-
 #ifndef BOOST_NO_SFINAE
       , typename ::boost::enable_if<
             ::std::tr1::is_convertible<N,Node>
           , enabler
         >::type
 #endif
-//->
     ) : super_t(other.base())
       , _node_stack(other._node_stack.begin(), other._node_stack.end())
       , _itr_stack(other._itr_stack.begin(), other._itr_stack.end())
@@ -204,7 +203,7 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-//[reference__pre_order_iterator__operator_equals
+//[reference__pre_order_descendant_iterator__operator_equals
 namespace boost { namespace tree_node {
 
     template <typename Node1, typename Node2>
@@ -235,7 +234,7 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-//[reference__pre_order_iterator__operator_not_equal
+//[reference__pre_order_descendant_iterator__operator_not_equal
 namespace boost { namespace tree_node {
 
     template <typename Node1, typename Node2>

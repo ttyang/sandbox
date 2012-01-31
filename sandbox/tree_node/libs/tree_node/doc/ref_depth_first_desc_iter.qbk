@@ -1,0 +1,223 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:depth_first_desc_iter `depth_first_descendant_iterator<Node>`]
+
+[section Synopsis]
+[reference__depth_first_descendant_iterator]
+[endsect]
+
+[section Description]
+This iterator traverses the specified root node and all its descendants in
+depth-first fashion, e.g. given the following tree representation:
+
+``
+      A
+      |
+  C---+---B
+  |       |
++-+-+   +-+-+
+|   |   |   |
+D   E   F   G
+``
+
+This iterator will traverse the tree nodes in the following order:
+
+``
+C  pre_order_traversal
+D  pre_order_traversal
+D  post_order_traversal
+E  pre_order_traversal
+E  post_order_traversal
+C  post_order_traversal
+B  pre_order_traversal
+F  pre_order_traversal
+F  post_order_traversal
+G  pre_order_traversal
+G  post_order_traversal
+B  post_order_traversal
+``
+
+The traversal state conversion operator of this iterator will yield each value
+in the column on the right at the appropriate iteration.
+
+This iterator is ideal for algorithms that need to perform both preprocessing
+and postprocessing of a tree node, e.g. the copy constructors of the
+__binary_node__, __nary_node__, and __associative_node__ implementations.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_depth_first_desc_iterator_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Node`]
+        [The type of a tree node.]
+        [
+            It must model the __Tree_Node__ concept, but it can be
+            `const`-qualified.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Tree_Node_Descendant_Iterator__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Value type]
+        [`value_type`]
+        [Defined in the __Tree_Node_Descendant_Iterator__ concept.]
+    ]
+    [
+        [Reference type]
+        [`reference`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Pointer type]
+        [`pointer`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Distance type]
+        [`difference_type`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Iterator category]
+        [`iterator_category`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Default constructor]
+        [`depth_first_descendant_iterator();`]
+        [Defined in the __Default_Constructible__ concept.]
+    ]
+    [
+        [Constructor from node]
+        [`depth_first_descendant_iterator(Node&);`]
+        [Defined in the __Tree_Node_Descendant_Iterator__ concept.]
+    ]
+    [
+        [Conversion constructor]
+        [``
+            template <typename N>
+            depth_first_descendant_iterator(
+                depth_first_descendant_iterator<N> const&
+            );
+        ``]
+        [
+            Constructs a `depth_first_descendant_iterator` object that will
+            point to the same element that the specified iterator points to.
+        ]
+    ]
+    [
+        [Copy constructor]
+        [``
+            depth_first_descendant_iterator(
+                depth_first_descendant_iterator const&
+            );
+        ``]
+        [Defined in the __Copy_Constructible__ concept.]
+    ]
+    [
+        [Assignment operator]
+        [``
+            depth_first_descendant_iterator&
+                operator=(depth_first_descendant_iterator const&);
+        ``]
+        [Defined in the __Assignable__ concept.]
+    ]
+    [
+        [Dereference operator]
+        [`reference operator*() const;`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Indirection operator]
+        [`pointer operator->() const;`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Pre-increment operator]
+        [`depth_first_descendant_iterator& operator++();`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Post-increment operator]
+        [`depth_first_descendant_iterator operator++(int);`]
+        [Defined in the __Forward_Iterator__ concept.]
+    ]
+    [
+        [Traversal state conversion operator]
+        [[^operator _traversal_state_() const;]]
+        [
+            Returns `pre_order_traversal` if this iterator has not yet examined
+            the children of the current node, `post_order_traversal` if this
+            iterator has examined all of the children of the current node, or
+            `no_traversal` if this iterator is not dereferenceable.
+        ]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Definition][Description]]
+    [
+        [Iterator creation]
+        [[reference__make_depth_first_descendant_iterator]]
+        [
+            Constructs and returns a `depth_first_descendant_iterator` that
+            will iterate through the descendants of the specified node.
+        ]
+    ]
+    [
+        [Iteration]
+        [[reference__depth_first_iterate_descendants]]
+        [
+            Iterates through the descendants of the specified node in
+            depth-first fashion, passing each element dereferenced to
+            the specified __Unary_Function__ object.
+        ]
+    ]
+    [
+        [Equality]
+        [[reference__depth_first_descendant_iterator__operator_equals]]
+        [Defined by the __Input_Iterator__ concept.]
+    ]
+    [
+        [Inequality]
+        [[reference__depth_first_descendant_iterator__operator_not_equal]]
+        [Defined by the __Input_Iterator__ concept.]
+    ]
+]
+[endsect]
+
+[endsect] [/ depth_first_descendant_iterator]
+

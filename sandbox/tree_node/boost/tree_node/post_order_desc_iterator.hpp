@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -50,6 +50,7 @@ namespace boost { namespace tree_node {
         };
 #endif
 
+     public:  // Should be private, but conversion ctor won't work.
         std::deque<child_iterator> _stack;
         traversal_state            _state;
         //->
@@ -192,7 +193,7 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-//[reference__post_order_iterator__operator_equals
+//[reference__post_order_descendant_iterator__operator_equals
 namespace boost { namespace tree_node {
 
     template <typename Node1, typename Node2>
@@ -223,7 +224,7 @@ namespace boost { namespace tree_node {
 }}  // namespace boost::tree_node
 //]
 
-//[reference__post_order_iterator__operator_not_equal
+//[reference__post_order_descendant_iterator__operator_not_equal
 namespace boost { namespace tree_node {
 
     template <typename Node1, typename Node2>

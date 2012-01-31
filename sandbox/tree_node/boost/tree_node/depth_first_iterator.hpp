@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -47,13 +47,14 @@ namespace boost { namespace tree_node {
         };
 #endif
 
+     public:  // Should be private, but conversion ctor won't work.
         ::std::deque<Node*>          _node_stack;
         ::std::deque<child_iterator> _itr_stack;
         child_iterator               _current_itr;
         traversal_state              _state;
+        //->
 
      public:
-        //->
         depth_first_iterator();
 
         explicit depth_first_iterator(Node& node);
@@ -223,7 +224,7 @@ namespace boost { namespace tree_node {
     {
         if (lhs._state == rhs._state)
         {
-            return lhs._state ? (*lhs == *rhs) : !rhs._state;
+            return lhs._state ? (lhs.base() == rhs.base()) : !rhs._state;
         }
         else
         {

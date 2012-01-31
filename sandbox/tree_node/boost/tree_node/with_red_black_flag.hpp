@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -11,7 +11,6 @@
 #include <boost/mpl/eval_if.hpp>
 #include <boost/move/move.hpp>
 
-//[reference__with_red_black_flag_base
 namespace boost { namespace tree_node {
 
     template <
@@ -21,15 +20,17 @@ namespace boost { namespace tree_node {
       , typename T2
     >
     class with_red_black_flag_base
-      : public ::boost::mpl::eval_if<
+      : public
+        //[reference__with_red_black_flag_base__bases
+        ::boost::mpl::eval_if<
             ::std::tr1::is_void<T2>
           , ::boost::mpl::apply_wrap2<BaseGenerator,Derived,T1>
           , ::boost::mpl::apply_wrap3<BaseGenerator,Derived,T1,T2>
         >::type
+        //]
     {
-        //<-
         BOOST_COPYABLE_AND_MOVABLE(with_red_black_flag_base);
-        //->
+
         typedef typename ::boost::mpl::eval_if<
                     ::std::tr1::is_void<T2>
                   , ::boost::mpl::apply_wrap2<BaseGenerator,Derived,T1>
@@ -49,32 +50,19 @@ namespace boost { namespace tree_node {
         typedef typename super_t::const_iterator
                 const_iterator;
 
-        //<-
      private:
         bool _is_red;
 
      public:
-        //->
+        //[reference__with_red_black_flag_base__default_ctor
         with_red_black_flag_base();
+        //]
 
+        //[reference__with_red_black_flag_base__data_ctor
         explicit with_red_black_flag_base(
             typename traits::data_type const& data
         );
-
-//<-
-#if 0
-//->
-        with_red_black_flag_base(with_red_black_flag_base const& copy);
-
-        with_red_black_flag_base(with_red_black_flag_base&& source);
-
-        with_red_black_flag_base&
-            operator=(with_red_black_flag_base const& copy);
-
-        with_red_black_flag_base&
-            operator=(with_red_black_flag_base&& source);
-//<-
-#endif
+        //]
 
         with_red_black_flag_base(
             BOOST_RV_REF(with_red_black_flag_base) source
@@ -85,16 +73,20 @@ namespace boost { namespace tree_node {
 
         with_red_black_flag_base&
             operator=(BOOST_RV_REF(with_red_black_flag_base) source);
-//->
 
+        //[reference__with_red_black_flag_base__is_red
         bool is_red() const;
+        //]
 
+        //[reference__with_red_black_flag_base__is_black
         bool is_black() const;
+        //]
 
+        //[reference__with_red_black_flag_base__set_red_flag
         void set_red_flag(bool flag);
+        //]
     };
 
-    //<-
     template <
         typename Derived
       , typename BaseGenerator
@@ -225,21 +217,21 @@ namespace boost { namespace tree_node {
     {
         _is_red = flag;
     }
-    //->
 }}  // namespace boost::tree_node
-//]
 
-//[reference__with_red_black_flag
 namespace boost { namespace tree_node {
 
     template <typename BaseGenerator, typename T1, typename T2 = void>
     class with_red_black_flag
-      : public with_red_black_flag_base<
+      : public
+        //[reference__with_red_black_flag__bases
+        with_red_black_flag_base<
             with_red_black_flag<BaseGenerator,T1,T2>
           , BaseGenerator
           , T1
           , T2
         >
+        //]
     {
         typedef with_red_black_flag_base<
                     with_red_black_flag
@@ -261,22 +253,13 @@ namespace boost { namespace tree_node {
         typedef typename super_t::const_iterator
                 const_iterator;
 
+        //[reference__with_red_black_flag__default_ctor
         with_red_black_flag();
+        //]
 
+        //[reference__with_red_black_flag__data_ctor
         explicit with_red_black_flag(typename traits::data_type const& data);
-
-//<-
-#if 0
-//->
-        with_red_black_flag(with_red_black_flag const& copy);
-
-        with_red_black_flag(with_red_black_flag&& source);
-
-        with_red_black_flag& operator=(with_red_black_flag const& copy);
-
-        with_red_black_flag& operator=(with_red_black_flag&& source);
-//<-
-#endif
+        //]
 
         with_red_black_flag(BOOST_RV_REF(with_red_black_flag) source);
 
@@ -285,10 +268,8 @@ namespace boost { namespace tree_node {
 
         with_red_black_flag&
             operator=(BOOST_RV_REF(with_red_black_flag) source);
-//->
     };
 
-    //<-
     template <typename BaseGenerator, typename T1, typename T2>
     with_red_black_flag<BaseGenerator,T1,T2>::with_red_black_flag() : super_t()
     {
@@ -327,9 +308,7 @@ namespace boost { namespace tree_node {
         super_t::operator=(::boost::move(static_cast<super_t&>(source)));
         return *this;
     }
-    //->
 }}  // namespace boost::tree_node
-//]
 
 //[reference__with_red_black_flag_gen
 namespace boost { namespace tree_node {

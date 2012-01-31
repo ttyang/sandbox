@@ -1,13 +1,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>with_depth_base</title>
+<title>with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="with_depth.html" title="with_depth">
-<link rel="next" href="with_depth_gen.html" title="with_depth_gen">
+<link rel="prev" href="with_depth.html" title="with_depth&lt;BaseGenerator,T1,T2,Depth&gt;">
+<link rel="next" href="with_depth_gen.html" title="with_depth_gen&lt;BaseGenerator&gt;">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
@@ -17,80 +17,19 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="tree_node.reference.with_depth_base"></a><a class="link" href="with_depth_base.html" title="with_depth_base"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a>
+<a name="tree_node.reference.with_depth_base"></a><a class="link" href="with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth_base</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">,</span><span class="identifier">Depth</span><span class="special">&gt;</span></code></a>
 </h3></div></div></div>
-<div class="section">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="tree_node.reference.with_depth_base.synopsis"></a><a class="link" href="with_depth_base.html#tree_node.reference.with_depth_base.synopsis" title="Synopsis">Synopsis</a>
-</h4></div></div></div>
-<p>
-          
-</p>
-<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
-
-    <span class="keyword">template</span> <span class="special">&lt;</span>
-        <span class="keyword">typename</span> <span class="identifier">Derived</span>
-      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">BaseGenerator</span>
-      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span>
-      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span>
-    <span class="special">&gt;</span>
-    <span class="keyword">class</span> <span class="identifier">with_depth_base</span>
-      <span class="special">:</span> <span class="keyword">public</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">eval_if</span><span class="special">&lt;</span>
-            <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_void</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">&gt;</span>
-          <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap2</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">T1</span><span class="special">&gt;</span>
-          <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap3</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span>
-        <span class="special">&gt;::</span><span class="identifier">type</span>
-    <span class="special">{</span>
-        <span class="keyword">friend</span> <span class="keyword">struct</span> <span class="identifier">tree_node_base</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&gt;;</span>
-        <span class="keyword">friend</span> <span class="keyword">struct</span> <span class="identifier">shared_tree_node_base</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&gt;;</span>
-
-        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">eval_if</span><span class="special">&lt;</span>
-                    <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_void</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">&gt;</span>
-                  <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap2</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">T1</span><span class="special">&gt;</span>
-                  <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap3</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span>
-                <span class="special">&gt;::</span><span class="identifier">type</span>
-                <span class="identifier">super_t</span><span class="special">;</span>
-
-     <span class="keyword">public</span><span class="special">:</span>
-        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">traits</span>
-                <span class="identifier">traits</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">pointer</span>
-                <span class="identifier">pointer</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_pointer</span>
-                <span class="identifier">const_pointer</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">child_iterator</span>
-                <span class="identifier">child_iterator</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">super_t</span><span class="special">::</span><span class="identifier">const_child_iterator</span>
-                <span class="identifier">const_child_iterator</span><span class="special">;</span>
-
-
-     <span class="keyword">protected</span><span class="special">:</span>
-        <span class="identifier">with_depth_base</span><span class="special">();</span>
-
-        <span class="keyword">explicit</span> <span class="identifier">with_depth_base</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
-
-
-     <span class="keyword">public</span><span class="special">:</span>
-        <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">get_depth</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
-
-    <span class="special">};</span>
-
-<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
-</span></pre>
-<p>
-        </p>
-</div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.reference.with_depth_base.description"></a><a class="link" href="with_depth_base.html#tree_node.reference.with_depth_base.description" title="Description">Description</a>
 </h4></div></div></div>
 <p>
-          The <a class="link" href="with_depth.html" title="with_depth"><code class="computeroutput"><span class="identifier">with_depth</span></code></a>
+          The <a class="link" href="with_depth.html" title="with_depth&lt;BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth</span></code></a>
           class template inherits its functionality from this class template. They
-          differ only with regard to template parameters: the <a class="link" href="with_depth.html" title="with_depth"><code class="computeroutput"><span class="identifier">with_depth</span></code></a> class template is meant
+          differ only with regard to template parameters: the <a class="link" href="with_depth.html" title="with_depth&lt;BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth</span></code></a> class template is meant
           to be used directly as a data structure, while <code class="computeroutput"><span class="identifier">with_depth_base</span></code>
           is more suitable as a base class template from which other <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> adaptor class templates can derive
-          via the <a class="link" href="with_depth_gen.html" title="with_depth_gen"><code class="computeroutput"><span class="identifier">with_depth_gen</span></code></a> <a class="link" href="../concepts/type_generator.html" title="Type Generator"><span class="bold"><strong>Type Generator</strong></span></a>.
+          via the <a class="link" href="with_depth_gen.html" title="with_depth_gen&lt;BaseGenerator&gt;"><code class="computeroutput"><span class="identifier">with_depth_gen</span></code></a> <a class="link" href="../concepts/type_generator.html" title="Type Generator"><span class="bold"><strong>Type Generator</strong></span></a>.
         </p>
 </div>
 <div class="section">
@@ -187,7 +126,8 @@
 <td>
                   <p>
                     The key type if <code class="computeroutput"><span class="identifier">T2</span></code>
-                    is specified; the data type otherwise.
+                    is not <code class="computeroutput"><span class="keyword">void</span></code>; the
+                    data type otherwise.
                   </p>
                 </td>
 <td>
@@ -203,15 +143,29 @@
                 </td>
 <td>
                   <p>
-                    The data type if specified; ignored otherwise.
+                    The data type if not <code class="computeroutput"><span class="keyword">void</span></code>;
+                    ignored otherwise.
                   </p>
                 </td>
 <td>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Depth</span></code>
+                  </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="keyword">void</span></code>
+                    The depth type.
                   </p>
+                </td>
+<td>
+                </td>
+<td>
                 </td>
 </tr>
 </tbody>
@@ -222,7 +176,7 @@
 <a name="tree_node.reference.with_depth_base.model_of"></a><a class="link" href="with_depth_base.html#tree_node.reference.with_depth_base.model_of" title="Model of">Model
         of</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T2</span><span class="error">`</span> <span class="identifier">is</span> <span class="identifier">specified</span><span class="special">;</span>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T2</span><span class="error">`</span> <span class="identifier">is</span> <span class="keyword">not</span> <span class="error">`</span><span class="keyword">void</span><span class="error">`</span><span class="special">;</span>
   <a class="link" href="../concepts/non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a> <span class="identifier">otherwise</span>
 <span class="special">*</span> <a class="link" href="../concepts/base_tree_node.html" title="Base Tree Node"><span class="bold"><strong>Base Tree Node</strong></span></a>
 <span class="special">*</span> <span class="identifier">any</span> <span class="identifier">other</span> <span class="identifier">concept</span> <span class="identifier">that</span> <span class="identifier">the</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">BaseGenerator</span><span class="error">`</span> <span class="identifier">models</span>
@@ -234,18 +188,27 @@
         Base Classes</a>
 </h4></div></div></div>
 <p>
-          <code class="literal"><a href="http://www.boost.org/libs/mpl/doc/refmanual/apply-wrap.html" target="_top">boost::mpl::apply_wrap3</a>&lt;BaseGenerator,Derived,T1,T2&gt;::type</code>
-          if <code class="computeroutput"><span class="identifier">T2</span></code> is specified; otherwise
-          <code class="literal"><a href="http://www.boost.org/libs/mpl/doc/refmanual/apply-wrap.html" target="_top">boost::mpl::apply_wrap2</a>&lt;BaseGenerator,Derived,T1&gt;::type</code>
+          
+</p>
+<pre class="programlisting"><span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">eval_if</span><span class="special">&lt;</span>
+    <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">is_void</span><span class="special">&lt;</span><span class="identifier">T2</span><span class="special">&gt;</span>
+  <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap2</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">T1</span><span class="special">&gt;</span>
+  <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">apply_wrap3</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span>
+<span class="special">&gt;::</span><span class="identifier">type</span>
+</pre>
+<p>
         </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.reference.with_depth_base.members"></a><a class="link" href="with_depth_base.html#tree_node.reference.with_depth_base.members" title="Members">Members</a>
 </h4></div></div></div>
+<p>
+          In addition to those inherited from the return type of <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>,
+          the following members are defined:
+        </p>
 <div class="informaltable"><table class="table">
 <colgroup>
-<col>
 <col>
 <col>
 <col>
@@ -258,12 +221,7 @@
                 </th>
 <th>
                   <p>
-                    Expression
-                  </p>
-                </th>
-<th>
-                  <p>
-                    Scope
+                    Definition
                   </p>
                 </th>
 <th>
@@ -276,132 +234,21 @@
 <tr>
 <td>
                   <p>
-                    Traits type
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">traits</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">public</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Same as the traits type of the return type of <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Pointer type
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">pointer</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">public</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Pointer-to-const type
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">const_pointer</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">public</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Child iterator type
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">child_iterator</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">public</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Immutable child iterator type
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">const_child_iterator</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">public</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Defined by the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
                     Default constructor
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">with_depth_base</span><span class="special">();</span></code>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">with_depth_base</span><span class="special">();</span>
+</pre>
+<p>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="keyword">protected</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Defined by the <a class="link" href="../concepts/base_tree_node.html" title="Base Tree Node"><span class="bold"><strong>Base Tree Node</strong></span></a> concept.
+                    Defined by the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
                   </p>
                 </td>
 </tr>
@@ -413,13 +260,11 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="keyword">explicit</span> <span class="identifier">with_depth_base</span><span class="special">(</span><span class="keyword">typename</span>
-                    <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;);</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">protected</span></code>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">explicit</span> <span class="identifier">with_depth_base</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+</pre>
+<p>
                   </p>
                 </td>
 <td>
@@ -431,17 +276,86 @@
 <tr>
 <td>
                   <p>
+                    Copy constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_depth_base</span><span class="special">(</span><span class="identifier">with_depth_base</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_depth_base</span><span class="special">(</span><span class="identifier">with_depth_base</span><span class="special">&amp;&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_depth_base</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">with_depth_base</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_depth_base</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">with_depth_base</span><span class="special">&amp;&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
                     Depth access
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">get_depth</span><span class="special">()</span> <span class="keyword">const</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="keyword">public</span></code>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">Depth</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">get_depth</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
                   </p>
                 </td>
 <td>
@@ -453,10 +367,18 @@
 </tbody>
 </table></div>
 </div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_depth_base.non_members"></a><a class="link" href="with_depth_base.html#tree_node.reference.with_depth_base.non_members" title="Non-members">Non-members</a>
+</h4></div></div></div>
+<p>
+          None beyond those inherited from the return type of <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>.
+        </p>
+</div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -9,18 +9,26 @@
 [section Reference]
 
 [include ref_container_gen.qbk]
-[include ref_ptr_container_gen.qbk]
 [include ref_assoc_container_gen.qbk]
+[include ref_ptr_container_gen.qbk]
 [include ref_ptr_assoc_container_gen.qbk]
 [include ref_is_rand_access_selector.qbk]
 [include ref_is_unique_assoc_sel.qbk]
+[include ref_is_multiple_assoc_sel.qbk]
+[include ref_is_associative_selector.qbk]
+[include ref_is_unordered_selector.qbk]
+[include ref_has_stable_iters_sel.qbk]
 
   * __container_gen__
-  * __ptr_container_gen__
   * __associative_container_gen__
+  * __ptr_container_gen__
   * __ptr_associative_container_gen__
   * __is_random_access_selector__
   * __is_unique_associative_selector__
+  * __is_multiple_associative_selector__
+  * __is_associative_selector__
+  * __is_unordered_selector__
+  * __has_stable_iterators_selector__
 
 [endsect] [/ Reference]
 

@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -26,14 +26,11 @@ __Forward_Iterator__
     [[`Iterator`][A type that models the [*Tree Node Iterator] concept.]]
     [[`itr`][An object of type `Iterator`.]]
     [[`Node`][A type that models the __Tree_Node__ concept.]]
-    [[`node`][An object of type `Node::pointer`.]]
-    [[`const_node`][An object of type `Node::const_pointer`.]]
+    [[`node`][An object of type `Node&`.]]
 ]
 
 [section:types Associated Types]
-No additional types beyond those defined in the __Forward_Iterator__ concept;
-however, the requirements for the value type are strengthened: it must model
-the __Trivial_Iterator__ concept.
+No additional types beyond those defined in the __Forward_Iterator__ concept.
 [endsect]
 
 [section:expressions Valid Expressions and Semantics]
@@ -59,20 +56,10 @@ following expressions must be valid.
         [Constant]
     ]
     [
-        [Constructor from mutable node]
+        [Constructor from node]
         [``
             Iterator(node)
             Iterator itr(node)
-        ``]
-        []
-        [Refinement-specific.]
-        [Amortized constant]
-    ]
-    [
-        [Constructor from immutable node]
-        [``
-            Iterator(const_node)
-            Iterator itr(const_node)
         ``]
         []
         [Refinement-specific.]

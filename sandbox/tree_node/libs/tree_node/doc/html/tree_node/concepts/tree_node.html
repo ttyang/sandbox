@@ -4,7 +4,7 @@
 <title>Tree Node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="../concepts.html" title="Concepts">
 <link rel="next" href="base_tree_node.html" title="Base Tree Node">
@@ -159,12 +159,12 @@
 <tr>
 <td>
                   <p>
-                    Child iterator type
+                    Iterator type
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">child_iterator</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -176,19 +176,19 @@
 <td>
                   <p>
                     It must model the <a href="http://www.sgi.com/tech/stl/InputIterator.html" target="_top"><span class="bold"><strong>Input Iterator</strong></span></a> concept, and it
-                    must be convertible to <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_child_iterator</span></code>.
+                    must be convertible to <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span></code>.
                   </p>
                 </td>
 </tr>
 <tr>
 <td>
                   <p>
-                    Immutable child iterator type
+                    Immutable iterator type
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_child_iterator</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -311,7 +311,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_parent</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_parent_ptr</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -321,8 +321,8 @@
                 </td>
 <td>
                   <p>
-                    Returns the parent of the tree node, or a null pointer if the
-                    node is the root.
+                    Returns a pointer to the parent of the tree node, or a null pointer
+                    if the node is the root.
                   </p>
                 </td>
 <td>
@@ -339,7 +339,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_parent</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_parent_ptr</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -349,8 +349,8 @@
                 </td>
 <td>
                   <p>
-                    Returns the parent of the tree node, or a null pointer if the
-                    node is the root.
+                    Returns a pointer to the parent of the tree node, or a null pointer
+                    if the node is the root.
                   </p>
                 </td>
 <td>
@@ -367,12 +367,12 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_child_begin</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_child_iterator</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -396,12 +396,12 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_child_begin</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">child_iterator</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -425,12 +425,12 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_child_end</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_child_iterator</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -453,12 +453,12 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_child_end</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">child_iterator</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -476,58 +476,29 @@
 <tr>
 <td>
                   <p>
-                    Children range
+                    Leaf node query
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_children</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">empty</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;Node::const_child_iterator,Node::const_child_iterator&gt;</code>
+                    <code class="computeroutput"><span class="keyword">bool</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    Returns a pair <code class="computeroutput"><span class="identifier">p</span></code>
-                    such that <code class="computeroutput"><span class="special">[</span><span class="identifier">p</span><span class="special">.</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">second</span><span class="special">)</span></code> is the range of children of
-                    the tree node.
+                    Equivalent to <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">begin</span><span class="special">()</span> <span class="special">==</span>
+                    <span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">()</span></code>,
+                    but may be more efficient in certain cases.
                   </p>
                 </td>
 <td>
                   <p>
-                    Constant
-                  </p>
-                </td>
-</tr>
-<tr>
-<td>
-                  <p>
-                    Children range
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_children</span><span class="special">()</span></code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    <code class="literal"><a href="http://www.sgi.com/tech/stl/pair.html" target="_top">std::pair</a>&lt;Node::child_iterator,Node::child_iterator&gt;</code>
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Returns a pair <code class="computeroutput"><span class="identifier">p</span></code>
-                    such that <code class="computeroutput"><span class="special">[</span><span class="identifier">p</span><span class="special">.</span><span class="identifier">first</span><span class="special">,</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">second</span><span class="special">)</span></code> is the range of children of
-                    the tree node.
-                  </p>
-                </td>
-<td>
-                  <p>
-                    Constant
+                    Linear with respect to the number of children
                   </p>
                 </td>
 </tr>
@@ -539,7 +510,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">remove_all_children</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">clear</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -554,7 +525,7 @@
                 </td>
 <td>
                   <p>
-                    Linear with respect to the number of children and its descendants
+                    Linear with respect to the number of children and their descendants
                   </p>
                 </td>
 </tr>
@@ -565,26 +536,24 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.concepts.tree_node.models"></a><a class="link" href="tree_node.html#tree_node.concepts.tree_node.models" title="Models">Models</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/raw_binary_node.html" title="raw_binary_node"><code class="computeroutput"><span class="identifier">raw_binary_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_binary_node_base.html" title="raw_binary_node_base"><code class="computeroutput"><span class="identifier">raw_binary_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_node.html" title="raw_node"><code class="computeroutput"><span class="identifier">raw_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_node_base.html" title="raw_node_base"><code class="computeroutput"><span class="identifier">raw_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/simple_node.html" title="simple_node"><code class="computeroutput"><span class="identifier">simple_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/simple_node_base.html" title="simple_node_base"><code class="computeroutput"><span class="identifier">simple_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_associative_node.html" title="raw_associative_node"><code class="computeroutput"><span class="identifier">raw_associative_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_associative_node_base.html" title="raw_associative_node_base"><code class="computeroutput"><span class="identifier">raw_associative_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/simple_associative_node.html" title="simple_associative_node"><code class="computeroutput"><span class="identifier">simple_associative_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/simple_assoc_node_base.html" title="simple_associative_node_base"><code class="computeroutput"><span class="identifier">simple_associative_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/with_child_range_access.html" title="with_child_range_access"><code class="computeroutput"><span class="identifier">with_child_range_access</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/with_child_range_acc_base.html" title="with_child_range_access_base"><code class="computeroutput"><span class="identifier">with_child_range_access_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/with_depth.html" title="with_depth"><code class="computeroutput"><span class="identifier">with_depth</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/with_depth_base.html" title="with_depth_base"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/binary_node.html" title="binary_node&lt;T&gt;"><code class="computeroutput"><span class="identifier">binary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/binary_node_base.html" title="binary_node_base&lt;Derived,T&gt;"><code class="computeroutput"><span class="identifier">binary_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/nary_node.html" title="nary_node&lt;T,Selector&gt;"><code class="computeroutput"><span class="identifier">nary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/nary_node_base.html" title="nary_node_base&lt;Derived,T,Selector&gt;"><code class="computeroutput"><span class="identifier">nary_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/associative_node.html" title="associative_node&lt;Key,Data,AssociativeContainerSelector&gt;"><code class="computeroutput"><span class="identifier">associative_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/associative_node_base.html" title="associative_node_base&lt;Derived,Key,Data,AssociativeContainerSelector&gt;"><code class="computeroutput"><span class="identifier">associative_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_depth.html" title="with_depth&lt;BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_position.html" title="with_position&lt;BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_position</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_position_base.html" title="with_position_base&lt;Derived,BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_position_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_rb_flag.html" title="with_red_black_flag&lt;BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_red_black_flag</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_rb_flag_base.html" title="with_red_black_flag_base&lt;Derived,BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_red_black_flag_base</span></code></a>
 </pre>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -8,19 +8,54 @@
 
 [section Changelog]
 
+[heading From 0.2 to 0.3]
+
+  * Added __Associative_Tree_Node__, __Non_Associative_Tree_Node__,
+    __Binary_Tree_Node__, __N_ary_Tree_Node__, and __Type_Generator__ concepts.
+  * Added __binary_node__ data structure, the corresponding __Base_Tree_Node__
+    model __binary_node_base__, and the corresponding __Type_Generator__ model
+    __binary_node_gen__.
+  * Renamed `raw_node` to __nary_node__; added the corresponding
+    __Base_Tree_Node__ model __nary_node_base__ and the corresponding
+    __Type_Generator__ model __nary_node_gen__.
+  * Renamed `raw_associative_node` to __associative_node__; added the
+    corresponding __Base_Tree_Node__ model __associative_node_base__ and the
+    corresponding __Type_Generator__ model __associative_node_gen__.
+  * Added the __Base_Tree_Node__ model __tree_node_with_depth_base__ and the
+    corresponding __Type_Generator__ model __tree_node_with_depth_gen__.
+  * Added __tree_node_with_position__ adaptor class template, the corresponding
+    __Base_Tree_Node__ model __tree_node_with_position_base__, and the
+    corresponding __Type_Generator__ model __tree_node_with_position_gen__.
+  * Added __tree_node_with_red_black_flag__ adaptor class template, the
+    corresponding __Base_Tree_Node__ model
+    __tree_node_with_red_black_flag_base__, and the corresponding
+    __Type_Generator__ model __tree_node_with_red_black_flag_gen__.
+  * Added __breadth_first_descendant_iterator__,
+    __pre_order_descendant_iterator__, __post_order_descendant_iterator__,
+    __in_order_iterator__, and __depth_first_descendant_iterator__ adaptor
+    class templates.
+  * Added __dereference_iterator__, __tree_node_equal__,
+    __tree_node_strictly_equal__, __tree_node_lexicographical_compare__, and
+    __tree_node_strict_lexicographical_compare__ algorithms.
+  * Removed [*Factory-Constructible Tree Node] and [*Cloneable Tree Node]
+    concepts.
+  * Removed `tree_node_factory` facade.
+  * Removed `shared_tree_node_base` `struct` template.
+  * Removed `simple_node` and `simple_associative_node` data structures.
+  * Removed `with_child_range_access` adaptor class template; __Tree_Node__
+    concept now requires child range access for all models.
+
 [heading From 0.1 to 0.2]
 
-  * Added __Base_Tree_Node__, __Factory_Constructible_Tree_Node__, and
-    __Cloneable_Tree_Node__ concepts.
-  * Added __tree_node_factory__ facade.
-  * Added __tree_node_base__ and __shared_tree_node_base__ `struct` templates;
+  * Added __Base_Tree_Node__, [*Factory-Constructible Tree Node], and
+    [*Cloneable Tree Node] concepts.
+  * Added `tree_node_factory` facade.
+  * Added __tree_node_base__ and `shared_tree_node_base` `struct` templates;
     each __Tree_Node__ model that is not a __Base_Tree_Node__ now inherits from
     a corresponding __Base_Tree_Node__ which, in turn, inherits from one of
     these two types.
-  * Added __tree_node_with_child_range_access__ and __tree_node_with_depth__
+  * Added `with_child_range_access` and __tree_node_with_depth__
     adaptor class templates.
-  * All __Tree_Node__ models now use CRTP so that adaptor classes can inherit
-    from the base types.
 
 [endsect] [/ Changelog]
 

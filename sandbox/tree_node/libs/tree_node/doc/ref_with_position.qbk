@@ -1,0 +1,116 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_position `with_position<BaseGenerator,T1,T2>`]
+
+[section Description]
+This __Tree_Node__ adaptor provides access to its position in its parent's
+range of children as well as the other operations it inherits from the return
+type of `BaseGenerator`.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_with_position_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`BaseGenerator`]
+        [
+            The __Metafunction_Class__ from whose return type `with_position`
+            will ultimately inherit.
+        ]
+        [It must model the __Type_Generator__ concept.]
+        []
+    ]
+    [
+        [`T1`]
+        [The key type if `T2` is specified; the data type otherwise.]
+        []
+        []
+    ]
+    [
+        [`T2`]
+        [The data type if specified; ignored otherwise.]
+        []
+        [`void`]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Associative_Tree_Node__ if `T2` is specified;
+    __Non_Associative_Tree_Node__ otherwise
+  * any other concept that the return type of `BaseGenerator` models
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__with_position__bases]
+[endsect]
+
+[section:members Public Members]
+In addition to those inherited from the return type of `BaseGenerator`, the
+following members are defined:
+
+[table
+    [[Name][Definition][Description]]
+    [
+        [Default constructor]
+        [[reference__with_position__default_ctor]]
+        [Defined by the __Default_Constructible__ concept.]
+    ]
+    [
+        [Constructor with data]
+        [[reference__with_position__data_ctor]]
+        [Defined by the __Base_Tree_Node__ concept.]
+    ]
+    [
+        [Copy constructor]
+        [`with_position(with_position const&);`]
+        [Defined by the __Copy_Constructible__ concept.]
+    ]
+    [
+        [Move constructor]
+        [`with_position(with_position&&);`]
+        [Defined by the __Movable__ concept.]
+    ]
+    [
+        [Assignment operator]
+        [`with_position& operator=(with_position const&);`]
+        [Defined by the __Assignable__ concept.]
+    ]
+    [
+        [Move assignment operator]
+        [`with_position& operator=(with_position&&);`]
+        [Defined by the __Movable__ concept.]
+    ]
+    [
+        [Position access]
+        [[reference__with_position_base__get_position__const]]
+        [Returns the immutable iterator that points to this tree node.]
+    ]
+    [
+        [Position access]
+        [[reference__with_position_base__get_position]]
+        [Returns the iterator that points to this tree node.]
+    ]
+]
+[endsect]
+
+[section:non_members Non-members]
+None beyond those inherited from the return type of `BaseGenerator`.
+[endsect]
+
+[endsect] [/ with_position]
+

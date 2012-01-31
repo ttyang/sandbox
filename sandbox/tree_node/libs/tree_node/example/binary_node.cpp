@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -86,6 +86,11 @@ int main()
     std::cout << "After d_root tree construction," << std::endl;
     showcase_in_order_iterator(d_root, show_number<DNode>);
     showcase_iterators(d_root, show_number<DNode>, show_number_tree());
+
+    {
+        DNode d_copy(d_root);
+        BOOST_ASSERT((d_copy == d_root) && "Clones not equal.");
+    }
 
     {
         DNode::pointer p = d_root.get_left_child_ptr()->get_left_child_ptr();

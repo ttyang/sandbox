@@ -1,7 +1,7 @@
 //=======================================================================
 // Copyright 1997, 1998, 1999, 2000 University of Notre Dame.
 // Copyright 2010 Thomas Claveirole
-// Copyright 2011 Cromwell D. Enage
+// Copyright 2011-2012 Cromwell D. Enage
 // Authors: Andrew Lumsdaine, Lie-Quan Lee, Jeremy G. Siek, Thomas Claveirole,
 //          Cromwell D. Enage
 //
@@ -28,14 +28,24 @@
 namespace boost {
 
     struct vecS { };
-    struct stable_vecS { };
     struct dequeS { };
     struct listS { };
+#if !defined BOOST_NO_SLIST
     struct slistS { };
+#endif
     struct setS { };
     struct mapS { };
     struct multisetS { };
     struct multimapS { };
+    struct boost_vecS { };
+    struct stable_vecS { };
+    struct boost_dequeS { };
+    struct boost_listS { };
+    struct boost_slistS { };
+    struct boost_setS { };
+    struct boost_mapS { };
+    struct boost_multisetS { };
+    struct boost_multimapS { };
     struct hash_setS { };
     struct hash_mapS { };
     struct hash_multisetS { };
@@ -47,15 +57,20 @@ namespace boost {
 }  // namespace boost
 //]
 
-#else // defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#else  // defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
-#include <boost/container/vector.hpp>
-#include <boost/container/stable_vector.hpp>
-#include <boost/container/deque.hpp>
-#include <boost/container/list.hpp>
-#include <boost/container/slist.hpp>
-#include <boost/container/set.hpp>
-#include <boost/container/flat_set.hpp>
+#include <vector>
+#include <deque>
+#include <list>
+#include <set>
+
+#if !defined BOOST_NO_SLIST
+#  ifdef BOOST_SLIST_HEADER
+#    include BOOST_SLIST_HEADER
+#  else
+#    include <slist>
+#  endif
+#endif
 
 #include <boost/tr1/unordered_set.hpp>
 #include <boost/functional/hash.hpp>
@@ -71,65 +86,68 @@ namespace boost {
 #include <boost/detail/function/range_equal.hpp>
 #include <boost/detail/function/range_less.hpp>
 
+//[reference__ptr_container_selectors
 namespace boost {
 
     struct vecS
     {
+        //<-
         template <typename T>
         struct bind_
         {
-            typedef ::boost::container::vector<T> type;
+            typedef ::std::vector<T> type;
             typedef ::boost::ptr_vector<T> ptr_type;
         };
-    };
-
-    struct stable_vecS
-    {
-        template <typename T>
-        struct bind_
-        {
-            typedef ::boost::container::stable_vector<T> type;
-        };
+        //->
     };
 
     struct dequeS
     {
+        //<-
         template <typename T>
         struct bind_
         {
-            typedef ::boost::container::deque<T> type;
+            typedef ::std::deque<T> type;
             typedef ::boost::ptr_deque<T> ptr_type;
         };
+        //->
     };
 
     struct listS
     {
+        //<-
         template <typename T>
         struct bind_
         {
-            typedef ::boost::container::list<T> type;
+            typedef ::std::list<T> type;
             typedef ::boost::ptr_list<T> ptr_type;
         };
+        //->
     };
 
+    //<-
+#if !defined BOOST_NO_SLIST
     struct slistS
     {
         template <typename T>
         struct bind_
         {
-            typedef ::boost::container::slist<T> type;
+            typedef ::BOOST_STD_EXTENSION_NAMESPACE::slist<T> type;
         };
     };
+#endif
+    //->
 
     struct setS
     {
+        //<-
         template <typename T>
         struct bind_
         {
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
-                      , ::boost::container::set<T,::boost::detail::range_less>
-                      , ::boost::container::set<T>
+                      , ::std::set<T,::boost::detail::range_less>
+                      , ::std::set<T>
                     >::type
                     type;
             typedef typename ::boost::mpl::if_<
@@ -139,17 +157,19 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct mapS
     {
+        //<-
         template <typename T>
         struct bind_
         {
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
-                      , ::boost::container::set<T,::boost::detail::range_less>
-                      , ::boost::container::set<T>
+                      , ::std::set<T,::boost::detail::range_less>
+                      , ::std::set<T>
                     >::type
                     type;
             typedef typename ::boost::mpl::if_<
@@ -159,20 +179,19 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct multisetS
     {
+        //<-
         template <typename T>
         struct bind_
         {
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
-                      , ::boost::container::multiset<
-                            T
-                          , ::boost::detail::range_less
-                        >
-                      , ::boost::container::multiset<T>
+                      , ::std::multiset<T,::boost::detail::range_less>
+                      , ::std::multiset<T>
                     >::type
                     type;
             typedef typename ::boost::mpl::if_<
@@ -182,20 +201,19 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct multimapS
     {
+        //<-
         template <typename T>
         struct bind_
         {
             typedef typename ::boost::mpl::if_<
                         ::boost::detail::is_container<T>
-                      , ::boost::container::multiset<
-                            T
-                          , ::boost::detail::range_less
-                        >
-                      , ::boost::container::multiset<T>
+                      , ::std::multiset<T,::boost::detail::range_less>
+                      , ::std::multiset<T>
                     >::type
                     type;
             typedef typename ::boost::mpl::if_<
@@ -205,10 +223,12 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct hash_setS
     {
+        //<-
         template <typename T>
         struct bind_
         {
@@ -233,10 +253,12 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct hash_mapS
     {
+        //<-
         template <typename T>
         struct bind_
         {
@@ -261,10 +283,12 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct hash_multisetS
     {
+        //<-
         template <typename T>
         struct bind_
         {
@@ -289,10 +313,12 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
     struct hash_multimapS
     {
+        //<-
         template <typename T>
         struct bind_
         {
@@ -317,76 +343,10 @@ namespace boost {
                     >::type
                     ptr_type;
         };
+        //->
     };
 
-    struct flat_setS
-    {
-        template <typename T>
-        struct bind_
-        {
-            typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<T>
-                      , ::boost::container::flat_set<
-                            T
-                          , ::boost::detail::range_less
-                        >
-                      , ::boost::container::flat_set<T>
-                    >::type
-                    type;
-        };
-    };
-
-    struct flat_mapS
-    {
-        template <typename T>
-        struct bind_
-        {
-            typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<T>
-                      , ::boost::container::flat_set<
-                            T
-                          , ::boost::detail::range_less
-                        >
-                      , ::boost::container::flat_set<T>
-                    >::type
-                    type;
-        };
-    };
-
-    struct flat_multisetS
-    {
-        template <typename T>
-        struct bind_
-        {
-            typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<T>
-                      , ::boost::container::flat_multiset<
-                            T
-                          , ::boost::detail::range_less
-                        >
-                      , ::boost::container::flat_multiset<T>
-                    >::type
-                    type;
-        };
-    };
-
-    struct flat_multimapS
-    {
-        template <typename T>
-        struct bind_
-        {
-            typedef typename ::boost::mpl::if_<
-                        ::boost::detail::is_container<T>
-                      , ::boost::container::flat_multiset<
-                            T
-                          , ::boost::detail::range_less
-                        >
-                      , ::boost::container::flat_multiset<T>
-                    >::type
-                    type;
-        };
-    };
-
+    //<-
     template <typename Selector>
     struct container_selector
     {
@@ -397,10 +357,11 @@ namespace boost {
     template <> struct container_selector<NAME> { typedef NAME type; }
 
     BOOST_CONTAINER_SELECTOR(vecS);
-    BOOST_CONTAINER_SELECTOR(stable_vecS);
     BOOST_CONTAINER_SELECTOR(dequeS);
     BOOST_CONTAINER_SELECTOR(listS);
+#if !defined BOOST_NO_SLIST
     BOOST_CONTAINER_SELECTOR(slistS);
+#endif
     BOOST_CONTAINER_SELECTOR(setS);
     BOOST_CONTAINER_SELECTOR(mapS);
     BOOST_CONTAINER_SELECTOR(multisetS);
@@ -409,16 +370,14 @@ namespace boost {
     BOOST_CONTAINER_SELECTOR(hash_mapS);
     BOOST_CONTAINER_SELECTOR(hash_multisetS);
     BOOST_CONTAINER_SELECTOR(hash_multimapS);
-    BOOST_CONTAINER_SELECTOR(flat_setS);
-    BOOST_CONTAINER_SELECTOR(flat_mapS);
-    BOOST_CONTAINER_SELECTOR(flat_multisetS);
-    BOOST_CONTAINER_SELECTOR(flat_multimapS);
 
 #undef BOOST_CONTAINER_SELECTOR
 
+    //->
 }  // namespace boost
+//]
 
-#endif // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 #endif  // BOOST_UTILITY_CONTAINER_SELECTOR_HPP_INCLUDED
 

@@ -6,7 +6,7 @@
     [@http://www.boost.org/LICENSE_1_0.txt])
 =============================================================================/]
 
-[section:is_unique_associative_selector `is_unique_associative_selector`]
+[section:is_unique_assoc_selector `is_unique_associative_selector`]
 
 [section Synopsis]
 [reference__is_unique_associative_selector]

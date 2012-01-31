@@ -1,23 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>with_depth_gen</title>
+<title>with_depth_gen&lt;BaseGenerator&gt;</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="with_depth_base.html" title="with_depth_base">
-<link rel="next" href="tree_node_base.html" title="tree_node_base">
+<link rel="prev" href="with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;">
+<link rel="next" href="with_position.html" title="with_position&lt;BaseGenerator,T1,T2&gt;">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="with_depth_base.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="tree_node_base.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="with_depth_base.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="with_position.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="tree_node.reference.with_depth_gen"></a><a class="link" href="with_depth_gen.html" title="with_depth_gen"><code class="computeroutput"><span class="identifier">with_depth_gen</span></code></a>
+<a name="tree_node.reference.with_depth_gen"></a><a class="link" href="with_depth_gen.html" title="with_depth_gen&lt;BaseGenerator&gt;"><code class="computeroutput"><span class="identifier">with_depth_gen</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">&gt;</span></code></a>
 </h3></div></div></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -28,14 +28,13 @@
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">BaseGenerator</span><span class="special">&gt;</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">BaseGenerator</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Depth</span> <span class="special">=</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">&gt;</span>
     <span class="keyword">struct</span> <span class="identifier">with_depth_gen</span>
     <span class="special">{</span>
         <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Derived</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T2</span> <span class="special">=</span> <span class="keyword">void</span><span class="special">&gt;</span>
         <span class="keyword">struct</span> <span class="identifier">apply</span>
         <span class="special">{</span>
-            <span class="keyword">typedef</span> <span class="identifier">with_depth_base</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span>
-                    <span class="identifier">type</span><span class="special">;</span>
+            <span class="keyword">typedef</span> <span class="identifier">with_depth_base</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">,</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">,</span><span class="identifier">Depth</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
         <span class="special">};</span>
     <span class="special">};</span>
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
@@ -108,7 +107,8 @@
                   </p>
                 </th>
 </tr></thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>
                   <p>
                     <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>
@@ -117,7 +117,7 @@
 <td>
                   <p>
                     The <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Metafunction Class</strong></span></a> from whose
-                    return type <a class="link" href="with_depth_base.html" title="with_depth_base"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a> will
+                    return type <a class="link" href="with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a> will
                     inherit.
                   </p>
                 </td>
@@ -128,7 +128,27 @@
                 </td>
 <td>
                 </td>
-</tr></tbody>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Depth</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The depth type.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span></code>
+                  </p>
+                </td>
+</tr>
+</tbody>
 </table></div>
 </div>
 <div class="section">
@@ -138,14 +158,16 @@
 </h4></div></div></div>
 <p>
           Let <code class="computeroutput"><span class="identifier">Derived</span></code> be the type
-          that will inherit from <a class="link" href="with_depth_base.html" title="with_depth_base"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a>. Let <code class="computeroutput"><span class="identifier">Key</span></code> be the key type. Let <code class="computeroutput"><span class="identifier">Data</span></code> be the data type. Let <code class="computeroutput"><span class="identifier">Selector</span></code> be a valid <code class="computeroutput"><span class="identifier">with_child_range_access_gen</span></code>
-          template argument.
+          that will inherit from <a class="link" href="with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;"><code class="computeroutput"><span class="identifier">with_depth_base</span></code></a>. Let <code class="computeroutput"><span class="identifier">Key</span></code> be the key type. Let <code class="computeroutput"><span class="identifier">Data</span></code> be the data type. Let <code class="computeroutput"><span class="identifier">BaseGenerator</span></code> be a valid first template
+          argument for <code class="computeroutput"><span class="identifier">with_depth_gen</span></code>.
+          Let <code class="computeroutput"><span class="identifier">Depth</span></code> be the depth
+          type.
         </p>
 <p>
           
 </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <a href="http://www.boost.org/libs/mpl/doc/refmanual/apply-wrap.html" target="_top">boost::mpl::apply_wrap3</a><span class="special">&lt;</span>
-    <span class="identifier">with_depth_gen</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">&gt;</span>
+    <span class="identifier">with_depth_gen</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Depth</span><span class="special">&gt;</span>
   <span class="special">,</span> <span class="identifier">Derived</span>
   <span class="special">,</span> <span class="identifier">Key</span>
   <span class="special">,</span> <span class="identifier">Data</span>
@@ -154,13 +176,13 @@
 <p>
         </p>
 <p>
-          <span class="bold"><strong>Return type:</strong></span> <code class="literal"><a class="link" href="with_depth_base.html" title="with_depth_base">with_depth_base</a>&lt;Derived,BaseGenerator,Key,Data&gt;</code>
+          <span class="bold"><strong>Return type:</strong></span> <code class="literal"><a class="link" href="with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;">with_depth_base</a>&lt;Derived,BaseGenerator,Key,Data,Depth&gt;</code>
         </p>
 <p>
           
 </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <a href="http://www.boost.org/libs/mpl/doc/refmanual/apply-wrap.html" target="_top">boost::mpl::apply_wrap2</a><span class="special">&lt;</span>
-    <span class="identifier">with_depth_gen</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">&gt;</span>
+    <span class="identifier">with_depth_gen</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">Depth</span><span class="special">&gt;</span>
   <span class="special">,</span> <span class="identifier">Derived</span>
   <span class="special">,</span> <span class="identifier">Data</span>
 <span class="special">&gt;::</span><span class="identifier">type</span> <span class="identifier">r</span><span class="special">;</span>
@@ -168,7 +190,7 @@
 <p>
         </p>
 <p>
-          <span class="bold"><strong>Return type:</strong></span> <code class="literal"><a class="link" href="with_depth_base.html" title="with_depth_base">with_depth_base</a>&lt;Derived,BaseGenerator,Data&gt;</code>
+          <span class="bold"><strong>Return type:</strong></span> <code class="literal"><a class="link" href="with_depth_base.html" title="with_depth_base&lt;Derived,BaseGenerator,T1,T2,Depth&gt;">with_depth_base</a>&lt;Derived,BaseGenerator,Data,void,Depth&gt;</code>
         </p>
 </div>
 <div class="section">
@@ -182,7 +204,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -190,7 +212,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="with_depth_base.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="tree_node_base.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="with_depth_base.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="with_position.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

@@ -1,0 +1,28 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:equal `equal()`]
+
+[section Synopsis]
+[reference__equal__with_comparators]
+[reference__equal__with_comparator]
+[reference__equal]
+[endsect]
+
+[section Description]
+TODO.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_algorithm_equal_hpp__>
+``
+[endsect]
+
+[endsect] [/ equal]
+

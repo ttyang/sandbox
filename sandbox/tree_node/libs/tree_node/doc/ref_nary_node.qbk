@@ -1,0 +1,214 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:nary_node `nary_node<T,Selector>`]
+
+[section Description]
+This class template is suitable for classes or algorithms that require a tree
+node data structure that can handle an arbitrary number of children.  Objects
+of this type can be stored by value.
+
+[important
+    This component depends on __Boost_Utility_ContainerGen__, which is not yet
+    a part of Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_nary_node_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`T`]
+        [The type of the object to be stored in an `nary_node`.]
+        []
+        []
+    ]
+    [
+        [`Selector`]
+        [
+            The type that determines the internal container types whose value
+            types are the same as the pointer type.
+        ]
+        [
+            It must be a type for which __container_gen__ returns a recursive,
+            move-aware container.
+        ]
+        [`boost_dequeS`]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __N_ary_Tree_Node__
+  * __Default_Constructible__ if `T` is __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__ if `T` is __Assignable__
+  * __Movable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__nary_node__bases]
+[endsect]
+
+[section:members Public Members]
+Given:
+[reference__nary_node__super_t]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Data type]
+        [[reference__nary_node__traits]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer type]
+        [[reference__nary_node__pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__nary_node__const_pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Iterator type]
+        [[reference__nary_node__iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__nary_node__const_iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Default constructor]
+        [[reference__nary_node__default_ctor]]
+        [__Default_Constructible__]
+    ]
+    [
+        [Constructor with data]
+        [[reference__nary_node__data_ctor]]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Copy constructor]
+        [`nary_node(nary_node const&);`]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Move constructor]
+        [`nary_node(nary_node&&);`]
+        [__Movable__]
+    ]
+    [
+        [Assignment operator]
+        [`nary_node& operator=(nary_node const&);`]
+        [__Assignable__]
+    ]
+    [
+        [Move assignment operator]
+        [`nary_node& operator=(nary_node&&);`]
+        [__Movable__]
+    ]
+    [
+        [Data access]
+        [[reference__nary_node_base__get_data__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Data access]
+        [[reference__nary_node_base__get_data]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr]]
+        [__Tree_Node__]
+    ]
+    [
+        [Child creation with data]
+        [[reference__nary_node_base__add_child__data]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Child creation]
+        [[reference__nary_node_base__add_child]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Child copy creation]
+        [[reference__nary_node_base__add_child_copy]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__begin__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__begin]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__end__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__end]]
+        [__Tree_Node__]
+    ]
+    [
+        [Leaf node query]
+        [[reference__nary_node_base__empty]]
+        [__Tree_Node__]
+    ]
+    [
+        [Remove all children]
+        [[reference__nary_node_base__clear]]
+        [__Tree_Node__]
+    ]
+    [
+        [Derived access]
+        [`const_pointer get_derived() const;`]
+        [__tree_node_base__]
+    ]
+    [
+        [Derived access]
+        [`pointer get_derived();`]
+        [__tree_node_base__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+None beyond those inherited from __nary_node_base__.
+[endsect]
+
+[section Example]
+<__example_nary_node_cpp__>
+[endsect]
+
+[endsect] [/ nary_node]
+

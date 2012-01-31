@@ -1,0 +1,32 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_associative_selector `is_associative_selector`]
+
+[section Synopsis]
+[reference__is_associative_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the storage type will model the
+__Associative_Container__ concept, __mpl_false__ otherwise.
+
+Specialize either the __is_unique_associative_selector__ metafunction or the
+__is_multiple_associative_selector__ metafunction to return __mpl_true__ for
+your custom selector if and only if the storage type to be returned by
+__container_gen__ models the respective concept.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_is_associative_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ is_associative_selector]
+

@@ -1,6 +1,6 @@
 [/=============================================================================
     Copyright (C) 2000-2001 Jeremy G. Siek
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -39,18 +39,6 @@ It is possible to nest associative containers via `container_gen`, e.g.:
 typedef container_gen<setS,container_gen<setS,int>::type>::type
         SetOfSetsOfIntegers;
 ``
-
-[important
-    This last capability depends on __Boost_Type_Traits_Operators__, which has
-    been recently accepted into Boost but is currently not part of an official
-    release.  For now, you must perform a Subversion checkout from the
-    __SVN_Trac__, add the `type_traits` module to your list of header
-    directories, and `#define BOOST_CONTAINER_GEN_USES_OP_TYPE_TRAITS` in order
-    to obtain this capability.
-
-    If you do not need this capability, then you do not need
-    __Boost_Type_Traits_Operators__.
-]
 [endsect]
 
 [section:definition Where defined]

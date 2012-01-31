@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -18,7 +18,7 @@ TODO.
 
 [section:definition Where defined]
 ``
-#include <__boost_tree_node_dereference_iterator_hpp__>
+#include <__boost_tree_node_algorithm_dereference_iterator_hpp__>
 ``
 [endsect]
 

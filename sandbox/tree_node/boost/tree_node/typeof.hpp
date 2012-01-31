@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -42,9 +42,9 @@ BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::nary_node_gen, 1)
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::associative_node_base, 4)
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::associative_node, 3)
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::associative_node_gen, 1)
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_depth_base, 4)
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_depth, 3)
-BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_depth_gen, 1)
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_depth_base, 5)
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_depth, 4)
+BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_depth_gen, 2)
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_position_base, 4)
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_position, 3)
 BOOST_TYPEOF_REGISTER_TEMPLATE(boost::tree_node::with_position_gen, 1)

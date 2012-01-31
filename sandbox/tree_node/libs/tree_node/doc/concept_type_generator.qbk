@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -60,13 +60,12 @@ necessary functionality.
 
 [section Models]
 
-  * __raw_binary_node_gen__
-  * __raw_node_gen__
-  * __simple_node_gen__
-  * __raw_associative_node_gen__
-  * __simple_associative_node_gen__
-  * __tree_node_with_child_range_access_gen__
+  * __binary_node_gen__
+  * __nary_node_gen__
+  * __associative_node_gen__
   * __tree_node_with_depth_gen__
+  * __tree_node_with_position_gen__
+  * __tree_node_with_red_black_flag_gen__
 
 [endsect]
 

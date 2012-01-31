@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2007-2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -10,8 +10,6 @@
 
 [include concept_tree_node.qbk]
 [include concept_base_tree_node.qbk]
-[include concept_factory_construct.qbk]
-[include concept_cloneable_tree_node.qbk]
 [include concept_assoc_tree_node.qbk]
 [include concept_non_assoc_tree_node.qbk]
 [include concept_binary_tree_node.qbk]
@@ -25,8 +23,6 @@
 
   * __Tree_Node__
       * __Base_Tree_Node__
-      * __Factory_Constructible_Tree_Node__
-      * __Cloneable_Tree_Node__
       * __Associative_Tree_Node__
       * __Non_Associative_Tree_Node__
           * __Binary_Tree_Node__

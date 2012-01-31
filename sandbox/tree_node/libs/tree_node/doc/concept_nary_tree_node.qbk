@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -58,7 +58,7 @@ concept, the following expressions must be valid.
         [Child creation with data]
         [`node->add_child(data)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be stored in the range of
             children of the invoking node.  The node returned will store
@@ -73,7 +73,7 @@ concept, the following expressions must be valid.
             `Node::traits::data_type` must model the __Default_Constructible__
             concept.
         ]
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a tree node to be stored in the range of
             children of the invoking node.
@@ -84,7 +84,7 @@ concept, the following expressions must be valid.
         [Child copy creation]
         [`node->add_child_copy(const_node)`]
         []
-        [`Node::pointer`]
+        [`Node::iterator`]
         [
             Creates and returns a deep copy of `const_node` to be stored in the
             range of children of the invoking node.
@@ -96,10 +96,8 @@ concept, the following expressions must be valid.
 
 [section Models]
 
-  * __raw_node__
-  * __raw_node_base__
-  * __simple_node__
-  * __simple_node_base__
+  * __nary_node__
+  * __nary_node_base__
 
 [endsect]
 

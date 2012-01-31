@@ -1,5 +1,5 @@
 //=======================================================================
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
@@ -9,6 +9,7 @@
 #ifndef BOOST_UTILITY_IS_UNIQUE_ASSOC_SELECTOR_HPP_INCLUDED
 #define BOOST_UTILITY_IS_UNIQUE_ASSOC_SELECTOR_HPP_INCLUDED
 
+#include <boost/config.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/utility/container_selector.hpp>
@@ -49,6 +50,17 @@ namespace boost {
     {
     };
 
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+    template <>
+    struct is_unique_associative_selector<boost_setS> : ::boost::mpl::true_
+    {
+    };
+
+    template <>
+    struct is_unique_associative_selector<boost_mapS> : ::boost::mpl::true_
+    {
+    };
+
     template <>
     struct is_unique_associative_selector<flat_setS> : ::boost::mpl::true_
     {
@@ -58,6 +70,7 @@ namespace boost {
     struct is_unique_associative_selector<flat_mapS> : ::boost::mpl::true_
     {
     };
+#endif
     //->
 }  // namespace boost
 //]

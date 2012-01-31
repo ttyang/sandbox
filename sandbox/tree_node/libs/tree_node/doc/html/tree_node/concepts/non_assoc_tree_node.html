@@ -4,7 +4,7 @@
 <title>Non-Associative Tree Node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="associative_tree_node.html" title="Associative Tree Node">
 <link rel="next" href="binary_tree_node.html" title="Binary Tree Node">
@@ -48,9 +48,8 @@
           No additional types beyond those defined in the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept; however, the requirements
           for the child iterator types are strengthened:
         </p>
-<pre class="programlisting"><span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">child_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span><span class="error">`</span><span class="special">.</span>
-<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_child_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span>
-  <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span><span class="error">`</span><span class="special">.</span>
+<pre class="programlisting"><span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">&amp;</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="error">`</span><span class="identifier">Node</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="error">`</span><span class="special">.</span>
 </pre>
 </div>
 <div class="section">
@@ -66,18 +65,16 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.concepts.non_assoc_tree_node.models"></a><a class="link" href="non_assoc_tree_node.html#tree_node.concepts.non_assoc_tree_node.models" title="Models">Models</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/raw_binary_node.html" title="raw_binary_node"><code class="computeroutput"><span class="identifier">raw_binary_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_binary_node_base.html" title="raw_binary_node_base"><code class="computeroutput"><span class="identifier">raw_binary_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_node.html" title="raw_node"><code class="computeroutput"><span class="identifier">raw_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_node_base.html" title="raw_node_base"><code class="computeroutput"><span class="identifier">raw_node_base</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/simple_node.html" title="simple_node"><code class="computeroutput"><span class="identifier">simple_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/simple_node_base.html" title="simple_node_base"><code class="computeroutput"><span class="identifier">simple_node_base</span></code></a>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/binary_node.html" title="binary_node&lt;T&gt;"><code class="computeroutput"><span class="identifier">binary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/binary_node_base.html" title="binary_node_base&lt;Derived,T&gt;"><code class="computeroutput"><span class="identifier">binary_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/nary_node.html" title="nary_node&lt;T,Selector&gt;"><code class="computeroutput"><span class="identifier">nary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/nary_node_base.html" title="nary_node_base&lt;Derived,T,Selector&gt;"><code class="computeroutput"><span class="identifier">nary_node_base</span></code></a>
 </pre>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

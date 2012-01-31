@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -15,7 +15,7 @@ typedef boost::tree_node::nary_node<default_unconstructible_example_type>
         DNode;
 typedef boost::tree_node::with_depth<
             boost::tree_node::with_position_gen<
-                boost::tree_node::nary_node_gen<boost::slistS>
+                boost::tree_node::nary_node_gen<boost::boost_slistS>
             >
           , char*
         >
@@ -74,6 +74,11 @@ int main()
 
     std::cout << "After d_root tree construction," << std::endl;
     showcase_iterators(d_root, show_number<DNode>, show_number_tree());
+
+    {
+        DNode d_copy(d_root);
+        BOOST_ASSERT((d_copy == d_root) && "Clones not equal.");
+    }
 
     {
         DNode::iterator d_child = (d_root.begin() + 2)->add_child_copy(d_root);

@@ -1,0 +1,379 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>with_position&lt;BaseGenerator,T1,T2&gt;</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="with_depth_gen.html" title="with_depth_gen&lt;BaseGenerator&gt;">
+<link rel="next" href="with_position_base.html" title="with_position_base&lt;Derived,BaseGenerator,T1,T2&gt;">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="with_depth_gen.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="with_position_base.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.reference.with_position"></a><a class="link" href="with_position.html" title="with_position&lt;BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_position</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.description"></a><a class="link" href="with_position.html#tree_node.reference.with_position.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          This <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+          Node</strong></span></a> adaptor provides access to its position in its parent's
+          range of children as well as the other operations it inherits from the
+          return type of <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.definition"></a><a class="link" href="with_position.html#tree_node.reference.with_position.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/with_position.hpp" target="_top">boost/tree_node/with_position.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.tpl_param"></a><a class="link" href="with_position.html#tree_node.reference.with_position.tpl_param" title="Template Parameters">Template
+        Parameters</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Parameter
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Requirements
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Default
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The <a href="http://www.boost.org/libs/mpl/doc/refmanual/metafunction-class.html" target="_top"><span class="bold"><strong>Metafunction Class</strong></span></a> from whose
+                    return type <code class="computeroutput"><span class="identifier">with_position</span></code>
+                    will ultimately inherit.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    It must model the <a class="link" href="../concepts/type_generator.html" title="Type Generator"><span class="bold"><strong>Type Generator</strong></span></a> concept.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T1</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The key type if <code class="computeroutput"><span class="identifier">T2</span></code>
+                    is specified; the data type otherwise.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">T2</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The data type if specified; ignored otherwise.
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.model_of"></a><a class="link" href="with_position.html#tree_node.reference.with_position.model_of" title="Model of">Model of</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> <span class="keyword">if</span> <span class="error">`</span><span class="identifier">T2</span><span class="error">`</span> <span class="identifier">is</span> <span class="identifier">specified</span><span class="special">;</span>
+  <a class="link" href="../concepts/non_assoc_tree_node.html" title="Non-Associative Tree Node"><span class="bold"><strong>Non-Associative Tree Node</strong></span></a> <span class="identifier">otherwise</span>
+<span class="special">*</span> <span class="identifier">any</span> <span class="identifier">other</span> <span class="identifier">concept</span> <span class="identifier">that</span> <span class="identifier">the</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">BaseGenerator</span><span class="error">`</span> <span class="identifier">models</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.public_bases"></a><a class="link" href="with_position.html#tree_node.reference.with_position.public_bases" title="Public Base Classes">Public
+        Base Classes</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">with_position_base</span><span class="special">&lt;</span>
+    <span class="identifier">with_position</span><span class="special">&lt;</span><span class="identifier">BaseGenerator</span><span class="special">,</span><span class="identifier">T1</span><span class="special">,</span><span class="identifier">T2</span><span class="special">&gt;</span>
+  <span class="special">,</span> <span class="identifier">BaseGenerator</span>
+  <span class="special">,</span> <span class="identifier">T1</span>
+  <span class="special">,</span> <span class="identifier">T2</span>
+<span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.members"></a><a class="link" href="with_position.html#tree_node.reference.with_position.members" title="Public Members">Public Members</a>
+</h4></div></div></div>
+<p>
+          In addition to those inherited from the return type of <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>,
+          the following members are defined:
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Definition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Default constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">with_position</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Constructor with data
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">explicit</span> <span class="identifier">with_position</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">data</span><span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a class="link" href="../concepts/base_tree_node.html" title="Base Tree Node"><span class="bold"><strong>Base Tree Node</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Copy constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_position</span><span class="special">(</span><span class="identifier">with_position</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_position</span><span class="special">(</span><span class="identifier">with_position</span><span class="special">&amp;&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_position</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">with_position</span>
+                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Move assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">with_position</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">with_position</span><span class="special">&amp;&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Position access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">const_iterator</span> <span class="identifier">get_position</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns the immutable iterator that points to this tree node.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Position access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">iterator</span> <span class="identifier">get_position</span><span class="special">();</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns the iterator that points to this tree node.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.with_position.non_members"></a><a class="link" href="with_position.html#tree_node.reference.with_position.non_members" title="Non-members">Non-members</a>
+</h4></div></div></div>
+<p>
+          None beyond those inherited from the return type of <code class="computeroutput"><span class="identifier">BaseGenerator</span></code>.
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="with_depth_gen.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="with_position_base.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

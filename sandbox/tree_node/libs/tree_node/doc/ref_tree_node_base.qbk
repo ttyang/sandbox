@@ -1,16 +1,12 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
     [@http://www.boost.org/LICENSE_1_0.txt])
 =============================================================================/]
 
-[section:tree_node_base `tree_node_base`]
-
-[section Synopsis]
-[reference__tree_node_base]
-[endsect]
+[section:tree_node_base `tree_node_base<Derived>`]
 
 [section Description]
 TODO.
@@ -40,22 +36,34 @@ None.
 
 [section Members]
 [table
-    [[Name][Expression][Scope][Description]]
+    [[Name][Definition][Scope][Description]]
     [
         [Pointer type]
-        [`pointer`]
+        [`typedef Derived* pointer;`]
         [`public`]
         [Defined by the __Tree_Node__ concept.]
     ]
     [
         [Pointer-to-const type]
-        [`const_pointer`]
+        [`typedef Derived const* const_pointer;`]
         [`public`]
         [Defined by the __Tree_Node__ concept.]
     ]
     [
+        [Derived access]
+        [`const_pointer get_derived() const;`]
+        [`public`]
+        [Returns `this` as the derived type.]
+    ]
+    [
+        [Derived access]
+        [`pointer get_derived();`]
+        [`public`]
+        [Returns `this` as the derived type.]
+    ]
+    [
         [Shallow update implementation]
-        [`void shallow_update_impl();`]
+        [[reference__tree_node_base__shallow_update_impl]]
         [`protected`]
         [
             Subclass types should override this method if they hold data that
@@ -64,18 +72,8 @@ None.
         ]
     ]
     [
-        [Deep update implementation]
-        [`void deep_update_impl();`]
-        [`protected`]
-        [
-            Subclass types should override this method if they hold data that
-            will change if the tree node and all its descendants (not just its
-            children) are structurally modified.  Does nothing by default.
-        ]
-    ]
-    [
         [Shallow update]
-        [`void shallow_update_derived();`]
+        [[reference__tree_node_base__shallow_update_derived]]
         [`protected`]
         [
             Subclass types should invoke this method after the tree node and
@@ -84,13 +82,56 @@ None.
         ]
     ]
     [
+        [Deep update implementation]
+        [[reference__tree_node_base__deep_update_impl]]
+        [`protected`]
+        [
+            Subclass types should override this method if they hold data that
+            will change if the tree node and all its descendants (not just its
+            children) are structurally modified.  Does nothing by default.
+        ]
+    ]
+    [
         [Deep update]
-        [`void deep_update_derived();`]
+        [[reference__tree_node_base__deep_update_derived]]
         [`protected`]
         [
             Subclass types should invoke this method after the tree node and
             all its descendants (not just its children) are structurally
             modified.  Calls the corresponding implementation method.
+        ]
+    ]
+    [
+        [Position update implementation]
+        [[reference__tree_node_base__set_position_impl__true]]
+        [`protected`]
+        [
+            Subclass types should override this method if they store iterators
+            that will remain valid even if any of the siblings of the pointees
+            are removed.  The overriding implementation should simply store the
+            specified position.  Does nothing by default.
+        ]
+    ]
+    [
+        [Position update implementation]
+        [[reference__tree_node_base__set_position_impl__false]]
+        [`protected`]
+        [
+            Subclass types should override this method if they store iterators
+            that may become invalidated if any of the siblings of the pointees
+            are removed.  The overriding implementation should validate the
+            positions of the siblings as well as its own.  Does nothing by
+            default.
+        ]
+    ]
+    [
+        [Position update]
+        [[reference__tree_node_base__set_position_derived]]
+        [`protected`]
+        [
+            Subclass types should invoke this method on their child nodes after
+            they are stored, or on the siblings of those child nodes after they
+            are removed.  Calls the corresponding implementation method.
         ]
     ]
 ]

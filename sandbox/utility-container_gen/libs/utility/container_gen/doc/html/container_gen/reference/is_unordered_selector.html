@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>is_unordered_selector</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;container_gen 0.2">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="is_associative_selector.html" title="is_associative_selector">
+<link rel="next" href="has_stable_iters_selector.html" title="has_stable_iterators_selector">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="is_associative_selector.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="has_stable_iters_selector.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="container_gen.reference.is_unordered_selector"></a><a class="link" href="is_unordered_selector.html" title="is_unordered_selector"><code class="computeroutput"><span class="identifier">is_unordered_selector</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.is_unordered_selector.synopsis"></a><a class="link" href="is_unordered_selector.html#container_gen.reference.is_unordered_selector.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Selector</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">is_unordered_selector</span> <span class="special">:</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span>
+    <span class="special">{</span>
+    <span class="special">};</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost
+</span></pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.is_unordered_selector.description"></a><a class="link" href="is_unordered_selector.html#container_gen.reference.is_unordered_selector.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Returns <a href="http://www.boost.org/libs/mpl/doc/refmanual/bool.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">true_</span></code></a> if the storage type to
+          be returned by <a class="link" href="container_gen.html" title="container_gen"><code class="computeroutput"><span class="identifier">container_gen</span></code></a> is an instantiation
+          of either <a href="http://www.boost.org/doc/html/boost_tr1/subject_list.html#boost_tr1.subject_list.unordered_set" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">unordered_set</span></code></a> or <a href="http://www.boost.org/doc/html/boost_tr1/subject_list.html#boost_tr1.subject_list.unordered_set" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">unordered_multiset</span></code></a>, or if the
+          storage type to be returned by <a class="link" href="associative_container_gen.html" title="associative_container_gen"><code class="computeroutput"><span class="identifier">associative_container_gen</span></code></a> is an
+          instantiation of either <a href="http://www.boost.org/doc/html/boost_tr1/subject_list.html#boost_tr1.subject_list.unordered_map" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">unordered_map</span></code></a> or <a href="http://www.boost.org/doc/html/boost_tr1/subject_list.html#boost_tr1.subject_list.unordered_map" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">tr1</span><span class="special">::</span><span class="identifier">unordered_multimap</span></code></a>, <a href="http://www.boost.org/libs/mpl/doc/refmanual/bool.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span></code></a> otherwise.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="container_gen.reference.is_unordered_selector.definition"></a><a class="link" href="is_unordered_selector.html#container_gen.reference.is_unordered_selector.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../../boost/utility/is_unordered_selector.hpp" target="_top">boost/utility/is_unordered_selector.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 1997 -2012 Andrew Lumsdaine, Lie-Quan Lee, Thomas Claveirole,
+      Jeremy G. Siek, Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="is_associative_selector.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="has_stable_iters_selector.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

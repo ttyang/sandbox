@@ -4,7 +4,7 @@
 <title>Binary Tree Node</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../concepts.html" title="Concepts">
 <link rel="prev" href="non_assoc_tree_node.html" title="Non-Associative Tree Node">
 <link rel="next" href="nary_tree_node.html" title="N-ary Tree Node">
@@ -138,7 +138,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -172,7 +172,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -202,7 +202,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -232,7 +232,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -266,7 +266,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -296,7 +296,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
                   </p>
                 </td>
 <td>
@@ -319,7 +319,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_left_child</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_left_child_ptr</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -349,7 +349,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_left_child</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_left_child_ptr</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -379,7 +379,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_right_child</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">get_right_child_ptr</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -409,7 +409,7 @@
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_right_child</span><span class="special">()</span></code>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">get_right_child_ptr</span><span class="special">()</span></code>
                   </p>
                 </td>
 <td>
@@ -562,14 +562,14 @@
 <div class="titlepage"><div><div><h4 class="title">
 <a name="tree_node.concepts.binary_tree_node.models"></a><a class="link" href="binary_tree_node.html#tree_node.concepts.binary_tree_node.models" title="Models">Models</a>
 </h4></div></div></div>
-<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/raw_binary_node.html" title="raw_binary_node"><code class="computeroutput"><span class="identifier">raw_binary_node</span></code></a>
-<span class="special">*</span> <a class="link" href="../reference/raw_binary_node_base.html" title="raw_binary_node_base"><code class="computeroutput"><span class="identifier">raw_binary_node_base</span></code></a>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/binary_node.html" title="binary_node&lt;T&gt;"><code class="computeroutput"><span class="identifier">binary_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/binary_node_base.html" title="binary_node_base&lt;Derived,T&gt;"><code class="computeroutput"><span class="identifier">binary_node_base</span></code></a>
 </pre>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>

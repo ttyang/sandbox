@@ -1,0 +1,39 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:has_stable_iters_selector `has_stable_iterators_selector`]
+
+[section Synopsis]
+[reference__has_stable_iterators_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the storage type does not invalidate iterators other
+than the argument during an `erase()` call, __mpl_false__ otherwise.
+
+Specialize this metafunction to return __mpl_false__ for your custom selector
+if and only if the storage type to be returned by __container_gen__ invalidates
+iterators other than the argument during an `erase()` call.
+
+[important
+    Because the iterators of __Boost_Unordered__ containers can be invalidated
+    during rehashing, this metafunction has been specialized to return
+    __mpl_false__ when passed the corresponding selectors.  Define the
+    `BOOST_UNORDERED_ITERATORS_ARE_STABLE` macro to inhibit the specializations
+    if you can ensure that such rehashing will never occur in your application.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_utility_has_stable_iters_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ has_stable_iterators_selector]
+

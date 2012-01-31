@@ -1,0 +1,197 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:breadth_first_desc_iter `breadth_first_descendant_iterator<Node>`]
+
+[section Synopsis]
+[reference__breadth_first_descendant_iterator]
+[endsect]
+
+[section Description]
+This iterator traverses the descendants of the specified root node in
+breadth-first fashion, e.g. given the following tree representation:
+
+``
+      A
+      |
+  C---+---B
+  |       |
++-+-+   +-+-+
+|   |   |   |
+D   E   F   G
+``
+
+This iterator will traverse the tree nodes in the following order:
+
+``
+C B D E F G
+``
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_breadth_first_desc_iterator_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Node`]
+        [The type of a tree node.]
+        [
+            It must model the __Tree_Node__ concept, but it can be
+            `const`-qualified.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Tree_Node_Descendant_Iterator__
+  * __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Expression][Where defined]]
+    [
+        [Value type]
+        [`value_type`]
+        [__Tree_Node_Descendant_Iterator__]
+    ]
+    [
+        [Reference type]
+        [`reference`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pointer type]
+        [`pointer`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Difference type]
+        [`difference_type`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Iterator category]
+        [`iterator_category`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Default constructor]
+        [`breadth_first_iterator();`]
+        [__Default_Constructible__]
+    ]
+    [
+        [Constructor from node]
+        [`explicit breadth_first_descendant_iterator(Node&);`]
+        [__Tree_Node_Descendant_Iterator__]
+    ]
+    [
+        [Conversion constructor]
+        [``
+            template <typename N>
+            breadth_first_descendant_iterator(
+                breadth_first_descendant_iterator<N> const&
+            );
+        ``]
+        [`breadth_first_descendant_iterator`]
+    ]
+    [
+        [Copy constructor]
+        [``
+            breadth_first_descendant_iterator(
+                breadth_first_descendant_iterator const&
+            );
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Assignment operator]
+        [``
+            breadth_first_descendant_iterator&
+                operator=(breadth_first_descendant_iterator const&);
+        ``]
+        [__Assignable__]
+    ]
+    [
+        [Dereference operator]
+        [`reference operator*() const;`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Indirection operator]
+        [`pointer operator->() const;`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Pre-increment operator]
+        [`breadth_first_descendant_iterator& operator++();`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Post-increment operator]
+        [`breadth_first_descendant_iterator operator++(int);`]
+        [__Forward_Iterator__]
+    ]
+    [
+        [Traversal state conversion operator]
+        [[^operator _traversal_state_() const;]]
+        [__Tree_Node_Iterator__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Definition][Description]]
+    [
+        [Iterator creation]
+        [[reference__make_breadth_first_descendant_iterator]]
+        [
+            Constructs and returns a `breadth_first_descendant_iterator` that
+            will iterate through the descendants of the specified node.
+        ]
+    ]
+    [
+        [Iteration]
+        [[reference__breadth_first_iterate_descendants]]
+        [
+            Iterates through the descendants of the specified node in
+            breadth-first fashion, passing each element dereferenced to
+            the specified __Unary_Function__ object.
+        ]
+    ]
+    [
+        [Equality]
+        [[reference__breadth_first_descendant_iterator__operator_equals]]
+        [Defined by the __Input_Iterator__ concept.]
+    ]
+    [
+        [Inequality]
+        [[reference__breadth_first_descendant_iterator__operator_not_equal]]
+        [Defined by the __Input_Iterator__ concept.]
+    ]
+]
+[endsect]
+
+[endsect] [/ breadth_first_descendant_iterator]
+

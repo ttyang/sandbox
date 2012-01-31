@@ -1,0 +1,262 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:nary_node_base `nary_node_base<Derived,T,Selector>`]
+
+[section Description]
+The __nary_node__ class template inherits its functionality from this class
+template.  They differ only with regard to template parameters: the
+__nary_node__ class template is meant to be used directly as a data structure,
+while `nary_node_base` is more suitable as a base class template from which
+__Tree_Node__ adaptor class templates can derive via the __nary_node_gen__
+__Type_Generator__.
+
+[important
+    This component depends on __Boost_Utility_ContainerGen__, which is not yet
+    a part of Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_nary_node_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Derived`]
+        [The most descendant type that will inherit from this one.]
+        []
+        []
+    ]
+    [
+        [`T`]
+        [The data type.]
+        []
+        []
+    ]
+    [
+        [`Selector`]
+        [
+            The type that determines the internal container types whose value
+            types are the same as the pointer type.
+        ]
+        [
+            It must be a type for which __container_gen__ returns a valid
+            container.
+        ]
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __N_ary_Tree_Node__
+  * __Base_Tree_Node__
+  * __Default_Constructible__ if `T` is __Default_Constructible__
+  * __Copy_Constructible__
+  * __Assignable__ if `T` is __Assignable__
+  * __Movable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__nary_node_base__bases]
+[endsect]
+
+[section:members Public Members]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Data type]
+        [[reference__nary_node_base__traits]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer type]
+        [[reference__nary_node_base__pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__nary_node_base__const_pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Iterator type]
+        [[reference__nary_node_base__iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__nary_node_base__const_iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Default constructor]
+        [[reference__nary_node_base__default_ctor]]
+        [__Default_Constructible__]
+    ]
+    [
+        [Constructor with data]
+        [[reference__nary_node_base__data_ctor]]
+        [__Base_Tree_Node__]
+    ]
+    [
+        [Copy constructor]
+        [[reference__nary_node_base__copy_ctor]]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Move constructor]
+        [`nary_node_base(nary_node_base&&);`]
+        [__Movable__]
+    ]
+    [
+        [Assignment operator]
+        [`nary_node_base& operator=(nary_node_base const&);`]
+        [__Assignable__]
+    ]
+    [
+        [Move assignment operator]
+        [`nary_node_base& operator=(nary_node_base&&);`]
+        [__Movable__]
+    ]
+    [
+        [Data access]
+        [[reference__nary_node_base__get_data__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Data access]
+        [[reference__nary_node_base__get_data]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__nary_node_base__get_parent_ptr]]
+        [__Tree_Node__]
+    ]
+    [
+        [Child creation with data]
+        [[reference__nary_node_base__add_child__data]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Child creation]
+        [[reference__nary_node_base__add_child]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Child copy creation]
+        [[reference__nary_node_base__add_child_copy]]
+        [__N_ary_Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__begin__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__nary_node_base__begin]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__end__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__nary_node_base__end]]
+        [__Tree_Node__]
+    ]
+    [
+        [Leaf node query]
+        [[reference__nary_node_base__empty]]
+        [__Tree_Node__]
+    ]
+    [
+        [Remove all children]
+        [[reference__nary_node_base__clear]]
+        [__Tree_Node__]
+    ]
+    [
+        [Derived access]
+        [`const_pointer get_derived() const;`]
+        [__tree_node_base__]
+    ]
+    [
+        [Derived access]
+        [`pointer get_derived();`]
+        [__tree_node_base__]
+    ]
+]
+[endsect] [/ Members]
+
+[section:non_members Non-members]
+[table
+    [[Name][Definition][Description]]
+    [
+        [Equality]
+        [[reference__nary_node_base__operator_equals]]
+        [
+            Performs in-order comparison of the data of each of the specified
+            nodes and their descendants, then compares the nodes for structural
+            equality.  Returns `true` if and only if the nodes are
+            lexicographically and structurally equal, `false` otherwise.
+        ]
+    ]
+    [
+        [Inequality]
+        [[reference__nary_node_base__operator_not_equal]]
+        [Equivalent to `!(rhs == lhs)`.]
+    ]
+    [
+        [Less]
+        [[reference__nary_node_base__operator_less_than]]
+        [
+            Performs in-order comparison of the data of each of the specified
+            nodes and their descendants, then compares the nodes for structural
+            inequality.  Returns `true` if and only if the first node is
+            lexicographically less than the second one, or if both nodes are
+            lexicographically equal but the first one is skewed further to the
+            left than the second one, `false` otherwise.
+        ]
+    ]
+    [
+        [Greater]
+        [[reference__nary_node_base__operator_greater_than]]
+        [Equivalent to `rhs < lhs`.]
+    ]
+    [
+        [Less or equal]
+        [[reference__nary_node_base__operator_less_equal]]
+        [Equivalent to `!(rhs < lhs)`.]
+    ]
+    [
+        [Greater or equal]
+        [[reference__nary_node_base__operator_greater_equal]]
+        [Equivalent to `!(lhs < rhs)`.]
+    ]
+]
+[endsect]
+
+[endsect] [/ nary_node_base]
+

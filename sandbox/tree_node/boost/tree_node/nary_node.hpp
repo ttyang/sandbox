@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -17,103 +17,133 @@
 #include <boost/tree_node/base.hpp>
 #include <boost/tree_node/depth_first_desc_iterator.hpp>
 #include <boost/tree_node/breadth_first_iterator.hpp>
-#include <boost/tree_node/algorithm/equal.hpp>
-#include <boost/tree_node/algorithm/lexicographical_compare.hpp>
+#include <boost/tree_node/algorithm/lexicographical_comp_3way.hpp>
+#include <boost/tree_node/algorithm/_detail/skew_equal.hpp>
+#include <boost/tree_node/algorithm/_detail/skew_less.hpp>
 
-//[reference__nary_node_base
 namespace boost { namespace tree_node {
 
     template <typename Derived, typename T, typename Selector>
-    class nary_node_base : public tree_node_base<Derived>
+    class nary_node_base
+      : public
+        //[reference__nary_node_base__bases
+        tree_node_base<Derived>
+        //]
     {
-        //<-
         BOOST_COPYABLE_AND_MOVABLE(nary_node_base);
         typedef typename ::boost::container_gen<Selector,Derived>::type
                 children;
-        //->
 
      public:
+        //[reference__nary_node_base__traits
         struct traits
         {
             typedef T data_type;
         };
+        //]
 
+        //[reference__nary_node_base__pointer
         typedef typename tree_node_base<Derived>::pointer
                 pointer;
+        //]
+
+        //[reference__nary_node_base__const_pointer
         typedef typename tree_node_base<Derived>::const_pointer
                 const_pointer;
+        //]
+
+        //[reference__nary_node_base__iterator
         typedef // implementation_defined
                 //<-
                 typename children::iterator
                 //->
                 iterator;
+        //]
+
+        //[reference__nary_node_base__const_iterator
         typedef // implementation_defined
                 //<-
                 typename children::const_iterator
                 //->
                 const_iterator;
+        //]
 
-        //<-
      private:
         children                   _children;
         pointer                    _parent;
         typename traits::data_type _data;
 
      public:
-        //->
+        //[reference__nary_node_base__default_ctor
         nary_node_base();
+        //]
 
+        //[reference__nary_node_base__data_ctor
         explicit nary_node_base(typename traits::data_type const& data);
+        //]
 
+        //[reference__nary_node_base__copy_ctor
         nary_node_base(nary_node_base const& copy);
-
-//<-
-#if 0
-//->
-        nary_node_base(nary_node_base&& source);
-
-        nary_node_base& operator=(nary_node_base const& copy);
-
-        nary_node_base& operator=(nary_node_base&& source);
-//<-
-#endif
+        //]
 
         nary_node_base(BOOST_RV_REF(nary_node_base) source);
 
         nary_node_base& operator=(BOOST_COPY_ASSIGN_REF(nary_node_base) copy);
 
         nary_node_base& operator=(BOOST_RV_REF(nary_node_base) source);
-//->
 
-        pointer clone() const;
-
+        //[reference__nary_node_base__get_data__const
         typename traits::data_type const& get_data() const;
+        //]
 
+        //[reference__nary_node_base__get_data
         typename traits::data_type& get_data();
+        //]
 
+        //[reference__nary_node_base__get_parent_ptr__const
         const_pointer get_parent_ptr() const;
+        //]
 
+        //[reference__nary_node_base__get_parent_ptr
         pointer get_parent_ptr();
+        //]
 
+        //[reference__nary_node_base__add_child__data
         iterator add_child(typename traits::data_type const& data);
+        //]
 
+        //[reference__nary_node_base__add_child
         iterator add_child();
+        //]
 
+        //[reference__nary_node_base__add_child_copy
         iterator add_child_copy(Derived const& copy);
+        //]
 
+        //[reference__nary_node_base__begin__const
         const_iterator begin() const;
+        //]
 
+        //[reference__nary_node_base__begin
         iterator begin();
+        //]
 
+        //[reference__nary_node_base__end__const
         const_iterator end() const;
+        //]
 
+        //[reference__nary_node_base__end
         iterator end();
+        //]
 
+        //[reference__nary_node_base__empty
         bool empty() const;
+        //]
 
+        //[reference__nary_node_base__clear
         void clear();
+        //]
 
-        //<-
      private:
         template <typename Arg>
         iterator _add_child(Arg& arg);
@@ -139,12 +169,11 @@ namespace boost { namespace tree_node {
         iterator _add_child_def_assoc(::boost::mpl::true_);
 
         iterator _add_child_def_assoc(::boost::mpl::false_);
-        // We shouldn't need all of these, but we do.
+        // We shouldn't need all of the above private methods, but we do.
 
         void _initialize(iterator& to_child);
 
         void _clone(nary_node_base const& copy);
-        //->
     };
 
     //<-
@@ -471,22 +500,22 @@ namespace boost { namespace tree_node {
         pointer p = this->get_derived();
 
         for (
-            depth_first_descendant_iterator<Derived const> copy_itr(
-                *copy.get_derived()
-            );
+            ::boost::tree_node::depth_first_descendant_iterator<
+                Derived const
+            > copy_itr(*copy.get_derived());
             copy_itr;
             ++copy_itr
         )
         {
-            switch (traversal_state(copy_itr))
+            switch (::boost::tree_node::traversal_state(copy_itr))
             {
-                case pre_order_traversal:
+                case ::boost::tree_node::pre_order_traversal:
                 {
                     p = &*p->_add_child(copy_itr->get_data());
                     break;
                 }
 
-                case post_order_traversal:
+                case ::boost::tree_node::post_order_traversal:
                 {
                     p = p->_parent;
                     break;
@@ -503,25 +532,89 @@ namespace boost { namespace tree_node {
 //[reference__nary_node_base__operator_equals
 namespace boost { namespace tree_node {
 
-    template <typename Derived, typename T, typename Selector>
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
     bool
         operator==(
-            nary_node_base<Derived,T,Selector> const& lhs
-          , nary_node_base<Derived,T,Selector> const& rhs
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
         );
 
     //<-
-    template <typename Derived, typename T, typename Selector>
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
     bool
         operator==(
-            nary_node_base<Derived,T,Selector> const& lhs
-          , nary_node_base<Derived,T,Selector> const& rhs
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
         )
     {
-        return ::boost::tree_node::equal(
-            breadth_first_iterator<Derived const>(*lhs.get_derived())
-          , breadth_first_iterator<Derived const>(*rhs.get_derived())
+        return (
+            (
+                0 == ::boost::tree_node::lexicographical_compare_3way(
+                    ::boost::tree_node::breadth_first_iterator<Derived1 const>(
+                        *lhs.get_derived()
+                    )
+                  , ::boost::tree_node::breadth_first_iterator<Derived2 const>(
+                        *rhs.get_derived()
+                    )
+                )
+            )
+         && ::boost::tree_node::_detail::skew_equal(
+                *lhs.get_derived()
+              , *rhs.get_derived()
+            )
         );
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__nary_node_base__operator_not_equal
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    bool
+        operator!=(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        );
+
+    //<-
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    inline bool
+        operator!=(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        )
+    {
+        return !(lhs == rhs);
     }
     //->
 }}  // namespace boost::tree_node
@@ -530,74 +623,228 @@ namespace boost { namespace tree_node {
 //[reference__nary_node_base__operator_less_than
 namespace boost { namespace tree_node {
 
-    template <typename Derived, typename T, typename Selector>
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
     bool
         operator<(
-            nary_node_base<Derived,T,Selector> const& lhs
-          , nary_node_base<Derived,T,Selector> const& rhs
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
         );
 
     //<-
-    template <typename Derived, typename T, typename Selector>
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
     bool
         operator<(
-            nary_node_base<Derived,T,Selector> const& lhs
-          , nary_node_base<Derived,T,Selector> const& rhs
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
         )
     {
-        return ::boost::tree_node::lexicographical_compare(
-            breadth_first_iterator<Derived const>(*lhs.get_derived())
-          , breadth_first_iterator<Derived const>(*rhs.get_derived())
+        int value = ::boost::tree_node::lexicographical_compare_3way(
+            ::boost::tree_node::breadth_first_iterator<Derived1 const>(
+                *lhs.get_derived()
+            )
+          , ::boost::tree_node::breadth_first_iterator<Derived2 const>(
+                *rhs.get_derived()
+            )
+        );
+
+        if (value < 0)
+        {
+            return true;
+        }
+
+        if (0 < value)
+        {
+            return false;
+        }
+
+        return ::boost::tree_node::_detail::skew_less(
+            *lhs.get_derived()
+          , *rhs.get_derived()
         );
     }
     //->
 }}  // namespace boost::tree_node
 //]
 
-//[reference__nary_node
+//[reference__nary_node_base__operator_greater_than
 namespace boost { namespace tree_node {
 
-    template <typename T, typename Selector = ::boost::dequeS>
-    class nary_node : public nary_node_base<nary_node<T,Selector>,T,Selector>
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    bool
+        operator>(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        );
+
+    //<-
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    inline bool
+        operator>(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        )
     {
-        //<-
+        return rhs < lhs;
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__nary_node_base__operator_less_equal
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    bool
+        operator<=(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        );
+
+    //<-
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    inline bool
+        operator<=(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        )
+    {
+        return !(rhs < lhs);
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+//[reference__nary_node_base__operator_greater_equal
+namespace boost { namespace tree_node {
+
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    bool
+        operator>=(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        );
+
+    //<-
+    template <
+        typename Derived1
+      , typename T1
+      , typename Selector1
+      , typename Derived2
+      , typename T2
+      , typename Selector2
+    >
+    inline bool
+        operator>=(
+            nary_node_base<Derived1,T1,Selector1> const& lhs
+          , nary_node_base<Derived2,T2,Selector2> const& rhs
+        )
+    {
+        return !(lhs < rhs);
+    }
+    //->
+}}  // namespace boost::tree_node
+//]
+
+namespace boost { namespace tree_node {
+
+    template <typename T, typename Selector = ::boost::boost_dequeS>
+    class nary_node
+      : public
+        //[reference__nary_node__bases
+        nary_node_base<nary_node<T,Selector>,T,Selector>
+        //]
+    {
         BOOST_COPYABLE_AND_MOVABLE(nary_node);
-        //->
+
+        //[reference__nary_node__super_t
         typedef nary_node_base<nary_node,T,Selector> super_t;
+        //]
 
      public:
+        //[reference__nary_node__traits
         typedef typename super_t::traits traits;
+        //]
+
+        //[reference__nary_node__pointer
         typedef typename super_t::pointer pointer;
+        //]
+
+        //[reference__nary_node__const_pointer
         typedef typename super_t::const_pointer const_pointer;
+        //]
+
+        //[reference__nary_node__iterator
         typedef typename super_t::iterator iterator;
+        //]
+
+        //[reference__nary_node__const_iterator
         typedef typename super_t::const_iterator const_iterator;
+        //]
 
+        //[reference__nary_node__default_ctor
         nary_node();
+        //]
 
+        //[reference__nary_node__data_ctor
         explicit nary_node(typename traits::data_type const& data);
-
-//<-
-#if 0
-//->
-        nary_node(nary_node const& copy);
-
-        nary_node(nary_node&& source);
-
-        nary_node& operator=(nary_node const& copy);
-
-        nary_node& operator=(nary_node&& source);
-//<-
-#endif
+        //]
 
         nary_node(BOOST_RV_REF(nary_node) source);
 
         nary_node& operator=(BOOST_COPY_ASSIGN_REF(nary_node) copy);
 
         nary_node& operator=(BOOST_RV_REF(nary_node) source);
-//->
     };
 
-    //<-
     template <typename T, typename Selector>
     nary_node<T,Selector>::nary_node() : super_t()
     {
@@ -632,14 +879,13 @@ namespace boost { namespace tree_node {
         super_t::operator=(::boost::move(static_cast<super_t&>(source)));
         return *this;
     }
-    //->
 }}  // namespace boost::tree_node
 //]
 
 //[reference__nary_node_gen
 namespace boost { namespace tree_node {
 
-    template <typename Selector = ::boost::dequeS>
+    template <typename Selector = ::boost::boost_dequeS>
     struct nary_node_gen
     {
         template <typename Derived, typename T>

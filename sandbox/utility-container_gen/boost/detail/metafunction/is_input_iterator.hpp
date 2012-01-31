@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Cromwell D. Enage
+// Copyright (C) 2011-2012 Cromwell D. Enage
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -6,11 +6,16 @@
 #ifndef BOOST_DETAIL_METAFUNCTION_IS_INPUT_ITERATOR_HPP_INCLUDED
 #define BOOST_DETAIL_METAFUNCTION_IS_INPUT_ITERATOR_HPP_INCLUDED
 
-#include <boost/type_traits/is_signed.hpp>
+#include <boost/config.hpp>
+
+#ifndef BOOST_NO_SFINAE
 #include <boost/type_traits/has_equal_to.hpp>
 #include <boost/type_traits/has_dereference.hpp>
 #include <boost/type_traits/has_pre_increment.hpp>
 #include <boost/type_traits/has_post_increment.hpp>
+#endif
+
+#include <boost/type_traits/is_signed.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/and.hpp>
@@ -37,13 +42,17 @@ namespace boost { namespace detail {
               , typename has_pointer<T>::type
               , typename has_reference<T>::type
             >
+#ifndef BOOST_NO_SFINAE
           , ::boost::mpl::and_<
                 ::boost::has_equal_to<T>
               , ::boost::has_dereference<T>
               , ::boost::has_pre_increment<T>
               , ::boost::has_post_increment<T>
+#endif
               , is_input_iterator_impl<T>
+#ifndef BOOST_NO_SFINAE
             >
+#endif
           , ::boost::mpl::false_
         >::type
     {

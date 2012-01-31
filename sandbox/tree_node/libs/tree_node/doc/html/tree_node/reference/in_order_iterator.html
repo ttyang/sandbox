@@ -1,23 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
-<title>in_order_iterator</title>
+<title>in_order_iterator&lt;Node&gt;</title>
 <link rel="stylesheet" href="../../boostbook.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
-<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.2">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
 <link rel="up" href="../reference.html" title="Reference">
-<link rel="prev" href="depth_first_iterator.html" title="depth_first_iterator">
-<link rel="next" href="factory.html" title="factory">
+<link rel="prev" href="post_order_desc_iter.html" title="post_order_descendant_iterator&lt;Node&gt;">
+<link rel="next" href="depth_first_iterator.html" title="depth_first_iterator&lt;Node&gt;">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="depth_first_iterator.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="factory.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="post_order_desc_iter.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="depth_first_iterator.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="tree_node.reference.in_order_iterator"></a><a class="link" href="in_order_iterator.html" title="in_order_iterator"><code class="computeroutput"><span class="identifier">in_order_iterator</span></code></a>
+<a name="tree_node.reference.in_order_iterator"></a><a class="link" href="in_order_iterator.html" title="in_order_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span></code></a>
 </h3></div></div></div>
 <div class="section">
 <div class="titlepage"><div><div><h4 class="title">
@@ -28,36 +28,25 @@
 </p>
 <pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NodePointer</span><span class="special">&gt;</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">&gt;</span>
     <span class="keyword">class</span> <span class="identifier">in_order_iterator</span>
+      <span class="special">:</span> <span class="keyword">public</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_adaptor</span><span class="special">&lt;</span>
+            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span>
+          <span class="special">,</span> <span class="identifier">Node</span><span class="special">*</span>
+          <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">use_default</span>
+          <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">bidirectional_traversal_tag</span>
+        <span class="special">&gt;</span>
     <span class="special">{</span>
-     <span class="keyword">public</span><span class="special">:</span>
-        <span class="keyword">typedef</span> <span class="identifier">NodePointer</span>                       <span class="identifier">value_type</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">&amp;</span>                 <span class="identifier">reference</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="identifier">value_type</span> <span class="keyword">const</span><span class="special">*</span>                 <span class="identifier">pointer</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">ptrdiff_t</span>                  <span class="identifier">difference_type</span><span class="special">;</span>
-        <span class="keyword">typedef</span> <span class="special">::</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">bidirectional_iterator_tag</span> <span class="identifier">iterator_category</span><span class="special">;</span>
 
+     <span class="keyword">public</span><span class="special">:</span>
         <span class="identifier">in_order_iterator</span><span class="special">();</span>
 
-        <span class="identifier">in_order_iterator</span><span class="special">(</span><span class="identifier">NodePointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">,</span> <span class="keyword">bool</span> <span class="identifier">start_left</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">);</span>
+        <span class="keyword">explicit</span> <span class="identifier">in_order_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">,</span> <span class="keyword">bool</span> <span class="identifier">start_left</span> <span class="special">=</span> <span class="keyword">true</span><span class="special">);</span>
 
-        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NP</span><span class="special">&gt;</span>
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">N</span><span class="special">&gt;</span>
         <span class="identifier">in_order_iterator</span><span class="special">(</span>
-            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NP</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span>
+            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span>
         <span class="special">);</span>
-
-        <span class="identifier">reference</span> <span class="keyword">operator</span><span class="special">*()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">pointer</span> <span class="keyword">operator</span><span class="special">-&gt;()</span> <span class="keyword">const</span><span class="special">;</span>
-
-        <span class="identifier">in_order_iterator</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">++();</span>
-
-        <span class="identifier">in_order_iterator</span> <span class="keyword">operator</span><span class="special">++(</span><span class="keyword">int</span><span class="special">);</span>
-
-        <span class="identifier">in_order_iterator</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">--();</span>
-
-        <span class="identifier">in_order_iterator</span> <span class="keyword">operator</span><span class="special">--(</span><span class="keyword">int</span><span class="special">);</span>
 
         <span class="keyword">operator</span> <span class="identifier">traversal_state</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
 
@@ -169,18 +158,18 @@
 <tbody><tr>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">NodePointer</span></code>
+                    <code class="computeroutput"><span class="identifier">Node</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    The type of a pointer to a tree node.
+                    The type of a tree node.
                   </p>
                 </td>
 <td>
                   <p>
-                    It must model the <a href="http://www.sgi.com/tech/stl/trivial.html" target="_top"><span class="bold"><strong>Trivial Iterator</strong></span></a> concept, and
-                    its value type must model the <a class="link" href="../concepts/binary_tree_node.html" title="Binary Tree Node"><span class="bold"><strong>Binary Tree Node</strong></span></a> concept.
+                    It must model the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept, but it can be
+                    <code class="computeroutput"><span class="keyword">const</span></code>-qualified.
                   </p>
                 </td>
 <td>
@@ -250,7 +239,7 @@
                 </td>
 <td>
                   <p>
-                    <a class="link" href="../concepts/tree_node_iterator.html" title="Tree Node Iterator"><span class="bold"><strong>Tree Node Iterator</strong></span></a>
+                    <a class="link" href="../concepts/full_tree_node_iterator.html" title="Full Tree Node Iterator"><span class="bold"><strong>Full Tree Node Iterator</strong></span></a>
                   </p>
                 </td>
 </tr>
@@ -342,18 +331,17 @@
 <tr>
 <td>
                   <p>
-                    Constructor from im/mutable node
+                    Constructor from node
                   </p>
                 </td>
 <td>
                   <p>
-                    <code class="computeroutput"><span class="identifier">in_order_iterator</span><span class="special">(</span><span class="identifier">NodePointer</span>
-                    <span class="keyword">const</span><span class="special">&amp;);</span></code>
+                    <code class="computeroutput"><span class="identifier">in_order_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;);</span></code>
                   </p>
                 </td>
 <td>
                   <p>
-                    <a class="link" href="../concepts/tree_node_iterator.html" title="Tree Node Iterator"><span class="bold"><strong>Tree Node Iterator</strong></span></a>
+                    <a class="link" href="../concepts/full_tree_node_iterator.html" title="Full Tree Node Iterator"><span class="bold"><strong>Full Tree Node Iterator</strong></span></a>
                   </p>
                 </td>
 </tr>
@@ -367,8 +355,8 @@
                   <p>
                     
 </p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NP</span><span class="special">&gt;</span>
-<span class="identifier">in_order_iterator</span><span class="special">(</span><span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NP</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">N</span><span class="special">&gt;</span>
+<span class="identifier">in_order_iterator</span><span class="special">(</span><span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;);</span>
 </pre>
 <p>
                   </p>
@@ -577,9 +565,8 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NodePointer</span><span class="special">&gt;</span>
-    <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NodePointer</span><span class="special">&gt;</span>
-        <span class="identifier">make_in_order_forward_iterator</span><span class="special">(</span><span class="identifier">NodePointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">);</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">&gt;</span>
+    <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span> <span class="identifier">make_in_order_forward_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">);</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
 </span></pre>
@@ -606,9 +593,8 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NodePointer</span><span class="special">&gt;</span>
-    <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NodePointer</span><span class="special">&gt;</span>
-        <span class="identifier">make_in_order_reverse_iterator</span><span class="special">(</span><span class="identifier">NodePointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">);</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">&gt;</span>
+    <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span> <span class="identifier">make_in_order_reverse_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">);</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
 </span></pre>
@@ -635,12 +621,8 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NodePointer</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">UnaryFunction</span><span class="special">&gt;</span>
-    <span class="keyword">void</span>
-        <span class="identifier">in_order_iterate_forward</span><span class="special">(</span>
-            <span class="identifier">NodePointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">node</span>
-          <span class="special">,</span> <span class="identifier">UnaryFunction</span> <span class="identifier">function</span>
-        <span class="special">);</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">UnaryFunction</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <span class="identifier">in_order_iterate_forward</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">,</span> <span class="identifier">UnaryFunction</span> <span class="identifier">function</span><span class="special">);</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
 </span></pre>
@@ -667,12 +649,8 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NodePointer</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">UnaryFunction</span><span class="special">&gt;</span>
-    <span class="keyword">void</span>
-        <span class="identifier">in_order_iterate_reverse</span><span class="special">(</span>
-            <span class="identifier">NodePointer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">node</span>
-          <span class="special">,</span> <span class="identifier">UnaryFunction</span> <span class="identifier">function</span>
-        <span class="special">);</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">UnaryFunction</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <span class="identifier">in_order_iterate_reverse</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">,</span> <span class="identifier">UnaryFunction</span> <span class="identifier">function</span><span class="special">);</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
 </span></pre>
@@ -699,11 +677,11 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NP1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">NP2</span><span class="special">&gt;</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">N1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">N2</span><span class="special">&gt;</span>
     <span class="keyword">bool</span>
         <span class="keyword">operator</span><span class="special">==(</span>
-            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NP1</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
-          <span class="special">,</span> <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NP2</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">N1</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+          <span class="special">,</span> <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">N2</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
         <span class="special">);</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
@@ -729,11 +707,11 @@
 </p>
 <pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
 
-    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">NP1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">NP2</span><span class="special">&gt;</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">N1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">N2</span><span class="special">&gt;</span>
     <span class="keyword">bool</span>
         <span class="keyword">operator</span><span class="special">!=(</span>
-            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NP1</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
-          <span class="special">,</span> <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">NP2</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+            <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">N1</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+          <span class="special">,</span> <span class="identifier">in_order_iterator</span><span class="special">&lt;</span><span class="identifier">N2</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
         <span class="special">);</span>
 
 <span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
@@ -753,7 +731,7 @@
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
 <td align="left"></td>
-<td align="right"><div class="copyright-footer">Copyright &#169; 2011 Cromwell D. Enage<p>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
         Distributed under the Boost Software License, Version 1.0. (See accompanying
         file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
@@ -761,7 +739,7 @@
 </tr></table>
 <hr>
 <div class="spirit-nav">
-<a accesskey="p" href="depth_first_iterator.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="factory.html"><img src="../../images/next.png" alt="Next"></a>
+<a accesskey="p" href="post_order_desc_iter.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="depth_first_iterator.html"><img src="../../images/next.png" alt="Next"></a>
 </div>
 </body>
 </html>

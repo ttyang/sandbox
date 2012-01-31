@@ -1,7 +1,9 @@
 //=======================================================================
 // Copyright 1997, 1998, 1999, 2000 University of Notre Dame.
 // Copyright 2010 Thomas Claveirole
-// Authors: Andrew Lumsdaine, Lie-Quan Lee, Jeremy G. Siek, Thomas Claveirole
+// Copyright 2011-2012 Cromwell D. Enage
+// Authors: Andrew Lumsdaine, Lie-Quan Lee, Jeremy G. Siek, Thomas Claveirole,
+//          Cromwell D. Enage
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt or copy at
@@ -11,6 +13,7 @@
 #ifndef BOOST_UTILITY_IS_RANDOM_ACCESS_SELECTOR_HPP_INCLUDED
 #define BOOST_UTILITY_IS_RANDOM_ACCESS_SELECTOR_HPP_INCLUDED
 
+#include <boost/config.hpp>
 #include <boost/mpl/bool.hpp>
 #include <boost/mpl/aux_/lambda_support.hpp>
 #include <boost/utility/container_selector.hpp>
@@ -33,12 +36,23 @@ namespace boost {
     };
 
     template <>
+    struct is_random_access_selector<dequeS> : ::boost::mpl::true_
+    {
+    };
+
+#if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+    template <>
+    struct is_random_access_selector<boost_vecS> : ::boost::mpl::true_
+    {
+    };
+
+    template <>
     struct is_random_access_selector<stable_vecS> : ::boost::mpl::true_
     {
     };
 
     template <>
-    struct is_random_access_selector<dequeS> : ::boost::mpl::true_
+    struct is_random_access_selector<boost_dequeS> : ::boost::mpl::true_
     {
     };
 
@@ -62,6 +76,7 @@ namespace boost {
     struct is_random_access_selector<flat_multimapS> : ::boost::mpl::true_
     {
     };
+#endif
 #endif
     //->
 }  // namespace boost

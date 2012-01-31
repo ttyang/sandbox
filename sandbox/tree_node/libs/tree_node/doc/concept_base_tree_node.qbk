@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -15,16 +15,18 @@ functionality for greater reuse.
 
 In practice, each [*Base Tree Node] model must do the following:
 
-  * Inherit from either __tree_node_base__, __shared_tree_node_base__, or
-    the return type of a __Type_Generator__.
+  * Inherit from either __tree_node_base__ or the return type of a
+    __Type_Generator__.
   * Take in the derived type and the data type as template parameters.
-  * Define the requisite constructors in `protected` or `public` scope.
 
 
 [endsect]
 
 [section Refinement of]
-__Tree_Node__
+
+  * __Tree_Node__
+  * __Default_Constructible__
+
 [endsect]
 
 [variablelist Notation
@@ -36,12 +38,13 @@ __Tree_Node__
 ]
 
 [section:types Associated Types]
-No additional types beyond those defined in the __Tree_Node__ concept.
+No additional types beyond those defined in the __Tree_Node__ and
+__Default_Constructible__ concepts.
 [endsect]
 
 [section:expressions Valid Expressions and Semantics]
-In addition to the expressions defined in the __Tree_Node__ concept, the
-following expressions must be valid.
+In addition to the expressions defined in the __Tree_Node__ and
+__Default_Constructible__ concepts, the following expressions must be valid.
 
 [table
     [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
@@ -59,6 +62,13 @@ following expressions must be valid.
         [Returns a pointer to the same immutable `Node` object.]
         [Constant]
     ]
+    [
+        [Constructor with data]
+        [`Base(data)`]
+        []
+        [Constructs a `Base` object that stores the specified data.]
+        []
+    ]
 ]
 
 Also, the following expressions must be valid from within any `Node` member
@@ -66,20 +76,6 @@ function.
 
 [table
     [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
-    [
-        [Default constructor]
-        [`Base()`]
-        []
-        [Default-constructs a `Base` object.]
-        [Constant]
-    ]
-    [
-        [Constructor with data]
-        [`Base(data)`]
-        []
-        [Constructs a `Base` object that stores the specified data.]
-        [Constant]
-    ]
     [
         [Shallow update]
         [`base->shallow_update_derived()`]
@@ -113,13 +109,12 @@ function.
 
 [section Models]
 
-  * __raw_binary_node_base__
-  * __raw_node_base__
-  * __simple_node_base__
-  * __raw_associative_node_base__
-  * __simple_associative_node_base__
-  * __tree_node_with_child_range_access_base__
+  * __binary_node_base__
+  * __nary_node_base__
+  * __associative_node_base__
   * __tree_node_with_depth_base__
+  * __tree_node_with_position_base__
+  * __tree_node_with_red_black_flag_base__
 
 [endsect]
 

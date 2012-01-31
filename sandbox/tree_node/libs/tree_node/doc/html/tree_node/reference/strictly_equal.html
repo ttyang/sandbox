@@ -1,0 +1,109 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>strictly_equal()</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="equal.html" title="equal()">
+<link rel="next" href="lexicographical_compare.html" title="lexicographical_compare()">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="equal.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="lexicographical_compare.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.reference.strictly_equal"></a><a class="link" href="strictly_equal.html" title="strictly_equal()"><code class="computeroutput"><span class="identifier">strictly_equal</span><span class="special">()</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.strictly_equal.synopsis"></a><a class="link" href="strictly_equal.html#tree_node.reference.strictly_equal.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">Iterator1</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iterator2</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">KeyCompare</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ValueCompare</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">bool</span>
+        <span class="identifier">strictly_equal</span><span class="special">(</span>
+            <span class="identifier">Iterator1</span> <span class="identifier">itr1</span>
+          <span class="special">,</span> <span class="identifier">Iterator2</span> <span class="identifier">itr2</span>
+          <span class="special">,</span> <span class="identifier">KeyCompare</span> <span class="identifier">key_comp</span>
+          <span class="special">,</span> <span class="identifier">ValueCompare</span> <span class="identifier">value_comp</span>
+        <span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iterator2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">BinaryPredicate</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <span class="identifier">strictly_equal</span><span class="special">(</span><span class="identifier">Iterator1</span> <span class="identifier">itr1</span><span class="special">,</span> <span class="identifier">Iterator2</span> <span class="identifier">itr2</span><span class="special">,</span> <span class="identifier">BinaryPredicate</span> <span class="identifier">comp</span><span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Iterator1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Iterator2</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <span class="identifier">strictly_equal</span><span class="special">(</span><span class="identifier">Iterator1</span> <span class="identifier">itr1</span><span class="special">,</span> <span class="identifier">Iterator2</span> <span class="identifier">itr2</span><span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.strictly_equal.description"></a><a class="link" href="strictly_equal.html#tree_node.reference.strictly_equal.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          TODO.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.strictly_equal.definition"></a><a class="link" href="strictly_equal.html#tree_node.reference.strictly_equal.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/algorithm/equal.hpp" target="_top">boost/tree_node/algorithm/equal.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="equal.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="lexicographical_compare.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

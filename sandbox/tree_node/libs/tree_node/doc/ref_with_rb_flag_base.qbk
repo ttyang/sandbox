@@ -1,0 +1,142 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_rb_flag_base
+    `with_red_black_flag_base<Derived,BaseGenerator,T1,T2>`
+]
+
+[section Description]
+The __tree_node_with_red_black_flag__ class template inherits its functionality
+from this class template.  They differ only with regard to template parameters:
+the __tree_node_with_red_black_flag__ class template is meant to be used
+directly as a data structure, while `with_red_black_flag_base` is more suitable
+as a base class template from which other __Tree_Node__ adaptor class templates
+can derive via the __tree_node_with_red_black_flag_gen__ __Type_Generator__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_with_red_black_flag_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Derived`]
+        [The most descendant type that will inherit from this one.]
+        []
+        []
+    ]
+    [
+        [`BaseGenerator`]
+        [
+            The __Metafunction_Class__ from whose return type
+            `with_red_black_flag_base` will inherit.
+        ]
+        [It must model the __Type_Generator__ concept.]
+        []
+    ]
+    [
+        [`T1`]
+        [The key type if `T2` is specified; the data type otherwise.]
+        []
+        []
+    ]
+    [
+        [`T2`]
+        [The data type if specified; ignored otherwise.]
+        []
+        [`void`]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Associative_Tree_Node__ if `T2` is specified;
+    __Non_Associative_Tree_Node__ otherwise
+  * __Base_Tree_Node__
+  * any other concept that the return type of `BaseGenerator` models
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__with_red_black_flag_base__bases]
+[endsect]
+
+[section Members]
+[table
+    [[Name][Definition][Description]]
+    [
+        [Default constructor]
+        [[reference__with_red_black_flag_base__default_ctor]]
+        [Defined by the __Default_Constructible__ concept.]
+    ]
+    [
+        [Constructor with data]
+        [[reference__with_red_black_flag_base__data_ctor]]
+        [Defined by the __Base_Tree_Node__ concept.]
+    ]
+    [
+        [Copy constructor]
+        [`with_red_black_flag_base(with_red_black_flag_base const&);`]
+        [Defined by the __Copy_Constructible__ concept.]
+    ]
+    [
+        [Move constructor]
+        [`with_red_black_flag_base(with_red_black_flag_base&&);`]
+        [Defined by the __Movable__ concept.]
+    ]
+    [
+        [Assignment operator]
+        [
+            `with_red_black_flag_base&
+            operator=(with_red_black_flag_base const&);`
+        ]
+        [Defined by the __Assignable__ concept.]
+    ]
+    [
+        [Move assignment operator]
+        [`with_red_black_flag_base& operator=(with_red_black_flag_base&&);`]
+        [Defined by the __Movable__ concept.]
+    ]
+    [
+        [Red flag query]
+        [[reference__with_red_black_flag_base__is_red]]
+        [
+            Returns `true` if the flag is set to red, `false` if it is set to
+            black.
+        ]
+    ]
+    [
+        [Black flag query]
+        [[reference__with_red_black_flag_base__is_black]]
+        [
+            Returns `true` if the flag is set to black, `false` if it is set to
+            red.
+        ]
+    ]
+    [
+        [Red flag setting]
+        [[reference__with_red_black_flag_base__set_red_flag]]
+        [
+            Sets the flag to red if the argument evaluates to `true`; sets the
+            flag to black if the argument evaluates to `false`.
+        ]
+    ]
+]
+[endsect]
+
+[section:non_members Non-members]
+None beyond those inherited from the return type of `BaseGenerator`.
+[endsect]
+
+[endsect] [/ with_red_black_flag_base]
+

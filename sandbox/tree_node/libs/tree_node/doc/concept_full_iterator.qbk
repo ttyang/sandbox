@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -20,15 +20,14 @@ __Tree_Node_Iterator__
 [variablelist Notation
     [[`Iterator`][A type that models the [*Full Tree Node Iterator] concept.]]
     [[`itr`][An object of type `Iterator`.]]
-    [[`Node`][A type that models the __Tree_Node__ concept.]]
-    [[`node`][An object of type `Node::pointer`.]]
-    [[`const_node`][An object of type `Node::const_pointer`.]]
+    [[`Node`][The value type of `Iterator`.]]
+    [[`node`][An object of type `Node&`.]]
 ]
 
 [section:types Associated Types]
 No additional types beyond those defined in the __Tree_Node_Iterator__ concept;
-however, the requirements for the value type are strengthened: its unqualified
-value type, in turn, must model the __Tree_Node__ concept.
+however, the requirements for the value type are strengthened: it must model
+the __Tree_Node__ concept.
 [endsect]
 
 [section:expressions Valid Expressions and Semantics]
@@ -44,7 +43,7 @@ are clarified.
         [Semantics]
     ]
     [
-        [Constructor from mutable node]
+        [Constructor from node]
         [``
             Iterator(node)
             Iterator itr(node)
@@ -55,31 +54,18 @@ are clarified.
             and its descendants.
         ]
     ]
-    [
-        [Constructor from immutable node]
-        [``
-            Iterator(const_node)
-            Iterator itr(const_node)
-        ``]
-        [The value type of `Iterator::value_type` must be `const`-qualified.]
-        [
-            Constructs an iterator that will iterate through the specified node
-            and its descendants.
-        ]
-    ]
 ]
 [endsect]
 
 [section Models]
 
-  * The return type of __make_breadth_first_iterator__.
-  * The return type of __make_pre_order_iterator__.
-  * The return type of __make_post_order_iterator__.
-  * The return type of __make_depth_first_iterator__.
-  * The return type of __make_in_order_forward_iterator__.
-  * The return type of __make_in_order_reverse_iterator__.
+  * __breadth_first_iterator__
+  * __pre_order_iterator__
+  * __post_order_iterator__
+  * __in_order_iterator__
+  * __depth_first_iterator__
 
 [endsect]
 
-[endsect] [/ Tree Node Iterator]
+[endsect] [/ Full Tree Node Iterator]
 

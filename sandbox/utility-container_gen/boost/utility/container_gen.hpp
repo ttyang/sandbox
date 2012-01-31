@@ -1,7 +1,7 @@
 //=======================================================================
 // Copyright 1997, 1998, 1999, 2000 University of Notre Dame.
 // Copyright 2010 Thomas Claveirole
-// Copyright 2011 Cromwell D. Enage
+// Copyright 2011-2012 Cromwell D. Enage
 // Authors: Andrew Lumsdaine, Lie-Quan Lee, Jeremy G. Siek, Thomas Claveirole,
 //          Cromwell D. Enage
 //
@@ -17,6 +17,19 @@
 #include <boost/utility/container_selector.hpp>
 
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+
+#include <vector>
+#include <deque>
+#include <list>
+#include <set>
+
+#if !defined BOOST_NO_SLIST
+#  ifdef BOOST_SLIST_HEADER
+#    include BOOST_SLIST_HEADER
+#  else
+#    include <slist>
+#  endif
+#endif
 
 #include <boost/container/vector.hpp>
 #include <boost/container/stable_vector.hpp>
@@ -46,6 +59,78 @@ namespace boost {
     template <typename ValueType>
     struct container_gen<vecS,ValueType>
     {
+        typedef ::std::vector<ValueType> type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<dequeS,ValueType>
+    {
+        typedef ::std::deque<ValueType> type;
+    };
+    //->
+
+    template <typename ValueType>
+    struct container_gen<listS,ValueType>
+    {
+        typedef ::std::list<ValueType> type;
+    };
+
+    //<-
+#if !defined BOOST_NO_SLIST
+    template <typename ValueType>
+    struct container_gen<slistS,ValueType>
+    {
+        typedef ::BOOST_STD_EXTENSION_NAMESPACE::slist<ValueType> type;
+    };
+#endif
+
+    template <typename ValueType>
+    struct container_gen<setS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::std::set<ValueType,::boost::detail::range_less>
+                  , ::std::set<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<mapS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::std::set<ValueType,::boost::detail::range_less>
+                  , ::std::set<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<multisetS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::std::multiset<ValueType,::boost::detail::range_less>
+                  , ::std::multiset<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<multimapS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::std::multiset<ValueType,::boost::detail::range_less>
+                  , ::std::multiset<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<boost_vecS,ValueType>
+    {
         typedef ::boost::container::vector<ValueType> type;
     };
 
@@ -56,27 +141,25 @@ namespace boost {
     };
 
     template <typename ValueType>
-    struct container_gen<dequeS,ValueType>
+    struct container_gen<boost_dequeS,ValueType>
     {
         typedef ::boost::container::deque<ValueType> type;
     };
-    //->
 
     template <typename ValueType>
-    struct container_gen<listS,ValueType>
+    struct container_gen<boost_listS,ValueType>
     {
         typedef ::boost::container::list<ValueType> type;
     };
 
-    //<-
     template <typename ValueType>
-    struct container_gen<slistS,ValueType>
+    struct container_gen<boost_slistS,ValueType>
     {
         typedef ::boost::container::slist<ValueType> type;
     };
 
     template <typename ValueType>
-    struct container_gen<setS,ValueType>
+    struct container_gen<boost_setS,ValueType>
     {
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
@@ -90,7 +173,7 @@ namespace boost {
     };
 
     template <typename ValueType>
-    struct container_gen<mapS,ValueType>
+    struct container_gen<boost_mapS,ValueType>
     {
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
@@ -104,7 +187,7 @@ namespace boost {
     };
 
     template <typename ValueType>
-    struct container_gen<multisetS,ValueType>
+    struct container_gen<boost_multisetS,ValueType>
     {
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
@@ -118,7 +201,7 @@ namespace boost {
     };
 
     template <typename ValueType>
-    struct container_gen<multimapS,ValueType>
+    struct container_gen<boost_multimapS,ValueType>
     {
         typedef typename ::boost::mpl::if_<
                     ::boost::detail::is_container<ValueType>
@@ -127,6 +210,62 @@ namespace boost {
                       , ::boost::detail::range_less
                     >
                   , ::boost::container::multiset<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<flat_setS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::boost::container::flat_set<
+                        ValueType
+                      , ::boost::detail::range_less
+                    >
+                  , ::boost::container::flat_set<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<flat_mapS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::boost::container::flat_set<
+                        ValueType
+                      , ::boost::detail::range_less
+                    >
+                  , ::boost::container::flat_set<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<flat_multisetS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::boost::container::flat_multiset<
+                        ValueType
+                      , ::boost::detail::range_less
+                    >
+                  , ::boost::container::flat_multiset<ValueType>
+                >::type
+                type;
+    };
+
+    template <typename ValueType>
+    struct container_gen<flat_multimapS,ValueType>
+    {
+        typedef typename ::boost::mpl::if_<
+                    ::boost::detail::is_container<ValueType>
+                  , ::boost::container::flat_multiset<
+                        ValueType
+                      , ::boost::detail::range_less
+                    >
+                  , ::boost::container::flat_multiset<ValueType>
                 >::type
                 type;
     };
@@ -202,67 +341,11 @@ namespace boost {
                 >::type
                 type;
     };
-
-    template <typename ValueType>
-    struct container_gen<flat_setS,ValueType>
-    {
-        typedef typename ::boost::mpl::if_<
-                    ::boost::detail::is_container<ValueType>
-                  , ::boost::container::flat_set<
-                        ValueType
-                      , ::boost::detail::range_less
-                    >
-                  , ::boost::container::flat_set<ValueType>
-                >::type
-                type;
-    };
-
-    template <typename ValueType>
-    struct container_gen<flat_mapS,ValueType>
-    {
-        typedef typename ::boost::mpl::if_<
-                    ::boost::detail::is_container<ValueType>
-                  , ::boost::container::flat_set<
-                        ValueType
-                      , ::boost::detail::range_less
-                    >
-                  , ::boost::container::flat_set<ValueType>
-                >::type
-                type;
-    };
-
-    template <typename ValueType>
-    struct container_gen<flat_multisetS,ValueType>
-    {
-        typedef typename ::boost::mpl::if_<
-                    ::boost::detail::is_container<ValueType>
-                  , ::boost::container::flat_multiset<
-                        ValueType
-                      , ::boost::detail::range_less
-                    >
-                  , ::boost::container::flat_multiset<ValueType>
-                >::type
-                type;
-    };
-
-    template <typename ValueType>
-    struct container_gen<flat_multimapS,ValueType>
-    {
-        typedef typename ::boost::mpl::if_<
-                    ::boost::detail::is_container<ValueType>
-                  , ::boost::container::flat_multiset<
-                        ValueType
-                      , ::boost::detail::range_less
-                    >
-                  , ::boost::container::flat_multiset<ValueType>
-                >::type
-                type;
-    };
     //->
 }  // namespace boost
 //]
 
-#else // defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#else  // defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
   //===========================================================================
   // The main container_gen traits class uses partial specialization,
@@ -286,7 +369,7 @@ namespace boost {
 }  // namespace boost
 //]
 
-#endif // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
+#endif  // !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 #endif  // BOOST_UTILITY_CONTAINER_GEN_HPP_INCLUDED
 

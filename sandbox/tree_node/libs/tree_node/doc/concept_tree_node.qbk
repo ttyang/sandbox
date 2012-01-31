@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -57,20 +57,20 @@ inherit.
         ]
     ]
     [
-        [Child iterator type]
-        [`Node::child_iterator`]
+        [Iterator type]
+        [`Node::iterator`]
         [
             The type of iterator used to iterate through the children of a
             `Node` object.
         ]
         [
             It must model the __Input_Iterator__ concept, and it must be
-            convertible to `Node::const_child_iterator`.
+            convertible to `Node::const_iterator`.
         ]
     ]
     [
-        [Immutable child iterator type]
-        [`Node::const_child_iterator`]
+        [Immutable iterator type]
+        [`Node::const_iterator`]
         [
             The type of iterator used to iterate through the children of a
             `Node const` object.
@@ -101,28 +101,28 @@ inherit.
     ]
     [
         [Parent access]
-        [`const_node->get_parent()`]
+        [`const_node->get_parent_ptr()`]
         [`Node::const_pointer`]
         [
-            Returns the parent of the tree node, or a null pointer if the node
-            is the root.
+            Returns a pointer to the parent of the tree node, or a null pointer
+            if the node is the root.
         ]
         [Constant]
     ]
     [
         [Parent access]
-        [`node->get_parent()`]
+        [`node->get_parent_ptr()`]
         [`Node::pointer`]
         [
-            Returns the parent of the tree node, or a null pointer if the node
-            is the root.
+            Returns a pointer to the parent of the tree node, or a null pointer
+            if the node is the root.
         ]
         [Constant]
     ]
     [
         [Children range begin access]
-        [`const_node->get_child_begin()`]
-        [`Node::const_child_iterator`]
+        [`const_node->begin()`]
+        [`Node::const_iterator`]
         [
             Returns an iterator pointing to the beginning of the range of
             children of the tree node.  If the range is empty, then the
@@ -132,8 +132,8 @@ inherit.
     ]
     [
         [Children range begin access]
-        [`node->get_child_begin()`]
-        [`Node::child_iterator`]
+        [`node->begin()`]
+        [`Node::iterator`]
         [
             Returns an iterator pointing to the beginning of the range of
             children of the tree node.  If the range is empty, then the
@@ -143,8 +143,8 @@ inherit.
     ]
     [
         [Children range past-the-end access]
-        [`const_node->get_child_end()`]
-        [`Node::const_child_iterator`]
+        [`const_node->end()`]
+        [`Node::const_iterator`]
         [
             Returns an iterator pointing past the end of the range of children
             of the tree node.
@@ -153,8 +153,8 @@ inherit.
     ]
     [
         [Children range past-the-end access]
-        [`node->get_child_end()`]
-        [`Node::child_iterator`]
+        [`node->end()`]
+        [`Node::iterator`]
         [
             Returns an iterator pointing past the end of the range of children
             of the tree node.
@@ -162,51 +162,39 @@ inherit.
         [Constant]
     ]
     [
-        [Children range]
-        [`const_node->get_children()`]
-        [[^_std_pair_<Node::const_child_iterator,Node::const_child_iterator>]]
+        [Leaf node query]
+        [`const_node->empty()`]
+        [`bool`]
         [
-            Returns a pair `p` such that `[p.first, p.second)` is the range of
-            children of the tree node.
+            Equivalent to `const_node->begin() == const_node->end()`, but may
+            be more efficient in certain cases.
         ]
-        [Constant]
-    ]
-    [
-        [Children range]
-        [`node->get_children()`]
-        [[^_std_pair_<Node::child_iterator,Node::child_iterator>]]
-        [
-            Returns a pair `p` such that `[p.first, p.second)` is the range of
-            children of the tree node.
-        ]
-        [Constant]
+        [Linear with respect to the number of children]
     ]
     [
         [Remove all children]
-        [`node->remove_all_children()`]
+        [`node->clear()`]
         [`void`]
         [Removes all children from the tree node.]
-        [Linear with respect to the number of children and its descendants]
+        [Linear with respect to the number of children and their descendants]
     ]
 ]
 [endsect] [/ Valid Expressions and Semantics]
 
 [section Models]
 
-  * __raw_binary_node__
-  * __raw_binary_node_base__
-  * __raw_node__
-  * __raw_node_base__
-  * __simple_node__
-  * __simple_node_base__
-  * __raw_associative_node__
-  * __raw_associative_node_base__
-  * __simple_associative_node__
-  * __simple_associative_node_base__
-  * __tree_node_with_child_range_access__
-  * __tree_node_with_child_range_access_base__
+  * __binary_node__
+  * __binary_node_base__
+  * __nary_node__
+  * __nary_node_base__
+  * __associative_node__
+  * __associative_node_base__
   * __tree_node_with_depth__
   * __tree_node_with_depth_base__
+  * __tree_node_with_position__
+  * __tree_node_with_position_base__
+  * __tree_node_with_red_black_flag__
+  * __tree_node_with_red_black_flag_base__
 
 [endsect]
 

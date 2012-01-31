@@ -1,12 +1,12 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
     [@http://www.boost.org/LICENSE_1_0.txt])
 =============================================================================/]
 
-[section:in_order_iterator `in_order_iterator`]
+[section:in_order_iterator `in_order_iterator<Node>`]
 
 [section Synopsis]
 [reference__in_order_iterator]
@@ -53,11 +53,11 @@ G B F A E C D
 [table
     [[Parameter][Description][Requirements][Default]]
     [
-        [`NodePointer`]
-        [The type of a pointer to a tree node.]
+        [`Node`]
+        [The type of a tree node.]
         [
-            It must model the __Trivial_Iterator__ concept, and its value type
-            must model the __Binary_Tree_Node__ concept.
+            It must model the __Tree_Node__ concept, but it can be
+            `const`-qualified.
         ]
         []
     ]
@@ -84,7 +84,7 @@ None.
     [
         [Value type]
         [`value_type`]
-        [__Tree_Node_Iterator__]
+        [__Full_Tree_Node_Iterator__]
     ]
     [
         [Reference type]
@@ -112,15 +112,15 @@ None.
         [__Default_Constructible__]
     ]
     [
-        [Constructor from im/mutable node]
-        [`in_order_iterator(NodePointer const&);`]
-        [__Tree_Node_Iterator__]
+        [Constructor from node]
+        [`in_order_iterator(Node&);`]
+        [__Full_Tree_Node_Iterator__]
     ]
     [
         [Conversion constructor]
         [``
-            template <typename NP>
-            in_order_iterator(in_order_iterator<NP> const&);
+            template <typename N>
+            in_order_iterator(in_order_iterator<N> const&);
         ``]
         [`in_order_iterator`]
     ]

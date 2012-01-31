@@ -1,0 +1,676 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>depth_first_descendant_iterator&lt;Node&gt;</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.3">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="depth_first_iterator.html" title="depth_first_iterator&lt;Node&gt;">
+<link rel="next" href="traversal_state.html" title="traversal_state">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="depth_first_iterator.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="traversal_state.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.reference.depth_first_desc_iter"></a><a class="link" href="depth_first_desc_iter.html" title="depth_first_descendant_iterator&lt;Node&gt;"><code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.synopsis"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">depth_first_descendant_iterator</span>
+      <span class="special">:</span> <span class="keyword">public</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">iterator_adaptor</span><span class="special">&lt;</span>
+            <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span>
+        <span class="comment">//, typename Node::iterator or typename Node::const_iterator
+</span>          <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">use_default</span>
+          <span class="special">,</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">forward_traversal_tag</span>
+        <span class="special">&gt;</span>
+    <span class="special">{</span>
+
+     <span class="keyword">public</span><span class="special">:</span>
+        <span class="identifier">depth_first_descendant_iterator</span><span class="special">();</span>
+
+        <span class="keyword">explicit</span> <span class="identifier">depth_first_descendant_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">);</span>
+
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">N</span><span class="special">&gt;</span>
+        <span class="identifier">depth_first_descendant_iterator</span><span class="special">(</span>
+            <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">other</span>
+        <span class="special">);</span>
+
+        <span class="keyword">operator</span> <span class="identifier">traversal_state</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+    <span class="special">};</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.description"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          This iterator traverses the specified root node and all its descendants
+          in depth-first fashion, e.g. given the following tree representation:
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting">      <span class="identifier">A</span>
+      <span class="special">|</span>
+  <span class="identifier">C</span><span class="special">---+---</span><span class="identifier">B</span>
+  <span class="special">|</span>       <span class="special">|</span>
+<span class="special">+-+-+</span>   <span class="special">+-+-+</span>
+<span class="special">|</span>   <span class="special">|</span>   <span class="special">|</span>   <span class="special">|</span>
+<span class="identifier">D</span>   <span class="identifier">E</span>   <span class="identifier">F</span>   <span class="identifier">G</span>
+</pre>
+<p>
+        </p>
+<p>
+          This iterator will traverse the tree nodes in the following order:
+        </p>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="identifier">C</span>  <span class="identifier">pre_order_traversal</span>
+<span class="identifier">D</span>  <span class="identifier">pre_order_traversal</span>
+<span class="identifier">D</span>  <span class="identifier">post_order_traversal</span>
+<span class="identifier">E</span>  <span class="identifier">pre_order_traversal</span>
+<span class="identifier">E</span>  <span class="identifier">post_order_traversal</span>
+<span class="identifier">C</span>  <span class="identifier">post_order_traversal</span>
+<span class="identifier">B</span>  <span class="identifier">pre_order_traversal</span>
+<span class="identifier">F</span>  <span class="identifier">pre_order_traversal</span>
+<span class="identifier">F</span>  <span class="identifier">post_order_traversal</span>
+<span class="identifier">G</span>  <span class="identifier">pre_order_traversal</span>
+<span class="identifier">G</span>  <span class="identifier">post_order_traversal</span>
+<span class="identifier">B</span>  <span class="identifier">post_order_traversal</span>
+</pre>
+<p>
+        </p>
+<p>
+          The traversal state conversion operator of this iterator will yield each
+          value in the column on the right at the appropriate iteration.
+        </p>
+<p>
+          This iterator is ideal for algorithms that need to perform both preprocessing
+          and postprocessing of a tree node, e.g. the copy constructors of the <a class="link" href="binary_node.html" title="binary_node&lt;T&gt;"><code class="computeroutput"><span class="identifier">binary_node</span></code></a>,
+          <a class="link" href="nary_node.html" title="nary_node&lt;T,Selector&gt;"><code class="computeroutput"><span class="identifier">nary_node</span></code></a>,
+          and <a class="link" href="associative_node.html" title="associative_node&lt;Key,Data,AssociativeContainerSelector&gt;"><code class="computeroutput"><span class="identifier">associative_node</span></code></a> implementations.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.definition"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+          
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/depth_first_iterator.hpp" target="_top">boost/tree_node/depth_first_desc_iterator.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.tpl_param"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.tpl_param" title="Template Parameters">Template
+        Parameters</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Parameter
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Requirements
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Default
+                  </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of a tree node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    It must model the <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept, but it can be
+                    <code class="computeroutput"><span class="keyword">const</span></code>-qualified.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.model_of"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.model_of" title="Model of">Model
+        of</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../concepts/tree_node_desc_iterator.html" title="Tree Node Descendant Iterator"><span class="bold"><strong>Tree Node Descendant Iterator</strong></span></a>
+<span class="special">*</span> <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.public_bases"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.public_bases" title="Public Base Classes">Public
+        Base Classes</a>
+</h4></div></div></div>
+<p>
+          None.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.members"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.members" title="Members">Members</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Value type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">value_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a class="link" href="../concepts/tree_node_desc_iterator.html" title="Tree Node Descendant Iterator"><span class="bold"><strong>Tree Node Descendant Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Reference type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">reference</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Pointer type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Distance type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">difference_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iterator category
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">iterator_category</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Default constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span><span class="special">();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/DefaultConstructible.html" target="_top"><span class="bold"><strong>Default Constructible</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Constructor from node
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a class="link" href="../concepts/tree_node_desc_iterator.html" title="Tree Node Descendant Iterator"><span class="bold"><strong>Tree Node Descendant Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Conversion constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">N</span><span class="special">&gt;</span>
+<span class="identifier">depth_first_descendant_iterator</span><span class="special">(</span>
+    <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span>
+<span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs a <code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span></code>
+                    object that will point to the same element that the specified
+                    iterator points to.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Copy constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">depth_first_descendant_iterator</span><span class="special">(</span>
+    <span class="identifier">depth_first_descendant_iterator</span> <span class="keyword">const</span><span class="special">&amp;</span>
+<span class="special">);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Assignment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">depth_first_descendant_iterator</span><span class="special">&amp;</span>
+    <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">depth_first_descendant_iterator</span> <span class="keyword">const</span><span class="special">&amp;);</span>
+</pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Dereference operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">reference</span> <span class="keyword">operator</span><span class="special">*()</span> <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Indirection operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">pointer</span> <span class="keyword">operator</span><span class="special">-&gt;()</span> <span class="keyword">const</span><span class="special">;</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Pre-increment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">++();</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Post-increment operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span>
+                    <span class="keyword">operator</span><span class="special">++(</span><span class="keyword">int</span><span class="special">);</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined in the <a href="http://www.sgi.com/tech/stl/ForwardIterator.html" target="_top"><span class="bold"><strong>Forward Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Traversal state conversion operator
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="literal">operator <a class="link" href="traversal_state.html" title="traversal_state">traversal_state</a>()
+                    const;</code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns <code class="computeroutput"><span class="identifier">pre_order_traversal</span></code>
+                    if this iterator has not yet examined the children of the current
+                    node, <code class="computeroutput"><span class="identifier">post_order_traversal</span></code>
+                    if this iterator has examined all of the children of the current
+                    node, or <code class="computeroutput"><span class="identifier">no_traversal</span></code>
+                    if this iterator is not dereferenceable.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.depth_first_desc_iter.non_members"></a><a class="link" href="depth_first_desc_iter.html#tree_node.reference.depth_first_desc_iter.non_members" title="Non-members">Non-members</a>
+</h4></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Definition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Iterator creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">&gt;</span>
+    <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node</span><span class="special">&gt;</span>
+        <span class="identifier">make_depth_first_descendant_iterator</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constructs and returns a <code class="computeroutput"><span class="identifier">depth_first_descendant_iterator</span></code>
+                    that will iterate through the descendants of the specified node.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iteration
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">BinaryFunction</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <span class="identifier">depth_first_iterate_descendants</span><span class="special">(</span><span class="identifier">Node</span><span class="special">&amp;</span> <span class="identifier">node</span><span class="special">,</span> <span class="identifier">BinaryFunction</span> <span class="identifier">function</span><span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Iterates through the descendants of the specified node in depth-first
+                    fashion, passing each element dereferenced to the specified
+                    <a href="http://www.sgi.com/tech/stl/UnaryFunction.html" target="_top"><span class="bold"><strong>Unary Function</strong></span></a> object.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Equality
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Node2</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span>
+        <span class="keyword">operator</span><span class="special">==(</span>
+            <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node1</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+          <span class="special">,</span> <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node2</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+        <span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.sgi.com/tech/stl/InputIterator.html" target="_top"><span class="bold"><strong>Input Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Inequality
+                  </p>
+                </td>
+<td>
+                  <p>
+                    
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">tree_node</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Node1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Node2</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span>
+        <span class="keyword">operator</span><span class="special">!=(</span>
+            <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node1</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">lhs</span>
+          <span class="special">,</span> <span class="identifier">depth_first_descendant_iterator</span><span class="special">&lt;</span><span class="identifier">Node2</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">rhs</span>
+        <span class="special">);</span>
+
+<span class="special">}}</span>  <span class="comment">// namespace boost::tree_node
+</span></pre>
+<p>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Defined by the <a href="http://www.sgi.com/tech/stl/InputIterator.html" target="_top"><span class="bold"><strong>Input Iterator</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011 -2012 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="depth_first_iterator.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="traversal_state.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:associative_node_gen `associative_node_gen<Selector>`]
+
+[section Synopsis]
+[reference__associative_node_gen]
+[endsect]
+
+[section Description]
+TODO.
+
+[important
+    This component depends on __Boost_Utility_ContainerGen__, which is not yet
+    a part of Boost.  For now, you must perform a Subversion checkout from the
+    __SVN_Trac__.
+]
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_associative_node_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+__Type_Generator__
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Selector`]
+        [
+            The type that determines the internal container types of
+            __associative_node_base__.
+        ]
+        [
+            It must be a type for which __associative_container_gen__ returns
+            a recursive, move-aware container.
+        ]
+        [`boost_mapS`]
+    ]
+]
+[endsect]
+
+[section:expressions Expression Semantics]
+Let `Derived` be the type that will inherit from __associative_node_base__.
+Let `Key` be the key type.
+Let `Data` be the data type.
+Let `Selector` be a valid `associative_node_gen` template argument.
+
+``
+    typedef _mpl_apply_wrap3_<
+        associative_node_gen<Selector>
+      , Derived
+      , Key
+      , Data
+    >::type r;
+``
+
+[*Return type:] [^_associative_node_base_<Derived,Key,Data,Selector>]
+
+[endsect]
+
+[section Complexity]
+Compile time.
+[endsect]
+
+[endsect] [/ associative_node_gen]
+

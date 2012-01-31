@@ -1,5 +1,5 @@
 [/=============================================================================
-    Copyright (C) 2011 Cromwell D. Enage
+    Copyright (C) 2011-2012 Cromwell D. Enage
 
     Distributed under the Boost Software License, Version 1.0.
     (See accompanying file LICENSE_1_0.txt or copy at
@@ -35,18 +35,14 @@ __Tree_Node_Iterator__
     ]
     [
         [`node`]
-        [An object of type `Node::pointer`.]
-    ]
-    [
-        [`const_node`]
-        [An object of type `Node::const_pointer`.]
+        [An object of type `Node&`.]
     ]
 ]
 
 [section:types Associated Types]
 No additional types beyond those defined in the __Tree_Node_Iterator__ concept;
-however, the requirements for the value type are strengthened: its value type,
-in turn, must model the __Forward_Iterator__ concept.
+however, the requirements for the value type are strengthened: it must be the
+appropriate iterator type of `Node`.
 [endsect]
 
 [section:expressions Valid Expressions and Semantics]
@@ -62,7 +58,7 @@ are clarified.
         [Semantics]
     ]
     [
-        [Constructor from mutable node]
+        [Constructor from node]
         [``
             Iterator(node)
             Iterator itr(node)
@@ -73,30 +69,15 @@ are clarified.
             the specified node.
         ]
     ]
-    [
-        [Constructor from immutable node]
-        [``
-            Iterator(const_node)
-            Iterator itr(const_node)
-        ``]
-        [
-            The value type of `Iterator` must be the value type of
-            `Node::const_child_iterator`.
-        ]
-        [
-            Constructs an iterator that will iterate through the descendants of
-            the specified node.
-        ]
-    ]
 ]
 [endsect]
 
 [section Models]
 
-  * The return type of __make_breadth_first_descendant_iterator__.
-  * The return type of __make_pre_order_descendant_iterator__.
-  * The return type of __make_post_order_descendant_iterator__.
-  * The return type of __make_depth_first_descendant_iterator__.
+  * __breadth_first_descendant_iterator__
+  * __pre_order_descendant_iterator__
+  * __post_order_descendant_iterator__
+  * __depth_first_descendant_iterator__
 
 [endsect]
 
