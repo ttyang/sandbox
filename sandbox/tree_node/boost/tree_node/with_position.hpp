@@ -74,6 +74,10 @@ namespace boost { namespace tree_node {
         with_position_base&
             operator=(BOOST_RV_REF(with_position_base) source);
 
+     protected:
+        ~with_position_base();
+
+     public:
         //[reference__with_position_base__get_position__const
         const_iterator get_position() const;
         //]
@@ -94,12 +98,9 @@ namespace boost { namespace tree_node {
       , typename T1
       , typename T2
     >
-    with_position_base<
-        Derived
-      , BaseGenerator
-      , T1
-      , T2
-    >::with_position_base() : super_t(), _position()
+    with_position_base<Derived,BaseGenerator,T1,T2>::with_position_base()
+      : super_t()
+      , _position()
     {
     }
 
@@ -167,6 +168,16 @@ namespace boost { namespace tree_node {
         }
 
         return *this;
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    with_position_base<Derived,BaseGenerator,T1,T2>::~with_position_base()
+    {
     }
 
     template <

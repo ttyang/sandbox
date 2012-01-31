@@ -114,6 +114,10 @@ namespace boost { namespace tree_node {
         associative_node_base&
             operator=(BOOST_RV_REF(associative_node_base) source);
 
+     protected:
+        ~associative_node_base();
+
+     public:
         //[reference__associative_node_base__get_data__const
         typename traits::data_type const& get_data() const;
         //]
@@ -316,6 +320,11 @@ namespace boost { namespace tree_node {
         }
 
         return *this;
+    }
+
+    template <typename Derived, typename K, typename D, typename A>
+    associative_node_base<Derived,K,D,A>::~associative_node_base()
+    {
     }
 
     template <typename Derived, typename K, typename D, typename A>

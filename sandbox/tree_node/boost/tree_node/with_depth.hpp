@@ -76,6 +76,10 @@ namespace boost { namespace tree_node {
 
         with_depth_base& operator=(BOOST_RV_REF(with_depth_base) source);
 
+     protected:
+        ~with_depth_base();
+
+     public:
         //[reference__with_depth_base__get_depth
         Depth const& get_depth() const;
         //]
@@ -170,6 +174,17 @@ namespace boost { namespace tree_node {
         }
 
         return *this;
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+      , typename Depth
+    >
+    with_depth_base<Derived,BaseGenerator,T1,T2,Depth>::~with_depth_base()
+    {
     }
 
     template <

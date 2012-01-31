@@ -21,6 +21,8 @@ namespace boost { namespace tree_node {
                 const_pointer;
 
      protected:
+        ~tree_node_base();
+
         //[reference__tree_node_base__shallow_update_impl
         void shallow_update_impl();
         //]
@@ -56,6 +58,11 @@ namespace boost { namespace tree_node {
             );
         //]
     };
+
+    template <typename Derived>
+    tree_node_base<Derived>::~tree_node_base()
+    {
+    }
 
     template <typename Derived>
     inline void tree_node_base<Derived>::shallow_update_impl()

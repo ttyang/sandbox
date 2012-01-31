@@ -74,6 +74,10 @@ namespace boost { namespace tree_node {
         with_red_black_flag_base&
             operator=(BOOST_RV_REF(with_red_black_flag_base) source);
 
+     protected:
+        ~with_red_black_flag_base();
+
+     public:
         //[reference__with_red_black_flag_base__is_red
         bool is_red() const;
         //]
@@ -173,6 +177,21 @@ namespace boost { namespace tree_node {
         }
 
         return *this;
+    }
+
+    template <
+        typename Derived
+      , typename BaseGenerator
+      , typename T1
+      , typename T2
+    >
+    with_red_black_flag_base<
+        Derived
+      , BaseGenerator
+      , T1
+      , T2
+    >::~with_red_black_flag_base()
+    {
     }
 
     template <

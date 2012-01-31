@@ -17,6 +17,9 @@ namespace boost { namespace detail {
         const_pointer get_derived() const;
 
         pointer get_derived();
+
+     protected:
+        ~base_pointee();
     };
 
     template <typename Derived>
@@ -31,6 +34,11 @@ namespace boost { namespace detail {
         base_pointee<Derived>::get_derived()
     {
         return static_cast<pointer>(this);
+    }
+
+    template <typename Derived>
+    base_pointee<Derived>::~base_pointee()
+    {
     }
 }}  // namespace boost::detail
 

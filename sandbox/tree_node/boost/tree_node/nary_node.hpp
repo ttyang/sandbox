@@ -92,6 +92,10 @@ namespace boost { namespace tree_node {
 
         nary_node_base& operator=(BOOST_RV_REF(nary_node_base) source);
 
+     protected:
+        ~nary_node_base();
+
+     public:
         //[reference__nary_node_base__get_data__const
         typename traits::data_type const& get_data() const;
         //]
@@ -176,7 +180,6 @@ namespace boost { namespace tree_node {
         void _clone(nary_node_base const& copy);
     };
 
-    //<-
     template <typename Derived, typename T, typename Selector>
     nary_node_base<Derived,T,Selector>::nary_node_base()
       : _children(), _parent(), _data()
@@ -252,6 +255,11 @@ namespace boost { namespace tree_node {
         }
 
         return *this;
+    }
+
+    template <typename Derived, typename T, typename Selector>
+    nary_node_base<Derived,T,Selector>::~nary_node_base()
+    {
     }
 
     template <typename Derived, typename T, typename Selector>
@@ -525,9 +533,7 @@ namespace boost { namespace tree_node {
 
         this->deep_update_derived();
     }
-    //->
 }}  // namespace boost::tree_node
-//]
 
 //[reference__nary_node_base__operator_equals
 namespace boost { namespace tree_node {

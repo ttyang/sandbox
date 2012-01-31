@@ -257,10 +257,10 @@ namespace boost { namespace tree_node {
 
         binary_node_base& operator=(BOOST_RV_REF(binary_node_base) source);
 
-        //[reference__binary_node_base__dtor
+     protected:
         ~binary_node_base();
-        //]
 
+     public:
         //[reference__binary_node_base__get_data__const
         typename traits::data_type const& get_data() const;
         //]
