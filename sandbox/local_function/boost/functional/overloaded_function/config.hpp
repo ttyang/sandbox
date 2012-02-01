@@ -1,5 +1,5 @@
 
-// Copyright (C) 2009-2012 Lorenzo Caminiti
+// Copyright (C) 2011-2012 Lorenzo Caminiti
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -21,7 +21,7 @@ When specified by the user, this macro must be a non-negative integer number.
 
 @See
     @RefSectId{Getting_Started, Getting Started},
-    @RefClass{overloaded_function}.
+    @RefClass{boost::overloaded_function}.
 */
 #ifndef BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_ARITY_MAX 
 #define BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_ARITY_MAX 5
@@ -38,7 +38,7 @@ order to define an overload).
 
 @See
     @RefSectId{Getting_Started, Getting Started},
-    @RefClass{overloaded_function}.
+    @RefClass{boost::overloaded_function}.
 */
 #ifndef BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_OVERLOAD_MAX
 #define BOOST_FUNCTIONAL_OVERLOADED_FUNCTION_CONFIG_OVERLOAD_MAX 5

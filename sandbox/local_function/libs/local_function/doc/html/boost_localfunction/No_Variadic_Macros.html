@@ -40,7 +40,7 @@
       macros</a> (notably, these include GCC, MSVC, and all <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
       compilers). However, in the rare case that programmers need to use this library
       on a compiler without variadic macros, this library also allows to specify
-      its macro parameters using a <a href="http://www.boost.org/doc/libs/release/libs/preprocessor/doc/index.html" target="_top">Boost.Preprocessor</a>
+      its macro parameters using a <a href="http://www.boost.org/doc/libs/release/libs/preprocessor" target="_top">Boost.Preprocessor</a>
       sequence where tokens are separated by round parenthesis <code class="computeroutput"><span class="special">()</span></code>:
     </p>
 <pre class="programlisting"><span class="special">(</span><span class="identifier">token1</span><span class="special">)</span> <span class="special">(</span><span class="identifier">token2</span><span class="special">)</span> <span class="special">...</span> <span class="comment">// All compilers.</span>
@@ -53,26 +53,29 @@
 </pre>
 <p>
       For example, the following syntax is accepted on all compilers with and without
-      variadic macros (see also <a href="../../../test/add_seq.cpp" target="_top"><code class="computeroutput"><span class="string">"add_seq.cpp"</span></code></a>):
+      variadic macros (see also <a href="../../../test/add_seq.cpp" target="_top"><code class="literal">add_seq.cpp</code></a>):
     </p>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">sum</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">factor</span> <span class="special">=</span> <span class="number">10</span><span class="special">;</span> <span class="comment">// Variables in scope to bind.</span>
+<pre class="programlisting"><span class="special">{</span>                                           <span class="comment">// Some local scope.</span>
+    <span class="keyword">int</span> <span class="identifier">sum</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">factor</span> <span class="special">=</span> <span class="number">10</span><span class="special">;</span>               <span class="comment">// Variables in scope to bind.</span>
 
-<span class="keyword">void</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span> <span class="identifier">factor</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">sum</span><span class="special">)</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">num</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
-    <span class="identifier">sum</span> <span class="special">+=</span> <span class="identifier">factor</span> <span class="special">*</span> <span class="identifier">num</span><span class="special">;</span>
-<span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">add</span><span class="special">)</span>
+    <span class="keyword">void</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">bind</span> <span class="identifier">factor</span><span class="special">)</span> <span class="special">(</span><span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">sum</span><span class="special">)</span> <span class="special">(</span><span class="keyword">int</span> <span class="identifier">num</span><span class="special">)</span> <span class="special">)</span> <span class="special">{</span>
+        <span class="identifier">sum</span> <span class="special">+=</span> <span class="identifier">factor</span> <span class="special">*</span> <span class="identifier">num</span><span class="special">;</span>                <span class="comment">// Parameters as sequence.</span>
+    <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">add</span><span class="special">)</span>
 
-<span class="identifier">add</span><span class="special">(</span><span class="number">1</span><span class="special">);</span> <span class="comment">// Call the local function (with one parameter `num`).</span>
+    <span class="identifier">add</span><span class="special">(</span><span class="number">1</span><span class="special">);</span>                                 <span class="comment">// Call the local function.</span>
+    <span class="keyword">int</span> <span class="identifier">nums</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span><span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">};</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span><span class="special">(</span><span class="identifier">nums</span><span class="special">,</span> <span class="identifier">nums</span> <span class="special">+</span> <span class="number">2</span><span class="special">,</span> <span class="identifier">add</span><span class="special">);</span>     <span class="comment">// Pass it to an algorithm.</span>
 
-<span class="keyword">int</span> <span class="identifier">nums</span><span class="special">[]</span> <span class="special">=</span> <span class="special">{</span><span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">};</span>
-<span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span><span class="special">(</span><span class="identifier">nums</span><span class="special">,</span> <span class="identifier">nums</span> <span class="special">+</span> <span class="number">2</span><span class="special">,</span> <span class="identifier">add</span><span class="special">);</span> <span class="comment">// Pass it to an algorithm.</span>
+    <span class="identifier">BOOST_CHECK</span><span class="special">(</span> <span class="identifier">sum</span> <span class="special">==</span> <span class="number">60</span> <span class="special">);</span>               <span class="comment">// Assert final summation value.</span>
+<span class="special">}</span>
 </pre>
 <p>
     </p>
 <p>
       However, on compilers with variadic macros the comma-separated syntax we have
-      seen so far is preferred because more readable (see also <a href="../../../test/add.cpp" target="_top"><code class="computeroutput"><span class="string">"add.cpp"</span></code></a>):
+      seen so far is preferred because more readable (see also <a href="../../../test/add.cpp" target="_top"><code class="literal">add.cpp</code></a>):
     </p>
 <p>
 </p>
@@ -95,8 +98,18 @@
 <p>
       Note how the same macros accept both syntaxes on compilers with variadic macros
       and only the sequence syntax on compilers without variadic macros. Finally,
-      an empty list is always specified using <code class="computeroutput"><span class="keyword">void</span></code>
-      on compilers with and without variadic macros.
+      an parameter list is always specified using <code class="computeroutput"><span class="keyword">void</span></code>
+      on compilers with and without variadic macros:
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// No parameter.</span>
+    <span class="keyword">return</span> <span class="number">10</span><span class="special">;</span>
+<span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">ten</span><span class="special">)</span>
+
+<span class="identifier">BOOST_CHECK</span><span class="special">(</span> <span class="identifier">ten</span><span class="special">()</span> <span class="special">==</span> <span class="number">10</span> <span class="special">);</span>
+</pre>
+<p>
     </p>
 <h6>
 <a name="boost_localfunction.No_Variadic_Macros.h1"></a>
@@ -104,8 +117,8 @@
       Example</a>
     </h6>
 <p>
-      The following is an example that shows a bit of all the different macro parameter
-      combinations using the sequence syntax (see also <a href="../../../test/seq.cpp" target="_top"><code class="computeroutput"><span class="string">"seq.cpp"</span></code></a>):
+      The following example shows a bit of all the different macro parameter combinations
+      using the sequence syntax (see also <a href="../../../test/seq.cpp" target="_top"><code class="literal">seq.cpp</code></a>):
     </p>
 <p>
 </p>
@@ -266,7 +279,7 @@
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Lorenzo
       Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

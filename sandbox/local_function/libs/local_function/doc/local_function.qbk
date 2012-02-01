@@ -10,8 +10,8 @@
     [copyright 2009-2012 Lorenzo Caminiti]
     [purpose declare functions at local scope]
     [license
-        Distributed under the Boost Software License, Version 1.0.
-        (See accompanying file LICENSE_1_0.txt or a copy at
+        Distributed under the Boost Software License, Version 1.0
+        (see accompanying file LICENSE_1_0.txt or a copy at
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
     [authors [Caminiti <email>lorcaminiti@gmail.com</email>, Lorenzo]]
@@ -22,21 +22,21 @@
 [def __CPP11__ [@http://www.open-std.org/JTC1/SC22/WG21/ C++11]]
 [def __C99__ [@http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899 C99]]
 [def __Boost__ [@http://www.boost.org/ Boost]]
-[def __Boost_LocalFunction__ [@http://www.boost.org/doc/libs/release/libs/local_function/doc/html/index.html Boost.LocalFunction]]
-[def __Boost_ScopeExit__ [@http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html Boost.ScopeExit]]
-[def __Boost_Test__ [@http://www.boost.org/doc/libs/release/libs/test/doc/html/index.html Boost.Test]]
-[def __Boost_Lambda__ [@http://www.boost.org/doc/libs/release/doc/html/lambda.html Boost.Lambda]]
-[def __Boost_Phoenix__ [@http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html Boost.Phoenix]]
-[def __Boost_Preprocessor__ [@http://www.boost.org/doc/libs/release/libs/preprocessor/doc/index.html Boost.Preprocessor]]
-[def __Boost_MPL__ [@http://www.boost.org/doc/libs/release/libs/mpl/doc/index.html Boost.MPL]]
-[def __Boost_ConceptCheck__ [@http://www.boost.org/doc/libs/release/libs/concept_check/doc/index.html Boost.ConceptCheck]]
-[def __Boost_Parameter__ [@http://www.boost.org/doc/libs/release/libs/parameter/doc/index.html Boost.Paramater]]
-[def __Boost_Typeof__ [@http://www.boost.org/doc/libs/release/doc/html/typeof.html Boost.Typeof]]
-[def __Boost_Function__ [@http://www.boost.org/doc/libs/release/doc/html/function.html Boost.Function]]
-[def __Boost_FunctionalOverloadedFunction__ [@http://www.boost.org/doc/libs/release/doc/html/functional/overloaded_function.html Boost.Functional/OverloadedFunction]]
-[def __Boost_TypeTraits__ [@http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html Boost.TypeTraits]]
-[def __Boost_Utility__ [@http://www.boost.org/doc/libs/release/libs/utility/doc/html/index.html Boost.Utility]]
-[def __Boost_Chrono__ [@http://www.boost.org/doc/libs/release/libs/chrono/doc/html/index.html Boost.Chrono]]
+[def __Boost_LocalFunction__ [@http://www.boost.org/doc/libs/release/libs/local_function Boost.LocalFunction]]
+[def __Boost_ScopeExit__ [@http://www.boost.org/doc/libs/release/libs/scope_exit Boost.ScopeExit]]
+[def __Boost_Test__ [@http://www.boost.org/doc/libs/release/libs/test Boost.Test]]
+[def __Boost_Lambda__ [@http://www.boost.org/doc/libs/release/libs/lambda Boost.Lambda]]
+[def __Boost_Phoenix__ [@http://www.boost.org/doc/libs/release/libs/phoenix Boost.Phoenix]]
+[def __Boost_Preprocessor__ [@http://www.boost.org/doc/libs/release/libs/preprocessor Boost.Preprocessor]]
+[def __Boost_MPL__ [@http://www.boost.org/doc/libs/release/libs/mpl Boost.MPL]]
+[def __Boost_ConceptCheck__ [@http://www.boost.org/doc/libs/release/libs/concept_check Boost.ConceptCheck]]
+[def __Boost_Parameter__ [@http://www.boost.org/doc/libs/release/libs/parameter Boost.Paramater]]
+[def __Boost_Typeof__ [@http://www.boost.org/doc/libs/release/libs/typeof Boost.Typeof]]
+[def __Boost_Function__ [@http://www.boost.org/doc/libs/release/libs/function Boost.Function]]
+[def __Boost_Functional_OverloadedFunction__ [@http://www.boost.org/doc/libs/release/libs/functional/overloaded_function Boost.Functional/OverloadedFunction]]
+[def __Boost_TypeTraits__ [@http://www.boost.org/doc/libs/release/libs/type_traits Boost.TypeTraits]]
+[def __Boost_Utility_IdentityType__ [@http://www.boost.org/doc/libs/release/libs/utility/identity_type Boost.Utility/IdentityType]]
+[def __Boost_Chrono__ [@http://www.boost.org/doc/libs/release/libs/chrono Boost.Chrono]]
 [def __CPP11_lambda__ [@http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions C++11 lambda]]
 [def __LISP__ [@http://en.wikipedia.org/wiki/Lisp_(programming_language) LISP]]
 [def __Contractpp__ [@http://sourceforge.net/projects/contractpp Contract++]]
@@ -86,14 +86,14 @@
 [import ../test/goto_err.cpp]
 [import ../test/seq.cpp]
 
-[import ../example/const_block.cpp]
 [import ../example/gcc_lambda.cpp]
 [import ../example/gcc_lambda_cpp11.cpp]
+[import ../example/const_block_err.cpp]
 [import ../example/scope_exit.cpp]
 [import ../example/scope_exit.hpp]
-[import ../example/phoenix_local_factorial.cpp]
+[import ../example/phoenix_factorial_local.cpp]
 [import ../example/phoenix_factorial.cpp]
-[import ../example/noncopyable_lambda.cpp]
+[import ../example/noncopyable_lambda_err.cpp]
 [import ../example/noncopyable_local_function.cpp]
 [import ../example/expensive_copy_lambda.cpp]
 [import ../example/expensive_copy_local_function.cpp]
@@ -102,7 +102,6 @@
 [import ../example/add_phoenix.cpp]
 [import ../example/impl_tparam_tricks.cpp]
 [import ../example/impl_pp_keyword.cpp]
-[import ../example/impl_factorial.cpp]
 
 This library allows to program functions locally, directly within the scope where they are needed.
 

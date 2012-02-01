@@ -5,7 +5,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/config.hpp>
-
 #ifndef BOOST_NO_LAMBDAS
 
 #define BOOST_TEST_MODULE TestAddLambda
@@ -29,9 +28,9 @@ BOOST_AUTO_TEST_CASE( test_add_lambda )
 }
 //]
 
-#else // LAMBDAS
+#else // NO_LAMBDAS
 
-int main(void) { return 0; } // Trivial test.
+int main(void) { return 0; } // Trivial program.
 
-#endif // LAMBDAS
+#endif // NO_LAMBDAS
 

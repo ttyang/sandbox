@@ -6,7 +6,7 @@
 
 [section:Examples Examples]
 
-This sections lists some examples that use this library features.
+This section lists some examples that use this library.
 
 [section GCC Lambdas (Without C++11)]
 
@@ -20,7 +20,7 @@ For example (see also [@../../example/gcc_lambda.cpp =gcc_lambda.cpp=] and [@../
 
 [table
     [ [With Local Functions (GCC only)] [C++11 Lambdas] ]
-    [ [[example_gcc_lambda]] [[example_gcc_lambda_cpp11]] ]
+    [ [[gcc_lambda]] [[gcc_lambda_cpp11]] ]
 ]
 
 Where the macros are defined in [@../../example/gcc_lambda.hpp =gcc_lambda.hpp=].
@@ -29,13 +29,13 @@ This is possible because GCC statement expressions allow to use declaration stat
 The macros automatically detect if the compiler supports __CPP11_lambda__ functions in which case the implementation uses native lambdas instead of local functions in statement expressions.
 However, __CPP11_lambda__ functions do not support constant binding so it is best to only use `const bind variable` (same as __CPP11_lambda__ `=variable`) and `bind& variable` (same as __CPP11_lambda__ `&variable`) because these have the exact same semantic between the local function and native lambda implementation.
 Unfortunately, the __CPP11_lambda__ short-hand binds `&` and `=` (which automatically bind all variables in scope either by reference or value) are not supported by the macros because they are not supported by the local function implementation.
-Finally, the result type `return `[^/result-type/] is optional and it is assumed `void` when it is not specified (same as with __CPP11_lambda__ functions).
+Finally, the result type `return `[^['result-type]] is optional and it is assumed `void` when it is not specified (same as with __CPP11_lambda__ functions).
 
 [endsect]
 
 [section Constant Blocks]
 
-It is possible to use local functions to check assertions between variables that are made constant within the asserted expression.
+It is possible to use local functions to check assertions between variables that are made constant within the asserted expressions.
 This is advantageous because assertions are not supposed to change the state of the program and ideally the compiler will not compile assertions that modify variables.
 
 For example, consider the following assertion where by mistake we programmed `operator=` instead of `operator==`:
@@ -44,12 +44,12 @@ For example, consider the following assertion where by mistake we programmed `op
     assert(x = y); // Mistakenly `=` instead of `==`.
 
 Ideally this code will not compile instead this example not only compiles but the assertion even passes the run-time check and no error is generated at all.
-The __N1613__ paper introduced the idea of a /const-block/ which could be used to wrap the assertion above and catch the programming error at compile-time.
-Similarly, the following code will generate a compile-time error when `operator=` is mistakenly used instead of `operator==` because both `x` and `y` are made constants (using local functions) within the block of code performing the assertion (see also [@../../example/const_block.cpp =const_block.cpp=]):
+The __N1613__ paper introduces the idea of a /const-block/ which could be used to wrap the assertion above and catch the programming error at compile-time.
+Similarly, the following code will generate a compile-time error when `operator=` is mistakenly used instead of `operator==` because both `x` and `y` are made constants (using local functions) within the block of code performing the assertion (see also [@../../example/const_block_err.cpp =const_block_err.cpp=]):
 
 [table
-    [ [With Local Functions] [N1613 Constant Block] ]
-    [ [[example_const_block]] [``
+    [ [With Local Functions] [N1613 Const-Blocks] ]
+    [ [[const_block]] [``
     int x = 1, y = 2;
     const {             // Constant block.
         assert(x = y);  // Compiler error.
@@ -60,10 +60,10 @@ Similarly, the following code will generate a compile-time error when `operator=
 Where the macros are defined in [@../../example/const_block.hpp =const_block.hpp=].
 
 The constant block macros are implemented using a local function which binds by constant reference `const bind&` all the specified variables (so the variables are constant within the code block but they do not need to be `CopyConstructible` and no extra copy is performed).
-The local function executes the `assert` instruction its body which is called immediately after it is defined.
+The local function executes the `assert` instruction in its body which is called immediately after it is defined.
 More in general, constant blocks can be used to evaluate any instruction (not just assertions) within a block were all specified variables are constant.
 
-Unfortunately, constant blocks cannot be implemented with __CPP11_lambda__ functions because these do not support constant binding (of course it is always possible to introduce extra constant variables `const int& const_x = x;` and use these variables in the assertion).
+Unfortunately, constant blocks cannot be implemented with __CPP11_lambda__ functions because these do not support constant binding (of course it is always possible to introduce extra constant variables `const int& const_x = x`, etc and use these variables in the assertion).
 Variables bound by value using __CPP11_lambda__ functions (`variable`, `=variable`, and `=`) are constant but they are required to be `CopyConstructible` and they introduce potentially expensive copy operations.
 [footnote
 Ideally, __CPP11_lambda__ functions would allow to bind variables also using `const& variable` (constant reference) and `const&` (all variables by constant reference).
@@ -84,21 +84,23 @@ The following example binds `p` by constant reference so this variable cannot be
 
 [table
     [ [With Local Functions] [Boost.ScopeExit] ]
-    [ [[example_scope_exit]] [``
+    [ [[scope_exit]] [
+[pre
     person& p = persons_.back();
     person::evolution_t checkpoint = p.evolution_;
 
     BOOST_SCOPE_EXIT(checkpoint, &p, this_) { // Or extra variable `const_p`.
         if (checkpoint == p.evolution_) this_->persons_.pop_back();
     } BOOST_SCOPE_EXIT_END
-    ``] ]
+]
+    ] ]
 ]
 
 Where the macros are defined in [@../../example/scope_exit.hpp =scope_exit.hpp=].
 
 The scope exit macros are implemented by passing a local function when constructing an object of the following class:
 
-[example_scope_exit_object]
+[scope_exit_class]
 
 A local variable within the enclosing scope is used to hold the object so the destructor will be invoked at the exit of the enclosing scope and it will in turn call the local function executing the scope exit instructions.
 The scope exit local function has no parameter and `void` result type but it supports binding and constant binding.
@@ -108,11 +110,11 @@ The scope exit local function has no parameter and `void` result type but it sup
 [section Boost.Phoenix Functions]
 
 Local functions can be used to create __Boost_Phoenix__ functions.
-For example (see also [@../../example/boost_phoenix_local_factorial.cpp =boost_phoenix_local_factorial.cpp=] and [@../../example/boost_phoenix_factorial.cpp =boost_phoenix_factorial.cpp=]):
+For example (see also [@../../example/phoenix_factorial_local.cpp =phoenix_factorial_local.cpp=] and [@../../example/phoenix_factorial.cpp =phoenix_factorial.cpp=]):
 
 [table
     [ [Local Functions] [Global Functor] ]
-    [ [[example_boost_phoenix_local_factorial]] [[example_boost_phoenix_factorial]] ]
+    [ [[phoenix_factorial_local]] [[phoenix_factorial]] ]
 ]
 
 This is presented here mainly as a curiosity because __Boost_Phoenix__ functions created from local functions have the important limitation that they cannot be polymorphic.
@@ -126,7 +128,7 @@ Therefore, in many cases creating the __Boost_Phoenix__ function from global fun
 
 [section Closures]
 
-A few more examples on how to return local functions to the calling scope (and the relative precautions to take) mainly adapted from examples of [@http://en.wikipedia.org/wiki/Closure_(computer_science) closures].
+The following are examples of [@http://en.wikipedia.org/wiki/Closure_(computer_science) closures] that illustrate how to return local functions to the calling scope (and the relative precautions to take).
 
 [table
     [ [Files] ]

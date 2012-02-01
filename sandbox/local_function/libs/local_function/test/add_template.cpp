@@ -20,7 +20,6 @@ T total(const T& x, const T& y, const T& z) {
     } BOOST_LOCAL_FUNCTION_NAME(add)
 
     add(x);
-
     T nums[2]; nums[0] = y; nums[1] = z;
     std::for_each(nums, nums + 2, add);
 

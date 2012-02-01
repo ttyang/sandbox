@@ -1,5 +1,5 @@
 
-// Copyright (C) 2009-2012 Lorenzo Caminiti
+// Copyright (C) 2011-2012 Lorenzo Caminiti
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -10,7 +10,7 @@
 #include <boost/test/unit_test.hpp>
 #include <string>
 
-//[identity_checks
+//[identity_make_checks
 template<typename F>
 void check(F identity) {
     BOOST_CHECK( identity("abc") == "abc" );
@@ -44,6 +44,7 @@ BOOST_AUTO_TEST_CASE( test_identity ) {
             , double (double)
         > identity(identity_s, identity_i, identity_d);
 
+        // All calls via single `identity` function.
         BOOST_CHECK( identity("abc") == "abc" );
         BOOST_CHECK( identity(123) == 123 );
         BOOST_CHECK( identity(1.23) == 1.23 );

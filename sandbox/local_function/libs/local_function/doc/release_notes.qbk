@@ -10,7 +10,14 @@ This section lists the major changes between different library releases (in chro
 
 [h5 Version 1.0.0 (2012-01-31)]
 
-@todo do this
+# Incorporated all comments from the [@http://lists.boost.org/boost-announce/2011/12/0340.php Boost review of this library].
+# Removed local blocks and local exits.
+# Renamed the library from Boost.Local to Boost.LocalFunction.
+# Using `this_` instead of `this` also in the local function declaration (not just the body).
+# Made changes that allow to return local functions (similar to closures).
+# Added GCC lambda and constant block examples.
+# Moved `overloaded_function` to Boost.Functional/OverloadedFunction.
+# Moved `BOOST_IDENTITY_TYPE` to Boost.Utility/IdentityType.
 
 [h5 Version 0.2.0 (2011-05-14)]
 

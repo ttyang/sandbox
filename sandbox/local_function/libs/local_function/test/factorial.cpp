@@ -22,7 +22,7 @@ struct calculator {
             if(num <= 0) result = 1;
             else result = num * factorial(num - 1, true); // Recursive call.
 
-            if (!recursion) this_->results.push_back(result);
+            if(!recursion) this_->results.push_back(result);
             return result;
         } BOOST_LOCAL_FUNCTION_NAME(recursive factorial) // Recursive.
     

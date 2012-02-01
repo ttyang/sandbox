@@ -5,8 +5,8 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/utility/identity_type.hpp>
-#include <boost/type_traits/is_const.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/add_reference.hpp>
 #include <boost/type_traits/remove_reference.hpp>
 #include <map>

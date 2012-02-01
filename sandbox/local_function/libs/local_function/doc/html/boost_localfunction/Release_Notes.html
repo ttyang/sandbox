@@ -35,9 +35,37 @@
       <span><a name="boost_localfunction.Release_Notes.version_1_0_0__2012_01_31_"></a></span><a class="link" href="Release_Notes.html#boost_localfunction.Release_Notes.version_1_0_0__2012_01_31_">Version
       1.0.0 (2012-01-31)</a>
     </h6>
-<p>
-      @todo do this
-    </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+          Incorporated all comments from the <a href="http://lists.boost.org/boost-announce/2011/12/0340.php" target="_top">Boost
+          review of this library</a>.
+        </li>
+<li class="listitem">
+          Removed local blocks and local exits.
+        </li>
+<li class="listitem">
+          Renamed the library from Boost.Local to Boost.LocalFunction.
+        </li>
+<li class="listitem">
+          Using <code class="computeroutput"><span class="identifier">this_</span></code> instead of
+          <code class="computeroutput"><span class="keyword">this</span></code> also in the local function
+          declaration (not just the body).
+        </li>
+<li class="listitem">
+          Made changes that allow to return local functions (similar to closures).
+        </li>
+<li class="listitem">
+          Added GCC lambda and constant block examples.
+        </li>
+<li class="listitem">
+          Moved <code class="computeroutput"><span class="identifier">overloaded_function</span></code>
+          to Boost.Functional/OverloadedFunction.
+        </li>
+<li class="listitem">
+          Moved <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span></code>
+          to Boost.Utility/IdentityType.
+        </li>
+</ol></div>
 <h6>
 <a name="boost_localfunction.Release_Notes.h1"></a>
       <span><a name="boost_localfunction.Release_Notes.version_0_2_0__2011_05_14_"></a></span><a class="link" href="Release_Notes.html#boost_localfunction.Release_Notes.version_0_2_0__2011_05_14_">Version
@@ -116,7 +144,7 @@
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Lorenzo
       Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

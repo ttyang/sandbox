@@ -8,7 +8,7 @@
 #ifndef FILE_boost_scope_exit_hpp_INCLUDED
 #define FILE_boost_scope_exit_hpp_INCLUDED
 
-#ifndef DOXY
+#ifndef DOXYGEN
 
 #include <boost/local_function/detail/preprocessor/line_counter.hpp>
 #include <boost/local_function/detail/preprocessor/void_list.hpp>
@@ -625,7 +625,7 @@ private:
 
 // DOCUMENTATION //
 
-#else // DOXY (Doxygen documentation)
+#else // DOXYGEN
 
 /** @file
 @brief Scope exits allow to execute arbitrary code when the enclosing scope exits.
@@ -648,7 +648,7 @@ The scope exit declaration schedules the execution of the scope exit body at the
 
 The enclosing scope must be local.
 If multiple scope exits are declared within the same enclosing scope, the scope exit bodies are executed in the reversed order of their declarations.
-Note how the end of the scope exit body must be marked with the @RefMacro{BOOST_SCOPE_EXIT_END} (or with a <c>;</c> but only on C++11).
+Note how the end of the scope exit body must be marked by @RefMacro{BOOST_SCOPE_EXIT_END} (or by a <c>;</c> but only on C++11).
 
 @Params
 @Param{capture_list,
@@ -674,10 +674,9 @@ Finally\, on C++11 compilers <c>this</c> can be used instead of <c>this_</c>:
             [&]variable | this_ | this
 @endcode
 
-(Where the following lexical conventions are adopted: <c>token1 | token2</c>
-means either <c>token1</c> or <c>token2</c>; <c>[token]</c> means either
-<c>token</c> or nothing; <c>{expression}</c> means the token resulting from the
-expression.)
+Lexical conventions: <c>token1 | token2</c> means either <c>token1</c> or
+<c>token2</c>; <c>[token]</c> means either <c>token</c> or nothing;
+<c>{expression}</c> means the token resulting from the expression.
 }
 @EndParams
 
@@ -701,7 +700,7 @@ On C++11, it is possible capture all variables in scope without listing their na
 @Warning The implementation executes the scope exit body within a destructor thus the scope exit body must never throw in order to comply with STL exception safety requirements.
 
 @Note The implementation uses Boost.Typeof to automatically deduce the types of the captured variables.
-In order to compile code in typeof-emulation mode, Boost.Typeof must be properly configured (see the @RefSectId{Getting_Started, Getting Started} section).
+In order to compile code in type-of emulation mode, Boost.Typeof must be properly configured (see the @RefSectId{Getting_Started, Getting Started} section).
 
 @See @RefSect{Tutorial} section, @RefSectId{Getting_Started, Getting Started} section, @RefSectId{No_Variadic_Macros, No Variadic Macros} section, @RefMacro{BOOST_SCOPE_EXIT_TPL}, @RefMacro{BOOST_SCOPE_EXIT_ALL}, @RefMacro{BOOST_SCOPE_EXIT_END}.
 */
@@ -725,7 +724,7 @@ As a workaround, @RefMacro{BOOST_SCOPE_EXIT_TPL} should be used instead of @RefM
 
 The syntax of @RefMacro{BOOST_SCOPE_EXIT_TPL} is the exact same as the one of @RefMacro{BOOST_SCOPE_EXIT} (see @RefMacro{BOOST_SCOPE_EXIT} for more information).
 
-On C++11, @RefMacro{BOOST_SCOPE_EXIT_TPL} is not needed because @RefMacro{BOOST_SCOPE_EXIT} always compiles on GCC versions that support C++11.
+On C++11, @RefMacro{BOOST_SCOPE_EXIT_TPL} is not needed because @RefMacro{BOOST_SCOPE_EXIT} always compiles on GCC versions that support C++11 (that is also why there is no need for a <c>BOOST_SCOPE_EXIT_ALL_TPL</c> macro given that @RefMacro{BOOST_SCOPE_EXIT_ALL} is only available for C++11 compilers on which it always compiles correctly).
 However, @RefMacro{BOOST_SCOPE_EXIT_TPL} is still provided on C++11 so to write code that is portable between C++03 and C++11 compilers.
 
 @Note The problem boils down to the following code (see also <a href="http://gcc.gnu.org/bugzilla/show_bug.cgi?id=37920">GCC bug 37920</a>):
@@ -754,8 +753,8 @@ This can be fixed by adding <c>typename</c> in front of <c>local::typeof_i</c> a
 /**
 @brief This macro declares a scope exit that captures all variables in scope (C++11 only).
 
-@Warning This macro is only available on C++11 compilers.
-It is not defined on non-C++11 compilers so its use on non-C++11 compilers will generate a compiler error.
+This macro accepts a capture list starting with either <c>&</c> or <c>=</c> to capture all variables in scope by reference or value respectively (following the same syntax of C++11 lambdas).
+A part from that, this macro works like @RefMacro{BOOST_SCOPE_EXIT} (see @RefMacro{BOOST_SCOPE_EXIT} for more information).
 
 @code
     { // Some local scope.
@@ -767,8 +766,8 @@ It is not defined on non-C++11 compilers so its use on non-C++11 compilers will 
     }
 @endcode
 
-This macro accepts a capture list starting with either <c>&</c> or <c>=</c> to capture all variables in scope by reference or value respectively (following the same syntax of C++11 lambdas).
-A part from that, this macro works like @RefMacro{BOOST_SCOPE_EXIT} (see @RefMacro{BOOST_SCOPE_EXIT} for more information).
+@Warning This macro is only available on C++11 compilers.
+It is not defined on non-C++11 compilers so its use on non-C++11 compilers will generate a compiler error.
 
 @Params
 @Param{capture_list,
@@ -783,21 +782,18 @@ capture:
         [&]variable | this_ | this
 @endcode
 
-(Where the following lexical conventions are adopted: <c>token1 | token2</c>
-means either <c>token1</c> or <c>token2</c>; <c>[token]</c> means either
-<c>token</c> or nothing; <c>{expression}</c> means the token resulting from the
-expression.)
+Lexical conventions: <c>token1 | token2</c> means either <c>token1</c> or
+<c>token2</c>; <c>[token]</c> means either <c>token</c> or nothing;
+<c>{expression}</c> means the token resulting from the expression.
 }
 @EndParams
 
-Note that on compilers with variadic macro support (which should be all C++11 compilers), the capture list can be specified as a comma-separated list.
-On all compilers, the same macro @RefMacro{BOOST_SCOPE_EXIT_ALL} also allows to specify the capture list as a Boost.Preprocessor sequence (to allow to use a syntax consistent with the one of <c>BOOST_SCOPE_EXIT</c> when used on compilers without variadic macro support).
-
 For this macro, the capture list must always contain at least the leading <c>&</c> or <c>=</c> so it can never be <c>void</c>.
 
+Note that on compilers with variadic macro support (which should be all C++11 compilers), the capture list can be specified as a comma-separated list.
+On all compilers, the same macro @RefMacro{BOOST_SCOPE_EXIT_ALL} also allows to specify the capture list as a Boost.Preprocessor sequence (to allow to use a syntax consistent with the one of <c>BOOST_SCOPE_EXIT</c> when used on compilers without variadic macro support).
 The scope exit body declared by this macro can be terminated equivalently by either a semi-column <c>;</c> or by the macro @RefMacro{BOOST_SCOPE_EXIT_END}.
 The @RefMacro{BOOST_SCOPE_EXIT_ALL} macro is only available on C++11 where the terminating semi-column <c>;</c> can always be used without worrying about portability with C++03 (see @RefMacro{BOOST_SCOPE_EXIT_END} for more information).
-
 Similarly, this macro can always use <c>this</c> instead of <c>this_</c> to capture the enclosing object without worrying about portability with C++03 because this macro is only available on C++11 compilers.
 
 @Note In summary, this macro can take advantage of all syntax improvements allowed by C++11 but it optionally supports the same syntax required by C++03 so programmers can always program both @RefMacro{BOOST_SCOPE_EXIT_ALL} and @RefMacro{BOOST_SCOPE_EXIT} using the same syntax and for all compilers if they wish to do so.
@@ -851,7 +847,7 @@ By default this macro is not defined.
 */
 #define BOOST_SCOPE_EXIT_CONFIG_NO_CPP11
 
-#endif // DOXY
+#endif // DOXYGEN
 
 #endif // #ifndef FILE_boost_scope_exit_hpp_INCLUDED
 

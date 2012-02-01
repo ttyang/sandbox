@@ -13,7 +13,7 @@ run add_local_functor.cpp ;
 #run add_phoenix.cpp ;
 
 run const_block.cpp ;
-compile-fail const_block_err.cpp ;
+#compile-fail const_block_err.cpp ;
 
 run expensive_copy_lambda.cpp ;
 run expensive_copy_local_function.cpp ;
@@ -24,7 +24,6 @@ run gcc_lambda_cpp11.cpp ;
 run gcc_square.cpp ;
 run gcc_store.cpp ;
 
-#run impl_factorial.cpp ;
 run impl_pp_keyword.cpp ;
 run impl_tparam_tricks.cpp ;
 

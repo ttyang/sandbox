@@ -10,7 +10,7 @@
 #include <vector>
 #include <algorithm>
 
-//[test_add_typed
+//[add_typed
 struct adder {
     adder(): sum_(0) {}
 

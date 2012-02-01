@@ -44,9 +44,9 @@
         Local functions are defined using macros from the header file <code class="computeroutput"><a class="link" href="../reference.html#header.boost.local_function_hpp" title="Header &lt;boost/local_function.hpp&gt;">boost/local_function.hpp</a></code>. The
         macros must be used from within a declarative context (this is a limitation
         with respect to <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
-        lambda</a> functions which can instead be declared within expressions):
+        lambda</a> functions which can instead be declared also within expressions):
       </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local_function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// Include library header.</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local_function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// This library header.</span>
 
 <span class="special">...</span>
 <span class="special">{</span> <span class="comment">// Some declarative context.</span>
@@ -98,8 +98,8 @@
       </p>
 <p>
         If the local function has no parameter, it is possible to pass <code class="computeroutput"><span class="keyword">void</span></code> to the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION.html" title="Macro BOOST_LOCAL_FUNCTION">BOOST_LOCAL_FUNCTION</a></code>
-        macro (similarly to the C syntax that allows to use <code class="computeroutput"><span class="keyword">int</span>
-        <span class="identifier">f</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span></code> to declare
+        macro (similarly to the C syntax that allows to use <code class="literal"><span class="emphasis"><em>result-type
+        function-name</em></span></code><code class="computeroutput"><span class="special">(</span><span class="keyword">void</span><span class="special">)</span></code> to declare
         a function with no parameter): <sup>[<a name="boost_localfunction.Tutorial.local_functions.f2" href="#ftn.boost_localfunction.Tutorial.local_functions.f2" class="footnote">7</a>]</sup>
       </p>
 <pre class="programlisting"><span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">void</span><span class="special">)</span> <span class="comment">// No parameter.</span>
@@ -127,8 +127,7 @@
         variables, etc) can be bound to a local function declaration. Only bound
         variables, static variables, global variables, functions, and enumerations
         from the enclosing scope are accessible from within the local function body.
-        The types of bound variables are automatically deduced by this library using
-        <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>.
+        The types of bound variables are deduced automatically by this library.
         <sup>[<a name="boost_localfunction.Tutorial.Binding.f0" href="#ftn.boost_localfunction.Tutorial.Binding.f0" class="footnote">8</a>]</sup>
       </p>
 <div class="important"><table border="0" summary="Important">
@@ -137,13 +136,13 @@
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          The library implementation uses <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
+          The library implementation uses <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
           to automatically deduce the types of the bound variables. Therefore, in
           order to compile code in type-of emulation mode, all types should be properly
           registered with <code class="computeroutput"><span class="identifier">BOOST_TYPEOF_REGISTER_TYPE</span></code>
           or <code class="computeroutput"><span class="identifier">BOOST_TYPEOF_REGISTER_TEMPLATE</span></code>
-          macros, or appropriate <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
-          headers should be included (see the <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
+          macros, or appropriate <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+          headers should be included (see the <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
           documentation for more detail).
         </p></td></tr>
 </table></div>
@@ -183,10 +182,11 @@
         at the point of the local function declaration. If a variable is bound by
         reference instead, the variable will refer to the value it has at the point
         of the local function call. Furthermore, it is the programmers' responsibility
-        to ensure that variables bound by reference survive the declaration scope
-        of the local function otherwise the bound references will be invalid resulting
-        in undefined behaviour (in other words, the usual care in using C++ references
-        must be taken for variables bound by reference).
+        to ensure that variables bound by reference survive the existence scope of
+        the local function otherwise the bound references will be invalid when the
+        local function is called resulting in undefined behaviour (in other words,
+        the usual care in using C++ references must be taken for variables bound
+        by reference).
       </p>
 <p>
         The type of a bound variable is automatically deduced and it is the exact
@@ -216,17 +216,18 @@
         When a variable is bound by value (constant or not), its type must be <code class="computeroutput"><span class="identifier">CopyConstructible</span></code> (i.e., its must provide
         a copy constructor). As with passing parameters to usual C++ functions, programmers
         might want to bind variables of complex types by (possibly constant) reference
-        instead than by value to avoid expensive copy operations when these variables
+        instead of by value to avoid expensive copy operations when these variables
         are bound to a local function.
       </p>
 <p>
         For example, let's program the local function <code class="computeroutput"><span class="identifier">add</span></code>
         from the example in the <a class="link" href="../index.html#boost_localfunction.Introduction" title="Introduction">Introduction</a>
         section. We bind the local variable <code class="computeroutput"><span class="identifier">factor</span></code>
-        by constant value (because its value does not need to be changed), the local
-        variable <code class="computeroutput"><span class="identifier">sum</span></code> by non-constant
-        reference (because its value needs to be updated with the summation result),
-        and program the body to perform the summation (see also <a href="../../../test/add.cpp" target="_top"><code class="literal">add.cpp</code></a>):
+        by constant value (because its value should not be modified by the local
+        function), the local variable <code class="computeroutput"><span class="identifier">sum</span></code>
+        by non-constant reference (because its value needs to be updated with the
+        summation result), and program the body to perform the summation (see also
+        <a href="../../../test/add.cpp" target="_top"><code class="literal">add.cpp</code></a>):
       </p>
 <p>
 </p>
@@ -256,8 +257,9 @@
         It is also possible to bind the object <code class="computeroutput"><span class="keyword">this</span></code>
         when it is in scope (e.g., from an enclosing non-static member function).
         This is done by using the special symbol <code class="computeroutput"><span class="identifier">this_</span></code>
-        (instead of <code class="computeroutput"><span class="keyword">this</span></code>) <sup>[<a name="boost_localfunction.Tutorial.binding_the_object__this_.f0" href="#ftn.boost_localfunction.Tutorial.binding_the_object__this_.f0" class="footnote">13</a>]</sup> as the name of the variable to bind in the local function declaration
-        and also to access the object within the local function body.
+        (instead of <code class="computeroutput"><span class="keyword">this</span></code>) as the name
+        of the variable to bind in the local function declaration and also to access
+        the object within the local function body. <sup>[<a name="boost_localfunction.Tutorial.binding_the_object__this_.f0" href="#ftn.boost_localfunction.Tutorial.binding_the_object__this_.f0" class="footnote">13</a>]</sup>
       </p>
 <div class="warning"><table border="0" summary="Warning">
 <tr>
@@ -300,9 +302,9 @@
         or <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span> <span class="identifier">this_</span></code>).
         Note that <code class="computeroutput"><span class="keyword">this</span></code> is a pointer
         so the pointed object is never copied even if <code class="computeroutput"><span class="keyword">this</span></code>
-        is bound by value (also it is not allowed to directly bind <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> because
+        is bound by value (also it is not possible to directly bind <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> because
         <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
-        is an expression and not a valid name of a variable in scope).
+        is an expression and not a variable name).
       </p>
 <p>
         For example, let's program a local function <code class="computeroutput"><span class="identifier">add</span></code>
@@ -331,7 +333,7 @@
 <p>
       </p>
 <p>
-        As expected, the local function has access to all class members via the bound
+        Note that the local function has access to all class members via the bound
         object <code class="computeroutput"><span class="identifier">this_</span></code> regardless of
         their access level (<code class="computeroutput"><span class="keyword">public</span></code>,
         <code class="computeroutput"><span class="keyword">protected</span></code>, or <code class="computeroutput"><span class="keyword">private</span></code>). <sup>[<a name="boost_localfunction.Tutorial.binding_the_object__this_.f2" href="#ftn.boost_localfunction.Tutorial.binding_the_object__this_.f2" class="footnote">15</a>]</sup> Specifically, in the example above the local function updates
@@ -344,10 +346,10 @@
 </h3></div></div></div>
 <p>
         When local functions are programmed within templates, they need to be declared
-        using the special macro <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TPL.html" title="Macro BOOST_LOCAL_FUNCTION_TPL">BOOST_LOCAL_FUNCTION_TPL</a></code>
-        (see the <a href="../reference.html" target="_top">Reference</a> section): <sup>[<a name="boost_localfunction.Tutorial.templates.f0" href="#ftn.boost_localfunction.Tutorial.templates.f0" class="footnote">16</a>]</sup>
+        using the special macro <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TPL.html" title="Macro BOOST_LOCAL_FUNCTION_TPL">BOOST_LOCAL_FUNCTION_TPL</a></code>:
+        <sup>[<a name="boost_localfunction.Tutorial.templates.f0" href="#ftn.boost_localfunction.Tutorial.templates.f0" class="footnote">16</a>]</sup>
       </p>
-<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local_function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">local_function</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span> <span class="comment">// This library header.</span>
 
 <span class="special">...</span>
 <span class="special">{</span> <span class="comment">// Some declarative context within a template.</span>
@@ -366,7 +368,7 @@
 <p>
         For example, let's program a local function similar to the one from the
         <a class="link" href="../index.html#boost_localfunction.Introduction" title="Introduction">Introduction</a> section
-        but wrapped within a template (see also <a href="../../../test/add_template.cpp" target="_top"><code class="literal">add_template.cpp</code></a>):
+        but within a template (see also <a href="../../../test/add_template.cpp" target="_top"><code class="literal">add_template.cpp</code></a>):
       </p>
 <p>
 </p>
@@ -380,7 +382,6 @@
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">add</span><span class="special">)</span>
 
     <span class="identifier">add</span><span class="special">(</span><span class="identifier">x</span><span class="special">);</span>
-
     <span class="identifier">T</span> <span class="identifier">nums</span><span class="special">[</span><span class="number">2</span><span class="special">];</span> <span class="identifier">nums</span><span class="special">[</span><span class="number">0</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">y</span><span class="special">;</span> <span class="identifier">nums</span><span class="special">[</span><span class="number">1</span><span class="special">]</span> <span class="special">=</span> <span class="identifier">z</span><span class="special">;</span>
     <span class="identifier">std</span><span class="special">::</span><span class="identifier">for_each</span><span class="special">(</span><span class="identifier">nums</span><span class="special">,</span> <span class="identifier">nums</span> <span class="special">+</span> <span class="number">2</span><span class="special">,</span> <span class="identifier">add</span><span class="special">);</span>
 
@@ -410,9 +411,9 @@
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Tutorial.local_functions.f2" href="#boost_localfunction.Tutorial.local_functions.f2" class="para">7</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> The <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
-          standard does not allow pass empty parameters to a macro so the macro cannot
-          be invoked as <code class="computeroutput"><span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">()</span></code>. On <a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
-          compilers with properly implemented empty macro parameter support it would
+          standard does not allow to pass empty parameters to a macro so the macro
+          cannot be invoked as <code class="computeroutput"><span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">()</span></code>. On <a href="http://www.open-std.org/jtc1/sc22/wg14/www/projects#9899" target="_top">C99</a>
+          compilers with properly implemented empty macro parameter support, it would
           be possible to allow <code class="computeroutput"><span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">()</span></code> but this is already not the case for
           MSVC so this syntax is never allowed to ensure better portability.
         </p></div>
@@ -432,9 +433,9 @@
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Tutorial.Binding.f1" href="#boost_localfunction.Tutorial.Binding.f1" class="para">9</a>] </sup>
           Obviously, the token <code class="computeroutput"><span class="identifier">bind</span></code>
           is not a keyword of the C++ language. This library parses the token <code class="computeroutput"><span class="identifier">bind</span></code> during macro expansion using preprocessor
-          metaprogramming (see the <a class="link" href="Implementation.html" title="Annex: Implementation">Implementation</a>
+          meta-programming (see the <a class="link" href="Implementation.html" title="Annex: Implementation">Implementation</a>
           section). Therefore, <code class="computeroutput"><span class="identifier">bind</span></code>
-          can be considered a new "keyword" only at the preprocessor metaprogramming
+          can be considered a new "keyword" only at the preprocessor meta-programming
           level within the syntax defined by the macros of this library (thus it
           is referred to as a "keyword" only within quotes).
         </p></div>
@@ -469,7 +470,7 @@
               as references are bound by value unless <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span> <span class="identifier">bind</span><span class="special">&amp;</span></code>
               is used so that references can be bound by both value <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span> <span class="identifier">bind</span></code>
               and reference <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span> <span class="identifier">bind</span><span class="special">&amp;</span></code> (this is the same binding semantic
-              adopted by <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>).
+              adopted by <a href="http://www.boost.org/doc/libs/release/libs/scope_exit" target="_top">Boost.ScopeExit</a>).
               On the other hand, variables originally declared as constants should
               never loose their <code class="computeroutput"><span class="keyword">const</span></code>
               qualifier (to prevent their modification not just in the enclosing
@@ -510,8 +511,9 @@
           </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Tutorial.binding_the_object__this_.f2" href="#boost_localfunction.Tutorial.binding_the_object__this_.f2" class="para">15</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This is possible because of
-          C++ defect fix #46 that made inner and local types able to access all outer
-          class members regardless of their access level.
+          the fix to C++ <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#45" target="_top">defect
+          45</a> that made inner and local types able to access all outer class
+          members regardless of their access level.
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Tutorial.templates.f0" href="#boost_localfunction.Tutorial.templates.f0" class="para">16</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> Within templates, this library
@@ -529,7 +531,7 @@
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Lorenzo
       Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

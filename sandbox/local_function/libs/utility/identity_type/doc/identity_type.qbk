@@ -21,7 +21,7 @@
 This library allows to wrap type expressions within round parenthesis so they can be passed to macros even when they contain commas.
 
 [import ../test/var_err.cpp]
-[import ../test/var_ok.cpp]
+[import ../test/var.cpp]
 [import ../test/template.cpp]
 [import ../test/tmp_assert.cpp]
 
@@ -39,33 +39,33 @@ However, the second macro invocation fails generating a preprocessor error simil
 ]
 
 That is because the `std::map` type passed as the first macro parameter contains a comma `,` not wrapped by round parenthesis `()`.
-The preprocessor interprets that unwrapped comma as separation between macro parameters concluding that a total of three (and not two) parameters are passed to the macro in the following order:
+The preprocessor interprets that unwrapped comma as a separation between macro parameters concluding that a total of three (and not two) parameters are passed to the macro in the following order:
 
 # `std::map<int`
 # `char>`
 # `2`
 
 Note that, differently from the compiler, the preprocessor only recognizes round parameters `()`.
-Angular `<>` or squared `[]` parenthesis are not used by the preprocessor in parsing the macro parameters.
+Angular `<>` or squared `[]` parenthesis are not used by the preprocessor when parsing the macro parameters.
 
 [endsect]
 
 [section Solution]
 
-In some cases, it might be possible to workaround the issue above by avoiding to pass the type expression to the macro all together.
-For example, in some cases a `typedef` can be used to specify the type expression with the commas outside the macro (see also [@../../test/var_ok.cpp =var_ok.cpp=]):
+In some cases, it might be possible to workaround this issue by avoiding to pass the type expression to the macro all together.
+For example, in some cases a `typedef` can be used to specify the type expression with the commas outside the macro (see also [@../../test/var.cpp =var.cpp=]):
 
 [var_typedef]
 
-When this is not possible or desired (e.g., see the function template `f` in the section below), the library header [headerref boost/utility/identity_type.hpp] defines a macro [macroref BOOST_IDENTITY_TYPE] which can be used to workaround the issue while keeping the type expression as one of the macro parameters (see also [@../../test/var_ok.cpp =var_ok.cpp=]).
+When this is not possible or desired (e.g., see the function template `f` in the section below), the library header [headerref boost/utility/identity_type.hpp] defines a macro [macroref BOOST_IDENTITY_TYPE] which can be used to workaround the issue while keeping the type expression as one of the macro parameters (see also [@../../test/var.cpp =var.cpp=]).
 
 [var_ok]
 
 This macro expands to an expression that evaluates (at compile-time) to the specified type.
 The specified type is never split into multiple macro parameters because it is always wrapped by a set of extra round parenthesis `()`.
-In fact, a total of two set of round parenthesis must be used: The parenthesis to invoke the macro `BOOST_IDENTITY_TYPE(...)` plus the inner parenthesis to wrap the type within `BOOST_IDENTITY_TYPE((...))`.
+In fact, a total of two sets of round parenthesis must be used: The parenthesis to invoke the macro `BOOST_IDENTITY_TYPE(...)` plus the inner parenthesis to wrap the type passed to the macro `BOOST_IDENTITY_TYPE((...))`.
 
-This macro works on any [@http://www.open-std.org/JTC1/SC22/WG21/docs/standards C++03] compiler (because it does not require [@http://en.wikipedia.org/wiki/Variadic_macro variadic macro] support).
+This macro works on any [@http://www.open-std.org/JTC1/SC22/WG21/docs/standards C++03] compiler (because it does not use [@http://en.wikipedia.org/wiki/Variadic_macro variadic macros]).
 [footnote
 Using variadic macros, it would be possible to use a single set of parenthesis `BOOST_IDENTITY_TYPE(`/type/`)` instead of two `BOOST_IDENTITY_TYPE((`/type/`))` but variadic macros are not part of C++03 (even if nowadays they are supported by most modern compilers and they are also part of C++11).
 ]
@@ -95,7 +95,7 @@ In other words, without using the [macroref BOOST_IDENTITY_TYPE] macro, C++ woul
 On some compilers (e.g., GCC), using this macro on abstract types (i.e., a class with one or more pure virtual functions) generates a compiler error.
 This can be worked around by manipulating the type adding and removing a reference to it.
 
-Let's program a macro that performs a static assertion on a [@http://en.wikipedia.org/wiki/Template_metaprogramming Template Meta-Programming] (TMP) meta-function (similarly to [@http://www.boost.org/doc/libs/1_36_0/libs/mpl/doc/refmanual/assert.html Boost.MPL `BOOST_MPL_ASSERT`]).
+Let's program a macro that performs a static assertion on a [@http://en.wikipedia.org/wiki/Template_metaprogramming Template Meta-Programming] (TMP) meta-function (similarly to Boost.MPL [@http://www.boost.org/doc/libs/1_36_0/libs/mpl/doc/refmanual/assert.html `BOOST_MPL_ASSERT`]).
 The [macroref BOOST_IDENTITY_TYPE] macro can be used to pass a meta-function with multiple template parameters to the assert macro (so to handle the commas separating the template parameters).
 In this case, if the meta-function is an abstract type, it needs to be manipulated adding and removing a reference to it (see also [@../../test/tmp_assert.cpp =tmp_assert.cpp=]):
 
@@ -105,17 +105,17 @@ In this case, if the meta-function is an abstract type, it needs to be manipulat
 
 [section Annex: Usages]
 
-The [macroref BOOST_IDENTITY_TYPE] macro can be used either in call of the user-defined macro (as shown by the examples so far), or internally to the definition of the user macro.
+The [macroref BOOST_IDENTITY_TYPE] macro can be used either in the call of the user-defined macro (as shown by the examples so far), or internally to the definition of the user macro.
 When [macroref BOOST_IDENTITY_TYPE] is used internally, the call of the user macro will only have to specify the extra parenthesis (see also [@../../test/tmp_assert.cpp =tmp_assert.cpp=]):
 
 [tmp_assert_alternative]
 
-However, note that the user will /always/ have to specify the extra parenthesis even when the macro parameter contains no comma:
+However, note that the user will /always/ have to specify the extra parenthesis even when the macro parameters contain no comma:
 
 [tmp_assert_alternative_always]
 
-In some cases, using the macro internally might provide the best syntax to the user.
-For example, this is the case for `BOOST_MPL_ASSERT` because the large majority of template meta-programming expressions contain unwrapped commas so it is less confusing for the user to always specify the extra parenthesis `((...))` instead of using [macroref BOOST_IDENTITY_TYPE]:
+In some cases, using [macroref BOOST_IDENTITY_TYPE] internally might provide the best syntax for the user.
+For example, this is the case for `BOOST_MPL_ASSERT` because the majority of template meta-programming expressions contain unwrapped commas so it is less confusing for the user to always specify the extra parenthesis `((...))` instead of using [macroref BOOST_IDENTITY_TYPE]:
 
     BOOST_MPL_ASSERT(( // Natural syntax.
         boost::mpl::and_<
@@ -124,7 +124,7 @@ For example, this is the case for `BOOST_MPL_ASSERT` because the large majority 
         >
     ));
 
-However, in other cases it might be preferable to not require the extra parenthesis in normal cases and handle commas as special cases using the [macroref BOOST_IDENTITY_TYPE].
+However, in other situations it might be preferable to not require the extra parenthesis in common cases and handle commas as special cases using the [macroref BOOST_IDENTITY_TYPE].
 For example, this is the case for `BOOST_LOCAL_FUNCTION` for which always requiring the extra parenthesis `((...))` around the types would lead to an unnatural syntax for the local function parameter types:
 
     int BOOST_LOCAL_FUNCTION( ((int)) x, ((int)) y ) { // Unnatural syntax.

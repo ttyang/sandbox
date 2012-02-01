@@ -9,7 +9,7 @@
 #include <algorithm>
 
 //[add_global_functor
-// Unfortunately, cannot be defined locally (so not real alternative).
+// Unfortunately, cannot be defined locally (so not a real alternative).
 struct global_add { // Unfortunately, boilerplate code to program the class.
     global_add(int& _sum, int _factor): sum(_sum), factor(_factor) {}
 

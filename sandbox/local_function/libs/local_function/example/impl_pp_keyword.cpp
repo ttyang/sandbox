@@ -12,7 +12,7 @@
 #include <boost/test/unit_test.hpp>
 
 // Expand to 1 if space-separated tokens end with `this_`, 0 otherwise.
-#define HAS_THIS_(tokens) \
+#define IS_THIS_BACK(tokens) \
     BOOST_LOCAL_FUNCTION_DETAIL_PP_KEYWORD_IS_THISUNDERSCORE_BACK( \
     BOOST_LOCAL_FUNCTION_DETAIL_PP_KEYWORD_BIND_REMOVE_FRONT( \
     BOOST_LOCAL_FUNCTION_DETAIL_PP_KEYWORD_CONST_REMOVE_FRONT( \
@@ -20,8 +20,8 @@
     )))
 
 BOOST_AUTO_TEST_CASE( test_impl_pp_keyword ) {
-    BOOST_CHECK( HAS_THIS_(const bind this_) == 1 );
-    BOOST_CHECK( HAS_THIS_(const bind& x) == 0 );
+    BOOST_CHECK( IS_THIS_BACK(const bind this_) == 1 );
+    BOOST_CHECK( IS_THIS_BACK(const bind& x) == 0 );
 }
 //]
 

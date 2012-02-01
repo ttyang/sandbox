@@ -295,6 +295,7 @@ public:
 #endif
         BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_LOCAL_FUNCTION_AUX_defaults),
                 BOOST_LOCAL_FUNCTION_AUX_call_init, ~) // INC for no defaults.
+        unused_ = 0; // To avoid a GCC uninitialized warning.
     }
     
     // Result operator(Arg1, ..., ArgN-1, ArgN) -- iff defaults >= 0

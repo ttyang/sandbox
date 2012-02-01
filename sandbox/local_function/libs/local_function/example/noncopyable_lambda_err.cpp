@@ -10,7 +10,7 @@
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
-//[noncopyable_lambda
+//[noncopyable_lambda_err
 struct n: boost::noncopyable {
     int i;
     n(int _i): i(_i) {}

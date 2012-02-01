@@ -11,8 +11,8 @@
     [copyright 2006-2012 Alexander Nasonov, Lorenzo Caminiti]
     [purpose execute arbitrary code at scope exit]
     [license
-        Distributed under the Boost Software License, Version 1.0.
-        (See accompanying file LICENSE_1_0.txt or copy at
+        Distributed under the Boost Software License, Version 1.0
+        (see accompanying file LICENSE_1_0.txt or a copy at
         [@http://www.boost.org/LICENSE_1_0.txt])
     ]
     [authors
@@ -62,8 +62,8 @@ This library allows to execute arbitrary code when the enclosing scope exits.
 Nowadays, every C++ developer is familiar with the __RAII__ technique.
 It binds resource acquisition and release to initialization and destruction of a variable that holds the resource.
 But there are times when writing a special class for such variable is not worth the effort.
-
 This is when the __scope_exit__ library comes into play.
+
 Programmers can put resource acquisition directly in their code and next to it, they can write code that releases the resource using this library.
 For example:
 [footnote
@@ -72,7 +72,7 @@ While maintaining full backward compatibility, it is now possible to specify the
 See the __No_Variadic_Macros__ section for more details.
 ]
 
-[test_world]
+[world]
 
 Read the __Tutorial__ section to find out how to write programs with __scope_exit__ or jump to the __Reference__ section.
 
@@ -87,7 +87,7 @@ This section explains how to setup a system to use this library.
 The library should be usable on any compiler that supports __typeof__ except:
 
 * MSVC 7.1 and 8.0 fail to link if a function with __scope_exit__ is included by multiple translation units.
-Furthermore, on MSVC 7.1 and 8.0 it is possible to capture the object `this_` only with native __typeof__ (and not in __typeof__ emulation mode).
+Furthermore, on MSVC 7.1 and 8.0 it is possible to capture the object `this_` only with native __typeof__ (and not in __typeof_emulation__ mode).
 * GCC 3.3 cannot compile __scope_exit__ inside a template (see [@http://lists.boost.org/Archives/boost/2007/02/116235.php] for more details).
 
 The authors tested the library on GCC 3.3, 3.4, 4.1, 4.2, 4.5.3 (with and without C++11 features [^-std=c++0x]), MSVC 8.0, and Intel 10.1 under Linux, Cygwin, and Windows 7.
@@ -103,11 +103,6 @@ Programmers can simply instruct the compiler where to find the library header fi
 The library implementation uses __typeof__ to automatically deduce the types of the __scope_exit__ captured variables (see the __Tutorial__ section).
 In order to compile code in __typeof_emulation__ mode, all types should be properly registered with __typeof_REGISTER_TYPE__ or __typeof_REGISTER_TEMPLATE__ macros, or appropriate __typeof__ headers should be included.
 
-When using comma-separated lists to specify captures (see the __No_Variadic_Macros__ section), make sure that the `BOOST_PP_VARIADICS` macro is defined (either automatically by __pp__ or manually using compiler options `-D`, `/D`, etc).
-[footnote
-It is not sufficient for the `BOOST_NO_VARIADIC_MACROS` macro to be undefined, the `BOOST_PP_VARIADICS` macro must be defined.
-]
-
 [endsect]
 
 [endsect]
@@ -118,8 +113,8 @@ This section illustrates how to use this library.
 
 [section Capturing Variables]
 
-Imagine that we want to make many modifications to data members of the `world` class in the `world::add_person` function.
-You start with adding a new `person` object to a vector of persons:
+Imagine that we want to make many modifications to data members of some `world` class in its `world::add_person` member function.
+We start with adding a new `person` object to a vector of persons:
 
     void world::add_person(person const& a_person) {
         bool commit = false;
@@ -132,16 +127,16 @@ This all-or-nothing semantic is also known as __strong_guarantee__.
 
 In particular, the last added person must be deleted from `persons_` if the function throws.
 All we need is to define a delayed action (release of a resource) right after the direct action (resource acquisition).
-For example (see also [@../../test/world.cpp `"world.cpp"`]):
+For example (see also [@../../test/world.cpp =world.cpp=]):
 
-[test_world]
+[world]
 
-The block below point `(1)` is a __scope_exit__ declaration.
-Unlike point `(1)`, an execution of the __scope_exit__ body will be delayed until the end of the current scope. In this case it will be executed either after point `(4)` or on any exception.
+The block below point =(1)= is a __scope_exit__ declaration.
+Unlike point =(1)=, an execution of the __scope_exit__ body will be delayed until the end of the current scope. In this case it will be executed either after point =(4)= or on any exception.
 (On various versions of the GCC compiler, it is necessary to use [macroref BOOST_SCOPE_EXIT_TPL] instead of [macroref BOOST_SCOPE_EXIT] within templates, see later in this section for details.)
 
 The __scope_exit__ declaration starts with the [macroref BOOST_SCOPE_EXIT] macro invocation which accepts a comma-separated list of captured variables (a __pp_seq__ is also accepted here for compilers that do not support variadic macros and for backward compatibility with older versions of this library, see the __No_Variadic_Macros__ section).
-If a capture starts with the ampersand sign `&`, a reference to the captured variable will be available inside the __scope_exit__ body; otherwise, a copy of the variable will be made after the __scope_exit__ declaration at point `(1)` and only the copy will be available inside the body (in this case, the captured variable's type must be `CopyConstructible`).
+If a capture starts with the ampersand sign `&`, a reference to the captured variable will be available inside the __scope_exit__ body; otherwise, a copy of the variable will be made after the __scope_exit__ declaration at point =(1)= and only the copy will be available inside the body (in this case, the captured variable's type must be `CopyConstructible`).
 
 In the example above, the variables `commit` and `persons_` are captured by reference because the final value of the `commit` variable should be used to determine whether to execute rollback actions or not and the action should modify the `persons_` object, not its copy.
 This is the most common case but passing a variable by value is sometimes useful as well.
@@ -153,7 +148,7 @@ The macro [macroref BOOST_SCOPE_EXIT_END] can still be used on C++11 to write po
 Using `;` instead of [macroref BOOST_SCOPE_EXIT_END] on C++03 compilers will generate a (possibly cryptic) compiler error.
 ]
 
-[warning
+[important
 In order to comply with the STL exception safety requirements, the __scope_exit__ body must never throw (because the library implementation executes the body within a destructor).
 This is true for all __scope_exit__ macros (including [macroref BOOST_SCOPE_EXIT_TPL] and [macroref BOOST_SCOPE_EXIT_ALL]) on both C++03 and C++11.
 ]
@@ -162,9 +157,9 @@ Consider a more complex example where `world::add_person` can save intermediate 
 We use `person::evolution_` to store a version of the changes and increment it to cancel all rollback actions associated with those changes.
 If we pass a current value of `evolution_` stored in the `checkpoint` variable by value, it remains unchanged within the __scope_exit__ body so we can compare it with the final value of `evolution_`.
 If the latter was not incremented since we saved it, the rollback action inside the __scope_exit__ body should be executed.
-For example (see also [@../../test/world_checkpoint.cpp `"world_checkpoint.cpp"`]):
+For example (see also [@../../test/world_checkpoint.cpp =world_checkpoint.cpp=]):
 
-[test_world_checkpoint]
+[world_checkpoint]
 
 When multiple __scope_exit__ blocks are declared within the same enclosing scope, the __scope_exit__ bodies are executed in the reversed order of their declarations.
 
@@ -174,18 +169,18 @@ When multiple __scope_exit__ blocks are declared within the same enclosing scope
 
 Within a member function, it is also possible to capture the object `this`.
 However, the special symbol `this_` must be used instead of `this` in the __scope_exit__ declaration and body to capture and access the object.
-For example (see also [@../../test/world_this.cpp `"world_this.cpp"`]):
+For example (see also [@../../test/world_this.cpp =world_this.cpp=]):
 
-[test_world_this_]
+[world_this_]
 
 On C++11, it is possible (but not required) to directly use `this` instead of the special symbol `this_`.
 [footnote
 The special symbol `this_` can still be used on C++11 to write portable code that can be used on both C++03 and C++11 compilers.
 Unfortunately, using `this` instead of `this_` on C++03 compilers leads to undefined behaviour (it will likely generate a compiler error but that is not guaranteed).
 ]
-For example (see also [@../../test/world_this.cpp `"world_this.cpp"`]):
+For example (see also [@../../test/world_this.cpp =world_this.cpp=]):
 
-[test_world_this]
+[world_this]
 
 It is never possible to capture the object `this_` (or `this`) by reference because C++ does not allow to take a reference to `this`.
 If the enclosing member function is constant then the captured object will also be constant, otherwise the captured object will be mutable.
@@ -194,14 +189,15 @@ If the enclosing member function is constant then the captured object will also 
 
 [section Capturing No Variable]
 
-It is possible to declare a __scope_exit__ block that captures no variable.
-In this case, the list of captured variables is replaced by the `void` keyword (similarly to the C syntax that allows to declare a function with no parameter using `result_type func(void);`).
+It is possible to declare __scope_exit__ code that captures no variable.
+In this case, the list of captured variables is replaced by the `void` keyword (similarly to the C syntax that allows to declare a function with no parameter using [^['result-type function-name]]`(void)`).
 [footnote
+*Rationale.*
 Unfortunately, it is not possible to simply invoke the __scope_exit__ macro with no parameters `BOOST_SCOPE_EXIT()` because the preprocessor cannot detect emptiness of a macro parameter when the parameter can start with a non-alphanumeric symbol (which is the case when capturing a variable by reference `&variable`).
 ]
-For example, this can be useful when the __scope_exit__ body only needs to access global variables (see also [@../../test/world_void.cpp `"world_void.cpp"`]):
+For example, this can be useful when the __scope_exit__ body only needs to access global variables (see also [@../../test/world_void.cpp =world_void.cpp=]):
 
-[test_world_void]
+[world_void]
 
 This same syntax is supported for both compilers with and without variadic macro support.
 
@@ -211,16 +207,17 @@ This same syntax is supported for both compilers with and without variadic macro
 
 On C++11 compliers, it is also possible to capture all the variables in scope without naming them one by one using the special macro [macroref BOOST_SCOPE_EXIT_ALL] instead of [macroref BOOST_SCOPE_EXIT].
 [footnote
+*Rationale.*
 The [macroref BOOST_SCOPE_EXIT_ALL] macro is only defined on C++11 compilers.
 Using [macroref BOOST_SCOPE_EXIT_ALL] on C++03 compilers will generate a (possibly cryptic) compiler error.
-Note that a new macro [macroref BOOST_SCOPE_EXIT_ALL] needed to be introduced instead of reusing [macroref BOOST_SCOPE_EXIT] because `BOOST_SCOPE_EXIT(&)` and `BOOST_SCOPE_EXIT(=)` could not be distinguished from `BOOST_SCOPE_EXIT(void)` or `BOOST_SCOPE_EXIT(this_)` using the preprocessor because the symbols `&` and `=` are neither prefxied or postfixed by alphanumeric tokens (this is not an issue for [macroref BOOST_SCOPE_EXIT_ALL] which always has `&` or `=` as the first capture so the first capture token is never compared with neither `void` of `this_` for this macro).
+Note that a new macro [macroref BOOST_SCOPE_EXIT_ALL] needed to be introduced instead of reusing [macroref BOOST_SCOPE_EXIT] because `BOOST_SCOPE_EXIT(&)` and `BOOST_SCOPE_EXIT(=)` could not be distinguished from `BOOST_SCOPE_EXIT(void)` or `BOOST_SCOPE_EXIT(this_)` using the preprocessor because the symbols `&` and `=` are neither prefxied or postfixed by alphanumeric tokens (this is not an issue for [macroref BOOST_SCOPE_EXIT_ALL] which always has `&` or `=` as the first capture so the first capture token is never compared with neither `void` or `this_` for this macro).
 ]
 
 Following the same syntax adopted by C++11 lambdas, the [macroref BOOST_SCOPE_EXIT_ALL] macro accepts a comma-separated list of captures which must start with either `&` or `=` to capture all variables in scope respectively by reference or by value (note that no variable name is specified by these leading captures).
 Additional captures of specific variables can follow the leading `&` or `=` and they will override the default reference or value captures.
-For example (see also [@../../test/world_checkpoint_all.cpp `"world_checkpoint_all.cpp"`]):
+For example (see also [@../../test/world_checkpoint_all.cpp =world_checkpoint_all.cpp=]):
 
-[test_world_checkpoint_all]
+[world_checkpoint_all]
 
 The first __scope_exit__ declaration captures all variables in scope by reference but `checkpoint` and `this_` which are explicitly captured by value (in particular, `p` and `persons_` are captured by reference).
 The second __scope_exit__ declaration instead captures all variables in scope by value but `p` which is captured by reference (in particular, `checkpoint`, `prev_id`, and `this` are captured by value).
@@ -230,12 +227,12 @@ The second __scope_exit__ declaration instead captures all variables in scope by
 [section GCC Template Workaround]
 
 Various versions of the GCC compiler do not compile [macroref BOOST_SCOPE_EXIT] inside templates (see the __Reference__ section for more information).
+As a workaround, [macroref BOOST_SCOPE_EXIT_TPL] should be used instead of [macroref BOOST_SCOPE_EXIT] in these cases:
 [footnote
 GCC versions compliant with C++11 do not present this issue and given that [macroref BOOST_SCOPE_EXIT_ALL] is only available on C++11 compilers, there is no need for a `BOOST_SCOPE_EXIT_ALL_TPL` macro.
 ]
-As a workaround, [macroref BOOST_SCOPE_EXIT_TPL] should be used instead of [macroref BOOST_SCOPE_EXIT] in these cases:
 
-[test_world_tpl]
+[world_tpl]
 
 The [macroref BOOST_SCOPE_EXIT_TPL] macro has the exact same syntax of [macroref BOOST_SCOPE_EXIT].
 
@@ -243,17 +240,19 @@ The [macroref BOOST_SCOPE_EXIT_TPL] macro has the exact same syntax of [macroref
 
 [endsect]
 
+[xinclude reference.xml]
+
 [section Annex: Alternatives]
 
 This section presents some alternatives and work related to __scope_exit__.
 
-[section Try-Catch]
+[h5 Try-Catch]
 
 This is an example of using a badly designed `file` class. 
 An instance of `file` does not close the file in its destructor, a programmer is expected to call the `close` member function explicitly.
-For example (see also [@../../example/try_catch.cpp `"try_catch.cpp"`]):
+For example (see also [@../../example/try_catch.cpp =try_catch.cpp=]):
 
-[example_try_catch_bad]
+[try_catch_bad]
 
 Note the following issues with this approach:
 
@@ -263,13 +262,11 @@ member function returns.
 * If opening throws, the `passwd.close()` should not be called, hence the call to `passwd.is_open()`.
 
 The __scope_exit__ approach does not have any of these issues.
-For example (see also [@../../example/try_catch.cpp `"try_catch.cpp"`]):
+For example (see also [@../../example/try_catch.cpp =try_catch.cpp=]):
 
-[example_try_catch_good]
+[try_catch_good]
 
-[endsect]
-
-[section RAII]
+[h5 RAII]
 
 __RAII__ is absolutely perfect for the `file` class introduced above.
 Use of a properly designed `file` class would look like:
@@ -307,13 +304,12 @@ In some cases __strong_guarantee__ can be accomplished with standard utilities:
 
 Or with specialized containers such as __ptr_container__ or __multi_index__.
 
-[endsect]
 
-[section Scope Guards]
+[h5 Scope Guards]
 
 Imagine that a new currency rate is introduced before performing a transaction:
 
-[example_scope_guard_decl]
+[scope_guard_decl]
 	
 If the transaction does not complete, the currency must be erased from `rates`.
 This can be done with __scope_guard__ and __lambda__ (or __phoenix__):
@@ -347,8 +343,7 @@ Note the following issues with this approach:
 This code will look much better with C++11 lambdas:
 
     ON_BLOCK_EXIT(
-        [currency_rate_inserted, &commit, &rates, &currency]() -> void
-        {
+        [currency_rate_inserted, &commit, &rates, &currency]() {
             if(currency_rate_inserted && !commit) rates.erase(currency);
         }
     );
@@ -357,13 +352,11 @@ This code will look much better with C++11 lambdas:
     
     commit = true;
 
-With __scope_exit__ we can simply do the following (see also [@../../example/scope_guard.cpp `"scope_guard.cpp"`]):
+With __scope_exit__ we can simply do the following (see also [@../../example/scope_guard.cpp =scope_guard.cpp=]):
 
-[example_scope_guard_exit]
+[scope_guard_exit]
 
-[endsect]
-
-[section The D Programming Language]
+[h5 The D Programming Language]
 
 __scope_exit__ is similar to __D_scope_exit__ feature built into the __D__ programming language.
 
@@ -371,18 +364,14 @@ A curious reader may notice that the library does not implement `scope(success)`
 Unfortunately, these are not possible in C++ because failure or success conditions cannot be determined by calling `std::uncaught_exception` (see [@http://www.gotw.ca/gotw/047.htm Guru of the Week #47] for more details about `std::uncaught_exception` and if it has any good use at all).
 However, this is not a big problem because these two __D__'s constructs can be expressed in terms of __D_scope_exit__ and a `bool commit` variable as explained in the __Tutorial__ section.
 
-[endsect]
-
-[section C++11 Lambdas]
+[h5 C++11 Lambdas]
 
 Using C++11 lambdas, it is relatively easy to implement the __scope_exit__ construct.
-For example (see also [@../../test/world_lambda.cpp `"world_lambda.cpp"`]):
+For example (see also [@../../test/world_lambda.cpp =world_lambda.cpp=]):
 
-[test_world_lambda]
+[world_lambda]
 
 However, this library allows to program the __scope_exit__ construct in a way that is portable between C++03 and C++11 compilers.
-
-[endsect]
 
 [endsect]
 
@@ -390,57 +379,54 @@ However, this library allows to program the __scope_exit__ construct in a way th
 
 This section presents an alternative syntax for compilers without variadic macro support.
 
-[section Sequence Syntax]
+[h5 Sequence Syntax]
 
 Most modern compilers support variadic macros (notably, these include GCC, MSVC, and all C++11 compilers).
 However, in the rare case that programmers need to use this library on a complier without variaidc macros, this library also allows to specify the capture list using a __pp_seq__ where tokens are separated by round parenthesis `()`:
 
     (capture1) (capture2) ... // All compilers.
 
-Instead of a comma-separated list that we have seen so far which requires variadic macros:
+Instead of the comma-separated list that we have seen so far which requires variadic macros:
 
     capture1, capture2, ... // Only compilers with variadic macros.
 
-For example, the following syntax is accepted on all compilers with and without variadic macros (see also [@../../test/world_seq.cpp `"world_seq.cpp"`]):
+For example, the following syntax is accepted on all compilers with and without variadic macros (see also [@../../test/world_seq.cpp =world_seq.cpp=]):
 
-[test_world_seq]
+[world_seq]
 
 Furthermore, older versions of this library used to only support the __pp_seq__ syntax so the above syntax is also supported for backward compatibility.
-However, in the current version of this library and on compilers with variadic macros, the syntax we have seen so far is preferred because more readable (see also [@../../test/world.cpp `"world.cpp"`]):
+However, in the current version of this library and on compilers with variadic macros, the comma-separated syntax we have seen so far is preferred because more readable (see also [@../../test/world.cpp =world.cpp=]):
 
-[test_world]
+[world]
 
 Note how the same macros accept both syntaxes on compilers with variadic macros and only the __pp_seq__ syntax on compilers without variadic macros.
-Finally, an empty capture list is always specified using `void` on compilers with and without variaidc macros.
+Finally, an empty capture list is always specified using `void` on compilers with and without variaidc macros (see also [@../../test/world_void.cpp =world_void.cpp=]):
 
-[endsect]
+[world_void]
 
-[section Examples]
+[h5 Examples]
 
 The following is a list of most of the examples presented in this documentation reprogrammed using the __pp_seq__ syntax instead of the comma-separated list:
 
 [table
     [ [Files] ]
-    [ [[@../../test/world_checkpoint_seq.cpp "world_checkpoint_seq.cpp"]] ]
-    [ [[@../../test/world_this_seq.cpp "world_this_seq.cpp"]] ]
-    [ [[@../../test/world_checkpoint_all_seq.cpp "world_checkpoint_all_seq.cpp"]] ]
-    [ [[@../../test/world_tpl_seq.cpp "world_tpl_seq.cpp"]] ]
-    [ [[@../../example/try_catch_seq.cpp "try_catch_seq.cpp"]] ]
-    [ [[@../../example/scope_guard_seq.cpp "scope_guard_seq.cpp"]] ]
+    [ [[@../../test/world_checkpoint_seq.cpp =world_checkpoint_seq.cpp=]] ]
+    [ [[@../../test/world_this_seq.cpp =world_this_seq.cpp=]] ]
+    [ [[@../../test/world_checkpoint_all_seq.cpp =world_checkpoint_all_seq.cpp=]] ]
+    [ [[@../../test/world_tpl_seq.cpp =world_tpl_seq.cpp=]] ]
+    [ [[@../../example/try_catch_seq.cpp =try_catch_seq.cpp=]] ]
+    [ [[@../../example/scope_guard_seq.cpp =scope_guard_seq.cpp=]] ]
 ]
 
 [endsect]
 
-[endsect]
-
-
-[xinclude reference.xml]
-
 [section Acknowledgements]
 
-['In chronological order.]
-
 Alexander Nasonov is the original library author.
+
+Lorenzo Caminiti added variadic macro support, capture of the object `this_`, empty captures using `void`, and `BOOST_SCOPE_EXIT_ALL`.
+
+/Thanks to the following people (in chronological order)./
 
 Maxim Yegorushkin for sharing code where he used a local struct to clean up resources.
 
@@ -455,8 +441,6 @@ Jody Hagins for good comments that helped to significantly improve the documenta
 Richard Webb for testing the library on MSVC compiler.
 
 Adam Butcher for a workaround to error C2355 when deducing the type of `this` on some MSVC versions.
-
-Lorenzo Caminiti for variadic macro support, capture of the object `this_`, empty captures using `void`, and `BOOST_SCOPE_EXIT_ALL`.
 
 [endsect]
 

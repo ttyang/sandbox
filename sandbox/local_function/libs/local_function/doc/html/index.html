@@ -29,7 +29,7 @@
       Caminiti</p></div>
 <div><div class="legalnotice">
 <a name="boost_localfunction.legal"></a><p>
-        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></div>
@@ -64,8 +64,8 @@
 <dt><span class="section"><a href="boost_localfunction/Advanced_Topics.html#boost_localfunction.Advanced_Topics.assigning_and_returning">Assigning
       and Returning</a></span></dt>
 <dt><span class="section"><a href="boost_localfunction/Advanced_Topics.html#boost_localfunction.Advanced_Topics.nesting">Nesting</a></span></dt>
-<dt><span class="section"><a href="boost_localfunction/Advanced_Topics.html#boost_localfunction.Advanced_Topics.deducing_bound_types__concepts__etc_">Deducing
-      Bound Types (concepts, etc)</a></span></dt>
+<dt><span class="section"><a href="boost_localfunction/Advanced_Topics.html#boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_">Accessing
+      Types (concepts, etc)</a></span></dt>
 <dt><span class="section"><a href="boost_localfunction/Advanced_Topics.html#boost_localfunction.Advanced_Topics.specifying_types">Specifying
       Types</a></span></dt>
 <dt><span class="section"><a href="boost_localfunction/Advanced_Topics.html#boost_localfunction.Advanced_Topics.inlining">Inlining</a></span></dt>
@@ -116,11 +116,11 @@
 </h2></div></div></div>
 <p>
       <span class="emphasis"><em>Local functions</em></span> are a form of <span class="emphasis"><em>information hiding</em></span>
-      and are useful for dividing procedural tasks into subtasks which are only meaningful
-      locally, avoiding cluttering other parts of the program with functions, variables,
-      etc unrelated to those parts. Local functions therefore complement other structuring
-      possibilities such as namespaces and classes. Local functions are a feature
-      of many programming languages, notably <a href="http://en.wikipedia.org/wiki/Nested_function#An_example" target="_top">Pascal</a>
+      and they are useful for dividing procedural tasks into subtasks which are only
+      meaningful locally, avoiding cluttering other parts of the program with functions,
+      variables, etc unrelated to those parts. Local functions therefore complement
+      other structuring possibilities such as namespaces and classes. Local functions
+      are a feature of many programming languages, notably <a href="http://en.wikipedia.org/wiki/Nested_function#An_example" target="_top">Pascal</a>
       and <a href="http://en.wikipedia.org/wiki/Nesting_(computing)#In_programming" target="_top">Ada</a>,
       yet lacking from <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
       (see also <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2511.html" target="_top">[N2511]</a>).
@@ -189,7 +189,7 @@
         </li>
 <li class="listitem">
           Local functions can be passed as template parameters so they can be conveniently
-          passed to STL algorithms, etc. <sup>[<a name="boost_localfunction.Introduction.f0" href="#ftn.boost_localfunction.Introduction.f0" class="footnote">1</a>]</sup>
+          used with STL algorithms, etc. <sup>[<a name="boost_localfunction.Introduction.f0" href="#ftn.boost_localfunction.Introduction.f0" class="footnote">1</a>]</sup>
         </li>
 <li class="listitem">
           However, local functions must be specified within a declarative context
@@ -200,7 +200,7 @@
 <p>
       See the <a class="link" href="boost_localfunction/Alternatives.html" title="Annex: Alternatives">Alternatives</a>
       section for a comparison between this library, <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
-      lambda</a> functions, <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>,
+      lambda</a> functions, <a href="http://www.boost.org/doc/libs/release/libs/phoenix" target="_top">Boost.Phoenix</a>,
       and other C++ techniques that implement features related to local functions.
     </p>
 </div>
@@ -209,20 +209,20 @@
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Introduction.f0" href="#boost_localfunction.Introduction.f0" class="para">1</a>] </sup>
             This is a strength with respect to <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
             functors implemented using local classes which cannot be passed as template
-            parameters, see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>
+            parameters (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2657.htm" target="_top">[N2657]</a>
             and the <a class="link" href="boost_localfunction/Alternatives.html" title="Annex: Alternatives">Alternatives</a>
-            section.
+            section).
           </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Introduction.f1" href="#boost_localfunction.Introduction.f1" class="para">2</a>] </sup>
             This is a weakness with respect to <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
-            lambda</a> functions which can instead be specified also within expressions,
-            see the <a class="link" href="boost_localfunction/Alternatives.html" title="Annex: Alternatives">Alternatives</a>
-            section.
+            lambda</a> functions which can instead be specified also within expressions
+            (see the <a class="link" href="boost_localfunction/Alternatives.html" title="Annex: Alternatives">Alternatives</a>
+            section).
           </p></div>
 </div>
 </div>
 <table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
-<td align="left"><p><small>Last revised: January 26, 2012 at 22:13:12 GMT</small></p></td>
+<td align="left"><p><small>Last revised: February 01, 2012 at 00:00:23 GMT</small></p></td>
 <td align="right"><div class="copyright-footer"></div></td>
 </tr></table>
 <hr>

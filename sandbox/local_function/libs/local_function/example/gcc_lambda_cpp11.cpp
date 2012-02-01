@@ -5,7 +5,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 
 #include <boost/config.hpp>
-
 #ifndef BOOST_NO_LAMBDAS
 
 #define BOOST_TEST_MODULE TestGccLambdaCpp11

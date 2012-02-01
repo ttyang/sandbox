@@ -34,8 +34,8 @@
 <dt><span class="section"><a href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.assigning_and_returning">Assigning
       and Returning</a></span></dt>
 <dt><span class="section"><a href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.nesting">Nesting</a></span></dt>
-<dt><span class="section"><a href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.deducing_bound_types__concepts__etc_">Deducing
-      Bound Types (concepts, etc)</a></span></dt>
+<dt><span class="section"><a href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_">Accessing
+      Types (concepts, etc)</a></span></dt>
 <dt><span class="section"><a href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.specifying_types">Specifying
       Types</a></span></dt>
 <dt><span class="section"><a href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.inlining">Inlining</a></span></dt>
@@ -86,7 +86,7 @@
 <p>
         Programmers can define a <code class="computeroutput"><span class="identifier">WITH_DEFAULT</span></code>
         macro similar to the following if they think it improves readability over
-        the above syntax (see also <a href="../../../test/add_with_default.cpp" target="_top"><code class="literal">add_with_default.cpp</code></a>):
+        the syntax above (see also <a href="../../../test/add_with_default.cpp" target="_top"><code class="literal">add_with_default.cpp</code></a>):
         <sup>[<a name="boost_localfunction.Advanced_Topics.default_parameters.f1" href="#ftn.boost_localfunction.Advanced_Topics.default_parameters.f1" class="footnote">18</a>]</sup>
       </p>
 <p>
@@ -113,9 +113,11 @@
 </h3></div></div></div>
 <p>
         The C++ preprocessor does not allow commas <code class="computeroutput"><span class="special">,</span></code>
-        within macro parameters unless they are wrapped by round parenthesis <code class="computeroutput"><span class="special">()</span></code>. Therefore, using commas within the local
-        function parameters and bindings will generate (cryptic) preprocessor errors
-        unless they are wrapped with an extra set of round parenthesis <code class="computeroutput"><span class="special">()</span></code> as explained here.
+        within macro parameters unless they are wrapped by round parenthesis <code class="computeroutput"><span class="special">()</span></code> (see the <a href="http://www.boost.org/doc/libs/release/libs/utility/identity_type" target="_top">Boost.Utility/IdentityType</a>
+        documentation for details). Therefore, using commas within the local function
+        parameters and bindings will generate (cryptic) preprocessor errors unless
+        they are wrapped with an extra set of round parenthesis <code class="computeroutput"><span class="special">()</span></code>
+        as explained here.
       </p>
 <div class="note"><table border="0" summary="Note">
 <tr>
@@ -156,10 +158,10 @@
         <span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">&gt;&amp;</span></code> contains a comma <code class="computeroutput"><span class="special">,</span></code>
         after the first template parameter <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span></code>.
         This comma is not wrapped by any round parenthesis <code class="computeroutput"><span class="special">()</span></code>
-        thus it will cause a preprocessor error. <sup>[<a name="boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f1" href="#ftn.boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f1" class="footnote">20</a>]</sup> The <a href="http://www.boost.org/doc/libs/release/libs/utility/doc/html/index.html" target="_top">Boost.Utility</a>
-        macro <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">(</span></code><span class="emphasis"><em>parenthesized-type</em></span><code class="computeroutput"><span class="special">)</span></code> from the header <code class="literal">boost/utility/identity_type.hpp</code>
+        thus it will cause a preprocessor error. <sup>[<a name="boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f1" href="#ftn.boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f1" class="footnote">20</a>]</sup> The <a href="http://www.boost.org/doc/libs/release/libs/utility/identity_type" target="_top">Boost.Utility/IdentityType</a>
+        macro <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">(</span></code><code class="literal"><span class="emphasis"><em>parenthesized-type</em></span></code><code class="computeroutput"><span class="special">)</span></code> from the header <code class="literal">boost/utility/identity_type.hpp</code>
         can be used to wrap a type within extra parenthesis <code class="computeroutput"><span class="special">()</span></code>
-        so to overcome this issue:
+        so to overcome the problem:
       </p>
 <pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">utility</span><span class="special">/</span><span class="identifier">identity_type</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 
@@ -176,14 +178,8 @@
         <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">(...)</span></code>
         macro plus the parenthesis to wrap the type expression (and therefore any
         comma <code class="computeroutput"><span class="special">,</span></code> that it contains) passed
-        as parameter to the <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((...))</span></code> macro. <sup>[<a name="boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f2" href="#ftn.boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f2" class="footnote">21</a>]</sup> Finally, the <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span></code>
-        macro must be prefixed by the <code class="computeroutput"><span class="keyword">typename</span></code>
-        keyword:
-      </p>
-<pre class="programlisting"><span class="keyword">typename</span> <span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">(</span><span class="emphasis"><em>parenthesized-type</em></span><span class="special">)</span>
-</pre>
-<p>
-        When used together with the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TPL.html" title="Macro BOOST_LOCAL_FUNCTION_TPL">BOOST_LOCAL_FUNCTION_TPL</a></code>
+        as parameter to the <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">((...))</span></code> macro. Finally, the <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span></code> macro must be prefixed
+        by the <code class="computeroutput"><span class="keyword">typename</span></code> keyword <code class="computeroutput"><span class="keyword">typename</span> <span class="identifier">BOOST_IDENTITY_TYPE</span><span class="special">(</span></code><code class="literal"><span class="emphasis"><em>parenthesized-type</em></span></code><code class="computeroutput"><span class="special">)</span></code> when used together with the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TPL.html" title="Macro BOOST_LOCAL_FUNCTION_TPL">BOOST_LOCAL_FUNCTION_TPL</a></code>
         macro within templates.
       </p>
 <div class="note"><table border="0" summary="Note">
@@ -199,7 +195,7 @@
 </table></div>
 <p>
         For example, in this case a <code class="computeroutput"><span class="keyword">typedef</span></code>
-        could have been used in the enclosing scope to obtain the following valid
+        from the enclosing scope could have been used to obtain the following valid
         and perhaps more readable code:
       </p>
 <pre class="programlisting"><span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">&gt;</span> <span class="identifier">map_type</span><span class="special">;</span>
@@ -296,7 +292,7 @@
 </h3></div></div></div>
 <p>
         Local functions are function objects so it is possible to assign them to
-        other functors like <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>
+        other functors like <a href="http://www.boost.org/doc/libs/release/libs/function" target="_top">Boost.Function</a>
         <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code> in order to store the local function
         into a variable, pass it as a parameter to another function, or return it
         from the enclosing function.
@@ -410,8 +406,8 @@
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="boost_localfunction.Advanced_Topics.deducing_bound_types__concepts__etc_"></a><a class="link" href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.deducing_bound_types__concepts__etc_" title="Deducing Bound Types (concepts, etc)">Deducing
-      Bound Types (concepts, etc)</a>
+<a name="boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_"></a><a class="link" href="Advanced_Topics.html#boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_" title="Accessing Types (concepts, etc)">Accessing
+      Types (concepts, etc)</a>
 </h3></div></div></div>
 <p>
         This library never requires to explicitly specify the type of bound variables.
@@ -427,12 +423,12 @@
         type expression is fully qualified in the sense that it will be constant
         if the variable is bound by constant <code class="computeroutput"><span class="keyword">const</span>
         <span class="identifier">bind</span><span class="special">[&amp;]</span></code>
-        and it will also be a reference is the variable is bound by reference <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span>
+        and it will also be a reference if the variable is bound by reference <code class="computeroutput"><span class="special">[</span><span class="keyword">const</span><span class="special">]</span>
         <span class="identifier">bind</span><span class="special">&amp;</span></code>
-        (if needed, programmers can strip away the <code class="computeroutput"><span class="keyword">const</span></code>
+        (if needed, programmers can remove the <code class="computeroutput"><span class="keyword">const</span></code>
         and <code class="computeroutput"><span class="special">&amp;</span></code> qualifiers using
         <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">remove_const</span></code> and <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">remove_reference</span></code>,
-        see <a href="http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html" target="_top">Boost.TypeTraits</a>).
+        see <a href="http://www.boost.org/doc/libs/release/libs/type_traits" target="_top">Boost.TypeTraits</a>).
       </p>
 <p>
         The deduced bound type can be used within the body to check concepts, declare
@@ -459,7 +455,7 @@
       </p>
 <p>
         Within templates, <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TYPEOF.html" title="Macro BOOST_LOCAL_FUNCTION_TYPEOF">BOOST_LOCAL_FUNCTION_TYPEOF</a></code>
-        does not require to be prefixed by the <code class="computeroutput"><span class="keyword">typename</span></code>
+        should not be prefixed by the <code class="computeroutput"><span class="keyword">typename</span></code>
         keyword but eventual type manipulations need the <code class="computeroutput"><span class="keyword">typename</span></code>
         prefix as usual (see also <a href="../../../test/typeof_template.cpp" target="_top"><code class="literal">typeof_template.cpp</code></a>
         and <a href="../../../test/addable.hpp" target="_top"><code class="literal">addable.hpp</code></a>):
@@ -483,6 +479,31 @@
 </pre>
 <p>
       </p>
+<p>
+        It is best to use the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TYPEOF.html" title="Macro BOOST_LOCAL_FUNCTION_TYPEOF">BOOST_LOCAL_FUNCTION_TYPEOF</a></code>
+        macro instead of using <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+        so to reduce the number of times that <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+        is invoked:
+      </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+            Either the library already internally used <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+            once, in which case using this macro will not use <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+            again.
+          </li>
+<li class="listitem">
+            Or, the bound variable type is explicitly specified by programmers (see
+            below), in which case using this macro will not use <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+            at all.
+          </li>
+</ol></div>
+<p>
+        Furthermore, within the local function body it possible to access the result
+        type using <code class="computeroutput"><span class="identifier">result_type</span></code>, the
+        type of the first parameter using <code class="computeroutput"><span class="identifier">arg1_type</span></code>,
+        the type of the second parameter using <code class="computeroutput"><span class="identifier">arg2_type</span></code>,
+        etc. <sup>[<a name="boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_.f0" href="#ftn.boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_.f0" class="footnote">21</a>]</sup>
+      </p>
 </div>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -491,7 +512,7 @@
 </h3></div></div></div>
 <p>
         While not required, it is possible to explicitly specify the type of a bound
-        variable so the library will not internally use <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
+        variable so the library will not internally use <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
         to automatically deduce such a type. When specified, the bound variable type
         must follow the <code class="computeroutput"><span class="identifier">bind</span></code> "keyword"
         and it must be wrapped within round parenthesis <code class="computeroutput"><span class="special">()</span></code>:
@@ -506,16 +527,17 @@
 <p>
         Note that within the local function body it is always possible to abstract
         the access to the type of a bound variable using <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_TYPEOF.html" title="Macro BOOST_LOCAL_FUNCTION_TYPEOF">BOOST_LOCAL_FUNCTION_TYPEOF</a></code>
-        (even when the bound variable type is explicitly specified).
+        (even when the bound variable type is explicitly specified in the local function
+        declaration).
       </p>
 <p>
-        The library also uses <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
-        to determine the local function result type (because this type specified
+        The library also uses <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+        to determine the local function result type (because this type is specified
         outside the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION.html" title="Macro BOOST_LOCAL_FUNCTION">BOOST_LOCAL_FUNCTION</a></code>
         macro). Thus it is also possible to specify the local function result type
         as one of the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION.html" title="Macro BOOST_LOCAL_FUNCTION">BOOST_LOCAL_FUNCTION</a></code>
-        macro parameters prefixed by <code class="computeroutput"><span class="keyword">return</span></code>
-        so the library will not use <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
+        macro parameters prefixing it by <code class="computeroutput"><span class="keyword">return</span></code>
+        so the library will not use <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
         to deduce the result type:
       </p>
 <pre class="programlisting"><span class="identifier">BOOST_LOCAL_FUNCTION_TYPE</span><span class="special">(</span><span class="keyword">return</span> <code class="literal"><span class="emphasis"><em>result-type</em></span></code><span class="special">,</span> <span class="special">...)</span>
@@ -530,8 +552,8 @@
         is specified as one of the macro parameters).
       </p>
 <p>
-        The following example specifies the type of all bound variables and of the
-        local function result (see also <a href="../../../test/add_typed.cpp" target="_top"><code class="literal">add_typed.cpp</code></a>):
+        The following example specifies all bound variables and result types (see
+        also <a href="../../../test/add_typed.cpp" target="_top"><code class="literal">add_typed.cpp</code></a>):
         <sup>[<a name="boost_localfunction.Advanced_Topics.specifying_types.f0" href="#ftn.boost_localfunction.Advanced_Topics.specifying_types.f0" class="footnote">22</a>]</sup>
       </p>
 <p>
@@ -567,10 +589,10 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top"><p>
-          Unfortunately, the current implementation implementation still internally
-          uses <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.Typeof</a>
-          once to deduce the local function object type (see the <a class="link" href="Implementation.html" title="Annex: Implementation">Implementation</a>
-          section) even when all bound variable and result types are explicitly specified.
+          Unfortunately, even when all bound variables and result types are explicitly
+          specified, the currently library implementation still has to use <a href="http://www.boost.org/doc/libs/release/libs/typeof" target="_top">Boost.Typeof</a>
+          once (to deduce the local function object type, see the <a class="link" href="Implementation.html" title="Annex: Implementation">Implementation</a>
+          section).
         </p></td></tr>
 </table></div>
 </div>
@@ -582,8 +604,7 @@
         Local functions can be declared inline to increase the chances that the compiler
         will be able to reduce the run-time of the local function call by inlining
         the generated assembly code. A local function is declared inline by prefixing
-        the local function name passed to the <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_NAME.html" title="Macro BOOST_LOCAL_FUNCTION_NAME">BOOST_LOCAL_FUNCTION_NAME</a></code>
-        macro with the "keyword" <code class="computeroutput"><span class="keyword">inline</span></code>:
+        its name with the keyword <code class="computeroutput"><span class="keyword">inline</span></code>:
       </p>
 <pre class="programlisting"><span class="emphasis"><em>result-type</em></span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="emphasis"><em>parameters</em></span><span class="special">)</span> <span class="special">{</span>
     <span class="special">...</span> <span class="comment">// Body.</span>
@@ -656,11 +677,10 @@
 <p>
         Local functions can be declared <a href="http://en.wikipedia.org/wiki/Recursion_(computer_science)#Recursive_procedures" target="_top">recursive</a>
         so a local function can recursively call itself from its body (as usual with
-        C++ functions). A local function is declared recursive by prefixing the local
-        function name passed to <code class="computeroutput"><a class="link" href="../BOOST_LOCAL_FUNCTION_NAME.html" title="Macro BOOST_LOCAL_FUNCTION_NAME">BOOST_LOCAL_FUNCTION_NAME</a></code>
-        macro with the "keyword" <code class="computeroutput"><span class="identifier">recursive</span></code>
-        (thus <code class="computeroutput"><span class="identifier">recursive</span></code> is not a
-        valid local function name):
+        C++ functions). A local function is declared recursive by prefixing its name
+        with the "keyword" <code class="computeroutput"><span class="identifier">recursive</span></code>
+        (thus <code class="computeroutput"><span class="identifier">recursive</span></code> cannot be
+        used as a local function name):
       </p>
 <pre class="programlisting"><span class="emphasis"><em>result-type</em></span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="emphasis"><em>parameters</em></span><span class="special">)</span> <span class="special">{</span>
     <span class="special">...</span> <span class="comment">// Body.</span>
@@ -683,7 +703,7 @@
             <span class="keyword">if</span><span class="special">(</span><span class="identifier">num</span> <span class="special">&lt;=</span> <span class="number">0</span><span class="special">)</span> <span class="identifier">result</span> <span class="special">=</span> <span class="number">1</span><span class="special">;</span>
             <span class="keyword">else</span> <span class="identifier">result</span> <span class="special">=</span> <span class="identifier">num</span> <span class="special">*</span> <span class="identifier">factorial</span><span class="special">(</span><span class="identifier">num</span> <span class="special">-</span> <span class="number">1</span><span class="special">,</span> <span class="keyword">true</span><span class="special">);</span> <span class="comment">// Recursive call.</span>
 
-            <span class="keyword">if</span> <span class="special">(!</span><span class="identifier">recursion</span><span class="special">)</span> <span class="identifier">this_</span><span class="special">-&gt;</span><span class="identifier">results</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">result</span><span class="special">);</span>
+            <span class="keyword">if</span><span class="special">(!</span><span class="identifier">recursion</span><span class="special">)</span> <span class="identifier">this_</span><span class="special">-&gt;</span><span class="identifier">results</span><span class="special">.</span><span class="identifier">push_back</span><span class="special">(</span><span class="identifier">result</span><span class="special">);</span>
             <span class="keyword">return</span> <span class="identifier">result</span><span class="special">;</span>
         <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">recursive</span> <span class="identifier">factorial</span><span class="special">)</span> <span class="comment">// Recursive.</span>
 
@@ -722,9 +742,9 @@
 </h3></div></div></div>
 <p>
         It is possible to overload local functions using the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">overloaded_function</span></code>
-        functor of <a href="http://www.boost.org/doc/libs/release/doc/html/functional/overloaded_function.html" target="_top">Boost.Functional/OverloadedFunction</a>
+        functor of <a href="http://www.boost.org/doc/libs/release/libs/functional/overloaded_function" target="_top">Boost.Functional/OverloadedFunction</a>
         from the header <code class="literal">boost/functional/overloaded_function.hpp</code>
-        (see the <a href="http://www.boost.org/doc/libs/release/doc/html/functional/overloaded_function.html" target="_top">Boost.Functional/OverloadedFunction</a>
+        (see the <a href="http://www.boost.org/doc/libs/release/libs/functional/overloaded_function" target="_top">Boost.Functional/OverloadedFunction</a>
         documentation for details).
       </p>
 <p>
@@ -831,7 +851,7 @@
       </p>
 <p>
 </p>
-<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">auto</span> <span class="keyword">int</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">register</span> <span class="keyword">int</span> <span class="identifier">y</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Classifers.</span>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">auto</span> <span class="keyword">int</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">register</span> <span class="keyword">int</span> <span class="identifier">y</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Classifiers.</span>
     <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">;</span>
 <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">add</span><span class="special">)</span>
 </pre>
@@ -866,7 +886,7 @@
               </th>
 <th>
                 <p>
-                  Reason
+                  Comment
                 </p>
               </th>
 </tr></thead>
@@ -885,14 +905,15 @@
 <td>
                 <p>
                   This is not supported because local functions cannot be templates
-                  (plus most C++ compilers do not implement <code class="computeroutput"><span class="keyword">export</span></code>).
+                  (plus most C++ compilers do not implement <code class="computeroutput"><span class="keyword">export</span></code>
+                  at all).
                 </p>
               </td>
 </tr>
 <tr>
 <td>
                 <p>
-                  <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><span class="emphasis"><em>template-parameter-list</em></span><code class="computeroutput"><span class="special">&gt;</span></code>
+                  <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span></code><code class="literal"><span class="emphasis"><em>template-parameter-list</em></span></code><code class="computeroutput"><span class="special">&gt;</span></code>
                 </p>
               </td>
 <td>
@@ -942,8 +963,9 @@
                   to improve the chances that <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
                   standard compilers can optimize the local function call run-time
                   (but <code class="computeroutput"><span class="keyword">inline</span></code> local
-                  functions cannot be passes as template parameters on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
-                  standard compilers).
+                  functions cannot be passed as template parameters on <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/standards" target="_top">C++03</a>
+                  standard compilers, see the <a class="link" href="Advanced_Topics.html" title="Advanced Topics">Advanced
+                  Topics</a> section).
                 </p>
               </td>
 </tr>
@@ -1150,7 +1172,7 @@
 <p>
 </p>
 <pre class="programlisting"><span class="keyword">int</span> <span class="identifier">error</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">y</span><span class="special">)</span> <span class="special">{</span>
-    <span class="keyword">bool</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">int</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span>
         <span class="keyword">if</span><span class="special">(</span><span class="identifier">x</span> <span class="special">&lt;=</span> <span class="number">0</span><span class="special">)</span> <span class="keyword">goto</span> <span class="identifier">failure</span><span class="special">;</span>    <span class="comment">// Error: Cannot jump to enclosing scope.</span>
         <span class="keyword">else</span> <span class="keyword">goto</span> <span class="identifier">success</span><span class="special">;</span>          <span class="comment">// OK: Can jump within local function.</span>
 
@@ -1171,31 +1193,31 @@
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.default_parameters.f0" href="#boost_localfunction.Advanced_Topics.default_parameters.f0" class="para">17</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> The assignment symbol <code class="computeroutput"><span class="special">=</span></code> cannot be used to specify default parameter
           values because default values are not part of the parameter type so they
-          cannot be handled using template metaprogamming. Default parameter values
+          cannot be handled using template meta-programming. Default parameter values
           need to be separated from the rest of the parameter declaration using the
-          preprocessor. Specifically, this library needs to use preprocessor mataprogramming
+          preprocessor. Specifically, this library needs to use preprocessor meta-programming
           to remove default values when constructing the local function type and
           then to count the number of default values to provide the correct set of
           call operators for the local functor. Therefore, the symbol <code class="computeroutput"><span class="special">=</span></code> cannot be used because it cannot be handled
-          by preprocessor metaprogramming (non-alphanumeric symbols cannot be detected
-          by preprocessor metaprogramming because it cannot be concatenated by the
-          preprocessor).
+          by preprocessor meta-programming (non-alphanumeric symbols cannot be detected
+          by preprocessor meta-programming because they cannot be concatenated by
+          the preprocessor).
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.default_parameters.f1" href="#boost_localfunction.Advanced_Topics.default_parameters.f1" class="para">18</a>] </sup>
           The authors do not personally find the use of the <code class="computeroutput"><span class="identifier">WITH_DEFAULT</span></code>
           macro more readable and they prefer to use the <code class="computeroutput"><span class="keyword">default</span></code>
-          "keyword" directly. Furthermore, <code class="computeroutput"><span class="identifier">WITH_DEFAULT</span></code>
-          need to be defined differently for compilers without variadic macros <code class="computeroutput"><span class="preprocessor">#define</span> <span class="identifier">WITH_DEFAULT</span>
+          keyword directly. Furthermore, <code class="computeroutput"><span class="identifier">WITH_DEFAULT</span></code>
+          needs to be defined differently for compilers without variadic macros
+          <code class="computeroutput"><span class="preprocessor">#define</span> <span class="identifier">WITH_DEFAULT</span>
           <span class="special">(</span><span class="keyword">default</span><span class="special">)</span></code> so it can only be defined by programmers
           based on the syntax they decide to use.
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f0" href="#boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f0" class="para">19</a>] </sup>
-          <span class="bold"><strong>Rationale.</strong></span> This limitation derives from
-          the fact that <code class="computeroutput"><span class="identifier">BOOST_LOCAL_FUNCTION</span></code>
-          uses preprocessor token concatenation <code class="literal">##</code> to inspect
-          the parameter type token (to see if this token is a parameter or a bound
-          variable) and the C++ preprocessor does not allow to concatenate non-alphanumeric
-          tokens.
+          <span class="bold"><strong>Rationale.</strong></span> This limitation is because
+          this library uses preprocessor token concatenation <code class="literal">##</code>
+          to inspect the macro parameters (to distinguish between function parameters,
+          bound variables, etc) and the C++ preprocessor does not allow to concatenate
+          non-alphanumeric tokens.
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f1" href="#boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f1" class="para">20</a>] </sup>
           The preprocessor always interprets unwrapped commas as separating macro
@@ -1206,12 +1228,9 @@
           <span class="identifier">m</span></code>, etc instead of passing <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">map</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">size_t</span><span class="special">&gt;&amp;</span> <span class="identifier">m</span></code>
           as a single macro parameter.
         </p></div>
-<div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f2" href="#boost_localfunction.Advanced_Topics.commas_and_symbols_in_macros.f2" class="para">21</a>] </sup>
-          <span class="bold"><strong>Rationale.</strong></span> Using variadic macros, this
-          extra set of parenthesis could be eliminated requiring only the parenthesis
-          to invoke the <code class="computeroutput"><span class="identifier">BOOST_IDENTITY_TYPE</span></code>
-          macro. However, this feature is currently not implemented and the double
-          parenthesis are always needed when invoking this macro.
+<div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_.f0" href="#boost_localfunction.Advanced_Topics.accessing_types__concepts__etc_.f0" class="para">21</a>] </sup>
+          <span class="bold"><strong>Rationale.</strong></span> The type names <code class="computeroutput"><span class="identifier">result_type</span></code> and <code class="computeroutput"><span class="identifier">arg</span></code><code class="literal"><span class="emphasis"><em>N</em></span></code><code class="computeroutput"><span class="identifier">_type</span></code> follow the <a href="http://www.boost.org/doc/libs/release/libs/type_traits" target="_top">Boost.TypeTraits</a>
+          naming conventions for function traits.
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.specifying_types.f0" href="#boost_localfunction.Advanced_Topics.specifying_types.f0" class="para">22</a>] </sup>
           In the examples of this documentation, we specify bound variables, function
@@ -1243,8 +1262,8 @@
             scope) does not know the local function name so the local function name
             used for recursive call cannot be set in the global functor. This limitation
             together with preventing the possibility for inlining are the reasons
-            why local functions do not allow for recursion unless programmers explicitly
-            declare them <code class="computeroutput"><span class="identifier">recursive</span></code>.
+            why local functions are not recursive unless programmers explicitly declare
+            them <code class="computeroutput"><span class="identifier">recursive</span></code>.
           </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.storage_classifiers___auto__and__register__.f0" href="#boost_localfunction.Advanced_Topics.storage_classifiers___auto__and__register__.f0" class="para">25</a>] </sup>
           The <code class="computeroutput"><span class="keyword">auto</span></code> storage classifier
@@ -1258,8 +1277,8 @@
         </p></div>
 <div class="footnote"><p><sup>[<a id="ftn.boost_localfunction.Advanced_Topics.limitations__operators__etc_.f1" href="#boost_localfunction.Advanced_Topics.limitations__operators__etc_.f1" class="para">26</a>] </sup>
           <span class="bold"><strong>Rationale.</strong></span> This is the because a local
-          function name must be a valid local variable name (the local variable to
-          hold the local functor) and operators cannot be used as local variable
+          function name must be a valid local variable name (the local variable used
+          to hold the local functor) and operators cannot be used as local variable
           names.
         </p></div>
 </div>
@@ -1268,7 +1287,7 @@
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Lorenzo
       Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

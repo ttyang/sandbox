@@ -21,7 +21,7 @@ struct key_sizeof {
 
 typedef int sign_t;
 
-BOOST_AUTO_TEST_CASE( text_macro_commas ) {
+BOOST_AUTO_TEST_CASE( test_macro_commas ) {
     //[macro_commas
     void BOOST_LOCAL_FUNCTION(
         BOOST_IDENTITY_TYPE((const std::map<std::string, size_t>&)) m,

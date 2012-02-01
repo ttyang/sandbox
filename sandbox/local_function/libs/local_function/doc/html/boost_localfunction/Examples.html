@@ -40,7 +40,7 @@
 <dt><span class="section"><a href="Examples.html#boost_localfunction.Examples.n_papers">N-Papers</a></span></dt>
 </dl></div>
 <p>
-      This sections lists some examples that use this library features.
+      This section lists some examples that use this library.
     </p>
 <div class="section">
 <div class="titlepage"><div><div><h3 class="title">
@@ -156,7 +156,7 @@
 </h3></div></div></div>
 <p>
         It is possible to use local functions to check assertions between variables
-        that are made constant within the asserted expression. This is advantageous
+        that are made constant within the asserted expressions. This is advantageous
         because assertions are not supposed to change the state of the program and
         ideally the compiler will not compile assertions that modify variables.
       </p>
@@ -172,13 +172,13 @@
         Ideally this code will not compile instead this example not only compiles
         but the assertion even passes the run-time check and no error is generated
         at all. The <a href="http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2004/n1613.pdf" target="_top">[N1613]</a>
-        paper introduced the idea of a <span class="emphasis"><em>const-block</em></span> which could
+        paper introduces the idea of a <span class="emphasis"><em>const-block</em></span> which could
         be used to wrap the assertion above and catch the programming error at compile-time.
         Similarly, the following code will generate a compile-time error when <code class="computeroutput"><span class="keyword">operator</span><span class="special">=</span></code>
         is mistakenly used instead of <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code> because both <code class="computeroutput"><span class="identifier">x</span></code>
         and <code class="computeroutput"><span class="identifier">y</span></code> are made constants
         (using local functions) within the block of code performing the assertion
-        (see also <a href="../../../example/const_block.cpp" target="_top"><code class="literal">const_block.cpp</code></a>):
+        (see also <a href="../../../example/const_block_err.cpp" target="_top"><code class="literal">const_block_err.cpp</code></a>):
       </p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -193,7 +193,7 @@
               </th>
 <th>
                 <p>
-                  N1613 Constant Block
+                  N1613 Const-Blocks
                 </p>
               </th>
 </tr></thead>
@@ -230,17 +230,18 @@
         by constant reference <code class="computeroutput"><span class="keyword">const</span> <span class="identifier">bind</span><span class="special">&amp;</span></code>
         all the specified variables (so the variables are constant within the code
         block but they do not need to be <code class="computeroutput"><span class="identifier">CopyConstructible</span></code>
-        and no extra copy is performed). The local function executes the <code class="computeroutput"><span class="identifier">assert</span></code> instruction its body which is called
-        immediately after it is defined. More in general, constant blocks can be
-        used to evaluate any instruction (not just assertions) within a block were
-        all specified variables are constant.
+        and no extra copy is performed). The local function executes the <code class="computeroutput"><span class="identifier">assert</span></code> instruction in its body which is
+        called immediately after it is defined. More in general, constant blocks
+        can be used to evaluate any instruction (not just assertions) within a block
+        were all specified variables are constant.
       </p>
 <p>
         Unfortunately, constant blocks cannot be implemented with <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
         lambda</a> functions because these do not support constant binding (of
         course it is always possible to introduce extra constant variables <code class="computeroutput"><span class="keyword">const</span> <span class="keyword">int</span><span class="special">&amp;</span> <span class="identifier">const_x</span>
-        <span class="special">=</span> <span class="identifier">x</span><span class="special">;</span></code> and use these variables in the assertion).
-        Variables bound by value using <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
+        <span class="special">=</span> <span class="identifier">x</span></code>,
+        etc and use these variables in the assertion). Variables bound by value using
+        <a href="http://en.wikipedia.org/wiki/C%2B%2B0x#Lambda_functions_and_expressions" target="_top">C++11
         lambda</a> functions (<code class="computeroutput"><span class="identifier">variable</span></code>,
         <code class="computeroutput"><span class="special">=</span><span class="identifier">variable</span></code>,
         and <code class="computeroutput"><span class="special">=</span></code>) are constant but they
@@ -254,18 +255,18 @@
 </h3></div></div></div>
 <p>
         Scope exits allow to execute arbitrary code at the exit of the enclosing
-        scope and they are provided by the <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        scope and they are provided by the <a href="http://www.boost.org/doc/libs/release/libs/scope_exit" target="_top">Boost.ScopeExit</a>
         library.
       </p>
 <p>
         For curiosity, here we show how to re-implement scope exits using local functions.
         One small advantage of scope exits that use local functions is that they
-        support constant binding. <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        support constant binding. <a href="http://www.boost.org/doc/libs/release/libs/scope_exit" target="_top">Boost.ScopeExit</a>
         does not directly support constant binding (however, it is always possible
         to introduce an extra <code class="computeroutput"><span class="keyword">const</span></code>
         local variable, assign it to the value to bind, and then bind the <code class="computeroutput"><span class="keyword">const</span></code> variable so to effectively have constant
-        binding with <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
-        as well). In general, the authors recommend to use <a href="http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html" target="_top">Boost.ScopeExit</a>
+        binding with <a href="http://www.boost.org/doc/libs/release/libs/scope_exit" target="_top">Boost.ScopeExit</a>
+        as well). In general, the authors recommend to use <a href="http://www.boost.org/doc/libs/release/libs/scope_exit" target="_top">Boost.ScopeExit</a>
         instead of the code listed here whenever possible.
       </p>
 <p>
@@ -307,17 +308,13 @@
                 </p>
               </td>
 <td>
-                <p>
-</p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">person</span><span class="special">&amp;</span> <span class="identifier">p</span> <span class="special">=</span> <span class="identifier">persons_</span><span class="special">.</span><span class="identifier">back</span><span class="special">();</span>
-<span class="identifier">person</span><span class="special">::</span><span class="identifier">evolution_t</span> <span class="identifier">checkpoint</span> <span class="special">=</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">evolution_</span><span class="special">;</span>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting">person&amp; p = persons_.back();
+    person::evolution_t checkpoint = p.evolution_;
 
-<span class="identifier">BOOST_SCOPE_EXIT</span><span class="special">(</span><span class="identifier">checkpoint</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">p</span><span class="special">,</span> <span class="identifier">this_</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Or extra variable `const_p`.</span>
-    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">checkpoint</span> <span class="special">==</span> <span class="identifier">p</span><span class="special">.</span><span class="identifier">evolution_</span><span class="special">)</span> <span class="identifier">this_</span><span class="special">-&gt;</span><span class="identifier">persons_</span><span class="special">.</span><span class="identifier">pop_back</span><span class="special">();</span>
-<span class="special">}</span> <span class="identifier">BOOST_SCOPE_EXIT_END</span>
+    BOOST_SCOPE_EXIT(checkpoint, &amp;p, this_) { // Or extra variable <code class="computeroutput"><span class="identifier">const_p</span></code>.
+        if (checkpoint == p.evolution_) this_-&gt;persons_.pop_back();
+    } BOOST_SCOPE_EXIT_END
 </pre>
-<p>
-                </p>
               </td>
 </tr></tbody>
 </table></div>
@@ -353,9 +350,9 @@
       Functions</a>
 </h3></div></div></div>
 <p>
-        Local functions can be used to create <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>
-        functions. For example (see also <a href="../../../example/boost_phoenix_local_factorial.cpp" target="_top"><code class="literal">boost_phoenix_local_factorial.cpp</code></a>
-        and <a href="../../../example/boost_phoenix_factorial.cpp" target="_top"><code class="literal">boost_phoenix_factorial.cpp</code></a>):
+        Local functions can be used to create <a href="http://www.boost.org/doc/libs/release/libs/phoenix" target="_top">Boost.Phoenix</a>
+        functions. For example (see also <a href="../../../example/phoenix_factorial_local.cpp" target="_top"><code class="literal">phoenix_factorial_local.cpp</code></a>
+        and <a href="../../../example/phoenix_factorial.cpp" target="_top"><code class="literal">phoenix_factorial.cpp</code></a>):
       </p>
 <div class="informaltable"><table class="table">
 <colgroup>
@@ -378,10 +375,10 @@
 <td>
                 <p>
 </p>
-<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">example_boost_phoenix_factorial_local</span> <span class="special">)</span> <span class="special">{</span>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_phoenix_factorial_local</span> <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">arg_names</span><span class="special">::</span><span class="identifier">arg1</span><span class="special">;</span>
 
-    <span class="keyword">int</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">n</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Monomorphic.</span>
+    <span class="keyword">int</span> <span class="identifier">BOOST_LOCAL_FUNCTION</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">n</span><span class="special">)</span> <span class="special">{</span> <span class="comment">// Unfortunately, monomorphic.</span>
         <span class="keyword">return</span> <span class="special">(</span><span class="identifier">n</span> <span class="special">&lt;=</span> <span class="number">0</span><span class="special">)</span> <span class="special">?</span> <span class="number">1</span> <span class="special">:</span> <span class="identifier">n</span> <span class="special">*</span> <span class="identifier">factorial_impl</span><span class="special">(</span><span class="identifier">n</span> <span class="special">-</span> <span class="number">1</span><span class="special">);</span>
     <span class="special">}</span> <span class="identifier">BOOST_LOCAL_FUNCTION_NAME</span><span class="special">(</span><span class="identifier">recursive</span> <span class="identifier">factorial_impl</span><span class="special">)</span>
 
@@ -415,7 +412,7 @@
     <span class="special">}</span>
 <span class="special">};</span>
 
-<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">example_boost_phoenix_factorial</span> <span class="special">)</span> <span class="special">{</span>
+<span class="identifier">BOOST_AUTO_TEST_CASE</span><span class="special">(</span> <span class="identifier">test_phoenix_factorial</span> <span class="special">)</span> <span class="special">{</span>
     <span class="keyword">using</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">arg_names</span><span class="special">::</span><span class="identifier">arg1</span><span class="special">;</span>
 
     <span class="identifier">boost</span><span class="special">::</span><span class="identifier">phoenix</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">factorial_impl</span><span class="special">&gt;</span> <span class="identifier">factorial</span><span class="special">;</span>
@@ -431,10 +428,10 @@
 </tr></tbody>
 </table></div>
 <p>
-        This is presented here mainly as a curiosity because <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>
+        This is presented here mainly as a curiosity because <a href="http://www.boost.org/doc/libs/release/libs/phoenix" target="_top">Boost.Phoenix</a>
         functions created from local functions have the important limitation that
-        they cannot be polymorphic. <sup>[<a name="boost_localfunction.Examples.boost_phoenix_functions.f0" href="#ftn.boost_localfunction.Examples.boost_phoenix_functions.f0" class="footnote">28</a>]</sup> Therefore, in many cases creating the <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>
-        function from global functors (possibly with the help of <a href="http://www.boost.org/doc/libs/release/libs/spirit/phoenix/index.html" target="_top">Boost.Phoenix</a>
+        they cannot be polymorphic. <sup>[<a name="boost_localfunction.Examples.boost_phoenix_functions.f0" href="#ftn.boost_localfunction.Examples.boost_phoenix_functions.f0" class="footnote">28</a>]</sup> Therefore, in many cases creating the <a href="http://www.boost.org/doc/libs/release/libs/phoenix" target="_top">Boost.Phoenix</a>
+        function from global functors (possibly with the help of <a href="http://www.boost.org/doc/libs/release/libs/phoenix" target="_top">Boost.Phoenix</a>
         adaptor macros) might be a more valuable option.
       </p>
 </div>
@@ -443,8 +440,9 @@
 <a name="boost_localfunction.Examples.closures"></a><a class="link" href="Examples.html#boost_localfunction.Examples.closures" title="Closures">Closures</a>
 </h3></div></div></div>
 <p>
-        A few more examples on how to return local functions to the calling scope
-        (and the relative precautions to take) mainly adapted from examples of <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)" target="_top">closures</a>.
+        The following are examples of <a href="http://en.wikipedia.org/wiki/Closure_(computer_science)" target="_top">closures</a>
+        that illustrate how to return local functions to the calling scope (and the
+        relative precautions to take).
       </p>
 <div class="informaltable"><table class="table">
 <colgroup><col></colgroup>
@@ -595,7 +593,7 @@
 <td align="left"></td>
 <td align="right"><div class="copyright-footer">Copyright &#169; 2009-2012 Lorenzo
       Caminiti<p>
-        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        Distributed under the Boost Software License, Version 1.0 (see accompanying
         file LICENSE_1_0.txt or a copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
       </p>
 </div></td>

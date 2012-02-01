@@ -6,7 +6,7 @@
 
 [section:Alternatives Annex: Alternatives]
 
-This section compares the features offered by this library with similar features offered by other libraries and by the new __CPP11__ standard.
+This section compares the features offered by this library with similar features offered by C++ and by other libraries.
 
 [h5 Features]
 
@@ -33,13 +33,13 @@ Therefore this not really an alternative implementation of local functions but i
 [
     [ ['Can be defined using C++ statement syntax] ]
     [ Yes.
-Plus eventual compiler errors follow the usual format of C++ statement errors. ]
+Plus eventual compiler errors and debugging follow the usual format of C++ statement errors. ]
     [ Yes.
-Plus eventual compiler errors follow the usual format of C++ statement errors. ]
+Plus eventual compiler errors and debugging follow the usual format of C++ statement errors. ]
     [ Yes.
-Plus eventual compiler errors follow the usual format of C++ statement errors. ]
+Plus eventual compiler errors and debugging follow the usual format of C++ statement errors. ]
     [ Yes.
-Plus eventual compiler errors follow the usual format of C++ statement errors. ]
+Plus eventual compiler errors and debugging follow the usual format of C++ statement errors. ]
     [ No (it uses C++ __expression_template__ syntax). ]
 ]
 [
@@ -67,10 +67,11 @@ The variable names are repeated in the function declaration so they can be bound
 The variable names are repeated in the function declaration (plus there is a short-hand syntax to bind all variables in scope at once) so they can be bound by constant value and by reference (the object `this` can also be bound).
 However, variables cannot be bound by constant references and non-constant value (see below). ]
     [ No.
-Programmers must manually manage functor member variables and explicitly specify their types to access variables in scope. ]
+Programmers must manually program functor data members and explicitly specify their types to access variables in scope. ]
     [ No.
-Programmers must manually manage functor member variables and explicitly specify their types to access variables in scope. ]
-    [ Yes (variables in scope are accessible as usual within expressions) plus `boost::phoenix::let` can be used to bind variables by constant reference. ]
+Programmers must manually program functor data members and explicitly specify their types to access variables in scope. ]
+    [ Yes.
+Variables in scope are accessible as usual within expressions (plus `boost::phoenix::let` can be used to bind variables by constant reference). ]
 ]
 [
     [ ['[@http://en.wikipedia.org/wiki/Type_polymorphism#Parametric_polymorphism Polymorphic] in the unbound parameter types] ]
@@ -92,12 +93,13 @@ This library local functions can be programmed also on __CPP03__ compilers (and 
 * __CPP11_lambda__ functions do not allow to bind variables in scope by constant reference or by non-constant value.
 Because a variable cannot be bound by constant reference, __CPP11_lambda__ functions can bind a variable by constant only if the variable is `CopyConstructible` and the binding requires a (potentially expensive) extra copy operation.
 Both constant reference and non-constant value binding are instead supported by this library.
+However, __CPP11_lambda__ functions provide a short-hand syntax to bind all variables in scope at once (`&` or `=`).
 
-For example, for non-copyable objects (see also [@../../example/noncopyable_lambda.cpp =noncopyable_lambda.cpp=] and [@../../example/noncopyable_local_function.cpp =noncopyable_local_function.cpp=]):
+For example, for non-copyable objects (see also [@../../example/noncopyable_lambda_err.cpp =noncopyable_lambda_err.cpp=] and [@../../example/noncopyable_local_function.cpp =noncopyable_local_function.cpp=]):
 
 [table
     [ [C++11 Lambda] [Boost.LocalFunction] ]
-    [ [[noncopyable_lambda]] [[noncopyable_local_function]] ]
+    [ [[noncopyable_lambda_err]] [[noncopyable_local_function]] ]
 ]
 
 Or, for objects with expensive copy operations (see also [@../../example/expensive_copy_lambda.cpp =expensive_copy_lambda.cpp=] and [@../../example/expensive_copy_local_function.cpp =expensive_copy_local_function.cpp=]):
@@ -107,7 +109,7 @@ Or, for objects with expensive copy operations (see also [@../../example/expensi
     [ [[expensive_copy_lambda]] [[expensive_copy_local_function]] ]
 ]
 
-Note that when constant binding functionality is needed for __CPP11_lambda__ functions, the best alternative might be to bind an extra local variable declared constant and initialized to the original variable (for example, `const n& const_x = x;` and then bind `const_x` instead of `x` to the lambda function).
+When constant binding functionality is needed for __CPP11_lambda__ functions, the best alternative might be to bind an extra local variable declared constant and initialized to the original variable (for example, `const n& const_x = x` and then bind `const_x` instead of `x` to the lambda function).
 In many cases the use of the extra constant variable `const_x` can be acceptable but in other cases (e.g., /constant blocks/ presented in the __Examples__ section) it might be preferable to maintain the same variable name `x` within the function body.
 
 [*Local Functor]
@@ -116,7 +118,7 @@ The following example compares local functions with C++ local functors (see also
 
 [table
     [ [Local Functor] [Boost.LocalFunction] ]
-    [ [[add_local_functor]] [[test_add]] ]
+    [ [[add_local_functor]] [[add]] ]
 ]
 
 [*Global Functor]
@@ -125,7 +127,7 @@ The following example compares local functions with C++ global functors (see als
 
 [table
     [ [Global Functor] [Boost.LocalFunction] ]
-    [ [[add_global_functor]] [[test_add]] ]
+    [ [[add_global_functor]] [[add]] ]
 ]
 
 However, note that global functors do not allow to define the function locally so they are not a real alternative implementation of local functions.
@@ -136,10 +138,10 @@ The following example compares local functions with __Boost_Phoenix__ (see also 
 
 [table
     [ [Boost.Phoenix] [Boost.LocalFunction] ]
-    [ [[add_phoenix]] [[test_add]] ]
+    [ [[add_phoenix]] [[add]] ]
 ]
 
-The comparison in this section does not include the __Boost_Lambda__ library because it is obsolete and it was replaced replaced by __Boost_Phoenix__.
+The comparison in this section does not include the __Boost_Lambda__ library because that library is obsolete and it was replaced by __Boost_Phoenix__.
 The __Boost_Phoenix__ library version 3.0 is used for this comparison.
 
 [h5 Performances]
@@ -147,9 +149,10 @@ The __Boost_Phoenix__ library version 3.0 is used for this comparison.
 The following tables compare run-times, compile-times, and binary sizes for the different alternatives presented here for local functions.
 
 Overall, this library has compile-times and generates binary sizes similar to the ones of the other approaches.
-This library run-times on __CPP03__ compliant compilers were measured to be larger than other approaches when compiler optimization is enabled (using `bjam release ...`).
-However, on compilers that allow to pass local types as template parameters (e.g., MSVC 8.0 or GCC 4.5.3 with __CPP11__ features enabled [^-std=c++0x], see also __N2657__) this library automatically generates optimized code that runs as fast as the fastest of the other approaches (see __Boost_LocalFunction__ below).
-When this library local function is specified `inline` (see __Boost_LocalFunction__ Inline below and the __Advanced_Topics__ section) its run-times are always comparable to both the Local Functor and Global Functor approaches (but in this case the local function cannot be portably passed as template parameter, see __N2657__, so `std::for_each` is replaced by a for-loop).
+This library run-times on __CPP03__ compilers were measured to be larger than other approaches when compiler optimization is enabled (using `bjam release ...`).
+However, on compilers that allow to pass local types as template parameters (e.g., MSVC 8.0 or GCC 4.5.3 with __CPP11__ features enabled [^-std=c++0x], see also __N2657__) this library automatically generates optimized code that runs as fast as the fastest of the other approaches (see the "Boost.LocalFunction" approach below).
+When this library local function is specified `inline` (see the "Boost.LocalFunction Inline" approach below and the __Advanced_Topics__ section) its run-times are always comparable to both the "Local Functor" and "Global Functor" approaches.
+However, in these cases the local function cannot be portably passed as template parameter (see __N2657__) so `std::for_each` is replaced by a for-loop (on MSVC the for-loop, and not the local function in fact the same applies to local functors, was measured to have worst performances than using `std::for_each`).
 Finally, this library run-times are always among the fastest when no compiler optimization is enabled (using `bjam debug ...`).
 
 [note
@@ -159,7 +162,7 @@ Instead, the functors used by other approaches (e.g., __Boost_Phoenix__) have be
 This run-time performance cost is not present on compilers that allow to pass local types as template parameters (e.g., MSVC 8.0 or GCC 4.5.3 with __CPP11__ features enabled [^-std=c++0x]) because this library does not have to use the extra function pointer to implement the local function call (it directly passes the local class type as template parameter).
 ]
 
-This run-time performance cost on __CPP03__ compliant compilers might or might not be an issue depending on the performance requirements of specific applications.
+This run-time performance cost on __CPP03__ compilers might or might not be an issue depending on the performance requirements of specific applications.
 For example, an application might already be using a number of indirect function calls (function pointers, virtual functions, etc) for which the overhead added by using the one extra function pointer required by the local function call might not be noticeable within the overall program run-time.
 
 Finally, note that only a very simple local function body with just a single instruction was used for the anaylsis presented here (see the source files below).
@@ -168,9 +171,10 @@ The authors have not studied how this library and the other approaches will perf
 The following commands were executed from the library example directory to measure compile-time, binary size, and run-time respectively:
 
 [pre
-> python chrono.py bjam {release|debug} <PROGRAM>   # compile-time
-> size <PROGRAM>                                    # binary size (Linux and Gygwin)
-> <PROGRAM>                                         # run-time
+> touch <FILE_NAME>.cpp                             # force recompilation
+> python chrono.py bjam {release|debug} <FILE_NAME> # compile-time
+> size <FILE_NAME>                                  # binary size
+> ./<FILE_NAME>                                     # run-time
 ]
 
 The local function was called =1e8= times to add together all the elements of a vector and the run-time was measured using __Boost_Chrono__ averaging over =10= executions of the vector summation (see the source files below).
@@ -179,7 +183,7 @@ The local function was called =1e8= times to add together all the elements of a 
     [
         [Legend]
         [Approach]
-        [File]
+        [Source File]
     ]
     [
         [[$../../example/profile_legend_local_function.png]]
@@ -193,7 +197,11 @@ The local function was called =1e8= times to add together all the elements of a 
     ]
     [
         [[$../../example/profile_legend_lambda.png]]
-        [__CPP11__ Lambda Function]
+        [__CPP11__ Lambda Function
+[footnote
+Measurements available only for __CPP11__ compilers.
+]
+        ]
         [[@../../example/profile_lambda.cpp =profile_lambda.cpp=]]
     ]
     [

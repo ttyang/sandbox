@@ -1,5 +1,5 @@
 
-// Copyright (C) 2009-2012 Lorenzo Caminiti
+// Copyright (C) 2011-2012 Lorenzo Caminiti
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -178,7 +178,7 @@ objects into a single function object.
 namespace boost {
 
 /**
-@brief Function object that overloads functions with distinct signatures.
+@brief Function object to overload functions with distinct signatures.
 
 This function object aggregates together calls to functions of all the
 specified function types <c>F1</c>, <c>F2</c>, etc.
@@ -214,9 +214,9 @@ public:
     /**
     @brief Construct the overloaded function object.
 
-    Any function pointer, function reference, function object that can be
-    converted to a <c>boost::function</c> function object can be specified as
-    parameter.
+    Any function pointer, function reference, and monomorphic function object
+    that can be converted to a <c>boost::function</c> function object can be
+    specified as parameter.
     */
     overloaded_function(const boost::function<F1>&,
             const boost::function<F2>&, ...);
@@ -241,7 +241,7 @@ public:
     the constructor.
 
     @Note Similar call operators are present for all specified function types
-    <c>F1</c>, <c>F2</c>, etc (even if not explicitly listed by this
+    <c>F1</c>, <c>F2</c>, etc (even if not exhaustively listed by this
     documentation).
     */
     typename boost::function_traits<F2>::result_type operator()(
@@ -264,7 +264,7 @@ Therefore, this function template usually has a more concise syntax when
 compared with @RefClass{overloaded_function}.
 This is especially useful when the explicit type of the returned
 @RefClass{overloaded_function} does not need to be known (e.g., when used with Boost.Typeof's <c>BOOST_AUTO</c> (or C++11 <c>auto</c>) or when the overloaded
-function object is deduced using a function template parameter, see the
+function object is handled using a function template parameter, see the
 @RefSect{Tutorial} section).
 
 The maximum number of functions to overload is given by the
