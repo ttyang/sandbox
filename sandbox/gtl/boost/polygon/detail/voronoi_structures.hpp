@@ -212,7 +212,7 @@ namespace detail {
     private:
         enum kBits {
             IS_INVERSE = 1,
-            IS_INITIAL_DIRECTION = 2,
+            IS_INITIAL_DIRECTION = 2
         };
 
         point_type point0_;

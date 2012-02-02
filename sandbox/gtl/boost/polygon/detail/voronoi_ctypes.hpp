@@ -688,8 +688,7 @@ struct type_converter_fpt {
         return that.d();
     }
 
-    template <>
-    fpt64 operator()< extended_exponent_fpt<fpt64> >(const extended_exponent_fpt<fpt64>& that) const {
+    fpt64 operator()(const extended_exponent_fpt<fpt64>& that) const {
         return that.d();
     }
 };

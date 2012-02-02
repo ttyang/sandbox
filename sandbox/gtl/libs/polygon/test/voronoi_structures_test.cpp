@@ -64,15 +64,15 @@ BOOST_AUTO_TEST_CASE(site_event_test4) {
     s.index(27);
     BOOST_CHECK(s.is_initial());
     BOOST_CHECK(s.has_initial_direction());
-    BOOST_CHECK_EQUAL(s.index(), 27);
+    BOOST_CHECK(s.index() == 27);
     s.inverse();
     BOOST_CHECK(!s.has_initial_direction());
     BOOST_CHECK(s.is_initial());
-    BOOST_CHECK_EQUAL(s.index(), 27);
+    BOOST_CHECK(s.index() == 27);
     s.change_initial_direction();
     BOOST_CHECK(s.has_initial_direction());
     BOOST_CHECK(!s.is_initial());
-    BOOST_CHECK_EQUAL(s.index(), 27);
+    BOOST_CHECK(s.index() == 27);
 }
 
 BOOST_AUTO_TEST_CASE(circle_event_test) {

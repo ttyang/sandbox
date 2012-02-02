@@ -183,7 +183,7 @@ enum kVerification {
     INCIDENT_EDGES_CCW_ORDER = 4,
     NO_HALF_EDGE_INTERSECTIONS = 8,
     FAST_VERIFICATION = 7,
-    COMPLETE_VERIFICATION = 15,
+    COMPLETE_VERIFICATION = 15
 };
 
 template <typename Output>

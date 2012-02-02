@@ -470,7 +470,7 @@ namespace polygon {
             std::pair<edge_type*, edge_type*> edges =
                 output->insert_new_edge(site_arc2, site_event);
             position = beach_line_.insert(position,
-                beach_line_type::value_type(new_right_node, value_type(edges.second)));
+                typename beach_line_type::value_type(new_right_node, value_type(edges.second)));
 
             if (site_event.is_segment()) {
                 // Update the beach line with temporary bisector, that will
@@ -486,7 +486,7 @@ namespace polygon {
             }
 
             position = beach_line_.insert(position,
-                beach_line_type::value_type(new_left_node, value_type(edges.first)));
+                typename beach_line_type::value_type(new_left_node, value_type(edges.first)));
 
             return position;
         }

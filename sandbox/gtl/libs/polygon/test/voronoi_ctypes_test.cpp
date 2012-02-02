@@ -23,8 +23,9 @@ BOOST_AUTO_TEST_CASE(ulp_comparison_test1) {
     ulp_comparison<double> ulp_cmp;
     uint64 a = 22;
     uint64 b = 27;
-    fpt64 da = *reinterpret_cast<fpt64*>(&a);
-    fpt64 db = *reinterpret_cast<fpt64*>(&b);
+    fpt64 da, db;
+    memcpy(&da, &a, sizeof(uint64));
+    memcpy(&db, &b, sizeof(uint64));
     BOOST_CHECK_EQUAL(ulp_cmp(da, db, 1), ulp_cmp.LESS);
     BOOST_CHECK_EQUAL(ulp_cmp(db, da, 1), ulp_cmp.MORE);
     BOOST_CHECK_EQUAL(ulp_cmp(da, db, 4), ulp_cmp.LESS);
@@ -36,8 +37,9 @@ BOOST_AUTO_TEST_CASE(ulp_comparison_test2) {
     ulp_comparison<fpt64> ulp_cmp;
     uint64 a = 0ULL;
     uint64 b = 0x8000000000000002ULL;
-    fpt64 da = *reinterpret_cast<fpt64*>(&a);
-    fpt64 db = *reinterpret_cast<fpt64*>(&b);
+    fpt64 da, db;
+    memcpy(&da, &a, sizeof(uint64));
+    memcpy(&db, &b, sizeof(uint64));
     BOOST_CHECK_EQUAL(ulp_cmp(da, db, 1), ulp_cmp.MORE);
     BOOST_CHECK_EQUAL(ulp_cmp(db, da, 1), ulp_cmp.LESS);
     BOOST_CHECK_EQUAL(ulp_cmp(da, db, 2), ulp_cmp.EQUAL);
@@ -180,7 +182,7 @@ BOOST_AUTO_TEST_CASE(extended_int_test1) {
 BOOST_AUTO_TEST_CASE(extended_int_test2) {
     typedef extended_int<2> eint64;
     int64 val64 = 0x7fffffffffffffffLL;
-    eint64 e1(0LL), e2(32LL), e3(-32LL), e4(val64), e5(-val64);
+    eint64 e1(0), e2(32), e3(-32), e4(val64), e5(-val64);
     BOOST_CHECK_EQUAL(e1.count(), 0);
     BOOST_CHECK_EQUAL(e2.count(), 1);
     BOOST_CHECK_EQUAL(e2.chunks()[0], 32U);

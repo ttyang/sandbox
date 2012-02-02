@@ -305,7 +305,7 @@ public:
         uint32 mask = (1 << MX_SQRTS);
         for (size_t i = 0; i < mask; i++) {
             fpt64 expected_val = 0.0;
-            for (int j = 0; j < MX_SQRTS; j++) {
+            for (size_t j = 0; j < MX_SQRTS; j++) {
                 if (i & (1 << j)) {
                     A[j] = a[j];
                     B[j] = b[j];
