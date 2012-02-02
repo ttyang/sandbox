@@ -14,6 +14,7 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/test/test_case_template.hpp>
 
+#include "boost/polygon/polygon.hpp"
 #include "boost/polygon/voronoi.hpp"
 using namespace boost::polygon;
 #include "voronoi_test_helper.hpp"

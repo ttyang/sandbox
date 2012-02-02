@@ -19,6 +19,7 @@
 #include <boost/test/test_case_template.hpp>
 #include <boost/timer.hpp>
 
+#include "boost/polygon/polygon.hpp"
 #include "boost/polygon/voronoi.hpp"
 using namespace boost::polygon;
 

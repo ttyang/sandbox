@@ -13,6 +13,7 @@
 #include <QtGui/QtGui>
 
 #include "boost/polygon/voronoi.hpp"
+#include "boost/polygon/voronoi_utils.hpp"
 using namespace boost::polygon;
 
 class GLWidget : public QGLWidget {
@@ -59,8 +60,8 @@ public:
         // Build voronoi diagram.
         vd_.clear();
         construct_voronoi(point_sites, segment_sites, &vd_);
-        brect_ = voronoi_helper<coordinate_type>::get_view_rectangle(
-            vd_.bounding_rectangle());
+        brect_ = voronoi_utils<coordinate_type>::get_view_rectangle(
+            vd_.bounding_rectangle(), 2.0);
 
         // Update view.
         update_view_port();
@@ -128,7 +129,7 @@ protected:
                 if (!it->is_primary() && primary_edges_only_)
                     continue;
                 std::vector<opoint_type> temp_v =
-                    voronoi_helper<coordinate_type>::get_point_interpolation(
+                    voronoi_utils<coordinate_type>::get_point_interpolation(
                         &(*it), brect_, 1E-3);
                 for (int i = 0; i < static_cast<int>(temp_v.size()) - 1; i++) {
                     glVertex2f(temp_v[i].x(), temp_v[i].y());
@@ -176,7 +177,7 @@ private:
         voronoi_vertex_const_iterator_type;
     typedef voronoi_diagram<coordinate_type>::voronoi_edge_const_iterator_type
         voronoi_edge_const_iterator_type;
-    BRect<coordinate_type> brect_;
+    bounding_rectangle<coordinate_type> brect_;
     voronoi_diagram<coordinate_type> vd_;
     bool primary_edges_only_;
 };

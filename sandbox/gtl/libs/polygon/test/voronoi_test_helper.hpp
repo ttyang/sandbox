@@ -106,20 +106,29 @@ bool verify_incident_edges_ccw_order(const Output &output) {
     return true;
 }
 
+template <typename P>
+struct cmp {
+    bool operator()(const P& p1, const P& p2) const {
+        if (p1.x() != p2.x()) return p1.x() < p2.x();
+        return p1.y() < p2.y();
+    }
+};
+
 template <typename Output>
 bool verfiy_no_line_edge_intersections(const Output &output) {
     // Create map from edges with first point less than the second one.
     // Key is the first point of the edge, value is a vector of second points
     // with the same first point.
     typedef typename Output::point_type point_type;
-    std::map< point_type, std::vector<point_type> > edge_map;
+    cmp<point_type> comparator;
+    std::map< point_type, std::vector<point_type>, cmp<point_type> > edge_map;
     typename Output::voronoi_edge_const_iterator_type edge_it;
     for (edge_it = output.edge_records().begin();
          edge_it != output.edge_records().end(); edge_it++) {
         if (edge_it->is_bounded()) {
             const point_type &vertex0 = edge_it->vertex0()->vertex();
             const point_type &vertex1 = edge_it->vertex1()->vertex();
-            if (vertex0 < vertex1)
+            if (comparator(vertex0, vertex1))
                 edge_map[vertex0].push_back(vertex1);
         }
     }
@@ -127,7 +136,7 @@ bool verfiy_no_line_edge_intersections(const Output &output) {
 }
 
 template <typename Point2D>
-bool intersection_check(const std::map< Point2D, std::vector<Point2D> > &edge_map) {
+bool intersection_check(const std::map< Point2D, std::vector<Point2D>, cmp<Point2D> > &edge_map) {
     // Iterate over map of edges and check if there are any intersections.
     // All the edges are stored by the low x value. That's why we iterate
     // left to right checking for intersections between all pairs of edges
@@ -135,7 +144,7 @@ bool intersection_check(const std::map< Point2D, std::vector<Point2D> > &edge_ma
     // Complexity. Approximately N*sqrt(N). Worst case N^2.
     typedef Point2D point_type;
     typedef typename point_type::coordinate_type coordinate_type;
-    typedef typename std::map< point_type, std::vector<point_type> >::const_iterator
+    typedef typename std::map< point_type, std::vector<point_type>, cmp<Point2D> >::const_iterator
         edge_map_iterator;
     typedef typename std::vector<point_type>::size_type size_type;
     edge_map_iterator edge_map_it1, edge_map_it2, edge_map_it_bound;
@@ -200,23 +209,21 @@ bool verify_output(const Output &output, kVerification mask) {
     return result;
 }
 
-template <typename T>
-void save_voronoi_input(const std::vector< point_data<T> > &points, const char *file_name) {
+template <typename PointIterator>
+void save_points(PointIterator first, PointIterator last, const char *file_name) {
     std::ofstream ofs(file_name);
     ofs << points.size() << std::endl;
-    for (typename std::vector< point_data<T> >::iterator it = points.begin();
-         it != points.end(); ++it) {
+    for (PointIterator it = first; it != last; ++it) {
         ofs << it->x() << " " << it->y() << std::endl;
     }
     ofs.close();
 }
 
-template <typename T>
-void save_voronoi_input(const directed_line_segment_set_data<T> &segments, const char *file_name) {
+template <typename SegmentIterator>
+void save_segments(SegmentIterator first, SegmentIterator last, const char *file_name) {
     std::ofstream ofs(file_name);
     ofs << segments.size() << std::endl;
-    for (typename directed_line_segment_set_data<T>::iterator_type it = segments.begin();
-         it != segments.end(); ++it) {
+    for (SegmentIterator it = first; it != last; ++it) {
         ofs << it->low().x() << " " << it->low().y() << " ";
         ofs << it->high().x() << " " << it->high().y() << std::endl;
     }
