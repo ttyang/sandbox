@@ -334,6 +334,18 @@ namespace polygon {
         typedef voronoi_cell<coordinate_type> voronoi_cell_type;
         typedef voronoi_vertex<coordinate_type> voronoi_vertex_type;
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
+        typedef class {
+        public:
+            bool operator()(const point_type &v1,
+                            const point_type &v2) const {
+                return (ulp_cmp(v1.x(), v2.x(), 128) ==
+                        detail::ulp_comparison<T>::EQUAL) &&
+                       (ulp_cmp(v1.y(), v2.y(), 128) ==
+                        detail::ulp_comparison<T>::EQUAL);
+            }
+        private:
+            typename detail::ulp_comparison<T> ulp_cmp;
+        } vertex_equality_predicate_type;
     };
 
     // Voronoi output data structure.
@@ -372,6 +384,8 @@ namespace polygon {
         typedef typename TRAITS::voronoi_cell_type voronoi_cell_type;
         typedef typename TRAITS::voronoi_vertex_type voronoi_vertex_type;
         typedef typename TRAITS::voronoi_edge_type voronoi_edge_type;
+        typedef typename TRAITS::vertex_equality_predicate_type
+            vertex_equality_predicate_type;
 
         typedef std::vector<voronoi_cell_type> voronoi_cells_type;
         typedef typename voronoi_cells_type::iterator
@@ -620,10 +634,7 @@ namespace polygon {
                 const voronoi_vertex_type *v2 = edge_it1->vertex1();
 
                 // Make epsilon robust check.
-                if (ulp_cmp_(v1->vertex().x(), v2->vertex().x(), 128) ==
-                    detail::ulp_comparison<T>::EQUAL &&
-                    ulp_cmp_(v1->vertex().y(), v2->vertex().y(), 128) ==
-                    detail::ulp_comparison<T>::EQUAL) {
+                if (vertex_equality_predicate_(v1->vertex(), v2->vertex())) {
                     // Decrease number of cell's incident edges.
                     edge_it1->cell()->dec_num_incident_edges();
                     edge_it1->twin()->cell()->dec_num_incident_edges();
@@ -781,7 +792,7 @@ namespace polygon {
 
         bounding_rectangle_type voronoi_rect_;
         ctype_converter_type convert_;
-        detail::ulp_comparison<T> ulp_cmp_;
+        vertex_equality_predicate_type vertex_equality_predicate_;
 
         // Disallow copy constructor and operator=
         voronoi_diagram(const voronoi_diagram&);
