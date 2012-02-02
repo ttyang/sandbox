@@ -59,6 +59,7 @@ template<typename EST> struct fetch_target :
     mpl::back<EST> {};
 
 // Edge->Target map for an Source for out_*, adjacent_vertices
+// would it be more efficient to build Source->Edge->Target map-of-maps like adjacency does?
 template<typename Source, typename ESTSequence>
 struct produce_out_map<incidence_list_tag, Source, ESTSequence> :
     mpl::fold<typename mpl::filter_view<ESTSequence, boost::is_same<fetch_source<mpl::_1>,Source> >::type,
@@ -95,6 +96,7 @@ struct produce_vertex_set<incidence_list_tag, ESTSequence> :
          mpl::insert<mpl::_1, fetch_source<mpl::_2> > >
 {};
 // Edge set for EdgeListGraph
+// wouldn't it be more efficient to adapt edge_st_map? assuming both concepts will be used
 template<typename ESTSequence>
 struct produce_edge_set<incidence_list_tag, ESTSequence> :
     mpl::fold<ESTSequence,

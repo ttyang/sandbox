@@ -338,7 +338,7 @@ namespace boost {
       // currently (undocumented ;) in dfa_iter<>::state
       template<typename DFA, typename StartState, typename Input, typename PropFn>
       struct dfa_sequence {
-        typedef typename detail::de_arg<Input>::type token;
+        typedef typename detail::de_arg<Input>::type token; // unchecked; we should actually work with single_view<Input> as starting sequence and add start state to parsers
         typedef typename detail::arg_seq<Input>::type inner_seq;
         typedef typename detail::create_stack<typename get_state_start_data<typename PropFn::template apply<StartState>::type>::type, StartState, typename mpl::begin<inner_seq>::type, typename mpl::end<inner_seq>::type>::type stack;
         typedef detail::dfa_iter<DFA, stack, PropFn> begin;

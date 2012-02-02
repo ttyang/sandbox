@@ -19,6 +19,11 @@ namespace angly {
   struct state {};
   template<typename ...>
   struct transition {};
+  // we'd prefer true attributes but are settling for crude semantic actions for now
+  // this special one records a map of names to data, a common requirement for graph parsers
+  // key lambda and value lambda are applied to _1 parent data and _2 child data as all other lambdas
+  template<typename KeyLambda, typename ValueLambda>
+  struct record {};
 
   // parser for descriptions of parsers
   // dfa<state<name, [is_finish, [data,]] [transition<name, target, [match_fn, [recurse_rule, [post_action, [pre_action]]]]>], 
@@ -37,6 +42,7 @@ namespace angly {
   struct transition_recurse : dfa_state<mpl::true_> {};
   struct transition_post_action : dfa_state<mpl::true_> {};
   struct transition_pre_action : dfa_state<mpl::true_> {};
+  struct transition_record : dfa_state<mpl::true_> {};
   struct transition_done : dfa_state<mpl::true_> {};
 
   // there are two horrible thing about building at DFA this way:
@@ -107,28 +113,28 @@ namespace angly {
   struct state_finish_transition : state_transition {};
   struct transition_name_trans : 
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::vector1<mpl::_2> > {};
+                   void, 
+                   mpl::vector1<mpl::_2> > {};
   struct transition_target_trans : 
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::push_back<mpl::_1,mpl::_2> > {};
+                   void, 
+                   mpl::push_back<mpl::_1,mpl::_2> > {};
   struct transition_match_trans :
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::push_back<mpl::_1,mpl::_2> > {};
+                   void, 
+                   mpl::push_back<mpl::_1,mpl::_2> > {};
   struct transition_recurse_trans :
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::push_back<mpl::_1,mpl::_2> > {};
+                   void, 
+                   mpl::push_back<mpl::_1,mpl::_2> > {};
   struct transition_post_action_trans :
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::push_back<mpl::_1,mpl::lambda<mpl::_2> > > {};
+                   void, 
+                   mpl::push_back<mpl::_1,mpl::lambda<mpl::_2> > > {};
   struct transition_pre_action_trans :
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::push_back<mpl::_1,mpl::_2> > {};
+                   void, 
+                   mpl::push_back<mpl::_1,mpl::lambda<mpl::_2> > > {};
 
   typedef boost::msm::mpl_graph::adjacency_list_graph<
     mpl::vector<mpl::pair<dfa_states, 
