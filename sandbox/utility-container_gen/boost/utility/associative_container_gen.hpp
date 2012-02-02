@@ -24,7 +24,7 @@
 
 #include <boost/tr1/unordered_set.hpp>
 #include <boost/tr1/unordered_map.hpp>
-#include <boost/functional/hash.hpp>
+#include <boost/tr1/functional.hpp>
 
 #include <boost/tr1/type_traits.hpp>
 #include <boost/mpl/eval_if.hpp>
@@ -415,23 +415,26 @@ namespace boost {
                             ::std::tr1::is_same<Mapped,void>
                           , ::std::tr1::unordered_set<
                                 Key
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                           , ::std::tr1::unordered_map<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_set<Key,::boost::hash<Key> >
+                          , ::std::tr1::unordered_set<
+                                Key
+                              , ::std::tr1::hash<Key>
+                            >
                           , ::std::tr1::unordered_map<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                             >
                         >
                     >::type
@@ -451,23 +454,26 @@ namespace boost {
                             ::std::tr1::is_same<Mapped,void>
                           , ::std::tr1::unordered_set<
                                 Key
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                           , ::std::tr1::unordered_map<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                         >
                       , ::boost::mpl::if_<
                             ::std::tr1::is_same<Mapped,void>
-                          , ::std::tr1::unordered_set<Key,::boost::hash<Key> >
+                          , ::std::tr1::unordered_set<
+                                Key
+                              , ::std::tr1::hash<Key>
+                            >
                           , ::std::tr1::unordered_map<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                             >
                         >
                     >::type
@@ -487,13 +493,13 @@ namespace boost {
                             ::std::tr1::is_same<Mapped,void>
                           , ::std::tr1::unordered_multiset<
                                 Key
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                           , ::std::tr1::unordered_multimap<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                         >
@@ -501,12 +507,12 @@ namespace boost {
                             ::std::tr1::is_same<Mapped,void>
                           , ::std::tr1::unordered_multiset<
                                 Key
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                             >
                           , ::std::tr1::unordered_multimap<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                             >
                         >
                     >::type
@@ -526,13 +532,13 @@ namespace boost {
                             ::std::tr1::is_same<Mapped,void>
                           , ::std::tr1::unordered_multiset<
                                 Key
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                           , ::std::tr1::unordered_multimap<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                               , ::boost::detail::range_equal
                             >
                         >
@@ -540,12 +546,12 @@ namespace boost {
                             ::std::tr1::is_same<Mapped,void>
                           , ::std::tr1::unordered_multiset<
                                 Key
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                             >
                           , ::std::tr1::unordered_multimap<
                                 Key
                               , Mapped
-                              , ::boost::hash<Key>
+                              , ::std::tr1::hash<Key>
                             >
                         >
                     >::type

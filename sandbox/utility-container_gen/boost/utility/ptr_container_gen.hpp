@@ -15,7 +15,7 @@
 #if !defined BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
 
 #include <boost/mpl/if.hpp>
-#include <boost/functional/hash.hpp>
+#include <boost/tr1/functional.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
 #include <boost/ptr_container/ptr_deque.hpp>
 #include <boost/ptr_container/ptr_list.hpp>
@@ -113,12 +113,12 @@ namespace boost {
                     ::boost::detail::is_container<ValueType>
                   , ::boost::ptr_unordered_set<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                       , ::boost::detail::range_equal
                     >
                   , ::boost::ptr_unordered_set<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                     >
                 >::type
                 type;
@@ -131,12 +131,12 @@ namespace boost {
                     ::boost::detail::is_container<ValueType>
                   , ::boost::ptr_unordered_set<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                       , ::boost::detail::range_equal
                     >
                   , ::boost::ptr_unordered_set<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                     >
                 >::type
                 type;
@@ -149,12 +149,12 @@ namespace boost {
                     ::boost::detail::is_container<ValueType>
                   , ::boost::ptr_unordered_multiset<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                       , ::boost::detail::range_equal
                     >
                   , ::boost::ptr_unordered_multiset<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                     >
                 >::type
                 type;
@@ -167,12 +167,12 @@ namespace boost {
                     ::boost::detail::is_container<ValueType>
                   , ::boost::ptr_unordered_multiset<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                       , ::boost::detail::range_equal
                     >
                   , ::boost::ptr_unordered_multiset<
                         ValueType
-                      , ::boost::hash<ValueType>
+                      , ::std::tr1::hash<ValueType>
                     >
                 >::type
                 type;
