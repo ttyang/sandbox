@@ -90,10 +90,12 @@ public:
         const bounding_rectangle<CT> &brect,
         fpt_type max_error) {
         // Retrieve the cell to the left of the current edge.
-        const typename voronoi_edge<CT>::voronoi_cell_type *cell1 = edge->cell();
+        const typename voronoi_edge<CT>::voronoi_cell_type *cell1 =
+            edge->cell();
 
         // Retrieve the cell to the right of the current edge.
-        const typename voronoi_edge<CT>::voronoi_cell_type *cell2 = edge->twin()->cell();
+        const typename voronoi_edge<CT>::voronoi_cell_type *cell2 =
+            edge->twin()->cell();
 
         // edge_points - contains intermediate points.
         point_set_type edge_points;
@@ -442,7 +444,6 @@ private:
         static ctype_converter_type converter;
         return converter(value);
     }
-
 };
 }  // polygon
 }  // boost

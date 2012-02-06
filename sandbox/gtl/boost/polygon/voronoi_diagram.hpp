@@ -381,7 +381,8 @@ namespace polygon {
         typedef typename TRAITS::coordinate_type coordinate_type;
         typedef typename TRAITS::ctype_converter_type ctype_converter_type;
         typedef typename TRAITS::point_type point_type;
-        typedef typename TRAITS::bounding_rectangle_type bounding_rectangle_type;
+        typedef typename TRAITS::bounding_rectangle_type
+            bounding_rectangle_type;
         typedef typename TRAITS::voronoi_cell_type voronoi_cell_type;
         typedef typename TRAITS::voronoi_vertex_type voronoi_vertex_type;
         typedef typename TRAITS::voronoi_edge_type voronoi_edge_type;
@@ -530,8 +531,10 @@ namespace polygon {
                               const CEvent &circle,
                               void *data12,
                               void *data23) {
-            voronoi_edge_type *edge12 = static_cast<voronoi_edge_type*>(data12);
-            voronoi_edge_type *edge23 = static_cast<voronoi_edge_type*>(data23);
+            voronoi_edge_type *edge12 =
+                static_cast<voronoi_edge_type*>(data12);
+            voronoi_edge_type *edge23 =
+                static_cast<voronoi_edge_type*>(data23);
 
             // Add a new voronoi vertex.
             coordinate_type x = convert_(circle.x());
