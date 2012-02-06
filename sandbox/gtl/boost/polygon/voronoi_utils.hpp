@@ -63,8 +63,8 @@ public:
     };
 
     // Get a view rectangle based on the voronoi bounding rectangle.
-    template <typename T>
-    static brect_type get_view_rectangle(const bounding_rectangle<T> &brect,
+    template <typename CT>
+    static brect_type get_view_rectangle(const bounding_rectangle<CT> &brect,
                                          fpt_type scale = 1.0) {
         fpt_type x_len = to_fpt(brect.x_max()) - to_fpt(brect.x_min());
         fpt_type y_len = to_fpt(brect.y_max()) - to_fpt(brect.y_min());
@@ -84,16 +84,16 @@ public:
     // Max_error is the maximum distance (relative to the minor of two
     // rectangle sides) allowed between the parabola and line segments
     // that interpolate it.
-    template <typename T>
+    template <typename CT>
     static point_set_type get_point_interpolation(
-        const voronoi_edge<T> *edge,
-        const bounding_rectangle<T> &brect,
+        const voronoi_edge<CT> *edge,
+        const bounding_rectangle<CT> &brect,
         fpt_type max_error) {
         // Retrieve the cell to the left of the current edge.
-        const voronoi_cell<T> *cell1 = edge->cell();
+        const typename voronoi_edge<CT>::voronoi_cell_type *cell1 = edge->cell();
 
         // Retrieve the cell to the right of the current edge.
-        const voronoi_cell<T> *cell2 = edge->twin()->cell();
+        const typename voronoi_edge<CT>::voronoi_cell_type *cell2 = edge->twin()->cell();
 
         // edge_points - contains intermediate points.
         point_set_type edge_points;
@@ -174,10 +174,10 @@ public:
 
     // Interpolate voronoi edge with a set of segments to satisfy maximal
     // error requirement.
-    template <typename T>
+    template <typename CT>
     static segment_set_type get_segment_interpolation(
-        const voronoi_edge<T> *edge,
-        const bounding_rectangle<T> &brect,
+        const voronoi_edge<CT> *edge,
+        const bounding_rectangle<CT> &brect,
         fpt_type max_error) {
         point_set_type point_interpolation =
             get_point_interpolcation(edge, brect, max_error);

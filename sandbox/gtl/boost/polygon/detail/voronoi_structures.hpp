@@ -171,7 +171,7 @@ namespace detail {
         }
 
         site_event& index(int index) {
-            site_index_ = index << 2;
+            site_index_ = (index << 2) + (site_index_ & 3);
             return *this;
         }
 
@@ -181,7 +181,7 @@ namespace detail {
         }
 
         site_event& change_initial_direction() {
-            site_index_ ^= IS_INITIAL_DIRECTION;
+            site_index_ ^= HAS_INITIAL_DIRECTION;
             return *this;
         }
 
@@ -202,7 +202,7 @@ namespace detail {
         }
 
         bool is_initial() const {
-            return (site_index_ & IS_INITIAL_DIRECTION) ? false : true;
+            return (site_index_ & HAS_INITIAL_DIRECTION) ? false : true;
         }
 
         bool has_initial_direction() const {
@@ -212,7 +212,7 @@ namespace detail {
     private:
         enum kBits {
             IS_INVERSE = 1,
-            IS_INITIAL_DIRECTION = 2
+            HAS_INITIAL_DIRECTION = 2
         };
 
         point_type point0_;
