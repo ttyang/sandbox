@@ -61,7 +61,9 @@ public:
         vd_.clear();
         construct_voronoi(point_sites, segment_sites, &vd_);
         brect_ = voronoi_utils<coordinate_type>::get_view_rectangle(
-            vd_.bounding_rectangle(), 2.0);
+            vd_.bounding_rectangle(), 1.4);
+        shift_ = point_data<double>((brect_.x_min() + brect_.x_max()) * 0.5,
+                                    (brect_.y_min() + brect_.y_max()) * 0.5);
 
         // Update view.
         update_view_port();
@@ -88,20 +90,23 @@ protected:
             const voronoi_cells_type &cells = vd_.cell_records();
             voronoi_cell_const_iterator_type it;
             glColor3f(0.0f, 0.0f, 1.0f);
-            glPointSize(9);
+            glPointSize(6);
             glBegin(GL_POINTS);
             for (it = cells.begin(); it != cells.end(); it++) {
                 if (!it->contains_segment())
-                    glVertex2f(it->point0().x(), it->point0().y());
+                    glVertex2f(it->point0().x() - shift_.x(),
+                               it->point0().y() - shift_.y());
             }
             glEnd();
-            glPointSize(6);
-            glLineWidth(2.7f);
+            glPointSize(4);
+            glLineWidth(2.0f);
             glBegin(GL_LINES);
             for (it = cells.begin(); it != cells.end(); it++) {
                 if (it->contains_segment()) {
-                    glVertex2f(it->point0().x(), it->point0().y());
-                    glVertex2f(it->point1().x(), it->point1().y());
+                    glVertex2f(it->point0().x() - shift_.x(),
+                               it->point0().y() - shift_.y());
+                    glVertex2f(it->point1().x() - shift_.x(),
+                               it->point1().y() - shift_.y());
                 }
             }
             glEnd();
@@ -115,7 +120,8 @@ protected:
             glColor3f(0.0f, 1.0f, 0.0f);
             glBegin(GL_POINTS);
             for (it = vertices.begin(); it != vertices.end(); it++)
-                glVertex2f(it->vertex().x(), it->vertex().y());
+                glVertex2f(it->vertex().x() - shift_.x(),
+                           it->vertex().y() - shift_.y());
             glEnd();
         }
 
@@ -132,8 +138,10 @@ protected:
                     voronoi_utils<coordinate_type>::get_point_interpolation(
                         &(*it), brect_, 1E-3);
                 for (int i = 0; i < static_cast<int>(temp_v.size()) - 1; i++) {
-                    glVertex2f(temp_v[i].x(), temp_v[i].y());
-                    glVertex2f(temp_v[i+1].x(), temp_v[i+1].y());
+                    glVertex2f(temp_v[i].x() - shift_.x(),
+                               temp_v[i].y() - shift_.y());
+                    glVertex2f(temp_v[i+1].x() - shift_.x(),
+                               temp_v[i+1].y() - shift_.y());
                 }
             }
             glEnd();
@@ -153,8 +161,10 @@ private:
     void update_view_port() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(brect_.x_min(), brect_.x_max(),
-                brect_.y_min(), brect_.y_max(),
+        glOrtho(brect_.x_min() - shift_.x(),
+                brect_.x_max() - shift_.x(),
+                brect_.y_min() - shift_.y(),
+                brect_.y_max() - shift_.y(),
                 -1.0, 1.0);
         glMatrixMode(GL_MODELVIEW);
     }
@@ -178,6 +188,7 @@ private:
     typedef voronoi_diagram<coordinate_type>::voronoi_edge_const_iterator_type
         voronoi_edge_const_iterator_type;
     bounding_rectangle<coordinate_type> brect_;
+    point_data<double> shift_;
     voronoi_diagram<coordinate_type> vd_;
     bool primary_edges_only_;
 };
