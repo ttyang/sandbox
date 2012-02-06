@@ -57,7 +57,7 @@
 
 This library allows to execute arbitrary code when the enclosing scope exits.
 
-[section:intro Introduction]
+[section Introduction]
 
 Nowadays, every C++ developer is familiar with the __RAII__ technique.
 It binds resource acquisition and release to initialization and destruction of a variable that holds the resource.
@@ -242,7 +242,7 @@ The [macroref BOOST_SCOPE_EXIT_TPL] macro has the exact same syntax of [macroref
 
 [xinclude reference.xml]
 
-[section Annex: Alternatives]
+[section:Alternatives Annex: Alternatives]
 
 This section presents some alternatives and work related to __scope_exit__.
 
@@ -420,7 +420,7 @@ The following is a list of most of the examples presented in this documentation 
 
 [endsect]
 
-[section Acknowledgements]
+[section:Acknowledgements Acknowledgements]
 
 Alexander Nasonov is the original library author.
 
