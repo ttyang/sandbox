@@ -336,11 +336,12 @@ namespace polygon {
         typedef voronoi_edge<coordinate_type> voronoi_edge_type;
         typedef class {
         public:
+            enum { ULPS = 128 };
             bool operator()(const point_type &v1,
                             const point_type &v2) const {
-                return (ulp_cmp(v1.x(), v2.x(), 128) ==
+                return (ulp_cmp(v1.x(), v2.x(), ULPS) ==
                         detail::ulp_comparison<T>::EQUAL) &&
-                       (ulp_cmp(v1.y(), v2.y(), 128) ==
+                       (ulp_cmp(v1.y(), v2.y(), ULPS) ==
                         detail::ulp_comparison<T>::EQUAL);
             }
         private:

@@ -719,6 +719,7 @@ struct voronoi_ctype_traits<int32> {
     typedef ulp_comparison<fpt_type> ulp_cmp_type;
     typedef type_converter_fpt to_fpt_converter_type;
     typedef type_converter_efpt to_efpt_converter_type;
+    enum { ULPS = 64 };
 };
 } // detail
 } // polygon
