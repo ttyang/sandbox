@@ -15,17 +15,16 @@
 
   namespace Util
   {
-    template<typename T> class FindRootBase : public RangedFunctionOperation<T>
+    template<typename T>
+    class FindRootBase : public RangedFunctionOperation<T>
     {
+    public:
+      virtual ~FindRootBase() { }
+
     protected:
-    
       FindRootBase(const T& lo,
                    const T& hi,
                    const T& tol) : RangedFunctionOperation<T>(lo, hi, tol) { }
-
-    public:
-
-      virtual ~FindRootBase() { }
     };
   }
 

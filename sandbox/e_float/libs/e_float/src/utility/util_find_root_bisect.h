@@ -11,25 +11,22 @@
 #ifndef _UTIL_FIND_ROOT_BISECT_2009_10_31_H_
   #define _UTIL_FIND_ROOT_BISECT_2009_10_31_H_
 
-  #include <utility/util_find_root_base.h>
-  #include <boost/e_float/e_float.hpp>
+  #include "util_find_root_base.h"
 
   namespace Util
   {
-    template<typename T> class FindRootBisect : public FindRootBase<T>
+    template<typename T>
+    class FindRootBisect : public FindRootBase<T>
     {
+    public:
+      virtual ~FindRootBisect() { }
+
     protected:
-    
       FindRootBisect(const T& lo,
                      const T& hi,
                      const T& tol) : FindRootBase<T>(lo, hi, tol) { }
 
-    public:
-
-      virtual ~FindRootBisect() { }
-
     private:
-
       virtual T my_operation(void) const
       {
         // Bisection method as described in Numerical Recipes in C++ 2nd Ed., chapter 9.1.

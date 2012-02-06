@@ -13,17 +13,11 @@
 
   namespace Util
   {
-    template<typename T1, typename T2 = T1> struct alternating_sum
+    template<typename T1,
+             typename T2 = T1>
+    struct alternating_sum
     {
-    private:
-
-      const alternating_sum& operator=(const alternating_sum&);
-
-      bool b_neg_term;
-      const T2 initial;
-
     public:
-
       alternating_sum(const bool b_neg = false, const T2& init = T2(0)) : b_neg_term(b_neg),
                                                                           initial   (init) { }
                                                                           
@@ -33,6 +27,12 @@
         b_neg_term = !b_neg_term;
         return the_sum + initial;
       }
+
+    private:
+      bool b_neg_term;
+      const T2 initial;
+
+      const alternating_sum& operator=(const alternating_sum&);
     };
   }
 

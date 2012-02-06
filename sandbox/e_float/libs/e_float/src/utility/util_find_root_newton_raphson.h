@@ -15,24 +15,20 @@
 
   namespace Util
   {
-    template<typename T> class FindRootNewtonRaphson : public FindRootBase<T>
+    template<typename T>
+    class FindRootNewtonRaphson : public FindRootBase<T>
     {
+    public:
+      virtual ~FindRootNewtonRaphson() { }
+
+      void function_derivative(const T& x, T& f, T& d) const { my_function_derivative(x, f, d); }
+
     protected:
-    
       FindRootNewtonRaphson(const T& lo,
                             const T& hi,
                             const T& tol) : FindRootBase<T>(lo, hi, tol) { }
 
-    public:
-
-      virtual ~FindRootNewtonRaphson() { }
-
-    public:
-
-      void function_derivative(const T& x, T& f, T& d) const { my_function_derivative(x, f, d); }
-
     private:
-
       virtual void my_function_derivative(const T& x, T& f, T& d) const = 0;
 
       virtual T my_operation(void) const

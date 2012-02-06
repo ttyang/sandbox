@@ -13,28 +13,22 @@
 
   namespace Util
   {
-    template<typename T> class Function
+    template<typename T>
+    class Function
     {
+    public:
+      virtual ~Function() { }
+
+      T function(const T& x) const { return my_function(x); }
+
+    protected:
+      Function() { }
+
     private:
+      virtual T my_function(const T&) const = 0;
 
       const Function& operator=(const Function&);
       Function(const Function&);
-
-    protected:
-
-      Function() { }
-
-    public:
-
-      virtual ~Function() { }
-
-    private:
-
-      virtual T my_function(const T&) const = 0;
-
-    public:
-
-      T function(const T& x) const { return my_function(x); }
     };
   }
 

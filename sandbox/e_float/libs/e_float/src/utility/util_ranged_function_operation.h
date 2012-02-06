@@ -15,25 +15,22 @@
 
   namespace Util
   {
-    template<typename T> class RangedFunctionOperation : public FunctionOperation<T>
+    template<typename T>
+    class RangedFunctionOperation : public FunctionOperation<T>
     {
-    protected:
+    public:
+      virtual ~RangedFunctionOperation() { }
 
+    protected:
       const T xlo;
       const T xhi;
       const T eps;
-
-    protected:
 
       RangedFunctionOperation(const T& lo,
                               const T& hi,
                               const T& tol) : xlo(lo),
                                               xhi(hi),
                                               eps(tol) { }
-
-    public:
-
-      virtual ~RangedFunctionOperation() { }
     };
   }
 

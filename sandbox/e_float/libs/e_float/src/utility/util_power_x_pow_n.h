@@ -13,7 +13,8 @@
 
   namespace Util
   {
-    template<typename T> inline T x_pow_n_template(const T& t, const INT64 p)
+    template<typename T>
+    inline T x_pow_n_template(const T& t, const INT64 p)
     {
       // Compute the pure power of typename T t^p. Binary splitting of the power is
       // used. The resulting computational complexity has the order of log2[abs(p)].

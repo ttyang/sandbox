@@ -15,24 +15,19 @@
 
   namespace Util
   {
-    template<typename T> class FunctionOperation : public Function<T>
+    template<typename T>
+    class FunctionOperation : public Function<T>
     {
-    protected:
-
-      mutable bool op_ok;
-
-    protected:
-
-      FunctionOperation() : op_ok(false) { }
-
     public:
-
       virtual ~FunctionOperation() { }
 
       bool success(void) const { return op_ok; }
       T operation(void) const { return my_operation(); }
 
     protected:
+      mutable bool op_ok;
+
+      FunctionOperation() : op_ok(false) { }
 
       virtual T my_operation(void) const = 0;
     };

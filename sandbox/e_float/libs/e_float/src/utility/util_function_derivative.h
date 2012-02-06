@@ -14,55 +14,23 @@
   #include <string>
   #include <sstream>
 
-  #include <utility/util_function_operation.h>
-  #include <utility/util_lexical_cast.h>
+  #include "util_function_operation.h"
+  #include "util_lexical_cast.h"
+  #include "util_numeric_cast.h"
 
   namespace Util
   {
-    template<typename T> class FunctionDerivative : public FunctionOperation<T>
+    template<typename T>
+    class FunctionDerivative : public FunctionOperation<T>
     {
-    private:
-
-      static const T& my_tol(void)
-      {
-        static bool is_init = false;
-
-        static T val_tol;
-
-        if(!is_init)
-        {
-          is_init = true;
-
-          // Set the default tolerance to be approximately 10^[-(digits10 * 1.15)/5].
-          static const double      tx = (static_cast<double>(std::numeric_limits<T>::digits10) * 1.15) / 5.0;
-          static const std::size_t tn = static_cast<std::size_t>(tx + 0.5);
-
-          std::stringstream ss;
-
-          ss << "1E-" + Util::lexical_cast(tn);
-
-          ss >> val_tol;
-        }
-
-        static const T the_tol = val_tol;
-
-        return the_tol;
-      }
-
-    protected:
-
-      const T my_x;
-      const T my_dx;
-
-    protected:
-
-      FunctionDerivative(const T& x, const T& dx = my_tol()) : my_x(x), my_dx(dx) { }
-
     public:
-
       virtual ~FunctionDerivative() { }
 
     protected:
+      const T my_x;
+      const T my_dx;
+
+      FunctionDerivative(const T& x, const T& dx = my_tol()) : my_x(x), my_dx(dx) { }
 
       virtual T my_operation(void) const
       {
@@ -83,6 +51,19 @@
         const T ten_dx1    = static_cast<INT32>(10) * dx1;
 
         return ((fifteen_m1 - six_m2) + m3) / ten_dx1;
+      }
+
+    private:
+      static const T& my_tol(void)
+      {
+        // Set the default tolerance to be approximately 10^[-(digits10 * 1.15)/5].
+        static const double      tx = (static_cast<double>(std::numeric_limits<T>::digits10) * 1.15) / 5.0;
+        static const std::size_t tn = static_cast<std::size_t>(tx + 0.5);
+
+        static const std::string str_tol("1E-" + Util::lexical_cast(tn));
+        static const T val_tol(Util::numeric_cast<T>(str_tol));
+
+        return val_tol;
       }
     };
   }

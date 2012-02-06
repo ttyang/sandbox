@@ -11,22 +11,30 @@
 #ifndef _UTIL_TRAPEZOID_2008_09_06_H_
   #define _UTIL_TRAPEZOID_2008_09_06_H_
 
+  #include <limits>
   #include "util_ranged_function_operation.h"
+  #include "util_lexical_cast.h"
+  #include "util_numeric_cast.h"
 
   namespace Util
   {
-    template<typename T> class RecursiveTrapezoidRule : public RangedFunctionOperation<T>
+    template<typename T>
+    class RecursiveTrapezoidRule : public RangedFunctionOperation<T>
     {
-    protected:
-
-      RecursiveTrapezoidRule(const T& lo, const T& hi, const T& tol) : RangedFunctionOperation<T>(lo, hi, tol) { }
-
     public:
-
       virtual ~RecursiveTrapezoidRule() { }
 
-    private:
+    protected:
+      RecursiveTrapezoidRule(const T& lo, const T& hi, const T& tol) : RangedFunctionOperation<T>(lo, hi, tol) { }
 
+      static const T& my_tol(void)
+      {
+        static const std::string str_tol("1E-" + Util::lexical_cast(std::numeric_limits<T>::digits10 / 2));
+        static const T val(Util::numeric_cast<T>(str_tol));
+        return val;
+      }
+
+    private:
       virtual T my_operation(void) const
       {
         INT32 n = static_cast<INT32>(1);
@@ -58,7 +66,7 @@
           const T ratio = I0 / I;
           const T delta = ((ratio > one) ? (ratio - one) : (one - ratio));
 
-          if((k > static_cast<INT32>(2)) && delta < RangedFunctionOperation<T>::eps)
+          if((k > static_cast<INT32>(3)) && (delta < RangedFunctionOperation<T>::eps))
           {
             FunctionOperation<T>::op_ok = true;
             break;
