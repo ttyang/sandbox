@@ -1022,9 +1022,9 @@ public:
             c_event = circle_type(c_x.dif().fpv() * inv_orientation.fpv(),
                                   c_y.dif().fpv() * inv_orientation.fpv(),
                                   lower_x.dif().fpv() * inv_orientation.fpv());
-            bool recompute_c_x = c_x.dif().ulp() > to_fpt(ULPS);
-            bool recompute_c_y = c_y.dif().ulp() > to_fpt(ULPS);
-            bool recompute_lower_x = lower_x.dif().ulp() > to_fpt(ULPS);
+            bool recompute_c_x = c_x.dif().ulp() > ULPS;
+            bool recompute_c_y = c_y.dif().ulp() > ULPS;
+            bool recompute_lower_x = lower_x.dif().ulp() > ULPS;
             if (recompute_c_x || recompute_c_y || recompute_lower_x) {
                 exact_circle_formation_functor_.ppp(
                     site1, site2, site3, c_event, recompute_c_x, recompute_c_y, recompute_lower_x);
@@ -1079,9 +1079,9 @@ public:
             }
             lower_x += r * inv_segm_len;
             c_event = circle_type(c_x.dif().fpv(), c_y.dif().fpv(), lower_x.dif().fpv());
-            bool recompute_c_x = c_x.dif().ulp() > to_fpt(ULPS);
-            bool recompute_c_y = c_y.dif().ulp() > to_fpt(ULPS);
-            bool recompute_lower_x = lower_x.dif().ulp() > to_fpt(ULPS);
+            bool recompute_c_x = c_x.dif().ulp() > ULPS;
+            bool recompute_c_y = c_y.dif().ulp() > ULPS;
+            bool recompute_lower_x = lower_x.dif().ulp() > ULPS;
             if (recompute_c_x || recompute_c_y || recompute_lower_x) {
                 exact_circle_formation_functor_.pps(
                     site1, site2, site3, segment_index, c_event,
@@ -1146,9 +1146,9 @@ public:
                 } else {
                     lower_x += robust_fpt_type(0.5, false) * c / a.sqrt();
                 }
-                recompute_c_x = c_x.dif().ulp() > to_fpt(ULPS);
-                recompute_c_y = c_y.dif().ulp() > to_fpt(ULPS);
-                recompute_lower_x = lower_x.dif().ulp() > to_fpt(ULPS);
+                recompute_c_x = c_x.dif().ulp() > ULPS;
+                recompute_c_y = c_y.dif().ulp() > ULPS;
+                recompute_lower_x = lower_x.dif().ulp() > ULPS;
                 c_event = circle_type(c_x.dif().fpv(), c_y.dif().fpv(), lower_x.dif().fpv());
             } else {
                 robust_fpt_type sqr_sum1(get_sqrt(a1 * a1 + b1 * b1), 2.0);
@@ -1212,9 +1212,9 @@ public:
                 } else {
                     lower_x += t * orientation;
                 }
-                recompute_c_x = c_x.dif().ulp() > to_fpt(ULPS);
-                recompute_c_y = c_y.dif().ulp() > to_fpt(ULPS);
-                recompute_lower_x = lower_x.dif().ulp() > to_fpt(ULPS);
+                recompute_c_x = c_x.dif().ulp() > ULPS;
+                recompute_c_y = c_y.dif().ulp() > ULPS;
+                recompute_lower_x = lower_x.dif().ulp() > ULPS;
                 c_event = circle_type(c_x.dif().fpv(), c_y.dif().fpv(), lower_x.dif().fpv());
             }
             if (recompute_c_x || recompute_c_y || recompute_lower_x) {
@@ -1277,10 +1277,10 @@ public:
             c_y += b3 * c1 * len2;
             c_y -= b1 * c3 * len2;
             robust_dif_type lower_x(c_x + r);
-            bool recompute_c_x = c_x.dif().ulp() > to_fpt(ULPS);
-            bool recompute_c_y = c_y.dif().ulp() > to_fpt(ULPS);
-            bool recompute_lower_x = lower_x.dif().ulp() > to_fpt(ULPS);
-            bool recompute_denom = denom.dif().ulp() > to_fpt(ULPS);
+            bool recompute_c_x = c_x.dif().ulp() > ULPS;
+            bool recompute_c_y = c_y.dif().ulp() > ULPS;
+            bool recompute_lower_x = lower_x.dif().ulp() > ULPS;
+            bool recompute_denom = denom.dif().ulp() > ULPS;
             c_event = circle_type(c_x.dif().fpv() / denom.dif().fpv(),
                                   c_y.dif().fpv() / denom.dif().fpv(),
                                   lower_x.dif().fpv() / denom.dif().fpv());

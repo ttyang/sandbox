@@ -731,8 +731,8 @@ namespace polygon {
         }
 
     private:
-        template <typename T>
-        point_type prepare_point(const T& x, const T& y) {
+        template <typename CT>
+        point_type prepare_point(const CT& x, const CT& y) {
             coordinate_type xc = convert_(x);
             coordinate_type yc = convert_(y);
             return point_type(xc, yc);
