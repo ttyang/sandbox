@@ -14,7 +14,7 @@
 #include "profile_helpers.hpp"
 
 int main(int argc, char* argv[]) {
-	unsigned long size = 0, trials = 0;
+    unsigned long size = 0, trials = 0;
     profile::args(argc, argv, size, trials);
 
     double sum = 0.0;

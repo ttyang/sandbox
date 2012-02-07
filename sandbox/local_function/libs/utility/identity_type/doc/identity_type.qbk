@@ -103,7 +103,7 @@ In this case, if the meta-function is an abstract type, it needs to be manipulat
 
 [endsect]
 
-[section Annex: Usages]
+[section Annex: Usage]
 
 The [macroref BOOST_IDENTITY_TYPE] macro can be used either in the call of the user-defined macro (as shown by the examples so far), or internally to the definition of the user macro.
 When [macroref BOOST_IDENTITY_TYPE] is used internally, the call of the user macro will only have to specify the extra parenthesis (see also [@../../test/tmp_assert.cpp =tmp_assert.cpp=]):
