@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-// See http://www.boost.org/libs/local_function for library home page
+// Home at http://www.boost.org/libs/local_function
 
 #if !BOOST_PP_IS_ITERATING
 #   ifndef BOOST_LOCAL_FUNCTION_AUX_FUNCTION_HPP_

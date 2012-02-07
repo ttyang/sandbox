@@ -3,7 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-// See http://www.boost.org/libs/local_function for library home page
+// Home at http://www.boost.org/libs/local_function
 
 #ifndef BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_ERROR_HPP_
 #define BOOST_LOCAL_FUNCTION_AUX_PP_DECL_TRAITS_ERROR_HPP_

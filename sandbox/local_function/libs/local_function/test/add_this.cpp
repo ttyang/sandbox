@@ -3,6 +3,7 @@
 // Distributed under the Boost Software License, Version 1.0
 // (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
+// Home at http://www.boost.org/libs/local_function
 
 #include <boost/local_function.hpp>
 #define BOOST_TEST_MODULE TestAddThis

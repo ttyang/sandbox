@@ -3,6 +3,7 @@
 # Distributed under the Boost Software License, Version 1.0
 # (see accompanying file LICENSE_1_0.txt or a copy at
 # http://www.boost.org/LICENSE_1_0.txt)
+# Home at http://www.boost.org/libs/local_function
 
 export BOOST_ROOT="/cygdrive/e/sandbox/boost-trunk.cygwin"
 export BOOST_BUILD_PATH="$BOOST_ROOT/tools/build/v2"

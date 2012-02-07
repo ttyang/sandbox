@@ -2,9 +2,9 @@
 // Copyright (C) 2006-2009, 2012 Alexander Nasonov
 // Copyright (C) 2012 Lorenzo Caminiti
 // Distributed under the Boost Software License, Version 1.0
-// (see accompanying file LICENSE_1_0.txt or a copy at 
+// (see accompanying file LICENSE_1_0.txt or a copy at
 // http://www.boost.org/LICENSE_1_0.txt)
-// See http://www.boost.org/libs/scope_exit for library home page
+// Home at http://www.boost.org/libs/scope_exit
 
 #ifndef FILE_boost_scope_exit_hpp_INCLUDED
 #define FILE_boost_scope_exit_hpp_INCLUDED
