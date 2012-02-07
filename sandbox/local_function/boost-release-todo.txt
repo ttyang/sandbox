@@ -1,0 +1,26 @@
+
+https://svn.boost.org/trac/boost/wiki/DeveloperChecklist
+http://www.boost.org/development/requirements.html
+
+0) sandbox development
+* Boost.Config for LOCAL_TYPES_AS_TEMPLATE_PARAMS.
+
+http://beta.boost.org/development/testing.html
+
+1) sandbox -> trunk (svn export)
+* Run inspect before commit!
+* Add lib to several files: libraries.html, maintainers.txt, status/Jamfile.v2
+* Review regression tests: http://beta.boost.org/development/testing.html#RegressionTesting
+
+https://svn.boost.org/trac/boost/wiki/ImprovingPractices
+https://svn.boost.org/trac/boost/wiki/ReleasePractices/Procedures (old)
+
+2) trunk -> release (svn merge)
+* Review regression tests: http://beta.boost.org/development/testing.html#RegressionTesting
+* Review generated docs: http://boost.cowic.de/rc/boost-docs.7z
+    . Boost.LocalFunction
+    . Boost.ScopeExit
+    . Boost.Utility/IdentityType (also linked from Utility docs)
+    . Boost.Functional/OverloadedFunction (also linked from Functional docs)
+* Updated release history: https://svn.boost.org/svn/boost/website/public_html/beta/feed/history
+
