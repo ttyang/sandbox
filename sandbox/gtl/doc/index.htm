@@ -38,6 +38,13 @@
 			<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
 			<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
 			<li><a href="gtl_property_merge.htm">Property Merge</a></li>
+			<li><a href="voronoi_ctypes_concept.htm">Voronoi CTypes Concept</a></li>
+			<li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram 
+			Datastructure</a></li>
+			<li><a href="voronoi_lazy_arithmetic_concept.htm">Voronoi Lazy 
+			Arithmetic Concept</a></li>
+			<li><a href="voronoi_sweepline_algorithm.htm">Voronoi Sweepline 
+			Algorithm</a></li>
         </ul>
         <h3 class="navbar">Other Resources</h3>
         <ul>
@@ -47,6 +54,10 @@
              <li><a href="analysis.htm">Performance Analysis</a></li>
 			<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
 			<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
+			<li><a href="voronoi_diagram_basic_tutorial.htm">Voronoi Diagram 
+			Basic Tutorial</a></li>
+			<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Diagram 
+			Advanced Tutorial</a></li>
         </ul>
     </div>
         <h3 class="navbar">Polygon Sponsor</h3>
@@ -75,6 +86,20 @@ Boost.Polygon library is not intended to cover all of computational
 geometry in its scope, and provides a set of capabilities for working with 
 coordinates, points, intervals and rectangles that are needed to support 
 implementing and interacting with polygon data structures and algorithms.&nbsp; </p><img border="0" src="images/hand.png" width="837" height="277"><p>
+One of the important features of the library is implementation of generic 
+sweepline algorithm to build Voronoi diagrams in 2D (developed as part of GSoC 
+2010 program). Voronoi diagram datastructure has applications in image 
+segmentation, optical character recognition, nearest neighbor queries execution, 
+etc. It is closely related with other computational geometry concepts: delaunay 
+triangulation, medial axis, straight skeleton, largest empty circle.&nbsp; 
+Boost.Polygon library provides interface to construct Voronoi diagrams of points 
+figure a and line segments figure b (the last could be used to discretize any 
+two-dimensional curve). Figure c contains example of medial axis of a non-convex 
+polygon. The implementation outperforms most of the known commercial and 
+non-commercial libraries in both efficiency and numerical robustness aspects.
+</p>
+<p><img border="0" src="images/voronoi.png" width="900" height="300"></p>
+<p>
 The coordinate data type is a template parameter of all data types and 
 algorithms provided by the library, and is expected to be integral.&nbsp; 
 Floating point coordinate data types are not supported by the algorithms 
@@ -192,6 +217,11 @@ performing these programming tasks.</p>
 	extraction application</li>
 	<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum</a> Learn how to 
 	apply Boost.Polygon capabilities to implement Minkowski sum of polygon sets</li>
+	<li><a href="voronoi_diagram_basic.htm">Voronoi Diagram Basic</a> Learn how 
+	to build Voronoi diagram without digging into library details.</li>
+	<li><a href="voronoi_diagram_advanced.htm">Voronoi Diagram Advanced</a> 
+	Learn how to configure Voronoi diagram builder and Voronoi diagram 
+	datastructure to suit your requirements. </li>
 </ul>
 
 </ul>
