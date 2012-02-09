@@ -8,6 +8,7 @@
 #define BOOST_MGL_ITERATOR_POLICIES_HPP
 
 #include <boost/mpl/vector.hpp>
+#include <boost/mpl/void.hpp>
 
 #include <boost/typeof/typeof.hpp>
 
@@ -24,24 +25,24 @@ struct EndAtEndOfGraph {};
 // trace policies
 struct NoTrace
 {
-	typedef ::boost::mpl::void_ container_type;
+    typedef ::boost::mpl::void_ container_type;
 
-	template<typename Vertex, typename Container>
+    template<typename Vertex, typename Container>
     struct apply
     {
-		typedef ::boost::mpl::void_ type;
+        typedef ::boost::mpl::void_ type;
     };
 };
 
 template<typename TraceVector>
 struct RecordTrace
 {
-	typedef TraceVector container_type;
+    typedef TraceVector container_type;
 
-	template<typename Vertex, typename Container>
+    template<typename Vertex, typename Container>
     struct apply
     {
-		typedef typename ::boost::mpl::push_back<Container, Vertex>::type type;
+        typedef typename ::boost::mpl::push_back<Container, Vertex>::type type;
     };
 };
 

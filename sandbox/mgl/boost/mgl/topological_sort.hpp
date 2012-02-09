@@ -24,20 +24,20 @@ namespace mgl
 template<class Graph>
 struct topological_sort
 {
-	typedef typename depth_first_search<
-		Graph,
-		aux::predecessor_edge_builder
-	>::type::visitor_result predecessor_map;
+    typedef typename depth_first_search<
+        Graph,
+        aux::predecessor_edge_builder
+    >::type::visitor_result predecessor_map;
 
-	BOOST_MPL_ASSERT_NOT(( ::boost::mpl::empty<predecessor_map> ));
+    BOOST_MPL_ASSERT_NOT(( ::boost::mpl::empty<predecessor_map> ));
 
-	typedef typename aux::topological_sort_impl<
-		Graph,
-		predecessor_map,
-		::boost::mpl::vector0<>
-	>::type type;
+    typedef typename aux::topological_sort_impl<
+        Graph,
+        predecessor_map,
+        ::boost::mpl::vector0<>
+    >::type type;
 
-	BOOST_MPL_ASSERT_NOT(( ::boost::mpl::empty<type> ));
+    BOOST_MPL_ASSERT_NOT(( ::boost::mpl::empty<type> ));
 };
 
 } // namespace mgl

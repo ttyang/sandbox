@@ -8,7 +8,7 @@
 
 #define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
 #undef  BOOST_MPL_LIMIT_METAFUNCTION_ARITY
-#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 6
+#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 7
 #include <boost/mpl/apply.hpp>
 
 #include <boost/mpl/vector.hpp>
@@ -68,10 +68,10 @@ BOOST_AUTO_TEST_CASE(invalid_breadth_first_search)
 {
 	typedef BOOST_TYPEOF(mpl::void_()) void_t;
 
-	typedef breadth_first_search<foo>::type::vertex_trace dfs;
-	typedef BOOST_TYPEOF(dfs()) dfs_t;
+	typedef breadth_first_search<foo>::type::vertex bfs;
+	typedef BOOST_TYPEOF(bfs()) bfs_t;
 
-	BOOST_CHECK_MESSAGE(typeid(dfs_t) == typeid(void_t), "breadth_first_search<> should return mpl::void_ for invalid graph type");
+	BOOST_CHECK_MESSAGE(typeid(bfs_t) == typeid(void_t), "breadth_first_search<> should return mpl::void_ for invalid graph type");
 }
 
 BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
@@ -88,10 +88,10 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 		::boost::mgl::vertex_trace_visitor,
 		v0,
 		::boost::mgl::EndWhenNoVerticesFound
-	>::type::vertex_trace result11;
+	>::type::visitor_result result11;
 	typedef BOOST_TYPEOF(result11()) result11_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result11_t) == typeid(expected_result11_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result11_t, expected_result11_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from first vertex (visit all vertices)
 	typedef mpl::vector10<
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result12;
 	typedef BOOST_TYPEOF(result12()) result12_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result12_t) == typeid(expected_result12_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result12_t, expected_result12_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v1'
 	typedef mpl::vector4<
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result21;
 	typedef BOOST_TYPEOF(result21()) result21_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result21_t) == typeid(expected_result21_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result21_t, expected_result21_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v1' (visit all vertices)
 	typedef mpl::vector10<
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result22;
 	typedef BOOST_TYPEOF(result22()) result22_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result22_t) == typeid(expected_result22_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result22_t, expected_result22_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v2'
 	typedef mpl::vector8<
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result31;
 	typedef BOOST_TYPEOF(result31()) result31_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result31_t) == typeid(expected_result31_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result31_t, expected_result31_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v2' (visit all vertices)
 	typedef mpl::vector10<
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result32;
 	typedef BOOST_TYPEOF(result32()) result32_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result32_t) == typeid(expected_result32_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result32_t, expected_result32_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v3'
 	typedef mpl::vector4<
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result41;
 	typedef BOOST_TYPEOF(result41()) result41_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result41_t) == typeid(expected_result41_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result41_t, expected_result41_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v3' (visit all vertices)
 	typedef mpl::vector10<
@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result42;
 	typedef BOOST_TYPEOF(result42()) result42_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result42_t) == typeid(expected_result42_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result42_t, expected_result42_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v4'
 	typedef mpl::vector6<
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result51;
 	typedef BOOST_TYPEOF(result51()) result51_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result51_t) == typeid(expected_result51_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result51_t, expected_result51_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v4' (visit all vertices)
 	typedef mpl::vector10<
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result52;
 	typedef BOOST_TYPEOF(result52()) result52_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result52_t) == typeid(expected_result52_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result52_t, expected_result52_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v5'
 	typedef mpl::vector1<
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result61;
 	typedef BOOST_TYPEOF(result61()) result61_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result61_t) == typeid(expected_result61_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result61_t, expected_result61_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v5' (visit all vertices)
 	typedef mpl::vector10<
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result62;
 	typedef BOOST_TYPEOF(result62()) result62_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result62_t) == typeid(expected_result62_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result62_t, expected_result62_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v6'
 	typedef mpl::vector1<
@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result71;
 	typedef BOOST_TYPEOF(result71()) result71_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result71_t) == typeid(expected_result71_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result71_t, expected_result71_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v6' (visit all vertices)
 	typedef mpl::vector10<
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result72;
 	typedef BOOST_TYPEOF(result72()) result72_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result72_t) == typeid(expected_result72_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result72_t, expected_result72_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v7'
 	typedef mpl::vector4<
@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result81;
 	typedef BOOST_TYPEOF(result81()) result81_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result81_t) == typeid(expected_result81_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result81_t, expected_result81_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v7' (visit all vertices)
 	typedef mpl::vector10<
@@ -416,7 +416,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result82;
 	typedef BOOST_TYPEOF(result82()) result82_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result82_t) == typeid(expected_result82_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result82_t, expected_result82_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v8'
 	typedef mpl::vector4<
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result91;
 	typedef BOOST_TYPEOF(result91()) result91_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result91_t) == typeid(expected_result91_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result91_t, expected_result91_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v8' (visit all vertices)
 	typedef mpl::vector10<
@@ -459,7 +459,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result92;
 	typedef BOOST_TYPEOF(result92()) result92_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result92_t) == typeid(expected_result92_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result92_t, expected_result92_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v9'
 	typedef mpl::vector1<
@@ -475,7 +475,7 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result101;
 	typedef BOOST_TYPEOF(result101()) result101_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result101_t) == typeid(expected_result101_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result101_t, expected_result101_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 
 	// perform search from vertex 'v9' (visit all vertices)
 	typedef mpl::vector10<
@@ -499,5 +499,5 @@ BOOST_AUTO_TEST_CASE(perform_breadth_first_search)
 	>::type::visitor_result result102;
 	typedef BOOST_TYPEOF(result102()) result102_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result102_t) == typeid(expected_result102_t), "breadth_first_search<> should return the right mpl::vector<> type");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result102_t, expected_result102_t>::value), "breadth_first_search<> should return the right mpl::vector<> type");
 }

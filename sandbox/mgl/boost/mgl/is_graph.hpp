@@ -23,7 +23,7 @@ namespace detail
 
 template<typename T>
 struct is_graph_impl :
-	is_base_of<directed_graph<T>, T>::type
+    is_base_of<directed_graph<T>, T>::type
 {
 };
 

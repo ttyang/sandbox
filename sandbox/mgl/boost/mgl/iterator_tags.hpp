@@ -7,8 +7,6 @@
 #ifndef BOOST_MGL_ITERATOR_TAGS_HPP
 #define BOOST_MGL_ITERATOR_TAGS_HPP
 
-#include <boost/mpl/int.hpp>
-
 namespace boost
 {
 

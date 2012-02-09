@@ -24,40 +24,75 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(dfs_find_supported)
 BOOST_MPL_HAS_XXX_TRAIT_DEF(bfs_find_supported)
 
 /// \brief Find a specified vertex inside a graph and return a DFS iterator.
-/// \param Graph Graph where the iteration should be performed
-/// \param Vertex Vertex that should be found inside the graph
-/// \param EndAtStrategy The strategy used to abort the iteration
-/// \param TracePolicy The policy used to trace the iteration
-/// \param Visitor The visitor class used during the iteration
-//template<class Graph, class Vertex, class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph, class TracePolicy = ::boost::mgl::NoTrace, class Visitor = ::boost::mgl::null_visitor>
-template<class Graph, class Vertex, class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph, class TracePolicy = ::boost::mgl::NoTrace, class Visitor = ::boost::mgl::null_visitor, class Enable = void>
+/// \tparam Graph Graph where the iteration should be performed
+/// \tparam Vertex Vertex that should be found inside the graph
+/// \tparam EndAtStrategy The strategy used to abort the iteration
+/// \tparam Visitor The visitor class used during the iteration
+template<
+    class Graph,
+    class Vertex,
+    class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph,
+    class Visitor = ::boost::mgl::null_visitor,
+    class Enable = void
+>
 struct dfs_find
 {
-	typedef ::boost::mpl::void_ type;
+    typedef ::boost::mpl::void_ type;
 };
 
-template<class Graph, class Vertex, class EndAtStrategy, class TracePolicy, class Visitor>
-struct dfs_find<Graph, Vertex, EndAtStrategy, TracePolicy, Visitor, typename ::boost::enable_if<has_dfs_find_supported<Graph> >::type>
+template<
+    class Graph,
+    class Vertex,
+    class EndAtStrategy,
+    class Visitor
+>
+struct dfs_find<
+    Graph,
+    Vertex,
+    EndAtStrategy,
+    Visitor,
+    typename ::boost::enable_if<
+	    has_dfs_find_supported<Graph>
+	>::type
+>
 {
-	typedef typename Graph::template dfs_find<Vertex, EndAtStrategy, TracePolicy, Visitor>::type type;
+    typedef typename Graph::template dfs_find<Vertex, EndAtStrategy, Visitor>::type type;
 };
 
 /// \brief Find a specified vertex inside a graph and return a BFS iterator.
-/// \param Graph Graph where the iteration should be performed
-/// \param Vertex Vertex that should be found inside the graph
-/// \param EndAtStrategy The strategy used to abort the iteration
-/// \param TracePolicy The policy used to trace the iteration
-/// \param Visitor The visitor class used during the iteration
-template<class Graph, class Vertex, class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph, class TracePolicy = ::boost::mgl::NoTrace, class Visitor = ::boost::mgl::null_visitor, class Enable = void>
+/// \tparam Graph Graph where the iteration should be performed
+/// \tparam Vertex Vertex that should be found inside the graph
+/// \tparam EndAtStrategy The strategy used to abort the iteration
+/// \tparam Visitor The visitor class used during the iteration
+template<
+    class Graph,
+    class Vertex,
+    class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph,
+    class Visitor = ::boost::mgl::null_visitor,
+    class Enable = void
+>
 struct bfs_find
 {
-	typedef ::boost::mpl::void_ type;
+    typedef ::boost::mpl::void_ type;
 };
 
-template<class Graph, class Vertex, class EndAtStrategy, class TracePolicy, class Visitor>
-struct bfs_find<Graph, Vertex, EndAtStrategy, TracePolicy, Visitor, typename ::boost::enable_if<has_bfs_find_supported<Graph> >::type>
+template<
+    class Graph,
+    class Vertex,
+    class EndAtStrategy,
+    class Visitor
+>
+struct bfs_find<
+    Graph,
+    Vertex, 
+    EndAtStrategy,
+    Visitor,
+    typename ::boost::enable_if<
+	    has_bfs_find_supported<Graph>
+    >::type
+>
 {
-	typedef typename Graph::template bfs_find<Vertex, EndAtStrategy, TracePolicy, Visitor>::type type;
+	typedef typename Graph::template bfs_find<Vertex, EndAtStrategy, Visitor>::type type;
 };
 
 } // namespace mgl

@@ -21,17 +21,18 @@ namespace boost
 namespace mgl
 {
 
+/// \brief Test if a graph has a cycle
+/// \tparam Graph The graph that should be tested
 template<class Graph>
 struct contains_cycle
 {
-	typedef typename ::boost::mgl::dfs_begin<
-		Graph,
-		::boost::mgl::EndWhenNoVerticesFound,
-		::boost::mgl::RecordTrace< ::boost::mpl::vector0<> >,
-		aux::cycle_detector_visitor
-	>::type iter;
+    typedef typename ::boost::mgl::dfs_begin<
+        Graph,
+        ::boost::mgl::EndWhenNoVerticesFound,
+        aux::cycle_detector_visitor
+    >::type iter;
 
-	typedef typename aux::template depth_first_search_impl<iter>::type::visitor_result type;
+    typedef typename aux::template depth_first_search_impl<iter>::type::visitor_result type;
 };
 
 } // namespace mgl

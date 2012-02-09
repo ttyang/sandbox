@@ -8,7 +8,7 @@
 
 #define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
 #undef  BOOST_MPL_LIMIT_METAFUNCTION_ARITY
-#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 6
+#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 7
 #include <boost/mpl/apply.hpp>
 
 #include <boost/mpl/vector.hpp>

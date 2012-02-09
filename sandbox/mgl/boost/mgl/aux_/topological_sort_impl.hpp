@@ -42,41 +42,41 @@ struct predecessor_edge_builder
 		typedef ::boost::mpl::map0<> type;
 	};
 
-	template<typename Edge, typename T, typename TraversalStack, typename ColorMap>
+	template<typename Vertex1, typename Vertex2, typename Weight, typename T, typename TraversalStack, typename ColorMap>
 	struct on_examine_edge
 	{
 		typedef typename ::boost::mpl::if_<
-			typename ::boost::mpl::has_key<T, typename ::boost::mpl::first<Edge>::type>::type,
+			typename ::boost::mpl::has_key<T, Vertex1>::type,
 			T,
 			typename ::boost::mpl::insert<
 				T,
 				::boost::mpl::pair<
-					typename ::boost::mpl::first<Edge>::type,
+					Vertex1,
 					::boost::mpl::vector0<>
 				>
 			>::type
 		>::type T_;
 
 		typedef typename ::boost::mpl::if_<
-			typename ::boost::mpl::has_key<T_, typename ::boost::mpl::second<Edge>::type>::type,
-			typename ::boost::mpl::at<T, typename ::boost::mpl::second<Edge>::type>::type,
+			typename ::boost::mpl::has_key<T_, Vertex2>::type,
+			typename ::boost::mpl::at<T, Vertex2>::type,
 			::boost::mpl::vector0<>
 		>::type bucket;
 
 		typedef typename ::boost::mpl::push_back<
 			bucket,
-			typename ::boost::mpl::first<Edge>::type
+			Vertex1
 		>::type new_bucket;
 
 		typedef typename ::boost::mpl::erase_key<
 			T_,
-			typename ::boost::mpl::second<Edge>::type
+			Vertex2
 		>::type T__;
 
 		typedef typename ::boost::mpl::insert<
 			T__,
 			::boost::mpl::pair<
-				typename ::boost::mpl::second<Edge>::type,
+				Vertex2,
 				new_bucket
 			>
 		>::type type;

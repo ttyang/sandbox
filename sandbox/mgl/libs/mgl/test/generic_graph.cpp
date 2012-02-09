@@ -8,7 +8,7 @@
 
 #define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
 #undef  BOOST_MPL_LIMIT_METAFUNCTION_ARITY
-#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 6
+#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 7
 #include <boost/mpl/apply.hpp>
 
 #include <boost/mpl/assert.hpp>
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(test_directed_graph_dfs)
 	typedef depth_first_search<simple_directed_graph, ::boost::mgl::edge_trace_visitor, b>::type::visitor_result result1;
 	typedef BOOST_TYPEOF(result1()) result1_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result1_t) == typeid(expected_result1_t), "depth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result1_t, expected_result1_t>::value), "depth_first_search<> should return the expected mpl::vector<>");
 
 	typedef mpl::vector1<
 		mpl::pair<b, d>
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(test_directed_graph_dfs)
 	typedef depth_first_search<simple_directed_graph, ::boost::mgl::edge_trace_visitor, b, EndWhenNoVerticesFound>::type::visitor_result result2;
 	typedef BOOST_TYPEOF(result2()) result2_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result2_t) == typeid(expected_result2_t), "depth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result2_t, expected_result2_t>::value), "depth_first_search<> should return the expected mpl::vector<>");
 }
 
 BOOST_AUTO_TEST_CASE(test_directed_graph_dfs_find)
@@ -131,12 +131,12 @@ BOOST_AUTO_TEST_CASE(test_undirected_graph_dfs)
 	typedef depth_first_search<simple_undirected_graph, ::boost::mgl::edge_trace_visitor, b>::type::visitor_result result1;
 	typedef BOOST_TYPEOF(result1()) result1_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result1_t) == typeid(expected_result_t), "depth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result1_t, expected_result_t>::value), "depth_first_search<> should return the expected mpl::vector<>");
 
 	typedef depth_first_search<simple_undirected_graph, ::boost::mgl::edge_trace_visitor, b, EndWhenNoVerticesFound>::type::visitor_result result2;
 	typedef BOOST_TYPEOF(result2()) result2_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result2_t) == typeid(expected_result_t), "depth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result2_t, expected_result_t>::value), "depth_first_search<> should return the expected mpl::vector<>");
 }
 
 BOOST_AUTO_TEST_CASE(test_directed_graph_bfs)
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(test_directed_graph_bfs)
 	typedef breadth_first_search<simple_directed_graph, ::boost::mgl::edge_trace_visitor, b>::type::visitor_result result1;
 	typedef BOOST_TYPEOF(result1()) result1_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result1_t) == typeid(expected_result1_t), "breadth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result1_t, expected_result1_t>::value), "breadth_first_search<> should return the expected mpl::vector<>");
 
 	typedef mpl::vector1<
 		mpl::pair<b, d>
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(test_directed_graph_bfs)
 	typedef breadth_first_search<simple_directed_graph, ::boost::mgl::edge_trace_visitor, b, EndWhenNoVerticesFound>::type::visitor_result result2;
 	typedef BOOST_TYPEOF(result2()) result2_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result2_t) == typeid(expected_result2_t), "breadth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result2_t, expected_result2_t>::value), "breadth_first_search<> should return the expected mpl::vector<>");
 }
 
 BOOST_AUTO_TEST_CASE(test_directed_graph_bfs_find)
@@ -199,10 +199,10 @@ BOOST_AUTO_TEST_CASE(test_undirected_graph_bfs)
 	typedef breadth_first_search<simple_undirected_graph, ::boost::mgl::edge_trace_visitor, b>::type::visitor_result result1;
 	typedef BOOST_TYPEOF(result1()) result1_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result1_t) == typeid(expected_result_t), "breadth_first_search<> should return the expected mpl::vector<>");
+	BOOST_CHECK_MESSAGE((::boost::mpl::equal<result1_t, expected_result_t>::value), "breadth_first_search<> should return the expected mpl::vector<>");
 
 	typedef breadth_first_search<simple_undirected_graph, ::boost::mgl::edge_trace_visitor, b, EndWhenNoVerticesFound>::type::visitor_result result2;
 	typedef BOOST_TYPEOF(result2()) result2_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result2_t) == typeid(expected_result_t), "breadth_first_search<> should return the expected mpl::vector<>");
+    BOOST_CHECK_MESSAGE((::boost::mpl::equal<result2_t, expected_result_t>::value), "breadth_first_search<> should return the expected mpl::vector<>");
 }

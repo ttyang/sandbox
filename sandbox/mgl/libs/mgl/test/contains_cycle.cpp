@@ -8,7 +8,7 @@
 
 #define BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
 #undef  BOOST_MPL_LIMIT_METAFUNCTION_ARITY
-#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 6
+#define BOOST_MPL_LIMIT_METAFUNCTION_ARITY 7
 #include <boost/mpl/apply.hpp>
 
 #include <boost/mpl/bool.hpp>
@@ -81,5 +81,5 @@ BOOST_AUTO_TEST_CASE(test_non_cycle_graph)
 	typedef contains_cycle<non_cycle_graph>::type result;
 	typedef BOOST_TYPEOF(result()) result_t;
 
-	BOOST_CHECK_MESSAGE(typeid(result_t) == typeid(false_t), "contains_cycle<> should return a proper ::mpl::false_");
+	BOOST_CHECK_MESSAGE(typeid(result_t) == typeid(false_t), "contains_cycle<> should return a proper ::mpl::true_");
 }

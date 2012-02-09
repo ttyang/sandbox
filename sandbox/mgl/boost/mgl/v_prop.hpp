@@ -18,20 +18,20 @@ namespace mgl
 template<class T, class Property = ::boost::mpl::empty_base>
 struct v_prop
 {
-	typedef T vertex;
-	typedef Property property;
+    typedef T vertex;
+    typedef Property property;
 };
 
 template<class T>
 struct v_prop_vertex
 {
-	typedef typename T::vertex type;
+    typedef typename T::vertex type;
 };
 
 template<class T>
 struct v_prop_property
 {
-	typedef typename T::property type;
+    typedef typename T::property type;
 };
 
 } // namespace mgl

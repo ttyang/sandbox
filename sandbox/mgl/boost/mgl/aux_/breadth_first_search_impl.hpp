@@ -7,6 +7,10 @@
 #ifndef BOOST_MGL_BREADTH_FIRST_SEARCH_IMPL_HPP
 #define BOOST_MGL_BREADTH_FIRST_SEARCH_IMPL_HPP
 
+#include <boost/mpl/set.hpp>
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/void.hpp>
+
 #include <boost/mgl/begin_end.hpp>
 #include <boost/mgl/next_prior.hpp>
 
@@ -31,11 +35,15 @@ struct breadth_first_search_impl
 };
 
 template<class Iterator>
-struct breadth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost::is_same<Iterator, ::boost::mpl::void_> >::type>
+struct breadth_first_search_impl<
+    Iterator,
+    typename ::boost::enable_if<
+	    ::boost::is_same<Iterator, ::boost::mpl::void_>
+    >::type>
 {
 	typedef bfs_iterator<
-		void,
-		void,
+	    ::boost::mpl::void_,
+	    ::boost::mpl::void_,
 		::boost::mpl::set0<>,
 		::boost::mpl::vector0<>
 	> type;
@@ -45,7 +53,14 @@ struct breadth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost:
 };
 
 template<class Iterator>
-struct breadth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost::is_same<typename ::boost::mgl::dfs_end<typename Iterator::graph>::type, typename Iterator::vertex> >::type>
+struct breadth_first_search_impl<
+    Iterator,
+    typename ::boost::enable_if<
+	    ::boost::is_same<
+	        typename ::boost::mgl::dfs_end<typename Iterator::graph>::type,
+	        typename Iterator::vertex>
+	    >::type
+    >
 {
 	typedef bfs_iterator<
 		typename Iterator::graph,
@@ -53,8 +68,6 @@ struct breadth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost:
 		typename Iterator::color_map,
 		typename Iterator::traversal_stack,
 		typename Iterator::end_at_strategy,
-		typename Iterator::trace_policy,
-		typename Iterator::vertex_trace,
 		typename Iterator::visitor_type,
 		typename Iterator::visitor_result
 	> type;

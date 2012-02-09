@@ -16,8 +16,8 @@ namespace mgl
 template<class Vertex, class VertexList>
 struct row
 {
-	typedef Vertex vertex;
-	typedef VertexList adjacency_vertices;
+    typedef Vertex vertex;
+    typedef VertexList adjacency_vertices;
 };
 
 } // namespace mgl

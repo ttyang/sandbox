@@ -7,12 +7,12 @@
 #ifndef BOOST_MGL_COLORS_HPP
 #define BOOST_MGL_COLORS_HPP
 
+#include <boost/mpl/at.hpp>
 #include <boost/mpl/erase_key.hpp>
+#include <boost/mpl/has_key.hpp>
+#include <boost/mpl/if.hpp>
 #include <boost/mpl/insert.hpp>
 #include <boost/mpl/pair.hpp>
-#include <boost/mpl/if.hpp>
-#include <boost/mpl/has_key.hpp>
-#include <boost/mpl/at.hpp>
 
 namespace boost
 {
@@ -27,25 +27,25 @@ struct black {};
 template<typename Vertex, typename Color, typename Map>
 struct set_color
 {
-	typedef typename ::boost::mpl::erase_key<
-		Map,
-		Vertex
-	>::type map;
+    typedef typename ::boost::mpl::erase_key<
+        Map,
+        Vertex
+    >::type map;
 
-	typedef typename ::boost::mpl::insert<
-		map,
-		::boost::mpl::pair<Vertex, Color>
-	>::type type;
+    typedef typename ::boost::mpl::insert<
+        map,
+        ::boost::mpl::pair<Vertex, Color>
+    >::type type;
 };
 
 template<typename Vertex, typename Map>
 struct get_color
 {
-	typedef typename ::boost::mpl::if_<
-		typename ::boost::mpl::has_key<Map, Vertex>::type,
-		typename ::boost::mpl::at<Map, Vertex>::type,
-		white
-	>::type type;
+    typedef typename ::boost::mpl::if_<
+        typename ::boost::mpl::has_key<Map, Vertex>::type,
+        typename ::boost::mpl::at<Map, Vertex>::type,
+        white
+    >::type type;
 };
 
 } // namespace mgl

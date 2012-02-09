@@ -25,72 +25,99 @@ BOOST_MPL_HAS_XXX_TRAIT_DEF(dfs_begin_supported)
 BOOST_MPL_HAS_XXX_TRAIT_DEF(bfs_begin_supported)
 
 /// \brief Get a DFS iterator to the begin of a graph
-/// \param Graph Graph where the iteration should be performed
-/// \param EndAtStrategy The strategy used to abort the iteration
-/// \param TracePolicy The policy used to trace the iteration
-/// \param Visitor The visitor class used during the iteration
-template<class Graph, class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph, class TracePolicy = ::boost::mgl::NoTrace, class Visitor = ::boost::mgl::null_visitor, class Enable = void>
+/// \tparam Graph Graph where the iteration should be performed
+/// \tparam EndAtStrategy The strategy used to abort the iteration
+/// \tparam Visitor The visitor class used during the iteration
+template<
+    class Graph,
+    class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph,
+    class Visitor = ::boost::mgl::null_visitor,
+    class Enable = void
+>
 struct dfs_begin
 {
-	typedef ::boost::mpl::void_ type;
+    typedef ::boost::mpl::void_ type;
 };
 
-template<class Graph, class EndAtStrategy, class TracePolicy, class Visitor>
-struct dfs_begin<Graph, EndAtStrategy, TracePolicy, Visitor, typename ::boost::enable_if<has_dfs_begin_supported<Graph> >::type>
+template<
+    class Graph,
+    class EndAtStrategy,
+    class Visitor
+>
+struct dfs_begin<
+    Graph,
+    EndAtStrategy,
+    Visitor,
+    typename ::boost::enable_if<
+        has_dfs_begin_supported<Graph>
+    >::type>
 {
-	typedef typename Graph::template dfs_begin<EndAtStrategy, TracePolicy, Visitor>::type type;
+    typedef typename Graph::template dfs_begin<EndAtStrategy, Visitor>::type type;
 };
 
 /// \brief Get a DFS iterator to the end of a graph
-/// \param Graph Graph where the iteration should be performed
+/// \tparam Graph Graph where the iteration should be performed
 template<class Graph, class Enable = void>
 struct dfs_end
 {
-	typedef ::boost::mpl::void_ type;
+    typedef ::boost::mpl::void_ type;
 };
 
 template<class Graph>
 struct dfs_end<Graph, typename ::boost::enable_if<has_dfs_begin_supported<Graph> >::type>
 {
-	typedef typename Graph::end::type type;
+    typedef typename Graph::end::type type;
 };
 
 /// \brief Get a BFS iterator to the begin of a graph
-/// \param Graph Graph where the iteration should be performed
-/// \param EndAtStrategy The strategy used to abort the iteration
-/// \param TracePolicy The policy used to trace the iteration
-/// \param Visitor The visitor class used during the iteration
-template<class Graph, class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph, class TracePolicy = ::boost::mgl::NoTrace, class Visitor = ::boost::mgl::null_visitor, class Enable = void>
+/// \tparam Graph Graph where the iteration should be performed
+/// \tparam EndAtStrategy The strategy used to abort the iteration
+/// \tparam Visitor The visitor class used during the iteration
+template<
+    class Graph,
+    class EndAtStrategy = ::boost::mgl::EndAtEndOfGraph,
+    class Visitor = ::boost::mgl::null_visitor,
+    class Enable = void
+>
 struct bfs_begin
 {
-	typedef ::boost::mpl::void_ type;
+    typedef ::boost::mpl::void_ type;
 };
 
-template<class Graph, class EndAtStrategy, class TracePolicy, class Visitor>
-struct bfs_begin<Graph, EndAtStrategy, TracePolicy, Visitor, typename ::boost::enable_if<has_bfs_begin_supported<Graph> >::type>
+template<
+    class Graph,
+    class EndAtStrategy,
+    class Visitor>
+struct bfs_begin<
+    Graph,
+    EndAtStrategy,
+    Visitor,
+    typename ::boost::enable_if<
+        has_bfs_begin_supported<Graph>
+    >::type>
 {
-	typedef typename Graph::template bfs_begin<EndAtStrategy, TracePolicy, Visitor>::type type;
+    typedef typename Graph::template bfs_begin<EndAtStrategy, Visitor>::type type;
 };
 
 /// \brief Get a BFS iterator to the end of a graph
-/// \param Graph Graph where the iteration should be performed
+/// \tparam Graph Graph where the iteration should be performed
 template<class Graph, class Enable = void>
 struct bfs_end
 {
-	typedef ::boost::mpl::void_ type;
+    typedef ::boost::mpl::void_ type;
 };
 
 template<class Graph>
 struct bfs_end<Graph, typename ::boost::enable_if<has_bfs_begin_supported<Graph> >::type>
 {
-	typedef typename Graph::end::type type;
+    typedef typename Graph::end::type type;
 };
 
 //! @todo Add enable_if's like above!!!
 template<class VertexIterator>
 struct edge_begin
 {
-	typedef typename aux::edge_begin_impl::template apply<typename VertexIterator::graph, VertexIterator>::type type;
+    typedef typename aux::edge_begin_impl::template apply<typename VertexIterator::graph, VertexIterator>::type type;
 };
 
 } // namespace mgl

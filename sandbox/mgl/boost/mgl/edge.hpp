@@ -7,8 +7,8 @@
 #ifndef BOOST_MGL_EDGE_HPP
 #define BOOST_MGL_EDGE_HPP
 
-#include <boost/mpl/vector.hpp>
 #include <boost/mpl/int.hpp>
+#include <boost/mpl/vector.hpp>
 
 namespace boost
 {
@@ -19,34 +19,34 @@ namespace mgl
 template<class VertexFrom, class VertexTo, int Weight, class Properties = ::boost::mpl::vector0<> >
 struct edge
 {
-	typedef VertexFrom vertex_from;
-	typedef VertexTo vertex_to;
-	typedef ::boost::mpl::int_<Weight> weight;
-	typedef Properties properties;
+    typedef VertexFrom vertex_from;
+    typedef VertexTo vertex_to;
+    typedef ::boost::mpl::int_<Weight> weight;
+    typedef Properties properties;
 };
 
 template<class Edge>
 struct edge_begin_vertex
 {
-	typedef typename Edge::vertex_from type;
+    typedef typename Edge::vertex_from type;
 };
 
 template<class Edge>
 struct edge_end_vertex
 {
-	typedef typename Edge::vertex_to type;
+    typedef typename Edge::vertex_to type;
 };
 
 template<class Edge>
 struct edge_weight
 {
-	typedef typename Edge::weight type;
+    typedef typename Edge::weight type;
 };
 
 template<class Edge>
 struct edge_properties
 {
-	typedef typename Edge::properties type;
+    typedef typename Edge::properties type;
 };
 
 } // namespace mgl

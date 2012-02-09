@@ -16,23 +16,25 @@ namespace mgl
 template<class Visitor, class Vertex, class VisitorResult, class TraversalStack, class ColorMap>
 struct do_on_discover_vertex
 {
-	typedef typename Visitor::template on_discover_vertex<
-		Vertex,
-		VisitorResult,
-		TraversalStack,
-		ColorMap
-	>::type type;
+    typedef typename Visitor::template on_discover_vertex<
+        Vertex,
+        VisitorResult,
+        TraversalStack,
+        ColorMap
+    >::type type;
 };
 
-template<class Visitor, class Vertex1, class Vertex2, class VisitorResult, class TraversalStack, class ColorMap>
+template<class Visitor, class Vertex1, class Vertex2, typename Weight, class VisitorResult, class TraversalStack, class ColorMap>
 struct do_on_examine_edge
 {
-	typedef typename Visitor::template on_examine_edge<
-		::boost::mpl::pair<Vertex1, Vertex2>,
-		VisitorResult,
-		TraversalStack,
-		ColorMap
-	>::type type;
+    typedef typename Visitor::template on_examine_edge<
+        Vertex1,
+        Vertex2,
+        Weight,
+        VisitorResult,
+        TraversalStack,
+        ColorMap
+    >::type type;
 };
 
 } // namespace mgl

@@ -7,15 +7,15 @@
 #ifndef BOOST_MGL_DEPTH_FIRST_SEARCH_IMPL_HPP
 #define BOOST_MGL_DEPTH_FIRST_SEARCH_IMPL_HPP
 
-#include <boost/mpl/vector.hpp>
 #include <boost/mpl/set.hpp>
+#include <boost/mpl/vector.hpp>
+#include <boost/mpl/void.hpp>
 
 #include <boost/mgl/begin_end.hpp>
 #include <boost/mgl/next_prior.hpp>
 
 #include <boost/type_traits/is_same.hpp>
 #include <boost/utility/enable_if.hpp>
-#include <boost/type_traits/is_void.hpp>
 
 namespace boost
 {
@@ -35,11 +35,15 @@ struct depth_first_search_impl
 };
 
 template<class Iterator>
-struct depth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost::is_same<Iterator, ::boost::mpl::void_> >::type>
+struct depth_first_search_impl<
+    Iterator,
+    typename ::boost::enable_if<
+	    ::boost::is_same<Iterator, ::boost::mpl::void_>
+    >::type>
 {
 	typedef dfs_iterator<
-		void,
-		void,
+        ::boost::mpl::void_,
+	    ::boost::mpl::void_,
 		::boost::mpl::set0<>,
 		::boost::mpl::vector0<>
 	> type;
@@ -49,7 +53,14 @@ struct depth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost::i
 };
 
 template<class Iterator>
-struct depth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost::is_same<typename ::boost::mgl::dfs_end<typename Iterator::graph>::type, typename Iterator::vertex> >::type>
+struct depth_first_search_impl<
+    Iterator,
+    typename ::boost::enable_if<
+	    ::boost::is_same<
+	        typename ::boost::mgl::dfs_end<typename Iterator::graph>::type,
+		    typename Iterator::vertex>
+	    >::type
+    >
 {
 	typedef dfs_iterator<
 		typename Iterator::graph,
@@ -57,8 +68,6 @@ struct depth_first_search_impl<Iterator, typename ::boost::enable_if< ::boost::i
 		typename Iterator::color_map,
 		typename Iterator::traversal_stack,
 		typename Iterator::end_at_strategy,
-		typename Iterator::trace_policy,
-		typename Iterator::vertex_trace,
 		typename Iterator::visitor_type,
 		typename Iterator::visitor_result
 	> type;

@@ -78,59 +78,59 @@ BOOST_AUTO_TEST_CASE(bfs_iteration)
 	typedef deref<iter>::type iter_deref;
 	typedef BOOST_TYPEOF(iter_deref()) iter_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_deref_t) != typeid(void_t), "bfs_begin<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_deref_t) != typeid(void_t), "bfs_begin<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter>::type iter_next1;
 	typedef deref<iter_next1>::type iter_next1_deref;
 	typedef BOOST_TYPEOF(iter_next1_deref()) iter_next1_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next1_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next1_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next1>::type iter_next2;
 	typedef deref<iter_next2>::type iter_next2_deref;
 	typedef BOOST_TYPEOF(iter_next2_deref()) iter_next2_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next2_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next2_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next2>::type iter_next3;
 	typedef deref<iter_next3>::type iter_next3_deref;
 	typedef BOOST_TYPEOF(iter_next3_deref()) iter_next3_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next3_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next3_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next3>::type iter_next4;
 	typedef deref<iter_next4>::type iter_next4_deref;
 	typedef BOOST_TYPEOF(iter_next4_deref()) iter_next4_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next4_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next4_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next4>::type iter_next5;
 	typedef deref<iter_next5>::type iter_next5_deref;
 	typedef BOOST_TYPEOF(iter_next5_deref()) iter_next5_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next5_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next5_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next5>::type iter_next6;
 	typedef deref<iter_next6>::type iter_next6_deref;
 	typedef BOOST_TYPEOF(iter_next6_deref()) iter_next6_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next6_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next6_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next6>::type iter_next7;
 	typedef deref<iter_next7>::type iter_next7_deref;
 	typedef BOOST_TYPEOF(iter_next7_deref()) iter_next7_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next7_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next7_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next7>::type iter_next8;
 	typedef deref<iter_next8>::type iter_next8_deref;
 	typedef BOOST_TYPEOF(iter_next8_deref()) iter_next8_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next8_deref_t) != typeid(end_t), "next<> should return a valid iterator type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next8_deref_t) != typeid(end_t), "next<> shouldn't return a valid iterator type");
 
 	typedef ::boost::mgl::next<iter_next8>::type iter_next9;
 	typedef deref<iter_next9>::type iter_next9_deref;
 	typedef BOOST_TYPEOF(iter_next9_deref()) iter_next9_deref_t;
 
-	BOOST_CHECK_MESSAGE(typeid(iter_next9_deref_t) == typeid(end_t), "bfs_begin<> should return mpl::void_ at invalid graph type");
+	BOOST_CHECK_MESSAGE(typeid(iter_next9_deref_t) == typeid(end_t), "next<> should return a valid graph::end type");
 }
