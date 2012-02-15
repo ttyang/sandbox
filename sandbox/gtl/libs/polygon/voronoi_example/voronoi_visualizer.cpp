@@ -8,6 +8,8 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <iostream>
+#include <set>
+#include <vector>
 
 #include <QtOpenGL/QGLWidget>
 #include <QtGui/QtGui>
@@ -21,7 +23,8 @@ class GLWidget : public QGLWidget {
 public:
   GLWidget(QMainWindow *parent = NULL) :
       QGLWidget(QGLFormat(QGL::SampleBuffers), parent),
-      primary_edges_only_(false) {
+      primary_edges_only_(false),
+      internal_edges_only_(false) {
     startTimer(40);
   }
 
@@ -66,12 +69,24 @@ public:
     shift_ = point_data<double>((brect_.x_min() + brect_.x_max()) * 0.5,
                                 (brect_.y_min() + brect_.y_max()) * 0.5);
 
+    exterior_edges_set_.clear();
+    for (voronoi_edge_const_iterator_type it = vd_.edge_records().begin();
+        it != vd_.edge_records().end(); ++it) {
+      if (!it->is_bounded()) {
+        remove_exterior(&(*it));
+      }
+    }
+
     // Update view.
     update_view_port();
   }
 
   void show_primary_edges_only() {
     primary_edges_only_ ^= true;
+  }
+
+  void show_internal_edges_only() {
+    internal_edges_only_ ^= true;
   }
 
 protected:
@@ -136,7 +151,10 @@ protected:
       glLineWidth(1.7f);
       glBegin(GL_LINES);
       for (it = edges.begin(); it != edges.end(); ++it) {
-        if (!it->is_primary() && primary_edges_only_) {
+        if (primary_edges_only_ && !it->is_primary()) {
+          continue;
+        }
+        if (internal_edges_only_ && exterior_edges_set_.count(&(*it))) {
           continue;
         }
         std::vector<opoint_type> temp_v =
@@ -161,6 +179,23 @@ protected:
   }
 
 private:
+  void remove_exterior(const voronoi_diagram<double>::voronoi_edge_type* edge) {
+    if (exterior_edges_set_.count(edge)) {
+      return;
+    }
+    exterior_edges_set_.insert(edge);
+    exterior_edges_set_.insert(edge->twin());
+    const voronoi_diagram<double>::voronoi_vertex_type* v = edge->vertex1();
+    if (v == NULL || !edge->is_primary()) {
+      return;
+    }
+    const voronoi_diagram<double>::voronoi_edge_type* e = v->incident_edge();
+    do {
+      remove_exterior(e);
+      e = e->rot_next();
+    } while (e != v->incident_edge());
+  }
+
   void update_view_port() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -176,6 +211,8 @@ private:
   typedef directed_line_segment_data<int> isegment_type;
   typedef std::vector<ipoint_type> ipoint_set_type;
   typedef directed_line_segment_set_data<int> isegment_set_type;
+  typedef voronoi_diagram<coordinate_type>::voronoi_edge_type
+    voronoi_edge_type;
   typedef voronoi_diagram<coordinate_type>::voronoi_cells_type
     voronoi_cells_type;
   typedef voronoi_diagram<coordinate_type>::voronoi_vertices_type
@@ -191,7 +228,9 @@ private:
   bounding_rectangle<coordinate_type> brect_;
   point_data<double> shift_;
   voronoi_diagram<coordinate_type> vd_;
+  std::set<const voronoi_edge_type*> exterior_edges_set_;
   bool primary_edges_only_;
+  bool internal_edges_only_;
 };
 
 class MainWindow : public QWidget {
@@ -215,6 +254,10 @@ public:
 private slots:
   void primary_edges_only() {
     glWidget_->show_primary_edges_only();
+  }
+
+  void internal_edges_only() {
+    glWidget_->show_internal_edges_only();
   }
 
   void browse() {
@@ -261,6 +304,10 @@ private:
     connect(primary_checkbox, SIGNAL(clicked()),
         this, SLOT(primary_edges_only()));
 
+    QCheckBox *internal_checkbox = new QCheckBox("Show internal edges only.");
+    connect(internal_checkbox, SIGNAL(clicked()),
+        this, SLOT(internal_edges_only()));
+
     QPushButton *browse_button =
         new QPushButton(tr("Browse Input Directory"));
     connect(browse_button, SIGNAL(clicked()), this, SLOT(browse()));
@@ -273,8 +320,9 @@ private:
     file_layout->addWidget(message_label_, 0, 0);
     file_layout->addWidget(file_list_, 1, 0);
     file_layout->addWidget(primary_checkbox, 2, 0);
-    file_layout->addWidget(browse_button, 3, 0);
-    file_layout->addWidget(print_scr_button, 4, 0);
+    file_layout->addWidget(internal_checkbox, 3, 0);
+    file_layout->addWidget(browse_button, 4, 0);
+    file_layout->addWidget(print_scr_button, 5, 0);
 
     return file_layout;
   }
