@@ -802,7 +802,7 @@ namespace polygon {
         voronoi_diagram(const voronoi_diagram&);
         void operator=(const voronoi_diagram&);
     };
-} // polygon
-} // boost
+}  // polygon
+}  // boost
 
-#endif
+#endif  // BOOST_POLYGON_VORONOI_DIAGRAM

@@ -7,8 +7,8 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_DETAIL_STRUCTURES
-#define BOOST_POLYGON_VORONOI_DETAIL_STRUCTURES
+#ifndef BOOST_POLYGON_DETAIL_VORONOI_STRUCTURES
+#define BOOST_POLYGON_DETAIL_VORONOI_STRUCTURES
 
 #include <list>
 #include <queue>
@@ -438,8 +438,8 @@ private:
   Circle *circle_event_;
   Edge *edge_;
 };
-} // detail
-} // polygon
-} // boost
+}  // detail
+}  // polygon
+}  // boost
 
-#endif  // BOOST_POLYGON_VORONOI_DETAIL_STRUCTURES
+#endif  // BOOST_POLYGON_DETAIL_VORONOI_STRUCTURES

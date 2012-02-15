@@ -7,8 +7,8 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_DETAIL_PREDICATES
-#define BOOST_POLYGON_VORONOI_DETAIL_PREDICATES
+#ifndef BOOST_POLYGON_DETAIL_VORONOI_PREDICATES
+#define BOOST_POLYGON_DETAIL_VORONOI_PREDICATES
 
 #include "voronoi_robust_fpt.hpp"
 
@@ -1379,8 +1379,8 @@ private:
         return dif_x * dif_x + dif_y * dif_y;
     }
 };
-} // detail
-} // polygon
-} // boost
+}  // detail
+}  // polygon
+}  // boost
 
-#endif
+#endif  // BOOST_POLYGON_DETAIL_VORONOI_PREDICATES

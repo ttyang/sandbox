@@ -7,8 +7,8 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_DETAIL_ROBUST_FPT
-#define BOOST_POLYGON_VORONOI_DETAIL_ROBUST_FPT
+#ifndef BOOST_POLYGON_DETAIL_VORONOI_ROBUST_FPT
+#define BOOST_POLYGON_DETAIL_VORONOI_ROBUST_FPT
 
 #include <cmath>
 
@@ -515,8 +515,8 @@ template <typename _int, typename _fpt, typename _converter>
 const unsigned int robust_sqrt_expr<_int, _fpt, _converter>::EVAL3_MAX_RELATIVE_ERROR = 16;
 template <typename _int, typename _fpt, typename _converter>
 const unsigned int robust_sqrt_expr<_int, _fpt, _converter>::EVAL4_MAX_RELATIVE_ERROR = 25;
-} // detail
-} // polygon
-} // boost
+}  // detail
+}  // polygon
+}  // boost
 
-#endif
+#endif  // BOOST_POLYGON_DETAIL_VORONOI_ROBUST_FPT

@@ -531,7 +531,7 @@ namespace polygon {
     };
 
     typedef voronoi_builder<detail::int32> default_voronoi_builder;
-} // polygon
-} // boost
+}  // polygon
+}  // boost
 
-#endif
+#endif  // BOOST_POLYGON_VORONOI_BUILDER

@@ -7,8 +7,8 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#ifndef BOOST_POLYGON_VORONOI_DETAIL_CTYPES
-#define BOOST_POLYGON_VORONOI_DETAIL_CTYPES
+#ifndef BOOST_POLYGON_DETAIL_VORONOI_CTYPES
+#define BOOST_POLYGON_DETAIL_VORONOI_CTYPES
 
 #include <cmath>
 #include <boost/cstdint.hpp>
@@ -721,8 +721,8 @@ struct voronoi_ctype_traits<int32> {
     typedef type_converter_efpt to_efpt_converter_type;
     enum { ULPS = 64 };
 };
-} // detail
-} // polygon
-} // boost
+}  // detail
+}  // polygon
+}  // boost
 
-#endif
+#endif  // BOOST_POLYGON_DETAIL_VORONOI_CTYPES

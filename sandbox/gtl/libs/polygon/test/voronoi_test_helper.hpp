@@ -11,6 +11,7 @@
 #define VORONOI_TEST_HELPER
 
 #include <iostream>
+#include <iterator>
 #include <fstream>
 #include <map>
 #include <vector>
@@ -212,7 +213,7 @@ bool verify_output(const Output &output, kVerification mask) {
 template <typename PointIterator>
 void save_points(PointIterator first, PointIterator last, const char *file_name) {
     std::ofstream ofs(file_name);
-    ofs << points.size() << std::endl;
+    ofs << std::distance(first, last) << std::endl;
     for (PointIterator it = first; it != last; ++it) {
         ofs << it->x() << " " << it->y() << std::endl;
     }
@@ -222,7 +223,7 @@ void save_points(PointIterator first, PointIterator last, const char *file_name)
 template <typename SegmentIterator>
 void save_segments(SegmentIterator first, SegmentIterator last, const char *file_name) {
     std::ofstream ofs(file_name);
-    ofs << segments.size() << std::endl;
+    ofs << std::distance(first, last) << std::endl;
     for (SegmentIterator it = first; it != last; ++it) {
         ofs << it->low().x() << " " << it->low().y() << " ";
         ofs << it->high().x() << " " << it->high().y() << std::endl;

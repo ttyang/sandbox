@@ -83,15 +83,15 @@ protected:
   }
 
   void paintGL() {
-    qglClearColor(QColor::fromRgb(0, 0, 0));
+    qglClearColor(QColor::fromRgb(255, 255, 255));
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw voronoi sites.
     {
       const voronoi_cells_type &cells = vd_.cell_records();
       voronoi_cell_const_iterator_type it;
-      glColor3f(0.0f, 0.0f, 1.0f);
-      glPointSize(6);
+      glColor3f(0.0f, 0.5f, 1.0f);
+      glPointSize(9);
       glBegin(GL_POINTS);
       for (it = cells.begin(); it != cells.end(); ++it) {
         if (!it->contains_segment()) {
@@ -100,8 +100,8 @@ protected:
         }
       }
       glEnd();
-      glPointSize(4);
-      glLineWidth(2.0f);
+      glPointSize(6);
+      glLineWidth(2.7f);
       glBegin(GL_LINES);
       for (it = cells.begin(); it != cells.end(); ++it) {
         if (it->contains_segment()) {
@@ -115,24 +115,25 @@ protected:
       glLineWidth(1.0);
     }
 
-    // Draw voronoi vertices.
-    {
-      const voronoi_vertices_type &vertices = vd_.vertex_records();
-      voronoi_vertex_const_iterator_type it;
-      glColor3f(0.0f, 1.0f, 0.0f);
-      glBegin(GL_POINTS);
-      for (it = vertices.begin(); it != vertices.end(); ++it) {
-        glVertex2f(it->vertex().x() - shift_.x(),
-                   it->vertex().y() - shift_.y());
-      }
-      glEnd();
-    }
+    //// Draw voronoi vertices.
+    //{
+    //  const voronoi_vertices_type &vertices = vd_.vertex_records();
+    //  voronoi_vertex_const_iterator_type it;
+    //  glColor3f(0.0f, 0.0f, 0.0f);
+    //  glBegin(GL_POINTS);
+    //  for (it = vertices.begin(); it != vertices.end(); ++it) {
+    //    glVertex2f(it->vertex().x() - shift_.x(),
+    //               it->vertex().y() - shift_.y());
+    //  }
+    //  glEnd();
+    //}
 
     // Draw voronoi edges.
     {
       const voronoi_edges_type &edges = vd_.edge_records();
       voronoi_edge_const_iterator_type it;
-      glColor3f(0.0f, 1.0f, 0.0f);
+      glColor3f(0.0f, 0.0f, 0.0f);
+      glLineWidth(1.7f);
       glBegin(GL_LINES);
       for (it = edges.begin(); it != edges.end(); ++it) {
         if (!it->is_primary() && primary_edges_only_) {

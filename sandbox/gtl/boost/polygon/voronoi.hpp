@@ -54,7 +54,7 @@ static inline void construct_voronoi(
   builder.construct(output);
   builder.clear();
 }
-}
-}
+}  // polygon
+}  // boost
 
 #endif  // BOOST_POLYGON_VORONOI
