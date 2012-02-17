@@ -1,0 +1,134 @@
+<table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0"><tbody><tr>
+<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+    <div style="padding: 5px;" align="center">
+        <img border="0" src="images/boost.png" width="277" height="86"><a title="www.boost.org home page" href="http://www.boost.org/" tabindex="2" style="border: medium none ;">
+            </a>
+    </div>
+    <div style="margin: 5px;">
+        <h3 class="navbar">Contents</h3>
+        <ul>
+            <li><a href="index.htm">Boost.Polygon Main Page</a></li>
+			<li><a href="gtl_design_overview.htm">Design Overview</a></li>
+			<li><a href="gtl_isotropy.htm">Isotropy</a></li>
+            <li><a href="gtl_coordinate_concept.htm">Coordinate Concept</a></li>
+            <li><a href="gtl_interval_concept.htm">Interval Concept</a></li>
+            <li>
+			<a href="gtl_point_concept.htm">Point Concept</a></li>
+			<li><a href="gtl_rectangle_concept.htm">Rectangle Concept</a></li>
+			<li><a href="gtl_polygon_90_concept.htm">Polygon 90 Concept</a></li>
+			<li><a href="gtl_polygon_90_with_holes_concept.htm">Polygon 90 With Holes Concept</a></li>
+			<li><a href="gtl_polygon_45_concept.htm">Polygon 45 Concept</a></li>
+			<li><a href="gtl_polygon_45_with_holes_concept.htm">Polygon 45 With Holes Concept</a></li>
+			<li><a href="gtl_polygon_concept.htm">Polygon Concept</a></li>
+			<li><a href="gtl_polygon_with_holes_concept.htm">Polygon With Holes Concept</a></li>
+			<li><a href="gtl_polygon_90_set_concept.htm">Polygon 90 Set Concept</a></li>
+			<li><a href="gtl_polygon_45_set_concept.htm">Polygon 45 Set Concept</a></li>
+			<li><a href="gtl_polygon_set_concept.htm">Polygon Set Concept</a></li>
+			<li><a href="gtl_connectivity_extraction_90.htm">Connectivity Extraction 90</a></li>
+			<li><a href="gtl_connectivity_extraction_45.htm">Connectivity Extraction 45</a></li>
+			<li><a href="gtl_connectivity_extraction.htm">Connectivity Extraction</a></li>
+			<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
+			<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
+			<li><a href="gtl_property_merge.htm">Property Merge</a></li>
+			<li>Voronoi CTypes Traits</li>
+			<li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram 
+			Datastructure</a></li>
+			<li><a href="voronoi_lazy_arithmetic_concept.htm">Voronoi Lazy 
+			Arithmetic Concept</a></li>
+			<li><a href="voronoi_sweepline_algorithm.htm">Voronoi Sweepline 
+			Algorithm</a></li>
+        </ul>
+        <h3 class="navbar">Other Resources</h3>
+        <ul>
+            <li><a href="GTL_boostcon2009.pdf">GTL Boostcon 2009 Paper</a></li>
+             <li><a href="GTL_boostcon_draft03.htm">GTL Boostcon 2009 
+				Presentation</a></li>
+             <li><a href="analysis.htm">Performance Analysis</a></li>
+			<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
+			<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
+			<li><a href="voronoi_diagram_basic_tutorial.htm">Voronoi Diagram 
+			Basic Tutorial</a></li>
+			<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Diagram 
+			Advanced Tutorial</a></li>
+        </ul>
+    </div>
+        <h3 class="navbar">Polygon Sponsor</h3>
+    <div style="padding: 5px;" align="center">
+        <img border="0" src="images/intlogo.gif" width="127" height="51"><a title="www.adobe.com home page" href="http://www.adobe.com/" tabindex="2" style="border: medium none ;">
+            </a>
+    </div>    
+</td>
+<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
+
+<!-- End Header -->
+
+<br>
+<h1>Voronoi Coordinate Types Requirements</h1>
+<p>The requirements for the coordinate type of all input and output data types 
+supported by the Voronoi unit are weaker than for the rest of the Boost.Polygon 
+library. The main differences are in the following: 1) The input coordinate type 
+is not required to be integral (while it still should be integer type); 2) The 
+output coordinate type could be integer or floating-point non built-in type. 
+This additional functionality is achieved using Voronoi coordinate type traits, 
+that&nbsp; are described in details below. Separate paragraph is dedicated to 
+the default Voronoi coordinate types, that enable user to use Voronoi unit 
+functionality ignoring underlying coordinate types metaprogramming.</p>
+<h1>Default Voronoi Coordinate Types</h1>
+<p>By default Voronoi unit operates with 32-bit signed integer coordinate type 
+for the input objects and double coordinate type for the output geometries. This 
+set up is ready to use from the box and doesn't require any additional 
+configuration steps to be done. The simplest code that builds voronoi diagram 
+with default coordinate types looks like this:</p>
+	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+		<span style="font-family: Courier New">#include &quot;boost/polygon/voronoi.hpp&quot;</span><p>
+		<span style="font-family: Courier New">int main() {<br>
+&nbsp; /* Read input points and segments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Input coordinates should be 32-bit signed integers! */<br>
+&nbsp; voronoi_diagram&lt;double&gt; vd;<br>
+&nbsp; construct_voronoi(points, segments, &amp;vd);<br>
+&nbsp; /* Having some fun with the output. */<br>
+		}</span></p>
+		<p>As you might see two lines of code do all the complex computational 
+		geometry procedure for you.</div>
+<h1>Voronoi Builder CType Traits</h1>
+<p>As was mentioned above Voronoi input &amp; output coordinate types are not 
+required to be built-in. To provide functionality that supports user defined 
+coordinate types special technique called runtime-variable traits is used. Let's 
+have a closer look at the voronoi_builder structure definition:</p>
+<p>
+<font face="Courier New">template &lt;typename T,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename CTT = 
+detail::voronoi_ctype_traits&lt;T&gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename VP = 
+detail::voronoi_predicates&lt;CTT&gt; &gt;<br>
+class voronoi_builder { ... };</font></p>
+<h1>Voronoi Diagram Traits</h1>
+<p>
+&nbsp;</p>
+
+
+	<tr>
+<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+    &nbsp;</td>
+<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
+
+
+<table class="docinfo" rules="none" frame="void" id="table2">
+	<colgroup>
+		<col class="docinfo-name"><col class="docinfo-content">
+	</colgroup>
+	<tbody vAlign="top">
+		<tr>
+			<th class="docinfo-name">Copyright:</th>
+			<td>Copyright © Intel Corporation 2008-2010.</td>
+		</tr>
+		<tr class="field">
+			<th class="docinfo-name">License:</th>
+			<td class="field-body">Distributed under the Boost Software License, 
+			Version 1.0. (See accompanying file <tt class="literal">
+			<span class="pre">LICENSE_1_0.txt</span></tt> or copy at
+			<a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
+			http://www.boost.org/LICENSE_1_0.txt</a>)</td>
+		</tr>
+</table>
+
