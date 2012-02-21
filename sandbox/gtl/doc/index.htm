@@ -1,15 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><!--
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<!--
     Copyright 2009-2010 Intel Corporation
     license banner
--->
-<title>Boost Polygon Library: Main Page</title>
-    <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1">
-    <!-- <link type="text/css" rel="stylesheet" href="adobe_source.css"> -->
-<table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0"><tbody><tr>
+--><title>Boost Polygon Library: Main Page</title>
+
+    <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" /><!-- <link type="text/css" rel="stylesheet" href="adobe_source.css"> --></head><body><table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0"><tbody><tr>
 <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
     <div style="padding: 5px;" align="center">
-        <img border="0" src="images/boost.png" width="277" height="86"><a title="www.boost.org home page" href="http://www.boost.org/" tabindex="2" style="border: medium none ;">
+        <img src="images/boost.png" border="0" height="86" width="277" /><a title="www.boost.org home page" href="http://www.boost.org/" tabindex="2" style="border: medium none ;">
             </a>
     </div>
     <div style="margin: 5px;">
@@ -62,7 +61,7 @@
     </div>
         <h3 class="navbar">Polygon Sponsor</h3>
     <div style="padding: 5px;" align="center">
-        <img border="0" src="images/intlogo.gif" width="127" height="51"><a title="www.adobe.com home page" href="http://www.adobe.com/" tabindex="2" style="border: medium none ;">
+        <img src="images/intlogo.gif" border="0" height="51" width="127" /><a title="www.adobe.com home page" href="http://www.adobe.com/" tabindex="2" style="border: medium none ;">
             </a>
     </div>    
 </td>
@@ -70,7 +69,7 @@
 
 <!-- End Header -->
 
-<br>
+<br />
 <p>
 </p><h1>THE BOOST.POLYGON LIBRARY</h1> 
 <p>The Boost.Polygon library provides algorithms focused on manipulating planar 
@@ -85,20 +84,22 @@ areas, and providing them is the primary focus of this library.&nbsp; The
 Boost.Polygon library is not intended to cover all of computational 
 geometry in its scope, and provides a set of capabilities for working with 
 coordinates, points, intervals and rectangles that are needed to support 
-implementing and interacting with polygon data structures and algorithms.&nbsp; </p><img border="0" src="images/hand.png" width="837" height="277"><p>
-One of the important features of the library is implementation of generic 
-sweepline algorithm to build Voronoi diagrams in 2D (developed as part of GSoC 
-2010 program). Voronoi diagram datastructure has applications in image 
-segmentation, optical character recognition, nearest neighbor queries execution, 
-etc. It is closely related with other computational geometry concepts: delaunay 
-triangulation, medial axis, straight skeleton, largest empty circle.&nbsp; 
-Boost.Polygon library provides interface to construct Voronoi diagrams of points 
-figure a and line segments figure b (the last could be used to discretize any 
-two-dimensional curve). Figure c contains example of medial axis of a non-convex 
-polygon. The implementation outperforms most of the known commercial and 
-non-commercial libraries in both efficiency and numerical robustness aspects.
+implementing and interacting with polygon data structures and algorithms.&nbsp; </p><img src="images/hand.png" border="0" height="277" width="837" /><p>
+One of the important features of the library is implementation of
+generic sweepline algorithm to build Voronoi diagrams in 2D (developed
+as part of GSoC 2010 program). Voronoi diagram datastructure has
+applications in image segmentation, optical character recognition,
+nearest neighbor queries execution. It is closely related with other
+computational geometry concepts: delaunay triangulation, medial axis,
+straight skeleton, largest empty circle.&nbsp; Boost.Polygon library
+provides interface to construct Voronoi diagrams of points figure a and
+line segments figure b (the last could be used to discretize any
+two-dimensional curve). Figure c contains example of medial axis of a
+non-convex polygon. The implementation outperforms most of the known
+commercial and non-commercial libraries in both efficiency and
+numerical robustness aspects.
 </p>
-<p><img border="0" src="images/voronoi.png" width="900" height="300"></p>
+<p><img src="images/voronoi.png" border="0" height="300" width="900" /></p>
 <p>
 The coordinate data type is a template parameter of all data types and 
 algorithms provided by the library, and is expected to be integral (this is 
@@ -124,40 +125,39 @@ runtime or memory efficiency of the underlying algorithms.&nbsp; The API is
 intended to demonstrate what could be achieved with ease by a C++-concepts based 
 library interface, but is implemented based on current language features.&nbsp; This API makes 
 the following code snippet that operates on non-library geometry types possible:</p>
-<p:colorscheme
- colors="#ffffff,#000000,#808080,#000000,#bbe0e3,#333399,#009999,#99cc00"/>
+<p:colorscheme colors="#ffffff,#000000,#808080,#000000,#bbe0e3,#333399,#009999,#99cc00">
 
-<div v:shape="_x0000_s1026" class="O">
-	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+</p:colorscheme><div v:shape="_x0000_s1026" class="O">
+	<div style="text-align: justify;">
 		<nobr>
-		<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">
-		void foo(list&lt;CPolygon&gt;&amp; result, const list&lt;CPolygon&gt;&amp; a, </span></nobr><br>
-		<span style="font-family: Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span style="font-family: Courier New;">
+		void foo(list&lt;CPolygon&gt;&amp; result, const list&lt;CPolygon&gt;&amp; a, </span></nobr><br />
+		<span style="font-family: Courier New;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		</span><nobr>
-		<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">
+		<span style="font-family: Courier New;">
 		const list&lt;CPolygon&gt;&amp; 
 		b, int deflateValue) { </span></nobr></div>
-	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+	<div style="text-align: justify;">
 		<nobr>
-<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">&nbsp;&nbsp;&nbsp;&nbsp; 
+<span style="font-family: Courier New;">&nbsp;&nbsp;&nbsp;&nbsp; 
 		CBoundingBox domainExtent; </span></nobr></div>
-	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+	<div style="text-align: justify;">
 		<nobr>
-		<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">
-		<span style="mso-spacerun:yes">&nbsp; </span>&nbsp;&nbsp; using namespace boost::polygon::operators; </span></nobr></div>
-	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+		<span style="font-family: Courier New;">
+		<span style="">&nbsp; </span>&nbsp;&nbsp; using namespace boost::polygon::operators; </span></nobr></div>
+	<div style="text-align: justify;">
 		<nobr>
-		<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">
-		<span style="mso-spacerun:yes">&nbsp; </span>&nbsp;&nbsp; 
+		<span style="font-family: Courier New;">
+		<span style="">&nbsp; </span>&nbsp;&nbsp; 
 		boost::polygon::extents(domainExtent, a); </span></nobr></div>
-	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+	<div style="text-align: justify;">
 		<nobr>
-		<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">
-		<span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span>result += (b &amp; 
+		<span style="font-family: Courier New;">
+		<span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>result += (b &amp; 
 		domainExtent) ^ (a - deflateValue); </span></nobr></div>
-	<div style="text-align:justify;mso-char-wrap:1;mso-kinsoku-overflow:1">
+	<div style="text-align: justify;">
 		<nobr>
-		<span style="font-family: Courier New; mso-ascii-font-family: Courier New; mso-bidi-font-family: Arial; mso-hansi-font-family: Courier New">
+		<span style="font-family: Courier New;">
 		}</span></nobr></div>
 </div>
 <p>In the code snippet above the hypothetical polygon type CPolygon has been 
@@ -168,10 +168,11 @@ The end result is accumulated into a list of polygons with a union operation.&nb
 It is considerably more typing to describe this usage of the API than to code 
 it, and the description is not much clearer than the code itself.&nbsp; 
 A picture is worth a thousand words.</p>
-<p><img border="0" src="images/foo.PNG" width="432" height="371"></p>
-<p>In Boost.Polygon operations such as those shown above are free functions named for what they do, or are overloads of C++ operators that make it 
-easy to infer from reading the code what to expect.&nbsp; Operators are 
-contained in the namespace <font face="Courier New">boost::polygon::operators</font> 
+<p><img src="images/foo.PNG" border="0" height="371" width="432" /></p>
+<p>In Boost.Polygon operations such as those shown above are free
+functions named for what they do, or are overloads of C++ operators
+that make it easy to infer from reading the code what to expect.&nbsp;
+Operators are contained in the namespace <font face="Courier New">boost::polygon::operators</font> 
 so that they can be used outside the <font face="Courier New">boost::polygon</font> 
 namespace without bringing in the entire <font face="Courier New">boost::polygon</font> 
 namespace.&nbsp; Following the 
@@ -212,7 +213,7 @@ performing these programming tasks.</p>
 		Using the n-layer map-overlay algorithm on polygon data</li>
     </ul>
 
-<li>Tutorials: 
+</li><li>Tutorials: 
 <ul>
 	<li><a href="gtl_tutorial.htm">Layout Versus Schematic</a> Learn how to 
 	apply Boost.Polygon capabilities to implement a simplified circuit 
@@ -226,7 +227,7 @@ performing these programming tasks.</p>
 	datastructure to suit your requirements. </li>
 </ul>
 
-</ul>
+</li></ul>
 
 
 <p>We would like to thank: Thomas Klimpel, Frank Mori Hess, Barend Gehrels, 
@@ -240,17 +241,17 @@ feedback and or formal review of the library as part of the boost submission
 process and Fernando Cacciola for graciously serving as review manager.</p>
 
 
-	<tr>
+	</td></tr><tr>
 <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
     &nbsp;</td>
 <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
 
 
-<table class="docinfo" rules="none" frame="void" id="table2">
+<table class="docinfo" id="table2" frame="void" rules="none">
 	<colgroup>
-		<col class="docinfo-name"><col class="docinfo-content">
+		<col class="docinfo-name" /><col class="docinfo-content" />
 	</colgroup>
-	<tbody vAlign="top">
+	<tbody valign="top">
 		<tr>
 			<th class="docinfo-name">Copyright:</th>
 			<td>Copyright © Intel Corporation 2008-2010.</td>
@@ -263,6 +264,6 @@ process and Fernando Cacciola for graciously serving as review manager.</p>
 			<a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
 			http://www.boost.org/LICENSE_1_0.txt</a>)</td>
 		</tr>
-</table>
+</tbody></table>
 
-</html>
+</td></tr></tbody></table></body></html>
