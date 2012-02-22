@@ -1,100 +1,273 @@
-<table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0"><tbody><tr>
-<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
-    <div style="padding: 5px;" align="center">
-        <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" href="http://www.boost.org/" tabindex="2" style="border: medium none ;">
-            </a>
-    </div>
-    <div style="margin: 5px;">
-        <h3 class="navbar">Contents</h3>
-        <ul>
-            <li><a href="index.htm">Boost.Polygon Main Page</a></li>
-			<li><a href="gtl_design_overview.htm">Design Overview</a></li>
-			<li><a href="gtl_isotropy.htm">Isotropy</a></li>
-            <li><a href="gtl_coordinate_concept.htm">Coordinate Concept</a></li>
-            <li><a href="gtl_interval_concept.htm">Interval Concept</a></li>
-            <li>
-			<a href="gtl_point_concept.htm">Point Concept</a></li>
-			<li><a href="gtl_rectangle_concept.htm">Rectangle Concept</a></li>
-			<li><a href="gtl_polygon_90_concept.htm">Polygon 90 Concept</a></li>
-			<li><a href="gtl_polygon_90_with_holes_concept.htm">Polygon 90 With Holes Concept</a></li>
-			<li><a href="gtl_polygon_45_concept.htm">Polygon 45 Concept</a></li>
-			<li><a href="gtl_polygon_45_with_holes_concept.htm">Polygon 45 With Holes Concept</a></li>
-			<li><a href="gtl_polygon_concept.htm">Polygon Concept</a></li>
-			<li><a href="gtl_polygon_with_holes_concept.htm">Polygon With Holes Concept</a></li>
-			<li><a href="gtl_polygon_90_set_concept.htm">Polygon 90 Set Concept</a></li>
-			<li><a href="gtl_polygon_45_set_concept.htm">Polygon 45 Set Concept</a></li>
-			<li><a href="gtl_polygon_set_concept.htm">Polygon Set Concept</a></li>
-			<li><a href="gtl_connectivity_extraction_90.htm">Connectivity Extraction 90</a></li>
-			<li><a href="gtl_connectivity_extraction_45.htm">Connectivity Extraction 45</a></li>
-			<li><a href="gtl_connectivity_extraction.htm">Connectivity Extraction</a></li>
-			<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
-			<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
-			<li><a href="gtl_property_merge.htm">Property Merge</a></li><li><a href="voronoi_unit.htm">Voronoi Main Page</a><br></li>
-			<li>Voronoi Builder Datastructure<br></li>
-			<li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram 
-			Datastructure</a></li>
-			<li><a href="voronoi_lazy_arithmetic_concept.htm">Voronoi Lazy 
-			Arithmetic Concept</a></li>
-			
-        </ul>
-        <h3 class="navbar">Other Resources</h3>
-        <ul>
-            <li><a href="GTL_boostcon2009.pdf">GTL Boostcon 2009 Paper</a></li>
-             <li><a href="GTL_boostcon_draft03.htm">GTL Boostcon 2009 
-				Presentation</a></li>
-             <li><a href="analysis.htm">Performance Analysis</a></li>
-			<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
-			<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
-			<li><a href="voronoi_diagram_basic_tutorial.htm">Voronoi Diagram 
-			Basic Tutorial</a></li>
-			<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Diagram 
-			Advanced Tutorial</a></li>
-        </ul>
-    </div>
-        <h3 class="navbar">Polygon Sponsor</h3>
-    <div style="padding: 5px;" align="center">
-        <img src="images/intlogo.gif" border="0" height="51" width="127"><a title="www.adobe.com home page" href="http://www.adobe.com/" tabindex="2" style="border: medium none ;">
-            </a>
-    </div>    
-</td>
-<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header -->
 
-<br>
-<p>
-</p><h1>Voronoi Builder Datastructure<br></h1>Voronoi Builder datastructure provides interface to construct Voronoi diagrams. It implements sweepline algorithm that scans 2D space and constructs output geometries (voronoi edges and voronoi vertices) which are processed by Voronoi Diagram datastructure. The requirements for the input / output coordinate types of the Builder geometries are not the same as for the rest of the Boost.Polygon library. The main differences are in the following: 1) The input coordinate type 
-is not required to be integral (while it still should be integer type); 2) The 
-output coordinate type (for voronoi vertices) is required to be IEEE-754 floating point type. Let's have a closer look at the voronoi_builder definition:<br><br><font face="Courier New">template &lt;typename T,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename CTT = 
-detail::voronoi_ctype_traits&lt;T&gt;,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename VP = 
-detail::voronoi_predicates&lt;CTT&gt; &gt;<br>
-class voronoi_builder { /* Implementation. */ };<br><br></font><font face="Courier New">T</font> - specifies coordinate type of the input geometries (points and segments).<br><font face="Courier New">CTT</font> - defines input / output coordinate types used by VP.<br><font face="Courier New">VP</font> - predicates kernel, that provides builder with robust and efficient predicates.<br>The Voronoi Builder datastructure is ready to use from the box with 32bit signed integer input coordinate type. The user may extend input coordinate range to other integer types (e.g. 64-bit integer), however this will also require manual set up of coordinate type traits. Default voronoi_predicates&lt;CTT&gt; implementaiton provides correct predicates as soon as CTT types satisfy requirements explained below. In case those requirements are not satisfied for the user provided CTT, proper VP implementation is required. The default VP implementation is highly optimized and efficient that's why it's always better to come up with a proper CTT structure.<br><font face="Courier New"></font><h1>Member Functions<br></h1><h1>Voronoi Builder CType Traits</h1><p>The library provides default Builder coordinate type traits for the 32 bit signed integer type:</p><p>template &lt;typename T&gt;<br>struct voronoi_ctype_traits;<br><br>template &lt;&gt;<br>struct voronoi_ctype_traits&lt;int32&gt; {<br>&nbsp;&nbsp;&nbsp; typedef int32 int_type;<br>&nbsp;&nbsp;&nbsp; typedef uint32 uint_type;<br>&nbsp;&nbsp;&nbsp; typedef int64 int_x2_type;<br>&nbsp;&nbsp;&nbsp; typedef uint64 uint_x2_type;<br>&nbsp;&nbsp;&nbsp; typedef extended_int&lt;128&gt; big_int_type;<br>&nbsp;&nbsp;&nbsp; typedef fpt64 fpt_type;<br>&nbsp;&nbsp;&nbsp; typedef extended_exponent_fpt&lt;fpt_type&gt; efpt_type;<br>&nbsp;&nbsp;&nbsp; typedef ulp_comparison&lt;fpt_type&gt; ulp_cmp_type;<br>&nbsp;&nbsp;&nbsp; typedef type_converter_fpt to_fpt_converter_type;<br>&nbsp;&nbsp;&nbsp; typedef type_converter_efpt to_efpt_converter_type;<br>&nbsp;&nbsp;&nbsp; enum { ULPS = 64 };<br>};</p>
-<p>In order for the user defined traits to be consistent with default Voronoi Builder predicates implementation user should provide following set of coordinate types (assumption is made that input geometries have X-bit signed integer coordinate type):<br></p><table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2"><tbody><tr><td>int_type<br></td><td style="vertical-align: top;">At least X-bit signed integer type.<br></td></tr><tr><td style="vertical-align: top;">uint_type<br></td><td style="vertical-align: top;">At least X-bit unsigned integer type.<br></td></tr><tr><td style="vertical-align: top;">int_x2_type<br></td><td style="vertical-align: top;">At least 2X-bit signed integer type.<br></td></tr><tr><td style="vertical-align: top;">uint_x2_type<br></td><td style="vertical-align: top;">At least 2X-bit unsigned integer type.<br></td></tr><tr><td style="vertical-align: top;">big_int_type<br></td><td style="vertical-align: top;">At least 8X-bit signed integer type for voronoi of points.<br>At least 128X-bit signed integer type for voronoi of segments.<br></td></tr><tr><td style="vertical-align: top;">fpt_type<br></td><td style="vertical-align: top;">IEEE-754 floating point type, with mantissa at least (X+20) bits and exponent able to handle 32X-bit unsigned integer type.<br></td></tr><tr><td style="vertical-align: top;">efpt_type<br></td><td style="vertical-align: top;">IEEE-754 floating point type, with mantissa at least (X+20) bits and exponent able to handle 128X-bit unsigned integer type.<br></td></tr><tr><td style="vertical-align: top;">ulp_cmp_type<br></td><td style="vertical-align: top;">Ulp comarison structure that checks if two fpt_type values are withing given ulp range (relative error range).<br></td></tr><tr><td style="vertical-align: top;">to_fpt_converter_type<br></td><td style="vertical-align: top;">Type converter structure that converts any of the integer types above plus efpt_type to the fpt_type using operator().<br></td></tr><tr><td style="vertical-align: top;">to_efpt_converter_type<br></td><td style="vertical-align: top;">Type converter structure that converts any of the integer types above to the efpt_type using operator().<br></td></tr><tr><td style="vertical-align: top;">ULPS<br></td><td style="vertical-align: top;">Relative precision of the output geometries (approximation of relative error).<br></td></tr></tbody></table><p><br>Notes:<br>1) 5 different integer types are used (instead of a single big_int_type for everything) to slightly improve algorithm performance and memory usage.<br>2) As maximum required size of the big_int_type is known in advance library provided implementation of fixed integers could be used, which is much faster than heap-allocated big integers.<br>3) two separate floating-point types are defined because for input with 32 bit signed integer coordinates double won't be able to handle 4096 bit (128 * 32) integers as they will overflow its' exponent. On the gcc compiler it's possible to use 80-bit long doubles for both fpt types, however this is not supported by msvc compiler.<br>4) efpt_type and to_efpt_converter_type are not used by voronoi of points (mocks will work fine).<br>5) for an example of the user defined voronoi coordinate type traits see <a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Diagram Advanced Tutorial</a>.</p>
-
-
-	</td></tr><tr>
-<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
-    &nbsp;</td>
-<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
-
-
-<table class="docinfo" id="table2" frame="void" rules="none">
-	<colgroup>
-		<col class="docinfo-name"><col class="docinfo-content">
-	</colgroup>
-	<tbody valign="top">
-		<tr>
-			<th class="docinfo-name">Copyright:</th>
-			<td>Copyright © Intel Corporation 2008-2010.</td>
-		</tr>
-		<tr class="field">
-			<th class="docinfo-name">License:</th>
-			<td class="field-body">Distributed under the Boost Software License, 
-			Version 1.0. (See accompanying file <tt class="literal">
-			<span class="pre">LICENSE_1_0.txt</span></tt> or copy at
-			<a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
-			http://www.boost.org/LICENSE_1_0.txt</a>)</td>
-		</tr>
-</tbody></table>
-
-</td></tr></tbody></table>
+<table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" href="http://www.boost.org/" tabindex="2" style="border: medium none ;"> </a> </div>
+      <div style="margin: 5px;">
+      <h3 class="navbar">Contents</h3>
+      <ul>
+        <li><a href="index.htm">Boost.Polygon Main Page</a></li>
+        <li><a href="gtl_design_overview.htm">Design Overview</a></li>
+        <li><a href="gtl_isotropy.htm">Isotropy</a></li>
+        <li><a href="gtl_coordinate_concept.htm">Coordinate Concept</a></li>
+        <li><a href="gtl_interval_concept.htm">Interval Concept</a></li>
+        <li> <a href="gtl_point_concept.htm">Point Concept</a></li>
+        <li><a href="gtl_rectangle_concept.htm">Rectangle Concept</a></li>
+        <li><a href="gtl_polygon_90_concept.htm">Polygon 90 Concept</a></li>
+        <li><a href="gtl_polygon_90_with_holes_concept.htm">Polygon 90
+With Holes Concept</a></li>
+        <li><a href="gtl_polygon_45_concept.htm">Polygon 45 Concept</a></li>
+        <li><a href="gtl_polygon_45_with_holes_concept.htm">Polygon 45
+With Holes Concept</a></li>
+        <li><a href="gtl_polygon_concept.htm">Polygon Concept</a></li>
+        <li><a href="gtl_polygon_with_holes_concept.htm">Polygon With
+Holes Concept</a></li>
+        <li><a href="gtl_polygon_90_set_concept.htm">Polygon 90 Set
+Concept</a></li>
+        <li><a href="gtl_polygon_45_set_concept.htm">Polygon 45 Set
+Concept</a></li>
+        <li><a href="gtl_polygon_set_concept.htm">Polygon Set Concept</a></li>
+        <li><a href="gtl_connectivity_extraction_90.htm">Connectivity
+Extraction 90</a></li>
+        <li><a href="gtl_connectivity_extraction_45.htm">Connectivity
+Extraction 45</a></li>
+        <li><a href="gtl_connectivity_extraction.htm">Connectivity
+Extraction</a></li>
+        <li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
+        <li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
+        <li><a href="gtl_property_merge.htm">Property Merge</a></li>
+        <li><a href="voronoi_unit.htm">Voronoi Main Page</a><br>
+        </li>
+        <li>Voronoi Builder Datastructure<br>
+        </li>
+        <li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram
+Datastructure</a></li>
+        <li><a href="voronoi_lazy_arithmetic_concept.htm">Voronoi Lazy
+Arithmetic Concept</a></li>
+      </ul>
+      <h3 class="navbar">Other Resources</h3>
+      <ul>
+        <li><a href="GTL_boostcon2009.pdf">GTL Boostcon 2009 Paper</a></li>
+        <li><a href="GTL_boostcon_draft03.htm">GTL Boostcon 2009
+Presentation</a></li>
+        <li><a href="analysis.htm">Performance Analysis</a></li>
+        <li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
+        <li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
+        <li><a href="voronoi_diagram_basic_tutorial.htm">Voronoi
+Diagram Basic Tutorial</a></li>
+        <li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi
+Diagram Advanced Tutorial</a></li>
+      </ul>
+      </div>
+      <h3 class="navbar">Polygon Sponsor</h3>
+      <div style="padding: 5px;" align="center"> <img src="images/intlogo.gif" border="0" height="51" width="127"><a title="www.adobe.com home page" href="http://www.adobe.com/" tabindex="2" style="border: medium none ;"> </a> </div>
+      </td>
+      <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> <br>
+      <p> </p>
+      <h1>Voronoi Builder Datastructure<br>
+      </h1>
+Voronoi Builder datastructure provides interface to construct Voronoi
+diagrams. It implements sweepline algorithm that scans 2D space and
+constructs output geometries (voronoi edges and voronoi vertices) which
+are processed by Voronoi Diagram datastructure. The requirements for
+the input / output coordinate types of the Builder geometries are not
+the same as for the rest of the Boost.Polygon library. The main
+differences are in the following: 1) The input coordinate type is not
+required to be integral (while it still should be integer type); 2) The
+output coordinate type (for voronoi vertices) is required to be
+IEEE-754 floating point type. Let's have a closer look at the
+voronoi_builder definition:<br>
+      <br>
+      <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">template
+&lt;typename T,</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+typename CTT =
+detail::voronoi_ctype_traits&lt;T&gt;,</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+typename VP =
+detail::voronoi_predicates&lt;CTT&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">class
+voronoi_builder { /* Implementation. */ };</span><br>
+      <br>
+      </font><font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">T</span></font> -
+specifies coordinate
+type of the input geometries (points and segments).<br>
+      <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">CTT</span></font>
+- defines input / output
+coordinate types used by VP.<br>
+      <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">VP</span></font> -
+predicates kernel, that
+provides builder with robust and efficient predicates.<br>
+The Voronoi Builder datastructure is ready to use from the box with
+32bit signed integer input coordinate type. The user may extend input
+coordinate range to other integer types (e.g. 64-bit integer), however
+this will also require manual set up of coordinate type traits. Default
+voronoi_predicates&lt;<font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">CTT</span></font>&gt;
+implementaiton provides correct
+predicates as soon as <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">CTT</span></font>
+types satisfy requirements explained below.
+In case those requirements are not satisfied for the user provided <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">CTT</span></font>,
+proper <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">VP</span></font>
+implementation is required. The default <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">VP</span></font>
+implementation is
+highly optimized and efficient that's why it's always better to come up
+with a proper <font face="Courier New"><span style="font-family: Courier New,Courier,monospace;">CTT</span></font>
+structure.<br>
+      <h1>Member Functions<br>
+      </h1>
+      <h1>Voronoi Builder CType Traits</h1>
+      <p>The library provides default Builder coordinate type traits
+for the 32 bit signed integer type:</p>
+      <font style="font-family: Courier New,Courier,monospace;" face="Courier New">
+      <p>template &lt;typename T&gt;<br>
+struct voronoi_ctype_traits;<br>
+      <br>
+template &lt;&gt;<br>
+struct voronoi_ctype_traits&lt;int32&gt; {<br>
+&nbsp;&nbsp;&nbsp; typedef int32 int_type;<br>
+&nbsp;&nbsp;&nbsp; typedef uint32 uint_type;<br>
+&nbsp;&nbsp;&nbsp; typedef int64 int_x2_type;<br>
+&nbsp;&nbsp;&nbsp; typedef uint64 uint_x2_type;<br>
+&nbsp;&nbsp;&nbsp; typedef extended_int&lt;128&gt; big_int_type;<br>
+&nbsp;&nbsp;&nbsp; typedef fpt64 fpt_type;<br>
+&nbsp;&nbsp;&nbsp; typedef extended_exponent_fpt&lt;fpt_type&gt;
+efpt_type;<br>
+&nbsp;&nbsp;&nbsp; typedef ulp_comparison&lt;fpt_type&gt; ulp_cmp_type;<br>
+&nbsp;&nbsp;&nbsp; typedef type_converter_fpt to_fpt_converter_type;<br>
+&nbsp;&nbsp;&nbsp; typedef type_converter_efpt to_efpt_converter_type;<br>
+&nbsp;&nbsp;&nbsp; enum { ULPS = 64 };<br>
+};</p>
+      </font>
+      <p>In order for the user defined traits to be consistent with
+default Voronoi Builder predicates implementation user should provide
+following set of coordinate types (assumption is made that input
+geometries have X-bit signed integer coordinate type):<br>
+      </p>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="font-family: Courier New,Courier,monospace;">int_type<br>
+            </td>
+            <td style="vertical-align: top;">At least X-bit signed
+integer type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">uint_type<br>
+            </td>
+            <td style="vertical-align: top;">At least X-bit unsigned
+integer type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">int_x2_type<br>
+            </td>
+            <td style="vertical-align: top;">At least 2X-bit signed
+integer type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">uint_x2_type<br>
+            </td>
+            <td style="vertical-align: top;">At least 2X-bit unsigned
+integer type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">big_int_type<br>
+            </td>
+            <td style="vertical-align: top;">At least 8X-bit signed
+integer type for voronoi of points.<br>
+At least 128X-bit signed integer type for voronoi of segments.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">fpt_type<br>
+            </td>
+            <td style="vertical-align: top;">IEEE-754 floating point
+type, with mantissa at least (X+20) bits and exponent able to handle
+32X-bit unsigned integer type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">efpt_type<br>
+            </td>
+            <td style="vertical-align: top;">IEEE-754 floating point
+type, with mantissa at least (X+20) bits and exponent able to handle
+128X-bit unsigned integer type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">ulp_cmp_type<br>
+            </td>
+            <td style="vertical-align: top;">Ulp comarison structure
+that checks if two fpt_type values are withing given ulp range
+(relative error range).<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">to_fpt_converter_type<br>
+            </td>
+            <td style="vertical-align: top;">Type converter structure
+that converts any of the integer types above plus efpt_type to the
+fpt_type using operator().<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">to_efpt_converter_type<br>
+            </td>
+            <td style="vertical-align: top;">Type converter structure
+that converts any of the integer types above to the efpt_type using
+operator().<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">ULPS<br>
+            </td>
+            <td style="vertical-align: top;">Relative precision
+threshold that triggers multi-precision predicates.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Notes:<br>
+1) 5 different integer types are used (instead of a single big_int_type
+for everything) to slightly improve algorithm performance and memory
+usage.<br>
+2) As maximum required size of the big_int_type is known in advance
+library provided implementation of fixed integers could be used, which
+is much faster than heap-allocated big integers.<br>
+3) two separate floating-point types are defined because for input with
+32 bit signed integer coordinates double won't be able to handle 4096
+bit (128 * 32) integers as they will overflow its' exponent. On the gcc
+compiler it's possible to use 80-bit long doubles for both fpt types,
+however this is not supported by msvc compiler.<br>
+4) efpt_type and to_efpt_converter_type are not used to construct
+Voronoi of points (mocks will work fine).<br>
+5) for an example of the user defined voronoi coordinate type traits
+see <a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Diagram
+Advanced Tutorial</a>.</p>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top"> &nbsp;</td>
+      <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
+      <table class="docinfo" id="table2" frame="void" rules="none">
+        <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">
+          <tr>
+            <th class="docinfo-name">Copyright:</th>
+            <td>Copyright © Intel Corporation 2008-2010.</td>
+          </tr>
+          <tr class="field">
+            <th class="docinfo-name">License:</th>
+            <td class="field-body">Distributed under the Boost Software
+License, Version 1.0. (See accompanying file <tt class="literal"> <span class="pre">LICENSE_1_0.txt</span></tt> or copy at <a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
+http://www.boost.org/LICENSE_1_0.txt</a>)</td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
