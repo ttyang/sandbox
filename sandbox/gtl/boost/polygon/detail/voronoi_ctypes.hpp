@@ -710,7 +710,6 @@ struct voronoi_ctype_traits;
 template <>
 struct voronoi_ctype_traits<int32> {
     typedef int32 int_type;
-    typedef uint32 uint_type;
     typedef int64 int_x2_type;
     typedef uint64 uint_x2_type;
     typedef extended_int<128> big_int_type;

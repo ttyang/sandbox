@@ -22,7 +22,6 @@ template <typename CTYPE_TRAITS>
 class voronoi_predicates {
 public:
     typedef typename CTYPE_TRAITS::int_type int_type;
-    typedef typename CTYPE_TRAITS::uint_type uint_type;
     typedef typename CTYPE_TRAITS::int_x2_type int_x2_type;
     typedef typename CTYPE_TRAITS::uint_x2_type uint_x2_type;
     typedef typename CTYPE_TRAITS::big_int_type big_int_type;

@@ -112,6 +112,10 @@ namespace polygon {
             // Init structures.
             output->reserve(site_events_.size());
             init_sites_queue();
+            if (!circle_events_.empty())
+                circle_events_.clear();
+            while (!end_points_.empty())
+                end_points_.pop();
             init_beach_line(output);
 
             // The algorithm stops when there are no events to process.
@@ -202,7 +206,10 @@ namespace polygon {
 
         template <typename OUTPUT>
         void init_beach_line(OUTPUT *output) {
-            if (site_events_.empty()) return;
+            if (!beach_line_.empty())
+                beach_line_.clear();
+            if (site_events_.empty())
+                return;
             if (site_events_.size() == 1) {
                 // Handle one input site case.
                 output->process_single_site(site_events_[0]);

@@ -326,6 +326,12 @@ public:
     return c_list_.front();
   }
 
+  void clear() {
+    while (!c_.empty())
+        c_.pop();
+    c_list_.clear();
+  }
+
 private:
   typedef typename std::list<T>::iterator list_iterator_type;
 
