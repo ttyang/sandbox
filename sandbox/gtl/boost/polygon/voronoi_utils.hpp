@@ -14,7 +14,6 @@
 #include <stack>
 #include <vector>
 
-#include "polygon.hpp"
 #include "voronoi_diagram.hpp"
 
 namespace boost {
@@ -26,10 +25,8 @@ struct voronoi_utils_traits;
 template<>
 struct voronoi_utils_traits<double> {
     typedef double fpt_type;
-    typedef point_data<fpt_type> point_type;
+    typedef detail::point_2d<fpt_type> point_type;
     typedef std::vector<point_type> point_set_type;
-    typedef directed_line_segment_data<fpt_type> segment_type;
-    typedef directed_line_segment_set_data<fpt_type> segment_set_type;
     typedef bounding_rectangle<fpt_type> brect_type;
     typedef struct {
         template <typename CT>
@@ -46,8 +43,6 @@ public:
     typedef typename TRAITS::fpt_type fpt_type;
     typedef typename TRAITS::point_type point_type;
     typedef typename TRAITS::point_set_type point_set_type;
-    typedef typename TRAITS::segment_type segment_type;
-    typedef typename TRAITS::segment_set_type segment_set_type;
     typedef typename TRAITS::brect_type brect_type;
     typedef typename TRAITS::ctype_converter_type ctype_converter_type;
 
@@ -172,22 +167,6 @@ public:
             }
         }
         return edge_points;
-    }
-
-    // Interpolate voronoi edge with a set of segments to satisfy maximal
-    // error requirement.
-    template <typename CT>
-    static segment_set_type get_segment_interpolation(
-        const voronoi_edge<CT> *edge,
-        const bounding_rectangle<CT> &brect,
-        fpt_type max_error) {
-        point_set_type point_interpolation =
-            get_point_interpolcation(edge, brect, max_error);
-        segment_set_type ret_val;
-        for (size_t i = 1; i < point_interpolation.size(); ++i)
-            ret_val.insert(segment_type(point_interpolation[i-1],
-                                        point_interpolation[i]));
-        return ret_val;
     }
 
     // Find edge-rectangle intersection points.

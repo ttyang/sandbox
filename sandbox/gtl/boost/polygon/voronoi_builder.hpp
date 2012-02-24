@@ -65,37 +65,59 @@ namespace polygon {
               typename VP = detail::voronoi_predicates<CTT> >
     class voronoi_builder {
     public:
+        typedef typename CTT::int_type int_type;
+        typedef typename CTT::fpt_type fpt_type;
+
         voronoi_builder() {}
+
+        void insert_point(const int_type& x, const int_type& y) {
+            site_events_.push_back(site_event_type(x, y));
+        }
+
+        template <typename PointType>
+        void insert_point(const PointType& point) {
+            insert_point(point.x(), point.y());
+        }
 
         template <typename PointIterator>
         void insert_points(PointIterator first_point, PointIterator last_point) {
             // Create a site event from each input point.
             for (PointIterator it = first_point; it != last_point; ++it) {
-                site_events_.push_back(site_event_type(it->x(), it->y()));
+                insert_point(*it);
             }
         }
 
-        template <typename SegmentIterator>
-        void insert_segments(SegmentIterator first_segment, SegmentIterator last_segment) {
+        void insert_segment(const int_type& x1, const int_type& y1,
+                            const int_type& x2, const int_type& y2) {
             // Each segment creates three segment sites:
             //   1) the startpoint of the segment;
             //   2) the endpoint of the segment;
             //   3) the segment itself.
-            point_comparison_predicate point_comparison;
+            point_type p1(x1, y1);
+            point_type p2(x2, y2);
+            site_events_.push_back(site_event_type(p1));
+            site_events_.push_back(site_event_type(p2));
+            if (point_comparison_(p1, p2)) {
+                site_events_.push_back(site_event_type(p1, p2));
+            } else {
+                site_events_.push_back(site_event_type(p2, p1));
+            }
+        }
+
+        template <typename PointType>
+        void insert_segment(const PointType& point1, const PointType& point2) {
+            insert_segment(point1.x(), point1.y(), point2.x(), point2.y());  
+        }
+
+        template <typename SegmentType>
+        void insert_segment(const SegmentType& segment) {
+            insert_segment(segment.low(), segment.high());
+        }
+
+        template <typename SegmentIterator>
+        void insert_segments(SegmentIterator first_segment, SegmentIterator last_segment) {
             for (SegmentIterator it = first_segment; it != last_segment; ++it) {
-                int_type x1 = it->low().x();
-                int_type y1 = it->low().y();
-                int_type x2 = it->high().x();
-                int_type y2 = it->high().y();
-                point_type p1(x1, y1);
-                point_type p2(x2, y2);
-                site_events_.push_back(site_event_type(p1));
-                site_events_.push_back(site_event_type(p2));
-                if (point_comparison(p1, p2)) {
-                    site_events_.push_back(site_event_type(p1, p2));
-                } else {
-                    site_events_.push_back(site_event_type(p2, p1));
-                }
+                insert_segment(*it);
             }
         }
 
@@ -147,12 +169,15 @@ namespace polygon {
 
         void clear() {
             site_events_.clear();
+            if (!beach_line_.empty())
+                beach_line_.clear();
+            if (!circle_events_.empty())
+                circle_events_.clear();
+            while (!end_points_.empty())
+                end_points_.pop();
         }
 
     private:
-        typedef typename CTT::int_type int_type;
-        typedef typename CTT::fpt_type fpt_type;
-
         typedef detail::point_2d<int_type> point_type;
         typedef detail::site_event<int_type> site_event_type;
         typedef typename std::vector<site_event_type>::const_iterator
@@ -517,6 +542,7 @@ namespace polygon {
         }
 
     private:
+        point_comparison_predicate point_comparison_;
         struct end_point_comparison {
             bool operator() (const end_point_type &end1, const end_point_type &end2) const {
                 return point_comparison(end2.first, end1.first);

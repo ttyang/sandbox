@@ -33,8 +33,8 @@ public:
   }
 
   void build(QString file_path) {
-    ipoint_set_type point_sites;
-    isegment_set_type segment_sites;
+    vb_.clear();
+    vd_.clear();
 
     // Open file.
     QFile data(file_path);
@@ -51,23 +51,21 @@ public:
     in_stream >> num_point_sites;
     for (int i = 0; i < num_point_sites; ++i) {
       in_stream >> x1 >> y1;
-      point_sites.push_back(ipoint_type(x1, y1));
+      vb_.insert_point(x1, y1);
     }
     in_stream >> num_edge_sites;
     for (int i = 0; i < num_edge_sites; ++i) {
       in_stream >> x1 >> y1 >> x2 >> y2;
-      segment_sites.insert(isegment_type(ipoint_type(x1, y1),
-                                         ipoint_type(x2, y2)));
+      vb_.insert_segment(x1, y1, x2, y2);
     }
     in_stream.flush();
 
     // Build voronoi diagram.
-    vd_.clear();
-    construct_voronoi(point_sites, segment_sites, &vd_);
+    vb_.construct(&vd_);
     brect_ = voronoi_utils<coordinate_type>::get_view_rectangle(
         vd_.bounding_rectangle(), 1.4);
-    shift_ = point_data<double>((brect_.x_min() + brect_.x_max()) * 0.5,
-                                (brect_.y_min() + brect_.y_max()) * 0.5);
+    shift_ = point_type((brect_.x_min() + brect_.x_max()) * 0.5,
+                        (brect_.y_min() + brect_.y_max()) * 0.5);
 
     exterior_edges_set_.clear();
     for (voronoi_edge_const_iterator_type it = vd_.edge_records().begin();
@@ -157,7 +155,7 @@ protected:
         if (internal_edges_only_ && exterior_edges_set_.count(&(*it))) {
           continue;
         }
-        std::vector<opoint_type> temp_v =
+        std::vector<point_type> temp_v =
           voronoi_utils<coordinate_type>::get_point_interpolation(
               &(*it), brect_, 1E-3);
         for (int i = 0; i < static_cast<int>(temp_v.size()) - 1; ++i) {
@@ -179,7 +177,18 @@ protected:
   }
 
 private:
-  void remove_exterior(const voronoi_diagram<double>::voronoi_edge_type* edge) {
+  typedef double coordinate_type;
+  typedef detail::point_2d<double> point_type;
+  typedef voronoi_diagram<double> VD;
+  typedef VD::voronoi_edge_type voronoi_edge_type;
+  typedef VD::voronoi_cells_type voronoi_cells_type;
+  typedef VD::voronoi_vertices_type voronoi_vertices_type;
+  typedef VD::voronoi_edges_type voronoi_edges_type;
+  typedef VD::voronoi_cell_const_iterator_type voronoi_cell_const_iterator_type;
+  typedef VD::voronoi_vertex_const_iterator_type voronoi_vertex_const_iterator_type;
+  typedef VD::voronoi_edge_const_iterator_type voronoi_edge_const_iterator_type;
+
+  void remove_exterior(const VD::voronoi_edge_type* edge) {
     if (exterior_edges_set_.count(edge)) {
       return;
     }
@@ -205,28 +214,9 @@ private:
     glMatrixMode(GL_MODELVIEW);
   }
 
-  typedef double coordinate_type;
-  typedef point_data<int> ipoint_type;
-  typedef point_data<double> opoint_type;
-  typedef directed_line_segment_data<int> isegment_type;
-  typedef std::vector<ipoint_type> ipoint_set_type;
-  typedef directed_line_segment_set_data<int> isegment_set_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_edge_type
-    voronoi_edge_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_cells_type
-    voronoi_cells_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_vertices_type
-    voronoi_vertices_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_edges_type
-    voronoi_edges_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_cell_const_iterator_type
-    voronoi_cell_const_iterator_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_vertex_const_iterator_type
-    voronoi_vertex_const_iterator_type;
-  typedef voronoi_diagram<coordinate_type>::voronoi_edge_const_iterator_type
-    voronoi_edge_const_iterator_type;
-  bounding_rectangle<coordinate_type> brect_;
-  point_data<double> shift_;
+  bounding_rectangle<double> brect_;
+  point_type shift_;
+  default_voronoi_builder vb_;
   voronoi_diagram<coordinate_type> vd_;
   std::set<const voronoi_edge_type*> exterior_edges_set_;
   bool primary_edges_only_;
