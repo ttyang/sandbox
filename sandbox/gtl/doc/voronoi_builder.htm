@@ -1,20 +1,17 @@
-<html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
 
-<head>
+
 <meta http-equiv="Content-Language" content="en-us">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>Contents</title>
-</head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
-<body>
-
-<table style="width: 100%; margin: 0pt; padding: 0pt" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td style="background-color: rgb(238, 238, 238)" nowrap="1" valign="top">
-		<div style="padding: 5px" align="center">
-			<img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none" href="http://www.boost.org/">
+<table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+		<div style="padding: 5px;" align="center">
+			<img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/">
 			</a></div>
-		<div style="margin: 5px">
+		<div style="margin: 5px;">
 			<h3 class="navbar">Contents</h3>
 			<ul>
 				<li><a href="index.htm">Boost.Polygon Main Page</a></li>
@@ -71,16 +68,16 @@
 			</ul>
 		</div>
 		<h3 class="navbar">Polygon Sponsor</h3>
-		<div style="padding: 5px" align="center">
-			<img src="images/intlogo.gif" border="0" height="51" width="127"><a title="www.adobe.com home page" tabindex="2" style="border: medium none" href="http://www.adobe.com/">
+		<div style="padding: 5px;" align="center">
+			<img src="images/intlogo.gif" border="0" height="51" width="127"><a title="www.adobe.com home page" tabindex="2" style="border: medium none ;" href="http://www.adobe.com/">
 			</a></div>
 		</td>
-		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px" valign="top" width="100%"><!-- End Header --> 
+		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> 
 		<br>
 		<p></p>
 		<h1>Voronoi Builder<br>
 		</h1>
-		Voronoi builder is event generator datastructure. It implements 
+		Voronoi builder is event generator structure. It implements 
 		sweepline algorithm that scans 2D space and generates two types of 
 		events: site events and circle events (we won't go into details what 
 		those are exactly). Each event is reported to the output datastructure 
@@ -97,102 +94,130 @@
 		definition:<br>
 		<br>
 		<font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">template &lt;typename 
-		T,</span><br style="font-family: 'Courier New',Courier,monospace">
-		<span style="font-family: 'Courier New',Courier,monospace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		typename CTT = detail::voronoi_ctype_traits&lt;T&gt;,</span><br style="font-family: 'Courier New',Courier,monospace">
-		<span style="font-family: 'Courier New',Courier,monospace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		typename VP = detail::voronoi_predicates&lt;CTT&gt; &gt;</span><br style="font-family: 'Courier New',Courier,monospace">
-		<span style="font-family: 'Courier New',Courier,monospace">class voronoi_builder 
+		<span style="font-family: 'Courier New',Courier,monospace;">template &lt;typename 
+		T,</span><br style="font-family: 'Courier New',Courier,monospace;">
+		<span style="font-family: 'Courier New',Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		typename CTT = detail::voronoi_ctype_traits&lt;T&gt;,</span><br style="font-family: 'Courier New',Courier,monospace;">
+		<span style="font-family: 'Courier New',Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		typename VP = detail::voronoi_predicates&lt;CTT&gt; &gt;</span><br style="font-family: 'Courier New',Courier,monospace;">
+		<span style="font-family: 'Courier New',Courier,monospace;">class voronoi_builder 
 		{ /* Implementation. */ };</span><br>
 		<br>
-		<span style="font-family: 'Courier New',Courier,monospace">T</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">T</span></font> 
 		- specifies coordinate type of the input geometries (points and segments).<br>
 		<font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">CTT</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">CTT</span></font> 
 		- defines input / output coordinate types used by VP.<br>
 		<font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">VP</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">VP</span></font> 
 		- predicates kernel, that provides builder with robust and efficient 
 		predicates.<br>
 		The Voronoi builder datastructure is ready to use from the box with 
 		32-bit signed integer input coordinate type. The user may extend input 
 		coordinate range to other integer types (e.g. 64-bit integer), however 
 		this will also require manual set up of coordinate type traits. Default 
-		voronoi_predicates&lt;<font face="Courier New"><span style="font-family: 'Courier New',Courier,monospace">CTT</span></font>&gt; 
+		voronoi_predicates&lt;<font face="Courier New"><span style="font-family: 'Courier New',Courier,monospace;">CTT</span></font>&gt; 
 		implementaiton provides correct predicates as soon as
 		<font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">CTT</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">CTT</span></font> 
 		types satisfy requirements explained below. In case those requirements 
 		are not satisfied for the user provided <font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">CTT</span></font>, 
+		<span style="font-family: 'Courier New',Courier,monospace;">CTT</span></font>, 
 		proper <font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">VP</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">VP</span></font> 
 		implementation is required. The default <font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">VP</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">VP</span></font> 
 		implementation is highly optimized and efficient that's why it's always 
 		better to come up with a proper <font face="Courier New">
-		<span style="font-family: 'Courier New',Courier,monospace">CTT</span></font> 
+		<span style="font-family: 'Courier New',Courier,monospace;">CTT</span></font> 
 		structure.<br>
 		<h1>Member Functions</h1>
-		<table style="text-align: left; width: 100%" border="1" cellpadding="2" cellspacing="2">
-			<tr>
-				<td style="font-family: 'Courier New',Courier,monospace">
+		<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+			<tbody><tr>
+				<td style="font-family: 'Courier New',Courier,monospace;">
 				voronoi_builder()</td>
-				<td style="vertical-align: top" width="693">Default constructor.</td>
+				<td style="vertical-align: top;" width="693">Default constructor.</td>
 			</tr>
 			<tr>
-				<td style="font-family: 'Courier New',Courier,monospace">
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">void insert_point(const int_type&amp; x, const int_type&amp; y)</span><br>
+            </td>
+            <td style="vertical-align: top;">Inserts point object with provided coordinates into Voronoi builder. <br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template &lt;typename PointType&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+            <span style="font-family: Courier New,Courier,monospace;">void insert_point(const PointType&amp; point)</span><br>
+            </td>
+            <td style="vertical-align: top;">Inserts point object into Voronoi builder.<br>
+
+				Point object should support x() and y() methods to retrieve its coordinates.<br>
+            </td>
+          </tr>
+<tr>
+				<td style="font-family: 'Courier New',Courier,monospace;">
 				template &lt;typename PointIterator&gt;<br>
-				void insert_points(PointIterator first_point,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				PointIterator last_point)<br>
+				void insert_points(PointIterator first_point, PointIterator last_point)<br>
 				</td>
-				<td style="vertical-align: top" width="693">Inserts point 
+				<td style="vertical-align: top;" width="693">Inserts point 
 				objects into Voronoi builder.<br>
-				Point objects should support x() and y() methods that retrieve 
+				Point objects should support x() and y() methods to retrieve 
 				their coordinates.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">void insert_segment(const int_type&amp; x1, const int_type&amp; y1, const int_type&amp; x2, const int_type&amp; y2)</span><br>
+            </td>
+            <td style="vertical-align: top;">Insert segment object with provided coordinates into Voronoi builder.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template &lt;typename PointType&gt;</span><span style="font-family: Courier New,Courier,monospace;"><br>
+void insert_segment(const PointType&amp; point1, const PointType&amp; point2)</span><br>
+            </td>
+            <td style="vertical-align: top;">Insert segment object with provided endpoints into Voronoi builder.<br>
+Endpoint objects should support x() and y() methods to retrieve their coordinates.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename SegmentType&gt;<br>
+void insert_segment(const SegmentType&amp; segment)<br>
+            </td>
+            <td style="vertical-align: top;">Insert segment object into Voronoi builder.<br>
+Segment object should support low() and high() methods that retrieve segment endpoints.<br>
+Endpoint objects should support x() and y() methods to retrieve their coordinates.<br>
+            </td>
+          </tr>
+<tr>
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				template &lt;typename SegmentIterator&gt;<br>
-				void insert_segments(SegmentIterator first_segment,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				SegmentIterator last_segment)<br>
+				void insert_segments(SegmentIterator first_segment, SegmentIterator last_segment)<br>
 				</td>
-				<td style="vertical-align: top" width="693">Inserts segment 
+				<td style="vertical-align: top;" width="693">Inserts segment 
 				objects into Voronoi builder.<br>
-				Segment objects should support low() and high() methods that 
+				Segment objects should support low() and high() methods to 
 				retrieve segment endpoints.<br>
-				Endpoint objects should support x() and y() methods that 
+				Endpoint objects should support x() and y() methods to 
 				retrieve their coordinates.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
-				template &lt;typename PointIterator,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename SegmentIterator&gt;<br>
-				void insert_sites(PointIterator first_point,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				PointIterator last_point,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				SegmentIterator first_segment,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-				SegmentIterator last_segment)<br>
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
+				template &lt;typename PointIterator, typename SegmentIterator&gt;<br>
+void insert_sites(PointIterator first_point, PointIterator last_point,
+SegmentIterator first_segment, SegmentIterator last_segment)<br>
 				</td>
-				<td style="vertical-align: top" width="693">Inserts point and 
+				<td style="vertical-align: top;" width="693">Inserts point and 
 				segment objects into Voronoi builder.<br>
 				Requirements for the point and segment objects interface are 
 				given above.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				template &lt;typename OUTPUT&gt;<br>
 				void construct(OUTPUT *output)<br>
 				</td>
-				<td style="vertical-align: top" width="693">Runs sweepline 
+				<td style="vertical-align: top;" width="693">Runs sweepline 
 				algorithm over the set of the inserted geometries, outputs site 
 				and circle events to the OUTPUT datastructure. It's 
 				responsibility of the output structure to process them. For 
@@ -200,24 +225,24 @@
 				constructed from the Voronoi builder events, however internally 
 				they are different datastructures, so it's up to them to process 
 				properly events produced by the builder object. To make this 
-				possible OUTPUT type should provide a set of template methods 
+				possible OUTPUT type should provide a set of generic methods 
 				which are discussed in detail on <a href="voronoi_diagram.htm">
 				Voronoi Diagram</a> page.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				void clear()<br>
 				</td>
-				<td style="vertical-align: top" width="693">Clears the list of 
+				<td style="vertical-align: top;" width="693">Clears the list of 
 				the inserted geometries.<br>
 				</td>
 			</tr>
-		</table>
+		</tbody></table>
 		<h1>Coordinate Type Traits</h1>
 		<p>The library provides default builder coordinate type traits for the 
 		32-bit signed integer type:</p>
-		<font style="font-family: 'Courier New',Courier,monospace" face="Courier New">
+		<font style="font-family: 'Courier New',Courier,monospace;" face="Courier New">
 		<p>template &lt;typename T&gt;<br>
 		struct voronoi_ctype_traits;<br>
 		<br>
@@ -243,93 +268,93 @@
 		implementation user should provide following set of coordinate types (assumption 
 		is made that input geometries have X-bit signed integer coordinate type):<br>
 		</p>
-		<table style="text-align: left; width: 100%" border="1" cellpadding="2" cellspacing="2">
-			<tr>
-				<td style="font-family: 'Courier New',Courier,monospace">int_type<br>
+		<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+			<tbody><tr>
+				<td style="font-family: 'Courier New',Courier,monospace;">int_type<br>
 				</td>
-				<td style="vertical-align: top">At least X-bit signed integer 
+				<td style="vertical-align: top;">At least X-bit signed integer 
 				type. <br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				int_x2_type<br>
 				</td>
-				<td style="vertical-align: top">At least 2X-bit signed integer 
+				<td style="vertical-align: top;">At least 2X-bit signed integer 
 				type.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				uint_x2_type<br>
 				</td>
-				<td style="vertical-align: top">At least 2X-bit unsigned integer 
+				<td style="vertical-align: top;">At least 2X-bit unsigned integer 
 				type.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				big_int_type<br>
 				</td>
-				<td style="vertical-align: top">At least 8X-bit signed integer 
+				<td style="vertical-align: top;">At least 8X-bit signed integer 
 				type for voronoi of points.<br>
 				At least 128X-bit signed integer type for voronoi of segments.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				fpt_type<br>
 				</td>
-				<td style="vertical-align: top">IEEE-754 floating point type, 
+				<td style="vertical-align: top;">IEEE-754 floating point type, 
 				with mantissa at least (X+20) bits and exponent able to handle 
 				32X-bit unsigned integer type.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				efpt_type<br>
 				</td>
-				<td style="vertical-align: top">IEEE-754 floating point type, 
+				<td style="vertical-align: top;">IEEE-754 floating point type, 
 				with mantissa at least (X+20) bits and exponent able to handle 
 				128X-bit unsigned integer type.<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				ulp_cmp_type<br>
 				</td>
-				<td style="vertical-align: top">Ulp comarison structure that 
+				<td style="vertical-align: top;">Ulp comarison structure that 
 				checks if two fpt_type values are withing given ulp range 
 				(relative error range).<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				to_fpt_converter_type<br>
 				</td>
-				<td style="vertical-align: top">Type converter structure that 
+				<td style="vertical-align: top;">Type converter structure that 
 				converts any of the integer types above plus efpt_type to the 
 				fpt_type using operator().<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				to_efpt_converter_type<br>
 				</td>
-				<td style="vertical-align: top">Type converter structure that 
+				<td style="vertical-align: top;">Type converter structure that 
 				converts any of the integer types above to the efpt_type using 
 				operator().<br>
 				</td>
 			</tr>
 			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace">
+				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
 				ULPS<br>
 				</td>
-				<td style="vertical-align: top">Relative precision threshold 
+				<td style="vertical-align: top;">Relative precision threshold 
 				that triggers multi-precision predicates.<br>
 				</td>
 			</tr>
-		</table>
+		</tbody></table>
 		<p>Notes:<br>
 		1) 4 different integer types are used (instead of a single big_int_type 
 		for everything) to slightly improve algorithm performance and memory 
@@ -344,13 +369,13 @@
 		types, however this is not supported by msvc compiler.<br>
 		4) efpt_type and to_efpt_converter_type are not used to construct 
 		Voronoi of points (mocks will work fine).<br>
-		5) for an example of the user defined voronoi coordinate type traits see
+		5) for an example of the user defined builder coordinate type traits see
 		<a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Diagram Advanced 
-		Tutorial</a>.</td>
+		Tutorial</a>.</p></td>
 	</tr>
 	<tr>
-		<td style="background-color: rgb(238, 238, 238)" nowrap="1" valign="top">&nbsp;</td>
-		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px" valign="top" width="100%">
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
 		<table class="docinfo" id="table2" frame="void" rules="none">
 			<colgroup>
 				<col class="docinfo-name"><col class="docinfo-content">
@@ -369,11 +394,9 @@
 					<a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
 					http://www.boost.org/LICENSE_1_0.txt</a>)</td>
 				</tr>
-		</table>
+		</tbody></table>
 		</td>
 	</tr>
-</table>
+</tbody></table>
 
-</body>
-
-</html>
+</body></html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-<!--
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><!--
     Copyright 2009-2010 Intel Corporation
     license banner
 --><title>Boost Polygon Library: Main Page</title>
+
+
 
     <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" /><!-- <link type="text/css" rel="stylesheet" href="adobe_source.css"> --></head><body><table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0"><tbody><tr>
 <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
@@ -15,35 +16,30 @@
         <h3 class="navbar">Contents</h3>
         <ul>
             <li>Boost.Polygon Main Page</li>
-			<li><a href="gtl_design_overview.htm">Design Overview</a></li>
-			<li><a href="gtl_isotropy.htm">Isotropy</a></li>
+            <li><a href="gtl_design_overview.htm">Design Overview</a></li>
+            <li><a href="gtl_isotropy.htm">Isotropy</a></li>
             <li><a href="gtl_coordinate_concept.htm">Coordinate Concept</a></li>
             <li><a href="gtl_interval_concept.htm">Interval Concept</a></li>
-            <li>
-			<a href="gtl_point_concept.htm">Point Concept</a></li>
-			<li><a href="gtl_rectangle_concept.htm">Rectangle Concept</a></li>
-			<li><a href="gtl_polygon_90_concept.htm">Polygon 90 Concept</a></li>
-			<li><a href="gtl_polygon_90_with_holes_concept.htm">Polygon 90 With Holes Concept</a></li>
-			<li><a href="gtl_polygon_45_concept.htm">Polygon 45 Concept</a></li>
-			<li><a href="gtl_polygon_45_with_holes_concept.htm">Polygon 45 With Holes Concept</a></li>
-			<li><a href="gtl_polygon_concept.htm">Polygon Concept</a></li>
-			<li><a href="gtl_polygon_with_holes_concept.htm">Polygon With Holes Concept</a></li>
-			<li><a href="gtl_polygon_90_set_concept.htm">Polygon 90 Set Concept</a></li>
-			<li><a href="gtl_polygon_45_set_concept.htm">Polygon 45 Set Concept</a></li>
-			<li><a href="gtl_polygon_set_concept.htm">Polygon Set Concept</a></li>
-			<li><a href="gtl_connectivity_extraction_90.htm">Connectivity Extraction 90</a></li>
-			<li><a href="gtl_connectivity_extraction_45.htm">Connectivity Extraction 45</a></li>
-			<li><a href="gtl_connectivity_extraction.htm">Connectivity Extraction</a></li>
-			<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
-			<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
-			<li><a href="gtl_property_merge.htm">Property Merge</a></li>
-			<li><a href="voronoi_ctype_traits.htm">Voronoi CType Traits</a></li>
-			<li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram 
-			Datastructure</a></li>
-			<li><a href="voronoi_lazy_arithmetic_concept.htm">Voronoi Lazy 
-			Arithmetic Concept</a></li>
-			<li><a href="voronoi_sweepline_algorithm.htm">Voronoi Sweepline 
-			Algorithm</a></li>
+            <li><a href="gtl_point_concept.htm">Point Concept</a></li>
+            <li><a href="gtl_rectangle_concept.htm">Rectangle Concept</a></li>
+            <li><a href="gtl_polygon_90_concept.htm">Polygon 90 Concept</a></li>
+            <li><a href="gtl_polygon_90_with_holes_concept.htm">Polygon 90 With Holes Concept</a></li>
+            <li><a href="gtl_polygon_45_concept.htm">Polygon 45 Concept</a></li>
+            <li><a href="gtl_polygon_45_with_holes_concept.htm">Polygon 45 With Holes Concept</a></li>
+            <li><a href="gtl_polygon_concept.htm">Polygon Concept</a></li>
+            <li><a href="gtl_polygon_with_holes_concept.htm">Polygon With Holes Concept</a></li>
+            <li><a href="gtl_polygon_90_set_concept.htm">Polygon 90 Set Concept</a></li>
+            <li><a href="gtl_polygon_45_set_concept.htm">Polygon 45 Set Concept</a></li>
+            <li><a href="gtl_polygon_set_concept.htm">Polygon Set Concept</a></li>
+            <li><a href="gtl_connectivity_extraction_90.htm">Connectivity Extraction 90</a></li>
+            <li><a href="gtl_connectivity_extraction_45.htm">Connectivity Extraction 45</a></li>
+            <li><a href="gtl_connectivity_extraction.htm">Connectivity Extraction</a></li>
+            <li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
+            <li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
+            <li><a href="gtl_property_merge.htm">Property Merge</a></li>
+            <li><a href="voronoi_builder.htm">Voronoi Builder</a></li>
+            <li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram Datastructure</a></li>
+            <li><a href="voronoi_lazy_arithmetic_concept.htm">Voronoi Lazy Arithmetic Concept</a></li>			
         </ul>
         <h3 class="navbar">Other Resources</h3>
         <ul>
@@ -102,10 +98,7 @@ numerical robustness aspects.
 <p><img src="images/voronoi.png" border="0" height="300" width="900" /></p>
 <p>
 The coordinate data type is a template parameter of all data types and 
-algorithms provided by the library, and is expected to be integral (this is 
-different for Voronoi code, look at the <a href="voronoi_ctype_traits.htm">Voronoi 
-CType Traits</a> page).&nbsp; 
-Floating point coordinate data types are not supported by the algorithms 
+algorithms provided by the library, and is expected to be integral. Floating point coordinate data types are not supported by the algorithms 
 implemented in the library due to the fact that the achieving floating point 
 robustness implies a different set of algorithms and generally platform specific 
 assumptions about floating point representations.&nbsp;
