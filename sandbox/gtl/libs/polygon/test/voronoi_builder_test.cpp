@@ -22,42 +22,39 @@ using namespace boost::polygon;
 typedef boost::mpl::list<int> test_types;
 
 #define CHECK_EQUAL_POINTS(p1, p2) \
-        BOOST_CHECK_EQUAL(p1.x() == static_cast<T>(p2.x()), true); \
-        BOOST_CHECK_EQUAL(p1.y() == static_cast<T>(p2.y()), true)
+        BOOST_CHECK(p1.x() == static_cast<T>(p2.x())); \
+        BOOST_CHECK(p1.y() == static_cast<T>(p2.y()))
 
 #define CHECK_BRECT(brect, xmin, ymin, xmax, ymax) \
-        BOOST_CHECK_EQUAL(brect.x_min() == static_cast<coordinate_type>(xmin), true); \
-        BOOST_CHECK_EQUAL(brect.y_min() == static_cast<coordinate_type>(ymin), true); \
-        BOOST_CHECK_EQUAL(brect.x_max() == static_cast<coordinate_type>(xmax), true); \
-        BOOST_CHECK_EQUAL(brect.y_max() == static_cast<coordinate_type>(ymax), true)
+        BOOST_CHECK(brect.x_min() == static_cast<coordinate_type>(xmin)); \
+        BOOST_CHECK(brect.y_min() == static_cast<coordinate_type>(ymin)); \
+        BOOST_CHECK(brect.x_max() == static_cast<coordinate_type>(xmax)); \
+        BOOST_CHECK(brect.y_max() == static_cast<coordinate_type>(ymax))
 
 #define CHECK_OUTPUT_SIZE(output, cells, vertices, edges) \
-        BOOST_CHECK_EQUAL(output.cell_records().size() == static_cast<unsigned int>(cells), true); \
-        BOOST_CHECK_EQUAL(output.num_cell_records() == cells, true); \
-        BOOST_CHECK_EQUAL(output.vertex_records().size() == static_cast<unsigned int>(vertices), true); \
-        BOOST_CHECK_EQUAL(output.num_vertex_records() == vertices, true); \
-        BOOST_CHECK_EQUAL(output.edge_records().size() == static_cast<unsigned int>(edges << 1), true); \
-        BOOST_CHECK_EQUAL(output.num_edge_records() == edges, true)
+        BOOST_CHECK(output.num_cells() == cells); \
+        BOOST_CHECK(output.num_vertices() == vertices); \
+        BOOST_CHECK(output.num_edges() == edges)
 
 #define VERIFY_OUTPUT(output) \
-    BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(output, \
-        voronoi_test_helper::HALF_EDGE_ORIENTATION), true); \
-    BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(output, \
-        voronoi_test_helper::CELL_CONVEXITY), true); \
-    BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(output, \
-        voronoi_test_helper::INCIDENT_EDGES_CCW_ORDER), true); \
-    BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(output, \
-        voronoi_test_helper::NO_HALF_EDGE_INTERSECTIONS), true)
+    BOOST_CHECK(voronoi_test_helper::verify_output(output, \
+        voronoi_test_helper::HALF_EDGE_ORIENTATION)); \
+    BOOST_CHECK(voronoi_test_helper::verify_output(output, \
+        voronoi_test_helper::CELL_CONVEXITY)); \
+    BOOST_CHECK(voronoi_test_helper::verify_output(output, \
+        voronoi_test_helper::INCIDENT_EDGES_CCW_ORDER)); \
+    BOOST_CHECK(voronoi_test_helper::verify_output(output, \
+        voronoi_test_helper::NO_HALF_EDGE_INTERSECTIONS))
 
 #define VERIFY_NO_HALF_EDGE_INTERSECTIONS(output) \
-    BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(output, \
-        voronoi_test_helper::NO_HALF_EDGE_INTERSECTIONS), true)
+    BOOST_CHECK(voronoi_test_helper::verify_output(output, \
+        voronoi_test_helper::NO_HALF_EDGE_INTERSECTIONS))
 
 typedef voronoi_diagram<double> vd_type;
 typedef vd_type::coordinate_type coordinate_type;
-typedef vd_type::voronoi_edge_type voronoi_edge_type;
-typedef vd_type::voronoi_cell_const_iterator_type voronoi_cell_const_iterator_type;
-typedef vd_type::voronoi_vertex_const_iterator_type voronoi_vertex_const_iterator_type;
+typedef vd_type::edge_type voronoi_edge_type;
+typedef vd_type::const_cell_iterator const_cell_iterator;
+typedef vd_type::const_vertex_iterator const_vertex_iterator;
 
 // Sites: (0, 0).
 BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
@@ -68,11 +65,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
     VERIFY_OUTPUT(test_output);
 
     CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 0, 0);
+    BOOST_CHECK(test_output.cells().size() == 1);
     CHECK_OUTPUT_SIZE(test_output, 1, 0, 0);
 
-    voronoi_cell_const_iterator_type it = test_output.cell_records().begin();
-    BOOST_CHECK_EQUAL(it->num_incident_edges(), 0);
-    BOOST_CHECK_EQUAL(it->incident_edge() == NULL, true);
+    const_cell_iterator it = test_output.cells().begin();
+    BOOST_CHECK(it->num_incident_edges() == 0);
+    BOOST_CHECK(it->incident_edge() == NULL);
 }
 
 // Sites: (0, 0), (0, 1).
@@ -87,7 +85,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
     CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 0, 1);
     CHECK_OUTPUT_SIZE(test_output, 2, 0, 1);
 
-    voronoi_cell_const_iterator_type cell_it = test_output.cell_records().begin();
+    const_cell_iterator cell_it = test_output.cells().begin();
     BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
     cell_it++;
     BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
@@ -122,7 +120,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
     CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 2, 2);
     CHECK_OUTPUT_SIZE(test_output, 3, 0, 2);
 
-    voronoi_cell_const_iterator_type cell_it = test_output.cell_records().begin();
+    const_cell_iterator cell_it = test_output.cells().begin();
     BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
     const voronoi_edge_type *edge1_1 = cell_it->incident_edge();
     const voronoi_edge_type *edge1_2 = edge1_1->twin();
@@ -163,7 +161,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
     CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 2, 4);
     CHECK_OUTPUT_SIZE(test_output, 3, 1, 3);
 
-    voronoi_vertex_const_iterator_type it = test_output.vertex_records().begin();
+    const_vertex_iterator it = test_output.vertices().begin();
     BOOST_CHECK_EQUAL(it->vertex().x() == static_cast<coordinate_type>(0.25) &&
                       it->vertex().y() == static_cast<coordinate_type>(2.0), true);
 
@@ -215,7 +213,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
     CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 2, 4);
     CHECK_OUTPUT_SIZE(test_output, 3, 1, 3);
 
-    voronoi_vertex_const_iterator_type it = test_output.vertex_records().begin();
+    const_vertex_iterator it = test_output.vertices().begin();
     BOOST_CHECK_EQUAL(it->vertex().x() == static_cast<coordinate_type>(1.75) &&
                       it->vertex().y() == static_cast<coordinate_type>(2.0), true);
 
@@ -270,7 +268,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
     CHECK_OUTPUT_SIZE(test_output, 4, 1, 4);
 
     // Check voronoi vertex.
-    voronoi_vertex_const_iterator_type it = test_output.vertex_records().begin();
+    const_vertex_iterator it = test_output.vertices().begin();
     BOOST_CHECK_EQUAL(it->vertex().x() == static_cast<coordinate_type>(0.5) &&
                       it->vertex().y() == static_cast<coordinate_type>(0.5), true);
 
@@ -338,9 +336,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test, T, test_types) {
         construct_voronoi_points(point_vec_large, &test_output_large);
         VERIFY_OUTPUT(test_output_small);
         VERIFY_OUTPUT(test_output_large);
-        int num_cells = grid_size[k] * grid_size[k];
-        int num_vertices = num_cells - 2 * grid_size[k] + 1;
-        int num_edges = 2 * num_cells - 2 * grid_size[k];
+        unsigned int num_cells = grid_size[k] * grid_size[k];
+        unsigned int num_vertices = num_cells - 2 * grid_size[k] + 1;
+        unsigned int num_edges = 2 * num_cells - 2 * grid_size[k];
         CHECK_OUTPUT_SIZE(test_output_small, num_cells, num_vertices, num_edges);
         CHECK_OUTPUT_SIZE(test_output_large, num_cells, num_vertices, num_edges);
     }
@@ -374,12 +372,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test, T, test_types) {
             construct_voronoi_points(point_vec_large, &test_output_large);
             VERIFY_OUTPUT(test_output_small);
             VERIFY_OUTPUT(test_output_large);
-            BOOST_CHECK_EQUAL(test_output_small.num_cell_records(),
-                              test_output_large.num_cell_records());
-            BOOST_CHECK_EQUAL(test_output_small.num_vertex_records(),
-                              test_output_large.num_vertex_records());
-            BOOST_CHECK_EQUAL(test_output_small.num_edge_records(),
-                              test_output_large.num_edge_records());
+            BOOST_CHECK_EQUAL(test_output_small.num_cells(),
+                              test_output_large.num_cells());
+            BOOST_CHECK_EQUAL(test_output_small.num_vertices(),
+                              test_output_large.num_vertices());
+            BOOST_CHECK_EQUAL(test_output_small.num_edges(),
+                              test_output_large.num_edges());
         }
     }
 }
@@ -553,9 +551,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_grid_test, T, test_types) {
         construct_voronoi_segments(segments_large, &test_output_large);
         VERIFY_NO_HALF_EDGE_INTERSECTIONS(test_output_small);
         VERIFY_NO_HALF_EDGE_INTERSECTIONS(test_output_large);
-        BOOST_CHECK_EQUAL(test_output_small.num_cell_records(), test_output_large.num_cell_records());
-        BOOST_CHECK_EQUAL(test_output_small.num_vertex_records(), test_output_large.num_vertex_records());
-        BOOST_CHECK_EQUAL(test_output_small.num_edge_records(), test_output_large.num_edge_records());
+        BOOST_CHECK_EQUAL(test_output_small.num_cells(), test_output_large.num_cells());
+        BOOST_CHECK_EQUAL(test_output_small.num_vertices(), test_output_large.num_vertices());
+        BOOST_CHECK_EQUAL(test_output_small.num_edges(), test_output_large.num_edges());
     }
 }
 #endif
@@ -641,9 +639,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_random_test2, T, test_types) {
             construct_voronoi_segments(segments_large, &test_output_large);
             VERIFY_NO_HALF_EDGE_INTERSECTIONS(test_output_small);
             VERIFY_NO_HALF_EDGE_INTERSECTIONS(test_output_large);
-            BOOST_CHECK_EQUAL(test_output_small.num_cell_records(), test_output_large.num_cell_records());
-            BOOST_CHECK_EQUAL(test_output_small.num_vertex_records(), test_output_large.num_vertex_records());
-            BOOST_CHECK_EQUAL(test_output_small.num_edge_records(), test_output_large.num_edge_records());
+            BOOST_CHECK_EQUAL(test_output_small.num_cells(), test_output_large.num_cells());
+            BOOST_CHECK_EQUAL(test_output_small.num_vertices(), test_output_large.num_vertices());
+            BOOST_CHECK_EQUAL(test_output_small.num_edges(), test_output_large.num_edges());
         }
     }
 }

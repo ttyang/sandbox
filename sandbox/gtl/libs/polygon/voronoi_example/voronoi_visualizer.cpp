@@ -68,8 +68,8 @@ public:
                         (brect_.y_min() + brect_.y_max()) * 0.5);
 
     exterior_edges_set_.clear();
-    for (voronoi_edge_const_iterator_type it = vd_.edge_records().begin();
-        it != vd_.edge_records().end(); ++it) {
+    for (const_edge_iterator it = vd_.edges().begin();
+        it != vd_.edges().end(); ++it) {
       if (!it->is_bounded()) {
         remove_exterior(&(*it));
       }
@@ -101,12 +101,11 @@ protected:
 
     // Draw voronoi sites.
     {
-      const voronoi_cells_type &cells = vd_.cell_records();
-      voronoi_cell_const_iterator_type it;
       glColor3f(0.0f, 0.5f, 1.0f);
       glPointSize(9);
       glBegin(GL_POINTS);
-      for (it = cells.begin(); it != cells.end(); ++it) {
+      for (const_cell_iterator it = vd_.cells().begin();
+          it != vd_.cells().end(); ++it) {
         if (!it->contains_segment()) {
           glVertex2f(it->point0().x() - shift_.x(),
                      it->point0().y() - shift_.y());
@@ -116,7 +115,8 @@ protected:
       glPointSize(6);
       glLineWidth(2.7f);
       glBegin(GL_LINES);
-      for (it = cells.begin(); it != cells.end(); ++it) {
+      for (const_cell_iterator it = vd_.cells().begin();
+          it != vd_.cells().end(); ++it) {
         if (it->contains_segment()) {
           glVertex2f(it->point0().x() - shift_.x(),
                      it->point0().y() - shift_.y());
@@ -128,27 +128,25 @@ protected:
       glLineWidth(1.0);
     }
 
-    //// Draw voronoi vertices.
-    //{
-    //  const voronoi_vertices_type &vertices = vd_.vertex_records();
-    //  voronoi_vertex_const_iterator_type it;
-    //  glColor3f(0.0f, 0.0f, 0.0f);
-    //  glBegin(GL_POINTS);
-    //  for (it = vertices.begin(); it != vertices.end(); ++it) {
-    //    glVertex2f(it->vertex().x() - shift_.x(),
-    //               it->vertex().y() - shift_.y());
-    //  }
-    //  glEnd();
-    //}
+    // Draw voronoi vertices.
+    /*{
+      glColor3f(0.0f, 0.0f, 0.0f);
+      glBegin(GL_POINTS);
+      for (const_vertex_iterator it = vd_.vertices().begin();
+          it != vd_.vertices().end(); ++it) {
+        glVertex2f(it->vertex().x() - shift_.x(),
+                   it->vertex().y() - shift_.y());
+      }
+      glEnd();
+    }*/
 
     // Draw voronoi edges.
     {
-      const voronoi_edges_type &edges = vd_.edge_records();
-      voronoi_edge_const_iterator_type it;
       glColor3f(0.0f, 0.0f, 0.0f);
       glLineWidth(1.7f);
       glBegin(GL_LINES);
-      for (it = edges.begin(); it != edges.end(); ++it) {
+      for (const_edge_iterator it = vd_.edges().begin();
+          it != vd_.edges().end(); ++it) {
         if (primary_edges_only_ && !it->is_primary()) {
           continue;
         }
@@ -180,25 +178,25 @@ private:
   typedef double coordinate_type;
   typedef detail::point_2d<double> point_type;
   typedef voronoi_diagram<double> VD;
-  typedef VD::voronoi_edge_type voronoi_edge_type;
-  typedef VD::voronoi_cells_type voronoi_cells_type;
-  typedef VD::voronoi_vertices_type voronoi_vertices_type;
-  typedef VD::voronoi_edges_type voronoi_edges_type;
-  typedef VD::voronoi_cell_const_iterator_type voronoi_cell_const_iterator_type;
-  typedef VD::voronoi_vertex_const_iterator_type voronoi_vertex_const_iterator_type;
-  typedef VD::voronoi_edge_const_iterator_type voronoi_edge_const_iterator_type;
+  typedef VD::edge_type edge_type;
+  typedef VD::cell_container_type cell_container_type;
+  typedef VD::cell_container_type vertex_container_type;
+  typedef VD::edge_container_type edge_container_type;
+  typedef VD::const_cell_iterator const_cell_iterator;
+  typedef VD::const_vertex_iterator const_vertex_iterator;
+  typedef VD::const_edge_iterator const_edge_iterator;
 
-  void remove_exterior(const VD::voronoi_edge_type* edge) {
+  void remove_exterior(const VD::edge_type* edge) {
     if (exterior_edges_set_.count(edge)) {
       return;
     }
     exterior_edges_set_.insert(edge);
     exterior_edges_set_.insert(edge->twin());
-    const voronoi_diagram<double>::voronoi_vertex_type* v = edge->vertex1();
+    const voronoi_diagram<double>::vertex_type* v = edge->vertex1();
     if (v == NULL || !edge->is_primary()) {
       return;
     }
-    const voronoi_diagram<double>::voronoi_edge_type* e = v->incident_edge();
+    const voronoi_diagram<double>::edge_type* e = v->incident_edge();
     do {
       remove_exterior(e);
       e = e->rot_next();
@@ -218,7 +216,7 @@ private:
   point_type shift_;
   default_voronoi_builder vb_;
   voronoi_diagram<coordinate_type> vd_;
-  std::set<const voronoi_edge_type*> exterior_edges_set_;
+  std::set<const edge_type*> exterior_edges_set_;
   bool primary_edges_only_;
   bool internal_edges_only_;
 };

@@ -330,10 +330,10 @@ namespace polygon {
             }
         } ctype_converter_type;
         typedef detail::point_2d<coordinate_type> point_type;
-        typedef bounding_rectangle<coordinate_type> bounding_rectangle_type;
-        typedef voronoi_cell<coordinate_type> voronoi_cell_type;
-        typedef voronoi_vertex<coordinate_type> voronoi_vertex_type;
-        typedef voronoi_edge<coordinate_type> voronoi_edge_type;
+        typedef bounding_rectangle<coordinate_type> brect_type;
+        typedef voronoi_cell<coordinate_type> cell_type;
+        typedef voronoi_vertex<coordinate_type> vertex_type;
+        typedef voronoi_edge<coordinate_type> edge_type;
         typedef class {
         public:
             enum { ULPS = 128 };
@@ -381,83 +381,70 @@ namespace polygon {
         typedef typename TRAITS::coordinate_type coordinate_type;
         typedef typename TRAITS::ctype_converter_type ctype_converter_type;
         typedef typename TRAITS::point_type point_type;
-        typedef typename TRAITS::bounding_rectangle_type
-            bounding_rectangle_type;
-        typedef typename TRAITS::voronoi_cell_type voronoi_cell_type;
-        typedef typename TRAITS::voronoi_vertex_type voronoi_vertex_type;
-        typedef typename TRAITS::voronoi_edge_type voronoi_edge_type;
+        typedef typename TRAITS::brect_type brect_type;
+        typedef typename TRAITS::cell_type cell_type;
+        typedef typename TRAITS::vertex_type vertex_type;
+        typedef typename TRAITS::edge_type edge_type;
         typedef typename TRAITS::vertex_equality_predicate_type
             vertex_equality_predicate_type;
 
-        typedef std::vector<voronoi_cell_type> voronoi_cells_type;
-        typedef typename voronoi_cells_type::iterator
-            voronoi_cell_iterator_type;
-        typedef typename voronoi_cells_type::const_iterator
-            voronoi_cell_const_iterator_type;
+        typedef std::vector<cell_type> cell_container_type;
+        typedef typename cell_container_type::iterator cell_iterator;
+        typedef typename cell_container_type::const_iterator const_cell_iterator;
 
-        typedef std::list<voronoi_vertex_type> voronoi_vertices_type;
-        typedef typename voronoi_vertices_type::iterator
-            voronoi_vertex_iterator_type;
-        typedef typename voronoi_vertices_type::const_iterator
-            voronoi_vertex_const_iterator_type;
+        typedef std::list<vertex_type> vertex_container_type;
+        typedef typename vertex_container_type::iterator vertex_iterator;
+        typedef typename vertex_container_type::const_iterator const_vertex_iterator;
 
-        typedef std::list<voronoi_edge_type> voronoi_edges_type;
-        typedef typename voronoi_edges_type::iterator
-            voronoi_edge_iterator_type;
-        typedef typename voronoi_edges_type::const_iterator
-            voronoi_edge_const_iterator_type;
+        typedef std::list<edge_type> edge_container_type;
+        typedef typename edge_container_type::iterator edge_iterator;
+        typedef typename edge_container_type::const_iterator const_edge_iterator;
 
         voronoi_diagram() :
-            num_cell_records_(0),
-            num_edge_records_(0),
-            num_vertex_records_(0) {}
+            num_cells_(0),
+            num_edges_(0),
+            num_vertices_(0) {}
 
-        void clear() {
-            voronoi_cells_type().swap(cell_records_);
-            vertex_records_.clear();
-            edge_records_.clear();
-
-            num_cell_records_ = 0;
-            num_edge_records_ = 0;
-            num_vertex_records_ = 0;
+        void reserve(int num_sites) {
+            cells_.reserve(num_sites);
         }
 
-        const bounding_rectangle_type &bounding_rectangle() const {
+        void clear() {
+            cells_.clear();
+            vertices_.clear();
+            edges_.clear();
+
+            num_cells_ = 0;
+            num_edges_ = 0;
+            num_vertices_ = 0;
+        }
+
+        const brect_type &bounding_rectangle() const {
             return voronoi_rect_;
         }
 
-        const voronoi_cells_type &cell_records() const {
-            return cell_records_;
+        const cell_container_type &cells() const {
+            return cells_;
         }
 
-        const voronoi_vertices_type &vertex_records() const {
-            return vertex_records_;
+        const vertex_container_type &vertices() const {
+            return vertices_;
         }
 
-        const voronoi_edges_type &edge_records() const {
-            return edge_records_;
+        const edge_container_type &edges() const {
+            return edges_;
         }
 
-        int num_cell_records() const {
-            return num_cell_records_;
+        unsigned int num_cells() const {
+            return num_cells_;
         }
 
-        int num_edge_records() const {
-            return num_edge_records_;
+        unsigned int num_edges() const {
+            return num_edges_;
         }
 
-        int num_vertex_records() const {
-            return num_vertex_records_;
-        }
-
-        void reserve(int num_sites) {
-            // Resize cell vector to avoid reallocations.
-            cell_records_.reserve(num_sites);
-
-            // Init counters.
-            num_cell_records_ = 0;
-            num_edge_records_ = 0;
-            num_vertex_records_ = 0;
+        unsigned int num_vertices() const {
+            return num_vertices_;
         }
 
         // Update the voronoi output in case of a single point input.
@@ -465,10 +452,10 @@ namespace polygon {
         void process_single_site(const SEvent &site) {
             // Update bounding rectangle.
             point_type p = prepare_point(site.point0());
-            voronoi_rect_ = bounding_rectangle_type(p);
+            voronoi_rect_ = brect_type(p);
 
             // Update cell records.
-            cell_records_.push_back(voronoi_cell_type(p, NULL));
+            cells_.push_back(cell_type(p, NULL));
         }
 
         // Insert a new half-edge into the output data structure.
@@ -482,34 +469,34 @@ namespace polygon {
             int site_index2 = site2.index();
 
             // Create a new half-edge that belongs to the first site.
-            edge_records_.push_back(voronoi_edge_type());
-            voronoi_edge_type &edge1 = edge_records_.back();
+            edges_.push_back(edge_type());
+            edge_type &edge1 = edges_.back();
 
             // Create a new half-edge that belongs to the second site.
-            edge_records_.push_back(voronoi_edge_type());
-            voronoi_edge_type &edge2 = edge_records_.back();
+            edges_.push_back(edge_type());
+            edge_type &edge2 = edges_.back();
 
             // Add the initial cell during the first edge insertion.
-            if (cell_records_.empty()) {
+            if (cells_.empty()) {
                 process_single_site(site1);
-                cell_records_.back().incident_edge(&edge1);
+                cells_.back().incident_edge(&edge1);
             }
-            cell_records_[site_index1].inc_num_incident_edges();
+            cells_[site_index1].inc_num_incident_edges();
 
             // Update the bounding rectangle.
             voronoi_rect_.update(prepare_point(site2.point0()));
 
             // The second site represents a new site during site event
             // processing. Add a new cell to the cell records.
-            cell_records_.push_back(voronoi_cell_type(
+            cells_.push_back(cell_type(
                 prepare_point(site2.point0()),
                 prepare_point(site2.point1()),
                 &edge2));
-            cell_records_.back().inc_num_incident_edges();
+            cells_.back().inc_num_incident_edges();
 
             // Set up pointers to cells.
-            edge1.cell(&cell_records_[site_index1]);
-            edge2.cell(&cell_records_[site_index2]);
+            edge1.cell(&cells_[site_index1]);
+            edge2.cell(&cells_[site_index2]);
 
             // Set up twin pointers.
             edge1.twin(&edge2);
@@ -531,32 +518,29 @@ namespace polygon {
                               const CEvent &circle,
                               void *data12,
                               void *data23) {
-            voronoi_edge_type *edge12 =
-                static_cast<voronoi_edge_type*>(data12);
-            voronoi_edge_type *edge23 =
-                static_cast<voronoi_edge_type*>(data23);
+            edge_type *edge12 = static_cast<edge_type*>(data12);
+            edge_type *edge23 = static_cast<edge_type*>(data23);
 
             // Add a new voronoi vertex.
             coordinate_type x = convert_(circle.x());
             coordinate_type y = convert_(circle.y());
-            vertex_records_.push_back(
-                voronoi_vertex_type(point_type(x, y), edge12));
-            voronoi_vertex_type &new_vertex = vertex_records_.back();
+            vertices_.push_back(vertex_type(point_type(x, y), edge12));
+            vertex_type &new_vertex = vertices_.back();
 
             // Update vertex pointers of the old edges.
             edge12->vertex0(&new_vertex);
             edge23->vertex0(&new_vertex);
 
             // Add a new half-edge.
-            edge_records_.push_back(voronoi_edge_type());
-            voronoi_edge_type &new_edge1 = edge_records_.back();
-            new_edge1.cell(&cell_records_[site1.index()]);
+            edges_.push_back(edge_type());
+            edge_type &new_edge1 = edges_.back();
+            new_edge1.cell(&cells_[site1.index()]);
             new_edge1.cell()->inc_num_incident_edges();
 
             // Add a new half-edge.
-            edge_records_.push_back(voronoi_edge_type());
-            voronoi_edge_type &new_edge2 = edge_records_.back();
-            new_edge2.cell(&cell_records_[site3.index()]);
+            edges_.push_back(edge_type());
+            edge_type &new_edge2 = edges_.back();
+            new_edge2.cell(&cells_[site3.index()]);
             new_edge2.cell()->inc_num_incident_edges();
 
             // Update twin pointers.
@@ -580,31 +564,31 @@ namespace polygon {
 
         // Remove zero-length edges from the voronoi output.
         void clean() {
-            voronoi_edge_iterator_type edge_it1;
-            voronoi_edge_iterator_type edge_it = edge_records_.begin();
-            num_cell_records_ = cell_records_.size();
+            edge_iterator edge_it1;
+            edge_iterator edge_it = edges_.begin();
+            num_cells_ = cells_.size();
 
             // All the initial sites are colinear.
-            if (vertex_records_.empty()) {
+            if (vertices_.empty()) {
                 // Update edges counter.
-                num_edge_records_ = num_cell_records_ - 1;
+                num_edges_ = num_cells_ - 1;
 
                 // Return if there are no edges.
-                if (edge_it == edge_records_.end())
+                if (edge_it == edges_.end())
                     return;
 
                 // Update prev/next pointers of the edges. Those edges won't
                 // have any common endpoints, cause they are infinite.
                 // But still they follow each other using CCW ordering.
-                voronoi_edge_type *edge1 = &(*edge_it);
+                edge_type *edge1 = &(*edge_it);
                 edge1->next(edge1);
                 edge1->prev(edge1);
                 ++edge_it;
                 edge1 = &(*edge_it);
                 ++edge_it;
 
-                while (edge_it != edge_records_.end()) {
-                    voronoi_edge_type *edge2 = &(*edge_it);
+                while (edge_it != edges_.end()) {
+                    edge_type *edge2 = &(*edge_it);
                     ++edge_it;
 
                     edge1->next(edge2);
@@ -624,18 +608,18 @@ namespace polygon {
             // Iterate over all the edges and remove degeneracies
             // (zero-length edges). Edge is considered to be zero-length
             // if both its endpoints lie within some epsilon-rectangle.
-            while (edge_it != edge_records_.end()) {
+            while (edge_it != edges_.end()) {
                 edge_it1 = edge_it;
                 std::advance(edge_it, 2);
 
                 // Degenerate edges exist only among finite edges.
                 if (!edge_it1->vertex0() || !edge_it1->vertex1()) {
-                    ++num_edge_records_;
+                    ++num_edges_;
                     continue;
                 }
 
-                const voronoi_vertex_type *v1 = edge_it1->vertex0();
-                const voronoi_vertex_type *v2 = edge_it1->vertex1();
+                const vertex_type *v1 = edge_it1->vertex0();
+                const vertex_type *v2 = edge_it1->vertex1();
 
                 // Make epsilon robust check.
                 if (vertex_equality_predicate_(v1->vertex(), v2->vertex())) {
@@ -679,31 +663,31 @@ namespace polygon {
                     }
 
                     // Remove zero-length edge.
-                    edge_records_.erase(edge_it1, edge_it);
+                    edges_.erase(edge_it1, edge_it);
                 } else {
                     // Count not degenerate edge.
-                    ++num_edge_records_;
+                    ++num_edges_;
                 }
             }
 
             // Remove degenerate voronoi vertices with zero incident edges.
-            for (voronoi_vertex_iterator_type vertex_it =
-                 vertex_records_.begin();
-                 vertex_it != vertex_records_.end();) {
+            for (vertex_iterator vertex_it =
+                 vertices_.begin();
+                 vertex_it != vertices_.end();) {
                 if (vertex_it->incident_edge() == NULL) {
-                    vertex_it = vertex_records_.erase(vertex_it);
+                    vertex_it = vertices_.erase(vertex_it);
                 } else {
                     ++vertex_it;
-                    ++num_vertex_records_;
+                    ++num_vertices_;
                 }
             }
 
             // Update prev/next pointers for the ray-edges.
-            for (voronoi_cell_iterator_type cell_it = cell_records_.begin();
-                 cell_it != cell_records_.end(); ++cell_it) {
+            for (cell_iterator cell_it = cells_.begin();
+                 cell_it != cells_.end(); ++cell_it) {
                 // Move to the previous edge while
                 // it is possible in the CW direction.
-                voronoi_edge_type *cur_edge = cell_it->incident_edge();
+                edge_type *cur_edge = cell_it->incident_edge();
                 if (cur_edge) {
                     while (cur_edge->prev() != NULL) {
                         cur_edge = cur_edge->prev();
@@ -719,8 +703,7 @@ namespace polygon {
 
                     // Set up prev/next half-edge pointers for the ray-edges.
                     if (cur_edge->prev() == NULL) {
-                        voronoi_edge_type *last_edge =
-                            cell_it->incident_edge();
+                        edge_type *last_edge = cell_it->incident_edge();
                         while (last_edge->next() != NULL)
                             last_edge = last_edge->next();
                         last_edge->next(cur_edge);
@@ -744,29 +727,29 @@ namespace polygon {
         }
 
         // Remove degenerate edge.
-        void remove_edge(voronoi_edge_type *edge) {
-            voronoi_vertex_type *vertex1 = edge->vertex0();
-            voronoi_vertex_type *vertex2 = edge->vertex1();
+        void remove_edge(edge_type *edge) {
+            vertex_type *vertex1 = edge->vertex0();
+            vertex_type *vertex2 = edge->vertex1();
 
             // Update number of incident edges.
             vertex1->num_incident_edges(vertex1->num_incident_edges() +
                                         vertex2->num_incident_edges() - 2);
 
             // Update the endpoints of the incident edges to the second vertex.
-            voronoi_edge_type *updated_edge = edge->twin()->rot_next();
+            edge_type *updated_edge = edge->twin()->rot_next();
             while (updated_edge != edge->twin()) {
                 updated_edge->vertex0(vertex1);
                 updated_edge = updated_edge->rot_next();
             }
 
-            voronoi_edge_type *edge1 = edge;
-            voronoi_edge_type *edge2 = edge->twin();
+            edge_type *edge1 = edge;
+            edge_type *edge2 = edge->twin();
 
-            voronoi_edge_type *edge1_rot_prev = edge1->rot_prev();
-            voronoi_edge_type *edge1_rot_next = edge1->rot_next();
+            edge_type *edge1_rot_prev = edge1->rot_prev();
+            edge_type *edge1_rot_next = edge1->rot_next();
 
-            voronoi_edge_type *edge2_rot_prev = edge2->rot_prev();
-            voronoi_edge_type *edge2_rot_next = edge2->rot_next();
+            edge_type *edge2_rot_prev = edge2->rot_prev();
+            edge_type *edge2_rot_next = edge2->rot_next();
 
             // Update prev/next pointers for the incident edges.
             edge1_rot_next->twin()->next(edge2_rot_prev);
@@ -780,21 +763,21 @@ namespace polygon {
                 vertex1->incident_edge(edge->rot_prev());
             }
 
-            // Set the incident edge point of the second vertex to NULL value.
+            // Set the incident edge pointer of the second vertex to NULL value.
             if (vertex1 != vertex2) {
                 vertex2->incident_edge(NULL);
             }
         }
 
-        voronoi_cells_type cell_records_;
-        voronoi_vertices_type vertex_records_;
-        voronoi_edges_type edge_records_;
+        cell_container_type cells_;
+        vertex_container_type vertices_;
+        edge_container_type edges_;
 
-        int num_cell_records_;
-        int num_edge_records_;
-        int num_vertex_records_;
+        unsigned int num_cells_;
+        unsigned int num_edges_;
+        unsigned int num_vertices_;
 
-        bounding_rectangle_type voronoi_rect_;
+        brect_type voronoi_rect_;
         ctype_converter_type convert_;
         vertex_equality_predicate_type vertex_equality_predicate_;
 

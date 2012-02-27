@@ -38,9 +38,9 @@ kOrientation get_orientation(const Point2D &point1,
 template <typename Output>
 bool verify_half_edge_orientation(const Output &output) {
     typedef typename Output::point_type point_type;
-    typename Output::voronoi_edge_const_iterator_type edge_it;
-    for (edge_it = output.edge_records().begin(); 
-         edge_it != output.edge_records().end(); edge_it++) {
+    typename Output::const_edge_iterator edge_it;
+    for (edge_it = output.edges().begin(); 
+         edge_it != output.edges().end(); edge_it++) {
         if (edge_it->is_bounded()) {
             const point_type &site_point = edge_it->cell()->point0();
             const point_type &start_point = edge_it->vertex0()->vertex();
@@ -55,10 +55,10 @@ bool verify_half_edge_orientation(const Output &output) {
 template <typename Output>
 bool verify_cell_convexity(const Output &output) {
     typedef typename Output::point_type point_type;
-    typename Output::voronoi_cell_const_iterator_type cell_it;
-    for (cell_it = output.cell_records().begin();
-         cell_it != output.cell_records().end(); cell_it++) {
-        const typename Output::voronoi_edge_type *edge = cell_it->incident_edge();
+    typename Output::const_cell_iterator cell_it;
+    for (cell_it = output.cells().begin();
+         cell_it != output.cells().end(); cell_it++) {
+        const typename Output::edge_type *edge = cell_it->incident_edge();
         if (edge)
             do {
                 if (edge->next()->prev() != edge)
@@ -84,10 +84,10 @@ bool verify_cell_convexity(const Output &output) {
 template <typename Output>
 bool verify_incident_edges_ccw_order(const Output &output) {
     typedef typename Output::point_type point_type;
-    typedef typename Output::voronoi_edge_type voronoi_edge_type;
-    typename Output::voronoi_vertex_const_iterator_type vertex_it;
-    for (vertex_it = output.vertex_records().begin();
-         vertex_it != output.vertex_records().end(); vertex_it++) {
+    typedef typename Output::edge_type voronoi_edge_type;
+    typename Output::const_vertex_iterator vertex_it;
+    for (vertex_it = output.vertices().begin();
+         vertex_it != output.vertices().end(); vertex_it++) {
         if (vertex_it->num_incident_edges() < 3)
             continue;
         const voronoi_edge_type *edge = vertex_it->incident_edge();
@@ -123,9 +123,9 @@ bool verfiy_no_line_edge_intersections(const Output &output) {
     typedef typename Output::point_type point_type;
     cmp<point_type> comparator;
     std::map< point_type, std::vector<point_type>, cmp<point_type> > edge_map;
-    typename Output::voronoi_edge_const_iterator_type edge_it;
-    for (edge_it = output.edge_records().begin();
-         edge_it != output.edge_records().end(); edge_it++) {
+    typename Output::const_edge_iterator edge_it;
+    for (edge_it = output.edges().begin();
+         edge_it != output.edges().end(); edge_it++) {
         if (edge_it->is_bounded()) {
             const point_type &vertex0 = edge_it->vertex0()->vertex();
             const point_type &vertex1 = edge_it->vertex1()->vertex();
