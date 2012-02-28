@@ -132,9 +132,10 @@ limit_point_style_(lightgrey, red, 10, cone), // Default limit (inf or NaN) poin
 line_style_(black, blank, 2, false, false) // Default line style, black, no fill, width, line_on, bezier_on false
 {
   for(T i = begin; i != end; ++i)
-  {  // No defaults for begin and end?
+  {  // Might be useful to have defaults for begin and end? But unclear how.
     unc temp = *i; // Assumes unc type.
-    // TODO This should be a template  typename built-in vector<double>, or vector<unc> or vector<named>
+    // TODO This unc could be a template typename of the data type, double for built-in vector<double>, 
+    // or unc for vector<unc> or named for vector<named>?
     if(detail::is_limit(temp.value()))
     {
       series_limits_.push_back(temp.value()); // 'limit' values: too big, too small or NaN.

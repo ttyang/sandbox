@@ -2822,9 +2822,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
 
       svg_2d_plot& svg_2d_plot::x_ticks_on_window_or_axis(int side)
       { // Set if ticks on the plot window or on the X axis.
-        //! \param side -1 ticks downward.
-        //! \param side 0 no ticks.
-        //! \param side +1 ticks upward.
+        //! \param side -1 ticks downward, 0 no ticks, +1 ticks upward.
         x_ticks_.ticks_on_window_or_on_axis_ = side;
         return *this; //! \return reference to svg_2d_plot to make chainable.
       }
@@ -2835,10 +2833,8 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
       }
 
       svg_2d_plot& svg_2d_plot::x_major_labels_side(int side)
-      { /*! Side for major ticks label values:
-         \param side -1 labels downward.
-         \param side 0 no labels.
-         \param side +1 labels upward.
+      { /*! Set which side (up, down or none) for major ticks label values:
+          \param side -1 labels downward, 0 no labels, +1 labels upward.
         */
         x_ticks_.major_value_labels_side_ = side;
         return *this; //! \return reference to svg_2d_plot to make chainable.
@@ -2850,11 +2846,9 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
       }
 
       svg_2d_plot& svg_2d_plot::y_ticks_on_window_or_axis(int cmd)
-      {  /*!  Set Y ticks on window or axis
-              \arg cmd -1 left of plot window,
-              \arg cmd 0 on Y axis.
-              \arg cmd +1 right of plot window.
-            */
+      { /*!  Set Y ticks on window or axis
+          \param cmd -1 left of plot window, 0 on Y axis, +1 right of plot window.
+        */
         y_ticks_.ticks_on_window_or_on_axis_ = cmd;
         return *this; //! \return reference to svg_2d_plot to make chainable.
       }

@@ -1040,7 +1040,7 @@ namespace boost
                   sty.shape_ = unc_ellipse;
                 }
               }
-              
+
               // Line markers are only really useful for 2-D lines and curves showing functions.
               if (derived().legend_lines_)
               { // Need to draw a short line to show color for that data series.
@@ -1080,7 +1080,7 @@ namespace boost
             g_element& g_ptr,
             plot_point_style& sty,
             unc ux, unc uy) // Default unc ux = 0.? and uy = 0.
-          { /*! Draw a plot data point marker shape 
+          { /*! Draw a plot data point marker shape
               whose size and stroke and fill colors are specified in plot_point_style.
             */
             /*
@@ -1122,14 +1122,14 @@ namespace boost
 
             case unc_ellipse:
               { // Uncertainty horizontal (and, for 2D, vertical) ellipses for one, two and three standard deviations.
-                double xu = ux.value(); // 
+                double xu = ux.value(); //
                 if (ux.uncertainty() > 0)
                 { // uncertainty is meaningful.
                   xu +=  ux.uncertainty();
                 }
                 transform_x(xu); // To SVG coordinates.
                 double x_radius = abs(xu - x);
-                if (x_radius <= 0.) 
+                if (x_radius <= 0.)
                 { // Make sure something is visible.
                   x_radius = 1.; // Or size?
                 }
@@ -1178,7 +1178,7 @@ namespace boost
               g_ptr.text(x, y + half_size, sty.symbols(), sty.style(), center_align, horizontal); // symbol(s), size and centre.
 
               // Unicode symbols that work on most browsers are listed at
-              // boost\math_toolkit\libs\math\doc\sf_and_dist\html4_symbols.qbk,
+              // boost\math\libs\math\doc\sf_and_dist\html4_symbols.qbk,
               // http://www.htmlhelp.com/reference/html40/entities/symbols.html
               // and  http://www.alanwood.net/demos/ent4_frame.html
               // The Unicode value in decimal 9830 or hex x2666 must be prefixed with & and terminated with ;
@@ -1232,9 +1232,13 @@ namespace boost
           } // void draw_plot_point
 
           void draw_plot_point_value(double x, double y, g_element& g_ptr, value_style& val_style, plot_point_style& point_style, unc uvalue)
-          { /*! Write one data point (X or Y) value as a string, for example "1.23e-2", near the data point marker.
-             Unecessary e, +, \& leading exponent zeros may optionally be stripped, and the position and rotation controlled.
-             Uncertainty estimate, typically standard deviation (half conventional 95% confidence 'plus or minus') may be optionally be appended.
+          { /*!
+             Write one data point (X or Y) value as a string, for example "1.23e-2",
+             near the data point marker.
+             Unecessary e, +, \& leading exponent zeros may optionally be stripped,
+             and the position and rotation controlled.
+             Uncertainty estimate, typically standard deviation
+             (half conventional 95% confidence 'plus or minus') may be optionally be appended.
              Degrees of freedom estimate (number of replicates) may optionally be appended.
              For example: "3.45 +-0.1(10)"\n
              The precision and format (scientific, fixed), and color and font type and size can be controlled too.
@@ -1900,20 +1904,19 @@ namespace boost
           Derived& x_ticks_values_font_size(unsigned int i); //!< Set X ticks value label font size (svg units, default pixels).
           unsigned int x_ticks_values_font_size(); //!< Set X ticks value label font size (svg units, default pixels).
 
-          Derived& x_ticks_on_window_or_axis(int cmd); /*!<  Set position of X ticks on window or axis.
-              \arg \c cmd -1 X ticks on bottom of plot window,
-              \arg \c cmd 0 X ticks on X axis horizontal line.
-              \arg \c cmd +1 X ticks top of plot window.
+          Derived& x_ticks_on_window_or_axis(int side);
+            /*!<  Set position of X ticks on window or axis.
+              \param side -1 X ticks on bottom of plot window,
+                       0 X ticks on X-axis horizontal line,
+                       +1 X ticks top of plot window.
             */
           int x_ticks_on_window_or_axis(); //!< \return true if X axis ticks wanted on the window (rather than on axis).\n
             //!< -1 bottom of plot window, 0 on horiztonal X axis , +1 top of plot window.
           Derived& x_label_units_on(bool cmd); //!< Set true if want X axis label to include units (as well as label like "length").
             //!< \see x_label_units which also sets true.
           bool x_label_units_on(); //!< Set true if want X axis label to include units (as well as label like "length").
-          Derived& x_major_labels_side(int cmd); /*!< Position of labels for X major ticks on horizontal X axis line.
-               \arg \c cmd  place > 0 X tick value labels to left of Y axis line (default),
-               \arg \c cmd place = 0 (false) no major X tick value labels on Y axis.
-               \arg \c cmd place > 0 X tick labels to right of Y axis line.
+          Derived& x_major_labels_side(int side); /*!< Position of labels for X major ticks on horizontal X axis line.
+               \param side > 0 X tick value labels to left of Y axis line (default), 0 (false) no major X tick value labels on Y axis, 0 X tick labels to right of Y axis line.
             */
           int x_major_labels_side(); //!< \return the side for X ticks major value labels.
           Derived& x_major_label_rotation(rotate_style rot); /*!< Set rotation for X ticks major value labels. (Default horizontal).

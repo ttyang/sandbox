@@ -127,8 +127,13 @@ and uncertainty and degrees of freedom if known.
 /*`
 Finally, we can write the SVG to a file of our choice.
 */
-  //my_plot.write("./demo_1d_uncertainty.svg");
-  my_plot.write("./demo_1d_uncertainty_legend.svg");
+
+  std::string svg_file =  (my_plot.legend_on() == true) ? 
+    "./demo_1d_uncertainty_legend.svg" : "./demo_1d_uncertainty.svg";
+
+  my_plot.write(svg_file);
+
+  cout <<"Plot written to file " << svg_file << endl;
 
 //] [/demo_1d_uncertainty_2]
   // show_1d_plot_settings(my_plot);

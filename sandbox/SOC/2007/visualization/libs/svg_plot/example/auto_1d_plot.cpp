@@ -182,8 +182,9 @@ It accepts parameters controlling the scaling and updates 4 items. Its signature
   double axis_tick_increment;
   int axis_ticks;
 
-/*` The values of
-`min_value` and `max_value` could be provided by the user program:
+/*`
+The values of `min_value` and `max_value`
+could be provided by the user program:
 but usually these values are derived in some way from the user data.
 Several examples follow: */
 
@@ -231,7 +232,7 @@ Several examples follow: */
 However autoscaling may go wrong if the data could contain values that are outside normal limits.
 Infinity (+ and -), and maximum value, and NaN (Not A Number),
 are separated by the plot program to allow them to be shown
-but separate from 'normal' values.  These values similarly can distort automatic scaling:
+but separate from 'normal' values. These values similarly can distort automatic scaling:
 a single infinity would result in useless scaling!
 When the plot range is set, the maximum and minimum values are checked,
 and if not normal then an exception will be thrown, and no plot will be produced.
@@ -241,7 +242,7 @@ for example because they come from some measuring equipment that is known only t
 it will be much quicker to use `std::min_max_element` which can take advantange of knowledge of the container.
 
 The function `autoscale_check_limits(bool)` is provided to control this.
-If set true, all values will be checked, and those at 'limits' will be ignored in autoscaling.
+If set true, all values will be checked, and those 'at limits' will be ignored in autoscaling.
 The default is true, to check all values.
 
 If we had many very known normal values to plot and want to autoscale,
@@ -262,7 +263,7 @@ we might instead opt to ignore these checks, and write:
 /*`There are also some parameters which can fine-tune the autoscaling
 to produce more aesthetically pleasing ranges. One can:
 
-# enforce the inclusion of zero on the plot.
+# Enforce the inclusion of zero on the plot.
 # Specify a minimum number of major ticks.
 # Specify the steps between major ticks, default 0,  or 2 for 2, 4, 6, 8, 10, 5 for 1, 5, 10, or 10 (2, 5, 10).
 # Avoid values that are a tiny amount over the minimum or maximum from causing
@@ -305,7 +306,7 @@ to produce more aesthetically pleasing ranges. One can:
     << ", interval " << my_1d_plot.x_auto_tick_interval() << endl; // Autoscaled min 1, max 5.5, interval 0.5
 
   //my_1d_plot.x_autoscale(true);  // Ensure autoscale values are used for the plot.
-  // This is also automatically set true by any call of `x_autoscale(some_data);
+  // This is also automatically set true by any call of x_autoscale(some_data);
 
 /*`The actual addition of data values to the plot is, of course, quite separate from any autoscaling.
 */
