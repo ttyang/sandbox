@@ -92,8 +92,9 @@ public:
   // Constructor svg_1d_plot_series.
   //! Scan each data point between the iterators that are passed,
   //! sorting them into the appropriate std::vectors, normal or not (NaN or infinite).
-  template <class T> //! \tparam T an STL container: array, vector<double>, set, map ...<
-  svg_1d_plot_series(T begin, T end, const std::string& title = "");
+
+  template <class C> //! \tparam C an STL container: array, vector<double>, set, map ...<
+  svg_1d_plot_series(C begin, C end, const std::string& title = "");
 
   // Declarations of Set functions for the plot series.
 
@@ -122,8 +123,8 @@ public:
 }; // class svg_1d_plot_series
 
 // class svg_1d_plot_series Constructor.
-template <class T> //! \tparam T an STL container: array, vector<double>, vector<unc>, set, map ...
-svg_1d_plot_series::svg_1d_plot_series(T begin, T end, const std::string& title)
+template <class C> //! \tparam C an iterator into STL container: array, vector<double>, vector<unc>, set, map ...
+svg_1d_plot_series::svg_1d_plot_series(C begin, C end, const std::string& title)
 : // Constructor.
 title_(title),
 point_style_(black, blank, 5, vertical_line), // Default point style.
@@ -131,11 +132,35 @@ limit_point_style_(lightgrey, red, 10, cone), // Default limit (inf or NaN) poin
 //limit_point_style_(lightgrey, whitesmoke, 10, cone), // Default limit (inf or NaN) point style.
 line_style_(black, blank, 2, false, false) // Default line style, black, no fill, width, line_on, bezier_on false
 {
-  for(T i = begin; i != end; ++i)
+  //cout << "typeid(C).name() = " << typeid(C).name() << endl;
+  /*
+      typeid(C).name() =
+    class boost::transform_iterator
+    <
+      class boost::svg::detail::unc_1d_convert, class std::_Vector_const_iterator
+      <
+        class std::_Vector_val
+        <
+          class boost::svg::unc, class std::allocator
+          <
+            class boost::svg::unc
+          >
+        >
+      >,
+      struct boost::use_default, struct boost::use_default
+    >
+  */
+
+  for(C i = begin; i != end; ++i)
   {  // Might be useful to have defaults for begin and end? But unclear how.
-    unc temp = *i; // Assumes unc type.
-    // TODO This unc could be a template typename of the data type, double for built-in vector<double>, 
-    // or unc for vector<unc> or named for vector<named>?
+    //double temp = *i; // assume type is just double.   
+    //boost::svg::unc temp = *i; // Assumes unc type.
+    // So use auto to automatically make temp the right type.
+
+    auto temp = *i; // Should provide double, unc, ... type.
+
+    //cout << "typeid(temp).name() = " << typeid(temp).name() << endl;
+    //   typeid(temp).name() = class boost::svg::unc
     if(detail::is_limit(temp.value()))
     {
       series_limits_.push_back(temp.value()); // 'limit' values: too big, too small or NaN.
