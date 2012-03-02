@@ -54,7 +54,8 @@ select Dag.Parent as ParentId, Dag.Child as ChildId,
 
 
 -- ----------------------------------------------------------------------------
-create view Collections as
+create view Collections as 
+-- This part works for: void fromSql()
 select Dag.Parent as ParentId, Dag.Child as ChildId, Types.Id as TypeId,
   (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent,
   Objects.name as Child, Types.name as Type 

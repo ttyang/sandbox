@@ -312,7 +312,11 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
         data[childName]  = query.value(childName);
         data[childType]  = query.value(childType);
 
-        DagItem* curNode = new DagItem(data, parent);
+        DagItem* curNode = (depth==0) ? new DagItem(data, 0) //curNode==rootItem
+                                      : new DagItem(data, parent);
+        if(depth == 0)
+            rootItem = curNode;
+
         //if the new node is not a leaf, create children.
         //JODO if(!curNode->IsLeaf())
         if(data[typeId] != 2)
@@ -322,6 +326,7 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
             while((curChild = fromSql(query, curNode, depth+1)) != NULL)
             {
                 curNode->addChild(curChild);
+                int dbg_childCount = curNode->childCount(); //CL
             }
         }
 

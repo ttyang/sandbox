@@ -80,13 +80,20 @@ void Browser::exec()
 
     QStringList headers;
     headers << tr("Title") << tr("Description");
-    DagModel* dagmo = new DagModel(headers);
+    DagModel* dagmo = new DagModel(headers); // Dag-Model
 
     QSqlQuery xpQuery = QSqlQuery("", connectionWidget->currentDatabase());
     QString dbg_query = QString(sqlEdit->toPlainText());
     xpQuery.exec(sqlEdit->toPlainText());
+
     int dbg_size = xpQuery.size();
+    // Populate the Dag Model from an sql-Query
     dagmo->fromSql(xpQuery);
+
+    QMessageBox msgBox;
+    QString dagStr = dagmo->toString();
+    msgBox.setText(dagStr);
+    msgBox.exec();
 
     model->setQuery(curQuery);
     //REV? model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
