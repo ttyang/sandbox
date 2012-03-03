@@ -7,12 +7,14 @@
 
 
 
+
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 	<tbody><tr>
-		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+		<td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
 		<div style="padding: 5px;" align="center">
 			<img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/">
 			</a></div>
@@ -49,16 +51,17 @@
 				<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
 				<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
 				<li><a href="gtl_property_merge.htm">Property Merge</a></li>
-				<li><a href="voronoi_unit.htm">Voronoi Main</a></li>
+				<li><a href="voronoi_unit.htm">Voronoi Main Page<br>
+</a></li>
         <li><a href="voronoi_benchmark.htm">Voronoi Benchmark</a></li>
 
 				<li><a href="voronoi_builder.htm">Voronoi Builder</a><br>
 				</li>
 				<li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram</a></li>
-        <li><a href="voronoi_robust_fpt.htm">Voronoi Robust FPT</a><br>
+        <li>Voronoi Robust FPT<br>
         </li>
 
-        <li>Voronoi Predicates</li>
+        <li><a href="voronoi_predicates.htm">Voronoi Predicates</a></li>
 
         <li><a href="voronoi_utils.htm">Voronoi Utils</a><br>
         </li>
@@ -108,7 +111,7 @@ error. Let's consider two values A and B; C - rounding error; re
       <span style="font-family: Courier New,Courier,monospace;">re(A-B) &lt;= (B * re(A) + A * re(B)) / |A-B| + C, if A * B &lt; 0;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">re(A*B) &lt;= re(A) + re(B) + C;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">re(A/B) &lt;= re(A) + re(B) + C;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">re(sqrt(A)) &lt;= re(A) * 0.5 + C.<br>
+      <span style="font-family: Courier New,Courier,monospace;">re(sqrt(A)) &lt;= re(A) * 0.5 + C;<br>
       <br>
       </span>The constant C is equal to the rounding relative error
 which for the above set of arithmetic operations in the IEEE-754
@@ -127,15 +130,15 @@ exteremely large in case threir values are close to each other (this is
 also called cancellation error).<br>
 To explain this a bit consider following experssion (~ - stands for almost equal, &lt;&lt; - many times larger than):<br>
       <br>
-      <span style="font-family: Courier New,Courier,monospace;">A - B + C, where A ~ B and C &lt;&lt; B.</span><br>
+      <span style="font-family: Courier New,Courier,monospace;">A - B + C, where A ~ B and C &lt;&lt; B;</span><br>
       <br>
 Computing relative error of this expression from left to right will produce extremely large relative error:<br>
       <br>
-      <span style="font-family: Courier New,Courier,monospace;">re(A-B+C) = max(re(A-B), re(C)) = re(A-B) = INF.<br>
+      <span style="font-family: Courier New,Courier,monospace;">re(A-B+C) = max(re(A-B), re(C)) = re(A-B) = INF;<br>
       <br>
       </span>While doing this from right to left will keep relative error value small:<br>
       <br>
-      <span style="font-family: Courier New,Courier,monospace;">re(A-B+C) = re(C-B+A) = max(re(C-B), re(A)) = max(re(A), re(B)).<br>
+      <span style="font-family: Courier New,Courier,monospace;">re(A-B+C) = re(C-B+A) = max(re(C-B), re(A)) = max(re(A), re(B));<br>
       <br>
       </span>While both estimates are valid (they define upper bound of the relative error), of course the second one is preferable.<br>
 Here is the place where robust difference type comes useful. Basically
@@ -168,7 +171,7 @@ This appears to be enough for the Voronoi.<br>
 </td>
 	</tr>
 	<tr>
-		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+		<td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
 		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
 		<table class="docinfo" id="table2" frame="void" rules="none">
 			<colgroup>

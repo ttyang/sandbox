@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
+
+<table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+		<div style="padding: 5px;" align="center">
+			<img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/">
+			</a></div>
+		<div style="margin: 5px;">
+			<h3 class="navbar">Contents</h3>
+			<ul>
+				<li><a href="index.htm">Boost.Polygon Main Page</a></li>
+				<li><a href="gtl_design_overview.htm">Design Overview</a></li>
+				<li><a href="gtl_isotropy.htm">Isotropy</a></li>
+				<li><a href="gtl_coordinate_concept.htm">Coordinate Concept</a></li>
+				<li><a href="gtl_interval_concept.htm">Interval Concept</a></li>
+				<li><a href="gtl_point_concept.htm">Point Concept</a></li>
+				<li><a href="gtl_rectangle_concept.htm">Rectangle Concept</a></li>
+				<li><a href="gtl_polygon_90_concept.htm">Polygon 90 Concept</a></li>
+				<li><a href="gtl_polygon_90_with_holes_concept.htm">Polygon 90 
+				With Holes Concept</a></li>
+				<li><a href="gtl_polygon_45_concept.htm">Polygon 45 Concept</a></li>
+				<li><a href="gtl_polygon_45_with_holes_concept.htm">Polygon 45 
+				With Holes Concept</a></li>
+				<li><a href="gtl_polygon_concept.htm">Polygon Concept</a></li>
+				<li><a href="gtl_polygon_with_holes_concept.htm">Polygon With 
+				Holes Concept</a></li>
+				<li><a href="gtl_polygon_90_set_concept.htm">Polygon 90 Set 
+				Concept</a></li>
+				<li><a href="gtl_polygon_45_set_concept.htm">Polygon 45 Set 
+				Concept</a></li>
+				<li><a href="gtl_polygon_set_concept.htm">Polygon Set Concept</a></li>
+				<li><a href="gtl_connectivity_extraction_90.htm">Connectivity 
+				Extraction 90</a></li>
+				<li><a href="gtl_connectivity_extraction_45.htm">Connectivity 
+				Extraction 45</a></li>
+				<li><a href="gtl_connectivity_extraction.htm">Connectivity 
+				Extraction</a></li>
+				<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
+				<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
+				<li><a href="gtl_property_merge.htm">Property Merge</a></li>
+				<li><a href="voronoi_unit.htm">Voronoi Main Page<br>
+</a></li>
+        <li><a href="voronoi_benchmark.htm">Voronoi Benchmark</a></li>
+
+				<li><a href="voronoi_builder.htm">Voronoi Builder</a><br>
+				</li>
+				<li><a href="voronoi_diagram_datastructure.htm">Voronoi Diagram</a></li>
+        <li><a href="voronoi_robust_fpt.htm">Voronoi Robust FPT</a><br>
+        </li>
+
+        <li><a href="voronoi_predicates.htm">Voronoi Predicates</a></li>
+
+        <li>Voronoi Utils<br>
+        </li>
+
+				
+			</ul>
+			<h3 class="navbar">Other Resources</h3>
+			<ul>
+				<li><a href="GTL_boostcon2009.pdf">GTL Boostcon 2009 Paper</a></li>
+				<li><a href="GTL_boostcon_draft03.htm">GTL Boostcon 2009 
+				Presentation</a></li>
+				<li><a href="analysis.htm">Performance Analysis</a></li>
+				<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
+				<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
+				<li><a href="voronoi_diagram_basic_tutorial.htm">Voronoi Basic Tutorial</a></li>
+				<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
+			</ul>
+		</div>
+		<h3 class="navbar">Polygon Sponsor</h3>
+		<div style="padding: 5px;" align="center">
+			<img src="images/intlogo.gif" border="0" height="51" width="127"><a title="www.adobe.com home page" tabindex="2" style="border: medium none ;" href="http://www.adobe.com/">
+			</a></div>
+		</td>
+		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> 
+		<br>
+		<p></p>
+      <h1>Voronoi Utils</h1>Voronoi
+utilities are set of tools that users may find useful especially for
+the visualization of the Voronoi diagrams or parabolic edges
+interpoliation.<br>
+All the methods within the utilities class are static. Class definition follows:<br>
+      <br><span style="font-family: Courier New,Courier,monospace;">
+template &lt;typename T, typename TRAITS = voronoi_utils_traits&lt;T&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;"><span style="font-family: Courier New,Courier,monospace;">
+class voronoi_utils;<br>
+      <br>
+      </span><span style="font-family: Courier New,Courier,monospace;">T - </span>coordinate type utilities methods operate with.<br>
+      <span style="font-family: Courier New,Courier,monospace;">TRAITS - </span><span style="font-family: Courier New,Courier,monospace;"></span> contain utilities coordinate and geometry traits.<br>
+      <br>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+            <span style="font-family: Courier New,Courier,monospace;">static brect_type get_view_rectangle(const bounding_rectangle&lt;CT&gt; &amp;brect, fpt_type scale = 1.0)</span><br>
+            </td>
+            <td style="vertical-align: top;">Returns scaled homothetic bounding rectangle. The center of homotethy corresponds to the center of the input rectangle.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+            <span style="font-family: Courier New,Courier,monospace;">static point_set_type get_point_interpolation(</span><span style="font-family: Courier New,Courier,monospace;">const voronoi_edge&lt;CT&gt; *edge,</span><span style="font-family: Courier New,Courier,monospace;"> const bounding_rectangle&lt;CT&gt; &amp;brect,</span><span style="font-family: Courier New,Courier,monospace;"> fpt_type max_error)</span><br>
+            </td>
+            <td style="vertical-align: top;">Interpolates Voronoi edge.
+For linear edges fills output set with edge endpoints. For parabolic
+edges fills output set with points that interpolate Voronoi edge.&nbsp;
+Additional clipping is done for infinite edges using input bounding
+rectangle.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">static
+void find_intersections(const point_type &amp;origin, const point_type
+&amp;direction, kEdgeType edge_type, const brect_type &amp;brect,
+point_set_type &amp;intersections)</span><br>
+            </td>
+            <td style="vertical-align: top;"><br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+&nbsp;
+
+      <h1>Voronoi Utils Traits<br>
+</h1><br>
+
+
+
+</td>
+	</tr>
+	<tr>
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
+		<table class="docinfo" id="table2" frame="void" rules="none">
+			<colgroup>
+				<col class="docinfo-name"><col class="docinfo-content">
+			</colgroup>
+			<tbody valign="top">
+				<tr>
+					<th class="docinfo-name">Copyright:</th>
+					<td>Copyright © Intel Corporation 2008-2010.</td>
+				</tr>
+				<tr class="field">
+					<th class="docinfo-name">License:</th>
+					<td class="field-body">Distributed under the Boost Software 
+					License, Version 1.0. (See accompanying file
+					<tt class="literal"><span class="pre">LICENSE_1_0.txt</span></tt> 
+					or copy at
+					<a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
+					http://www.boost.org/LICENSE_1_0.txt</a>)</td>
+				</tr>
+		</tbody></table>
+		</td>
+	</tr>
+</tbody></table>
+
+</body></html>
