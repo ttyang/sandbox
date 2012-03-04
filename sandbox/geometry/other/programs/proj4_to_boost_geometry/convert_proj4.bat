@@ -5,11 +5,11 @@
 :: Please note that proj-4.7.0 has still an error in pconics, which is
 :: solved in the trunk of proj. So take that trunk somewhere.
 
-set proj4=c:\svn\other\osgeo_proj4\src
+set proj4=c:\_svn\osgeo\proj_trunk\proj\src
 
 :: This is the path where Boost.Geometry extensions gis projections proj lives:
-set bg_proj=../../../boost/geometry/extensions/gis/projections/proj
-:: set bg_proj=t
+:: set bg_proj=../../../boost/geometry/extensions/gis/projections/proj
+set bg_proj=t
 
 set converter=release\proj4_to_boost_geometry.exe
 
@@ -105,3 +105,11 @@ set converter=release\proj4_to_boost_geometry.exe
 %converter% %proj4%/pj_wink1.c wink1 > %bg_proj%/wink1.hpp
 %converter% %proj4%/pj_wink2.c wink2 > %bg_proj%/wink2.hpp
 %converter% %proj4%/proj_rouss.c rouss > %bg_proj%/rouss.hpp
+
+:: New since 4.7
+echo New since proj 4.7
+%converter% %proj4%/pj_auth.c auth > %bg_proj%/auth.hpp
+%converter% %proj4%/pj_healpix.c healpix > %bg_proj%/healpix.hpp
+%converter% %proj4%/pj_igh.c igh > %bg_proj%/igh.hpp
+%converter% %proj4%/pj_isea.c isea > %bg_proj%/isea.hpp
+%converter% %proj4%/pj_natearth.c  natearth > %bg_proj%/natearth.hpp

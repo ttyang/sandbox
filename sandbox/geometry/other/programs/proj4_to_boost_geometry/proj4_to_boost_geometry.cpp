@@ -7,6 +7,9 @@
 //
 // Proj4 to Boost.Geometry
 
+// NOTE:
+// This was written in 2008 to quickly accomplish a good conversion,
+// which was successful. However needs to be cleaned up, split up etc.
 
 #include <iostream>
 #include <fstream>
@@ -198,6 +201,11 @@ class proj4_converter
             if (boost::contains(line, "->"))
             {
                 boost::replace_all(line, "fac->", prefix + "fac.");
+
+                // BSG 2012-03-03, remove the new "proj ctx" context completely, it's only debug-info
+                boost::replace_all(line, "P->ctx, ", "");
+                boost::replace_all(line, "P->ctx,", "");
+
                 boost::replace_all(line, "P->", prefix + "par.");
                 boost::replace_all(line, "P -> ", prefix + "par.");
                 // Refer to project-specific parameters
@@ -212,18 +220,9 @@ class proj4_converter
                 // Same for lam0
                 boost::replace_all(line, "proj_parm.lam0", "par.lam0");
 
-
-                /*if (projection_group == "chamb")
-                {
-                    boost::replace_all(line, "par.c", "proj_parm.c");
-                }
-                if (use_mlfn())
-                {
-                    boost::replace_all(line, "par.en", "proj_parm.en");
-                }*/
             }
 
-            // Special casses
+            // Special cases
             if (projection_group == "robin"
                 || projection_group == "tmerc")
             {
@@ -233,6 +232,13 @@ class proj4_converter
                     boost::replace_all(line, "floor", "int_floor");
                 }
             }
+            else if (projection_group == "chamb")
+            {
+                boost::replace_all(line, "(projCtx ctx, ", "(");
+                boost::replace_all(line, "(ctx, ", "(");
+                boost::replace_all(line, "(ctx,", "(");
+            }
+
         }
 
         void replace_in_entry(std::string& line)
@@ -281,11 +287,23 @@ class proj4_converter
                 {
                     line = tab1 + "proj_parm.en = detail::gauss::gauss_ini(par.e, par.phi0, proj_parm.phic0, R);";
                 }
+                boost::replace_all(line, "ENTRYX", "");
+                boost::replace_all(line, "proj_parm.en=0;", "");
+            }
+            else if (projection_group == "cea")
+            {
+                boost::replace_all(line, "double t;", "double t = 0;");
             }
             else if (projection_group == "ob_tran")
             {
                 boost::replace_all(line, "proj_parm.link->", "pj.");
             }
+            else if (projection_group == "geos")
+            {
+                boost::replace_all(line, "sweep_axis == NULL", "sweep_axis.empty()");
+            }
+
+
 
             if (use_mlfn())
             {
@@ -321,15 +339,18 @@ class proj4_converter
                 boost::replace_all(line, it->name, it->value);
             }
 
-            if (boost::contains(boost::replace_all_copy(line, " ", ""), "pj_errno="))
+            if (boost::contains(line, "errno"))
             {
-                boost::replace_all(line, "pj_errno", "throw proj_exception(");
-                boost::replace_all(line, "=", "");
-                boost::replace_all(line, ";", ");");
-                boost::replace_all(line, ";;", ";");
+                if (boost::contains(boost::replace_all_copy(line, " ", ""), "pj_errno="))
+                {
+                    boost::replace_all(line, "pj_errno", "throw proj_exception(");
+                    boost::replace_all(line, "=", "");
+                    boost::replace_all(line, ";", ");");
+                    boost::replace_all(line, ";;", ";");
+                }
+                boost::replace_all(line, "pj_ctx_set_errno", "throw proj_exception");
             }
         }
-
 
         void replace_for_setup(std::string const& line, std::vector<std::string>& setup)
         {
@@ -375,7 +396,10 @@ class proj4_converter
             else if (projection_group == "goode")
             {
                 if (boost::contains(line, "!(P->sinu = pj_sinu")
-                    || boost::contains(line, "E_ERROR_0"))
+                    || boost::contains(line, "E_ERROR_0")
+                    || boost::contains(line, "->ctx")
+                    || boost::contains(line, "sinu->es")
+                    )
                 {
                     return;
                 }
@@ -623,7 +647,8 @@ class proj4_converter
                         in_projection = false;
                         started = true;
                     }
-                    else if (boost::starts_with(trimmed, "ENTRY"))
+                    else if (boost::starts_with(trimmed, "ENTRY") 
+                        && ! boost::equals(trimmed, "ENTRYX"))
                     {
                         in_constructor = true;
                         in_postfix = false;
@@ -780,6 +805,11 @@ class proj4_converter
                         {
                             boost::replace_all(par, "XY", "CXY");
                         }
+                        else if (projection_group == "geos")
+                        {
+                            // Update for sweep_axis
+                            boost::replace_all(par, "char *", "std::string");
+                        }
                         else if (projection_group == "goode")
                         {
                             if (boost::contains(trimmed, "struct PJconsts"))
@@ -880,25 +910,10 @@ class proj4_converter
                         else if (projection_group == "robin")
                         {
                             boost::replace_all(line, "float c0, c1", "double c0, c1");
-                            // Add missing braces, all values are separated by , and have a ., the rest
-                            // of the lines here do not have that combination
-                            if (boost::contains(line, ".") && boost::contains(line, ","))
-                            {
-                                boost::trim(line);
 
-                                // add begin brace
-                                line.insert(0, "{");
-                                if (boost::contains(line, "}"))
-                                {
-                                    // For the last line: add double end brace
-                                    boost::replace_last(line, "}", "}}");
-                                }
-                                else
-                                {
-                                    // The normal case: add end brace
-                                    boost::replace_last(line, ",", "},");
-                                }
-                            }
+                            // There was a problem for "robin"
+                            // with missing braces in an earlier version of proj4,
+                            // which has been fixed in trunk now.
                         }
                         else if (projection_group == "goode")
                         {
@@ -1045,6 +1060,14 @@ class proj4_converter
                                 {
                                     line = tab1 + "detail::gauss::inv_gauss(m_proj_parm.en, lp_lon, lp_lat);";
                                 }
+
+                                // For "cosl" problem submitted by Krzysztof Czainski
+                                if (boost::contains(line, "cosl"))
+                                {
+                                    boost::replace_all(line, " cosl, ", " cosl_, ");
+                                    boost::replace_all(line, " cosl = ", " cosl_ = ");
+                                    boost::replace_all(line, " cosl);", " cosl_);");
+                                }
                             }
                             else if (projection_group == "mod_ster")
                             {
@@ -1094,6 +1117,8 @@ class proj4_converter
                                         line2 = tab1 + "xy_x = xy.x; xy_y = xy.y;";
                                     }
                                 }
+                                // Surpress uninitialized variables warning
+                                boost::replace_all(line, "double yc;", "double yc = 0;");
                             }
                             else if (projection_group == "goode")
                             {
@@ -1111,44 +1136,6 @@ class proj4_converter
                                     boost::replace_all(line, "->inv", ".inv");
                                 }
                             }
-
-                            // Unused variables
-                            if (projection_group == "krovak")
-                            {
-                                boost::replace_all(line, "char errmess[255];", "");
-                                boost::replace_all(line, "char tmp[16];", "");
-                                boost::replace_all(line, ", lon17", "");
-                                boost::replace_all(line, ", lamdd", "");
-                                boost::replace_all(line, ", l24", "");
-                            }
-                            else if (projection_group == "geos")
-                            {
-                                boost::replace_all(line, ", c", "");
-                            }
-                            else if (projection_group == "gn_sinu")
-                            {
-                                boost::replace_all(line, "double s;", "double s; boost::ignore_unused_variable_warning(s);");
-                            }
-                            else if (projection_group == "lcca")
-                            {
-                                boost::replace_all(line, ", S3", "");
-                            }
-                            else if (projection_group == "mbt_fps")
-                            {
-                                boost::replace_all(line, ", s", "");
-                            }
-                            else if (projection_group == "moll" || projection_group == "nell")
-                            {
-                                boost::replace_all(line, "double th, s;", "");
-                            }
-
-                            // uninitialized variables warning
-                            if (projection_group == "imw_p")
-                            {
-                                boost::replace_all(line, "double yc;", "double yc = 0;");
-                            }
-
-
 
                             proj_it->lines.push_back(line);
                             if (! line2.empty())
@@ -1332,7 +1319,7 @@ class proj4_converter
 
             stream << std::endl;
 
-            stream << "namespace boost { namespace geometry { namespace projection" << std::endl
+            stream << "namespace boost { namespace geometry { namespace projections" << std::endl
                 << "{" << std::endl;
 
             if (projection_group == "ob_tran")
@@ -1818,7 +1805,7 @@ class proj4_converter
         void write_end()
         {
             stream
-                << "}}} // namespace boost::geometry::projection" << std::endl << std::endl
+                << "}}} // namespace boost::geometry::projections" << std::endl << std::endl
                 << "#endif // " << hpp << std::endl << std::endl;
         }
 
