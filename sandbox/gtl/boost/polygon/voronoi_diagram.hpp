@@ -464,7 +464,7 @@ namespace polygon {
         template <typename SEvent>
         std::pair<void*, void*> insert_new_edge(const SEvent &site1,
                                                 const SEvent &site2) {
-            // Get sites' indices.
+            // Get sites' indexes.
             int site_index1 = site1.index();
             int site_index2 = site2.index();
 
@@ -509,7 +509,7 @@ namespace polygon {
         // Insert a new half-edge into the output data structure with the
         // start at the point where two previously added half-edges intersect.
         // Takes as input two sites that create a new bisector, circle event
-        // that correponds to the intersection point of the two old half-edges,
+        // that corresponds to the intersection point of the two old half-edges,
         // pointers to those half-edges. Half-edges' direction goes out of the
         // new voronoi vertex point. Returns a pointer to the new half-edge.
         template <typename SEvent, typename CEvent>
@@ -568,7 +568,7 @@ namespace polygon {
             edge_iterator edge_it = edges_.begin();
             num_cells_ = cells_.size();
 
-            // All the initial sites are colinear.
+            // All the initial sites are collinear.
             if (vertices_.empty()) {
                 // Update edges counter.
                 num_edges_ = num_cells_ - 1;

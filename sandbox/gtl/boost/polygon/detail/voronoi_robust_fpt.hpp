@@ -26,7 +26,7 @@
 // Let EPS be machine epsilon, then next inequalities have place:
 // 1 EPS <= 1 ULP <= 2 EPS (1), 0.5 ULP <= 1 EPS <= 1 ULP (2).
 // ULPs are good for measuring rounding errors and comparing values.
-// Relative erros are good for computation of general relative
+// Relative errors are good for computation of general relative
 // error of formulas or expressions. So to calculate epsilon
 // interval within which epsilon robust predicates have undefined result
 // next schema is used:
@@ -44,10 +44,10 @@
 //     2) r(A * B) <= r(A) + r(B);
 //     3) r(A / B) <= r(A) + r(B);
 // In addition rounding error should be added, that is always equal to
-// 0.5 ULP or atmost 1 epsilon. As you might see from the above formulas
-// substraction relative error may be extremely large, that's why
+// 0.5 ULP or at most 1 epsilon. As you might see from the above formulas
+// subtraction relative error may be extremely large, that's why
 // epsilon robust comparator class is used to store floating point values
-// and compute substraction as the final step of the evaluation.
+// and compute subtraction as the final step of the evaluation.
 // For further information about relative errors and ULPs try this link:
 // http://docs.sun.com/source/806-3568/ncg_goldberg.html
 
@@ -247,8 +247,8 @@ bool is_zero(const robust_fpt<T>& that) {
 
 // robust_dif consists of two not negative values: value1 and value2.
 // The resulting expression is equal to the value1 - value2.
-// Substraction of a positive value is equivalent to the addition to value2
-// and substraction of a negative value is equivalent to the addition to
+// Subtraction of a positive value is equivalent to the addition to value2
+// and subtraction of a negative value is equivalent to the addition to
 // value1. The structure implicitly avoids difference computation.
 template <typename T>
 class robust_dif {

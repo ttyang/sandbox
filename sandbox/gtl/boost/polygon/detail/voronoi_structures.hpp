@@ -64,19 +64,19 @@ private:
 // Site event type.
 // Occurs when the sweepline sweeps over one of the initial sites:
 //   1) point site;
-//   2) startpoint of the segment site;
+//   2) start-point of the segment site;
 //   3) endpoint of the segment site.
-// Implicit segment direction is defined: the startpoint of
+// Implicit segment direction is defined: the start-point of
 // the segment compares less than its endpoint.
 // Each input segment is divided onto two site events:
-//   1) One going from the startpoint to the endpoint
+//   1) One going from the start-point to the endpoint
 //      (is_inverse_ = false);
-//   2) Another going from the endpoint to the startpoint
+//   2) Another going from the endpoint to the start-point
 //      (is_inverse_ = true).
 // In beach line data structure segment sites of the first
-// type preceed sites of the second type for the same segment.
+// type precede sites of the second type for the same segment.
 // Variables:
-//   point0_ - point site or segment's startpoint;
+//   point0_ - point site or segment's start-point;
 //   point1_ - segment's endpoint if site is a segment;
 //   index_ - the last bit encodes if the site is inverse;
 //            the last-1 bit encodes initial site direction;
@@ -221,9 +221,9 @@ private:
 };
 
 // Circle event type.
-// Occrus when the sweepline sweeps over the rightmost point of the voronoi
+// Occurs when the sweepline sweeps over the rightmost point of the voronoi
 // circle (with the center at the intersection point of the bisectors).
-// Circle event is made of the two consequtive nodes in the beach line data
+// Circle event is made of the two consecutive nodes in the beach line data
 // structure. In case another node was inserted during algorithm execution
 // between the given two nodes circle event becomes inactive.
 // Variables:
@@ -411,7 +411,7 @@ private:
   site_type right_site_;
 };
 
-// Represents edge data sturcture from the voronoi output, that is
+// Represents edge data structure from the voronoi output, that is
 // associated as a value with beach line bisector in the beach
 // line. Contains pointer to the circle event in the circle event
 // queue if the edge corresponds to the right bisector of the circle event.

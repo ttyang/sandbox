@@ -36,7 +36,7 @@ struct voronoi_utils_traits<double> {
     } ctype_converter_type;
 };
 
-// Voronoi output postprocessing tools.
+// Voronoi output post-processing tools.
 template <typename T, typename TRAITS = voronoi_utils_traits<T> >
 class voronoi_utils {
 public:
@@ -127,7 +127,7 @@ public:
             const point_type &point1 = (cell1->contains_segment()) ?
                 get_point(cell2->point0()) : get_point(cell1->point0());
 
-            // point2 - startpoint of the segment site;
+            // point2 - start-point of the segment site;
             const point_type &point2 = (cell1->contains_segment()) ?
                 get_point(cell1->point0()) : get_point(cell2->point0());
 
@@ -288,7 +288,7 @@ private:
                                  segment_site_start,
                                  segment_site_end);
 
-        // Compute parabola parameterers in the transformed space.
+        // Compute parabola parameters in the transformed space.
         // Parabola has next representation:
         // f(x) = ((x-rot_x)^2 + rot_y^2) / (2.0*rot_y).
         fpt_type point_vec_x = point_site.x() - segment_site_start.x();
@@ -402,7 +402,7 @@ private:
     // This is made to avoid sqrt computation during transformation from
     // the initial space to the transformed one and vice versa.
     // Assumption is made that projection of the point lies
-    // between the startpoint and endpoint of the segment.
+    // between the start-point and endpoint of the segment.
     static fpt_type get_point_projection(
             const point_type &point,
             const point_type &segment_start,

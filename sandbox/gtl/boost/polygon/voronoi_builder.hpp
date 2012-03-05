@@ -31,7 +31,7 @@ namespace polygon {
     // along the x-axis positive direction. Each of the input objects is
     // wrapped into the site event. Each event is characterized by its
     // coordinates: the point site event is defined by the point itself,
-    // the segment site event is defined by its startpoint. At any moment we
+    // the segment site event is defined by its start-point. At any moment we
     // consider only the sites that lie to the left of the sweepline. Beach
     // line is a curve formed by the parabolic arcs and line segments, that
     // consists of the points equidistant from the sweepline and the nearest
@@ -90,7 +90,7 @@ namespace polygon {
         void insert_segment(const int_type& x1, const int_type& y1,
                             const int_type& x2, const int_type& y2) {
             // Each segment creates three segment sites:
-            //   1) the startpoint of the segment;
+            //   1) the start-point of the segment;
             //   2) the endpoint of the segment;
             //   3) the segment itself.
             point_type p1(x1, y1);
@@ -344,7 +344,7 @@ namespace polygon {
                 beach_line_iterator left_it = right_it;
 
                 // Do further processing depending on the above node position.
-                // For any two neighbouring nodes the second site of the first node
+                // For any two neighboring nodes the second site of the first node
                 // is the same as the first site of the second node.
                 if (right_it == beach_line_.end()) {
                     // The above arc corresponds to the second arc of the last node.
@@ -414,11 +414,11 @@ namespace polygon {
             }
         }
 
-        // In general case circle event is made of the three consequtive sites
+        // In general case circle event is made of the three consecutive sites
         // that form two bisector nodes in the beach line data structure.
         // Let circle event sites be A, B, C, two bisectors that define
         // circle event are (A, B), (B, C). During circle event processing
-        // we remove (A, B), (B, C) and insert (A, C). As beach line comparer
+        // we remove (A, B), (B, C) and insert (A, C). As beach line comparison
         // works correctly only if one of the nodes is a new one we remove
         // (B, C) bisector and change (A, B) bisector to the (A, C). That's
         // why we use const_cast there and take all the responsibility that

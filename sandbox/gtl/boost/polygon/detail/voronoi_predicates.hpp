@@ -301,7 +301,7 @@ public:
                                             const point_type &point) const {
             fpt_type dx = to_fpt(site.x()) - to_fpt(point.x());
             fpt_type dy = to_fpt(site.y()) - to_fpt(point.y());
-            // The relative error is atmost 3EPS.
+            // The relative error is at most 3EPS.
             return (dx * dx + dy * dy) / (to_fpt(2.0) * dx);
         }
 
@@ -317,13 +317,13 @@ public:
                 fpt_type a3 = to_fpt(point.x()) - to_fpt(segment0.x());
                 fpt_type b3 = to_fpt(point.y()) - to_fpt(segment0.y());
                 fpt_type k = get_sqrt(a1 * a1 + b1 * b1);
-                // Avoid substraction while computing k.
+                // Avoid subtraction while computing k.
                 if (!is_neg(b1)) {
                     k = to_fpt(1.0) / (b1 + k);
                 } else {
                     k = (k - b1) / (a1 * a1);
                 }
-                // The relative error is atmost 7EPS.
+                // The relative error is at most 7EPS.
                 return robust_cross_product(a1, b1, a3, b3) * k;
             }
         }
@@ -390,7 +390,7 @@ public:
         // be represented as a straight horizontal line.
         bool operator() (const node_type &node1,
                          const node_type &node2) const {
-            // Get x coordinate of the righmost site from both nodes.
+            // Get x coordinate of the rightmost site from both nodes.
             const site_type &site1 = get_comparison_site(node1);
             const site_type &site2 = get_comparison_site(node2);
 
