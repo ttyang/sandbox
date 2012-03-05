@@ -32,13 +32,13 @@ struct ulp_comparison;
 
 template <>
 struct ulp_comparison<fpt64> {
-    enum kResult {
+    enum Result {
         LESS = -1,
         EQUAL = 0,
         MORE = 1
     };
 
-    kResult operator()(fpt64 a, fpt64 b, unsigned int maxUlps) const {
+    Result operator()(fpt64 a, fpt64 b, unsigned int maxUlps) const {
         uint64 ll_a, ll_b;
 
         // Reinterpret double bits as 64-bit signed integer.

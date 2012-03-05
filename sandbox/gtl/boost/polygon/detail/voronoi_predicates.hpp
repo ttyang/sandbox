@@ -76,7 +76,7 @@ public:
     typedef struct orientation_test {
     public:
         // Represents orientation test result.
-        enum kResult {
+        enum Orientation {
             RIGHT = -1,
             COLLINEAR = 0,
             LEFT = 1
@@ -85,21 +85,21 @@ public:
         // Value is a determinant of two vectors (e.g. x1 * y2 - x2 * y1).
         // Return orientation based on the sign of the determinant.
         template <typename T>
-        static kResult eval(T value) {
+        static Orientation eval(T value) {
             if (is_zero(value)) return COLLINEAR;
             return (is_neg(value)) ? RIGHT : LEFT;
         }
 
         template <typename T>
-        static kResult eval(T dif_x1_, T dif_y1_, T dif_x2_, T dif_y2_) {
+        static Orientation eval(T dif_x1_, T dif_y1_, T dif_x2_, T dif_y2_) {
             return eval(robust_cross_product(dif_x1_, dif_y1_,
                                              dif_x2_, dif_y2_));
         }
 
         template <typename Point>
-        static kResult eval(const Point &point1,
-                            const Point &point2,
-                            const Point &point3) {
+        static Orientation eval(const Point &point1,
+                                const Point &point2,
+                                const Point &point3) {
             int_x2_type dx1 = static_cast<int_x2_type>(point1.x()) -
                               static_cast<int_x2_type>(point2.x());
             int_x2_type dx2 = static_cast<int_x2_type>(point2.x()) -
@@ -161,34 +161,34 @@ public:
         }
 
         bool operator()(const site_type &lhs, const circle_type &rhs) const {
-            typename ulp_cmp_type::kResult xCmp =
+            typename ulp_cmp_type::Result xCmp =
                 ulp_cmp(to_fpt(lhs.x()), to_fpt(rhs.lower_x()), ULPS);
             if (xCmp != ulp_cmp_type::EQUAL) {
                 return xCmp == ulp_cmp_type::LESS;
             }
-            typename ulp_cmp_type::kResult yCmp =
+            typename ulp_cmp_type::Result yCmp =
                 ulp_cmp(to_fpt(lhs.y()), to_fpt(rhs.lower_y()), ULPS);
             return yCmp == ulp_cmp_type::LESS;
         }
 
         bool operator()(const circle_type &lhs, const site_type &rhs) const {
-            typename ulp_cmp_type::kResult xCmp =
+            typename ulp_cmp_type::Result xCmp =
                 ulp_cmp(to_fpt(lhs.lower_x()), to_fpt(rhs.x()), ULPS);
             if (xCmp != ulp_cmp_type::EQUAL) {
                 return xCmp == ulp_cmp_type::LESS;
             }
-            typename ulp_cmp_type::kResult yCmp =
+            typename ulp_cmp_type::Result yCmp =
                 ulp_cmp(to_fpt(lhs.lower_y()), to_fpt(rhs.y()), ULPS);
             return yCmp == ulp_cmp_type::LESS;
         }
 
         bool operator()(const circle_type &lhs, const circle_type &rhs) const {
-            typename ulp_cmp_type::kResult xCmp =
+            typename ulp_cmp_type::Result xCmp =
                 ulp_cmp(to_fpt(lhs.lower_x()), to_fpt(rhs.lower_x()), ULPSx2);
             if (xCmp != ulp_cmp_type::EQUAL) {
                 return xCmp == ulp_cmp_type::LESS;
             }
-            typename ulp_cmp_type::kResult yCmp =
+            typename ulp_cmp_type::Result yCmp =
                 ulp_cmp(to_fpt(lhs.lower_y()), to_fpt(rhs.lower_y()), ULPSx2);
             return yCmp == ulp_cmp_type::LESS;
         }
@@ -350,7 +350,7 @@ public:
                     return LESS;
                 return UNDEFINED;
             } else {
-                typename ot::kResult orientation = ot::eval(a, b, dif_x, dif_y);
+                typename ot::Orientation orientation = ot::eval(a, b, dif_x, dif_y);
                 if (orientation == ot::LEFT) {
                     if (!right_site.is_inverse())
                         return reverse_order ? LESS : UNDEFINED;
@@ -360,7 +360,7 @@ public:
 
             fpt_type fast_left_expr = a * (dif_y + dif_x) * (dif_y - dif_x);
             fpt_type fast_right_expr = (to_fpt(2.0) * b) * dif_x * dif_y;
-            typename ulp_cmp_type::kResult expr_cmp = ulp_cmp(fast_left_expr, fast_right_expr, 4);
+            typename ulp_cmp_type::Result expr_cmp = ulp_cmp(fast_left_expr, fast_right_expr, 4);
             if (expr_cmp != ulp_cmp_type::EQUAL) {
                 if ((expr_cmp == ulp_cmp_type::MORE) ^ reverse_order)
                     return reverse_order ? LESS : MORE;
@@ -465,9 +465,9 @@ public:
                  const site_type &site3,
                  int segment_index) const {
             if (segment_index != 2) {
-                typename ot::kResult orient1 = ot::eval(site1.point0(),
+                typename ot::Orientation orient1 = ot::eval(site1.point0(),
                     site2.point0(), site3.point0(true));
-                typename ot::kResult orient2 = ot::eval(site1.point0(),
+                typename ot::Orientation orient2 = ot::eval(site1.point0(),
                     site2.point0(), site3.point1(true));
                 if (segment_index == 1 && site1.x0() >= site2.x0()) {
                     if (orient1 != ot::RIGHT)

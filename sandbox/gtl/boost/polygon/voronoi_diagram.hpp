@@ -21,9 +21,6 @@ namespace polygon {
 
     // Forward declarations.
     template <typename T>
-    class voronoi_cell;
-
-    template <typename T>
     class voronoi_edge;
 
     // Bounding rectangle data structure. Contains coordinates

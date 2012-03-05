@@ -62,7 +62,7 @@ public:
 
     // Build voronoi diagram.
     vb_.construct(&vd_);
-    brect_ = voronoi_utils<coordinate_type>::get_view_rectangle(
+    brect_ = voronoi_utils<coordinate_type>::scale(
         vd_.bounding_rectangle(), 1.4);
     shift_ = point_type((brect_.x_min() + brect_.x_max()) * 0.5,
                         (brect_.y_min() + brect_.y_max()) * 0.5);
@@ -153,12 +153,11 @@ protected:
         if (internal_edges_only_ && exterior_edges_set_.count(&(*it))) {
           continue;
         }
-        std::vector<point_type> temp_v =
-          voronoi_utils<coordinate_type>::get_point_interpolation(
-              &(*it), brect_, 1E-3);
-        for (int i = 0; i < static_cast<int>(temp_v.size()) - 1; ++i) {
-          glVertex2f(temp_v[i].x() - shift_.x(), temp_v[i].y() - shift_.y());
-          glVertex2f(temp_v[i+1].x() - shift_.x(), temp_v[i+1].y() - shift_.y());
+        std::vector<point_type> vec;
+        voronoi_utils<coordinate_type>::discretize(*it, brect_, 1E-3, vec);
+        for (int i = 0; i < static_cast<int>(vec.size()) - 1; ++i) {
+          glVertex2f(vec[i].x() - shift_.x(), vec[i].y() - shift_.y());
+          glVertex2f(vec[i+1].x() - shift_.x(), vec[i+1].y() - shift_.y());
         }
       }
       glEnd();

@@ -1,6 +1,6 @@
 // Boost.Polygon library voronoi_clipping_test.cpp file
 
-//          Copyright Andrii Sydorchuk 2010-2011.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
 //    (See accompanying file LICENSE_1_0.txt or copy at
 //          http://www.boost.org/LICENSE_1_0.txt)
@@ -32,38 +32,38 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test1) {
     point_type direction5(5, -1);
     std::vector<point_type> intersections;
 
-    VU::find_intersections(origin, direction1_1, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction1_1, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 2, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 3 && intersections[1].y() == -1, true);
     intersections.clear();
     
-    VU::find_intersections(origin, direction1_2, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction1_2, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 2, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction1_3, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction1_3, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(intersections.empty(), true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction2, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction2, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 1 && intersections[1].y() == -1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction3, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction3, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 1 && intersections[0].y() == 2, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction4, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction4, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == -1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction5, VU::SEGMENT, rect, intersections);
+    VU::intersect(origin, direction5, VU::SEGMENT, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 2, true);
     intersections.clear();
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test2) {
         for (int j = -50; j <= 50; j++) {
             intersections.clear();
             point_type direction(i, j);
-            VU::find_intersections(origin, direction, VU::SEGMENT, rect, intersections);
+            VU::intersect(origin, direction, VU::SEGMENT, rect, intersections);
             if (abs(i) >= 2 || abs(j) >= 2)
                 BOOST_CHECK_EQUAL(SZ(intersections), 1);
             else
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(segment_clipping_test3) {
             double x = 1.0 * i / 26;
             double y = 1.0 * j / 26;
             point_type direction(x, y);
-            VU::find_intersections(origin, direction, VU::SEGMENT, rect, intersections);
+            VU::intersect(origin, direction, VU::SEGMENT, rect, intersections);
             BOOST_CHECK_EQUAL(SZ(intersections), 0);
         }
 }
@@ -113,30 +113,30 @@ BOOST_AUTO_TEST_CASE(ray_clipping_test1) {
     point_type direction5(5, -1);
     std::vector<point_type> intersections;
 
-    VU::find_intersections(origin, direction1, VU::RAY, rect, intersections);
+    VU::intersect(origin, direction1, VU::RAY, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 2, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 3 && intersections[1].y() == -1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction2, VU::RAY, rect, intersections);
+    VU::intersect(origin, direction2, VU::RAY, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == 1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 1 && intersections[1].y() == -1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction3, VU::RAY, rect, intersections);
+    VU::intersect(origin, direction3, VU::RAY, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 1 && intersections[0].y() == 2, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 4 && intersections[1].y() == 0.5, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction4, VU::RAY, rect, intersections);
+    VU::intersect(origin, direction4, VU::RAY, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == -1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction5, VU::RAY, rect, intersections);
+    VU::intersect(origin, direction5, VU::RAY, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 2, true);
     intersections.clear();
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(ray_clipping_test2) {
             double x = 1.0 * i / 26;
             double y = 1.0 * j / 26;
             point_type direction(x, y);
-            VU::find_intersections(origin, direction, VU::RAY, rect, intersections);
+            VU::intersect(origin, direction, VU::RAY, rect, intersections);
             BOOST_CHECK_EQUAL(SZ(intersections), 1);
         }
 }
@@ -170,30 +170,30 @@ BOOST_AUTO_TEST_CASE(line_clipping_test1) {
     point_type direction5(-5, 1);
     std::vector<point_type> intersections;
     
-    VU::find_intersections(origin, direction1, VU::LINE, rect, intersections);
+    VU::intersect(origin, direction1, VU::LINE, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 3 && intersections[0].y() == -1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 0 && intersections[1].y() == 2, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction2, VU::LINE, rect, intersections);
+    VU::intersect(origin, direction2, VU::LINE, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 1 && intersections[0].y() == -1, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 0 && intersections[1].y() == 1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction3, VU::LINE, rect, intersections);
+    VU::intersect(origin, direction3, VU::LINE, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 2);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 0.5, true);
     BOOST_CHECK_EQUAL(intersections[1].x() == 1 && intersections[1].y() == 2, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction4, VU::LINE, rect, intersections);
+    VU::intersect(origin, direction4, VU::LINE, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 0 && intersections[0].y() == -1, true);
     intersections.clear();
 
-    VU::find_intersections(origin, direction5, VU::LINE, rect, intersections);
+    VU::intersect(origin, direction5, VU::LINE, rect, intersections);
     BOOST_CHECK_EQUAL(SZ(intersections), 1);
     BOOST_CHECK_EQUAL(intersections[0].x() == 4 && intersections[0].y() == 2, true);
     intersections.clear();
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(line_clipping_test2) {
             double x = 1.0 * i / 26;
             double y = 1.0 * j / 26;
             point_type direction(x, y);
-            VU::find_intersections(origin, direction, VU::LINE, rect, intersections);
+            VU::intersect(origin, direction, VU::LINE, rect, intersections);
             BOOST_CHECK_EQUAL(SZ(intersections), 2);
         }
 }
