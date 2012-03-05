@@ -11,8 +11,11 @@
 
 
 
+
+
+
 <meta http-equiv="Content-Language" content="en-us">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 	<tbody><tr>
@@ -91,52 +94,88 @@
 		<br>
 		<p></p>
       <h1>Voronoi Utils</h1>Voronoi
-utilities are set of tools that users may find useful especially for
-the visualization of the Voronoi diagrams or parabolic edges
-interpoliation.<br>
-All the methods within the utilities class are static. Class definition follows:<br>
+utilities imlements a set of tools that users may find useful
+especially for
+the visualization of Voronoi diagrams or interpolation of the parabolic
+edges. All the methods within the utilities class are static. Class
+declaration is following:<br>
       <br><span style="font-family: Courier New,Courier,monospace;">
 template &lt;typename T, typename TRAITS = voronoi_utils_traits&lt;T&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;"><span style="font-family: Courier New,Courier,monospace;">
 class voronoi_utils;<br>
       <br>
-      </span><span style="font-family: Courier New,Courier,monospace;">T - </span>coordinate type utilities methods operate with.<br>
-      <span style="font-family: Courier New,Courier,monospace;">TRAITS - </span><span style="font-family: Courier New,Courier,monospace;"></span> contain utilities coordinate and geometry traits.<br>
+      </span><span style="font-family: Courier New,Courier,monospace;">T - </span>output coordinate type used by the utilities.<br>
+      <span style="font-family: Courier New,Courier,monospace;">TRAITS - </span>output geometries type traits (see definition below).<br>
+<h2 style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">EdgeType</h2><span style="font-family: Courier New,Courier,monospace;"></span>EdgeType
+enumerator is used to categorise straight linear primitive based on the
+finity of its endpoints. There are three possible values: segment, ray,
+line.<br>
       <br>
+      <span style="font-family: Courier New,Courier,monospace;">enum EdgeType { SEGMENT = 0, RAY = 1, LINE = 2&nbsp;};</span>&nbsp;
+<h2 style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">Member Functions</h2>
+      
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
-            <span style="font-family: Courier New,Courier,monospace;">static brect_type get_view_rectangle(const bounding_rectangle&lt;CT&gt; &amp;brect, fpt_type scale = 1.0)</span><br>
+            <span style="font-family: Courier New,Courier,monospace;">static brect_type scale(const bounding_rectangle&lt;CT&gt; &amp;brect, fpt_type factor = 1.0)</span><br>
             </td>
-            <td style="vertical-align: top;">Returns scaled homothetic bounding rectangle. The center of homotethy corresponds to the center of the input rectangle.<br>
+            <td style="vertical-align: top;">Returns scaled bounding rectangle. The center of transformation corresponds to the center of the input rectangle.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
-            <span style="font-family: Courier New,Courier,monospace;">static point_set_type get_point_interpolation(</span><span style="font-family: Courier New,Courier,monospace;">const voronoi_edge&lt;CT&gt; *edge,</span><span style="font-family: Courier New,Courier,monospace;"> const bounding_rectangle&lt;CT&gt; &amp;brect,</span><span style="font-family: Courier New,Courier,monospace;"> fpt_type max_error)</span><br>
+            <span style="font-family: Courier New,Courier,monospace;">static void discretize(</span><span style="font-family: Courier New,Courier,monospace;">const voronoi_edge&lt;CT&gt; *edge,</span><span style="font-family: Courier New,Courier,monospace;"> const bounding_rectangle&lt;CT&gt; &amp;brect,</span><span style="font-family: Courier New,Courier,monospace;"> fpt_type max_error, </span><span style="font-family: Courier New,Courier,monospace;">point_set_type &amp;interpolation)</span><span style="font-family: Courier New,Courier,monospace;"></span><br>
             </td>
-            <td style="vertical-align: top;">Interpolates Voronoi edge.
-For linear edges fills output set with edge endpoints. For parabolic
-edges fills output set with points that interpolate Voronoi edge.&nbsp;
-Additional clipping is done for infinite edges using input bounding
-rectangle.<br>
+            <td style="vertical-align: top;">Provides point discretization of the input voronoi edge. <br>
+Finite edges are not clipped at all. Infinite edges (at least one of
+the endpoints is not finite) are clipped by the bounding rectangle.<br>
+For linear edges fills output set with edge endpoints.<br>
+For parabolic edges fills output set with edge discretization
+satisfying max distance requirement equal to max_error *
+brect.min_len().<br>
+
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">static
-void find_intersections(const point_type &amp;origin, const point_type
-&amp;direction, kEdgeType edge_type, const brect_type &amp;brect,
+void intersect(const point_type &amp;origin, const point_type
+&amp;direction, EdgeType edge_type, const brect_type &amp;brect,
 point_set_type &amp;intersections)</span><br>
             </td>
-            <td style="vertical-align: top;"><br>
+            <td style="vertical-align: top;">Fills
+the output structure with the intersection points of input linear
+primitive and bounding rectangle. Based on the EdgeType origin and
+direction mean following:<br>
+SEGMENT: origin - start-point, direction - vector going from start-point to endpoint;<br>
+RAY: origin - start-point, direction - ray vector;<br>
+LINE: origin - point on a line, direction - line vector.<br>
             </td>
           </tr>
         </tbody>
-      </table>
-&nbsp;
+      </table><h1>Voronoi Utils Traits<br>
+</h1>Below is shown the default voronoi utilities traits:<br>
+      <br>
+      <span style="font-family: Courier New,Courier,monospace;">template &lt;typename fpt_&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">struct voronoi_utils_traits;</span><br style="font-family: Courier New,Courier,monospace;">
+      <br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">template&lt;&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">struct voronoi_utils_traits&lt;double&gt; {</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; typedef double fpt_type;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; typedef detail::point_2d&lt;fpt_type&gt; point_type;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; typedef std::vector&lt;point_type&gt; point_set_type;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; typedef bounding_rectangle&lt;fpt_type&gt; brect_type;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; typedef struct {</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; template &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fpt_type operator()(const CT&amp; value) const {</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return static_cast&lt;fpt_type&gt;(value);</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; } ctype_converter_type;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">};<br>
+      <br>
+      </span>Most of the types define output geometries.
+ctype_converter_type is used to cast coordinate type of the input
+primitives to the one used by the utilities.<br>
 
-      <h1>Voronoi Utils Traits<br>
-</h1><br>
 
 
 
