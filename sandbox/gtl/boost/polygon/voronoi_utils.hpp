@@ -30,7 +30,7 @@ struct voronoi_utils_traits<double> {
   typedef bounding_rectangle<coordinate_type> brect_type;
   typedef struct {
     template <typename CT>
-      coordinate_type operator()(const CT& value) {
+      coordinate_type operator()(const CT& value) const {
         return static_cast<coordinate_type>(value);
     }
   } ctype_converter_type;

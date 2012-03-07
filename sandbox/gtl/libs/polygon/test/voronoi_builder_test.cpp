@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
     CHECK_OUTPUT_SIZE(test_output, 1, 0, 0);
 
     const_cell_iterator it = test_output.cells().begin();
-    BOOST_CHECK(it->num_incident_edges() == 0);
     BOOST_CHECK(it->incident_edge() == NULL);
 }
 
@@ -86,9 +85,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
     CHECK_OUTPUT_SIZE(test_output, 2, 0, 1);
 
     const_cell_iterator cell_it = test_output.cells().begin();
-    BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
     cell_it++;
-    BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
 
     const voronoi_edge_type *edge1_1 = cell_it->incident_edge();
     const voronoi_edge_type *edge1_2 = edge1_1->twin();
@@ -121,13 +118,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
     CHECK_OUTPUT_SIZE(test_output, 3, 0, 2);
 
     const_cell_iterator cell_it = test_output.cells().begin();
-    BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
     const voronoi_edge_type *edge1_1 = cell_it->incident_edge();
     const voronoi_edge_type *edge1_2 = edge1_1->twin();
     cell_it++;
-    BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 2);
     cell_it++;
-    BOOST_CHECK_EQUAL(cell_it->num_incident_edges(), 1);
     const voronoi_edge_type *edge2_2 = cell_it->incident_edge();
     const voronoi_edge_type *edge2_1 = edge2_2->twin();
 

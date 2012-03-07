@@ -88,8 +88,6 @@ bool verify_incident_edges_ccw_order(const Output &output) {
     typename Output::const_vertex_iterator vertex_it;
     for (vertex_it = output.vertices().begin();
          vertex_it != output.vertices().end(); vertex_it++) {
-        if (vertex_it->num_incident_edges() < 3)
-            continue;
         const voronoi_edge_type *edge = vertex_it->incident_edge();
         do {
             const voronoi_edge_type *edge_next1 = edge->rot_next();
