@@ -152,6 +152,9 @@ public:
   // Returns true if the cell contains segment site, false else.
   bool contains_segment() const { return point0_ != point1_; }
 
+  // Degenerate cells don't have any incident edges.
+  bool is_degenerate() const { return incident_edge_ == NULL; }
+
   // Returns site point in case cell contains point site,
   // the first point of the segment site else.
   const point_type &point0() const { return point0_; }
@@ -193,6 +196,8 @@ public:
       data_(NULL) {}
 
   const point_type &vertex() const { return vertex_; }
+
+  bool is_degenerate() const { return incident_edge_ == NULL; }
 
   voronoi_edge_type *incident_edge() { return incident_edge_; }
   const voronoi_edge_type *incident_edge() const { return incident_edge_; }
@@ -387,7 +392,8 @@ public:
   voronoi_diagram() :
       num_cells_(0),
       num_edges_(0),
-      num_vertices_(0) {}
+      num_vertices_(0),
+      sealed_(false) {}
 
   void reserve(int num_sites) {
     cells_.reserve(num_sites);
@@ -397,6 +403,8 @@ public:
     cells_.clear();
     vertices_.clear();
     edges_.clear();
+
+    sealed_ = false;
 
     num_cells_ = 0;
     num_edges_ = 0;
@@ -434,6 +442,8 @@ public:
   // Update the voronoi output in case of a single point input.
   template <typename SEvent>
   void process_single_site(const SEvent &site) {
+    if (sealed_) return;
+
     // Update bounding rectangle.
     point_type p = prepare_point(site.point0());
     vrect_ = brect_type(p);
@@ -448,6 +458,8 @@ public:
   template <typename SEvent>
   std::pair<void*, void*> insert_new_edge(
       const SEvent &site1, const SEvent &site2) {
+    if (sealed_) return std::pair<void*, void*>(NULL, NULL);
+
     // Get sites' indices.
     int site_index1 = site1.index();
     int site_index2 = site2.index();
@@ -463,7 +475,6 @@ public:
     // Add the initial cell during the first edge insertion.
     if (cells_.empty()) {
       process_single_site(site1);
-      cells_.back().incident_edge(&edge1);
     }
 
     // Update the bounding rectangle.
@@ -473,7 +484,7 @@ public:
     // processing. Add a new cell to the cell records.
     cells_.push_back(cell_type(prepare_point(site2.point0()),
                                prepare_point(site2.point1()),
-                               &edge2));
+                               NULL));
 
     // Set up pointers to cells.
     edge1.cell(&cells_[site_index1]);
@@ -497,13 +508,15 @@ public:
   void *insert_new_edge(
       const SEvent &site1, const SEvent &site3, const CEvent &circle,
       void *data12, void *data23) {
+    if (sealed_) return NULL;
+
     edge_type *edge12 = static_cast<edge_type*>(data12);
     edge_type *edge23 = static_cast<edge_type*>(data23);
 
     // Add a new voronoi vertex.
     coordinate_type x = convert_(circle.x());
     coordinate_type y = convert_(circle.y());
-    vertices_.push_back(vertex_type(point_type(x, y), edge12));
+    vertices_.push_back(vertex_type(point_type(x, y), NULL));
     vertex_type &new_vertex = vertices_.back();
 
     // Update vertex pointers of the old edges.
@@ -539,144 +552,99 @@ public:
     return &new_edge1;
   }
 
-  // Remove zero-length edges from the voronoi output.
-  void clean() {
-    edge_iterator edge_it1;
-    edge_iterator edge_it = edges_.begin();
+  void seal() {
+    if (sealed_) return;
+
     num_cells_ = cells_.size();
+    num_edges_ = edges_.size() >> 1;
+    num_vertices_ = vertices_.size();
 
-    // All the initial sites are collinear.
+    // Remove degenerate edges.
+    for (edge_iterator it = edges_.begin(); it != edges_.end();) {
+      const vertex_type *v1 = it->vertex0();
+      const vertex_type *v2 = it->vertex1();
+      edge_iterator it_old = it;
+      std::advance(it, 2);
+      if (v1 && v2 && vertex_equality_predicate_(v1->vertex(), v2->vertex())) {
+        remove_edge(&(*it_old));
+        edges_.erase(it_old, it);
+        --num_edges_;
+      }
+    }
+
+    // Set up incident edge pointers for cells and vertices.
+    for (edge_iterator it = edges_.begin(); it != edges_.end(); ++it) {
+      it->cell()->incident_edge(&(*it));
+      if (it->vertex0()) {
+        it->vertex0()->incident_edge(&(*it));
+      }
+    }
+
+    for (vertex_iterator it = vertices_.begin(); it != vertices_.end();) {
+      if (!it->incident_edge()) {
+        it = vertices_.erase(it);
+        --num_vertices_;
+      } else {
+        ++it;
+      }
+    }
+
+    // Set up next/prev pointers for infinite edges.
     if (vertices_.empty()) {
-      // Update edges counter.
-      num_edges_ = num_cells_ - 1;
-
-      // Return if there are no edges.
-      if (edge_it == edges_.end())
-        return;
-
-      // Update prev/next pointers of the edges. Those edges won't
-      // have any common endpoints, cause they are infinite.
-      // But still they follow each other using CCW ordering.
-      edge_type *edge1 = &(*edge_it);
-      edge1->next(edge1);
-      edge1->prev(edge1);
-      ++edge_it;
-      edge1 = &(*edge_it);
-      ++edge_it;
-
-      while (edge_it != edges_.end()) {
-        edge_type *edge2 = &(*edge_it);
+      if (!edges_.empty()) {
+        // Update prev/next pointers for the line edges.
+        edge_iterator edge_it = edges_.begin();
+        edge_type *edge1 = &(*edge_it);
+        edge1->next(edge1);
+        edge1->prev(edge1);
         ++edge_it;
-
-        edge1->next(edge2);
-        edge1->prev(edge2);
-        edge2->next(edge1);
-        edge2->prev(edge1);
-
         edge1 = &(*edge_it);
         ++edge_it;
-      }
 
-      edge1->next(edge1);
-      edge1->prev(edge1);
-      return;
-    }
+        while (edge_it != edges_.end()) {
+          edge_type *edge2 = &(*edge_it);
+          ++edge_it;
 
-    // Iterate over all the edges and remove degeneracies
-    // (zero-length edges). Edge is considered to be zero-length
-    // if both its endpoints lie within some epsilon-rectangle.
-    while (edge_it != edges_.end()) {
-      edge_it1 = edge_it;
-      std::advance(edge_it, 2);
+          edge1->next(edge2);
+          edge1->prev(edge2);
+          edge2->next(edge1);
+          edge2->prev(edge1);
 
-      // Degenerate edges exist only among finite edges.
-      if (!edge_it1->vertex0() || !edge_it1->vertex1()) {
-        ++num_edges_;
-        continue;
-      }
-
-      const vertex_type *v1 = edge_it1->vertex0();
-      const vertex_type *v2 = edge_it1->vertex1();
-
-      // Make epsilon robust check.
-      if (vertex_equality_predicate_(v1->vertex(), v2->vertex())) {
-        // Corresponding cell incident edge pointer
-        // points to the degenerate edge.
-        if (edge_it1->cell()->incident_edge() == &(*edge_it1)) {
-          // Update incident edge pointer.
-          if (edge_it1->cell()->incident_edge() ==
-            edge_it1->next()) {
-            edge_it1->cell()->incident_edge(NULL);
-          } else {
-            edge_it1->cell()->incident_edge(edge_it1->next());
-          }
+          edge1 = &(*edge_it);
+          ++edge_it;
         }
 
-        // Cell corresponding to the twin edge
-        // points to the degenerate edge.
-        if (edge_it1->twin()->cell()->incident_edge() ==
-          edge_it1->twin()) {
-          // Update incident edge pointer.
-          if (edge_it1->twin()->cell()->incident_edge() ==
-            edge_it1->twin()->next()) {
-            edge_it1->twin()->cell()->incident_edge(NULL);
-          } else {
-            edge_it1->twin()->cell()->incident_edge(
-              edge_it1->twin()->next());
-          }
-        }
-
-        remove_edge(&(*edge_it1));
-
-        // Remove zero-length edge.
-        edges_.erase(edge_it1, edge_it);
-      } else {
-        // Count not degenerate edge.
-        ++num_edges_;
+        edge1->next(edge1);
+        edge1->prev(edge1);
       }
-    }
-
-    // Remove degenerate voronoi vertices with zero incident edges.
-    for (vertex_iterator vertex_it =
-       vertices_.begin();
-       vertex_it != vertices_.end();) {
-      if (vertex_it->incident_edge() == NULL) {
-        vertex_it = vertices_.erase(vertex_it);
-      } else {
-        ++vertex_it;
-        ++num_vertices_;
-      }
-    }
-
-    // Update prev/next pointers for the ray-edges.
-    for (cell_iterator cell_it = cells_.begin();
-       cell_it != cells_.end(); ++cell_it) {
-      // Move to the previous edge while
-      // it is possible in the CW direction.
-      edge_type *cur_edge = cell_it->incident_edge();
-      if (cur_edge) {
-        while (cur_edge->prev() != NULL) {
-          cur_edge = cur_edge->prev();
-
+    } else {
+      // Update prev/next pointers for the ray edges.
+      for (cell_iterator cell_it = cells_.begin();
+         cell_it != cells_.end(); ++cell_it) {
+        if (cell_it->is_degenerate())
+          continue;
+        // Move to the previous edge while
+        // it is possible in the CW direction.
+        edge_type *left_edge = cell_it->incident_edge();
+        while (left_edge->prev() != NULL) {
+          left_edge = left_edge->prev();
           // Terminate if this is not a boundary cell.
-          if (cur_edge == cell_it->incident_edge())
+          if (left_edge == cell_it->incident_edge())
             break;
         }
 
-        // Rewind incident edge pointer to the
-        // CW leftmost edge for the boundary cells.
-        cell_it->incident_edge(cur_edge);
+        if (left_edge->prev() != NULL)
+          continue;
 
-        // Set up prev/next half-edge pointers for the ray-edges.
-        if (cur_edge->prev() == NULL) {
-          edge_type *last_edge = cell_it->incident_edge();
-          while (last_edge->next() != NULL)
-            last_edge = last_edge->next();
-          last_edge->next(cur_edge);
-          cur_edge->prev(last_edge);
-        }
+        edge_type *right_edge = cell_it->incident_edge();
+        while (right_edge->next() != NULL)
+          right_edge = right_edge->next();
+        left_edge->prev(right_edge);
+        right_edge->next(left_edge);
       }
     }
+
+    sealed_ = true;
   }
 
 private:
@@ -694,13 +662,11 @@ private:
 
   // Remove degenerate edge.
   void remove_edge(edge_type *edge) {
-    vertex_type *vertex1 = edge->vertex0();
-    vertex_type *vertex2 = edge->vertex1();
-
     // Update the endpoints of the incident edges to the second vertex.
+    vertex_type *vertex = edge->vertex0();
     edge_type *updated_edge = edge->twin()->rot_next();
     while (updated_edge != edge->twin()) {
-      updated_edge->vertex0(vertex1);
+      updated_edge->vertex0(vertex);
       updated_edge = updated_edge->rot_next();
     }
 
@@ -718,17 +684,6 @@ private:
     edge2_rot_prev->prev(edge1_rot_next->twin());
     edge1_rot_prev->prev(edge2_rot_next->twin());
     edge2_rot_next->twin()->next(edge1_rot_prev);
-
-    // Change the pointer to the incident edge if it points to the
-    // degenerate edge.
-    if (vertex1->incident_edge() == edge) {
-      vertex1->incident_edge(edge->rot_prev());
-    }
-
-    // Set the incident edge pointer of the second vertex to NULL value.
-    if (vertex1 != vertex2) {
-      vertex2->incident_edge(NULL);
-    }
   }
 
   cell_container_type cells_;
@@ -738,6 +693,8 @@ private:
   unsigned int num_cells_;
   unsigned int num_edges_;
   unsigned int num_vertices_;
+
+  bool sealed_;
 
   brect_type vrect_;
   ctype_converter_type convert_;

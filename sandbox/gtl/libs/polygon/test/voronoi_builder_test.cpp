@@ -20,6 +20,11 @@ using namespace boost::polygon;
 #include "voronoi_test_helper.hpp"
 
 typedef boost::mpl::list<int> test_types;
+typedef voronoi_diagram<double> vd_type;
+typedef vd_type::coordinate_type coordinate_type;
+typedef vd_type::edge_type voronoi_edge_type;
+typedef vd_type::const_cell_iterator const_cell_iterator;
+typedef vd_type::const_vertex_iterator const_vertex_iterator;
 
 #define CHECK_EQUAL_POINTS(p1, p2) \
         BOOST_CHECK(p1.x() == static_cast<T>(p2.x())); \
@@ -49,12 +54,6 @@ typedef boost::mpl::list<int> test_types;
 #define VERIFY_NO_HALF_EDGE_INTERSECTIONS(output) \
     BOOST_CHECK(voronoi_test_helper::verify_output(output, \
         voronoi_test_helper::NO_HALF_EDGE_INTERSECTIONS))
-
-typedef voronoi_diagram<double> vd_type;
-typedef vd_type::coordinate_type coordinate_type;
-typedef vd_type::edge_type voronoi_edge_type;
-typedef vd_type::const_cell_iterator const_cell_iterator;
-typedef vd_type::const_vertex_iterator const_vertex_iterator;
 
 // Sites: (0, 0).
 BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
@@ -161,18 +160,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
 
     const voronoi_edge_type *edge1_1 = it->incident_edge();
     const voronoi_edge_type *edge1_2 = edge1_1->twin();
-    CHECK_EQUAL_POINTS(edge1_1->cell()->point0(), point3);
-    CHECK_EQUAL_POINTS(edge1_2->cell()->point0(), point1);
+    CHECK_EQUAL_POINTS(edge1_1->cell()->point0(), point2);
+    CHECK_EQUAL_POINTS(edge1_2->cell()->point0(), point3);
 
     const voronoi_edge_type *edge2_1 = edge1_1->rot_prev();
     const voronoi_edge_type *edge2_2 = edge2_1->twin();
-    CHECK_EQUAL_POINTS(edge2_1->cell()->point0(), point1);
-    CHECK_EQUAL_POINTS(edge2_2->cell()->point0(), point2);
+    CHECK_EQUAL_POINTS(edge2_1->cell()->point0(), point3);
+    CHECK_EQUAL_POINTS(edge2_2->cell()->point0(), point1);
 
     const voronoi_edge_type *edge3_1 = edge2_1->rot_prev();
     const voronoi_edge_type *edge3_2 = edge3_1->twin();
-    CHECK_EQUAL_POINTS(edge3_1->cell()->point0(), point2);
-    CHECK_EQUAL_POINTS(edge3_2->cell()->point0(), point3);
+    CHECK_EQUAL_POINTS(edge3_1->cell()->point0(), point1);
+    CHECK_EQUAL_POINTS(edge3_2->cell()->point0(), point2);
 
     BOOST_CHECK_EQUAL(edge1_2->twin() == edge1_1, true);
     BOOST_CHECK_EQUAL(edge2_2->twin() == edge2_1, true);
@@ -213,18 +212,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
 
     const voronoi_edge_type *edge1_1 = it->incident_edge();
     const voronoi_edge_type *edge1_2 = edge1_1->twin();
-    CHECK_EQUAL_POINTS(edge1_1->cell()->point0(), point2);
-    CHECK_EQUAL_POINTS(edge1_2->cell()->point0(), point1);
+    CHECK_EQUAL_POINTS(edge1_1->cell()->point0(), point3);
+    CHECK_EQUAL_POINTS(edge1_2->cell()->point0(), point2);
 
     const voronoi_edge_type *edge2_1 = edge1_1->rot_prev();
     const voronoi_edge_type *edge2_2 = edge2_1->twin();
-    CHECK_EQUAL_POINTS(edge2_1->cell()->point0(), point1);
-    CHECK_EQUAL_POINTS(edge2_2->cell()->point0(), point3);
+    CHECK_EQUAL_POINTS(edge2_1->cell()->point0(), point2);
+    CHECK_EQUAL_POINTS(edge2_2->cell()->point0(), point1);
 
     const voronoi_edge_type *edge3_1 = edge2_1->rot_prev();
     const voronoi_edge_type *edge3_2 = edge3_1->twin();
-    CHECK_EQUAL_POINTS(edge3_1->cell()->point0(), point3);
-    CHECK_EQUAL_POINTS(edge3_2->cell()->point0(), point2);
+    CHECK_EQUAL_POINTS(edge3_1->cell()->point0(), point1);
+    CHECK_EQUAL_POINTS(edge3_2->cell()->point0(), point3);
 
     BOOST_CHECK_EQUAL(edge1_2->twin() == edge1_1, true);
     BOOST_CHECK_EQUAL(edge2_2->twin() == edge2_1, true);
@@ -269,23 +268,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
     // Check voronoi edges.
     const voronoi_edge_type *edge1_1 = it->incident_edge();
     const voronoi_edge_type *edge1_2 = edge1_1->twin();
-    CHECK_EQUAL_POINTS(edge1_1->cell()->point0(), points[1]);
-    CHECK_EQUAL_POINTS(edge1_2->cell()->point0(), points[3]);
+    CHECK_EQUAL_POINTS(edge1_1->cell()->point0(), points[3]);
+    CHECK_EQUAL_POINTS(edge1_2->cell()->point0(), points[2]);
 
     const voronoi_edge_type *edge2_1 = edge1_1->rot_prev();
     const voronoi_edge_type *edge2_2 = edge2_1->twin();
-    CHECK_EQUAL_POINTS(edge2_1->cell()->point0(), points[3]);
-    CHECK_EQUAL_POINTS(edge2_2->cell()->point0(), points[2]);
+    CHECK_EQUAL_POINTS(edge2_1->cell()->point0(), points[2]);
+    CHECK_EQUAL_POINTS(edge2_2->cell()->point0(), points[0]);
 
     const voronoi_edge_type *edge3_1 = edge2_1->rot_prev();
     const voronoi_edge_type *edge3_2 = edge3_1->twin();
-    CHECK_EQUAL_POINTS(edge3_1->cell()->point0(), points[2]);
-    CHECK_EQUAL_POINTS(edge3_2->cell()->point0(), points[0]);
+    CHECK_EQUAL_POINTS(edge3_1->cell()->point0(), points[0]);
+    CHECK_EQUAL_POINTS(edge3_2->cell()->point0(), points[1]);
 
     const voronoi_edge_type *edge4_1 = edge3_1->rot_prev();
     const voronoi_edge_type *edge4_2 = edge4_1->twin();
-    CHECK_EQUAL_POINTS(edge4_1->cell()->point0(), points[0]);
-    CHECK_EQUAL_POINTS(edge4_2->cell()->point0(), points[1]);
+    CHECK_EQUAL_POINTS(edge4_1->cell()->point0(), points[1]);
+    CHECK_EQUAL_POINTS(edge4_2->cell()->point0(), points[3]);
 
     BOOST_CHECK_EQUAL(edge1_2->twin() == edge1_1, true);
     BOOST_CHECK_EQUAL(edge2_2->twin() == edge2_1, true);

@@ -164,7 +164,7 @@ namespace polygon {
             beach_line_.clear();
 
             // Clean the output (remove zero-length edges).
-            output->clean();
+            output->seal();
         }
 
         void clear() {
