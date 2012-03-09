@@ -111,21 +111,20 @@ void scale_axis(
 
 // Definitions.
 
-//! \tparam iter iterator into STL container.
+ /*! \brief Inspect values to find min and max.
+     \details Inspect all values between begin and (one before) end to work out and update min and max.
+       Similar to boost::minmax_element, but ignoring at 'limit': non-finite, +-infinity, max & min, & NaN).
+       If can't find a max and a min, then throw a runtime_error exception.
+    \tparam iter InputIterator into STL container.
+    \return number of normal values (not 'at limit' neither too big, NaN nor infinite).
+  */
 template <typename iter>
 int mnmx(
   iter begin, //!< iterator to chosen first item in container.
   iter end,  //!< iterator to chosen last item in container.
   double* min, //!< Updated with Minimum value found (not 'at limit').
   double* max) //!< Updated with Maximum value found (not 'at limit').
-{ //! \brief Inspect values to find min and max.
-  /*! \details Inspect all values between begin and (one before) end to work out and update min and max.
-
-       Similar to boost::minmax_element, but ignoring at 'limit': non-finite, +-infinity, max & min, & NaN).
-       If can't find a max and a min, then throw a runtime_error exception.
-    \tparam iter STL container iterator.
-    \return number of normal values (not 'at limit' neither too big, NaN nor infinite).
-  */
+{
   *max = std::numeric_limits<double>::quiet_NaN();
   *min = std::numeric_limits<double>::quiet_NaN();
   using boost::svg::detail::is_limit; // Either x and/or y not a proper data value.
@@ -182,7 +181,7 @@ int mnmx(
     throw std::runtime_error("Autoscale could not find useful min & max to scale axis!");
   }
   return goods; // If goods < 2,
-} // inmmax(iter begin, iter end, double* min, double* max)
+} // template <typename iter>int mnmx((iter begin, iter end, double* min, double* max)
 
 //! Scale axis function to define axis marker ticks based on min & max parameters values.
 void scale_axis(

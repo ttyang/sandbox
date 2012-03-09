@@ -17,7 +17,7 @@
   \author Paul A. Bristow
   \date Mar 2009
 */
-// Copyright Paul A. Bristow 2009, 2011
+// Copyright Paul A. Bristow 2009, 2011, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -26,6 +26,13 @@
 
 #ifndef BOOST_SVG_UNCERTAIN_HPP
 #define BOOST_SVG_UNCERTAIN_HPP
+
+#ifdef _MSC_VER
+# pragma once
+//# pragma warning (disable : 4520) //  multiple default constructors specified.
+// Removed explicit default constructor to avoid this, relying on normal constructor
+// having defaults for all parameters.
+#endif
 
 #include <boost/svg_plot/detail/pair.hpp>
 
@@ -43,7 +50,6 @@ namespace svg
    //! Nominal factor of 2 (strictly 1.96) corresponds to 95% confidence limit.
    static const double plusminus = 2.; //!< Number of standard deviations used for plusminus text display.\n
 
-//  template <bool correlated = false>
 /*! \brief Uncertain class for storing an observed or measured value together with information
     about its uncertainty (previously called 'error' or 'plusminus', but now deprecated) represented
     nominally one standard deviation (but displayed as a multiple, usually two standard deviations).
@@ -53,22 +59,48 @@ namespace svg
     ISO, Guide to the expression of uncertainty in measurement, ISO, Geneva, 1993.\n
     Eurochem, Quantifying uncertainty in analytical measurements.
 */
-class unc
+
+// Forward declarations.
+template <bool correlated>
+class unc;
+
+typedef unc<false> uncun;  //! Uncertainties are NOT correlated.
+//! Uncorrelated is the normal case when uncertainties add.
+
+typedef unc<true> uncorr;   //! Uncertainties ARE correlated.
+//!  Correlated is an unusual case where the sum of uncertainties is fixed.
+
+template<typename correlated> std::ostream& operator<< (std::ostream& os, const unc<false>& u);
+template<typename correlated> std::ostream& operator<< (std::ostream& os, const unc<false>& u);
+// Need to declare so that can make a friend (in unc), and thus access private data value_ etc.
+// See http://www.parashift.com/c++-faq-lite/templates.html#faq-35.16
+// This avoids failure to instantiate these operators, and thus link failures.
+// May need for input operator>> too.
+// template<typename correlated> std::istream& operator>> (std::istream& is, const unc<false>& u);
+// friend istream& operator>> (istream& is, UReal<correlated>& u)
+
+template <bool correlated = false>
+class unc : public std::char_traits<char>
 {
 public:
-  unc(); //!< Default constructor with value .
-  unc(double v, float u, short unsigned df, short unsigned ty);
-   /*! \brief Output an value with (if defined) uncertainty and degrees of freedom (and type).
+  // Constructors.
+  //unc(); //!< Default constructor with value zero not needed because all parameters have defaults.
+  unc(double v = 0., float u = -1.f, short unsigned df = (std::numeric_limits<unsigned short int>::max)(), short unsigned ty = 0U);
+
+  /*! \brief Output an value with (if defined) uncertainty and degrees of freedom (and type).
        For example: "1.23 +/- 0.01 (13)".\n
        \details Note that the uncertainty is input and stored as one standard deviation,
        but output multiplied for a user configurable 'confidence factor' plusminus,
-       default two for about 95% confidence (but could also be one for 67% or 3 for 99% confidence).
+       default is two standard deviation for about 95%
+       confidence (but could also be one for 67% or 3 for 99% confidence).
   */
-  friend std::ostream& operator<< (std::ostream& os, const unc& u);
-   /*! Output a pair (X and Y) value with (if defined) uncertainty and degrees of freedom.
+  friend std::ostream& operator<< <> (std::ostream& os, const unc<correlated>& u);
+
+   /*! Output a pair of (X and Y) values with (if defined) uncertainty and degrees of freedom.
        \details For example: "1.23 +/- 0.01 (13), 3.45 +/- 0.06 (78)".
    */
-  friend std::ostream& operator<< (std::ostream& os, const std::pair<unc, unc>& u);
+  friend std::ostream& operator<< <> (std::ostream& os, const std::pair<unc, unc>& u);
+
   bool operator<(const unc& rhs)const;
   bool operator<(unc& rhs)const;
   bool operator==(const unc& rhs) const;
@@ -85,7 +117,7 @@ public:
   void deg_free(short unsigned); //!< Set degrees of freedom, usually = number of observations -1;
   void types(short unsigned); //!< Set other information about the value.
 
-private:
+ private:
   // Note that this class should fit into 128 bytes, same as two 64 bit doubles,
   // so it only doubles the memory required.
   double value_; //!< Most likely value, typically the mean.
@@ -104,36 +136,39 @@ private:
   // (Hopefully, this only uses up the bits that would otherwise be padding).
 };
 
-unc::unc(double v, float u = -1.f, short unsigned df = (std::numeric_limits<unsigned short int>::max)(), short unsigned ty = 0U)
+
+template <bool correlated>
+//unc<correlated>::unc(double v = 0., float u = -1.f, short unsigned df = (std::numeric_limits<unsigned short int>::max)(), short unsigned ty = 0U)
+unc<correlated>::unc(double v, float u, short unsigned df, short unsigned ty)
 :
-  value_(v), uncertainty_(u), deg_free_(df), types_(ty)
+value_(v), uncertainty_(u), deg_free_(df), types_(ty)
 { //! Constructor allowing an unc to be constructed from just value providing defaults for all other parameters.
   //! Note the defaults so that unspecified variables have 'undefined' status.
 }
 
-unc::unc()
-:
-  value_(0.), uncertainty_(-1.F), deg_free_((std::numeric_limits<unsigned short int>::max)()), types_(0U)
-{ //! Default constructor.
-  //! Note the defaults so that value is zero, but others have 'undefined' status.
-}
 
-bool unc::operator<(const unc& u) const
+
+template <bool correlated>
+bool unc<correlated>::operator<(const unc& u) const
 { //! Less operator only compares the value, ignoring any uncertainty information.
   return value_ < u.value_;
 }
 
-bool unc::operator<(unc& u) const
+template <bool correlated>
+bool unc<correlated>::operator<(unc& u) const
 { //! Less operator only compares the value, ignoring any uncertainty information.
   return value_ < u.value_;
 }
 
-bool unc::operator ==(const unc& u) const
+template <bool correlated>
+bool unc<correlated>::operator ==(const unc& u) const
 { //! Equality operator only compares the value, ignoring any uncertainty information.
-  return value_ == u.value_; // But might check ALL are equal? Or that are approximately equal taking uncertainty infor account?
+  return value_ == u.value_; // But might check ALL are equal?
+  // Or that are approximately equal taking uncertainty infor account?
 }
 
-unc& unc::operator=(const unc& u)
+template <bool correlated>
+unc<correlated>& unc<correlated>::operator=(const unc& u)
 { //! Assignment simply copies all values, including those with 'undefined' status.
   value_ = u.value_;
   uncertainty_ = u.uncertainty_;
@@ -142,47 +177,58 @@ unc& unc::operator=(const unc& u)
   return *this; //! to make chainable.
 }
 
-double unc::value() const
+template <bool correlated>
+double unc<correlated>::value() const
 { //! \return Most likely value, typically the mean.
   return value_;
 }
 
-float unc::uncertainty() const
+template <bool correlated>
+float unc<correlated>::uncertainty() const
 { //! \return Estimate of uncertainty, typically standard deviation.
   return uncertainty_;
 }
 
-short unsigned unc::deg_free() const
+template <bool correlated>
+short unsigned unc<correlated>::deg_free() const
 { //! \return Degrees of freedom, usually the number of observations -1.
   return deg_free_;
 }
 
-short unsigned unc::types() const
+template <bool correlated>
+short unsigned unc<correlated>::types() const
 { //! \return Other information about the uncertain value.
   return types_;
 }
 
-void unc::value(double v)
+
+template <bool correlated>
+void unc<correlated>::value(double v)
 { //! Set most likely value, typically the mean.
   value_ = v;
 }
 
-void unc::uncertainty(float u)
+template <bool correlated>
+void unc<correlated>::uncertainty(float u)
 { //! Set estimate of uncertainty, typically standard deviation.
   uncertainty_ = u;
 }
-void unc::deg_free(short unsigned df)
+
+template <bool correlated>
+void unc<correlated>::deg_free(short unsigned df)
 { //! Set degrees of freedom, usually = number of observations -1;
   deg_free_ = df;
 }
 
-void unc::types(short unsigned  t)
+template <bool correlated>
+void unc<correlated>::types(short unsigned  t)
 { //! Set other information about the uncertain value.
   types_ = t;
 }
 
-std::ostream& operator<< (std::ostream& os, const unc& u)
-{ /*! \brief Output an value with (if defined) uncertainty and degrees of freedom (and type).
+template <bool correlated>
+std::ostream& operator<< (std::ostream& os, const unc<correlated>& u)
+{ /*! \brief Output a single value with (if defined) uncertainty and degrees of freedom (and type).
      For example: "1.23 +/- 0.01 (13)".\n
      /details Note that the uncertainty is input and stored as one standard deviation,
      but output multiplied for a user configurable 'confidence factor' plusminus,
@@ -215,15 +261,21 @@ std::ostream& operator<< (std::ostream& os, const unc& u)
     os << " [" << u.types_ << "] ";
   }
   return os;
-} // ostream& operator<< (ostream& os, const unc& u)
+} // template <bool correlated> ostream& operator<< (ostream& os, const unc<correlated>c& u)
 
-std::ostream& operator<< (std::ostream& os, const std::pair<unc, unc>& u)
+// Explicit instantiation (but this is not enough - see note above).
+template std::ostream& operator<< (std::ostream& os, const unc<false>& u);
+
+template <bool correlated>
+std::ostream& operator<< (std::ostream& os, const std::pair< unc<correlated>, unc<correlated> >& u)
 { /*! Output a pair (X and Y) value with (if defined) uncertainty and degrees of freedom.
      \details For example: "1.23 +/- 0.01 (13), 3.45 +/- 0.06 (78)".
    */
   os << u.first << ", " << u.second;
   return os;
-} // std::ostream& operator<< (ostream& os, const pair<unc, unc>& u)
+} // std::ostream& operator<< (ostream& os, const pair<unc<correlated>, unc<correlated> >& u)
+
+template std::ostream& operator<< (std::ostream& os, const std::pair< unc<false>, unc<false> >& u);
 
 /*! Allow value part of variables of class unc to be assigned to, and compared with double.
 \tparam T Built-in floating-point type, float, double or long double, or uncertain type unc.
@@ -231,14 +283,20 @@ std::ostream& operator<< (std::ostream& os, const std::pair<unc, unc>& u)
 template <class T>
 double value_of(T v);
 
-template <class T> //!< \tparam value type convertible to double.
+template <class T> //!< \tparam T value type convertible to double.
 double value_of(T v)
 { //! \return value as a double.
   return double(v);
 }
 
 template<>
-double value_of(unc v)
+double value_of(unc<true> v)
+{ //! \return unc.value() as a double.
+  return v.value();
+}
+
+template<>
+double value_of(unc<false> v)
 { //! \return unc.value() as a double.
   return v.value();
 }
@@ -255,8 +313,9 @@ float unc_of(T)
   return float(0.);
 }
 
-template<>
-float unc_of(unc v)
+// template<>
+template <bool correlated>
+float unc_of(unc<correlated> v)
 { //! \return unc.uncertainty() as a float. (Can be cast or converted to double without loss of accuracy).
   return v.uncertainty();
 }
@@ -264,7 +323,7 @@ float unc_of(unc v)
 // Two helper functions to provide values and uncertainties as pairs.
 // Note names plural valueS_of
 
-template <class T> //! \tparam T Built-infloating-point type, float, double, long double or unc.
+template <class T> //! \tparam T Built-in floating-point type, float, double, long double or unc.
 std::pair<double, double> values_of(T); //!< Get double values of a pair of values.
 
 template <class T> //! \tparam T Built-infloating-point type, float, double, long double or unc.
@@ -273,19 +332,20 @@ std::pair<double, double> values_of(std::pair<const T, T> vp)
   return std::make_pair(value_of(vp.first), value_of(vp.second));
 }
 
+/* already defined
 template <class T> //! \tparam T Builtin-floating point type or unc.
-std::pair<double, double> values_of(std::pair<const unc, unc> up)
-{ //! \return value (part) as a pair of doubles.
-  /* \noteso can write
-     @c std::pair<const double, double> minmax = value_of(*result.first); // x min & max
-     whether T is double or unc.
-  */
+std::pair<double, double> values_of(std::pair<T, T> up)
+{ //! \return values (parts) as a pair of doubles.
+  //! \note so can write
+  //!   @c std::pair<const double, double> minmax = value_of(*result.first); // x min & max
+  //!   whether T is double or unc, or ...
 
   double vp1 = up.first.value();
   double vp2 = up.second.value();
   std::pair<double, double> minmax = std::make_pair(up.first.value(), up.second.value());
   return minmax;
 }
+*/
 
 template <class T>
 std::pair<double, double> values_of(std::pair<T, T> vp)
@@ -293,8 +353,8 @@ std::pair<double, double> values_of(std::pair<T, T> vp)
   return std::make_pair(value_of(vp.first), value_of(vp.second));
 }
 
-template <class T>
-std::pair<double, double> values_of(std::pair<unc, unc> up)
+template <bool correlated>
+std::pair<double, double> values_of(std::pair<unc<correlated>, unc<correlated> > up)
 { //! \return value (part) as a pair of doubles.
   /* \note so can write
   @c std::pair<const double, double> minmax = value_of(*result.first); // x min & max

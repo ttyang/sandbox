@@ -75,7 +75,7 @@ namespace boost
 
     public:
       // 2-D Data series points to plot.
-      std::multimap<unc, unc> series_; //!< Normal 'OK to plot' data values.
+      std::multimap<unc<false>, unc<false>> series_; //!< Normal 'OK to plot' data values.
       std::multimap<double, double> series_limits_; //!< 'limit' values: too big or small, or NaN.
 
       std::string title_; //!< Title of data series (to show on legend using legend style).
@@ -150,9 +150,9 @@ namespace boost
   { // Constructor.
     for(T i = begin; i != end; ++i)
     { // Sort data points into normal and limited series.
-      std::pair<unc, unc> temp = *i;
-      unc ux = temp.first;
-      unc uy = temp.second;
+      std::pair<unc<false>, unc<false>> temp = *i;
+      unc<false> ux = temp.first;
+      unc<false> uy = temp.second;
       std::pair<double, double> xy = std::make_pair<double, double>(ux.value(), uy.value());
       if(detail::pair_is_limit(xy))
       { // Either x and/or y is at limit.
@@ -1620,13 +1620,13 @@ my_plot.background_color(ghostwhite) // Whole image.
         double prev_y;
         if(series.series_.size() > 1)
         { // Need at least two points for a line  ;-)
-          std::multimap<unc, unc>::const_iterator j = series.series_.begin();
+          std::multimap<unc<false>, unc<false>>::const_iterator j = series.series_.begin();
           // If required to fill the area under the plot,
           // we first have to move from the X-axis (y = 0) to the first point,
           // and again to the X-axis (y = 0) at the end after the last point.
 
           // std::multimap<double, double> was prev_x = (*j).first;
-          unc prev_ux = (*j).first;
+          unc<false> prev_ux = (*j).first;
           prev_x = prev_ux.value(); // 1st point X-value.
           prev_y = 0.; // y = 0, so on horizontal X-axis.
           transform_point(prev_x, prev_y);
@@ -1636,7 +1636,7 @@ my_plot.background_color(ghostwhite) // Whole image.
             path.M(prev_x, prev_y);
           }
           // std::multimap<double, double> was transform_y(prev_y = (*j).second);
-          unc prev_uy = (*j).second;
+          unc<false> prev_uy = (*j).second;
           prev_y = prev_uy.value();
           transform_y(prev_y);
           if(is_fill == true)
@@ -1654,9 +1654,9 @@ my_plot.background_color(ghostwhite) // Whole image.
           double temp_y;
           for(; j != series.series_.end(); ++j)
           {
-            unc temp_ux = (*j).first;
+            unc<false> temp_ux = (*j).first;
             temp_x = temp_ux.value();
-            unc temp_uy = (*j).second;
+            unc<false> temp_uy = (*j).second;
             temp_y = temp_uy.value();
             transform_point(temp_x, temp_y);
             path.L(temp_x, temp_y); // Line to next point.
@@ -1699,13 +1699,13 @@ my_plot.background_color(ghostwhite) // Whole image.
 
         if(series.series_.size() > 2)
         { // Need >= 3 points for a cubic curve (start point, 2 control points, and end point).
-          std::multimap<unc, unc>::const_iterator iter = series.series_.begin();
-          std::pair<unc, unc> un_minus_1 = *(iter++); // 1st unc X & Y data.
+          std::multimap<unc<false>, unc<false> >::const_iterator iter = series.series_.begin();
+          std::pair<unc<false>, unc<false> > un_minus_1 = *(iter++); // 1st unc X & Y data.
           n_minus_1 = std::make_pair(un_minus_1.first.value(), un_minus_1.second.value()); // X and Y values.
           //n_minus_1 = *(iter++);  // begin()
           transform_pair(n_minus_1);
 
-          std::pair<unc, unc> un = *(iter++); // middle
+          std::pair<unc<false>, unc<false> > un = *(iter++); // middle
           n = std::make_pair(un.first.value(), un.second.value()); // X and Y values.
           transform_pair(n);
           path.M(n_minus_1.first, n_minus_1.second); // move m_minus_1, the 1st data point.
@@ -1724,7 +1724,7 @@ my_plot.background_color(ghostwhite) // Whole image.
           {
             n_minus_2 = n_minus_1;
             n_minus_1 = n;
-            std::pair<unc, unc> un = *iter; // middle
+            std::pair<unc<false>, unc<false> > un = *iter; // middle
             n = std::make_pair(un.first.value(), un.second.value()); // X and Y values.
             transform_pair(n);
 
@@ -1785,13 +1785,13 @@ my_plot.background_color(ghostwhite) // Whole image.
             .fill_color(serieses_[i].point_style_.fill_color_)
             .stroke_color(serieses_[i].point_style_.stroke_color_);
 
-          for(std::multimap<unc, unc>::const_iterator j = serieses_[i].series_.begin();
+          for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
             j != serieses_[i].series_.end(); ++j)
           {
-            unc ux = j->first;
+            unc<false> ux = j->first;
             x = ux.value(); // Just the X value.
             //double vx = x; // Note the true X value.
-            unc uy = j->first;
+            unc<false> uy = j->first;
             uy = j->second;
             y = uy.value(); // Just the Y value
             //double vy = y; // Note the true Y value.
@@ -1891,12 +1891,12 @@ my_plot.background_color(ghostwhite) // Whole image.
             serieses_[i].limit_point_style_.fill_color_ = image_.g(detail::PLOT_LIMIT_POINTS).style().fill_color();
             // This is a kludge.  limit_point_style_ should probably be common to all data series.
 
-            draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, unc(0.), unc(0.));  // No uncertainty info for values at limit infinity & NaN.
+            draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, unc<false>(), unc<false>());  // No uncertainty info for values at limit infinity & NaN.
 
             if((x > plot_left_)  && (x < plot_right_) && (y > plot_top_) && (y < plot_bottom_))
             { // Is inside plot window, so draw a point.
               // draw_plot_point(x, y, g_ptr, plot_point_style(blank, blank, s, cone)); default.
-              draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, unc(0.), unc(0.));
+              draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, unc<false>(), unc<false>());
             }
           }
         } // limits point
@@ -1926,12 +1926,12 @@ my_plot.background_color(ghostwhite) // Whole image.
 
           double h_w = serieses_[i].bar_style_.width_; // For block bar chart.
           //double h_h = 0.;
-          for(std::multimap<unc, unc>::const_iterator j = serieses_[i].series_.begin();
+          for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
             j != serieses_[i].series_.end(); ++j)
           { // All the 'good' data points.
-            unc ux = j->first;
+            unc<false> ux = j->first;
             x = ux.value();
-            unc uy = j->second;
+            unc<false> uy = j->second;
             y = uy.value();
             transform_point(x, y);
             if((x > plot_left_)  && (x < plot_right_) && (y > plot_top_)  && (y < plot_bottom_))
@@ -2017,26 +2017,26 @@ my_plot.background_color(ghostwhite) // Whole image.
             path.style().fill_color(blank);
           }
 
-          std::multimap<unc, unc>::const_iterator last = serieses_[i].series_.end();
+          std::multimap<unc<false>, unc<false> >::const_iterator last = serieses_[i].series_.end();
           last--; // Final pair with first the last bin end, and value zero or NaN.
-          unc u = last->second;
+          unc<false> u = last->second;
           if (u.value() != 0)
           {
             std::cout << "Last bin end " << last->first << " should have zero value! but is "  << last->second << std::endl;
             // Or Throw? or skip this series?
           }
-          for(std::multimap<unc, unc>::const_iterator j = serieses_[i].series_.begin();
+          for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
             j != last; ++j)
           { // All the 'good' 'real' data points.
-            unc ux = j->first;
+            unc<false> ux = j->first;
             double x = ux.value();
-            unc uy =  j->second;
+            unc<false> uy =  j->second;
             double y = uy.value();
-            std::multimap<unc, unc>::const_iterator j_next = j;
+            std::multimap<unc<false>, unc<false> >::const_iterator j_next = j;
             j_next++;
             if (j != last)
             { // Draw a column (perhaps filled) to show bin.
-              unc ux_next= j_next->first;
+              unc<false> ux_next= j_next->first;
               double x_next = ux_next.value();
               double w = x_next - x;
               double h = y / w;
@@ -3154,7 +3154,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
   template <class T> //! \tparam T Type of data in series (must be convertible to unc double).
   svg_2d_plot_series& svg_2d_plot::plot(const T& container, const std::string& title)
   { /*! Add a container of a data series to the plot.
-      This version assumes that  \b ALL the data values in the container are used.
+      This version assumes that  \b ALL the data values in the container are to be plotted.
       \code
 my_plot.plot(data1, "Sqrt(x)");
       \endcode
@@ -3162,8 +3162,8 @@ my_plot.plot(data1, "Sqrt(x)");
     */
     serieses_.push_back(
       svg_2d_plot_series(
-      boost::make_transform_iterator(container.begin(), detail::pair_unc_2d_convert()),
-      boost::make_transform_iterator(container.end(), detail::pair_unc_2d_convert()),
+      boost::make_transform_iterator(container.begin(), detail::pair_unc_2d_convert<false>()),
+      boost::make_transform_iterator(container.end(), detail::pair_unc_2d_convert<false>()),
       title)
     );
     return serieses_[serieses_.size()-1]; //! \return Reference to data series just added to make chainable.

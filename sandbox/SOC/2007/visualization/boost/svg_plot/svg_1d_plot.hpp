@@ -80,7 +80,7 @@ class svg_1d_plot_series
 */
 
 public:
-  std::vector<unc> series_; //!< Normal 'OK to plot' data values.
+  std::vector<unc<false> > series_; //!< Normal 'OK to plot' data values.
   std::vector<double> series_limits_; //!< 'limit' values: too big, too small or NaN.
   // TODO should these be unc too?
 
@@ -761,7 +761,7 @@ public:
 
       for(unsigned int j = 0; j < serieses_[i].series_.size(); ++j)
       { // Draw jth point for ith serieses.
-        unc ux = serieses_[i].series_[j];
+        unc<false> ux = serieses_[i].series_[j];
         double x = ux.value();
         // TODO symbols are offset downwards because
         // the origin of the point is the top left of the glyph.
@@ -770,7 +770,7 @@ public:
         if((x >= plot_left_) && (x <= plot_right_)) // Check point is inside plot_window.
         // May need a margin here to avoid points just over the window not being shown.
         {
-          draw_plot_point(x, y, g_ptr, serieses_[i].point_style_, ux, unc(0)); // Marker. (y uncertainty is zero)
+          draw_plot_point(x, y, g_ptr, serieses_[i].point_style_, ux, unc<false>()); // Marker. (y uncertainty is zero)
           if (x_values_on_)
           { // Show the value (& perhaps uncertainty) of the data point too.
             g_element& g_ptr_v = image_.g(detail::PLOT_X_POINT_VALUES).add_g_element();
@@ -806,7 +806,7 @@ public:
             x = plot_right_;
           }
           //else X axis includes zero, so x is OK.
-          draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, 0, 0);
+          draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, unc<false>(), unc<false>());
         }
         else
         { // Not NaN
@@ -825,7 +825,7 @@ public:
           serieses_[i].limit_point_style_.fill_color_ = image_.g(detail::PLOT_LIMIT_POINTS).style().fill_color();
           // This is a kludge.  limit_point_style_ should probably be common to all data series.
 
-          draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, 0, 0);
+          draw_plot_point(x, y, g_ptr, serieses_[i].limit_point_style_, unc<false>(), unc<false>());
         }
       } // for j
     } // for i limits point
@@ -920,8 +920,8 @@ my_1d_plot.plot(my_data, "All data in my container"); // Plot all data in contai
    */
     serieses_.push_back(
       svg_1d_plot_series(
-      boost::make_transform_iterator(container.begin(), detail::unc_1d_convert()),
-      boost::make_transform_iterator(container.end(), detail::unc_1d_convert()),
+      boost::make_transform_iterator(container.begin(), detail::unc_1d_convert<false>()),
+      boost::make_transform_iterator(container.end(), detail::unc_1d_convert<false>()),
       title)
     );
     return serieses_[serieses_.size() - 1];

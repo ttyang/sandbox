@@ -1032,7 +1032,7 @@ namespace boost
                   legend_x_pos,
                   legend_y_pos,
                   *g_inner_ptr,
-                  sty, unc(0.), unc(0.));
+                  sty, unc<false>(), unc<false>());
                   //was derived().serieses_[i].point_style_, unc(0.), unc(0.));
                 legend_x_pos += 1.5 * spacing;
                 if (was_unc_ellipse)
@@ -1079,7 +1079,7 @@ namespace boost
           //void draw_plot_point(unc x, unc y, // SVG coordinates.
             g_element& g_ptr,
             plot_point_style& sty,
-            unc ux, unc uy) // Default unc ux = 0.? and uy = 0.
+            unc<false> ux, unc<false> uy) // Default unc ux = 0.? and uy = 0.
           { /*! Draw a plot data point marker shape
               whose size and stroke and fill colors are specified in plot_point_style.
             */
@@ -1231,7 +1231,7 @@ namespace boost
             }
           } // void draw_plot_point
 
-          void draw_plot_point_value(double x, double y, g_element& g_ptr, value_style& val_style, plot_point_style& point_style, unc uvalue)
+          void draw_plot_point_value(double x, double y, g_element& g_ptr, value_style& val_style, plot_point_style& point_style, unc<false> uvalue)
           { /*!
              Write one data point (X or Y) value as a string, for example "1.23e-2",
              near the data point marker.
@@ -1393,7 +1393,7 @@ namespace boost
               label.str();  // Leave unstripped.
           } // std::string sv(double v, const value_style& sty)
 
-          void draw_plot_point_values(double x, double y, g_element& x_g_ptr, g_element& y_g_ptr, const value_style& x_sty, const value_style& y_sty, unc uncx, unc uncy)
+          void draw_plot_point_values(double x, double y, g_element& x_g_ptr, g_element& y_g_ptr, const value_style& x_sty, const value_style& y_sty, unc<false> uncx, unc<false> uncy)
           { /*! \brief Write the \b pair of data point's X and Y values as a string.
                \details
                \verbatim  If a separator, then both on the same line, for example "1.23, 3.45", or "[5.6, 7.8]

@@ -103,7 +103,8 @@ inline bool pair_is_limit(std::pair<int, double> a)
     || limit_max(a.second) || limit_min(a.second) || limit_NaN(a.second);
 }
 
-inline bool pair_is_limit(std::pair<const unc, unc> a)
+template <bool correlated>
+inline bool pair_is_limit(std::pair<const unc<correlated>, unc<correlated> > a)
 { //! Check on values of both x and y unc data points.
   // \return false if either or both are at limit.
   return limit_max(value_of(a.first)) || limit_min(value_of(a.first)) || limit_NaN(value_of(a.first))
@@ -121,6 +122,8 @@ bool boost::svg::detail::limit_NaN(double); // true if NaN.
 bool boost::svg::detail::is_limit(double); // max, min, infinity or NaN - not a 'proper' data value.
 bool boost::svg::detail::pair_is_limit(std::pair<double, double>); // x and/or y  not a proper data value.
 bool boost::svg::detail::pair_is_limit(std::pair<const double, double>); // x and/or y  not a proper data value.
-bool boost::svg::detail::pair_is_limit(std::pair<const unc, unc>); // x and/or y  not a proper data value.
+
+template <bool correlated>
+bool boost::svg::detail::pair_is_limit(std::pair<const unc<correlated>, unc<correlated> >); // x and/or y  not a proper data value.
 
 #endif // BOOST_SVG_NUMERIC_LIMITS_HANDLING_DETAIL_HPP

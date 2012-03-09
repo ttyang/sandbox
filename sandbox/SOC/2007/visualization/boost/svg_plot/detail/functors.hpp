@@ -78,53 +78,58 @@ public:
     }
 }; // class pair_double_2d_convert
 
+template <bool correlated>
 class pair_unc_2d_convert
 { /*! \class boost::svg::detail::pair_unc_2d_convert
       \brief This functor allows any 2D data convertible to type std::pair<unc, unc> to be plotted.
 */
 public:
-    typedef std::pair<unc, unc> result_type; //!< result type is pair of uncertain values.
-    unc i; //!< Start uncertain value.
-    void start(unc i)
+    typedef std::pair<unc<correlated>, unc<correlated>> result_type; //!< result type is pair of uncertain values.
+    unc<correlated> i; //!< Start uncertain value.
+    void start(unc<correlated> i)
     { //!< Set a start value.
        i = i;
     }
 
     //!< \tparam T type convertible to double.
     template <class T, class U>
-    std::pair<unc, unc> operator()(const std::pair<T, U>& a) const
+    std::pair<unc<correlated>, unc<correlated> > operator()(const std::pair<T, U>& a) const
     {  //!< Convert a pair of X and Y uncertain type values to a pair of doubles.
        //! \return pair of uncs.
-       return std::pair<unc, unc>((unc)(a.first), (unc)(a.second));
+       return std::pair<unc<correlated>, unc<correlated> >((unc<correlated>)(a.first), (unc<correlated>)(a.second));
     }
 
     template <class T>    //!< \tparam T Any type convertible to double.
-    std::pair<unc, unc> operator()(T a)
+    std::pair<unc<correlated>, unc<correlated> > operator()(T a)
     {  //!< Convert a pair of X and Y uncertain type values to a pair of unc.
-        return std::pair<unc, unc>(i++, (unc)a); //! \return pair of unc.
+        return std::pair<un<correlated>c, unc<correlated> >(i++, (unc<correlated>)a); //! \return pair of unc.
     }
 }; // class pair_unc_2d_convert
 
+template <bool correlated>
 class unc_1d_convert
 { /*! \class boost::svg::detail::unc_1d_convert
       \brief This functor allows any 1D data convertible to unc (uncertain doubles) to be plotted.
       \details Defaults provided by the unc class constructor ensure that
-      uncertainty, degrees of freedom information, and type are suitably set too.
+        uncertainty, degrees of freedom information, and type are suitably set too.
 */
 public:
-    typedef unc result_type; //!< result type is an uncertain floating-point type.
+    typedef unc<correlated> result_type; //!< result type is an uncertain floating-point type.
 
-    //! \tparam T  Any type convertible to double.
+    //! \tparam T Any data type with a value convertible to double, for example: double, unc, Meas.
     template <class T>
-    unc operator()(T val) const /*!< Convert to uncertain type, providing defaults for uncertainty,
-    degrees of freedom information, and type (meaning undefined).
+    unc<correlated> operator()(T val) const
+    /*!< Convert to uncertain type,
+      providing defaults for uncertainty,  degrees of freedom information, and type (meaning undefined).
     \return value including uncertainty information.
     */
     {
-      return (unc)val; //! \return uncertain type (uncertainty, degrees of freedom information, and type meaning undefined).
-      // warning C4244: 'argument' : conversion from 'long double' to 'double', possible loss of data.
-      // because unc only holds values to double precision. 
-      // Suppressed by pragma for MSVC above. Need similar for other compilers.
+      return (unc<correlated>)val;
+      /*! \return uncertain type (uncertainty, degrees of freedom information, and type meaning undefined).
+       warning C4244: 'argument' : conversion from 'long double' to 'double', possible loss of data.
+       because unc only holds values to double precision. 
+       Suppressed by pragma for MSVC above. Need similar for other compilers.
+      */
     }
 }; // class default_1d_convert
 
