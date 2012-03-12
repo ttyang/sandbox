@@ -70,7 +70,17 @@ private:
     void setupModelData(const QStringList &lines, DagItem *parent);
     DagItem *getItem(const QModelIndex &index) const;
 
+    void fillData(QVector<QVariant>& data, QSqlQuery& query);
+
     DagItem *rootItem;
+
+    int m_parentId  ;
+    int m_childId   ;
+    int m_typeId    ;
+    int m_parentName;
+    int m_childName ;
+    int m_childType ;
+
 };
 
 #endif

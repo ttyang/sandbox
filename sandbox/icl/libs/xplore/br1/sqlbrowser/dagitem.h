@@ -14,6 +14,8 @@
 class DagItem
 {
 public:
+    static const int NodeType_Object = 2;
+
     DagItem(const QVector<QVariant> &data, DagItem *parent = 0);
     ~DagItem();
 
@@ -30,6 +32,7 @@ public:
     bool setData(int column, const QVariant &value);
 
     void addChild(DagItem* child);
+    bool isLeaf(int TypeId)const { return itemData[TypeId] == NodeType_Object; }
 
 private:
     QList<DagItem*> childItems;

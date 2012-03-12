@@ -289,28 +289,8 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
     {
         //create a node
         QVector<QVariant> data;
-        //JODO REFA Function
-        int fieldCount = 6; //JODO retrieve from QSql
-        data.resize(fieldCount);
-
-        QSqlRecord rec   = query.record();
-        int parentId     = rec.indexOf("ParentId");
-        int childId      = rec.indexOf("ChildId");
-        int typeId       = rec.indexOf("TypeId");
-        int parentName   = rec.indexOf("Parent");
-        int childName    = rec.indexOf("Child");
-        int childType    = rec.indexOf("Type");
-
-        int dbg_parentId = query.value(parentId).toInt();
-        int dbg_childId  = query.value(childId).toInt();
-        int dbg_typeId   = query.value(typeId).toInt();
-
-        data[parentId]   = query.value(parentId);
-        data[childId]    = query.value(childId);
-        data[typeId]     = query.value(typeId);
-        data[parentName] = query.value(parentName);
-        data[childName]  = query.value(childName);
-        data[childType]  = query.value(childType);
+        //fill node
+        fillData(data, query);
 
         DagItem* curNode = (depth==0) ? new DagItem(data, 0) //curNode==rootItem
                                       : new DagItem(data, parent);
@@ -318,23 +298,17 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
             rootItem = curNode;
 
         //if the new node is not a leaf, create children.
-        //JODO if(!curNode->IsLeaf())
-        if(data[typeId] != 2)
+        if(!curNode->isLeaf(m_typeId))
         {
             //While records available: Read children.
             DagItem* curChild;
             while((curChild = fromSql(query, curNode, depth+1)) != NULL)
-            {
                 curNode->addChild(curChild);
-                int dbg_childCount = curNode->childCount(); //CL
-            }
         }
 
         return curNode;
     }
 }
-
-
 
 
 //JOFA Iteration example: The container as String
@@ -347,7 +321,6 @@ QString DagModel::nodeToString(DagItem* node, int depth)const
 {
     if(node->childCount()==0)
         return tr("(%1)").arg(depth); //Print only structure and depth.
-        //return tr("(%1)").arg(node->data(0));
     else
     {
         QString nodeRepr(tr("["));
@@ -359,4 +332,24 @@ QString DagModel::nodeToString(DagItem* node, int depth)const
     }
 }
 
+
+void DagModel::fillData(QVector<QVariant>& data, QSqlQuery& query)
+{
+    QSqlRecord rec = query.record();
+    data.resize(rec.count());
+
+    m_parentId     = rec.indexOf("ParentId");
+    m_childId      = rec.indexOf("ChildId");
+    m_typeId       = rec.indexOf("TypeId");
+    m_parentName   = rec.indexOf("Parent");
+    m_childName    = rec.indexOf("Child");
+    m_childType    = rec.indexOf("Type");
+
+    data[m_parentId]   = query.value(m_parentId);
+    data[m_childId]    = query.value(m_childId);
+    data[m_typeId]     = query.value(m_typeId);
+    data[m_parentName] = query.value(m_parentName);
+    data[m_childName]  = query.value(m_childName);
+    data[m_childType]  = query.value(m_childType);
+}
 
