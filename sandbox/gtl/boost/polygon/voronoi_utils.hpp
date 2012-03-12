@@ -105,7 +105,7 @@ public:
         point_type direction(site1.y() - site2.y(), site2.x() - site1.x());
 
         // Find intersection points.
-        intersect(origin, direction, LINE, brect, discretization);
+        intersect(origin, direction, LINE, get_brect(brect), discretization);
 
         // Update endpoints in case edge is a ray.
         if (edge.vertex1() != NULL)
@@ -130,7 +130,9 @@ public:
         // Edge is a segment or parabolic arc.
         discretization.push_back(get_point(edge.vertex0()->vertex()));
         discretization.push_back(get_point(edge.vertex1()->vertex()));
-        coordinate_type max_dist = max_error * brect.min_len();
+        coordinate_type x_len = to_fpt(brect.x_max()) - to_fpt(brect.x_min());
+        coordinate_type y_len = to_fpt(brect.y_max()) - to_fpt(brect.y_min());
+        coordinate_type max_dist = max_error * (std::min)(x_len, y_len);
         fill_intermediate_points(point1, point2, point3,
                                  discretization, max_dist);
       } else {
@@ -228,6 +230,15 @@ private:
     coordinate_type x = to_fpt(point.x());
     coordinate_type y = to_fpt(point.y());
     return point_type(x, y);
+  }
+
+  template <typename CT>
+  static brect_type get_brect(const bounding_rectangle<CT> &rect) {
+    coordinate_type x1 = to_fpt(rect.x_min());
+    coordinate_type y1 = to_fpt(rect.y_min());
+    coordinate_type x2 = to_fpt(rect.x_max());
+    coordinate_type y2 = to_fpt(rect.y_max());
+    return brect_type(x1, y1, x2, y2);
   }
 
   // Find intermediate points of the parabola.

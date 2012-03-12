@@ -10,7 +10,6 @@
 #ifndef BOOST_POLYGON_VORONOI_DIAGRAM
 #define BOOST_POLYGON_VORONOI_DIAGRAM
 
-#include <list>
 #include <vector>
 
 #include "detail/voronoi_ctypes.hpp"
@@ -38,26 +37,11 @@ public:
       x_max_(x),
       y_max_(y) {}
 
-  template <typename P>
-  bounding_rectangle(const P &p) :
-      x_min_(p.x()),
-      y_min_(p.y()),
-      x_max_(p.x()),
-      y_max_(p.y()) {}
-
   bounding_rectangle(T x1, T y1, T x2, T y2) {
     x_min_ = (std::min)(x1, x2);
     y_min_ = (std::min)(y1, y2);
     x_max_ = (std::max)(x1, x2);
     y_max_ = (std::max)(y1, y2);
-  }
-
-  template <typename P>
-  bounding_rectangle(const P &p1, const P &p2) {
-    x_min_ = (std::min)(p1.x(), p2.x());
-    y_min_ = (std::min)(p1.y(), p2.y());
-    x_max_ = (std::max)(p1.x(), p2.x());
-    y_max_ = (std::max)(p1.y(), p2.y());
   }
 
   void update(T x, T y) {
@@ -67,25 +51,9 @@ public:
     y_max_ = (std::max)(y_max_, y);
   }
 
-  // Extend the rectangle with a new point.
-  template <typename P>
-  void update(const P &p) {
-    x_min_ = (std::min)(x_min_, p.x());
-    y_min_ = (std::min)(y_min_, p.y());
-    x_max_ = (std::max)(x_max_, p.x());
-    y_max_ = (std::max)(y_max_, p.y());
-  }
-
   bool contains(T x, T y) const {
     return x >= x_min_ && x <= x_max_ &&
            y >= y_min_ && y <= y_max_;
-  }
-
-  // Check whether a point is situated inside the bounding rectangle.
-  template <typename P>
-  bool contains(const P &p) const {
-    return p.x() >= x_min_ && p.x() <= x_max_ &&
-           p.y() >= y_min_ && p.y() <= y_max_;
   }
 
   // Return the x-coordinate of the bottom left point of the rectangle.
@@ -106,14 +74,6 @@ public:
   // Return the y-coordinate of the upper right point of the rectangle.
   coordinate_type y_max() const {
     return y_max_;
-  }
-
-  coordinate_type min_len() const {
-    return (std::min)(x_max_ - x_min_, y_max_ - y_min_);
-  }
-
-  coordinate_type max_len() const {
-    return (std::max)(x_max_ - x_min_, y_max_ - y_min_);
   }
 
 private:
@@ -189,8 +149,7 @@ public:
   typedef detail::point_2d<T> point_type;
   typedef voronoi_edge<coordinate_type> voronoi_edge_type;
 
-  voronoi_vertex(const point_type &vertex,
-                 voronoi_edge_type *edge) :
+  voronoi_vertex(const point_type &vertex, voronoi_edge_type *edge) :
       vertex_(vertex),
       incident_edge_(edge),
       data_(NULL) {}
@@ -448,7 +407,7 @@ public:
 
     // Update bounding rectangle.
     point_type p = prepare_point(site.point0());
-    vrect_ = brect_type(p);
+    vrect_ = brect_type(p.x(), p.y());
 
     // Update cell records.
     cells_.push_back(cell_type(p, NULL));
@@ -480,7 +439,8 @@ public:
     }
 
     // Update the bounding rectangle.
-    vrect_.update(prepare_point(site2.point0()));
+    point_type p = prepare_point(site2.point0());
+    vrect_.update(p.x(), p.y());
 
     // The second site represents a new site during site event
     // processing. Add a new cell to the cell records.
