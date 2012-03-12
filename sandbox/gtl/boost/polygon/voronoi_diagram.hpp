@@ -1,9 +1,9 @@
 // Boost.Polygon library voronoi_diagram.hpp header file
 
-//      Copyright Andrii Sydorchuk 2010-2012.
+//          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
-//  (See accompanying file LICENSE_1_0.txt or copy at
-//      http://www.boost.org/LICENSE_1_0.txt)
+//    (See accompanying file LICENSE_1_0.txt or copy at
+//          http://www.boost.org/LICENSE_1_0.txt)
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
@@ -34,15 +34,15 @@ public:
 
   bounding_rectangle(T x, T y) :
       x_min_(x),
-      x_max_(x),
       y_min_(y),
+      x_max_(x),
       y_max_(y) {}
 
   template <typename P>
   bounding_rectangle(const P &p) :
       x_min_(p.x()),
-      x_max_(p.x()),
       y_min_(p.y()),
+      x_max_(p.x()),
       y_max_(p.y()) {}
 
   bounding_rectangle(T x1, T y1, T x2, T y2) {
@@ -381,11 +381,11 @@ public:
   typedef typename cell_container_type::iterator cell_iterator;
   typedef typename cell_container_type::const_iterator const_cell_iterator;
 
-  typedef std::list<vertex_type> vertex_container_type;
+  typedef std::vector<vertex_type> vertex_container_type;
   typedef typename vertex_container_type::iterator vertex_iterator;
   typedef typename vertex_container_type::const_iterator const_vertex_iterator;
 
-  typedef std::list<edge_type> edge_container_type;
+  typedef std::vector<edge_type> edge_container_type;
   typedef typename edge_container_type::iterator edge_iterator;
   typedef typename edge_container_type::const_iterator const_edge_iterator;
 
@@ -397,6 +397,8 @@ public:
 
   void reserve(int num_sites) {
     cells_.reserve(num_sites);
+    vertices_.reserve(num_sites << 1);
+    edges_.reserve((num_sites << 2) + (num_sites << 1));
   }
 
   void clear() {
@@ -560,17 +562,32 @@ public:
     num_vertices_ = vertices_.size();
 
     // Remove degenerate edges.
-    for (edge_iterator it = edges_.begin(); it != edges_.end();) {
+    edge_iterator last_edge = edges_.begin();
+    for (edge_iterator it = edges_.begin(); it != edges_.end(); it += 2) {
       const vertex_type *v1 = it->vertex0();
       const vertex_type *v2 = it->vertex1();
-      edge_iterator it_old = it;
-      std::advance(it, 2);
       if (v1 && v2 && vertex_equality_predicate_(v1->vertex(), v2->vertex())) {
-        remove_edge(&(*it_old));
-        edges_.erase(it_old, it);
+        remove_edge(&(*it));
         --num_edges_;
+      } else {
+        if (it != last_edge) {
+          edge_type *e1 = &(*last_edge = *it);
+          edge_type *e2 = &(*(last_edge + 1) = *(it + 1));
+          e1->twin(e2);
+          e2->twin(e1);
+          if (e1->prev()) {
+            e1->prev()->next(e1); 
+            e2->next()->prev(e2);
+          }
+          if (e2->prev()) {
+            e1->next()->prev(e1);
+            e2->prev()->next(e2);
+          }
+        }
+        last_edge += 2;
       }
     }
+    edges_.erase(last_edge, edges_.end());
 
     // Set up incident edge pointers for cells and vertices.
     for (edge_iterator it = edges_.begin(); it != edges_.end(); ++it) {
@@ -580,14 +597,25 @@ public:
       }
     }
 
-    for (vertex_iterator it = vertices_.begin(); it != vertices_.end();) {
-      if (!it->incident_edge()) {
-        it = vertices_.erase(it);
-        --num_vertices_;
+    // Remove degenerate vertices.
+    vertex_iterator last_vertex = vertices_.begin();
+    for (vertex_iterator it = vertices_.begin(); it != vertices_.end(); ++it) {
+      if (it->incident_edge()) {
+        if (it != last_vertex) {
+          *last_vertex = *it;
+          vertex_type *v = &(*last_vertex);
+          edge_type *e = v->incident_edge();
+          do {
+            e->vertex0(v);
+            e = e->rot_next();
+          } while (e != v->incident_edge());
+        }
+        ++last_vertex;
       } else {
-        ++it;
+        --num_vertices_;
       }
     }
+    vertices_.erase(last_vertex, vertices_.end());
 
     // Set up next/prev pointers for infinite edges.
     if (vertices_.empty()) {
