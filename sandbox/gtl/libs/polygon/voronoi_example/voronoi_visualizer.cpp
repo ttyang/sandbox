@@ -8,7 +8,6 @@
 //  See http://www.boost.org for updates, documentation, and revision history.
 
 #include <iostream>
-#include <set>
 #include <vector>
 
 #include <QtOpenGL/QGLWidget>
@@ -70,7 +69,6 @@ public:
     shift_ = point_type((brect_.x_min() + brect_.x_max()) * 0.5,
                         (brect_.y_min() + brect_.y_max()) * 0.5);
 
-    exterior_edges_set_.clear();
     for (const_edge_iterator it = vd_.edges().begin();
         it != vd_.edges().end(); ++it) {
       if (!it->is_bounded()) {
@@ -153,7 +151,7 @@ protected:
         if (primary_edges_only_ && !it->is_primary()) {
           continue;
         }
-        if (internal_edges_only_ && exterior_edges_set_.count(&(*it))) {
+        if (internal_edges_only_ && it->data()) {
           continue;
         }
         std::vector<point_type> vec;
@@ -189,15 +187,13 @@ private:
   typedef VD::const_edge_iterator const_edge_iterator;
 
   void remove_exterior(const VD::edge_type* edge) {
-    if (exterior_edges_set_.count(edge)) {
+    if (edge->data())
       return;
-    }
-    exterior_edges_set_.insert(edge);
-    exterior_edges_set_.insert(edge->twin());
+    edge->data(&edge);
+    edge->twin()->data(&edge);
     const voronoi_diagram<double>::vertex_type* v = edge->vertex1();
-    if (v == NULL || !edge->is_primary()) {
+    if (v == NULL || !edge->is_primary())
       return;
-    }
     const voronoi_diagram<double>::edge_type* e = v->incident_edge();
     do {
       remove_exterior(e);
@@ -218,7 +214,6 @@ private:
   point_type shift_;
   default_voronoi_builder vb_;
   voronoi_diagram<coordinate_type> vd_;
-  std::set<const edge_type*> exterior_edges_set_;
   bool primary_edges_only_;
   bool internal_edges_only_;
 };
