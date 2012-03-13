@@ -19,6 +19,76 @@
 namespace boost {
 namespace polygon {
 
+// Bounding rectangle data structure. Contains coordinates
+// of the bottom left and upper right points of the rectangle.
+template <typename T>
+class bounding_rectangle {
+public:
+  typedef T coordinate_type;
+
+  bounding_rectangle() : x_min_(1), x_max_(0) {}
+
+  bounding_rectangle(coordinate_type x1, coordinate_type y1,
+                     coordinate_type x2, coordinate_type y2) {
+    x_min_ = (std::min)(x1, x2);
+    y_min_ = (std::min)(y1, y2);
+    x_max_ = (std::max)(x1, x2);
+    y_max_ = (std::max)(y1, y2);
+  }
+
+  void update(coordinate_type x, coordinate_type y) {
+    if (x_min_ > x_max_) {
+      x_min_ = x_max_ = x;
+      y_min_ = y_max_ = y;
+    } else {
+      x_min_ = (std::min)(x_min_, x);
+      y_min_ = (std::min)(y_min_, y);
+      x_max_ = (std::max)(x_max_, x);
+      y_max_ = (std::max)(y_max_, y);
+    }
+  }
+
+  bool is_empty() const {
+    return x_min_ > x_max_;
+  }
+
+  void clear() {
+    x_min_ = 1;
+    x_max_ = 0;
+  }
+
+  // Update bounding rectangle.
+  bool contains(coordinate_type x, coordinate_type y) const {
+    return x > x_min_ && x < x_max_ && y > y_min_ && y < y_max_;
+  }
+
+  // Return the x-coordinate of the bottom left point of the rectangle.
+  coordinate_type x_min() const {
+    return x_min_;
+  }
+
+  // Return the y-coordinate of the bottom left point of the rectangle.
+  coordinate_type y_min() const {
+    return y_min_;
+  }
+
+  // Return the x-coordinate of the upper right point of the rectangle.
+  coordinate_type x_max() const {
+    return x_max_;
+  }
+
+  // Return the y-coordinate of the upper right point of the rectangle.
+  coordinate_type y_max() const {
+    return y_max_;
+  }
+
+private:
+  coordinate_type x_min_;
+  coordinate_type y_min_;
+  coordinate_type x_max_;
+  coordinate_type y_max_;
+};
+
 template <typename fpt_>
 struct voronoi_utils_traits;
 

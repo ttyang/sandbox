@@ -33,6 +33,7 @@ public:
   }
 
   void build(QString file_path) {
+    brect_.clear();
     vb_.clear();
     vd_.clear();
 
@@ -52,18 +53,20 @@ public:
     for (int i = 0; i < num_point_sites; ++i) {
       in_stream >> x1 >> y1;
       vb_.insert_point(x1, y1);
+      brect_.update(x1, y1);
     }
     in_stream >> num_edge_sites;
     for (int i = 0; i < num_edge_sites; ++i) {
       in_stream >> x1 >> y1 >> x2 >> y2;
       vb_.insert_segment(x1, y1, x2, y2);
+      brect_.update(x1, y1);
+      brect_.update(x2, y2);
     }
     in_stream.flush();
 
     // Build voronoi diagram.
     vb_.construct(&vd_);
-    brect_ = voronoi_utils<coordinate_type>::scale(
-        vd_.bounding_rectangle(), 1.4);
+    brect_ = voronoi_utils<coordinate_type>::scale(brect_, 1.4);
     shift_ = point_type((brect_.x_min() + brect_.x_max()) * 0.5,
                         (brect_.y_min() + brect_.y_max()) * 0.5);
 

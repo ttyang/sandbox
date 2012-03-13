@@ -22,67 +22,6 @@ namespace polygon {
 template <typename T>
 class voronoi_edge;
 
-// Bounding rectangle data structure. Contains coordinates
-// of the bottom left and the upper right points of the rectangle.
-template <typename T>
-class bounding_rectangle {
-public:
-  typedef T coordinate_type;
-
-  bounding_rectangle() {}
-
-  bounding_rectangle(T x, T y) :
-      x_min_(x),
-      y_min_(y),
-      x_max_(x),
-      y_max_(y) {}
-
-  bounding_rectangle(T x1, T y1, T x2, T y2) {
-    x_min_ = (std::min)(x1, x2);
-    y_min_ = (std::min)(y1, y2);
-    x_max_ = (std::max)(x1, x2);
-    y_max_ = (std::max)(y1, y2);
-  }
-
-  void update(T x, T y) {
-    x_min_ = (std::min)(x_min_, x);
-    y_min_ = (std::min)(y_min_, y);
-    x_max_ = (std::max)(x_max_, x);
-    y_max_ = (std::max)(y_max_, y);
-  }
-
-  bool contains(T x, T y) const {
-    return x >= x_min_ && x <= x_max_ &&
-           y >= y_min_ && y <= y_max_;
-  }
-
-  // Return the x-coordinate of the bottom left point of the rectangle.
-  coordinate_type x_min() const {
-    return x_min_;
-  }
-
-  // Return the y-coordinate of the bottom left point of the rectangle.
-  coordinate_type y_min() const {
-    return y_min_;
-  }
-
-  // Return the x-coordinate of the upper right point of the rectangle.
-  coordinate_type x_max() const {
-    return x_max_;
-  }
-
-  // Return the y-coordinate of the upper right point of the rectangle.
-  coordinate_type y_max() const {
-    return y_max_;
-  }
-
-private:
-  coordinate_type x_min_;
-  coordinate_type y_min_;
-  coordinate_type x_max_;
-  coordinate_type y_max_;
-};
-
 // Represents voronoi cell.
 // Data members: 1) pointer to the incident edge;
 //               2) site inside cell;
@@ -295,7 +234,6 @@ struct voronoi_diagram_traits {
     }
   } ctype_converter_type;
   typedef detail::point_2d<coordinate_type> point_type;
-  typedef bounding_rectangle<coordinate_type> brect_type;
   typedef voronoi_cell<coordinate_type> cell_type;
   typedef voronoi_vertex<coordinate_type> vertex_type;
   typedef voronoi_edge<coordinate_type> edge_type;
@@ -314,14 +252,6 @@ struct voronoi_diagram_traits {
 };
 
 // Voronoi output data structure.
-// Data members:
-//   1) cells_ - vector of the voronoi cells;
-//   2) vertices_ - list of the voronoi vertices;
-//   3) edges_ - list of the voronoi edges;
-//   4) vrect_ - bounding rectangle;
-//   5) num_cells_ - number of the voronoi cells;
-//   6) num_vertices_ - number of the voronoi vertices;
-//   7) num_edges_ - number of the voronoi edges.
 // CCW ordering is used on the faces perimeter and around the vertices.
 template <typename T, typename TRAITS = voronoi_diagram_traits<T> >
 class voronoi_diagram {
@@ -329,7 +259,6 @@ public:
   typedef typename TRAITS::coordinate_type coordinate_type;
   typedef typename TRAITS::ctype_converter_type ctype_converter_type;
   typedef typename TRAITS::point_type point_type;
-  typedef typename TRAITS::brect_type brect_type;
   typedef typename TRAITS::cell_type cell_type;
   typedef typename TRAITS::vertex_type vertex_type;
   typedef typename TRAITS::edge_type edge_type;
@@ -348,11 +277,7 @@ public:
   typedef typename edge_container_type::iterator edge_iterator;
   typedef typename edge_container_type::const_iterator const_edge_iterator;
 
-  voronoi_diagram() :
-      num_cells_(0),
-      num_edges_(0),
-      num_vertices_(0),
-      sealed_(false) {}
+  voronoi_diagram() : sealed_(false) {}
 
   void reserve(int num_sites) {
     cells_.reserve(num_sites);
@@ -364,16 +289,7 @@ public:
     cells_.clear();
     vertices_.clear();
     edges_.clear();
-
     sealed_ = false;
-
-    num_cells_ = 0;
-    num_edges_ = 0;
-    num_vertices_ = 0;
-  }
-
-  const brect_type &bounding_rectangle() const {
-    return vrect_;
   }
 
   const cell_container_type &cells() const {
@@ -389,27 +305,23 @@ public:
   }
 
   unsigned int num_cells() const {
-    return num_cells_;
+    return cells_.size();
   }
 
   unsigned int num_edges() const {
-    return num_edges_;
+    return edges_.size() >> 1;
   }
 
   unsigned int num_vertices() const {
-    return num_vertices_;
+    return vertices_.size();
   }
 
   // Update the voronoi output in case of a single point input.
   template <typename SEvent>
   void process_single_site(const SEvent &site) {
     if (sealed_) return;
-
-    // Update bounding rectangle.
-    point_type p = prepare_point(site.point0());
-    vrect_ = brect_type(p.x(), p.y());
-
     // Update cell records.
+    point_type p = prepare_point(site.point0());
     cells_.push_back(cell_type(p, NULL));
   }
 
@@ -438,10 +350,6 @@ public:
       process_single_site(site1);
     }
 
-    // Update the bounding rectangle.
-    point_type p = prepare_point(site2.point0());
-    vrect_.update(p.x(), p.y());
-
     // The second site represents a new site during site event
     // processing. Add a new cell to the cell records.
     cells_.push_back(cell_type(prepare_point(site2.point0()),
@@ -465,20 +373,18 @@ public:
   // Takes as input two sites that create a new bisector, circle event
   // that corresponds to the intersection point of the two old half-edges,
   // pointers to those half-edges. Half-edges' direction goes out of the
-  // new voronoi vertex point. Returns a pointer to the new half-edge.
+  // new voronoi vertex point. Returns a pair of pointers to a new half-edges.
   template <typename SEvent, typename CEvent>
-  void *insert_new_edge(
+  std::pair<void *, void *> insert_new_edge(
       const SEvent &site1, const SEvent &site3, const CEvent &circle,
       void *data12, void *data23) {
-    if (sealed_) return NULL;
+    if (sealed_) return std::pair<void*, void*>(NULL, NULL);
 
     edge_type *edge12 = static_cast<edge_type*>(data12);
     edge_type *edge23 = static_cast<edge_type*>(data23);
 
     // Add a new voronoi vertex.
-    coordinate_type x = convert_(circle.x());
-    coordinate_type y = convert_(circle.y());
-    vertices_.push_back(vertex_type(point_type(x, y), NULL));
+    vertices_.push_back(vertex_type(prepare_point(circle), NULL));
     vertex_type &new_vertex = vertices_.back();
 
     // Update vertex pointers of the old edges.
@@ -511,15 +417,11 @@ public:
     new_edge2.prev(edge23->twin());
 
     // Return a pointer to the new half-edge.
-    return &new_edge1;
+    return std::make_pair(&new_edge1, &new_edge2);
   }
 
   void seal() {
     if (sealed_) return;
-
-    num_cells_ = cells_.size();
-    num_edges_ = edges_.size() >> 1;
-    num_vertices_ = vertices_.size();
 
     // Remove degenerate edges.
     edge_iterator last_edge = edges_.begin();
@@ -528,7 +430,6 @@ public:
       const vertex_type *v2 = it->vertex1();
       if (v1 && v2 && vertex_equality_predicate_(v1->vertex(), v2->vertex())) {
         remove_edge(&(*it));
-        --num_edges_;
       } else {
         if (it != last_edge) {
           edge_type *e1 = &(*last_edge = *it);
@@ -571,8 +472,6 @@ public:
           } while (e != v->incident_edge());
         }
         ++last_vertex;
-      } else {
-        --num_vertices_;
       }
     }
     vertices_.erase(last_vertex, vertices_.end());
@@ -636,16 +535,11 @@ public:
   }
 
 private:
-  template <typename CT>
-  point_type prepare_point(const CT& x, const CT& y) {
-    coordinate_type nx = convert_(x);
-    coordinate_type ny = convert_(y);
-    return point_type(nx, ny);
-  }
-
   template <typename P>
   point_type prepare_point(const P& p) {
-    return prepare_point(p.x(), p.y());
+    coordinate_type nx = convert_(p.x());
+    coordinate_type ny = convert_(p.y());
+    return point_type(nx, ny);
   }
 
   // Remove degenerate edge.
@@ -677,14 +571,8 @@ private:
   cell_container_type cells_;
   vertex_container_type vertices_;
   edge_container_type edges_;
-
-  unsigned int num_cells_;
-  unsigned int num_edges_;
-  unsigned int num_vertices_;
-
   bool sealed_;
 
-  brect_type vrect_;
   ctype_converter_type convert_;
   vertex_equality_predicate_type vertex_equality_predicate_;
 

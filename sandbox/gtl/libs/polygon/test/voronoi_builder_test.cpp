@@ -30,12 +30,6 @@ typedef vd_type::const_vertex_iterator const_vertex_iterator;
         BOOST_CHECK(p1.x() == static_cast<T>(p2.x())); \
         BOOST_CHECK(p1.y() == static_cast<T>(p2.y()))
 
-#define CHECK_BRECT(brect, xmin, ymin, xmax, ymax) \
-        BOOST_CHECK(brect.x_min() == static_cast<coordinate_type>(xmin)); \
-        BOOST_CHECK(brect.y_min() == static_cast<coordinate_type>(ymin)); \
-        BOOST_CHECK(brect.x_max() == static_cast<coordinate_type>(xmax)); \
-        BOOST_CHECK(brect.y_max() == static_cast<coordinate_type>(ymax))
-
 #define CHECK_OUTPUT_SIZE(output, cells, vertices, edges) \
         BOOST_CHECK(output.num_cells() == cells); \
         BOOST_CHECK(output.num_vertices() == vertices); \
@@ -63,7 +57,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
     construct_voronoi_points(points, &test_output);
     VERIFY_OUTPUT(test_output);
 
-    CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 0, 0);
     BOOST_CHECK(test_output.cells().size() == 1);
     CHECK_OUTPUT_SIZE(test_output, 1, 0, 0);
 
@@ -79,8 +72,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
     vd_type test_output;
     construct_voronoi_points(points, &test_output);
     VERIFY_OUTPUT(test_output);
-
-    CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 0, 1);
     CHECK_OUTPUT_SIZE(test_output, 2, 0, 1);
 
     const_cell_iterator cell_it = test_output.cells().begin();
@@ -112,8 +103,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
     vd_type test_output;
     construct_voronoi_points(points, &test_output);
     VERIFY_OUTPUT(test_output);
-
-    CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 2, 2);
     CHECK_OUTPUT_SIZE(test_output, 3, 0, 2);
 
     const_cell_iterator cell_it = test_output.cells().begin();
@@ -150,8 +139,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
     vd_type test_output;
     construct_voronoi_points(points, &test_output);
     VERIFY_OUTPUT(test_output);
-
-    CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 2, 4);
     CHECK_OUTPUT_SIZE(test_output, 3, 1, 3);
 
     const_vertex_iterator it = test_output.vertices().begin();
@@ -202,8 +189,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
     vd_type test_output;
     construct_voronoi_points(points, &test_output);
     VERIFY_OUTPUT(test_output);
-
-    CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 2, 4);
     CHECK_OUTPUT_SIZE(test_output, 3, 1, 3);
 
     const_vertex_iterator it = test_output.vertices().begin();
@@ -256,8 +241,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
     vd_type test_output;
     construct_voronoi_points(points, &test_output);
     VERIFY_OUTPUT(test_output);
-
-    CHECK_BRECT(test_output.bounding_rectangle(), 0, 0, 1, 1);
     CHECK_OUTPUT_SIZE(test_output, 4, 1, 4);
 
     // Check voronoi vertex.

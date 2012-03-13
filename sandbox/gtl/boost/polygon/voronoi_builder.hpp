@@ -453,8 +453,8 @@ namespace polygon {
             const_cast<key_type &>(it_first->first).right_site(site3);
 
             // Insert the new bisector into the beach line.
-            it_first->second.edge(output->insert_new_edge(site1, site3, circle_event,
-                                                          bisector1, bisector2));
+            it_first->second.edge(output->insert_new_edge(
+                site1, site3, circle_event, bisector1, bisector2).first);
 
             // Remove the (B, C) bisector node from the beach line.
             beach_line_.erase(it_last);
