@@ -277,19 +277,56 @@ public:
   typedef typename edge_container_type::iterator edge_iterator;
   typedef typename edge_container_type::const_iterator const_edge_iterator;
 
-  voronoi_diagram() : sealed_(false) {}
+  class voronoi_diagram_builder {
+  public:
+    void vd(voronoi_diagram *vd) {
+      vd_ = vd;
+    }
 
-  void reserve(int num_sites) {
-    cells_.reserve(num_sites);
-    vertices_.reserve(num_sites << 1);
-    edges_.reserve((num_sites << 2) + (num_sites << 1));
+    bool done() {
+      return vd_ == NULL;
+    }
+
+    void reserve(int num_sites) {
+      vd_->reserve(num_sites);
+    }
+
+    template <typename SEvent>
+    void process_single_site(const SEvent &site) {
+      vd_->process_single_site(site);
+    }
+
+    template <typename SEvent>
+    std::pair<void*, void*> insert_new_edge(
+        const SEvent &site1, const SEvent &site2) {
+      return vd_->insert_new_edge(site1, site2);
+    }
+
+    template <typename SEvent, typename CEvent>
+    std::pair<void *, void *> insert_new_edge(
+        const SEvent &site1, const SEvent &site3, const CEvent &circle,
+        void *data12, void *data23) {
+      return vd_->insert_new_edge(site1, site3, circle, data12, data23);
+    }
+
+    void build() {
+      vd_->build();
+      vd_ = NULL;
+    }
+
+  private:
+    voronoi_diagram *vd_;
+  };
+
+  voronoi_diagram() {
+    builder_.vd(&(*this));
   }
 
   void clear() {
     cells_.clear();
     vertices_.clear();
     edges_.clear();
-    sealed_ = false;
+    builder_.vd(&(*this));
   }
 
   const cell_container_type &cells() const {
@@ -316,10 +353,26 @@ public:
     return vertices_.size();
   }
 
+  voronoi_diagram_builder *builder() {
+    if (builder_.done()) {
+      return NULL;
+    } else {
+      return &builder_;
+    }
+  }
+
+private:
+  friend class voronoi_diagram_builder;
+
+  void reserve(int num_sites) {
+    cells_.reserve(num_sites);
+    vertices_.reserve(num_sites << 1);
+    edges_.reserve((num_sites << 2) + (num_sites << 1));
+  }
+
   // Update the voronoi output in case of a single point input.
   template <typename SEvent>
   void process_single_site(const SEvent &site) {
-    if (sealed_) return;
     // Update cell records.
     point_type p = prepare_point(site.point0());
     cells_.push_back(cell_type(p, NULL));
@@ -331,8 +384,6 @@ public:
   template <typename SEvent>
   std::pair<void*, void*> insert_new_edge(
       const SEvent &site1, const SEvent &site2) {
-    if (sealed_) return std::pair<void*, void*>(NULL, NULL);
-
     // Get sites' indices.
     int site_index1 = site1.index();
     int site_index2 = site2.index();
@@ -378,8 +429,6 @@ public:
   std::pair<void *, void *> insert_new_edge(
       const SEvent &site1, const SEvent &site3, const CEvent &circle,
       void *data12, void *data23) {
-    if (sealed_) return std::pair<void*, void*>(NULL, NULL);
-
     edge_type *edge12 = static_cast<edge_type*>(data12);
     edge_type *edge23 = static_cast<edge_type*>(data23);
 
@@ -420,9 +469,7 @@ public:
     return std::make_pair(&new_edge1, &new_edge2);
   }
 
-  void seal() {
-    if (sealed_) return;
-
+  void build() {
     // Remove degenerate edges.
     edge_iterator last_edge = edges_.begin();
     for (edge_iterator it = edges_.begin(); it != edges_.end(); it += 2) {
@@ -530,11 +577,8 @@ public:
         right_edge->next(left_edge);
       }
     }
-
-    sealed_ = true;
   }
 
-private:
   template <typename P>
   point_type prepare_point(const P& p) {
     coordinate_type nx = convert_(p.x());
@@ -571,8 +615,8 @@ private:
   cell_container_type cells_;
   vertex_container_type vertices_;
   edge_container_type edges_;
-  bool sealed_;
 
+  voronoi_diagram_builder builder_;
   ctype_converter_type convert_;
   vertex_equality_predicate_type vertex_equality_predicate_;
 

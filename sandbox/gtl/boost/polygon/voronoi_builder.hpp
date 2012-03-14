@@ -132,7 +132,7 @@ namespace polygon {
         template <typename OUTPUT>
         void construct(OUTPUT *output) {
             // Init structures.
-            output->reserve(site_events_.size());
+            output->builder()->reserve(site_events_.size());
             init_sites_queue();
             if (!circle_events_.empty())
                 circle_events_.clear();
@@ -164,7 +164,7 @@ namespace polygon {
             beach_line_.clear();
 
             // Clean the output (remove zero-length edges).
-            output->seal();
+            output->builder()->build();
         }
 
         void clear() {
@@ -237,7 +237,7 @@ namespace polygon {
                 return;
             if (site_events_.size() == 1) {
                 // Handle one input site case.
-                output->process_single_site(site_events_[0]);
+                output->builder()->process_single_site(site_events_[0]);
                 ++site_event_iterator_;
             } else {
                 int skip = 0;
@@ -292,7 +292,7 @@ namespace polygon {
                  key_type new_node(*it_first, *it_second);
 
                  // Update the output.
-                 edge_type *edge = output->insert_new_edge(*it_first, *it_second).first;
+                 edge_type *edge = output->builder()->insert_new_edge(*it_first, *it_second).first;
 
                  // Insert a new bisector into the beach line.
                  beach_line_.insert(beach_line_.end(),
@@ -453,7 +453,7 @@ namespace polygon {
             const_cast<key_type &>(it_first->first).right_site(site3);
 
             // Insert the new bisector into the beach line.
-            it_first->second.edge(output->insert_new_edge(
+            it_first->second.edge(output->builder()->insert_new_edge(
                 site1, site3, circle_event, bisector1, bisector2).first);
 
             // Remove the (B, C) bisector node from the beach line.
@@ -500,7 +500,7 @@ namespace polygon {
 
             // Update the output.
             std::pair<edge_type*, edge_type*> edges =
-                output->insert_new_edge(site_arc2, site_event);
+                output->builder()->insert_new_edge(site_arc2, site_event);
             position = beach_line_.insert(position,
                 typename beach_line_type::value_type(new_right_node, value_type(edges.second)));
 
