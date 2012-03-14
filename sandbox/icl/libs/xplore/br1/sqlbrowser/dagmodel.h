@@ -71,6 +71,8 @@ private:
     DagItem *getItem(const QModelIndex &index) const;
 
     void fillData(QVector<QVariant>& data, QSqlQuery& query);
+    QString indentation(int depth)const;
+
 
     DagItem *rootItem;
 

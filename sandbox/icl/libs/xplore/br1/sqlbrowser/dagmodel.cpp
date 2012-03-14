@@ -320,16 +320,28 @@ QString DagModel::toString()const
 QString DagModel::nodeToString(DagItem* node, int depth)const
 {
     if(node->childCount()==0)
-        return tr("(%1)").arg(depth); //Print only structure and depth.
+        return tr("%1(%2)\n").arg(indentation(depth), depth); //Print only structure and depth.
     else
     {
-        QString nodeRepr(tr("["));
+        QString indent = indentation(depth);
+
+        QVariant parentNameV = node->data(m_childName);
+        QString  parentName  = parentNameV.toString();
+        QString nodeRepr( tr("%1[%2\n").arg(indentation(depth), parentName) ); //, node->data[m_parentName]);
         for(int idx=0; idx<node->childCount(); idx++)
             nodeRepr += nodeToString(node->child(idx), depth+1);
 
-        nodeRepr += tr("]");
+        nodeRepr += tr("%1]\n").arg(indentation(depth));
         return nodeRepr;
     }
+}
+
+QString DagModel::indentation(int depth)const
+{
+    QString indent;
+    for(int idx=0; idx < depth; idx++)
+        indent += "    ";
+    return indent;
 }
 
 
