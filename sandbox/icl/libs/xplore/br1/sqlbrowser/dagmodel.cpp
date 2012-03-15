@@ -9,6 +9,8 @@
 #include "dagitem.h"
 #include "dagmodel.h"
 
+using namespace boost;
+
 DagModel::DagModel(const QStringList &headers, //const QString &data,
                      QObject *parent)
     : QAbstractItemModel(parent)
@@ -260,6 +262,20 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
     }
 }
 
+void DagModel::getEdges(QSqlQuery& query)
+{
+    while(query.next())
+    {
+        //create an edge
+        QVector<QVariant> data;
+        //fill node
+        fillData(data, query);
+        m_edges.append(data);
+    }
+}
+
+
+
 //JODO Populate a DagModel from an sql-query that provides the DAG as
 // (ParentId -> ChildId), ParentName, ChildName, ChildType
 void DagModel::fromSql(QSqlQuery& query)
@@ -272,6 +288,41 @@ void DagModel::fromSql(QSqlQuery& query)
         fromSql(query, rootItem, 0);
     }
 }
+
+void DagModel::makeDag()
+{
+    m_nameTags = get(name_tag(), m_dag);
+
+    for(tEdgeList::iterator iter = m_edges.begin(); iter != m_edges.end(); iter++)
+    {
+        int source = (*iter)[m_parentId].toInt();
+        int target = (*iter)[m_childId].toInt();
+        if(!(source==0 && target==0))
+        {
+            boost::add_edge(source, target, m_dag);
+            m_nameTags[source] = (*iter)[m_parentName].toString();
+            m_nameTags[target] = (*iter)[m_childName].toString();
+        }
+    }
+}
+
+QString DagModel::dagToString()
+{
+    QString dagst;
+
+    boost::depth_first_search(
+        m_dag
+      , boost::visitor(make_dfs_visitor(boost::make_list(
+                                              node_arrival(&dagst, m_nameTags)
+                                            , edge_visit(&dagst, m_nameTags)
+                                            , node_final(&dagst, m_nameTags)
+                                            )
+                      ))
+    );
+
+    return dagst;
+}
+
 
 
 // The result indicates: False: No more data. True: Data available.
@@ -303,7 +354,9 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
             //While records available: Read children.
             DagItem* curChild;
             while((curChild = fromSql(query, curNode, depth+1)) != NULL)
+            {
                 curNode->addChild(curChild);
+            }
         }
 
         return curNode;

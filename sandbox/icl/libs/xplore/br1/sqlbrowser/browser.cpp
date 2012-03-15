@@ -88,10 +88,13 @@ void Browser::exec()
 
     int dbg_size = xpQuery.size();
     // Populate the Dag Model from an sql-Query
-    dagmo->fromSql(xpQuery);
+    //JODO dagmo->fromSql(xpQuery);
+    dagmo->getEdges(xpQuery);
+    dagmo->makeDag();
 
     QMessageBox msgBox;
-    QString dagStr = dagmo->toString();
+    //QString dagStr = dagmo->toString();
+    QString dagStr = dagmo->dagToString();
     msgBox.setText(dagStr);
     msgBox.exec();
 
