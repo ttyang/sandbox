@@ -17,10 +17,41 @@
 
 #include <map>
 
-typedef std::map<int, int> daggy;
+
+inline QString indentation(int depth)
+{
+    QString indent;
+    for(int idx=0; idx < depth; idx++)
+        indent += "    ";
+    return indent;
+}
+
+
+typedef std::map<int, int> daggy; //CL?
 
 class QSqlQuery;
 class DagItem;
+
+// An object to collect results on graph traversal
+class NodeAttributes
+{
+public:
+    NodeAttributes(): m_name(), m_depth() {}
+    NodeAttributes(const QString& name): m_name(name), m_depth() {}
+    NodeAttributes(const QString& name, int depth): m_name(name), m_depth(depth) {}
+
+    void setName(const QString& name) { m_name  = name;  }
+    QString name()const { return m_name; }
+
+    void setDepth(int depth){ m_depth = depth; }
+    int depth()const { return m_depth; }
+
+    int inc(){ return ++m_depth; }
+
+private:
+    QString m_name;
+    int     m_depth;
+};
 
 class DagModel : public QAbstractItemModel
 {
@@ -78,13 +109,13 @@ public:
 
 private:
     void setupModelData(const QStringList &lines, DagItem *parent);
+    void setupDag(DagItem *parent);
+
     DagItem *getItem(const QModelIndex &index) const;
 
     void fillData(QVector<QVariant>& data, QSqlQuery& query);
-    QString indentation(int depth)const;
 
-
-    DagItem *rootItem;
+    DagItem *m_rootItem;
 
     int m_parentId  ;
     int m_childId   ;
@@ -99,32 +130,32 @@ private:
 
     //==========================================================================
     // Graph
-    struct name_tag {
+    struct attribute_tag {
         typedef boost::vertex_property_tag kind;
     };
 
-    typedef boost::property<name_tag, QString> tNameTag;
+    typedef boost::property<attribute_tag, NodeAttributes> tAttributeTag;
 
     typedef boost::adjacency_list
     < boost::vecS
     , boost::vecS
     , boost::directedS
-    , tNameTag
+    , tAttributeTag
     > tDag;
 
     tDag m_dag;
 
-    typedef boost::property_map<tDag, name_tag>::type
-        tNameTagMap;
+    typedef boost::property_map<tDag, attribute_tag>::type
+        tAttributesMap;
 
-    tNameTagMap m_nameTags;
+    tAttributesMap m_nodeAttributes;
 
     //--------------------------------------------------------------------------
     // Visitors
     struct node_arrival : public boost::base_visitor<node_arrival>
     {
-        node_arrival(QString* result, const tNameTagMap& names)
-            : p_result(result), r_names(names){}
+        node_arrival(QString* result, tAttributesMap& names)
+            : p_result(result), r_attrs(names){}
 
         typedef boost::on_discover_vertex event_filter;
 
@@ -133,8 +164,8 @@ private:
         {
             if(boost::out_degree(node, dag) > 0)
             {
-                *p_result += "(";
-                *p_result += r_names[node];
+                *p_result += indentation(r_attrs[node].depth()) + "(";
+                *p_result += r_attrs[node].name();
                 *p_result += "\n";
             }
         }
@@ -154,32 +185,39 @@ private:
             return edge_cnt;
         }
 
-        QString*           p_result;
-        const tNameTagMap& r_names;
+        QString*        p_result;
+        tAttributesMap& r_attrs;
     };
 
     struct edge_visit : public boost::base_visitor<edge_visit>
     {
-        edge_visit(QString* result, const tNameTagMap& names)
-            : p_result(result), r_names(names){}
+        edge_visit(QString* result, tAttributesMap& names)
+            : p_result(result), r_attrs(names){}
 
         typedef boost::on_examine_edge event_filter;
 
         template<class Edge, class Graph>
         void operator()(Edge edge, Graph& dag)
         {
-            *p_result += " ->" + r_names[target(edge, dag)];
-            *p_result += "\n";
+            int source_depth = r_attrs[source(edge, dag)].depth();
+            int target_depth = source_depth + 1;
+            r_attrs[target(edge, dag)].setDepth(target_depth);
+
+            if(boost::out_degree(target(edge, dag), dag)==0)
+            {
+                *p_result += indentation(target_depth) + r_attrs[target(edge, dag)].name();
+                *p_result += "\n";
+            }
         }
 
-        QString*           p_result;
-        const tNameTagMap& r_names;
+        QString*        p_result;
+        tAttributesMap& r_attrs;
     };
 
     struct node_final : public boost::base_visitor<node_final>
     {
-        node_final(QString* result, const tNameTagMap& names)
-            : p_result(result), r_names(names){}
+        node_final(QString* result, tAttributesMap& names)
+            : p_result(result), r_attrs(names){}
 
         typedef boost::on_finish_vertex event_filter;
 
@@ -188,13 +226,13 @@ private:
         {
             if(boost::out_degree(node, dag) > 0)
             {
-                *p_result += ")";
+                *p_result += indentation(r_attrs[node].depth()) + ")";
                 *p_result += "\n";
             }
         }
 
-        QString*           p_result;
-        const tNameTagMap& r_names;
+        QString*        p_result;
+        tAttributesMap& r_attrs;
     };
 
 };

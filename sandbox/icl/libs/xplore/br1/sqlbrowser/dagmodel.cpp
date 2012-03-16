@@ -19,8 +19,8 @@ DagModel::DagModel(const QStringList &headers, //const QString &data,
     foreach (QString header, headers)
         rootData << header;
 
-    //rootItem = new DagItem(rootData);
-    //setupModelData(data.split(QString("\n")), rootItem);
+    //m_rootItem = new DagItem(rootData);
+    //setupModelData(data.split(QString("\n")), m_rootItem);
 }
 
 /* JODO
@@ -32,20 +32,20 @@ DagModel::DagModel(const QStringList &headers, const QString &data,
     foreach (QString header, headers)
         rootData << header;
 
-    rootItem = new DagItem(rootData);
-    setupModelData(data.split(QString("\n")), rootItem);
+    m_rootItem = new DagItem(rootData);
+    setupModelData(data.split(QString("\n")), m_rootItem);
 }
 */
 
 DagModel::~DagModel()
 {
-    delete rootItem;
+    delete m_rootItem;
 }
 
 
 int DagModel::columnCount(const QModelIndex & /* parent */) const
 {
-    return rootItem->columnCount();
+    return m_rootItem->columnCount();
 }
 
 
@@ -78,7 +78,7 @@ DagItem *DagModel::getItem(const QModelIndex &index) const
         DagItem *item = static_cast<DagItem*>(index.internalPointer());
         if (item) return item;
     }
-    return rootItem;
+    return m_rootItem;
 }
 
 
@@ -86,7 +86,7 @@ QVariant DagModel::headerData(int section, Qt::Orientation orientation,
                                int role) const
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return rootItem->data(section);
+        return m_rootItem->data(section);
 
     return QVariant();
 }
@@ -112,7 +112,7 @@ bool DagModel::insertColumns(int position, int columns, const QModelIndex &paren
     bool success;
 
     beginInsertColumns(parent, position, position + columns - 1);
-    success = rootItem->insertColumns(position, columns);
+    success = m_rootItem->insertColumns(position, columns);
     endInsertColumns();
 
     return success;
@@ -124,7 +124,7 @@ bool DagModel::insertRows(int position, int rows, const QModelIndex &parent)
     bool success;
 
     beginInsertRows(parent, position, position + rows - 1);
-    success = parentItem->insertChildren(position, rows, rootItem->columnCount());
+    success = parentItem->insertChildren(position, rows, m_rootItem->columnCount());
     endInsertRows();
 
     return success;
@@ -139,7 +139,7 @@ QModelIndex DagModel::parent(const QModelIndex &index) const
     DagItem *childItem = getItem(index);
     DagItem *parentItem = childItem->parent();
 
-    if (parentItem == rootItem)
+    if (parentItem == m_rootItem)
         return QModelIndex();
 
     return createIndex(parentItem->childNumber(), 0, parentItem);
@@ -151,10 +151,10 @@ bool DagModel::removeColumns(int position, int columns, const QModelIndex &paren
     bool success;
 
     beginRemoveColumns(parent, position, position + columns - 1);
-    success = rootItem->removeColumns(position, columns);
+    success = m_rootItem->removeColumns(position, columns);
     endRemoveColumns();
 
-    if (rootItem->columnCount() == 0)
+    if (m_rootItem->columnCount() == 0)
         removeRows(0, rowCount());
 
     return success;
@@ -202,7 +202,7 @@ bool DagModel::setHeaderData(int section, Qt::Orientation orientation,
     if (role != Qt::EditRole || orientation != Qt::Horizontal)
         return false;
 
-    bool result = rootItem->setData(section, value);
+    bool result = m_rootItem->setData(section, value);
 
     if (result)
         emit headerDataChanged(orientation, section, section);
@@ -253,13 +253,28 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
 
             // Append a new item to the current parent's list of children.
             DagItem *parent = parents.last();
-            parent->insertChildren(parent->childCount(), 1, rootItem->columnCount());
+            parent->insertChildren(parent->childCount(), 1, m_rootItem->columnCount());
             for (int column = 0; column < columnData.size(); ++column)
                 parent->child(parent->childCount() - 1)->setData(column, columnData[column]);
         }
 
         number++;
     }
+}
+
+void DagModel::setupDag(DagItem *parent)
+{
+    /*JODO CONT
+    boost::depth_first_search(
+        m_dag
+      , boost::visitor(make_dfs_visitor(boost::make_list(
+                                              creater::node_start(m_rootItem, m_nodeAttributes)
+                                            , creater::edge_visit(m_rootItem, m_nodeAttributes)
+                                            , creater::node_stop (m_rootItem, m_nodeAttributes)
+                                            )
+                      ))
+    );
+    */
 }
 
 void DagModel::getEdges(QSqlQuery& query)
@@ -285,13 +300,13 @@ void DagModel::fromSql(QSqlQuery& query)
     else
     {
         //We skip the first record and its NIL information.
-        fromSql(query, rootItem, 0);
+        fromSql(query, m_rootItem, 0);
     }
 }
 
 void DagModel::makeDag()
 {
-    m_nameTags = get(name_tag(), m_dag);
+    m_nodeAttributes = get(attribute_tag(), m_dag);
 
     for(tEdgeList::iterator iter = m_edges.begin(); iter != m_edges.end(); iter++)
     {
@@ -300,27 +315,27 @@ void DagModel::makeDag()
         if(!(source==0 && target==0))
         {
             boost::add_edge(source, target, m_dag);
-            m_nameTags[source] = (*iter)[m_parentName].toString();
-            m_nameTags[target] = (*iter)[m_childName].toString();
+            m_nodeAttributes[source] = (*iter)[m_parentName].toString();
+            m_nodeAttributes[target] = (*iter)[m_childName].toString();
         }
     }
 }
 
 QString DagModel::dagToString()
 {
-    QString dagst;
+    QString dagAsString;
 
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
-                                              node_arrival(&dagst, m_nameTags)
-                                            , edge_visit(&dagst, m_nameTags)
-                                            , node_final(&dagst, m_nameTags)
+                                              node_arrival(&dagAsString, m_nodeAttributes)
+                                            , edge_visit(&dagAsString, m_nodeAttributes)
+                                            , node_final(&dagAsString, m_nodeAttributes)
                                             )
                       ))
     );
 
-    return dagst;
+    return dagAsString;
 }
 
 
@@ -343,10 +358,10 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
         //fill node
         fillData(data, query);
 
-        DagItem* curNode = (depth==0) ? new DagItem(data, 0) //curNode==rootItem
+        DagItem* curNode = (depth==0) ? new DagItem(data, 0) //curNode==m_rootItem
                                       : new DagItem(data, parent);
         if(depth == 0)
-            rootItem = curNode;
+            m_rootItem = curNode;
 
         //if the new node is not a leaf, create children.
         if(!curNode->isLeaf(m_typeId))
@@ -367,7 +382,7 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
 //JOFA Iteration example: The container as String
 QString DagModel::toString()const
 {
-    return nodeToString(rootItem, 0);
+    return nodeToString(m_rootItem, 0);
 }
 
 QString DagModel::nodeToString(DagItem* node, int depth)const
@@ -387,14 +402,6 @@ QString DagModel::nodeToString(DagItem* node, int depth)const
         nodeRepr += tr("%1]\n").arg(indentation(depth));
         return nodeRepr;
     }
-}
-
-QString DagModel::indentation(int depth)const
-{
-    QString indent;
-    for(int idx=0; idx < depth; idx++)
-        indent += "    ";
-    return indent;
 }
 
 
