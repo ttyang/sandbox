@@ -20,7 +20,7 @@ namespace boost {
 namespace polygon {
 
 // Bounding rectangle data structure. Contains coordinates
-// of the bottom left and upper right points of the rectangle.
+// of the bottom left and upper right corners of rectangle.
 template <typename T>
 class bounding_rectangle {
 public:
@@ -58,7 +58,7 @@ public:
     x_max_ = 0;
   }
 
-  bool contains(coordinate_type x, coordinate_type y) const {
+  bool contains(coordinate_type x, coordinate_type y) 	 {
     return x > x_min_ && x < x_max_ && y > y_min_ && y < y_max_;
   }
 
@@ -227,7 +227,8 @@ public:
     point_type direction(end.x() - start.x(), end.y() - start.y());
     if (brect.contains(start.x(), start.y()))
       clipped_edge.push_back(start);
-    intersect(start, direction, SEGMENT, brect, clipped_edge);
+    if (p1 != p2)
+      intersect(start, direction, SEGMENT, brect, clipped_edge);
     if (brect.contains(end.x(), end.y()))
       clipped_edge.push_back(end);
   }

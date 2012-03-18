@@ -9,12 +9,13 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 	<tbody><tr>
-		<td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
 		<div style="padding: 5px;" align="center">
 			<img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/">
 			</a></div>
@@ -90,25 +91,25 @@
 		<p></p>
       <h1>Voronoi Robust FPT</h1>
       Voronoi
-robust floating-point types represents set of classes and tools that
+robust floating-point types are set of classes and tools that
 allow to estimate relative error of arithmetic expressions. It is
 assumed that other Boost libraries may find this unit functionality
 extremely useful. One can use them to implement robust and efficient
-arithmetic predicates or functors that compute values with predefined
+arithmetic predicates or functors that compute values with known
 relative error.<br>
 
       <h1>Robust Fpt Type</h1>
 Robust
 fpt (robust floating-point type)
 - represents IEEE-754 floating-point type wrapper that also contains
-information on the current relative error of underlying value. The
+information about relative error of the underlying value. The
 implementation overloads 5 standard operations: +, -, *, /, sqrt and
-apart from evaluating expression value also computes its relativer
+apart from evaluating value of the expression also computes its relativer
 error. Let's consider two values A and B; C - rounding error; re
 - correspond to relative error, then following rules apply:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">re(A+B) &lt;= max(re(A), re(B)) + C, if A * B &gt;= 0;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">re(A-B) &lt;= (B * re(A) + A * re(B)) / |A-B| + C, if A * B &lt; 0;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">re(A-B) &lt;= (B * re(A) + A * re(B)) / |A - B| + C, if A * B &lt; 0;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">re(A*B) &lt;= re(A) + re(B) + C;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">re(A/B) &lt;= re(A) + re(B) + C;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">re(sqrt(A)) &lt;= re(A) * 0.5 + C;<br>
@@ -118,15 +119,19 @@ which for the above set of arithmetic operations in the IEEE-754
 floating-point implementation should be equal to 1 machine epsilon. <br>
 
 
-      <h1>Robust Difference Type</h1>Robust difference type -
+      <h1>Robust Difference Type</h1>Robust
+difference type -
 represents expression wrapper that holds positive and negative partial
 sums of the expression in a separate values in order to avoid
-cancellation errors before evaluating final difference.<br>
+cancellation errors before evaluating final difference. Following
+arithmetic operators are overloaded for the robust difference type: +,
+-, *, / (division operator is not overloaded for the case were both
+arguments have robust difference type).<br>
 Looking at the relative error formulas above one may notice a few facts about them:<br>
-1) all of the formulas evaluate upper bound of the relative error, while it could be a lot smaller;<br>
-2) relative error estimate of the expression depends on the order operations are evaluated;<br>
+1) all of the formulas evaluate upper bound of the relative error, while it could be a lot lower;<br>
+2) relative error of the expression depends on the order operations are evaluated;<br>
 3) relative error of difference of two positive numbers may be
-exteremely large in case threir values are close to each other (this is
+exteremely large in case their values are close to each other (this is
 also called cancellation error).<br>
 To explain this a bit consider following experssion (~ - stands for almost equal, &lt;&lt; - many times larger than):<br>
       <br>
@@ -134,7 +139,7 @@ To explain this a bit consider following experssion (~ - stands for almost equal
       <br>
 Computing relative error of this expression from left to right will produce extremely large relative error:<br>
       <br>
-      <span style="font-family: Courier New,Courier,monospace;">re(A-B+C) = max(re(A-B), re(C)) = re(A-B) = INF;<br>
+      <span style="font-family: Courier New,Courier,monospace;">re(A-B+C) = max(re(A-B), re(C)) = re(A-B) = (B * re(A) + A * re(B)) / 0 = INF;<br>
       <br>
       </span>While doing this from right to left will keep relative error value small:<br>
       <br>
@@ -142,14 +147,13 @@ Computing relative error of this expression from left to right will produce extr
       <br>
       </span>While both estimates are valid (they define upper bound of the relative error), of course the second one is preferable.<br>
 Here is the place where robust difference type comes useful. Basically
-it splits the expression values onto positive and negative, partially
-overloads four arithmetic operations: +,-,*,/ and evaluates the
+it splits expression onto positive and negative partial sums and evaluates the
 diference only when the result is required. And did I mention that
 positive and negative values might be of robust fpt type, that's why
 relative error is always known for the expression result.<br>
 <h1>Robust Sqrt Expression Structure</h1>
-Robust square root expression structure allows evaluate results of
-expressions that contain square roots with predefined relative error.
+Robust square root expression structure allows to compute results of
+expression that contains square roots with predefined relative error.
 As an example consider following expression:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">A * sqrt(a) - B * sqrt(b), A * B &gt; 0, a &gt;= 0, b &gt;= 0;</span><br>
@@ -160,7 +164,7 @@ however it may be transformed to the next equivalent expression:<br>
 (A * A * a - B * B * b) / (A * sqrt(a) + B * sqrt(b));</span><br>
       <br>
 Numerator and denominator of this epxression could be computed directly as those won't lead to the cancellation errors.<br>
-In general case robust sqrt expression structure allows to evaluate next set of expressions:<br>
+In general case robust sqrt expression structure allows to evaluate following set of expressions:<br>
       <span style="font-family: Courier New,Courier,monospace;"><br>
 sum(A[i] * sqrt(a[i]), i = 1 .. N), N &lt;= 4;</span><br>
       <br>
@@ -171,7 +175,7 @@ This appears to be enough for the Voronoi.<br>
 </td>
 	</tr>
 	<tr>
-		<td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
 		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
 		<table class="docinfo" id="table2" frame="void" rules="none">
 			<colgroup>

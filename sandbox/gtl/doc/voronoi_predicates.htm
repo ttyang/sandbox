@@ -8,12 +8,13 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 	<tbody><tr>
-		<td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
+		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
 		<div style="padding: 5px;" align="center">
 			<img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/">
 			</a></div>
@@ -87,19 +88,26 @@
 		<br>
 		<p></p>
 		<h1>Voronoi Predicates<br>
-</h1>In mathematical theory predicate is an operator which returns true or false.<br>
+</h1>In mathematical theory predicate is an operator which returns true
+or false (e.g. it may answer a question: "is it sunny today?").<br>
 Voronoi predicates contain implementation of a set of geometric
 predicates used by Voronoi builder. Except of those it also provides
 functors that allow to compute coordinates of centers of inscribed
 circles (those correspond to the voronoi vertices) within the given
-relative error precision range for both point and segment inputs. This
+relative error precision range. This means that the more mantissa bits
+your floating point type has the better precision of the output
+geometries you'll get. This
 is a very handy functionality as it allows to improve output precision
 simply providing 3rd party IEEE-754 like floating-point types.<br>
       <h1>Geometric Predicates</h1>
 The main issues with implementation of any complex geometric
-algorithm arise when dealing with robustness of geometric predicates. Usually this
-is also the point where commercial projects stand strong agains noncommercial implementations (it's not the case with Voronoi).
-For the short example let's consider following code snippet, that could be used to compute orientation of three points:<br>
+algorithm arise when dealing with robustness of geometric predicates.
+Usually this
+is also the point where commercial projects stand strong agains
+noncommercial implementations (it's not the case with our
+implementation).
+For the short example let's consider following code snippet, that could
+be used to compute orientation of three points:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">double cross_product(double dx1, double dy1, double dx2, double dy2) {</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">&nbsp; return dx1 * dy2 - dx2 * dy1;</span><br style="font-family: Courier New,Courier,monospace;">
@@ -126,22 +134,21 @@ arithmetic and multiple
 precision computations.<br>
  
       <h1>Lazy Arithmetic</h1>Lazy
-arithmetic is based on usage of IEEE-754 floating-point types to
-compute expression results. While this approach has a good speed
+arithmetic is based on usage of IEEE-754 floating-point types to evaluate an expression. While this approach has a good speed
 performance it doesn't produce reliable results all the time (as in the
 example above). The way to solve the issue is apart from computing
 result of the expression compute the relative error of it also. This will
 give us the range of values evaluated result belongs to and based on that we can
 come up with two decisions: 1) output the value; 2) recompute the
-expression using multi precision types. The way relative errors are
+expression using multi precision type. The way relative errors are
 evaluated is explained in the <a href="voronoi_robust_fpt.htm">Voronoi Robust FPT</a> section.<br>
 <h1>Multiple Precision arithmetic</h1>In the vast majority of cases
 lazy arithmetic approach produces correct result thus furhter
-processing is not required. In other cases Voronoi specific or user
+processing is not required. In other cases Voronoi defined or user
 provided multiple precision types are used to produce correct result.
 However even that doesn't solve all the cases. Multiprecision geometric
 predicates could be devided onto two categories:<br>
-1) mathematical transformation of the predicate exists that evaluates exact results:<span style="font-family: Courier New,Courier,monospace;"><br>
+1) mathematical transformation of the predicate exists that evaluates exact result:<span style="font-family: Courier New,Courier,monospace;"><br>
       <br>
 Predicate: A/B + C/D ?&lt; 0;<br>
 After math. transform: (A*D + B*C) / (B * D) ?&lt; 0;<br>
@@ -150,7 +157,7 @@ Predicate: sqrt(A) ?&lt; 1.2;<br>
 After math. transform: A ?&lt; 1.44;<br>
       <br>
       </span>2) the correct result could be produced only by increasing
-precision of the multiprecision types and with defined relative error
+precision of the multiprecision type and with defined relative error
 for the output type:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">Predicate: sqrt(A) + sqrt(B) + sqrt(C) + sqrt(D) + sqrt(E) ?&lt; 1.2;<br>
@@ -159,10 +166,9 @@ Imagine that value of the expression to the left is very close to 1.2;<br>
       <span style="font-family: Courier New,Courier,monospace;">Predicate: sin(x) ?&lt; 0.57;<br>
 Relativer error of sin function should be known;<br>
       <br>
-      </span>Voronoi of points could be implemented using only the
-predicates of the first type, however Voronoi of segments could not.
+      </span>Voronoi of points could be implemented using only predicates of the first type, however Voronoi of segments could not.
 The predicate that doesn't fall into the first category is responsible
-for Voronoi circle comparison. However it appears that properly used
+for comparison of Voronoi circle events. However it appears that properly used
 this predicate can't corrupt algorithm internal structures and produces
 output technically the same as produced in case this predicate falt in
 the first category.&nbsp; The main reasons for this are: 1) algorithm
@@ -171,7 +177,7 @@ situated Voronoi vertices are considered to be the same in the output
 data structure (this won't influence main targets algorithm is used
 for).<span style="font-family: Courier New,Courier,monospace;"><br>
       </span>
-</td></tr><tr><td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1"><br>
+</td></tr><tr><td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top"><br>
 </td><td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><table class="docinfo" id="table2" frame="void" rules="none"><tbody valign="top"><tr><th class="docinfo-name">Copyright:</th>
 					<td>Copyright © Intel Corporation 2008-2010.</td>
 				</tr>
