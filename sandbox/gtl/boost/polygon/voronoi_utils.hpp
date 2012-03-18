@@ -143,7 +143,6 @@ public:
 
     // Retrieve the cell to the left of the current edge.
     const typename voronoi_edge<CT>::voronoi_cell_type *cell1 = edge.cell();
-
     // Retrieve the cell to the right of the current edge.
     const typename voronoi_edge<CT>::voronoi_cell_type *cell2 =
         edge.twin()->cell();
@@ -151,18 +150,16 @@ public:
     discretization.push_back(get_point(edge.vertex0()->vertex()));
     discretization.push_back(get_point(edge.vertex1()->vertex()));
     if (edge.is_curved()) {
+      bool flag = cell1->contains_segment();
       // point1 - site point;
-      point_type point1 = (cell1->contains_segment()) ?
+      point_type point1 = flag ?
           get_point(cell2->point0()) : get_point(cell1->point0());
-
       // point2 - start-point of the segment site;
-      point_type point2 = (cell1->contains_segment()) ?
+      point_type point2 = flag ?
           get_point(cell1->point0()) : get_point(cell2->point0());
-
       // point3 - endpoint of the segment site;
-      point_type point3 = (cell1->contains_segment()) ?
+      point_type point3 = flag ?
           get_point(cell1->point1()) : get_point(cell2->point1());
-
       fill_intermediate_points(
           point1, point2, point3, max_error, discretization);
     }
