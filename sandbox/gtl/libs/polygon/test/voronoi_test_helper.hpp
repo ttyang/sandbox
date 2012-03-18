@@ -41,7 +41,7 @@ bool verify_half_edge_orientation(const Output &output) {
     typename Output::const_edge_iterator edge_it;
     for (edge_it = output.edges().begin(); 
          edge_it != output.edges().end(); edge_it++) {
-        if (edge_it->is_bounded()) {
+        if (edge_it->is_finite()) {
             const point_type &site_point = edge_it->cell()->point0();
             const point_type &start_point = edge_it->vertex0()->vertex();
             const point_type &end_point = edge_it->vertex1()->vertex();
@@ -126,7 +126,7 @@ bool verfiy_no_line_edge_intersections(const Output &output) {
     typename Output::const_edge_iterator edge_it;
     for (edge_it = output.edges().begin();
          edge_it != output.edges().end(); edge_it++) {
-        if (edge_it->is_bounded()) {
+        if (edge_it->is_finite()) {
             const point_type &vertex0 = edge_it->vertex0()->vertex();
             const point_type &vertex1 = edge_it->vertex1()->vertex();
             if (comparator(vertex0, vertex1))

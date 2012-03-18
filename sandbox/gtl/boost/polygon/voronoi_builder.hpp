@@ -163,7 +163,7 @@ namespace polygon {
             }
             beach_line_.clear();
 
-            // Clean the output (remove zero-length edges).
+            // Finish construction.
             output->builder()->build();
         }
 

@@ -71,7 +71,7 @@ public:
 
     for (const_edge_iterator it = vd_.edges().begin();
         it != vd_.edges().end(); ++it) {
-      if (!it->is_bounded()) {
+      if (!it->is_finite()) {
         remove_exterior(&(*it));
       }
     }
@@ -155,7 +155,12 @@ protected:
           continue;
         }
         std::vector<point_type> vec;
-        voronoi_utils<coordinate_type>::discretize(*it, brect_, 1E-3, vec);
+        if (!it->is_finite())
+          voronoi_utils<coordinate_type>::clip(*it, brect_, vec);
+        else {
+          coordinate_type max_error = 1E-3 * (brect_.x_max() - brect_.x_min());
+          voronoi_utils<coordinate_type>::discretize(*it, max_error, vec);
+        }
         for (int i = 0; i < static_cast<int>(vec.size()) - 1; ++i) {
           glVertex2f(vec[i].x() - shift_.x(), vec[i].y() - shift_.y());
           glVertex2f(vec[i+1].x() - shift_.x(), vec[i+1].y() - shift_.y());

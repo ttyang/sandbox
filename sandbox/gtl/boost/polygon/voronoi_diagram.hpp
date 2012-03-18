@@ -48,6 +48,9 @@ public:
       incident_edge_(edge),
       data_(NULL) {}
 
+  // Returns true if the cell contains point site, false else.
+  bool contains_point() const { return point0_ == point1_; }
+
   // Returns true if the cell contains segment site, false else.
   bool contains_segment() const { return point0_ != point1_; }
 
@@ -183,17 +186,21 @@ public:
 
   // Return true if the edge is finite (segment, parabolic arc).
   // Return false if the edge is infinite (ray, line).
-  bool is_bounded() const { return vertex0() && vertex1(); }
+  bool is_finite() const { return vertex0() && vertex1(); }
 
-  // Return true if the edge is linear.
+  // Return true if the edge is linear (segment, ray, line).
   // Return false if the edge is curved (parabolic arc).
   bool is_linear() const {
+    if (!is_primary())
+      return true;
     return !(cell()->contains_segment() ^ twin()->cell()->contains_segment());
   }
 
   // Returns true if the edge is curved (parabolic arc).
-  // Returns false if the edge is linear.
+  // Returns false if the edge is linear (segment, ray, line).
   bool is_curved() const {
+    if (!is_primary())
+      return false;
     return (cell()->contains_segment() ^ twin()->cell()->contains_segment());
   }
 
