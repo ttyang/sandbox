@@ -86,7 +86,6 @@ void Browser::exec()
     QString dbg_query = QString(sqlEdit->toPlainText());
     xpQuery.exec(sqlEdit->toPlainText());
 
-    int dbg_size = xpQuery.size();
     // Populate the Dag Model from an sql-Query
     //JODO dagmo->fromSql(xpQuery);
     dagmo->getEdges(xpQuery);

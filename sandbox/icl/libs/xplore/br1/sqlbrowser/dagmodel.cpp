@@ -8,6 +8,7 @@
 
 #include "dagitem.h"
 #include "dagmodel.h"
+#include "StringVisitor.h"
 
 using namespace boost;
 
@@ -269,7 +270,7 @@ void DagModel::setupDag(DagItem *parent)
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
                                               creater::node_start(m_rootItem, m_nodeAttributes)
-                                            , creater::edge_visit(m_rootItem, m_nodeAttributes)
+                                            , creater::OnExamineEdge(m_rootItem, m_nodeAttributes)
                                             , creater::node_stop (m_rootItem, m_nodeAttributes)
                                             )
                       ))
@@ -306,7 +307,7 @@ void DagModel::fromSql(QSqlQuery& query)
 
 void DagModel::makeDag()
 {
-    m_nodeAttributes = get(attribute_tag(), m_dag);
+    m_nodeAttributes = get(Dag::attribute_tag(), m_dag);
 
     for(tEdgeList::iterator iter = m_edges.begin(); iter != m_edges.end(); iter++)
     {
@@ -328,9 +329,10 @@ QString DagModel::dagToString()
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
-                                              node_arrival(&dagAsString, m_nodeAttributes)
-                                            , edge_visit(&dagAsString, m_nodeAttributes)
-                                            , node_final(&dagAsString, m_nodeAttributes)
+                                              StringVisitor::OnDiscoverVertex(&dagAsString, m_nodeAttributes)
+                                            , StringVisitor::OnExamineEdge(&dagAsString, m_nodeAttributes, m_parentMap)
+                                            , StringVisitor::OnFinishVertex(&dagAsString, m_nodeAttributes)
+                                            //, boost::record_predecessors(parentMap.begin(), boost::on_tree_edge())
                                             )
                       ))
     );

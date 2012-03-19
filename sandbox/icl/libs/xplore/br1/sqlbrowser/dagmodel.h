@@ -6,6 +6,8 @@
 #ifndef DAGMODEL_H
 #define DAGMODEL_H
 
+#include <map>
+
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/depth_first_search.hpp>
@@ -15,43 +17,14 @@
 #include <QModelIndex>
 #include <QVariant>
 
-#include <map>
+#include "Dag.h"
 
-
-inline QString indentation(int depth)
-{
-    QString indent;
-    for(int idx=0; idx < depth; idx++)
-        indent += "    ";
-    return indent;
-}
 
 
 typedef std::map<int, int> daggy; //CL?
 
 class QSqlQuery;
 class DagItem;
-
-// An object to collect results on graph traversal
-class NodeAttributes
-{
-public:
-    NodeAttributes(): m_name(), m_depth() {}
-    NodeAttributes(const QString& name): m_name(name), m_depth() {}
-    NodeAttributes(const QString& name, int depth): m_name(name), m_depth(depth) {}
-
-    void setName(const QString& name) { m_name  = name;  }
-    QString name()const { return m_name; }
-
-    void setDepth(int depth){ m_depth = depth; }
-    int depth()const { return m_depth; }
-
-    int inc(){ return ++m_depth; }
-
-private:
-    QString m_name;
-    int     m_depth;
-};
 
 class DagModel : public QAbstractItemModel
 {
@@ -130,111 +103,9 @@ private:
 
     //==========================================================================
     // Graph
-    struct attribute_tag {
-        typedef boost::vertex_property_tag kind;
-    };
-
-    typedef boost::property<attribute_tag, NodeAttributes> tAttributeTag;
-
-    typedef boost::adjacency_list
-    < boost::vecS
-    , boost::vecS
-    , boost::directedS
-    , tAttributeTag
-    > tDag;
-
-    tDag m_dag;
-
-    typedef boost::property_map<tDag, attribute_tag>::type
-        tAttributesMap;
-
-    tAttributesMap m_nodeAttributes;
-
-    //--------------------------------------------------------------------------
-    // Visitors
-    struct node_arrival : public boost::base_visitor<node_arrival>
-    {
-        node_arrival(QString* result, tAttributesMap& names)
-            : p_result(result), r_attrs(names){}
-
-        typedef boost::on_discover_vertex event_filter;
-
-        template<class Vertex, class Graph>
-        void operator()(Vertex node, Graph& dag)
-        {
-            if(boost::out_degree(node, dag) > 0)
-            {
-                *p_result += indentation(r_attrs[node].depth()) + "(";
-                *p_result += r_attrs[node].name();
-                *p_result += "\n";
-            }
-        }
-
-        //CL Example for iterating over edges.
-        template<class Vertex, class Graph>
-        int edge_count(Vertex node, Graph& dag)
-        {
-            typedef graph_traits<Graph> GraphTraits;
-            typename GraphTraits::out_edge_iterator out_i, out_end;
-            typename GraphTraits::edge_descriptor ed;
-
-            int edge_cnt = 0;
-            for(boost::tie(out_i, out_end) = boost::out_edges(node, dag); out_i != out_end; ++out_i)
-                ++edge_cnt;
-
-            return edge_cnt;
-        }
-
-        QString*        p_result;
-        tAttributesMap& r_attrs;
-    };
-
-    struct edge_visit : public boost::base_visitor<edge_visit>
-    {
-        edge_visit(QString* result, tAttributesMap& names)
-            : p_result(result), r_attrs(names){}
-
-        typedef boost::on_examine_edge event_filter;
-
-        template<class Edge, class Graph>
-        void operator()(Edge edge, Graph& dag)
-        {
-            int source_depth = r_attrs[source(edge, dag)].depth();
-            int target_depth = source_depth + 1;
-            r_attrs[target(edge, dag)].setDepth(target_depth);
-
-            if(boost::out_degree(target(edge, dag), dag)==0)
-            {
-                *p_result += indentation(target_depth) + r_attrs[target(edge, dag)].name();
-                *p_result += "\n";
-            }
-        }
-
-        QString*        p_result;
-        tAttributesMap& r_attrs;
-    };
-
-    struct node_final : public boost::base_visitor<node_final>
-    {
-        node_final(QString* result, tAttributesMap& names)
-            : p_result(result), r_attrs(names){}
-
-        typedef boost::on_finish_vertex event_filter;
-
-        template<class Vertex, class Graph>
-        void operator()(Vertex node, Graph& dag)
-        {
-            if(boost::out_degree(node, dag) > 0)
-            {
-                *p_result += indentation(r_attrs[node].depth()) + ")";
-                *p_result += "\n";
-            }
-        }
-
-        QString*        p_result;
-        tAttributesMap& r_attrs;
-    };
-
+    Dag::type           m_dag;
+    Dag::tAttributesMap m_nodeAttributes;
+    Dag::tParentMap     m_parentMap;
 };
 
 #endif
