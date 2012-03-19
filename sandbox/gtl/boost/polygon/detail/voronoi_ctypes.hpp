@@ -712,7 +712,7 @@ struct voronoi_ctype_traits<int32> {
     typedef int32 int_type;
     typedef int64 int_x2_type;
     typedef uint64 uint_x2_type;
-    typedef extended_int<128> big_int_type;
+    typedef extended_int<64> big_int_type;
     typedef fpt64 fpt_type;
     typedef extended_exponent_fpt<fpt_type> efpt_type;
     typedef ulp_comparison<fpt_type> ulp_cmp_type;

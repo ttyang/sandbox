@@ -335,8 +335,8 @@ private:
 };
 
 BOOST_AUTO_TEST_CASE(mpz_sqrt_evaluator_test) {
-    typedef extended_int<32> eint1024;
-    sqrt_expr_tester<eint1024, efpt64> tester;
+    typedef extended_int<16> eint512;
+    sqrt_expr_tester<eint512, efpt64> tester;
     for (int i = 0; i < 2000; ++i) {
         BOOST_CHECK(tester.run());
     }
