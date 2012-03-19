@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -49,9 +49,10 @@ struct base_by_sig<Sig, final_overload_base, FOUND>
 // it provedes the index of a signature, and returns -1 if it's not found
 
 template< typename Sig, typename Overload >
-struct index
+struct index_of_signature
 {
-    static const unsigned int value =  base_by_sig<Sig, Overload>::type::index;
+    BOOST_STATIC_CONSTANT( unsigned int, value
+                           = (base_by_sig<Sig, Overload>::type::index) );
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,8 +61,9 @@ struct index
 template< typename Sig, typename Overload >
 struct has_signature
 {
-    static const bool value 
-        = !( index<Sig, Overload>::value == final_overload_base::index );
+    BOOST_STATIC_CONSTANT( bool, value
+        = !( index_of_signature<Sig, Overload>::value
+                == final_overload_base::index ) );
 };
 
 } } } // end namespaces

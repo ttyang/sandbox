@@ -1,0 +1,1052 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Tutorial</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="up" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="prev" href="getting_started.html" title="Getting Started">
+<link rel="next" href="use_case.html" title="Use case">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="getting_started.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="use_case.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_overload.tutorial"></a><a class="link" href="tutorial.html" title="Tutorial">Tutorial</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.basic_usage">Basic usage</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.backward_compatibility__boost__overload_is_a_boost__function">Backward
+      compatibility: boost::overload is a boost::function</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities">Supported
+      types of callable entities</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_function_objects">Example
+        - Using Function Objects</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_boost_function">Example
+        - Using Boost.Function</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_member_functions">Example
+        - Using member functions</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax">The
+      call signature based syntax</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___a_multi_signature_function_object">Example
+        - A multi-signature function object</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___free_and_member_polymorphic_functions">Example
+        - Free and member polymorphic functions</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___a_functor_with_a_call_signature_that_is_only_compatible">Example
+        - A functor with a call signature that is only compatible</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_index_based_syntax">The index
+      based syntax</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_make_overload_utility">The
+      make_overload utility</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.helper_methods">Helper methods</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.basic_usage"></a><a class="link" href="tutorial.html#boost_overload.tutorial.basic_usage" title="Basic usage">Basic usage</a>
+</h3></div></div></div>
+<p>
+        In order to instantiate a template class <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> you have to specify the
+        required <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">call
+        signature</a>s as template arguments and then you can set the <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+        object</a>s as targets through the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a> method which support automatic
+        <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">call
+        signature</a> deduction of the passed argument for monomorphic functors.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+
+<span class="keyword">int</span> <span class="identifier">int_sum</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">x</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">y</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">+</span> <span class="identifier">y</span><span class="special">;</span>
+<span class="special">}</span>
+
+<span class="keyword">float</span> <span class="identifier">float_inc</span><span class="special">(</span><span class="keyword">float</span> <span class="identifier">x</span> <span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">x</span> <span class="special">+</span> <span class="number">1.0f</span><span class="special">;</span>
+<span class="special">}</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">int</span> <span class="special">),</span> <span class="keyword">float</span> <span class="special">(</span><span class="keyword">float</span> <span class="special">)&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">int_sum</span><span class="special">);</span>     <span class="comment">// here automatic signature</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">float_inc</span><span class="special">);</span>   <span class="comment">// deduction occurs</span>
+
+    <span class="keyword">int</span> <span class="identifier">r1</span> <span class="special">=</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="number">2</span><span class="special">);</span>    <span class="comment">// invokes int_sum</span>
+    <span class="keyword">float</span> <span class="identifier">r2</span> <span class="special">=</span> <span class="identifier">f</span><span class="special">(</span><span class="number">3.0f</span><span class="special">);</span>  <span class="comment">// invokes float_inc</span>
+
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">r1</span> <span class="special">==</span> <span class="number">3</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">r2</span> <span class="special">==</span> <span class="number">4.0f</span> <span class="special">);</span>
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          If you try to instantiate a template class <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> using the same <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">call
+          signature</a> as template argument more than once you get a compile
+          time error.
+        </p></td></tr>
+</table></div>
+<p>
+        Even if the callable targets are set at run-time, the function call relies
+        on standard C++ overload resolution: <span class="underline">the right
+        callable target is selected at compile time</span>, so the run-time overhead
+        for the call is the same that you have using <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.backward_compatibility__boost__overload_is_a_boost__function"></a><a class="link" href="tutorial.html#boost_overload.tutorial.backward_compatibility__boost__overload_is_a_boost__function" title="Backward compatibility: boost::overload is a boost::function">Backward
+      compatibility: boost::overload is a boost::function</a>
+</h3></div></div></div>
+<p>
+        For any <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">call
+        signature</a> <span class="emphasis"><em>S</em></span> used as a template argument of an
+        instantiation <span class="emphasis"><em>O</em></span> of the class template <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a>, the type <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;</span></code> is
+        a base class type for the instantiation <span class="emphasis"><em>O</em></span>. That means
+        you can pass a (const) reference/pointer to an object of type <code class="computeroutput"><span class="identifier">overload</span><span class="special">&lt;..,</span><span class="identifier">S</span><span class="special">,...&gt;</span></code>
+        everywhere a (const) reference/pointer to an object of type <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;</span></code> is
+        expected.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.supported_types_of_callable_entities"></a><a class="link" href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities" title="Supported types of callable entities">Supported
+      types of callable entities</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_function_objects">Example
+        - Using Function Objects</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_boost_function">Example
+        - Using Boost.Function</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_member_functions">Example
+        - Using member functions</a></span></dt>
+</dl></div>
+<p>
+        You can utilize different kinds of callable entities: free functions, <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.function_objects" title="Function Objects">function
+        object</a>s, function objects wrapped with <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ref</span></code> and
+        <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code>s. Moreover you have support for
+        member functions too. Given a member function <span class="emphasis"><em>mf</em></span> of
+        a class <code class="computeroutput"><span class="identifier">T</span></code>, all you have to
+        do is to specify a const or non-const <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">explicit
+        call signature</a> of <code class="computeroutput"><span class="identifier">T</span><span class="special">::</span></code><span class="emphasis"><em><code class="computeroutput"><span class="identifier">mf</span></code></em></span>
+        as a template argument of <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> and pass a pointer to the
+        member function to the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a> method. You'll get an overloaded
+        function call operator that is able to perform a forwarding call to <code class="computeroutput"><span class="identifier">T</span><span class="special">::</span></code><span class="emphasis"><em><code class="computeroutput"><span class="identifier">mf</span></code></em></span> using any object of type
+        <code class="computeroutput"><span class="identifier">T</span></code>.
+      </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The constructor and the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a> method can manage only monomorphic
+          callable objects, if you try to pass to them a polymorphic functor (i.e.
+          a callable object that is overloaded or that involve a template parameter)
+          you'll get a compile time error. The only exception is for a polymorphic
+          function object of class type that shares with the overload object one
+          and only one call signature.
+        </p></td></tr>
+</table></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.tutorial.supported_types_of_callable_entities.example___using_function_objects"></a><a class="link" href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_function_objects" title="Example - Using Function Objects">Example
+        - Using Function Objects</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+
+<span class="comment">/* a free function */</span>
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">)</span>
+<span class="special">{</span>
+   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+<span class="special">}</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature1_t</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">);</span>
+
+<span class="comment">/* a function object type */</span>
+<span class="keyword">struct</span> <span class="identifier">FuncObj1</span>
+<span class="special">{</span>
+   <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()</span> <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">)</span> <span class="keyword">const</span>
+   <span class="special">{</span>
+           <span class="keyword">return</span> <span class="number">2</span><span class="special">;</span>
+   <span class="special">}</span>
+<span class="special">};</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature2_t</span> <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">);</span>
+
+<span class="comment">/* a statefull function object type */</span>
+<span class="keyword">struct</span> <span class="identifier">FuncObj2</span>
+<span class="special">{</span>
+   <span class="identifier">FuncObj2</span><span class="special">()</span> <span class="special">:</span> <span class="identifier">calls</span><span class="special">(</span><span class="number">0</span><span class="special">)</span> <span class="special">{}</span>
+
+   <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()</span> <span class="special">(</span><span class="keyword">char</span> <span class="special">)</span>
+   <span class="special">{</span>
+       <span class="special">++</span><span class="identifier">calls</span><span class="special">;</span>
+       <span class="keyword">return</span> <span class="number">3</span><span class="special">;</span>
+   <span class="special">}</span>
+  <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">calls</span><span class="special">;</span>
+<span class="special">};</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature3_t</span> <span class="special">(</span><span class="keyword">char</span> <span class="special">);</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+   <span class="comment">// an overload object that supports</span>
+   <span class="comment">// all the above call signatures</span>
+   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">signature1_t</span><span class="special">,</span> <span class="identifier">signature2_t</span><span class="special">,</span> <span class="identifier">signature3_t</span><span class="special">&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+   <span class="comment">// set a pointer to foo as target object tied to</span>
+   <span class="comment">// the first call signature</span>
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+
+   <span class="identifier">FuncObj1</span> <span class="identifier">func_obj_1</span><span class="special">;</span>
+   <span class="comment">// func_obj_1 is cloned to an internal function</span>
+   <span class="comment">// object tied to the matching call signature</span>
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">func_obj_1</span><span class="special">);</span>
+
+   <span class="comment">// if cloning is too expensive (e.g. your function object is</span>
+   <span class="comment">// statefull) or semantically incorrect you can wrap</span>
+   <span class="comment">// a function object with boost::ref</span>
+   <span class="identifier">FuncObj2</span> <span class="identifier">func_obj_2</span><span class="special">;</span>
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">ref</span><span class="special">(</span><span class="identifier">func_obj_2</span><span class="special">));</span>
+   <span class="comment">// no copy occurs, only a reference to func_obj_2 is kept.</span>
+
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="string">"hello"</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span> <span class="special">);</span>
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span> <span class="special">);</span>
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="number">3</span> <span class="special">);</span>
+   <span class="comment">// we keep only a reference</span>
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">func_obj_2</span><span class="special">.</span><span class="identifier">calls</span> <span class="special">==</span> <span class="number">1</span> <span class="special">);</span>
+
+   <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.tutorial.supported_types_of_callable_entities.example___using_boost_function"></a><a class="link" href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_boost_function" title="Example - Using Boost.Function">Example
+        - Using Boost.Function</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+
+<span class="comment">/* a free function */</span>
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">)</span>
+<span class="special">{</span>
+   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+<span class="special">}</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature1_t</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">);</span>
+
+<span class="comment">/* a function object type */</span>
+<span class="keyword">struct</span> <span class="identifier">FuncObj</span>
+<span class="special">{</span>
+   <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()</span> <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">)</span> <span class="keyword">const</span>
+   <span class="special">{</span>
+           <span class="keyword">return</span> <span class="number">2</span><span class="special">;</span>
+   <span class="special">}</span>
+<span class="special">};</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature2_t</span> <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">char</span> <span class="special">);</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+   <span class="comment">// boost::function object that set foo as object target</span>
+   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">signature1_t</span><span class="special">&gt;</span> <span class="identifier">foo_wrapper</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+
+   <span class="comment">// instance of FuncObj</span>
+   <span class="identifier">FuncObj</span> <span class="identifier">func_obj</span><span class="special">;</span>
+
+
+   <span class="comment">// overload object</span>
+   <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">signature1_t</span><span class="special">,</span> <span class="identifier">signature2_t</span><span class="special">&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+   <span class="comment">// a copy of the object target held by foo_wrapper</span>
+   <span class="comment">// is created and tied to the first call signature</span>
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">foo_wrapper</span><span class="special">);</span>
+
+   <span class="comment">// set a copy of func_obj as object target</span>
+   <span class="comment">// for the second call signature</span>
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(</span><span class="identifier">func_obj</span><span class="special">);</span>
+
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="string">"hello"</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span> <span class="special">);</span>
+   <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">,</span> <span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span> <span class="special">);</span>
+
+   <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.tutorial.supported_types_of_callable_entities.example___using_member_functions"></a><a class="link" href="tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities.example___using_member_functions" title="Example - Using member functions">Example
+        - Using member functions</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+
+<span class="comment">/* a free function */</span>
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">)</span>
+<span class="special">{</span>
+   <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span>
+<span class="special">}</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature1_t</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">);</span>
+
+<span class="comment">/* a member function */</span>
+<span class="keyword">class</span> <span class="identifier">Alpha</span>
+<span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">Alpha</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">_offset</span><span class="special">)</span> <span class="special">:</span> <span class="identifier">offset</span><span class="special">(</span><span class="identifier">_offset</span><span class="special">)</span> <span class="special">{}</span>
+
+    <span class="keyword">int</span> <span class="identifier">code</span><span class="special">(</span><span class="keyword">char</span> <span class="identifier">c</span><span class="special">)</span>
+    <span class="special">{</span>
+        <span class="keyword">if</span><span class="special">(</span> <span class="identifier">c</span> <span class="special">&lt;</span> <span class="char">'a'</span> <span class="special">||</span> <span class="identifier">c</span> <span class="special">&gt;</span> <span class="char">'z'</span> <span class="special">)</span>
+            <span class="keyword">return</span> <span class="special">-</span><span class="number">1</span><span class="special">;</span>
+        <span class="keyword">return</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">c</span> <span class="special">-</span> <span class="char">'a'</span><span class="special">)</span> <span class="special">+</span> <span class="identifier">offset</span> <span class="special">)</span> <span class="special">%</span> <span class="number">26</span><span class="special">;</span>
+    <span class="special">}</span>
+
+  <span class="keyword">private</span><span class="special">:</span>
+    <span class="keyword">int</span> <span class="identifier">offset</span><span class="special">;</span>
+<span class="special">};</span>
+<span class="comment">// member function explicit non-const signature</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">signature2_t</span> <span class="special">(</span><span class="identifier">Alpha</span><span class="special">*,</span> <span class="keyword">char</span> <span class="special">);</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">Alpha</span> <span class="identifier">alpha</span><span class="special">(</span><span class="number">3</span><span class="special">);</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">signature1_t</span><span class="special">,</span> <span class="identifier">signature2_t</span><span class="special">&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="comment">// we pass a pointer to the member fuction Alpha::code</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">Alpha</span><span class="special">::</span><span class="identifier">code</span><span class="special">);</span>
+
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="string">"hello"</span><span class="special">)</span> <span class="special">==</span> <span class="number">1</span> <span class="special">);</span>
+    <span class="comment">// invokes alpha.code('x')</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(&amp;</span><span class="identifier">alpha</span><span class="special">,</span> <span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="number">0</span> <span class="special">);</span>
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<p>
+        In the above examples we have always set a single callable object at time,
+        however the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a>
+        method is able to set up multiple callable objects at once. For instance
+        referring to the last example you can write:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">Alpha</span><span class="special">::</span><span class="identifier">code</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        The order you pass the callable objects does not matter. You could have written
+        the previous line of code as <code class="computeroutput"><span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">Alpha</span><span class="special">::</span><span class="identifier">code</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">foo</span><span class="special">)</span></code>. Moreover you can pass the callable objects
+        directly in the constructor:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">signature1_t</span><span class="special">,</span> <span class="identifier">signature2_t</span><span class="special">&gt;</span> <span class="identifier">f</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">,</span> <span class="special">&amp;</span><span class="identifier">Alpha</span><span class="special">::</span><span class="identifier">code</span><span class="special">);</span>
+</pre>
+<p>
+      </p>
+<p>
+        As for the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a>
+        method the order of the arguments does not matter and you can pass only monomorphic
+        callable objects. Moreover both the constructor and the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a> method accept only callable
+        objects whose call signature is equal to one of the call signatures supported
+        by the overload object. For instance the following lines of code do not compile:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">){</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+<span class="keyword">int</span> <span class="identifier">bar</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">2</span><span class="special">;</span> <span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+   <span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">);</span> <span class="comment">// ok foo call signature matches</span>
+                <span class="comment">// the first call signature of f</span>
+
+   <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">bar</span><span class="special">);</span> <span class="comment">// compile error: bar call signature does not</span>
+                <span class="comment">// match any call signature supported by f</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          If you try to pass to the constructor or to the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a> method a callable object with
+          a call signature that does not match one of the call signatures supported
+          by the given instantiation of the template class <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> you get a compile time
+          error.
+        </p></td></tr>
+</table></div>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          The <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a>
+          method does not work properly with <a href="http://www.boost.org/doc/libs/release/libs/bind/bind.html" target="_top">Boost.Bind</a>
+          and <a href="http://www.boost.org/doc/libs/release/doc/html/lambda.html" target="_top">Boost.Lambda</a>
+        </p></td></tr>
+</table></div>
+<p>
+        In order to workaround the limitations of the <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a> method you should utilize the
+        <a class="link" href="references.html#ref_overload_set_S_F"><code class="computeroutput"><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a> or the <a class="link" href="references.html#ref_overload_set_N_F"><code class="computeroutput"><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span></code></a>
+        methods.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.the_call_signature_based_syntax"></a><a class="link" href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax" title="The call signature based syntax">The
+      call signature based syntax</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___a_multi_signature_function_object">Example
+        - A multi-signature function object</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___free_and_member_polymorphic_functions">Example
+        - Free and member polymorphic functions</a></span></dt>
+<dt><span class="section"><a href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___a_functor_with_a_call_signature_that_is_only_compatible">Example
+        - A functor with a call signature that is only compatible</a></span></dt>
+</dl></div>
+<p>
+        If you need to set a polymorphic callable object as object target of a given
+        overload object for a specific supported call signature you can always use
+        the <a class="link" href="references.html#ref_overload_set_S_F"><code class="computeroutput"><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a> method. Look at the following
+        examples:
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.tutorial.the_call_signature_based_syntax.example___a_multi_signature_function_object"></a><a class="link" href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___a_multi_signature_function_object" title="Example - A multi-signature function object">Example
+        - A multi-signature function object</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">/* polymorphic function object */</span>
+<span class="keyword">struct</span> <span class="identifier">bar</span>
+<span class="special">{</span>
+    <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">(</span> <span class="number">2</span> <span class="special">+</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="special">);</span> <span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">char</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+    <span class="comment">// function object</span>
+    <span class="identifier">bar</span> <span class="identifier">foo</span><span class="special">;</span>
+
+    <span class="comment">// we use the call signature syntax for setting a copy of</span>
+    <span class="comment">// foo as object target for the call signature int (char )</span>
+    <span class="comment">// only</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">char</span> <span class="special">)&gt;(</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="comment">// invokes int foo(char ) template instantiation</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="comment">// through the empty&lt;Signature&gt;() method we check</span>
+    <span class="comment">// that no other object target has been set up</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+
+    <span class="comment">// now we set a copy of foo as object target tied to</span>
+    <span class="comment">// the call signature int( int )</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;(</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+
+    <span class="comment">// and finally we set up also the object target</span>
+    <span class="comment">// for the int(double ) call signature</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;(</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Any method that accepts a polymorphic function object as argument accepts
+          also an instance of the class template <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a>.
+        </p></td></tr>
+</table></div>
+<p>
+        All that work for free and member polymorphic functions too:
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.tutorial.the_call_signature_based_syntax.example___free_and_member_polymorphic_functions"></a><a class="link" href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___free_and_member_polymorphic_functions" title="Example - Free and member polymorphic functions">Example
+        - Free and member polymorphic functions</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">T</span>  <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">(</span><span class="number">3</span> <span class="special">+</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">T</span><span class="special">));</span> <span class="special">}</span>
+
+<span class="keyword">struct</span> <span class="identifier">bar</span>
+<span class="special">{</span>
+    <span class="keyword">int</span> <span class="identifier">mf</span><span class="special">(</span><span class="keyword">int</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+    <span class="keyword">int</span> <span class="identifier">mf</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">2</span><span class="special">;</span> <span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">),</span>
+                    <span class="keyword">int</span> <span class="special">(</span><span class="identifier">bar</span><span class="special">*,</span> <span class="keyword">int</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="identifier">bar</span><span class="special">*,</span> <span class="keyword">double</span> <span class="special">)&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+    <span class="comment">// bar instance</span>
+    <span class="identifier">bar</span> <span class="identifier">abar</span><span class="special">;</span>
+
+    <span class="comment">// set bar::*mf as object target</span>
+    <span class="comment">// for the int (bar*, int ) call signature only</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="identifier">bar</span><span class="special">*,</span> <span class="keyword">int</span> <span class="special">)&gt;(&amp;</span><span class="identifier">bar</span><span class="special">::</span><span class="identifier">mf</span><span class="special">);</span>
+    <span class="comment">// invokes int bar.mf(int )</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(&amp;</span><span class="identifier">abar</span><span class="special">,</span> <span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">abar</span><span class="special">.</span><span class="identifier">mf</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="identifier">bar</span><span class="special">*,</span> <span class="keyword">double</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+
+    <span class="comment">// set bar::*mf as object target</span>
+    <span class="comment">// for the int (bar*, double ) call signature too</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="identifier">bar</span><span class="special">*,</span> <span class="keyword">double</span> <span class="special">)&gt;(&amp;</span><span class="identifier">bar</span><span class="special">::</span><span class="identifier">mf</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(&amp;</span><span class="identifier">abar</span><span class="special">,</span> <span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">abar</span><span class="special">.</span><span class="identifier">mf</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(&amp;</span><span class="identifier">abar</span><span class="special">,</span> <span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">abar</span><span class="special">.</span><span class="identifier">mf</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+
+    <span class="comment">// set *foo as object target</span>
+    <span class="comment">// for the int (int ) call signature only</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+
+    <span class="comment">// set *foo as object target</span>
+    <span class="comment">// for the int (double ) call signature too</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Obviously, in case you wish, you can use the <a class="link" href="references.html#ref_overload_set_S_F"><code class="computeroutput"><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a>
+          method with monomorphic callable objects too.
+        </p></td></tr>
+</table></div>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          Given a template free function <code class="computeroutput"><span class="identifier">foo</span></code>
+          and a call signature <span class="emphasis"><em>S</em></span>, supported by <code class="computeroutput"><span class="identifier">foo</span></code>, the expression <code class="computeroutput"><span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;(&amp;</span><span class="identifier">foo</span><span class="special">)</span></code>, where <code class="computeroutput"><span class="identifier">f</span></code>
+          is an overload object that supports the call signature <span class="emphasis"><em>S</em></span>,
+          compiles without any error only if all template parameters involved in
+          the declaration of <code class="computeroutput"><span class="identifier">foo</span></code>
+          are deducible by the call signature <span class="emphasis"><em>S</em></span>. The same applies
+          to template member functions and template function objects.
+        </p></td></tr>
+</table></div>
+<p>
+        The call signature synatx let us set up as object target a functor whose
+        call signature is compatible with, but does not match a given call signature
+        of an overload object. This situation is showed in the following example:
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.tutorial.the_call_signature_based_syntax.example___a_functor_with_a_call_signature_that_is_only_compatible"></a><a class="link" href="tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax.example___a_functor_with_a_call_signature_that_is_only_compatible" title="Example - A functor with a call signature that is only compatible">Example
+        - A functor with a call signature that is only compatible</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">string</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;</span> <span class="identifier">f1</span><span class="special">;</span>
+
+    <span class="comment">// the call signature of the foo free function does not</span>
+    <span class="comment">// match exactly any call signature of f1, anyway it is</span>
+    <span class="comment">// compatible with the call signature int (int )</span>
+    <span class="comment">// because an int type convert implicitly to a double</span>
+    <span class="comment">// for this reason the set&lt;Signature&gt; method let you</span>
+    <span class="comment">// pass as argument a functor whose call signature is only</span>
+    <span class="comment">// compatible with the call signature Signature</span>
+    <span class="identifier">f1</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;(</span> <span class="special">&amp;</span><span class="identifier">foo</span> <span class="special">);</span>
+    <span class="comment">// ok the target object tied to the int (int )</span>
+    <span class="comment">// call signature is set</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f1</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+    <span class="comment">// foo is invoked</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f1</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+
+    <span class="comment">// all that work even if the overload object owns a call</span>
+    <span class="comment">// signature that matches exactly the call signature of the</span>
+    <span class="comment">// functor</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;</span> <span class="identifier">f2</span><span class="special">;</span>
+
+    <span class="comment">// all work exactly as before</span>
+    <span class="identifier">f2</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;(</span> <span class="special">&amp;</span><span class="identifier">foo</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f2</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f2</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="comment">// no object target has been set up for</span>
+    <span class="comment">// the int (double ) call signature</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f2</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;()</span> <span class="special">);</span>
+
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.the_index_based_syntax"></a><a class="link" href="tutorial.html#boost_overload.tutorial.the_index_based_syntax" title="The index based syntax">The index
+      based syntax</a>
+</h3></div></div></div>
+<p>
+        Besides the <a class="link" href="references.html#ref_overload_set_S_F"><code class="computeroutput"><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a> method you can utilize also the
+        <a class="link" href="references.html#ref_overload_set_N_F"><code class="computeroutput"><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;</span></code></a>
+        method where <code class="computeroutput"><span class="identifier">N</span></code> must be an
+        integer included in the range from 0 to the number of call signatures supported
+        by the given overload object less one. Given an overload object <code class="computeroutput"><span class="identifier">f</span></code> and a functor <code class="computeroutput"><span class="identifier">g</span></code>,
+        the call <code class="computeroutput"><span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">N</span><span class="special">&gt;(</span><span class="identifier">g</span><span class="special">)</span></code> is equivalent
+        to the call <code class="computeroutput"><span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;(</span><span class="identifier">g</span><span class="special">)</span></code> where
+        <code class="computeroutput"><span class="identifier">S</span></code> is the N-1 call signature
+        listed in the template argument list for the instantiation of the type of
+        the overload object <code class="computeroutput"><span class="identifier">f</span></code>. As
+        an example we reimplement the example that shows how to set up a polymorphic
+        function object by using the index based syntax.
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">/* polymorphic function object */</span>
+<span class="keyword">struct</span> <span class="identifier">bar</span>
+<span class="special">{</span>
+    <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()(</span><span class="keyword">int</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+    <span class="keyword">int</span> <span class="keyword">operator</span><span class="special">()(</span><span class="identifier">T</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">(</span> <span class="number">2</span> <span class="special">+</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">T</span><span class="special">)</span> <span class="special">);</span> <span class="special">}</span>
+<span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">char</span> <span class="special">),</span> <span class="keyword">int</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">)&gt;</span> <span class="identifier">f</span><span class="special">;</span>
+
+    <span class="comment">// function object</span>
+    <span class="identifier">bar</span> <span class="identifier">foo</span><span class="special">;</span>
+
+    <span class="comment">// we use the index syntax for setting a copy of</span>
+    <span class="comment">// foo as object target for the second call signature</span>
+    <span class="comment">// int (char ) only</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="number">1</span><span class="special">&gt;(</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="comment">// invokes int foo(char ) template instantiation</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="comment">// through the empty&lt;N&gt;() method we check</span>
+    <span class="comment">// that no other object target has been set up</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="comment">// now we set a copy of foo as object target tied to</span>
+    <span class="comment">// the first call signature int( int )</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="number">0</span><span class="special">&gt;(</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="comment">// and finally we set up also the object target</span>
+    <span class="comment">// for the last call signature int(double )</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="number">2</span><span class="special">&gt;(</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.the_make_overload_utility"></a><a class="link" href="tutorial.html#boost_overload.tutorial.the_make_overload_utility" title="The make_overload utility">The
+      make_overload utility</a>
+</h3></div></div></div>
+<p>
+        <a class="link" href="../index.html" title="Boost.Overload 0.4.0">Boost.Overload</a> provides an utility
+        named <a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload" title="Generative function make_overload"><code class="computeroutput"><span class="identifier">make_overload</span></code></a> to create an <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> object on the fly without
+        the need to specify the <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">call
+        signature</a> of each callable object passed as argument. A limitation
+        of the <a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload" title="Generative function make_overload"><code class="computeroutput"><span class="identifier">make_overload</span></code></a> utility is that it
+        can handle only monomorphic callable objects.
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          In order to utilize the <a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload" title="Generative function make_overload"><code class="computeroutput"><span class="identifier">make_overload</span></code></a> utility you need
+          to include the header file <a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp" title="&lt;boost/overload/make_overload.hpp&gt;"><code class="computeroutput"><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">/</span><span class="identifier">make_overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span></code></a>
+        </p></td></tr>
+</table></div>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="../images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          <a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload" title="Generative function make_overload"><code class="computeroutput"><span class="identifier">make_overload</span></code></a> utility implementation
+          depends on <a href="http://www.boost.org/doc/libs/release/doc/html/typeof.html" target="_top">Boost.TypeOf</a>
+        </p></td></tr>
+</table></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">functional</span><span class="special">/</span><span class="identifier">hash</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">adapted</span><span class="special">/</span><span class="keyword">struct</span><span class="special">/</span><span class="identifier">adapt_struct</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">adapt_struct</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">algorithm</span><span class="special">/</span><span class="identifier">transformation</span><span class="special">/</span><span class="identifier">transform</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">transform</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">algorithm</span><span class="special">/</span><span class="identifier">iteration</span><span class="special">/</span><span class="identifier">for_each</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">fusion</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">for_each</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// You need this header file for the make_overload utility</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">/</span><span class="identifier">make_overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+
+<span class="keyword">using</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">;</span>
+
+
+<span class="comment">// A sample struct</span>
+<span class="keyword">struct</span> <span class="identifier">Person</span>
+<span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="identifier">name</span><span class="special">;</span>
+    <span class="keyword">int</span> <span class="identifier">age</span><span class="special">;</span>
+    <span class="keyword">bool</span> <span class="identifier">student</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="comment">// Make the Person struct a Boost.Fusion sequence</span>
+<span class="identifier">BOOST_FUSION_ADAPT_STRUCT</span><span class="special">(</span>
+        <span class="identifier">Person</span><span class="special">,</span>
+        <span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">,</span> <span class="identifier">name</span><span class="special">)</span>
+        <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="identifier">age</span><span class="special">)</span>
+        <span class="special">(</span><span class="keyword">bool</span><span class="special">,</span> <span class="identifier">student</span><span class="special">)</span>
+<span class="special">)</span>
+
+<span class="comment">// Creates a hash value by combining hash values</span>
+<span class="keyword">class</span> <span class="identifier">hash_combine</span>
+<span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="identifier">hash_combine</span><span class="special">(</span><span class="identifier">size_t</span><span class="special">&amp;</span> <span class="identifier">_seed</span><span class="special">)</span>
+        <span class="special">:</span> <span class="identifier">m_seed</span><span class="special">(</span><span class="identifier">_seed</span><span class="special">)</span>
+    <span class="special">{}</span>
+
+    <span class="keyword">void</span> <span class="keyword">operator</span><span class="special">()(</span> <span class="identifier">size_t</span> <span class="identifier">hv</span> <span class="special">)</span> <span class="keyword">const</span>
+    <span class="special">{</span>
+        <span class="identifier">m_seed</span> <span class="special">^=</span> <span class="identifier">hv</span> <span class="special">+</span> <span class="number">0x9e3779b9</span> <span class="special">+</span> <span class="special">(</span><span class="identifier">m_seed</span> <span class="special">&lt;&lt;</span> <span class="number">6</span><span class="special">)</span> <span class="special">+</span> <span class="special">(</span><span class="identifier">m_seed</span> <span class="special">&gt;&gt;</span> <span class="number">2</span><span class="special">);</span>
+    <span class="special">}</span>
+
+  <span class="keyword">private</span><span class="special">:</span>
+    <span class="comment">// boost::fusion::for_each needs a const reference function object</span>
+    <span class="keyword">volatile</span> <span class="identifier">size_t</span><span class="special">&amp;</span> <span class="identifier">m_seed</span><span class="special">;</span>
+<span class="special">};</span>
+
+<span class="comment">// It will be used to generate a hash value for each field of a Person object</span>
+<span class="keyword">typedef</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">size_t</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> <span class="special">),</span>
+                        <span class="identifier">size_t</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">),</span>
+                        <span class="identifier">size_t</span> <span class="special">(</span><span class="keyword">bool</span> <span class="special">)&gt;</span>
+        <span class="identifier">person_field_hash_function_type</span><span class="special">;</span>
+
+<span class="comment">// Returns a hash value for an object of Person type</span>
+<span class="identifier">size_t</span> <span class="identifier">hash</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Person</span> <span class="special">&amp;</span> <span class="identifier">person</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">person_field_hash_function_type</span> <span class="special">&amp;</span> <span class="identifier">hf</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">;</span>
+
+    <span class="identifier">size_t</span> <span class="identifier">seed</span> <span class="special">=</span> <span class="number">0</span><span class="special">;</span>
+    <span class="identifier">hash_combine</span> <span class="identifier">hc</span><span class="special">(</span><span class="identifier">seed</span><span class="special">);</span>
+    <span class="identifier">for_each</span><span class="special">(</span> <span class="identifier">transform</span><span class="special">(</span><span class="identifier">person</span><span class="special">,</span> <span class="identifier">hf</span><span class="special">),</span> <span class="identifier">hc</span> <span class="special">);</span>
+    <span class="keyword">return</span> <span class="identifier">seed</span><span class="special">;</span>
+<span class="special">}</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">Person</span> <span class="identifier">Anna</span> <span class="special">=</span> <span class="special">{</span><span class="string">"Anna Rossi"</span><span class="special">,</span> <span class="number">25</span><span class="special">,</span> <span class="keyword">false</span><span class="special">};</span>
+
+    <span class="comment">// We utilize make_overload to create an overload object on the fly</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">hv</span> <span class="special">=</span>
+            <span class="identifier">hash</span><span class="special">(</span> <span class="identifier">Anna</span><span class="special">,</span>
+                  <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_overload</span><span class="special">(</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span><span class="special">&gt;(),</span>
+                                        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">int</span><span class="special">&gt;(),</span>
+                                        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">hash</span><span class="special">&lt;</span><span class="keyword">bool</span><span class="special">&gt;()</span> <span class="special">)</span> <span class="special">);</span>
+
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">Anna</span><span class="special">.</span><span class="identifier">name</span> <span class="special">&lt;&lt;</span> <span class="string">" hash value: "</span> <span class="special">&lt;&lt;</span> <span class="identifier">hv</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.tutorial.helper_methods"></a><a class="link" href="tutorial.html#boost_overload.tutorial.helper_methods" title="Helper methods">Helper methods</a>
+</h3></div></div></div>
+<p>
+        There are some helper methods provided by the template class overload and
+        that mimic the ones offered by the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code>
+        template class:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            we have the <a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a> method that tell us if it
+            is set an object target related to the specified call signature;
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_empty_all"><code class="computeroutput"><span class="identifier">empty_all</span></code></a>
+            method that tell us if all object targets are empty;
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_empty_any"><code class="computeroutput"><span class="identifier">empty_any</span></code></a>
+            method that tell us if any object targets are empty
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_empty_none"><code class="computeroutput"><span class="identifier">empty_none</span></code></a>
+            method that returns true if no object target is empty;
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_get_S"><code class="computeroutput"><span class="identifier">get</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a> method return a (const) reference
+            to the embedded object of type <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code>;
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_clear_S"><code class="computeroutput"><span class="identifier">clear</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code></a> method clears the objecttarget
+            related to the specified signature;
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_clear_all"><code class="computeroutput"><span class="identifier">clear_all</span></code></a>
+            method that clears all the object targets.
+          </li>
+<li class="listitem">
+            the <a class="link" href="references.html#ref_overload_swap"><code class="computeroutput"><span class="identifier">swap</span></code></a>
+            method that accepts overload objects of the same type of <code class="computeroutput"><span class="special">(*</span><span class="keyword">this</span><span class="special">)</span></code> its action is to exchange the object
+            targets for each pair of embedded <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code>
+            objects with the same call signature;
+          </li>
+<li class="listitem">
+            finally we have the <a class="link" href="references.html#ref_overload_swap_function"><code class="computeroutput"><span class="identifier">swap_function</span></code></a> method that takes
+            only callable entities of type <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code> where <code class="computeroutput"><span class="identifier">Signature</span></code>
+            has to be a supported signature of the given instantiation of the template
+            class <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a>; its action is to swap
+            the object target of the passed <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code> instance with the object target of
+            the embedded <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code>
+            object.
+          </li>
+</ul></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">detail</span><span class="special">/</span><span class="identifier">lightweight_test</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">zoo</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="identifier">T</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">(</span><span class="number">2</span> <span class="special">+</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">T</span><span class="special">));</span> <span class="special">}</span>
+
+<span class="keyword">int</span> <span class="identifier">zoo2</span><span class="special">(</span><span class="keyword">double</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">-</span><span class="number">1</span><span class="special">;</span> <span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+<span class="keyword">int</span> <span class="identifier">foo2</span><span class="special">(</span><span class="identifier">T</span> <span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">-(</span><span class="keyword">int</span><span class="special">)(</span><span class="number">2</span> <span class="special">+</span> <span class="keyword">sizeof</span><span class="special">(</span><span class="identifier">T</span><span class="special">));</span> <span class="special">}</span>
+
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">sig1</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">);</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">sig2</span> <span class="special">(</span><span class="keyword">double</span> <span class="special">);</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> <span class="identifier">sig3</span> <span class="special">(</span><span class="keyword">char</span> <span class="special">);</span>
+
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="comment">// test if a object target is valid</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">,</span> <span class="identifier">sig2</span><span class="special">,</span> <span class="identifier">sig3</span><span class="special">&gt;</span><span class="identifier">f</span><span class="special">;</span>
+    <span class="comment">// all object targets are empty</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_all</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_any</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="comment">// only the first object target is set</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_all</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_any</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;(&amp;</span><span class="identifier">zoo</span><span class="special">);</span>
+    <span class="comment">// only the last object target is not set</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_all</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_any</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="comment">// no object target is empty</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_all</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_none</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">clear</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;();</span>
+    <span class="comment">// all object targets set but the second one</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_all</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_any</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="special">!</span><span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">clear_all</span><span class="special">();</span>
+    <span class="comment">// all object targets are empty again</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_all</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty_any</span><span class="special">()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;()</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">empty</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;()</span> <span class="special">);</span>
+
+
+    <span class="comment">// swapping</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;(&amp;</span><span class="identifier">foo</span><span class="special">).</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;(&amp;</span><span class="identifier">zoo</span><span class="special">).</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;</span> <span class="identifier">h</span> <span class="special">=</span> <span class="identifier">f</span><span class="special">.</span><span class="identifier">get</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;();</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">h</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">h</span> <span class="special">=</span> <span class="special">&amp;</span><span class="identifier">zoo2</span><span class="special">;</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">h</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo2</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">swap_function</span><span class="special">(</span><span class="identifier">h</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo2</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">h</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;(</span><span class="identifier">h</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">,</span> <span class="identifier">sig2</span><span class="special">,</span> <span class="identifier">sig3</span><span class="special">&gt;</span> <span class="identifier">g</span><span class="special">;</span>
+    <span class="identifier">g</span><span class="special">.</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig1</span><span class="special">&gt;(&amp;</span><span class="identifier">foo2</span><span class="special">).</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig2</span><span class="special">&gt;(&amp;</span><span class="identifier">zoo2</span><span class="special">).</span><span class="identifier">set</span><span class="special">&lt;</span><span class="identifier">sig3</span><span class="special">&gt;(&amp;</span><span class="identifier">foo2</span><span class="special">);</span>
+    <span class="identifier">f</span><span class="special">.</span><span class="identifier">swap</span><span class="special">(</span><span class="identifier">g</span><span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo2</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo2</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">f</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo2</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">g</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">g</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">zoo</span><span class="special">(</span><span class="number">1.0</span><span class="special">)</span> <span class="special">);</span>
+    <span class="identifier">BOOST_ASSERT</span><span class="special">(</span> <span class="identifier">g</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">foo</span><span class="special">(</span><span class="char">'x'</span><span class="special">)</span> <span class="special">);</span>
+
+    <span class="keyword">return</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">report_errors</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          For any helper method that supports the call signature syntax there is
+          an equivalent method that supports the index syntax.
+        </p></td></tr>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007-2012 Marco Cecchetti, Dean Michael Berris<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="getting_started.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="use_case.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -22,13 +22,13 @@ struct extent
   private:
     typedef typename Overload::base_type base;
   public:
-    static const int value = extent<base>::value + 1;
+    BOOST_STATIC_CONSTANT( int, value = (extent<base>::value + 1) );
 };
 
 template<>
 struct extent<final_overload_base>  
 {
-    static const int value = final_overload_base::index;
+    BOOST_STATIC_CONSTANT( int, value = (final_overload_base::index) );
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,6 +46,12 @@ template< unsigned int N, typename Overload >
 struct base_by_idx<N, Overload, true>
 {
     typedef typename Overload::base_type type;
+};
+
+template< unsigned int N, bool FOUND >
+struct base_by_idx<N, final_overload_base, FOUND>
+{
+    typedef final_overload_base type;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

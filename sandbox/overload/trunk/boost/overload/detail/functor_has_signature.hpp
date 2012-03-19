@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -33,13 +33,13 @@ struct func_obj_has_signature
     template<typename T> static char check(helper<&T::operator()>* );
     template<typename T> static char (& check(...))[2];
   public:
-    static const bool value = ( sizeof(check<FunctionObj>(0)) == sizeof(char) );
+    BOOST_STATIC_CONSTANT( bool, value = ( sizeof(check<FunctionObj>(0)) == sizeof(char) ) );
 };
 
 template<typename FunctionObj>
 struct func_obj_has_signature<FunctionObj, no_signature, member_func_non_const_tag>
 {
-    static const bool value = false;
+    BOOST_STATIC_CONSTANT( bool, value = false );
 };
 
 struct member_func_const_tag {}; // for member functions of kind "R f(..) const"
@@ -54,13 +54,13 @@ struct func_obj_has_signature<FunctionObj, Sig, member_func_const_tag>
     template<typename T> static char check(helper<&T::operator()>* );
     template<typename T> static char (& check(...))[2];
   public:
-    static const bool value = ( sizeof(check<FunctionObj>(0)) == sizeof(char) );
+    BOOST_STATIC_CONSTANT( bool, value = ( sizeof(check<FunctionObj>(0)) == sizeof(char) ) );
 };
 
 template<typename FunctionObj>
 struct func_obj_has_signature<FunctionObj, no_signature, member_func_const_tag>
 {
-    static const bool value = false;
+    BOOST_STATIC_CONSTANT( bool, value = false );
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,7 +71,10 @@ template< typename Functor,
           typename function_tag 
                 = typename get_function_tag<Functor>::type
 >
-struct functor_has_signature{ static const bool value = false; };
+struct functor_has_signature
+{
+//    BOOST_STATIC_CONSTANT( bool, value = false );
+};
 
 template< typename FunctionPtr, typename Sig>
 struct functor_has_signature<FunctionPtr, Sig, function_ptr_tag>
@@ -79,7 +82,7 @@ struct functor_has_signature<FunctionPtr, Sig, function_ptr_tag>
     private:
       typedef typename remove_pointer<FunctionPtr>::type func_ptr_t;
     public:
-          static const bool value = boost::is_same<func_ptr_t, Sig>::value;
+      BOOST_STATIC_CONSTANT( bool, value = (boost::is_same<func_ptr_t, Sig>::value) );
 };
 
 template< typename MemberPtr, typename Sig>
@@ -92,35 +95,59 @@ struct functor_has_signature<MemberPtr, Sig, member_ptr_tag>
     typedef
         typename memb_func_trait<MemberPtr>::const_binded_type
         const_binded_type;
-    static const bool const_qualified 
-        = memb_func_trait<MemberPtr>::const_qualified;
+    BOOST_STATIC_CONSTANT( bool, const_qualified
+        = (memb_func_trait<MemberPtr>::const_qualified) );
   public:
-    static const bool value 
-        = boost::is_same<binded_type, Sig>::value
-        || (boost::is_same<const_binded_type, Sig>::value && const_qualified);
+    BOOST_STATIC_CONSTANT( bool, value
+        = (boost::is_same<binded_type, Sig>::value
+        || (boost::is_same<const_binded_type, Sig>::value && const_qualified)) );
 };
 
 template< typename FunctionObj, typename Sig>
 struct functor_has_signature<FunctionObj, Sig, function_obj_tag>
 {
-    static const bool value 
-        = func_obj_has_signature<FunctionObj, Sig>::value
-        || func_obj_has_signature<FunctionObj, Sig, member_func_const_tag>::value;
+    BOOST_STATIC_CONSTANT( bool, value
+        = (func_obj_has_signature<FunctionObj, Sig>::value
+        || func_obj_has_signature<FunctionObj, Sig, member_func_const_tag>::value) );
 };
 
 template< typename FunctionObj, typename Sig>
 struct functor_has_signature<boost::reference_wrapper<FunctionObj>, Sig, function_obj_ref_tag>
 {
-    static const bool value 
-        = func_obj_has_signature<FunctionObj, Sig>::value
-        || func_obj_has_signature<FunctionObj, Sig, member_func_const_tag>::value;
+    BOOST_STATIC_CONSTANT( bool, value
+        = (func_obj_has_signature<FunctionObj, Sig>::value
+        || func_obj_has_signature<FunctionObj, Sig, member_func_const_tag>::value) );
 };
 
 template< typename FuncSig, typename Sig>
 struct functor_has_signature< boost::function<FuncSig>, Sig, function_obj_tag >
 {
-    static const bool value = boost::is_same<FuncSig, Sig>::value;
+    BOOST_STATIC_CONSTANT( bool, value = (boost::is_same<FuncSig, Sig>::value) );
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// test if a given functor is a pointer to a free or member function and its
+// signature matches exactly the Signature template argument;
+// in case Functor is not a pointer to a free or member function no functor
+// signature match is performed (so avoiding a compile time error in case
+// Functor is not really a functor)
+
+template<
+    typename Functor,
+    typename Signature,
+    bool IS_PTR_OR_MEMB_PTR = is_ptr_or_memb_ptr<Functor>::value
+>
+struct is_ptr_or_memb_ptr_and_has_matching_signature
+{
+    BOOST_STATIC_CONSTANT( bool, value = false );
+};
+
+template<typename Functor, typename Signature>
+struct is_ptr_or_memb_ptr_and_has_matching_signature<Functor, Signature, true>
+{
+    BOOST_STATIC_CONSTANT( bool, value = (functor_has_signature<Functor, Signature>::value) );
+};
+
 
 } } } // end namespaces
 

@@ -16,9 +16,9 @@ BOOST_STATIC_ASSERT((
     >::value 
 ));
 #endif
-BOOST_STATIC_ASSERT(( ovdtl::index<sig2_t, overload_type>::value == 2 ));
+BOOST_STATIC_ASSERT(( ovdtl::index_of_signature<sig2_t, overload_type>::value == 2 ));
 BOOST_STATIC_ASSERT(( ovdtl::has_signature<sig5_t, overload_type>::value ));
-BOOST_STATIC_ASSERT(( !ovdtl::has_signature<sig6_t, overload_type>::value ));
+BOOST_STATIC_ASSERT(( !ovdtl::has_signature<sig6_1_t, overload_type>::value ));
 
 }
 

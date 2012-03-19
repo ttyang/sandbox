@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -12,6 +12,7 @@
 
 #include <boost/type_traits/is_pointer.hpp>
 #include <boost/type_traits/is_member_pointer.hpp>
+#include <boost/type_traits/is_function.hpp>
 #include <boost/ref.hpp>
 
 #include "if_metafunction.hpp"
@@ -27,6 +28,7 @@ struct function_ptr_tag {};
 struct function_obj_tag {};
 struct member_ptr_tag {};
 struct function_obj_ref_tag {};
+struct function_signature_tag {};
 
 template<typename F>
 class get_function_tag
@@ -42,18 +44,21 @@ class get_function_tag
     typedef typename if_c<(boost::is_reference_wrapper<F>::value),
                            function_obj_ref_tag,
                            ptr_or_obj_or_mem_tag>::type or_ref_tag;
+    typedef typename if_c<(boost::is_function<F>::value),
+                           function_signature_tag,
+                           or_ref_tag>::type or_sig_tag;
 
   public:
-    typedef or_ref_tag type;
+    typedef or_sig_tag type;
 };
 
 
 template<typename F>
 struct is_ptr_or_memb_ptr
 {
-    static const bool value 
-        = boost::is_pointer<F>::value 
-        || boost::is_member_pointer<F>::value;
+    BOOST_STATIC_CONSTANT( bool, value
+        = (boost::is_pointer<F>::value
+        || boost::is_member_pointer<F>::value) );
 };
 
 } } } // end namespaces

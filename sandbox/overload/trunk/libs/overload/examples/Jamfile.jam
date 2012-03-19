@@ -1,0 +1,29 @@
+# Copyright 2007-2012 (c) Dean Michael Berris, Marco Cecchetti
+# Released under the Boost Software License Version 1.0
+# See http://boost.org/LICENSE_1_0.txt for full license text.
+
+using testing ;
+
+
+test-suite "examples" :
+    [ run overview.cpp ]
+    [ run basic_usage.cpp ]
+    [ run using_function_objects.cpp ]
+    [ run using_boost_function.cpp ]
+    [ run using_member_functions.cpp ]
+    [ run signature_syntax_1.cpp ]
+    [ run signature_syntax_2.cpp ]
+    [ run signature_syntax_3.cpp ]
+    [ run compatible_signature.cpp ]
+    [ run index_syntax.cpp ]
+    [ run helper_methods.cpp ]
+    [ run set_for_each_shared_signature.cpp ]
+    [ run statefull_polymorphic_function_object.cpp ]
+    [ compile result_of_support.cpp ]
+    [ run lambda_result_type_support.cpp ]
+    [ compile type_traits.cpp ]
+    [ run make_overload.cpp ]
+    [ run use_case_variant_visitor.cpp ]
+    ;
+
+

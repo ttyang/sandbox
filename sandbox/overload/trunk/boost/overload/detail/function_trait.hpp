@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -22,13 +22,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 // helper macros 
  
-#define OVL_ARG_TYPE(z, n, type) \
+#define BOOST_OVERLOAD_ARG_TYPE(z, n, type) \
 typedef type BOOST_PP_CAT(arg, BOOST_PP_CAT(n, _type));
-// end macro OVL_ARG_TYPE
+// end macro BOOST_OVERLOAD_ARG_TYPE
 
-#define OVL_IS_SIG_ARITY_ZERO(z, n, sig) \
+#define BOOST_OVERLOAD_IS_SIG_ARITY_ZERO(z, n, sig) \
 ( func_trait<BOOST_PP_CAT(sig,n)>::arity == 0 ) ||
-// end macro OVL_IS_SIG_ARITY_ZERO
+// end macro BOOST_OVERLOAD_IS_SIG_ARITY_ZERO
 
 
 namespace boost{ namespace overloads{ namespace detail{
@@ -55,32 +55,32 @@ struct ambiguous_function_call;
 // compile issues
 
 template< typename Signature >
-struct func_trait : public boost::function_traits<Signature>
+struct func_trait : public ::boost::function_traits<Signature>
 {
 };
 
 template<>
 struct func_trait< no_signature >
 {
-	static const unsigned int arity = UINT_MAX;
+    BOOST_STATIC_CONSTANT( unsigned int, arity = UINT_MAX );
 	typedef no_type		result_type;
-    BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_MAX_NUM_ARGS, OVL_ARG_TYPE, no_type);
+    BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_MAX_NUM_ARGS, BOOST_OVERLOAD_ARG_TYPE, no_type)
 };
 
 template<unsigned int N>
 struct func_trait< dummy_signature<N> >
 {
-	static const unsigned int arity = UINT_MAX;
+    BOOST_STATIC_CONSTANT( unsigned int, arity = UINT_MAX );
     typedef dummy_type<N>		result_type;
-    BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_MAX_NUM_ARGS, OVL_ARG_TYPE, dummy_type<N>);
+    BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_MAX_NUM_ARGS, BOOST_OVERLOAD_ARG_TYPE, dummy_type<N>)
 };
 
 template<typename error_type>
 struct func_trait< error<error_type> >
 {
-	static const unsigned int arity = UINT_MAX;
+    BOOST_STATIC_CONSTANT( unsigned int, arity = UINT_MAX );
 	typedef error_type		result_type;
-    BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_MAX_NUM_ARGS, OVL_ARG_TYPE, error_type);
+    BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_MAX_NUM_ARGS, BOOST_OVERLOAD_ARG_TYPE, error_type)
 };
 
 
@@ -104,10 +104,10 @@ template< BOOST_PP_ENUM_PARAMS(BOOST_OVERLOAD_LIMIT, typename Sig) >
 struct zero_arity_signature
 {
   private:
-	static const bool sig0_no_arg = ( func_trait<Sig0>::arity == 0 );
-	static const bool sig0_no_other_no_arg 
+    BOOST_STATIC_CONSTANT( bool, sig0_no_arg = ( func_trait<Sig0>::arity == 0 ) );
+    BOOST_STATIC_CONSTANT( bool, sig0_no_other_no_arg
 		= !( BOOST_PP_REPEAT_FROM_TO(1, BOOST_OVERLOAD_LIMIT, 
-                                     OVL_IS_SIG_ARITY_ZERO, Sig) false );
+                                     BOOST_OVERLOAD_IS_SIG_ARITY_ZERO, Sig) false ) );
   public:
 	typedef 
 		typename if_c<sig0_no_arg, 
@@ -137,7 +137,7 @@ template<unsigned int N, typename S, unsigned int arity>
 struct real_or_dummy_signature
 {
   private:
-	static const bool same_arity = ( func_trait<S>::arity == arity );
+	BOOST_STATIC_CONSTANT( bool, same_arity = ( func_trait<S>::arity == arity ) );
   public:
 	typedef 
 		typename if_c< same_arity, S, dummy_signature<N> >::type
@@ -147,8 +147,8 @@ struct real_or_dummy_signature
 
 } } } // end namespaces
 
-#undef OVL_IS_SIG_ARITY_ZERO
-#undef OVL_ARG_TYPE
+#undef BOOST_OVERLOAD_IS_SIG_ARITY_ZERO
+#undef BOOST_OVERLOAD_ARG_TYPE
 
 #endif // _FUNCTION_TRAIT_HPP_
 

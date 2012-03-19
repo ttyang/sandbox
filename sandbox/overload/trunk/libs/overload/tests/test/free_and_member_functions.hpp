@@ -3,7 +3,7 @@
 #define _TEST_FREE_AND_MEMBER_OVERLOADED_FUNCTIONS_HPP_
 
 
-void test07()
+void free_and_member_overloaded_functions_test()
 {
     typedef 
         boost::overload<inc_int_sig_t, inc_float_sig_t, 
@@ -29,7 +29,6 @@ void test07()
     BOOST_ASSERT( f(&multi1, 1) == 2 );
 
 
-
     boost::overload<foo_int_const_sig_t, foo_float_sig_t> g;
 
     // uses "int foo(int ) const" because it's the only valid choice
@@ -48,10 +47,12 @@ void test07()
     qui.set<sig1_t>(&bar1::foo1);
     qui.set<non_const_sig2_t>(&bar2::foo2);
     BOOST_ASSERT( qui(&b1, 'x') == 123 );
-    BOOST_ASSERT( qui(&b2, 1, 'x') == 123.456 );
+    double d = qui(&b2, 1, 'x');
+    BOOST_ASSERT( d > 233.999 && d < 234.001 );
     qui.clear<non_const_sig2_t>();
     qui.set<non_const_sig2_t, ovld::const_>(&bar2::foo2);
-    BOOST_ASSERT( qui(&b2, 1, 'x') == 123.456 );
+    d = qui(&b2, 1, 'x');
+    BOOST_ASSERT( d > 233.999 && d < 234.001 );
 
 
 
@@ -59,10 +60,12 @@ void test07()
     quo.set<sig1_t>(&bar1::foo1);
     quo.set<sig2_t>(&bar2::foo2);
     BOOST_ASSERT( quo(&b1, 'x') == 123 );
-    BOOST_ASSERT( quo(&b2, 1, 'x') == 123.456 );
+    d = quo(&b2, 1, 'x');
+    BOOST_ASSERT( d > 233.999 && d < 234.001 );
     quo.clear<sig2_t>();
     quo.set<sig2_t, ovld::const_>(&bar2::foo2);
-    BOOST_ASSERT( quo(&b2, 1, 'x') == 123.456 );
+    d = quo(&b2, 1, 'x');
+    BOOST_ASSERT( d > 233.999 && d < 234.001 );
 
 
 
@@ -80,6 +83,50 @@ void test07()
     duck.set<int (bar13*, int, std::string )>(&bar13::foo13);
     BOOST_ASSERT( duck(&b13, 1, 1) == 13 );
     BOOST_ASSERT( duck(&b13, 1, std::string("hi")) == 133 );
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // set<N> tests
+
+    f.clear_all();
+    BOOST_ASSERT( f.empty_all() );
+
+    f.set<0>(&inc);                         // uses "int inc(int )"
+    f.set<1>(&inc);                         // uses "float inc(float )"
+    f.set<3>(&multi::foo);                  // uses "float foo(std::string )"
+
+    BOOST_ASSERT( f(1) == 2 );
+    BOOST_ASSERT( f(2.0f) == 3.0f );
+    BOOST_ASSERT( f(&multi1, "hi") == 3.0f );
+
+
+    qui.clear_all();
+    BOOST_ASSERT( qui.empty_all() );
+
+    qui.set<0>(&bar1::foo1);
+    qui.set<1>(&bar2::foo2);
+    BOOST_ASSERT( qui(&b1, 'x') == 123 );
+    d = qui(&b2, 1, 'x');
+    BOOST_ASSERT( d > 233.999 && d < 234.001 );
+
+
+    qua.clear_all();
+    BOOST_ASSERT( qua.empty_all() );
+
+    qua.set<1>(&foo12);
+    qua.set<0>(&foo12);
+    BOOST_ASSERT( qua(1, 1) == 12 );
+    BOOST_ASSERT( qua(1, std::string("hi")) == 122 );
+
+
+    duck.clear_all();
+    BOOST_ASSERT( duck.empty_all() );
+
+    duck.set<0>(&bar13::foo13);
+    duck.set<1>(&bar13::foo13);
+    BOOST_ASSERT( duck(&b13, 1, 1) == 13 );
+    BOOST_ASSERT( duck(&b13, 1, std::string("hi")) == 133 );
+
 }
 
 

@@ -1,0 +1,107 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Getting Started</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="up" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="prev" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="next" href="tutorial.html" title="Tutorial">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="tutorial.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_overload.getting_started"></a><a class="link" href="getting_started.html" title="Getting Started">Getting Started</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="getting_started.html#boost_overload.getting_started.overview">Overview</a></span></dt>
+<dt><span class="section"><a href="getting_started.html#boost_overload.getting_started.installation_and_configuration">Installation
+      and configuration</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.getting_started.overview"></a><a class="link" href="getting_started.html#boost_overload.getting_started.overview" title="Overview">Overview</a>
+</h3></div></div></div>
+<p>
+        <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>
+        already supports wrapping function objects, member function pointers, and
+        function pointers in general. By itself, <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>
+        is already powerful and already useful enough in situations where you want
+        to be able to pass around generic function objects. The only limitation of
+        <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>
+        is that you can only wrap one function with one instance of the wrapper,
+        and only functions or function objects that all have the same signatures.
+        This becomes a problem in many settings where an overloaded function set
+        is required. <a class="link" href="../index.html" title="Boost.Overload 0.4.0">Boost.Overload</a> allows
+        this functionality of supporting multiple signatures by wrapping multiple
+        <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>
+        objects in a single object that overloads the function operator to support
+        the various overloads defined. This allows us to map many functions to a
+        single overload instance, provided that these functions have a call signature
+        that the <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> instance supports. To illustrate
+        the usage of the <a class="link" href="../index.html" title="Boost.Overload 0.4.0">Boost.Overload</a> library,
+        the following code snippet is provided:
+      </p>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="keyword">int</span> <span class="identifier">foo</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">a</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">a</span> <span class="special">+</span> <span class="number">1</span><span class="special">;</span> <span class="special">};</span>
+<span class="keyword">long</span> <span class="identifier">bar</span><span class="special">(</span><span class="keyword">int</span> <span class="identifier">a</span><span class="special">,</span> <span class="keyword">int</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">a</span> <span class="special">+</span> <span class="identifier">b</span><span class="special">;</span> <span class="special">};</span>
+
+<span class="keyword">int</span> <span class="identifier">main</span><span class="special">()</span>
+<span class="special">{</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">overload</span><span class="special">&lt;</span><span class="keyword">int</span> <span class="special">(</span><span class="keyword">int</span> <span class="special">),</span> <span class="keyword">long</span> <span class="special">(</span><span class="keyword">int</span><span class="special">,</span> <span class="keyword">int</span> <span class="special">)&gt;</span> <span class="identifier">functions</span><span class="special">;</span>
+    <span class="identifier">functions</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">foo</span><span class="special">);</span>
+    <span class="identifier">functions</span><span class="special">.</span><span class="identifier">set</span><span class="special">(&amp;</span><span class="identifier">bar</span><span class="special">);</span>
+
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">functions</span><span class="special">(</span><span class="number">1</span><span class="special">)</span> <span class="special">==</span> <span class="number">2</span><span class="special">);</span>
+    <span class="identifier">assert</span><span class="special">(</span><span class="identifier">functions</span><span class="special">(</span><span class="number">2</span><span class="special">,</span> <span class="number">3</span><span class="special">)</span> <span class="special">==</span> <span class="number">5L</span><span class="special">);</span>
+    <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
+<p>
+      </p>
+<p>
+        In the above example we have two functions <code class="computeroutput"><span class="identifier">foo</span></code>
+        and <code class="computeroutput"><span class="identifier">bar</span></code>, both having different
+        signatures and return types. This illustrates the powerful features which
+        <a class="link" href="../index.html" title="Boost.Overload 0.4.0">Boost.Overload</a> allows us to exploit:
+        compile-time function argument deduction and registration, and static function
+        dispatch using function overload type deduction.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.getting_started.installation_and_configuration"></a><a class="link" href="getting_started.html#boost_overload.getting_started.installation_and_configuration" title="Installation and configuration">Installation
+      and configuration</a>
+</h3></div></div></div>
+<p>
+        The library is based only on header files, all you have to do in order to
+        utilize it is to include the following header file: <code class="computeroutput"><span class="identifier">boost</span><span class="special">/</span><span class="identifier">overload</span><span class="special">.</span><span class="identifier">hpp</span></code> as
+        shown in the above example. Through the <code class="computeroutput"><span class="identifier">BOOST_OVERLOAD_LIMITS</span></code>
+        configuration macro you can set up the maximum number of unique signatures
+        supported by the overload template class. The default value is 10 signatures.
+      </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007-2012 Marco Cecchetti, Dean Michael Berris<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="tutorial.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

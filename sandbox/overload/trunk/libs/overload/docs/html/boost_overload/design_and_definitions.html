@@ -1,0 +1,295 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Design and Definitions</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="up" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="prev" href="advanced_features.html" title="Advanced features">
+<link rel="next" href="references.html" title="References">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="advanced_features.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="references.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_overload.design_and_definitions"></a><a class="link" href="design_and_definitions.html" title="Design and Definitions">Design and Definitions</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.design">Design</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions">Definitions</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.invoke_expression">INVOKE
+        expression</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.function_objects">Function
+        Objects</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects">Call
+        Signatures and Callable Objects</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_wrappers">Call
+        Wrappers</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.dynamic_function_wrapper">Dynamic
+        Function Wrapper</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.dynamic_overloaded_function_wrapper">Dynamic
+        Overloaded Function Wrapper</a></span></dt>
+</dl></dd>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.design_and_definitions.design"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.design" title="Design">Design</a>
+</h3></div></div></div>
+<p>
+        The library is succinctly implemented in one header file requiring only that
+        <a href="http://www.boost.org/doc/libs/release/doc/html/function.html" target="_top">Boost.Function</a>,
+        and a small subset of <a href="http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html" target="_top">Boost.TypeTraits</a>
+        are available. This library also requires the <a href="http://www.boost.org/doc/libs/release/libs/preprocessor/doc/index.html" target="_top">Boost.Preprocessor</a>
+        library if in case you don't want to get the preprocessed header file. The
+        library is configured by default to handle overloads with 10 unique signatures
+        and can be configured to support more by changing the <code class="computeroutput"><span class="identifier">BOOST_OVERLOAD_LIMIT</span></code>
+        macro when building the application that uses <a class="link" href="../index.html" title="Boost.Overload 0.4.0">Boost.Overload</a>.
+      </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.design_and_definitions.definitions"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions" title="Definitions">Definitions</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.invoke_expression">INVOKE
+        expression</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.function_objects">Function
+        Objects</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects">Call
+        Signatures and Callable Objects</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_wrappers">Call
+        Wrappers</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.dynamic_function_wrapper">Dynamic
+        Function Wrapper</a></span></dt>
+<dt><span class="section"><a href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.dynamic_overloaded_function_wrapper">Dynamic
+        Overloaded Function Wrapper</a></span></dt>
+</dl></div>
+<p>
+        In accordance with the <a href="http://www.open-std.org/JTC1/SC22/WG21/" target="_top">C++11</a>
+        ISO standard, we provide the following definitions.
+      </p>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.design_and_definitions.definitions.invoke_expression"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.invoke_expression" title="INVOKE expression">INVOKE
+        expression</a>
+</h4></div></div></div>
+<p>
+          De&#64257;ne <code class="computeroutput"><span class="identifier">INVOKE</span> <span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">t1</span><span class="special">,</span> <span class="identifier">t2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">tN</span><span class="special">)</span></code> as
+          follows:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <code class="computeroutput"><span class="special">(</span><span class="identifier">t1</span><span class="special">.*</span><span class="identifier">f</span><span class="special">)(</span><span class="identifier">t2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">tN</span><span class="special">)</span></code>
+              when <code class="computeroutput"><span class="identifier">f</span></code> is a pointer
+              to a member function of a class <code class="computeroutput"><span class="identifier">T</span></code>
+              and <code class="computeroutput"><span class="identifier">t1</span></code> is an object
+              of type <code class="computeroutput"><span class="identifier">T</span></code> or a reference
+              to an object of type <code class="computeroutput"><span class="identifier">T</span></code>
+              or a reference to an object of a type derived from <code class="computeroutput"><span class="identifier">T</span></code>;
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="special">((*</span><span class="identifier">t1</span><span class="special">).*</span><span class="identifier">f</span><span class="special">)(</span><span class="identifier">t2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">tN</span><span class="special">)</span></code>
+              when <code class="computeroutput"><span class="identifier">f</span></code> is a pointer
+              to a member function of a class <code class="computeroutput"><span class="identifier">T</span></code>
+              and <code class="computeroutput"><span class="identifier">t1</span></code> is not one of
+              the types described in the previous item;
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">t1</span><span class="special">.*</span><span class="identifier">f</span></code> when <code class="computeroutput"><span class="identifier">N</span>
+              <span class="special">==</span> <span class="number">1</span></code>
+              and <code class="computeroutput"><span class="identifier">f</span></code> is a pointer
+              to member data of a class <code class="computeroutput"><span class="identifier">T</span></code>
+              and <code class="computeroutput"><span class="identifier">t1</span></code> is an object
+              of type <code class="computeroutput"><span class="identifier">T</span></code> or a reference
+              to an object of type <code class="computeroutput"><span class="identifier">T</span></code>
+              or a reference to an object of a type derived from <code class="computeroutput"><span class="identifier">T</span></code>;
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="special">(*</span><span class="identifier">t1</span><span class="special">).*</span><span class="identifier">f</span></code>
+              when <code class="computeroutput"><span class="identifier">N</span> <span class="special">==</span>
+              <span class="number">1</span></code> and <code class="computeroutput"><span class="identifier">f</span></code>
+              is a pointer to member data of a class <code class="computeroutput"><span class="identifier">T</span></code>
+              and <code class="computeroutput"><span class="identifier">t1</span></code> is not one of
+              the types described in the previous item;
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">f</span><span class="special">(</span><span class="identifier">t1</span><span class="special">,</span> <span class="identifier">t2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">tN</span><span class="special">)</span></code> in all other cases.
+            </li>
+</ul></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.design_and_definitions.definitions.function_objects"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.function_objects" title="Function Objects">Function
+        Objects</a>
+</h4></div></div></div>
+<p>
+          A <span class="emphasis"><em>function object type</em></span> is an object type that can
+          be the type of the expression preceding the parenthesis in a function call.
+          A <span class="emphasis"><em>function object</em></span> is an object of function object
+          type. A function object type that is also of class type must expose a public
+          function call operator.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">Call
+        Signatures and Callable Objects</a>
+</h4></div></div></div>
+<p>
+          A <span class="emphasis"><em>call signature</em></span> is the name of the expression <code class="computeroutput"><span class="identifier">R</span> <span class="special">(</span><span class="identifier">A1</span><span class="special">,</span><span class="identifier">A2</span><span class="special">,...,</span><span class="identifier">AN</span><span class="special">)</span></code> where
+          <code class="computeroutput"><span class="identifier">R</span><span class="special">,</span>
+          <span class="identifier">A1</span><span class="special">,</span><span class="identifier">A2</span><span class="special">,...,</span><span class="identifier">AN</span></code> are types. Two call signatures are
+          regarded as <span class="emphasis"><em>equal</em></span> iff the ordered N-upla <code class="computeroutput"><span class="identifier">A1</span><span class="special">,</span><span class="identifier">A2</span><span class="special">,...,</span><span class="identifier">AN</span></code>
+          of one call signature match exactly the N-upla of the other one. A call
+          signature <code class="computeroutput"><span class="identifier">S1</span><span class="special">:=</span><span class="identifier">R1</span> <span class="special">(</span><span class="identifier">A1</span><span class="special">,...,</span><span class="identifier">AN</span><span class="special">)</span></code> is
+          <span class="emphasis"><em>compatible</em></span> with a call signature <code class="computeroutput"><span class="identifier">S2</span><span class="special">:=</span><span class="identifier">R2</span> <span class="special">(</span><span class="identifier">B1</span><span class="special">,...,</span><span class="identifier">BM</span><span class="special">)</span></code> if
+          we have <code class="computeroutput"><span class="identifier">N</span> <span class="special">==</span>
+          <span class="identifier">M</span></code>, <code class="computeroutput"><span class="identifier">Bi</span></code>
+          is implicitly convertible to <code class="computeroutput"><span class="identifier">Ai</span></code>
+          for each <code class="computeroutput"><span class="identifier">i</span> <span class="special">=</span>
+          <span class="number">1</span><span class="special">,...,</span><span class="identifier">N</span></code> and <code class="computeroutput"><span class="identifier">R1</span></code>
+          is implicitly convertible to <code class="computeroutput"><span class="identifier">R2</span></code>.
+        </p>
+<p>
+          A <span class="emphasis"><em>callable type</em></span> is a function object type or a pointer
+          to member. A <span class="emphasis"><em>callable object</em></span> or <span class="emphasis"><em>functor</em></span>
+          is an object of callable type.
+        </p>
+<p>
+          A callable object <code class="computeroutput"><span class="identifier">f</span></code> supports
+          the call signature <code class="computeroutput"><span class="identifier">S</span><span class="special">:=</span><span class="identifier">R</span> <span class="special">(</span><span class="identifier">A1</span><span class="special">,</span><span class="identifier">A2</span><span class="special">,...,</span><span class="identifier">AN</span><span class="special">)</span></code> if
+          the expression <code class="computeroutput"><span class="identifier">INVOKE</span><span class="special">(</span><span class="identifier">f</span><span class="special">,</span> <span class="identifier">a1</span><span class="special">,</span> <span class="identifier">a2</span><span class="special">,...,</span><span class="identifier">aN</span> <span class="special">)</span></code> where <code class="computeroutput"><span class="identifier">ai</span></code>
+          is of type <code class="computeroutput"><span class="identifier">Ai</span></code> is well formed
+          and can be implicitly converted to type <code class="computeroutput"><span class="identifier">R</span></code>
+          or <code class="computeroutput"><span class="identifier">R</span></code> is the <code class="computeroutput"><span class="keyword">void</span></code> type.
+        </p>
+<p>
+          In case <code class="computeroutput"><span class="identifier">f</span></code> is a pointer
+          to member function we call <code class="computeroutput"><span class="identifier">S</span></code>
+          an <span class="emphasis"><em>explicit call signature</em></span> of <code class="computeroutput"><span class="identifier">f</span></code>,
+          and we call the call signature <code class="computeroutput"><span class="identifier">R</span>
+          <span class="special">(</span><span class="identifier">A2</span><span class="special">,...,</span><span class="identifier">AN</span><span class="special">)</span></code> <span class="emphasis"><em>the implicit call signature</em></span>
+          of <code class="computeroutput"><span class="identifier">f</span></code>.
+        </p>
+<p>
+          Given a call signature <code class="computeroutput"><span class="identifier">S</span> <span class="special">:=</span> <span class="identifier">R</span> <span class="special">(</span><span class="identifier">A1</span><span class="special">,</span><span class="identifier">A2</span><span class="special">,...,</span><span class="identifier">AN</span><span class="special">)</span></code> with
+          <code class="computeroutput"><span class="identifier">N</span> <span class="special">&gt;=</span>
+          <span class="number">0</span></code>, the type <code class="computeroutput"><span class="identifier">Ai</span></code>
+          is said the <span class="emphasis"><em>i-th argument type</em></span> of <code class="computeroutput"><span class="identifier">S</span></code>
+          and the type <code class="computeroutput"><span class="identifier">R</span></code> is the
+          <span class="emphasis"><em>result type</em></span> of <code class="computeroutput"><span class="identifier">S</span></code>,
+          finally <code class="computeroutput"><span class="identifier">N</span></code> is the arity
+          of <code class="computeroutput"><span class="identifier">S</span></code>. If a callable object
+          supports only one call signature these naming conventions extend naturally
+          to the callable object.
+        </p>
+<p>
+          A <span class="emphasis"><em>multi-signature</em></span> or <span class="emphasis"><em>polymorphic callable
+          object</em></span> is a callable object that supports two or more different
+          call signatures. For a pointer to member function the previous definition
+          apply to the implicit signature.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.design_and_definitions.definitions.call_wrappers"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_wrappers" title="Call Wrappers">Call
+        Wrappers</a>
+</h4></div></div></div>
+<p>
+          A <span class="emphasis"><em>call wrapper type</em></span> is a type that holds a callable
+          object and supports a call operation that forwards to that object. A <span class="emphasis"><em>call
+          wrapper</em></span> is an object of call wrapper type.
+        </p>
+<p>
+          A <span class="emphasis"><em>target object</em></span> is the callable object held by a call
+          wrapper.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.design_and_definitions.definitions.dynamic_function_wrapper"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.dynamic_function_wrapper" title="Dynamic Function Wrapper">Dynamic
+        Function Wrapper</a>
+</h4></div></div></div>
+<p>
+          A type F is a model of <span class="emphasis"><em>Dynamic Function Wrapper</em></span> with
+          signature S if we have that :
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              F is a call wrapper type
+            </li>
+<li class="listitem">
+              F provides a method to set/replace the object target;
+            </li>
+<li class="listitem">
+              F provides a method to check if the object target is empty.
+            </li>
+</ul></div>
+<p>
+          The template classes <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code>
+          and <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">function</span></code> in C++11 are families of models
+          of Dynamic Function Wrapper. Any instantiation of the template class <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> that supports one and
+          only one call signature is a model of Dynamic Function Wrapper.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.design_and_definitions.definitions.dynamic_overloaded_function_wrapper"></a><a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.dynamic_overloaded_function_wrapper" title="Dynamic Overloaded Function Wrapper">Dynamic
+        Overloaded Function Wrapper</a>
+</h4></div></div></div>
+<p>
+          A type <code class="computeroutput"><span class="identifier">F</span></code> is a model of
+          <span class="emphasis"><em>Dynamic Overloaded Function Wrapper</em></span> supporting the
+          signatures <code class="computeroutput"><span class="identifier">S1</span><span class="special">,</span>
+          <span class="special">...,</span> <span class="identifier">SN</span></code>
+          with N &gt;= 2 if for each integer <code class="computeroutput"><span class="identifier">i</span></code>
+          s.t. 1 &lt;= i &lt;= N we have that :
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">F</span></code> is a call wrapper
+              type for any callable object that supports at least one of the call
+              signatures supported by F; the current accessible callable object related
+              to <code class="computeroutput"><span class="identifier">Si</span></code> is named the
+              object target tied to <code class="computeroutput"><span class="identifier">Si</span></code>;
+              if there is no accessible callable object tied to <code class="computeroutput"><span class="identifier">Si</span></code>
+              the object target related to <code class="computeroutput"><span class="identifier">Si</span></code>
+              is said empty;
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">F</span></code> provides a method
+              to set/replace the object target tied to <code class="computeroutput"><span class="identifier">Si</span></code>;
+            </li>
+<li class="listitem">
+              <code class="computeroutput"><span class="identifier">F</span></code> provides a method
+              to check if the object target tied to <code class="computeroutput"><span class="identifier">Si</span></code>
+              is empty
+            </li>
+</ul></div>
+<p>
+          Any instantiation of the template class <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> that support more than
+          one call signature is a model of Dynamic Overloaded Function Wrapper.
+        </p>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007-2012 Marco Cecchetti, Dean Michael Berris<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="advanced_features.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="references.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

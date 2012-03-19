@@ -1,0 +1,132 @@
+
+[/ Copyright (C) 2012 Marco Cecchetti ]
+[/ Use, modification, and distribution is subject to the Boost Software ]
+[/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
+[/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
+
+[section Design and Definitions]
+
+[section Design]
+The library is succinctly implemented in one header file requiring only that
+__Boost_Function__, and a small subset of __Boost_TypeTraits__ are available.
+This library also requires the __Boost_Preprocessor__ library
+if in case you don't want to get the preprocessed header file. The library is
+configured by default to handle overloads with 10 unique signatures and can be
+configured to support more by changing the `BOOST_OVERLOAD_LIMIT` macro when
+building the application that uses __Boost_Overload__.
+[endsect]
+
+[section Definitions]
+
+In accordance with the __CPP11__ ISO standard, we provide the following
+definitions.
+
+[section INVOKE expression]
+
+Deﬁne `INVOKE (f, t1, t2, ..., tN)` as follows:
+
+* `(t1.*f)(t2, ..., tN)` when `f` is a pointer to a member function of a class
+  `T` and `t1` is an object of type `T` or a reference to an object of type `T`
+  or a reference to an object of a type derived from `T`;
+* `((*t1).*f)(t2, ..., tN)` when `f` is a pointer to a member function of a
+  class `T` and `t1` is not one of the types described in the previous item;
+* `t1.*f` when `N == 1` and `f` is a pointer to member data of a class `T` and
+  `t1` is an object of type `T` or a reference to an object of type `T` or a
+  reference to an object of a type derived from `T`;
+* `(*t1).*f` when `N == 1` and `f` is a pointer to member data of a class `T`
+  and `t1` is not one of the types described in the previous item;
+* `f(t1, t2, ..., tN)` in all other cases.
+
+[endsect]
+
+[section Function Objects]
+
+A /function object type/ is an object type that can be the type of the expression
+preceding the parenthesis in a function call. A /function object/ is an object
+of function object type.
+A function object type that is also of class type must expose a public function
+call operator.
+
+[endsect]
+
+[section Call Signatures and Callable Objects]
+
+A /call signature/ is the name of the expression `R (A1,A2,...,AN)` where
+`R, A1,A2,...,AN` are types. Two call signatures are regarded as /equal/ iff
+the ordered N-upla `A1,A2,...,AN` of one call signature match exactly the
+N-upla of the other one.
+A call signature `S1:=R1 (A1,...,AN)` is /compatible/ with a call signature
+`S2:=R2 (B1,...,BM)` if we have `N == M`, `Bi` is implicitly convertible to
+`Ai` for each `i = 1,...,N` and `R1` is implicitly convertible to `R2`.
+
+A /callable type/ is a function object type or a pointer to member. A /callable
+object/ or /functor/ is an object of callable type.
+
+A callable object `f` supports the call signature `S:=R (A1,A2,...,AN)` if the
+expression `INVOKE(f, a1, a2,...,aN )` where `ai` is of type `Ai` is well
+formed and can be implicitly converted to type `R` or `R` is the `void` type.
+
+In case `f` is a pointer to member function we call `S` an ['explicit call
+signature] of `f`, and we call the call signature `R (A2,...,AN)` ['the implicit
+call signature] of `f`.
+
+Given a call signature `S := R (A1,A2,...,AN)` with `N >= 0`, the type `Ai` is
+said the /i-th argument type/ of `S` and the type `R` is the /result type/ of
+`S`, finally `N` is the arity of `S`.
+If a callable object supports only one call signature these naming conventions
+extend naturally to the callable object.
+
+A /multi-signature/ or /polymorphic callable object/ is a callable object that
+supports two or more different call signatures. For a pointer to member
+function the previous definition apply to the implicit signature.
+
+[endsect]
+
+[section Call Wrappers]
+
+A /call wrapper type/ is a type that holds a callable object and supports a
+call operation that forwards to that object. A /call wrapper/ is an object of
+call wrapper type.
+
+A /target object/ is the callable object held by a call wrapper.
+
+[endsect]
+
+[section Dynamic Function Wrapper]
+
+A type F is a model of /Dynamic Function Wrapper/ with signature S if we have
+that :
+
+*    F is a call wrapper type
+*    F provides a method to set/replace the object target;
+*    F provides a method to check if the object target is empty.
+
+The template classes `boost::function` and `std::function` in C++11 are
+families of models of Dynamic Function Wrapper.
+Any instantiation of the template class __overload_class__ that supports one and only
+one call signature is a model of Dynamic Function Wrapper.
+
+[endsect]
+
+[section Dynamic Overloaded Function Wrapper]
+
+A type `F` is a model of /Dynamic Overloaded Function Wrapper/ supporting the
+signatures `S1, ..., SN` with N >= 2 if for each integer `i` s.t. 1 <= i <= N
+we have that :
+
+*    `F` is a call wrapper type for any callable object that supports at least
+     one of the call signatures supported by F; the current accessible callable
+     object related to `Si` is named the object target tied to `Si`; if there
+     is no accessible callable object tied to `Si` the object target related to
+     `Si` is said empty;
+*    `F` provides a method to set/replace the object target tied to `Si`;
+*    `F` provides a method to check if the object target tied to `Si` is empty
+
+Any instantiation of the template class __overload_class__ that support more than one
+call signature is a model of  Dynamic Overloaded Function Wrapper.
+
+[endsect]
+
+[endsect]
+
+[endsect]

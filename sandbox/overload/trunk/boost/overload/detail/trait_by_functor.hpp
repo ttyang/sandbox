@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -46,6 +46,31 @@ struct base_by_functor<Functor, final_overload_base, FOUND>
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+// it provides the total amount of signatures supported by both an overload
+// type and a functor
+
+template<
+    typename Functor,
+    typename Overload,
+    bool FOUND
+        = functor_has_signature<Functor, typename Overload::base_type::signature_type >::value
+>
+struct number_of_shared_signatures
+{
+  private:
+    typedef typename Overload::base_type base_type;
+    typedef number_of_shared_signatures<Functor, base_type> type;
+  public:
+    BOOST_STATIC_CONSTANT( int, value = (FOUND + type::value) );
+};
+
+template< typename Functor, bool FOUND >
+struct number_of_shared_signatures<Functor, final_overload_base, FOUND>
+{
+    BOOST_STATIC_CONSTANT( int, value = 0 );
+};
+
+///////////////////////////////////////////////////////////////////////////////
 // it provides the first signature of an overload type that matches with
 // the functor signature, if it's not found it returns no_signature as type
 
@@ -76,8 +101,8 @@ struct function_by_functor
 template< typename Functor, typename Overload >
 struct index_by_functor
 {
-    static const unsigned int value 
-        =  base_by_functor<Functor, Overload>::type::index;
+    BOOST_STATIC_CONSTANT( unsigned int, value
+        =  (base_by_functor<Functor, Overload>::type::index) );
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -85,11 +110,11 @@ struct index_by_functor
 // an overload type
 
 template< typename Functor, typename Overload >
-struct has_functor_signature
+struct have_any_shared_signature
 {
-    static const bool value 
+    BOOST_STATIC_CONSTANT( bool, value
         = !( index_by_functor<Functor, Overload>::value 
-             == final_overload_base::index );
+             == final_overload_base::index ) );
 };
 
 } } } // end namespaces

@@ -1,0 +1,49 @@
+
+[/ Copyright (C) 2012 Marco Cecchetti ]
+[/ Use, modification, and distribution is subject to the Boost Software ]
+[/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
+[/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
+
+
+[section Getting Started]
+
+[section Overview]
+
+__Boost_Function__ already supports wrapping function objects, member function
+pointers, and function pointers in general. By itself, __Boost_Function__ is
+already powerful and already useful enough in situations where you want to be 
+able to pass around generic function objects. The only limitation of 
+__Boost_Function__ is that you can only wrap one function with one instance of
+the wrapper, and only functions or function objects that all have the same 
+signatures. This becomes a problem in many settings where an overloaded 
+function set is required.
+__Boost_Overload__ allows this functionality of supporting multiple signatures
+by wrapping multiple __Boost_Function__ objects in a single object that
+overloads the function operator to support the various overloads defined. This
+allows us to map many functions to a single overload instance, provided that
+these functions have a call signature that the __overload_class__ instance supports.
+To illustrate the usage of the __Boost_Overload__ library, the following code
+snippet is provided:
+
+[overview_cpp]
+
+In the above example we have two functions `foo` and `bar`, both having
+different signatures and return types. This illustrates the powerful features 
+which __Boost_Overload__ allows us to exploit: compile-time function argument
+deduction and registration, and static function dispatch using function 
+overload type deduction.
+
+[endsect]
+
+[section Installation and configuration]
+
+The library is based only on header files, all you have to do in order to 
+utilize it is to include the following header file: `boost/overload.hpp` as 
+shown in the above example.
+Through the `BOOST_OVERLOAD_LIMITS` configuration macro you can set up the 
+maximum number of unique signatures supported by the overload template class. 
+The default value is 10 signatures.
+
+[endsect]
+
+[endsect]

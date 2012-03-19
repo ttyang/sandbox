@@ -1,0 +1,105 @@
+[/ Copyright (C) 2012 Marco Cecchetti ]
+[/ Use, modification, and distribution is subject to the Boost Software ]
+[/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
+[/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
+
+[section Advanced features]
+
+[section The set_for_each_shared_signature method]
+
+The __set_for_each_shared_sig__ method can manage multi-signature
+function objects of class type (i.e. function objects whose `operator()` is
+overloaded or is a template function) and it handles them in a special way. The
+passed function object sets/replaces all the existent object targets related to
+the call signatures supported by both the given instantiation of the template
+class __overload_class__ and the passed function object itself.
+
+[warning Signature deduction of multi-signature function objects is not
+supported with Microsoft Visual C++ 7.1, you have to use the __set_sig__
+method.]
+
+[warning The __set_for_each_shared_sig__ method cannot handle either free
+or member polymorphic functions.]
+
+[section Example - Polymorphic function objects]
+[set_for_each_shared_signature_cpp]
+[endsect]
+
+[warning It is important that you understand that internally for each supported
+signature a new `boost::function` object is generated exactly as you had used
+the __set_sig__ method. Each created `boost::function` instance wraps a
+different copy of the passed multi-signature function object. This behaviour
+can lead to unexpected result if the multi-signature function object has its
+own state. A solution to this issue is to to utilize `boost::ref` for wrapping
+the function object.]
+
+[section Example - A statefull polymorphic function object]
+[statefull_polymorphic_function_object_cpp]
+[endsect]
+
+[endsect]
+
+[section Boost.ResultOf and Boost.Lambda support]
+
+__Boost_Overload__ provides support for __Boost_ResultOf__ and __Boost_Lambda__
+result type deduction. The latter needs to be explicitly enabled by defines the
+macro `BOOST_OVERLOAD_ENABLE_LAMBDA_SUPPORT`.
+
+[section Example - Boost.ResultOf support]
+[result_of_support_cpp]
+[endsect]
+
+[section Example - Boost.Lambda support]
+[lambda_result_type_support_cpp]
+
+[warning __Boost_Lambda__ result type deduction support does not work with
+MSVC 7.1 and with all Intel compilers prior to version 12.0]
+[endsect]
+
+[endsect]
+
+[section A special variant of the set<Signature> method]
+
+When the explicit call signature of a member function supported by an overload
+object is the non-const qualified version (e.g. as `int (bar*, int )` where
+`bar` is of class type), you need a special variant of the call signature based
+syntax in order to manage the case of a class with two member function
+overloads that differ for the const qualifier only. This is exactly what
+happens in the next example:
+
+[signature_syntax_3_cpp]
+
+[endsect]
+
+[section Type Traits]
+
+For extracting type traits from a template class __overload_class__ the following
+metafunctions are provided:
+
+[table
+[[Metafunction][Description]]
+[[`__tt_extent__<CallWrapperType>::value`]
+ [it provides the amount of signatures supported by a call wrapper type]]
+[[`__tt_signature__<CallWrapperType, N = 0>::type`]
+ [it provides the N-th signature for a call wrapper type
+  (indexing start from zero)]]
+[[`__tt_function__<CallWrapperType, N = 0>::type`]
+ [it provides the type of the N-th boost::function embedded object
+  (indexing start from zero)]]
+[[`__tt_index_of_sig__<CallWrapperType, Signature>::value`]
+ [it provides the index of a signature, and returns -1 if it is not found]]
+[[`__tt_has_signature__<CallWrapperType, Signature>::value`]
+ [utility to discover if a given signature is supported by a call wrapper type]]
+[[`__tt_have_any_shared_sig__<CallWrapperType, Functor>::value`]
+ [utility to discover if a given functor has a signature supported by a call
+  wrapper type]]
+]
+
+These metafunctions live in the namespace `boost::overloads` and work  with
+`boost::function` too.
+
+[type_traits_cpp]
+
+[endsect]
+
+[endsect]

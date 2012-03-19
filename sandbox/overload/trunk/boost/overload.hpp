@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -10,11 +10,7 @@
 #define _BOOST_OVERLOAD_HPP_
 
 
-#ifndef BOOST_OVERLOAD_LIMIT
-    #define BOOST_OVERLOAD_LIMIT 10
-#endif
-
-#define BOOST_OVERLOAD_MAX_NUM_ARGS 10
+#include "overload/config.hpp"
 
 //#define BOOST_MSVC 1310  // for test only
 

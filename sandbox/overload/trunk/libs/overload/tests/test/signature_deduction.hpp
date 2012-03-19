@@ -3,10 +3,10 @@
 #define _TEST_SIGNATURE_DEDUCTION_HPP_
 
 
-void test05() 
+void signature_deduction_test() 
 {
     typedef boost::overload<sig0_t, sig1_t, sig2_t, sig3_t, sig4_t, 
-                            sig5_t, sig6_t, sig7_t, sig8_t, sig9_t> 
+                            sig5_t, sig6_1_t, sig6_2_t, sig7_1_t, sig7_2_t> 
             overload_type;
 
     f0_t f0 = &foo0;                // function pointer
@@ -21,19 +21,19 @@ void test05()
     overload_type f(f4, f2);
     f.set(f0, f5, f1, f3);
 
-    f( "Hello",  ", ",  "world !" );
+    int out0    = f( "Hello",  ", ",  "world !" );
+    int out1    = f(&b1, 'x');
+    double out2 = f(&b2, 123, 'x');
+    char out3   = f("hello");
+    int out4    = f('x');
+    double out5 = f(123, 'x');
 
-    int i       = f(&b1, 'x');
-    double d1   = f(&b2, 123, 'x');
-    char c      = f("hello");
-    int j       = f('x');
-    double d2   = f(123, 'x');
-
-    BOOST_ASSERT(i == 123);
-    BOOST_ASSERT(d1 > 123.455 && d1 < 123.457);
-    BOOST_ASSERT(c == 'x');
-    BOOST_ASSERT(j == 123);
-    BOOST_ASSERT(d2 > 123.455 && d2 < 123.457);
+    BOOST_ASSERT(out0 == 12);
+    BOOST_ASSERT(out1 == 123);
+    BOOST_ASSERT(out2 > 233.999 && out2 < 234.001);
+    BOOST_ASSERT(out3 == 'Y');
+    BOOST_ASSERT(out4 == 456);
+    BOOST_ASSERT(out5 > 566.999 && out5 < 567.001);
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -44,25 +44,27 @@ void test05()
 #if !BOOST_WORKAROUND(BOOST_MSVC, < 1400)  
  
     f6_t f6;                        // overloaded function object
-    f7_t f7;                        // polymorfic function object
+    f7_t f7;                        // template function object
 
-    f.set(f7, f6);
+    f.set_for_each_shared_signature(f6);
+    f.set_for_each_shared_signature(f7);
 
-    double d3   = f(2.5f);
-    double d4   = f(3.0f, 4.0f);
-    int k       = f(1);
-    double d5   = f(2.5);
+    double out61    = f(2.5f);
+    double out62    = f(3.0f, 4.0f);
+    int out71       = f(1);
+    double out72    = f(2.5);
 
-    BOOST_ASSERT(d3 == 3.5);
-    BOOST_ASSERT(d4 == 7.0);
-    BOOST_ASSERT(k == 2);
-    BOOST_ASSERT(d5 == 3.5);
+    BOOST_ASSERT(out61 > 6780.999 && out61 < 6781.001);
+    BOOST_ASSERT(out62 > 6781.999 && out62 < 6782.001);
+    BOOST_ASSERT(out71 == (789 + sizeof(int)));
+    BOOST_ASSERT(out72 > (788.999 + sizeof(double)) &&
+                 out72 < (789.001 + sizeof(double)));
 
 
 
     boost::overload<int (int, int), int (int, std::string )> g;
     f14_t f14;
-    g.set(f14);
+    g.set_for_each_shared_signature(f14);
     BOOST_ASSERT( g(1,1) == sizeof(int) );
     BOOST_ASSERT( g(1, std::string("hi")) == sizeof(std::string) );
 

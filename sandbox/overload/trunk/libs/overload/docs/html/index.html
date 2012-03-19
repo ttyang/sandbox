@@ -1,0 +1,99 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Boost.Overload 0.4.0</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Boost.Overload 0.4.0">
+<link rel="next" href="boost_overload/getting_started.html" title="Getting Started">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="boost_overload/getting_started.html"><img src="images/next.png" alt="Next"></a></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="boost_overload"></a>Boost.Overload 0.4.0</h2></div>
+<div><div class="authorgroup"><div class="author"><h3 class="author">
+<span class="firstname">Marco</span> <span class="surname">Cecchetti</span>
+</h3></div></div></div>
+<div><p class="copyright">Copyright &#169; 2007-2012 Marco Cecchetti, Dean Michael Berris</p></div>
+<div><div class="legalnotice">
+<a name="boost_overload.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="boost_overload/getting_started.html">Getting Started</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_overload/getting_started.html#boost_overload.getting_started.overview">Overview</a></span></dt>
+<dt><span class="section"><a href="boost_overload/getting_started.html#boost_overload.getting_started.installation_and_configuration">Installation
+      and configuration</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_overload/tutorial.html">Tutorial</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.basic_usage">Basic usage</a></span></dt>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.backward_compatibility__boost__overload_is_a_boost__function">Backward
+      compatibility: boost::overload is a boost::function</a></span></dt>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.supported_types_of_callable_entities">Supported
+      types of callable entities</a></span></dt>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.the_call_signature_based_syntax">The
+      call signature based syntax</a></span></dt>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.the_index_based_syntax">The index
+      based syntax</a></span></dt>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.the_make_overload_utility">The
+      make_overload utility</a></span></dt>
+<dt><span class="section"><a href="boost_overload/tutorial.html#boost_overload.tutorial.helper_methods">Helper methods</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_overload/use_case.html">Use case</a></span></dt>
+<dd><dl><dt><span class="section"><a href="boost_overload/use_case.html#boost_overload.use_case.a_boost_variant_visitor">A Boost.Variant
+      visitor</a></span></dt></dl></dd>
+<dt><span class="section"><a href="boost_overload/advanced_features.html">Advanced features</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_overload/advanced_features.html#boost_overload.advanced_features.the_set_for_each_shared_signature_method">The
+      set_for_each_shared_signature method</a></span></dt>
+<dt><span class="section"><a href="boost_overload/advanced_features.html#boost_overload.advanced_features.boost_resultof_and_boost_lambda_support">Boost.ResultOf
+      and Boost.Lambda support</a></span></dt>
+<dt><span class="section"><a href="boost_overload/advanced_features.html#boost_overload.advanced_features.a_special_variant_of_the_set_signature__method">A
+      special variant of the set&lt;Signature&gt; method</a></span></dt>
+<dt><span class="section"><a href="boost_overload/advanced_features.html#boost_overload.advanced_features.type_traits">Type Traits</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_overload/design_and_definitions.html">Design and Definitions</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_overload/design_and_definitions.html#boost_overload.design_and_definitions.design">Design</a></span></dt>
+<dt><span class="section"><a href="boost_overload/design_and_definitions.html#boost_overload.design_and_definitions.definitions">Definitions</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_overload/references.html">References</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="boost_overload/references.html#boost_overload.references.boost_overload_hpp">&lt;boost/overload.hpp&gt;</a></span></dt>
+<dt><span class="section"><a href="boost_overload/references.html#boost_overload.references.boost_overload_make_overload_hpp">&lt;boost/overload/make_overload.hpp&gt;</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="boost_overload/acknowledgements.html">Acknowledgements</a></span></dt>
+</dl>
+</div>
+<div class="warning"><table border="0" summary="Warning">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td>
+<th align="left">Warning</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+      At present Boost.Overload <span class="bold"><strong>IS NOT</strong></span> a Boost Library
+    </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: March 18, 2012 at 15:00 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="boost_overload/getting_started.html"><img src="images/next.png" alt="Next"></a></div>
+</body>
+</html>

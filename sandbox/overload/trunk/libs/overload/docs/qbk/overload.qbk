@@ -1,0 +1,145 @@
+[article Boost.Overload
+    [quickbook 1.5]
+    [version 0.4.0]
+    [authors [Cecchetti, Marco]]
+    [copyright 2007-2012 Marco Cecchetti, Dean Michael Berris]
+    [/ purpose Multi Signature Overloaded Function Set]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+    [/ category Function Objects and Higher-Order Programming]
+    [id boost_overload]
+    [last-revision $Date: 2012/03/18 15:00 $]
+]
+
+[/ Boost Overload Document Version 0.4.0 ]
+
+
+
+[def __overload__ `overload`]
+[def __CPP11__                      [@http://www.open-std.org/JTC1/SC22/WG21/ C++11]]
+[def __Boost_Bind__                 [@http://www.boost.org/doc/libs/release/libs/bind/bind.html Boost.Bind]]
+[def __Boost_Function__             [@http://www.boost.org/doc/libs/release/doc/html/function.html Boost.Function]]
+[def __Boost_Lambda__               [@http://www.boost.org/doc/libs/release/doc/html/lambda.html Boost.Lambda]]
+[def __Boost_Overload__             [link boost_overload Boost.Overload]]
+[def __Boost_Preprocessor__         [@http://www.boost.org/doc/libs/release/libs/preprocessor/doc/index.html Boost.Preprocessor]]
+[def __Boost_ResultOf__             [@http://www.boost.org/doc/libs/release/libs/utility/utility.htm#result_of Boost.ResultOf]]
+[def __Boost_TypeOf__               [@http://www.boost.org/doc/libs/release/doc/html/typeof.html Boost.TypeOf]]
+[def __Boost_TypeTraits__           [@http://www.boost.org/doc/libs/release/libs/type_traits/doc/html/index.html Boost.TypeTraits]]
+
+[def __boost_function_class__       [@http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html `boost::function`]]
+[def __overload_class__             [link boost_overload.references.boost_overload_hpp.class_template_overload __overload__]]
+[def __overload_type_traits__       [link boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_type_traits type traits]]
+[def __overload_ctor_copy_dtor__    [link boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_ctor_copy_dtor construct/copy/destruct ]]
+[def __overload_modifiers__         [link boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_modifiers modifiers]]
+[def __overload_capacity__          [link boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_capacity capacity]]
+[def __overload_function_access__   [link boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_function_access function access]]
+[def __overload_specialized_algorithms__ [link boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_specialized_algorithms specialized algorithms]]
+[def __boost_overload_make_overload_hpp__  [link boost_overload.references.boost_overload_make_overload_hpp `<boost/overload/make_overload.hpp>`]]
+[def __make_overload__              [link boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload `make_overload`]]
+
+[def __this_type__                  [link ref_overload_this_type this_type]]
+[def __wrapped_function__           [link ref_overload_wrapped_function wrapped_function]]
+[def __overload_tt_signature__      [link ref_overload_tt_signature signature]]
+[def __overload_tt_function__       [link ref_overload_tt_function function]]
+[def __overload_tt_index_of_sig__   [link ref_overload_tt_index_of_sig index_of_signature]]
+[def __overload_tt_has_signature__  [link ref_overload_tt_has_signature has_signature]]
+[def __overload_tt_shares_any_sig_with__   [link ref_overload_tt_shares_any_sig_with shares_any_signature_with]]
+
+[def __overload_extent__            [link ref_overload_extent extent]]
+[def __default_ctor__               [link ref_overload_default_ctor __overload__]]
+[def __copy_ctor__                  [link ref_overload_copy_ctor __overload__]]
+[def __ctor_F1__                    [link ref_overload_ctor_F1 __overload__]]
+[def __ctor_F1_F2__                 [link ref_overload_ctor_F1___FN __overload__]]
+[def __ctor_F1___FN__               [link ref_overload_ctor_F1___FN __overload__]]
+[def __op_assign__                  [link ref_overload_op_assign `operator()`]]
+[def __overload_dtor__              [link ref_overload_dtor ~__overload__]]
+[def __set__                        [link ref_overload_set_F1 `set`]]
+[def __set_F1__                     [link ref_overload_set_F1 `set`]]
+[def __set_F1_F2__                  [link ref_overload_set_F1___FN `set`]]
+[def __set_F1___FN__                [link ref_overload_set_F1___FN `set`]]
+[def __set_for_each_shared_sig__    [link ref_overload_set_for_each_shared_sig `set_for_each_shared_signature`]]
+[def __set_sig__                    [link ref_overload_set_S_F `set<Signature>`]]
+[def __set_idx__                    [link ref_overload_set_N_F `set<N>`]]
+[def __set_S_F__                    [link ref_overload_set_S_F `set`]]
+[def __set_N_F__                    [link ref_overload_set_N_F `set`]]
+[def __swap_function__              [link ref_overload_swap_function `swap_function`]]
+[def __swap__                       [link ref_overload_swap `swap`]]
+[def __clear_all__                  [link ref_overload_clear_all `clear_all`]]
+[def __clear_sig__                  [link ref_overload_clear_S `clear<Signature>`]]
+[def __clear_S__                    [link ref_overload_clear_S `clear`]]
+[def __clear_N__                    [link ref_overload_clear_N `clear`]]
+[def __empty_all__                  [link ref_overload_empty_all `empty_all`]]
+[def __empty_any__                  [link ref_overload_empty_any `empty_any`]]
+[def __empty_none__                 [link ref_overload_empty_none `empty_none`]]
+[def __empty_sig__                  [link ref_overload_empty_S `empty<Signature>`]]
+[def __empty_S__                    [link ref_overload_empty_S `empty`]]
+[def __empty_N__                    [link ref_overload_empty_N `empty`]]
+[def __get_sig__                    [link ref_overload_get_S `get<Signature>`]]
+[def __get_S__                      [link ref_overload_get_S `get`]]
+[def __get_N__                      [link ref_overload_get_N `get`]]
+[def __get_S_const__                [link ref_overload_get_S_const `get`]]
+[def __get_N_const__                [link ref_overload_get_N_const `get`]]
+[def __gloabal_overload_swap__      [link ref_global_overload_swap `swap`]]
+
+
+[def __tt_extent__                  [link ref_tt_extent extent]]
+[def __tt_signature__               [link ref_tt_signature signature]]
+[def __tt_function__                [link ref_tt_function function]]
+[def __tt_index_of_sig__            [link ref_tt_index_of_sig index_of_signature]]
+[def __tt_has_signature__           [link ref_tt_has_signature has_signature]]
+[def __tt_have_any_shared_sig__     [link ref_tt_have_any_shared_sig have_any_shared_signature]]
+
+[def __call_sig__                   [link boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects call signature]]
+[def __callable_object__            [link boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects callable object]]
+[def __callable_type__              [link boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects callable object type]]
+[def __functor__                    [link boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects functor]]
+[def __explicit_signature__         [link boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects explicit call signature]]
+[def __implicit_signature__         [link boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects implicit call signature]]
+[def __function_object__            [link boost_overload.design_and_definitions.definitions.function_objects function object]]
+
+[template plural[word] [word]s]
+
+[import ../../examples/overview.cpp]
+[import ../../examples/basic_usage.cpp]
+[import ../../examples/compatible_signature.cpp]
+[import ../../examples/helper_methods.cpp]
+[import ../../examples/index_syntax.cpp]
+[import ../../examples/lambda_result_type_support.cpp]
+[import ../../examples/make_overload.cpp]
+[import ../../examples/result_of_support.cpp]
+[import ../../examples/set_for_each_shared_signature.cpp]
+[import ../../examples/signature_syntax_1.cpp]
+[import ../../examples/signature_syntax_2.cpp]
+[import ../../examples/signature_syntax_3.cpp]
+[import ../../examples/statefull_polymorphic_function_object.cpp]
+[import ../../examples/type_traits.cpp]
+[import ../../examples/use_case_variant_visitor.cpp]
+[import ../../examples/using_boost_function.cpp]
+[import ../../examples/using_function_objects.cpp]
+[import ../../examples/using_member_functions.cpp]
+
+
+
+[warning At present Boost.Overload *IS NOT* a Boost Library ]
+
+[include getting_started.qbk]
+[include tutorial.qbk]
+[include use_cases.qbk]
+[include advanced_features.qbk]
+[include design_and_definitions.qbk]
+[include references.qbk]
+
+
+[section Acknowledgements]
+
+Thanks go to Joel De Guzman for posting an implementation of a minimal overload 
+implementation to the Boost C++ Developer Mailing List, and to Douglas Gregor 
+for Boost.Function -- without which all this would not have been possible.
+I especially thank Dean Michael Berris that contributed to prepare some parts 
+of this documentation.
+
+[endsect]
+

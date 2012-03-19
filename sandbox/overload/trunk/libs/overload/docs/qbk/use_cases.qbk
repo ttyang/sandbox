@@ -1,0 +1,18 @@
+[/ Copyright (C) 2012 Marco Cecchetti ]
+[/ Use, modification, and distribution is subject to the Boost Software ]
+[/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
+[/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
+
+[section Use case]
+
+[section A Boost.Variant visitor]
+
+In the following example you will see __Boost_Overload__ used to design an
+overloaded visitor utility template class that let us create a dynamic visitor
+for a variant object.
+
+[use_case_variant_visitor_cpp]
+
+[endsect]
+
+[endsect]

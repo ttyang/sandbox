@@ -1,0 +1,233 @@
+
+[/ Copyright (C) 2012 Marco Cecchetti ]
+[/ Use, modification, and distribution is subject to the Boost Software ]
+[/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
+[/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
+
+[section Tutorial]
+
+[section Basic usage]
+
+In order to instantiate a template class __overload_class__ you have to specify the
+required [? __call_sig__ __call_sig__]s as template arguments and then you can
+set the [? __callable_object__  __callable_object__]s as targets through the
+__set__ method which support automatic __call_sig__ deduction of the passed
+argument for monomorphic functors.
+
+[basic_usage_cpp]
+
+[note If you try to instantiate a template class __overload_class__ using the same
+__call_sig__ as template argument more than once you get a compile time error.]
+
+Even if the callable targets are set at run-time, the function call relies on
+standard C++ overload resolution: [_the right callable target is selected at
+compile time], so the run-time overhead for the call is the same that you have
+using __Boost_Function__.
+
+[endsect]
+
+[section Backward compatibility: boost::overload is a boost::function]
+
+For any __call_sig__ /S/ used as a template argument of an instantiation /O/
+of the class template __overload_class__, the type `boost::function<S>` is a base
+class type for the instantiation /O/.
+That means you can pass a (const) reference/pointer to an object of type
+`overload<..,S,...>` everywhere a (const) reference/pointer to an object of
+type `boost::function<S>` is expected.
+
+[endsect]
+
+
+[section Supported types of callable entities]
+
+You can utilize different kinds of callable entities: free functions,
+[? __function_object__ __function_object__]s, function objects wrapped with
+`boost::ref` and `boost::function`s.
+Moreover you have support for member functions too. Given a member function
+/mf/ of a class `T`, all you have to do is to specify a const or non-const
+__explicit_signature__ of `T::`['`mf`] as a template argument of __overload_class__
+and pass a pointer to the member function to the __set__ method. You'll get an
+overloaded function call operator that is able to perform a forwarding call to
+`T::`['`mf`] using any object of type `T`.
+
+[warning The constructor and the __set__ method can manage only monomorphic
+callable objects, if you try to pass to them a polymorphic functor (i.e. a
+callable object that is overloaded or that involve a template parameter) you'll
+get a compile time error. The only exception is for a polymorphic function
+object of class type that shares with the overload object one and only one call
+signature.]
+
+[section Example - Using Function Objects]
+[using_function_objects_cpp]
+[endsect]
+
+[section Example - Using Boost.Function]
+[using_boost_function_cpp]
+[endsect]
+
+[section Example - Using member functions]
+[using_member_functions_cpp]
+[endsect]
+
+In the above examples we have always set a single callable object at time,
+however the __set__ method is able to set up multiple callable objects at once.
+For instance referring to the last example you can write:
+
+``
+f.set(&foo, &Alpha::code);
+``
+
+The order you pass the callable objects does not matter. You could have written
+the previous line of code as `f.set(&Alpha::code, &foo)`.
+Moreover you can pass the callable objects directly in the constructor:
+
+``
+overload<signature1_t, signature2_t> f(&foo, &Alpha::code);
+``
+
+As for the __set__ method the order of the arguments does not matter and you
+can pass only monomorphic callable objects. Moreover both the constructor and
+the __set__ method accept only callable objects whose call signature is equal
+to one of the call signatures supported by the overload object. For instance
+the following lines of code do not compile:
+
+``
+int foo(std::string ){ return 1; }
+int bar(double ) { return 2; }
+
+int main()
+{
+   overload<int (std::string ), int (int )> f;
+
+   f.set(&foo); // ok foo call signature matches
+                // the first call signature of f
+
+   f.set(&bar); // compile error: bar call signature does not
+                // match any call signature supported by f
+}
+``
+
+[warning If you try to pass to the constructor or to the __set__ method a
+callable object with a call signature that does not match one of the call
+signatures supported by the given instantiation of the template class
+__overload_class__ you get a compile time error.]
+
+[warning The __set__ method does not work properly with __Boost_Bind__ and
+__Boost_Lambda__]
+
+In order to workaround the limitations of the __set__ method you should utilize
+the __set_sig__ or the __set_idx__ methods.
+
+[endsect]
+
+[section The call signature based syntax]
+
+If you need to set a polymorphic callable object as object target of a given
+overload object for a specific supported call signature you can always use the
+__set_sig__ method. Look at the following examples:
+
+[section Example - A multi-signature function object]
+[signature_syntax_1_cpp]
+[endsect]
+
+[note Any method that accepts a polymorphic function object as argument accepts
+also an instance of the class template __overload_class__.]
+
+All that work for free and member polymorphic functions too:
+
+[section Example - Free and member polymorphic functions]
+[signature_syntax_2_cpp]
+[endsect]
+
+[note Obviously, in case you wish, you can use the __set_sig__ method with
+monomorphic callable objects too.]
+
+[warning Given a template free function `foo` and a call signature /S/,
+supported by `foo`, the expression `f.set<S>(&foo)`, where `f` is an overload
+object that supports the call signature /S/, compiles without any error only if
+all template parameters involved in the declaration of `foo` are deducible by
+the call signature /S/. The same applies to template member functions and
+template function objects.]
+
+The call signature synatx let us set up as object target a functor whose call
+signature is compatible with, but does not match a given call signature of an
+overload object. This situation is showed in the following example:
+
+[section Example - A functor with a call signature that is only compatible]
+[compatible_signature_cpp]
+[endsect]
+
+[endsect]
+
+[section The index based syntax]
+
+Besides the __set_sig__ method you can utilize also the __set_idx__ method
+where `N` must be an integer included in the range from 0 to the number of call
+signatures supported by the given overload object less one.
+Given an overload object `f` and a functor `g`, the call `f.set<N>(g)` is
+equivalent to the call `f.set<S>(g)` where `S` is the N-1 call signature listed
+in the template argument list for the instantiation of the type of the overload
+object `f`. As an example we reimplement the example that shows how to set up a
+polymorphic function object by using the index based syntax.
+
+[/ section Example - Using the index based syntax with a multi-signature function
+object]
+[index_syntax_cpp]
+[/ endsect]
+
+[endsect]
+
+[section The make_overload utility]
+
+__Boost_Overload__ provides an utility named __make_overload__ to create an
+__overload_class__ object on the fly without the need to specify the __call_sig__ of
+each callable object passed as argument. A limitation of the __make_overload__
+utility is that it can handle only monomorphic callable objects.
+
+[note In order to utilize the __make_overload__ utility you need to include
+the header file __boost_overload_make_overload_hpp__ ]
+
+[warning __make_overload__ utility implementation depends on __Boost_TypeOf__ ]
+
+[/ section Example]
+[make_overload_cpp]
+[/ endsect]
+
+[endsect]
+
+[section Helper methods]
+
+There are some helper methods provided by the template class overload and that
+mimic the ones offered by the `boost::function` template class:
+
+* we have the __empty_sig__ method that tell us if it is set an object target
+  related to the specified call signature;
+* the __empty_all__ method that tell us if all object targets are empty;
+* the __empty_any__ method that tell us if any object targets are empty
+* the __empty_none__ method that returns true if no object target is empty;
+* the __get_sig__ method return a (const) reference to the embedded object of
+  type `boost::function<Signature>`;
+* the __clear_sig__ method clears the objecttarget related to the specified
+  signature;
+* the __clear_all__ method that clears all the object targets.
+* the __swap__ method that accepts overload objects of the same type of
+  `(*this)` its action is to exchange the object targets for each pair of
+  embedded `boost::function` objects with the same call signature;
+* finally we have the __swap_function__ method that takes only callable entities of
+  type `boost::function<Signature>` where `Signature` has to be a supported
+  signature of the given instantiation of the template class __overload_class__; its
+  action is to swap the object target of the passed `boost::function<Signature>`
+  instance with the object target of the embedded `boost::function<Signature>`
+  object.
+
+[/ section Example - Helper methods]
+[helper_methods_cpp]
+[/ endsect]
+
+[note For any helper method that supports the call signature syntax there is an
+equivalent method that supports the index syntax.]
+
+[endsect]
+
+[endsect]
+

@@ -19,7 +19,7 @@ BOOST_STATIC_ASSERT((
 #endif
 BOOST_STATIC_ASSERT(( is_same<ovdtl::signature<2,overload_type>::type, sig2_t>::value ));
 BOOST_STATIC_ASSERT(( 
-    is_same<ovdtl::function<5, overload_type>::type, 
+    is_same<ovdtl::function<5, overload_type>::type,
             boost::function<sig5_t> 
     >::value 
 ));

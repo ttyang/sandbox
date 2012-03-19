@@ -1,0 +1,581 @@
+
+[/ Copyright (C) 2012 Marco Cecchetti ]
+[/ Use, modification, and distribution is subject to the Boost Software ]
+[/ License, Version 1.0 (see accompanying file LICENSE_1_0.txt or a ]
+[/ copy at http://www.boost.org/LICENSE_1_0.txt). ]
+
+[section References]
+
+[section:boost_overload_hpp <boost/overload.hpp>]
+
+[section Class template overload]
+
+[section Synopsis]
+
+    template<typename Signature1,
+             typename Signature2 = detail::no_signature,
+             .
+             .
+             typename SignatureK = detail::no_signature>  // K == BOOST_OVERLOAD_LIMITS
+    class overload
+        : public detail::overload_base<0, Signature1, Signature2, ..., SignatureK>
+    {
+      public:
+        // types
+        typedef overload<Signature1, Signature2, ..., SignatureK> this_type; ``[#ref_overload_this_type]``
+        typedef detail::overload_base<0, Signature1, Signature2, ..., SignatureK> base_type;
+
+        // wrapped function type
+        template <typename Signature>
+        struct wrapped_function ``[#ref_overload_wrapped_function]``
+        {
+            typedef __boost_function_class__<Signature> type;
+        };
+
+        // static constants
+        static const unsigned int extent = __tt_extent__<__this_type__>::value; ``[#ref_overload_extent]``
+
+        // ``__overload_type_traits__``
+        template<unsigned int I>
+        struct __overload_tt_signature__;
+
+        template<unsigned int I>
+        struct __overload_tt_function__;
+
+        template<typename Signature>
+        struct __overload_tt_index_of_sig__;
+
+        template<typename Signature>
+        struct __overload_tt_has_signature__;
+
+        template<typename Functor>
+        struct __overload_tt_shares_any_sig_with__;
+
+        // Lambda library support
+        template<typename Args>
+        struct sig;
+
+        // ResultOf library support
+        template<typename CallType>
+        struct result;
+
+        // ``__overload_ctor_copy_dtor__``
+        __default_ctor__();
+        __copy_ctor__(const __this_type__& );
+        template<typename Functor>
+        __ctor_F1__(const Functor& );
+        template<typename F1, typename F2>
+        __ctor_F1_F2__(const F1&, const F2& );
+        .
+        .
+        .
+        template<typename F1, typename F2, ..., typename FN>  // ``N == __overload_extent__``
+        __ctor_F1___FN__(const F1&, const F2&, ...,  const FN& );
+        __this_type__& __op_assign__(const __this_type__& );
+        __overload_dtor__();
+
+        // ``__overload_modifiers__``
+        template<typename Functor>
+        __this_type__& __set_F1__(const Functor& );
+        template<typename F1, typename F2>
+        __this_type__& __set_F1_F2__(const F1&, const F2& );
+        .
+        .
+        .
+        template<typename F1, typename F2, ..., typename FN>  // ``N == __overload_extent__``
+        __this_type__& __set_F1___FN__(const F1&, const F2&, ...,  const FN& );
+        template<typename Signature, typename Functor>
+        __this_type__& __set_S_F__(const Functor& );
+        template<unsigned int I, typename Functor>
+        __this_type__& __set_N_F__(const Functor& );
+
+        template<typename Functor>
+        __this_type__& __set_for_each_shared_sig__(const Functor& );
+        
+        void __swap__(__this_type__& );
+        template<typename Signature>
+        void __swap_function__(__boost_function_class__<Signature>& );
+
+        void __clear_all__();
+        template<typename Signature>
+        void __clear_S__();
+        template<unsigned int I>
+        void __clear_N__();
+
+        // ``__overload_capacity__``
+        bool __empty_all__();
+        bool __empty_any__();
+        bool __empty_none__();
+        template<typename Signature>
+        bool __empty_S__();
+        template<unsigned int I>
+        bool __empty_N__();
+        
+        // ``__overload_function_access__``
+        template<typename Signature>
+        typename __wrapped_function__<Signature>::type& __get_S__();
+        template<unsigned int I>
+        typename __overload_tt_function__<I>::type& __get_N__();
+        template<typename Signature>
+        const typename __wrapped_function__<Signature>::type& __get_S_const__() const;
+        template<unsigned int I>
+        const typename __overload_tt_function__<I>::type& __get_N_const__() const;
+        
+    };
+
+    // ``__overload_specialized_algorithms__``
+    template<typename S1, typename S2, typename SK>  // K == BOOST_OVERLOAD_LIMITS
+    void __gloabal_overload_swap__(__overload_class__<S1, S2,...,SK>&, __overload_class__<S1, S2,...,SK>& );
+
+[endsect]
+
+[section Description]
+
+Class template __overload_class__ behaves as an overloaded __boost_function_class__.
+Actually it wraps multiple __boost_function_class__ objects of different call
+signatures. In this context N is equal to `__overload_class__::__overload_extent__`
+and refers to the number of supported call signatures.
+
+[section overload type traits]
+
+# [#ref_overload_tt_signature]
+  `template<unsigned int I>`[br]
+  `struct signature;`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N`.[br]
+  [*Returns]:
+    `signature<I>::type` is the `(I+1)`-th call signature listed in the template
+    argument list of __this_type__.[br]
+[br]
+# [#ref_overload_tt_function]
+  `template<unsigned int I>`[br]
+  `struct function;`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N`.[br]
+  [*Returns]:
+   `function<I>::type` is the same as `__boost_function_class__<S>`, where S is the call
+   signature `__overload_tt_signature__<I>::type`.[br]
+[br]
+# [#ref_overload_tt_index_of_sig]
+  `template<typename Signature>`[br]
+  `struct index_of_signature;`[br]
+  [*Returns]:
+    `index_of_signature<Signature>::value` is  an integral constant
+    that represents the position, starting from 0, of the call signature
+    `Signature` in the template argument list of __this_type__ if it is present
+    and `-1` otherwise .[br]
+[br]
+# [#ref_overload_tt_has_signature]
+  `template<typename Signature>`[br]
+  `struct has_signature;`[br]
+  [*Returns]:
+    `has_signature<Signature>::value` is a boolean constant equals to `true`
+    if __this_type__ supports the call signature `Signature` and `false` otherwise.[br]
+[br]
+# [#ref_overload_tt_shares_any_sig_with]
+  `template<typename Functor>`[br]
+  `struct shares_any_signature_with;`[br]
+  [*Returns]:
+    `shares_any_signature_with<Functor>::value` is a boolean constant equals to
+    `true` if __this_type__ shares at least one call signature with the
+     __callable_type__ `Functor`.[br]
+[br]
+
+[endsect]
+
+[section:overload_ctor_copy_dtor overload public construct/copy/destruct]
+
+# [#ref_overload_default_ctor] 
+  `overload();`[br]
+  [*Post conditions]:
+    `this->__empty_all__()`.[br]
+  [*Throws]:
+    Will not throw.[br]
+[br]
+# [#ref_overload_copy_ctor] 
+  `overload(const __this_type__& f);`[br]
+  [*Post conditions]:
+    Each object target is in the same state as the copied object target of `f`.[br]
+  [*Throws]:
+    Will not throw unless copying one of the object targets of `f` throws.[br]
+[br]
+#  [#ref_overload_ctor_F1]
+   `template<typename Functor>`[br]
+   `overload(const Functor& f);`[br]
+   [*Requires]:
+     `f` is a monomorphic __callable_object__ that is callable by `*this`.[br]
+   [*Post conditions]:
+     The object target related to `S` is a copy of `f` if `f` is not empty or
+     `this->__empty_S__<S>()` if `f` is empty, where `S` is the call signature
+     supported by `f`.[br]
+[br]
+#  [#ref_overload_ctor_F1___FN]
+   `template<typename F1, typename F2, ..., typename FN>`[br]
+   `overload(const F1& f1, const F2& f2, ...,  const FN& fN);`[br]
+   [*Requires]:
+     `f1,f2,...,fN` are monomorphic [plural __callable_object__] that are
+     callable by `*this`.[br]
+   [*Post conditions]:
+     For each `I=1,...N` the object target related to `S` is a copy of `fI`
+     if `fI` is not empty or `this->__empty_S__<S>()` if `fI` is empty, where
+     `S` is the call signature supported by `fI`.[br]
+[br]
+#   [#ref_overload_op_assign]
+    ` __this_type__& operator=(const __this_type__& f);`[br]
+    [*Post conditions]:
+      If copy construction does not throw, for each supported call signature `S` 
+      `*this` targets a copy of `f`'s target related to `S`, if it has one, or is
+      empty if `f.__empty_S__<S>()`. If copy construction does throw while
+      copying the `I`-th object target then `this->__get_N__<J>()` is a copy of
+      `f.__get_N__<J>` for `J<I`, `this->__get_N__<J>()` is not modified for
+      `J>I` and finally `this->__empty_N__<I>()`.[br]
+[br]
+# [#ref_overload_dtor]
+  `~overload();` [br]
+  [*Effetcs]: Destroys each non-empty target.
+[br]
+
+[endsect]
+
+[section overload modifiers]
+
+# [#ref_overload_set_F1]
+  `template<typename Functor>`[br]
+  ` __this_type__& set(const Functor& f);`[br]
+  [*Requires]:
+    `f` is a monomorphic __callable_object__ that is callable by `*this`.[br]
+  [*Post conditions]:
+     The object target related to `S` is a copy of `f` if `f` is not empty or
+     `this->__empty_S__<S>()` if `f` is empty, where `S` is the call signature
+     supported by `f`.[br]
+[br]
+# [#ref_overload_set_F1___FN]
+  `template<typename F1, typename F2, ..., typename FN>`[br]
+  ` __this_type__& set(const F1& f1, const F2& f2, ...,  const FN& fN);`[br]
+   [*Requires]:
+     `f1,f2,...,fN` are monomorphic [plural __callable_object__] that are
+     callable by `*this`.[br]
+   [*Post conditions]:
+     For each `I=1,...N` the object target related to `S` is a copy of `fI`
+     if `fI` is not empty or `this->__empty_S__<S>()` if `fI` is empty, where
+     `S` is the call signature supported by `fI`.[br]
+[br]
+# [#ref_overload_set_S_F]
+  `template<typename Signature, typename Functor>`[br]
+  ` __this_type__& set(const Functor& f);`[br]
+  [*Requires]:
+    `Signature` is a call signature supported by `*this` and `f` is a
+    __callable_object__ that is callable by `*this`.[br]
+  [*Post conditions]:
+     The object target related to the call signature `Signature` is a copy of
+     `f` if `f` is not empty or `this->__empty_S__<Signature>()` if `f` is empty.[br]
+[br]
+# [#ref_overload_set_N_F]
+  `template<unsigned int I, typename Functor>`[br]
+  ` __this_type__& set(const Functor& f);`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N` and
+    `f` is a __callable_object__ that is callable by `*this`.[br]
+  [*Post conditions]:
+     The object target related to the call signature
+     `S:=__overload_tt_signature__<I>::type` is a copy of `f` if `f` is not
+     empty or `this->__empty_S__<S>()` if `f` is empty.[br]
+[br]
+# [#ref_overload_set_for_each_shared_sig]
+  `template<typename Functor>`[br]
+  ` __this_type__& set_for_each_shared_signature(const Functor& f);`[br]
+  [*Requires]:
+    `f` is a __callable_object__ that is callable by `*this` with any call
+    signature shared by both `*this` and `f`.[br]
+  [*Post conditions]:
+     For each call signature `S` shared by both `*this` and `f` the object target
+     related to `S` is a copy of `f` if `f` is not empty or `this->__empty_S__<S>()`
+     if `f` is empty.[br]
+[br]
+# [#ref_overload_swap]
+  `void swap(__this_type__& f);`[br]
+  [*Effetcs]: 
+    For each supported call signature `S` interchanges the object targets of
+    `*this` and `f` related to `S`[br]
+[br]
+# [#ref_overload_swap_function]
+  `template<typename Signature>`[br]
+  `void swap_function(__boost_function_class__<Signature>& f);`[br]
+  [*Requires]:
+    `Signature` is a call signature supported by `*this`.[br]
+  [*Effetcs]: 
+    Interchanges the object target of `*this` related to the call signature
+    `Signature` with the object target of `f`.
+[br]
+# [#ref_overload_clear_all]
+  `void clear_all();`[br]
+  [*Post conditions]: `this->__empty_all__()`.[br]
+[br]
+# [#ref_overload_clear_S]
+  `template<typename Signature>`[br]
+  `void clear();`[br]
+  [*Requires]:
+    `Signature` is a call signature supported by `*this`.[br]
+  [*Post conditions]:
+    `this->__empty_S__<Signature>()`.[br]
+[br]
+# [#ref_overload_clear_N]
+  `template<unsigned int I>`[br]
+  `void clear();`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N`.[br]
+  [*Post conditions]:
+    `this->__empty_N__<I>()`.[br]
+[br]
+
+[endsect]
+
+[section overload capacity]
+
+# [#ref_overload_empty_all]
+  `bool empty_all();`[br]
+  [*Returns]:
+    `false` if `*this` has at least one call signature `S` such that `!this->__empty_S__<S>()`
+    and `true` otherwise.[br]
+[br]
+# [#ref_overload_empty_any]
+  `bool empty_any();`[br]
+  [*Returns]:
+    `false` if for each supported call signature `S` `!this->__empty_S__<S>()`
+    and `true` otherwise.[br]
+[br]
+# [#ref_overload_empty_none]
+  `bool empty_none();`[br]
+  [*Returns]:
+  `false` if `*this` has at least one call signature `S` such that `this->__empty_S__<S>()`
+  and `true` otherwise.[br]
+[br]
+# [#ref_overload_empty_S]
+  `template<typename Signature>`[br]
+  `bool empty();`[br]
+  [*Requires]:
+    `Signature` is a call signature supported by `*this`.[br]
+  [*Returns]:
+    `false` if `this->__get_S__<Signature>()` has a target and `true` otherwise.[br]
+[br]
+# [#ref_overload_empty_N]
+  `template<unsigned int I>`[br]
+  `bool empty();`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N`.[br]
+  [*Returns]:
+    `false` if `this->__get_N__<I>()` has a target and `true` otherwise.[br]
+[br]
+
+[endsect]
+
+[section overload function access]
+
+# [#ref_overload_get_S]
+  `template<typename Signature>`[br]
+  `typename __wrapped_function__<Signature>::type& get();`[br]
+  [*Requires]:
+    `Signature` is a call signature supported by `*this`.[br]
+  [*Returns]:
+    a reference to the unique embedded object of type `__boost_function_class__<Signature>`[br]
+[br]
+# [#ref_overload_get_N]
+  `template<unsigned int I>`[br]
+  `typename __overload_tt_function__<I>::type& get();`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N`.[br]
+  [*Returns]:
+    a reference to the unique embedded object of type `__boost_function_class__<S>`
+    where `S` is the call signature `__overload_tt_signature__<I>::type`[br]
+[br]
+# [#ref_overload_get_S_const]
+  `template<typename Signature>`[br]
+  `const typename __wrapped_function__<Signature>::type& get() const;`[br]
+  [*Requires]:
+    `Signature` is a call signature supported by `*this`.[br]
+  [*Returns]:
+    a const reference to the unique embedded object of type `__boost_function_class__<S>`
+    where `S` is the call signature `__overload_tt_signature__<I>::type`[br]
+[br]
+# [#ref_overload_get_N_const]
+  `template<unsigned int I>`[br]
+  `const typename __overload_tt_function__<I>::type& get() const;`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N`.[br]
+  [*Returns]:
+    a const reference to the unique embedded object of type `__boost_function_class__<Signature>`[br]
+[br]
+
+[endsect]
+
+[section overload specialized algorithms]
+
+# [#ref_global_overload_swap]
+  `template<typename S1, typename S2, typename SK>  // K == BOOST_OVERLOAD_LIMITS`[br]
+  `void swap(__overload_class__<S1, S2,...,SK>& f1, __overload_class__<S1, S2,...,SK>& f2);`[br]
+  [*Effects]: `f1.__swap__(f2)`.
+[br]
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+[section Call Wrapper Type Traits]
+
+[section Synopsis]
+
+    namespace boost{ namespace overloads{
+
+        template<typename CallWrapperType>
+        struct __tt_extent__;
+
+        template<typename CallWrapperType, unsigned int I>
+        struct __tt_signature__;
+
+        template<typename CallWrapperType, unsigned int I>
+        struct __tt_function__;
+
+        template<typename CallWrapperType, typename Signature>
+        struct __tt_index_of_sig__;
+
+        template<typename CallWrapperType, typename Signature>
+        struct __tt_has_signature__;
+
+        template<typename CallWrapperType, typename Functor>
+        struct __tt_have_any_shared_sig__;
+
+    } } // end namespaces
+
+[endsect]
+
+[section Description]
+
+# [#ref_tt_extent]
+  `template<typename CallWrapperType>`[br]
+  `struct extent;`[br]
+  [*Returns]:
+    `extent<CallWrapperType>::value` is a non-negative integral constant equals
+    to the number of call signatures supported by `CallWrapperType`.[br]
+[br]
+# [#ref_tt_signature]
+  `template<typename CallWrapperType, unsigned int I>`[br]
+  `struct signature;`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N` where `N = __tt_extent__<CallWrapperType>::value`.[br]
+  [*Returns]:
+    `signature<CallWrapperType, I>::type` is the `(I+1)`-th call signature listed
+    in the template argument list of `CallWrapperType`.[br]
+[br]
+# [#ref_tt_function]
+  `template<typename CallWrapperType, unsigned int I>`[br]
+  `struct function;`[br]
+  [*Requires]:
+    The index `I` is such that `0<=I<N` where `N = extent<CallWrapperType>::value`.[br]
+  [*Returns]:
+    `function<CallWrapperType, I>::type` is the same as `__boost_function_class__<S>`,
+    where `S` is the call signature `__tt_signature__<CallWrapperType, I>::type`.[br]
+[br]
+# [#ref_tt_index_of_sig]
+  `template<typename CallWrapperType, typename Signature>`[br]
+  `struct index_of_signature;`[br]
+  [*Returns]:
+    `index_of_signature<CallWrapperType, Signature>::value` is  an integral constant
+    that represents the position, starting from 0, of the call signature
+    `Signature` in the template argument list of `CallWrapperType` if it is present
+    and `-1` otherwise .[br]
+[br]
+# [#ref_tt_has_signature]
+  `template<typename CallWrapperType, typename Signature>`[br]
+  `struct has_signature;`[br]
+  [*Returns]:
+    `has_signature<CallWrapperType, Signature>::value` is a boolean constant
+    equals to `true` if `CallWrapperType` supports the call signature `Signature`
+    and `false` otherwise.[br]
+[br]
+# [#ref_tt_have_any_shared_sig]
+  `template<typename CallWrapperType, typename Functor>`[br]
+  `struct have_any_shared_signature;`[br]
+  [*Returns]:
+    `have_any_shared_signature<CallWrapperType, Functor>::value` is a boolean
+    constant equals to `true` if `CallWrapperType` shares at least one call
+    signature with the __callable_type__ `Functor`.[br]
+[br]
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+[section:boost_overload_make_overload_hpp <boost/overload/make_overload.hpp>]
+
+[section Generative function make_overload]
+
+[section Synopsis]
+
+    namespace boost{ namespace overloads{
+
+        template<typename F1,
+                 typename F2 = detail::no_function,
+                 .
+                 .
+                 typename FK = detail::no_function> // K == BOOST_OVERLOAD_LIMITS
+        struct make_overload_type;
+
+        template<typename F1>
+        typename make_overload_type<F1>::type
+        make_overload(const F1& );
+
+        template<typename F1 , typename F2>
+        typename make_overload_type<F1, F2>::type
+        make_overload(const F1& , const F2&);
+        .
+        .
+        .
+        template<typename F1, typename F2, ..., typename FK> // K == BOOST_OVERLOAD_LIMITS
+        typename make_overload_type<F1, F2, ..., FK>::type
+        make_overload(const F1& , const F2&, ...,const FK& );
+
+    } } // end namespaces
+
+[endsect]
+
+[section Description]
+
+In the following context `N` is an integral constant between 1 and `K=BOOST_OVERLOAD_LIMITS`.
+
+# [#ref_make_overload_type]
+  `template<typename F1 , typename F2, ..., typename FK>`[br]
+  `struct make_overload_type;`[br]
+  [*Requires]:
+    `F1, F2, ..., FK` are [plural __callable_type__] with different call
+    signatures or the `detail::no_function` type.[br]
+  [*Returns]:
+    `make_overload_type<F1, F2, ..., FN>::type` is the same type as
+    `__overload_class__<S1, S2, ..., SN>` where `SI` is the call signature of
+    the __callable_type__ `FI`, for `I=1,..N`.[br]
+[br]
+# [#ref_make_overload]
+  `template<typename F1 , typename F2, ..., typename FN>`[br]
+  `typename make_overload_type<F1, F2, ..., FN>::type`[br]
+  `make_overload(const F1& f1, const F2& f2, ...,const FN& fN);`[br]
+   [*Requires]:
+     `f1,f2,...,fN` are monomorphic [plural __callable_object__] each supporting
+     a different call signature.[br]
+   [*Returns]:
+      An __overload_class__ object `f` that supports all and only the call
+      signatures supported by f1, ..., fN and that for each `I=1,...,N`
+      the object target related to the call signature `__overload_tt_signature__<I>::type`
+      is a copy of `fI`.[br]
+[br]
+
+[endsect]
+
+[endsect]
+
+[endsect]
+
+[endsect]
+

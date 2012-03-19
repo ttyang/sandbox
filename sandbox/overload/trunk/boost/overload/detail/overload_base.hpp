@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -21,16 +21,16 @@ namespace boost{ namespace overloads{ namespace detail{
 template< 
     unsigned int N,
     typename Sig0, 
-    BOOST_PP_ENUM_SHIFTED(BOOST_OVERLOAD_LIMIT, OVL_TEMPL_PARAMS, Sig)
+    BOOST_OVERLOAD_ENUM_SHIFTED_PARAMS_WITH_A_DEFAULT(BOOST_OVERLOAD_LIMIT, typename Sig, detail::no_signature)
 >
 struct overload_base
-    : public boost::function<Sig0>
+    : public BOOST_OVERLOAD_WRAPPED_FUNC<Sig0>
     , public overload_base<N+1, BOOST_PP_ENUM_SHIFTED_PARAMS(BOOST_OVERLOAD_LIMIT, Sig)>
 {
-    static const unsigned int index = N;
+        BOOST_STATIC_CONSTANT( unsigned int, index = N );
 
-    typedef Sig0                        signature_type;
-    typedef boost::function<Sig0>       function_type;
+    typedef Sig0                                 signature_type;
+    typedef BOOST_OVERLOAD_WRAPPED_FUNC<Sig0>    function_type;
     typedef 
         overload_base<N+1, BOOST_PP_ENUM_SHIFTED_PARAMS(BOOST_OVERLOAD_LIMIT, Sig)> 
         base_type;
@@ -40,18 +40,25 @@ struct overload_base
     using function_type::operator();
     using base_type::operator();
 #endif
+// Workaround for masking result_type inherited from boost::function
+// that leads to a problem for result_of support
+#if BOOST_WORKAROUND(BOOST_MSVC, < 1500) || BOOST_WORKAROUND(__INTEL_COMPILER, < 1220)
+  private:
+    template<typename T>
+    struct result_type;
+#endif
 };
 
 template< unsigned int N, typename Sig0 >
 struct overload_base<N, Sig0>
-    : public boost::function<Sig0>
+    : public BOOST_OVERLOAD_WRAPPED_FUNC<Sig0>
     , public final_overload_base
 {
-    static const unsigned int index = N;
+    BOOST_STATIC_CONSTANT( unsigned int, index = N );
 
-    typedef Sig0                        signature_type;
-    typedef boost::function<Sig0>       function_type;
-    typedef final_overload_base         base_type;
+    typedef Sig0                                 signature_type;
+    typedef BOOST_OVERLOAD_WRAPPED_FUNC<Sig0>    function_type;
+    typedef final_overload_base                  base_type;
 
 // Workaround for MSVC < 8.0 tested on MSVC 7.1 
 #if !BOOST_WORKAROUND(BOOST_MSVC, < 1400)  

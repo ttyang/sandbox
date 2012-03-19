@@ -1,0 +1,822 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>References</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="up" href="../index.html" title="Boost.Overload 0.4.0">
+<link rel="prev" href="design_and_definitions.html" title="Design and Definitions">
+<link rel="next" href="acknowledgements.html" title="Acknowledgements">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="design_and_definitions.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="acknowledgements.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="boost_overload.references"></a><a class="link" href="references.html" title="References">References</a>
+</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp">&lt;boost/overload.hpp&gt;</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload">Class
+        template overload</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits">Call
+        Wrapper Type Traits</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp">&lt;boost/overload/make_overload.hpp&gt;</a></span></dt>
+<dd><dl><dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload">Generative
+        function make_overload</a></span></dt></dl></dd>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.references.boost_overload_hpp"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp" title="&lt;boost/overload.hpp&gt;">&lt;boost/overload.hpp&gt;</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload">Class
+        template overload</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description">Description</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits">Call
+        Wrapper Type Traits</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.description">Description</a></span></dt>
+</dl></dd>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload">Class
+        template overload</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description">Description</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.synopsis"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.synopsis" title="Synopsis">Synopsis</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature1</span><span class="special">,</span>
+         <span class="keyword">typename</span> <span class="identifier">Signature2</span> <span class="special">=</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">no_signature</span><span class="special">,</span>
+         <span class="special">.</span>
+         <span class="special">.</span>
+         <span class="keyword">typename</span> <span class="identifier">SignatureK</span> <span class="special">=</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">no_signature</span><span class="special">&gt;</span>  <span class="comment">// K == BOOST_OVERLOAD_LIMITS</span>
+<span class="keyword">class</span> <span class="identifier">overload</span>
+    <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">overload_base</span><span class="special">&lt;</span><span class="number">0</span><span class="special">,</span> <span class="identifier">Signature1</span><span class="special">,</span> <span class="identifier">Signature2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">SignatureK</span><span class="special">&gt;</span>
+<span class="special">{</span>
+  <span class="keyword">public</span><span class="special">:</span>
+    <span class="comment">// types</span>
+    <span class="keyword">typedef</span> <span class="identifier">overload</span><span class="special">&lt;</span><span class="identifier">Signature1</span><span class="special">,</span> <span class="identifier">Signature2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">SignatureK</span><span class="special">&gt;</span> <span class="identifier">this_type</span><span class="special">;</span> <a name="ref_overload_this_type"></a>
+    <span class="keyword">typedef</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">overload_base</span><span class="special">&lt;</span><span class="number">0</span><span class="special">,</span> <span class="identifier">Signature1</span><span class="special">,</span> <span class="identifier">Signature2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">SignatureK</span><span class="special">&gt;</span> <span class="identifier">base_type</span><span class="special">;</span>
+
+    <span class="comment">// wrapped function type</span>
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">wrapped_function</span> <a name="ref_overload_wrapped_function"></a>
+    <span class="special">{</span>
+        <span class="keyword">typedef</span> <a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span> <span class="identifier">type</span><span class="special">;</span>
+    <span class="special">};</span>
+
+    <span class="comment">// static constants</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">extent</span> <span class="special">=</span> <a class="link" href="references.html#ref_tt_extent">extent</a><span class="special">&lt;</span><a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&gt;::</span><span class="identifier">value</span><span class="special">;</span> <a name="ref_overload_extent"></a>
+
+    <span class="comment">// <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_type_traits" title="overload type traits">type traits</a></span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_overload_tt_signature">signature</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_overload_tt_function">function</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_overload_tt_index_of_sig">index_of_signature</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_overload_tt_has_signature">has_signature</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_overload_tt_shares_any_sig_with">shares_any_signature_with</a><span class="special">;</span>
+
+    <span class="comment">// Lambda library support</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Args</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">sig</span><span class="special">;</span>
+
+    <span class="comment">// ResultOf library support</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallType</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <span class="identifier">result</span><span class="special">;</span>
+
+    <span class="comment">// <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_ctor_copy_dtor" title="overload public construct/copy/destruct">construct/copy/destruct </a></span>
+    <a class="link" href="references.html#ref_overload_default_ctor"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">();</span>
+    <a class="link" href="references.html#ref_overload_copy_ctor"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_ctor_F1"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_ctor_F1___FN"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="special">.</span>
+    <span class="special">.</span>
+    <span class="special">.</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">FN</span><span class="special">&gt;</span>  <span class="comment">// N == <a class="link" href="references.html#ref_overload_extent">extent</a></span>
+    <a class="link" href="references.html#ref_overload_ctor_F1___FN"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;,</span> <span class="special">...,</span>  <span class="keyword">const</span> <span class="identifier">FN</span><span class="special">&amp;</span> <span class="special">);</span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_op_assign"><code class="computeroutput"><span class="keyword">operator</span><span class="special">()</span></code></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="special">);</span>
+    <a class="link" href="references.html#ref_overload_dtor">~<code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">();</span>
+
+    <span class="comment">// <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_modifiers" title="overload modifiers">modifiers</a></span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_set_F1"><code class="computeroutput"><span class="identifier">set</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_set_F1___FN"><code class="computeroutput"><span class="identifier">set</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="special">.</span>
+    <span class="special">.</span>
+    <span class="special">.</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">FN</span><span class="special">&gt;</span>  <span class="comment">// N == <a class="link" href="references.html#ref_overload_extent">extent</a></span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_set_F1___FN"><code class="computeroutput"><span class="identifier">set</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;,</span> <span class="special">...,</span>  <span class="keyword">const</span> <span class="identifier">FN</span><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_set_S_F"><code class="computeroutput"><span class="identifier">set</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_set_N_F"><code class="computeroutput"><span class="identifier">set</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">&amp;</span> <span class="special">);</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_set_for_each_shared_sig"><code class="computeroutput"><span class="identifier">set_for_each_shared_signature</span></code></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">&amp;</span> <span class="special">);</span>
+
+    <span class="keyword">void</span> <a class="link" href="references.html#ref_overload_swap"><code class="computeroutput"><span class="identifier">swap</span></code></a><span class="special">(</span><a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="special">);</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <a class="link" href="references.html#ref_overload_swap_function"><code class="computeroutput"><span class="identifier">swap_function</span></code></a><span class="special">(</span><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;&amp;</span> <span class="special">);</span>
+
+    <span class="keyword">void</span> <a class="link" href="references.html#ref_overload_clear_all"><code class="computeroutput"><span class="identifier">clear_all</span></code></a><span class="special">();</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <a class="link" href="references.html#ref_overload_clear_S"><code class="computeroutput"><span class="identifier">clear</span></code></a><span class="special">();</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">void</span> <a class="link" href="references.html#ref_overload_clear_N"><code class="computeroutput"><span class="identifier">clear</span></code></a><span class="special">();</span>
+
+    <span class="comment">// <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_capacity" title="overload capacity">capacity</a></span>
+    <span class="keyword">bool</span> <a class="link" href="references.html#ref_overload_empty_all"><code class="computeroutput"><span class="identifier">empty_all</span></code></a><span class="special">();</span>
+    <span class="keyword">bool</span> <a class="link" href="references.html#ref_overload_empty_any"><code class="computeroutput"><span class="identifier">empty_any</span></code></a><span class="special">();</span>
+    <span class="keyword">bool</span> <a class="link" href="references.html#ref_overload_empty_none"><code class="computeroutput"><span class="identifier">empty_none</span></code></a><span class="special">();</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">();</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">bool</span> <a class="link" href="references.html#ref_overload_empty_N"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">();</span>
+
+    <span class="comment">// <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_function_access" title="overload function access">function access</a></span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <a class="link" href="references.html#ref_overload_wrapped_function">wrapped_function</a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_get_S"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">();</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <a class="link" href="references.html#ref_overload_tt_function">function</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_get_N"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">();</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">const</span> <span class="keyword">typename</span> <a class="link" href="references.html#ref_overload_wrapped_function">wrapped_function</a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_get_S_const"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">const</span> <span class="keyword">typename</span> <a class="link" href="references.html#ref_overload_tt_function">function</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <a class="link" href="references.html#ref_overload_get_N_const"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span>
+
+<span class="special">};</span>
+
+<span class="comment">// <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_specialized_algorithms" title="overload specialized algorithms">specialized algorithms</a></span>
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">S1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">S2</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">SK</span><span class="special">&gt;</span>  <span class="comment">// K == BOOST_OVERLOAD_LIMITS</span>
+<span class="keyword">void</span> <a class="link" href="references.html#ref_global_overload_swap"><code class="computeroutput"><span class="identifier">swap</span></code></a><span class="special">(</span><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">&lt;</span><span class="identifier">S1</span><span class="special">,</span> <span class="identifier">S2</span><span class="special">,...,</span><span class="identifier">SK</span><span class="special">&gt;&amp;,</span> <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">&lt;</span><span class="identifier">S1</span><span class="special">,</span> <span class="identifier">S2</span><span class="special">,...,</span><span class="identifier">SK</span><span class="special">&gt;&amp;</span> <span class="special">);</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description" title="Description">Description</a>
+</h5></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_type_traits">overload
+            type traits</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_ctor_copy_dtor">overload
+            public construct/copy/destruct</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_modifiers">overload
+            modifiers</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_capacity">overload
+            capacity</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_function_access">overload
+            function access</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_specialized_algorithms">overload
+            specialized algorithms</a></span></dt>
+</dl></div>
+<p>
+            Class template <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> behaves as an overloaded
+            <a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a>. Actually it wraps
+            multiple <a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a> objects of different
+            call signatures. In this context N is equal to <code class="computeroutput"><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">::</span><a class="link" href="references.html#ref_overload_extent">extent</a></code> and refers to the
+            number of supported call signatures.
+          </p>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_type_traits"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_type_traits" title="overload type traits">overload
+            type traits</a>
+</h6></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                  <a name="ref_overload_tt_signature"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                  <span class="identifier">signature</span><span class="special">;</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: The index <code class="computeroutput"><span class="identifier">I</span></code> is such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="identifier">signature</span><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code> is the <code class="computeroutput"><span class="special">(</span><span class="identifier">I</span><span class="special">+</span><span class="number">1</span><span class="special">)</span></code>-th
+                  call signature listed in the template argument list of <a class="link" href="references.html#ref_overload_this_type">this_type</a>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_tt_function"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                  <span class="identifier">function</span><span class="special">;</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: The index <code class="computeroutput"><span class="identifier">I</span></code> is such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code> is the same as <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;</span></code>,
+                  where S is the call signature <code class="computeroutput"><a class="link" href="references.html#ref_overload_tt_signature">signature</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_tt_index_of_sig"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">struct</span> <span class="identifier">index_of_signature</span><span class="special">;</span></code><br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="identifier">index_of_signature</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">value</span></code>
+                  is an integral constant that represents the position, starting
+                  from 0, of the call signature <code class="computeroutput"><span class="identifier">Signature</span></code>
+                  in the template argument list of <a class="link" href="references.html#ref_overload_this_type">this_type</a>
+                  if it is present and <code class="computeroutput"><span class="special">-</span><span class="number">1</span></code> otherwise .<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_tt_has_signature"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">struct</span> <span class="identifier">has_signature</span><span class="special">;</span></code><br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="identifier">has_signature</span><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">value</span></code> is a boolean constant equals
+                  to <code class="computeroutput"><span class="keyword">true</span></code> if <a class="link" href="references.html#ref_overload_this_type">this_type</a>
+                  supports the call signature <code class="computeroutput"><span class="identifier">Signature</span></code>
+                  and <code class="computeroutput"><span class="keyword">false</span></code> otherwise.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_tt_shares_any_sig_with"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                  <span class="identifier">shares_any_signature_with</span><span class="special">;</span></code><br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="identifier">shares_any_signature_with</span><span class="special">&lt;</span><span class="identifier">Functor</span><span class="special">&gt;::</span><span class="identifier">value</span></code>
+                  is a boolean constant equals to <code class="computeroutput"><span class="keyword">true</span></code>
+                  if <a class="link" href="references.html#ref_overload_this_type">this_type</a> shares
+                  at least one call signature with the <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object type</a> <code class="computeroutput"><span class="identifier">Functor</span></code>.<br>
+                  <br>
+                </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_ctor_copy_dtor"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_ctor_copy_dtor" title="overload public construct/copy/destruct">overload
+            public construct/copy/destruct</a>
+</h6></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                  <a name="ref_overload_default_ctor"></a> <code class="computeroutput"><span class="identifier">overload</span><span class="special">();</span></code><br> <span class="bold"><strong>Post
+                  conditions</strong></span>: <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_all"><code class="computeroutput"><span class="identifier">empty_all</span></code></a><span class="special">()</span></code>.<br>
+                  <span class="bold"><strong>Throws</strong></span>: Will not throw.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_copy_ctor"></a> <code class="computeroutput"><span class="identifier">overload</span><span class="special">(</span><span class="keyword">const</span>
+                  <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">f</span><span class="special">);</span></code><br> <span class="bold"><strong>Post
+                  conditions</strong></span>: Each object target is in the same state
+                  as the copied object target of <code class="computeroutput"><span class="identifier">f</span></code>.<br>
+                  <span class="bold"><strong>Throws</strong></span>: Will not throw unless
+                  copying one of the object targets of <code class="computeroutput"><span class="identifier">f</span></code>
+                  throws.<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_ctor_F1"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Functor</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="identifier">overload</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">Functor</span><span class="special">&amp;</span> <span class="identifier">f</span><span class="special">);</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">f</span></code> is a monomorphic
+                  <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a> that is callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: The object target related to <code class="computeroutput"><span class="identifier">S</span></code> is a copy of <code class="computeroutput"><span class="identifier">f</span></code> if <code class="computeroutput"><span class="identifier">f</span></code>
+                  is not empty or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code>
+                  if <code class="computeroutput"><span class="identifier">f</span></code> is empty,
+                  where <code class="computeroutput"><span class="identifier">S</span></code> is the
+                  call signature supported by <code class="computeroutput"><span class="identifier">f</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_ctor_F1___FN"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">F1</span><span class="special">,</span>
+                  <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span>
+                  <span class="keyword">typename</span> <span class="identifier">FN</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="identifier">overload</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">F1</span><span class="special">&amp;</span>
+                  <span class="identifier">f1</span><span class="special">,</span>
+                  <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span> <span class="special">...,</span>
+                  <span class="keyword">const</span> <span class="identifier">FN</span><span class="special">&amp;</span> <span class="identifier">fN</span><span class="special">);</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">f1</span><span class="special">,</span><span class="identifier">f2</span><span class="special">,...,</span><span class="identifier">fN</span></code> are monomorphic <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a>s that are callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: For each <code class="computeroutput"><span class="identifier">I</span><span class="special">=</span><span class="number">1</span><span class="special">,...</span><span class="identifier">N</span></code>
+                  the object target related to <code class="computeroutput"><span class="identifier">S</span></code>
+                  is a copy of <code class="computeroutput"><span class="identifier">fI</span></code>
+                  if <code class="computeroutput"><span class="identifier">fI</span></code> is not empty
+                  or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code> if <code class="computeroutput"><span class="identifier">fI</span></code>
+                  is empty, where <code class="computeroutput"><span class="identifier">S</span></code>
+                  is the call signature supported by <code class="computeroutput"><span class="identifier">fI</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_op_assign"></a> <code class="computeroutput"> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="keyword">const</span>
+                  <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">f</span><span class="special">);</span></code><br> <span class="bold"><strong>Post
+                  conditions</strong></span>: If copy construction does not throw, for
+                  each supported call signature <code class="computeroutput"><span class="identifier">S</span></code>
+                  <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  targets a copy of <code class="computeroutput"><span class="identifier">f</span></code>'s
+                  target related to <code class="computeroutput"><span class="identifier">S</span></code>,
+                  if it has one, or is empty if <code class="computeroutput"><span class="identifier">f</span><span class="special">.</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code>.
+                  If copy construction does throw while copying the <code class="computeroutput"><span class="identifier">I</span></code>-th object target then <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_get_N"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">&lt;</span><span class="identifier">J</span><span class="special">&gt;()</span></code> is a copy of <code class="computeroutput"><span class="identifier">f</span><span class="special">.</span><a class="link" href="references.html#ref_overload_get_N"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">&lt;</span><span class="identifier">J</span><span class="special">&gt;</span></code> for <code class="computeroutput"><span class="identifier">J</span><span class="special">&lt;</span><span class="identifier">I</span></code>,
+                  <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_get_N"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">&lt;</span><span class="identifier">J</span><span class="special">&gt;()</span></code> is not modified for <code class="computeroutput"><span class="identifier">J</span><span class="special">&gt;</span><span class="identifier">I</span></code> and finally <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_N"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;()</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_dtor"></a> <code class="computeroutput"><span class="special">~</span><span class="identifier">overload</span><span class="special">();</span></code>
+                  <br> <span class="bold"><strong>Effetcs</strong></span>: Destroys each
+                  non-empty target. <br>
+                </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_modifiers"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_modifiers" title="overload modifiers">overload
+            modifiers</a>
+</h6></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                  <a name="ref_overload_set_F1"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Functor</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">Functor</span><span class="special">&amp;</span>
+                  <span class="identifier">f</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: <code class="computeroutput"><span class="identifier">f</span></code>
+                  is a monomorphic <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a> that is callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: The object target related to <code class="computeroutput"><span class="identifier">S</span></code> is a copy of <code class="computeroutput"><span class="identifier">f</span></code> if <code class="computeroutput"><span class="identifier">f</span></code>
+                  is not empty or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code>
+                  if <code class="computeroutput"><span class="identifier">f</span></code> is empty,
+                  where <code class="computeroutput"><span class="identifier">S</span></code> is the
+                  call signature supported by <code class="computeroutput"><span class="identifier">f</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_set_F1___FN"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">F1</span><span class="special">,</span>
+                  <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span>
+                  <span class="keyword">typename</span> <span class="identifier">FN</span><span class="special">&gt;</span></code><br> <code class="computeroutput"> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">F1</span><span class="special">&amp;</span>
+                  <span class="identifier">f1</span><span class="special">,</span>
+                  <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;</span> <span class="identifier">f2</span><span class="special">,</span> <span class="special">...,</span>
+                  <span class="keyword">const</span> <span class="identifier">FN</span><span class="special">&amp;</span> <span class="identifier">fN</span><span class="special">);</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">f1</span><span class="special">,</span><span class="identifier">f2</span><span class="special">,...,</span><span class="identifier">fN</span></code> are monomorphic <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a>s that are callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: For each <code class="computeroutput"><span class="identifier">I</span><span class="special">=</span><span class="number">1</span><span class="special">,...</span><span class="identifier">N</span></code>
+                  the object target related to <code class="computeroutput"><span class="identifier">S</span></code>
+                  is a copy of <code class="computeroutput"><span class="identifier">fI</span></code>
+                  if <code class="computeroutput"><span class="identifier">fI</span></code> is not empty
+                  or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code> if <code class="computeroutput"><span class="identifier">fI</span></code>
+                  is empty, where <code class="computeroutput"><span class="identifier">S</span></code>
+                  is the call signature supported by <code class="computeroutput"><span class="identifier">fI</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_set_S_F"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">,</span>
+                  <span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span></code><br> <code class="computeroutput"> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">Functor</span><span class="special">&amp;</span>
+                  <span class="identifier">f</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: <code class="computeroutput"><span class="identifier">Signature</span></code>
+                  is a call signature supported by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> and <code class="computeroutput"><span class="identifier">f</span></code>
+                  is a <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a> that is callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: The object target related to the call signature
+                  <code class="computeroutput"><span class="identifier">Signature</span></code> is a
+                  copy of <code class="computeroutput"><span class="identifier">f</span></code> if <code class="computeroutput"><span class="identifier">f</span></code> is not empty or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;()</span></code> if <code class="computeroutput"><span class="identifier">f</span></code>
+                  is empty.<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_set_N_F"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">,</span> <span class="keyword">typename</span>
+                  <span class="identifier">Functor</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">set</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">Functor</span><span class="special">&amp;</span>
+                  <span class="identifier">f</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: The index <code class="computeroutput"><span class="identifier">I</span></code> is such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code> and <code class="computeroutput"><span class="identifier">f</span></code>
+                  is a <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a> that is callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: The object target related to the call signature
+                  <code class="computeroutput"><span class="identifier">S</span><span class="special">:=</span><a class="link" href="references.html#ref_overload_tt_signature">signature</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code> is a copy of <code class="computeroutput"><span class="identifier">f</span></code> if <code class="computeroutput"><span class="identifier">f</span></code>
+                  is not empty or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code>
+                  if <code class="computeroutput"><span class="identifier">f</span></code> is empty.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_set_for_each_shared_sig"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span></code><br> <code class="computeroutput"> <a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span> <span class="identifier">set_for_each_shared_signature</span><span class="special">(</span><span class="keyword">const</span>
+                  <span class="identifier">Functor</span><span class="special">&amp;</span>
+                  <span class="identifier">f</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: <code class="computeroutput"><span class="identifier">f</span></code>
+                  is a <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                  object</a> that is callable by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> with any call signature shared
+                  by both <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  and <code class="computeroutput"><span class="identifier">f</span></code>.<br> <span class="bold"><strong>Post conditions</strong></span>: For each call signature
+                  <code class="computeroutput"><span class="identifier">S</span></code> shared by both
+                  <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  and <code class="computeroutput"><span class="identifier">f</span></code> the object
+                  target related to <code class="computeroutput"><span class="identifier">S</span></code>
+                  is a copy of <code class="computeroutput"><span class="identifier">f</span></code>
+                  if <code class="computeroutput"><span class="identifier">f</span></code> is not empty
+                  or <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code> if <code class="computeroutput"><span class="identifier">f</span></code>
+                  is empty.<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_swap"></a> <code class="computeroutput"><span class="keyword">void</span>
+                  <span class="identifier">swap</span><span class="special">(</span><a class="link" href="references.html#ref_overload_this_type">this_type</a><span class="special">&amp;</span>
+                  <span class="identifier">f</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Effetcs</strong></span>: For each supported call
+                  signature <code class="computeroutput"><span class="identifier">S</span></code> interchanges
+                  the object targets of <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> and <code class="computeroutput"><span class="identifier">f</span></code>
+                  related to <code class="computeroutput"><span class="identifier">S</span></code><br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_swap_function"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">swap_function</span><span class="special">(</span><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;&amp;</span>
+                  <span class="identifier">f</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: <code class="computeroutput"><span class="identifier">Signature</span></code>
+                  is a call signature supported by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Effetcs</strong></span>:
+                  Interchanges the object target of <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code> related to the call signature
+                  <code class="computeroutput"><span class="identifier">Signature</span></code> with
+                  the object target of <code class="computeroutput"><span class="identifier">f</span></code>.
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_clear_all"></a> <code class="computeroutput"><span class="keyword">void</span>
+                  <span class="identifier">clear_all</span><span class="special">();</span></code><br>
+                  <span class="bold"><strong>Post conditions</strong></span>: <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_all"><code class="computeroutput"><span class="identifier">empty_all</span></code></a><span class="special">()</span></code>.<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_clear_S"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">clear</span><span class="special">();</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">Signature</span></code> is a
+                  call signature supported by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;()</span></code>.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_clear_N"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">void</span>
+                  <span class="identifier">clear</span><span class="special">();</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: The index <code class="computeroutput"><span class="identifier">I</span></code> is such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code>.<br> <span class="bold"><strong>Post
+                  conditions</strong></span>: <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_N"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;()</span></code>.<br>
+                  <br>
+                </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_capacity"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_capacity" title="overload capacity">overload
+            capacity</a>
+</h6></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                  <a name="ref_overload_empty_all"></a> <code class="computeroutput"><span class="keyword">bool</span>
+                  <span class="identifier">empty_all</span><span class="special">();</span></code><br>
+                  <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="keyword">false</span></code>
+                  if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  has at least one call signature <code class="computeroutput"><span class="identifier">S</span></code>
+                  such that <code class="computeroutput"><span class="special">!</span><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code>
+                  and <code class="computeroutput"><span class="keyword">true</span></code> otherwise.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_empty_any"></a> <code class="computeroutput"><span class="keyword">bool</span>
+                  <span class="identifier">empty_any</span><span class="special">();</span></code><br>
+                  <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="keyword">false</span></code>
+                  if for each supported call signature <code class="computeroutput"><span class="identifier">S</span></code>
+                  <code class="computeroutput"><span class="special">!</span><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code>
+                  and <code class="computeroutput"><span class="keyword">true</span></code> otherwise.<br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_empty_none"></a> <code class="computeroutput"><span class="keyword">bool</span>
+                  <span class="identifier">empty_none</span><span class="special">();</span></code><br>
+                  <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="keyword">false</span></code>
+                  if <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>
+                  has at least one call signature <code class="computeroutput"><span class="identifier">S</span></code>
+                  such that <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_empty_S"><code class="computeroutput"><span class="identifier">empty</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;()</span></code> and <code class="computeroutput"><span class="keyword">true</span></code>
+                  otherwise.<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_empty_S"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">bool</span> <span class="identifier">empty</span><span class="special">();</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">Signature</span></code> is a
+                  call signature supported by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="keyword">false</span></code> if <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_get_S"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;()</span></code> has a target and <code class="computeroutput"><span class="keyword">true</span></code> otherwise.<br> <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_empty_N"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">bool</span>
+                  <span class="identifier">empty</span><span class="special">();</span></code><br>
+                  <span class="bold"><strong>Requires</strong></span>: The index <code class="computeroutput"><span class="identifier">I</span></code> is such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  <code class="computeroutput"><span class="keyword">false</span></code> if <code class="computeroutput"><span class="keyword">this</span><span class="special">-&gt;</span><a class="link" href="references.html#ref_overload_get_N"><code class="computeroutput"><span class="identifier">get</span></code></a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;()</span></code> has a target and <code class="computeroutput"><span class="keyword">true</span></code> otherwise.<br> <br>
+                </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_function_access"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_function_access" title="overload function access">overload
+            function access</a>
+</h6></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                  <a name="ref_overload_get_S"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">typename</span> <a class="link" href="references.html#ref_overload_wrapped_function">wrapped_function</a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">();</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">Signature</span></code> is a
+                  call signature supported by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  a reference to the unique embedded object of type <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_get_N"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">typename</span>
+                  <a class="link" href="references.html#ref_overload_tt_function">function</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">();</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  The index <code class="computeroutput"><span class="identifier">I</span></code> is
+                  such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  a reference to the unique embedded object of type <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;</span></code>
+                  where <code class="computeroutput"><span class="identifier">S</span></code> is the
+                  call signature <code class="computeroutput"><a class="link" href="references.html#ref_overload_tt_signature">signature</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code><br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_get_S_const"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <code class="computeroutput"><span class="keyword">const</span> <span class="keyword">typename</span>
+                  <a class="link" href="references.html#ref_overload_wrapped_function">wrapped_function</a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  <code class="computeroutput"><span class="identifier">Signature</span></code> is a
+                  call signature supported by <code class="computeroutput"><span class="special">*</span><span class="keyword">this</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  a const reference to the unique embedded object of type <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;</span></code>
+                  where <code class="computeroutput"><span class="identifier">S</span></code> is the
+                  call signature <code class="computeroutput"><a class="link" href="references.html#ref_overload_tt_signature">signature</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code><br>
+                  <br>
+                </li>
+<li class="listitem">
+                  <a name="ref_overload_get_N_const"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">unsigned</span>
+                  <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">const</span>
+                  <span class="keyword">typename</span> <a class="link" href="references.html#ref_overload_tt_function">function</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&amp;</span> <span class="identifier">get</span><span class="special">()</span> <span class="keyword">const</span><span class="special">;</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                  The index <code class="computeroutput"><span class="identifier">I</span></code> is
+                  such that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code>.<br> <span class="bold"><strong>Returns</strong></span>:
+                  a const reference to the unique embedded object of type <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">Signature</span><span class="special">&gt;</span></code><br>
+                  <br>
+                </li>
+</ol></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h6 class="title">
+<a name="boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_specialized_algorithms"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload.description.overload_specialized_algorithms" title="overload specialized algorithms">overload
+            specialized algorithms</a>
+</h6></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+                  <a name="ref_global_overload_swap"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                  <span class="identifier">S1</span><span class="special">,</span>
+                  <span class="keyword">typename</span> <span class="identifier">S2</span><span class="special">,</span> <span class="keyword">typename</span>
+                  <span class="identifier">SK</span><span class="special">&gt;</span>
+                  <span class="comment">// K == BOOST_OVERLOAD_LIMITS</span></code><br>
+                  <code class="computeroutput"><span class="keyword">void</span> <span class="identifier">swap</span><span class="special">(</span><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">&lt;</span><span class="identifier">S1</span><span class="special">,</span>
+                  <span class="identifier">S2</span><span class="special">,...,</span><span class="identifier">SK</span><span class="special">&gt;&amp;</span>
+                  <span class="identifier">f1</span><span class="special">,</span>
+                  <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">&lt;</span><span class="identifier">S1</span><span class="special">,</span>
+                  <span class="identifier">S2</span><span class="special">,...,</span><span class="identifier">SK</span><span class="special">&gt;&amp;</span>
+                  <span class="identifier">f2</span><span class="special">);</span></code><br>
+                  <span class="bold"><strong>Effects</strong></span>: <code class="computeroutput"><span class="identifier">f1</span><span class="special">.</span><a class="link" href="references.html#ref_overload_swap"><code class="computeroutput"><span class="identifier">swap</span></code></a><span class="special">(</span><span class="identifier">f2</span><span class="special">)</span></code>.
+                  <br>
+                </li></ol></div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.references.boost_overload_hpp.call_wrapper_type_traits"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits" title="Call Wrapper Type Traits">Call
+        Wrapper Type Traits</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.description">Description</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.synopsis"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.synopsis" title="Synopsis">Synopsis</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">overloads</span><span class="special">{</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallWrapperType</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_tt_extent">extent</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_tt_signature">signature</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="identifier">I</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_tt_function">function</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_tt_index_of_sig">index_of_signature</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_tt_has_signature">has_signature</a><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span>
+    <span class="keyword">struct</span> <a class="link" href="references.html#ref_tt_have_any_shared_sig">have_any_shared_signature</a><span class="special">;</span>
+
+<span class="special">}</span> <span class="special">}</span> <span class="comment">// end namespaces</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.description"></a><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.call_wrapper_type_traits.description" title="Description">Description</a>
+</h5></div></div></div>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                <a name="ref_tt_extent"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">CallWrapperType</span><span class="special">&gt;</span></code><br>
+                <code class="computeroutput"><span class="keyword">struct</span> <span class="identifier">extent</span><span class="special">;</span></code><br> <span class="bold"><strong>Returns</strong></span>:
+                <code class="computeroutput"><span class="identifier">extent</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">&gt;::</span><span class="identifier">value</span></code> is a non-negative integral
+                constant equals to the number of call signatures supported by <code class="computeroutput"><span class="identifier">CallWrapperType</span></code>.<br> <br>
+              </li>
+<li class="listitem">
+                <a name="ref_tt_signature"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">CallWrapperType</span><span class="special">,</span>
+                <span class="keyword">unsigned</span> <span class="keyword">int</span>
+                <span class="identifier">I</span><span class="special">&gt;</span></code><br>
+                <code class="computeroutput"><span class="keyword">struct</span> <span class="identifier">signature</span><span class="special">;</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                The index <code class="computeroutput"><span class="identifier">I</span></code> is such
+                that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code> where <code class="computeroutput"><span class="identifier">N</span>
+                <span class="special">=</span> <a class="link" href="references.html#ref_tt_extent">extent</a><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">&gt;::</span><span class="identifier">value</span></code>.<br>
+                <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="identifier">signature</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code>
+                is the <code class="computeroutput"><span class="special">(</span><span class="identifier">I</span><span class="special">+</span><span class="number">1</span><span class="special">)</span></code>-th call signature listed in the
+                template argument list of <code class="computeroutput"><span class="identifier">CallWrapperType</span></code>.<br>
+                <br>
+              </li>
+<li class="listitem">
+                <a name="ref_tt_function"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">CallWrapperType</span><span class="special">,</span>
+                <span class="keyword">unsigned</span> <span class="keyword">int</span>
+                <span class="identifier">I</span><span class="special">&gt;</span></code><br>
+                <code class="computeroutput"><span class="keyword">struct</span> <span class="identifier">function</span><span class="special">;</span></code><br> <span class="bold"><strong>Requires</strong></span>:
+                The index <code class="computeroutput"><span class="identifier">I</span></code> is such
+                that <code class="computeroutput"><span class="number">0</span><span class="special">&lt;=</span><span class="identifier">I</span><span class="special">&lt;</span><span class="identifier">N</span></code> where <code class="computeroutput"><span class="identifier">N</span>
+                <span class="special">=</span> <span class="identifier">extent</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">&gt;::</span><span class="identifier">value</span></code>.<br>
+                <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="identifier">function</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code>
+                is the same as <code class="computeroutput"><a href="http://www.boost.org/doc/libs/release/doc/html/boost/functionN.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">function</span></code></a><span class="special">&lt;</span><span class="identifier">S</span><span class="special">&gt;</span></code>,
+                where <code class="computeroutput"><span class="identifier">S</span></code> is the call
+                signature <code class="computeroutput"><a class="link" href="references.html#ref_tt_signature">signature</a><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code>.<br>
+                <br>
+              </li>
+<li class="listitem">
+                <a name="ref_tt_index_of_sig"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">CallWrapperType</span><span class="special">,</span>
+                <span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                <span class="identifier">index_of_signature</span><span class="special">;</span></code><br>
+                <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="identifier">index_of_signature</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">value</span></code>
+                is an integral constant that represents the position, starting from
+                0, of the call signature <code class="computeroutput"><span class="identifier">Signature</span></code>
+                in the template argument list of <code class="computeroutput"><span class="identifier">CallWrapperType</span></code>
+                if it is present and <code class="computeroutput"><span class="special">-</span><span class="number">1</span></code> otherwise .<br> <br>
+              </li>
+<li class="listitem">
+                <a name="ref_tt_has_signature"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">CallWrapperType</span><span class="special">,</span>
+                <span class="keyword">typename</span> <span class="identifier">Signature</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                <span class="identifier">has_signature</span><span class="special">;</span></code><br>
+                <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="identifier">has_signature</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="identifier">Signature</span><span class="special">&gt;::</span><span class="identifier">value</span></code>
+                is a boolean constant equals to <code class="computeroutput"><span class="keyword">true</span></code>
+                if <code class="computeroutput"><span class="identifier">CallWrapperType</span></code>
+                supports the call signature <code class="computeroutput"><span class="identifier">Signature</span></code>
+                and <code class="computeroutput"><span class="keyword">false</span></code> otherwise.<br>
+                <br>
+              </li>
+<li class="listitem">
+                <a name="ref_tt_have_any_shared_sig"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">CallWrapperType</span><span class="special">,</span>
+                <span class="keyword">typename</span> <span class="identifier">Functor</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                <span class="identifier">have_any_shared_signature</span><span class="special">;</span></code><br> <span class="bold"><strong>Returns</strong></span>:
+                <code class="computeroutput"><span class="identifier">have_any_shared_signature</span><span class="special">&lt;</span><span class="identifier">CallWrapperType</span><span class="special">,</span> <span class="identifier">Functor</span><span class="special">&gt;::</span><span class="identifier">value</span></code>
+                is a boolean constant equals to <code class="computeroutput"><span class="keyword">true</span></code>
+                if <code class="computeroutput"><span class="identifier">CallWrapperType</span></code>
+                shares at least one call signature with the <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                object type</a> <code class="computeroutput"><span class="identifier">Functor</span></code>.<br>
+                <br>
+              </li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="boost_overload.references.boost_overload_make_overload_hpp"></a><a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp" title="&lt;boost/overload/make_overload.hpp&gt;">&lt;boost/overload/make_overload.hpp&gt;</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload">Generative
+        function make_overload</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.description">Description</a></span></dt>
+</dl></dd>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload"></a><a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload" title="Generative function make_overload">Generative
+        function make_overload</a>
+</h4></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.description">Description</a></span></dt>
+</dl></div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.synopsis"></a><a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.synopsis" title="Synopsis">Synopsis</a>
+</h5></div></div></div>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">{</span> <span class="keyword">namespace</span> <span class="identifier">overloads</span><span class="special">{</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span>
+             <span class="keyword">typename</span> <span class="identifier">F2</span> <span class="special">=</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">no_function</span><span class="special">,</span>
+             <span class="special">.</span>
+             <span class="special">.</span>
+             <span class="keyword">typename</span> <span class="identifier">FK</span> <span class="special">=</span> <span class="identifier">detail</span><span class="special">::</span><span class="identifier">no_function</span><span class="special">&gt;</span> <span class="comment">// K == BOOST_OVERLOAD_LIMITS</span>
+    <span class="keyword">struct</span> <span class="identifier">make_overload_type</span><span class="special">;</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <span class="identifier">make_overload_type</span><span class="special">&lt;</span><span class="identifier">F1</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">make_overload</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;</span> <span class="special">);</span>
+
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span> <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <span class="identifier">make_overload_type</span><span class="special">&lt;</span><span class="identifier">F1</span><span class="special">,</span> <span class="identifier">F2</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">make_overload</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;</span> <span class="special">,</span> <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;);</span>
+    <span class="special">.</span>
+    <span class="special">.</span>
+    <span class="special">.</span>
+    <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F1</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">FK</span><span class="special">&gt;</span> <span class="comment">// K == BOOST_OVERLOAD_LIMITS</span>
+    <span class="keyword">typename</span> <span class="identifier">make_overload_type</span><span class="special">&lt;</span><span class="identifier">F1</span><span class="special">,</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">FK</span><span class="special">&gt;::</span><span class="identifier">type</span>
+    <span class="identifier">make_overload</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;</span> <span class="special">,</span> <span class="keyword">const</span> <span class="identifier">F2</span><span class="special">&amp;,</span> <span class="special">...,</span><span class="keyword">const</span> <span class="identifier">FK</span><span class="special">&amp;</span> <span class="special">);</span>
+
+<span class="special">}</span> <span class="special">}</span> <span class="comment">// end namespaces</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h5 class="title">
+<a name="boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.description"></a><a class="link" href="references.html#boost_overload.references.boost_overload_make_overload_hpp.generative_function_make_overload.description" title="Description">Description</a>
+</h5></div></div></div>
+<p>
+            In the following context <code class="computeroutput"><span class="identifier">N</span></code>
+            is an integral constant between 1 and <code class="computeroutput"><span class="identifier">K</span><span class="special">=</span><span class="identifier">BOOST_OVERLOAD_LIMITS</span></code>.
+          </p>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+                <a name="ref_make_overload_type"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">F1</span> <span class="special">,</span>
+                <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">FK</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">struct</span>
+                <span class="identifier">make_overload_type</span><span class="special">;</span></code><br>
+                <span class="bold"><strong>Requires</strong></span>: <code class="computeroutput"><span class="identifier">F1</span><span class="special">,</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">FK</span></code> are <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                object type</a>s with different call signatures or the <code class="computeroutput"><span class="identifier">detail</span><span class="special">::</span><span class="identifier">no_function</span></code> type.<br> <span class="bold"><strong>Returns</strong></span>: <code class="computeroutput"><span class="identifier">make_overload_type</span><span class="special">&lt;</span><span class="identifier">F1</span><span class="special">,</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">FN</span><span class="special">&gt;::</span><span class="identifier">type</span></code> is the same type as <code class="computeroutput"><a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a><span class="special">&lt;</span><span class="identifier">S1</span><span class="special">,</span> <span class="identifier">S2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">SN</span><span class="special">&gt;</span></code> where <code class="computeroutput"><span class="identifier">SI</span></code>
+                is the call signature of the <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                object type</a> <code class="computeroutput"><span class="identifier">FI</span></code>,
+                for <code class="computeroutput"><span class="identifier">I</span><span class="special">=</span><span class="number">1</span><span class="special">,..</span><span class="identifier">N</span></code>.<br> <br>
+              </li>
+<li class="listitem">
+                <a name="ref_make_overload"></a> <code class="computeroutput"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span>
+                <span class="identifier">F1</span> <span class="special">,</span>
+                <span class="keyword">typename</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="keyword">typename</span> <span class="identifier">FN</span><span class="special">&gt;</span></code><br> <code class="computeroutput"><span class="keyword">typename</span>
+                <span class="identifier">make_overload_type</span><span class="special">&lt;</span><span class="identifier">F1</span><span class="special">,</span> <span class="identifier">F2</span><span class="special">,</span> <span class="special">...,</span> <span class="identifier">FN</span><span class="special">&gt;::</span><span class="identifier">type</span></code><br>
+                <code class="computeroutput"><span class="identifier">make_overload</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">F1</span><span class="special">&amp;</span> <span class="identifier">f1</span><span class="special">,</span> <span class="keyword">const</span>
+                <span class="identifier">F2</span><span class="special">&amp;</span>
+                <span class="identifier">f2</span><span class="special">,</span>
+                <span class="special">...,</span><span class="keyword">const</span>
+                <span class="identifier">FN</span><span class="special">&amp;</span>
+                <span class="identifier">fN</span><span class="special">);</span></code><br>
+                <span class="bold"><strong>Requires</strong></span>: <code class="computeroutput"><span class="identifier">f1</span><span class="special">,</span><span class="identifier">f2</span><span class="special">,...,</span><span class="identifier">fN</span></code>
+                are monomorphic <a class="link" href="design_and_definitions.html#boost_overload.design_and_definitions.definitions.call_signatures_and_callable_objects" title="Call Signatures and Callable Objects">callable
+                object</a>s each supporting a different call signature.<br>
+                <span class="bold"><strong>Returns</strong></span>: An <a class="link" href="references.html#boost_overload.references.boost_overload_hpp.class_template_overload" title="Class template overload"><code class="computeroutput"><span class="identifier">overload</span></code></a> object <code class="computeroutput"><span class="identifier">f</span></code> that supports all and only the
+                call signatures supported by f1, ..., fN and that for each <code class="computeroutput"><span class="identifier">I</span><span class="special">=</span><span class="number">1</span><span class="special">,...,</span><span class="identifier">N</span></code> the object target related to
+                the call signature <code class="computeroutput"><a class="link" href="references.html#ref_overload_tt_signature">signature</a><span class="special">&lt;</span><span class="identifier">I</span><span class="special">&gt;::</span><span class="identifier">type</span></code>
+                is a copy of <code class="computeroutput"><span class="identifier">fI</span></code>.<br>
+                <br>
+              </li>
+</ol></div>
+</div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2007-2012 Marco Cecchetti, Dean Michael Berris<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="design_and_definitions.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="acknowledgements.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -4,16 +4,15 @@
 
 
 #include <string>
-#include <iostream>
 #include <boost/function.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
-void foo0(std::string s1, std::string s2, std::string s3)
+int foo0(std::string , std::string , std::string )
 {
-    std::cout << s1 << s2 << s3  << std::endl;
+    return 12;
 }
 
-typedef void sig0_t (std::string , std::string , std::string );
+typedef int sig0_t (std::string , std::string , std::string );
 typedef sig0_t* f0_t;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,7 +32,7 @@ struct bar2
 {
     double foo2(int, char ) const
     {
-        return 123.456;
+        return 234.0;
     }
 };
 
@@ -43,7 +42,12 @@ typedef double (bar2::* f2_t) (int, char ) const;
 ///////////////////////////////////////////////////////////////////////////////
 char foo3(std::string )
 {
-    return 'x';
+    return 'Y';
+}
+
+char foo3b(std::string )
+{
+    return 'Z';
 }
 
 typedef char sig3_t (std::string );
@@ -55,7 +59,7 @@ struct foo4
 {
     int operator() (char )
     {
-        return 123;
+        return 456;
     }
 };
 
@@ -67,7 +71,7 @@ struct foo5
 {
     double operator() (int, char ) const
     {
-        return 123.456;
+        return 567.0;
     }
 };
 
@@ -77,33 +81,33 @@ typedef foo5 f5_t;
 ///////////////////////////////////////////////////////////////////////////////
 struct foo6
 {
-    double operator() (float x)
+    double operator() (float )
     {
-        return x + 1;
+        return 6781.0;
     }
 
-    double operator() (float x, float y)
+    double operator() (float , float )
     {
-        return x + y;
+        return 6782.0;
     }
 };
 
-typedef double sig6_t (float );
-typedef double sig7_t (float, float );
+typedef double sig6_1_t (float );
+typedef double sig6_2_t (float, float );
 typedef foo6 f6_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct foo7
 {
     template<typename T> 
-    T operator()(T x)
+    T operator()(T )
     {
-        return x + 1;
+        return (789 + sizeof(T));
     }
 };
 
-typedef int sig8_t (int );
-typedef double sig9_t (double );
+typedef int sig7_1_t (int );
+typedef double sig7_2_t (double );
 typedef foo7 f7_t;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,37 +116,37 @@ int foo8( double & )
     return 8;
 }
 
-typedef int sig10_t (double& );
-typedef sig10_t* f8_t;
+typedef int sig8_t (double& );
+typedef sig8_t* f8_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 struct bar9
 {
-    int foo9( double** )
+    int foo9_1( double** )
     {
         return 9;
     }
 
-    int foo10( double* const& ) const
+    int foo9_2( double* const& ) const
     {
         return 10;
     }
 };
-typedef int sig11_t (bar9*, double** );
-typedef int (bar9::* f9_t) (double** );
-typedef int sig12_t (bar9*, double* const& );
-typedef int (bar9::* f10_t) (const double* & ) const;
+typedef int sig9_1_t (bar9*, double** );
+typedef int (bar9::* f9_1_t) (double** );
+typedef int sig9_2_t (bar9*, double* const& );
+typedef int (bar9::* f9_2_t) (const double* & ) const;
 
 ///////////////////////////////////////////////////////////////////////////////
-struct bar11
+struct bar10
 {
-    int foo11( double** ) const
+    int foo10( double** ) const
     {
         return 11;
     }
 };
-typedef int sig13_t (bar11*, double** );
-typedef int (bar11::* f11_t) ( double** ) const;
+typedef int sig10_t (bar10*, double** );
+typedef int (bar10::* f10_t) ( double** ) const;
 
 ///////////////////////////////////////////////////////////////////////////////
 int foo12(int, int )

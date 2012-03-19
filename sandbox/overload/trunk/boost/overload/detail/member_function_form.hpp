@@ -1,5 +1,5 @@
 /*=============================================================================
-    Copyright (c) 2007 Marco Cecchetti
+    Copyright (c) 2007-2012 Marco Cecchetti
 
     Use, modification and distribution is subject to the Boost Software
     License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
@@ -16,7 +16,7 @@
 
 #include "member_function_trait.hpp"
 
-#define OVL_MEMB_FUNC_FORM(z, n, unused) \
+#define BOOST_OVERLOAD_MEMB_FUNC_FORM(z, n, unused) \
 template< typename ClassT,                                                     \
           typename R BOOST_PP_ENUM_TRAILING_PARAMS(n, typename A) >            \
 struct memb_func_form<                                                         \
@@ -60,7 +60,7 @@ struct memb_func_form<                                                         \
 {                                                                              \
 };                                                                             \
 
-// end macro OVL_MEMB_FUNC_FORM
+// end macro BOOST_OVERLOAD_MEMB_FUNC_FORM
 
 namespace boost{ namespace overloads{ namespace detail{
 
@@ -76,15 +76,15 @@ struct is_interface_func
     typedef typename boost::function_traits<Signature>::arg1_type arg_type;
     typedef typename boost::remove_pointer<arg_type>::type candidate_type;
   public:
-      static const bool value 
-          = boost::is_class<candidate_type>::value
-          && boost::is_pointer<arg_type>::value;
+    BOOST_STATIC_CONSTANT( bool, value
+          = (boost::is_class<candidate_type>::value
+          && boost::is_pointer<arg_type>::value) );
 };
 
 template< typename Signature >
 struct is_interface_func<Signature, 0>
 {
-    static const bool value = false;
+    BOOST_STATIC_CONSTANT( bool, value = false );
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,11 +100,11 @@ template< typename Signature,
 struct memb_func_form
 {};
 
-BOOST_PP_REPEAT(BOOST_OVERLOAD_LIMIT, OVL_MEMB_FUNC_FORM, unused)
+BOOST_PP_REPEAT(BOOST_OVERLOAD_MAX_NUM_ARGS, BOOST_OVERLOAD_MEMB_FUNC_FORM, unused)
 
 } } } // end namespaces
 
-#undef OVL_MEMB_FUNC_FORM
+#undef BOOST_OVERLOAD_MEMB_FUNC_FORM
 
 #endif // _BOOST_OVERLOAD_DETAIL_MEMBER_FUNCTION_FORM_HPP_
 
