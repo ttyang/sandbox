@@ -93,7 +93,8 @@ void Browser::exec()
 
     QMessageBox msgBox;
     //QString dagStr = dagmo->toString();
-    QString dagStr = dagmo->dagToString();
+    //QString dagStr = dagmo->dagToString();
+    QString dagStr = dagmo->setupDag();
     msgBox.setText(dagStr);
     msgBox.exec();
 

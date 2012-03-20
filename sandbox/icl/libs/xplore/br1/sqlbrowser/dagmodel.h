@@ -71,6 +71,7 @@ public:
     void makeDag();
 
     QString dagToString();
+    QString setupDag();
 
     DagItem* fromSql(QSqlQuery& query, DagItem* node, int depth);
 
@@ -82,7 +83,6 @@ public:
 
 private:
     void setupModelData(const QStringList &lines, DagItem *parent);
-    void setupDag(DagItem *parent);
 
     DagItem *getItem(const QModelIndex &index) const;
 

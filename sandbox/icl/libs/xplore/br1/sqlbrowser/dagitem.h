@@ -11,12 +11,15 @@
 #include <QVector>
 
 
+typedef QVector<QVariant> tVariVector;
+
 class DagItem
 {
 public:
+
     static const int NodeType_Object = 2;
 
-    DagItem(const QVector<QVariant> &data, DagItem *parent = 0);
+    DagItem(const tVariVector &data, DagItem *parent = 0);
     ~DagItem();
 
     DagItem *child(int number);
@@ -36,10 +39,8 @@ public:
 
 private:
     QList<DagItem*> childItems;
-    QVector<QVariant> itemData;
-    DagItem *parentItem;
-    // int m_selectedParent;
-    // QList<DagItem*> m_parentItems;
+    tVariVector     itemData;
+    DagItem         *parentItem;
 };
 
 #endif

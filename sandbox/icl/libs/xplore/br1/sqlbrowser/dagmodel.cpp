@@ -9,6 +9,7 @@
 #include "dagitem.h"
 #include "dagmodel.h"
 #include "StringVisitor.h"
+#include "CreatorVisitor.h"
 
 using namespace boost;
 
@@ -263,19 +264,21 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
     }
 }
 
-void DagModel::setupDag(DagItem *parent)
+QString DagModel::setupDag()
 {
-    /*JODO CONT
+    QString dagAsString; //JODO CL
+
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
-                                              creater::node_start(m_rootItem, m_nodeAttributes)
-                                            , creater::OnExamineEdge(m_rootItem, m_nodeAttributes)
-                                            , creater::node_stop (m_rootItem, m_nodeAttributes)
+                                              CreatorVisitor::OnDiscoverVertex(m_rootItem, &dagAsString, m_nodeAttributes)
+                                            , CreatorVisitor::OnExamineEdge   (m_rootItem, &dagAsString, m_nodeAttributes)
+                                            , CreatorVisitor::OnFinishVertex  (m_rootItem, &dagAsString, m_nodeAttributes)
                                             )
                       ))
     );
-    */
+
+    return dagAsString;
 }
 
 void DagModel::getEdges(QSqlQuery& query)
