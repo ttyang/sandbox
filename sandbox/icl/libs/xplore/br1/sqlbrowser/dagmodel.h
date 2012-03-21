@@ -80,6 +80,7 @@ public:
 
     QString nodeToString(DagItem* node, int depth)const;
 
+    DagItem* rootItem()const { return m_rootItem; } //CL DBG
 
 private:
     void setupModelData(const QStringList &lines, DagItem *parent);

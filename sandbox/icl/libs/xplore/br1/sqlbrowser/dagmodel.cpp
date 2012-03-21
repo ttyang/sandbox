@@ -21,7 +21,10 @@ DagModel::DagModel(const QStringList &headers, //const QString &data,
     foreach (QString header, headers)
         rootData << header;
 
-    //m_rootItem = new DagItem(rootData);
+    rootData.resize(dag::node::sizeOf_node);
+    rootData[dag::node::posId] = QVariant(0);
+    rootData[dag::node::posName] = QVariant("NIL");
+    m_rootItem = new DagItem(rootData);
     //setupModelData(data.split(QString("\n")), m_rootItem);
 }
 

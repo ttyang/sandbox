@@ -94,8 +94,11 @@ void Browser::exec()
     QMessageBox msgBox;
     //QString dagStr = dagmo->toString();
     //QString dagStr = dagmo->dagToString();
-    QString dagStr = dagmo->setupDag();
+    QString dagStr  = dagmo->setupDag();
+    QString dagStr2 = dagmo->rootItem()->toString();
     msgBox.setText(dagStr);
+    msgBox.exec();
+    msgBox.setText(dagStr2);
     msgBox.exec();
 
     model->setQuery(curQuery);

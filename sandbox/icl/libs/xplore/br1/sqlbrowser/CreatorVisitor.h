@@ -21,34 +21,40 @@ struct CreatorVisitor
     struct OnDiscoverVertex : public boost::base_visitor<OnDiscoverVertex>
     {
         OnDiscoverVertex(DagItem* curItem, QString* result, Dag::tAttributesMap& attrs)
-            : p_curItem(curItem), p_result(result), r_attrs(attrs){}
+            : p_curItem(curItem), p_result(result), r_attrs(attrs)
+        {
+            r_attrs[0].setDagItem(p_curItem); //Root node
+        }
 
         typedef boost::on_discover_vertex event_filter;
 
         template<class Vertex, class Graph>
         void operator()(Vertex node, Graph& dag)
         {
+            // "Visitation by descent". All nodes are reached through this function on
+            // descend, which is always done first for "depth first search. Therefore
+            // we can create all nodes for the Qt DagModel in this functor:
+            //
             // Create a DagItem. The node that has been visited last should be the parent.
             // While we are descending, we build a chain going "down".
 
-            tVariVector itemData(2); // ItemData node(id, name, ..) will only by a part of
-                                  // the data from sql that represented edges. Via r_attrs
-                                  // we only obtain associated node data from the boost::graph
+            tVariVector itemData(dag::node::sizeOf_node); // ItemData node(id, name, ..)
+                             // will only by a part of the data from sql that represented
+                             // edges. Via r_attrs we only obtain associated node data
+                             // from the boost::graph
             dag::copyBoostNode2DagItem(r_attrs[node], itemData);
 
             // Discoverage is always on the way down. So we should maintain the invariant
-            //JODO p_curItem is parent wrt. itemData.
-            DagItem* newItem = new DagItem(itemData, p_curItem);
+            // p_curItem should be initialized to the DagModel's DatItem* rootItem
 
             if(boost::out_degree(node, dag) > 0)
             {
                 *p_result += indentation(r_attrs[node].depth()) + "(";
                 *p_result += r_attrs[node].name();
-                *p_result += " = " + newItem[dag::node::posName].name();
+                *p_result += QString(" d:%1").arg(r_attrs[node].depth());
+                *p_result += " -> " + (p_curItem==0 ? QString("{}") : p_curItem->data()[dag::node::posName].toString());
                 *p_result += "\n";
             }
-
-            p_curItem = newItem;
         }
 
         //CL Example for iterating over edges.
@@ -74,20 +80,43 @@ struct CreatorVisitor
     struct OnExamineEdge : public boost::base_visitor<OnExamineEdge>
     {
         OnExamineEdge(DagItem* curItem, QString* result, Dag::tAttributesMap& names)
-            : p_curItem(curItem), p_result(result), r_attrs(names){}
+            : p_curItem(curItem), p_result(result), r_attrs(names)
+        {
+            r_attrs[0].setDagItem(p_curItem); //Root node
+        }
 
         typedef boost::on_examine_edge event_filter;
 
         template<class Edge, class Graph>
         void operator()(Edge edge, Graph& dag)
         {
-            int source_depth = r_attrs[source(edge, dag)].depth();
+            Dag::vertex_descriptor source_node = source(edge, dag);
+            Dag::vertex_descriptor target_node = target(edge, dag);
+            int source_depth = r_attrs[source_node].depth();
             int target_depth = source_depth + 1;
-            r_attrs[target(edge, dag)].setDepth(target_depth);
+            r_attrs[target_node].setDepth(target_depth);
+            DagItem* sourceDagItem = r_attrs[source_node].dagItem();
+            DagItem* targetDagItem = r_attrs[target_node].dagItem();
+
+            Q_ASSERT(sourceDagItem);
+
+            if(p_curItem != sourceDagItem)
+                p_curItem = sourceDagItem;
+
+            if(targetDagItem)
+                sourceDagItem->addChild(targetDagItem);
+            else
+            {
+                tVariVector itemData(dag::node::sizeOf_node);
+                dag::copyBoostNode2DagItem(r_attrs[target_node], itemData);
+                DagItem* newDagItem = new DagItem(itemData, p_curItem);
+                sourceDagItem->addChild(newDagItem);
+                r_attrs[target_node].setDagItem(newDagItem);
+            }
 
             if(boost::out_degree(target(edge, dag), dag)==0)
             {
-                *p_result += indentation(target_depth) + r_attrs[target(edge, dag)].name();
+                *p_result += indentation(target_depth) + r_attrs[target(edge, dag)].name() + " ?";
                 *p_result += "\n";
             }
         }
@@ -100,7 +129,10 @@ struct CreatorVisitor
     struct OnFinishVertex : public boost::base_visitor<OnFinishVertex>
     {
         OnFinishVertex(DagItem* curItem, QString* result, Dag::tAttributesMap& names)
-            : p_curItem(curItem), p_result(result), r_attrs(names){}
+            : p_curItem(curItem), p_result(result), r_attrs(names)
+        {
+            r_attrs[0].setDagItem(p_curItem); //Root node
+        }
 
         typedef boost::on_finish_vertex event_filter;
 
@@ -119,5 +151,5 @@ struct CreatorVisitor
         Dag::tAttributesMap& r_attrs;
     };
 
-}; // StringVisitor
+}; // CreatorVisitor
 

@@ -24,8 +24,8 @@ class NodeAttributes
 {
 public:
     NodeAttributes(): m_name(), m_depth() {}
-    NodeAttributes(const QString& name): m_name(name), m_depth() {}
-    NodeAttributes(const QString& name, int depth): m_name(name), m_depth(depth) {}
+    NodeAttributes(const QString& name): m_name(name), m_depth(), p_dagItem() {}
+    NodeAttributes(const QString& name, int depth): m_name(name), m_depth(depth), p_dagItem() {}
 
     void setName(const QString& name) { m_name  = name;  }
     QString name()const { return m_name; }
@@ -33,11 +33,15 @@ public:
     void setDepth(int depth){ m_depth = depth; }
     int depth()const { return m_depth; }
 
+    void setDagItem(DagItem* dagItem) { p_dagItem = dagItem; }
+    DagItem* dagItem()const { return p_dagItem; }
+
     int inc(){ return ++m_depth; }
 
 private:
-    QString m_name;
-    int     m_depth;
+    QString  m_name;
+    int      m_depth;
+    DagItem* p_dagItem;
 };
 
 namespace dag
@@ -64,8 +68,8 @@ namespace dag
 
     inline void copyBoostNode2DagItem(const NodeAttributes& src, tVariVector& target)//JODO cpp
     {
-        target[dag::node::posId]   = 0;
-        target[dag::node::posName] = src.name();
+        target[dag::node::posId]   = QVariant(0);
+        target[dag::node::posName] = QVariant(src.name());
     }
 }//namespace dag
 

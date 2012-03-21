@@ -11,6 +11,7 @@
 
 #include <QStringList>
 
+#include "Dag.h"
 #include "dagitem.h"
 
 DagItem::DagItem(const QVector<QVariant> &data, DagItem *parent)
@@ -144,5 +145,23 @@ bool DagItem::setData(int column, const QVariant &value)
 
     itemData[column] = value;
     return true;
+}
+
+
+QString DagItem::toString()
+{
+    if(childCount()==0)
+        return itemData[dag::node::posName].toString() + "\n";
+    else
+    {
+        QString children = "(";
+        children += itemData[dag::node::posName].toString() + "\n";
+
+        for(int idx=0; idx < childCount(); idx++)
+            children += child(idx)->toString() + "\n";
+
+        children += ")";
+        return children;
+    }
 }
 

@@ -37,6 +37,10 @@ public:
     void addChild(DagItem* child);
     bool isLeaf(int TypeId)const { return itemData[TypeId] == NodeType_Object; }
 
+    tVariVector data()const { return itemData; }
+
+    QString toString(); //DBG CL
+
 private:
     QList<DagItem*> childItems;
     tVariVector     itemData;
