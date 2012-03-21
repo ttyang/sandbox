@@ -58,7 +58,7 @@ public:
     x_max_ = 0;
   }
 
-  bool contains(coordinate_type x, coordinate_type y) 	 {
+  bool contains(coordinate_type x, coordinate_type y) const {
     return x > x_min_ && x < x_max_ && y > y_min_ && y < y_max_;
   }
 
