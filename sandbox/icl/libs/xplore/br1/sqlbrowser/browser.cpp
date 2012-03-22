@@ -88,14 +88,17 @@ void Browser::exec()
 
     // Populate the Dag Model from an sql-Query
     //JODO dagmo->fromSql(xpQuery);
-    dagmo->getEdges(xpQuery);
-    dagmo->makeDag();
+
+    dagmo->getEdges(xpQuery);  //Read edges from database
+    dagmo->makeDag();          //Make a boost::graph internally
 
     QMessageBox msgBox;
     //QString dagStr = dagmo->toString();
     //QString dagStr = dagmo->dagToString();
-    QString dagStr  = dagmo->setupDag();
+    QString dagStr  = dagmo->setupDag(); //Build a tree representation from the boost::dag
     QString dagStr2 = dagmo->rootItem()->toString();
+
+    //DBG Check structure via generated strings representing the structure.
     msgBox.setText(dagStr);
     msgBox.exec();
     msgBox.setText(dagStr2);
@@ -105,7 +108,7 @@ void Browser::exec()
     //REV? model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
 
     ext_table->setModel(model);
-    ext_tree->setModel(model);//JOFA
+    ext_tree->setModel(dagmo);//JOFA
 
     //JOFA additions ----------------------------------------------------------
     ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);

@@ -42,6 +42,10 @@ public:
     QString toString(); //DBG CL
 
 private:
+    QString toString(int depth); //DBG CL
+
+
+private:
     QList<DagItem*> childItems;
     tVariVector     itemData;
     DagItem         *parentItem;

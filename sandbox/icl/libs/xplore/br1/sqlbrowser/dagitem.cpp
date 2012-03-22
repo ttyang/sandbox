@@ -150,18 +150,22 @@ bool DagItem::setData(int column, const QVariant &value)
 
 QString DagItem::toString()
 {
+    return toString(0);
+}
+
+QString DagItem::toString(int depth)
+{
     if(childCount()==0)
-        return itemData[dag::node::posName].toString() + "\n";
+        return indentation(depth) + itemData[dag::node::posName].toString();
     else
     {
-        QString children = "(";
+        QString children = indentation(depth) + "(";
         children += itemData[dag::node::posName].toString() + "\n";
 
         for(int idx=0; idx < childCount(); idx++)
-            children += child(idx)->toString() + "\n";
+            children += child(idx)->toString(depth+1) + "\n";
 
-        children += ")";
+        children += indentation(depth) + ")";
         return children;
     }
 }
-

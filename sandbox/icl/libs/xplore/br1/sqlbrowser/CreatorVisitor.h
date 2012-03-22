@@ -24,6 +24,7 @@ struct CreatorVisitor
             : p_curItem(curItem), p_result(result), r_attrs(attrs)
         {
             r_attrs[0].setDagItem(p_curItem); //Root node
+            r_attrs[0].setParentItem(0);      //Root node
         }
 
         typedef boost::on_discover_vertex event_filter;
@@ -82,7 +83,7 @@ struct CreatorVisitor
         OnExamineEdge(DagItem* curItem, QString* result, Dag::tAttributesMap& names)
             : p_curItem(curItem), p_result(result), r_attrs(names)
         {
-            r_attrs[0].setDagItem(p_curItem); //Root node
+            //CL r_attrs[0].setDagItem(p_curItem); //Root node
         }
 
         typedef boost::on_examine_edge event_filter;
@@ -112,6 +113,8 @@ struct CreatorVisitor
                 DagItem* newDagItem = new DagItem(itemData, p_curItem);
                 sourceDagItem->addChild(newDagItem);
                 r_attrs[target_node].setDagItem(newDagItem);
+                newDagItem->setData(dag::node::posParentId, newDagItem->parent()->data(dag::node::posId));
+                newDagItem->setData(dag::node::posParentName, newDagItem->parent()->data(dag::node::posName));
             }
 
             if(boost::out_degree(target(edge, dag), dag)==0)
@@ -131,7 +134,6 @@ struct CreatorVisitor
         OnFinishVertex(DagItem* curItem, QString* result, Dag::tAttributesMap& names)
             : p_curItem(curItem), p_result(result), r_attrs(names)
         {
-            r_attrs[0].setDagItem(p_curItem); //Root node
         }
 
         typedef boost::on_finish_vertex event_filter;

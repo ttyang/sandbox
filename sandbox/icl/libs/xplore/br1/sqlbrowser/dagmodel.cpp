@@ -281,6 +281,15 @@ QString DagModel::setupDag()
                       ))
     );
 
+    // Here I can change the headers by altering some attributes for root.
+    m_rootItem->setData(dag::node::posName, QVariant("Name"));
+    //JODO It is not possible to do this:
+    //m_rootItem->setData(dag::node::posId,   QVariant("Id"));
+    //JODO So: Provide headers as strings before this point.
+
+    m_rootItem->setData(dag::node::posParentId, QVariant(0));
+    m_rootItem->setData(dag::node::posParentName, QVariant("Parent"));
+
     return dagAsString;
 }
 
@@ -322,8 +331,8 @@ void DagModel::makeDag()
         if(!(source==0 && target==0))
         {
             boost::add_edge(source, target, m_dag);
-            m_nodeAttributes[source] = (*iter)[m_parentName].toString();
-            m_nodeAttributes[target] = (*iter)[m_childName].toString();
+            m_nodeAttributes[source] = NodeAttributes((*iter)[m_parentName].toString(), source);
+            m_nodeAttributes[target] = NodeAttributes((*iter)[m_childName].toString(),  target);
         }
     }
 }

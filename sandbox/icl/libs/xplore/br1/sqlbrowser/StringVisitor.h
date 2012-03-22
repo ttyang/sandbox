@@ -13,14 +13,6 @@
 #include "Dag.h"
 
 
-inline QString indentation(int depth)
-{
-    QString indent;
-    for(int idx=0; idx < depth; idx++)
-        indent += "    ";
-    return indent;
-}
-
 
 struct StringVisitor
 {

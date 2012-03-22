@@ -12,6 +12,15 @@
 
 #include "dagitem.h"
 
+inline QString indentation(int depth)
+{
+    QString indent;
+    for(int idx=0; idx < depth; idx++)
+        indent += "    ";
+    return indent;
+}
+
+
 
 // An object to collect results on graph traversal.
 // The object stores all the information, that shall be associated to graph nodes.
@@ -23,9 +32,8 @@
 class NodeAttributes
 {
 public:
-    NodeAttributes(): m_name(), m_depth() {}
-    NodeAttributes(const QString& name): m_name(name), m_depth(), p_dagItem() {}
-    NodeAttributes(const QString& name, int depth): m_name(name), m_depth(depth), p_dagItem() {}
+    NodeAttributes(): m_nodeId(), m_name(), m_depth() {}
+    NodeAttributes(const QString& name, int id): m_nodeId(id), m_name(name), m_depth(), p_dagItem() {}
 
     void setName(const QString& name) { m_name  = name;  }
     QString name()const { return m_name; }
@@ -33,16 +41,26 @@ public:
     void setDepth(int depth){ m_depth = depth; }
     int depth()const { return m_depth; }
 
+    void setNodeId(int nodeId) { m_nodeId = nodeId; }
+    int nodeId()const { return m_nodeId; }
+
     void setDagItem(DagItem* dagItem) { p_dagItem = dagItem; }
     DagItem* dagItem()const { return p_dagItem; }
+
+    void setParentItem(DagItem* parentItem) { p_parentItem = parentItem; }
+    DagItem* parentItem()const { return p_parentItem; }
 
     int inc(){ return ++m_depth; }
 
 private:
+    int      m_nodeId;
     QString  m_name;
     int      m_depth;
     DagItem* p_dagItem;
+    DagItem* p_parentItem;
 };
+
+//JODO: m_depth/depth() may be removed. It's currently only needed for debugging.
 
 namespace dag
 {
@@ -62,13 +80,15 @@ namespace dag
     {
         enum {  posId  = 0
              ,  posName
+             ,  posParentId
+             ,  posParentName
              ,  sizeOf_node
              };
     }
 
     inline void copyBoostNode2DagItem(const NodeAttributes& src, tVariVector& target)//JODO cpp
     {
-        target[dag::node::posId]   = QVariant(0);
+        target[dag::node::posId]   = QVariant(src.nodeId());
         target[dag::node::posName] = QVariant(src.name());
     }
 }//namespace dag
