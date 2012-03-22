@@ -69,8 +69,7 @@ public:
   const voronoi_edge_type *incident_edge() const { return incident_edge_; }
   void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
-  void *data() { return data_; }
-  const void *data() const { return data_; }
+  void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
 
 private:
@@ -104,8 +103,7 @@ public:
   const voronoi_edge_type *incident_edge() const { return incident_edge_; }
   void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
-  void *data() { return data_; }
-  const void *data() const { return data_; }
+  void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
 
 private:
@@ -162,8 +160,7 @@ public:
   const voronoi_edge_type *prev() const { return prev_; }
   void prev(voronoi_edge_type *e) { prev_ = e; }
 
-  void *data() { return data_; }
-  const void *data() const { return data_; }
+  void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
 
   // Return a pointer to the rotation next edge
