@@ -5,6 +5,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
@@ -311,7 +312,7 @@ void insert_sites(<br>
 				</td>
 				<td style="vertical-align: top;">At least 8X-bit signed integer 
 				type for voronoi of points.<br>
-				At least 128X-bit signed integer type for voronoi of segments.<br>
+				At least 64X-bit signed integer type for voronoi of segments.<br>
 				</td>
 			</tr>
 			<tr>
@@ -319,7 +320,7 @@ void insert_sites(<br>
 				fpt_type<br>
 				</td>
 				<td style="vertical-align: top;">IEEE-754 floating point type, 
-				with mantissa at least (X+20) bits and exponent able to handle 
+				with mantissa at least (X+16) bits and exponent able to handle 
 				32X-bit unsigned integer type.<br>
 				</td>
 			</tr>
@@ -328,8 +329,7 @@ void insert_sites(<br>
 				efpt_type<br>
 				</td>
 				<td style="vertical-align: top;">IEEE-754 floating point type, 
-				with mantissa at least (X+20) bits and exponent able to handle 
-				128X-bit unsigned integer type.<br>
+				with mantissa at least (X+16) bits and exponent able to handle 64X-bit unsigned integer type.<br>
 				</td>
 			</tr>
 			<tr>
@@ -374,11 +374,11 @@ void insert_sites(<br>
 		2) As maximum required size of the big_int_type is known in advance 
 		library provided implementation of fixed integers could be used, which 
 		is much faster than heap-allocated big integers.<br>
-		3) two separate floating-point types are defined because for input with 
-		32-bit signed integer coordinates double won't be able to handle 
-		4096-bit (128 * 32) integers as they will overflow its exponent. On the 
-		gcc compiler it's possible to use 80-bit long doubles for both fpt 
-		types, however this is not supported by msvc compiler.<br>
+3) two separate floating-point types are defined because for input with
+32-bit signed integer coordinates double won't be able to handle
+2048-bit (64 * 32) integers as they will overflow its exponent. On the
+gcc compiler it's possible to use 80-bit long doubles for both fpt
+types, however this is not supported by msvc compiler.<br>
 		4) efpt_type and to_efpt_converter_type are not used to construct 
 		Voronoi of points (mocks will work fine).<br>
 		5) for an example of the user defined builder coordinate type traits see

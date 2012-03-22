@@ -1015,9 +1015,9 @@ public:
             c_y -= robust_fpt_type(dif_x1 * sum_x1 * dif_x2, 2.0);
             c_y -= robust_fpt_type(dif_y1 * sum_y1 * dif_x2, 2.0);
             robust_dif_type lower_x(c_x);
-            lower_x -= robust_fpt_type(get_sqrt(sqr_distance(dif_x1, dif_y1) *
-                                                sqr_distance(dif_x2, dif_y2) *
-                                                sqr_distance(dif_x3, dif_y3)), 5.0);
+            lower_x -= robust_fpt_type(get_sqrt((dif_x1 * dif_x1 + dif_y1 * dif_y1) *
+                                                (dif_x2 * dif_x2 + dif_y2 * dif_y2) *
+                                                (dif_x3 * dif_x3 + dif_y3 * dif_y3)), 5.0);
             c_event = circle_type(c_x.dif().fpv() * inv_orientation.fpv(),
                                   c_y.dif().fpv() * inv_orientation.fpv(),
                                   lower_x.dif().fpv() * inv_orientation.fpv());
@@ -1049,7 +1049,7 @@ public:
                 to_fpt(site3.point1().y()) - to_fpt(site2.y()),
                 to_fpt(site2.x()) - to_fpt(site3.point1().x())), 1.0);
             robust_fpt_type denom(robust_cross_product(vec_x, vec_y, line_a, line_b), 1.0);
-            robust_fpt_type inv_segm_len(to_fpt(1.0) / get_sqrt(sqr_distance(line_a, line_b)), 3.0);
+            robust_fpt_type inv_segm_len(to_fpt(1.0) / get_sqrt(line_a * line_a + line_b * line_b), 3.0);
             robust_dif_type t;
             if (ot::eval(denom) == ot::COLLINEAR) {
                 t += teta / (robust_fpt_type(8.0, false) * A);
@@ -1371,12 +1371,6 @@ public:
         circle_existence_predicate_type circle_existence_predicate_;
         circle_formation_functor_type circle_formation_functor_;
     };
-
-private:
-    template <typename T>
-    static T sqr_distance(T dif_x, T dif_y) {
-        return dif_x * dif_x + dif_y * dif_y;
-    }
 };
 }  // detail
 }  // polygon
