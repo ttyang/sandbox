@@ -19,6 +19,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -133,13 +134,13 @@ extremely fast floating-point predicates. Yes, those are not always
 exact, but we developed <a href="voronoi_robust_fpt.htm">relative error arithmetic apparatus</a> to identify them and switch to higher precision predicates when required.<br>
       <h1>Precision of output structures<br>
       </h1>
-
 One of the extremely important results of using two types of predicates
 is that library efficiently computes relatively precise coordinates of
-the output geometries. Here we will explain a bit what exactly
+output geometries. Here we will explain a bit what exactly
 "relatively precise" means and how received output may differ from
 theoretically correct one (here and after we assume that output
 coordinate type is IEEE-754 floating-point type).<br>
+<br>
 Voronoi implementation guaranties that relative error of the output
 geometries coordinates is always not higher then 64 machine epsilons (6
 bits of mantissa), while in many cases it is slightly less. That also
@@ -153,7 +154,8 @@ x-coordinate equal to 2^31, the absolute error will be at most 2^-53 *
 [2^31 - 2^-16, 2^31 + 2^16]. For output Voronoi vertex with long double
 (64 bit mantissa) x-coordinate equal to 2^31, the absolute error will
 be at most 2^-64 * 2 ^31 * 2^6 = 2^-27 and exact value of x-coordinate
-lies in the range [2^31-2^-27, 2^31+2^-27].<br>
+lies in the range [2^31-2^-27, 2^31+2^-27]. If you'd like to become master of absolute and relative errors try this <a href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html">article</a>.<br>
+<br>
 During finalization step library unites Voronoi vertices whose both
 coordinates are situated within relative error range equal to 128
 machine epsilons and removes any voronoi edges between them. That is
@@ -168,8 +170,7 @@ for output geometries within our solar system will be on its boundary
 and equal to 2^-64 * 2^42 * 2^6 = 2^-18. In the output we are going to
 consider vertices with both coordinates that are within 2^-17 meters (8
 micrometers) distance to be equal. Come on that distance is equal to
-the size of bacteria. Can you even see those? I hope such overview
-convinced most pessimistic readers to give a try to our library.<br>
+the size of bacteria. Can you even see those?<br>
       <h1>Fully functional with segment inputs</h1>
 There are not many implementations of Voronoi diagrams that could
 handle segment inputs, even considering commercial ones. Support of
@@ -180,7 +181,52 @@ integer grid. This functionality is very handy as allows to compute
 medial axis transform of the arbitrary input geometry. So one may start
 using it for the next generation pattern recognition or computer vision
 project.<br>
-      <h1>Basic and advanced usage cases</h1>
+      <h1>Basic and advanced usage cases</h1>The main library header <span style="font-family: Courier New,Courier,monospace;">voronoi.hpp</span> defines following static functions:<br>
+      <br>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PC, typename VD&gt;<br>
+static inline void construct_voronoi_points(<br>
+&nbsp;&nbsp;&nbsp; const PC &amp;points, VD *output)<br>
+            </td>
+            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of points into the output data structure.<br>
+Coordinates of the input geometries should belong to [-2^31, 2^31-1] integer range.<br>
+PC is a container of points that supports forward iterator.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename SC, typename VD&gt;<br>
+static inline void construct_voronoi_segments(<br>
+&nbsp;&nbsp;&nbsp; const SC &amp;segments, VD *output)<br>
+            </td>
+            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of segments into the output data structure.<br>
+Coordinates of the input geometries should belong to [-2^31, 2^31-1] integer range.<br>
+SC is a container of segments that supports forward iterator.<br>
+Segment object should provide low(), high() public methods to retrieve endpoints of a segment.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PC, typename SC, typename VD&gt;<br>
+static inline void construct_voronoi(<br>
+&nbsp;&nbsp;&nbsp; const PC &amp;points, const SC &amp;segments, VD *output)<br>
+            </td>
+            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of points and segments into the output data structure.<br>
+Coordinates of the input geometries should belong to [-2^31, 2^31-1] integer range.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+For users that don't want to go into the details of the library this
+means that it's possible to construct Voronoi diagram with the
+following two lines of code:<br>
+      <br>
+      <span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt; vd;</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">construct_voronoi(points, segments, vd);</span><br>
+      <br>
+Isn't that simple? The library also provides clear interfaces to associate user data with output geometries, efficiently <a href="voronoi_diagram.htm">traverse Voronoi graph</a> and utilities to <a href="voronoi_utils.htm">visualize output primitives</a> (e.g. discretization of parabolic edges, clipping of linear edges). More details on those is covered in the <a href="voronoi_diagram_basic_tutorial.htm">basic Voronoi tutorial</a>.&nbsp; Advanced usage of the library with configuration of the coordinate types is explained in the <a href="voronoi_diagram_advanced_tutorial.htm">advanced Voronoi tutorial</a>.<br>
+
       <h1>Extendable for user provided coordinate types</h1>
 Voronoi implementation is coordinate type agnostic. That means that as soon as user provided types satisfy set of <a href="voronoi_builder.htm">Voronoi builder coordinate type traits restrictions</a>
 and implement library required methods no changes are requied neither
@@ -209,12 +255,12 @@ points and segments from Voronoi builder one's the Voronoi diagram is
 constructed in O(N) time.</li>
         <li>Dropping restriction on non-intersecting input geometries.<br>
 Note: this means that library will also compute segment intersections if such exist.</li>
-        <li>Closer integration with interfaces and functionality of Boost Polygon.<br>
+        <li>Closer integration with interfaces and functionality of Boost Polygon Library.<br>
         </li>
       </ul>
 High-priority tasks to be considered:<br>
       <ul>
-        <li>Integration of Voronoi diagram structure with BGL library.</li>
+        <li>Integration of Voronoi diagram structure with BGL (Boost Graph Library).</li>
         <li>Support of other types of distance metrics.</li>
         <li>Construction of constrained Delaunay triangulation.</li>
         <li>Support of circle input geometries.</li>

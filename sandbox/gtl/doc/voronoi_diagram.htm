@@ -19,6 +19,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -98,20 +99,22 @@
 		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> 
 		<br>
 		<p></p>
-      <h1>Voronoi Diagram</h1>Voronoi
+      
+      <h1>Voronoi Diagram</h1>
+Voronoi
 diagram is a computational geometry concept that represents partition
 of a given space onto regions, with bounds determined by distances to a
 specified family of objects. Boost.Polygon provides implementation of
 Voronoi diagram data structure in 2D space. Internal representation
-consists of a three arrays, that respectively contain: voronoi cells
-(area around input sites bounded by voronoi edges), voronoi vertices
-(points where three or more voronoi edges intersect), voronoi edges
+consists of a three arrays, that respectively contain: Voronoi cells
+(area around input sites bounded by Voronoi edges), Voronoi vertices
+(points where three or more Voronoi edges intersect), Voronoi edges
 (one dimensonal curves containing points equidistant from the two
 closest input sites). Each of the primitives (cell, vertex, edge)
 contains pointers to other linked primitives, so that it's always
 possible to efficiently traverse Voronoi diagram. Picture below shows
-voronoi vertices in red, voronoi edges in black, input sites that
-correspond to the voroni cells in blue (it is considered that each
+Voronoi vertices in red, Voronoi edges in black, input sites that
+correspond to the Voronoi cells in blue (it is considered that each
 input segment consists of three sites: segment itself and two
 endpoints).<br>
       <br>
@@ -126,44 +129,44 @@ Voronoi diagram declaration and list of member fucntions is following:<br>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top;">voronoi_diagram()<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_diagram()<br>
             </td>
             <td style="vertical-align: top;">Default constructor.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">void clear()<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void clear()<br>
             </td>
             <td style="vertical-align: top;">Clears diagram.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">const cell_container_type &amp;cells() const<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const cell_container_type &amp;cells() const<br>
             </td>
             <td style="vertical-align: top;">Returns const reference to Voronoi cells container.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">const vertex_container_type &amp;vertices() const<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const vertex_container_type &amp;vertices() const<br>
             </td>
             <td style="vertical-align: top;">Returns const reference to Voronoi vertices container.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">const edge_container_type &amp;edges() const<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const edge_container_type &amp;edges() const<br>
             </td>
             <td style="vertical-align: top;">Returns const reference to Voronoi edges container.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">unsigned int num_cells() const<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">unsigned int num_cells() const<br>
             </td>
             <td style="vertical-align: top;">Returns number of cells in the Voronoi diagram.<br>
 This value should be the same as the size of cells container.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">unsigned int num_edges() const<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">unsigned int num_edges() const<br>
             </td>
             <td style="vertical-align: top;">Returns number of edges in the Voronoi diagram.<br>
 This value should be twice smaller then the size of edges container.<br>
@@ -171,7 +174,7 @@ The reason is that we have two half-edges for each Voronoi edge.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">unsigned int num_vertices() const<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">unsigned int num_vertices() const<br>
             </td>
             <td style="vertical-align: top;">Returns number of vertices in the Voronoi diagram.<br>
 This value should be the same as the size of vertices container.<br>
@@ -197,19 +200,19 @@ Voronoi edge is represented as a bit improved classical <a href="http://www.flip
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_cell_type *cell()<br>
             </td>
-            <td style="vertical-align: top;">Retruns pointer to the voronoi cell that edge belongs to.<br>
+            <td style="vertical-align: top;">Retruns pointer to the Voronoi <span style="font-family: Courier New,Courier,monospace;"></span>cell that edge belongs to.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_cell_type *cell() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the voronoi cell that edge belongs to.<br>
+            <td style="vertical-align: top;">Returns const pointer to the Voronoi cell that edge belongs to.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void cell(voronoi_cell_type *c)<br>
             </td>
-            <td style="vertical-align: top;">Sets voronoi cell pointer for the cell current edge belongs to.<br>
+            <td style="vertical-align: top;">Sets Voronoi cell pointer for the cell current edge belongs to.<br>
             </td>
           </tr>
           <tr>
@@ -273,14 +276,14 @@ If edge is infinite in that direction returns NULL.<br>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *next()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the CCW next edge within the corresponding voronoi cell.<br>
+            <td style="vertical-align: top;">Returns pointer to the CCW next edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *next() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the CCW next edge within the corresponding voronoi cell.<br>
+            <td style="vertical-align: top;">Returns const pointer to the CCW next edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
@@ -293,14 +296,14 @@ Edges not necessarily share a common vertex.<br>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *prev()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the CCW prev edge within the corresponding voronoi cell.<br>
+            <td style="vertical-align: top;">Returns pointer to the CCW prev edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *prev() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the CCW prev edge within the corresponding voronoi cell.<br>
+            <td style="vertical-align: top;">Returns const pointer to the CCW prev edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
@@ -397,7 +400,7 @@ class voronoi_cell;<br>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_cell(const point_type &amp;p1,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_edge_type *edge)<br>
             </td>
-            <td style="vertical-align: top;">Constructs voronoi cell from the given point site and pointer to the one of boundary edges.<br>
+            <td style="vertical-align: top;">Constructs Voronoi cell from the given point site and pointer to the one of boundary edges.<br>
             </td>
           </tr>
           <tr>
@@ -405,7 +408,7 @@ class voronoi_cell;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const point_type &amp;p2,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_edge_type *edge)<br>
             </td>
-            <td style="vertical-align: top;">Constructs voronoi cell from the given segment site and pointer to one of boundary edges.<br>
+            <td style="vertical-align: top;">Constructs Voronoi cell from the given segment site and pointer to one of boundary edges.<br>
             </td>
           </tr>
           <tr>
@@ -473,6 +476,14 @@ Could happen if a few input segments share a common endpoint.</td>
       </span>All the above methods have O(1) complexity. The size of
 the Voronoi cell structure is equal to: 2 * sizeof(void *) + 4 *
 sizeof(coordinate_type).<br>
+      <br>
+Following code snipped effectively traverses Voronoi edges around the Voronoi cell:<br>
+      <br>
+      <span style="font-family: Courier New,Courier,monospace;">const voronoi_edge&lt;double&gt; *edge = cell-&gt;incident_edge();</span><br>
+      <span style="font-family: Courier New,Courier,monospace;">do {</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp; edge = edge-&gt;next();</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp; // Do smth. with edge.</span><br style="font-family: Courier New,Courier,monospace;">
+      <span style="font-family: Courier New,Courier,monospace;">} while (edge != cell-&gt;incident_edge());</span><br>
       <h1>Voronoi Vertex</h1>
 Voronoi vertex is represented by a point that corresponds to the vertex
 and a pointer to the incident edge. The declaration and list of member
@@ -487,7 +498,7 @@ functions is following:<br>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_vertex(const point_type &amp;vertex, voronoi_edge_type *edge)<br>
             </td>
-            <td style="vertical-align: top;">Constructs voronoi vertex that corresponds to the give point and incident edge.<br>
+            <td style="vertical-align: top;">Constructs Voronoi vertex that corresponds to the give point and incident edge.<br>
             </td>
           </tr>
           <tr>
@@ -533,6 +544,18 @@ This allows user to associate any data type with the vertex.</td>
       <span style="font-family: Courier New,Courier,monospace;"><br>
       </span>All the above methods have O(1) complexity. The size of the Voronoi vertex structure is equal to: 2 * sizeof(void *) + 2 *
 sizeof(coordinate_type).<br>
+      <br>
+Following code snipped effectively traverses Voronoi edges around the Voronoi vertex:<br>
+      <br>
+      <span style="font-family: Courier New,Courier,monospace;">const voronoi_edge&lt;double&gt; *edge = vertex-&gt;incident_edge();</span><br>
+
+      <span style="font-family: Courier New,Courier,monospace;">do {</span><br style="font-family: Courier New,Courier,monospace;">
+
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp; edge = edge-&gt;next();</span><br style="font-family: Courier New,Courier,monospace;">
+
+      <span style="font-family: Courier New,Courier,monospace;">&nbsp; // Do smth. with edge.</span><br style="font-family: Courier New,Courier,monospace;">
+
+      <span style="font-family: Courier New,Courier,monospace;">} while (edge != vertex-&gt;incident_edge());</span><br>
       <h1>Voronoi Diagram Traits<br>
       </h1>
 
@@ -549,7 +572,7 @@ following:<br>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">coordinate_type<br>
             </td>
-            <td style="vertical-align: top;">The main coordinate type of the voronoi diagram internal structures.<br>
+            <td style="vertical-align: top;">The main coordinate type of the Voronoi diagram internal structures.<br>
             </td>
           </tr>
           <tr>
@@ -587,7 +610,7 @@ Converts coordinates provided by Voronoi builder to the internal coordinate type
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">vertex_equality_predicate_type<br>
             </td>
             <td style="vertical-align: top;">Predicate that returns true if two points are considered to be equal.<br>
-This is used to unite nearby voronoi vertices.<br>
+This is used to unite nearby Voronoi vertices.<br>
             </td>
           </tr>
         </tbody>
