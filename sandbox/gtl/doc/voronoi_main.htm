@@ -20,6 +20,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -100,8 +101,7 @@
 		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> 
 		<br>
 		<p></p>
-      <h1>Voronoi<br>
-</h1>The Boost.Polygon Voronoi library provides functionality to construct <a href="voronoi_diagram.htm">Voronoi diagrams</a>
+      <h1>Voronoi</h1>The Boost.Polygon Voronoi library provides functionality to construct <a href="voronoi_diagram.htm">Voronoi diagrams</a>
 of a set of points and segments in 2D space with the following set of
 limitations: 1) coordinates of input points and endpoints of segments
 should be of integer type; 2) input segments should not intersect
@@ -109,8 +109,9 @@ except their endpoints. While the first restriction is permanent (it
 allows to give waranties for algorithm output precision and execution),
 the second one may be waved in the future releases. Strong sides of the
 library and main benefits comparing to other implementations are
-discussed in the following paragraphs.<br>
+discussed in the following paragraphs.<span style="font-weight: bold;"></span><br>
       <h1>Robustness and efficiency</h1>
+
 Lets explain a bit those terms. The efficiency is simply measured by
 the time it takes the algorithm to execute. The robustness is a bit
 more harder to explain.&nbsp; But those of you who had experience with
@@ -266,6 +267,18 @@ High-priority tasks to be considered:<br>
         <li>Support of circle input geometries.</li>
       </ul>
 Based on the community suggestions priorities may be changed.<br>
+      <h1>Theoretical Research<br>
+      </h1>
+Voronoi was developed as part of Google Summer of Code 2010. The
+library was actively maintained for the last two years and involved
+strong math research in the field of algorithms, data structures,
+relative error arithmetic and numerical robustness. Nowadays one can
+often read scientific article that contains non-practical theoretical
+results or implementation with
+benchmarks nobody else can reproduce. The opposite story is with
+Voronoi. We provide pure implementation and benchmarks one may run on
+his PC. In case community finds it useful we will incrementally
+add more documentation on the theoretical side of our realization.<br>
 
 
 
