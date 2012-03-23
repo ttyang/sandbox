@@ -13,15 +13,16 @@
 #include "voronoi_builder.hpp"
 #include "voronoi_diagram.hpp"
 
-// Public methods to compute voronoi diagram.
-// points - container of input points (supports forward iterator).
-// segments - container of input segments (supports forward iterator).
-// output - voronoi output data structure to hold voronoi diagram.
+// Public methods to compute Voronoi diagram.
+// PC - container of input points (should supports forward iterator).
+// SC - container of input segments (should supports forward iterator).
+// output - Voronoi output data structure to hold Voronoi diagram.
+// Segment class should provide low(), high() methods to access its endpoints.
 // The assumption is made that input doesn't contain segments that intersect
 // or points lying on the segments. Also coordinates of the points and of the
 // endpoints of the segments should belong to the signed integer range
 // [-2^31, 2^31-1]. To use wider input coordinate range use voronoi_builder
-// structure with user provided coordinate traits.
+// structure with user provided coordinate type traits.
 // Complexity - O(N*logN), memory usage - O(N),
 // where N is the total number of points and segments.
 namespace boost {

@@ -132,7 +132,7 @@ public:
     return new_brect;
   }
 
-  // Discretizes finite voronoi edge.
+  // Discretizes finite Voronoi edge.
   // Disretization absolute error is defined by max_error value.
   template <typename CT>
   static void discretize(const voronoi_edge<CT> &edge, 
@@ -165,7 +165,7 @@ public:
     }
   }
 
-  // Clip a linear voronoi edge with a given rectangle.
+  // Clip a linear Voronoi edge with a given rectangle.
   template <typename CT>
   static void clip(const voronoi_edge<CT> &edge,
       const brect_type &brect, point_set_type &clipped_edge) {
@@ -317,7 +317,7 @@ private:
   // Find intermediate points of the parabola.
   // Parabola is a locus of points equidistant from the point and segment
   // sites. intermediate_points should contain two initial endpoints
-  // of the edge (voronoi vertices). Intermediate points are inserted
+  // of the edge (Voronoi vertices). Intermediate points are inserted
   // between the given two endpoints.
   // Max_dist is the maximum distance allowed between parabola and line
   // segments that discretize it.

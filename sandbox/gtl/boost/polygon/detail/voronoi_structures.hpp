@@ -411,7 +411,7 @@ private:
   site_type right_site_;
 };
 
-// Represents edge data structure from the voronoi output, that is
+// Represents edge data structure from the Voronoi output, that is
 // associated as a value with beach line bisector in the beach
 // line. Contains pointer to the circle event in the circle event
 // queue if the edge corresponds to the right bisector of the circle event.

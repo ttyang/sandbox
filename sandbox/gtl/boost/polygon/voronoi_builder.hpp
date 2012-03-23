@@ -21,7 +21,7 @@
 namespace boost {
 namespace polygon {
 // GENERAL INFO:
-// The sweepline algorithm implementation to compute voronoi diagram of
+// The sweepline algorithm implementation to compute Voronoi diagram of
 // points and non-intersecting segments (except endpoints).
 // Complexity - O(N*logN), memory usage - O(N), where N is the total number
 // of input geometries. Input geometries should have integer coordinate type.
@@ -36,7 +36,7 @@ namespace polygon {
 // topmost element from the circle event queue. STL map (red-black tree)
 // container was chosen to hold state of the beach line. The keys of the map
 // correspond to the neighboring sites that form a bisector and values to the
-// corresponding voronoi edge in the output data structure.
+// corresponding Voronoi edge in the output data structure.
 template <typename T,
           typename CTT = detail::voronoi_ctype_traits<T>,
           typename VP = detail::voronoi_predicates<CTT> >
@@ -477,8 +477,8 @@ private:
 
     if (site_event.is_segment()) {
       // Update the beach line with temporary bisector, that will
-      // disappear after processing site event going through the
-      // endpoint of the segment site.
+      // disappear after processing site event corresponding to the
+      // second endpoint of the segment site.
       key_type new_node(site_event, site_event);
       new_node.right_site().inverse();
       position = beach_line_.insert(position,

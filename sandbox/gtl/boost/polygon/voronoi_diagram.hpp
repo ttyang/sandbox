@@ -22,11 +22,12 @@ namespace polygon {
 template <typename T>
 class voronoi_edge;
 
-// Represents voronoi cell.
-// Data members: 1) pointer to the incident edge;
-//               2) site inside cell;
-//               3) data associated with a cell.
-// The cell may contain point or segment site.
+// Represents Voronoi cell.
+// Data members:
+//   1) pointer to the incident edge;
+//   2) site inside cell;
+//   3) data associated with a cell.
+// Cell may contain point or segment site inside.
 template <typename T>
 class voronoi_cell {
 public:
@@ -58,11 +59,11 @@ public:
   bool is_degenerate() const { return incident_edge_ == NULL; }
 
   // Returns site point in case cell contains point site,
-  // the first point of the segment site else.
+  // the first endpoint of the segment site else.
   const point_type &point0() const { return point0_; }
 
   // Returns site point in case cell contains point site,
-  // the second point of the segment site else.
+  // the second endpoint of the segment site else.
   const point_type &point1() const { return point1_; }
 
   voronoi_edge_type *incident_edge() { return incident_edge_; }
@@ -79,10 +80,11 @@ private:
   mutable void *data_;
 };
 
-// Represents voronoi vertex.
-// Data members: 1) vertex point itself;
-//               2) pointer to the incident edge;
-//               3) data associated with vertex.
+// Represents Voronoi vertex.
+// Data members:
+//   1) vertex point itself;
+//   2) pointer to the incident edge;
+//   3) data associated with vertex.
 template <typename T>
 class voronoi_vertex {
 public:
@@ -112,14 +114,15 @@ private:
   mutable void *data_;
 };
 
-// Half-edge data structure. Represents voronoi edge.
-// Variables: 1) pointer to the corresponding cell;
-//            2) pointer to the vertex that is the starting
-//               point of the half-edge;
-//            3) pointer to the twin edge;
-//            4) pointer to the CCW next edge;
-//            5) pointer to the CCW prev edge;
-//            6) pointer to data associated with edge.
+// Half-edge data structure. Represents Voronoi edge.
+// Data members:
+//   1) pointer to the corresponding cell;
+//   2) pointer to the vertex that is the starting
+//      point of the half-edge;
+//   3) pointer to the twin edge;
+//   4) pointer to the CCW next edge;
+//   5) pointer to the CCW prev edge;
+//   6) pointer to data associated with edge.
 template <typename T>
 class voronoi_edge {
 public:
@@ -163,7 +166,7 @@ public:
   void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
 
-  // Return a pointer to the rotation next edge
+  // Returns a pointer to the rotation next edge
   // over the starting point of the half-edge.
   voronoi_edge_type *rot_next() {
     return (vertex_) ? prev_->twin() : NULL;
@@ -172,7 +175,7 @@ public:
     return (vertex_) ? prev_->twin() : NULL;
   }
 
-  // Return a pointer to the rotation prev edge
+  // Returns a pointer to the rotation prev edge
   // over the starting point of the half-edge.
   voronoi_edge_type *rot_prev() {
     return (vertex_) ? twin_->next() : NULL;
@@ -181,12 +184,12 @@ public:
     return (vertex_) ? twin_->next() : NULL;
   }
 
-  // Return true if the edge is finite (segment, parabolic arc).
-  // Return false if the edge is infinite (ray, line).
+  // Returns true if the edge is finite (segment, parabolic arc).
+  // Returns false if the edge is infinite (ray, line).
   bool is_finite() const { return vertex0() && vertex1(); }
 
-  // Return true if the edge is linear (segment, ray, line).
-  // Return false if the edge is curved (parabolic arc).
+  // Returns true if the edge is linear (segment, ray, line).
+  // Returns false if the edge is curved (parabolic arc).
   bool is_linear() const {
     if (!is_primary())
       return true;
@@ -201,8 +204,8 @@ public:
     return (cell()->contains_segment() ^ twin()->cell()->contains_segment());
   }
 
-  // Return false if edge goes through the endpoint of the segment.
-  // Return true else.
+  // Returns false if edge goes through the endpoint of the segment.
+  // Returns true else.
   bool is_primary() const {
     bool flag1 = cell_->contains_segment();
     bool flag2 = twin_->cell()->contains_segment();
@@ -279,6 +282,8 @@ public:
   typedef typename edge_container_type::iterator edge_iterator;
   typedef typename edge_container_type::const_iterator const_edge_iterator;
 
+  // This builder class is mainly used to hide from the user methods that
+  // construct Voronoi diagram.
   class voronoi_diagram_builder {
   public:
     void vd(voronoi_diagram *vd) {
@@ -372,7 +377,7 @@ private:
     edges_.reserve((num_sites << 2) + (num_sites << 1));
   }
 
-  // Update the voronoi output in case of a single point input.
+  // Update the Voronoi output in case of a single point input.
   template <typename SEvent>
   void process_single_site(const SEvent &site) {
     // Update cell records.
@@ -426,7 +431,7 @@ private:
   // Takes as input two sites that create a new bisector, circle event
   // that corresponds to the intersection point of the two old half-edges,
   // pointers to those half-edges. Half-edges' direction goes out of the
-  // new voronoi vertex point. Returns a pair of pointers to a new half-edges.
+  // new Voronoi vertex point. Returns a pair of pointers to a new half-edges.
   template <typename SEvent, typename CEvent>
   std::pair<void *, void *> insert_new_edge(
       const SEvent &site1, const SEvent &site3, const CEvent &circle,
@@ -434,7 +439,7 @@ private:
     edge_type *edge12 = static_cast<edge_type*>(data12);
     edge_type *edge23 = static_cast<edge_type*>(data23);
 
-    // Add a new voronoi vertex.
+    // Add a new Voronoi vertex.
     vertices_.push_back(vertex_type(prepare_point(circle), NULL));
     vertex_type &new_vertex = vertices_.back();
 
@@ -459,7 +464,7 @@ private:
     // Update vertex pointer.
     new_edge2.vertex0(&new_vertex);
 
-    // Update voronoi prev/next pointers.
+    // Update Voronoi prev/next pointers.
     edge12->prev(&new_edge1);
     new_edge1.next(edge12);
     edge12->twin()->next(edge23);
