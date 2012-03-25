@@ -153,7 +153,7 @@ public:
   robust_fpt& operator*=(const robust_fpt &that) {
     this->re_ += that.re_ + ROUNDING_ERROR;
     this->fpv_ *= that.fpv_;
-      return *this;
+    return *this;
   }
 
   robust_fpt& operator/=(const robust_fpt &that) {
