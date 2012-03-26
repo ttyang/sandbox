@@ -24,6 +24,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -118,7 +119,7 @@ allows to give waranties for algorithm output precision and execution),
 the second one may be waved in the future releases. Strong sides of the
 library and main benefits comparing to other implementations are
 discussed in the following paragraphs.<span style="font-weight: bold;"></span><br>
-      <h1>Robustness and efficiency</h1>
+      <h1>Robustness and Efficiency</h1>
 
 Lets explain a bit those terms. The efficiency is simply measured by
 the time it takes the algorithm to execute. The robustness is a bit
@@ -141,7 +142,7 @@ results in huge performance slowdown. Here is another strong side of
 Voronoi: we avoid multiprecision computations in 95% of cases using
 extremely fast floating-point predicates. Yes, those are not always
 exact, but we developed <a href="voronoi_robust_fpt.htm">relative error arithmetic apparatus</a> to identify them and switch to higher precision predicates when required.<br>
-      <h1>Precision of output structures<br>
+      <h1>Precision of Output Structures<br>
       </h1>
 One of the extremely important results of using two types of predicates
 is that library efficiently computes relatively precise coordinates of
@@ -180,7 +181,7 @@ and equal to 2^-64 * 2^42 * 2^6 = 2^-18. In the output we are going to
 consider vertices with both coordinates that are within 2^-17 meters (8
 micrometers) distance to be equal. Come on that distance is equal to
 the size of bacteria. Can you even see those?<br>
-      <h1>Fully functional with segment inputs</h1>
+      <h1>Fully Functional with Segment Inputs</h1>
 There are not many implementations of Voronoi diagrams that could
 handle segment inputs, even considering commercial ones. Support of
 segments allows to discretize any input geometry (circle, elipse,
@@ -190,7 +191,7 @@ integer grid. This functionality is very handy as allows to compute
 medial axis transform of the arbitrary input geometry. So one may start
 using it for the next generation pattern recognition or computer vision
 project.<br>
-      <h1>Basic and advanced usage cases</h1>The main library header <span style="font-family: Courier New,Courier,monospace;">voronoi.hpp</span> defines following static functions:<br>
+      <h1>Basic and Advanced Usage Cases</h1>The main library header <span style="font-family: Courier New,Courier,monospace;">voronoi.hpp</span> defines following static functions:<br>
       <br>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -236,14 +237,14 @@ following two lines of code:<br>
       <br>
 Isn't that simple? The library also provides clear interfaces to associate user data with output geometries, efficiently <a href="voronoi_diagram.htm">traverse Voronoi graph</a> and utilities to <a href="voronoi_utils.htm">visualize output primitives</a> (e.g. discretization of parabolic edges, clipping of linear edges). More details on those is covered in the <a href="voronoi_diagram_basic_tutorial.htm">basic Voronoi tutorial</a>.&nbsp; Advanced usage of the library with configuration of the coordinate types is explained in the <a href="voronoi_diagram_advanced_tutorial.htm">advanced Voronoi tutorial</a>.<br>
 
-      <h1>Extendable for user provided coordinate types</h1>
+      <h1>Extendable for User Provided Coordinate Types</h1>
 Voronoi implementation is coordinate type agnostic. That means that as soon as user provided types satisfy set of <a href="voronoi_builder.htm">Voronoi builder coordinate type traits restrictions</a>
 and implement library required methods no changes are requied neither
 from algorithm, nor from predicates implementation. So it's possible to
 construct Voronoi diagram for 256 bit integer input coordinate type and
 512 bit output floating-pont type without changing any internal code.<br>
 
-      <h1>Bright future<br>
+      <h1>Bright Future<br>
       </h1>
 Below one may find list of main directions for the future development of the library.<br>
       <br>
