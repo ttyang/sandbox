@@ -20,6 +20,8 @@
 
 
 
+
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -62,17 +64,19 @@
 				<li><a href="gtl_property_merge_90.htm">Property Merge 90</a></li>
 				<li><a href="gtl_property_merge_45.htm">Property Merge 45</a></li>
 				<li><a href="gtl_property_merge.htm">Property Merge</a></li>
-				<li><a href="voronoi_unit.htm">Voronoi Main Page<br>
+				<li><a href="voronoi_main.htm">Voronoi Main Page<br>
 </a></li>
         <li><a href="voronoi_benchmark.htm">Voronoi Benchmark</a></li>
 
 				<li><a href="voronoi_builder.htm">Voronoi Builder</a><br>
 				</li>
 				<li>Voronoi Diagram</li>
+        <li><a href="voronoi_predicates.htm">Voronoi Predicates</a></li>
+
         <li><a href="voronoi_robust_fpt.htm">Voronoi Robust FPT</a><br>
         </li>
 
-        <li><a href="voronoi_predicates.htm">Voronoi Predicates</a></li>
+        
 
         <li><a href="voronoi_utils.htm">Voronoi Utils</a><br>
         </li>
@@ -116,9 +120,12 @@ possible to efficiently traverse Voronoi diagram. Picture below shows
 Voronoi vertices in red, Voronoi edges in black, input sites that
 correspond to the Voronoi cells in blue (it is considered that each
 input segment consists of three sites: segment itself and two
-endpoints).<br>
+endpoints). As one may notice each segment is splitted onto segment
+site itself and both its endpoints. As the result two additional
+Voronoi edges are constructed per each segment. This is made to
+simplify representation of the Voronoi diagram.<br>
       <br>
-      <img style="border: 1px solid ; width: 300px; height: 300px;" alt="" src="images/diagram.png"><br>
+      <img style="border: 1px solid ; width: 300px; height: 300px;" alt="" src="images/voronoi2.png"><br>
       <br>
 Voronoi diagram declaration and list of member fucntions is following:<br>
       <br>

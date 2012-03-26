@@ -21,6 +21,9 @@
 
 
 
+
+
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -71,10 +74,12 @@
 				<li><a href="voronoi_builder.htm">Voronoi Builder</a><br>
 				</li>
 				<li><a href="voronoi_diagram.htm">Voronoi Diagram</a></li>
+        <li><a href="voronoi_predicates.htm">Voronoi Predicates</a></li>
+
         <li><a href="voronoi_robust_fpt.htm">Voronoi Robust FPT</a><br>
         </li>
 
-        <li><a href="voronoi_predicates.htm">Voronoi Predicates</a></li>
+        
 
         <li><a href="voronoi_utils.htm">Voronoi Utils</a><br>
         </li>
@@ -101,7 +106,10 @@
 		<td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> 
 		<br>
 		<p></p>
-      <h1>Voronoi</h1>The Boost.Polygon Voronoi library provides functionality to construct <a href="voronoi_diagram.htm">Voronoi diagrams</a>
+      <h1>THE BOOST.POLYGON VORONOI LIBRARY<br>
+</h1><img style="width: 900px; height: 300px;" alt="" src="images/voronoi3.png"><br>
+      <br>
+The Boost.Polygon Voronoi library provides functionality to construct <a href="voronoi_diagram.htm">Voronoi diagrams</a>
 of a set of points and segments in 2D space with the following set of
 limitations: 1) coordinates of input points and endpoints of segments
 should be of integer type; 2) input segments should not intersect
@@ -239,7 +247,7 @@ construct Voronoi diagram for 256 bit integer input coordinate type and
       </h1>
 Below one may find list of main directions for the future development of the library.<br>
       <br>
-High-priority tasks that already have approximate implementation plan:<br>
+High-priority tasks that already have approximate implementation plan (some of those may be proposed as future GSoC projects):<br>
       <ul>
         <li>Implementing Delaunay triangulation data structure.<br>
 Note: only data structure needs to be implemented that properly processes events provided by Voronoi builder.</li>
