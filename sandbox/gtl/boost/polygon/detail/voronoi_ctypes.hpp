@@ -11,6 +11,8 @@
 #define BOOST_POLYGON_DETAIL_VORONOI_CTYPES
 
 #include <cmath>
+#include <memory.h>
+
 #include <boost/cstdint.hpp>
 
 namespace boost {
