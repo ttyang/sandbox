@@ -355,9 +355,9 @@ public:
 
   template <size_t M>
   extended_int& operator=(const extended_int<M>& that) {
-    if (that.size() > N) return;
+    size_t mx = (std::max)(N, that.size());
     this->count_ = that.count();
-    memcpy(this->chunks_, that.chunks(), that.size() * sizeof(uint32));
+    memcpy(this->chunks_, that.chunks(), mx * sizeof(uint32));
     return *this;
   }
 

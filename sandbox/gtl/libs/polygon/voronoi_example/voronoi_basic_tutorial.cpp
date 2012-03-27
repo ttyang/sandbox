@@ -114,7 +114,7 @@ void render_diagram(const voronoi_diagram<double> &vd,
       voronoi_utils<double>::discretize(*it, 1E-1, polyline);
     // Note: discretized edges may also lie outside of the bbox.
     // So user might do additional clipping before rendering each such edge.  
-    for (int i = 1; i < polyline.size(); ++i)
+    for (size_t i = 1; i < polyline.size(); ++i)
       draw_segment(polyline[i-1].x(), polyline[i-1].y(),
                    polyline[i].x(), polyline[i].y());
   }

@@ -17,30 +17,39 @@ typedef long double fpt80;
 using namespace boost::polygon;
 
 struct my_ulp_comparison {
-  int operator()(fpt80 a, fpt80 b, unsigned int maxUlps) const {
+  enum Result {
+    LESS = -1,
+    EQUAL = 0,
+    MORE = 1
+  };  
+
+  Result operator()(fpt80 a, fpt80 b, unsigned int maxUlps) const {
     if (a == b)
-      return 0;
-    if (a > b)
-      return -operator()(b, a, maxUlps);
+      return EQUAL;
+    if (a > b) {
+      Result res = operator()(b, a, maxUlps);
+      if (res == EQUAL) return res;
+      return (res == LESS) ? MORE : LESS;
+    }
     ieee854_long_double lhs, rhs;
     lhs.d = a;
     rhs.d = b;
     if (lhs.ieee.negative ^ rhs.ieee.negative)
-      return lhs.ieee.negative ? -1 : 1;
+      return lhs.ieee.negative ? LESS : MORE;
     boost::uint64_t le = lhs.ieee.exponent; le = (le << 32) + lhs.ieee.mantissa0;
     boost::uint64_t re = rhs.ieee.exponent; re = (re << 32) + rhs.ieee.mantissa0;
     if (lhs.ieee.negative) {
       if (le - 1 > re)
-        return -1;
+        return LESS;
       le = (le == re) ? 0 : 1; le = (le << 32) + lhs.ieee.mantissa1;
       re = rhs.ieee.mantissa1;
-      return (re + maxUlps < le) ? -1 : 0;
+      return (re + maxUlps < le) ? LESS : EQUAL;
     } else {
       if (le + 1 < re)
-        return -1;
+        return LESS;
       le = lhs.ieee.mantissa0;
       re = (le == re) ? 0 : 1; re = (re << 32) + rhs.ieee.mantissa1;
-      return (le + maxUlps < re) ? -1 : 0;
+      return (le + maxUlps < re) ? LESS : EQUAL;
     }
   }
 };
@@ -52,15 +61,40 @@ struct my_fpt_converter {
   }
 
   template <size_t N>
-  fpt80 operator()(const detail::extended_int<N>& that) const {
+  fpt80 operator()(const typename detail::extended_int<N> &that) const {
     fpt80 result = 0.0;
-    for (int i = 1; i <= (std::min)(3u, that.size()); ++i) {
+    for (size_t i = 1; i <= (std::min)((size_t)3, that.size()); ++i) {
       if (i != 1)
         result *= static_cast<fpt80>(0x100000000ULL);
-      result += that.chunks[that.size() - i];
+      result += that.chunks()[that.size() - i];
     }
-    return (that.count < 0) ? -result : result;
+    return (that.count() < 0) ? -result : result;
   }
+};
+
+// Voronoi diagram traits.
+struct my_voronoi_diagram_traits {
+  typedef fpt80 coordinate_type;
+  typedef struct {
+    template <typename CT>
+    fpt80 operator()(const CT& that) const {
+      return static_cast<fpt80>(that);
+    }
+  } ctype_converter_type;
+  typedef detail::point_2d<coordinate_type> point_type;
+  typedef voronoi_cell<coordinate_type> cell_type;
+  typedef voronoi_vertex<coordinate_type> vertex_type;
+  typedef voronoi_edge<coordinate_type> edge_type;
+  typedef struct {
+  public:
+    enum { ULPS = 128 };
+    bool operator()(const point_type &v1, const point_type &v2) const {
+      return (ulp_cmp(v1.x(), v2.x(), ULPS) == my_ulp_comparison::EQUAL &&
+              ulp_cmp(v1.y(), v2.y(), ULPS) == my_ulp_comparison::EQUAL);
+    }
+  private:
+    my_ulp_comparison ulp_cmp;
+  } vertex_equality_predicate_type;
 };
 
 // Voronoi ctype traits for 43-bit signed integer input coordinates.
@@ -76,8 +110,9 @@ struct my_voronoi_ctype_traits {
   typedef my_fpt_converter to_efpt_converter_type;
 };
 
+#include <iostream>
 int main () {
-  voronoi_diagram<fpt80> vd;
+  voronoi_diagram<fpt80, my_voronoi_diagram_traits> vd;
   voronoi_builder<boost::int64_t, my_voronoi_ctype_traits> vb;
   vb.construct(&vd);
   return 0;
