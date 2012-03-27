@@ -32,8 +32,8 @@ public:
   typedef typename CTYPE_TRAITS::to_efpt_converter_type to_efpt_converter;
 
   enum {
-    ULPS = CTYPE_TRAITS::ULPS,
-    ULPSx2 = ULPS * 2
+    ULPS = 64,
+    ULPSx2 = 128
   };
 
   template <typename Point>

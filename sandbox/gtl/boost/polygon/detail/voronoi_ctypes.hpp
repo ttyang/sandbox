@@ -11,7 +11,7 @@
 #define BOOST_POLYGON_DETAIL_VORONOI_CTYPES
 
 #include <cmath>
-#include <memory.h>
+#include <cstring>
 
 #include <boost/cstdint.hpp>
 
@@ -705,7 +705,6 @@ struct voronoi_ctype_traits<int32> {
   typedef ulp_comparison<fpt_type> ulp_cmp_type;
   typedef type_converter_fpt to_fpt_converter_type;
   typedef type_converter_efpt to_efpt_converter_type;
-  enum { ULPS = 64 };
 };
 }  // detail
 }  // polygon

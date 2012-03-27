@@ -7,7 +7,6 @@
 
 // See http://www.boost.org for updates, documentation, and revision history.
 
-#include <iostream>
 #include <vector>
 
 #include <QtOpenGL/QGLWidget>
