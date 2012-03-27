@@ -26,6 +26,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -234,7 +235,7 @@ means that it's possible to construct Voronoi diagram with the
 following two lines of code:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt; vd;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">construct_voronoi(points, segments, vd);</span><br>
+      <span style="font-family: Courier New,Courier,monospace;">construct_voronoi(points, segments, &amp;vd);</span><br>
       <br>
 Isn't that simple? The library also provides clear interfaces to associate user data with output geometries, efficiently <a href="voronoi_diagram.htm">traverse Voronoi graph</a> and utilities to <a href="voronoi_utils.htm">visualize output primitives</a> (e.g. discretization of parabolic edges, clipping of linear edges). More details on those is covered in the <a href="voronoi_diagram_basic_tutorial.htm">basic Voronoi tutorial</a>.&nbsp; Advanced usage of the library with configuration of the coordinate types is explained in the <a href="voronoi_diagram_advanced_tutorial.htm">advanced Voronoi tutorial</a>.<br>
 

@@ -8,6 +8,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
@@ -272,7 +273,6 @@ void insert_sites(<br>
 &nbsp;&nbsp;&nbsp; typedef ulp_comparison&lt;fpt_type&gt; ulp_cmp_type;<br>
 &nbsp;&nbsp;&nbsp; typedef type_converter_fpt to_fpt_converter_type;<br>
 &nbsp;&nbsp;&nbsp; typedef type_converter_efpt to_efpt_converter_type;<br>
-&nbsp;&nbsp;&nbsp; enum { ULPS = 64 };<br>
 		};</p>
 		</font>
 		<p>One of the most important features of the library is that Voronoi 
@@ -360,14 +360,7 @@ void insert_sites(<br>
 				operator().<br>
 				</td>
 			</tr>
-			<tr>
-				<td style="vertical-align: top; font-family: 'Courier New',Courier,monospace;">
-				ULPS<br>
-				</td>
-				<td style="vertical-align: top;">Relative precision threshold 
-				that triggers multi-precision predicates.<br>
-				</td>
-			</tr>
+			
 		</tbody></table>
 		<p>Notes:<br>
 		1) 4 different integer types are used (instead of a single big_int_type) to slightly improve algorithm performance and memory 
