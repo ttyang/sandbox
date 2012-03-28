@@ -85,10 +85,8 @@ public:
   static const relative_error_type ROUNDING_ERROR;
 
   robust_fpt() : fpv_(0.0), re_(0.0) {}
-  explicit robust_fpt(floating_point_type fpv,
-                      bool rounded = true) : fpv_(fpv) {
-    re_ = rounded ? ROUNDING_ERROR : 0;
-  }
+  robust_fpt(floating_point_type fpv) :
+      fpv_(fpv), re_(0.0) {}
   robust_fpt(floating_point_type fpv, relative_error_type error) :
       fpv_(fpv), re_(error) {}
 

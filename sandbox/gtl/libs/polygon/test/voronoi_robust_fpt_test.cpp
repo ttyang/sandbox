@@ -26,20 +26,20 @@ type_converter_fpt to_fpt;
 
 BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test1) {
     rfpt_type a = rfpt_type();
-    BOOST_CHECK_EQUAL(a.fpv(),0.0);
+    BOOST_CHECK_EQUAL(a.fpv(), 0.0);
     BOOST_CHECK_EQUAL(a.re(), 0.0);
     BOOST_CHECK_EQUAL(a.ulp(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test2) {
-    rfpt_type a(10.0);
+    rfpt_type a(10.0, 1.0);
     BOOST_CHECK_EQUAL(a.fpv(), 10.0);
     BOOST_CHECK_EQUAL(a.re(), 1.0);
     BOOST_CHECK_EQUAL(a.ulp(), 1.0);
 }
 
 BOOST_AUTO_TEST_CASE(robust_fpt_constructors_test3) {
-    rfpt_type a(10.0, false);
+    rfpt_type a(10.0);
     BOOST_CHECK_EQUAL(a.fpv(), 10.0);
     BOOST_CHECK_EQUAL(a.re(), 0.0);
     BOOST_CHECK_EQUAL(a.ulp(), 0.0);
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(robust_fpt_dif_test2) {
 
 BOOST_AUTO_TEST_CASE(robust_fpt_mult_test3) {
     rfpt_type a(2.0, 3.0);
-    rfpt_type b(4.0);
+    rfpt_type b(4.0, 1.0);
     rfpt_type c = a * b;
     BOOST_CHECK_EQUAL(c.fpv(), 8.0);
     BOOST_CHECK_EQUAL(c.re(), 5.0);
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(robust_fpt_mult_test3) {
 
 BOOST_AUTO_TEST_CASE(robust_fpt_div_test1) {
     rfpt_type a(2.0, 3.0);
-    rfpt_type b(4.0);
+    rfpt_type b(4.0, 1.0);
     rfpt_type c = a / b;
     BOOST_CHECK_EQUAL(c.fpv(), 0.5);
     BOOST_CHECK_EQUAL(c.re(), 5.0);
