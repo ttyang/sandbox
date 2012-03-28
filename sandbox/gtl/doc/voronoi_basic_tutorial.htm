@@ -6,6 +6,7 @@
 
 
 
+
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Polygon Usage</title></head><body>
 
 <h1>Voronoi Basic Tutorial<br>
@@ -40,7 +41,8 @@ And before you start don't forget to:<span style="font-family: Courier New,Couri
 #include "boost/polygon/voronoi.hpp"<br>
 using boost::polygon;<br>
 </span>
-<h1>Preparing Input Geometries</h1>Before executing the algorithm lets see how the user provided types for
+<h2>Preparing Input Geometries</h2>
+Before executing the algorithm lets see how the user provided types for
 the input geometries might look like:<br>
 <br>
 <span style="font-family: Courier New,Courier,monospace;">class Point {<br>
@@ -81,8 +83,10 @@ std::vector&lt;Segment&gt; segments;<br>
 segments.push_back(Segment(-4, 5, 5, -1));<br>
 segments.push_back(Segment(3, -11, 13, -1));</span><span style="font-family: Courier New,Courier,monospace;"><br>
 </span>
-<h1>Construction of the Voronoi Diagram<br>
-</h1>
+<h2>Construction of the Voronoi Diagram<br>
+
+</h2>
+
 
 
 Now let's construct Voronoi diagram of the input set of points and segments:<br>
@@ -91,7 +95,8 @@ Now let's construct Voronoi diagram of the input set of points and segments:<br>
 construct_voronoi(points, segments, &amp;vd);<br>
 <br>
 </span>So brief, isn't that awesome!<br>
-<h1>Traversing Voronoi Graph</h1>
+<h2>Traversing Voronoi Graph</h2>
+
 At the next step we are going to traverse Voronoi graph and count the
 number of visited edges. There are three ways to do that and we are going to cover all of them:<br>
 <ul>
@@ -152,7 +157,8 @@ diagram. Notice that while the output from the first two methods should
 be the same, it wouldn't for the third one. The reason is that in the
 last case we will iterate only once through the edges with a single
 finite endpoint and will skip all the edges with no finite endpoints.<br>
-<h1>Associating User Data with Voronoi Primitives</h1>
+<h2>Associating User Data with Voronoi Primitives</h2>
+
 A few simple cases of associating user data with Voronoi primitives are following:<br>
 <ul>
   <li>associating number of incident edges with each cell, vertex;</li>
@@ -181,7 +187,8 @@ for (voronoi_diagram&lt;double&gt;::const_cell_iterator it = vd.cells().begin();
 Note: In the example above we could not simply use count variable
 without a vector, because pointer to it will become invalid as soon as
 we leave the scope of enclosing for-loop.<br>
-<h1>Rendering Voronoi Diagram</h1>
+<h2>Rendering Voronoi Diagram</h2>
+
 There are two main issues that don't allow to strictly render resulting
 Voronoi diagram using such rendering tools as OpenGL or DirectX.
 Those are:<br>
