@@ -49,8 +49,10 @@ public:
   // Compute robust cross_product: a1 * b2 - b1 * a2.
   // It was mathematically proven that the result is correct
   // with epsilon relative error equal to 1EPS.
-  template <typename T>
-  static fpt_type robust_cross_product(T a1_, T b1_, T a2_, T b2_) {
+  static fpt_type robust_cross_product(int_x2_type a1_,
+                                       int_x2_type b1_,
+                                       int_x2_type a2_,
+                                       int_x2_type b2_) {
     static to_fpt_converter to_fpt;
     uint_x2_type a1 = static_cast<uint_x2_type>(is_neg(a1_) ? -a1_ : a1_);
     uint_x2_type b1 = static_cast<uint_x2_type>(is_neg(b1_) ? -b1_ : b1_);
@@ -90,8 +92,10 @@ public:
       return (is_neg(value)) ? RIGHT : LEFT;
     }
 
-    template <typename T>
-    static Orientation eval(T dif_x1_, T dif_y1_, T dif_x2_, T dif_y2_) {
+    static Orientation eval(int_x2_type dif_x1_,
+                            int_x2_type dif_y1_,
+                            int_x2_type dif_x2_,
+                            int_x2_type dif_y2_) {
       return eval(robust_cross_product(dif_x1_, dif_y1_, dif_x2_, dif_y2_));
     }
 
@@ -306,8 +310,6 @@ public:
         const point_type &segment1 = site.point1(true);
         fpt_type a1 = to_fpt(segment1.x()) - to_fpt(segment0.x());
         fpt_type b1 = to_fpt(segment1.y()) - to_fpt(segment0.y());
-        fpt_type a3 = to_fpt(point.x()) - to_fpt(segment0.x());
-        fpt_type b3 = to_fpt(point.y()) - to_fpt(segment0.y());
         fpt_type k = get_sqrt(a1 * a1 + b1 * b1);
         // Avoid subtraction while computing k.
         if (!is_neg(b1)) {
@@ -316,7 +318,11 @@ public:
           k = (k - b1) / (a1 * a1);
         }
         // The relative error is at most 7EPS.
-        return robust_cross_product(a1, b1, a3, b3) * k;
+        return k * robust_cross_product(
+            static_cast<int_x2_type>(segment1.x()) - static_cast<int_x2_type>(segment0.x()),
+            static_cast<int_x2_type>(segment1.y()) - static_cast<int_x2_type>(segment0.y()),
+            static_cast<int_x2_type>(point.x()) - static_cast<int_x2_type>(segment0.x()),
+            static_cast<int_x2_type>(point.y()) - static_cast<int_x2_type>(segment0.y()));
       }
     }
 
@@ -343,7 +349,11 @@ public:
           return LESS;
         return UNDEFINED;
       } else {
-        typename ot::Orientation orientation = ot::eval(a, b, dif_x, dif_y);
+        typename ot::Orientation orientation = ot::eval(
+            static_cast<int_x2_type>(segment_end.x()) - static_cast<int_x2_type>(segment_start.x()),
+            static_cast<int_x2_type>(segment_end.y()) - static_cast<int_x2_type>(segment_start.y()),
+            static_cast<int_x2_type>(new_point.x()) - static_cast<int_x2_type>(site_point.x()),
+            static_cast<int_x2_type>(new_point.y()) - static_cast<int_x2_type>(site_point.y()));
         if (orientation == ot::LEFT) {
           if (!right_site.is_inverse())
             return reverse_order ? LESS : UNDEFINED;
@@ -715,7 +725,7 @@ public:
                a[0] * (static_cast<int_x2_type>(segm_start2.y()) -
                        static_cast<int_x2_type>(segm_start1.y()));
         big_int_type dx = a[0] * (static_cast<int_x2_type>(site1.y()) -
-                                   static_cast<int_x2_type>(segm_start1.y())) -
+                                  static_cast<int_x2_type>(segm_start1.y())) -
                           b[0] * (static_cast<int_x2_type>(site1.x()) -
                                   static_cast<int_x2_type>(segm_start1.x()));
         big_int_type dy = b[0] * (static_cast<int_x2_type>(site1.x()) -
@@ -989,8 +999,11 @@ public:
       fpt_type dif_x2 = to_fpt(site2.x()) - to_fpt(site3.x());
       fpt_type dif_y1 = to_fpt(site1.y()) - to_fpt(site2.y());
       fpt_type dif_y2 = to_fpt(site2.y()) - to_fpt(site3.y());
-      fpt_type orientation =
-          robust_cross_product(dif_x1, dif_y1, dif_x2, dif_y2);
+      fpt_type orientation = robust_cross_product(
+          static_cast<int_x2_type>(site1.x()) - static_cast<int_x2_type>(site2.x()),
+          static_cast<int_x2_type>(site2.x()) - static_cast<int_x2_type>(site3.x()),
+          static_cast<int_x2_type>(site1.y()) - static_cast<int_x2_type>(site2.y()),
+          static_cast<int_x2_type>(site2.y()) - static_cast<int_x2_type>(site3.y()));
       robust_fpt_type inv_orientation(to_fpt(0.5) / orientation, 2.0);
       fpt_type sum_x1 = to_fpt(site1.x()) + to_fpt(site2.x());
       fpt_type sum_x2 = to_fpt(site2.x()) + to_fpt(site3.x());
@@ -1037,18 +1050,26 @@ public:
                         to_fpt(site3.point1(true).x());
       fpt_type vec_x = to_fpt(site2.y()) - to_fpt(site1.y());
       fpt_type vec_y = to_fpt(site1.x()) - to_fpt(site2.x());
-      robust_fpt_type teta(
-          robust_cross_product(line_a, line_b, -vec_y, vec_x), 1.0);
+      robust_fpt_type teta(robust_cross_product(
+          static_cast<int_x2_type>(site3.point1(true).y()) - static_cast<int_x2_type>(site3.point0(true).y()),
+          static_cast<int_x2_type>(site3.point0(true).x()) - static_cast<int_x2_type>(site3.point1(true).x()),
+          static_cast<int_x2_type>(site2.x()) - static_cast<int_x2_type>(site1.x()),
+          static_cast<int_x2_type>(site2.y()) - static_cast<int_x2_type>(site1.y())), 1.0);
       robust_fpt_type A(robust_cross_product(
-          line_a, line_b,
-          to_fpt(site3.point1().y()) - to_fpt(site1.y()),
-          to_fpt(site1.x()) - to_fpt(site3.point1().x())), 1.0);
+          static_cast<int_x2_type>(site3.point1(true).y()) - static_cast<int_x2_type>(site3.point0(true).y()),
+          static_cast<int_x2_type>(site3.point0(true).x()) - static_cast<int_x2_type>(site3.point1(true).x()),
+          static_cast<int_x2_type>(site3.point1().y()) - static_cast<int_x2_type>(site1.y()),
+          static_cast<int_x2_type>(site1.x()) - static_cast<int_x2_type>(site3.point1().x())), 1.0);
       robust_fpt_type B(robust_cross_product(
-          line_a, line_b,
-          to_fpt(site3.point1().y()) - to_fpt(site2.y()),
-          to_fpt(site2.x()) - to_fpt(site3.point1().x())), 1.0);
-      robust_fpt_type denom(
-          robust_cross_product(vec_x, vec_y, line_a, line_b), 1.0);
+          static_cast<int_x2_type>(site3.point1(true).y()) - static_cast<int_x2_type>(site3.point0(true).y()),
+          static_cast<int_x2_type>(site3.point0(true).x()) - static_cast<int_x2_type>(site3.point1(true).x()),
+          static_cast<int_x2_type>(site3.point1().y()) - static_cast<int_x2_type>(site2.y()),
+          static_cast<int_x2_type>(site2.x()) - static_cast<int_x2_type>(site3.point1().x())), 1.0);
+      robust_fpt_type denom(robust_cross_product(
+          static_cast<int_x2_type>(site2.y()) - static_cast<int_x2_type>(site1.y()),
+          static_cast<int_x2_type>(site1.x()) - static_cast<int_x2_type>(site2.x()),
+          static_cast<int_x2_type>(site3.point1(true).y()) - static_cast<int_x2_type>(site3.point0(true).y()),
+          static_cast<int_x2_type>(site3.point0(true).x()) - static_cast<int_x2_type>(site3.point1(true).x())), 1.0);
       robust_fpt_type inv_segm_len(to_fpt(1.0) /
           get_sqrt(line_a * line_a + line_b * line_b), 3.0);
       robust_dif_type t;
@@ -1105,22 +1126,29 @@ public:
       fpt_type a2 = to_fpt(segm_end2.x()) - to_fpt(segm_start2.x());
       fpt_type b2 = to_fpt(segm_end2.y()) - to_fpt(segm_start2.y());
       bool recompute_c_x, recompute_c_y, recompute_lower_x;
-      robust_fpt_type orientation(robust_cross_product(b1, a1, b2, a2), 1.0);
+      robust_fpt_type orientation(robust_cross_product(
+        static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+        static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+        static_cast<int_x2_type>(segm_end2.y()) - static_cast<int_x2_type>(segm_start2.y()),
+        static_cast<int_x2_type>(segm_end2.x()) - static_cast<int_x2_type>(segm_start2.x())), 1.0);
       if (ot::eval(orientation) == ot::COLLINEAR) {
         robust_fpt_type a(a1 * a1 + b1 * b1, 2.0);
         robust_fpt_type c(robust_cross_product(
-            b1, a1,
-            to_fpt(segm_start2.y()) - to_fpt(segm_start1.y()),
-            to_fpt(segm_start2.x()) - to_fpt(segm_start1.x())), 1.0);
+            static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+            static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+            static_cast<int_x2_type>(segm_start2.y()) - static_cast<int_x2_type>(segm_start1.y()),
+            static_cast<int_x2_type>(segm_start2.x()) - static_cast<int_x2_type>(segm_start1.x())), 1.0);
         robust_fpt_type det(
             robust_cross_product(
-                a1, b1,
-                to_fpt(site1.x()) - to_fpt(segm_start1.x()),
-                to_fpt(site1.y()) - to_fpt(segm_start1.y())) *
+                static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+                static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+                static_cast<int_x2_type>(site1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+                static_cast<int_x2_type>(site1.y()) - static_cast<int_x2_type>(segm_start1.y())) *
             robust_cross_product(
-                b1, a1,
-                to_fpt(site1.y()) - to_fpt(segm_start2.y()),
-                to_fpt(site1.x()) - to_fpt(segm_start2.x())),
+                static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+                static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+                static_cast<int_x2_type>(site1.y()) - static_cast<int_x2_type>(segm_start2.y()),
+                static_cast<int_x2_type>(site1.x()) - static_cast<int_x2_type>(segm_start2.x())),
             3.0);
         robust_dif_type t;
         t -= robust_fpt_type(a1, false) * robust_fpt_type((
@@ -1156,25 +1184,37 @@ public:
       } else {
         robust_fpt_type sqr_sum1(get_sqrt(a1 * a1 + b1 * b1), 2.0);
         robust_fpt_type sqr_sum2(get_sqrt(a2 * a2 + b2 * b2), 2.0);
-        robust_fpt_type a(robust_cross_product(a1, b1, -b2, a2), 1.0);
+        robust_fpt_type a(robust_cross_product(
+          static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+          static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+          static_cast<int_x2_type>(segm_start2.y()) - static_cast<int_x2_type>(segm_end2.y()),
+          static_cast<int_x2_type>(segm_end2.x()) - static_cast<int_x2_type>(segm_start2.x())), 1.0);
         if (!is_neg(a)) {
           a += sqr_sum1 * sqr_sum2;
         } else {
           a = (orientation * orientation) / (sqr_sum1 * sqr_sum2 - a);
         }
         robust_fpt_type or1(robust_cross_product(
-            b1, a1,
-            to_fpt(segm_end1.y()) - to_fpt(site1.y()),
-            to_fpt(segm_end1.x()) - to_fpt(site1.x())), 1.0);
+            static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+            static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+            static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(site1.y()),
+            static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(site1.x())), 1.0);
         robust_fpt_type or2(robust_cross_product(
-            a2, b2,
-            to_fpt(segm_end2.x()) - to_fpt(site1.x()),
-            to_fpt(segm_end2.y()) - to_fpt(site1.y())), 1.0);
+            static_cast<int_x2_type>(segm_end2.x()) - static_cast<int_x2_type>(segm_start2.x()),
+            static_cast<int_x2_type>(segm_end2.y()) - static_cast<int_x2_type>(segm_start2.y()),
+            static_cast<int_x2_type>(segm_end2.x()) - static_cast<int_x2_type>(site1.x()),
+            static_cast<int_x2_type>(segm_end2.y()) - static_cast<int_x2_type>(site1.y())), 1.0);
         robust_fpt_type det = robust_fpt_type(2.0, false) * a * or1 * or2;
         robust_fpt_type c1(robust_cross_product(
-            b1, a1, to_fpt(segm_end1.y()), to_fpt(segm_end1.x())), 1.0);
+            static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+            static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+            static_cast<int_x2_type>(segm_end1.y()),
+            static_cast<int_x2_type>(segm_end1.x())), 1.0);
         robust_fpt_type c2(robust_cross_product(
-            a2, b2, to_fpt(segm_end2.x()), to_fpt(segm_end2.y())), 1.0);
+            static_cast<int_x2_type>(segm_end2.x()) - static_cast<int_x2_type>(segm_start2.x()),
+            static_cast<int_x2_type>(segm_end2.y()) - static_cast<int_x2_type>(segm_start2.y()),
+            static_cast<int_x2_type>(segm_end2.x()),
+            static_cast<int_x2_type>(segm_end2.y())), 1.0);
         robust_fpt_type inv_orientation =
             robust_fpt_type(1.0, false) / orientation;
         robust_dif_type t, b, ix, iy;
@@ -1188,9 +1228,15 @@ public:
         b += iy * (robust_fpt_type(b1, false) * sqr_sum2);
         b += iy * (robust_fpt_type(b2, false) * sqr_sum1);
         b -= sqr_sum1 * robust_fpt_type(robust_cross_product(
-            a2, b2, to_fpt(-site1.y()), to_fpt(site1.x())), 1.0);
+            static_cast<int_x2_type>(segm_end2.x()) - static_cast<int_x2_type>(segm_start2.x()),
+            static_cast<int_x2_type>(segm_end2.y()) - static_cast<int_x2_type>(segm_start2.y()),
+            static_cast<int_x2_type>(-site1.y()),
+            static_cast<int_x2_type>(site1.x())), 1.0);
         b -= sqr_sum2 * robust_fpt_type(robust_cross_product(
-            a1, b1, to_fpt(-site1.y()), to_fpt(site1.x())), 1.0);
+            static_cast<int_x2_type>(segm_end1.x()) - static_cast<int_x2_type>(segm_start1.x()),
+            static_cast<int_x2_type>(segm_end1.y()) - static_cast<int_x2_type>(segm_start1.y()),
+            static_cast<int_x2_type>(-site1.y()),
+            static_cast<int_x2_type>(site1.x())), 1.0);
         t -= b;
         if (point_index == 2) {
           t += det.sqrt();
@@ -1251,11 +1297,20 @@ public:
       robust_fpt_type len2 = (a2 * a2 + b2 * b2).sqrt();
       robust_fpt_type len3 = (a3 * a3 + b3 * b3).sqrt();
       robust_fpt_type cross_12(robust_cross_product(
-          a1.fpv(), b1.fpv(), a2.fpv(), b2.fpv()), 1.0);
+          static_cast<int_x2_type>(site1.x1(true)) - static_cast<int_x2_type>(site1.x0(true)),
+          static_cast<int_x2_type>(site1.y1(true)) - static_cast<int_x2_type>(site1.y0(true)),
+          static_cast<int_x2_type>(site2.x1(true)) - static_cast<int_x2_type>(site2.x0(true)),
+          static_cast<int_x2_type>(site2.y1(true)) - static_cast<int_x2_type>(site2.y0(true))), 1.0);
       robust_fpt_type cross_23(robust_cross_product(
-          a2.fpv(), b2.fpv(), a3.fpv(), b3.fpv()), 1.0);
+          static_cast<int_x2_type>(site2.x1(true)) - static_cast<int_x2_type>(site2.x0(true)),
+          static_cast<int_x2_type>(site2.y1(true)) - static_cast<int_x2_type>(site2.y0(true)),
+          static_cast<int_x2_type>(site3.x1(true)) - static_cast<int_x2_type>(site3.x0(true)),
+          static_cast<int_x2_type>(site3.y1(true)) - static_cast<int_x2_type>(site3.y0(true))), 1.0);
       robust_fpt_type cross_31(robust_cross_product(
-          a3.fpv(), b3.fpv(), a1.fpv(), b1.fpv()), 1.0);
+          static_cast<int_x2_type>(site3.x1(true)) - static_cast<int_x2_type>(site3.x0(true)),
+          static_cast<int_x2_type>(site3.y1(true)) - static_cast<int_x2_type>(site3.y0(true)),
+          static_cast<int_x2_type>(site1.x1(true)) - static_cast<int_x2_type>(site1.x0(true)),
+          static_cast<int_x2_type>(site1.y1(true)) - static_cast<int_x2_type>(site1.y0(true))), 1.0);
       robust_dif_type denom, c_x, c_y, r;
 
       // denom = cross_12 * len3 + cross_23 * len1 + cross_31 * len2.
