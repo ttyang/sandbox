@@ -105,7 +105,7 @@ struct my_voronoi_diagram_traits {
   } vertex_equality_predicate_type;
 };
 
-// Voronoi ctype traits for 43-bit signed integer input coordinates.
+// Voronoi ctype traits for 48-bit signed integer input coordinates.
 struct my_voronoi_ctype_traits {
   typedef boost::int64_t int_type;
   typedef detail::extended_int<3> int_x2_type;
@@ -126,7 +126,6 @@ int main () {
   boost::mt19937_64 gen(std::time(0));
   boost::random::uniform_int_distribution<boost::int64_t> distr(-MAX, MAX-1);
   voronoi_builder<boost::int64_t, my_voronoi_ctype_traits> vb;
-  voronoi_diagram<fpt80, my_voronoi_diagram_traits> vd;
   for (size_t i = 0; i < GENERATED_POINTS; ++i) {
     boost::int64_t x = distr(gen);
     boost::int64_t y = distr(gen);
@@ -135,12 +134,13 @@ int main () {
 
   printf("Constructing Voronoi diagram of %d points...\n", GENERATED_POINTS);
   boost::timer::cpu_timer t;
+  voronoi_diagram<fpt80, my_voronoi_diagram_traits> vd;
   t.start();
   vb.construct(&vd);
   boost::timer::cpu_times times = t.elapsed();
   std::string ftime = boost::timer::format(times, 5, "%w");
 
-  printf("Consturction done in: %s seconds.\n", ftime.c_str());
+  printf("Construction done in: %s seconds.\n", ftime.c_str());
   printf("Resulting Voronoi graph has following stats:\n");
   printf("Number of Voronoi cells: %d.\n", vd.num_cells());
   printf("Number of Voronoi vertices: %d.\n", vd.num_vertices());

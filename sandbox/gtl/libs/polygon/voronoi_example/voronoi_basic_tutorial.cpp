@@ -183,7 +183,7 @@ int main() {
     }
     // Add 10% offset to the bounding rectangle.
     bbox = voronoi_utils<double>::scale(bbox, 1.1);
-    // Redner Voronoi diagram.
+    // Render Voronoi diagram.
     render_diagram(vd, bbox);
   }
 
