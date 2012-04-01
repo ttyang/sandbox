@@ -410,9 +410,11 @@ QString DagModel::nodeToString(DagItem* node, int depth)const
     {
         QString indent = indentation(depth);
 
-        QVariant parentNameV = node->data(m_childName);
-        QString  parentName  = parentNameV.toString();
-        QString nodeRepr( tr("%1[%2\n").arg(indentation(depth), parentName) ); //, node->data[m_parentName]);
+        QVariant childNameV = node->data(m_childName);
+        QString  childName  = childNameV.toString();
+        QString  nodeRepr( tr("%1[%2\n").arg(indentation(depth), childName) );
+        int nodeCount = node->childCount();
+
         for(int idx=0; idx<node->childCount(); idx++)
             nodeRepr += nodeToString(node->child(idx), depth+1);
 

@@ -3,7 +3,8 @@ TARGET          = sqlbrowser
 
 QT              += sql
 
-INCLUDEPATH     += /NIBuild/3rdparty/boost-1.48.0
+#INCLUDEPATH     += /NIBuild/3rdparty/boost-1.48.0
+INCLUDEPATH     += /cygwin/home/jofa/dev/boost/trunk
 
 HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     exttableview.h \

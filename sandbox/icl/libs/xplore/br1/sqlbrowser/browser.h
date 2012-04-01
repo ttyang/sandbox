@@ -71,6 +71,7 @@ public:
 
 public slots:
     void exec();
+    void rexec();
     QSqlTableModel* showTable(const QString &table);
     void showTree(QSqlTableModel *model);
     void showMetaData(const QString &table);

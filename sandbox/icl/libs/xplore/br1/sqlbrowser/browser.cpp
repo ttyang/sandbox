@@ -73,6 +73,12 @@ Browser::~Browser()
 
 void Browser::exec()
 {
+    if(sqlEdit->toPlainText().isEmpty())
+    {
+        rexec();
+        return;
+    }
+
     QSqlQueryModel *model = new QSqlQueryModel(ext_table);
 
 
@@ -87,11 +93,10 @@ void Browser::exec()
     xpQuery.exec(sqlEdit->toPlainText());
 
     // Populate the Dag Model from an sql-Query
-    //JODO dagmo->fromSql(xpQuery);
-
     dagmo->getEdges(xpQuery);  //Read edges from database
     dagmo->makeDag();          //Make a boost::graph internally
 
+    /*CL DBG Controlling the Dag via string output
     QMessageBox msgBox;
     //QString dagStr = dagmo->toString();
     //QString dagStr = dagmo->dagToString();
@@ -103,6 +108,63 @@ void Browser::exec()
     msgBox.exec();
     msgBox.setText(dagStr2);
     msgBox.exec();
+    */
+
+    QString dagStr  = dagmo->setupDag(); //Build a tree representation from the boost::dag
+
+    model->setQuery(curQuery);
+    //REV? model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
+
+    ext_table->setModel(model);
+    ext_tree->setModel(dagmo);//JOFA
+
+    //JOFA additions ----------------------------------------------------------
+    ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
+
+    //ext_table->setSortingEnabled(true);
+    ext_table->setAlternatingRowColors(true);
+    ext_table->resizeColumnsToContents();
+    //JOFA additions ----------------------------------------------------------
+
+
+    if (model->lastError().type() != QSqlError::NoError)
+        emit statusMessage(model->lastError().text());
+    else if (model->query().isSelect())
+        emit statusMessage(tr("Query OK."));
+    else
+        emit statusMessage(tr("Query OK, number of affected rows: %1").arg(
+                           model->query().numRowsAffected()));
+
+    updateActions();
+}
+
+void Browser::rexec()
+{
+    QSqlQueryModel *model = new QSqlQueryModel(ext_table);
+
+
+    QString dagSql;
+    dagSql += "select Dag.Parent as ParentId, Dag.Child as ChildId, Types.Id as TypeId, \n";
+    dagSql += "  (select Objects.name from Objects where Objects.id = Dag.Parent) as Parent, \n";
+    dagSql += "  Objects.name as Child, Types.name as Type  \n";
+    dagSql += "  from Dag \n";
+    dagSql += "  inner join Objects on      Dag.Child = Objects.id \n";
+    dagSql += "  inner join Types   on Objects.TypeOf = Types.id ";
+
+    QSqlQuery curQuery = QSqlQuery(dagSql, connectionWidget->currentDatabase());
+
+    QStringList headers;
+    headers << tr("Title") << tr("Description");
+    DagModel* dagmo = new DagModel(headers); // Dag-Model
+
+    QSqlQuery xpQuery = QSqlQuery("", connectionWidget->currentDatabase());
+    xpQuery.exec(dagSql);
+
+    // Populate the Dag Model from an sql-Query
+    dagmo->getEdges(xpQuery);  //Read edges from database
+    dagmo->makeDag();          //Make a boost::graph internally
+
+    QString dagStr  = dagmo->setupDag(); //Build a tree representation from the boost::dag
 
     model->setQuery(curQuery);
     //REV? model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
@@ -188,6 +250,8 @@ void Browser::addConnection()
         if (err.type() != QSqlError::NoError)
             QMessageBox::warning(this, tr("Unable to open database"), tr("An error occurred while "
                                        "opening the connection: ") + err.text());
+        else
+            rexec();
     }
 }
 
