@@ -7,39 +7,153 @@
 
 
 
+
+
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Polygon Usage</title></head><body>
 
 <h1>Voronoi Advanced Tutorial<br>
-</h1>This tutorial consists of two parts. The first one provides three
+</h1>This tutorial consists of two parts. The first one provides two
 examples of a real world problems that default configuration of Voronoi
-library solves. By default configuration we mean the one that accepts
-signed 32-bit integer coordinates and outputs floating-point (64-bit
+library is capable to solve. By default configuration we mean the one that accepts
+signed 32-bit integer and outputs floating-point (64-bit
 double) coordinates. We provide those examples to convience even the
 most sceptical users that they probably don't need to configure library
 for higher-precision input or output coordinate types. However if the
 posed problem really requires those, fully featured configuration of
 both input and output coordinate types is provided in the second part
 of this tutorial.<br>
-<h2>Three Examples<br>
-</h2>
-In three chapters below we explain three different areas of application
-of Voronoi diagram. Each of the examples covers following topics:<br>
+<h2>Red Planet</h2>
+
+<div style="margin-left: 40px;">
+<h3>Problem Statement</h3>
+
+<img style="width: 665px; height: 369px;" alt="" src="images/rover.jpg"><br>
+<br>
+Yes, we are going to talk about Mars. So lets imagine that NASA is
+planning to send a new robot to Mars. Each day center situated on Earth
+will send a destination point coordinates the robot needs to reach by
+the end of the day. Of course we'd like to save as much energy as
+possible thus choosing the shortest possible path. This would be a
+straight line in a perfect world (we don't consider curvature of
+surface), but situation becomes more complicated as there are some
+rocks and wells on Mars our robot can't go through. Behind of those our
+robot has some dimensions that might not allow it to pass narrow places.<br>
+<h3>Application of Voronoi diagram</h3>
+
+The problem above could be solved using Voronoi diagram. The first
+stage would be to discretize obstacles (rocks and wells) with
+polylines. Afterwards we will compute Voronoi diagram of the input set
+of segments. As each Voronoi edge is equidistant from the two closest
+sites we are able to filter edges the robot won't be able to pass due
+to it's dimensions. The last step would be to run a bit optimized A* algorithm to find
+the shortest or at least suboptimal path and we are done.<br>
+<h3>Discretization of input geometries</h3>
+
+To show how good is default input coordinate type provided by Voronoi
+we would discretize the whole area of Mars. That would be approximately
+1.44 *&nbsp; 10^8&nbsp; square kilometres that is equal to 1.44 *&nbsp;
+10^18&nbsp; square centimetres, which could be snapped to the integer
+grid with a side of 1.2 * 10^9 centimetres.&nbsp; To make Voronoi graph
+precise on the boundaries of that grid we will replicate input map 9
+times (3x3), thus Voronoi diagram within a central&nbsp; piece will
+provide us with a correct connectivity graph. This step will increse
+the size of our grid to 3.6 * 10^9 centimetres that is less than 2^32.
+So we are able to discretize Red planet surface within a 1 centimetre
+precision using default input coordinate type (signed 32 bit integer). That would imply maximum absolut error to be
+equal up to 0.5 centimetres per coordinate. Considering the radius of our robot to be
+0.3 metres and for security reasons avoiding any large enough obstacles
+that are within 1 metre distance from it that error would be irrelevant.<br>
+
+
+
+ <span style="color: rgb(0, 0, 0); font-family: sans-serif; font-size: 12px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 13px; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; background-color: rgb(249, 249, 249); display: inline ! important; float: none;"></span>
+<h3>Output analysis</h3>
+
+Estimates of the resulting Voronoi diagram precision were already discussed <a href="voronoi_main.hpp">here</a>.
+So to avoid those computations again we will simply state that the
+maximum absolute error of the output geometries will be on the grid
+boundaries and will be equal to 2^-16 centimetres, which is
+approximately equal to 150 nanometres and is 100 times larger than
+radius of a complex molecule. 
+
+We would like to notice that the absolute error of a discretization step is much higher than the one
+produced by the Voronoi diagram construction algorithm. </div><h2>VLSI Design</h2>
+
+<div style="margin-left: 40px;">
+<h3>Problem Statement</h3>
+
+<img style="width: 400px; height: 283px;" alt="" src="images/vlsi.jpg"><br>
+<br>Very-large-scale integration (VLSI) is the process of creating
+integrated circuits by combining thousands of transistors into a single
+chip. Considering the fact that it may take weeks or months to get an
+integrated circuit manufactured, designers often spend large amounts of
+time analyzing their layouts to avoid costly mistakes. One of the
+common static analysis checks is minimum distance requirement between
+the components of integrated circuit (distance should be not less than
+specified value).<br>
+<h3>Application of Voronoi diagram</h3>
+It appears that the minimal distance between components of the input
+set of points and segments corresponds to one of the Voronoi
+diagram edges. This means that we can iterate through each edge of
+Voronoi graph, extract pair of input geometries that form it and find
+distance between those. As the total amount of such edges is O(N) value
+(N - is the number of input geometries) minimal distance could be
+efficiently find in linear time once we construct the diagram.<br>
+
+<h3>Discretization of input geometries</h3>
+The average size of the modern CPUs is around 2.5 x 2.5 centimetres.
+Snapping this to the 32 bit integer grid will give discretization
+precision of 2.5 / 2^33 centimetres or 3 picometres that is 10 times
+smaller value than radius of an atom. That would be probably good
+enough precision even for a few next generations of processors.<br>
+<h3>Output analysis</h3>
+The maximum absolute error of the output geometries will be 2.5 / 2^47
+centimetres or 0.2 femtometres that is 10 times smaller value than
+radius of an electron. However in this particular case we are not
+interested in the precision, rather in topology. As it was noticed on
+the <a href="voronoi_main.htm">Voronoi main page</a> very small edges
+are removed from the Voronoi diagram. However user should not worry
+because the edge that correspond to the minimal distance won't be among
+those. That means that we would be able to 100% correclty identify a
+pair of closest objects within the discretization precision.<br>
+
+
+
+</div>
+
+
+<h2>Conclusions</h2>
+Above two examples show usage of the default Voronoi coordinate types
+in the marcro and micro world. The main point of those was to give user
+understanding of a scale default coordinate types provide. There are
+two main points we didn't mention before, but that would be relevant to
+the most real world problems:<br>
 <ul>
-  <li>Problem statement</li>
-  <li>Application of Voronoi diagram<br>
+  <li>The absolute error of coordinates of output Voronoi diagram
+inside the 32-bit integer discretization grid is slightly smaller than
+absolute error of discretization itself, thus could be neglected at all.</li>
+  <li>In both problems above we didn't consider error of measurement.
+For example: is it possible to construct map of the Mars within 0.5
+centimetres precision, or to get coordinates of the circuit parts
+withing subatomic precision. I guess the answer for both questions
+would be "No". And that actually means that error of discretization
+step could be neglected comparing to the error produced by measuring
+devices.<br>
   </li>
-  <li>Discretization of input geometries<br>
-  </li>
-  <li>Precision of output geometries</li>
 </ul>
-<h3>Red Planet</h3>
-<h3>VLSI Design</h3>
-<h3>Smart AI</h3>
+The second statement means that there is actually no point to provide
+implementation that operates with floating-point input coordinates,
+because those always could be snapped to the integer grid. In case you
+are not satisfied with the precision that the 32 bit integer grid
+provides or would like to receive output geometries within smaller
+relative error, follow next paragraph.<br>
 
 
-<h2>Voronoi Coordinate Types Configuration<br>
-</h2>
 
+
+<h2>Voronoi Coordinate Types Configuration</h2><br>
 <span style="font-family: Courier New,Courier,monospace;"></span><br>
 <table class="docinfo" id="table1" frame="void" rules="none">
 	<colgroup>
