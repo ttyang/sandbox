@@ -8,12 +8,20 @@
 // See http://www.boost.org for updates, documentation, and revision history.
 
 #include <cmath>
+#include <cstdio>
+#include <ctime>
+#include <string>
 
 // This will work properly only with GCC compiler.
 #include <ieee754.h>
 typedef long double fpt80;
 
-#include "boost/polygon/voronoi.hpp"
+// Random generators and distributions.
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
+#include <boost/timer/timer.hpp>
+
+#include <boost/polygon/voronoi.hpp>
 using namespace boost::polygon;
 
 struct my_ulp_comparison {
@@ -110,10 +118,32 @@ struct my_voronoi_ctype_traits {
   typedef my_fpt_converter to_efpt_converter_type;
 };
 
+const unsigned int GENERATED_POINTS = 100;
+const boost::int64_t MAX = 0x1000000000000LL;
+
 #include <iostream>
 int main () {
-  voronoi_diagram<fpt80, my_voronoi_diagram_traits> vd;
+  boost::mt19937_64 gen(std::time(0));
+  boost::random::uniform_int_distribution<boost::int64_t> distr(-MAX, MAX-1);
   voronoi_builder<boost::int64_t, my_voronoi_ctype_traits> vb;
+  voronoi_diagram<fpt80, my_voronoi_diagram_traits> vd;
+  for (size_t i = 0; i < GENERATED_POINTS; ++i) {
+    boost::int64_t x = distr(gen);
+    boost::int64_t y = distr(gen);
+    vb.insert_point(x, y);
+  }
+
+  printf("Constructing Voronoi diagram of %d points...\n", GENERATED_POINTS);
+  boost::timer::cpu_timer t;
+  t.start();
   vb.construct(&vd);
+  boost::timer::cpu_times times = t.elapsed();
+  std::string ftime = boost::timer::format(times, 5, "%w");
+
+  printf("Consturction done in: %s seconds.\n", ftime.c_str());
+  printf("Resulting Voronoi graph has following stats:\n");
+  printf("Number of Voronoi cells: %d.\n", vd.num_cells());
+  printf("Number of Voronoi vertices: %d.\n", vd.num_vertices());
+  printf("Number of Voronoi edges: %d.\n", vd.num_edges());
   return 0;
 }
