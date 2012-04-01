@@ -12,6 +12,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
@@ -102,7 +103,9 @@ extremely useful. One can use them to implement robust and efficient
 arithmetic predicates or functors that compute values with known
 relative error.<br>
 
-      <h1>Robust Fpt Type</h1>
+      
+      <h2>Robust Fpt Type</h2>
+
 Robust
 fpt (robust floating-point type)
 - represents IEEE-754 floating-point type wrapper that also contains
@@ -123,7 +126,9 @@ which for the above set of arithmetic operations in the IEEE-754
 floating-point implementation should be equal to 1 machine epsilon. <br>
 
 
-      <h1>Robust Difference Type</h1>Robust
+      
+      <h2>Robust Difference Type</h2>
+Robust
 difference type -
 represents expression wrapper that holds positive and negative partial
 sums of the expression in a separate values in order to avoid
@@ -155,7 +160,8 @@ it splits expression onto positive and negative partial sums and evaluates the
 diference only when the result is required. And did I mention that
 positive and negative values might be of robust fpt type, that's why
 relative error is always known for the expression result.<br>
-<h1>Robust Sqrt Expression Structure</h1>
+      <h2>Robust Sqrt Expression Structure</h2>
+
 Robust square root expression structure allows to compute results of
 expression that contains square roots with predefined relative error.
 As an example consider following expression:<br>
