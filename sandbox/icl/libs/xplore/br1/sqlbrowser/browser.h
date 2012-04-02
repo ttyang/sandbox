@@ -108,6 +108,8 @@ public slots:
     void on_cellClicked(int row, int col);
     void on_rowSelectChanged();
 
+    void insertNode();
+
 signals:
     void statusMessage(const QString &message);
 

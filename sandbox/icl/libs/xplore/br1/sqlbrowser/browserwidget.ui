@@ -686,6 +686,17 @@ QTableView
     </widget>
    </item>
   </layout>
+  <action name="insertNodeAction">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Insert Node</string>
+   </property>
+   <property name="statusTip">
+    <string>Inserts a new Node</string>
+   </property>
+  </action>
   <action name="insertRowAction">
    <property name="enabled">
     <bool>false</bool>

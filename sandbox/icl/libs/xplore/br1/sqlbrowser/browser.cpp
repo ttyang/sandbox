@@ -50,13 +50,15 @@
 Browser::Browser(QWidget *parent)
     : QWidget(parent)
 {
+    //JOFA: This seems to execute the generated code
     setupUi(this);
 
+    //JOFA: Hancoded initialization follows here.
     ext_table->addAction(insertRowAction);
     ext_table->addAction(deleteRowAction);
 
-    ext_tree->addAction(insertRowAction);
-    ext_tree->addAction(deleteRowAction);
+    ext_tree->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ext_tree->addAction(insertNodeAction);
 
     if (QSqlDatabase::drivers().isEmpty())
         QMessageBox::information(this, tr("No database drivers found"),
@@ -64,12 +66,33 @@ Browser::Browser(QWidget *parent)
                                     "Please check the documentation how to build the "
                                     "Qt SQL plugins."));
 
+    connect(insertNodeAction, SIGNAL(triggered()), this, SLOT(insertNode()));
+
     emit statusMessage(tr("Ready."));
 }
 
 Browser::~Browser()
 {
 }
+
+
+void Browser::insertNode()
+{
+    QModelIndex idx = ext_tree->currentIndex();
+    if(!idx.isValid())
+        return;
+
+    //QTreeWidgetItem* curItem = ext_tree->model()->item(idx);
+    QAbstractItemModel* absmo = ext_tree->model();
+    QVariant variDat = absmo->data(idx);
+
+    QMessageBox msgBox;
+    QString msg = "Insertion. ";
+    msg += variDat.toString();
+    msgBox.setText(msg);
+    msgBox.exec();
+}
+
 
 void Browser::exec()
 {

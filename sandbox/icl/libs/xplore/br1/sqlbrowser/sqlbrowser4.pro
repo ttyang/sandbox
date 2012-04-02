@@ -3,8 +3,8 @@ TARGET          = sqlbrowser
 
 QT              += sql
 
-#INCLUDEPATH     += /NIBuild/3rdparty/boost-1.48.0
-INCLUDEPATH     += /cygwin/home/jofa/dev/boost/trunk
+INCLUDEPATH     += /NIBuild/3rdparty/boost-1.48.0
+#INCLUDEPATH     += /cygwin/home/jofa/dev/boost/trunk
 
 HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     exttableview.h \
@@ -13,11 +13,13 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     dagmodel.h \
     StringVisitor.h \
     Dag.h \
-    CreatorVisitor.h
+    CreatorVisitor.h \
+    exttreeview.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
-    dagmodel.cpp
+    dagmodel.cpp \
+    exttreeview.cpp
 
 FORMS           = browserwidget.ui qsqlconnectiondialog.ui
 build_all:!build_pass {
