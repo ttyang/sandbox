@@ -413,7 +413,6 @@ QString DagModel::nodeToString(DagItem* node, int depth)const
         QVariant childNameV = node->data(m_childName);
         QString  childName  = childNameV.toString();
         QString  nodeRepr( tr("%1[%2\n").arg(indentation(depth), childName) );
-        int nodeCount = node->childCount();
 
         for(int idx=0; idx<node->childCount(); idx++)
             nodeRepr += nodeToString(node->child(idx), depth+1);
@@ -442,5 +441,15 @@ void DagModel::fillData(QVector<QVariant>& data, QSqlQuery& query)
     data[m_parentName] = query.value(m_parentName);
     data[m_childName]  = query.value(m_childName);
     data[m_childType]  = query.value(m_childType);
+}
+
+void DagModel::fillDummyData(QVector<QVariant>& data, int nodeId)
+{
+    data[m_parentId]   = QVariant(nodeId);
+    data[m_childId]    = QVariant(num_edges());
+    data[m_typeId]     = QVariant(-9);
+    data[m_parentName] = QVariant("Parent Name");
+    data[m_childName]  = QVariant("Child Name");
+    data[m_childType]  = QVariant(-9);
 }
 

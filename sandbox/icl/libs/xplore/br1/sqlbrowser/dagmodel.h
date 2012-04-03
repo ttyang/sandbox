@@ -82,6 +82,9 @@ public:
 
     DagItem* rootItem()const { return m_rootItem; } //CL DBG
 
+    //--------------------------------------------------------------------------
+    int num_edges()const { return boost::num_edges(m_dag); }
+
 private:
     void setupModelData(const QStringList &lines, DagItem *parent);
 
@@ -89,6 +92,13 @@ private:
 
     void fillData(QVector<QVariant>& data, QSqlQuery& query);
 
+public:
+    // Fill edge with dummy data. JODO CL later
+    void fillDummyData(QVector<QVariant>& data, int nodeId);
+
+    void appendEdge(QVector<QVariant>& data){ m_edges.append(data);}
+
+private:
     DagItem *m_rootItem;
 
     int m_parentId  ;

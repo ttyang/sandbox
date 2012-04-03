@@ -84,13 +84,42 @@ void Browser::insertNode()
 
     //QTreeWidgetItem* curItem = ext_tree->model()->item(idx);
     QAbstractItemModel* absmo = ext_tree->model();
+    DagModel*           dagmo = dynamic_cast<DagModel*>(ext_tree->model());
+
     QVariant variDat = absmo->data(idx);
+
+    //TMP Insert a fixed vertex.
+    // 1. Get the object id of the current
+    //(2. Insert a new object (vertex))
+    // 3. Insert a new edge. [Erst mal nur in den Graph.]
+    // 4. Refresh the dag model: Reload it from db.
+
+
 
     QMessageBox msgBox;
     QString msg = "Insertion. ";
     msg += variDat.toString();
     msgBox.setText(msg);
     msgBox.exec();
+
+    insertNewVertex(dagmo, idx);
+}
+
+
+// Insert a new Vertex and Edge at node refered by index in the boost::graph.
+// Then update the DagModel.
+void Browser::insertNewVertex(DagModel* pDagModel, const QModelIndex& index)
+{
+    Q_ASSERT(index.isValid());
+    // Get the id.
+    QModelIndex idIndex = index.sibling(index.row(), dag::node::posId);
+
+    //create an edge, fill as dummy and append.
+    QVector<QVariant> data(dag::edge::sizeOf_edge);
+    pDagModel->fillDummyData(data, idIndex.data().toInt());
+    pDagModel->appendEdge(data);
+
+    pDagModel->setupDag();
 }
 
 

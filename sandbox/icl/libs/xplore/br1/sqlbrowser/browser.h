@@ -54,6 +54,8 @@ QT_FORWARD_DECLARE_CLASS(QPushButton)
 QT_FORWARD_DECLARE_CLASS(QTextEdit)
 QT_FORWARD_DECLARE_CLASS(QSqlError)
 
+class DagModel;
+
 class Browser: public QWidget, private Ui::Browser
 {
     Q_OBJECT
@@ -115,6 +117,8 @@ signals:
 
 private:
     void deselectFirstCell(int selectedRow);
+
+    void insertNewVertex(DagModel* pDagModel, const QModelIndex& index);
 };
 
 #endif
