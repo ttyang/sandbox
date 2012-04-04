@@ -13,20 +13,12 @@
 
 using namespace boost;
 
-DagModel::DagModel(const QStringList &headers, //const QString &data,
-                     QObject *parent)
+DagModel::DagModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
-    QVector<QVariant> rootData;
-    foreach (QString header, headers)
-        rootData << header;
-
-    rootData.resize(dag::node::sizeOf_node);
-    rootData[dag::node::posId] = QVariant(0);
-    rootData[dag::node::posName] = QVariant("NIL");
-    m_rootItem = new DagItem(rootData);
-    //setupModelData(data.split(QString("\n")), m_rootItem);
+    m_rootItem = createDagItem();
 }
+
 
 /* JODO
 DagModel::DagModel(const QStringList &headers, const QString &data,
@@ -41,6 +33,17 @@ DagModel::DagModel(const QStringList &headers, const QString &data,
     setupModelData(data.split(QString("\n")), m_rootItem);
 }
 */
+
+DagItem* DagModel::createDagItem()
+{
+    QVector<QVariant> rootData;
+    rootData.resize(dag::node::sizeOf_node);
+    rootData[dag::node::posId] = QVariant(0);
+    rootData[dag::node::posName] = QVariant("NIL");
+    return new DagItem(rootData);
+}
+
+
 
 DagModel::~DagModel()
 {
@@ -322,6 +325,8 @@ void DagModel::fromSql(QSqlQuery& query)
 
 void DagModel::makeDag()
 {
+    m_dag.clear();
+
     m_nodeAttributes = get(Dag::attribute_tag(), m_dag);
 
     for(tEdgeList::iterator iter = m_edges.begin(); iter != m_edges.end(); iter++)
@@ -447,9 +452,9 @@ void DagModel::fillDummyData(QVector<QVariant>& data, int nodeId)
 {
     data[m_parentId]   = QVariant(nodeId);
     data[m_childId]    = QVariant(num_edges());
-    data[m_typeId]     = QVariant(-9);
+    data[m_typeId]     = QVariant(1);
     data[m_parentName] = QVariant("Parent Name");
     data[m_childName]  = QVariant("Child Name");
-    data[m_childType]  = QVariant(-9);
+    data[m_childType]  = QVariant(0);
 }
 

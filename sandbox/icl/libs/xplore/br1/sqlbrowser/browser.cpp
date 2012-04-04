@@ -118,6 +118,7 @@ void Browser::insertNewVertex(DagModel* pDagModel, const QModelIndex& index)
     QVector<QVariant> data(dag::edge::sizeOf_edge);
     pDagModel->fillDummyData(data, idIndex.data().toInt());
     pDagModel->appendEdge(data);
+    pDagModel->makeDag();
 
     pDagModel->setupDag();
 }
@@ -136,9 +137,9 @@ void Browser::exec()
 
     QSqlQuery curQuery = QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase());
 
-    QStringList headers;
+    QStringList headers; //JODO handle headers
     headers << tr("Title") << tr("Description");
-    DagModel* dagmo = new DagModel(headers); // Dag-Model
+    DagModel* dagmo = new DagModel(); // Dag-Model
 
     QSqlQuery xpQuery = QSqlQuery("", connectionWidget->currentDatabase());
     QString dbg_query = QString(sqlEdit->toPlainText());
@@ -205,9 +206,9 @@ void Browser::rexec()
 
     QSqlQuery curQuery = QSqlQuery(dagSql, connectionWidget->currentDatabase());
 
-    QStringList headers;
+    QStringList headers; //JODO handle headers
     headers << tr("Title") << tr("Description");
-    DagModel* dagmo = new DagModel(headers); // Dag-Model
+    DagModel* dagmo = new DagModel(); // Dag-Model
 
     QSqlQuery xpQuery = QSqlQuery("", connectionWidget->currentDatabase());
     xpQuery.exec(dagSql);

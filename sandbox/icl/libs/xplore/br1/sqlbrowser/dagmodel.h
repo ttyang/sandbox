@@ -33,8 +33,7 @@ class DagModel : public QAbstractItemModel
 public:
     //DagModel(const QStringList &headers, const QString &data,
     //          QObject *parent = 0);
-    DagModel(const QStringList &headers, //const QString &data,
-              QObject *parent = 0);
+    DagModel(QObject *parent = 0);
     ~DagModel();
 
     QVariant data(const QModelIndex &index, int role) const;
@@ -86,6 +85,8 @@ public:
     int num_edges()const { return boost::num_edges(m_dag); }
 
 private:
+    DagItem* createDagItem();
+
     void setupModelData(const QStringList &lines, DagItem *parent);
 
     DagItem *getItem(const QModelIndex &index) const;
