@@ -1,0 +1,37 @@
+#          Copyright Andrii Sydorchuk 2010-2012.
+# Distributed under the Boost Software License, Version 1.0.
+#    (See accompanying file LICENSE_1_0.txt or copy at
+#          http://www.boost.org/LICENSE_1_0.txt)
+
+import testing ;
+
+# It took five hours to configure CGAL.
+# If you want to run the benchmarks specify the following paths and
+# make sure that following libraries are compiled and do exist.
+# Good luck!
+path-constant CGAL_ROOT : "d:/Programming/CGAL-4.0" ;
+path-constant GMP_ROOT : "d:/Programming/CGAL-4.0/auxiliary/gmp" ;
+project polygon-test
+    :
+    requirements
+        <include>$(CGAL_ROOT)/include
+        <include>$(GMP_ROOT)/include
+	<library>$(BOOST_ROOT)/libs/thread/build//boost_thread
+	<library>$(BOOST_ROOT)/lib/libboost_thread-vc90-mt-1_48.lib
+        <library>$(GMP_ROOT)/lib/libgmp-10.lib
+        <library>$(GMP_ROOT)/lib/libmpfr-4.lib
+	<library>$(CGAL_ROOT)/lib/libCGAL-vc90-mt-4.0.lib
+	<library>$(CGAL_ROOT)/lib/libCGAL_Core-vc90-mt-4.0.lib
+    ;
+
+alias "benchmark-points"
+    :
+        [ run voronoi_benchmark_points.cpp ]
+    ;
+
+alias "benchmark-segments"
+    :
+        [ run voronoi_benchmark_segments.cpp ]
+    ;
+
+
