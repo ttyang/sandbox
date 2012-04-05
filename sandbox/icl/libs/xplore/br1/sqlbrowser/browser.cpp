@@ -115,12 +115,12 @@ void Browser::insertNewVertex(DagModel* pDagModel, const QModelIndex& index)
     QModelIndex idIndex = index.sibling(index.row(), dag::node::posId);
 
     //create an edge, fill as dummy and append.
-    QVector<QVariant> data(dag::edge::sizeOf_edge);
-    pDagModel->fillDummyData(data, idIndex.data().toInt());
-    pDagModel->appendEdge(data);
-    pDagModel->makeDag();
+    QVector<QVariant> edgeData(dag::edge::sizeOf_edge);
+    pDagModel->fillDummyData(edgeData, idIndex.data().toInt());
 
-    pDagModel->setupDag();
+    //Insert the dummy edge into DagModel (keeping the Dag consistent also)
+    //CL.. pDagModel->appendEdge(data);
+    pDagModel->insertVertex(edgeData, idIndex);
 }
 
 
@@ -148,20 +148,6 @@ void Browser::exec()
     // Populate the Dag Model from an sql-Query
     dagmo->getEdges(xpQuery);  //Read edges from database
     dagmo->makeDag();          //Make a boost::graph internally
-
-    /*CL DBG Controlling the Dag via string output
-    QMessageBox msgBox;
-    //QString dagStr = dagmo->toString();
-    //QString dagStr = dagmo->dagToString();
-    QString dagStr  = dagmo->setupDag(); //Build a tree representation from the boost::dag
-    QString dagStr2 = dagmo->rootItem()->toString();
-
-    //DBG Check structure via generated strings representing the structure.
-    msgBox.setText(dagStr);
-    msgBox.exec();
-    msgBox.setText(dagStr2);
-    msgBox.exec();
-    */
 
     QString dagStr  = dagmo->setupDag(); //Build a tree representation from the boost::dag
 

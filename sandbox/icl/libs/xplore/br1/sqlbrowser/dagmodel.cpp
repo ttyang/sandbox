@@ -114,7 +114,6 @@ QModelIndex DagModel::index(int row, int column, const QModelIndex &parent) cons
         return QModelIndex();
 }
 
-
 bool DagModel::insertColumns(int position, int columns, const QModelIndex &parent)
 {
     bool success;
@@ -124,6 +123,47 @@ bool DagModel::insertColumns(int position, int columns, const QModelIndex &paren
     endInsertColumns();
 
     return success;
+}
+
+void DagModel::insertVertex(QVector<QVariant>& edgeData, const QModelIndex& index)
+{
+    // Insert the vretex (via edge) into the Dag
+    dagInsertVertex(edgeData, index);
+    // Insert the vertex into the DagModel
+    modelInsertVertex(edgeData, index);
+}
+
+void DagModel::dagInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& index)
+{
+    int source = edgeData[m_parentId].toInt();
+    int target = edgeData[m_childId].toInt();
+    if(!(source==0 && target==0))
+    {
+        boost::add_edge(source, target, m_dag);
+        m_nodeAttributes[source] = NodeAttributes(edgeData[m_parentName].toString(), source);
+        m_nodeAttributes[target] = NodeAttributes(edgeData[m_childName].toString(),  target);
+    }
+}
+
+void DagModel::modelInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& index)
+{
+    // Create a new vertex or DagItem and append it a the node inicated by 'index'
+    // PRE: index is valid and points to the parent node of insertion.
+
+    //fill node data. The target node is 'new'
+    fillDummyData(edgeData, index.data().toInt());
+
+    DagItem* parentNode = item(index);
+    Q_ASSERT(parentNode != 0);
+
+    tVariVector childData(dag::node::sizeOf_node);
+    childData[dag::node::posId]         = edgeData[dag::edge::posChildId];
+    childData[dag::node::posParentId]   = edgeData[dag::edge::posParentId];
+    childData[dag::node::posName]       = edgeData[dag::edge::posChildName];
+    childData[dag::node::posParentName] = edgeData[dag::edge::posParentName];
+    DagItem* childNode = new DagItem(childData, parentNode);
+
+    parentNode->addChild(childNode);
 }
 
 bool DagModel::insertRows(int position, int rows, const QModelIndex &parent)
@@ -455,6 +495,6 @@ void DagModel::fillDummyData(QVector<QVariant>& data, int nodeId)
     data[m_typeId]     = QVariant(1);
     data[m_parentName] = QVariant("Parent Name");
     data[m_childName]  = QVariant("Child Name");
-    data[m_childType]  = QVariant(0);
+    data[m_childType]  = QVariant(2);
 }
 

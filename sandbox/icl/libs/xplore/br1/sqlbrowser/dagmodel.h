@@ -85,6 +85,13 @@ public:
     int num_edges()const { return boost::num_edges(m_dag); }
 
 private:
+    DagItem* item(const QModelIndex& index)const
+    {
+        if (!index.isValid())
+           return 0;
+        return static_cast<DagItem*>(index.internalPointer());
+    }
+
     DagItem* createDagItem();
 
     void setupModelData(const QStringList &lines, DagItem *parent);
@@ -97,7 +104,13 @@ public:
     // Fill edge with dummy data. JODO CL later
     void fillDummyData(QVector<QVariant>& data, int nodeId);
 
-    void appendEdge(QVector<QVariant>& data){ m_edges.append(data);}
+    void appendEdge(QVector<QVariant>& data){ m_edges.append(data);}//CL
+
+    void insertVertex(QVector<QVariant>& edgeData, const QModelIndex& index);
+
+private:
+    void dagInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& index);
+    void modelInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& index);
 
 private:
     DagItem *m_rootItem;
