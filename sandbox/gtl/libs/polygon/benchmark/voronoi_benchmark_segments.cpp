@@ -23,8 +23,8 @@ typedef boost::int32_t int32;
 typedef boost::polygon::voronoi_diagram<double> VD_BOOST;
 
 // Includes for CGAL library.
-# include <CGAL/Quotient.h>
-# include <CGAL/MP_Float.h>
+#include <CGAL/Quotient.h>
+#include <CGAL/MP_Float.h>
 typedef CGAL::Quotient<CGAL::MP_Float> ENT;
 #include <CGAL/Simple_cartesian.h>
 typedef CGAL::Simple_cartesian<double> CK;
@@ -44,9 +44,9 @@ typedef boost::polygon::directed_line_segment_data<int32> SEGMENT_POLYGON;
 typedef boost::polygon::directed_line_segment_set_data<int32> SSD_POLYGON;
 
 const int RANDOM_SEED = 27;
-const int NUM_TESTS = 5;
-const int NUM_SEGMENTS[] = {10, 100, 1000, 10000, 100000};
-const int NUM_RUNS[] = {100000, 10000, 1000, 100, 10};
+const int NUM_TESTS = 6;
+const int NUM_SEGMENTS[] = {10, 100, 1000, 10000, 100000, 1000000};
+const int NUM_RUNS[] = {100000, 10000, 1000, 100, 10, 1};
 std::ofstream bf("benchmark_segments.txt", std::ios_base::out | std::ios_base::app);
 boost::timer timer;
 
@@ -96,6 +96,7 @@ void run_voronoi_test(const std::vector<double> &running_times) {
         ssd.insert(SEGMENT_POLYGON(POINT_POLYGON(x1, y1),
                                    POINT_POLYGON(x1 + dx, y1 + dy)));
       }
+      ssd.clean();
       boost::polygon::construct_voronoi_segments(ssd, &vd);
     }
     double time_per_test = (timer.elapsed() - running_times[i]) / NUM_RUNS[i];
@@ -119,6 +120,7 @@ void run_cgal_test(const std::vector<double> &running_times) {
         ssd.insert(SEGMENT_POLYGON(POINT_POLYGON(x1, y1),
                                    POINT_POLYGON(x1 + dx, y1 + dy)));
       }
+      ssd.clean();
       SDT_CGAL dt;
       for (SSD_POLYGON::iterator_type it = ssd.begin(); it != ssd.end(); ++it) {
         dt.insert(Site_CGAL::construct_site_2(
