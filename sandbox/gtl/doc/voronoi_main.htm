@@ -30,8 +30,10 @@
 
 
 
+
+
 <meta http-equiv="Content-Language" content="en-us">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 	<tbody><tr>
@@ -101,7 +103,7 @@
 				<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
 				<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
 				<li><a href="voronoi_basic_tutorial.htm">Voronoi Basic Tutorial</a></li>
-				<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
+				<li><a href="voronoi_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
 			</ul>
 		</div>
 		<h3 class="navbar">Polygon Sponsor</h3>
@@ -120,7 +122,8 @@ limitations: 1) coordinates of input points and endpoints of segments
 should be of integer type; 2) input segments should not intersect
 except their endpoints. While the first restriction is permanent (it
 allows to give waranties for algorithm output precision and execution),
-the second one may be waved in the future releases. Strong sides of the
+the second one may be resolved using Boost.Polygon functionality.
+Strong sides of the
 library and main benefits comparing to other implementations are
 discussed in the following paragraphs.<span style="font-weight: bold;"></span><br>
       
@@ -278,11 +281,11 @@ of this data structure is to automatically filter Voronoi edges that
 belong to those areas.</li>
         <li>Implementing data structure built on top of Voronoi diagram that allows to execute nearest neighbour queries in O(log N) time.<br>
 Note: this would be sort of kd-tree data structure built on top of bounding rectangles around Voronoi cells.</li>
+        
         <li>Providing interface to retrieve convex hull of a set of
 points and segments from Voronoi builder one's the Voronoi diagram is
-constructed in O(N) time.</li>
-        <li>Dropping restriction on non-intersecting input geometries.<br>
-Note: this means that library will also compute segment intersections if such exist.</li>
+constructed in O(N) time.<br>
+</li>
         <li>Closer integration with interfaces and functionality of Boost Polygon Library.<br>
         </li>
       </ul>
@@ -292,14 +295,15 @@ High-priority tasks to be considered:<br>
         <li>Support of other types of distance metrics.</li>
         <li>Construction of constrained Delaunay triangulation.</li>
         <li>Support of circle input geometries.</li>
+        <li>Dropping restriction on non-intersecting input geometries.</li>
+
       </ul>
 Based on the community suggestions priorities may be changed.<br>
       
       <h2>Theoretical Research<br>
 
-      </h2>
-
-Voronoi was developed as part of Google Summer of Code 2010. The
+      </h2>Voronoi
+was developed as part of Google Summer of Code 2010. The
 library was actively maintained for the last two years and involved
 strong math research in the field of algorithms, data structures,
 relative error arithmetic and numerical robustness. Nowadays one can
@@ -308,7 +312,8 @@ results or implementation with
 benchmarks nobody else can reproduce. The opposite story is with
 Voronoi. We provide pure implementation and benchmarks one may run on
 his PC. In case community finds it useful we will incrementally
-add more documentation on the theoretical side of our realization.<br>
+add more documentation on the theoretical side of our realization. The
+authors would like to acknowledge Steven Fortune's article <span style="font-family: Arial,Helvetica,sans-serif;"><span style="font-weight: bold;"></span></span>"<a href="http://dl.acm.org/citation.cfm?id=10549">A Sweepline algorithm for Voronoi diagrams</a>", that contains fundamental ideas of the current implementation.<br>
 
 
 

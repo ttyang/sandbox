@@ -5,23 +5,32 @@
 
 import testing ;
 
-# It took five hours to configure CGAL.
-# If you want to run the benchmarks specify the following paths and
-# make sure that following libraries are compiled and do exist.
-# Good luck!
-path-constant CGAL_ROOT : "d:/Programming/CGAL-4.0" ;
-path-constant GMP_ROOT : "d:/Programming/CGAL-4.0/auxiliary/gmp" ;
+# Windows
+# It took five hours to configure CGAL on Windows. Good luck!
+#path-constant CGAL_ROOT : "d:/Programming/CGAL-4.0" ;
+#project polygon-test
+#    :
+#    requirements
+#        <include>$(CGAL_ROOT)/include
+# 	 <library>$(CGAL_ROOT)/lib/libCGAL-vc90-mt-4.0.lib
+#      	 <library>$(CGAL_ROOT)/lib/libCGAL_Core-vc90-mt-4.0.lib
+#        <include>$(GMP_ROOT)/auxiliary/gmp/include
+#        <library>$(GMP_ROOT)/auxiliary/gmp/lib/libgmp-10.lib
+#        <library>$(GMP_ROOT)/auxiliary/gmp/lib/libmpfr-4.lib
+#	 <library>$(BOOST_ROOT)/libs/thread/build//boost_thread
+#	 <library>$(BOOST_ROOT)/lib/libboost_thread-vc90-mt-1_48.lib
+#    ;
+
+# Linux
+# If follow official documentation of CGAL it takes 30 mins to
+# set up properly CGAL and required libraries (GMP, MPFR).
+path-constant CGAL_ROOT : "/home/slevin/Workspace/Libraries/CGAL" ;
 project polygon-test
     :
     requirements
         <include>$(CGAL_ROOT)/include
-        <include>$(GMP_ROOT)/include
-	<library>$(BOOST_ROOT)/libs/thread/build//boost_thread
-	<library>$(BOOST_ROOT)/lib/libboost_thread-vc90-mt-1_48.lib
-        <library>$(GMP_ROOT)/lib/libgmp-10.lib
-        <library>$(GMP_ROOT)/lib/libmpfr-4.lib
-	<library>$(CGAL_ROOT)/lib/libCGAL-vc90-mt-4.0.lib
-	<library>$(CGAL_ROOT)/lib/libCGAL_Core-vc90-mt-4.0.lib
+        <library>$(CGAL_ROOT)/lib/libCGAL.so
+        <library>$(CGAL_ROOT)/lib/libCGAL_Core.so
     ;
 
 alias "benchmark-points"
