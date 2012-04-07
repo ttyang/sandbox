@@ -53,11 +53,11 @@
 
         typedef boost::array<boost::uint32_t, static_cast<std::size_t>(mp_elem_number)> array_type;
 
-        array_type data;
-        boost::int64_t      exp;
-        bool       neg;
-        t_fpclass  fpclass;
-        boost::int32_t      prec_elem;
+        array_type     data;
+        boost::int64_t exp;
+        bool           neg;
+        t_fpclass      fpclass;
+        boost::int32_t prec_elem;
 
       public:
         // Constructors
