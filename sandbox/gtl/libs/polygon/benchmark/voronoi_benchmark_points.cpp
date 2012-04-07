@@ -48,7 +48,7 @@ void format_line(int num_points, int num_tests, double time_per_test) {
   bf << "| " << std::setw(16) << num_points << " ";
   bf << "| " << std::setw(15) << num_tests << " ";
   bf << "| " << std::setw(17) << time_per_test << " ";
-  bf << "| " << std::endl;
+  bf << "|" << std::endl;
 }
 
 void run_boost_test() {
