@@ -391,7 +391,7 @@ private:
   template <typename SEvent>
   std::pair<void*, void*> insert_new_edge(
       const SEvent &site1, const SEvent &site2) {
-    // Get sites' indices.
+    // Get sites' indexes.
     int site_index1 = site1.index();
     int site_index2 = site2.index();
 

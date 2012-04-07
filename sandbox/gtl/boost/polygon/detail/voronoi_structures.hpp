@@ -221,7 +221,7 @@ private:
 };
 
 // Circle event type.
-// Occurs when the sweepline sweeps over the rightmost point of the voronoi
+// Occurs when the sweepline sweeps over the rightmost point of the Voronoi
 // circle (with the center at the intersection point of the bisectors).
 // Circle event is made of the two consecutive nodes in the beach line data
 // structure. In case another node was inserted during algorithm execution

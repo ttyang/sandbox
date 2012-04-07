@@ -133,7 +133,7 @@ public:
   }
 
   // Discretizes finite Voronoi edge.
-  // Disretization absolute error is defined by max_error value.
+  // Discretization absolute error is defined by max_error value.
   template <typename CT>
   static void discretize(const voronoi_edge<CT> &edge, 
       coordinate_type max_error, point_set_type &discretization) {

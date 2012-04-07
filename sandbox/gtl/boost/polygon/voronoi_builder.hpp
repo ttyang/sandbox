@@ -107,7 +107,7 @@ public:
     insert_segments(first_segment, last_segment);
   }
 
-  // Run sweepline algorithm and fill output datastucture.
+  // Run sweepline algorithm and fill output data structure.
   template <typename OUTPUT>
   void construct(OUTPUT *output) {
     // Init structures.

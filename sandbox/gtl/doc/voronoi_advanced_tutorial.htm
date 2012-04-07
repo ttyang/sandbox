@@ -19,8 +19,8 @@
 examples of a real world problems that default configuration of Voronoi
 library is capable to solve. By default configuration we mean the one that accepts
 signed 32-bit integer and outputs floating-point (64-bit
-double) coordinates. We provide those examples to convience even the
-most sceptical users that they probably don't need to configure library
+double) coordinates. We provide those examples to convince even the
+most skeptical users that they probably don't need to configure library
 for higher-precision input or output coordinate types. However if the
 posed problem really requires those, fully featured configuration of
 both input and output coordinate types is provided in the second part
@@ -66,10 +66,10 @@ we would discretize the whole area of Mars. That would be approximately
 grid with a side of 1.2 * 10^9 centimetres.&nbsp; To make Voronoi graph
 precise on the boundaries of that grid we will replicate input map 9
 times (3x3), thus Voronoi diagram within a central&nbsp; piece will
-provide us with a correct connectivity graph. This step will increse
+provide us with a correct connectivity graph. This step will increase
 the size of our grid to 3.6 * 10^9 centimetres that is less than 2^32.
 So we are able to discretize Red planet surface within a 1 centimetre
-precision using default input coordinate type (signed 32 bit integer). That would imply maximum absolut error to be
+precision using default input coordinate type (signed 32 bit integer). That would imply maximum absolute error to be
 equal up to 0.5 centimetres per coordinate. Considering the radius of our robot to be
 0.3 metres and for security reasons avoiding any large enough obstacles
 that are within 1 metre distance from it that error would be irrelevant.<br>
@@ -135,7 +135,7 @@ interested in the precision, rather in topology. As it was noticed on
 the <a href="voronoi_main.htm">Voronoi main page</a> very small edges
 are removed from the Voronoi diagram. However user should not worry
 because the edge that correspond to the minimal distance won't be among
-those. That means that we would be able to 100% correclty identify a
+those. That means that we would be able to 100% correctly identify a
 pair of closest objects within the discretization precision.<br>
 
 
@@ -146,7 +146,7 @@ pair of closest objects within the discretization precision.<br>
 
 <h2>Conclusions</h2>
 Above two examples show usage of the default Voronoi coordinate types
-in the marcro and micro world. The main point of those was to give user
+in the macro and micro world. The main point of those was to give user
 understanding of a scale default coordinate types provide. There are
 two main points we didn't mention before, but that would be relevant to
 the most real world problems:<br>
@@ -182,7 +182,7 @@ support 80 bit long double type; ieee754.h header is required), it
 should give clear understanding of how the library supports user
 provided coordinate types.<br>
 <br>
-So the main step would be to declare voronoi coordinate type traits that satisfy set of restrictions expalined <a href="voronoi_builder.hpp">here</a>:<br>
+So the main step would be to declare voronoi coordinate type traits that satisfy set of restrictions explained <a href="voronoi_builder.hpp">here</a>:<br>
 <br>
 <span style="font-family: Courier New,Courier,monospace;">struct my_voronoi_ctype_traits {</span><br style="font-family: Courier New,Courier,monospace;">
 <span style="font-family: Courier New,Courier,monospace;">&nbsp; typedef boost::int64_t int_type;</span><br style="font-family: Courier New,Courier,monospace;">
@@ -196,11 +196,11 @@ So the main step would be to declare voronoi coordinate type traits that satisfy
 <span style="font-family: Courier New,Courier,monospace;">&nbsp; typedef my_fpt_converter to_efpt_converter_type;</span><br style="font-family: Courier New,Courier,monospace;">
 <span style="font-family: Courier New,Courier,monospace;">};<br>
 <br>
-</span>It is always better to use C++ builtin types wherever it's
+</span>It is always better to use C++ built-in types wherever it's
 possible. That's why we use 64 bit signed integer type to handle our
 input coordinates. <span style="font-family: Courier New,Courier,monospace;">int_x2_type</span> and <span style="font-family: Courier New,Courier,monospace;">uint_x2_type</span>
 is required to handle 96 bit signed/unsigned integers. As there is no
-such builtin type we use library provided efficient fixed integer type.
+such built-in type we use library provided efficient fixed integer type.
 Big int type should be capable to handle 48 * 64 bit integers, that is
 less than 32 * 128, and so far we are good with <span style="font-family: Courier New,Courier,monospace;">extended_int&lt;128&gt;</span> type. We use the same floating point type for both <span style="font-family: Courier New,Courier,monospace;">fpt_type</span> and <span style="font-family: Courier New,Courier,monospace;">efpt_type</span>
 as it has enough exponent bits to represent both 48 * 32 bit and 48 *

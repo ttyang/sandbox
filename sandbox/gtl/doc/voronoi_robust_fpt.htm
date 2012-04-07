@@ -111,7 +111,7 @@ fpt (robust floating-point type)
 - represents IEEE-754 floating-point type wrapper that also contains
 information about relative error of the underlying value. The
 implementation overloads 5 standard operations: +, -, *, /, sqrt and
-apart from evaluating value of the expression also computes its relativer
+apart from evaluating value of the expression also computes its relative
 error. Let's consider two values A and B; C - rounding error; re
 - correspond to relative error, then following rules apply:<br>
       <br>
@@ -140,9 +140,9 @@ Looking at the relative error formulas above one may notice a few facts about th
 1) all of the formulas evaluate upper bound of the relative error, while it could be a lot lower;<br>
 2) relative error of the expression depends on the order operations are evaluated;<br>
 3) relative error of difference of two positive numbers may be
-exteremely large in case their values are close to each other (this is
+extremely large in case their values are close to each other (this is
 also called cancellation error).<br>
-To explain this a bit consider following experssion (~ - stands for almost equal, &lt;&lt; - many times larger than):<br>
+To explain this a bit consider following expression (~ - stands for almost equal, &lt;&lt; - many times larger than):<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">A - B + C, where A ~ B and C &lt;&lt; B;</span><br>
       <br>
@@ -157,7 +157,7 @@ Computing relative error of this expression from left to right will produce extr
       </span>While both estimates are valid (they define upper bound of the relative error), of course the second one is preferable.<br>
 Here is the place where robust difference type comes useful. Basically
 it splits expression onto positive and negative partial sums and evaluates the
-diference only when the result is required. And did I mention that
+difference only when the result is required. And did I mention that
 positive and negative values might be of robust fpt type, that's why
 relative error is always known for the expression result.<br>
       <h2>Robust Sqrt Expression Structure</h2>
@@ -173,7 +173,7 @@ however it may be transformed to the next equivalent expression:<br>
       <span style="font-family: Courier New,Courier,monospace;"><br>
 (A * A * a - B * B * b) / (A * sqrt(a) + B * sqrt(b));</span><br>
       <br>
-Numerator and denominator of this epxression could be computed directly as those won't lead to the cancellation errors.<br>
+Numerator and denominator of this expression could be computed directly as those won't lead to the cancellation errors.<br>
 In general case robust sqrt expression structure allows to evaluate following set of expressions:<br>
       <span style="font-family: Courier New,Courier,monospace;"><br>
 sum(A[i] * sqrt(a[i]), i = 1 .. N), N &lt;= 4;</span><br>

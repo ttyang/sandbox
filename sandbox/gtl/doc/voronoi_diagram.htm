@@ -110,26 +110,26 @@
 Voronoi
 diagram is a computational geometry concept that represents partition
 of a given space onto regions, with bounds determined by distances to a
-specified family of objects. The application area of this concept vary <a href="http://www.ics.uci.edu/%7Eeppstein/gina/scot.drysdale.html">from Archaology to Zoology</a>. Boost.Polygon provides implementation of
+specified family of objects. The application area of this concept vary <a href="http://www.ics.uci.edu/%7Eeppstein/gina/scot.drysdale.html">from Archaeology to Zoology</a>. Boost.Polygon provides implementation of
 Voronoi diagram data structure in 2D space. Internal representation
 consists of a three arrays, that respectively contain: Voronoi cells
 (area around input sites bounded by Voronoi edges), Voronoi vertices
 (points where three or more Voronoi edges intersect), Voronoi edges
-(one dimensonal curves containing points equidistant from the two
+(one dimensional curves containing points equidistant from the two
 closest input sites). Each of the primitives (cell, vertex, edge)
 contains pointers to other linked primitives, so that it's always
 possible to efficiently traverse Voronoi diagram. Picture below shows
 Voronoi vertices in red, Voronoi edges in black, input sites that
 correspond to the Voronoi cells in blue (it is considered that each
 input segment consists of three sites: segment itself and two
-endpoints). As one may notice each segment is splitted onto segment
+endpoints). As one may notice each segment is split onto segment
 site itself and both its endpoints. As the result two additional
 Voronoi edges are constructed per each segment. This is made to
 simplify representation of the Voronoi diagram.<br>
       <br>
       <img style="border: 1px solid ; width: 300px; height: 300px;" alt="" src="images/voronoi2.png"><br>
       <br>
-Voronoi diagram declaration and list of member fucntions is following:<br>
+Voronoi diagram declaration and list of member functions is following:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">template &lt;typename T, typename TRAITS = voronoi_diagram_traits&lt;T&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class voronoi_diagram;<br>
@@ -209,7 +209,7 @@ Voronoi edge is represented as a bit improved classical <a href="http://www.flip
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_cell_type *cell()<br>
             </td>
-            <td style="vertical-align: top;">Retruns pointer to the Voronoi <span style="font-family: Courier New,Courier,monospace;"></span>cell that edge belongs to.<br>
+            <td style="vertical-align: top;">Returns pointer to the Voronoi <span style="font-family: Courier New,Courier,monospace;"></span>cell that edge belongs to.<br>
             </td>
           </tr>
           <tr>
