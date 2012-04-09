@@ -17,6 +17,8 @@
 
 
 
+
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
@@ -99,29 +101,59 @@
         </li>
         <li>compute output geometries within precision of the output coordinate type.</li>
       </ul>
-Apart from Boost.Polygon Voronoi we managed to find just one library that meets those requirements: <a href="http://www.cgal.org/">CGAL</a>
-(while it is clearly defined in CGAL documentation that it's capable to
-handle the first two items, we didn't find any clear specification on
-the third item). Taking into account that CGAL is well-known in
+Apart from Boost.Polygon Voronoi we managed to find just one library that meets at least two of those requirements: <a href="http://www.cgal.org/">CGAL</a>
+(it is clearly defined in CGAL documentation that it's capable to
+handle the first two items, however there are no warranties on the
+output geometries precision). Taking into account that CGAL is
+well-known in
 computational geometry area it should be clear why it is the main
-target of this benchmark comparison. Other libraries (<a href="https://github.com/aewallin/openvoronoi">OpenVoronoi</a>, <a href="http://qhull.org/">QHull</a>), that at least
+target of this benchmark comparison. Other libraries (<a href="https://github.com/aewallin/openvoronoi">OpenVoronoi</a>, <a href="http://qhull.org/">QHull</a>, <a href="http://www.cs.cmu.edu/%7Equake/triangle.html">Triangle</a>), that at least
 partially satisfy above requirements would be added to this benchmark
-incrementally (we are open for suggestions)<a href="http://qhull.org/"></a>.<br>
+incrementally (we are open for suggestions).<br>
+      <h2>Important<br>
+      </h2>
+While results of this benchmark show complete dominance of
+Boost.Polygon over CGAL implementation, we would like to make it clear
+that both libraries use different approach to construct Voronoi
+diagram. Thus there are problems were CGAL incremental approach would
+be still more vital than sweepline approach (e.g. input sites are inserted as a live stream
+data).<br>
       
       <h2>Voronoi Benchmark Details<br>
 
       </h2>
 
 The benchmark consists of two parts. The first one constructs Voronoi diagram of a set of random points (<a href="../libs/polygon/benchmark/voronoi_benchmark_points.cpp"><span style="text-decoration: underline;">voronoi_benchmark_points.cpp</span></a>), the second one constructs Voronoi diagram of a set of random segments (<a href="../libs/polygon/benchmark/voronoi_benchmark_segments.cpp">voronoi_benchmark_segments.cpp</a>).
-We ensure that input data sets are the same for both libraries by
-initializing random generator with the same seed. There is also one
-important detail to admit about Voronoi of segments: both Boost and
-CGAL implementation consider each segment as 3 input objects (segment
-itself and its endpoints), thus the running time one may expect would
-be at least three times slower for Voronoi of segments comparing to
-Voronoi of points.<br>
+Below we list important details about benchmark, Boost and CGAL
+implementation that should be considered while reviewing benchmark
+details:<br>
+      <ul>
+        <li>we ensure that input data sets are the same for both libraries by initializing random generator with the same seed;</li>
+        <li>we ensure that input data sets that consist of segments don't contain intersections;<br>
+        </li>
+        <li>there is no Voronoi diagram data structure in CGAL at the
+moment. That's why we use Segment Delaunay Graph which is topologically
+dual to Voronoi diagram;</li>
+        <li>CGAL
+output Delaunay graph doesn't contain information
+about coordinates of the Voronoi vertices, basically it stores just
+topology. We didn't include time to compute Voronoi vertices and memory
+storage required for those in our benchmarks. Thus one may expect
+Boost.Polygon Voronoi to be even more faster in comparison with CGAL.<br>
+        </li>
+        <li>Boost and CGAL library use completely different approaches
+to construct Voronoi diagram: sweepline and incremental algorithms
+respectively;<br>
+        </li>
+        <li>Boost and CGAL implementation consider each input segment
+as 3 input objects (segment itself and its endpoints), thus the running
+time and memory usage for Voronoi of segments would be at least 3 times
+slower than for Voronoi of points;<br>
+        </li>
+      </ul>
+
       <br>
-The benchmark was executed on the following two systems:<br>
+The benchmark was executed on the following two system configurations:<br>
       <br>
 Hardware: Intel i5-7600 2.8 GHz, 4GiB RAM.<br>
 OS: Windows 7 Professional 32-bit.<br>
@@ -261,7 +293,13 @@ Libraries: Boost 1.48.0, CGAL-4.0, GMP 5.0.4, MPFR 3.1.0 + cumulative patch.<br>
           <tr>
             <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_points_100000.png"></td>
             <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_points_1000000.png"></td>
+          </tr><tr>
+            <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_points_memory.png"><br>
+            </td>
+            <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_points_all.png"><br>
+            </td>
           </tr>
+
         </tbody>
       </table>
 
@@ -389,19 +427,32 @@ Libraries: Boost 1.48.0, CGAL-4.0, GMP 5.0.4, MPFR 3.1.0 + cumulative patch.<br>
           <tr>
             <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_segments_100000.png"></td>
             <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_segments_1000000.png"></td>
+          </tr><tr>
+            <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_segments_memory.png"><br>
+            </td>
+            <td style="vertical-align: top;"><img style="width: 500px; height: 300px;" alt="" src="../libs/polygon/benchmark/benchmark_results/plots/benchmark_segments_all.png"><br>
+            </td>
           </tr>
+
         </tbody>
       </table>
 <span style="font-weight: bold;"></span>
-      <h2>Voronoi Benchmark Conclusions<br>
-
-      </h2>
-
-
-The main conclusions for the benchmark results above are following:<br>
-      <ul>
-        <li>There is no input size range were CGAL would outperform Boost.Polygon Voronoi.<br>
+      <h2>Voronoi Benchmark Conclusions</h2>The main conclusions for the benchmark results above are following:<br>
+<ul>
+        
+        <li>There is no input size range were CGAL would outperform
+Boost.Polygon Voronoi. Even considering the fact that we didn't include
+time it would take CGAL to compute coordinates of the Voronoi vertices.</li>
+        <li>Logarithmic execution time shows that Boost.Polygon Voronoi
+has clear N*log(N) complexity, while this doesn't seem to be true for
+CGAL (at least for large input data sets).<br>
         </li>
+
+        <li>Boost.Polygon Voronoi computes coordinates of the output
+Voronoi vertices within 64 machine epsilon precision. There are no such
+warranties for the CGAL library.<br>
+        </li>
+
         <li>Boost.Polygon Voronoi of points is 4 times faster for small
 input data sets (10 points) and this factor grows up to 100 for large
 input data sets (1000000 points).</li>
@@ -411,10 +462,7 @@ large input data sets (1000000 segments).</li>
         <li>Boost.Polygon
 Voronoi is capable to construct Voronoi of 10000 points or 1000
 segments in 0.02 seconds. This allows to produce real time frame rate
-for those quantities.</li>
-        
-      </ul>
-      <span style="font-weight: bold;"></span></td>
+for those quantities.</li></ul></td>
 	</tr>
 	<tr>
 		<td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
