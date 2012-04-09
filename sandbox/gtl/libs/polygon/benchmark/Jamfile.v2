@@ -25,7 +25,7 @@ import testing ;
 # If follow official documentation of CGAL it takes 30 mins to
 # set up properly CGAL and required libraries (GMP, MPFR).
 path-constant CGAL_ROOT : "/home/slevin/Workspace/Libraries/CGAL" ;
-project voronoi-benchmark
+project benchmark
     :
     requirements
         <include>$(CGAL_ROOT)/include
@@ -42,5 +42,3 @@ alias "benchmark-segments"
     :
         [ run voronoi_benchmark_segments.cpp ]
     ;
-
-
