@@ -24,6 +24,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 
@@ -94,7 +95,7 @@
 				<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
 				<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
 				<li><a href="voronoi_basic_tutorial.htm">Voronoi Basic Tutorial</a></li>
-				<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
+				<li><a href="voronoi_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
 			</ul>
 		</div>
 		<h3 class="navbar">Polygon Sponsor</h3>
@@ -106,30 +107,28 @@
 		<br>
 		<p></p>
       
-      <h1>Voronoi Diagram</h1>
-Voronoi
+      <h1>Voronoi Diagram</h1>Voronoi
 diagram is a computational geometry concept that represents partition
 of a given space onto regions, with bounds determined by distances to a
 specified family of objects. The application area of this concept vary <a href="http://www.ics.uci.edu/%7Eeppstein/gina/scot.drysdale.html">from Archaeology to Zoology</a>. Boost.Polygon provides implementation of
-Voronoi diagram data structure in 2D space. Internal representation
+the Voronoi diagram data structure in 2D space. Internal representation
 consists of a three arrays, that respectively contain: Voronoi cells
 (area around input sites bounded by Voronoi edges), Voronoi vertices
 (points where three or more Voronoi edges intersect), Voronoi edges
 (one dimensional curves containing points equidistant from the two
 closest input sites). Each of the primitives (cell, vertex, edge)
-contains pointers to other linked primitives, so that it's always
-possible to efficiently traverse Voronoi diagram. Picture below shows
+contains pointers to the other linked primitives, so that it's always
+possible to efficiently traverse the Voronoi graph. Picture below shows
 Voronoi vertices in red, Voronoi edges in black, input sites that
-correspond to the Voronoi cells in blue (it is considered that each
-input segment consists of three sites: segment itself and two
-endpoints). As one may notice each segment is split onto segment
-site itself and both its endpoints. As the result two additional
+correspond to the Voronoi cells in blue. It is considered that each
+input segment consists of three sites: segment itself and its
+endpoints. As the result two additional
 Voronoi edges are constructed per each segment. This is made to
 simplify representation of the Voronoi diagram.<br>
       <br>
       <img style="border: 1px solid ; width: 300px; height: 300px;" alt="" src="images/voronoi2.png"><br>
       <br>
-Voronoi diagram declaration and list of member functions is following:<br>
+Voronoi diagram declaration and list of the member functions is following:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">template &lt;typename T, typename TRAITS = voronoi_diagram_traits&lt;T&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class voronoi_diagram;<br>
@@ -152,47 +151,47 @@ Voronoi diagram declaration and list of member functions is following:<br>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const cell_container_type &amp;cells() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const reference to Voronoi cells container.<br>
+            <td style="vertical-align: top;">Returns the const reference to the cell container.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const vertex_container_type &amp;vertices() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const reference to Voronoi vertices container.<br>
+            <td style="vertical-align: top;">Returns the const reference to the vertex container.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const edge_container_type &amp;edges() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const reference to Voronoi edges container.<br>
+            <td style="vertical-align: top;">Returns the const reference to the edge container.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">unsigned int num_cells() const<br>
             </td>
-            <td style="vertical-align: top;">Returns number of cells in the Voronoi diagram.<br>
-This value should be the same as the size of cells container.<br>
+            <td style="vertical-align: top;">Returns the number of the cells in the Voronoi diagram.<br>
+This value should be the same as the size of the cell container.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">unsigned int num_edges() const<br>
             </td>
-            <td style="vertical-align: top;">Returns number of edges in the Voronoi diagram.<br>
-This value should be twice smaller then the size of edges container.<br>
-The reason is that we have two half-edges for each Voronoi edge.<br>
+            <td style="vertical-align: top;">Returns the number of the edges in the Voronoi diagram.<br>
+This value should be twice smaller than the size of the edge container.<br>
+The reason is that two half-edges are present for each Voronoi edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">unsigned int num_vertices() const<br>
             </td>
-            <td style="vertical-align: top;">Returns number of vertices in the Voronoi diagram.<br>
-This value should be the same as the size of vertices container.<br>
+            <td style="vertical-align: top;">Returns the number of the vertices in the Voronoi diagram.<br>
+This value should be the same as the size of the vertex container.<br>
             </td>
           </tr>
         </tbody>
       </table>
       <h1>Voronoi Edge</h1>
-Voronoi edge is represented as a bit improved classical <a href="http://www.flipcode.com/archives/The_Half-Edge_Data_Structure.shtml">half-edge</a> data structure. The declaration and list of member functions is following:<br>
+Voronoi edge is represented as a bit improved classical <a href="http://www.flipcode.com/archives/The_Half-Edge_Data_Structure.shtml">half-edge</a> data structure. The declaration and list of the member functions is following:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">template &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class voronoi_edge;<br>
@@ -209,184 +208,184 @@ Voronoi edge is represented as a bit improved classical <a href="http://www.flip
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_cell_type *cell()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the Voronoi <span style="font-family: Courier New,Courier,monospace;"></span>cell that edge belongs to.<br>
+            <td style="vertical-align: top;">Returns the pointer to the Voronoi <span style="font-family: Courier New,Courier,monospace;"></span>cell that edge belongs to.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_cell_type *cell() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the Voronoi cell that edge belongs to.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the Voronoi cell that edge belongs to.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void cell(voronoi_cell_type *c)<br>
             </td>
-            <td style="vertical-align: top;">Sets Voronoi cell pointer for the cell current edge belongs to.<br>
+            <td style="vertical-align: top;">Sets the Voronoi cell pointer for the cell current edge belongs to.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_vertex_type *vertex0()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the start point of the edge.<br>
+            <td style="vertical-align: top;">Returns the pointer to the start point of the edge.<br>
 If edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_vertex_type *vertex0() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the start point of the edge.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the start point of the edge.<br>
 If edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void vertex0(voronoi_vertex_type *v)<br>
             </td>
-            <td style="vertical-align: top;">Sets start point pointer of the edge.<br>
+            <td style="vertical-align: top;">Sets the start point pointer of the edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_vertex_type *vertex1()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the end point of the edge.<br>
-If edge is infinite in that direction returns NULL.<br>
+            <td style="vertical-align: top;">Returns the pointer to the end point of the edge.<br>
+If the edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_vertex_type *vertex1() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the end point of the edge.<br>
-If edge is infinite in that direction returns NULL.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the end point of the edge.<br>
+If the edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void vertex1(voronoi_vertex_type *v)<br>
             </td>
-            <td style="vertical-align: top;">Sets end point pointer of the edge.<br>
+            <td style="vertical-align: top;">Sets the endpoint pointer of the edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *twin()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer&nbsp; to the twin edge.<br>
+            <td style="vertical-align: top;">Returns the pointer to the twin edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *twin() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the twin edge.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the twin edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void twin(voronoi_edge_type *e)<br>
             </td>
-            <td style="vertical-align: top;">Sets twin edge pointer of the edge.<br>
+            <td style="vertical-align: top;">Sets the twin edge pointer of the edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *next()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the CCW next edge within the corresponding Voronoi cell.<br>
+            <td style="vertical-align: top;">Returns the pointer to the CCW next edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *next() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the CCW next edge within the corresponding Voronoi cell.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the CCW next edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void next(voronoi_edge_type *e)<br>
             </td>
-            <td style="vertical-align: top;">Sets CCW next edge pointer of the edge.<br>
+            <td style="vertical-align: top;">Sets the CCW next edge pointer of the edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *prev()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the CCW prev edge within the corresponding Voronoi cell.<br>
+            <td style="vertical-align: top;">Returns the pointer to the CCW prev edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *prev() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the CCW prev edge within the corresponding Voronoi cell.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the CCW prev edge within the corresponding Voronoi cell.<br>
 Edges not necessarily share a common vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void prev(voronoi_edge_type *e)<br>
             </td>
-            <td style="vertical-align: top;">Sets CCW prev edge pointer of the edge.<br>
+            <td style="vertical-align: top;">Sets the CCW prev edge pointer of the edge.<br>
             </td>
           </tr>
           
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void *data() const<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the data associated with the edge.<br>
+            <td style="vertical-align: top;">Returns the pointer to the data associated with the edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void data(void *d) const<br>
             </td>
-            <td style="vertical-align: top;">Sets data pointer of the edge.<br>
-This allows user to associate any data type with the edge.<br>
+            <td style="vertical-align: top;">Sets the data pointer of the edge.<br>
+This allows the user to associate any data type with the edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *rot_next()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the CCW next edge rotated around the edge start point.<br>
-If edge is infinite in that direction returns NULL.<br>
+            <td style="vertical-align: top;">Returns the pointer to the CCW next edge rotated around the edge start point.<br>
+If the edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *rot_next() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the CCW next edge rotated around the edge start point.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the CCW next edge rotated around the edge start point.<br>
 
-If edge is infinite in that direction returns NULL.</td>
+If the edge is infinite in that direction returns NULL.</td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *rot_prev()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the CCW prev edge rotated around the edge start point.<br>
-If edge is infinite in that direction returns NULL.<br>
+            <td style="vertical-align: top;">Returns the pointer to the CCW prev edge rotated around the edge start point.<br>
+If the edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *rot_prev() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the CCW prev edge rotated around the edge start point.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the CCW prev edge rotated around the edge start point.<br>
 
 
-If edge is infinite in that direction returns NULL.</td>
+If the edge is infinite in that direction returns NULL.</td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool is_finite() const<br>
             </td>
-            <td style="vertical-align: top;">Returns true if both endpoints of the edge are finite, else false.<br>
+            <td style="vertical-align: top;">Returns true if the both endpoints of the edge are finite, else false.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool is_linear() const<br>
             </td>
-            <td style="vertical-align: top;">Returns true if edge is linear (segment, ray, line), else false.<br>
+            <td style="vertical-align: top;">Returns true if the edge is linear (segment, ray, line), else false.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool is_curved() const<br>
             </td>
-            <td style="vertical-align: top;">Returns true if edge is curved (parabolic arc), else false.<br>
+            <td style="vertical-align: top;">Returns true if the edge is curved (parabolic arc), else false.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool is_primary() const<br>
             </td>
-            <td style="vertical-align: top;">Returns false if the edge goes through segment endpoint, else true.<br>
+            <td style="vertical-align: top;">Returns false if the edge goes through the endpoint of the segment, else true.<br>
             </td>
           </tr>
         </tbody>
@@ -396,7 +395,7 @@ If edge is infinite in that direction returns NULL.</td>
       <h1>Voronoi Cell</h1>
 
 Voronoi cell is represented by a site the cell contains and a pointer
-to the incident edge. The declaration and list of member functions is
+to the incident edge. The declaration and list of the member functions is
 following:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">template &lt;typename T&gt;<br>
@@ -409,7 +408,7 @@ class voronoi_cell;<br>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_cell(const point_type &amp;p1,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_edge_type *edge)<br>
             </td>
-            <td style="vertical-align: top;">Constructs Voronoi cell from the given point site and pointer to the one of boundary edges.<br>
+            <td style="vertical-align: top;">Constructs the Voronoi cell from the given point site and pointer to the one of the boundary edges.<br>
             </td>
           </tr>
           <tr>
@@ -417,65 +416,65 @@ class voronoi_cell;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const point_type &amp;p2,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_edge_type *edge)<br>
             </td>
-            <td style="vertical-align: top;">Constructs Voronoi cell from the given segment site and pointer to one of boundary edges.<br>
+            <td style="vertical-align: top;">Constructs the Voronoi cell from the given segment site and pointer to the one of the boundary edges.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const point_type &amp;point0() const<br>
             </td>
-            <td style="vertical-align: top;">If cell contains point site returns it.<br>
-If cell contains segment site returns its first endpoint.<br>
+            <td style="vertical-align: top;">If the cell contains point site returns it.<br>
+If the cell contains segment site returns its first endpoint.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const point_type &amp;point1() const<br>
             </td>
-            <td style="vertical-align: top;">If cell contains point site returns it.<br>
-If cell contains segment site returns its second endpoint.<br>
+            <td style="vertical-align: top;">If the cell contains point site returns it.<br>
+If the cell contains segment site returns its second endpoint.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *incident_edge()<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to one of the boundary edges.<br>
+            <td style="vertical-align: top;">Returns the pointer to the one of the boundary edges.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *incident_edge() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to one of the boundary edges.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the one of the boundary edges.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void incident_edge(voronoi_edge_type *e)<br>
             </td>
-            <td style="vertical-align: top;">Sets incident boundary edge pointer of the cell.<br>
+            <td style="vertical-align: top;">Sets the incident boundary edge pointer of the cell.<br>
             </td>
           </tr>
           
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void *data() const<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the data associated with the cell.</td>
+            <td style="vertical-align: top;">Returns the pointer to the data associated with the cell.</td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void data(void *d) const<br>
             </td>
-            <td style="vertical-align: top;">Sets data pointer of the cell.<br>
+            <td style="vertical-align: top;">Sets the data pointer of the cell.<br>
 
-This allows user to associate any data type with the cell.</td>
+This allows the user to associate any data type with the cell.</td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool contains_point() const</td>
-            <td style="vertical-align: top;">Returns true if cell contains point site, else false.</td>
+            <td style="vertical-align: top;">Returns true if the cell contains a point site, else false.</td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool contains_segment() const</td>
-            <td style="vertical-align: top;">Returns true if cell contains segment site, else false.</td>
+            <td style="vertical-align: top;">Returns true if the cell contains a segment site, else false.</td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool is_degenerate() const </td>
-            <td style="vertical-align: top;">Returns true if cell doesn't have incident edge.<br>
+            <td style="vertical-align: top;">Returns true if the cell doesn't have an incident edge.<br>
 
 Could happen if a few input segments share a common endpoint.</td>
           </tr>
@@ -486,7 +485,7 @@ Could happen if a few input segments share a common endpoint.</td>
 the Voronoi cell structure is equal to: 2 * sizeof(void *) + 4 *
 sizeof(coordinate_type).<br>
       <br>
-Following code snipped effectively traverses Voronoi edges around the Voronoi cell:<br>
+Following code snippet effectively traverses Voronoi edges around the Voronoi cell:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">const voronoi_edge&lt;double&gt; *edge = cell-&gt;incident_edge();</span><br>
       <span style="font-family: Courier New,Courier,monospace;">do {</span><br style="font-family: Courier New,Courier,monospace;">
@@ -495,7 +494,7 @@ Following code snipped effectively traverses Voronoi edges around the Voronoi ce
       <span style="font-family: Courier New,Courier,monospace;">} while (edge != cell-&gt;incident_edge());</span><br>
       <h1>Voronoi Vertex</h1>
 Voronoi vertex is represented by a point that corresponds to the vertex
-and a pointer to the incident edge. The declaration and list of member
+and a pointer to the incident edge. The declaration and list of the member
 functions is following:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">template &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
@@ -507,46 +506,46 @@ functions is following:<br>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_vertex(const point_type &amp;vertex, voronoi_edge_type *edge)<br>
             </td>
-            <td style="vertical-align: top;">Constructs Voronoi vertex that corresponds to the give point and incident edge.<br>
+            <td style="vertical-align: top;">Constructs the Voronoi vertex that corresponds to the give point and incident edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const point_type &amp;vertex() const<br>
             </td>
-            <td style="vertical-align: top;">Returns point that represents vertex.<br>
+            <td style="vertical-align: top;">Returns the point that represents vertex.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">voronoi_edge_type *incident_edge()<br>
             </td>
-            <td style="vertical-align: top;">Returns incident edge pointer.<br>
+            <td style="vertical-align: top;">Returns the incident edge pointer.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">const voronoi_edge_type *incident_edge() const<br>
             </td>
-            <td style="vertical-align: top;">Returns const pointer to the incident edge.<br>
+            <td style="vertical-align: top;">Returns the const pointer to the incident edge.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void incident_edge(voronoi_edge_type *e)<br>
             </td>
-            <td style="vertical-align: top;">Sets incident edge pointer.<br>
+            <td style="vertical-align: top;">Sets the incident edge pointer.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void *data() const<br>
             </td>
-            <td style="vertical-align: top;">Returns pointer to the data associated with the vertex.</td>
+            <td style="vertical-align: top;">Returns the pointer to the data associated with the vertex.</td>
           </tr>
           
           <tr>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void data(void *d) const<br>
             </td>
-            <td style="vertical-align: top;">Sets data pointer of the cell.<br>
+            <td style="vertical-align: top;">Sets the data pointer of the cell.<br>
 
 
-This allows user to associate any data type with the vertex.</td>
+This allows the user to associate any data type with the vertex.</td>
           </tr>
         </tbody>
       </table>
@@ -568,8 +567,8 @@ Following code snipped effectively traverses Voronoi edges around the Voronoi ve
       <h1>Voronoi Diagram Traits<br>
       </h1>
 
-Voronoi diagram traits are used to configure Voronoi diagram data
-structure. The declaration and list of required type definitions is
+Voronoi diagram traits are used to configure the Voronoi diagram data
+structure. The declaration and list of the required type definitions is
 following:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">template &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
@@ -588,7 +587,7 @@ following:<br>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">ctype_converter_type<br>
             </td>
             <td style="vertical-align: top;">Coordinate type converter structure.<br>
-Converts coordinates provided by Voronoi builder to the internal coordinate type.<br>
+Converts the coordinates provided by the Voronoi builder to the internal coordinate type.<br>
             </td>
           </tr>
           <tr>

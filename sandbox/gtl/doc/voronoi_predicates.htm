@@ -14,6 +14,7 @@
 
 
 
+
 <meta http-equiv="Content-Language" content="en-us">
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Contents</title></head><body>
 
@@ -84,7 +85,7 @@
 				<li><a href="gtl_tutorial.htm">Layout Versus Schematic Tutorial</a></li>
 				<li><a href="gtl_minkowski_tutorial.htm">Minkowski Sum Tutorial</a></li>
 				<li><a href="voronoi_basic_tutorial.htm">Voronoi Basic Tutorial</a></li>
-				<li><a href="voronoi_diagram_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
+				<li><a href="voronoi_advanced_tutorial.htm">Voronoi Advanced Tutorial</a></li>
 			</ul>
 		</div>
 		<h3 class="navbar">Polygon Sponsor</h3>
@@ -97,12 +98,11 @@
 		<p></p>
 		<h1>Voronoi Predicates<br>
 </h1>In mathematical theory predicate is an operator which returns true
-or false (e.g. it may answer a question: "is it sunny today?").<br>
-Voronoi predicates contain implementation of a set of geometric
-predicates used by Voronoi builder. Except of those it also provides
-functors that allow to compute coordinates of centers of inscribed
+or false (e.g. it may answer a question: "is it sunny today?").<br>The Voronoi predicates contain implementation of a set of the geometric
+predicates used by the <a href="voronoi_builder.htm">Voronoi builder</a>. Except of those it also provides
+functors that allow to compute the coordinates of the centers of the inscribed
 circles (those correspond to the Voronoi vertices) within the given
-relative error precision range. This means that the more mantissa bits
+relative error precision range (64 machine epsilons). This means that the more mantissa bits
 your floating point type has the better precision of the output
 geometries you'll get. This
 is a very handy functionality as it allows to improve output precision
@@ -110,14 +110,14 @@ simply providing 3rd party IEEE-754 like floating-point types.<br>
       
       <h2>Geometric Predicates</h2>
 
-The main issues with implementation of any complex geometric
-algorithm arise when dealing with robustness of geometric predicates.
+The main issues with the implementation of any complex geometric
+algorithm arise when dealing with the robustness of the geometric predicates.
 Usually this
-is also the point where commercial projects stand strong against
+is also the point where the commercial projects stand strong against
 noncommercial implementations (it's not the case with our
 implementation).
-For the short example let's consider following code snippet, that could
-be used to compute orientation of three points:<br>
+For the short example let's consider the following code snippet, that could
+be used to compute orientation of the three points:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">double cross_product(double dx1, double dy1, double dx2, double dy2) {</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">&nbsp; return dx1 * dy2 - dx2 * dy1;</span><br style="font-family: Courier New,Courier,monospace;">
@@ -139,53 +139,73 @@ output from it may influence the further algorithm execution:
 corrupting algorithm underlying structures or producing completely
 invalid output. Voronoi uses
 slightly more complex predicates. To insure that they are robust and
-efficient approach that combines two known techniques is used: lazy
+efficient the approach that combines two known techniques (lazy
 arithmetic and multiple
-precision computations.<br>
+precision computations) is used.<br>
  
       
       <h2>Lazy Arithmetic</h2>
 Lazy
-arithmetic is based on usage of IEEE-754 floating-point types to evaluate an expression. While this approach has a good speed
+arithmetic is based on the usage of IEEE-754 floating-point types to
+quickly evaluate the result of the expression. While this approach has
+a good speed
 performance it doesn't produce reliable results all the time (as in the
 example above). The way to solve the issue is apart from computing
-result of the expression compute the relative error of it also. This will
-give us the range of values evaluated result belongs to and based on that we can
+result of the expression compute the relative error of it also. This
+will
+give us the range of values the evaluated result belongs to and based
+on that we can
 come up with two decisions: 1) output the value; 2) recompute the
-expression using multiprecision precision type. The way relative errors are
+expression using multiprecision type. The way relative errors are
 evaluated is explained in the <a href="voronoi_robust_fpt.htm">Voronoi Robust FPT</a> section.<br>
       <h2>Multiple Precision Arithmetic</h2>
 In the vast majority of cases
-lazy arithmetic approach produces correct result thus further
-processing is not required. In other cases Voronoi defined or user
+the lazy arithmetic approach produces correct result thus further
+processing is not required. In other cases the Voronoi library defined or user
 provided multiple precision types are used to produce correct result.
 However even that doesn't solve all the cases. Multiprecision geometric
-predicates could be divided onto two categories:<br>
+predicates could be divided onto two categories:<br><br>
 1) mathematical transformation of the predicate exists that evaluates exact result:<span style="font-family: Courier New,Courier,monospace;"><br>
+
       <br>
+
 Predicate: A/B + C/D ?&lt; 0;<br>
+
 After math. transform: (A*D + B*C) / (B * D) ?&lt; 0;<br>
+
       <br>
+
 Predicate: sqrt(A) ?&lt; 1.2;<br>
+
 After math. transform: A ?&lt; 1.44;<br>
+
       <br>
+
       </span>2) the correct result could be produced only by increasing
 precision of the multiprecision type and with defined relative error
 for the output type:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">Predicate: sqrt(A) + sqrt(B) + sqrt(C) + sqrt(D) + sqrt(E) ?&lt; 1.2;<br>
+
 Imagine that value of the expression to the left is very close to 1.2;<br>
+
       </span><br>
       <span style="font-family: Courier New,Courier,monospace;">Predicate: sin(x) ?&lt; 0.57;<br>
+
 Relative error of sin function should be known;<br>
+
       <br>
-      </span>Voronoi of points could be implemented using only predicates of the first type, however Voronoi of segments could not.
+      </span>The Voronoi of points could be completely
+implemented using predicates of the first type, however the Voronoi of
+segments could not.
 The predicate that doesn't fall into the first category is responsible
-for comparison of Voronoi circle events. However it appears that properly used
+for comparison of the Voronoi circle events. However it appears that
+properly used
 this predicate can't corrupt algorithm internal structures and produces
 output technically the same as produced in case this predicate fell in
 the first category.&nbsp; The main reasons for this are: 1) algorithm
-operates with integer coordinate type of input geometries; 2) closely
+operates with integer coordinate type of the input geometries; 2)
+closely
 situated Voronoi vertices are considered to be the same in the output
 data structure (this won't influence main targets algorithm is used
 for).<span style="font-family: Courier New,Courier,monospace;"><br>
