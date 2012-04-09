@@ -1,22 +1,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  <title>Voronoi Basic Tutorial</title>
 
-
-
-
-
-
-
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Polygon Usage</title></head><body>
-
+  
+</head><body>
 <h1>Voronoi Basic Tutorial<br>
-</h1> 
+</h1>
+
 <p>In this tutorial we will cover the basic usage of the Boost.Polygon
-Voronoi library that should be enough for 95% of cases. Below we will discuss the following topics:<br>
+Voronoi library that should be enough for 95% of cases. Below we will
+discuss the following topics:<br>
 </p>
+
 <ul>
+
   <li>preparing input geometries;<br>
   </li>
   <li>construction of the Voronoi diagram;</li>
@@ -24,17 +23,25 @@ Voronoi library that should be enough for 95% of cases. Below we will discuss th
   </li>
   <li>associating the user data with the Voronoi primitives;</li>
   <li>Voronoi diagram discretization and rendering.</li>
-</ul>In the example that goes through this tutorial (<a href="../libs/polygon/example/voronoi_basic_tutorial.cpp">voronoi_basic_tutorial.cpp</a>)
+</ul>
+
+In the example that goes through this tutorial (<a href="../libs/polygon/example/voronoi_basic_tutorial.cpp">voronoi_basic_tutorial.cpp</a>)
 we
-are going to construct the Voronoi diagram of a few points and segments.
-On the image below one may see the corresponding rendered Voronoi graph. Primary Voronoi edges
+are going to construct the Voronoi diagram of a few points and
+segments.
+On the image below one may see the corresponding rendered Voronoi
+graph. Primary Voronoi edges
 are marked with
-the black color, non-primary with green, input geometries have blue color. In
+the black color, non-primary with green, input geometries have blue
+color. In
 case you forgot, we split each input segment onto three sites (segment
 itself and both endpoints), edges that go between those sites are
 considered to be non-primary.<br>
+
 <br>
+
 <img style="border: 2px solid ; width: 300px; height: 300px;" alt="" src="images/voronoi4.png"><br>
+
 <br>
 
 And before you proceed don't forget to:<span style="font-family: Courier New,Courier,monospace;"><br>
@@ -43,9 +50,12 @@ And before you proceed don't forget to:<span style="font-family: Courier New,Cou
 using boost::polygon;<br>
 </span>
 <h2>Preparing Input Geometries</h2>
+
 Before executing the algorithm lets see how the user provided types for
 the input geometries might look like:<br>
+
 <br>
+
 <span style="font-family: Courier New,Courier,monospace;">class Point {<br>
 public:<br>
 &nbsp; Point() {}<br>
@@ -64,7 +74,8 @@ private:<br>
 class Segment {<br>
 public:<br>
 &nbsp; Segment() {}<br>
-&nbsp; Segment(int x1, int y1, int x2, int y2) : p0_(x1, y1), p1_(x2, y2) {}<br>
+&nbsp; Segment(int x1, int y1, int x2, int y2) : p0_(x1, y1), p1_(x2,
+y2) {}<br>
 <br>
 &nbsp; // Those accessors are required!<br>
 &nbsp; Point low() const { return p0_; }<br>
@@ -73,11 +84,15 @@ public:<br>
 private:<br>
 &nbsp; Point p0_;<br>
 &nbsp; Point p1_;</span><br>
+
 <span style="font-family: Courier New,Courier,monospace;">};<br>
 <br>
 </span>Once those are declared we can create the sample input:<br>
+
 <br>
-<span style="font-family: Courier New,Courier,monospace;">std::vector&lt;Point&gt; points;<br>
+
+<span style="font-family: Courier New,Courier,monospace;">std::vector&lt;Point&gt;
+points;<br>
 points.push_back(Point(0, 0));<br>
 points.push_back(Point(1, 6));<br>
 std::vector&lt;Segment&gt; segments;<br>
@@ -85,25 +100,34 @@ segments.push_back(Segment(-4, 5, 5, -1));<br>
 segments.push_back(Segment(3, -11, 13, -1));</span><span style="font-family: Courier New,Courier,monospace;"><br>
 </span>
 <h2>Construction of the Voronoi Diagram<br>
-
 </h2>
 
+Now let's construct the Voronoi diagram of the input set of points and
+segments:<br>
 
-
-Now let's construct the Voronoi diagram of the input set of points and segments:<br>
 <br>
-<span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt; vd;<br>
+
+<span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt;
+vd;<br>
 construct_voronoi(points, segments, &amp;vd);<br>
 <br>
 </span>So brief, isn't that awesome!<br>
-<h2>Traversing Voronoi Graph</h2>Voronoi graph traversal is the basic
+
+<h2>Traversing Voronoi Graph</h2>
+
+Voronoi graph traversal is the basic
 operation one would like to do once the Voronoi diagram is constructed.
 There are three ways to do that and we are going to cover all of them:<br>
+
 <ul>
+
   <li>simply iterating over the Voronoi edges (counts each edge twice):<br>
-    <span style="font-family: Courier New,Courier,monospace;"><br>int iterate_primary_edges1(const voronoi_diagram&lt;double&gt; &amp;vd) {<br>
+    <span style="font-family: Courier New,Courier,monospace;"><br>
+int iterate_primary_edges1(const voronoi_diagram&lt;double&gt; &amp;vd)
+{<br>
 &nbsp; int result = 0;<br>
-&nbsp; for (voronoi_diagram&lt;double&gt;::const_edge_iterator it = vd.edges().begin();<br>
+&nbsp; for (voronoi_diagram&lt;double&gt;::const_edge_iterator it =
+vd.edges().begin();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; it != vd.edges().end(); ++it) {<br>
 &nbsp;&nbsp;&nbsp; if (it-&gt;is_primary())<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++result;<br>
@@ -112,15 +136,21 @@ There are three ways to do that and we are going to cover all of them:<br>
 }</span><br>
     <span style="font-family: Courier New,Courier,monospace;">&nbsp;</span><br>
   </li>
-  <li>iterating over the Voronoi cells and then traversing edges around each cell (counts each edge twice):<br>
+  <li>iterating over the Voronoi cells and then traversing edges around
+each cell (counts each edge twice):<br>
     <br>
-    <span style="font-family: Courier New,Courier,monospace;">int iterate_primary_edges2(const voronoi_diagram&lt;double&gt; &amp;vd) {<br>
+    <span style="font-family: Courier New,Courier,monospace;">int
+iterate_primary_edges2(const voronoi_diagram&lt;double&gt; &amp;vd) {<br>
 &nbsp; int result = 0;<br>
-&nbsp; for (voronoi_diagram&lt;double&gt;::const_cell_iterator it = vd.cells().begin();<br>
+&nbsp; for (voronoi_diagram&lt;double&gt;::const_cell_iterator it =
+vd.cells().begin();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; it != vd.cells().end(); ++it) {<br>
-&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::cell_type &amp;cell = *it;<br>
-&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::edge_type *edge = cell.incident_edge();<br>
-&nbsp;&nbsp;&nbsp; // This is convenient way to iterate edges around Voronoi cell.<br>
+&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::cell_type
+&amp;cell = *it;<br>
+&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::edge_type *edge
+= cell.incident_edge();<br>
+&nbsp;&nbsp;&nbsp; // This is convenient way to iterate edges around
+Voronoi cell.<br>
 &nbsp;&nbsp;&nbsp; do {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (edge-&gt;is_primary())<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++result;<br>
@@ -131,18 +161,22 @@ There are three ways to do that and we are going to cover all of them:<br>
 }</span><br>
     <br>
   </li>
-  
   <li>iterating over the Voronoi
 vertices and then traversing edges around each vertex (number of
 iterations through each edge is equal to the number of finite endpoints
 of the edge):<span style="font-family: Courier New,Courier,monospace;"></span><br>
-    <span style="font-family: Courier New,Courier,monospace;">int iterate_primary_edges3(const voronoi_diagram&lt;double&gt; &amp;vd) {<br>
+    <span style="font-family: Courier New,Courier,monospace;">int
+iterate_primary_edges3(const voronoi_diagram&lt;double&gt; &amp;vd) {<br>
 &nbsp; int result = 0;<br>
-&nbsp; for (voronoi_diagram&lt;double&gt;::const_vertex_iterator it = vd.vertices().begin();<br>
+&nbsp; for (voronoi_diagram&lt;double&gt;::const_vertex_iterator it =
+vd.vertices().begin();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; it != vd.vertices().end(); ++it) {<br>
-&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::vertex_type &amp;vertex = *it;<br>
-&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::edge_type *edge = vertex.incident_edge();<br>
-&nbsp;&nbsp;&nbsp; // This is convenient way to iterate edges around Voronoi vertex.<br>
+&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::vertex_type
+&amp;vertex = *it;<br>
+&nbsp;&nbsp;&nbsp; const voronoi_diagram&lt;double&gt;::edge_type *edge
+= vertex.incident_edge();<br>
+&nbsp;&nbsp;&nbsp; // This is convenient way to iterate edges around
+Voronoi vertex.<br>
 &nbsp;&nbsp;&nbsp; do {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (edge-&gt;is_primary())<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++result;<br>
@@ -151,30 +185,48 @@ of the edge):<span style="font-family: Courier New,Courier,monospace;"></span><b
 &nbsp; }<br>
 &nbsp; return result;<br>
 }</span></li>
+</ul>
 
-</ul>This should give a very nice idea on how to traverse Voronoi
+This should give a very nice idea on how to traverse Voronoi
 diagram. Notice that while the output from the first two methods should
 be the same, it wouldn't for the third one. The reason is that in the
 last case we will iterate only once through the edges with a single
 finite endpoint and will skip all the edges with no finite endpoints.<br>
+
 <h2>Associating User Data with Voronoi Primitives</h2>
 
-A few simple cases of associating user data with Voronoi primitives are following:<br>
+A few simple cases of associating user data with Voronoi primitives are
+following:<br>
+
 <ul>
+
   <li>associating number of incident edges with each cell, vertex;</li>
   <li>associating color with each edge;</li>
-  <li>using DFS or BFS on the Voronoi graph requires to mark visited edges/vertices/cells.</li>
+  <li>using DFS or BFS on the Voronoi graph requires to mark visited
+edges/vertices/cells.</li>
 </ul>
-We will consider the first example and will associate the total number of incident edges with each cell.<br>
-Note: Each Voronoi primitive contains mutable pointer to void* type, that allows to associate any type of data with it.<br>
+
+We will consider the first example and will associate the total number
+of incident edges with each cell.<br>
+
+Note: Each Voronoi primitive contains mutable pointer to void* type,
+that allows to associate any type of data with it.<br>
+
 <br>
-<span style="font-family: Courier New,Courier,monospace;">std::vector&lt;int&gt; counts;</span><br>
-<span style="font-family: Courier New,Courier,monospace;">// This is required as reallocation of underlying vector will invalidate all the pointers.<br>
+
+<span style="font-family: Courier New,Courier,monospace;">std::vector&lt;int&gt;
+counts;</span><br>
+
+<span style="font-family: Courier New,Courier,monospace;">// This is
+required as reallocation of underlying vector will invalidate all the
+pointers.<br>
 counts.reserve(vd.num_cells());<br>
-for (voronoi_diagram&lt;double&gt;::const_cell_iterator it = vd.cells().begin();<br>
+for (voronoi_diagram&lt;double&gt;::const_cell_iterator it =
+vd.cells().begin();<br>
 &nbsp;&nbsp;&nbsp;&nbsp; it != vd.cells().end(); ++it) {<br>
 &nbsp; const voronoi_diagram&lt;double&gt;::cell_type &amp;cell = *it;<br>
-&nbsp; const voronoi_diagram&lt;double&gt;::edge_type *edge = cell.incident_edge();<br>
+&nbsp; const voronoi_diagram&lt;double&gt;::edge_type *edge =
+cell.incident_edge();<br>
 &nbsp; int count = 0;<br>
 &nbsp; do {<br>
 &nbsp;&nbsp;&nbsp; ++count;<br>
@@ -184,46 +236,67 @@ for (voronoi_diagram&lt;double&gt;::const_cell_iterator it = vd.cells().begin();
 &nbsp; cell.data(&amp;counts.back());<br>
 }</span><span style="font-family: Courier New,Courier,monospace;"><br>
 </span><br>
+
 Note: In the example above we could not use count variable
 without a vector, because pointer to it will become invalid as soon as
 we leave the scope of the enclosing for-loop.<br>
+
 <h2>Rendering Voronoi Diagram</h2>
 
 There are two main issues that don't allow to strictly render resulting
 Voronoi diagram using such rendering tools as OpenGL or DirectX.
 Those are:<br>
+
 <ul>
+
   <li>Some of the Voronoi edges are infinite, so should be clipped;</li>
-  <li>Some of the Voronoi edge are parabolic arcs, so should be discretized.</li>
-</ul>Note: This would be the issues not only for rendering tools.
+  <li>Some of the Voronoi edge are parabolic arcs, so should be
+discretized.</li>
+</ul>
+
+Note: This would be the issues not only for rendering tools.
 Basically every task that requires diagram to be represented as a set
 of finite segments will fall into this category.<br>
-<br>All the above functionality is already implemented in the Voronoi
+
+<br>
+
+All the above functionality is already implemented in the Voronoi
 utils.
 Before clipping an edge we are going to define the clipping rectangle.
 It is practical to choose it so that it wraps all the input geometries
 plus some offset.<br>
+
 <span style="font-family: Courier New,Courier,monospace;"><br>
 bounding_rectangle&lt;double&gt; bbox;<br>
-for (std::vector&lt;Point&gt;::iterator it = points.begin(); it != points.end(); ++it)<br>
+for (std::vector&lt;Point&gt;::iterator it = points.begin(); it !=
+points.end(); ++it)<br>
 &nbsp; bbox.update(it-&gt;x(), it-&gt;y());<br>
-for (std::vector&lt;Segment&gt;::iterator it = segments.begin(); it != segments.end(); ++it) {<br>
+for (std::vector&lt;Segment&gt;::iterator it = segments.begin(); it !=
+segments.end(); ++it) {<br>
 &nbsp; bbox.update(it-&gt;low().x(), it-&gt;low().y());<br>
 &nbsp; bbox.update(it-&gt;high().x(), it-&gt;high().y());<br>
 }<br>
 // Add 10% offset to the bounding rectangle.<br>
 bbox = voronoi_utils&lt;double&gt;::scale(bbox, 1.1);</span><span style="font-family: Courier New,Courier,monospace;"><br>
-</span><br>Now lets consider that we have the 3rd party library function that draws segments using the following prototype:<span style="font-family: Courier New,Courier,monospace;"><br>
+</span><br>
+
+Now lets consider that we have the 3rd party library function that
+draws segments using the following prototype:<span style="font-family: Courier New,Courier,monospace;"><br>
 <br>
 void draw_segment(double x1, double y1, double x2, double y2);<br>
 <br>
-</span>Then the function that renders our diagram edges will have the following implementation:<br>
+</span>Then the function that renders our diagram edges will have the
+following implementation:<br>
+
 <br>
-<span style="font-family: Courier New,Courier,monospace;">void render_diagram(const voronoi_diagram&lt;double&gt; &amp;vd,<br>
+
+<span style="font-family: Courier New,Courier,monospace;">void
+render_diagram(const voronoi_diagram&lt;double&gt; &amp;vd,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 const voronoi_utils&lt;double&gt;::brect_type &amp;bbox) {<br>
 &nbsp; int visited = 1;<br>
-&nbsp; for (voronoi_diagram&lt;double&gt;::const_edge_iterator it = vd.edges().begin();<br>
+&nbsp; for (voronoi_diagram&lt;double&gt;::const_edge_iterator it =
+vd.edges().begin();<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; it != vd.edges().end(); ++it) {<br>
 &nbsp;&nbsp;&nbsp; // We use data pointer to mark visited edges.<br>
 &nbsp;&nbsp;&nbsp; it-&gt;data(&amp;visited);<br>
@@ -231,13 +304,17 @@ const voronoi_utils&lt;double&gt;::brect_type &amp;bbox) {<br>
 &nbsp;&nbsp;&nbsp; if (it-&gt;twin()-&gt;data()) continue;<br>
 &nbsp;&nbsp;&nbsp; voronoi_utils&lt;double&gt;::point_set_type polyline;<br>
 &nbsp;&nbsp;&nbsp; if (it-&gt;is_linear())<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_utils&lt;double&gt;::clip(*it, bbox, polyline);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_utils&lt;double&gt;::clip(*it,
+bbox, polyline);<br>
 &nbsp;&nbsp;&nbsp; else<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Parabolic edges are always finite.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; voronoi_utils&lt;double&gt;::discretize(*it, 1E-1, polyline);<br>
-&nbsp;&nbsp;&nbsp; // Note: discretized edge segments may also lie outside of the bbox.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+voronoi_utils&lt;double&gt;::discretize(*it, 1E-1, polyline);<br>
+&nbsp;&nbsp;&nbsp; // Note: discretized edge segments may also lie
+outside of the bbox.<br>
 &nbsp;&nbsp;&nbsp; for (int i = 1; i &lt; polyline.size(); ++i)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; draw_segment(polyline[i-1].x(), polyline[i-1].y(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; draw_segment(polyline[i-1].x(),
+polyline[i-1].y(),<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 polyline[i].x(), polyline[i].y());<br>
 &nbsp; }<br>
@@ -249,31 +326,34 @@ renderer using Qt libraries. It was used to generate all the .png
 drawings under ./libs/polygon/example directory.<span style="text-decoration: underline;"><br>
 </span><span style="font-family: Courier New,Courier,monospace;">
 <br>
-</span>I hope the reader managed to get to this point and found the basic tutorial to be useful (in the end it's not so basic). Worth
+</span>I hope the reader managed to get to this point and found the
+basic tutorial to be useful (in the end it's not so basic). Worth
 to notice that construction of the Voronoi diagram takes only two lines
 of code, everything else is about initializing input data structures,
 traversing Voronoi graph, associating data with diagram primitives and
 using <a href="voronoi_utils.htm">Voronoi utilities</a>. In
 default mode Voronoi diagram operates with signed int (32-bit) input
-coordinate type and double (64-bit) output coordinate type. In <a href="voronoi_advanced_tutorial.htm">Voronoi Advanced Tutorial</a> we explain why this is enough for 95% of problems and how to expand the algorithm coordinate types for the other 5% of cases.<br>
+coordinate type and double (64-bit) output coordinate type. In <a href="voronoi_advanced_tutorial.htm">Voronoi Advanced Tutorial</a> we
+explain why this is enough for 95% of problems and how to expand the
+algorithm coordinate types for the other 5% of cases.<br>
+
 <span style="font-family: Courier New,Courier,monospace;"></span><br>
+
 <table class="docinfo" id="table1" frame="void" rules="none">
-	<colgroup>
-		<col class="docinfo-name"><col class="docinfo-content">
-	</colgroup>
-	<tbody valign="top">
-		<tr>
-			<th class="docinfo-name">Copyright:</th>
-			<td>Copyright © Intel Corporation 2008-2010.</td>
-		</tr>
-		<tr class="field">
-			<th class="docinfo-name">License:</th>
-			<td class="field-body">Distributed under the Boost Software License, 
-			Version 1.0. (See accompanying file <tt class="literal">
-			<span class="pre">LICENSE_1_0.txt</span></tt> or copy at
-			<a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
-			http://www.boost.org/LICENSE_1_0.txt</a>)</td>
-		</tr>
-</tbody></table>
+
+  <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup>
+  <tbody valign="top">
+    <tr>
+      <th class="docinfo-name">Copyright:</th>
+      <td>Copyright © Intel Corporation 2008-2010.</td>
+    </tr>
+    <tr class="field">
+      <th class="docinfo-name">License:</th>
+      <td class="field-body">Distributed under the Boost Software
+License, Version 1.0. (See accompanying file <tt class="literal"> <span class="pre">LICENSE_1_0.txt</span></tt> or copy at <a class="reference" target="_top" href="http://www.boost.org/LICENSE_1_0.txt">
+http://www.boost.org/LICENSE_1_0.txt</a>)</td>
+    </tr>
+  </tbody>
+</table>
 
 </body></html>
