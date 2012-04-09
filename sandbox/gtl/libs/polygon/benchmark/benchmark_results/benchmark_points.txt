@@ -3,6 +3,7 @@ OS: Windows 7 Professional 32 bit.
 Compiler: MSVC-9.0.
 
 Boost.Polygon Voronoi of Points:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000027 |
 |              100 |           10000 |          0.000392 |
 |             1000 |            1000 |          0.004541 |
@@ -11,6 +12,7 @@ Boost.Polygon Voronoi of Points:
 |          1000000 |               1 |          5.882000 |
 
 CGAL Triangulation of Points:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000116 |
 |              100 |           10000 |          0.002649 |
 |             1000 |            1000 |          0.039140 |
@@ -23,6 +25,7 @@ OS: Ubuntu 11.10 64 bit.
 Compiler: gcc 4.6.1.
 
 Boost.Polygon Voronoi of Points:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000013 |
 |              100 |           10000 |          0.000192 |
 |             1000 |            1000 |          0.002130 |
@@ -31,6 +34,7 @@ Boost.Polygon Voronoi of Points:
 |          1000000 |               1 |          3.290000 |
 
 CGAL Triangulation of Points:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000052 |
 |              100 |           10000 |          0.001150 |
 |             1000 |            1000 |          0.016680 |

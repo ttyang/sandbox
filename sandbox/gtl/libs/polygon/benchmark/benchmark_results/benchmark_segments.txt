@@ -3,6 +3,7 @@ OS: Windows 7 Professional 32 bit.
 Compiler: MSVC-9.0.
 
 Boost.Polygon Voronoi of Segments:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000290 |
 |              100 |           10000 |          0.003655 |
 |             1000 |            1000 |          0.038158 |
@@ -11,6 +12,7 @@ Boost.Polygon Voronoi of Segments:
 |          1000000 |               1 |         40.912000 |
 
 CGAL Triangulation of Segments:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.001047 |
 |              100 |           10000 |          0.014812 |
 |             1000 |            1000 |          0.177315 |
@@ -23,6 +25,7 @@ OS: Ubuntu 11.10 64 bit.
 Compiler: gcc 4.6.1.
 
 Boost.Polygon Voronoi of Segments:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000165 |
 |              100 |           10000 |          0.002006 |
 |             1000 |            1000 |          0.020440 |
@@ -31,6 +34,7 @@ Boost.Polygon Voronoi of Segments:
 |          1000000 |               1 |         22.250000 |
 
 CGAL Triangulation of Segments:
+| Number of points | Number of tests | Time per one test |
 |               10 |          100000 |          0.000483 |
 |              100 |           10000 |          0.007006 |
 |             1000 |            1000 |          0.084000 |
