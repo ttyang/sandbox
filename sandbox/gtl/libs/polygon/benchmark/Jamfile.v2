@@ -8,7 +8,7 @@ import testing ;
 # Windows
 # It took five hours to configure CGAL on Windows. Good luck!
 #path-constant CGAL_ROOT : "d:/Programming/CGAL-4.0" ;
-#project polygon-test
+#project voronoi-benchmark
 #    :
 #    requirements
 #        <include>$(CGAL_ROOT)/include
@@ -25,7 +25,7 @@ import testing ;
 # If follow official documentation of CGAL it takes 30 mins to
 # set up properly CGAL and required libraries (GMP, MPFR).
 path-constant CGAL_ROOT : "/home/slevin/Workspace/Libraries/CGAL" ;
-project polygon-test
+project voronoi-benchmark
     :
     requirements
         <include>$(CGAL_ROOT)/include
