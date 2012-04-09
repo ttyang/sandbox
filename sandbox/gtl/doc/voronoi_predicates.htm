@@ -1,7 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
-<title>Voronoi Predicates</title>
-    <meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" /><!-- <link type="text/css" rel="stylesheet" href="adobe_source.css"> --></head><body>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+  
+  <meta http-equiv="Content-Language" content="en-us">
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Predicates</title>
+  
+
+  
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
@@ -70,10 +82,14 @@ Tutorial</a></li>
       <div style="padding: 5px;" align="center"> <img src="images/intlogo.gif" border="0" height="51" width="127"><a title="www.adobe.com home page" tabindex="2" style="border: medium none ;" href="http://www.adobe.com/"> </a></div>
       </td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> <br>
+      
+      
       <h1>Voronoi Predicates<br>
       </h1>
+
 In mathematical theory predicate is an operator which returns true
 or false (e.g. it may answer a question: "is it sunny today?").<br>
+
 The Voronoi predicates contain implementation of a set of the geometric
 predicates used by the <a href="voronoi_builder.htm">Voronoi builder</a>.
 Except of those it also provides
@@ -86,7 +102,10 @@ your floating point type has the better precision of the output
 geometries you'll get. This
 is a very handy functionality as it allows to improve output precision
 simply providing 3rd party IEEE-754 like floating-point types.<br>
+
+      
       <h2>Geometric Predicates</h2>
+
 The main issues with the implementation of any complex geometric
 algorithm arise when dealing with the robustness of the geometric
 predicates.
@@ -97,11 +116,15 @@ implementation).
 For the short example let's consider the following code snippet, that
 could
 be used to compute orientation of the three points:<br>
+
       <br>
+
       <span style="font-family: Courier New,Courier,monospace;">double
 cross_product(double dx1, double dy1, double dx2, double dy2) {</span><br style="font-family: Courier New,Courier,monospace;">
+
       <span style="font-family: Courier New,Courier,monospace;">&nbsp;
 return dx1 * dy2 - dx2 * dy1;</span><br style="font-family: Courier New,Courier,monospace;">
+
       <span style="font-family: Courier New,Courier,monospace;">}<br>
       <br>
 int main() {<br>
@@ -124,7 +147,10 @@ slightly more complex predicates. To insure that they are robust and
 efficient the approach that combines two known techniques (lazy
 arithmetic and multiple
 precision computations) is used.<br>
+
+      
       <h2>Lazy Arithmetic</h2>
+
 Lazy
 arithmetic is based on the usage of IEEE-754 floating-point types to
 quickly evaluate the result of the expression. While this approach has
@@ -139,7 +165,10 @@ come up with two decisions: 1) output the value; 2) recompute the
 expression using multiprecision type. The way relative errors are
 evaluated is explained in the <a href="voronoi_robust_fpt.htm">Voronoi
 Robust FPT</a> section.<br>
+
+      
       <h2>Multiple Precision Arithmetic</h2>
+
 In the vast majority of cases
 the lazy arithmetic approach produces correct result thus further
 processing is not required. In other cases the Voronoi library defined
@@ -147,7 +176,9 @@ or user
 provided multiple precision types are used to produce correct result.
 However even that doesn't solve all the cases. Multiprecision geometric
 predicates could be divided onto two categories:<br>
+
       <br>
+
 1) mathematical transformation of the predicate exists that evaluates
 exact result:<span style="font-family: Courier New,Courier,monospace;"><br>
       <br>
@@ -160,11 +191,14 @@ After math. transform: A ?&lt; 1.44;<br>
       </span>2) the correct result could be produced only by increasing
 precision of the multiprecision type and with defined relative error
 for the output type:<br>
+
       <br>
+
       <span style="font-family: Courier New,Courier,monospace;">Predicate:
 sqrt(A) + sqrt(B) + sqrt(C) + sqrt(D) + sqrt(E) ?&lt; 1.2;<br>
 Imagine that value of the expression to the left is very close to 1.2;<br>
       </span><br>
+
       <span style="font-family: Courier New,Courier,monospace;">Predicate:
 sin(x) ?&lt; 0.57;<br>
 Relative error of sin function should be known;<br>
@@ -182,15 +216,14 @@ operates with integer coordinate type of the input geometries; 2)
 closely
 situated Voronoi vertices are considered to be the same in the output
 data structure (this won't influence main targets algorithm is used
-for).<span style="font-family: Courier New,Courier,monospace;"><br>
-      </span></td>
+for).<span style="font-family: Courier New,Courier,monospace;"></span><span style="font-family: Courier New,Courier,monospace;"></span><br>
+</td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top"><br>
-      </td>
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
-        <tbody valign="top">
+        <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">
           <tr>
             <th class="docinfo-name">Copyright:</th>
             <td>Copyright © Intel Corporation 2008-2010.</td>
