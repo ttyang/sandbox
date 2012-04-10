@@ -336,17 +336,17 @@ static e_float ElementaryTrans_Series::rootn_inv(const e_float& x, const INT32 p
   // Set the result equal to the initial guess.
   e_float result(one_over_rtn_d, static_cast<INT64>(-ne / p));
 
-  static const INT32 double_digits10_minus_one = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(1));
+  static const INT32 double_digits10_minus_a_few = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(3));
 
-  for(INT32 digits = double_digits10_minus_one; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
+  for(INT32 digits = double_digits10_minus_a_few; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
   {
     // Adjust precision of the terms.
-    result.precision(static_cast<INT32>(digits * static_cast<INT32>(2)));
+    result.precision(static_cast<INT32>((digits + 10) * static_cast<INT32>(2)));
 
     // Next iteration
     e_float term = (((-ef::pown(result, p) * x) + ef::one()) / p) + ef::one();
 
-    term.precision(static_cast<INT32>(digits * static_cast<INT32>(2)));
+    term.precision(static_cast<INT32>((digits + 10) * static_cast<INT32>(2)));
 
     result *= term;
   

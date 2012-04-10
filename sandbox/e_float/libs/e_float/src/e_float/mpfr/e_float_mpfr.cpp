@@ -10,6 +10,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 #include <cstdio>
 #include <cstdarg>
 
@@ -23,9 +24,11 @@ namespace
 {
   const double& d_log2(void)
   {
-    static const double value_log2 = 0.3010299956639811952137389;
+    static const double value_log2 = 0.30102999566398119521373889472449302676819;
     return value_log2;
   }
+
+  const mp_prec_t my_default_prec = static_cast<mp_prec_t>(mpfr::e_float::ef_digits + ((16 * 1000) / 301));
 }
 
 void mpfr::e_float::init(void)
@@ -35,7 +38,7 @@ void mpfr::e_float::init(void)
   if(precision_is_initialized == false)
   {
     precision_is_initialized = true;
-    ::mpfr_set_default_prec(static_cast<mp_prec_t>(ef_digits2 + static_cast<INT32>(4)));
+    ::mpfr_set_default_prec(my_default_prec);
   }
 }
 

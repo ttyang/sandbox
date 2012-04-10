@@ -20,7 +20,7 @@
   namespace ef
   {
     inline INT32   max_iteration(void)    { return static_cast<INT32>(10000); }
-    inline INT64   tol (void)             { return static_cast<INT64>(e_float::ef_max_digits10); }
+    inline INT64   tol (void)             { return static_cast<INT64>(e_float::ef_max_digits10 + (e_float::ef_max_digits10 / 10)); }
     inline e_float fabs(const e_float& x) { return (x.isneg() ? e_float(x).negate() : x); }
 
     e_float floor(const e_float& x);

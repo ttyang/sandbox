@@ -401,6 +401,213 @@ void efx::e_float::mul_loop_uv(const UINT32* const u, const UINT32* const v, UIN
   w[0u] = static_cast<UINT32>(carry);
 }
 
+template<const bool is_forward = true,
+         typename float_type = double>
+struct fft_lanczos
+{
+  static void fft(const UINT32 n, float_type* f)
+  {
+    UINT32 nn = n << 1;
+    UINT32 mmax;
+    UINT32 m;
+    UINT32 j = 1U;
+    UINT32 istep;
+    UINT32 i;
+
+    for(i = 1U; i < nn; i += 2U)
+    {
+      if(j > i)
+      {
+        std::swap(f[j - 1U], f[i - 1U]);
+        std::swap(f[j], f[i]);
+      }
+
+      m = n;
+
+      while((m >= 2U) && (j > m))
+      {
+        j -= m;
+        m >>= 1;
+      }
+
+      j += m;
+    }
+
+    mmax = 2U;
+
+    while(nn > mmax)
+    {
+      istep = mmax << 1;
+
+      float_type theta = (is_forward ? +float_type(6.2831853071795864769252867665590057683943) / mmax
+                                     : -float_type(6.2831853071795864769252867665590057683943) / mmax);
+
+      float_type wtemp = ::sin(float_type(0.5) * theta);
+      float_type wpr   = -2 * (wtemp * wtemp);
+      float_type wpi   = ::sin(theta);
+      float_type wr(1);
+      float_type wi(0);
+
+      for(m = 1U; m < mmax; m += 2U)
+      {
+        for(i =  m; i <= nn; i += istep)
+        {
+          j = i + mmax;
+          float_type tempr = wr * f[j -1U] - wi * f[j];
+          float_type tempi = wr * f[j] + wi * f[j - 1U];
+          f[j - 1U] = f[i - 1U] - tempr;
+          f[j] = f[i] - tempi;
+          f[i - 1U] += tempr;
+          f[i] += tempi;
+        }
+
+        wr = ((wtemp = wr) * wpr) - (wi * wpi) + wr;
+        wi = (wi * wpr) + (wtemp * wpi) + wi;
+      }
+
+      mmax = istep;
+    }
+  }
+};
+
+template<typename float_type = double>
+struct rfft_lanczos
+{
+  static void rfft(const UINT32 n, float_type* f, const bool is_forward = true)
+  {
+    UINT32 i1;
+    UINT32 i2;
+    UINT32 i3;
+    UINT32 i4;
+    UINT32 i;
+
+    float_type c1(0.5);
+    float_type c2;
+
+    float_type h1r;
+
+    float_type theta = float_type(3.1415926535897932384626433832795028841972) / (n >> 1);
+
+    if(is_forward)
+    {
+      c2 = float_type(-0.5);
+      fft_lanczos<true, float_type>::fft(n / 2, f);
+    }
+    else
+    {
+      c2 = float_type(0.5);
+      theta = -theta;
+    }
+
+    float_type wtemp = ::sin(float_type(0.5) * theta);
+    float_type wpr = -2 * (wtemp * wtemp);
+    float_type wpi = ::sin(theta);
+    float_type wr = 1 + wpr;
+    float_type wi = wpi;
+
+    for(i = 1U; i < (n >> 2); ++i)
+    {
+      i2 = 1 + (i1 = i + i);
+      i4 = 1 + (i3 = n - i1);
+
+      float_type h1r = c1 * (f[i1] + f[i3]);
+      float_type h1i = c1 * (f[i2] - f[i4]);
+
+      float_type h2r = -c2 * (f[i2] + f[i4]);
+      float_type h2i =  c2 * (f[i1] - f[i3]);
+
+      f[i1] =  h1r + wr * h2r - wi * h2i;
+      f[i2] =  h1i + wr * h2i + wi * h2r;
+      f[i3] =  h1r - wr * h2r + wi * h2i;
+      f[i4] = -h1i + wr * h2i + wi * h2r;
+
+      wr = ((wtemp = wr) * wpr) - wi * wpi + wr;
+      wi = wi * wpr + wtemp * wpi + wi;
+    }
+
+    if(is_forward)
+    {
+      f[0U] = (h1r = f[0U]) + f[1U];
+      f[1U] =  h1r - f[1U];
+    }
+    else
+    {
+      f[0U] = c1 * ((h1r = f[0U]) + f[1U]);
+      f[1U] = c1 *  (h1r - f[1U]);
+      fft_lanczos<false, float_type>::fft(n / 2, f);
+    }
+  }
+};
+
+void efx::e_float::mul_loop_fft(UINT32* const u, const UINT32* const v, const INT32 p)
+{
+    // Determine the required FFT size (p).
+    UINT32 n_fft = 1U;
+
+    for(unsigned i = 1; i < 31U; ++i)
+    {
+      n_fft <<= 1U;
+
+      if(n_fft >= (p * 2U))
+      {
+        break;
+      }
+    }
+
+    n_fft <<= 1;
+
+    double* af = new double[n_fft];
+    double* bf = new double[n_fft];
+
+    for(UINT32 i = 0U; i < static_cast<UINT32>(p); ++i)
+    {
+      af[(i * 2U)]      = (u[i] / 10000U);
+      af[(i * 2U) + 1U] = (u[i] % 10000U);
+
+      bf[(i * 2U)]      = (v[i] / 10000U);
+      bf[(i * 2U) + 1U] = (v[i] % 10000U);
+    }
+
+    std::fill(af + (p * 2U), af + n_fft, double(0));
+    std::fill(bf + (p * 2U), bf + n_fft, double(0));
+
+    rfft_lanczos<>::rfft(n_fft, af);
+    rfft_lanczos<>::rfft(n_fft, bf);
+
+    af[0U] *= bf[0U];
+    af[1U] *= bf[1U];
+
+    for(UINT32 j = 2U; j < n_fft; j += 2U)
+    {
+      double t;
+      af[j]      = ((t = af[j]) * bf[j]) - (af[j + 1U] * bf[j + 1U]);
+      af[j + 1U] = (t * bf[j + 1U]) + (af[j + 1U] * bf[j]);
+    }
+
+    rfft_lanczos<>::rfft(n_fft, af, false);
+
+    // Release the carries, re-combine the lo and hi parts and set the data elements.
+    UINT64 carry = static_cast<UINT64>(0u);
+
+    for(UINT32 j = ((p * 2U) - 2U); static_cast<INT32>(j) >= static_cast<INT32>(0); j -= 2U)
+    {
+            double xaj = af[j] / (n_fft / 2);
+      const UINT64 xlo = static_cast<UINT64>(xaj + 0.5) + carry;
+      carry            = static_cast<UINT64>(xlo / static_cast<UINT32>(10000));
+      const UINT32 nlo = static_cast<UINT32>(xlo - static_cast<UINT64>(carry * static_cast<UINT32>(10000)));
+
+                   xaj = ((j != static_cast<INT32>(0)) ? (af[j - 1u] / (n_fft / 2)) : 0.0);
+      const UINT64 xhi = static_cast<UINT64>(xaj + 0.5) + carry;
+      carry            = static_cast<UINT64>(xhi / static_cast<UINT32>(10000));
+      const UINT32 nhi = static_cast<UINT32>(xhi - static_cast<UINT64>(carry * static_cast<UINT32>(10000)));
+
+      u[(j / 2u)] = static_cast<UINT32>(static_cast<UINT32>(nhi * static_cast<UINT32>(10000)) + nlo);
+    }
+
+    delete [] af;
+    delete [] bf;
+}
+
 UINT32 efx::e_float::mul_loop_n(UINT32* const u, UINT32 n, const INT32 p)
 {
   UINT64 carry = static_cast<UINT64>(0u);
@@ -731,21 +938,48 @@ efx::e_float& efx::e_float::operator*=(const e_float& v)
   // Set the exponent of the result.
   exp += v.exp;
 
-  std::tr1::array<UINT32, static_cast<std::size_t>(ef_elem_number + static_cast<INT32>(1))> w = {{ 0u }};
+  const INT32 prec_mul = (std::min)(prec_elem, v.prec_elem);
 
-  mul_loop_uv(data.data(), v.data.data(), w.data(), (std::min)(prec_elem, v.prec_elem));
-
-  // Copy the multiplication data into the result.
-  // Shift the result and adjust the exponent if necessary.
-  if(w[static_cast<std::size_t>(0u)] != static_cast<UINT32>(0u))
+  if(prec_mul < 1000)
   {
-    exp += static_cast<INT64>(ef_elem_digits10);
+    std::tr1::array<UINT32, static_cast<std::size_t>(ef_elem_number + static_cast<INT32>(1))> w = {{ 0u }};
 
-    std::copy(w.begin(), w.end() - 1u, data.begin());
+    mul_loop_uv(data.data(), v.data.data(), w.data(), prec_mul);
+
+    // Copy the multiplication data into the result.
+    // Shift the result and adjust the exponent if necessary.
+    if(w[static_cast<std::size_t>(0u)] != static_cast<UINT32>(0u))
+    {
+      exp += static_cast<INT64>(ef_elem_digits10);
+
+      std::copy(w.begin(), w.begin() + prec_mul, data.begin());
+    }
+    else
+    {
+      std::copy(w.begin() + 1u, w.begin() + (prec_mul + 1), data.begin());
+    }
   }
   else
   {
-    std::copy(w.begin() + 1u, w.end(), data.begin());
+    // Use FFT-based multiplication.
+    mul_loop_fft(data.data(), v.data.data(), static_cast<INT32>(prec_mul));
+
+    // Adjust the exponent because of the internal scaling of the FFT multiplication.
+    exp += static_cast<INT64>(ef_elem_digits10);
+
+    // Check for justify
+    if(data.front() == static_cast<UINT32>(0u))
+    {
+      // Justify the data.
+      std::copy(data.begin() + static_cast<std::size_t>(1u),
+                data.begin() + static_cast<std::size_t>(prec_elem),
+                data.begin());
+
+      data.back() = static_cast<UINT32>(0u);
+
+      // Adjust the exponent accordingly.
+      exp -= static_cast<INT64>(ef_elem_digits10);
+    }
   }
 
   // Set the sign of the result.
@@ -985,13 +1219,13 @@ efx::e_float& efx::e_float::calculate_inv(void)
   // is used. During the iterative steps, the precision of the calculation is limited
   // to the minimum required in order to minimize the run-time.
 
-  static const INT32 double_digits10_minus_one = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(1));
+  static const INT32 double_digits10_minus_a_few = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(3));
 
-  for(INT32 digits = double_digits10_minus_one; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
+  for(INT32 digits = double_digits10_minus_a_few; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
   {
     // Adjust precision of the terms.
-      precision(static_cast<INT32>(digits * static_cast<INT32>(2)));
-    x.precision(static_cast<INT32>(digits * static_cast<INT32>(2)));
+      precision(static_cast<INT32>((digits + 10) * static_cast<INT32>(2)));
+    x.precision(static_cast<INT32>((digits + 10) * static_cast<INT32>(2)));
 
     // Next iteration.
     operator=(*this * (ef::two() - (*this * x)));
@@ -1054,13 +1288,13 @@ efx::e_float& efx::e_float::calculate_sqrt(void)
   // http://www.jjj.de/pibook/pibook.html
   // http://www.amazon.com/exec/obidos/tg/detail/-/3540665722/qid=1035535482/sr=8-7/ref=sr_8_7/104-3357872-6059916?v=glance&n=507846
 
-  static const INT32 double_digits10_minus_one = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(1));
+  static const INT32 double_digits10_minus_a_few = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(3));
 
-  for(INT32 digits = double_digits10_minus_one; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
+  for(INT32 digits = double_digits10_minus_a_few; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
   {
     // Adjust precision of the terms.
-       precision(static_cast<INT32>(digits * static_cast<INT32>(2)));
-    vi.precision(static_cast<INT32>(digits * static_cast<INT32>(2)));
+       precision(static_cast<INT32>((digits + 10) * static_cast<INT32>(2)));
+    vi.precision(static_cast<INT32>((digits + 10) * static_cast<INT32>(2)));
 
     // Next iteration of vi
     vi += vi * (-((*this * vi) * static_cast<INT32>(2)) + ef::one());

@@ -19,7 +19,7 @@ namespace test
     class TestCaseOverflowUnderflowBase : public TestCaseReal
     {
     protected:
-      static const INT32 kmax = static_cast<INT32>(1000);
+      static const INT32 kmax = static_cast<INT32>(10000);
 
       mutable bool my_test_result;
 
@@ -91,7 +91,7 @@ namespace test
         INT32 k;
         for(k = static_cast<INT32>(0); k < kmax; k++)
         {
-          y = y * y;
+          y *= y;
 
           data.push_back(y);
 
@@ -124,14 +124,14 @@ namespace test
         INT32 k;
         for(k = static_cast<INT32>(0); k < kmax; k++)
         {
-          y = y * y;
+          y *= y;
 
           data.push_back(y);
 
           if(ef::iszero(y)) { break; }
         }
 
-        my_test_result = (k > static_cast<INT32>(1)) && (k < static_cast<INT32>(1000));
+        my_test_result = (k > static_cast<INT32>(1)) && (k < kmax);
       }
     };
 
@@ -158,7 +158,7 @@ namespace test
 
         for(k = static_cast<INT32>(0); k < kmax; k++)
         {
-          y = y * static_cast<INT32>(3);
+          y *= static_cast<INT32>(7);
 
           data.push_back(y);
 
@@ -194,7 +194,7 @@ namespace test
         INT32 k;
         for(k = static_cast<INT32>(0); k < kmax; k++)
         {
-          y = y / static_cast<INT32>(3);
+          y /= static_cast<INT32>(7);
 
           data.push_back(y);
 

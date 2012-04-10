@@ -32,7 +32,6 @@
   #if !defined(E_FLOAT_DIGITS10)
     #define E_FLOAT_DIGITS10 50
   #endif
-  #define E_FLOAT_DIGITS10_LIMIT 300
 
   #if defined(E_FLOAT_TYPE_EFX)
     namespace efx { class e_float; }
@@ -50,11 +49,10 @@
   class e_float_base
   {
   public:
+    static const INT32 ef_digits10_limit   = static_cast<INT32>(1UL << 30);
     static const INT32 ef_digits10_setting = E_FLOAT_DIGITS10;
-    static const INT32 ef_digits10_limit   = E_FLOAT_DIGITS10_LIMIT;
     static const INT32 ef_digits10         = ((ef_digits10_setting < static_cast<INT32>(30)) ? static_cast<INT32>(30) : ((ef_digits10_setting > ef_digits10_limit) ? ef_digits10_limit : ef_digits10_setting));
-    static const INT32 ef_digits10_extra   = static_cast<INT32>(((static_cast<INT64>(ef_digits10) * 15LL) + 50LL) / 100LL);
-    static const INT32 ef_max_digits10     = static_cast<INT32>(ef_digits10 + ((ef_digits10_extra < static_cast<INT32>(5)) ? static_cast<INT32>(5) : ((ef_digits10_extra > static_cast<INT32>(30)) ? static_cast<INT32>(30) : ef_digits10_extra)));
+    static const INT32 ef_max_digits10     = static_cast<INT32>(ef_digits10 + 1);
 
     virtual ~e_float_base() { }
 

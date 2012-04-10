@@ -19,15 +19,15 @@ namespace test
                                       const e_float& my_value,
                                       const e_float& control)
   {
-    static const e_float the_epsilon = std::numeric_limits<e_float>::epsilon();
+    static const e_float the_epsilon = (std::min)(e_float("1E-25"), ef::pow(std::numeric_limits<e_float>::epsilon(), e_float(85) / 100));
 
     str_result.clear();
 
-    // Ensure that the two real numbers are equal in the sense that their difference is
-    // identically zero or that their relative difference is less than epsilon. Recall
-    // that std::numeric_limits<T>::epsilon() is defined as the smallest number of a given
-    // type T which is distinguishable from 1. This means that all significant digits of
-    // the two numbers are identical. Also make sure that the result from e_float is finite.
+    // Ensure that the two real numbers are equal in the sense that
+    // the difference between them is identically zero or that their
+    // relative difference is less than the_epsilon. Recall that
+    // std::numeric_limits<T>::epsilon() is defined as the smallest
+    // number of a given type T which is distinguishable from 1.
 
     const bool ef_data_is_zero = ef::iszero(my_value);
     const bool ml_data_is_zero = ef::iszero(control);

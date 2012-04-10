@@ -37,7 +37,7 @@
 
     private:
       static const INT32 ef_digits10_num_base = static_cast<INT32>((ef_max_digits10 / ef_elem_digits10) + (((ef_max_digits10 % ef_elem_digits10) != 0) ? 1 : 0));
-      static const INT32 ef_elem_number       = static_cast<INT32>(ef_digits10_num_base + 2);
+      static const INT32 ef_elem_number       = static_cast<INT32>(ef_digits10_num_base + 3);
 
       typedef enum enum_fpclass
       {
@@ -151,9 +151,10 @@
 
       INT32 cmp_data(const array_type& vd) const;
 
-      static void   mul_loop_uv(const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p);
-      static UINT32 mul_loop_n (UINT32* const u, UINT32 n, const INT32 p);
-      static UINT32 div_loop_n (UINT32* const u, UINT32 n, const INT32 p);
+      static void   mul_loop_uv (const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p);
+      static UINT32 mul_loop_n  (UINT32* const u, UINT32 n, const INT32 p);
+      static UINT32 div_loop_n  (UINT32* const u, UINT32 n, const INT32 p);
+      static void   mul_loop_fft(UINT32* const u, const UINT32* const v, const INT32 p);
 
       virtual INT64 get_order_exact(void) const { return get_order_fast(); }
       virtual INT64 get_order_fast(void) const;

@@ -333,9 +333,9 @@ e_float ef::asin(const e_float& x)
 
   // Newton-Raphson iteration
 
-  static const INT32 double_digits10_minus_one = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(1));
+  static const INT32 double_digits10_minus_a_few = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(3));
 
-  for(INT32 digits = double_digits10_minus_one; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
+  for(INT32 digits = double_digits10_minus_a_few; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
   {
     e_float s, c;
     ef::sincos(value, &s, &c);
@@ -439,9 +439,9 @@ e_float ef::atan(const e_float& x)
                                                 : Atan_Series::AtInfinity(xx);
 
   // Newton-Raphson iteration
-  static const INT32 double_digits10_minus_one = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(1));
+  static const INT32 double_digits10_minus_a_few = static_cast<INT32>(static_cast<INT32>(std::numeric_limits<double>::digits10) - static_cast<INT32>(3));
 
-  for(INT32 digits = double_digits10_minus_one; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
+  for(INT32 digits = double_digits10_minus_a_few; digits <= static_cast<INT32>(ef::tol()); digits *= static_cast<INT32>(2))
   {
     e_float s, c;
     ef::sincos(value, &s, &c);

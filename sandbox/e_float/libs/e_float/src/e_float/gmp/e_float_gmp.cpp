@@ -29,7 +29,7 @@ namespace
 {
   const double& d_log2(void)
   {
-    static const double value_log2 = 0.3010299956639811952137389;
+    static const double value_log2 = 0.30102999566398119521373889472449302676819;
     return value_log2;
   }
 
@@ -39,6 +39,8 @@ namespace
             || (c == static_cast<char>('E'))
             || (c == static_cast<char>('.')));
   }
+
+  const mp_prec_t my_default_prec = static_cast<unsigned long>(gmp::e_float::ef_digits + ((16 * 1000) / 301));
 }
 
 void gmp::e_float::init(void)
@@ -48,7 +50,7 @@ void gmp::e_float::init(void)
   if(precision_is_initialized == false)
   {
     precision_is_initialized = true;
-    ::mpf_set_default_prec(static_cast<unsigned long>(ef_digits2 + static_cast<INT32>(4)));
+    ::mpf_set_default_prec(my_default_prec);
   }
 }
 
@@ -296,7 +298,7 @@ gmp::e_float::e_float(const ::mpf_t& op) : fpclass  (ef_finite),
 
 gmp::e_float::~e_float()
 {
-  ::mpf_set_prec_raw(rop, static_cast<unsigned long int>(ef_digits2));
+  ::mpf_set_prec_raw(rop, static_cast<unsigned long int>(my_default_prec));
   ::mpf_clear(rop);
 }
 
@@ -320,7 +322,7 @@ void gmp::e_float::from_unsigned_long(const unsigned long u)
 void gmp::e_float::precision(const INT32 prec_digits)
 {
   const unsigned long int digits2_request = static_cast<unsigned long int>(static_cast<UINT64>(static_cast<double>(prec_digits) / ::d_log2()));
-  const unsigned long int d2              = static_cast<unsigned long int>(ef_digits2);
+  const unsigned long int d2              = static_cast<unsigned long int>(my_default_prec);
   const unsigned long int digits2_set     = (std::min)(digits2_request, d2);
 
   prec_elem = static_cast<INT32>(static_cast<INT64>(static_cast<double>(digits2_set) * ::d_log2()));
