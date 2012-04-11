@@ -30,7 +30,7 @@ namespace polygon {
 
 template <typename PC, typename VD>
 static inline void construct_voronoi(const PC &points, VD *output,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<typename PC::iterator>::value_type>::type>::type>::type>::type * = 0) {
+    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename PC::value_type>::type>::type>::type>::type * = 0) {
   default_voronoi_builder builder;
   builder.insert(points.begin(), points.end());
   builder.construct(output);
@@ -45,7 +45,7 @@ static inline void construct_voronoi_segments(const SC &segments, VD *output) {
 
 template <typename PC, typename SC, typename VD>
 static inline void construct_voronoi(const PC &points, const SC &segments, VD *output,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<typename PC::iterator>::value_type>::type>::type>::type>::type * = 0) {
+    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename PC::value_type>::type>::type>::type>::type * = 0) {
   default_voronoi_builder builder;
   builder.insert_sites(
     points.begin(), points.end(), segments.begin(), segments.end());

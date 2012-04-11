@@ -61,7 +61,7 @@ public:
 
   template <typename PointIterator>
   void insert(PointIterator first_point, PointIterator last_point,
-  typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
+  typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename PointIterator::value_type>::type>::type>::type>::type * = 0) {
     // Create a site event from each input point.
     for (PointIterator it = first_point; it != last_point; ++it) {
       insert(*it);
