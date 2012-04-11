@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(single_site_test, T, test_types) {
     std::vector< point_data<T> > points;
     points.push_back(point_data<T>(0, 0));
     vd_type test_output;
-    construct_voronoi_points(points, &test_output);
+    construct_voronoi(points, &test_output);
     VERIFY_OUTPUT(test_output);
 
     BOOST_CHECK(test_output.cells().size() == 1);
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test1, T, test_types) {
     points.push_back(point_data<T>(0, 0));
     points.push_back(point_data<T>(0, 1));
     vd_type test_output;
-    construct_voronoi_points(points, &test_output);
+    construct_voronoi(points, &test_output);
     VERIFY_OUTPUT(test_output);
     CHECK_OUTPUT_SIZE(test_output, 2, 0, 1);
 
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(collinear_sites_test2, T, test_types) {
     points.push_back(point_data<T>(1, 1));
     points.push_back(point_data<T>(2, 2));
     vd_type test_output;
-    construct_voronoi_points(points, &test_output);
+    construct_voronoi(points, &test_output);
     VERIFY_OUTPUT(test_output);
     CHECK_OUTPUT_SIZE(test_output, 3, 0, 2);
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test1, T, test_types) {
     points.push_back(point2);
     points.push_back(point3);
     vd_type test_output;
-    construct_voronoi_points(points, &test_output);
+    construct_voronoi(points, &test_output);
     VERIFY_OUTPUT(test_output);
     CHECK_OUTPUT_SIZE(test_output, 3, 1, 3);
 
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(triangle_test2, T, test_types) {
     points.push_back(point2);
     points.push_back(point3);
     vd_type test_output;
-    construct_voronoi_points(points, &test_output);
+    construct_voronoi(points, &test_output);
     VERIFY_OUTPUT(test_output);
     CHECK_OUTPUT_SIZE(test_output, 3, 1, 3);
 
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
     points.push_back(point3);
     points.push_back(point4);
     vd_type test_output;
-    construct_voronoi_points(points, &test_output);
+    construct_voronoi(points, &test_output);
     VERIFY_OUTPUT(test_output);
     CHECK_OUTPUT_SIZE(test_output, 4, 1, 4);
 
@@ -308,8 +308,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test, T, test_types) {
                 point_vec_small.push_back(point_data<T>(i, j));
                 point_vec_large.push_back(point_data<T>(koef * i, koef * j));
             }
-        construct_voronoi_points(point_vec_small, &test_output_small);
-        construct_voronoi_points(point_vec_large, &test_output_large);
+        construct_voronoi(point_vec_small, &test_output_small);
+        construct_voronoi(point_vec_large, &test_output_large);
         VERIFY_OUTPUT(test_output_small);
         VERIFY_OUTPUT(test_output_large);
         unsigned int num_cells = grid_size[k] * grid_size[k];
@@ -344,8 +344,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test, T, test_types) {
                 point_vec_small.push_back(point_data<T>(x, y));
                 point_vec_large.push_back(point_data<T>(koef * x, koef * y));
             }
-            construct_voronoi_points(point_vec_small, &test_output_small);
-            construct_voronoi_points(point_vec_large, &test_output_large);
+            construct_voronoi(point_vec_small, &test_output_small);
+            construct_voronoi(point_vec_large, &test_output_large);
             VERIFY_OUTPUT(test_output_small);
             VERIFY_OUTPUT(test_output_large);
             BOOST_CHECK_EQUAL(test_output_small.num_cells(),
@@ -366,7 +366,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(enormous_random_test, T, test_types) {
     std::vector< point_data<T> > point_vec;
     for (int i = 0; i < 1000000; i++)
         point_vec.push_back(point_data<T>(gen() % 10000 - 5000, gen() % 10000 - 5000));
-    construct_voronoi_points(point_vec, &test_output);
+    construct_voronoi(point_vec, &test_output);
     BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(test_output,
         voronoi_test_helper::FAST_VERIFICATION), true);
 }

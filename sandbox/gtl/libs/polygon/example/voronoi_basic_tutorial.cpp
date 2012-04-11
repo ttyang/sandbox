@@ -118,9 +118,9 @@ int main() {
   voronoi_builder<int> vb;
   voronoi_diagram<double> vd;
   for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
-    vb.insert_point(it->a, it->b);
+    vb.insert(it->a, it->b);
   for (std::vector<Segment>::iterator it = segments.begin(); it != segments.end(); ++it)
-    vb.insert_segment(it->p0.a, it->p0.b, it->p1.a, it->p1.b);
+    vb.insert(it->p0.a, it->p0.b, it->p1.a, it->p1.b);
   vb.construct(&vd);
 
   // Traversing Voronoi Graph.

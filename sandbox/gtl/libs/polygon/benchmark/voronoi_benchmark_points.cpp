@@ -59,10 +59,8 @@ void run_boost_test() {
     for (int j = 0; j < NUM_RUNS[i]; ++j) {
       VB_BOOST vb;
       VD_BOOST vd;
-      for (int k = 0; k < NUM_POINTS[i]; ++k) {
-        vb.insert_point(static_cast<int32>(gen()),
-                        static_cast<int32>(gen()));
-      }
+      for (int k = 0; k < NUM_POINTS[i]; ++k)
+        vb.insert(static_cast<int32>(gen()), static_cast<int32>(gen()));
       vb.construct(&vd);
     }
     double time_per_test = timer.elapsed() / NUM_RUNS[i];
