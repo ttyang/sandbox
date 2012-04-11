@@ -1,19 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
   
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  <title>Voronoi Builder</title>
-
-  
-</head><body>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Builder</title></head><body>
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -80,7 +77,7 @@ Tutorial</a></li>
       
       <h1>Voronoi Builder<br>
       </h1>
-Voronoi builder is event generator structure. It implements <a href="http://www.ams.org/samplings/feature-column/fcarc-voronoi">sweepline
+Voronoi builder is the event generator structure. It implements the <a href="http://www.ams.org/samplings/feature-column/fcarc-voronoi">sweepline
 algorithm</a> that scans 2D space and generates two types of events:
 site events and circle events (we won't go into details what those are
 exactly). Each event is reported to the output data structure builder.
@@ -125,6 +122,15 @@ implementation is required. The default <font face="Courier New"> <span style="f
 implementation is highly optimized and efficient that's why it's always
 better to come up with a proper <font face="Courier New"> <span style="font-family: 'Courier New',Courier,monospace;">CTT</span></font>
 structure.<br>
+      <h2>Important</h2>
+We encourage users to use default static methods defined in the <a href="../boost/polygon/voronoi.hpp">voronoi.hpp</a> header to construct Voronoi diagram. However in the following cases Voronoi builder data structure should be used explicitly:<br>
+      <ul>
+        <li>User provided point type doesn't conform x() and y() access methods to retrieve its coordinates;</li>
+        <li>User provided segment type doesn't conforms low() and high() access methods to retrieve its endpoints;</li>
+        <li>User provided container of points / segments doesn't support forward iterator using the increment operator++;</li>
+        <li>User needs to configure coordinate type domain or predicates the library operates with.</li>
+      </ul>
+
       <h2>Member Functions</h2>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -392,7 +398,7 @@ see <a href="voronoi_advanced_tutorial.htm">advanced Voronoi tutorial</a>.</p>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">

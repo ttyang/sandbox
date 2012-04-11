@@ -1,11 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-  
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  <title>Voronoi Basic Tutorial</title>
+
 
   
-</head><body>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Basic Tutorial</title></head><body>
 <h1>Voronoi Basic Tutorial<br>
 </h1>
 
@@ -49,41 +47,29 @@ And before you proceed don't forget to:<span style="font-family: Courier New,Cou
 #include "boost/polygon/voronoi.hpp"<br>
 using boost::polygon;<br>
 </span>
-<h2>Preparing Input Geometries</h2>
+<h2>Important</h2>
+<span style="font-family: Courier New,Courier,monospace;"></span>Voronoi diagram construction methods defined in the voronoi.hpp header
+could be used in case the following 4 requirements are satisfied:<br>
 
-Before executing the algorithm lets see how the user provided types for
-the input geometries might look like:<br>
+<ul>
+<li>User provided point type conforms x() and y() access methods to retrieve its coordinates;</li><li>User provided segment type conforms low() and high() access methods to retrieve its endpoints;</li><li>User provided container of points / segments supports forward iterator using the increment operator++;</li><li>User doesn't need to configure default coordinate types used by the library.</li>
+</ul>
 
-<br>
+For all the other case you should explicitly use <a href="voronoi_builder.htm">Voronoi builder</a> data structure to construct <a href="voronoi_diagram.htm">Voronoi diagram</a>.<br>
 
-<span style="font-family: Courier New,Courier,monospace;">class Point {<br>
-public:<br>
-&nbsp; Point() {}<br>
-&nbsp; Point(int x, int y) { x_ = x; y_ = y; }<br>
+<h2>Preparing Input Geometries</h2>Below is the example of how the user provided point and segment classes might look like:<br>
+<br><span style="font-family: Courier New,Courier,monospace;">struct Point {<br>&nbsp; int a;<br>
+&nbsp; int b;<br>
 <br>
-&nbsp; // Those accessors are required!<br>
-&nbsp; int x() const { return x_; }<br>
-&nbsp; int y() const { return y_; }<br>
-<br>
-private:<br>
-&nbsp; // Should be castable to the signed int32 type!<br>
-&nbsp; int x_;<br>
-&nbsp; int y_;<br>
+&nbsp; Point (int x, int y) : a(x), b(y) {}<br>
+
 };</span><span style="font-family: Courier New,Courier,monospace;"><br>
+<br>struct Segment {<br>
+&nbsp; Point p0;<br>
+&nbsp; Point p1;<br>
 <br>
-class Segment {<br>
-public:<br>
-&nbsp; Segment() {}<br>
-&nbsp; Segment(int x1, int y1, int x2, int y2) : p0_(x1, y1), p1_(x2,
-y2) {}<br>
-<br>
-&nbsp; // Those accessors are required!<br>
-&nbsp; Point low() const { return p0_; }<br>
-&nbsp; Point high() const { return p1_; }<br>
-</span><span style="font-family: Courier New,Courier,monospace;"><br>
-private:<br>
-&nbsp; Point p0_;<br>
-&nbsp; Point p1_;</span><br>
+&nbsp; Segment (int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}<br>
+</span><span style="font-family: Courier New,Courier,monospace;"></span>
 
 <span style="font-family: Courier New,Courier,monospace;">};<br>
 <br>
@@ -100,16 +86,27 @@ segments.push_back(Segment(-4, 5, 5, -1));<br>
 segments.push_back(Segment(3, -11, 13, -1));</span><span style="font-family: Courier New,Courier,monospace;"><br>
 </span>
 <h2>Construction of the Voronoi Diagram<br>
-</h2>
-
-Now let's construct the Voronoi diagram of the input set of points and
-segments:<br>
-
+</h2>As one may notice the user provided Point and Segment class
+doesn't conform to the interfaces supported by the static methods in
+the voronoi.hpp header, that's why we are going to use Voronoi builder
+data structure:<br>
 <br>
+<span style="font-family: Courier New,Courier,monospace;">voronoi_builder&lt;int&gt; vb;</span><br>
 
 <span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt;
 vd;<br>
+for (</span><span style="font-family: Courier New,Courier,monospace;">std::vector&lt;Point&gt;::iterator it = points.begin(); it != points.end(); ++it)<br>
+&nbsp; vb.insert_point(it-&gt;a, it-&gt;b);<br>
+for (std::vector&lt;Segment&gt;::iterator it = segments.begin(); it != segments.end(); ++it)<br>
+&nbsp; vb.insert_segment(it-&gt;p0.a, it-&gt;p0.b, it-&gt;p1.a, it-&gt;p1.b);<br>
+</span><span style="font-family: Courier New,Courier,monospace;">vb.construct(&amp;vd);<br>
+<br>
+</span>In case all the requirements of the <span style="font-weight: bold;">Important</span> section are satisfied the code would look like:<br>
+<br>
+<span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt;
+vd;<br>
 construct_voronoi(points, segments, &amp;vd);<br>
+</span><span style="font-family: Courier New,Courier,monospace;">
 <br>
 </span>So brief, isn't that awesome!<br>
 
@@ -267,14 +264,11 @@ It is practical to choose it so that it wraps all the input geometries
 plus some offset.<br>
 
 <span style="font-family: Courier New,Courier,monospace;"><br>
-bounding_rectangle&lt;double&gt; bbox;<br>
-for (std::vector&lt;Point&gt;::iterator it = points.begin(); it !=
-points.end(); ++it)<br>
-&nbsp; bbox.update(it-&gt;x(), it-&gt;y());<br>
-for (std::vector&lt;Segment&gt;::iterator it = segments.begin(); it !=
-segments.end(); ++it) {<br>
-&nbsp; bbox.update(it-&gt;low().x(), it-&gt;low().y());<br>
-&nbsp; bbox.update(it-&gt;high().x(), it-&gt;high().y());<br>
+bounding_rectangle&lt;double&gt; bbox;<br>for (std::vector&lt;Point&gt;::iterator it = points.begin(); it != points.end(); ++it)<br>
+&nbsp; bbox.update(it-&gt;a, it-&gt;b);<br>
+for (std::vector&lt;Segment&gt;::iterator it = segments.begin(); it != segments.end(); ++it) {<br>
+&nbsp; bbox.update(it-&gt;p0.a, it-&gt;p0.b);<br>
+&nbsp; bbox.update(it-&gt;p1.a, it-&gt;p1.b);<br>
 }<br>
 // Add 10% offset to the bounding rectangle.<br>
 bbox = voronoi_utils&lt;double&gt;::scale(bbox, 1.1);</span><span style="font-family: Courier New,Courier,monospace;"><br>

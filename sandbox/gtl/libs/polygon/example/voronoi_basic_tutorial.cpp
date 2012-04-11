@@ -14,33 +14,18 @@
 #include "boost/polygon/voronoi_utils.hpp"
 using namespace boost::polygon;
 
-class Point {
-public:
-  Point() {}
-  Point(int x, int y) { x_ = x; y_ = y; }
+struct Point {
+  int a;
+  int b;
 
-  // Those accessors are required!
-  int x() const { return x_; }
-  int y() const { return y_; }
-
-private:
-  // Should be castable to the signed int32 type!
-  int x_;
-  int y_;
+  Point (int x, int y) : a(x), b(y) {}
 };
 
-class Segment {
-public:
-  Segment() {}
-  Segment(int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}
-
-  // Those accessors are required!
-  Point low() const { return p0; }
-  Point high() const { return p1; }
-
-private:
+struct Segment {
   Point p0;
   Point p1;
+
+  Segment (int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}
 };
 
 // Traversing Voronoi edges using edge iterator.
@@ -130,8 +115,13 @@ int main() {
   segments.push_back(Segment(3, -11, 13, -1));
 
   // Construction of the Voronoi Diagram.
+  voronoi_builder<int> vb;
   voronoi_diagram<double> vd;
-  construct_voronoi(points, segments, &vd);
+  for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
+    vb.insert_point(it->a, it->b);
+  for (std::vector<Segment>::iterator it = segments.begin(); it != segments.end(); ++it)
+    vb.insert_segment(it->p0.a, it->p0.b, it->p1.a, it->p1.b);
+  vb.construct(&vd);
 
   // Traversing Voronoi Graph.
   {
@@ -176,10 +166,10 @@ int main() {
     // Construct clipping bounding rectangle.
     bounding_rectangle<double> bbox;
     for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
-      bbox.update(it->x(), it->y());
+      bbox.update(it->a, it->b);
     for (std::vector<Segment>::iterator it = segments.begin(); it != segments.end(); ++it) {
-      bbox.update(it->low().x(), it->low().y());
-      bbox.update(it->high().x(), it->high().y());
+      bbox.update(it->p0.a, it->p0.b);
+      bbox.update(it->p1.a, it->p1.b);
     }
     // Add 10% offset to the bounding rectangle.
     bbox = voronoi_utils<double>::scale(bbox, 1.1);
