@@ -50,13 +50,13 @@ public:
     in_stream >> num_point_sites;
     for (int i = 0; i < num_point_sites; ++i) {
       in_stream >> x1 >> y1;
-      vb_.insert(x1, y1);
+      vb_.insert_point(x1, y1);
       brect_.update(x1, y1);
     }
     in_stream >> num_edge_sites;
     for (int i = 0; i < num_edge_sites; ++i) {
       in_stream >> x1 >> y1 >> x2 >> y2;
-      vb_.insert(x1, y1, x2, y2);
+      vb_.insert_segment(x1, y1, x2, y2);
       brect_.update(x1, y1);
       brect_.update(x2, y2);
     }

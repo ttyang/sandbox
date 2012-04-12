@@ -129,7 +129,7 @@ int main () {
   for (size_t i = 0; i < GENERATED_POINTS; ++i) {
     boost::int64_t x = distr(gen);
     boost::int64_t y = distr(gen);
-    vb.insert(x, y);
+    vb.insert_point(x, y);
   }
 
   printf("Constructing Voronoi diagram of %d points...\n", GENERATED_POINTS);

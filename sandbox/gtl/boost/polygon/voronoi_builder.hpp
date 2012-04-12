@@ -49,19 +49,19 @@ public:
 
   voronoi_builder() {}
 
-  void insert(const int_type& x, const int_type& y) {
+  void insert_point(const int_type& x, const int_type& y) {
     site_events_.push_back(site_event_type(x, y));
   }
 
   template <typename PointType>
   void insert(const PointType& point,
   typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<PointType>::type>::type>::type>::type * = 0) {
-    insert(x(point), y(point));
+    insert_point(x(point), y(point));
   }
 
   template <typename PointIterator>
   void insert(PointIterator first_point, PointIterator last_point,
-  typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename PointIterator::value_type>::type>::type>::type>::type * = 0) {
+  typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
     // Create a site event from each input point.
     for (PointIterator it = first_point; it != last_point; ++it) {
       insert(*it);
@@ -72,8 +72,8 @@ public:
   //   1) the start point of the segment;
   //   2) the end point of the segment;
   //   3) the segment itself defined by its start point.
-  void insert(const int_type& x1, const int_type& y1,
-              const int_type& x2, const int_type& y2) {
+  void insert_segment(const int_type& x1, const int_type& y1,
+                      const int_type& x2, const int_type& y2) {
     point_type p1(x1, y1);
     point_type p2(x2, y2);
     site_events_.push_back(site_event_type(p1));
@@ -87,7 +87,7 @@ public:
 
   template <typename PointType>
   void insert_segment(const PointType& point1, const PointType& point2) {
-    insert(point1.x(), point1.y(), point2.x(), point2.y());  
+    insert_segment(point1.x(), point1.y(), point2.x(), point2.y());  
   }
 
   template <typename SegmentType>
@@ -101,14 +101,6 @@ public:
     for (SegmentIterator it = first_segment; it != last_segment; ++it) {
       insert_segment(*it);
     }
-  }
-
-  template <typename PointIterator, typename SegmentIterator>
-  void insert_sites(
-      PointIterator first_point, PointIterator last_point,
-      SegmentIterator first_segment, SegmentIterator last_segment) {
-    insert(first_point, last_point);
-    insert_segments(first_segment, last_segment);
   }
 
   // Run sweepline algorithm and fill output data structure.

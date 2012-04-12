@@ -60,7 +60,7 @@ void run_boost_test() {
       VB_BOOST vb;
       VD_BOOST vd;
       for (int k = 0; k < NUM_POINTS[i]; ++k)
-        vb.insert(static_cast<int32>(gen()), static_cast<int32>(gen()));
+        vb.insert_point(static_cast<int32>(gen()), static_cast<int32>(gen()));
       vb.construct(&vd);
     }
     double time_per_test = timer.elapsed() / NUM_RUNS[i];
@@ -77,8 +77,8 @@ void run_cgal_test() {
     for (int j = 0; j < NUM_RUNS[i]; ++j) {
       SDT_CGAL dt;
       for (int k = 0; k < NUM_POINTS[i]; ++k) {
-        dt.insert(Point_CGAL(static_cast<int32>(gen()),
-                             static_cast<int32>(gen())));
+        dt.insert(Point_CGAL(
+            static_cast<int32>(gen()), static_cast<int32>(gen())));
       }
     }
     double time_per_test = timer.elapsed() / NUM_RUNS[i];

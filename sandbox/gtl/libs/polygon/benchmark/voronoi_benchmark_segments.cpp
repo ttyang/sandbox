@@ -69,8 +69,8 @@ std::vector<double> get_intersection_runtime() {
         int32 y1 = gen();
         int32 dx = (gen() & 1023) + 1;
         int32 dy = (gen() & 1023) + 1;
-        ssd.insert(SEGMENT_POLYGON(POINT_POLYGON(x1, y1),
-                                   POINT_POLYGON(x1 + dx, y1 + dy)));
+        ssd.insert(SEGMENT_POLYGON(
+            POINT_POLYGON(x1, y1), POINT_POLYGON(x1 + dx, y1 + dy)));
       }
       ssd.clean();
     }
@@ -93,8 +93,8 @@ void run_voronoi_test(const std::vector<double> &running_times) {
         int32 y1 = gen();
         int32 dx = (gen() & 1023) + 1;
         int32 dy = (gen() & 1023) + 1;
-        ssd.insert(SEGMENT_POLYGON(POINT_POLYGON(x1, y1),
-                                   POINT_POLYGON(x1 + dx, y1 + dy)));
+        ssd.insert(SEGMENT_POLYGON(
+            POINT_POLYGON(x1, y1), POINT_POLYGON(x1 + dx, y1 + dy)));
       }
       ssd.clean();
       boost::polygon::construct_voronoi_segments(ssd, &vd);
