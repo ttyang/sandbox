@@ -262,13 +262,10 @@ template <typename T, typename TRAITS = voronoi_diagram_traits<T> >
 class voronoi_diagram {
 public:
   typedef typename TRAITS::coordinate_type coordinate_type;
-  typedef typename TRAITS::ctype_converter_type ctype_converter_type;
   typedef typename TRAITS::point_type point_type;
   typedef typename TRAITS::cell_type cell_type;
   typedef typename TRAITS::vertex_type vertex_type;
   typedef typename TRAITS::edge_type edge_type;
-  typedef typename TRAITS::vertex_equality_predicate_type
-    vertex_equality_predicate_type;
 
   typedef std::vector<cell_type> cell_container_type;
   typedef typename cell_container_type::iterator cell_iterator;
@@ -369,6 +366,10 @@ public:
   }
 
 private:
+  typedef typename TRAITS::ctype_converter_type ctype_converter_type;
+  typedef typename TRAITS::vertex_equality_predicate_type
+    vertex_equality_predicate_type;
+
   friend class voronoi_diagram_builder;
 
   void reserve(int num_sites) {

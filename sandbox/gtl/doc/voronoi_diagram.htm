@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
 
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -96,7 +97,7 @@ consists of a three arrays, that respectively contain: Voronoi cells
 (one dimensional curves containing points equidistant from the two
 closest input sites). Each of the primitives (cell, vertex, edge)
 contains pointers to the other linked primitives, so that it's always
-possible to efficiently traverse the Voronoi graph. Picture below shows
+possible to efficiently traverse Voronoi graph. Picture below shows
 Voronoi vertices in red, Voronoi edges in black, input sites that
 correspond to the Voronoi cells in blue. It is considered that each
 input segment consists of three sites: segment itself and its
@@ -105,10 +106,11 @@ Voronoi edges are constructed per each segment. This is made to
 simplify representation of the Voronoi diagram.<br>
       <br>
       <img style="border: 1px solid ; width: 300px; height: 300px;" alt="" src="images/voronoi2.png"><br>
-      <br>
-Voronoi diagram declaration and list of the member functions is
-following:<br>
-      <br>
+      <h2>Declaration<br>
+      </h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T, typename TRAITS = voronoi_diagram_traits&lt;T&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class
@@ -116,9 +118,12 @@ voronoi_diagram;<br>
       <br>
 </span><font face="Courier New"><span style="font-family: 'Courier New',Courier,monospace;">T</span></font>
 - specifies coordinate type of the output geometries: input sites (points / segments), Voronoi vertices.<br>
-      <span style="font-family: Courier New,Courier,monospace;">TRAITS - </span>Voronoi diagram traits (explained in the end of this chapter).<br>
+      <span style="font-family: Courier New,Courier,monospace;">TRAITS</span><font face="Courier New"><span style="font-family: 'Courier New',Courier,monospace;"></span></font>
+- Voronoi diagram traits (explained in the end of this chapter).<br>
+      <h2>Member Functions</h2>
+
       <span style="font-family: Courier New,Courier,monospace;">
-      <br>
+      
       </span>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -189,16 +194,116 @@ This value should be the same as the size of the vertex container.<br>
           </tr>
         </tbody>
       </table>
+      
+      <h2>Member Types</h2>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">coordinate_type<br>
+            </td>
+            <td style="vertical-align: top;">Coordinate type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_type<br>
+            </td>
+            <td style="vertical-align: top;">2D point.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">cell_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi cell.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">vertex_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi vertex.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">edge_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi edge.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">cell_container_type<br>
+            </td>
+            <td style="vertical-align: top;">Container of Voronoi cells.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">cell_iterator<br>
+            </td>
+            <td style="vertical-align: top;">Cell container iterator.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">const_cell_iterator<br>
+            </td>
+            <td style="vertical-align: top;">Const cell container iterator.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">vertex_container_type<br>
+            </td>
+            <td style="vertical-align: top;">Container of Voronoi vertices.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">vertex_iterator<br>
+            </td>
+            <td style="vertical-align: top;">Vertex container iterator.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">const_vertex_iterator<br>
+            </td>
+            <td style="vertical-align: top;">Const vertex container iterator.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">edge_container_type<br>
+            </td>
+            <td style="vertical-align: top;">Container of Voronoi edges.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">edge_iterator<br>
+            </td>
+            <td style="vertical-align: top;">Edge container iterator.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">const_edge_iterator<br>
+            </td>
+            <td style="vertical-align: top;">Const edge container iterator.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
       <h1>Voronoi Edge</h1>
+
 Voronoi edge is represented as a bit improved classical <a href="http://www.flipcode.com/archives/The_Half-Edge_Data_Structure.shtml">half-edge</a>
-data structure. The declaration and list of the member functions is
-following:<br>
-      <br>
+data structure.<br>
+      <h2>Declaration</h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class
 voronoi_edge;<br>
       <br>
+T</span> - coordinate type. While Voronoi edge doesn't contain coordinates itself, it stores pointers to Voronoi cell and vertex.<br>
+      <h2>Member Functions</h2>
+
+      <span style="font-family: Courier New,Courier,monospace;">
+      
       </span>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -239,7 +344,7 @@ pointer for the cell current edge belongs to.<br>
             </td>
             <td style="vertical-align: top;">Returns the pointer to the
 start point of the edge.<br>
-If edge is infinite in that direction returns NULL.<br>
+If the edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
@@ -247,8 +352,8 @@ If edge is infinite in that direction returns NULL.<br>
 voronoi_vertex_type *vertex0() const<br>
             </td>
             <td style="vertical-align: top;">Returns the const pointer
-to the start point of the edge.<br>
-If edge is infinite in that direction returns NULL.<br>
+to the point vertex of the edge.<br>
+If the edge is infinite in that direction returns NULL.<br>
             </td>
           </tr>
           <tr>
@@ -281,7 +386,7 @@ If the edge is infinite in that direction returns NULL.<br>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void
 vertex1(voronoi_vertex_type *v)<br>
             </td>
-            <td style="vertical-align: top;">Sets the endpoint pointer
+            <td style="vertical-align: top;">Sets the end point pointer
 of the edge.<br>
             </td>
           </tr>
@@ -315,7 +420,7 @@ of the edge.<br>
             </td>
             <td style="vertical-align: top;">Returns the pointer to the
 CCW next edge within the corresponding Voronoi cell.<br>
-Edges not necessarily share a common vertex.<br>
+Edges not necessarily share a common vertex (e.g. infinite edges).<br>
             </td>
           </tr>
           <tr>
@@ -324,7 +429,7 @@ voronoi_edge_type *next() const<br>
             </td>
             <td style="vertical-align: top;">Returns the const pointer
 to the CCW next edge within the corresponding Voronoi cell.<br>
-Edges not necessarily share a common vertex.<br>
+Edges not necessarily share a common vertex (e.g. infinite edges).<br>
             </td>
           </tr>
           <tr>
@@ -341,7 +446,7 @@ pointer of the edge.<br>
             </td>
             <td style="vertical-align: top;">Returns the pointer to the
 CCW prev edge within the corresponding Voronoi cell.<br>
-Edges not necessarily share a common vertex.<br>
+Edges not necessarily share a common vertex (e.g. infinite edges).<br>
             </td>
           </tr>
           <tr>
@@ -350,7 +455,7 @@ voronoi_edge_type *prev() const<br>
             </td>
             <td style="vertical-align: top;">Returns the const pointer
 to the CCW prev edge within the corresponding Voronoi cell.<br>
-Edges not necessarily share a common vertex.<br>
+Edges not necessarily share a common vertex (e.g. infinite edges).<br>
             </td>
           </tr>
           <tr>
@@ -417,7 +522,7 @@ If the edge is infinite in that direction returns NULL.</td>
 is_finite() const<br>
             </td>
             <td style="vertical-align: top;">Returns true if the both
-endpoints of the edge are finite, else false.<br>
+end points of the edge are finite, else false.<br>
             </td>
           </tr>
           <tr>
@@ -441,7 +546,7 @@ is curved (parabolic arc), else false.<br>
 is_primary() const<br>
             </td>
             <td style="vertical-align: top;">Returns false if the edge
-goes through the endpoint of the segment, else true.<br>
+goes through the endpoint of the segment site, else true.<br>
             </td>
           </tr>
         </tbody>
@@ -449,16 +554,53 @@ goes through the endpoint of the segment, else true.<br>
       <span style="font-family: Courier New,Courier,monospace;"><br>
       </span>All the above methods have O(1) complexity. The size of
 the Voronoi edge structure is equal to: 6 * sizeof(void *).<br>
+      <h2>Member Types</h2>
+
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">coordinate_type<br>
+            </td>
+            <td style="vertical-align: top;">Coordinate type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">voronoi_cell_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi cell type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">voronoi_vertex_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi vertex type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">voronoi_edge_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi edge type.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       <h1>Voronoi Cell</h1>
 Voronoi cell is represented by a site the cell contains and a pointer
-to the incident edge. The declaration and list of the member functions
-is
-following:<br>
-      <br>
+to the incident edge.<br>
+      <h2>Declaration</h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T&gt;<br>
 class voronoi_cell;<br>
       <br>
+</span><span style="font-family: Courier New,Courier,monospace;">T</span> - coordinate type.<br>
+      <h2>Member Functions</h2>
+
+      <span style="font-family: Courier New,Courier,monospace;">
+      
       </span>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -568,7 +710,33 @@ Could happen if a few input segments share a common endpoint.</td>
       </span>All the above methods have O(1) complexity. The size of
 the Voronoi cell structure is equal to: 2 * sizeof(void *) + 4 *
 sizeof(coordinate_type).<br>
-      <br>
+      <h2>Member Types</h2>
+
+
+      
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">coordinate_type<br>
+            </td>
+            <td style="vertical-align: top;">Coordinate type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_type</td>
+            <td style="vertical-align: top;">Point type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">voronoi_edge_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi edge type.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Miscellaneous</h2>
+
 Following code snippet effectively traverses Voronoi edges around the
 Voronoi cell:<br>
       <br>
@@ -583,15 +751,21 @@ edge = edge-&gt;next();</span><br style="font-family: Courier New,Courier,monosp
 (edge != cell-&gt;incident_edge());</span><br>
       <h1>Voronoi Vertex</h1>
 Voronoi vertex is represented by a point that corresponds to the vertex
-and a pointer to the incident edge. The declaration and list of the
-member
-functions is following:<br>
-      <br>
+and a pointer to the incident edge.<br>
+      <h2>Declaration</h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class
 voronoi_vertex;<br>
       <br>
+</span><span style="font-family: Courier New,Courier,monospace;">T</span> - coordinate type.<br>
+      <h2>Member Functions</h2>
+
+      <span style="font-family: Courier New,Courier,monospace;">
+      
       </span>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -656,8 +830,35 @@ This allows the user to associate any data type with the vertex.</td>
       </span>All the above methods have O(1) complexity. The size of
 the Voronoi vertex structure is equal to: 2 * sizeof(void *) + 2 *
 sizeof(coordinate_type).<br>
-      <br>
-Following code snipped effectively traverses Voronoi edges around the
+      <h2>Member Types</h2>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">coordinate_type<br>
+            </td>
+            <td style="vertical-align: top;">Coordainte type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_type<br>
+            </td>
+            <td style="vertical-align: top;">Point type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">voronoi_edge_type<br>
+            </td>
+            <td style="vertical-align: top;">Voronoi edge type.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Miscellaneous</h2>
+
+
+      
+Following code snippet effectively traverses Voronoi edges around the
 Voronoi vertex:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">const
@@ -671,15 +872,22 @@ edge = edge-&gt;next();</span><br style="font-family: Courier New,Courier,monosp
 (edge != vertex-&gt;incident_edge());</span><br>
       <h1>Voronoi Diagram Traits<br>
       </h1>
-Voronoi diagram traits are used to configure the Voronoi diagram data
-structure. The declaration and list of the required type definitions is
-following:<br>
-      <br>
+Voronoi diagram traits are used to configure Voronoi diagram data
+structure.<br>
+      <h2>Declaration</h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">struct
 voronoi_diagram_traits;<br>
       <br>
+</span><span style="font-family: Courier New,Courier,monospace;">T</span> - coordinate type.<br>
+      <h2>Member Types</h2>
+
+      <span style="font-family: Courier New,Courier,monospace;">
+      
       </span>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -687,7 +895,7 @@ voronoi_diagram_traits;<br>
             <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">coordinate_type<br>
             </td>
             <td style="vertical-align: top;">The main coordinate type
-of the Voronoi diagram internal structures.<br>
+of the Voronoi diagram primitives.<br>
             </td>
           </tr>
           <tr>
@@ -695,7 +903,7 @@ of the Voronoi diagram internal structures.<br>
             </td>
             <td style="vertical-align: top;">Coordinate type converter
 structure.<br>
-Converts the coordinates provided by the Voronoi builder to the
+Converts coordinates provided by the Voronoi builder to the
 internal coordinate type.<br>
             </td>
           </tr>
