@@ -55,13 +55,13 @@ public:
 
   template <typename PointType>
   void insert(const PointType& point,
-  typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<PointType>::type>::type>::type>::type * = 0) {
+    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<PointType>::type>::type>::type>::type * = 0) {
     insert_point(x(point), y(point));
   }
 
   template <typename PointIterator>
   void insert(PointIterator first_point, PointIterator last_point,
-  typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
+    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
     // Create a site event from each input point.
     for (PointIterator it = first_point; it != last_point; ++it) {
       insert(*it);
@@ -86,8 +86,9 @@ public:
   }
 
   template <typename PointType>
-  void insert_segment(const PointType& point1, const PointType& point2) {
-    insert_segment(point1.x(), point1.y(), point2.x(), point2.y());  
+  void insert_segment(const PointType& point1, const PointType& point2,
+      typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<PointType>::type>::type>::type>::type * = 0) {
+    insert_segment(x(point1), y(point1), x(point2), y(point2));  
   }
 
   template <typename SegmentType>
