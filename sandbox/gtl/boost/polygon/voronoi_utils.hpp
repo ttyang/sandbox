@@ -89,12 +89,9 @@ private:
   coordinate_type y_max_;
 };
 
-template <typename fpt_>
-struct voronoi_utils_traits;
-
-template<>
-struct voronoi_utils_traits<double> {
-  typedef double coordinate_type;
+template <typename fpt>
+struct voronoi_utils_traits {
+  typedef fpt coordinate_type;
   typedef detail::point_2d<coordinate_type> point_type;
   typedef std::vector<point_type> point_set_type;
   typedef bounding_rectangle<coordinate_type> brect_type;
@@ -114,7 +111,6 @@ public:
   typedef typename TRAITS::point_type point_type;
   typedef typename TRAITS::point_set_type point_set_type;
   typedef typename TRAITS::brect_type brect_type;
-  typedef typename TRAITS::ctype_converter_type ctype_converter_type;
 
   // Get scaled by a factor bounding rectangle.
   template <typename CT>
@@ -234,6 +230,8 @@ public:
   }
 
 private:
+  typedef typename TRAITS::ctype_converter_type ctype_converter_type;
+
   voronoi_utils();
 
   // There are three different types of linear primitive:

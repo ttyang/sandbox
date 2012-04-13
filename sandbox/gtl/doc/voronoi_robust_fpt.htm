@@ -1,19 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
   
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  <title>Voronoi Robust FPT</title>
-
-  
-</head><body>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Robust FPT</title></head><body>
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -83,7 +80,7 @@ The Voronoi
 robust floating-point types are the set of classes and tools that
 allow to estimate relative error of the arithmetic expressions. It is
 assumed that the other Boost libraries may find this unit functionality
-extremely useful, as it can be use d to implement robust and efficient
+extremely useful, as it can be used to implement robust and efficient
 arithmetic predicates or functors that compute values within known
 relative error.<br>
       <h2>Robust Fpt Type</h2>
@@ -123,12 +120,11 @@ Following
 arithmetic operators are overloaded for the robust difference type: +,
 -, *, / (division operator is not overloaded for the case were both
 arguments have robust difference type).<br>
-Looking at the relative error formulas above one may notice a few facts
-about them:<br>
+Looking at the relative error formulas above one may notice a few facts:<br>
 1) all of the formulas evaluate upper bound of the relative error, the
 actual value could be a lot smaller;<br>
 2) relative error estimate for the expression depends on the order
-operations are executed;<br>
+operations are evaluated;<br>
 3) relative error of&nbsp; the difference of two positive numbers may
 be
 extremely large in case their values are close to each other (this is
@@ -187,7 +183,7 @@ This appears to be enough for the Boost.Polygon Voronoi.<br>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">

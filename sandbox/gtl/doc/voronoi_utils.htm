@@ -1,25 +1,24 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
   
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  <title>Voronoi Utils</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Utils</title>
+  
 
   
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
   
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-
-</head><body>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -90,14 +89,19 @@ utilities implements a set of tools that users may find useful
 especially for
 the visualization of the Voronoi diagrams or discretization of the
 parabolic
-edges. Keep in mind that there are no warranties about precision of the
-output structures produces by the utilities class. This is mostly
+edges. <br>
+      <h2>Important<br>
+      </h2>
+
+There are no warranties about precision of the
+output structures produced by the utilities class. This is mostly
 because input
-coordinate type utilities operate with
-is double. Any degeneracies may be reported, however those are of low
-priority to be fixed. The class
-declaration is following:<br>
-      <br>
+coordinate type the utilities operate with
+is supposed to be double. Any degeneracies may be reported, however those are of low
+priority to be fixed. <br>
+      <h2>Declaration</h2>
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T, typename TRAITS = voronoi_utils_traits&lt;T&gt; &gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class
@@ -116,8 +120,7 @@ Functions</h2>
 &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
             <span style="font-family: Courier New,Courier,monospace;">static
 brect_type scale_bounding_rectangle(<br>
-&nbsp;&nbsp;&nbsp; const bounding_rectangle&lt;CT&gt; &amp;brect,<br>
-&nbsp;&nbsp;&nbsp; fpt_type factor = 1.0)</span><br>
+&nbsp; const bounding_rectangle&lt;CT&gt; &amp;brect,<br>&nbsp; fpt_type factor = 1.0)</span><br>
             </td>
             <td style="vertical-align: top;">Returns the scaled
 bounding rectangle.<br>
@@ -129,27 +132,23 @@ rectangle.<br>
             <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename CT&gt;<br>
 static void discretize_finite_edge(<br>
-&nbsp;&nbsp;&nbsp; const voronoi_edge&lt;CT&gt; &amp;edge,<br>
-&nbsp;&nbsp;&nbsp; coordinate_type max_error,<br>
-&nbsp;&nbsp;&nbsp; point_set_type &amp;discretization)</span><span style="font-family: Courier New,Courier,monospace;"></span><span style="font-family: Courier New,Courier,monospace;"></span><br>
+&nbsp; const voronoi_edge&lt;CT&gt; &amp;edge,<br>&nbsp; coordinate_type max_error,<br>&nbsp; point_set_type &amp;discretization)</span><span style="font-family: Courier New,Courier,monospace;"></span><span style="font-family: Courier New,Courier,monospace;"></span><br>
             </td>
             <td style="vertical-align: top;">Provides the point
 discretization of the input voronoi edge.<br>
-If the edge is infinite (ray, line) doesn't fill output point set.<br>
-Max error specifies the maximum absolute value of the approximation.<br>
+If the edge is infinite (ray, line) returns empty output set.<br>
+Max error specifies the maximum distance between approximation and original parabolic arc.<br>
             </td>
           </tr>
           <tr>
             <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename CT&gt;<br>
 static void clip_linear_edge(<br>
-&nbsp;&nbsp;&nbsp; const voronoi_edge&lt;CT&gt; &amp;edge,<br>
-&nbsp;&nbsp;&nbsp; const brect_type &amp;brect,<br>
-&nbsp;&nbsp;&nbsp; point_set_type &amp;clipped_edge)</span><br>
+&nbsp; const voronoi_edge&lt;CT&gt; &amp;edge,<br>&nbsp; const brect_type &amp;brect,<br>&nbsp; point_set_type &amp;clipped_edge)</span><br>
             </td>
             <td style="vertical-align: top;">Clips the input Voronoi
 edges with the specified rectangle.<br>
-If the edge is a parabolic arc doesn't fill the output point set.<br>
+If the edge is a parabolic arc returns empty output set.<br>
             </td>
           </tr>
           <tr>
@@ -157,10 +156,7 @@ If the edge is a parabolic arc doesn't fill the output point set.<br>
 &lt;typename PointType&gt;</span><br style="font-family: Courier New,Courier,monospace;">
             <span style="font-family: Courier New,Courier,monospace;">static
 void clip_linear_edge(<br>
-&nbsp;&nbsp;&nbsp; const PointType &amp;p1,<br>
-&nbsp;&nbsp;&nbsp; const PointType &amp;p2,<br>
-&nbsp;&nbsp;&nbsp; const brect_type &amp;brect,<br>
-&nbsp;&nbsp;&nbsp; point_set_type &amp;clipped_edge)</span><br>
+&nbsp; const PointType &amp;p1,<br>&nbsp; const PointType &amp;p2,<br>&nbsp; const brect_type &amp;brect,<br>&nbsp; point_set_type &amp;clipped_edge)</span><br>
             </td>
             <td style="vertical-align: top;">Clips the input linear
 edge with the specified rectangle.<br>
@@ -169,10 +165,37 @@ The edge is defined by its endpoints.<br>
           </tr>
         </tbody>
       </table>
+      
+      <h2 style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">Member Types</h2>
+
+      <br>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">coordinate_type</td>
+            <td style="vertical-align: top;">Coordinate type.</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_type</td>
+            <td style="vertical-align: top;">2D Point</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_set_type</td>
+            <td style="vertical-align: top;">2D Point set.</td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">brect_type</td>
+            <td style="vertical-align: top;">Bounding rectangle.</td>
+          </tr>
+        </tbody>
+      </table>
       <h1>Bounding Rectangle</h1>
-The module provides implementation of a simple bounding rectangle
-structure with the following declaration:<br>
-      <br style="font-family: Courier New,Courier,monospace;">
+
+The module provides implementation of a simple bounding rectangle data structure.<br>
+      <h2>Declaration</h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename T&gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">class
@@ -209,7 +232,7 @@ update(<br>
             </td>
             <td style="vertical-align: top;">Extends the bounding
 rectangle with the specified point defined by its coordinates.<br>
-If the rectangle is not initialized, initialized it with the specifed
+If the rectangle is not initialized, initializes it with the specifed
 point.<br>
             </td>
           </tr>
@@ -274,47 +297,60 @@ of the top right corner of the rectangle.<br>
           </tr>
         </tbody>
       </table>
-      <h1>Voronoi Utils Traits<br>
-      </h1>
-Below is shown the default Voronoi utilities traits declaration:<br>
-      <br>
+      
+      <h1>Voronoi Utils Traits</h1>
+Voronoi utils traits supply Voronoi utilities with appropriate input/output types and type converter structure.<br>
+      <h2>Declaration</h2>
+
+
+      
       <span style="font-family: Courier New,Courier,monospace;">template
-&lt;typename fpt_&gt;</span><br style="font-family: Courier New,Courier,monospace;">
+&lt;typename fpt&gt;</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">struct
 voronoi_utils_traits;</span><br style="font-family: Courier New,Courier,monospace;">
-      <br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">template&lt;&gt;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">struct
-voronoi_utils_traits&lt;double&gt; {</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;
-typedef double fpt_type;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;
-typedef detail::point_2d&lt;fpt_type&gt; point_type;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;
-typedef std::vector&lt;point_type&gt; point_set_type;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;
-typedef bounding_rectangle&lt;fpt_type&gt; brect_type;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;
-typedef struct {</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-template &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-fpt_type operator()(const CT&amp; value) const {</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-return static_cast&lt;fpt_type&gt;(value);</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-}</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;
-} ctype_converter_type;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">};<br>
-      <br>
-      </span>Most of the types define output geometries.
-ctype_converter_type is used to cast the coordinate type of the input
-primitives to the one used by the utililities internally.<br>
+
+      
+      <h2 style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px;">Member Types<br>
+      </h2>
+      <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+        <tbody>
+          <tr>
+            <td style="vertical-align: top;">coordinate_type<br>
+            </td>
+            <td style="vertical-align: top;">Coordinate type.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_type<br>
+            </td>
+            <td style="vertical-align: top;">2D Point .<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">point_set_type<br>
+            </td>
+            <td style="vertical-align: top;">2D Point set.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">brect_type<br>
+            </td>
+            <td style="vertical-align: top;">Bounding rectangle.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;">ctype_converter_type<br>
+            </td>
+            <td style="vertical-align: top;">Coordinate type converter structure.<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">
