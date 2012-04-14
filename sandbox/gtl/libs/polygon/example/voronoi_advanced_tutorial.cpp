@@ -141,7 +141,7 @@ int main () {
   std::string ftime = boost::timer::format(times, 5, "%w");
 
   printf("Construction done in: %s seconds.\n", ftime.c_str());
-  printf("Resulting Voronoi graph has following stats:\n");
+  printf("Resulting Voronoi graph has the following stats:\n");
   printf("Number of Voronoi cells: %d.\n", vd.num_cells());
   printf("Number of Voronoi vertices: %d.\n", vd.num_vertices());
   printf("Number of Voronoi edges: %d.\n", vd.num_edges());

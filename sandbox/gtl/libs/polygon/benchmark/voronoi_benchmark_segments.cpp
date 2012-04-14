@@ -97,7 +97,7 @@ void run_voronoi_test(const std::vector<double> &running_times) {
             POINT_POLYGON(x1, y1), POINT_POLYGON(x1 + dx, y1 + dy)));
       }
       ssd.clean();
-      boost::polygon::construct_voronoi_segments(ssd, &vd);
+      boost::polygon::construct_voronoi(ssd.begin(), ssd.end(), &vd);
     }
     double time_per_test = (timer.elapsed() - running_times[i]) / NUM_RUNS[i];
     format_line(NUM_SEGMENTS[i], NUM_RUNS[i], time_per_test);

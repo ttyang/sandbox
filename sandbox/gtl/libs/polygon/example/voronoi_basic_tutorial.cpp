@@ -17,16 +17,45 @@ using namespace boost::polygon;
 struct Point {
   int a;
   int b;
-
   Point (int x, int y) : a(x), b(y) {}
 };
 
 struct Segment {
+  typedef int coordinate_type; // this is temporary required
   Point p0;
   Point p1;
-
   Segment (int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}
 };
+
+namespace boost {
+namespace polygon {
+
+template <>
+struct geometry_concept<Point> { typedef point_concept type; };
+  
+template <>
+struct point_traits<Point> {
+  typedef int coordinate_type;
+
+  static inline coordinate_type get(const Point& point, orientation_2d orient) {
+    return (orient == HORIZONTAL) ? point.a : point.b;
+  }
+};
+
+template <>
+struct geometry_concept<Segment> { typedef directed_line_segment_concept type; };
+
+template <>
+struct directed_line_segment_traits<Segment> {
+  typedef int coordinate_type;
+  typedef Point point_type;
+    
+  static inline point_type get(const Segment& segment, direction_1d dir) {
+    return dir.to_int() ? segment.p1 : segment.p0;
+  }
+};
+}  // polygon
+}  // boost
 
 // Traversing Voronoi edges using edge iterator.
 int iterate_primary_edges1(const voronoi_diagram<double> &vd) {
@@ -115,13 +144,8 @@ int main() {
   segments.push_back(Segment(3, -11, 13, -1));
 
   // Construction of the Voronoi Diagram.
-  voronoi_builder<int> vb;
   voronoi_diagram<double> vd;
-  for (std::vector<Point>::iterator it = points.begin(); it != points.end(); ++it)
-    vb.insert_point(it->a, it->b);
-  for (std::vector<Segment>::iterator it = segments.begin(); it != segments.end(); ++it)
-    vb.insert_segment(it->p0.a, it->p0.b, it->p1.a, it->p1.b);
-  vb.construct(&vd);
+  construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
 
   // Traversing Voronoi Graph.
   {

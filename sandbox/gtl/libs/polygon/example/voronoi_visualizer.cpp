@@ -12,7 +12,8 @@
 #include <QtOpenGL/QGLWidget>
 #include <QtGui/QtGui>
 
-#include "boost/polygon/voronoi.hpp"
+#include "boost/polygon/voronoi_builder.hpp"
+#include "boost/polygon/voronoi_diagram.hpp"
 #include "boost/polygon/voronoi_utils.hpp"
 using namespace boost::polygon;
 

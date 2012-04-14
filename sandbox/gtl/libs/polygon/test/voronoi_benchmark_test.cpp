@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_random, T, test_types) {
                 y = static_cast<coordinate_type>(gen());
                 points[cur_point] = point_type(x, y);
             }
-            construct_voronoi(points, &test_output);
+            construct_voronoi(points.begin(), points.end(), &test_output);
         }
         double elapsed_time = timer.elapsed();
         double time_per_test = elapsed_time / num_tests;
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_points, T, test_types) {
         for (int i = 0; i < POINT_RUNS; ++i) {
             voronoi_diagram<double> test_output;
             timer.restart();
-            construct_voronoi(points, &test_output);
+            construct_voronoi(points.begin(), points.end(), &test_output);
             periods.push_back(timer.elapsed());
         }
     }
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
         for (int i = 0; i < SEGMENT_RUNS; ++i) {
             voronoi_diagram<double> test_output;
             timer.restart();
-            construct_voronoi_segments(segments, &test_output);
+            construct_voronoi(segments.begin(), segments.end(), &test_output);
             periods.push_back(timer.elapsed());
         }
     }

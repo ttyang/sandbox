@@ -5,6 +5,9 @@
 
 
 
+
+
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -20,12 +23,12 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
   
-  <meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -198,66 +201,76 @@ using it for the next generation pattern recognition or computer vision
 project.<br>
       <h2>Basic and Advanced Usage Cases</h2>
 The main library header <span style="font-family: Courier New,Courier,monospace;">voronoi.hpp</span>
-defines the following static functions:<br>
+defines the following static functions to integrate Voronoi library functionality with the Boost.Polygon interfaces:<br>
       <br>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template
-&lt;typename PC, typename VD&gt;<br>
-static inline void construct_voronoi(<br>
-&nbsp; const PC &amp;points, VD *output)<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename Point, typename VB&gt;<br>
+void insert(const Point &amp;point, VB &amp;vb)<br>
             </td>
-            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of points.<br>
-Coordinates of the input geometries should belong to the [-2^31,
-2^31-1] integer range.<br>
-PC is a container of points that model point concept.<br>
+            <td style="vertical-align: top;">Inserts a point into the Voronoi builder data structure.<br>
+Point type should model point concept.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template
-&lt;typename SC, typename VD&gt;<br>
-static inline void construct_voronoi_segments(<br>
-&nbsp; const SC &amp;segments, VD *output)<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename VB&gt;<br>
+void insert(PointIterator first, const PointIterator last, VB &amp;vb)<br>
             </td>
-            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of segments.<br>
-Coordinates of the input geometries should belong to the [-2^31,
-2^31-1] integer range.<br>
-SC is a container of segments that supports forward iterator.<br>
-Segment object should provide low(), high() public methods to retrieve
-endpoints of a segment.<br>
-This method is deprecated and will be changed to the concept model the first method conforms.<br>
+            <td style="vertical-align: top;">Inserts an iterator range of points into the Voronoi builder data structure.<br>
+Corresponding point type should model point concept.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template
-&lt;typename PC, typename SC, typename VD&gt;<br>
-static inline void construct_voronoi(<br>
-&nbsp; const PC &amp;points, const SC &amp;segments, VD
-*output)<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename Segment, typename VB&gt;<br>
+void insert(const Segment &amp;segment, VB &amp;vb)<br>
+            </td>
+            <td style="vertical-align: top;">Inserts a segment into the Voronoi builder data structure.<br>
+Segment type should model segment concept.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename SegmentIterator, typename VB&gt;<br>
+void insert(SegmentIterator first, SegmentIterator last, VB &amp;vb)<br>
+            </td>
+            <td style="vertical-align: top;">Inserts an iterator range of segments into the Voronoi builder data structure.<br>
+Corresponding segment type should model segment concept.<br>
+            </td>
+          </tr>
+<tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename VD&gt;<br>
+void construct_voronoi(PointIterator first, PointIterator last, VD *output)<br>
+            </td>
+            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of points.<br>Corresponding point type should model point concept.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename SegmentIterator, typename VD&gt;<br>
+void construct_voronoi(SegmentIterator first, SegmentIterator last, VD *output)<br>
+            </td>
+            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of segments.<br>Corresponding segment type should model segment concept.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename SegmentIterator, typename VD&gt;<br>
+static inline void construct_voronoi(PointIterator p_first, PointIterator p_last,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SegmentIterator s_first, SegmentIterator s_last, VD *output)<br>
             </td>
             <td style="vertical-align: top;">Constructs Voronoi
-diagram of a set of points and segments.<br>
-Coordinates of the input geometries should belong to the [-2^31,
-2^31-1] integer range.<br>
-
-Segment object should provide low(), high() public methods to retrieve
-endpoints of a segment.<br>
-This method is depricated and will be changed to the concept model the first method conforms.<br>
+diagram of a set of points and segments.<br>Corresponding point type should model point concept.<br>
+Corresponding segment type should model segment concept.<br>
             </td>
           </tr>
         </tbody>
       </table>
-      <br>
-For the users that don't want to go into the details of the library
-this
+      <br>This
 means that it's possible to construct Voronoi diagram with the
-following two lines of code (if this doesn't work for you read <a href="voronoi_builder.htm">Voronoi builder</a> documentation page):<br>
+following two lines of code (if corresponding input types satisfy Boost.Polygon <a href="gtl_design_overview.htm">concept model</a>):<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt;
 vd;</span><br style="font-family: Courier New,Courier,monospace;">
-      <span style="font-family: Courier New,Courier,monospace;">construct_voronoi(points,
-segments, &amp;vd);</span><br>
+      <span style="font-family: Courier New,Courier,monospace;">construct_voronoi(points.begin(), points.end(), &amp;vd);</span><br>
       <br>
 Isn't that simple? The library also provides the clear interfaces to
       <a href="voronoi_basic_tutorial.htm">associate user data</a> with the output geometries, efficiently <a href="voronoi_diagram.htm">traverse Voronoi graph</a> and utilities to
@@ -265,13 +278,20 @@ Isn't that simple? The library also provides the clear interfaces to
 discretization of the parabolic edges, clipping of the linear edges).
 More details on those are covered in the <a href="voronoi_basic_tutorial.htm">basic Voronoi tutorial</a>. Advanced usage of the library with the configuration of the coordinate
 types is explained in the <a href="voronoi_advanced_tutorial.htm">advanced
-Voronoi tutorial</a>.<br>
+Voronoi tutorial</a>.
+The library also allows users to implement their own Voronoi diagram /
+Delaunay triangulation construction routines based on the <a href="voronoi_builder.htm">Voronoi builder API</a>, that doesn't depend on any external code.<br>
       <h2>No Third Party Dependencies<br>
-      </h2>
-Yes, the library doesn't depend on any 3rd party code. The code depends only on the Boost libraries and STL.
+      </h2>Yes,
+the library doesn't depend on any 3rd party code. Even more than that
+there is only one dependency on the Boost libraries: boost/cstdint.hpp.
 All the required multiprecision types functionality is implemented as
-part of the library and is not exposed to the user.<br>
-      <h2>Extensible for the User Provided Coordinate Types</h2>
+part of the library and is not exposed to the user. Considering the
+fact that Voronoi implementation consists of just 7 headers (3 public
+and 4 private) it is easy to compile it within a minute after download.
+On the other hand voronoi.hpp header provides integration routines with
+the Boost.Polygon concepts and models with a drawback of additional
+dependencies. <h2>Extensible for the User Provided Coordinate Types</h2>
 Our implementation is coordinate type agnostic. That means that as soon
 as user provides types that satisfy set of restrictions of the <a href="voronoi_builder.htm">Voronoi builder</a> coordinate type traits
 and implements the library required methods no changes are required
@@ -315,9 +335,7 @@ the Boost libraries.</li>
 points and segments from the Voronoi builder once the Voronoi diagram is
 constructed in O(N) time.<br>
         </li>
-        <li>Closer integration with the interfaces and functionality of
-the Boost Polygon Library.<br>
-        </li>
+        
       </ul>
 High-priority tasks to be considered:<br>
       <ul>
@@ -350,13 +368,13 @@ current implementation.<br>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">
           <tr>
             <th class="docinfo-name">Copyright:</th>
-            <td>Copyright © Intel Corporation 2008-2010.</td>
+            <td>Copyright \A9 Intel Corporation 2008-2010.</td>
           </tr>
           <tr class="field">
             <th class="docinfo-name">License:</th>
@@ -370,5 +388,6 @@ http://www.boost.org/LICENSE_1_0.txt</a>)</td>
     </tr>
   </tbody>
 </table>
+
 
 </body></html>

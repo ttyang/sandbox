@@ -2,8 +2,11 @@
 <html><head>
 
 
+
+
+
   
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Basic Tutorial</title></head><body>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Basic Tutorial</title><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 <h1>Voronoi Basic Tutorial<br>
 </h1>
 
@@ -45,35 +48,51 @@ considered to be non-primary.<br>
 And before you proceed don't forget to:<span style="font-family: Courier New,Courier,monospace;"><br>
 <br>
 #include "boost/polygon/voronoi.hpp"<br>
-using boost::polygon;<br>
-</span>
-<h2>Important</h2>
-<span style="font-family: Courier New,Courier,monospace;"></span>Voronoi diagram construction methods defined in the voronoi.hpp header
-could be used in case the following 4 requirements are satisfied:<br>
-
-<ul>
-<li>User provided point type conforms x() and y() access methods to retrieve its coordinates;</li><li>User provided segment type conforms low() and high() access methods to retrieve its endpoints;</li><li>User provided container of points / segments supports forward iterator using the increment operator++;</li><li>User doesn't need to configure default coordinate types used by the library.</li>
-</ul>
-
-For all the other case you should explicitly use <a href="voronoi_builder.htm">Voronoi builder</a> data structure to construct <a href="voronoi_diagram.htm">Voronoi diagram</a>.<br>
+using boost::polygon;</span><br>
 
 <h2>Preparing Input Geometries</h2>Below is the example of how the user provided point and segment classes might look like:<br>
 <br><span style="font-family: Courier New,Courier,monospace;">struct Point {<br>&nbsp; int a;<br>
 &nbsp; int b;<br>
-<br>
 &nbsp; Point (int x, int y) : a(x), b(y) {}<br>
 
 };</span><span style="font-family: Courier New,Courier,monospace;"><br>
 <br>struct Segment {<br>
+&nbsp; typedef int coordinate_type; // this is temporary required</span><span style="font-family: Courier New,Courier,monospace;"></span><br>
+<span style="font-family: Courier New,Courier,monospace;">
 &nbsp; Point p0;<br>
 &nbsp; Point p1;<br>
-<br>
 &nbsp; Segment (int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}<br>
 </span><span style="font-family: Courier New,Courier,monospace;"></span>
 
 <span style="font-family: Courier New,Courier,monospace;">};<br>
 <br>
-</span>Once those are declared we can create the sample input:<br>
+</span>As we are going to use default routines defined in the
+voronoi.hpp header to construct Voronoi diagram, we are required to map
+our point and segment class to the corresponding Boost.Polygon concepts:<br>
+<br>
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">template &lt;&gt;</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"><br>
+struct geometry_concept&lt;Point&gt; { typedef point_concept type; };</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp;&nbsp; <span class="Apple-converted-space"></span></span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">template &lt;&gt;</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">struct point_traits&lt;</span><span style="font-family: Courier New,Courier,monospace;">Point</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&gt; {</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; typedef int coordinate_type;</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"><br>
+&nbsp; &nbsp;<span class="Apple-converted-space"> </span></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; static inline coordinate_type get(const </span><span style="font-family: Courier New,Courier,monospace;">Point</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&amp; point,<span class="Apple-converted-space"> </span></span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">orientation_2d orient) {<br>
+&nbsp;&nbsp;&nbsp; return </span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">(orient == HORIZONTAL) ? point.a : point.b;</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; }<br>
+};</span><br>
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">
+<br>
+template &lt;&gt;<br>
+</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">struct geometry_concept&lt;Segment&gt; { typedef directed_line_segment_concept type; };<br>
+<br>
+</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">template &lt;&gt;</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;">
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">struct point_traits&lt;</span><span style="font-family: Courier New,Courier,monospace;">Segment</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&gt; {</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;">
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; typedef int coordinate_type;<br>
+&nbsp; typedef Point point_type;<br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;">
+</span>
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; &nbsp;<span class="Apple-converted-space">&nbsp;</span></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;">
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; static inline coordinate_type get(const </span><span style="font-family: Courier New,Courier,monospace;">Segment</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&amp; segment,<span class="Apple-converted-space"> direction_1d dir</span></span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">) {<br>
+&nbsp;&nbsp;&nbsp; return </span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">dir.to_int() ? segment.p1() : segment.p0();</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;">
+<span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; }<br>};</span><br>
+<br>
+It's also possible to use native Boost.Polygon types as <a href="../boost/polygon/point_data.hpp">point_data</a> and <a href="../boost/polygon/directed_line_segment_data.hpp">directed_line_segment_data</a>, that won't require the above mapping.<br>
+<br>
+So once we are done we can create the sample input:<br>
 
 <br>
 
@@ -86,29 +105,13 @@ segments.push_back(Segment(-4, 5, 5, -1));<br>
 segments.push_back(Segment(3, -11, 13, -1));</span><span style="font-family: Courier New,Courier,monospace;"><br>
 </span>
 <h2>Construction of the Voronoi Diagram<br>
-</h2>As one may notice the user provided Point and Segment class
-doesn't conform to the interfaces supported by the static methods in
-the voronoi.hpp header, that's why we are going to use Voronoi builder
-data structure:<br>
-<br>
-<span style="font-family: Courier New,Courier,monospace;">voronoi_builder&lt;int&gt; vb;</span><br>
-
-<span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt;
-vd;<br>
-for (</span><span style="font-family: Courier New,Courier,monospace;">std::vector&lt;Point&gt;::iterator it = points.begin(); it != points.end(); ++it)<br>
-&nbsp; vb.insert_point(it-&gt;a, it-&gt;b);<br>
-for (std::vector&lt;Segment&gt;::iterator it = segments.begin(); it != segments.end(); ++it)<br>
-&nbsp; vb.insert_segment(it-&gt;p0.a, it-&gt;p0.b, it-&gt;p1.a, it-&gt;p1.b);<br>
-</span><span style="font-family: Courier New,Courier,monospace;">vb.construct(&amp;vd);<br>
-<br>
-</span>In case all the requirements of the <span style="font-weight: bold;">Important</span> section are satisfied the code would look like:<br>
-<br>
-<span style="font-family: Courier New,Courier,monospace;">voronoi_diagram&lt;double&gt;
-vd;<br>
-construct_voronoi(points, segments, &amp;vd);<br>
+</h2>At this point we are ready to construct Voronoi diagram:<br>
+<span style="font-family: Courier New,Courier,monospace;"><br>
 </span><span style="font-family: Courier New,Courier,monospace;">
-<br>
-</span>So brief, isn't that awesome!<br>
+voronoi_diagram&lt;double&gt; vd;<br>
+construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &amp;vd);<br>
+</span><br>
+So brief, isn't that awesome!<br>
 
 <h2>Traversing Voronoi Graph</h2>
 

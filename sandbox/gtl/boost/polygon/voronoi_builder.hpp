@@ -14,8 +14,6 @@
 #include <map>
 #include <vector>
 
-#include "isotropy.hpp"
-#include "point_concept.hpp"
 #include "detail/voronoi_ctypes.hpp"
 #include "detail/voronoi_predicates.hpp"
 #include "detail/voronoi_structures.hpp"
@@ -49,23 +47,9 @@ public:
 
   voronoi_builder() {}
 
+  // Each point creates a single site event.
   void insert_point(const int_type& x, const int_type& y) {
     site_events_.push_back(site_event_type(x, y));
-  }
-
-  template <typename PointType>
-  void insert(const PointType& point,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<PointType>::type>::type>::type>::type * = 0) {
-    insert_point(x(point), y(point));
-  }
-
-  template <typename PointIterator>
-  void insert(PointIterator first_point, PointIterator last_point,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
-    // Create a site event from each input point.
-    for (PointIterator it = first_point; it != last_point; ++it) {
-      insert(*it);
-    }
   }
 
   // Each segment creates three site events that correspond to:
@@ -82,25 +66,6 @@ public:
       site_events_.push_back(site_event_type(p1, p2));
     } else {
       site_events_.push_back(site_event_type(p2, p1));
-    }
-  }
-
-  template <typename PointType>
-  void insert_segment(const PointType& point1, const PointType& point2,
-      typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<PointType>::type>::type>::type>::type * = 0) {
-    insert_segment(x(point1), y(point1), x(point2), y(point2));  
-  }
-
-  template <typename SegmentType>
-  void insert_segment(const SegmentType& segment) {
-    insert_segment(segment.low(), segment.high());
-  }
-
-  template <typename SegmentIterator>
-  void insert_segments(
-      SegmentIterator first_segment, SegmentIterator last_segment) {
-    for (SegmentIterator it = first_segment; it != last_segment; ++it) {
-      insert_segment(*it);
     }
   }
 
