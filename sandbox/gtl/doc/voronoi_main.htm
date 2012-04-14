@@ -8,6 +8,7 @@
 
 
 
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -252,10 +253,11 @@ void construct_voronoi(SegmentIterator first, SegmentIterator last, VD *output)<
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename SegmentIterator, typename VD&gt;<br>
-static inline void construct_voronoi(PointIterator p_first, PointIterator p_last,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-SegmentIterator s_first, SegmentIterator s_last, VD *output)<br>
+            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename SegmentIterator, typename VD&gt;<br>void construct_voronoi(PointIterator p_first, PointIterator p_last,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SegmentIterator s_first, SegmentIterator s_last,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VD *output)<br>
             </td>
             <td style="vertical-align: top;">Constructs Voronoi
 diagram of a set of points and segments.<br>Corresponding point type should model point concept.<br>
