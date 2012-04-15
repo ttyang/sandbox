@@ -1,19 +1,18 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
+
+
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
   
-  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-  <title>Voronoi Benchmark</title>
-
-  
-</head><body>
+  <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Benchmark</title></head><body>
 <table style="margin: 0pt; padding: 0pt; width: 100%;" border="0" cellpadding="0" cellspacing="0">
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -88,21 +87,27 @@ output topology;<br>
         </li>
         <li>compute output geometries within precision of the output
 coordinate type.</li>
+      </ul>Libraries included in the benchmark:<br>
+      <ul>
+        <li>Boost.Polygon Voronoi - satisfies all three items above.<br>
+        </li>
+        <li>CGAL - satisifes the first two items. CGAL is a well-known
+library in the computational geometry area, especially for its
+robustness.</li>
+        <li>S-Hull
+- doesn't satisfy any of the above items. S-Hull is a non-robust
+implementation of sweep-hull algorithm that constructs Delaunay
+triangulation of a set of points.<br>
+        </li>
       </ul>
-Apart from Boost.Polygon Voronoi we managed to find just one library
-that meets at least two of those requirements: <a href="http://www.cgal.org/">CGAL</a>
-(it is clearly defined in CGAL documentation that it's capable to
-handle the first two items, however there are no warranties on the
-output geometries precision). Taking into account that CGAL is
-well-known in the
-computational geometry area it should be clear why it is the main
-target of this benchmark comparison. Other libraries (<a href="https://github.com/aewallin/openvoronoi">OpenVoronoi</a>, <a href="http://qhull.org/">QHull</a>, <a href="http://www.cs.cmu.edu/%7Equake/triangle.html">Triangle</a>),
-that at least
-partially satisfy above requirements would be added to this benchmark
+There are only two robust imlementations in our benchmark:
+Boost.Polygon Voronoi and CGAL. Thus we are considering comparison of
+those two to be of the most interest. <br>
+      <br>
+Other libraries (<a href="https://github.com/aewallin/openvoronoi">OpenVoronoi</a>, <a href="http://www.cs.cmu.edu/%7Equake/triangle.html">Triangle</a>) would be added to this benchmark
 incrementally (we are open for suggestions).<br>
       <h2>Important<br>
-      </h2>
-While results of this benchmark show complete dominance of
+      </h2>While results of this benchmark show complete dominance of
 the Boost.Polygon Voronoi over the CGAL Delaunay Graph implementation,
 we would like to make it clear
 that both libraries use different approach to construct Voronoi
@@ -140,10 +145,12 @@ segment
 as 3 input objects (segment itself and its endpoints), thus the running
 time and memory usage for Voronoi of segments would be approximately at
 least 3 times
-slower than for Voronoi of points;<br>
+slower than for Voronoi of points;</li>
+        <li>The S-Hull implementation doesn't process duplicate points properly, thus those are eliminated before the algorithm execution.<br>
         </li>
+
       </ul>
-      <br>
+      
 The benchmark was executed on the following two system configurations:<br>
       <br>
 Hardware: Intel i5-7600 2.8 GHz, 4GiB RAM.<br>
@@ -161,7 +168,7 @@ patch.<br>
           <tr>
             <td colspan="2" rowspan="1" style="vertical-align: top; text-align: center;">Test specification<br>
             </td>
-            <td colspan="4" rowspan="1" style="vertical-align: top; text-align: center;">Average construction
+            <td colspan="6" rowspan="1" style="vertical-align: top; text-align: center;">Average construction
 time (in secs)<br>
             </td>
           </tr>
@@ -178,12 +185,16 @@ Win-32<br>
             <td style="vertical-align: top; text-align: center;">CGAL
 Win-32<br>
             </td>
-            <td style="vertical-align: top; text-align: center;">Boost
+            <td style="vertical-align: top; text-align: center;">S-Hull Win-32<br>
+            </td>
+<td style="vertical-align: top; text-align: center;">Boost
 Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: center;">CGAL
 Linux-64<br>
+            </td><td style="vertical-align: top; text-align: center;">S-Hull Linux-64<br>
             </td>
+
           </tr>
           <tr>
             <td style="vertical-align: top; text-align: right;">10<br>
@@ -194,10 +205,14 @@ Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.000116<br>
             </td>
-            <td style="vertical-align: top; text-align: right;">0.000013<br>
+            <td style="vertical-align: top; text-align: right;">0.000043<br>
+            </td>
+<td style="vertical-align: top; text-align: right;">0.000013<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.000052<br>
+            </td><td style="vertical-align: top; text-align: right;">0.000012<br>
             </td>
+
           </tr>
           <tr>
             <td style="vertical-align: top; text-align: right;">100<br>
@@ -208,10 +223,14 @@ Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.002649<br>
             </td>
-            <td style="vertical-align: top; text-align: right;">0.000192<br>
+            <td style="vertical-align: top; text-align: right;">0.000521<br>
+            </td>
+<td style="vertical-align: top; text-align: right;">0.000192<br>
             </td>
             <td style="vertical-align: top; text-align: right;">&nbsp;0.001150<br>
+            </td><td style="vertical-align: top; text-align: right;">0.000139<br>
             </td>
+
           </tr>
           <tr>
             <td style="vertical-align: top; text-align: right;">1000<br>
@@ -222,10 +241,14 @@ Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.039140<br>
             </td>
-            <td style="vertical-align: top; text-align: right;">0.002130<br>
+            <td style="vertical-align: top; text-align: right;">0.007125<br>
+            </td>
+<td style="vertical-align: top; text-align: right;">0.002130<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.016680<br>
+            </td><td style="vertical-align: top; text-align: right;">0.002010<br>
             </td>
+
           </tr>
           <tr>
             <td style="vertical-align: top; text-align: right;">10000<br>
@@ -236,10 +259,14 @@ Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.684090<br>
             </td>
-            <td style="vertical-align: top; text-align: right;">0.022900<br>
+            <td style="vertical-align: top; text-align: right;">0.091640<br>
+            </td>
+<td style="vertical-align: top; text-align: right;">0.022900<br>
             </td>
             <td style="vertical-align: top; text-align: right;">0.297900<br>
+            </td><td style="vertical-align: top; text-align: right;">0.028300<br>
             </td>
+
           </tr>
           <tr>
             <td style="vertical-align: top; text-align: right;">100000<br>
@@ -250,10 +277,14 @@ Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: right;">&nbsp;16.904600<br>
             </td>
-            <td style="vertical-align: top; text-align: right;">0.274000<br>
+            <td style="vertical-align: top; text-align: right;">1.218000<br>
+            </td>
+<td style="vertical-align: top; text-align: right;">0.274000<br>
             </td>
             <td style="vertical-align: top; text-align: right;">8.047000<br>
+            </td><td style="vertical-align: top; text-align: right;">0.432000<br>
             </td>
+
           </tr>
           <tr>
             <td style="vertical-align: top; text-align: right;">1000000<br>
@@ -264,10 +295,14 @@ Linux-64<br>
             </td>
             <td style="vertical-align: top; text-align: right;">566.056000<br>
             </td>
-            <td style="vertical-align: top; text-align: right;">3.290000<br>
+            <td style="vertical-align: top; text-align: right;">15.394000<br>
+            </td>
+<td style="vertical-align: top; text-align: right;">3.290000<br>
             </td>
             <td style="vertical-align: top; text-align: right;">315.740000<br>
+            </td><td style="vertical-align: top; text-align: right;">6.350000<br>
             </td>
+
           </tr>
         </tbody>
       </table>
@@ -439,6 +474,11 @@ The main conclusions for the benchmark results above are following:<br>
         <li>There is no input size range were CGAL would outperform
 Boost.Polygon Voronoi. Even considering the fact that we didn't include
 time it would take CGAL to compute coordinates of the Voronoi vertices.</li>
+        <li>The more interesting fact is that robust implementation of
+the Boost.Polygon Voronoi is faster than non-robust of
+S-Hull (except small input sets of around 100 points on Linux-64).<br>
+        </li>
+
         <li>Logarithmic execution time shows that Boost.Polygon Voronoi
 has clear N*log(N) complexity, while this doesn't seem to be true for
 CGAL (at least for large input data sets).<br>
@@ -461,7 +501,7 @@ for those quantities.</li>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">
