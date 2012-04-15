@@ -8,17 +8,19 @@ import testing ;
 # Windows
 # It took five hours to configure CGAL on Windows. Good luck!
 #path-constant CGAL_ROOT : "d:/Programming/CGAL-4.0" ;
+#path-constant SHULL_ROOT : "d:/Programming/SHull" ;
 #project voronoi-benchmark
 #    :
 #    requirements
 #        <include>$(CGAL_ROOT)/include
-# 	 <library>$(CGAL_ROOT)/lib/libCGAL-vc90-mt-4.0.lib
-#      	 <library>$(CGAL_ROOT)/lib/libCGAL_Core-vc90-mt-4.0.lib
-#        <include>$(GMP_ROOT)/auxiliary/gmp/include
-#        <library>$(GMP_ROOT)/auxiliary/gmp/lib/libgmp-10.lib
-#        <library>$(GMP_ROOT)/auxiliary/gmp/lib/libmpfr-4.lib
-#	 <library>$(BOOST_ROOT)/libs/thread/build//boost_thread
-#	 <library>$(BOOST_ROOT)/lib/libboost_thread-vc90-mt-1_48.lib
+#        <library>$(CGAL_ROOT)/lib/libCGAL-vc90-mt-4.0.lib
+#        <library>$(CGAL_ROOT)/lib/libCGAL_Core-vc90-mt-4.0.lib
+#        <include>$(CGAL_ROOT)/auxiliary/gmp/include
+#        <library>$(CGAL_ROOT)/auxiliary/gmp/lib/libgmp-10.lib
+#        <library>$(CGAL_ROOT)/auxiliary/gmp/lib/libmpfr-4.lib
+#        <library>$(BOOST_ROOT)/libs/thread/build//boost_thread
+#        <library>$(BOOST_ROOT)/lib/libboost_thread-vc90-mt-1_48.lib
+#        <include>$(SHULL_ROOT)
 #    ;
 
 # Linux
