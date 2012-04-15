@@ -23,7 +23,7 @@ project
     : requirements
         <library>/boost/test///boost_unit_test_framework/<link>static
         <library>/boost/thread//boost_thread/<link>static
-        <library>../../tp/build//boost_threadpool/<link>static
+        #<library>../../tp/build//boost_threadpool/<link>static
 
         <include>.
         <include>../../..
@@ -32,6 +32,7 @@ project
 #       <target-os>cygwin
 #       <interthreadapi>pthread
 #       <variant>debug
+       <define>BOOST_THREAD_DONT_USE_MOVE
 #       <define>BOOST_THREAD_HAS_THREAD_ATTR
 
     ;
@@ -53,15 +54,15 @@ rule async-run ( sources * )
 #           [ async-run test_immediate.cpp ]
            [ async-run test_launcher.cpp ]
            [ async-run test_threader.cpp ]
-           [ async-run test_thread_pool.cpp ]
+          # [ async-run test_thread_pool.cpp ]
 #          [ async-run test_thread_decorator.cpp ]
     ;
     test-suite "example"
         :
           [ async-run ../example/hello_world.cpp ]
           [ async-run ../example/multiple_algorithms.cpp ]
-          [ async-run ../example/parallel_sort.cpp ]
-          [ async-run ../example/parallel_sort2.cpp ]
+          #[ async-run ../example/parallel_sort.cpp ]
+          #[ async-run ../example/parallel_sort2.cpp ]
 
 
     ;

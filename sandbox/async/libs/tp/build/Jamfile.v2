@@ -10,7 +10,7 @@
 project boost/tp
     : source-location ../src
     : requirements
-          #<include>../../..
+          <include>../../..
         #<include>$(BOOST_ROOT)
 
     : usage-requirements  # pass these requirement to dependents (i.e. users)
@@ -26,4 +26,4 @@ static-lib boost_threadpool
      <link>static:<define>BOOST_THREADPOOL_STATIC_LINK=1
    ;
 
-boost-install boost_threadpool ;
+#boost-install boost_threadpool ;

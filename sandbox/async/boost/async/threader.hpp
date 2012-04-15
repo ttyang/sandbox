@@ -41,14 +41,13 @@ namespace on_destruction {
         do_detach
     };
 }
-            
+
 
 template <typename ResultType>
 class unique_joiner;
 
 template <typename ResultType>
 class shared_joiner;
-
 
 namespace detail {
     template <typename ResultType>
@@ -58,8 +57,8 @@ namespace detail {
         thread th_;
         on_destruction::type on_destruction_;
 
-        unique_joiner_data(on_destruction::type on_destruction_do= on_destruction::do_join) 
-            : on_destruction_(on_destruction_do) 
+        unique_joiner_data(on_destruction::type on_destruction_do= on_destruction::do_join)
+            : on_destruction_(on_destruction_do)
         {}
         ~unique_joiner_data() {
             if (th_.joinable()) {
@@ -74,7 +73,7 @@ namespace detail {
         template <typename Nullary>
 #ifdef BOOST_THREAD_HAS_THREAD_ATTR
         unique_joiner_data(thread::native_handle_attr_type& attr, Nullary f, on_destruction::type on_destruction_do)
-            : on_destruction_(on_destruction_do) 
+            : on_destruction_(on_destruction_do)
         {
             packaged_task<result_type> tsk(f);
             fut_ = tsk.get_future();
@@ -83,7 +82,7 @@ namespace detail {
         }
 #else
         unique_joiner_data(Nullary f, on_destruction::type on_destruction_do)
-            : on_destruction_(on_destruction_do) 
+            : on_destruction_(on_destruction_do)
         {
             packaged_task<result_type> tsk(f);
             fut_ = tsk.get_future();
@@ -105,8 +104,8 @@ namespace detail {
         thread th_;
         on_destruction::type on_destruction_;
 
-        shared_joiner_data(on_destruction::type on_destruction_do= on_destruction::do_join) 
-            : on_destruction_(on_destruction_do) 
+        shared_joiner_data(on_destruction::type on_destruction_do= on_destruction::do_join)
+            : on_destruction_(on_destruction_do)
         {}
         ~shared_joiner_data() {
             if (th_.joinable()) {
@@ -121,7 +120,7 @@ namespace detail {
         template <typename Nullary>
 #ifdef BOOST_THREAD_HAS_THREAD_ATTR
         shared_joiner_data(thread::native_handle_attr_type& attr, Nullary f, on_destruction::type on_destruction_do) {
-            : on_destruction(on_destruction_do) 
+            : on_destruction(on_destruction_do)
         {
             packaged_task<result_type> tsk(f);
             fut_ = tsk.get_future();
@@ -130,7 +129,7 @@ namespace detail {
         }
 #else
         shared_joiner_data(Nullary f, on_destruction::type on_destruction_do)
-            : on_destruction_(on_destruction_do) 
+            : on_destruction_(on_destruction_do)
         {
             packaged_task<result_type> tsk(f);
             fut_ = tsk.get_future();
@@ -142,13 +141,13 @@ namespace detail {
 #endif
         }
 #endif
-        shared_joiner_data(unique_joiner_data<result_type>& data) 
+        shared_joiner_data(unique_joiner_data<result_type>& data)
             : fut_(data.fut_)
             , th_(boost::move(data.th_))
-            , on_destruction_(data.on_destruction_) 
+            , on_destruction_(data.on_destruction_)
         {}
 
-        shared_joiner_data& operator=(unique_joiner_data<result_type>& data) 
+        shared_joiner_data& operator=(unique_joiner_data<result_type>& data)
         {
             fut_= data.fut_;
             th_ = boost::move(data.th_);
@@ -157,7 +156,7 @@ namespace detail {
         }
 
     };
-    
+
 }
 
 template<typename T>
@@ -374,7 +373,7 @@ private:
 //protected:
 public:
     friend class shared_threader;
-    
+
     template <typename Nullary>
     // requires result_of<Nullary>::type  is convertible to ResultType
 #ifdef BOOST_THREAD_HAS_THREAD_ATTR
@@ -472,7 +471,7 @@ public:
         other->data_.reset();
         return *this;
     }
-    
+
     operator boost::detail::thread_move_t<shared_joiner>() {
         return move();
     }
@@ -636,6 +635,20 @@ struct get_future<shared_threader> {
         return boost::detail::thread_move_t<async::shared_joiner<T> >(t);
     }
 #endif
+
+#ifdef BOOST_NO_RVALUE_REFERENCES
+#if !defined BOOST_THREAD_USES_MOVE
+template <typename ResultType>
+struct has_move_emulation_enabled_aux<async::unique_joiner<ResultType> >
+  : BOOST_MOVE_BOOST_NS::integral_constant<bool, true>
+{};
+template <typename ResultType>
+struct has_move_emulation_enabled_aux<async::shared_joiner<ResultType> >
+  : BOOST_MOVE_BOOST_NS::integral_constant<bool, true>
+{};
+#endif
+#endif
+
 }
 
 
