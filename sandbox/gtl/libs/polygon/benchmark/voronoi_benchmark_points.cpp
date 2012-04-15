@@ -37,6 +37,9 @@ typedef CGAL::Segment_Delaunay_graph_filtered_traits_2<
 typedef CGAL::Segment_Delaunay_graph_2<Gt> SDT_CGAL;
 typedef SDT_CGAL::Point_2 Point_CGAL;
 
+// Includes for S-Hull library.
+#include <s_hull.h>
+
 const int RANDOM_SEED = 27;
 const int NUM_TESTS = 6;
 const int NUM_POINTS[] = {10, 100, 1000, 10000, 100000, 1000000};
@@ -87,11 +90,50 @@ void run_cgal_test() {
   bf << "\n";
 }
 
+void run_shull_test() {
+  boost::mt19937 gen(RANDOM_SEED);
+  bf << "S-Hull Triangulation of Points:\n";
+  // This value is required by S-Hull as it doesn't seem to support properly
+  // coordinates with absolute value higher than 100.
+  float koef = 100.0 / (1 << 16) / (1 << 15);
+  for (int i = 0; i < NUM_TESTS; ++i) {
+    timer.restart();
+    for (int j = 0; j < NUM_RUNS[i]; ++j) {
+      // S-Hull doesn't deal properly with duplicates so we need
+      // to eliminate them before running the algorithm.
+      std::vector< pair<int32, int32> > upts;
+      std::vector<Shx> pts;
+      std::vector<Triad> triads;
+      Shx pt;
+      for (int k = 0; k < NUM_POINTS[i]; ++k) {
+        int32 x = static_cast<int32>(gen());
+        int32 y = static_cast<int32>(gen());
+        upts.push_back(std::make_pair(x, y));
+      }
+      // Absolutely the same code is used by the Boost.Polygon Voronoi.
+      std::sort(upts.begin(), upts.end());
+      upts.erase(std::unique(upts.begin(), upts.end()), upts.end());
+      
+      for (int k = 0; k < upts.size(); ++k) {
+        pt.r = koef * upts[k].first;
+        pt.c = koef * upts[k].second;
+        pt.id = k;
+        pts.push_back(pt);
+      }
+      s_hull_del_ray2(pts, triads);
+    }
+    double time_per_test = timer.elapsed() / NUM_RUNS[i];
+    format_line(NUM_POINTS[i], NUM_RUNS[i], time_per_test);
+  }
+  bf << "\n";
+}
+
 int main() {
   bf << std::setiosflags(std::ios::right | std::ios::fixed)
      << std::setprecision(6);
   run_boost_test();
   run_cgal_test();
+  run_shull_test();
   bf.close();
   return 0;
 }

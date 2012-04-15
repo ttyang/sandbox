@@ -25,12 +25,15 @@ import testing ;
 # If follow official documentation of CGAL it takes 30 mins to
 # set up properly CGAL and required libraries (GMP, MPFR).
 path-constant CGAL_ROOT : "/home/slevin/Workspace/Libraries/CGAL" ;
+path-constant SHULL_ROOT : "/home/slevin/Workspace/Libraries/s_hull" ;
 project benchmark
     :
     requirements
         <include>$(CGAL_ROOT)/include
         <library>$(CGAL_ROOT)/lib/libCGAL.so
         <library>$(CGAL_ROOT)/lib/libCGAL_Core.so
+        <include>$(SHULL_ROOT)
+        <library>$(SHULL_ROOT)/s_hull.so
     ;
 
 alias "benchmark-points"
