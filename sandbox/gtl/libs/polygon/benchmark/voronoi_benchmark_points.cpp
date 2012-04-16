@@ -18,26 +18,26 @@
 
 typedef boost::int32_t int32;
 
-// Include for Boost.Polygon Voronoi library.
+// Include for the Boost.Polygon Voronoi library.
 #include <boost/polygon/voronoi.hpp>
 typedef boost::polygon::default_voronoi_builder VB_BOOST;
 typedef boost::polygon::voronoi_diagram<double> VD_BOOST;
 
-// Includes for CGAL library.
-# include <CGAL/Quotient.h>
-# include <CGAL/MP_Float.h>
-typedef CGAL::Quotient<CGAL::MP_Float> ENT;
+// Includes for the CGAL library.
+#include <CGAL/Quotient.h>
+#include <CGAL/MP_Float.h>
 #include <CGAL/Simple_cartesian.h>
-typedef CGAL::Simple_cartesian<double> CK;
-typedef CGAL::Simple_cartesian<ENT> EK;
 #include <CGAL/Segment_Delaunay_graph_filtered_traits_2.h>
 #include <CGAL/Segment_Delaunay_graph_2.h>
+typedef CGAL::Quotient<CGAL::MP_Float> ENT;
+typedef CGAL::Simple_cartesian<double> CK;
+typedef CGAL::Simple_cartesian<ENT> EK;
 typedef CGAL::Segment_Delaunay_graph_filtered_traits_2<
     CK, CGAL::Field_with_sqrt_tag, EK, CGAL::Field_tag> Gt;
 typedef CGAL::Segment_Delaunay_graph_2<Gt> SDT_CGAL;
 typedef SDT_CGAL::Point_2 Point_CGAL;
 
-// Includes for S-Hull library.
+// Includes for the S-Hull library.
 #include <s_hull.h>
 
 const int RANDOM_SEED = 27;
@@ -94,7 +94,7 @@ void run_shull_test() {
   boost::mt19937 gen(RANDOM_SEED);
   bf << "S-Hull Triangulation of Points:\n";
   // This value is required by S-Hull as it doesn't seem to support properly
-  // coordinates with absolute value higher than 100.
+  // coordinates with the absolute value higher than 100.
   float koef = 100.0 / (1 << 16) / (1 << 15);
   for (int i = 0; i < NUM_TESTS; ++i) {
     timer.restart();
@@ -110,7 +110,7 @@ void run_shull_test() {
         int32 y = static_cast<int32>(gen());
         upts.push_back(std::make_pair(x, y));
       }
-      // Absolutely the same code is used by the Boost.Polygon Voronoi.
+      // Absolutely the same code is used by the Boost.Polygon Voronoi library.
       std::sort(upts.begin(), upts.end());
       upts.erase(std::unique(upts.begin(), upts.end()), upts.end());
       

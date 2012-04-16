@@ -4,6 +4,7 @@
 
 
 
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -13,7 +14,7 @@
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -79,29 +80,30 @@ Tutorial</a></li>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> <br>
       
       <h1>Voronoi Benchmark</h1>
-There are not many known Voronoi libraries that are capable to satisfy
+There are not many known Voronoi libraries that are capable to satisfy the
 following set of conditions:<br>
       <ul>
-        <li>could handle both point and segment input geometries;</li>
+        <li>could handle input data sets of points and segments<br>
+</li>
         <li>give exact warranties about the algorithm robustness and
-output topology;<br>
+output topology<br>
         </li>
-        <li>compute output geometries within precision of the output
-coordinate type.</li>
+        <li>compute coordinates of the output geometries within the fixed relative precision<br>
+</li>
       </ul>Below is the list of libraries included in this benchmark sorted by the number of conditions each of them satisfies:<br>
       <ul>
-        <li>Boost.Polygon Voronoi - satisfies all three items above.<br>
+        <li>Boost.Polygon Voronoi - satisfies all three items above, implements sweep-line algorithm.<br>
         </li>
-        <li>CGAL - satisifes the first two items. CGAL is a well-known
+        <li>CGAL - satisfies the first two items, implements incremental algorithm. CGAL is a well-known
 library in the computational geometry area, especially for its
-robustness.</li>
+robustness.<br>
+</li>
         <li>S-Hull
 - doesn't satisfy any of the above items. S-Hull is a non-robust
-implementation of sweep-hull algorithm that constructs Delaunay
+implementation of the sweep-hull algorithm used to construct Delaunay
 triangulation of a set of points.<br>
         </li>
-      </ul>
-There are only two robust imlementations in our benchmark:
+      </ul>At the moment this benchmark includes only two robust implementations:
 Boost.Polygon Voronoi and CGAL. Thus we are considering comparison of
 those two to be of the most interest. <br>
       <br>
@@ -112,43 +114,42 @@ incrementally (we are open for suggestions).<br>
 the Boost.Polygon Voronoi over the CGAL Delaunay Graph implementation,
 we would like to make it clear
 that both libraries use different approach to construct Voronoi
-diagram. Thus there are problems were CGAL incremental approach would
-be still more vital than sweepline approach (e.g. input sites are
+diagram. Thus there are problems where the CGAL's incremental approach would
+be still more vital than the sweep-line algorithm (e.g. input sites are
 inserted as a live stream
 data).<br>
       <h2>Voronoi Benchmark Details<br>
       </h2>
-The benchmark consists of the two parts. The first one constructs the
-Voronoi diagram of a set of random points (<a href="../libs/polygon/benchmark/voronoi_benchmark_points.cpp"><span style="text-decoration: underline;">voronoi_benchmark_points.cpp</span></a>),
-the second one constructs the Voronoi diagram of a set of random
-segments (<a href="../libs/polygon/benchmark/voronoi_benchmark_segments.cpp">voronoi_benchmark_segments.cpp</a>).
-Below we list important details about the benchmark, Boost and CGAL
-implementation that should be considered while reviewing benchmark
-results:<br>
+The benchmark consists of the two parts:<br>
       <ul>
-        <li>We ensure that input data sets are the same for both
-libraries by initializing random generator with the same seed;</li>
+        <li>The first one constructs the Voronoi diagram of a set of random points (<a href="../libs/polygon/benchmark/voronoi_benchmark_points.cpp"><span style="text-decoration: underline;">voronoi_benchmark_points.cpp</span></a>)</li>
+        <li>The second one constructs the Voronoi diagram of a set of random
+segments (<a href="../libs/polygon/benchmark/voronoi_benchmark_segments.cpp">voronoi_benchmark_segments.cpp</a>)</li>
+      </ul>
+Below we list important benchmark details that should be considered while reviewing its results:<br>
+      <ul>
+        <li>We ensure that input data sets are the same for all
+libraries by initializing random generator with the same seed</li>
         <li>We ensure that input data sets that consist of segments
-don't contain intersections using Boost.Polygon functionality;<br>
+don't contain intersections using Boost.Polygon functionality</li>
+        <li>S-Hull's implementation doesn't process duplicate points
+properly, thus those are eliminated before the algorithm execution
+explicitly (Boost.Polygon Voronoi and CGAL do that&nbsp; implicitly) <br>
         </li>
-        <li>There is no Voronoi diagram data structure in CGAL at the
-moment. That's why we use Segment Delaunay Graph which is topologically
-dual to Voronoi diagram;</li>
-        <li>CGAL
-output Delaunay graph doesn't contain information
-about coordinates of the Voronoi vertices, basically it stores just
-topology. We didn't include time to compute Voronoi vertices and memory
-storage required for those in our benchmarks. Thus one may expect
-Boost.Polygon Voronoi to be even more faster in comparison with CGAL.<br>
+
+        <li>There is no Voronoi diagram data structure in CGAL/S-Hull. That's why we use the segment Delaunay graph which is topologically
+dual to the Voronoi diagram</li>
+        <li>CGAL's and S-Hull's output Delaunay triangulation doesn't contain information
+about coordinates of the Voronoi vertices. We didn't include time to compute Voronoi vertices and memory
+storage required for those in this benchmark.<br>
         </li>
-        <li>The Boost and CGAL implementation process each input
+        <li>Both Boost.Polygon Voronoi and CGAL process each input
 segment
 as 3 input objects (segment itself and its endpoints), thus the running
-time and memory usage for Voronoi of segments would be approximately at
+time and memory usage for Voronoi of segments would be at
 least 3 times
-slower than for Voronoi of points;</li>
-        <li>The S-Hull implementation doesn't process duplicate points properly, thus those are eliminated before the algorithm execution.<br>
-        </li>
+slower than for Voronoi of points</li>
+        
 
       </ul>
       
@@ -480,8 +481,8 @@ the Boost.Polygon Voronoi is faster than non-robust of
 S-Hull (except small input sets of around 100 points on Linux-64).<br>
         </li>
 
-        <li>Logarithmic execution time shows that Boost.Polygon Voronoi
-has clear N*log(N) complexity, while this doesn't seem to be true for
+        <li>Logarithmic execution time shows that Boost.Polygon Voronoi and S-Hull
+have clear N*log(N) complexity, while this doesn't seem to be true for
 CGAL (at least for large input data sets).<br>
         </li>
         <li>Boost.Polygon Voronoi computes coordinates of the output
@@ -502,7 +503,7 @@ for those quantities.</li>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">

@@ -18,26 +18,26 @@
 
 typedef boost::int32_t int32;
 
-// Include for Boost.Polygon Voronoi library.
+// Include for the Boost.Polygon Voronoi library.
 #include <boost/polygon/voronoi.hpp>
 typedef boost::polygon::voronoi_diagram<double> VD_BOOST;
 
-// Includes for CGAL library.
+// Includes for the CGAL library.
 #include <CGAL/Quotient.h>
 #include <CGAL/MP_Float.h>
-typedef CGAL::Quotient<CGAL::MP_Float> ENT;
 #include <CGAL/Simple_cartesian.h>
-typedef CGAL::Simple_cartesian<double> CK;
-typedef CGAL::Simple_cartesian<ENT> EK;
 #include <CGAL/Segment_Delaunay_graph_filtered_traits_2.h>
 #include <CGAL/Segment_Delaunay_graph_2.h>
+typedef CGAL::Quotient<CGAL::MP_Float> ENT;
+typedef CGAL::Simple_cartesian<double> CK;
+typedef CGAL::Simple_cartesian<ENT> EK;
 typedef CGAL::Segment_Delaunay_graph_filtered_traits_2<
     CK, CGAL::Field_with_sqrt_tag, EK, CGAL::Field_tag> Gt;
 typedef CGAL::Segment_Delaunay_graph_2<Gt> SDT_CGAL;
 typedef SDT_CGAL::Point_2 Point_CGAL;
 typedef SDT_CGAL::Site_2 Site_CGAL;
 
-// Include Boost.Polygon library.
+// Include for the Boost.Polygon library.
 #include <boost/polygon/polygon.hpp>
 typedef boost::polygon::point_data<int32> POINT_POLYGON;
 typedef boost::polygon::directed_line_segment_data<int32> SEGMENT_POLYGON;
