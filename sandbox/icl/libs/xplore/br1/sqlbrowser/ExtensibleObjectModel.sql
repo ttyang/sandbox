@@ -1,6 +1,7 @@
-drop table Types;
+drop view Collections;
+drop table Dag;
 drop table Objects;
-drop table Groups;
+drop table Types;
 
 -- -----------------------------------------------------------------------------
 create table Types (id integer primary key, Name varchar);
@@ -63,3 +64,5 @@ select Dag.Parent as ParentId, Dag.Child as ChildId, Types.Id as TypeId,
   inner join Objects on      Dag.Child = Objects.id
   inner join Types   on Objects.TypeOf = Types.id
 
+-- ----------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------

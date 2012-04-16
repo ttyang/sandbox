@@ -126,36 +126,25 @@ void Browser::insertNewVertex(DagModel* pDagModel, const QModelIndex& index)
 
 void Browser::exec()
 {
+    /*REV
     if(sqlEdit->toPlainText().isEmpty())
     {
         rexec();
         return;
     }
+    */
 
+    QString   curSql   = sqlEdit->toPlainText();
+    QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
+
+    execMulti(curQuery, curSql);
+
+
+    /*
     QSqlQueryModel *model = new QSqlQueryModel(ext_table);
 
-
-    QSqlQuery curQuery = QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase());
-
-    QStringList headers; //JODO handle headers
-    headers << tr("Title") << tr("Description");
-    DagModel* dagmo = new DagModel(); // Dag-Model
-
-    QSqlQuery xpQuery = QSqlQuery("", connectionWidget->currentDatabase());
-    QString dbg_query = QString(sqlEdit->toPlainText());
-    xpQuery.exec(sqlEdit->toPlainText());
-
-    // Populate the Dag Model from an sql-Query
-    dagmo->getEdges(xpQuery);  //Read edges from database
-    dagmo->makeDag();          //Make a boost::graph internally
-
-    QString dagStr  = dagmo->setupDag(); //Build a tree representation from the boost::dag
-
-    model->setQuery(curQuery);
-    //REV? model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
-
+    model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
     ext_table->setModel(model);
-    ext_tree->setModel(dagmo);//JOFA
 
     //JOFA additions ----------------------------------------------------------
     ext_table->setEditTriggers(QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed);
@@ -173,8 +162,27 @@ void Browser::exec()
     else
         emit statusMessage(tr("Query OK, number of affected rows: %1").arg(
                            model->query().numRowsAffected()));
-
+    */
     updateActions();
+}
+
+void Browser::execMulti(QSqlQuery& query, const QString& script)
+{
+    QStringList scriptQueries = script.split('\n');
+
+    foreach(QString queryTxt, scriptQueries)
+    {
+        if (queryTxt.trimmed().isEmpty()) {
+            continue;
+        }
+        if (!query.exec(queryTxt))
+        {
+            qFatal(QString("One of the query failed to execute."
+                           " Error detail: " + query.lastError().text() + "\n" +
+                           " Q:'" + queryTxt + "'").toLocal8Bit());
+        }
+        query.finish();
+    }
 }
 
 void Browser::rexec()
@@ -289,8 +297,8 @@ void Browser::addConnection()
         if (err.type() != QSqlError::NoError)
             QMessageBox::warning(this, tr("Unable to open database"), tr("An error occurred while "
                                        "opening the connection: ") + err.text());
-        else
-            rexec();
+        else//Execute an initial setup of the Dag
+            ;//JODO REV rexec();
     }
 }
 

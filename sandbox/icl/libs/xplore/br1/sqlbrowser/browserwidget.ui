@@ -667,16 +667,16 @@ QTableView
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="clearButton">
+         <widget class="QPushButton" name="submitButton">
           <property name="text">
-           <string>&amp;Clear</string>
+           <string>&amp;Submit</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="submitButton">
+         <widget class="QPushButton" name="clearButton">
           <property name="text">
-           <string>&amp;Submit</string>
+           <string>&amp;Clear</string>
           </property>
          </widget>
         </item>
@@ -735,7 +735,6 @@ QTableView
  <tabstops>
   <tabstop>sqlEdit</tabstop>
   <tabstop>clearButton</tabstop>
-  <tabstop>submitButton</tabstop>
   <tabstop>connectionWidget</tabstop>
   <tabstop>ext_table</tabstop>
  </tabstops>
