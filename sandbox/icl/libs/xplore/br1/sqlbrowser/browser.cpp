@@ -126,7 +126,7 @@ void Browser::insertNewVertex(DagModel* pDagModel, const QModelIndex& index)
 
 void Browser::exec()
 {
-    /*REV
+    /*JODO REV
     if(sqlEdit->toPlainText().isEmpty())
     {
         rexec();
@@ -134,13 +134,6 @@ void Browser::exec()
     }
     */
 
-    QString   curSql   = sqlEdit->toPlainText();
-    QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
-
-    execMulti(curQuery, curSql);
-
-
-    /*
     QSqlQueryModel *model = new QSqlQueryModel(ext_table);
 
     model->setQuery(QSqlQuery(sqlEdit->toPlainText(), connectionWidget->currentDatabase()));
@@ -162,12 +155,28 @@ void Browser::exec()
     else
         emit statusMessage(tr("Query OK, number of affected rows: %1").arg(
                            model->query().numRowsAffected()));
-    */
+
     updateActions();
 }
 
-void Browser::execMulti(QSqlQuery& query, const QString& script)
+bool Browser::runScript()
 {
+    QString   curSql   = sqlEdit->toPlainText();
+    QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
+
+    bool success = execMulti(curQuery, curSql);
+
+    if(success)
+        emit statusMessage(tr("Script executed successfully."));
+    else
+        emit statusMessage(tr("Error(s), Script aborted."));
+
+    return success;
+}
+
+bool Browser::execMulti(QSqlQuery& query, const QString& script)
+{
+    bool success = true;
     QStringList scriptQueries = script.split('\n');
 
     foreach(QString queryTxt, scriptQueries)
@@ -180,9 +189,11 @@ void Browser::execMulti(QSqlQuery& query, const QString& script)
             qFatal(QString("One of the query failed to execute."
                            " Error detail: " + query.lastError().text() + "\n" +
                            " Q:'" + queryTxt + "'").toLocal8Bit());
+            success = false;
         }
         query.finish();
     }
+    return success;
 }
 
 void Browser::rexec()

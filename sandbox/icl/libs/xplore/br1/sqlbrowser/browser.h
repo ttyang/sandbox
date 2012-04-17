@@ -74,7 +74,8 @@ public:
 public slots:
     void exec();
     void rexec();
-    void execMulti(QSqlQuery& query, const QString& script);
+    bool runScript();
+    bool execMulti(QSqlQuery& query, const QString& script);
     QSqlTableModel* showTable(const QString &table);
     void showTree(QSqlTableModel *model);
     void showMetaData(const QString &table);
@@ -96,14 +97,22 @@ public slots:
 
     void on_connectionWidget_metaDataRequested(const QString &table)
     { showMetaData(table); }
+
     void on_submitButton_clicked()
     {
         exec();
         sqlEdit->setFocus();
     }
+
     void on_clearButton_clicked()
     {
         sqlEdit->clear();
+        sqlEdit->setFocus();
+    }
+
+    void on_scriptButton_clicked()
+    {
+        runScript();
         sqlEdit->setFocus();
     }
 
