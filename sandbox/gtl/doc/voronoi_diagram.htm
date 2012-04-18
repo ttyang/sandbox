@@ -2,6 +2,7 @@
 <html><head>
 
 
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -19,7 +20,7 @@
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -85,25 +86,25 @@ Tutorial</a></li>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%"><!-- End Header --> <br>
       
       <h1>Voronoi Diagram</h1>
-Voronoi
-diagram is a computational geometry concept that represents partition
-of a given space onto regions, with bounds determined by distances to a
+A Voronoi
+diagram is the computational geometry concept that represents partition
+of the given space onto regions, with bounds determined by distances to a
 specified family of objects. The application area of this concept vary <a href="http://www.ics.uci.edu/%7Eeppstein/gina/scot.drysdale.html">from
-Archaeology to Zoology</a>. Boost.Polygon provides implementation of
-the Voronoi diagram data structure in 2D space. Internal representation
-consists of a three arrays, that respectively contain: Voronoi cells
-(area around input sites bounded by Voronoi edges), Voronoi vertices
+Archaeology to Zoology</a>. The Boost.Polygon library provides implementation of
+the Voronoi diagram data structure in 2D space. The internal representation
+consists of the three arrays, that respectively contain: Voronoi cells
+(represents the area around input site bounded by the Voronoi edges), Voronoi vertices
 (points where three or more Voronoi edges intersect), Voronoi edges
-(one dimensional curves containing points equidistant from the two
+(the one dimensional curves containing points equidistant from the two
 closest input sites). Each of the primitives (cell, vertex, edge)
 contains pointers to the other linked primitives, so that it's always
-possible to efficiently traverse Voronoi graph. Picture below shows
-Voronoi vertices in red, Voronoi edges in black, input sites that
+possible to efficiently traverse Voronoi graph. The picture below shows
+the Voronoi vertices in red, Voronoi edges in black, input sites that
 correspond to the Voronoi cells in blue. It is considered that each
-input segment consists of three sites: segment itself and its
+input segment consists of the three sites: segment itself and its
 endpoints. As the result two additional
-Voronoi edges are constructed per each segment. This is made to
-simplify representation of the Voronoi diagram.<br>
+Voronoi edges are constructed per each input segment. This is made to
+simplify the representation of the Voronoi diagram.<br>
       <br>
       <img style="border: 1px solid ; width: 300px; height: 300px;" alt="" src="images/voronoi2.png"><br>
       <h2>Declaration<br>
@@ -117,7 +118,7 @@ simplify representation of the Voronoi diagram.<br>
 voronoi_diagram;<br>
       <br>
 </span><font face="Courier New"><span style="font-family: 'Courier New',Courier,monospace;">T</span></font>
-- specifies coordinate type of the output geometries: input sites (points / segments), Voronoi vertices.<br>
+- specifies the coordinate type of the output geometries: input sites (points / segments), Voronoi vertices.<br>
       <span style="font-family: Courier New,Courier,monospace;">TRAITS</span><font face="Courier New"><span style="font-family: 'Courier New',Courier,monospace;"></span></font>
 - Voronoi diagram traits (explained in the end of this chapter).<br>
       <h2>Member Functions</h2>
@@ -299,7 +300,7 @@ data structure.<br>
       <span style="font-family: Courier New,Courier,monospace;">class
 voronoi_edge;<br>
       <br>
-T</span> - coordinate type. While Voronoi edge doesn't contain coordinates itself, it stores pointers to Voronoi cell and vertex.<br>
+T</span> - coordinate type. While Voronoi edge doesn't contain coordinates itself, it stores pointers to the Voronoi cell and vertex.<br>
       <h2>Member Functions</h2>
 
       <span style="font-family: Courier New,Courier,monospace;">
@@ -552,8 +553,13 @@ goes through the endpoint of the segment site, else true.<br>
         </tbody>
       </table>
       <span style="font-family: Courier New,Courier,monospace;"><br>
-      </span>All the above methods have O(1) complexity. The size of
-the Voronoi edge structure is equal to: 6 * sizeof(void *).<br>
+      </span>All
+the above methods have O(1) complexity. The size of
+the Voronoi edge structure is equal to: 6 * sizeof(void *). It is
+possible to disable the data member of the Voronoi edge data structure
+during the compile time using the following directive:<br>
+      <br>
+      <span style="font-family: Courier New,Courier,monospace;">#define NO_VORONOI_EDGE_DATA</span><br>
       <h2>Member Types</h2>
 
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
@@ -584,8 +590,8 @@ the Voronoi edge structure is equal to: 6 * sizeof(void *).<br>
           </tr>
         </tbody>
       </table>
-
       <h1>Voronoi Cell</h1>
+
 Voronoi cell is represented by a site the cell contains and a pointer
 to the incident edge.<br>
       <h2>Declaration</h2>
@@ -709,7 +715,12 @@ Could happen if a few input segments share a common endpoint.</td>
       <span style="font-family: Courier New,Courier,monospace;"><br>
       </span>All the above methods have O(1) complexity. The size of
 the Voronoi cell structure is equal to: 2 * sizeof(void *) + 4 *
-sizeof(coordinate_type).<br>
+sizeof(coordinate_type). It is possible to disable the data member of the Voronoi cell data
+structure during the compile time using the following directive:<br>
+
+      <br>
+
+      <span style="font-family: Courier New,Courier,monospace;">#define NO_VORONOI_CELL_DATA</span>
       <h2>Member Types</h2>
 
 
@@ -737,7 +748,7 @@ sizeof(coordinate_type).<br>
       </table>
       <h2>Miscellaneous</h2>
 
-Following code snippet effectively traverses Voronoi edges around the
+The following code snippet effectively traverses the Voronoi edges around the
 Voronoi cell:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">const
@@ -829,7 +840,12 @@ This allows the user to associate any data type with the vertex.</td>
       <span style="font-family: Courier New,Courier,monospace;"><br>
       </span>All the above methods have O(1) complexity. The size of
 the Voronoi vertex structure is equal to: 2 * sizeof(void *) + 2 *
-sizeof(coordinate_type).<br>
+sizeof(coordinate_type). It is possible to disable the data member of the Voronoi vertex data
+structure during the compile time using the following directive:<br>
+
+      <br>
+
+      <span style="font-family: Courier New,Courier,monospace;">#define NO_VORONOI_VERTEX_DATA</span>
       <h2>Member Types</h2>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
@@ -854,11 +870,7 @@ sizeof(coordinate_type).<br>
         </tbody>
       </table>
 
-      <h2>Miscellaneous</h2>
-
-
-      
-Following code snippet effectively traverses Voronoi edges around the
+      <h2>Miscellaneous</h2>The following code snippet effectively traverses the Voronoi edges around the
 Voronoi vertex:<br>
       <br>
       <span style="font-family: Courier New,Courier,monospace;">const
@@ -869,7 +881,8 @@ edge = edge-&gt;next();</span><br style="font-family: Courier New,Courier,monosp
       <span style="font-family: Courier New,Courier,monospace;">&nbsp;
 // Do smth. with edge.</span><br style="font-family: Courier New,Courier,monospace;">
       <span style="font-family: Courier New,Courier,monospace;">} while
-(edge != vertex-&gt;incident_edge());</span><br>
+(edge != vertex-&gt;incident_edge());<br>
+</span>
       <h1>Voronoi Diagram Traits<br>
       </h1>
 Voronoi diagram traits are used to configure Voronoi diagram data
@@ -944,7 +957,7 @@ This is used to unite nearby Voronoi vertices.<br>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">

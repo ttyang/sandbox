@@ -70,14 +70,18 @@ public:
   const voronoi_edge_type *incident_edge() const { return incident_edge_; }
   void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
+#ifndef NO_VORONOI_CELL_DATA
   void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
+#endif
 
 private:
   point_type point0_;
   point_type point1_;
   voronoi_edge_type *incident_edge_;
+#ifndef NO_VORONOI_CELL_DATA
   mutable void *data_;
+#endif
 };
 
 // Represents Voronoi vertex.
@@ -105,13 +109,17 @@ public:
   const voronoi_edge_type *incident_edge() const { return incident_edge_; }
   void incident_edge(voronoi_edge_type *e) { incident_edge_ = e; }
 
+#ifndef NO_VORONOI_VERTEX_DATA
   void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
+#endif
 
 private:
   point_type vertex_;
   voronoi_edge_type *incident_edge_;
+#ifndef NO_VORONOI_VERTEX_DATA
   mutable void *data_;
+#endif
 };
 
 // Half-edge data structure. Represents Voronoi edge.
@@ -163,8 +171,10 @@ public:
   const voronoi_edge_type *prev() const { return prev_; }
   void prev(voronoi_edge_type *e) { prev_ = e; }
 
+#ifndef NO_VORONOI_EDGE_DATA
   void *data() const { return data_; }
   void data(void *d) const { data_ = d; }
+#endif
 
   // Returns a pointer to the rotation next edge
   // over the starting point of the half-edge.
@@ -226,7 +236,9 @@ private:
   voronoi_edge_type *twin_;
   voronoi_edge_type *next_;
   voronoi_edge_type *prev_;
+#ifndef NO_VORONOI_EDGE_DATA
   mutable void *data_;
+#endif
 };
 
 template <typename T>
@@ -280,7 +292,7 @@ public:
   typedef typename edge_container_type::const_iterator const_edge_iterator;
 
   // This builder class is mainly used to hide from the user methods that
-  // construct Voronoi diagram.
+  // construct the Voronoi diagram.
   class voronoi_diagram_builder {
   public:
     void vd(voronoi_diagram *vd) {
