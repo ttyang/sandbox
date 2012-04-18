@@ -7,88 +7,109 @@ drop table Edge;
 drop table Object;
 drop table Relation;
 
-create table StructType (id integer primary key, Name varchar);
-create table ObjectType (id integer primary key, refStructType integer, Name varchar);
-create table RelationType (id integer primary key, Name varchar);
-create table EdgeType (id integer primary key, refSourceObjectType integer, refRelationType integer, refTargetObjectType integer, Name varchar);
-create table Vertex (id integer primary key, refObjectType integer);
-create table Edge (id integer primary key, refSourceVertex integer, refEdgeType integer, refTargetVertex integer);
-create table Object (id integer primary key, refVertex integer);
-create table Relation (id integer primary key, refEdge integer);
+create table TypeTraits (key integer primary key, name varchar);
+create table ObjectType (key integer primary key, traits integer, name varchar);
+create table EdgeType (key integer primary key, refSourceType integer, refRelationType integer, refTargetType integer, name varchar);
+create table Vertex (key integer primary key, refObjectType integer, refObject integer);
+create table Edge (key integer primary key, refEdgeType integer, refSourceVertex integer, refTargetVertex integer);
+create table Object (key integer primary key);
+create table Attribute (key integer primary key, name varchar);
+create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute));
+create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute));
+
 
 
 
 -- -----------------------------------------------------------------------------
-insert into StructType values (0, 'Nil');
-insert into StructType values (1, 'atom');
-insert into StructType values (2, 'composite');
+insert into TypeTraits values (0, 'atom obj');
+insert into TypeTraits values (1, 'comp obj');
+insert into TypeTraits values (2, 'atom rel');
 
 insert into ObjectType values (0, 0, 'Nil');
-insert into ObjectType values (1, 1, 'artist');
-insert into ObjectType values (2, 1, 'title');
-insert into ObjectType values (3, 1, 'recording');
-insert into ObjectType values (4, 2, 'artists');
-insert into ObjectType values (5, 2, 'genre');
+insert into ObjectType values (1, 0, 'a:artist');
+insert into ObjectType values (2, 0, 'a:title');
+insert into ObjectType values (3, 0, 'a:recording');
+insert into ObjectType values (4, 0, 'c:artists');
+insert into ObjectType values (5, 1, 'c:genre');
+insert into ObjectType values (6, 2, 'r:composed');
+insert into ObjectType values (7, 2, 'r:performed');
+insert into ObjectType values (8, 2, 'r:recorded as');
+insert into ObjectType values (9, 2, 'r:located at');
 
-insert into RelationType values (0, 'Nil');
-insert into RelationType values (1, 'composed');
-insert into RelationType values (2, 'performed');
-insert into RelationType values (3, 'recorded as');
-insert into RelationType values (4, 'located');
+insert into EdgeType values (1, 1, 6, 2, 'artist composed title'   );
+insert into EdgeType values (2, 1, 7, 3, 'artist performed record' );
+insert into EdgeType values (3, 2, 8, 3, 'title recorded as record');
+insert into EdgeType values (4, 3, 9, 4, 'record located at url'   );
 
-insert into EdgeType values (1, 1, 1, 2, 'artist composed title'   );
-insert into EdgeType values (2, 1, 2, 3, 'artist performed record' );
-insert into EdgeType values (3, 2, 3, 3, 'title recorded as record');
-insert into EdgeType values (4, 3, 4, 4, 'record located at url'   );
+insert into Object values (0);
 
-insert into Vertex values (0, 0);
-insert into Vertex values (1, 1);
-insert into Vertex values (2, 1);
-insert into Vertex values (3, 1);
-insert into Vertex values (4, 2);
-insert into Vertex values (5, 2);
+insert into Object values (1);
+insert into Attribute values (1, "Name");
+insert into VarCharObject values (1, 1, "Charlie Haden");
 
-insert into Edge values (0, 0, 0, 0);
+insert into Object values (2);
+insert into VarCharObject values (2, 1, "Kenny Barron");
+
+insert into Object values (3);
+insert into VarCharObject values (3, 1, "Jonny Green");
+
+insert into Object values (4);
+insert into VarCharObject values (4, 1, "Twighlight Song");
+
+insert into Object values (5);
+insert into VarCharObject values (5, 1, "Body & Soul");
+
+insert into Object values (6);
+insert into VarCharObject values (6, 1, "composed in 2001");
+
+insert into Object values (7);
+insert into VarCharObject values (7, 1, "composed in 1930");
+
+insert into Vertex values (0, 0, 0);
+insert into Vertex values (1, 1, 1);  
+insert into Vertex values (2, 1, 2);
+insert into Vertex values (3, 1, 3);
+insert into Vertex values (4, 2, 4);
+insert into Vertex values (5, 2, 5);
+
 insert into Edge values (1, 1, 1, 4);
+insert into Edge values (2, 2, 2, 4);
 
-insert into Object values (0, 0);
-insert into Object values (1, 1);
-insert into Object values (2, 2);
-insert into Object values (3, 3);
-insert into Object values (4, 4);
-insert into Object values (5, 5);
-
-insert into Relation values (0, 0);
-insert into Relation values (1, 1);
 
 -- -------------------------------------
 -- Dag Related Architecture Linking All 
 -- D   R       A      C U   L       A
 
-create view EdgeSignature as 
+create view EdgeTypeCheck as 
 select
-  (select StructType.Name from ObjectType as ObjT2
-     inner join ObjectType on ObjT2.id = EdgeType.refSourceObjectType
-     inner join StructType on StructType.id = ObjT2.refStructType) as SrcS,
-  (select ObjectType.Name from ObjectType where ObjectType.id = EdgeType.refSourceObjectType) as SrcT,
-  RelationType.Name as RelT,
-  StructType.Name as TrgS,
-  ObjectType.Name as TrgT,
-  EdgeType.Name
+  (select ObjectType.name from ObjectType where ObjectType.key = EdgeType.refSourceType)   as SrcT,
+  (select ObjectType.name from ObjectType where ObjectType.key = EdgeType.refRelationType) as RelT,
+  ObjectType.name as TrgT,
+  EdgeType.name
 from EdgeType
-  inner join ObjectType   on EdgeType.refTargetObjectType = ObjectType.id
-  inner join RelationType on EdgeType.refRelationType     = RelationType.id
-  inner join StructType   on ObjectType.refStructType     = StructType.id
+  inner join ObjectType   on EdgeType.refTargetType   = ObjectType.key
   
 
-insert into Vertex values (0, 0);
-insert into Vertex values (1, 1);
-insert into Vertex values (2, 1);
-insert into Vertex values (3, 1);
-insert into Vertex values (4, 2);
-insert into Vertex values (5, 2);
+select
+  ObjectType.name as TrgT,
+  EdgeType.name
+from EdgeType
+  inner join ObjectType   on EdgeType.refTargetType   = ObjectType.key
+  
+-- ---------------------------------------
+select refSourceVertex, VarCharObject.value as Source,
+  (select EdgeType.name from EdgeType where EdgeType.key = Edge.refEdgeType) as Relation,
+  (select VarCharObject.value
+    from Edge
+    inner join Vertex on Vertex.key = Edge.refTargetVertex
+    inner join Object on Object.key = Vertex.refObject
+    inner join VarCharObject on Object.key = VarCharObject.refObject
+  ) as Target
+from Edge
+inner join Vertex on Vertex.key = Edge.refSourceVertex
+inner join Object on Object.key = Vertex.refObject
+inner join VarCharObject on Object.key = VarCharObject.refObject
 
--- ------------------------------
-1(artist) 1(Name)  1(Text)
-1(artist) 2(Birth) 7(Date)
 
+
+  
