@@ -151,7 +151,7 @@
 
       INT32 cmp_data(const array_type& vd) const;
 
-      static void   mul_loop_uv (const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p);
+      static UINT32 mul_loop_uv (UINT32* const u, const UINT32* const v, const INT32 p);
       static UINT32 mul_loop_n  (UINT32* const u, UINT32 n, const INT32 p);
       static UINT32 div_loop_n  (UINT32* const u, UINT32 n, const INT32 p);
       static void   mul_loop_fft(UINT32* const u, const UINT32* const v, const INT32 p);

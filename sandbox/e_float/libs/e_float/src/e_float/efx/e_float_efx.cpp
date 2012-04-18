@@ -21,9 +21,7 @@
 
 #include <iomanip>
 #include <algorithm>
-#include <numeric>
 #include <cmath>
-#include <utility>
 
 #include <boost/e_float/e_float_functions.hpp>
 
@@ -381,7 +379,7 @@ void efx::e_float::from_unsigned_long_long(const unsigned long long u)
   std::copy(temp, temp + (std::min)(i, static_cast<std::size_t>(ef_elem_number)), data.begin());
 }
 
-void efx::e_float::mul_loop_uv(const UINT32* const u, const UINT32* const v, UINT32* const w, const INT32 p)
+UINT32 efx::e_float::mul_loop_uv(UINT32* const u, const UINT32* const v, const INT32 p)
 {
   UINT64 carry = static_cast<UINT64>(0u);
 
@@ -391,14 +389,14 @@ void efx::e_float::mul_loop_uv(const UINT32* const u, const UINT32* const v, UIN
 
     for(INT32 i = j; i >= static_cast<INT32>(0); i--)
     {
-      sum += static_cast<UINT64>(u[i] * static_cast<UINT64>(v[j - i]));
+      sum += static_cast<UINT64>(u[j - i] * static_cast<UINT64>(v[i]));
     }
 
-    w[j + 1] = static_cast<UINT32>(sum % static_cast<UINT32>(ef_elem_mask));
-    carry    = static_cast<UINT64>(sum / static_cast<UINT32>(ef_elem_mask));
+    u[j]  = static_cast<UINT32>(sum % static_cast<UINT32>(ef_elem_mask));
+    carry = static_cast<UINT64>(sum / static_cast<UINT32>(ef_elem_mask));
   }
 
-  w[0u] = static_cast<UINT32>(carry);
+  return static_cast<UINT32>(carry);
 }
 
 template<const bool is_forward = true,
@@ -703,6 +701,7 @@ efx::e_float& efx::e_float::operator+=(const e_float& v)
   }
 
   // Do the add/sub operation.
+  // TBD: Eliminate the temporary storage array n_data.
 
   array_type::iterator       p_u    =   data.begin();
   array_type::const_iterator p_v    = v.data.begin();
@@ -942,21 +941,19 @@ efx::e_float& efx::e_float::operator*=(const e_float& v)
 
   if(prec_mul < 1000)
   {
-    std::tr1::array<UINT32, static_cast<std::size_t>(ef_elem_number + static_cast<INT32>(1))> w = {{ 0u }};
+    const UINT32 carry = mul_loop_uv(data.data(), v.data.data(), prec_mul);
 
-    mul_loop_uv(data.data(), v.data.data(), w.data(), prec_mul);
-
-    // Copy the multiplication data into the result.
-    // Shift the result and adjust the exponent if necessary.
-    if(w[static_cast<std::size_t>(0u)] != static_cast<UINT32>(0u))
+    // Handle a potential carry.
+    if(carry != static_cast<UINT32>(0u))
     {
       exp += static_cast<INT64>(ef_elem_digits10);
 
-      std::copy(w.begin(), w.begin() + prec_mul, data.begin());
-    }
-    else
-    {
-      std::copy(w.begin() + 1u, w.begin() + (prec_mul + 1), data.begin());
+      // Shift the result of the multiplication one element to the right.
+      std::copy_backward(data.begin(),
+                         data.begin() + static_cast<std::size_t>(prec_elem - static_cast<INT32>(1)),
+                         data.begin() + static_cast<std::size_t>(prec_elem));
+
+      data.front() = static_cast<UINT32>(carry);
     }
   }
   else
