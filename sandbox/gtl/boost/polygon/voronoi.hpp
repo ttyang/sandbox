@@ -30,58 +30,126 @@ namespace boost {
 namespace polygon {
 
 template <typename Point, typename VB>
-static inline void insert(const Point &point, VB &vb,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<Point>::type>::type>::type>::type * = 0) {
-  vb.insert_point(x(point), y(point));
+static inline
+typename enable_if<
+  typename gtl_if<
+    typename is_point_concept<
+      typename geometry_concept<Point>::type
+    >::type
+  >::type,
+void>::type
+insert(const Point &point, VB *vb) {
+  vb->insert_point(x(point), y(point));
 }
 
+
 template <typename PointIterator, typename VB>
-static inline void insert(PointIterator first, const PointIterator last, VB &vb,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
+static inline
+typename enable_if<
+  typename gtl_if<
+    typename is_point_concept<
+      typename geometry_concept<
+        typename std::iterator_traits<PointIterator>::value_type
+      >::type
+    >::type
+  >::type,
+void>::type
+insert(PointIterator first, const PointIterator last, VB *vb) {
   for (PointIterator it = first; it != last; ++it) {
     insert(*it, vb);
   }
 }
 
 template <typename Segment, typename VB>
-static inline void insert(const Segment &segment, VB &vb,
-     typename enable_if<typename gtl_if<typename is_directed_line_segment_concept<typename geometry_concept<Segment>::type>::type>::type>::type * = 0) {
-  vb.insert_segment(x(low(segment)), y(low(segment)), x(high(segment)), y(high(segment)));
+static inline
+typename enable_if<
+  typename gtl_if<
+    typename is_directed_line_segment_concept<
+      typename geometry_concept<Segment>::type
+    >::type
+  >::type,
+void>::type
+insert(const Segment &segment, VB *vb) {
+  vb->insert_segment(x(low(segment)), y(low(segment)), x(high(segment)), y(high(segment)));
 }
 
 template <typename SegmentIterator, typename VB>
-static inline void insert(SegmentIterator first, SegmentIterator last, VB &vb,
-    typename enable_if<typename gtl_if<typename is_directed_line_segment_concept<typename geometry_concept<typename std::iterator_traits<SegmentIterator>::value_type>::type>::type>::type>::type * = 0) {
+static inline
+typename enable_if<
+  typename gtl_if<
+    typename is_directed_line_segment_concept<
+      typename geometry_concept<
+        typename std::iterator_traits<SegmentIterator>::value_type
+      >::type
+    >::type
+  >::type,
+void>::type
+insert(SegmentIterator first, SegmentIterator last, VB *vb) {
   for (SegmentIterator it = first; it != last; ++it) {
     insert(*it, vb);
   }
 }
 
 template <typename PointIterator, typename VD>
-static inline void construct_voronoi(PointIterator first, PointIterator last, VD *output,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0) {
+static inline
+typename enable_if<
+  typename gtl_if<
+    typename is_point_concept<
+      typename geometry_concept<
+        typename std::iterator_traits<PointIterator>::value_type
+      >::type
+    >::type
+  >::type,
+void>::type
+construct_voronoi(PointIterator first, PointIterator last, VD *vd) {
   default_voronoi_builder builder;
-  insert(first, last, builder);
-  builder.construct(output);
+  insert(first, last, &builder);
+  builder.construct(vd);
 }
 
 template <typename SegmentIterator, typename VD>
-static inline void construct_voronoi(SegmentIterator first, SegmentIterator last, VD *output,
-    typename enable_if<typename gtl_if<typename is_directed_line_segment_concept<typename geometry_concept<typename std::iterator_traits<SegmentIterator>::value_type>::type>::type>::type>::type * = 0) {
+static inline
+typename enable_if<
+  typename gtl_if<
+    typename is_directed_line_segment_concept<
+      typename geometry_concept<
+        typename std::iterator_traits<SegmentIterator>::value_type
+      >::type
+    >::type
+  >::type,
+void>::type
+construct_voronoi(SegmentIterator first, SegmentIterator last, VD *vd) {
   default_voronoi_builder builder;
-  insert(first, last, builder);
-  builder.construct(output);
+  insert(first, last, &builder);
+  builder.construct(vd);
 }
 
 template <typename PointIterator, typename SegmentIterator, typename VD>
-static inline void construct_voronoi(
-    PointIterator p_first, PointIterator p_last, SegmentIterator s_first, SegmentIterator s_last, VD *output,
-    typename enable_if<typename gtl_if<typename is_point_concept<typename geometry_concept<typename std::iterator_traits<PointIterator>::value_type>::type>::type>::type>::type * = 0,
-    typename enable_if<typename gtl_if<typename is_directed_line_segment_concept<typename geometry_concept<typename std::iterator_traits<SegmentIterator>::value_type>::type>::type>::type>::type * = 0) {
+static inline 
+typename enable_if<
+  typename gtl_and<
+    typename gtl_if<
+      typename is_point_concept<
+        typename geometry_concept<
+          typename std::iterator_traits<PointIterator>::value_type
+        >::type
+      >::type
+    >::type,
+    typename gtl_if<
+      typename is_directed_line_segment_concept<
+        typename geometry_concept<
+          typename std::iterator_traits<SegmentIterator>::value_type
+        >::type
+      >::type
+    >::type
+  >::type,
+void>::type
+construct_voronoi(PointIterator p_first, PointIterator p_last,
+    SegmentIterator s_first, SegmentIterator s_last, VD *vd) {
   default_voronoi_builder builder;
-  insert(p_first, p_last, builder);
-  insert(s_first, s_last, builder);
-  builder.construct(output);
+  insert(p_first, p_last, &builder);
+  insert(s_first, s_last, &builder);
+  builder.construct(vd);
 }
 }  // polygon
 }  // boost
