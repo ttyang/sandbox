@@ -13,13 +13,11 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     dagmodel.h \
     StringVisitor.h \
     Dag.h \
-    CreatorVisitor.h \
-    exttreeview.h
+    CreatorVisitor.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
-    dagmodel.cpp \
-    exttreeview.cpp
+    dagmodel.cpp
 
 FORMS           = browserwidget.ui qsqlconnectiondialog.ui
 build_all:!build_pass {
