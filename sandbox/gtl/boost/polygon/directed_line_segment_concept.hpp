@@ -189,7 +189,7 @@ namespace boost { namespace polygon{
   template <typename segment_type>
   typename enable_if< typename gtl_and<
         y_s_low,
-        typename is_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type,
+        typename gtl_if<typename is_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type>::type,
       typename directed_line_segment_point_type<segment_type>::type>::type
   low(const segment_type& segment) { return get(segment, LOW); }
 
@@ -199,7 +199,7 @@ namespace boost { namespace polygon{
   template <typename segment_type>
   typename enable_if< typename gtl_and<
         y_s_high,
-        typename is_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type,
+        typename gtl_if<typename is_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type>::type,
       typename directed_line_segment_point_type<segment_type>::type>::type
   high(const segment_type& segment) { return get(segment, HIGH); }
 
@@ -220,7 +220,10 @@ namespace boost { namespace polygon{
 
   // set the low point to v
   template <typename segment_type>
-  typename enable_if<typename gtl_and<y_s_low2, typename is_mutable_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type, void>::type 
+  typename enable_if<typename gtl_and<
+        y_s_low2,
+        typename gtl_if<typename is_mutable_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type>::type,
+      void>::type 
     low(segment_type& segment, typename directed_line_segment_traits<segment_type>::point_type v) { set(segment, LOW, v);
   }
   
@@ -228,7 +231,10 @@ namespace boost { namespace polygon{
 
   // set the high coordinate to v
   template <typename segment_type>
-  typename enable_if<typename gtl_and<y_s_high2, typename is_mutable_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type, void>::type 
+  typename enable_if<typename gtl_and<
+        y_s_high2,
+        typename gtl_if<typename is_mutable_directed_line_segment_concept<typename geometry_concept<segment_type>::type>::type>::type>::type,
+      void>::type 
     high(segment_type& segment, typename directed_line_segment_traits<segment_type>::point_type v) { set(segment, HIGH, v);
   }
 
