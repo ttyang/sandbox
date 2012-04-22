@@ -83,12 +83,13 @@ namespace boost { namespace polygon{
       T, typename is_rectangle_concept<typename geometry_concept<T>::type>::type>::type type;
   };
 
+  struct y_r_get_interval : gtl_yes {};
+
   template <typename T>
-  typename rectangle_interval_type<T>::type 
-  get(const T& rectangle, orientation_2d orient,
-  typename enable_if< typename gtl_if<typename is_rectangle_concept<typename geometry_concept<T>::type>::type>::type>::type * = 0
-  ) {
-    return rectangle_traits<T>::get(rectangle, orient); 
+  typename enable_if< typename gtl_and<y_r_get_interval, typename gtl_if<typename is_rectangle_concept<typename geometry_concept<T>::type>::type>::type>::type,
+                      typename rectangle_traits<T>::interval_type>::type
+  get(const T& rectangle, orientation_2d orient) {
+    return rectangle_traits<T>::get(rectangle, orient);
   }
 
   struct y_r_h : gtl_yes {};
@@ -374,14 +375,15 @@ namespace boost { namespace polygon{
     vertical(rectangle, construct<typename rectangle_traits<rectangle_type>::interval_type>(y1, y2));
     return rectangle;
   }
-  
+
+  struct y_r_move : gtl_yes {};
+
   // move rectangle by delta in orient
   template <typename rectangle_type>
-  rectangle_type&
+  typename enable_if< typename gtl_and<y_r_move, typename gtl_if<typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type>::type>::type>::type>::type,
+                      rectangle_type>::type &
   move(rectangle_type& rectangle, orientation_2d orient, 
-       typename coordinate_traits<typename rectangle_traits<rectangle_type>::coordinate_type>::coordinate_difference delta,
-       typename enable_if<typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type>::type>::type>::type * = 0
-       ) {
+       typename coordinate_traits<typename rectangle_traits<rectangle_type>::coordinate_type>::coordinate_difference delta) {
     typename rectangle_traits<rectangle_type>::interval_type ivl = get(rectangle, orient);
     move(ivl, delta);
     set(rectangle, orient, ivl);
@@ -526,13 +528,14 @@ namespace boost { namespace polygon{
   half_perimeter(const rectangle_type& rectangle) {
     return delta(rectangle, HORIZONTAL) + delta(rectangle, VERTICAL);
   }
-   
+
+  struct y_r_perimeter : gtl_yes {};
+
   // get the perimeter of the rectangle
   template <typename rectangle_type>
-  typename rectangle_difference_type<rectangle_type>::type
-  perimeter(const rectangle_type& rectangle,
-  typename enable_if< typename is_rectangle_concept<typename geometry_concept<rectangle_type>::type>::type>::type * = 0
-  ) {
+  typename enable_if< typename gtl_and<y_r_perimeter, typename gtl_if<typename is_rectangle_concept<typename geometry_concept<rectangle_type>::type>::type>::type>::type,
+                      typename rectangle_difference_type<rectangle_type>::type>::type
+  perimeter(const rectangle_type& rectangle) {
     return 2 * half_perimeter(rectangle);
   }
 
@@ -742,12 +745,12 @@ namespace boost { namespace polygon{
 
   // encompass interval on orient
   template <typename rectangle_type, typename interval_type>
-  typename enable_if<
-    typename gtl_and_3<y_r_encompass, typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type>::type>::type,
-                      typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
-    bool>::type 
-  encompass(rectangle_type& rectangle, const interval_type& b,
-            orientation_2d orient) {
+  typename enable_if<typename gtl_and_3<
+        y_r_encompass,
+        typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type>::type>::type,
+        typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+      bool>::type 
+  encompass(rectangle_type& rectangle, const interval_type& b, orientation_2d orient) {
     typename rectangle_traits<rectangle_type>::interval_type ivl = get(rectangle, orient);
     if(encompass(ivl, b)) {
       set(rectangle, orient, ivl);
@@ -760,12 +763,12 @@ namespace boost { namespace polygon{
 
   // enlarge rectangle to encompass the Rectangle b
   template <typename rectangle_type_1, typename rectangle_type_2>
-  bool 
-  encompass(rectangle_type_1& rectangle, const rectangle_type_2& b,
-    typename enable_if< typename gtl_and_3<y_r_encompass2,
-            typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type_1>::type>::type,
-            typename is_rectangle_concept<typename geometry_concept<rectangle_type_2>::type>::type >::type>::type * = 0
-  ) {
+  typename enable_if< typename gtl_and_3<
+        y_r_encompass2,
+        typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type_1>::type>::type,
+        typename is_rectangle_concept<typename geometry_concept<rectangle_type_2>::type>::type >::type,
+      bool>::type
+  encompass(rectangle_type_1& rectangle, const rectangle_type_2& b) {
     //note that operator | is intentional because both should be called regardless
     return encompass(rectangle, horizontal(b), HORIZONTAL) |
       encompass(rectangle, vertical(b), VERTICAL);
@@ -775,15 +778,12 @@ namespace boost { namespace polygon{
 
   // enlarge rectangle to encompass the point b
   template <typename rectangle_type_1, typename point_type>
-  typename enable_if<
-    typename gtl_and_3<y_r_encompass3, typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type_1>::type>::type,
-                      typename is_point_concept<typename geometry_concept<point_type>::type>::type>::type,
-    bool>::type 
-  encompass(rectangle_type_1& rectangle, const point_type& b,
-    typename enable_if<
-    typename gtl_and< typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type_1>::type>::type,
-            typename is_point_concept<typename geometry_concept<point_type>::type>::type>::type>::type * = 0
-  ) {
+  typename enable_if<typename gtl_and_3<
+        y_r_encompass3,
+        typename is_mutable_rectangle_concept<typename geometry_concept<rectangle_type_1>::type>::type,
+        typename is_point_concept<typename geometry_concept<point_type>::type>::type>::type,
+      bool>::type 
+  encompass(rectangle_type_1& rectangle, const point_type& b) {
     typename rectangle_traits<rectangle_type_1>::interval_type hivl, vivl;
     hivl = horizontal(rectangle);
     vivl = vertical(rectangle);

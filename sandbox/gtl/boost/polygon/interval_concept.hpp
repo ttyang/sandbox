@@ -47,65 +47,79 @@ namespace boost { namespace polygon{
             T, typename is_interval_concept<typename geometry_concept<T>::type>::type>::type type;
   };
 
+  struct y_i_get : gtl_yes {};
 
   template <typename T>
-  typename interval_coordinate_type<T>::type
-  get(const T& interval, direction_1d dir,
-  typename enable_if<typename gtl_if<typename is_interval_concept<typename geometry_concept<T>::type>::type>::type>::type * = 0
-  ) {
+  typename enable_if< typename gtl_and<
+        y_i_get,
+        typename is_interval_concept<typename geometry_concept<T>::type>::type>::type,
+      typename interval_coordinate_type<T>::type>::type
+  get(const T& interval, direction_1d dir) {
     return interval_traits<T>::get(interval, dir); 
   }
 
+  struct y_i_set : gtl_yes {};
+
   template <typename T, typename coordinate_type>
-  void 
-  set(T& interval, direction_1d dir, coordinate_type value,
-  typename enable_if<typename is_mutable_interval_concept<typename geometry_concept<T>::type>::type>::type * = 0
-  ) {
+  typename enable_if< typename gtl_and<
+        y_i_set,
+        typename is_mutable_interval_concept<typename geometry_concept<T>::type>::type>::type,
+      void>::type
+  set(T& interval, direction_1d dir, coordinate_type value) {
     //this may need to be refined
     interval_mutable_traits<T>::set(interval, dir, value); 
     if(high(interval) < low(interval))
       interval_mutable_traits<T>::set(interval, dir.backward(), value);
   }
+
+  struct y_i_construct : gtl_yes {};
   
   template <typename T, typename T2, typename T3>
-  T
-  construct(T2 low_value, T3 high_value,
-            typename enable_if<typename is_mutable_interval_concept<typename geometry_concept<T>::type>::type>::type * = 0
-  ) {
+  typename enable_if< typename gtl_and<
+        y_i_construct,
+        typename is_mutable_interval_concept<typename geometry_concept<T>::type>::type>::type,
+      T>::type
+  construct(T2 low_value, T3 high_value) {
     if(low_value > high_value) std::swap(low_value, high_value);
     return interval_mutable_traits<T>::construct(low_value, high_value); 
   }
+
+  struct y_i_copy_construct : gtl_yes {};
   
   template <typename T, typename T2>
-  T
-  copy_construct(const T2& interval,
-  typename enable_if< typename gtl_and<typename is_mutable_interval_concept<typename geometry_concept<T>::type>::type,
-  typename is_interval_concept<typename geometry_concept<T2>::type>::type>::type>::type * = 0
-  ) {
-    return construct<T>
-      (get(interval, LOW ),
-       get(interval, HIGH));
+  typename enable_if< typename gtl_and_3<
+        y_i_copy_construct,
+        typename is_mutable_interval_concept<typename geometry_concept<T>::type>::type,
+        typename is_interval_concept<typename geometry_concept<T2>::type>::type>::type,
+      T>::type
+  copy_construct(const T2& interval) {
+    return construct<T>(get(interval, LOW ), get(interval, HIGH));
   }
 
+  struct y_i_assign : gtl_yes {};
+
   template <typename T1, typename T2>
-  T1 &
-  assign(T1& lvalue, const T2& rvalue,
-  typename enable_if< typename gtl_and< typename is_mutable_interval_concept<typename geometry_concept<T1>::type>::type,
-  typename is_interval_concept<typename geometry_concept<T2>::type>::type>::type>::type * = 0) {
+  typename enable_if< typename gtl_and_3<
+        y_i_assign,
+        typename is_mutable_interval_concept<typename geometry_concept<T1>::type>::type,
+        typename is_interval_concept<typename geometry_concept<T2>::type>::type>::type,
+      T1>::type &
+  assign(T1& lvalue, const T2& rvalue) {
     lvalue = copy_construct<T1>(rvalue);
     return lvalue;
   }
 
+  struct y_i_equivalence : gtl_yes {};
+
   template <typename T, typename T2>
-  bool 
-  equivalence(const T& interval1, const T2& interval2,
-  typename enable_if< typename gtl_and< typename is_interval_concept<typename geometry_concept<T>::type>::type,
-  typename is_interval_concept<typename geometry_concept<T2>::type>::type>::type>::type * = 0
-  ) {
-    return get(interval1, LOW) ==
-      get(interval2, LOW) &&
-      get(interval1, HIGH) ==
-      get(interval2, HIGH); 
+  typename enable_if< typename gtl_and_3<
+        y_i_equivalence,
+        typename is_interval_concept<typename geometry_concept<T>::type>::type,
+        typename is_interval_concept<typename geometry_concept<T2>::type>::type>::type,
+      bool>::type
+  equivalence(const T& interval1, const T2& interval2) {
+    return get(interval1, LOW) == get(interval2, LOW) &&
+           get(interval1, HIGH) == get(interval2, HIGH); 
   }
   
   struct y_i_contains : gtl_yes {};
@@ -121,62 +135,78 @@ namespace boost { namespace polygon{
       return value < high(interval) && value > low(interval);
     }
   }
-  
+
+  struct y_i_contains2 : gtl_yes {};
+
   template <typename interval_type, typename interval_type_2>
-  bool 
+  typename enable_if< typename gtl_and_3<
+        y_i_contains2,
+        typename is_interval_concept<typename geometry_concept<interval_type>::type>::type,
+        typename is_interval_concept<typename geometry_concept<interval_type_2>::type>::type>::type,
+      bool>::type
   contains(const interval_type& interval,
-           const interval_type_2& value, bool consider_touch = true,
-           typename enable_if< typename gtl_and< typename is_interval_concept<typename geometry_concept<interval_type>::type>::type,
-           typename is_interval_concept<typename geometry_concept<interval_type_2>::type>::type>::type>::type * = 0
-           ) {
+           const interval_type_2& value,
+           bool consider_touch = true) {
     return contains(interval, get(value, LOW), consider_touch) &&
       contains(interval, get(value, HIGH), consider_touch);
   }
-  
-  // get the low coordinate
-  template <typename interval_type>
-  typename interval_traits<interval_type>::coordinate_type 
-  low(const interval_type& interval,
-  typename enable_if< typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type * = 0
-  ) { return get(interval, LOW); }
-
-  // get the high coordinate
-  template <typename interval_type>
-  typename interval_traits<interval_type>::coordinate_type 
-  high(const interval_type& interval,
-  typename enable_if< typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type * = 0
-  ) { return get(interval, HIGH); }
-
-  // get the center coordinate
-  template <typename interval_type>
-  typename interval_traits<interval_type>::coordinate_type
-  center(const interval_type& interval,
-  typename enable_if< typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type * = 0
-  ) { return (high(interval) + low(interval))/2; }
-
 
   struct y_i_low : gtl_yes {};
 
+  // get the low coordinate
+  template <typename interval_type>
+  typename enable_if< typename gtl_and<
+        y_i_low,
+        typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+      typename interval_traits<interval_type>::coordinate_type>::type
+  low(const interval_type& interval) { return get(interval, LOW); }
+
+  struct y_i_high : gtl_yes {};
+
+  // get the high coordinate
+  template <typename interval_type>
+  typename enable_if< typename gtl_and<
+        y_i_high,
+        typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+      typename interval_traits<interval_type>::coordinate_type>::type
+  high(const interval_type& interval) { return get(interval, HIGH); }
+
+  struct y_i_center : gtl_yes {};
+
+  // get the center coordinate
+  template <typename interval_type>
+  typename enable_if< typename gtl_and<
+        y_i_center,
+        typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+      typename interval_traits<interval_type>::coordinate_type>::type
+  center(const interval_type& interval) { return (high(interval) + low(interval))/2; }
+
+
+  struct y_i_low2 : gtl_yes {};
+
   // set the low coordinate to v
   template <typename interval_type>
-  typename enable_if<typename gtl_and<y_i_low, typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type, void>::type 
+  typename enable_if<typename gtl_and<y_i_low2, typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type, void>::type 
   low(interval_type& interval,
       typename interval_traits<interval_type>::coordinate_type v) { set(interval, LOW, v); }
   
-  struct y_i_high : gtl_yes {};
+  struct y_i_high2 : gtl_yes {};
 
   // set the high coordinate to v
   template <typename interval_type>
-  typename enable_if<typename gtl_and<y_i_high, typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type, void>::type 
+  typename enable_if<typename gtl_and<y_i_high2, typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type, void>::type 
   high(interval_type& interval,
       typename interval_traits<interval_type>::coordinate_type v) { set(interval, HIGH, v); }
-  
+
+  struct y_i_delta : gtl_yes {};
+
   // get the magnitude of the interval
   template <typename interval_type>
-  typename interval_difference_type<interval_type>::type 
-  delta(const interval_type& interval,
-  typename enable_if< typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type * = 0
-  ) { 
+  typename enable_if< typename gtl_and<
+        y_i_delta,
+        typename is_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+      typename interval_difference_type<interval_type>::type >::type
+  delta(const interval_type& interval) { 
     typedef typename coordinate_traits<typename interval_traits<interval_type>::coordinate_type>::coordinate_difference diffT;
     return (diffT)high(interval) - (diffT)low(interval); }
 
@@ -234,14 +264,16 @@ namespace boost { namespace polygon{
     high(interval, (newHigh));
     return interval;
   }
-  
+
+  struct y_i_move : gtl_yes {};
+
   // move interval by delta
   template <typename interval_type>
-  interval_type&
-  move(interval_type& interval,
-       typename interval_difference_type<interval_type>::type displacement,
-       typename enable_if<typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type * = 0
-       ) {
+  typename enable_if< typename gtl_and<
+        y_i_move,
+        typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+      interval_type>::type &
+  move(interval_type& interval, typename interval_difference_type<interval_type>::type displacement) {
     typedef typename interval_traits<interval_type>::coordinate_type ctype;
     typedef typename coordinate_traits<ctype>::coordinate_difference Unit;
     Unit len = delta(interval);
@@ -520,25 +552,27 @@ namespace boost { namespace polygon{
     return bloat(interval, dir, -shrinking);
   }
 
+  struct y_i_encompass : gtl_yes {};
+
   // Enlarge `this` Interval to encompass the specified Interval
   template <typename interval_type, typename interval_type_2>
-  bool
-  encompass(interval_type& interval, const interval_type_2& b,
-  typename enable_if<
-    typename gtl_and< typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type,
-            typename is_interval_concept<typename geometry_concept<interval_type_2>::type>::type>::type>::type * = 0
-  ) {
+  typename enable_if< typename gtl_and_3<
+        y_i_encompass,
+        typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type,
+        typename is_interval_concept<typename geometry_concept<interval_type_2>::type>::type>::type,
+      bool>::type
+  encompass(interval_type& interval, const interval_type_2& b) {
     bool retval = !contains(interval, b, true);
     low(interval, (std::min)(low(interval), low(b)));
     high(interval, (std::max)(high(interval), high(b)));
     return retval;
   }    
 
-  struct y_i_encompass : gtl_yes {};
+  struct y_i_encompass2 : gtl_yes {};
 
   // Enlarge `this` Interval to encompass the specified Interval
   template <typename interval_type>
-  typename enable_if< typename gtl_and<y_i_encompass, typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
+  typename enable_if< typename gtl_and<y_i_encompass2, typename is_mutable_interval_concept<typename geometry_concept<interval_type>::type>::type>::type,
                        bool>::type
   encompass(interval_type& interval, typename interval_traits<interval_type>::coordinate_type b) {
     bool retval = !contains(interval, b, true);
