@@ -21,7 +21,6 @@ struct Point {
 };
 
 struct Segment {
-  typedef int coordinate_type; // this is temporary required
   Point p0;
   Point p1;
   Segment (int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}
