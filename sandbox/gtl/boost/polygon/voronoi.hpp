@@ -37,7 +37,8 @@ typename enable_if<
       typename geometry_concept<Point>::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 insert(const Point &point, VB *vb) {
   vb->insert_point(x(point), y(point));
 }
@@ -53,7 +54,8 @@ typename enable_if<
       >::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 insert(PointIterator first, const PointIterator last, VB *vb) {
   for (PointIterator it = first; it != last; ++it) {
     insert(*it, vb);
@@ -68,7 +70,8 @@ typename enable_if<
       typename geometry_concept<Segment>::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 insert(const Segment &segment, VB *vb) {
   vb->insert_segment(x(low(segment)), y(low(segment)), x(high(segment)), y(high(segment)));
 }
@@ -83,7 +86,8 @@ typename enable_if<
       >::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 insert(SegmentIterator first, SegmentIterator last, VB *vb) {
   for (SegmentIterator it = first; it != last; ++it) {
     insert(*it, vb);
@@ -100,7 +104,8 @@ typename enable_if<
       >::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 construct_voronoi(PointIterator first, PointIterator last, VD *vd) {
   default_voronoi_builder builder;
   insert(first, last, &builder);
@@ -117,7 +122,8 @@ typename enable_if<
       >::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 construct_voronoi(SegmentIterator first, SegmentIterator last, VD *vd) {
   default_voronoi_builder builder;
   insert(first, last, &builder);
@@ -143,7 +149,8 @@ typename enable_if<
       >::type
     >::type
   >::type,
-void>::type
+  void
+>::type
 construct_voronoi(PointIterator p_first, PointIterator p_last,
     SegmentIterator s_first, SegmentIterator s_last, VD *vd) {
   default_voronoi_builder builder;
