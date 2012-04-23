@@ -5,13 +5,14 @@
 
 
 
+
   
   <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title>Voronoi Basic Tutorial</title><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>
 <h1>Voronoi Basic Tutorial<br>
 </h1>
 
 <p>In this tutorial we will cover the basic usage of the Boost.Polygon
-Voronoi library that should be enough for 95% of cases. Below we will
+Voronoi library that should be enough for the 95% of cases. Below we will
 discuss the following topics:<br>
 </p>
 
@@ -19,9 +20,11 @@ discuss the following topics:<br>
 
   <li>preparing input geometries;<br>
   </li>
-  <li>construction of the Voronoi diagram;</li>
+  <li>Voronoi diagram construction;</li>
+  
   <li>Voronoi graph traversal;<br>
   </li>
+
   <li>associating the user data with the Voronoi primitives;</li>
   <li>Voronoi diagram discretization and rendering.</li>
 </ul>
@@ -31,7 +34,7 @@ we
 are going to construct the Voronoi diagram of a few points and
 segments.
 On the image below one may see the corresponding rendered Voronoi
-graph. Primary Voronoi edges
+graph. The primary Voronoi edges
 are marked with
 the black color, non-primary with green, input geometries have blue
 color. In
@@ -56,8 +59,7 @@ using boost::polygon;</span><br>
 &nbsp; Point (int x, int y) : a(x), b(y) {}<br>
 
 };</span><span style="font-family: Courier New,Courier,monospace;"><br>
-<br>struct Segment {<br>
-&nbsp; typedef int coordinate_type; // this is temporary required</span><span style="font-family: Courier New,Courier,monospace;"></span><br>
+<br>struct Segment {</span><span style="font-family: Courier New,Courier,monospace;"></span><br>
 <span style="font-family: Courier New,Courier,monospace;">
 &nbsp; Point p0;<br>
 &nbsp; Point p1;<br>
@@ -66,9 +68,9 @@ using boost::polygon;</span><br>
 
 <span style="font-family: Courier New,Courier,monospace;">};<br>
 <br>
-</span>As we are going to use default routines defined in the
-voronoi.hpp header to construct Voronoi diagram, we are required to map
-our point and segment class to the corresponding Boost.Polygon concepts:<br>
+</span>As we are going to use the default routines defined in the
+voronoi.hpp header to construct the Voronoi diagram, we are required to map
+our point and segment classes to the corresponding Boost.Polygon concepts:<br>
 <br>
 <span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">template &lt;&gt;</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"><br>
 struct geometry_concept&lt;Point&gt; { typedef point_concept type; };</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp;&nbsp; <span class="Apple-converted-space"></span></span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">template &lt;&gt;</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">struct point_traits&lt;</span><span style="font-family: Courier New,Courier,monospace;">Point</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&gt; {</span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;"><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; typedef int coordinate_type;</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"><br>
@@ -90,7 +92,7 @@ template &lt;&gt;<br>
 &nbsp;&nbsp;&nbsp; return </span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">dir.to_int() ? segment.p1() : segment.p0();</span><span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;"></span><br style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium;">
 <span style="color: rgb(0, 0, 0); font-family: 'Courier New'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; font-size: medium; display: inline ! important; float: none;">&nbsp; }<br>};</span><br>
 <br>
-It's also possible to use native Boost.Polygon types as <a href="../boost/polygon/point_data.hpp">point_data</a> and <a href="../boost/polygon/directed_line_segment_data.hpp">directed_line_segment_data</a>, that won't require the above mapping.<br>
+It's also possible to use the native Boost.Polygon types as <a href="../boost/polygon/point_data.hpp">point_data</a> and <a href="../boost/polygon/directed_line_segment_data.hpp">directed_line_segment_data</a>, that won't require the above mapping.<br>
 <br>
 So once we are done we can create the sample input:<br>
 
@@ -105,7 +107,7 @@ segments.push_back(Segment(-4, 5, 5, -1));<br>
 segments.push_back(Segment(3, -11, 13, -1));</span><span style="font-family: Courier New,Courier,monospace;"><br>
 </span>
 <h2>Construction of the Voronoi Diagram<br>
-</h2>At this point we are ready to construct Voronoi diagram:<br>
+</h2>At this point we are ready to construct the Voronoi diagram:<br>
 <span style="font-family: Courier New,Courier,monospace;"><br>
 </span><span style="font-family: Courier New,Courier,monospace;">
 voronoi_diagram&lt;double&gt; vd;<br>
@@ -162,7 +164,7 @@ Voronoi cell.<br>
     <br>
   </li>
   <li>iterating over the Voronoi
-vertices and then traversing edges around each vertex (number of
+vertices and then traversing edges around each vertex (the number of the
 iterations through each edge is equal to the number of finite endpoints
 of the edge):<span style="font-family: Courier New,Courier,monospace;"></span><br>
     <span style="font-family: Courier New,Courier,monospace;">int
@@ -187,21 +189,21 @@ Voronoi vertex.<br>
 }</span></li>
 </ul>
 
-This should give a very nice idea on how to traverse Voronoi
-diagram. Notice that while the output from the first two methods should
+This should give a very nice idea on how to do the Voronoi
+diagram traversal. Notice that while the output from the first two methods should
 be the same, it wouldn't for the third one. The reason is that in the
 last case we will iterate only once through the edges with a single
 finite endpoint and will skip all the edges with no finite endpoints.<br>
 
 <h2>Associating User Data with Voronoi Primitives</h2>
 
-A few simple cases of associating user data with Voronoi primitives are
+A few simple cases of associating the user data with the Voronoi primitives are
 following:<br>
 
 <ul>
 
   <li>associating number of incident edges with each cell, vertex;</li>
-  <li>associating color with each edge;</li>
+  <li>associating color information with each edge;</li>
   <li>using DFS or BFS on the Voronoi graph requires to mark visited
 edges/vertices/cells.</li>
 </ul>
@@ -209,7 +211,7 @@ edges/vertices/cells.</li>
 We will consider the first example and will associate the total number
 of incident edges with each cell.<br>
 
-Note: Each Voronoi primitive contains mutable pointer to void* type,
+Note: Each Voronoi primitive contains mutable pointer to the void* type,
 that allows to associate any type of data with it.<br>
 
 <br>
@@ -238,12 +240,12 @@ cell.incident_edge();<br>
 </span><br>
 
 Note: In the example above we could not use count variable
-without a vector, because pointer to it will become invalid as soon as
+without the vector, because the pointer to it will become invalid as soon as
 we leave the scope of the enclosing for-loop.<br>
 
 <h2>Rendering Voronoi Diagram</h2>
 
-There are two main issues that don't allow to strictly render resulting
+There are two main issues that don't allow to strictly render the resulting
 Voronoi diagram using such rendering tools as OpenGL or DirectX.
 Those are:<br>
 
@@ -319,20 +321,20 @@ polyline[i].x(), polyline[i].y());<br>
 <br>
 </span><a href="../libs/polygon/example/voronoi_visualizer.cpp">voronoi_visualizer.cpp</a>
 contains a simple fully featured implementation of the Voronoi diagram
-renderer using Qt libraries. It was used to generate all the .png
-drawings under ./libs/polygon/example directory.<span style="text-decoration: underline;"><br>
+renderer using the Qt libraries. It was used to generate all the .png
+drawings under the ./libs/polygon/example directory.<span style="text-decoration: underline;"><br>
 </span><span style="font-family: Courier New,Courier,monospace;">
 <br>
 </span>I hope the reader managed to get to this point and found the
 basic tutorial to be useful (in the end it's not so basic). Worth
 to notice that construction of the Voronoi diagram takes only two lines
 of code, everything else is about initializing input data structures,
-traversing Voronoi graph, associating data with diagram primitives and
-using <a href="voronoi_utils.htm">Voronoi utilities</a>. In
-default mode Voronoi diagram operates with signed int (32-bit) input
-coordinate type and double (64-bit) output coordinate type. In <a href="voronoi_advanced_tutorial.htm">Voronoi Advanced Tutorial</a> we
-explain why this is enough for 95% of problems and how to expand the
-algorithm coordinate types for the other 5% of cases.<br>
+traversing Voronoi graph, associating data with the diagram primitives and
+using the <a href="voronoi_utils.htm">Voronoi utilities</a>. In the
+default mode the Voronoi diagram operates with the signed int (32-bit) input
+coordinate type and double (64-bit) output coordinate type. In the <a href="voronoi_advanced_tutorial.htm">advanced Voronoi tutorial</a> we
+explain why this is enough for the 95% of cases and how to expand the
+algorithm coordinate types for the other 5%.<br>
 
 <span style="font-family: Courier New,Courier,monospace;"></span><br>
 
