@@ -34,8 +34,10 @@ namespace boost { namespace polygon{
     {
       (*this) = that; 
     }
-    inline directed_line_segment_data& operator=(const directed_line_segment_data& that) {
-      points_[0] = that.points_[0]; points_[1] = that.points_[1]; return *this; 
+    inline directed_line_segment_data& operator=(
+        const directed_line_segment_data& that) {
+      points_[0] = that.points_[0]; points_[1] = that.points_[1];
+      return *this;
     }
     template <typename T2>
     inline directed_line_segment_data& operator=(const T2& rvalue);
@@ -44,8 +46,8 @@ namespace boost { namespace polygon{
     }
     inline point_type low() const { return points_[0]; }
     inline point_type low(point_type low) {
-        points_[0] = low;
-        return *this;
+      points_[0] = low;
+      return *this;
     }
     inline point_type high() const { return points_[1]; }
     inline point_type high(point_type high) {
@@ -62,16 +64,22 @@ namespace boost { namespace polygon{
       if(points_[1] < that.points_[1]) return true;
       return false;
     }
-    inline bool operator<=(const directed_line_segment_data& that) const { return !(that < *this); }
-    inline bool operator>(const directed_line_segment_data& that) const { return that < *this; }
-    inline bool operator>=(const directed_line_segment_data& that) const { return !((*this) < that); }
+    inline bool operator<=(const directed_line_segment_data& that) const {
+      return !(that < *this);
+    }
+    inline bool operator>(const directed_line_segment_data& that) const {
+      return that < *this;
+    }
+    inline bool operator>=(const directed_line_segment_data& that) const {
+      return !((*this) < that);
+    }
   inline void set(direction_1d dir, point_type value) {
     points_[dir.to_int()] = value; 
   }
-private:
+
+  private:
   point_type points_[2]; 
 };
-
 }
 }
 #endif
