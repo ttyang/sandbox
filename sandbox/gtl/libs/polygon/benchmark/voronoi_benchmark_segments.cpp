@@ -40,8 +40,8 @@ typedef SDT_CGAL::Site_2 Site_CGAL;
 // Include for the Boost.Polygon library.
 #include <boost/polygon/polygon.hpp>
 typedef boost::polygon::point_data<int32> POINT_POLYGON;
-typedef boost::polygon::directed_line_segment_data<int32> SEGMENT_POLYGON;
-typedef boost::polygon::directed_line_segment_set_data<int32> SSD_POLYGON;
+typedef boost::polygon::segment_data<int32> SEGMENT_POLYGON;
+typedef boost::polygon::segment_set_data<int32> SSD_POLYGON;
 
 const int RANDOM_SEED = 27;
 const int NUM_TESTS = 6;

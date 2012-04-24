@@ -117,9 +117,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_points, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
     typedef T coordinate_type;
     typedef point_data<coordinate_type> point_type;
-    typedef directed_line_segment_data<coordinate_type> segment_type;
+    typedef segment_data<coordinate_type> segment_type;
 
-    directed_line_segment_set_data<coordinate_type> segments;
+    segment_set_data<coordinate_type> segments;
     {
         std::ifstream input_file(SEGMENT_INPUT_FILE);
         int num_segments;

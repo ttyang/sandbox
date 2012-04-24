@@ -42,10 +42,10 @@ struct point_traits<Point> {
 };
 
 template <>
-struct geometry_concept<Segment> { typedef directed_line_segment_concept type; };
+struct geometry_concept<Segment> { typedef segment_concept type; };
 
 template <>
-struct directed_line_segment_traits<Segment> {
+struct segment_traits<Segment> {
   typedef int coordinate_type;
   typedef Point point_type;
     

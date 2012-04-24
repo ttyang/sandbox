@@ -5,23 +5,23 @@
   Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).
 */
-#ifndef BOOST_POLYGON_DIRECTED_LINE_SEGMENT_SET_DATA_HPP
-#define BOOST_POLYGON_DIRECTED_LINE_SEGMENT_SET_DATA_HPP
+#ifndef BOOST_POLYGON_SEGMENT_SET_DATA_HPP
+#define BOOST_POLYGON_SEGMENT_SET_DATA_HPP
 
 namespace boost { namespace polygon{
   template <typename T>
-  class directed_line_segment_set_data {
+  class segment_set_data {
   public:
     typedef T coordinate_type;
     typedef point_data<T> point_type;
-    typedef directed_line_segment_data<T> directed_line_segment_type;
-    typedef std::vector<directed_line_segment_type> value_type;
-    typedef typename std::vector<directed_line_segment_type>::const_iterator iterator_type;
+    typedef segment_data<T> segment_type;
+    typedef std::vector<segment_type> value_type;
+    typedef typename std::vector<segment_type>::const_iterator iterator_type;
 
-    inline directed_line_segment_set_data() : data_(), dirty_(false), unsorted_(false) {}
-    inline directed_line_segment_set_data(const directed_line_segment_set_data& that): 
+    inline segment_set_data() : data_(), dirty_(false), unsorted_(false) {}
+    inline segment_set_data(const segment_set_data& that): 
       data_(that.data_), dirty_(that.dirty_), unsorted_(that.unsorted_) {}
-    inline directed_line_segment_set_data& operator=(const directed_line_segment_set_data& that) {
+    inline segment_set_data& operator=(const segment_set_data& that) {
       if(this == &that) return *this;
       data_ = that.data_;
       dirty_ = that.dirty_;
@@ -29,24 +29,24 @@ namespace boost { namespace polygon{
       return *this;
     }
     template <typename T2>
-    inline directed_line_segment_set_data& operator=(const T2& rvalue) {
+    inline segment_set_data& operator=(const T2& rvalue) {
       data_.clear();
       bool unsorted = !sorted(rvalue);
-      bool dirty = !dirty(rvalue);
+      bool dirty = dirty(rvalue);
       insert(begin(rvalue), end(rvalue));
       unsorted_ = unsorted;
       dirty_ = dirty;
       return *this;
     }
 
-    inline bool operator==(const directed_line_segment_set_data& that) const {
+    inline bool operator==(const segment_set_data& that) const {
       clean();
       that.clean();
       sort();
       that.sort();
       return data_ == that.data_;
     } 
-    inline bool operator!=(const directed_line_segment_set_data& that) const {
+    inline bool operator!=(const segment_set_data& that) const {
       return !(*this == that);
     }
 
@@ -62,7 +62,7 @@ namespace boost { namespace polygon{
     inline void insert(ST segment) {
       unsorted_ = true;
       dirty_ = true;
-      directed_line_segment_type tmp_seg;
+      segment_type tmp_seg;
       assign(tmp_seg, segment);
       data_.push_back(tmp_seg);
     }
@@ -125,10 +125,10 @@ namespace boost { namespace polygon{
         id = half_edges_out[i].second;
         Point l = half_edges_out[i].first.first;
         Point h = half_edges_out[i].first.second;
-        directed_line_segment_type orig_seg = data_[id];
+        segment_type orig_seg = data_[id];
         if(orig_seg.high() < orig_seg.low())
           std::swap(l, h);
-        result.push_back(directed_line_segment_type(l, h));
+        result.push_back(segment_type(l, h));
       }
       std::swap(result, data_);
       dirty_ = false;
@@ -175,7 +175,7 @@ namespace boost { namespace polygon{
     }
 
     template <typename transform_type>
-    inline directed_line_segment_set_data& 
+    inline segment_set_data& 
     transform(const transform_type& tr) {
       for(typename value_type::iterator itr = data_.begin(); itr != data_.end(); ++itr) {
         point_type l = (*itr).low();
@@ -189,7 +189,7 @@ namespace boost { namespace polygon{
       return *this;
     }
 
-    inline directed_line_segment_set_data& 
+    inline segment_set_data& 
     scale_up(typename coordinate_traits<coordinate_type>::unsigned_area_type factor) {
       for(typename value_type::iterator itr = data_.begin(); itr != data_.end(); ++itr) {
         point_type l = (*itr).low();
@@ -202,7 +202,7 @@ namespace boost { namespace polygon{
       return *this;
     }
     
-    inline directed_line_segment_set_data& 
+    inline segment_set_data& 
     scale_down(typename coordinate_traits<coordinate_type>::unsigned_area_type factor) {
       for(typename value_type::iterator itr = data_.begin(); itr != data_.end(); ++itr) {
         point_type l = (*itr).low();
@@ -216,7 +216,7 @@ namespace boost { namespace polygon{
     }
     
     template <typename scaling_type>
-    inline directed_line_segment_set_data& scale(const scaling_type& scaling) {
+    inline segment_set_data& scale(const scaling_type& scaling) {
       for(typename value_type::iterator itr = data_.begin(); itr != data_.end(); ++itr) {
         point_type l = (*itr).low();
         point_type h = (*itr).high();
@@ -245,7 +245,8 @@ namespace boost { namespace polygon{
       }
       half_edges_out.reserve(half_edges.size());
       std::vector<std::set<Point> > intersection_points(half_edges.size(), std::set<Point>());
-      line_intersection<Unit>::validate_scan_divide_and_conquer(intersection_points, half_edges.begin(), half_edges.end());
+      line_intersection<Unit>::validate_scan_divide_and_conquer(
+          intersection_points, half_edges.begin(), half_edges.end());
       std::vector<Point> tmp_points;
       for(std::size_t i = 0; i < intersection_points.size(); ++i) {
         typename std::set<Point>::iterator itr2 = intersection_points[i].begin();
@@ -254,7 +255,8 @@ namespace boost { namespace polygon{
             tmp_points.push_back(*itr2);
       }
       polygon_sort(tmp_points.begin(), tmp_points.end());
-      typename std::vector<Point>::iterator new_end = std::unique(tmp_points.begin(), tmp_points.end());
+      typename std::vector<Point>::iterator new_end =
+          std::unique(tmp_points.begin(), tmp_points.end());
       output_points.insert(output_points.end(), tmp_points.begin(), new_end);
       return std::distance(tmp_points.begin(), new_end);
     }

@@ -66,7 +66,7 @@ template <typename Segment, typename VB>
 static inline
 typename enable_if<
   typename gtl_if<
-    typename is_directed_line_segment_concept<
+    typename is_segment_concept<
       typename geometry_concept<Segment>::type
     >::type
   >::type,
@@ -80,7 +80,7 @@ template <typename SegmentIterator, typename VB>
 static inline
 typename enable_if<
   typename gtl_if<
-    typename is_directed_line_segment_concept<
+    typename is_segment_concept<
       typename geometry_concept<
         typename std::iterator_traits<SegmentIterator>::value_type
       >::type
@@ -116,7 +116,7 @@ template <typename SegmentIterator, typename VD>
 static inline
 typename enable_if<
   typename gtl_if<
-    typename is_directed_line_segment_concept<
+    typename is_segment_concept<
       typename geometry_concept<
         typename std::iterator_traits<SegmentIterator>::value_type
       >::type
@@ -142,7 +142,7 @@ typename enable_if<
       >::type
     >::type,
     typename gtl_if<
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<
           typename std::iterator_traits<SegmentIterator>::value_type
         >::type

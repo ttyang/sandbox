@@ -5,85 +5,85 @@
   Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
   http://www.boost.org/LICENSE_1_0.txt).
 */
-#ifndef BOOST_POLYGON_DIRECTED_LINE_SEGMENT_CONCEPT_HPP
-#define BOOST_POLYGON_DIRECTED_LINE_SEGMENT_CONCEPT_HPP
+#ifndef BOOST_POLYGON_SEGMENT_CONCEPT_HPP
+#define BOOST_POLYGON_SEGMENT_CONCEPT_HPP
 #include "isotropy.hpp"
-#include "directed_line_segment_data.hpp"
-#include "directed_line_segment_traits.hpp"
+#include "segment_data.hpp"
+#include "segment_traits.hpp"
 #include "rectangle_concept.hpp"
 #include "detail/polygon_arbitrary_formation.hpp"
 
 namespace boost { namespace polygon{
-  struct directed_line_segment_concept {};
+  struct segment_concept {};
  
   template <typename T>
-  struct is_directed_line_segment_concept { typedef gtl_no type; };
+  struct is_segment_concept { typedef gtl_no type; };
   template <>
-  struct is_directed_line_segment_concept<directed_line_segment_concept> {
+  struct is_segment_concept<segment_concept> {
     typedef gtl_yes type;
   };
 
   template <typename T>
-  struct is_mutable_directed_line_segment_concept { typedef gtl_no type; };
+  struct is_mutable_segment_concept { typedef gtl_no type; };
   template <>
-  struct is_mutable_directed_line_segment_concept<directed_line_segment_concept> {
+  struct is_mutable_segment_concept<segment_concept> {
     typedef gtl_yes type;
   };
 
   template <typename T, typename CT>
-  struct directed_line_segment_distance_type_by_concept {
+  struct segment_distance_type_by_concept {
     typedef void type;
   };
 
   template <typename T>
-  struct directed_line_segment_distance_type_by_concept<T, gtl_yes> { 
+  struct segment_distance_type_by_concept<T, gtl_yes> { 
     typedef typename coordinate_traits<
-      typename directed_line_segment_traits<T>::coordinate_type
+      typename segment_traits<T>::coordinate_type
     >::coordinate_distance type;
   };
 
   template <typename T>
-  struct directed_line_segment_distance_type {
-    typedef typename directed_line_segment_distance_type_by_concept<
+  struct segment_distance_type {
+    typedef typename segment_distance_type_by_concept<
       T,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T>::type
       >::type
     >::type type;
   };
 
   template <typename T, typename CT>
-  struct directed_line_segment_point_type_by_concept { typedef void type; };
+  struct segment_point_type_by_concept { typedef void type; };
   template <typename T>
-  struct directed_line_segment_point_type_by_concept<T, gtl_yes> { 
-    typedef typename directed_line_segment_traits<T>::point_type type;
+  struct segment_point_type_by_concept<T, gtl_yes> { 
+    typedef typename segment_traits<T>::point_type type;
   };
 
   template <typename T>
-  struct directed_line_segment_point_type {
-    typedef typename directed_line_segment_point_type_by_concept<
+  struct segment_point_type {
+    typedef typename segment_point_type_by_concept<
       T,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T>::type
       >::type
     >::type type;
   };
 
   template <typename T, typename CT>
-  struct directed_line_segment_coordinate_type_by_concept {
+  struct segment_coordinate_type_by_concept {
     typedef void type;
   };
   
   template <typename T>
-  struct directed_line_segment_coordinate_type_by_concept<T, gtl_yes> { 
-    typedef typename directed_line_segment_traits<T>::coordinate_type type;
+  struct segment_coordinate_type_by_concept<T, gtl_yes> { 
+    typedef typename segment_traits<T>::coordinate_type type;
   };
 
   template <typename T>
-  struct directed_line_segment_coordinate_type {
-    typedef typename directed_line_segment_coordinate_type_by_concept<
+  struct segment_coordinate_type {
+    typedef typename segment_coordinate_type_by_concept<
       T,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T>::type
       >::type
     >::type type;
@@ -95,14 +95,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_get,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T>::type
       >::type
     >::type,
-    typename directed_line_segment_point_type<T>::type
+    typename segment_point_type<T>::type
   >::type
   get(const T& segment, direction_1d dir) {
-    return directed_line_segment_traits<T>::get(segment, dir); 
+    return segment_traits<T>::get(segment, dir); 
   }
 
   struct y_s_set : gtl_yes {};
@@ -111,14 +111,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_set,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<T>::type
       >::type
     >::type,
     void
   >::type
   set(T& segment, direction_1d dir, point_type value) {
-    directed_line_segment_mutable_traits<T>::set(segment, dir, value);
+    segment_mutable_traits<T>::set(segment, dir, value);
   }
 
   struct y_s_construct : gtl_yes {};
@@ -127,14 +127,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_construct,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<T>::type
       >::type
     >::type,
     T
   >::type
   construct(T2 low_value, T3 high_value) {
-    return directed_line_segment_mutable_traits<T>::construct(low_value, high_value);
+    return segment_mutable_traits<T>::construct(low_value, high_value);
   }
 
   struct y_s_copy_construct : gtl_yes {};
@@ -143,10 +143,10 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and_3<
       y_s_copy_construct,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<T>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T2>::type
       >::type
     >::type,
@@ -164,10 +164,10 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and_3<
       y_s_assign,
-        typename is_mutable_directed_line_segment_concept<
+        typename is_mutable_segment_concept<
           typename geometry_concept<T1>::type
         >::type,
-        typename is_directed_line_segment_concept<
+        typename is_segment_concept<
           typename geometry_concept<T2>::type
         >::type
     >::type,
@@ -184,10 +184,10 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and_3<
       y_s_equivalence,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<T2>::type
       >::type
     >::type,
@@ -205,16 +205,16 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_on_above_or_below,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     bool
   >::type 
   on_above_or_below(const segment_type& segment,
-                    typename directed_line_segment_point_type<segment_type>::type value) {
+                    typename segment_point_type<segment_type>::type value) {
     typedef polygon_arbitrary_formation<
-      typename directed_line_segment_coordinate_type<segment_type>::type
+      typename segment_coordinate_type<segment_type>::type
     > paf;
     typename paf::Point pt, l, h;
     assign(pt, value);
@@ -229,17 +229,17 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_contains,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     bool
   >::type 
   contains(const segment_type& segment,
-           typename directed_line_segment_point_type<segment_type>::type value,
+           typename segment_point_type<segment_type>::type value,
            bool consider_touch = true ) {
     if(on_above_or_below(segment, value) == 0) {
-      rectangle_data<typename directed_line_segment_coordinate_type<segment_type>::type> rect;
+      rectangle_data<typename segment_coordinate_type<segment_type>::type> rect;
       set_points(rect, low(segment), high(segment));
       if(area(rect) == 0.0) {
         if(!consider_touch) {
@@ -258,10 +258,10 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and_3<
       y_s_contains2,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
@@ -281,11 +281,11 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_low,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
-    typename directed_line_segment_point_type<segment_type>::type
+    typename segment_point_type<segment_type>::type
   >::type
   low(const segment_type& segment) {
     return get(segment, LOW);
@@ -298,11 +298,11 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_high,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
-    typename directed_line_segment_point_type<segment_type>::type
+    typename segment_point_type<segment_type>::type
   >::type
   high(const segment_type& segment) {
     return get(segment, HIGH);
@@ -315,14 +315,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_center,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
-    typename directed_line_segment_point_type<segment_type>::type
+    typename segment_point_type<segment_type>::type
   >::type
   center(const segment_type& segment) { 
-    return construct<typename directed_line_segment_coordinate_type<segment_type>::type>(
+    return construct<typename segment_coordinate_type<segment_type>::type>(
         (x(high(segment)) + x(low(segment)))/2,
         (y(high(segment)) + y(low(segment)))/2); 
   }
@@ -334,14 +334,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_low2,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     void
   >::type 
   low(segment_type& segment,
-      typename directed_line_segment_point_type<segment_type>::type v) {
+      typename segment_point_type<segment_type>::type v) {
     set(segment, LOW, v);
   }
   
@@ -352,14 +352,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_high2,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     void
   >::type 
   high(segment_type& segment,
-       typename directed_line_segment_point_type<segment_type>::type v) {
+       typename segment_point_type<segment_type>::type v) {
     set(segment, HIGH, v);
   }
 
@@ -369,11 +369,11 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_length,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
-    typename directed_line_segment_point_type<segment_type>::type
+    typename segment_point_type<segment_type>::type
   >::type
   length(const segment_type& segment) {
     return euclidean_distance(low(segment), high(segment));
@@ -386,7 +386,7 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_scale_up,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
@@ -394,9 +394,9 @@ namespace boost { namespace polygon{
   >::type &
   scale_up(segment_type& segment, 
            typename coordinate_traits<
-             typename directed_line_segment_coordinate_type<segment_type>::type
+             typename segment_coordinate_type<segment_type>::type
            >::unsigned_area_type factor) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, scale_up(l, factor));
     high(segment, scale_up(h, factor));
     return segment;
@@ -408,7 +408,7 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_scale_down,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
@@ -416,9 +416,9 @@ namespace boost { namespace polygon{
   >::type &
   scale_down(segment_type& segment, 
              typename coordinate_traits<
-               typename directed_line_segment_coordinate_type<segment_type>::type
+               typename segment_coordinate_type<segment_type>::type
              >::unsigned_area_type factor) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, scale_down(l, factor));
     high(segment, scale_down(h, factor));
     return segment;
@@ -430,14 +430,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_scale,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     segment_type
   >::type &
   scale(segment_type& segment, scaling_type factor) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, scale(l, factor));
     high(segment, scale(h, factor));
     return segment;
@@ -450,14 +450,14 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_transform,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     segment_type
   >::type &
   transform(segment_type& segment, const transform_type& val) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, transform(l, val));
     high(segment, transform(h, val));
     return segment;
@@ -470,15 +470,15 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_move,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     segment_type
   >::type &
   move(segment_type& segment, orientation_2d orient,
-      typename directed_line_segment_coordinate_type<segment_type>::type displacement) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+      typename segment_coordinate_type<segment_type>::type displacement) {
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, move(l, orient, displacement));
     high(segment, move(h, orient, displacement));
     return segment;
@@ -491,15 +491,15 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_convolve,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     segment_type
   >::type &
   convolve(segment_type& segment,
-      const typename directed_line_segment_point_type<segment_type>::type& b) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+      const typename segment_point_type<segment_type>::type& b) {
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, convolve(l, b));
     high(segment, convolve(h, b));
     return segment;
@@ -512,36 +512,36 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and<
       y_s_deconvolve,
-      typename is_mutable_directed_line_segment_concept<
+      typename is_mutable_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
     segment_type
   >::type &
   deconvolve(segment_type& segment,
-      const typename directed_line_segment_point_type<segment_type>::type& b) {
-    typename directed_line_segment_point_type<segment_type>::type l = low(segment), h = high(segment);
+      const typename segment_point_type<segment_type>::type& b) {
+    typename segment_point_type<segment_type>::type l = low(segment), h = high(segment);
     low(segment, deconvolve(l, b));
     high(segment, deconvolve(h, b));
     return segment;
   }
 
-  struct y_s_e_dist1 : gtl_yes {};
+  struct y_s_e_dist : gtl_yes {};
 
   // distance from a point to a segment
   template <typename segment_type>
   typename enable_if<
     typename gtl_and<
-      y_s_e_dist1,
-      typename is_directed_line_segment_concept<
+      y_s_e_dist,
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
-    typename directed_line_segment_distance_type<segment_type>::type
+    typename segment_distance_type<segment_type>::type
   >::type
   euclidean_distance(const segment_type& segment,
-      typename directed_line_segment_point_type<segment_type>::type position) {
-    typedef typename directed_line_segment_distance_type<segment_type>::type Unit;
+      typename segment_point_type<segment_type>::type position) {
+    typedef typename segment_distance_type<segment_type>::type Unit;
     Unit x1 = x(low(segment));
     Unit y1 = y(low(segment));
     Unit x2 = x(high(segment));
@@ -575,18 +575,18 @@ namespace boost { namespace polygon{
   typename enable_if< 
     typename gtl_and_3<
       y_s_e_dist2,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
-    typename directed_line_segment_distance_type<segment_type>::type
+    typename segment_distance_type<segment_type>::type
   >::type
   euclidean_distance(const segment_type& segment,
                      const segment_type_2& b) {
-    typename directed_line_segment_distance_type<segment_type>::type result1 =
+    typename segment_distance_type<segment_type>::type result1 =
         euclidean_distance(segment, low(b)),
     result2 = euclidean_distance(segment, high(b));
     if(result2 < result1) result1 = result2;
@@ -600,10 +600,10 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and_3<
       y_s_e_intersects, 
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type, 
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
@@ -620,7 +620,7 @@ namespace boost { namespace polygon{
         return true;
     }
     typedef polygon_arbitrary_formation<
-      typename directed_line_segment_coordinate_type<segment_type>::type
+      typename segment_coordinate_type<segment_type>::type
     > paf;
     typename paf::Point l, h, l2, h2;
     assign(l, low(segment));
@@ -638,10 +638,10 @@ namespace boost { namespace polygon{
   typename enable_if< 
     typename gtl_and_3<
       y_s_e_bintersect,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
@@ -662,10 +662,10 @@ namespace boost { namespace polygon{
   typename enable_if<
     typename gtl_and_3<
       y_s_abuts1,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
@@ -685,10 +685,10 @@ namespace boost { namespace polygon{
   typename enable_if< 
     typename gtl_and_3<
       y_s_abuts2,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
@@ -710,10 +710,10 @@ namespace boost { namespace polygon{
       typename is_mutable_point_concept<
         typename geometry_concept<point_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type>::type
       >::type,
-      typename is_directed_line_segment_concept<
+      typename is_segment_concept<
         typename geometry_concept<segment_type_2>::type
       >::type
     >::type,
@@ -725,7 +725,7 @@ namespace boost { namespace polygon{
                bool projected = false,
                bool round_closest = false) {
     typedef polygon_arbitrary_formation<
-      typename directed_line_segment_coordinate_type<segment_type>::type
+      typename segment_coordinate_type<segment_type>::type
     > paf;
     typename paf::Point pt;
     typename paf::Point l, h, l2, h2;
@@ -744,14 +744,14 @@ namespace boost { namespace polygon{
 
   template <class T>
   template <class T2>
-  directed_line_segment_data<T>& directed_line_segment_data<T>::operator=(const T2& rvalue) {
+  segment_data<T>& segment_data<T>::operator=(const T2& rvalue) {
     assign(*this, rvalue);
     return *this;
   }
 
   template <typename T>
-  struct geometry_concept<directed_line_segment_data<T> > {
-    typedef directed_line_segment_concept type;
+  struct geometry_concept<segment_data<T> > {
+    typedef segment_concept type;
   };
 }
 }
