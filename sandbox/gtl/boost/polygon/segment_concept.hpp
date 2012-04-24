@@ -117,7 +117,7 @@ namespace boost { namespace polygon{
     >::type,
     void
   >::type
-  set(T& segment, direction_1d dir, point_type value) {
+  set(T& segment, direction_1d dir, const point_type& value) {
     segment_mutable_traits<T>::set(segment, dir, value);
   }
 
@@ -133,7 +133,7 @@ namespace boost { namespace polygon{
     >::type,
     T
   >::type
-  construct(T2 low_value, T3 high_value) {
+  construct(const T2& low_value, const T3& high_value) {
     return segment_mutable_traits<T>::construct(low_value, high_value);
   }
 
@@ -153,9 +153,7 @@ namespace boost { namespace polygon{
     T
   >::type
   copy_construct(const T2& segment) {
-    return construct<T>
-      (get(segment, LOW ),
-       get(segment, HIGH));
+    return construct<T>(get(segment, LOW ), get(segment, HIGH));
   }
 
   struct y_s_assign : gtl_yes {};
@@ -195,7 +193,7 @@ namespace boost { namespace polygon{
   >::type
   equivalence(const T& segment1, const T2& segment2) {
     return get(segment1, LOW) == get(segment2, LOW) &&
-      get(segment1, HIGH) == get(segment2, HIGH);
+           get(segment1, HIGH) == get(segment2, HIGH);
   }
   
   struct y_s_on_above_or_below : gtl_yes {};
@@ -341,7 +339,7 @@ namespace boost { namespace polygon{
     void
   >::type 
   low(segment_type& segment,
-      typename segment_point_type<segment_type>::type v) {
+      const typename segment_point_type<segment_type>::type& v) {
     set(segment, LOW, v);
   }
   
@@ -359,7 +357,7 @@ namespace boost { namespace polygon{
     void
   >::type 
   high(segment_type& segment,
-       typename segment_point_type<segment_type>::type v) {
+       const typename segment_point_type<segment_type>::type& v) {
     set(segment, HIGH, v);
   }
 
@@ -373,7 +371,7 @@ namespace boost { namespace polygon{
         typename geometry_concept<segment_type>::type
       >::type
     >::type,
-    typename segment_point_type<segment_type>::type
+    typename segment_distance_type<segment_type>::type
   >::type
   length(const segment_type& segment) {
     return euclidean_distance(low(segment), high(segment));
@@ -540,7 +538,7 @@ namespace boost { namespace polygon{
     typename segment_distance_type<segment_type>::type
   >::type
   euclidean_distance(const segment_type& segment,
-      typename segment_point_type<segment_type>::type position) {
+      const typename segment_point_type<segment_type>::type& position) {
     typedef typename segment_distance_type<segment_type>::type Unit;
     Unit x1 = x(low(segment));
     Unit y1 = y(low(segment));
@@ -586,10 +584,10 @@ namespace boost { namespace polygon{
   >::type
   euclidean_distance(const segment_type& segment,
                      const segment_type_2& b) {
-    typename segment_distance_type<segment_type>::type result1 =
-        euclidean_distance(segment, low(b)),
-    result2 = euclidean_distance(segment, high(b));
-    if(result2 < result1) result1 = result2;
+    typename segment_distance_type<segment_type>::type
+        result1 = euclidean_distance(segment, low(b)),
+        result2 = euclidean_distance(segment, high(b));
+    if(result2 < result1) return result2;
     return result1;
   }
   
@@ -613,10 +611,8 @@ namespace boost { namespace polygon{
              const segment_type_2& b,
              bool consider_touch = true) {
     if(consider_touch) {
-      if(low(segment) == low(b) ||
-         low(segment) == high(b) ||
-         high(segment) == low(b) ||
-         high(segment) == high(b))
+      if(low(segment) == low(b) || low(segment) == high(b) ||
+         high(segment) == low(b) || high(segment) == high(b))
         return true;
     }
     typedef polygon_arbitrary_formation<
