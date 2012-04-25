@@ -13,7 +13,8 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     dagmodel.h \
     StringVisitor.h \
     Dag.h \
-    CreatorVisitor.h
+    CreatorVisitor.h \
+    Dag/DbType.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \

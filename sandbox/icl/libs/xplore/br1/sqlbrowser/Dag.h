@@ -11,6 +11,7 @@
 #include <boost/graph/graph_utility.hpp>
 
 #include "dagitem.h"
+#include "Dag/DbType.h"
 
 inline QString indentation(int depth)
 {
@@ -28,12 +29,12 @@ inline QString indentation(int depth)
 // this class, to add more information to graph nodes.
 //
 // The contents of this class is associated to the graph using tags:
-// attribute_tag,  boost::property<attribute_tag,  NodeAttributes>
-class NodeAttributes
+// attribute_tag,  boost::property<attribute_tag,  VertexAttributes>
+class VertexAttributes
 {
 public:
-    NodeAttributes(): m_nodeId(), m_name(), m_depth() {}
-    NodeAttributes(const QString& name, int id): m_nodeId(id), m_name(name), m_depth(), p_dagItem() {}
+    VertexAttributes(): m_nodeId(), m_name(), m_depth() {}
+    VertexAttributes(const QString& name, int id): m_nodeId(id), m_name(name), m_depth(), p_dagItem() {}
 
     void setName(const QString& name) { m_name  = name;  }
     QString name()const { return m_name; }
@@ -86,7 +87,7 @@ namespace dag
              };
     }
 
-    inline void copyBoostNode2DagItem(const NodeAttributes& src, tVariVector& target)//JODO cpp
+    inline void copyBoostNode2DagItem(const VertexAttributes& src, tVariVector& target)//JODO cpp
     {
         target[dag::node::posId]   = QVariant(src.nodeId());
         target[dag::node::posName] = QVariant(src.name());
@@ -98,9 +99,9 @@ struct Dag
     // The kind of attribute_tag is a vertex_property_tag
     struct attribute_tag  { typedef boost::vertex_property_tag kind; };
 
-    // Here we associate a real type for content 'NodeAttributes' to the tag type
-    // attribute_tag -> NodeAttributes
-    typedef boost::property<attribute_tag,  NodeAttributes> tAttributeTag;
+    // Here we associate a real type for content 'VertexAttributes' to the tag type
+    // attribute_tag -> VertexAttributes
+    typedef boost::property<attribute_tag,  VertexAttributes> tAttributeTag;
 
     typedef boost::adjacency_list
     < boost::vecS

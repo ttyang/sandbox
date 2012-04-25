@@ -140,8 +140,8 @@ void DagModel::dagInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& i
     if(!(source==0 && target==0))
     {
         boost::add_edge(source, target, m_dag);
-        m_nodeAttributes[source] = NodeAttributes(edgeData[m_parentName].toString(), source);
-        m_nodeAttributes[target] = NodeAttributes(edgeData[m_childName].toString(),  target);
+        m_aVertexAttributes[source] = VertexAttributes(edgeData[m_parentName].toString(), source);
+        m_aVertexAttributes[target] = VertexAttributes(edgeData[m_childName].toString(),  target);
     }
 }
 
@@ -317,9 +317,9 @@ QString DagModel::setupDag()
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
-                                              CreatorVisitor::OnDiscoverVertex(m_rootItem, &dagAsString, m_nodeAttributes)
-                                            , CreatorVisitor::OnExamineEdge   (m_rootItem, &dagAsString, m_nodeAttributes)
-                                            , CreatorVisitor::OnFinishVertex  (m_rootItem, &dagAsString, m_nodeAttributes)
+                                              CreatorVisitor::OnDiscoverVertex(m_rootItem, &dagAsString, m_aVertexAttributes)
+                                            , CreatorVisitor::OnExamineEdge   (m_rootItem, &dagAsString, m_aVertexAttributes)
+                                            , CreatorVisitor::OnFinishVertex  (m_rootItem, &dagAsString, m_aVertexAttributes)
                                             )
                       ))
     );
@@ -367,7 +367,7 @@ void DagModel::makeDag()
 {
     m_dag.clear();
 
-    m_nodeAttributes = get(Dag::attribute_tag(), m_dag);
+    m_aVertexAttributes = get(Dag::attribute_tag(), m_dag);
 
     for(tEdgeList::iterator iter = m_edges.begin(); iter != m_edges.end(); iter++)
     {
@@ -376,8 +376,8 @@ void DagModel::makeDag()
         if(!(source==0 && target==0))
         {
             boost::add_edge(source, target, m_dag);
-            m_nodeAttributes[source] = NodeAttributes((*iter)[m_parentName].toString(), source);
-            m_nodeAttributes[target] = NodeAttributes((*iter)[m_childName].toString(),  target);
+            m_aVertexAttributes[source] = VertexAttributes((*iter)[m_parentName].toString(), source);
+            m_aVertexAttributes[target] = VertexAttributes((*iter)[m_childName].toString(),  target);
         }
     }
 }
@@ -389,9 +389,9 @@ QString DagModel::dagToString()
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
-                                              StringVisitor::OnDiscoverVertex(&dagAsString, m_nodeAttributes)
-                                            , StringVisitor::OnExamineEdge(&dagAsString, m_nodeAttributes, m_parentMap)
-                                            , StringVisitor::OnFinishVertex(&dagAsString, m_nodeAttributes)
+                                              StringVisitor::OnDiscoverVertex(&dagAsString, m_aVertexAttributes)
+                                            , StringVisitor::OnExamineEdge(&dagAsString, m_aVertexAttributes, m_parentMap)
+                                            , StringVisitor::OnFinishVertex(&dagAsString, m_aVertexAttributes)
                                             //, boost::record_predecessors(parentMap.begin(), boost::on_tree_edge())
                                             )
                       ))

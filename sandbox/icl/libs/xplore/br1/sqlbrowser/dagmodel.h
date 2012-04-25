@@ -129,7 +129,7 @@ private:
     //==========================================================================
     // Graph
     Dag::type           m_dag;
-    Dag::tAttributesMap m_nodeAttributes;
+    Dag::tAttributesMap m_aVertexAttributes;
     Dag::tParentMap     m_parentMap;
 };
 
