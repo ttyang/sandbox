@@ -49,7 +49,7 @@ namespace boost { namespace polygon{
     template <typename Segment>
     inline segment_data& operator=(const Segment& that);
 
-    inline const point_type& get(direction_1d dir) const {
+    inline point_type get(direction_1d dir) const {
       return points_[dir.to_int()];
     }
 
@@ -57,14 +57,14 @@ namespace boost { namespace polygon{
       points_[dir.to_int()] = point;
     }
 
-    inline const point_type& low() const { return points_[0]; }
+    inline point_type low() const { return points_[0]; }
 
     inline point_type& low(const point_type& low) {
       points_[0] = low;
       return *this;
     }
 
-    inline const point_type& high() const {return points_[1]; }
+    inline point_type high() const {return points_[1]; }
 
     inline point_type& high(const point_type& high) {
         points_[1] = high;

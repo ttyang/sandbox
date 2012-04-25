@@ -238,7 +238,7 @@ namespace boost { namespace polygon{
   contains(const Segment& segment,
            const typename segment_point_type<Segment>::type& point,
            bool consider_touch = true ) {
-    if(on_above_or_below(segment, point) == 0) {
+    if(!on_above_or_below(segment, point)) {
       rectangle_data<typename segment_coordinate_type<Segment>::type> rect;
       set_points(rect, low(segment), high(segment));
       if(area(rect) == 0.0) {
@@ -247,7 +247,7 @@ namespace boost { namespace polygon{
                  !equivalence(point, high(segment));
         }
       }
-      return contains(rect, value, consider_touch);
+      return contains(rect, point, consider_touch);
     }
     return false;
   }
@@ -267,11 +267,11 @@ namespace boost { namespace polygon{
     >::type,
     bool
   >::type
-  contains(const Segment1& segment,
-           const Segment2& value,
+  contains(const Segment1& segment1,
+           const Segment2& segment2,
            bool consider_touch = true) {
-    return contains(segment, get(value, LOW), consider_touch) &&
-           contains(segment, get(value, HIGH), consider_touch);
+    return contains(segment1, get(segment2, LOW), consider_touch) &&
+           contains(segment1, get(segment2, HIGH), consider_touch);
   }
 
   struct y_s_low : gtl_yes {};
@@ -446,7 +446,7 @@ namespace boost { namespace polygon{
 
   struct y_s_transform : gtl_yes {};
 
-  template <typename Segment, typename transform_type>
+  template <typename Segment, typename Transform>
   typename enable_if<
     typename gtl_and<
       y_s_transform,
@@ -456,7 +456,7 @@ namespace boost { namespace polygon{
     >::type,
     Segment
   >::type &
-  transform(Segment& segment, const transform_type& val) {
+  transform(Segment& segment, const Transform& val) {
     typename segment_point_type<Segment>::type l = low(segment), h = high(segment);
     low(segment, transform(l, val));
     high(segment, transform(h, val));
@@ -529,25 +529,27 @@ namespace boost { namespace polygon{
   struct y_s_e_dist : gtl_yes {};
 
   // distance from a point to a segment
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_e_dist,
       typename is_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     typename segment_distance_type<Segment>::type
   >::type
-  euclidean_distance(const Segment& segment,
-      const typename segment_point_type<Segment>::type& position) {
+  euclidean_distance(const Segment& segment, const Point& point) {
     typedef typename segment_distance_type<Segment>::type Unit;
     Unit x1 = x(low(segment));
     Unit y1 = y(low(segment));
     Unit x2 = x(high(segment));
     Unit y2 = y(high(segment));
-    Unit X = x(position);
-    Unit Y = y(position);
+    Unit X = x(point);
+    Unit Y = y(point);
     Unit A = X - x1;
     Unit B = Y - y1;
     Unit C = x2 - x1;
@@ -555,9 +557,9 @@ namespace boost { namespace polygon{
     Unit length_sq = C * C + D * D;
     Unit param = (A * C + B * D)/length_sq;
     if(param > 1.0) {
-      return euclidean_distance(high(segment), position);
+      return euclidean_distance(high(segment), point);
     } else if(param < 0.0) {
-      return euclidean_distance(low(segment), position);
+      return euclidean_distance(low(segment), point);
     }
     Unit denom = sqrt(length_sq);
     if(denom == 0.0)
@@ -584,8 +586,7 @@ namespace boost { namespace polygon{
     >::type,
     typename segment_distance_type<Segment1>::type
   >::type
-  euclidean_distance(const Segment1& segment1,
-                     const Segment2& segment2) {
+  euclidean_distance(const Segment1& segment1, const Segment2& segment2) {
     typename segment_distance_type<Segment1>::type
         result1 = euclidean_distance(segment1, low(segment2)),
         result2 = euclidean_distance(segment1, high(segment2));
