@@ -56,7 +56,12 @@ public:
 private:
     int      m_nodeId;
     QString  m_name;
-    int      m_depth;
+    int      m_depth;    
+
+    //---- Db::Object associated to the Vertex ---------------------------------
+    //JODO dag::db::tObjectUniPtr m_pObject;
+
+    //---- DagModel ------------------------------------------------------------
     DagItem* p_dagItem;
     DagItem* p_parentItem;
 };

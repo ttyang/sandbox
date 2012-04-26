@@ -1,52 +1,31 @@
-/****************************************************************************
-**
-**
-****************************************************************************/
+#include "Dag/DbType.h"
 
-#pragma once
-
-//std
-#include <bitset>
-//boost
-#include <boost/scoped_ptr.hpp>
-//qt
-#include <QtCore/QVariant>
-#include <QtCore/QVector>
-
-namespace dag { namespace db
-{
-
-typedef unsigned int      tKey;
-typedef QVector<tKey>     tKeySequence;
-typedef QVector<QVariant> tVariVector;
-typedef QString           tString;
+using namespace dag::db;
 
 
 
-//==============================================================================
-//= dag::db::Types
-//==============================================================================
-
-template<unsigned int ciMaxBitCount = 64>
-class TypeTraits : public std::bitset<ciMaxBitCount>
+class TypeTraits
 {
 public:
-    enum
-    {
-          eDefined  = 0    //Bit 0: 0:undefined 1:defined
-        , eComposed        //Bit 0: 0:atomic    1:composite
-        , eRelation        //Bit 1: 0:object    1:relation
-        , eAddedType       //Bit 2: 0:built_in  1:added_type
-        , eTraits_count
-    };
-
+    static const int ciMaxBitCount = 64;
     typedef std::bitset<ciMaxBitCount> tTraitSet;
-
-    TypeTraits(): tTraitSet(){};
-    TypeTraits(unsigned long bits): tTraitSet(bits){};
+private:
+    tTraitSet m_aTraitSet;
 };
 
-typedef TypeTraits<> tTypeTraits;
+
+bool dag::db::isBuiltIn(const TypeTraits& aTraits);
+bool dag::db::isAtom(const TypeTraits& aTraits);
+bool isComposite(const TypeTraits& aTraits);
+
+
+
+
+/*
+bool isBuiltIn(const TypeTraits& aTraits);
+bool isAtom(const TypeTraits& aTraits);
+bool isComposite(const TypeTraits& aTraits);
+
 
 //! TypeSignature: The sequence of Types of an Objects
 //! Fields. The fields that contain all 1:1 Relationships
@@ -76,7 +55,7 @@ class ObjectType
 public:
 private:
     tKey            m_uKey;
-    TypeTraits<>    m_aTraits;
+    TypeTraits      m_aTraits;
     tString         m_aName;
     TypeSignature   m_aTypeSeq;
     FieldSignature  m_aFieldSeq;
@@ -111,7 +90,6 @@ template<class Type>
 class Object
 {
 public:
-    typedef Type tType;
     Object(): m_aType(){};
     explicit Object(Type aType): m_aType(aType){};
 private:
@@ -119,12 +97,11 @@ private:
     tVariVector m_aValue;
 };
 
-typedef Object<ObjectType>         tObject;
-typedef boost::scoped_ptr<tObject> tObjectUniPtr;
-typedef                   tObject* tObjectRawPtr;
-typedef             const tObject* tObjectConstRawPtr;
+typedef boost::scoped_ptr<Object> tObjectUniPtr;
+typedef                   Object* tObjectRawPtr;
+typedef             const Object* tObjectConstRawPtr;
 
-
+*/
 
 }} //namespace dag { namespace db
 
