@@ -13,6 +13,11 @@
 #include <QtCore/QVariant>
 #include <QtCore/QVector>
 
+
+class VertexAttributes;
+
+typedef VertexAttributes* VertexAttributesPtr;
+
 namespace dag { namespace db
 {
 
@@ -34,10 +39,10 @@ public:
     enum
     {
           eDefined  = 0    //Bit 0: 0:undefined 1:defined
-        , eComposed        //Bit 0: 0:atomic    1:composite
-        , eRelation        //Bit 1: 0:object    1:relation
-        , eAddedType       //Bit 2: 0:built_in  1:added_type
-        , eTraits_count
+        , eComposed        //Bit 1: 0:atomic    1:composite
+        , eRelation        //Bit 2: 0:object    1:relation
+        , eAddedType       //Bit 3: 0:built_in  1:added_type
+        , eSize
     };
 
     typedef std::bitset<ciMaxBitCount> tTraitSet;
@@ -58,12 +63,28 @@ private:
     tKeySequence m_aTypeSequence;
 };
 
-//! FieldSignature: The sequence of Fields of an Object.
+class TypedField
+{
+public:
+    TypedField(): m_uType(0), m_uField(0){}
+    TypedField(tKey type, tKey field): m_uType(type), m_uField(field){}
+
+    tKey type()const { return m_uType;  }
+    tKey field()const{ return m_uField; }
+private:
+    tKey m_uType;
+    tKey m_uField;
+};
+
+typedef QVector<TypedField> tFieldSignature;
+
+//! FieldSignature: The sequence of typed fields of an Object.
 class FieldSignature
 {
 public:
+    //JODO Read the field signature from the data base.
 private:
-    tKeySequence m_aFieldSequence;
+    tFieldSignature m_aFieldSequence;
 };
 
 
@@ -76,13 +97,13 @@ class ObjectType
 public:
 private:
     tKey            m_uKey;
-    TypeTraits<>    m_aTraits;
+    tTypeTraits     m_aTraits;
     tString         m_aName;
     TypeSignature   m_aTypeSeq;
     FieldSignature  m_aFieldSeq;
 };
 
-typedef boost::scoped_ptr<ObjectType> tObjectTypeUniPtr;
+typedef boost::shared_ptr<ObjectType> tObjectTypeSharedPtr;
 typedef ObjectType*                   tObjectTypeRawPtr;
 typedef const ObjectType*             tConstObjectTypeRawPtr;
 
@@ -91,11 +112,11 @@ class EdgeType
 {
 public:
 private:
-    tKey              m_uKey;
-    tString           m_aName;
-    tObjectTypeUniPtr m_pSourceType;
-    tObjectTypeUniPtr m_pRelationType;
-    tObjectTypeUniPtr m_pTargetType;
+    tKey                 m_uKey;
+    tString              m_aName;
+    tObjectTypeSharedPtr m_pSourceType;
+    tObjectTypeSharedPtr m_pRelationType;
+    tObjectTypeSharedPtr m_pTargetType;
 };
 
 
@@ -114,13 +135,17 @@ public:
     typedef Type tType;
     Object(): m_aType(){};
     explicit Object(Type aType): m_aType(aType){};
+
+    bool isConsistent()const; //!< Checks for consistency between types and data
+
 private:
     Type        m_aType;
     tVariVector m_aValue;
 };
 
 typedef Object<ObjectType>         tObject;
-typedef boost::scoped_ptr<tObject> tObjectUniPtr;
+//typedef boost::scoped_ptr<tObject> tObjectUniPtr;
+typedef boost::shared_ptr<tObject> tObjectSharedPtr;
 typedef                   tObject* tObjectRawPtr;
 typedef             const tObject* tObjectConstRawPtr;
 

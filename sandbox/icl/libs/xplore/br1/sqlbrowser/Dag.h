@@ -59,7 +59,7 @@ private:
     int      m_depth;    
 
     //---- Db::Object associated to the Vertex ---------------------------------
-    //JODO dag::db::tObjectUniPtr m_pObject;
+    dag::db::tObjectSharedPtr m_pObject;
 
     //---- DagModel ------------------------------------------------------------
     DagItem* p_dagItem;
