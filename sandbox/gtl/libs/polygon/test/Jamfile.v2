@@ -18,6 +18,7 @@ project polygon-test
 
 alias "polygon-unit"
     :
+        [ run polygon_segment_test.cpp ]
         [ run gtl_boost_unit_test.cpp ]
     ;
 

@@ -9,7 +9,6 @@
 #define BOOST_POLYGON_SEGMENT_DATA_HPP
 
 #include "isotropy.hpp"
-#include "point_data.hpp"
 
 namespace boost { namespace polygon{
   template <typename T>
@@ -60,7 +59,7 @@ namespace boost { namespace polygon{
     inline point_type low() const { return points_[0]; }
 
     inline segment_data& low(const point_type& point) {
-      points_[0] = low;
+      points_[0] = point;
       return *this;
     }
 

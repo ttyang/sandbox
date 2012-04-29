@@ -20,19 +20,14 @@ namespace boost { namespace polygon{
 
   template <typename Segment>
   struct segment_mutable_traits {
-    template <typename Point>
-    static inline void set(Segment& segment, direction_1d dir, const Point& value) {
-      typename segment_traits<Segment>::point_type p1;
-      assign(p1, value);
-      segment.set(dir, p1);
+    typedef typename segment_traits<Segment>::point_type point_type;
+
+    static inline void set(Segment& segment, direction_1d dir, const point_type& point) {
+      segment.set(dir, point);
     }
 
-    template <typename Point1, typename Point2>
-    static inline Segment construct(const Point1& low_value, const Point2& high_value) {
-      typename segment_traits<Segment>::point_type p1, p2;
-      assign(p1, low_value);
-      assign(p2, high_value);
-      return Segment(p1, p2);
+    static inline Segment construct(const point_type& low, const point_type& high) {
+      return Segment(low, high);
     }
   };
 }

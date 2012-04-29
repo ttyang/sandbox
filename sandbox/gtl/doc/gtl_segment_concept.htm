@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:(null)1="http://www.w3.org/TR/REC-html40" lang="en"><head>
-<!--
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:(null)1="http://www.w3.org/TR/REC-html40" lang="en"><head><!--
     Copyright 2009-2010 Intel Corporation
     license banner
 --><title>Boost Polygon Library: Segment Concept</title>
+
+
 
 
 
@@ -119,23 +120,19 @@ types that don't conform to the default behavior.</p>
       <span style="font-family: Courier New,Courier,monospace;">&nbsp; }</span><br style="font-family: Courier New,Courier,monospace;" />
       <span style="font-family: Courier New,Courier,monospace;">};</span><br />
       <br /><span style="font-family: Courier New,Courier,monospace;">template &lt;typename Segment&gt;<br />
-struct segment_mutable_traits {<br />
-&nbsp; template &lt;typename Point&gt;<br />
-&nbsp; static inline void set(Segment&amp; segment, direction_1d dir, const Point&amp; value) {<br />
-&nbsp;&nbsp;&nbsp; typename segment_traits&lt;Segment&gt;::point_type p1;<br />
-&nbsp;&nbsp;&nbsp; assign(p1, value);<br />
-&nbsp;&nbsp;&nbsp; segment.set(dir, p1);<br />
+struct segment_mutable_traits {</span></span></p>
+      <p><span style="font-family: Courier New,Courier,monospace;"><span style="font-family: Courier New,Courier,monospace;">&nbsp; typedef typename segment_traits&lt;Segment&gt;::point_type point_type;<br />
+<br />
+&nbsp; static inline void set(Segment&amp; segment, direction_1d dir, const point_type&amp; point) {<br />
+&nbsp;&nbsp;&nbsp; segment.set(dir, p);<br />
 &nbsp; }<br />
       <br />
-&nbsp; template &lt;typename Point1, typename Point2&gt;<br />
-&nbsp; static inline Segment construct(const Point1&amp; low_value, const Point2&amp; high_value) {<br />
-&nbsp;&nbsp;&nbsp; typename segment_traits&lt;Segment&gt;::point_type p1, p2;<br />
-&nbsp;&nbsp;&nbsp; assign(p1, low_value);<br />
-&nbsp;&nbsp;&nbsp; assign(p2, high_value);<br />
-&nbsp;&nbsp;&nbsp; return Segment(p1, p2);<br />
+&nbsp; static inline Segment construct(const point_type&amp; low, const point_type&amp; high) {<br />
+&nbsp;&nbsp;&nbsp; return Segment(low, high);<br />
 &nbsp; }<br />
 };<br />
       </span><span style="font-family: Courier New,Courier,monospace;" /></span></p>
+
 
       <p> Example code <a href="gtl_custom_segment.htm">custom_segment.cpp</a>
 demonstrates how to map a user defined segment class to the library segment_concept.</p>
@@ -263,9 +260,8 @@ void <span style="font-weight: bold;">high</span>(<span style="font-family: Cour
           </tr>
           <tr>
             <td width="586"><font face="Courier New">template
-&lt;typename </font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">, typename scaling_type&gt;<br />
-            </font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; <b>scale</b>(</font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; </font><font face="Courier New">segment</font><font face="Courier New">,<br />
-&nbsp;&nbsp;&nbsp; const scaling_type&amp; factor) </font></td>
+&lt;typename </font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">, typename Scale&gt;<br />
+            </font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; <b>scale</b>(</font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; </font><font face="Courier New">segment</font><font face="Courier New">, const Scale&amp; sc) </font></td>
             <td>Calls
 the scale member function of the scaling type on the low and high endpoint of
 an object that is a model of segment and updates the segment with the
@@ -273,8 +269,7 @@ scaled endpoints.</td>
           </tr>
           <tr>
             <td width="586"><font face="Courier New">template
-&lt;typename </font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">, typename Transform&gt;<br /></font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; <b>transform</b>(</font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; segment,<br />
-&nbsp;&nbsp;&nbsp; const </font><font face="Courier New">Transform</font><font face="Courier New">&amp; transform) </font></td>
+&lt;typename </font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">, typename Transform&gt;<br /></font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; <b>transform</b>(</font><span style="font-family: Courier New,Courier,monospace;">Segment</span><font face="Courier New">&amp; segment, const </font><font face="Courier New">Transform</font><font face="Courier New">&amp; tr) </font></td>
             <td>Calls the transform member function of transform type
 on the low and high endpoints of an object that is a model of segment and updates the segment with the transformed endpoints.</td>
           </tr>
