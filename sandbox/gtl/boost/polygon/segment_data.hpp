@@ -59,16 +59,16 @@ namespace boost { namespace polygon{
 
     inline point_type low() const { return points_[0]; }
 
-    inline point_type& low(const point_type& low) {
+    inline segment_data& low(const point_type& point) {
       points_[0] = low;
       return *this;
     }
 
     inline point_type high() const {return points_[1]; }
 
-    inline point_type& high(const point_type& high) {
-        points_[1] = high;
-        return *this;
+    inline segment_data& high(const point_type& point) {
+      points_[1] = point;
+      return *this;
     }
 
     inline bool operator==(const segment_data& that) const {

@@ -112,26 +112,35 @@ namespace boost { namespace polygon{
 
   template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_set,
       typename is_mutable_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     void
   >::type
-  set(Segment& segment, direction_1d dir, const Point& value) {
-    segment_mutable_traits<Segment>::set(segment, dir, value);
+  set(Segment& segment, direction_1d dir, const Point& point) {
+    segment_mutable_traits<Segment>::set(segment, dir, point);
   }
 
   struct y_s_construct : gtl_yes {};
 
   template <typename Segment, typename Point1, typename Point2>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_4<
       y_s_construct,
       typename is_mutable_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point1>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point2>::type
       >::type
     >::type,
     Segment
@@ -174,8 +183,8 @@ namespace boost { namespace polygon{
     >::type,
     Segment1
   >::type &
-  assign(Segment1& lvalue, const Segment2& rvalue) {
-    return lvalue = copy_construct<Segment1>(rvalue);
+  assign(Segment1& segment1, const Segment2& segment2) {
+    return segment1 = copy_construct<Segment1>(segment2);
   }
 
   struct y_s_equivalence : gtl_yes {};
@@ -201,18 +210,20 @@ namespace boost { namespace polygon{
   struct y_s_on_above_or_below : gtl_yes {};
 
   //-1 for below, 0 for on and 1 for above
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_on_above_or_below,
       typename is_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     bool
   >::type
-  on_above_or_below(const Segment& segment,
-                    const typename segment_point_type<Segment>::type& point) {
+  on_above_or_below(const Segment& segment, const Point& point) {
     typedef polygon_arbitrary_formation<
       typename segment_coordinate_type<Segment>::type
     > paf;
@@ -225,24 +236,25 @@ namespace boost { namespace polygon{
 
   struct y_s_contains : gtl_yes {};
 
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_contains,
       typename is_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     bool
   >::type
-  contains(const Segment& segment,
-           const typename segment_point_type<Segment>::type& point,
-           bool consider_touch = true ) {
-    if(!on_above_or_below(segment, point)) {
+  contains(const Segment& segment, const Point& point, bool consider_touch = true ) {
+    if (!on_above_or_below(segment, point)) {
       rectangle_data<typename segment_coordinate_type<Segment>::type> rect;
       set_points(rect, low(segment), high(segment));
-      if(area(rect) == 0.0) {
-        if(!consider_touch) {
+      if (area(rect) == 0.0) {
+        if (!consider_touch) {
           return !equivalence(point, low(segment)) &&
                  !equivalence(point, high(segment));
         }
@@ -267,16 +279,13 @@ namespace boost { namespace polygon{
     >::type,
     bool
   >::type
-  contains(const Segment1& segment1,
-           const Segment2& segment2,
-           bool consider_touch = true) {
+  contains(const Segment1& segment1, const Segment2& segment2, bool consider_touch = true) {
     return contains(segment1, get(segment2, LOW), consider_touch) &&
            contains(segment1, get(segment2, HIGH), consider_touch);
   }
 
   struct y_s_low : gtl_yes {};
 
-  // get the low point
   template <typename Segment>
   typename enable_if<
     typename gtl_and<
@@ -293,7 +302,6 @@ namespace boost { namespace polygon{
 
   struct y_s_high : gtl_yes {};
 
-  // get the high point
   template <typename Segment>
   typename enable_if<
     typename gtl_and<
@@ -310,7 +318,6 @@ namespace boost { namespace polygon{
 
   struct y_s_center : gtl_yes {};
 
-  // get the center point
   template <typename Segment>
   typename enable_if<
     typename gtl_and<
@@ -329,37 +336,39 @@ namespace boost { namespace polygon{
 
   struct y_s_low2 : gtl_yes {};
 
-  // set the low point to v
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_low2,
       typename is_mutable_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     void
   >::type
-  low(Segment& segment,
-      const typename segment_point_type<Segment>::type& point) {
+  low(Segment& segment, const Point& point) {
     set(segment, LOW, point);
   }
 
   struct y_s_high2 : gtl_yes {};
 
-  // set the high coordinate to v
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_high2,
       typename is_mutable_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     void
   >::type
-  high(Segment& segment,
-       const typename segment_point_type<Segment>::type& point) {
+  high(Segment& segment, const Point& point) {
     set(segment, HIGH, point);
   }
 
@@ -381,7 +390,6 @@ namespace boost { namespace polygon{
 
   struct y_s_scale_up : gtl_yes {};
 
-  // scale segment by factor
   template <typename Segment>
   typename enable_if<
     typename gtl_and<
@@ -465,7 +473,6 @@ namespace boost { namespace polygon{
 
   struct y_s_move : gtl_yes {};
 
-  // move segment by delta
   template <typename Segment>
   typename enable_if<
     typename gtl_and<
@@ -486,19 +493,20 @@ namespace boost { namespace polygon{
 
   struct y_s_convolve : gtl_yes {};
 
-  // convolve this with point
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_convolve,
       typename is_mutable_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     Segment
   >::type &
-  convolve(Segment& segment,
-      const typename segment_point_type<Segment>::type& point) {
+  convolve(Segment& segment, const Point& point) {
     typename segment_point_type<Segment>::type l = low(segment), h = high(segment);
     low(segment, convolve(l, point));
     high(segment, convolve(h, point));
@@ -507,19 +515,20 @@ namespace boost { namespace polygon{
 
   struct y_s_deconvolve : gtl_yes {};
 
-  // deconvolve this with point
-  template <typename Segment>
+  template <typename Segment, typename Point>
   typename enable_if<
-    typename gtl_and<
+    typename gtl_and_3<
       y_s_deconvolve,
       typename is_mutable_segment_concept<
         typename geometry_concept<Segment>::type
+      >::type,
+      typename is_point_concept<
+        typename geometry_concept<Point>::type
       >::type
     >::type,
     Segment
   >::type &
-  deconvolve(Segment& segment,
-      const typename segment_point_type<Segment>::type& point) {
+  deconvolve(Segment& segment, const Point& point) {
     typename segment_point_type<Segment>::type l = low(segment), h = high(segment);
     low(segment, deconvolve(l, point));
     high(segment, deconvolve(h, point));
@@ -528,7 +537,6 @@ namespace boost { namespace polygon{
 
   struct y_s_e_dist : gtl_yes {};
 
-  // distance from a point to a segment
   template <typename Segment, typename Point>
   typename enable_if<
     typename gtl_and_3<
@@ -556,23 +564,22 @@ namespace boost { namespace polygon{
     Unit D = y2 - y1;
     Unit length_sq = C * C + D * D;
     Unit param = (A * C + B * D)/length_sq;
-    if(param > 1.0) {
+    if (param > 1.0) {
       return euclidean_distance(high(segment), point);
-    } else if(param < 0.0) {
+    } else if (param < 0.0) {
       return euclidean_distance(low(segment), point);
     }
     Unit denom = sqrt(length_sq);
-    if(denom == 0.0)
+    if (denom == 0.0)
       return 0.0;
     Unit result = (A * D - C * B) / denom;
-    if(result < 0.0)
+    if (result < 0.0)
       result *= -1;
     return result;
   }
 
   struct y_s_e_dist2 : gtl_yes {};
 
-  // distance between two segments
   template <typename Segment1, typename Segment2>
   typename enable_if<
     typename gtl_and_3<
@@ -590,13 +597,12 @@ namespace boost { namespace polygon{
     typename segment_distance_type<Segment1>::type
         result1 = euclidean_distance(segment1, low(segment2)),
         result2 = euclidean_distance(segment1, high(segment2));
-    if(result2 < result1) return result2;
+    if (result2 < result1) return result2;
     return result1;
   }
 
   struct y_s_e_intersects : gtl_yes {};
 
-  // check if Interval b intersects `this` Interval
   template <typename Segment1, typename Segment2>
   typename enable_if<
     typename gtl_and_3<
@@ -610,12 +616,11 @@ namespace boost { namespace polygon{
     >::type,
     bool
   >::type
-  intersects(const Segment1& segment1,
-             const Segment2& segment2,
+  intersects(const Segment1& segment1, const Segment2& segment2,
              bool consider_touch = true) {
-    if(consider_touch) {
-      if(low(segment1) == low(segment2) || low(segment1) == high(segment2) ||
-         high(segment1) == low(segment2) || high(segment1) == high(segment2))
+    if (consider_touch) {
+      if (low(segment1) == low(segment2) || low(segment1) == high(segment2) ||
+          high(segment1) == low(segment2) || high(segment1) == high(segment2))
         return true;
     }
     typedef polygon_arbitrary_formation<
@@ -632,7 +637,6 @@ namespace boost { namespace polygon{
 
   struct y_s_e_bintersect : gtl_yes {};
 
-  // check if Interval b partially overlaps `this` Interval
   template <typename Segment1, typename Segment2>
   typename enable_if<
     typename gtl_and_3<
@@ -656,7 +660,6 @@ namespace boost { namespace polygon{
 
   struct y_s_abuts1 : gtl_yes {};
 
-  // check if they are end to end
   template <typename Segment1, typename Segment2>
   typename enable_if<
     typename gtl_and_3<
@@ -677,7 +680,6 @@ namespace boost { namespace polygon{
 
   struct y_s_abuts2 : gtl_yes {};
 
-  // check if they are end to end
   template <typename Segment1, typename Segment2>
   typename enable_if<
     typename gtl_and_3<
@@ -730,7 +732,7 @@ namespace boost { namespace polygon{
     assign(h2, high(segment2));
     typename paf::half_edge he1(l1, h1), he2(l2, h2);
     typename paf::compute_intersection_pack pack;
-    if(pack.compute_intersection(pt, he1, he2, projected, round_closest)) {
+    if (pack.compute_intersection(pt, he1, he2, projected, round_closest)) {
       assign(intersection, pt);
       return true;
     }
