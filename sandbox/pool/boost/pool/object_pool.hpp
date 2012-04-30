@@ -63,7 +63,7 @@ class object_pool_base: protected Pool
 { //!
   public:
     typedef T element_type; //!< ElementType
-		typedef typename Pool::user_allocator user_allocator; //!<
+    typedef typename Pool::user_allocator user_allocator; //!<
     typedef typename Pool::size_type size_type; //!<   pool<UserAllocator>::size_type
     typedef typename Pool::difference_type difference_type; //!< pool<UserAllocator>::difference_type
 
@@ -86,7 +86,7 @@ class object_pool_base: protected Pool
     }
 
   public:
-		explicit object_pool_base(const size_type arg_requested_objects)
+    explicit object_pool_base(const size_type arg_requested_objects)
     :
     Pool(sizeof(T), arg_requested_objects)
     { //! Constructs a new (empty by default) ObjectPoolBase.
@@ -286,7 +286,13 @@ to the object_pool's constructor.
 template<typename T, typename UserAllocator>
 class object_pool : public object_pool_base<T, pool<UserAllocator> >
 {
-	public:
+  public:
+    typedef typename object_pool_base<T, pool<UserAllocator> >::element_type element_type; //!< ElementType
+    typedef typename object_pool_base<T, pool<UserAllocator> >::user_allocator user_allocator; //!<
+    typedef typename object_pool_base<T, pool<UserAllocator> >::size_type size_type; //!<   pool<UserAllocator>::size_type
+    typedef typename object_pool_base<T, pool<UserAllocator> >::difference_type difference_type; //!< pool<UserAllocator>::difference_type
+
+  public:
     explicit object_pool(const size_type arg_next_size = 32, const size_type arg_max_size = 0)
     :
     object_pool_base<T, pool<UserAllocator> >(arg_next_size)
@@ -295,13 +301,13 @@ class object_pool : public object_pool_base<T, pool<UserAllocator> >
       //! \pre next_size != 0.
       //! \param arg_max_size Maximum number of chunks to ever request from the system - this puts a cap on the doubling algorithm
       //! used by the underlying pool.
-			set_max_size(arg_max_size);
+      set_max_size(arg_max_size);
     }
 
-	public:
+  public:
     size_type get_next_size() const
     { //! \returns The number of chunks that will be allocated next time we run out of memory.
-			return pool<UserAllocator>::get_next_size();
+      return pool<UserAllocator>::get_next_size();
     }
 
     void set_next_size(const size_type nnext_size)
@@ -310,14 +316,14 @@ class object_pool : public object_pool_base<T, pool<UserAllocator> >
       pool<UserAllocator>::set_next_size(nnext_size);
     }
 
-		size_type get_max_size() const
+    size_type get_max_size() const
     { //! \returns max_size.
-			return pool<UserAllocator>::get_max_size();
+      return pool<UserAllocator>::get_max_size();
     }
 
     void set_max_size(const size_type nmax_size)
     { //! Set max_size.
-			pool<UserAllocator>::set_max_size(nmax_size);
+      pool<UserAllocator>::set_max_size(nmax_size);
     }
 };
 
@@ -347,13 +353,19 @@ The StaticObjectPool allocates all memory needed at initialization.
 template<typename T, typename UserAllocator>
 class static_object_pool : public object_pool_base<T, static_pool<UserAllocator> >
 {
-	public:
-		explicit static_object_pool(const size_type arg_requested_objects)
+  public:
+    typedef typename object_pool_base<T, static_pool<UserAllocator> >::element_type element_type; //!< ElementType
+    typedef typename object_pool_base<T, static_pool<UserAllocator> >::user_allocator user_allocator; //!<
+    typedef typename object_pool_base<T, static_pool<UserAllocator> >::size_type size_type; //!<   pool<UserAllocator>::size_type
+    typedef typename object_pool_base<T, static_pool<UserAllocator> >::difference_type difference_type; //!< pool<UserAllocator>::difference_type
+
+  public:
+    explicit static_object_pool(const size_type arg_requested_objects)
     :
     object_pool_base<T, static_pool<UserAllocator> >(arg_requested_objects)
     { //! Constructs a new (empty by default) StaticObjectPool.
       //! \param arg_requested_objects Number of memory chunks to allocate at initialization. 
-			//!  It defines the maximum number of objects that can be malloc'ed from this pool.
+      //!  It defines the maximum number of objects that can be malloc'ed from this pool.
     }
 };
 
