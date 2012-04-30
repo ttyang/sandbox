@@ -34,17 +34,17 @@ class static_pool: protected pool<UserAllocator>
 		:
 		pool<UserAllocator>(nrequested_size, nrequested_items)
     { 
-			free(pool<UserAllocator>::malloc());
+			free BOOST_PREVENT_MACRO_SUBSTITUTION(pool<UserAllocator>::malloc BOOST_PREVENT_MACRO_SUBSTITUTION());
 		}
 
     void * malloc BOOST_PREVENT_MACRO_SUBSTITUTION()
 		{ 
-			return store().empty() ? NULL : store().malloc();
+			return store().empty() ? NULL : store().malloc BOOST_PREVENT_MACRO_SUBSTITUTION();
 		}
 
 		void * ordered_malloc()
 		{
-			return store().empty() ? NULL : store().malloc();
+			return store().empty() ? NULL : store().malloc BOOST_PREVENT_MACRO_SUBSTITUTION();
 		}
 
 		void * ordered_malloc(size_type n)
@@ -60,7 +60,7 @@ class static_pool: protected pool<UserAllocator>
   public:  // Inherited functions
 		void free BOOST_PREVENT_MACRO_SUBSTITUTION(void * const chunk)
 		{ 
-			return pool<UserAllocator>::free(chunk);
+			return pool<UserAllocator>::free BOOST_PREVENT_MACRO_SUBSTITUTION(chunk);
 		}
 
 		void ordered_free(void * const chunk)
@@ -70,7 +70,7 @@ class static_pool: protected pool<UserAllocator>
 
 		void free BOOST_PREVENT_MACRO_SUBSTITUTION(void * const chunks, const size_type n)
     {
-			return pool<UserAllocator>::free(chunks, n);
+			return pool<UserAllocator>::free BOOST_PREVENT_MACRO_SUBSTITUTION(chunks, n);
     }
 
     void ordered_free(void * const chunks, const size_type n)
@@ -80,7 +80,7 @@ class static_pool: protected pool<UserAllocator>
 
     size_type get_requested_size() const
     { 
-			return pool<UserAllocator>::get_requestedSize();
+			return pool<UserAllocator>::get_requested_size();
 		}
        
     bool is_from(void * const chunk) const
