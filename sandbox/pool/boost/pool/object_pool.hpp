@@ -19,6 +19,8 @@ It also provides automatic destruction of non-deallocated objects.
 
 // boost::pool
 #include <boost/pool/pool.hpp>
+// boost::static_pool
+#include <boost/pool/static_pool.hpp>
 
 // The following code will be put into Boost.Config in a later revision
 #if defined(BOOST_MSVC) || defined(__KCC)
@@ -48,43 +50,31 @@ It also provides automatic destruction of non-deallocated objects.
 <b>T</b> The type of object to allocate/deallocate.
 T must have a non-throwing destructor.
 
-<b>UserAllocator</b>
-Defines the allocator that the underlying Pool will use to allocate memory from the system.
-See <a href="boost_pool/pool/pooling.html#boost_pool.pool.pooling.user_allocator">User Allocators</a> for details.
+<b>Pool</b>
+Defines the underlying Pool will use to manage memory from the system.
+This is intended to be either a Pool or a StaticPool.
 
-Class object_pool is a template class
-that can be used for fast and efficient memory allocation of objects.
-It also provides automatic destruction of non-deallocated objects.
-
-When the object pool is destroyed, then the destructor for type T
-is called for each allocated T that has not yet been deallocated. O(N).
-
-Whenever an object of type ObjectPool needs memory from the system,
-it will request it from its UserAllocator template parameter.
-The amount requested is determined using a doubling algorithm;
-that is, each time more system memory is allocated,
-the amount of system memory requested is doubled.
-Users may control the doubling algorithm by the parameters passed
-to the object_pool's constructor.
+Class object_pool_base is a template base class which is used
+to define classes object_pool and static_object_pool.
 */
 
-template <typename T, typename UserAllocator>
-class object_pool: protected pool<UserAllocator>
+template <typename T, typename Pool>
+class object_pool_base: protected Pool
 { //!
   public:
     typedef T element_type; //!< ElementType
-    typedef UserAllocator user_allocator; //!<
-    typedef typename pool<UserAllocator>::size_type size_type; //!<   pool<UserAllocator>::size_type
-    typedef typename pool<UserAllocator>::difference_type difference_type; //!< pool<UserAllocator>::difference_type
+		typedef typename Pool::user_allocator user_allocator; //!<
+    typedef typename Pool::size_type size_type; //!<   pool<UserAllocator>::size_type
+    typedef typename Pool::difference_type difference_type; //!< pool<UserAllocator>::difference_type
 
   protected:
     //! \return The underlying boost:: \ref pool storage used by *this.
-    pool<UserAllocator> & store()
+    Pool & store()
     { 
       return *this;
     }
     //! \return The underlying boost:: \ref pool storage used by *this.
-    const pool<UserAllocator> & store() const
+    const Pool & store() const
     { 
       return *this;
     }
@@ -96,17 +86,14 @@ class object_pool: protected pool<UserAllocator>
     }
 
   public:
-    explicit object_pool(const size_type arg_next_size = 32, const size_type arg_max_size = 0)
+		explicit object_pool_base(const size_type arg_requested_objects)
     :
-    pool<UserAllocator>(sizeof(T), arg_next_size, arg_max_size)
-    { //! Constructs a new (empty by default) ObjectPool.
-      //! \param next_size Number of chunks to request from the system the next time that object needs to allocate system memory (default 32).
-      //! \pre next_size != 0.
-      //! \param max_size Maximum number of chunks to ever request from the system - this puts a cap on the doubling algorithm
-      //! used by the underlying pool.
+    Pool(sizeof(T), arg_requested_objects)
+    { //! Constructs a new (empty by default) ObjectPoolBase.
+      //! \param arg_requested_objects Number of memory chunks to allocate at initialization.
     }
 
-    ~object_pool();
+    ~object_pool_base();
 
     // Returns 0 if out-of-memory.
     element_type * malloc BOOST_PREVENT_MACRO_SUBSTITUTION()
@@ -204,20 +191,10 @@ class object_pool: protected pool<UserAllocator>
       chunk->~T();
       (free)(chunk);
     }
-
-    size_type get_next_size() const
-    { //! \returns The number of chunks that will be allocated next time we run out of memory.
-      return store().get_next_size();
-    }
-    void set_next_size(const size_type x)
-    { //! Set a new number of chunks to allocate the next time we run out of memory.
-      //! \param x wanted next_size (must not be zero).
-      store().set_next_size(x);
-    }
 };
 
-template <typename T, typename UserAllocator>
-object_pool<T, UserAllocator>::~object_pool()
+template <typename T, typename Pool>
+object_pool_base<T, Pool>::~object_pool_base()
 {
 #ifndef BOOST_POOL_VALGRIND
   // handle trivial case of invalid list.
@@ -258,7 +235,7 @@ object_pool<T, UserAllocator>::~object_pool()
     }
 
     // free storage.
-    (UserAllocator::free)(iter.begin());
+    (Pool::free)(iter.begin());
 
     // increment iter.
     iter = next;
@@ -276,6 +253,109 @@ object_pool<T, UserAllocator>::~object_pool()
    // base class will actually free the memory...
 #endif
 }
+
+/*! \brief A template class
+that can be used for fast and efficient memory allocation of objects.
+It also provides automatic destruction of non-deallocated objects.
+
+\details
+
+<b>T</b> The type of object to allocate/deallocate.
+T must have a non-throwing destructor.
+
+<b>UserAllocator</b>
+Defines the allocator that the underlying Pool will use to allocate memory from the system.
+See <a href="boost_pool/pool/pooling.html#boost_pool.pool.pooling.user_allocator">User Allocators</a> for details.
+
+Class object_pool is a template class
+that can be used for fast and efficient memory allocation of objects.
+It also provides automatic destruction of non-deallocated objects.
+
+When the object pool is destroyed, then the destructor for type T
+is called for each allocated T that has not yet been deallocated. O(N).
+
+Whenever an object of type ObjectPool needs memory from the system,
+it will request it from its UserAllocator template parameter.
+The amount requested is determined using a doubling algorithm;
+that is, each time more system memory is allocated,
+the amount of system memory requested is doubled.
+Users may control the doubling algorithm by the parameters passed
+to the object_pool's constructor.
+*/
+
+template<typename T, typename UserAllocator>
+class object_pool : public object_pool_base<T, pool<UserAllocator> >
+{
+	public:
+    explicit object_pool(const size_type arg_next_size = 32, const size_type arg_max_size = 0)
+    :
+    object_pool_base<T, pool<UserAllocator> >(arg_next_size)
+    { //! Constructs a new (empty by default) ObjectPool.
+      //! \param arg_next_size Number of chunks to request from the system the next time that object needs to allocate system memory (default 32).
+      //! \pre next_size != 0.
+      //! \param arg_max_size Maximum number of chunks to ever request from the system - this puts a cap on the doubling algorithm
+      //! used by the underlying pool.
+			set_max_size(arg_max_size);
+    }
+
+	public:
+    size_type get_next_size() const
+    { //! \returns The number of chunks that will be allocated next time we run out of memory.
+			return pool<UserAllocator>::get_next_size();
+    }
+
+    void set_next_size(const size_type nnext_size)
+    { //! Set a new number of chunks to allocate the next time we run out of memory.
+      //! \param nnext_size wanted next_size (must not be zero).
+      pool<UserAllocator>::set_next_size(nnext_size);
+    }
+
+		size_type get_max_size() const
+    { //! \returns max_size.
+			return pool<UserAllocator>::get_max_size();
+    }
+
+    void set_max_size(const size_type nmax_size)
+    { //! Set max_size.
+			pool<UserAllocator>::set_max_size(nmax_size);
+    }
+};
+
+/*! \brief A template class
+that can be used for fast and efficient memory allocation of objects.
+It also provides automatic destruction of non-deallocated objects.
+
+\details
+
+<b>T</b> The type of object to allocate/deallocate.
+T must have a non-throwing destructor.
+
+<b>UserAllocator</b>
+Defines the allocator that the underlying StaticPool will use to allocate memory from the system.
+See <a href="boost_pool/pool/pooling.html#boost_pool.pool.pooling.user_allocator">User Allocators</a> for details.
+
+Class static_object_pool is a template class
+that can be used for fast and efficient memory allocation of objects.
+It also provides automatic destruction of non-deallocated objects.
+
+When the object pool is destroyed, then the destructor for type T
+is called for each allocated T that has not yet been deallocated. O(N).
+
+The StaticObjectPool allocates all memory needed at initialization.
+*/
+
+template<typename T, typename UserAllocator>
+class static_object_pool : public object_pool_base<T, static_pool<UserAllocator> >
+{
+	public:
+		explicit static_object_pool(const size_type arg_requested_objects)
+    :
+    object_pool_base<T, static_pool<UserAllocator> >(arg_requested_objects)
+    { //! Constructs a new (empty by default) StaticObjectPool.
+      //! \param arg_requested_objects Number of memory chunks to allocate at initialization. 
+			//!  It defines the maximum number of objects that can be malloc'ed from this pool.
+    }
+};
 
 } // namespace boost
 

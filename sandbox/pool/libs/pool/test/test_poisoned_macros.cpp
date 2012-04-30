@@ -36,6 +36,9 @@ template class boost::pool<boost::default_user_allocator_malloc_free>;
 template class boost::static_pool<boost::default_user_allocator_new_delete>;
 template class boost::static_pool<boost::default_user_allocator_malloc_free>;
 
+template class boost::static_object_pool<int, boost::default_user_allocator_new_delete>;
+template class boost::static_object_pool<int, boost::default_user_allocator_malloc_free>;
+
 template class boost::pool_allocator<int, boost::default_user_allocator_new_delete>;
 template class boost::pool_allocator<int, boost::default_user_allocator_malloc_free>;
 template class boost::fast_pool_allocator<int, boost::default_user_allocator_new_delete>;
