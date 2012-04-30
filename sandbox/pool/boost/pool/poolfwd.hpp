@@ -47,6 +47,12 @@ template <typename T, typename UserAllocator = default_user_allocator_new_delete
 class object_pool;
 
 //
+// Location: <boost/pool/static_pool.hpp>
+//
+template<typename UserAllocator = default_user_allocator_new_delete>
+class static_pool;
+
+//
 // Location: <boost/pool/singleton_pool.hpp>
 //
 template <typename Tag, unsigned RequestedSize,
