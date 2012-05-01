@@ -66,7 +66,7 @@ void clean_segment_set(std::vector<SEGMENT_POLYGON> &data) {
   std::vector<std::pair<half_edge, segment_id> > half_edges_out;
   segment_id id = 0;
   half_edges.reserve(data.size());
-  for(std::vector<SEGMENT_POLYGON>::iterator it = data.begin(); it != data.end(); ++it) {
+  for (typename std::vector<SEGMENT_POLYGON>::iterator it = data.begin(); it != data.end(); ++it) {
     POINT_POLYGON l = it->low();
     POINT_POLYGON h = it->high();
     half_edges.push_back(std::make_pair(half_edge(l, h), id++));
@@ -77,12 +77,12 @@ void clean_segment_set(std::vector<SEGMENT_POLYGON> &data) {
       half_edges_out, half_edges.begin(), half_edges.end());
   std::vector<SEGMENT_POLYGON> result;
   result.reserve(half_edges_out.size());
-  for(std::size_t i = 0; i < half_edges_out.size(); ++i) {
+  for (std::size_t i = 0; i < half_edges_out.size(); ++i) {
     id = half_edges_out[i].second;
     POINT_POLYGON l = half_edges_out[i].first.first;
     POINT_POLYGON h = half_edges_out[i].first.second;
     SEGMENT_POLYGON orig_seg = data[id];
-    if(orig_seg.high() < orig_seg.low())
+    if (orig_seg.high() < orig_seg.low())
       std::swap(l, h);
     result.push_back(SEGMENT_POLYGON(l, h));
   }
