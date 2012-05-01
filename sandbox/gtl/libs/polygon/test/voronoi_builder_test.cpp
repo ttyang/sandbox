@@ -294,8 +294,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(square_test1, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(grid_test, T, test_types) {
   vd_type test_output_small, test_output_large;
   std::vector< point_data<T> > point_vec_small, point_vec_large;
-  int grid_size[4] = {10, 33, 101, 163};
-  int max_value[4] = {10, 33, 101, 163};
+  int grid_size[] = {10, 33, 101};
+  int max_value[] = {10, 33, 101};
   int array_length = sizeof(grid_size) / sizeof(int);
   for (int k = 0; k < array_length; k++) {
     test_output_small.clear();
@@ -326,10 +326,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test, T, test_types) {
   boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
   vd_type test_output_small, test_output_large;
   std::vector< point_data<T> > point_vec_small, point_vec_large;
-  int num_points[] = {5, 100, 1000, 10000, 100000};
-  int num_runs[] = {10000, 1000, 100, 10, 1};
-  int mod_koef[] = {10, 100, 100, 1000, 10000};
-  int max_value[] = {5, 50, 50, 5000, 5000};
+  int num_points[] = {10, 100, 1000, 10000};
+  int num_runs[] = {1000, 100, 10, 1};
+  int mod_koef[] = {10, 100, 100, 1000};
+  int max_value[] = {5, 50, 50, 5000};
   int array_length = sizeof(num_points) / sizeof(int);
   for (int k = 0; k < array_length; k++) {
     int koef = std::numeric_limits<int>::max() / max_value[k];
@@ -353,19 +353,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(random_test, T, test_types) {
       BOOST_CHECK_EQUAL(test_output_small.num_edges(), test_output_large.num_edges());
     }
   }
-}
-#endif
-
-#ifdef NDEBUG
-BOOST_AUTO_TEST_CASE_TEMPLATE(enormous_random_test, T, test_types) {
-  boost::mt19937 gen(static_cast<unsigned int>(time(NULL)));
-  vd_type test_output;
-  std::vector< point_data<T> > point_vec;
-  for (int i = 0; i < 1000000; i++)
-    point_vec.push_back(point_data<T>(gen() % 10000 - 5000, gen() % 10000 - 5000));
-  construct_voronoi(point_vec.begin(), point_vec.end(), &test_output);
-  BOOST_CHECK_EQUAL(voronoi_test_helper::verify_output(test_output,
-      voronoi_test_helper::FAST_VERIFICATION), true);
 }
 #endif
 
@@ -495,7 +482,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(segment_site_test8, T, test_types) {
 BOOST_AUTO_TEST_CASE_TEMPLATE(segment_grid_test, T, test_types) {
   vd_type test_output_small, test_output_large;
   std::vector< segment_data<T> > segments_small, segments_large;
-  int grid_size[] = {10, 33, 100};
+  int grid_size[] = {10, 27, 53};
   int max_value[] = {100, 330, 1000};
   int array_length = sizeof(grid_size) / sizeof(int);
   for (int k = 0; k < array_length; k++) {
