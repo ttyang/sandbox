@@ -534,7 +534,46 @@ namespace boost { namespace polygon{
     return segment;
   }
 
-struct y_s_e_intersects : gtl_yes {};
+  struct y_s_abuts1 : gtl_yes {};
+
+  template <typename Segment1, typename Segment2>
+  typename enable_if<
+    typename gtl_and_3<
+      y_s_abuts1,
+      typename is_segment_concept<
+        typename geometry_concept<Segment1>::type
+      >::type,
+      typename is_segment_concept<
+        typename geometry_concept<Segment2>::type
+      >::type
+    >::type,
+    bool
+  >::type
+  abuts(const Segment1& segment1, const Segment2& segment2, direction_1d dir) {
+    return dir.to_int() ? equivalence(low(segment2) , high(segment1)) :
+                          equivalence(low(segment1) , high(segment2));
+  }
+
+  struct y_s_abuts2 : gtl_yes {};
+
+  template <typename Segment1, typename Segment2>
+  typename enable_if<
+    typename gtl_and_3<
+      y_s_abuts2,
+      typename is_segment_concept<
+        typename geometry_concept<Segment1>::type
+      >::type,
+      typename is_segment_concept<
+        typename geometry_concept<Segment2>::type
+      >::type
+    >::type,
+    bool
+  >::type
+  abuts(const Segment1& segment1, const Segment2& segment2) {
+    return abuts(segment1, segment2, HIGH) || abuts(segment1, segment2, LOW);
+  }
+
+  struct y_s_e_intersects : gtl_yes {};
 
   template <typename Segment1, typename Segment2>
   typename enable_if<
@@ -566,6 +605,48 @@ struct y_s_e_intersects : gtl_yes {};
     assign(h2, high(segment2));
     return paf::intersects(typename paf::half_edge(l1, h1),
                            typename paf::half_edge(l2, h2));
+  }
+
+  struct y_s_intersect : gtl_yes {};
+
+  // Set point to the intersection of segment and b
+  template <typename Point, typename Segment1, typename Segment2>
+  typename enable_if<
+    typename gtl_and_4<
+      y_s_intersect,
+      typename is_mutable_point_concept<
+        typename geometry_concept<Point>::type
+      >::type,
+      typename is_segment_concept<
+        typename geometry_concept<Segment1>::type
+      >::type,
+      typename is_segment_concept<
+        typename geometry_concept<Segment2>::type
+      >::type
+    >::type,
+    bool
+  >::type
+  intersection(Point& intersection,
+               const Segment1& segment1,
+               const Segment2& segment2,
+               bool projected = false,
+               bool round_closest = false) {
+    typedef polygon_arbitrary_formation<
+      typename segment_coordinate_type<Segment1>::type
+    > paf;
+    typename paf::Point pt;
+    typename paf::Point l1, h1, l2, h2;
+    assign(l1, low(segment1));
+    assign(h1, high(segment1));
+    assign(l2, low(segment2));
+    assign(h2, high(segment2));
+    typename paf::half_edge he1(l1, h1), he2(l2, h2);
+    typename paf::compute_intersection_pack pack;
+    if (pack.compute_intersection(pt, he1, he2, projected, round_closest)) {
+      assign(intersection, pt);
+      return true;
+    }
+    return false;
   }
 
   struct y_s_e_dist : gtl_yes {};
@@ -636,110 +717,6 @@ struct y_s_e_intersects : gtl_yes {};
         subres1 = (result1 < result2) ? result1 : result2,
         subres2 = (result3 < result4) ? result3 : result4;
     return (subres1 < subres2) ? subres1 : subres2;
-  }
-
-  struct y_s_abuts1 : gtl_yes {};
-
-  template <typename Segment1, typename Segment2>
-  typename enable_if<
-    typename gtl_and_3<
-      y_s_abuts1,
-      typename is_segment_concept<
-        typename geometry_concept<Segment1>::type
-      >::type,
-      typename is_segment_concept<
-        typename geometry_concept<Segment2>::type
-      >::type
-    >::type,
-    bool
-  >::type
-  abuts(const Segment1& segment1, const Segment2& segment2, direction_1d dir) {
-    return dir.to_int() ? equivalence(low(segment2) , high(segment1)) :
-                          equivalence(low(segment1) , high(segment2));
-  }
-
-  struct y_s_abuts2 : gtl_yes {};
-
-  template <typename Segment1, typename Segment2>
-  typename enable_if<
-    typename gtl_and_3<
-      y_s_abuts2,
-      typename is_segment_concept<
-        typename geometry_concept<Segment1>::type
-      >::type,
-      typename is_segment_concept<
-        typename geometry_concept<Segment2>::type
-      >::type
-    >::type,
-    bool
-  >::type
-  abuts(const Segment1& segment1, const Segment2& segment2) {
-    return abuts(segment1, segment2, HIGH) || abuts(segment1, segment2, LOW);
-  }
-
-  struct y_s_e_bintersect : gtl_yes {};
-
-  template <typename Segment1, typename Segment2>
-  typename enable_if<
-    typename gtl_and_3<
-      y_s_e_bintersect,
-      typename is_segment_concept<
-        typename geometry_concept<Segment1>::type
-      >::type,
-      typename is_segment_concept<
-        typename geometry_concept<Segment2>::type
-      >::type
-    >::type,
-    bool
-  >::type
-  boundaries_intersect(const Segment1& segment1, const Segment2& segment2,
-                       bool consider_touch = true) {
-    return (contains(segment1, low(segment2), consider_touch) ||
-            contains(segment1, high(segment2), consider_touch)) &&
-           (contains(segment2, low(segment1), consider_touch) ||
-            contains(segment2, high(segment1), consider_touch));
-  }
-
-  struct y_s_intersect : gtl_yes {};
-
-  // Set point to the intersection of segment and b
-  template <typename Point, typename Segment1, typename Segment2>
-  typename enable_if<
-    typename gtl_and_4<
-      y_s_intersect,
-      typename is_mutable_point_concept<
-        typename geometry_concept<Point>::type
-      >::type,
-      typename is_segment_concept<
-        typename geometry_concept<Segment1>::type
-      >::type,
-      typename is_segment_concept<
-        typename geometry_concept<Segment2>::type
-      >::type
-    >::type,
-    bool
-  >::type
-  intersection(Point& intersection,
-               const Segment1& segment1,
-               const Segment2& segment2,
-               bool projected = false,
-               bool round_closest = false) {
-    typedef polygon_arbitrary_formation<
-      typename segment_coordinate_type<Segment1>::type
-    > paf;
-    typename paf::Point pt;
-    typename paf::Point l1, h1, l2, h2;
-    assign(l1, low(segment1));
-    assign(h1, high(segment1));
-    assign(l2, low(segment2));
-    assign(h2, high(segment2));
-    typename paf::half_edge he1(l1, h1), he2(l2, h2);
-    typename paf::compute_intersection_pack pack;
-    if (pack.compute_intersection(pt, he1, he2, projected, round_closest)) {
-      assign(intersection, pt);
-      return true;
-    }
-    return false;
   }
 
   template <class T>
