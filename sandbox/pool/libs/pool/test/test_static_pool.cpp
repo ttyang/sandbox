@@ -6,10 +6,10 @@
  */
 
 #include <boost/pool/static_pool.hpp>
+#include <boost/pool/array_pool.hpp>
 #include <boost/pool/object_pool.hpp>
 
 #include <boost/assert.hpp>
-#include <boost/detail/lightweight_test.hpp>
 
 // Allocator that checks whether malloc() is called only once
 
@@ -20,7 +20,7 @@ struct user_allocator_once
 
   static char * malloc BOOST_PREVENT_MACRO_SUBSTITUTION(const size_type bytes)
   {
-    BOOST_TEST(reset);
+    BOOST_ASSERT(reset);
     reset = false;
 
     return new (std::nothrow) char[bytes];
@@ -50,18 +50,14 @@ int Count::count = 0;
 
 // Testing static_pool
 
-template<int SIZE>
-void test_static_pool()
+template<typename Pool>
+void test_static_pool(Pool& pool, int pool_size)
 {
-  static const int pool_size = 24;                     // Initial size of pool
   static const int num_iterations = pool_size + 8;     // Number of mallocs we will try on pool in following tests
   static const int num_random_iterations = 2000;       // Number of iterations for test #4 that follows
   static const int consecutive_elements = 5;           // Number of consecutive elements we will request
 
-  void *p[num_iterations];
-
-  user_allocator_once::reset = true;
-  boost::static_pool<user_allocator_once> pool(SIZE, pool_size);
+  void **p = new void *[num_iterations];
 
   for (int n = 0; n < 2; n++)
   {
@@ -69,7 +65,7 @@ void test_static_pool()
     for (int k = 0; k < num_iterations; k++)
     {
       p[k] = pool.malloc();
-      BOOST_TEST((p[k] != NULL) == (k < pool_size));
+      BOOST_ASSERT((p[k] != NULL) == (k < pool_size));
     }
 
     for (int k = 0; k < num_iterations; k++)
@@ -82,7 +78,7 @@ void test_static_pool()
     for (int k = 0; k < num_iterations; k++)
     {
       p[k] = pool.ordered_malloc(consecutive_elements);
-      BOOST_TEST((p[k] != NULL) == (k < pool_size / consecutive_elements));
+      BOOST_ASSERT((p[k] != NULL) == (k < pool_size / consecutive_elements));
     }
 
     for (int k = 0; k < num_iterations; k++)
@@ -92,7 +88,7 @@ void test_static_pool()
     for (int k = 0; k < num_iterations; k++)
     {
       p[k] = pool.malloc();
-      BOOST_TEST((p[k] != NULL) == (k < pool_size));
+      BOOST_ASSERT((p[k] != NULL) == (k < pool_size));
     }
 
     for (int k = 0; k < num_iterations; k++)
@@ -111,11 +107,12 @@ void test_static_pool()
       if ((rand() & 8) && (allocated < pool_size))
       {
         p[allocated++] = pool.malloc();
+        BOOST_ASSERT(p[allocated - 1]);
       }
       else if (allocated > 0)
       {
         void *_p = p[--allocated];
-        BOOST_TEST(_p && pool.is_from(_p));
+        BOOST_ASSERT(_p && pool.is_from(_p));
         pool.free(_p);
       }
     }
@@ -123,20 +120,18 @@ void test_static_pool()
     while (allocated > 0)
       pool.free(p[--allocated]);
   }
+
+  delete[] p;
 }
 
 // Testing static_object_pool
 
-template<typename T>
-void test_static_object_pool()
+template<typename Pool>
+void test_static_object_pool(Pool& pool, int pool_size)
 {
-  static const int pool_size = 24;                     // Initial size of pool
   static const int num_random_iterations = 200;        // Number of iterations f
 
-  user_allocator_once::reset = true;
-  boost::static_object_pool<T, user_allocator_once> pool(pool_size);
-
-  T *p[pool_size];
+  Pool::element_type **p = new Pool::element_type *[pool_size];
 
   // TEST #1
 
@@ -151,26 +146,51 @@ void test_static_object_pool()
     if ((rand() & 8) && (allocated < pool_size))
     {
       p[allocated++] = pool.construct();
+      BOOST_ASSERT(p[allocated - 1]);
     }
     else if (allocated > 0)
     {
       pool.destroy(p[--allocated]);
     }
 
-    BOOST_TEST(Count::count == allocated);
+    BOOST_ASSERT(Count::count == allocated);
   }
 
   while (allocated < pool_size / 4)
     p[allocated++] = pool.construct();
+
+  delete[] p;
 }
 
 // Main
 
 int main()
 {
-  test_static_pool<8>();
-  test_static_object_pool<Count>();
-  BOOST_TEST(Count::count == 0);
+  static const int pool_size = 24;
+
+  { // Testing static_pool
+    user_allocator_once::reset = true;
+    boost::static_pool<user_allocator_once> pool(8, pool_size);
+    test_static_pool(pool, pool_size);
+  }
+
+  { // Testing array_pool
+    boost::array_pool<8, pool_size> pool;
+    test_static_pool(pool, pool_size);
+  }
+
+  { // Testing static_object_pool
+    user_allocator_once::reset = true;
+    boost::static_object_pool<Count, user_allocator_once> pool(pool_size);
+    test_static_object_pool(pool, pool_size);
+  }
+  BOOST_ASSERT(Count::count == 0);
+
+  { // Testing array_object_pool
+    boost::array_object_pool<Count, pool_size> pool;
+    test_static_object_pool(pool, pool_size);
+  }
+  BOOST_ASSERT(Count::count == 0);
 
   return 0;
 }

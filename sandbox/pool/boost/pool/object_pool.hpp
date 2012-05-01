@@ -369,6 +369,46 @@ class static_object_pool : public object_pool_base<T, static_pool<UserAllocator>
     }
 };
 
+/*! \brief A template class
+that can be used for fast and efficient memory allocation of objects.
+It also provides automatic destruction of non-deallocated objects.
+
+\details
+
+<b>T</b> The type of object to allocate/deallocate.
+T must have a non-throwing destructor.
+
+<b>UserAllocator</b>
+Defines the allocator that the underlying StaticPool will use to allocate memory from the system.
+See <a href="boost_pool/pool/pooling.html#boost_pool.pool.pooling.user_allocator">User Allocators</a> for details.
+
+Class static_object_pool is a template class
+that can be used for fast and efficient memory allocation of objects.
+It also provides automatic destruction of non-deallocated objects.
+
+When the object pool is destroyed, then the destructor for type T
+is called for each allocated T that has not yet been deallocated. O(N).
+
+The ArrayObjectPool does not allocate any memory as it's size is known at compile time.
+*/
+
+template<typename T, size_t PoolSize>
+class array_object_pool : public object_pool_base<T, array_pool<sizeof(T), PoolSize> >
+{
+  public:
+    typedef typename object_pool_base<T, array_pool<sizeof(T), PoolSize> >::element_type element_type; //!< ElementType
+    typedef typename object_pool_base<T, array_pool<sizeof(T), PoolSize> >::user_allocator user_allocator; //!<
+    typedef typename object_pool_base<T, array_pool<sizeof(T), PoolSize> >::size_type size_type; //!<   pool<UserAllocator>::size_type
+    typedef typename object_pool_base<T, array_pool<sizeof(T), PoolSize> >::difference_type difference_type; //!< pool<UserAllocator>::difference_type
+
+  public:
+    explicit array_object_pool()
+    :
+    object_pool_base<T, array_pool<sizeof(T), PoolSize> >(PoolSize)
+    { //! Constructs a new (empty by default) ArrayObjectPool.
+    }
+};
+
 } // namespace boost
 
 // The following code might be put into some Boost.Config header in a later revision

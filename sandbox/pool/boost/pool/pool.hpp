@@ -26,6 +26,8 @@
 
 #include <boost/pool/poolfwd.hpp>
 
+// boost::static_unsigned_max
+#include <boost/integer/static_min_max.hpp>
 // boost::math::static_lcm
 #include <boost/math/common_factor_ct.hpp>
 // boost::simple_segregated_storage
