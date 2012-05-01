@@ -16,13 +16,13 @@ project polygon-test
         <library>$(BOOST_ROOT)/libs/test/build//boost_unit_test_framework
     ;
 
-alias "polygon-unit"
+test-suite polygon-unit
     :
         [ run polygon_segment_test.cpp ]
         [ run gtl_boost_unit_test.cpp ]
     ;
 
-alias "voronoi-unit"
+test-suite voronoi-unit
     :
         [ run voronoi_builder_test.cpp ]
         [ run voronoi_ctypes_test.cpp ]
