@@ -38,6 +38,11 @@ project benchmark
         <library>$(SHULL_ROOT)/s_hull.so
     ;
 
+alias "benchmark-general"
+    :
+        [ run voronoi_benchmark.cpp ]
+    ;
+
 alias "benchmark-points"
     :
         [ run voronoi_benchmark_points.cpp ]

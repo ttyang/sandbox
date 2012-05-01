@@ -1,4 +1,4 @@
-// Boost.Polygon library voronoi_benchmark_test.cpp file
+// Boost.Polygon library voronoi_benchmark.cpp file
 
 //          Copyright Andrii Sydorchuk 2010-2012.
 // Distributed under the Boost Software License, Version 1.0.
