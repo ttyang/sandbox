@@ -131,7 +131,7 @@ void test_static_object_pool(Pool& pool, int pool_size)
 {
   static const int num_random_iterations = 200;        // Number of iterations f
 
-  Pool::element_type **p = new Pool::element_type *[pool_size];
+  typename Pool::element_type **p = new typename Pool::element_type *[pool_size];
 
   // TEST #1
 

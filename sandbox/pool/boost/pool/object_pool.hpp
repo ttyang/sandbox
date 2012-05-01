@@ -21,6 +21,8 @@ It also provides automatic destruction of non-deallocated objects.
 #include <boost/pool/pool.hpp>
 // boost::static_pool
 #include <boost/pool/static_pool.hpp>
+// boost::array_pool
+#include <boost/pool/array_pool.hpp>
 
 // The following code will be put into Boost.Config in a later revision
 #if defined(BOOST_MSVC) || defined(__KCC)
