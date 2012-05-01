@@ -10,8 +10,8 @@
 #include <cstdio>
 #include <vector>
 
-#include "boost/polygon/voronoi.hpp"
-#include "boost/polygon/voronoi_utils.hpp"
+#include <boost/polygon/voronoi.hpp>
+#include <boost/polygon/voronoi_utils.hpp>
 using namespace boost::polygon;
 
 struct Point {

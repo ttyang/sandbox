@@ -19,8 +19,8 @@
 #include <boost/test/test_case_template.hpp>
 #include <boost/timer.hpp>
 
-#include "boost/polygon/polygon.hpp"
-#include "boost/polygon/voronoi.hpp"
+#include <boost/polygon/polygon.hpp>
+#include <boost/polygon/voronoi.hpp>
 using namespace boost::polygon;
 
 typedef boost::mpl::list<int> test_types;
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
     typedef point_data<coordinate_type> point_type;
     typedef segment_data<coordinate_type> segment_type;
 
-    segment_set_data<coordinate_type> segments;
+    std::vector<segment_type> segments;
     {
         std::ifstream input_file(SEGMENT_INPUT_FILE);
         int num_segments;
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
         for (int i = 0; i < num_segments; ++i) {
             input_file >> x0 >> y0 >> x1 >> y1;
             point_type p0(x0, y0), p1(x1, y1);
-            segments.insert(segment_type(p0, p1));
+            segments.push_back(segment_type(p0, p1));
         }
         input_file.close();
     }
