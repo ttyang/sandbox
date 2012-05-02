@@ -25,8 +25,8 @@ using namespace boost::polygon;
 
 typedef boost::mpl::list<int> test_types;
 const char *BENCHMARK_FILE = "voronoi_benchmark.txt";
-const char *POINT_INPUT_FILE = "voronoi_input_data/voronoi_point.txt";
-const char *SEGMENT_INPUT_FILE = "voronoi_input_data/voronoi_segment.txt";
+const char *POINT_INPUT_FILE = "input_data/voronoi_point.txt";
+const char *SEGMENT_INPUT_FILE = "input_data/voronoi_segment.txt";
 const int POINT_RUNS = 10;
 const int SEGMENT_RUNS = 10;
 
@@ -42,13 +42,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_random, T, test_types) {
     bench_file << "Voronoi Benchmark Test (time in seconds):" << std::endl;
     bench_file << "| Number of points | Number of tests | Time per one test |" << std::endl;
     bench_file << std::setiosflags(std::ios::right | std::ios::fixed) << std::setprecision(6);
-
-#ifdef NDEBUG
     int max_points = 100000;
-#else
-    int max_points = 100;
-#endif
-
     std::vector<point_type> points;
     coordinate_type x, y;
     for (int num_points = 10; num_points <= max_points; num_points *= 10) {
@@ -75,7 +69,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_random, T, test_types) {
     bench_file.close();
 }
 
-#ifdef NDEBUG
 BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_points, T, test_types) {
     typedef T coordinate_type;
     typedef point_data<coordinate_type> point_type;
@@ -153,4 +146,3 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(benchmark_test_segments, T, test_types) {
     bench_file << "Static test of " << segments.size() << " segments: " << elapsed_time << std::endl;
     bench_file.close();
 }
-#endif
