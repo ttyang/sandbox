@@ -711,8 +711,8 @@ void * pool<UserAllocator>::malloc_need_resize()
   BOOST_USING_STD_MIN();
   if(!max_size)
     next_size <<= 1;
-  else if( next_size*partition_size/requested_size < max_size)
-    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size*requested_size/ partition_size);
+  else if(next_size < max_size * requested_size / partition_size)
+    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size);
 
   //  initialize it,
   store().add_block(node.begin(), node.element_size(), partition_size);
@@ -751,8 +751,8 @@ void * pool<UserAllocator>::ordered_malloc_need_resize()
   BOOST_USING_STD_MIN();
   if(!max_size)
     next_size <<= 1;
-  else if( next_size*partition_size/requested_size < max_size)
-    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size*requested_size/ partition_size);
+  else if(next_size < max_size * requested_size / partition_size)
+    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size);
 
   //  initialize it,
   //  (we can use "add_block" here because we know that
@@ -843,8 +843,8 @@ void * pool<UserAllocator>::ordered_malloc(const size_type n)
   BOOST_USING_STD_MIN();
   if(!max_size)
     next_size <<= 1;
-  else if( next_size*partition_size/requested_size < max_size)
-    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size*requested_size/ partition_size);
+  else if(next_size < max_size * requested_size / partition_size)
+    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size);
 
   //  insert it into the list,
   //   handle border case.
