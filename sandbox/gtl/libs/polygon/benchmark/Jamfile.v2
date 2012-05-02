@@ -20,6 +20,7 @@ import testing ;
 #        <library>$(CGAL_ROOT)/auxiliary/gmp/lib/libmpfr-4.lib
 #        <library>$(BOOST_ROOT)/libs/thread/build//boost_thread
 #        <library>$(BOOST_ROOT)/lib/libboost_thread-vc90-mt-1_48.lib
+#        <library>$(BOOST_ROOT)/libs/test/build//boost_unit_test_framework
 #        <include>$(SHULL_ROOT)
 #    ;
 
@@ -36,6 +37,7 @@ project benchmark
         <library>$(CGAL_ROOT)/lib/libCGAL_Core.so
         <include>$(SHULL_ROOT)
         <library>$(SHULL_ROOT)/s_hull.so
+        <library>$(BOOST_ROOT)/libs/test/build//boost_unit_test_framework
     ;
 
 alias "benchmark-general"

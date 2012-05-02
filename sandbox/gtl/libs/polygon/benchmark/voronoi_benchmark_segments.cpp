@@ -66,7 +66,7 @@ void clean_segment_set(std::vector<SEGMENT_POLYGON> &data) {
   std::vector<std::pair<half_edge, segment_id> > half_edges_out;
   segment_id id = 0;
   half_edges.reserve(data.size());
-  for (typename std::vector<SEGMENT_POLYGON>::iterator it = data.begin(); it != data.end(); ++it) {
+  for (std::vector<SEGMENT_POLYGON>::iterator it = data.begin(); it != data.end(); ++it) {
     POINT_POLYGON l = it->low();
     POINT_POLYGON h = it->high();
     half_edges.push_back(std::make_pair(half_edge(l, h), id++));
