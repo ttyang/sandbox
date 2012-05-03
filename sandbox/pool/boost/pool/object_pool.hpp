@@ -190,8 +190,11 @@ class object_pool_base: protected Pool
       //! p->~ElementType(); this->free(p);
       //!
       //! \pre p must have been previously allocated from *this via a call to \ref construct.
-      chunk->~T();
-      (free)(chunk);
+      if (chunk)
+      {
+        chunk->~T();
+        (free)(chunk);
+      }
     }
 };
 

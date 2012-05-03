@@ -453,14 +453,14 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
     // pre: 'chunk' must have been previously
     //        returned by *this.malloc().
     void free BOOST_PREVENT_MACRO_SUBSTITUTION(void * const chunk)
-    { //!   Deallocates a chunk of memory. Note that chunk may not be 0. O(1).
+    { //!   Deallocates a chunk of memory. O(1).
       //!
       //! Chunk must have been previously returned by t.malloc() or t.ordered_malloc().
       //! Assumes that chunk actually refers to a block of chunks
       //! spanning n * partition_sz bytes.
       //! deallocates each chunk in that block.
-      //! Note that chunk may not be 0. O(n).
-      (store().free)(chunk);
+      if (chunk)
+        (store().free)(chunk);
     }
 
     // pre: 'chunk' must have been previously
@@ -468,9 +468,10 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
     void ordered_free(void * const chunk)
     { //! Same as above, but is order-preserving.
       //!
-      //! Note that chunk may not be 0. O(N) with respect to the size of the free list.
+      //! O(N) with respect to the size of the free list.
       //! chunk must have been previously returned by t.malloc() or t.ordered_malloc().
-      store().ordered_free(chunk);
+      if (chunk)
+        store().ordered_free(chunk);
     }
 
     // pre: 'chunk' must have been previously
@@ -480,14 +481,14 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //!
       //! chunk must have been previously returned by t.ordered_malloc(n)
       //! spanning n * partition_sz bytes.
-      //! Deallocates each chunk in that block.
-      //! Note that chunk may not be 0. O(n).
+      //! Deallocates each chunk in that block. O(n).
       const size_type partition_size = alloc_size();
       const size_type total_req_size = n * requested_size;
       const size_type num_chunks = total_req_size / partition_size +
           ((total_req_size % partition_size) ? true : false);
 
-      store().free_n(chunks, num_chunks, partition_size);
+      if (chunks)
+        store().free_n(chunks, num_chunks, partition_size);
     }
 
     // pre: 'chunk' must have been previously
@@ -496,7 +497,7 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
     { //! Assumes that chunk actually refers to a block of chunks spanning n * partition_sz bytes;
       //! deallocates each chunk in that block.
       //!
-      //! Note that chunk may not be 0. Order-preserving. O(N + n) where N is the size of the free list.
+      //! Order-preserving. O(N + n) where N is the size of the free list.
       //! chunk must have been previously returned by t.malloc() or t.ordered_malloc().
 
       const size_type partition_size = alloc_size();
@@ -504,7 +505,8 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       const size_type num_chunks = total_req_size / partition_size +
           ((total_req_size % partition_size) ? true : false);
 
-      store().ordered_free_n(chunks, num_chunks, partition_size);
+      if (chunks)
+        store().ordered_free_n(chunks, num_chunks, partition_size);
     }
 
     // is_from() tests a chunk to determine if it was allocated from *this

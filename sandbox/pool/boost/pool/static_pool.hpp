@@ -39,12 +39,7 @@ class static_pool: protected pool<UserAllocator>
     :
     pool<UserAllocator>(nrequested_size, nrequested_items)
     { 
-#if 1
-      void *p = pool<UserAllocator>::malloc BOOST_PREVENT_MACRO_SUBSTITUTION();
-      p ? free BOOST_PREVENT_MACRO_SUBSTITUTION(p) : (void)(0);
-#else
       free BOOST_PREVENT_MACRO_SUBSTITUTION(pool<UserAllocator>::malloc BOOST_PREVENT_MACRO_SUBSTITUTION());
-#endif
     }
 
     void * malloc BOOST_PREVENT_MACRO_SUBSTITUTION()
