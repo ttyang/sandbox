@@ -26,6 +26,8 @@
 
 #include <boost/pool/poolfwd.hpp>
 
+// std::numeric_limits
+#include <boost/limits.hpp>
 // boost::static_unsigned_max
 #include <boost/integer/static_min_max.hpp>
 // boost::math::static_lcm
@@ -357,6 +359,15 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       return s;
     }
 
+    size_type max_chunks() const
+    { //! Calculated maximum number of memory chunks that can be allocated in a single call by this Pool.
+      size_type partition_size = alloc_size();
+      size_type POD_size = math::static_lcm<sizeof(size_type), sizeof(void *)>::value + sizeof(size_type);
+      size_type max_chunks = (std::numeric_limits<size_type>::max() - POD_size) / alloc_size();
+    
+      return max_chunks;
+    }
+
     static void * & nextof(void * const ptr)
     { //! \returns Pointer dereferenced.
       //! (Provided and used for the sake of code readability :)
@@ -376,7 +387,9 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //!   is the number of chunks to request from the system
       //!   the first time that object needs to allocate system memory.
       //!   The default is 32. This parameter may not be 0.
-      //! \param nmax_size is the maximum number of chunks to allocate in one block.
+      //! \param nmax_size is the maximum number of chunks to allocate in one block.			
+      set_next_size(nnext_size);
+      set_max_size(nmax_size);
     }
 
     ~pool()
@@ -399,9 +412,9 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       return next_size;
     }
     void set_next_size(const size_type nnext_size)
-    { //! Set number of chunks to request from the system the next time that object needs to allocate system memory. This value should never be set to 0.
-      //! \returns nnext_size.
-      next_size = start_size = nnext_size;
+    { //! Set number of chunks to request from the system the next time that object needs to allocate system memory. This value should never be set to 0.     
+      BOOST_USING_STD_MIN();
+      next_size = start_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(nnext_size, max_chunks());
     }
     size_type get_max_size() const
     { //! \returns max_size.
@@ -409,7 +422,8 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
     }
     void set_max_size(const size_type nmax_size)
     { //! Set max_size.
-      max_size = nmax_size;
+      BOOST_USING_STD_MIN();
+      max_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(nmax_size, max_chunks());
     }
     size_type get_requested_size() const
     { //!   \returns the requested size passed into the constructor.
@@ -712,9 +726,9 @@ void * pool<UserAllocator>::malloc_need_resize()
 
   BOOST_USING_STD_MIN();
   if(!max_size)
-    next_size <<= 1;
+    set_next_size(next_size << 1);
   else if(next_size < max_size * requested_size / partition_size)
-    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size);
+    set_next_size(min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size));
 
   //  initialize it,
   store().add_block(node.begin(), node.element_size(), partition_size);
@@ -752,9 +766,9 @@ void * pool<UserAllocator>::ordered_malloc_need_resize()
 
   BOOST_USING_STD_MIN();
   if(!max_size)
-    next_size <<= 1;
+    set_next_size(next_size << 1);
   else if(next_size < max_size * requested_size / partition_size)
-    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size);
+    set_next_size(min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size));
 
   //  initialize it,
   //  (we can use "add_block" here because we know that
@@ -796,6 +810,8 @@ void * pool<UserAllocator>::ordered_malloc(const size_type n)
 { //! Gets address of a chunk n, allocating new memory if not already available.
   //! \returns Address of chunk n if allocated ok.
   //! \returns 0 if not enough memory for n chunks.
+  if (n > max_chunks())
+    return 0;
 
   const size_type partition_size = alloc_size();
   const size_type total_req_size = n * requested_size;
@@ -844,9 +860,9 @@ void * pool<UserAllocator>::ordered_malloc(const size_type n)
 
   BOOST_USING_STD_MIN();
   if(!max_size)
-    next_size <<= 1;
+    set_next_size(next_size << 1);
   else if(next_size < max_size * requested_size / partition_size)
-    next_size = min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size);
+    set_next_size(min BOOST_PREVENT_MACRO_SUBSTITUTION(next_size << 1, max_size * requested_size / partition_size));
 
   //  insert it into the list,
   //   handle border case.
