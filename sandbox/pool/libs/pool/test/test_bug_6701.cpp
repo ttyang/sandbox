@@ -17,9 +17,6 @@ int main()
   void *x = p.malloc();
   BOOST_ASSERT(!x);
   
-  BOOST_ASSERT(std::numeric_limits<size_t>::max() / 1024 >= p.get_next_size());
-  BOOST_ASSERT(std::numeric_limits<size_t>::max() / 1024 >= p.get_max_size());
-
   void *y = p.ordered_malloc(std::numeric_limits<size_t>::max() / 768);
   BOOST_ASSERT(!y);
 
