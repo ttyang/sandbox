@@ -201,7 +201,6 @@ class object_pool_base: protected Pool
 template <typename T, typename Pool>
 object_pool_base<T, Pool>::~object_pool_base()
 {
-#ifndef BOOST_POOL_VALGRIND
   // handle trivial case of invalid list.
   if (!this->list.valid())
     return;
@@ -249,14 +248,6 @@ object_pool_base<T, Pool>::~object_pool_base()
   // Make the block list empty so that the inherited destructor doesn't try to
   // free it again.
   this->list.invalidate();
-#else
-   // destruct all used elements:
-   for(std::set<void*>::iterator pos = this->used_list.begin(); pos != this->used_list.end(); ++pos)
-   {
-      static_cast<T*>(*pos)->~T();
-   }
-   // base class will actually free the memory...
-#endif
 }
 
 /*! \brief A template class
