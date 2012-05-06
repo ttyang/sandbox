@@ -42,6 +42,12 @@ struct reify_apply_impl
         , TailAbstract...
         >* tar_src_p
       )const
+      /**@brief
+       *  While there are more abstract arguments,
+       *  create a reifier to convert the next
+       *  abstract arg pointer to a concrete arg pointer,
+       *  and recurse.
+       */
     {
             typedef
           ptrs_target_source
@@ -58,7 +64,9 @@ struct reify_apply_impl
           ( *this
           , tar_src_p
           );
-        return reifier();
+        return reifier.reify_rest()
+          //Recurse.  This calls back to one of this->operator()(...).
+          ;
     }
 
       template
@@ -75,17 +83,18 @@ struct reify_apply_impl
       /**@brief
        *  When there are no more abstract arguments
        *  ( presumably after a number of calls to
-       *    the previous member function.
-       *  ) apply my_functor to *tar_src_p.
+       *    the previous operator()(...) member function.
+       *  ) apply my_functor to *tar_src_p nd return result.
        */
     {
         #ifdef MULTIPLE_DISPATCH_DEBUG
           std::cout
-            <<"package<ArgsConcrete...>="
+            <<__FILE__<<":"<<__LINE__
+            <<":package<ArgsConcrete...>="
             <<utility::demangled_type_name<mpl::package<ArgsConcrete...> >()
             <<"\n";
-          return result_type();
-        #else
+          //return result_type();
+        #endif
             apply_unpack
             < typename mpl::package_range_c
               < unsigned
@@ -95,7 +104,6 @@ struct reify_apply_impl
             >
           uapp;
           return uapp(my_functor,*tar_src_p);
-        #endif
     }
 
 };    
@@ -120,7 +128,7 @@ reify_apply
     ... a_args_abstract
   )
   /**@brief
-   *  Applies Reifier to each argument in a_args_abstract 
+   *  Applies Reifier to each "abstract" argument in a_args_abstract 
    *  to produce a list of concrete arguments, which 
    *  are then passed to a_functor.
    */  
@@ -129,7 +137,8 @@ reify_apply
       < typename remove_reference<ArgsAbstract>::type...
       >::type
     ptrs_target_src_v(a_args_abstract...)
-    //creates container of void pointers to a_args_abstract...
+    //creates container of void pointers to
+    //abstract arguments in a_args_abstract...
     ;
     reify_apply_impl<Reifier,Functor> rai(a_functor); 
   #ifdef MULTIPLE_DISPATCH_DEBUG

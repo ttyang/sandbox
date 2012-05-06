@@ -8,8 +8,7 @@
 //  This software is provided "as is" without express or implied
 //  warranty, and with no claim as to its suitability for any purpose.
 //
-#include <boost/composite_storage/functor_indexed.hpp>
-#include <boost/composite_storage/pack/multiple_dispatch/replace_source_with_target_ptr.hpp>
+#include <boost/composite_storage/pack/multiple_dispatch/reifier_indexed_base.hpp>
 
 namespace boost
 {
@@ -25,69 +24,31 @@ namespace multiple_dispatch
   , typename ArgsConcreteAbstract
   >
 struct reifier_switch
-;
-  template
-  < typename ReifyApply
-  , typename... HeadConcrete
-  , typename HeadAbstract
-  , typename... TailAbstract
-  >
-struct reifier_switch
+: reifier_indexed_base
   < ReifyApply
-  , ptrs_target_source
-    < mpl::package
-      < HeadConcrete...
-      >
-    , HeadAbstract
-    , TailAbstract...
-    >
+  , ArgsConcreteAbstract
   >
   /**@brief
-   *  Uses switch statment (in superclass) 
-   *  to convert HeadAbstract,
-   *  a composite_storage<one_of_maybe, _, TailConcrete...>
-   *  to one of the TailConcretes, and then call
-   *  a ReifyApply with the converted ptrs_target_source.
+   *  Uses switch statment (in functor_indexed::apply)
+   *  to convert "abstract" head of an ArgsConcreteAbstract to
+   *  its "concrete" counterpart, and then call
+   *  a ReifyApply with the converted ArgsConcreteAbstract.
    */
-: functor_indexed::layout_visitor<HeadAbstract>
 {
         typedef
-      typename functor_indexed::layout_visitor<HeadAbstract>::case_type
-    case_type
-    ;
-        typedef
-      typename HeadAbstract::index_type
-    index_type
-    ;
-      ReifyApply const&
-    my_reify
-    ;
-        typedef
-      ptrs_target_source
-      < mpl::package
-        < HeadConcrete...
-        >
-      , HeadAbstract
-      , TailAbstract...
+      reifier_indexed_base
+      < ReifyApply
+      , ArgsConcreteAbstract
       >
-    now_tar_src_type
-    ;
-      now_tar_src_type*
-    my_tar_src
-    ;
-      HeadAbstract&
-    my_head_abstract
+    super_t
     ;
     reifier_switch
       ( ReifyApply const& a_reify
-      , now_tar_src_type* a_ptrs_tar_src
+      , ArgsConcreteAbstract* a_ptrs_tar_src
       )
-    : my_reify(a_reify)
-    , my_tar_src(a_ptrs_tar_src)
-    , my_head_abstract
-      ( my_tar_src->template project
-        < sizeof...(HeadConcrete)
-        >()
+    : super_t
+      ( a_reify
+      , a_ptrs_tar_src
       )
     {
     }
@@ -95,54 +56,18 @@ struct reifier_switch
       typename ReifyApply::result_type 
     result_type
     ;
- private:   
-      template
-      < typename TailConcrete
-      >
       result_type
-    push_back_concrete
-      ( TailConcrete& a_tail_concrete
-      )const
-    {
-            typedef 
-          ptrs_target_source
-          < mpl::package
-            < HeadConcrete...
-            , TailConcrete
-            >
-          , TailAbstract...
-          >
-        next_tar_src_t;
-          next_tar_src_t*
-        next_tar_src_p=replace_source_with_target_ptr(my_tar_src,a_tail_concrete);
-        return my_reify(next_tar_src_p);
-    }
-    
- public:
-      template
-      < case_type CaseValue
-      >
-      result_type 
-    operator()
-      ( mpl::integral_c<case_type,CaseValue> index
-      )const
-    {
-        index_type const index_concrete=index_type(CaseValue);
-            typedef 
-          decltype(my_head_abstract.template project<index_concrete>()) 
-        tail_type;
-        tail_type a_tail_concrete=my_head_abstract.template project<index_concrete>();
-        return this->push_back_concrete(a_tail_concrete);
-    }
-        
-      result_type
-    operator()
+    reify_rest
       ( void
       )const
+      /**@brief
+       *  Indirectly, calls this->super_t::operator()( mpl::integral_c<case_type,CaseValue> index)
+       *  where CaseValue == head_abstract().which().
+       */
     {
-        return functor_indexed::apply//calls this->operator()(_)
+        return functor_indexed::apply
           ( *this
-          , my_head_abstract.which()//the CaseValue template arg to this->operator()(_).
+          , this->head_abstract().which()
           );
     }
 };

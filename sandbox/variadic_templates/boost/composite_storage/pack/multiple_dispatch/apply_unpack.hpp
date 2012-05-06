@@ -12,6 +12,7 @@
 #include <boost/mpl/package_range_c.hpp>
 #include <boost/type_traits/remove_cv.hpp>
 #include <exception>
+//#define APPLY_UNPACK_USER_CHECKED_ARGS
 #ifndef APPLY_UNPACK_USER_CHECKED_ARGS
   #include <boost/function_types/can_be_called.hpp>
 #endif  
@@ -70,7 +71,7 @@ namespace multiple_dispatch
   template <typename Functor, typename... Args>
     typename functor_result_type<Functor>::type
   apply_ftor_callable_args( mpl::bool_<true>, Functor& ftor
-    , Args const&... args)
+    , Args&... args)
   {
       return ftor(args...);
   };
@@ -78,7 +79,7 @@ namespace multiple_dispatch
   template <typename Functor, typename... Args>
     typename functor_result_type<Functor>::type
   apply_ftor_callable_args( mpl::bool_<false>, Functor& ftor
-    , Args const&... args
+    , Args&... args
     )
   {
       throw bad_functor_args<Functor(Args const&...)>();
@@ -89,7 +90,7 @@ namespace multiple_dispatch
     typename functor_result_type<Functor>::type
   apply_ftor_check_args
     ( Functor& ftor
-    , Args const&... args
+    , Args&... args
     )
     /**@brief
      *  If ftor is callable with args..., does so.
@@ -98,7 +99,7 @@ namespace multiple_dispatch
      */
   {
       typedef typename function_types
-        ::can_be_called<Functor(Args const&...)>::type
+        ::can_be_called<Functor(Args&...)>::type
       is_ftor_args_callable;
       return apply_ftor_callable_args( is_ftor_args_callable()
         , ftor, args...);
@@ -113,8 +114,30 @@ namespace multiple_dispatch
   {
       template <typename Functor, typename ArgsPacked>
         typename functor_result_type<Functor>::type
-      operator()( Functor& a_functor, ArgsPacked const& a_args)
+      operator()
+        ( Functor& a_functor
+        ,   ArgsPacked const
+          & a_args
+        )
       {
+          #ifdef MULTIPLE_DISPATCH_DEBUG
+            std::cout
+            <<__FILE__<<":"<<__LINE__
+            <<":apply_unpack"
+            <<"\n:ArgsPacked="
+            <<utility::demangled_type_name<ArgsPacked>()
+            <<"\n:package_c<unsigned, Indices...>="
+            <<utility::demangled_type_name<mpl::package_c<unsigned, Indices...> >()
+          #if 0
+            //The demangled_type_names uses mpl::for_each, and that requires 
+            //all types being projected have public default CTORS.  Hence,
+            //The above #if is used to disable this call, if that requirement
+            //is not met.
+            <<"\n:a_args.project<Indices>()...="
+            <<utility::demangled_type_names(a_args.template project<Indices>()...)
+          #endif
+            <<"\n";
+          #endif
           return 
           #ifndef APPLY_UNPACK_USER_CHECKED_ARGS
             apply_ftor_check_args( a_functor

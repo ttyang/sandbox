@@ -74,8 +74,10 @@ void_ptr_array
         ptr_type
       my_ptrs[size]
         ;
+    #define VOID_PTR_ARRAY_NO_INIT_LIST 1
+    #ifndef VOID_PTR_ARRAY_NO_INIT_LIST
     #define VOID_PTR_ARRAY_NO_INIT_LIST defined(__clang__)
-    //#define VOID_PTR_ARRAY_NO_INIT_LIST 1
+    #endif
     #if VOID_PTR_ARRAY_NO_INIT_LIST
         template
         < typename... Refs
@@ -147,9 +149,9 @@ void_ptr_array
               typename result_type<Index>::type
             arg_type;
           #ifdef MULTIPLE_DISPATCH_DEBUG
-            result_type<Index>();
             std::cout
-              <<"project.\n"
+              <<__FILE__<<":"<<__LINE__
+              <<":project(void)const.\n"
               <<":Index="
               <<Index
               <<"\n"

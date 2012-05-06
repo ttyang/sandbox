@@ -8,7 +8,7 @@
 //  This software is provided "as is" without express or implied
 //  warranty, and with no claim as to its suitability for any purpose.
 //
-#include <boost/composite_storage/pack/multiple_dispatch/replace_source_with_target_ptr.hpp>
+#include <boost/composite_storage/pack/multiple_dispatch/reifier_base.hpp>
 #include <boost/mpl/pair.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/identity.hpp>
@@ -162,18 +162,7 @@ struct reifier_visit_concrete_pack
   , typename ConcreteHead
   >
 struct reifier_visit_concrete_seq
-{
-      typename ReifierVisitor::first
-    visit(ConcreteHead const&a_host)const
-    {
-            typedef
-          typename ReifierVisitor::second
-        self_derived;
-          self_derived  const&
-        self_value=static_cast<self_derived const&>(*this);
-        return self_value.push_back_concrete(a_host);
-    }
-};  
+  ;
   template
   < typename ReifierVisitor
   , typename... ConcreteHosts
@@ -232,6 +221,16 @@ struct reifier_visitor
     , TailAbstract...
     >
   >
+: reifier_base
+  < ReifyApply
+  , ptrs_target_source //container of pointers.
+    < mpl::package
+      < HeadConcrete...
+      >
+    , HeadAbstract
+    , TailAbstract...
+    >
+  >
   /**@brief
    *  Uses visitor design pattern (in superclass)
    *  to convert HeadAbstract* to its concrete
@@ -239,7 +238,7 @@ struct reifier_visitor
    *  ptrs_target_source, and then call
    *  a ReifyApply with the modified ptrs_target_source.
    */
-: reifier_visit_concrete_seq 
+, reifier_visit_concrete_seq 
   //Uses CRTP:
   //  http://www.informit.com/articles/article.aspx?p=31473&seqNum=3
   //to implement concrete visitor in the visitor design pattern:
@@ -268,9 +267,6 @@ struct reifier_visitor
     >::type
   >
 {
-      ReifyApply const&
-    my_reify
-    ;
         typedef
       ptrs_target_source
       < mpl::package
@@ -281,22 +277,20 @@ struct reifier_visitor
       >
     now_tar_src_type
     ;
-      now_tar_src_type*
-    my_tar_src
-    ;
-      HeadAbstract&
-    my_head_abstract
+        typedef
+      reifier_base
+      < ReifyApply
+      , now_tar_src_type
+      >
+    super_t
     ;
     reifier_visitor
       ( ReifyApply const& a_reify
       , now_tar_src_type* a_ptrs_tar_src
       )
-    : my_reify(a_reify)
-    , my_tar_src(a_ptrs_tar_src)
-    , my_head_abstract
-      ( my_tar_src->template project
-        < sizeof...(HeadConcrete)
-        >()
+    : super_t
+      ( a_reify
+      , a_ptrs_tar_src
       )
     {
     }
@@ -304,36 +298,13 @@ struct reifier_visitor
       typename ReifyApply::result_type 
     result_type
     ;
-      template
-      < typename TailConcrete
-      >
       result_type
-    push_back_concrete
-      ( TailConcrete& a_tail_concrete
-      )const
-    {
-            typedef 
-          ptrs_target_source
-          < mpl::package
-            < HeadConcrete...
-            , TailConcrete
-            >
-          , TailAbstract...
-          >
-        next_tar_src_t;
-          next_tar_src_t*
-        next_tar_src_p=replace_source_with_target_ptr(my_tar_src,a_tail_concrete);
-        return my_reify(next_tar_src_p);
-    }
-    
-      result_type
-    operator()
+    reify_rest
       ( void
       )const
     {
-        return my_head_abstract.accept(*this);
+        return this->head_abstract().accept(*this);
     }
-
 };
 
 }//exit namespace multiple_dispatch
