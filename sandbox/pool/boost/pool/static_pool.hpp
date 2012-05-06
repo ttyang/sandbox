@@ -87,6 +87,11 @@ class static_pool: protected pool<UserAllocator>
     { 
       return pool<UserAllocator>::get_requested_size();
     }
+
+    size_type get_size() const
+    {
+      return pool<UserAllocator>::get_size();
+    }
        
     bool is_from(void * const chunk) const
     { 

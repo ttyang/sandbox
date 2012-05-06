@@ -427,6 +427,16 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //! (This value will not change during the lifetime of a Pool object).
       return requested_size;
     }
+    size_type get_size() const
+    { //! \returns the total number of chunks (allocated or not) currently held by this pool
+      size_type partition_size = alloc_size();
+      size_type size = 0;
+
+      for (details::PODptr<size_type> podptr = list; podptr.valid(); podptr = podptr.next())
+        size += podptr.element_size() / partition_size;
+  
+      return size;
+    }
 
     // Both malloc and ordered_malloc do a quick inlined check first for any
     //  free chunks.  Only if we need to get another memory block do we call

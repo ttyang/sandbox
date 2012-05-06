@@ -321,6 +321,11 @@ class object_pool : public object_pool_base<T, pool<UserAllocator> >
     { //! Set max_size.
       pool<UserAllocator>::set_max_size(nmax_size);
     }
+
+    size_type get_size() const
+    {
+      return pool<UserAllocator>::get_size();
+    }
 };
 
 /*! \brief A template class
