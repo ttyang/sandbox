@@ -1,9 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:(null)1="http://www.w3.org/TR/REC-html40" lang="en"><head>
-<!--
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:(null)1="http://www.w3.org/TR/REC-html40" lang="en"><head><!--
     Copyright 2009-2010 Intel Corporation
     license banner
 --><title>Boost Polygon Library: Segment Concept</title>
+
+
 
 
 
@@ -133,13 +134,7 @@ struct segment_mutable_traits {<br />
 &nbsp; static inline Segment construct(const point_type&amp; low, const point_type&amp; high) {<br />
 &nbsp;&nbsp;&nbsp; return Segment(low, high);<br />
 &nbsp; }<br />
-};<br />
-      </span><span style="font-family: Courier New,Courier,monospace;" /></span></p>
-
-
-      <p> Example code <a href="gtl_custom_segment.htm">custom_segment.cpp</a>
-demonstrates how to map a user defined segment class to the library segment_concept.</p>
-      <h2>Functions</h2>
+};</span></span></p><h2>Functions</h2>
       <table style="width: 100%;" id="table1" border="1">
         <tbody>
           <tr>
@@ -328,19 +323,7 @@ bool <span style="font-weight: bold;">abuts</span>(const Segment1&amp; segment1,
             </td>
           </tr>
           
-          <tr>
-            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename Point, typename Segment1, typename Segment2&gt;<br />
-
-bool <span style="font-weight: bold;">intersection</span>(Point&amp; point,<br />
-
-&nbsp;&nbsp;&nbsp; const Segment1&amp; segment1, const Segment2&amp; segment2,<br />
-
-&nbsp;&nbsp;&nbsp; bool projected = false, bool round_closest = false)</td>
-            <td>Returns
-true and computes the intersection point of the two objects that model
-a segment in case those intersect, else returns false.
-            </td>
-          </tr>
+          
 <tr>
             <td style="font-family: Courier New,Courier,monospace;"><font face="Courier New">template
 &lt;typename </font><span style="font-family: Courier New,Courier,monospace;">Segment, typename Point</span><font face="Courier New">&gt;<br />distance_type <b>euclidean_distance</b>(<br />
@@ -371,10 +354,7 @@ T is the coordinate type.</p>
       <p>This data type is used internally when a segment is needed and
 is available to the library user who finds it convenient to use a
 library segment data type instead of providing their own.&nbsp; The data
-type is implemented to be convenient to use with the library traits.</p>
-      <p>Example code <a href="segment_usage.htm">segment_usage.cpp</a>
-demonstrates using the library provided segment data type and functions.</p>
-      <h2>Members</h2>
+type is implemented to be convenient to use with the library traits.</p><h2>Members</h2>
       <table style="width: 100%;" id="table2" border="1">
         <tbody>
           <tr>
@@ -395,7 +375,8 @@ demonstrates using the library provided segment data type and functions.</p>
             <td>Default constructor.</td>
           </tr>
           <tr>
-            <td width="586"><font face="Courier New"><b>segment_data</b>(point_type low, point_type high)</font></td>
+            <td width="586"><font face="Courier New"><b>segment_data</b>(const point_type&amp; low,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const point_type&amp; high)</font></td>
             <td>Constructs a segment from the given endpoints.</td>
           </tr>
           <tr>
