@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:(null)1="http://www.w3.org/TR/REC-html40" lang="en"><head><!--
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:(null)1="http://www.w3.org/TR/REC-html40" lang="en"><head>
+<!--
     Copyright 2009-2010 Intel Corporation
     license banner
 --><title>Boost Polygon Library: Segment Concept</title>
@@ -22,7 +23,7 @@
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277" /><a title="www.boost.org home page" href="http://www.boost.org/" tabindex="2" style="border: medium none ;"> </a> </div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -105,7 +106,7 @@ std::pair&lt;Point, Point&gt;,
 boost::tuple&lt;Point, Point&gt; or boost::array&lt;Point, 2&gt; could all be made models of
 segment by simply providing indirect access to their elements through
 traits, however, these objects cannot be made a model of both segment
-and interval in the same compilation unit, for obvious reason that
+and rectangle in the same compilation unit, for obvious reason that
 duplicate specialization of the geometry_concept struct is illegal, but
 also because it would make overloading generic function by concept
 ambiguous if a type modeled more than one concept.</p>
@@ -178,16 +179,32 @@ returns true if their low and high values are respectively equal.</td>
           </tr>
           <tr>
             <td><span style="font-family: Courier New,Courier,monospace;">template &lt;typename Segment, typename Point&gt;</span><br style="font-family: Courier New,Courier,monospace;" />
-            <span style="font-family: Courier New,Courier,monospace;">int </span><span style="font-weight: bold; font-family: Courier New,Courier,monospace;">on_above_or_below</span><span style="font-family: Courier New,Courier,monospace;">(const </span><span style="font-family: Courier New,Courier,monospace;">Segment</span><span style="font-family: Courier New,Courier,monospace;">&amp; segment,</span><br style="font-family: Courier New,Courier,monospace;" />
-            <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-const Point&amp; point)</span><br />
+            <span style="font-family: Courier New,Courier,monospace;">int orientation</span><span style="font-family: Courier New,Courier,monospace;">(const </span><span style="font-family: Courier New,Courier,monospace;">Segment</span><span style="font-family: Courier New,Courier,monospace;">&amp; segment,</span><br style="font-family: Courier New,Courier,monospace;" />
+            <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const Point&amp; point)</span><br />
             </td>
-            <td>Returns 0 if an object that is a model of segment and an object that is a model of point are collinear.<br />
-Returns 1 if the point object lies to the left of the segment object.<br />
-Returns -1 if the point object lies to the right of the segment object.<br />
+            <td>Implements
+a robust orientation test for two objects that model segment and point.
+Returns 0, if the point is collinear to the segment.<br />
+Returns 1, if the point lies to the left of the segment.<br />
+Returns -1, if the point lies to the right of the segment.<br />
+
             </td>
           </tr>
           <tr>
+            <td><span style="font-family: Courier New,Courier,monospace;">template &lt;typename Segment1, typename Segment2&gt;</span><br style="font-family: Courier New,Courier,monospace;" />
+
+            <span style="font-family: Courier New,Courier,monospace;">int orientation</span><span style="font-family: Courier New,Courier,monospace;">(const </span><span style="font-family: Courier New,Courier,monospace;">Segment1</span><span style="font-family: Courier New,Courier,monospace;">&amp; segment1,</span><br style="font-family: Courier New,Courier,monospace;" />
+
+            <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const Segment2&amp; segment2)</span></td>
+            <td>Implements a robust orientation test for two objects
+that are models of segment. Note: the segments are treated as math.
+vectors.<br />
+Returns 0, if the segments are collinear.<br />
+Returns 1, if the second segment is CCW oriented to the first segment.<br />
+Returns -1, if the second segment is CW oriented to the first segment.<br />
+            </td>
+          </tr>
+<tr>
             <td><span style="font-family: Courier New,Courier,monospace;">template &lt;typename </span><font face="Courier New">Segment, typename Point</font><span style="font-family: Courier New,Courier,monospace;">&gt;</span><br style="font-family: Courier New,Courier,monospace;" />
             <span style="font-family: Courier New,Courier,monospace;">bool </span><span style="font-weight: bold; font-family: Courier New,Courier,monospace;">contains</span><span style="font-family: Courier New,Courier,monospace;">(const </span><font face="Courier New">Segment</font><span style="font-family: Courier New,Courier,monospace;">&amp; segment,</span><br style="font-family: Courier New,Courier,monospace;" />
             <span style="font-family: Courier New,Courier,monospace;">&nbsp;&nbsp;&nbsp; const Point&amp; value,</span><span style="font-family: Courier New,Courier,monospace;"> bool consider_touch)</span><br />
@@ -451,7 +468,7 @@ const</font></td>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top"> &nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1"> &nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table3" frame="void" rules="none">
         <colgroup> <col class="docinfo-name" /><col class="docinfo-content" /> </colgroup> <tbody valign="top">
