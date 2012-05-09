@@ -302,7 +302,7 @@ void Browser::addConnection()
         q.exec("insert into Names values (4, 'Sherlock', 'Holmes', 'London')");
         connectionWidget->refresh();
     } else {
-        int dlgPort = dialog.port();
+        //int dlgPort = dialog.port();
         QSqlError err = addConnection(dialog.driverName(), dialog.databaseName(), dialog.hostName(),
                            dialog.userName(), dialog.password(), dialog.port());
         if (err.type() != QSqlError::NoError)

@@ -367,7 +367,7 @@ void DagModel::makeDag()
 {
     m_dag.clear();
 
-    m_aVertexAttributes = get(Dag::attribute_tag(), m_dag);
+    m_aVertexAttributes = get(Dag::vertex_attr_tag(), m_dag);
 
     for(tEdgeList::iterator iter = m_edges.begin(); iter != m_edges.end(); iter++)
     {

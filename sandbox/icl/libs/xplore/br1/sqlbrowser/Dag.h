@@ -29,7 +29,7 @@ inline QString indentation(int depth)
 // this class, to add more information to graph nodes.
 //
 // The contents of this class is associated to the graph using tags:
-// attribute_tag,  boost::property<attribute_tag,  VertexAttributes>
+// vertex_attr_tag,  boost::property<vertex_attr_tag,  VertexAttributes>
 class VertexAttributes
 {
 public:
@@ -64,6 +64,21 @@ private:
     //---- DagModel ------------------------------------------------------------
     DagItem* p_dagItem;
     DagItem* p_parentItem;
+};
+
+class EdgeAttributes
+{
+public:
+    EdgeAttributes(): m_nodeId() {}
+    EdgeAttributes(const QString& name, int id): m_nodeId(id) {}
+
+private:
+    int      m_nodeId;
+
+    //---- Db::Object associated to the Edge ---------------------------------
+    dag::db::tObjectSharedPtr m_pObject;
+
+    //---- DagModel ------------------------------------------------------------
 };
 
 //JODO: m_depth/depth() may be removed. It's currently only needed for debugging.
@@ -101,18 +116,23 @@ namespace dag
 
 struct Dag
 {
-    // The kind of attribute_tag is a vertex_property_tag
-    struct attribute_tag  { typedef boost::vertex_property_tag kind; };
+    // The kind of vertex_attr_tag is a vertex_property_tag
+    struct vertex_attr_tag  { typedef boost::vertex_property_tag kind; };
+
+    // The kind of edge_attr_tag is a edge_property_tag
+    struct edge_attr_tag  { typedef boost::edge_property_tag kind; };
 
     // Here we associate a real type for content 'VertexAttributes' to the tag type
-    // attribute_tag -> VertexAttributes
-    typedef boost::property<attribute_tag,  VertexAttributes> tAttributeTag;
+    // vertex_attr_tag -> VertexAttributes
+    typedef boost::property<vertex_attr_tag,  VertexAttributes> tVertexAttrTag;
+    typedef boost::property<edge_attr_tag,    EdgeAttributes>   tEdgeAttrTag;
 
     typedef boost::adjacency_list
     < boost::vecS
     , boost::vecS
     , boost::directedS
-    , tAttributeTag
+    , tVertexAttrTag
+    , tEdgeAttrTag
     > DagType;
 
     typedef DagType type;
@@ -120,7 +140,7 @@ struct Dag
     typedef DagType::edge_descriptor   edge_descriptor;
 
     //
-    typedef boost::property_map<Dag::type, attribute_tag>::type tAttributesMap;
+    typedef boost::property_map<Dag::type, vertex_attr_tag>::type tAttributesMap;
 
     typedef std::map<vertex_descriptor, vertex_descriptor> tParentMap;//CL
 };

@@ -124,8 +124,6 @@ private:
 //= dag::db::Objects
 //==============================================================================
 
-
-
 //! dag::db::Object is a fairly general and thus boring object.
 //! It has a db::Type which determines the flat type of data record m_aValue.
 template<class Type>
