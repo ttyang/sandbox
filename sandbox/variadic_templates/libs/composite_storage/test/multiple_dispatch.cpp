@@ -25,8 +25,7 @@
 //#define MULTIPLE_DISPATCH_DEBUG
 //#define MULTIPLE_DISPATCH_TEMP_DEBUG
 #include <boost/composite_storage/pack/multiple_dispatch/reify_apply.hpp>
-  #include <boost/composite_storage/pack/multiple_dispatch/reifier_switch.hpp>
-  #include <boost/composite_storage/pack/multiple_dispatch/reifier_funvec.hpp>
+  #include <boost/composite_storage/pack/multiple_dispatch/reifier_indexed.hpp>
 #include <boost/composite_storage/pack/container_one_of_maybe.hpp>
 #include <deque>
 
@@ -190,11 +189,7 @@ nary_test
     result_valu=
       bcsp::multiple_dispatch::reify_apply
       < bcsp::multiple_dispatch::
-      #if 0
-        reifier_switch
-      #else
-        reifier_funvec
-      #endif
+        reifier_indexed
       >
       ( checker
       , var...
@@ -284,13 +279,13 @@ int test_main(int , char* [])
     typedef nary_check_content_type< udt2> check2_t;
     typedef nary_check_content_type< udt2 const> check2_const_t;
 
-  #if 1
     //The next test has no counterpart in [oc] due to reasons 
     //given in comments under var_nothing declaration.
     check1nothing_t check1nothing_v;
     std::cout<<"test(check1nothing_v,var_nothing)\n";
     nary_test< check1nothing_t>( check1nothing_v, var_nothing);
 
+  #if 1
     //The following tests all have counterparts in [oc].
     check1_t check1_v;
     std::cout<<"test(check1_v,var1)\n";
