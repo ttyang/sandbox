@@ -9,6 +9,8 @@
 #include <bitset>
 //boost
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 //qt
 #include <QtCore/QVariant>
 #include <QtCore/QVector>
@@ -88,8 +90,8 @@ private:
 };
 
 
-//Don't optimize premature: Clearness first!!
-//I have to prepare and build the TypeGraph first.
+//CL Don't optimize premature: Clearness first!!
+//CL I have to prepare and build the TypeGraph first.
 //
 
 class ObjectType
@@ -120,6 +122,7 @@ private:
 };
 
 
+
 //==============================================================================
 //= dag::db::Objects
 //==============================================================================
@@ -136,9 +139,13 @@ public:
 
     bool isConsistent()const; //!< Checks for consistency between types and data
 
+    void setName(const QString& aName) { m_aName = aName; }
+    QString name()const { return m_aName; }
+
 private:
     Type        m_aType;
     tVariVector m_aValue;
+    QString     m_aName; //JODO for ease of testing only. Remove soon.
 };
 
 typedef Object<ObjectType>         tObject;
@@ -152,4 +159,31 @@ typedef             const tObject* tObjectConstRawPtr;
 }} //namespace dag { namespace db
 
 
+namespace typedag {
+
+//! Except for sythesized attributes, I could design like this:
+//! vertex(k)->T, T is the associated object. Do we need to store
+//! dynamically sythesized attributes? vertex(k)-><T,S>.
+
+template<class Object, class Synth>
+class VertexDeco
+{
+public:
+    typedef boost::shared_ptr<Object>  tObjectSharedPtr;
+    typedef                   tObject* tObjectRawPtr;
+    typedef             const tObject* tObjectConstRawPtr;
+
+    typedef boost::shared_ptr<Synth>   tSynthSharedPtr;
+    typedef                   tSynth*  tSynthRawPtr;
+    typedef             const tSynth*  tSynthConstRawPtr;
+
+public:
+
+private:
+    tObjectSharedPtr m_pObject;
+    tSynthSharedPtr  m_pSynth;
+
+};
+
+} // typedag
 

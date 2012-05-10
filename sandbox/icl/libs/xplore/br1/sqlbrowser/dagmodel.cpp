@@ -140,8 +140,8 @@ void DagModel::dagInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& i
     if(!(source==0 && target==0))
     {
         boost::add_edge(source, target, m_dag);
-        m_aVertexAttributes[source] = VertexAttributes(edgeData[m_parentName].toString(), source);
-        m_aVertexAttributes[target] = VertexAttributes(edgeData[m_childName].toString(),  target);
+        m_aVertexAttributes[source] = VertexAttributes(source, edgeData[m_parentName].toString());
+        m_aVertexAttributes[target] = VertexAttributes(target, edgeData[m_childName].toString());
     }
 }
 
@@ -376,8 +376,8 @@ void DagModel::makeDag()
         if(!(source==0 && target==0))
         {
             boost::add_edge(source, target, m_dag);
-            m_aVertexAttributes[source] = VertexAttributes((*iter)[m_parentName].toString(), source);
-            m_aVertexAttributes[target] = VertexAttributes((*iter)[m_childName].toString(),  target);
+            m_aVertexAttributes[source] = VertexAttributes(source, (*iter)[m_parentName].toString());
+            m_aVertexAttributes[target] = VertexAttributes(target, (*iter)[m_childName].toString());
         }
     }
 }

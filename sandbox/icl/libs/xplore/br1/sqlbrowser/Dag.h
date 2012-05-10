@@ -33,17 +33,31 @@ inline QString indentation(int depth)
 class VertexAttributes
 {
 public:
-    VertexAttributes(): m_nodeId(), m_name(), m_depth() {}
-    VertexAttributes(const QString& name, int id): m_nodeId(id), m_name(name), m_depth(), p_dagItem() {}
+    typedef dag::db::tKey              tKey;
+    typedef dag::db::tObject           tObject;
+    typedef dag::db::tObjectSharedPtr  tObjectSharedPtr;
 
-    void setName(const QString& name) { m_name  = name;  }
-    QString name()const { return m_name; }
+public:
+    VertexAttributes(): m_aKey(), m_depth() {}
+
+    VertexAttributes(tKey key, const tObjectSharedPtr& pObject) //JODO REMOVE
+        : m_aKey(key), m_pObject(pObject), m_depth(), p_dagItem() {}
+
+    VertexAttributes(tKey key, const QString& aName)
+        : m_aKey(key), m_pObject(boost::make_shared<tObject>())
+        , m_depth(), p_dagItem()
+    {
+        m_pObject->setName(aName);
+    }
+
+    void setName(const QString& name) { m_pObject->setName(name); }
+    QString name()const { return m_pObject->name(); }
 
     void setDepth(int depth){ m_depth = depth; }
     int depth()const { return m_depth; }
 
-    void setNodeId(int nodeId) { m_nodeId = nodeId; }
-    int nodeId()const { return m_nodeId; }
+    void setKey(tKey aKey) { m_aKey = aKey; }
+    tKey key()const { return m_aKey; }
 
     void setDagItem(DagItem* dagItem) { p_dagItem = dagItem; }
     DagItem* dagItem()const { return p_dagItem; }
@@ -54,9 +68,8 @@ public:
     int inc(){ return ++m_depth; }
 
 private:
-    int      m_nodeId;
-    QString  m_name;
-    int      m_depth;    
+    tKey  m_aKey;
+    int   m_depth;
 
     //---- Db::Object associated to the Vertex ---------------------------------
     dag::db::tObjectSharedPtr m_pObject;
@@ -69,16 +82,16 @@ private:
 class EdgeAttributes
 {
 public:
-    EdgeAttributes(): m_nodeId() {}
-    EdgeAttributes(const QString& name, int id): m_nodeId(id) {}
+    typedef dag::db::tKey  tKey;
+public:
+    EdgeAttributes(): m_aKey() {}
+    EdgeAttributes(tKey aKey): m_aKey(aKey) {}
 
 private:
-    int      m_nodeId;
+    tKey      m_aKey;
 
-    //---- Db::Object associated to the Edge ---------------------------------
+    //---- Db::Object associated to the Edge -----------------------------------
     dag::db::tObjectSharedPtr m_pObject;
-
-    //---- DagModel ------------------------------------------------------------
 };
 
 //JODO: m_depth/depth() may be removed. It's currently only needed for debugging.
@@ -109,7 +122,7 @@ namespace dag
 
     inline void copyBoostNode2DagItem(const VertexAttributes& src, tVariVector& target)//JODO cpp
     {
-        target[dag::node::posId]   = QVariant(src.nodeId());
+        target[dag::node::posId]   = QVariant(src.key());
         target[dag::node::posName] = QVariant(src.name());
     }
 }//namespace dag
