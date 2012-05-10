@@ -25,10 +25,10 @@ namespace detail_one_of_maybe
   , typename FrBuffer
   >
 struct assign_copy_visitor
-: functor_indexed::layout_visitor<Layout>
+: functor_indexed::layout_domain<Layout>
 {
         typedef
-      typename functor_indexed::layout_visitor<Layout>::case_type
+      typename functor_indexed::layout_domain<Layout>::index_type
     case_type
     ;
         typedef
@@ -72,10 +72,10 @@ struct assign_copy_visitor
   < typename Layout
   >
 struct equal_visitor
-: functor_indexed::layout_visitor<Layout>
+: functor_indexed::layout_domain<Layout>
 {
         typedef
-      typename functor_indexed::layout_visitor<Layout>::case_type
+      typename functor_indexed::layout_domain<Layout>::index_type
     case_type
     ;
         typedef
@@ -113,14 +113,10 @@ struct equal_visitor
   < typename Layout
   >
 struct destroy_visitor
-: functor_indexed::layout_visitor<Layout>
+: functor_indexed::layout_domain<Layout>
 {
         typedef
-      typename functor_indexed::layout_visitor<Layout>::cases
-    cases
-    ;
-        typedef
-      typename cases::value_type
+      typename functor_indexed::layout_domain<Layout>::index_type
     case_type
     ;
         typedef
@@ -327,11 +323,22 @@ container
     }   
       template
       < index_type IndexValu
+      >
+    container
+      ( mpl::integral_c<index_type,IndexValu>
+      )
+    {
+        mpl::integral_c<index_base,IndexValu> index;
+        scanned::inject_default( index, buffer.address());
+        which_put(IndexValu);
+    }
+      template
+      < index_type IndexValu
       , typename Component
       >
     container
       ( mpl::integral_c<index_type,IndexValu>
-      , Component a_component
+      , Component&& a_component
       )
     {
         mpl::integral_c<index_base,IndexValu> index;
@@ -429,7 +436,7 @@ container
     {
         mpl::integral_c<index_base,IndexValu> index;
 #ifdef MULTIPLE_DISPATCH_DEBUG
-        std::cout<<__FILE__<<":project-yes-const<"<<IndexValu<<">()\n";
+        std::cout<<__FILE__<<":"<<__LINE__<<":project-yes-const<"<<IndexValu<<">()\n";
 #endif
         return scanned::project(index,buffer.address());
     }        
@@ -445,7 +452,7 @@ container
     {
         mpl::integral_c<index_base,IndexValu> index;
 #ifdef MULTIPLE_DISPATCH_DEBUG
-        std::cout<<__FILE__<<":project-not-const<"<<IndexValu<<">()\n";
+        std::cout<<__FILE__<<":"<<__LINE__<<":project-not-const<"<<IndexValu<<">()\n";
 #endif
         return scanned::project(index,buffer.address());
     }

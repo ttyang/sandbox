@@ -44,6 +44,10 @@ struct layout_composite
     index_undefined
     ;
         typedef
+      mpl::integral_c<index_base,index_base(Index0::value)>
+    index_beg
+    ;
+        typedef
       typename mpl::fold_assoc_pack
       < mpl::assoc_left
       , layout_ops::template push_back

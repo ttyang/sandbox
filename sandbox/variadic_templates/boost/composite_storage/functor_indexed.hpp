@@ -17,8 +17,9 @@
   #include <boost/control/switch.hpp>
   #include <boost/control/case.hpp>
 //]switch #includes
-#include <boost/assert.hpp>
-#include <boost/type_traits/remove_cv.hpp>
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/package_range_c.hpp>
+#include <boost/mpl/front.hpp>
 
 namespace boost
 {
@@ -39,158 +40,185 @@ namespace functor_indexed
 //    typedef IndexFunctor::cases::value_type IndexType;
 //    IndexType IndexValu;
 //
-//  the case_c argument above is called 
-//    "case argument"
-//  below.
-//
 {
 
-//The following modified from:
-//  http://svn.boost.org/svn/boost/sandbox/switch/libs/switch/example/apply_visitor.cpp
-//As it was on 2009-12-03.1238 CST
-//
-//The comments here starting with //[functor_indexed
-//correspond to the comments in apply_visitor.cpp starting with //[apply_visitor
-//
-//[functor_indexed_implementation
-//
-// bring switch_ and case_ into scope.
 using namespace boost::control;
 
-// One of the cases should always be selected.  If the
-// the default is executed it must be an error.
-template<class R>
-struct never_called 
-{
-    template<class Int>
-    R operator()(Int) 
-    {
-        BOOST_ASSERT(!"this function should never be called.");
-    }
-};
-
   template
-  < class Visitor 
-    //functor with signature (case_c,Component) -> Visitor::result_type
-    //where:
-    //  case_c (see  below).
-    //  component is some component of Variant.
-    //
-  , class Variant
-    //  Abstractly, a "dependent index pair", IOW, like std::pair<Key,Value>,
-    //  except the type of Value depends on the value of Key part of the pair.
-    //  Also Key is of type like case_c below.
-    //
-    //  The possible values of Value are called the Components of Variant.
-  >
-struct visitor_variant
-/**@brief
- *  Adapts the Visitor functor to the 
- *  Index Functor Interface.
- */
-{
- public:
-        typedef
-      typename Visitor::cases
-    cases
-    ;
-        typedef
-      typename cases::value_type
-    case_type
-    ;
-        typedef
-      typename Visitor::result_type
-    result_type
-    ;
-    visitor_variant( Visitor& visitor, Variant& variant)
-        : visitor_(visitor)
-        , variant_(variant)
-    {}
-      template<case_type CaseValu>
-      result_type
-    operator()
-      ( mpl::integral_c<case_type,CaseValu> case_c
-      )
-    {
-            typedef
-          typename Variant::index_type
-        index_type
-        ;
-          return
-        visitor_
-        ( case_c //pass index to visitor
-        , *(variant_.template project<index_type(CaseValu)>())//pass component to visitor
-        );
-    }
- private:
-    Visitor& visitor_;
-    Variant& variant_;
-};
-
-  template
-  < class IndexFunctor //an Index Functor (see above).
+  < typename IndexFunctor //an Index Functor (see above).
+  , typename Indexes
   >
   struct
-apply_static
+dispatch_indexes
+;
+  template
+  < typename IndexFunctor
+  , typename IndexType
+  , IndexType Start
+  , IndexType Finish
+  >
+  struct
+dispatch_indexes
+  < IndexFunctor
+  , mpl::range_c< IndexType, Start, Finish>
+  >
 {
         typedef
-      typename remove_cv<IndexFunctor>::type
-    index_functor
-    ;
-        typedef
-      typename index_functor::result_type
+      typename IndexFunctor::result_type
     result_type
     ;
         typedef
-      typename index_functor::cases
-    cases
+      mpl::range_c< IndexType, Start, Finish>
+    indexes
     ;
         static
       result_type
-    _    
+    apply  
       ( IndexFunctor& index_functor
-      , typename index_functor::cases::value_type a_case
+      , IndexType a_index
       )
-    {
-          never_called<result_type>
-        default_
-        ;
-          return 
-        switch_<result_type>(a_case, case_<cases>(index_functor), default_);
-    }
+      {
+            return 
+          switch_<typename IndexFunctor::result_type>
+            ( a_index
+            , case_<typename IndexFunctor::indexes>(index_functor)
+            );
+      }      
 };
 
   template
-  < class IndexFunctor //an Index Functor (see above).
+  < typename IndexFunctor
+  , typename IndexType
+  , IndexType... Indexes
+  >
+  struct
+dispatch_indexes
+  < IndexFunctor
+  , mpl::package_c
+    < IndexType
+    , Indexes...
+    >
+  >
+{
+        typedef
+      typename IndexFunctor::result_type
+    result_type
+    ;
+    template<IndexType IndexVal> 
+    struct fun_index
+    {
+            static
+          result_type 
+        apply(IndexFunctor& f)
+        {
+            mpl::integral_c<IndexType, IndexVal> arg;
+            return f(arg);
+        }
+    };
+        static
+      result_type
+    apply  
+      ( IndexFunctor& index_functor
+      , IndexType a_index
+      )
+      {
+                static
+              unsigned const
+            vec_size
+              = sizeof...(Indexes)
+              ;
+                typedef
+              result_type
+              (*
+            fun_type
+              )(IndexFunctor&)
+              ;
+                static 
+              fun_type constexpr 
+            vec_funs[vec_size]=
+              { &fun_index<Indexes>::apply...
+              };
+                typedef typename
+              mpl::front
+              < mpl::package_c
+                < IndexType
+                , Indexes...
+                >
+              >::type
+            start_t
+              ;
+              int const
+            vec_offset=a_index-start_t::value;
+            return vec_funs[vec_offset](index_functor);
+      }
+};
+
+  template
+  < typename IndexFunctor //an Index Functor (see above).
   >
   typename IndexFunctor::result_type
 apply
   ( IndexFunctor& index_functor
-  , typename IndexFunctor::cases::value_type a_case
+  , typename IndexFunctor::indexes::value_type a_index
   )
 {
-    return apply_static<IndexFunctor>::_( index_functor, a_case);
+        typedef
+      dispatch_indexes
+      < IndexFunctor
+      , typename IndexFunctor::indexes
+      >
+    dispatcher;
+      return 
+    dispatcher::
+      apply
+      ( index_functor
+      , a_index
+      );
 };
 
 //]functor_indexed_implementation
 
   template
   < typename Layout
-  , typename Case0=typename Layout::index_undefined
+  , typename Index0=typename Layout::index_undefined 
+    //***CAUTION***
+    //  If Layout is a one_of_maybe container type
+    //  and Index0 has the default value,
+    //  then calling Layout::project<Index0::value>()
+    //  gives a special_type<nothing_id> value.
+    //  (see ./special_components.hpp).
+  ,   template
+      < typename IndexType
+      , IndexType Start
+      , IndexType Finish
+      >class 
+    Container=mpl::
+    #define LAYOUT_DOMAIN_CONTAINER_PACK
+    #ifdef LAYOUT_DOMAIN_CONTAINER_PACK
+      package_range_c
+    #else
+      range_c
+    #endif
   >
-struct layout_visitor
+struct layout_domain
+  /**@brief
+   *  Define domain of a composite, where 'domain'
+   *  means the possible values of the indexes used
+   *  to retrieve some component of the composite.
+   */
 {
         typedef
-      typename Case0::value_type
-    case_type
+      typename Index0::value_type
+    index_type
     ;  
         typedef
-      mpl::range_c
-      < case_type
-      , Case0::value
+        typename 
+      Container
+      < index_type
+      , Index0::value
       , Layout::index_end::value
-      >
-    cases
+      >::type
+    indexes
     ;
 };
 

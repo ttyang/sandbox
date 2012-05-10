@@ -101,7 +101,7 @@ indexed_ctor_args_all_of_aligned
       >
     : index_component<index_type,Keys,CtorTypes>...
     /**brief
-     *  A functor for injecting every component in to
+     *  A functor for injecting every component into
      *  the composite when used with mpl::for_each.
      */
     {
@@ -196,7 +196,7 @@ indexed_ctor_args_all_of_aligned
           ( mpl::integral_c<index_base,IndexValue> a_index
           )const
           /**@brief
-           *  If the arg with IndexValue was pass to CTOR,
+           *  If the arg with IndexValue was passed to CTOR,
            *    inject that into my_buffer at IndexValue;
            *  Otherwise:
            *    inject the default value into my_buffer at IndexValue.

@@ -21,8 +21,12 @@ namespace special_components
     //
     //    http://en.wikipedia.org/wiki/Monoidal_category
     //
-    { nothing_id //signifies error, something like haskell's Nothing.
-    , empty_id //signifies empty class.
+    { nothing_id
+      //signifies something like haskell's Nothing,
+      //or a variant with 0 components.
+    , empty_id 
+      //signifies empty tuple, 
+      //or a tuple with 0 components.
     };
     template<special_id Id>
     struct special_type
