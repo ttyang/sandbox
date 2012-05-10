@@ -41,17 +41,9 @@ struct reifier_base
     >
   >
   /**@brief
-   *  Uses switch statment (in functor_indexed::apply)
-   *  to convert HeadAbstract, which should be of type,
-   *  a composite_storage<one_of_maybe, _, TailConcrete...>, 
-   *  to one of the TailConcretes, and then call
-   *  a ReifyApply with the converted ptrs_target_source.
+   *  See push_back_concrete member template function.
    */
 {
-        typedef
-      HeadAbstract
-    head_abstract_t
-    ;
       ReifyApply const&
     my_reify
     ;
@@ -60,7 +52,7 @@ struct reifier_base
       < mpl::package
         < HeadConcrete...
         >
-      , head_abstract_t
+      , HeadAbstract
       , TailAbstract...
       >
     now_tar_src_type
@@ -76,8 +68,16 @@ struct reifier_base
     , my_tar_src(a_ptrs_tar_src)
     {
     }
+        typedef
+      HeadAbstract
+    head_abstract_t
+    ;
       head_abstract_t&
     head_abstract()const
+      /**@brief
+       *  The next abstract type to be converted
+       *  to it's concrete type.
+       */
     {
         return my_tar_src->template project
           < sizeof...(HeadConcrete)
@@ -95,10 +95,9 @@ struct reifier_base
       ( TailConcrete& a_tail_concrete
       )const
       /**@brief
-       *  Casts the head abstract value in the ptrs_target_source
-       *  into a TailConcrete value, and
-       *  then recurses on remaining abstract args
-       *  by calling on my_reify.
+       *  Casts the HeadAbstract* in the ptrs_target_source
+       *  into a TailConcrete*, and then recurses on
+       *  remaining abstract args, TailAbstract..., using my_reify.
        */
     {
             typedef 

@@ -1,6 +1,6 @@
 //
-#ifndef BOOST_COMPOSITE_STORAGE_PACK_MULTIPLE_DISPATCH_REIFIER_INDEXED_BASE_HPP_INCLUDED
-#define BOOST_COMPOSITE_STORAGE_PACK_MULTIPLE_DISPATCH_REIFIER_INDEXED_BASE_HPP_INCLUDED
+#ifndef BOOST_COMPOSITE_STORAGE_PACK_MULTIPLE_DISPATCH_REIFIER_INDEXED_HPP_INCLUDED
+#define BOOST_COMPOSITE_STORAGE_PACK_MULTIPLE_DISPATCH_REIFIER_INDEXED_HPP_INCLUDED
 //  (C) Copyright Larry Evans 2010.
 //
 //  Permission to copy, use, modify, sell and distribute this software
@@ -24,7 +24,7 @@ namespace multiple_dispatch
   < typename ReifyApply
   , typename ArgsConcreteAbstract
   >
-struct reifier_indexed_base
+struct reifier_indexed
 : reifier_base
   < ReifyApply
   , ArgsConcreteAbstract
@@ -42,25 +42,21 @@ struct reifier_indexed_base
     head_abstract_t
     ;
         typedef
-      typename functor_indexed::layout_visitor
+      typename functor_indexed::layout_domain
       < head_abstract_t
       , typename head_abstract_t::index_undefined
       >
-    layout_visitor
+    layout_domain
     ;
         typedef
-      typename layout_visitor::case_type
-    case_type
-    ;
-        typedef
-      typename layout_visitor::cases
-    cases
-    ;
-        typedef
-      typename head_abstract_t::index_type
+      typename layout_domain::index_type
     index_type
     ;
-    reifier_indexed_base
+        typedef
+      typename layout_domain::indexes
+    indexes
+    ;
+    reifier_indexed
       ( ReifyApply const& a_reify
       , ArgsConcreteAbstract* a_ptrs_tar_src
       )
@@ -75,20 +71,20 @@ struct reifier_indexed_base
     result_type
     ;
       template
-      < case_type CaseValue
+      < index_type IndexValue
       >
       result_type 
     operator()
-      ( mpl::integral_c<case_type,CaseValue> index
+      ( mpl::integral_c<index_type,IndexValue> index
       )const
       /**@brief
        *  "Reifies" the head_abstract() into
-       *  the type indicated by the tag, CaseValue.
+       *  the type indicated by the tag, IndexValue.
        *  Then calls this->push_back_concrete.
        */
     {
           index_type const 
-        index_concrete=index_type(CaseValue);
+        index_concrete=index_type(IndexValue);
           typename super_t::head_abstract_t&
         my_head_abstract=this->head_abstract();
             typedef 
@@ -98,6 +94,20 @@ struct reifier_indexed_base
         return this->push_back_concrete(a_tail_concrete);
     }
         
+      result_type
+    reify_rest
+      ( void
+      )const
+      /**@brief
+       *  Indirectly, calls this->operator()( mpl::integral_c<index_type,IndexValue> index)
+       *  where IndexValue == head_abstract().which().
+       */
+    {
+        return functor_indexed::apply
+          ( *this
+          , this->head_abstract().which()
+          );
+    }
 };
 
 }//exit namespace multiple_dispatch

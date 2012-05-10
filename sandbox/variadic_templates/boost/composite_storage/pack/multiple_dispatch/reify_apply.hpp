@@ -84,7 +84,7 @@ struct reify_apply_impl
        *  When there are no more abstract arguments
        *  ( presumably after a number of calls to
        *    the previous operator()(...) member function.
-       *  ) apply my_functor to *tar_src_p nd return result.
+       *  ) apply my_functor to *tar_src_p and return result.
        */
     {
         #ifdef MULTIPLE_DISPATCH_DEBUG
