@@ -71,6 +71,10 @@ class simple_segregated_storage
     static void * try_malloc_n(void * & start, size_type n,
         size_type partition_size);
 
+    static void *sort(void *list);
+    static void *merge(void *listA, void *listB);
+    static void split(void *list, void **listA, void **listB);
+
   protected:
     void * first; /*!< This data member is the free list.
       It points to the first chunk in the free list,
@@ -219,6 +223,12 @@ class simple_segregated_storage
         add_ordered_block(chunks, n * partition_size, partition_size);
        BOOST_POOL_VALIDATE_INTERNALS
     }
+
+    void order()
+    { //! Orders the storageby sorting the list of free chunks
+      first = sort(first);
+    }
+
 #ifdef BOOST_POOL_VALIDATE
     void validate()
     {
@@ -366,6 +376,66 @@ void * simple_segregated_storage<SizeType>::malloc_n(const size_type n,
   nextof(start) = nextof(iter);
   BOOST_POOL_VALIDATE_INTERNALS
   return ret;
+}
+
+//! Performs a recursive merge sort on given list
+template <typename SizeType>
+void *simple_segregated_storage<SizeType>::sort(void *list)
+{
+  if (!list || !nextof(list))
+    return list;
+
+  void *listA, *listB;
+  split(list, &listA, &listB);
+
+  return merge(sort(listA), sort(listB));
+}
+
+//! Merges two list in ascending order of memory addresses
+template <typename SizeType>
+void *simple_segregated_storage<SizeType>::merge(void *listA, void *listB)
+{
+  void *list = 0;
+  void **last = &list;
+
+  if (!listB)
+    return listA;
+
+  while (listA)
+  {
+    if (std::less<void *>()(listB, listA))
+      std::swap(listA, listB);
+
+    *last = listA;
+    last = &nextof(*last);
+    listA = nextof(listA);		
+  }
+
+  *last = listB;
+  return list;
+}
+
+//! Splits a list into two halves
+template <typename SizeType>
+void simple_segregated_storage<SizeType>::split(void *list, void **listA, void **listB)
+{
+  void *half = list;
+  void *full = nextof(list);
+
+  while (full)
+  {
+    full = nextof(full);
+    if (full)
+    {
+      half = nextof(half);
+      full = nextof(full);
+    }
+  }
+
+  *listA = list;
+  *listB = nextof(half);
+
+  nextof(half) = NULL;
 }
 
 } // namespace boost

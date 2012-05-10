@@ -69,6 +69,9 @@ class object_pool_base: protected Pool
     typedef typename Pool::size_type size_type; //!<   pool<UserAllocator>::size_type
     typedef typename Pool::difference_type difference_type; //!< pool<UserAllocator>::difference_type
 
+  private:
+    size_type allocated;
+
   protected:
     //! \return The underlying boost:: \ref pool storage used by *this.
     Pool & store()
@@ -93,6 +96,7 @@ class object_pool_base: protected Pool
     Pool(sizeof(T), arg_requested_objects)
     { //! Constructs a new (empty by default) ObjectPoolBase.
       //! \param arg_requested_objects Number of memory chunks to allocate at initialization.
+      allocated = 0;
     }
 
     ~object_pool_base();
@@ -104,16 +108,24 @@ class object_pool_base: protected Pool
       //! If out of memory, returns 0. 
       //!
       //! Amortized O(1).
-      return static_cast<element_type *>(store().ordered_malloc());
+      element_type *element = static_cast<element_type *>(store().malloc());
+      if (element)
+        allocated += 1;
+
+      return element;
     }
+
     void free BOOST_PREVENT_MACRO_SUBSTITUTION(element_type * const chunk)
     { //! De-Allocates memory that holds a chunk of type ElementType.
       //!
       //!  Note that p may not be 0.\n
       //!
       //! Note that the destructor for p is not called. O(N).
-      store().ordered_free(chunk);
+      store().free(chunk);
+      if (chunk)
+        allocated -= 1;
     }
+
     bool is_from(element_type * const chunk) const
     { /*! \returns true  if chunk was allocated from *this or
       may be returned as the result of a future allocation from *this.
@@ -204,6 +216,13 @@ object_pool_base<T, Pool>::~object_pool_base()
   // handle trivial case of invalid list.
   if (!this->list.valid())
     return;
+
+  // do not do useless work
+  if (!allocated)
+    return;
+
+  // sort store
+  store().order();
 
   details::PODptr<size_type> iter = this->list;
   details::PODptr<size_type> next = iter;

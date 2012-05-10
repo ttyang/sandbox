@@ -234,6 +234,63 @@ The member function valid can be used to test for validity.
       next_ptr() = arg.begin();
       next_size() = arg.total_size();
     }
+
+    static PODptr sort(PODptr list)
+    {
+      if (!list.valid() || !list.next().valid())
+        return list;
+
+      PODptr listA, listB;
+      split(list, &listA, &listB);
+
+      return merge(sort(listA), sort(listB));
+    }
+
+    static PODptr merge(PODptr listA, PODptr listB)
+    {
+      if (!listA.valid()) return listB;
+      if (!listB.valid()) return listA;
+
+      if (std::less<char *>()(listB.ptr, listA.ptr))
+        std::swap(listA, listB);
+
+      PODptr list = listA; listA = listA.next();
+      PODptr last = list;
+
+      while (listA.valid())
+      {
+        if (std::less<char *>()(listB.ptr, listA.ptr))
+          std::swap(listA, listB);
+
+        last.next(listA);
+        last = last.next();
+        listA = listA.next();
+      }
+
+      last.next(listB);
+      return list;
+    }
+  
+    static void split(PODptr list, PODptr *listA, PODptr *listB)
+    {
+      PODptr half = list;
+      PODptr full = list.next();
+
+      while (full.valid())
+      {
+        full = full.next();
+        if (full.valid())
+        {
+          half = half.next();
+          full = full.next();
+        }
+      }
+
+      *listA = list;
+      *listB = half.next();
+
+      half.next(PODptr());
+    }
 }; // class PODptr
 } // namespace details
 
@@ -308,6 +365,7 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
     size_type next_size;
     size_type start_size;
     size_type max_size;
+    bool ordered;
 
     //! finds which POD in the list 'chunk' was allocated from.
     details::PODptr<size_type> find_POD(void * const chunk) const;
@@ -383,7 +441,8 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //!   the first time that object needs to allocate system memory.
       //!   The default is 32. This parameter may not be 0.
       //! \param nmax_size is the maximum number of chunks to allocate in one block.			
-      set_max_size(nmax_size);			
+      set_max_size(nmax_size);	
+      ordered = true;
     }
 
     ~pool()
@@ -449,6 +508,7 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //! \returns a free chunk from that block.
       //! If a new memory block cannot be allocated, returns 0. Amortized O(1).
       // Look for a non-empty storage
+      ordered = false;
       if (!store().empty())
         return (store().malloc)();
       return malloc_need_resize();
@@ -480,6 +540,7 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //! Assumes that chunk actually refers to a block of chunks
       //! spanning n * partition_sz bytes.
       //! deallocates each chunk in that block.
+      ordered = false;
       if (chunk)
         (store().free)(chunk);
     }
@@ -540,6 +601,17 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //! Note that this function may not be used to reliably test random pointer values.
       return (find_POD(chunk).valid());
     }
+
+    void order()
+    { //! Orders a pool
+      //! O(1) if the pool is already ordered, O(n log n) otherwise.
+      if (!ordered)
+      {
+        list = details::PODptr<size_type>::sort(list);
+        store().order();
+        ordered = true;
+      }
+    }
 };
 
 #ifndef BOOST_NO_INCLASS_MEMBER_INITIALIZATION
@@ -557,6 +629,7 @@ bool pool<UserAllocator>::release_memory()
   // ret is the return value: it will be set to true when we actually call
   //  UserAllocator::free(..)
   bool ret = false;
+  order();
 
   // This is a current & previous iterator pair over the memory block list
   details::PODptr<size_type> ptr = list;
@@ -672,7 +745,7 @@ bool pool<UserAllocator>::release_memory()
 
   set_next_size(start_size);
   return ret;
-}
+}	
 
 template <typename UserAllocator>
 bool pool<UserAllocator>::purge_memory()
@@ -702,7 +775,8 @@ bool pool<UserAllocator>::purge_memory()
 
   list.invalidate();
   this->first = 0;
-  
+  ordered = true;
+
   set_next_size(start_size);
   return true;
 }
