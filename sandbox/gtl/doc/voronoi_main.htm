@@ -13,6 +13,7 @@
 
 
 
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -33,7 +34,7 @@
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -212,58 +213,75 @@ defines the following static functions to integrate the Voronoi library function
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename Point, typename VB&gt;<br>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename Point, typename VB&gt;<br>
 void insert(const Point &amp;point, VB *vb)<br>
             </td>
-            <td style="vertical-align: top;">Inserts a point into the Voronoi builder data structure.<br>
+            <td>Inserts a point into the Voronoi builder data structure.<br>
 Point type should model the point concept.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename VB&gt;<br>
-void insert(PointIterator first, const PointIterator last, VB *vb)<br>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename VB&gt;<br>
+void insert(PointIterator first, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PointIterator last,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VB *vb)<br>
             </td>
-            <td style="vertical-align: top;">Inserts an iterator range of points into the Voronoi builder data structure.<br>
+            <td>Inserts an iterator range of points into the Voronoi builder data structure.<br>
 Corresponding point type should model the point concept.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename Segment, typename VB&gt;<br>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename Segment, typename VB&gt;<br>
 void insert(const Segment &amp;segment, VB *vb)<br>
             </td>
-            <td style="vertical-align: top;">Inserts a segment into the Voronoi builder data structure.<br>
+            <td>Inserts a segment into the Voronoi builder data structure.<br>
 Segment type should model the segment concept.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename SegmentIterator, typename VB&gt;<br>
-void insert(SegmentIterator first, SegmentIterator last, VB *vb)<br>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename SegmentIterator, typename VB&gt;<br>
+void insert(SegmentIterator first,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SegmentIterator last,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; VB *vb)<br>
             </td>
-            <td style="vertical-align: top;">Inserts an iterator range of segments into the Voronoi builder data structure.<br>
+            <td>Inserts an iterator range of segments into the Voronoi builder data structure.<br>
 Corresponding segment type should model the segment concept.<br>
             </td>
           </tr>
 <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename VD&gt;<br>
-void construct_voronoi(PointIterator first, PointIterator last, VD *vd)<br>
-            </td>
-            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of points.<br>Corresponding point type should model the point concept.<br>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename SegmentIterator, typename VD&gt;<br>
-void construct_voronoi(SegmentIterator first, SegmentIterator last, VD *vd)<br>
-            </td>
-            <td style="vertical-align: top;">Constructs Voronoi diagram of a set of segments.<br>Corresponding segment type should model the segment concept.<br>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename SegmentIterator, typename VD&gt;<br>void construct_voronoi(PointIterator p_first, PointIterator p_last,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-SegmentIterator s_first, SegmentIterator s_last,<br>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator, typename VD&gt;<br>
+void construct_voronoi(PointIterator first,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PointIterator last,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 VD *vd)<br>
             </td>
-            <td style="vertical-align: top;">Constructs Voronoi
+            <td>Constructs Voronoi diagram of a set of points.<br>Corresponding point type should model the point concept.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename SegmentIterator, typename VD&gt;<br>
+void construct_voronoi(SegmentIterator first,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SegmentIterator last,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VD *vd)<br>
+            </td>
+            <td>Constructs Voronoi diagram of a set of segments.<br>Corresponding segment type should model the segment concept.<br>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-family: Courier New,Courier,monospace;">template &lt;typename PointIterator,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename SegmentIterator,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typename VD&gt;<br>void construct_voronoi(PointIterator p_first,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+PointIterator p_last,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SegmentIterator s_first,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+SegmentIterator s_last,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+VD *vd)<br>
+            </td>
+            <td>Constructs Voronoi
 diagram of a set of points and segments.<br>Corresponding point type should model the point concept.<br>
 Corresponding segment type should model the segment concept.<br>
             </td>
@@ -376,7 +394,7 @@ current implementation.<br>
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">

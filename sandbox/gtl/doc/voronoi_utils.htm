@@ -4,6 +4,7 @@
 
 
 
+
   
   <meta http-equiv="Content-Language" content="en-us">
 
@@ -21,7 +22,7 @@
 
   <tbody>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">
       <div style="padding: 5px;" align="center"> <img src="images/boost.png" border="0" height="86" width="277"><a title="www.boost.org home page" tabindex="2" style="border: medium none ;" href="http://www.boost.org/"> </a></div>
       <div style="margin: 5px;">
       <h3 class="navbar">Contents</h3>
@@ -121,49 +122,49 @@ Functions</h2>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template
+            <td><span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename CT&gt;</span><br style="font-family: Courier New,Courier,monospace;">
             <span style="font-family: Courier New,Courier,monospace;">static
 brect_type scale_bounding_rectangle(<br>
 &nbsp; const bounding_rectangle&lt;CT&gt; &amp;brect,<br>&nbsp; fpt_type factor = 1.0)</span><br>
             </td>
-            <td style="vertical-align: top;">Returns the scaled
+            <td>Returns the scaled
 bounding rectangle.<br>
 The center of the transformation corresponds to the center of the input
 rectangle.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template
+            <td><span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename CT&gt;<br>
 static void discretize_finite_edge(<br>
 &nbsp; const voronoi_edge&lt;CT&gt; &amp;edge,<br>&nbsp; coordinate_type max_error,<br>&nbsp; point_set_type &amp;discretization)</span><span style="font-family: Courier New,Courier,monospace;"></span><span style="font-family: Courier New,Courier,monospace;"></span><br>
             </td>
-            <td style="vertical-align: top;">Provides the point
+            <td>Provides the point
 discretization of the input voronoi edge.<br>
 If the edge is infinite (ray, line) returns empty output set.<br>
 Max error specifies the maximum distance between approximation and original parabolic arc.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template
+            <td><span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename CT&gt;<br>
 static void clip_linear_edge(<br>
 &nbsp; const voronoi_edge&lt;CT&gt; &amp;edge,<br>&nbsp; const brect_type &amp;brect,<br>&nbsp; point_set_type &amp;clipped_edge)</span><br>
             </td>
-            <td style="vertical-align: top;">Clips the input Voronoi
+            <td>Clips the input Voronoi
 edges with the specified rectangle.<br>
 If the edge is a parabolic arc returns empty output set.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;"><span style="font-family: Courier New,Courier,monospace;">template
+            <td><span style="font-family: Courier New,Courier,monospace;">template
 &lt;typename PointType&gt;</span><br style="font-family: Courier New,Courier,monospace;">
             <span style="font-family: Courier New,Courier,monospace;">static
 void clip_linear_edge(<br>
 &nbsp; const PointType &amp;p1,<br>&nbsp; const PointType &amp;p2,<br>&nbsp; const brect_type &amp;brect,<br>&nbsp; point_set_type &amp;clipped_edge)</span><br>
             </td>
-            <td style="vertical-align: top;">Clips the input linear
+            <td>Clips the input linear
 edge with the specified rectangle.<br>
 The edge is defined by its endpoints.<br>
             </td>
@@ -177,20 +178,20 @@ The edge is defined by its endpoints.<br>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top;">coordinate_type</td>
-            <td style="vertical-align: top;">Coordinate type.</td>
+            <td>coordinate_type</td>
+            <td>Coordinate type.</td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">point_type</td>
-            <td style="vertical-align: top;">2D Point</td>
+            <td>point_type</td>
+            <td>2D Point</td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">point_set_type</td>
-            <td style="vertical-align: top;">2D Point set.</td>
+            <td>point_set_type</td>
+            <td>2D Point set.</td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">brect_type</td>
-            <td style="vertical-align: top;">Bounding rectangle.</td>
+            <td>brect_type</td>
+            <td>Bounding rectangle.</td>
           </tr>
         </tbody>
       </table>
@@ -212,91 +213,91 @@ Functions</h2>
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bounding_rectangle()<br>
+            <td style="font-family: Courier New,Courier,monospace;">bounding_rectangle()<br>
             </td>
-            <td style="vertical-align: top;">Default constructor.
+            <td>Default constructor.
 Initializes the empty bounding rectangle.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bounding_rectangle(<br>
+            <td style="font-family: Courier New,Courier,monospace;">bounding_rectangle(<br>
 &nbsp;&nbsp;&nbsp; coordinate_type x1,<br>
 &nbsp;&nbsp;&nbsp; coordinate_type y1,<br>
 &nbsp;&nbsp;&nbsp; coordinate_type x2,<br>
 &nbsp;&nbsp;&nbsp; coordinate_type y2)<br>
             </td>
-            <td style="vertical-align: top;">Constructs the bounding
+            <td>Constructs the bounding
 rectangle with the given coordinates.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void
+            <td style="font-family: Courier New,Courier,monospace;">void
 update(<br>
 &nbsp;&nbsp;&nbsp; coordinate_type x,<br>
 &nbsp;&nbsp;&nbsp; coordinate_type y)<br>
             </td>
-            <td style="vertical-align: top;">Extends the bounding
+            <td>Extends the bounding
 rectangle with the specified point defined by its coordinates.<br>
 If the rectangle is not initialized, initializes it with the specifed
 point.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool
+            <td style="font-family: Courier New,Courier,monospace;">bool
 is_empty() const<br>
             </td>
-            <td style="vertical-align: top;">Returns true if the
+            <td>Returns true if the
 rectangle is empty (uninitialized), else false.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">void
+            <td style="font-family: Courier New,Courier,monospace;">void
 clear()<br>
             </td>
-            <td style="vertical-align: top;">Sets rectangle to an empty
+            <td>Sets rectangle to an empty
 state.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">bool
+            <td style="font-family: Courier New,Courier,monospace;">bool
 contains(<br>
 &nbsp;&nbsp; coordinate_type x,<br>
 &nbsp;&nbsp; coordinate_type y) const<br>
             </td>
-            <td style="vertical-align: top;">Returns true if the
+            <td>Returns true if the
 rectangle contains the given point defined by its coordinates, else
 false.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">coordinate_type
+            <td style="font-family: Courier New,Courier,monospace;">coordinate_type
 x_min() const<br>
             </td>
-            <td style="vertical-align: top;">Returns the x coordinate
+            <td>Returns the x coordinate
 of the bottom left corner of the rectangle.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">coordinate_type
+            <td style="font-family: Courier New,Courier,monospace;">coordinate_type
 y_min() const<br>
             </td>
-            <td style="vertical-align: top;">Returns the y coordinate
+            <td>Returns the y coordinate
 of the bottom left corner of the rectangle.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">coordinate_type
+            <td style="font-family: Courier New,Courier,monospace;">coordinate_type
 x_max() const<br>
             </td>
-            <td style="vertical-align: top;">Returns the x coordinate
+            <td>Returns the x coordinate
 of the top right corner of the rectangle.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top; font-family: Courier New,Courier,monospace;">coordinate_type
+            <td style="font-family: Courier New,Courier,monospace;">coordinate_type
 y_max() const<br>
             </td>
-            <td style="vertical-align: top;">Returns the y coordinate
+            <td>Returns the y coordinate
 of the top right corner of the rectangle.<br>
             </td>
           </tr>
@@ -320,33 +321,33 @@ voronoi_utils_traits;</span><br style="font-family: Courier New,Courier,monospac
       <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
-            <td style="vertical-align: top;">coordinate_type<br>
+            <td>coordinate_type<br>
             </td>
-            <td style="vertical-align: top;">Coordinate type.<br>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top;">point_type<br>
-            </td>
-            <td style="vertical-align: top;">2D Point .<br>
+            <td>Coordinate type.<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">point_set_type<br>
+            <td>point_type<br>
             </td>
-            <td style="vertical-align: top;">2D Point set.<br>
-            </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top;">brect_type<br>
-            </td>
-            <td style="vertical-align: top;">Bounding rectangle.<br>
+            <td>2D Point .<br>
             </td>
           </tr>
           <tr>
-            <td style="vertical-align: top;">ctype_converter_type<br>
+            <td>point_set_type<br>
             </td>
-            <td style="vertical-align: top;">Coordinate type converter structure.<br>
+            <td>2D Point set.<br>
+            </td>
+          </tr>
+          <tr>
+            <td>brect_type<br>
+            </td>
+            <td>Bounding rectangle.<br>
+            </td>
+          </tr>
+          <tr>
+            <td>ctype_converter_type<br>
+            </td>
+            <td>Coordinate type converter structure.<br>
             </td>
           </tr>
         </tbody>
@@ -355,7 +356,7 @@ voronoi_utils_traits;</span><br style="font-family: Courier New,Courier,monospac
       </td>
     </tr>
     <tr>
-      <td style="background-color: rgb(238, 238, 238);" nowrap="1" valign="top">&nbsp;</td>
+      <td style="background-color: rgb(238, 238, 238);" valign="top" nowrap="1">&nbsp;</td>
       <td style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;" valign="top" width="100%">
       <table class="docinfo" id="table2" frame="void" rules="none">
         <colgroup> <col class="docinfo-name"><col class="docinfo-content"> </colgroup> <tbody valign="top">
