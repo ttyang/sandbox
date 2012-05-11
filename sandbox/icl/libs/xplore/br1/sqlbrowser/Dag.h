@@ -12,6 +12,9 @@
 
 #include "dagitem.h"
 #include "Dag/DbType.h"
+#include "Dag/Decoration.h" //CL
+#include "Dag/DecoratedGraph.h" //CL
+#include "Dag/TypeGraph.h" //CL
 
 inline QString indentation(int depth)
 {

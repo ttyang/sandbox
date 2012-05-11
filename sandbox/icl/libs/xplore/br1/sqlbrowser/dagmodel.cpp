@@ -139,7 +139,9 @@ void DagModel::dagInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& i
     int target = edgeData[m_childId].toInt();
     if(!(source==0 && target==0))
     {
+        //JOFA MEMO: Build the graph: Add edges.
         boost::add_edge(source, target, m_dag);
+        //JOFA MEMO: Fill the associated objects. Aka. decorate the graph.
         m_aVertexAttributes[source] = VertexAttributes(source, edgeData[m_parentName].toString());
         m_aVertexAttributes[target] = VertexAttributes(target, edgeData[m_childName].toString());
     }

@@ -159,31 +159,3 @@ typedef             const tObject* tObjectConstRawPtr;
 }} //namespace dag { namespace db
 
 
-namespace typedag {
-
-//! Except for sythesized attributes, I could design like this:
-//! vertex(k)->T, T is the associated object. Do we need to store
-//! dynamically sythesized attributes? vertex(k)-><T,S>.
-
-template<class Object, class Synth>
-class VertexDeco
-{
-public:
-    typedef boost::shared_ptr<Object>  tObjectSharedPtr;
-    typedef                   tObject* tObjectRawPtr;
-    typedef             const tObject* tObjectConstRawPtr;
-
-    typedef boost::shared_ptr<Synth>   tSynthSharedPtr;
-    typedef                   tSynth*  tSynthRawPtr;
-    typedef             const tSynth*  tSynthConstRawPtr;
-
-public:
-
-private:
-    tObjectSharedPtr m_pObject;
-    tSynthSharedPtr  m_pSynth;
-
-};
-
-} // typedag
-

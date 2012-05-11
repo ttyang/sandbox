@@ -15,7 +15,10 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     Dag.h \
     CreatorVisitor.h \
     Dag/DbType.h \
-    Dag/DbType.cpp
+    Dag/DbType.cpp \
+    Dag/TypeGraph.h \
+    Dag/Decoration.h \
+    Dag/DecoratedGraph.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
