@@ -385,15 +385,19 @@ container
     {
         destroy();
     }
+      
+      template
+      < index_base IndexValu
+      >
+    struct result_base_type
+    : layout_comp::template result_type<IndexValu>
+    {
+    };
       template
       < index_type IndexValu
       >
     struct result_type
-    : mpl::if_c
-      < index_base(IndexValu)==index_undefined::value
-      , special_components::nothing
-      , typename layout_comp::template result_type<IndexValu>::type
-      >
+    : result_base_type<index_base(IndexValu)>
     {
     };
     
@@ -425,36 +429,46 @@ container
         which_put(IndexValu);
     }        
       template
-      < index_type IndexValu
+      < index_base IndexValu
       >
-      typename result_type<IndexValu>::type const&
-    project(void)const
+      typename result_base_type<IndexValu>::type const&
+    proj_base(void)const
       /**@brief
        *  Requires:
        *    IndexValue == which()
        */
     {
         mpl::integral_c<index_base,IndexValu> index;
-#ifdef MULTIPLE_DISPATCH_DEBUG
-        std::cout<<__FILE__<<":"<<__LINE__<<":project-yes-const<"<<IndexValu<<">()\n";
-#endif
         return scanned::project(index,buffer.address());
+    }        
+      template
+      < index_base IndexValu
+      >
+      typename result_base_type<IndexValu>::type&
+    proj_base(void)
+      /**@brief
+       *  Requires:
+       *    IndexValue == which()
+       */
+    {
+        mpl::integral_c<index_base,IndexValu> index;
+        return scanned::project(index,buffer.address());
+    }
+      template
+      < index_type IndexValu
+      >
+      typename result_type<IndexValu>::type const&
+    project(void)const
+    {
+        return proj_base<index_base(IndexValu)>();
     }        
       template
       < index_type IndexValu
       >
       typename result_type<IndexValu>::type&
     project(void)
-      /**@brief
-       *  Requires:
-       *    IndexValue == which()
-       */
     {
-        mpl::integral_c<index_base,IndexValu> index;
-#ifdef MULTIPLE_DISPATCH_DEBUG
-        std::cout<<__FILE__<<":"<<__LINE__<<":project-not-const<"<<IndexValu<<">()\n";
-#endif
-        return scanned::project(index,buffer.address());
+        return proj_base<index_base(IndexValu)>();
     }
       bool
     operator==( container const& from)const

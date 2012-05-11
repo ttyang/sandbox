@@ -88,9 +88,9 @@ struct reifier_indexed
           typename super_t::head_abstract_t&
         my_head_abstract=this->head_abstract();
             typedef 
-          decltype(my_head_abstract.template project<index_concrete>()) 
+          decltype(my_head_abstract.template proj_base<index_concrete>()) 
         tail_type;
-        tail_type& a_tail_concrete=my_head_abstract.template project<index_concrete>();
+        tail_type& a_tail_concrete=my_head_abstract.template proj_base<index_concrete>();
         return this->push_back_concrete(a_tail_concrete);
     }
         

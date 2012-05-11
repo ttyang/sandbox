@@ -61,7 +61,7 @@ struct layout_composite
     index_end
     ;
       template
-      < index_type IndexValu
+      < index_base IndexValu
       >
     struct result_type
     {

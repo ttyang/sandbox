@@ -14,7 +14,6 @@
 #include <boost/composite_storage/buffers/rval_ref_buf.hpp>
 #include <boost/composite_storage/alignment/compose.hpp>
 #include <boost/composite_storage/alignment/aligned_offset.hpp>
-#include <boost/composite_storage/special_components.hpp>
 #include <boost/mpl/next.hpp>
 
 #include <memory>
