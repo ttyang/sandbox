@@ -49,7 +49,7 @@ namespace boost
        * @Effects Constructs an object of class week by storing v.
        * @Postconditions static_cast<rep>(*this) == v
        */
-      week(rep v,no_check_t) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR week(rep v,no_check_t) BOOST_NOEXCEPT
       : value_(v)
       {}
 

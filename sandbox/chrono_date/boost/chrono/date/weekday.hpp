@@ -51,7 +51,7 @@ namespace boost
        * @Effects Constructs an object of class weekday by storing v.
        * @Postconditions static_cast<rep>(*this) == v
        */
-      explicit weekday(rep wd, no_check_t) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR explicit weekday(rep wd, no_check_t) BOOST_NOEXCEPT
       :value_(wd)
       {
       };

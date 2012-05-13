@@ -41,8 +41,8 @@ namespace boost
         average_months;
     typedef duration<boost::int_least32_t, boost::ratio<31556952> >
         average_years;
-    typedef duration<boost::int_least32_t, boost::ratio<400 * 31556952> >
-        _400_years;
+    //typedef duration<boost::int_least32_t, boost::ratio<400 * 31556952> >
+    //    _400_years;
 
 
 //    /**

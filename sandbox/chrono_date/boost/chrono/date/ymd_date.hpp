@@ -79,8 +79,7 @@ namespace boost
        * @Effect Constructs a @c ymd_date constructor from @c year, @c month, @c day stored in the arguments as follows:
        * Constructs a ymd_date so that <c>get_year() == y && get_month() = m && get_day() == d</c>.
        */
-      ymd_date(year::rep y, month::rep m, day::rep d, no_check_t)
-BOOST_NOEXCEPT      ;
+      ymd_date(year::rep y, month::rep m, day::rep d, no_check_t) BOOST_NOEXCEPT;
       /**
        * @Effect Constructs a ymd_date using the year, month_day stored in the arguments as follows:
        * If the value stored in md is outside the range of valid dates for this year y,

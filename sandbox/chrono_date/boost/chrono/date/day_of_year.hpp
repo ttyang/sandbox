@@ -50,7 +50,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      day_of_year(rep d,no_check_t) BOOST_NOEXCEPT
+      BOOST_CONSTEXPR day_of_year(rep d,no_check_t) BOOST_NOEXCEPT
       : value_(d)
       {}
       /**

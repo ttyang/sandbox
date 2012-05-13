@@ -61,7 +61,7 @@ namespace boost
        * @Effects: Constructs an object of class year by storing y.
        * @Postconditions: static_cast<int>(*this) == y.
        */
-      BOOST_CONSTEXPR year(rep y, no_check_t)BOOST_NOEXCEPT
+      BOOST_CONSTEXPR year(rep y, no_check_t) BOOST_NOEXCEPT
       :value_(y)
       {}
       /**
@@ -109,8 +109,7 @@ namespace boost
       /**
        * @Return the number of days of the month parameter in this year.
        */
-      days days_in(month m) const
-BOOST_NOEXCEPT      ;
+      days days_in(month m) const BOOST_NOEXCEPT;
 
       /**
        * @Return the number of days since the epoch until the fist day of this year.
@@ -131,14 +130,15 @@ BOOST_NOEXCEPT      ;
 
       static BOOST_CONSTEXPR year zero()
       {
-        return year(0);
+        return year(0, no_check);
       }
       static BOOST_CONSTEXPR year min BOOST_PREVENT_MACRO_SUBSTITUTION ()
       {
-        return year(first_);
-      }static BOOST_CONSTEXPR year max BOOST_PREVENT_MACRO_SUBSTITUTION ()
+        return year(first_, no_check);
+      }
+      static BOOST_CONSTEXPR year max BOOST_PREVENT_MACRO_SUBSTITUTION ()
       {
-        return year(last_);
+        return year(last_, no_check);
       }
 
     private:

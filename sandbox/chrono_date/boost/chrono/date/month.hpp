@@ -36,7 +36,7 @@ namespace boost
        * @Postconditions: <c>value() == m && is_valid()</c>.
        * @Throws: if @c m is outside of the range [1, 12], throws an exception of type @c bad_date.
        */
-      BOOST_CONSTEXPR explicit month(rep v) :
+      explicit month(rep v) :
         value_(v)
       {
         if (!(is_valid()))
@@ -51,7 +51,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      explicit month(rep m, no_check_t) :
+      BOOST_CONSTEXPR explicit month(rep m, no_check_t) :
         value_(m)
       {
       }

@@ -16,7 +16,7 @@ namespace boost
 
     struct no_check_t
     {};
-    const no_check_t no_check =
+    BOOST_CONSTEXPR_OR_CONST no_check_t no_check =
     {};
 
 
