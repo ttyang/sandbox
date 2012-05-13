@@ -99,7 +99,17 @@ class object_pool_base: protected Pool
       allocated = 0;
     }
 
-    ~object_pool_base();
+    ~object_pool_base()
+    {
+      purge_memory();
+    }
+
+    bool release_memory()
+    {
+      return Pool::release_memory();
+    }
+
+    bool purge_memory();
 
     // Returns 0 if out-of-memory.
     element_type * malloc BOOST_PREVENT_MACRO_SUBSTITUTION()
@@ -138,6 +148,11 @@ class object_pool_base: protected Pool
       \note This function may NOT be used to reliably test random pointer values!
     */
       return store().is_from(chunk);
+    }
+
+    size_type get_size() const
+    {
+      return store().get_size();
     }
 
     element_type * construct()
@@ -211,62 +226,56 @@ class object_pool_base: protected Pool
 };
 
 template <typename T, typename Pool>
-object_pool_base<T, Pool>::~object_pool_base()
+bool object_pool_base<T, Pool>::purge_memory()
 {
   // handle trivial case of invalid list.
   if (!this->list.valid())
-    return;
+    return false;
 
-  // do not do useless work
-  if (!allocated)
-    return;
-
-  // sort store
-  store().order();
-
-  details::PODptr<size_type> iter = this->list;
-  details::PODptr<size_type> next = iter;
-
-  // Start 'freed_iter' at beginning of free list
-  void * freed_iter = this->first;
-
-  const size_type partition_size = this->alloc_size();
-
-  do
+  // delete all objects that are not freed
+  if (allocated)
   {
-    // increment next
-    next = next.next();
+    // sort store
+    store().order();
 
-    // delete all contained objects that aren't freed.
+    details::PODptr<size_type> iter = this->list;
+    details::PODptr<size_type> next = iter;
 
-    // Iterate 'i' through all chunks in the memory block.
-    for (char * i = iter.begin(); i != iter.end(); i += partition_size)
+    // Start 'freed_iter' at beginning of free list
+    void * freed_iter = this->first;
+
+    const size_type partition_size = this->alloc_size();
+
+    do
     {
-      // If this chunk is free,
-      if (i == freed_iter)
-      {
-        // Increment freed_iter to point to next in free list.
-        freed_iter = nextof(freed_iter);
+      // increment next
+      next = next.next();
 
-        // Continue searching chunks in the memory block.
-        continue;
+      // Iterate 'i' through all chunks in the memory block.
+      for (char * i = iter.begin(); i != iter.end(); i += partition_size)
+      {
+        // If this chunk is free,
+        if (i == freed_iter)
+        {
+          // Increment freed_iter to point to next in free list.
+          freed_iter = nextof(freed_iter);
+
+          // Continue searching chunks in the memory block.
+          continue;
+        }
+
+        // This chunk is not free (allocated), so call its destructor,
+        static_cast<T *>(static_cast<void *>(i))->~T();
+        // and continue searching chunks in the memory block.
       }
 
-      // This chunk is not free (allocated), so call its destructor,
-      static_cast<T *>(static_cast<void *>(i))->~T();
-      // and continue searching chunks in the memory block.
-    }
+      // increment iter.
+      iter = next;
+    } while (iter.valid());
+  }
 
-    // free storage.
-    (Pool::free)(iter.begin());
-
-    // increment iter.
-    iter = next;
-  } while (iter.valid());
-
-  // Make the block list empty so that the inherited destructor doesn't try to
-  // free it again.
-  this->list.invalidate();
+  // Call inherited purge function
+  return Pool::purge_memory();
 }
 
 /*! \brief A template class
@@ -340,11 +349,6 @@ class object_pool : public object_pool_base<T, pool<UserAllocator> >
     { //! Set max_size.
       pool<UserAllocator>::set_max_size(nmax_size);
     }
-
-    size_type get_size() const
-    {
-      return pool<UserAllocator>::get_size();
-    }
 };
 
 /*! \brief A template class
@@ -387,6 +391,17 @@ class static_object_pool : public object_pool_base<T, static_pool<UserAllocator>
       //! \param arg_requested_objects Number of memory chunks to allocate at initialization. 
       //!  It defines the maximum number of objects that can be malloc'ed from this pool.
     }
+
+  protected :
+    bool release_memory()
+    {
+      return false;
+    }
+
+    bool purge_memory()
+    {
+      return false;
+    }
 };
 
 /*! \brief A template class
@@ -426,6 +441,17 @@ class array_object_pool : public object_pool_base<T, array_pool<sizeof(T), PoolS
     :
     object_pool_base<T, array_pool<sizeof(T), PoolSize> >(PoolSize)
     { //! Constructs a new (empty by default) ArrayObjectPool.
+    }
+
+  protected :
+    bool release_memory()
+    {
+      return false;
+    }
+
+    bool purge_memory()
+    {
+      return false;
     }
 };
 
