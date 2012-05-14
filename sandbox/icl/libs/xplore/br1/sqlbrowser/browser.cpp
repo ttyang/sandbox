@@ -47,6 +47,7 @@
 #include <QtGui>
 #include <QtSql>
 
+
 Browser::Browser(QWidget *parent)
     : QWidget(parent)
 {

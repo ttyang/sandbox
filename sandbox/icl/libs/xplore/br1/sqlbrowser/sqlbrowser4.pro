@@ -3,8 +3,8 @@ TARGET          = sqlbrowser
 
 QT              += sql
 
-INCLUDEPATH     += /cygwin/home/jofa/dev/boost/branches/release
-#INCLUDEPATH     += C:\NIBuild\3rdparty\boost-1.48.0
+#INCLUDEPATH     += /cygwin/home/jofa/dev/boost/branches/release
+INCLUDEPATH     += C:\NIBuild\3rdparty\boost-1.48.0
 
 HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     exttableview.h \
@@ -18,11 +18,19 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     Dag/DbType.cpp \
     Dag/TypeGraph.h \
     Dag/Decoration.h \
-    Dag/DecoratedGraph.h
+    Dag/DecoratedGraph.h \
+    data/concept/SelectorTraits.h \
+    data/concept/Selector.h \
+    data/concept/IsQuerySelector.h \
+    data/concept/CreatorTraits.h \
+    data/qsql/QSqlSelector.h \
+    data/qsql/QSqlCreator.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
-    dagmodel.cpp
+    dagmodel.cpp \
+    Dag/TypeGraph.cpp \
+    Dag/TypeGraph.cpp
 
 FORMS           = browserwidget.ui qsqlconnectiondialog.ui
 build_all:!build_pass {

@@ -12,7 +12,7 @@
 
 class QSqlQuery;
 
-namespace dag namespace db {
+namespace dag { namespace db
 {
 
 
@@ -56,5 +56,5 @@ private:
 };
 
 
-}} // dag::db
+}} // namespace dag::db
 

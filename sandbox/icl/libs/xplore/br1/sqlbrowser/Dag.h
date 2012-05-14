@@ -12,9 +12,14 @@
 
 #include "dagitem.h"
 #include "Dag/DbType.h"
+
+//JODO CL ..
 #include "Dag/Decoration.h" //CL
 #include "Dag/DecoratedGraph.h" //CL
 #include "Dag/TypeGraph.h" //CL
+#include "data/concept/CreatorTraits.h" //CL
+#include "data/concept/IsQuerySelector.h" //CL
+
 
 inline QString indentation(int depth)
 {
