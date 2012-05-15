@@ -36,25 +36,6 @@ private:
 
 void getTypeGraph(TypeGraph& tygr, const QSqlQuery& query);
 
-//! Data Access layer. May be sql, xml etc.
-class TypeGraphSqlAccessor // implements DataAccessor
-{
-public:
-    // The DataAccessor interface (generic)
-    bool prepareGet();
-    bool next();
-
-    // Interface specific to TypeGraph
-    EdgeType edge();
-
-private:
-    static tString s_aTypeEdgesQuery;
-    static bool    m_bInitialized;
-
-    int m_Edge_Key_Idx;
-    int m_Object_Key_Idx;
-};
-
 
 }} // namespace dag::db
 

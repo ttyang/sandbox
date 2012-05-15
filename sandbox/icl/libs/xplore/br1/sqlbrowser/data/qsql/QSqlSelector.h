@@ -22,7 +22,7 @@ namespace data
 class QSqlSelector
 {
 public:
-    typedef QVector<QVariant> type;
+    typedef QSqlSelector      type;
     typedef std::size_t       size_type;
     typedef QVector<QVariant> tResultSet;
     typedef tResultSet::const_iterator const_iterator;

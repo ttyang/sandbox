@@ -90,10 +90,9 @@ private:
 };
 
 
-//CL Don't optimize premature: Clearness first!!
-//CL I have to prepare and build the TypeGraph first.
-//
-
+//==============================================================================
+//= TypeGraph Objects
+//==============================================================================
 class ObjectType
 {
 public:

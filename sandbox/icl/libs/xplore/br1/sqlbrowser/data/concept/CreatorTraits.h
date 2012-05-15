@@ -5,9 +5,12 @@
 
 #pragma once
 
+#include "Dag/DbType.h"
 
 namespace data
 {
+
+typedef dag::db::tString tString;
 
 //==============================================================================
 //= Concept: data::Creator Traits
@@ -15,11 +18,11 @@ namespace data
 template<class Object, class Accessor>
 struct CreatorTraits
 {
-    typedef typename Accessor::iterator iterator;
+    typedef typename Accessor::const_iterator const_iterator;
     typedef typename Accessor::tQuery   tQuery;
 
-    static tQuery createQuery();
-    static Object create(iterator);
+    static tString createQuery();
+    static Object create(const_iterator);
 };
 
 } // namespace data

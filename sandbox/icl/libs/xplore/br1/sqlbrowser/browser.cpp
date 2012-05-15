@@ -47,6 +47,9 @@
 #include <QtGui>
 #include <QtSql>
 
+//---- First Accessor tests ----------------
+#include "data/qsql/QSqlSelector.h"
+#include "data/concept/Selector.h"
 
 Browser::Browser(QWidget *parent)
     : QWidget(parent)
@@ -160,6 +163,7 @@ void Browser::exec()
     updateActions();
 }
 
+/*JODO REV
 bool Browser::runScript()
 {
     QString   curSql   = sqlEdit->toPlainText();
@@ -174,6 +178,28 @@ bool Browser::runScript()
 
     return success;
 }
+*/
+
+bool Browser::runScript()
+{
+    QString   curSql   = "select * from EdgeType";
+    QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
+
+    //JODO Testcode
+    bool success = false;
+    data::QSqlSelector selector;
+    dag::db::TypeGraph tygra;
+
+    success = makeTypeGraph(selector, tygra);
+
+    if(success)
+        emit statusMessage(tr("Test executed successfully."));
+    else
+        emit statusMessage(tr("Error(s), Test aborted."));
+
+    return success;
+}
+
 
 bool Browser::execMulti(QSqlQuery& query, const QString& script)
 {
