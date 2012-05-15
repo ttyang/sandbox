@@ -20,10 +20,10 @@ template<class Accessor, class Query>
 struct SelectorTraits
 {
     typedef typename Accessor::size_type size_type;
-    typedef typename Accessor::iterator  iterator;
+    typedef typename Accessor::iterator  const_iterator;
 
-    static iterator begin(const Accessor& accessor);
-    static iterator end(const Accessor& accessor);
+    static const_iterator begin(const Accessor& accessor);
+    static const_iterator end(const Accessor& accessor);
     static size_type select(const Query&);
 };
 

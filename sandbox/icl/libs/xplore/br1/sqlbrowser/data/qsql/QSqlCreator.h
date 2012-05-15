@@ -12,6 +12,8 @@ namespace data
 
 typedef dag::db::tString tString;
 
+template<class Object>class QSqlCreator;
+
 //==============================================================================
 //= Concept: data::Creator Spec: QSqlCreator
 //==============================================================================
@@ -19,7 +21,7 @@ template<class Object>
 struct CreatorTraits<Object, QSqlCreator<Object> >
 {
     typedef QSqlCreator<Object> tCreator;
-    typedef typename tCreator::iterator iterator;
+    typedef typename tCreator::const_iterator const_iterator;
     typedef typename tCreator::tQuery   tQuery;
 
     static tQuery createQuery();
@@ -38,7 +40,7 @@ public:
             "SELECT ...";
     }
 
-    tObject create(iterator it)
+    tObject create(const_iterator it)
     {
         return dag::db::EdgeType();
     }

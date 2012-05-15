@@ -12,7 +12,7 @@
 #include <QSqlQuery.h>
 
 //concepts
-#include "data/concept/Selector.h"
+#include "data/concept/SelectorTraits.h"
 
 
 // Data access sql, xml, file etc. lives in namespace data
@@ -23,12 +23,13 @@ class QSqlSelector
 {
 public:
     typedef QVector<QVariant> type;
-    typedef typename tResultSet::iterator iterator;
+    typedef std::size_t       size_type;
     typedef QVector<QVariant> tResultSet;
+    typedef tResultSet::const_iterator const_iterator;
     typedef QSqlQuery         tQuery;
 
-    iterator begin(){ return m_aResultSet.begin(); }
-    iterator end()  { return m_aResultSet.end();   }
+    const_iterator begin()const{ return m_aResultSet.begin(); }
+    const_iterator end()  const{ return m_aResultSet.end();   }
     size_type select(const tQuery&);
 
 private:
@@ -37,16 +38,16 @@ private:
 
 
 //==============================================================================
-//= Concept: DataSelector Spec: QSqlSelector
+//= Concept: data::Selector Specialisation: QSqlSelector
 //==============================================================================
 template<>
-struct SelectorTraits<QSqlSelector, class QSqlQuery>
+struct SelectorTraits<QSqlSelector, QSqlQuery>
 {
     typedef std::size_t size_type;
-    typedef typename QSqlSelector::iterator iterator;
+    typedef QSqlSelector::const_iterator const_iterator;
 
-    static iterator begin(const QSqlSelector& accessor){ return accessor.begin(); }
-    static iterator end  (const QSqlSelector& accessor){ return accessor.end();   };
+    static const_iterator begin(const QSqlSelector& accessor){ return accessor.begin(); }
+    static const_iterator end  (const QSqlSelector& accessor){ return accessor.end();   };
     static size_type select(const QSqlQuery&);
 };
 

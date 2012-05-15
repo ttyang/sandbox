@@ -18,7 +18,10 @@
 #include "Dag/DecoratedGraph.h" //CL
 #include "Dag/TypeGraph.h" //CL
 #include "data/concept/CreatorTraits.h" //CL
+#include "data/concept/SelectorTraits.h" //CL
 #include "data/concept/IsQuerySelector.h" //CL
+#include "data/qsql/QSqlSelector.h" //CL
+#include "data/qsql/QSqlCreator.h" //CL
 
 
 inline QString indentation(int depth)

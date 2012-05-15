@@ -10,17 +10,17 @@
 namespace data
 {
 
-template<class Accessor> struct isQuerySelector;
-
 template<class Accessor>
-struct isQuerySelector
+struct IsQuerySelector
 {
+    typedef IsQuerySelector<Accessor> type;
     static const bool value = false;
 };
 
 template<>
-struct isQuerySelector<QSqlSelector>
+struct IsQuerySelector<QSqlSelector>
 {
+    typedef IsQuerySelector<QSqlSelector> type;
     static const bool value = true;
 };
 
