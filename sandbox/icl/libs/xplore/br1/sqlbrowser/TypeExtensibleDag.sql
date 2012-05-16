@@ -13,7 +13,14 @@ create table EdgeType (key integer primary key, refSourceType integer, refRelati
 create table Vertex (key integer primary key, refObjectType integer, refObject integer);
 create table Edge (key integer primary key, refEdgeType integer, refSourceVertex integer, refTargetVertex integer, refObject integer);
 create table Object (key integer primary key);
-create table Attribute (key integer primary key, name varchar);
+create table Attribute (key integer primary key, refObjectType integer, name varchar);
+
+create table Field (key integer primary key, refObject integer, refAttribute integer, seqnum integer);
+
+create table VarCharField (refField integer primary key, value varchar);
+
+
+
 create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute));
 create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute));
 
@@ -125,9 +132,7 @@ create view NamedObjects as
 select Object.key as Obj, VarCharObject.value as Name
 from Object
   inner join VarCharObject   on VarCharObject.refObject = Object.key
-  
-
-  
+    
 -- -----------------------------------------------------------------------------
 -- Vertexes
 select Vertex.key as Vtx, Object.key as Obj, ObjectType.Name as Type , Attribute.Name as Attr, 
@@ -218,6 +223,3 @@ from Edge
   inner join Object on Object.key = Vertex.refObject
   inner join VarCharObject on Object.key = VarCharObject.refObject
 
-
-
-  
