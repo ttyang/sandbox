@@ -190,6 +190,7 @@ bool Browser::runScript()
     data::QSqlSelector selector;
     dag::db::TypeGraph tygra;
 
+    selector.setDatabase(connectionWidget->currentDatabase());
     success = makeTypeGraph(selector, tygra);
 
     if(success)

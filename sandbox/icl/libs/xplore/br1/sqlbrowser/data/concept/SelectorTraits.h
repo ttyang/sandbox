@@ -16,15 +16,16 @@ namespace data
 //==============================================================================
 //= Concept: DataSelector Traits
 //==============================================================================
-template<class Accessor, class Query>
+template<class Accessor>
 struct SelectorTraits
 {
     typedef typename Accessor::size_type size_type;
+    typedef typename Accessor::tQuery    tQuery;
     typedef typename Accessor::iterator  const_iterator;
 
     static const_iterator begin(const Accessor& accessor);
     static const_iterator end(const Accessor& accessor);
-    static size_type select(const Query&);
+    static size_type select(const tQuery&);
 };
 
 } // namespace data

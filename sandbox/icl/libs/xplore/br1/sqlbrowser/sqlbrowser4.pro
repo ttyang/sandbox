@@ -3,8 +3,8 @@ TARGET          = sqlbrowser
 
 QT              += sql
 
-#INCLUDEPATH     += /cygwin/home/jofa/dev/boost/branches/release
-INCLUDEPATH     += C:\NIBuild\3rdparty\boost-1.48.0
+INCLUDEPATH     += /cygwin/home/jofa/dev/boost/branches/release
+#INCLUDEPATH     += C:\NIBuild\3rdparty\boost-1.48.0
 
 HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     exttableview.h \
@@ -24,7 +24,8 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     data/concept/IsQuerySelector.h \
     data/concept/CreatorTraits.h \
     data/qsql/QSqlSelector.h \
-    data/qsql/QSqlCreator.h
+    data/qsql/QSqlCreator.h \
+    data/concept/GetCreator.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
@@ -49,6 +50,7 @@ symbian: include($$QT_SOURCE_TREE/demos/symbianpkgrules.pri)
 wince*: {
     DEPLOYMENT_PLUGIN += qsqlite
 }
+
 
 
 

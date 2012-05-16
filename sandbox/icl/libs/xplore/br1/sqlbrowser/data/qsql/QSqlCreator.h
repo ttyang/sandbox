@@ -5,8 +5,12 @@
 
 #pragma once
 
+#include <QSqlRecord.h>
+#include <QSqlField.h>
+
 #include "Dag/DbType.h"
 #include "data/concept/CreatorTraits.h"
+#include "data/concept/GetCreator.h"
 #include "data/qsql/QSqlSelector.h"
 
 namespace data
@@ -17,32 +21,13 @@ typedef dag::db::tString tString;
 
 template<class Object, class Accessor>
 class QSqlCreator;
-/*
-{
-public:
-    typedef QSqlCreator       type;
-    typedef Object            tObject;
-    typedef Accessor          tAccessor;
-
-    typedef typename tAccessor::tResultSet     tResultSet;
-    typedef typename tAccessor::const_iterator const_iterator;
-
-    static tString createQuery()
-    {
-        return "...";
-    }
-
-    static tObject create(const_iterator it)
-    {
-        return tObject();
-    }
-};
-*/
 
 template<>
 class QSqlCreator<dag::db::EdgeType, QSqlSelector>
 {
 public:
+    enum { eKey=0, eRefSourceType, eRefRelationType, eRefTargetType, eName };
+
     typedef QSqlCreator       type;
     typedef dag::db::EdgeType tObject;
     typedef QSqlSelector      tAccessor;
@@ -52,18 +37,25 @@ public:
 
     static tString createQuery()
     {
-        return "SELECT ...";
+        return "SELECT key, refSourceType, refRelationType, refTargetType, name FROM EdgeType ";
     }
 
     static tObject create(const_iterator it)
     {
-        return dag::db::EdgeType();
+        return dag::db::EdgeType(it->field(eKey).value().toInt(),
+                                 it->field(eName).value().toString());
     }
 };
 
 
+template<class Object>
+struct GetCreator<Object, QSqlSelector>
+{
+    typedef QSqlCreator<Object, QSqlSelector> type;
+};
 
-template<class Object, class Accessor>class QSqlCreator;
+
+
 
 //==============================================================================
 //= Concept: data::Creator Spec: QSqlCreator
@@ -79,19 +71,5 @@ struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
     static Object create(const_iterator it){ return tCreator::create(it); }
 };
 
-
-/*
-template<>
-struct CreatorTraits<dag::db::EdgeType, QSqlCreator<dag::db::EdgeType, data::QSqlSelector> >
-{
-    typedef dag::db::EdgeType  tObject;
-    typedef data::QSqlSelector tAccessor;
-    typedef QSqlCreator<dag::db::EdgeType, data::QSqlSelector> tCreator;
-    typedef tAccessor::const_iterator const_iterator;
-
-    static tString createQuery(){ tCreator::createQuery(); }
-    static tObject create(const_iterator it){ return tCreator::create(it); }
-};
-*/
 
 } // namespace data

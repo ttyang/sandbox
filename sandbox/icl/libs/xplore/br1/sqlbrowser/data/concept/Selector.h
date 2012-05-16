@@ -23,19 +23,28 @@ template<class Accessor>
 typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
 makeTypeGraph(Accessor& accessor, dag::db::TypeGraph& typeGraph)
 {
-    typedef QSqlCreator<dag::db::EdgeType,Accessor> tCreator;
+    typedef typename GetCreator<dag::db::EdgeType,Accessor>::type tCreator;
     typedef typename Accessor::const_iterator const_iterator;
-    //DataSelectorConcept<Accessor>::
-    //    select(accessor, CreatorConcept<Object,Accessor>::createQuery());
+    typedef typename CreatorTraits<dag::db::EdgeType,tCreator> tCreatorInstance;
 
-    //JODO transform(accessor, typeGraph, CreatorConcept<TypeEdge,AccessorT>);
-    //for(iterator it = accessor.begin(); it != accessor.end(); ++it)
+    SelectorTraits<Accessor>::
+        select(accessor,
+               CreatorTraits<dag::db::EdgeType,tCreator>::createQuery());
 
-    QString ObjSql = CreatorTraits<dag::db::EdgeType,tCreator>::createQuery();
+    QString check;
+    for(const_iterator it = accessor.begin(); it != accessor.end(); ++it)
+    {
+        //check += it->field(4).value().toString();
+        dag::db::EdgeType aEdge
+                = CreatorTraits<dag::db::EdgeType,tCreator>::create(it);
+        check += aEdge.toString();
+        check += "\n";
+    }
+
 
     QMessageBox msgBox;
-    QString msg = "Insertion. ";
-    msg += ObjSql;
+    QString msg = "Edges:\n";
+    msg += check;
     msgBox.setText(msg);
     msgBox.exec();
 

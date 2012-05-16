@@ -112,6 +112,12 @@ typedef const ObjectType*             tConstObjectTypeRawPtr;
 class EdgeType
 {
 public:
+    EdgeType(tKey uKey, const tString& aName)
+        : m_uKey(uKey), m_aName(aName) {}
+
+    QString toString()const
+    { return QString("Edge: Key=%1, Name=%2").arg(m_uKey).arg(m_aName); }
+
 private:
     tKey                 m_uKey;
     tString              m_aName;
