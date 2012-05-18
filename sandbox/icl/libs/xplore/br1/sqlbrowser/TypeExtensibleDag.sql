@@ -15,14 +15,14 @@ create table Edge (key integer primary key, refEdgeType integer, refSourceVertex
 create table Object (key integer primary key);
 create table Attribute (key integer primary key, refObjectType integer, name varchar);
 
-create table Field (key integer primary key, refObject integer, refAttribute integer, seqnum integer);
-
-create table VarCharField (refField integer primary key, value varchar);
-
-
 
 create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute));
 create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute));
+
+//CL?
+create table Field (key integer primary key, refObject integer, refAttribute integer, seqnum integer);
+create table VarCharField (refField integer primary key, value varchar);
+create table IntField (refField integer primary key, value integer);
 
 
 
@@ -132,7 +132,23 @@ create view NamedObjects as
 select Object.key as Obj, VarCharObject.value as Name
 from Object
   inner join VarCharObject   on VarCharObject.refObject = Object.key
-    
+
+-- -----------------------------------------------------------------------------
+-- Named Objects 1:1 Attributes joined horizontally.
+select Object.key as Obj, Name.value as Name, YearOfCrea.value as YoC, Position.value as Pos, Duration.value as Dur 
+from Object
+  inner join VarCharObject      as Name       on Name.refObject       = Object.key and  Name.refAttribute = 1
+  left outer join IntObject     as YearOfCrea on YearOfCrea.refObject = Object.key and  YearOfCrea.refAttribute = 2
+  left outer join VarCharObject as Duration   on Duration.refObject   = Object.key and  Duration.refAttribute = 3  
+  left outer join VarCharObject as Position   on Position.refObject   = Object.key and  Position.refAttribute = 4  
+
+-- -----------------------------------------------------------------------------
+-- Named Objects 1:1 Attributes joined horizontally.
+select Object.key as Obj, VarCharObject.refAttribute as Attr, VarCharObject.value as Value
+from Object
+  inner join VarCharObject on VarCharObject.refObject = Object.key
+
+  
 -- -----------------------------------------------------------------------------
 -- Vertexes
 select Vertex.key as Vtx, Object.key as Obj, ObjectType.Name as Type , Attribute.Name as Attr, 
@@ -190,18 +206,6 @@ from Object
   inner join VarCharObject as TrgName on Edge.refTargetVertex = TrgName.refObject
   left outer join IntObject on IntObject.refObject        = Object.key  
   
-
--- -----------------------------------------------------------------------------
--- Artists
-select Vertex.key as Vtx, Object.key as Obj, VarCharObject.value as Name, IntObject.value as YoBirth
-from Vertex
-  inner join Object        on Object.key = Vertex.refObject
-  inner join VarCharObject on Object.key = VarCharObject.refObject and VarCharObject.refAttribute = 1  
-  inner join IntObject     on Object.key = IntObject.refObject     and IntObject.refAttribute = 2 
-where
-  Vertex.refObjectType = 1
-
-  
 -- -----------------------------------------------------------------------------
 -- Edges 2.
 -- 
@@ -222,4 +226,26 @@ from Edge
   inner join Vertex on Vertex.key = Edge.refSourceVertex
   inner join Object on Object.key = Vertex.refObject
   inner join VarCharObject on Object.key = VarCharObject.refObject
+
+  
+-- -----------------------------------------------------------------------------
+-- Fields
+
+
+-- -----------------------------------------------------------------------------
+-- Artists
+select Vertex.key as Vtx, Object.key as Obj, VarCharObject.value as Name, IntObject.value as YoBirth
+from Vertex
+  inner join Object        on Object.key = Vertex.refObject
+  inner join VarCharObject on Object.key = VarCharObject.refObject and VarCharObject.refAttribute = 1  
+  inner join IntObject     on Object.key = IntObject.refObject     and IntObject.refAttribute = 2 
+where
+  Vertex.refObjectType = 1
+
+
+-- -----------------------------------------------------------------------------
+-- Utils
+alter table VarCharObject add seqnum integer
+
+  
 
