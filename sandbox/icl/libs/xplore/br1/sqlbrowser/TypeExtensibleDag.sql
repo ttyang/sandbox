@@ -141,12 +141,17 @@ from Object
   left outer join IntObject     as YearOfCrea on YearOfCrea.refObject = Object.key and  YearOfCrea.refAttribute = 2
   left outer join VarCharObject as Duration   on Duration.refObject   = Object.key and  Duration.refAttribute = 3  
   left outer join VarCharObject as Position   on Position.refObject   = Object.key and  Position.refAttribute = 4  
+  -- and so on ...
 
 -- -----------------------------------------------------------------------------
--- Named Objects 1:1 Attributes joined horizontally.
-select Object.key as Obj, VarCharObject.refAttribute as Attr, VarCharObject.value as Value
+-- Named Objects and Types 1:1 Attributes joined horizontally.
+select Object.key as Obj, Vertex.refObjectType as Type, Name.value as Name, YearOfCrea.value as YoC, Position.value as Pos, Duration.value as Dur 
 from Object
-  inner join VarCharObject on VarCharObject.refObject = Object.key
+  inner join Vertex on Vertex.refObject = Object.key and Type = 3
+  inner join VarCharObject      as Name       on Name.refObject       = Object.key and  Name.refAttribute = 1
+  left outer join IntObject     as YearOfCrea on YearOfCrea.refObject = Object.key and  YearOfCrea.refAttribute = 2
+  left outer join VarCharObject as Duration   on Duration.refObject   = Object.key and  Duration.refAttribute = 3  
+  left outer join VarCharObject as Position   on Position.refObject   = Object.key and  Position.refAttribute = 4  
 
   
 -- -----------------------------------------------------------------------------
@@ -242,7 +247,55 @@ from Vertex
 where
   Vertex.refObjectType = 1
 
+  
+  
+-- -----------------------------------------------------------------------------
+-- Recordings alias Tracks
+select Object.key as Obj, Vertex.refObjectType as TKey, ObjectType.Name as Type, 
+  Name.value as Name, YearOfCrea.value as YoC, Position.value as Pos, Duration.value as Dur 
+from Object
+  inner join Vertex on Vertex.refObject = Object.key
+  inner join ObjectType on Vertex.refObjectType = ObjectType.key and ObjectType.key = 3
+  inner join VarCharObject      as Name       on Name.refObject       = Object.key and  Name.refAttribute = 1
+  left outer join IntObject     as YearOfCrea on YearOfCrea.refObject = Object.key and  YearOfCrea.refAttribute = 2
+  left outer join VarCharObject as Duration   on Duration.refObject   = Object.key and  Duration.refAttribute = 3  
+  left outer join VarCharObject as Position   on Position.refObject   = Object.key and  Position.refAttribute = 4  
 
+
+-- -----------------------------------------------------------------------------
+-- Recordings alias Tracks, incluing album attributes via sub-selects
+select Object.key as Obj, Vertex.refObjectType as Tp, ObjectType.Name as Type, 
+  Name.value as Name, YearOfCrea.value as YoC, Position.value as Pos, Duration.value as Dur,
+  (select Edge.refSourceVertex from Edge where refTargetVertex = Object.key and refEdgeType = 5) as Alb,
+  (select VarCharObject.value from VarCharObject where VarCharObject.refObject = (select Edge.refSourceVertex from Edge where refTargetVertex = Object.key and refEdgeType = 5) and VarCharObject.refAttribute = 1) as Album,
+  (select IntObject.value from IntObject where IntObject.refObject = (select Edge.refSourceVertex from Edge where refTargetVertex = Object.key and refEdgeType = 5) and IntObject.refAttribute = 2) as YoC
+from Object
+  inner join Vertex on Vertex.refObject = Object.key
+  inner join ObjectType on Vertex.refObjectType = ObjectType.key and ObjectType.key = 3
+  inner join VarCharObject      as Name       on Name.refObject       = Object.key and  Name.refAttribute = 1
+  left outer join IntObject     as YearOfCrea on YearOfCrea.refObject = Object.key and  YearOfCrea.refAttribute = 2
+  left outer join VarCharObject as Duration   on Duration.refObject   = Object.key and  Duration.refAttribute = 3  
+  left outer join VarCharObject as Position   on Position.refObject   = Object.key and  Position.refAttribute = 4  
+
+-- -----------------------------------------------------------------------------
+-- Recordings alias Tracks, incluing album attributes via joins
+select Object.key as Obj, Vertex.refObjectType as Tp, ObjectType.Name as Type, 
+  Name.value as Name, Position.value as Pos, Duration.value as Dur,
+  Album1.value as Album, Album2.value as YoC
+from Object
+  inner join Vertex on Vertex.refObject = Object.key
+  inner join ObjectType on Vertex.refObjectType = ObjectType.key and ObjectType.key = 3
+  inner join VarCharObject      as Name       on Name.refObject       = Object.key and  Name.refAttribute = 1
+  left outer join VarCharObject as Duration   on Duration.refObject   = Object.key and  Duration.refAttribute = 3  
+  left outer join VarCharObject as Position   on Position.refObject   = Object.key and  Position.refAttribute = 4  
+  left outer join VarCharObject as Album1       
+    on Album1.refObject = (select Edge.refSourceVertex from Edge where refTargetVertex = Object.key and refEdgeType = 5) 
+	                      and Album1.refAttribute = 1
+  left outer join IntObject as Album2       
+    on Album2.refObject = (select Edge.refSourceVertex from Edge where refTargetVertex = Object.key and refEdgeType = 5) 
+	                      and Album2.refAttribute = 2
+
+						   
 -- -----------------------------------------------------------------------------
 -- Utils
 alter table VarCharObject add seqnum integer
