@@ -142,6 +142,6 @@ int main()
     BOOST_TEST( has_role<Ex::Rake> (v));
   }
   std::cout << __FILE__ << ":" << __LINE__ << std::endl;
-  return 1 + boost::report_errors();
+  return boost::report_errors();
 }
 

@@ -125,9 +125,9 @@ namespace boost
     template <typename Entity, typename Base = role_base>
     class role: public Base
     {
+      typedef Base base_type;
     public:
       typedef Entity entity_type;
-      typedef Base base_type;
 
       explicit role(entity_type& e) :
         base_type(e)
@@ -145,10 +145,6 @@ namespace boost
       void set_entity(entity_type& e)
       {
         this->entity_ = &e;
-      }
-      void unset_entity()
-      {
-        this->entity_ = 0;
       }
     };
 
@@ -184,8 +180,7 @@ namespace boost
     {
     public:
       static const std::size_t max_num_of_roles = 0;
-      entity_base()
-BOOST_NOEXCEPT      ;
+      entity_base() BOOST_NOEXCEPT;
       entity_base(const entity_base& e) BOOST_NOEXCEPT;
     protected:
       class impl;
@@ -193,16 +188,15 @@ BOOST_NOEXCEPT      ;
 
       entity_base(impl*) BOOST_NOEXCEPT;
 
-      bool has_role2(std::size_t id) const;
-      shared_ptr<role_base> use_role2(std::size_t);
-      void add_role2(shared_ptr<role_base> r, std::size_t id);
-      void remove_role2(std::size_t id);
-      void move_role2(entity_base& e, std::size_t to, std::size_t from);
+      inline bool has_role(std::size_t id) const;
+      inline shared_ptr<role_base> use_role(std::size_t);
+      inline void add_role(shared_ptr<role_base> r, std::size_t id);
+      inline void remove_role(std::size_t id);
+      inline void move_role(entity_base& e, std::size_t to, std::size_t from);
 
     };
 
     /////////////////////////
-    // This should be placed on a specific header file available to
     class entity_base::impl
     {
       std::vector<shared_ptr<role_base> > roles_;
@@ -245,7 +239,7 @@ BOOST_NOEXCEPT      ;
         if (!has_role(from)) return;
 
         roles_[from]->set_entity(target);
-        target.add_role2(roles_[from], to);
+        target.add_role(roles_[from], to);
         roles_[from].reset();
       }
     };
@@ -264,28 +258,28 @@ BOOST_NOEXCEPT      ;
     }
 
     bool
-    entity_base::has_role2(std::size_t id) const
+    entity_base::has_role(std::size_t id) const
     {
       return impl_->has_role(id);
     }
     shared_ptr<role_base>
-    entity_base::use_role2(std::size_t id)
+    entity_base::use_role(std::size_t id)
     {
       return impl_->use_role(id);
     }
 
     void
-    entity_base::add_role2(shared_ptr<role_base> r, std::size_t id)
+    entity_base::add_role(shared_ptr<role_base> r, std::size_t id)
     {
       impl_->add_role(r, id);
     }
     void
-    entity_base::remove_role2(std::size_t id)
+    entity_base::remove_role(std::size_t id)
     {
       impl_->remove_role(id);
     }
     void
-    entity_base::move_role2(entity_base& target, std::size_t to, std::size_t from)
+    entity_base::move_role(entity_base& target, std::size_t to, std::size_t from)
     {
       impl_->move_role(target, to, from);
     }
@@ -313,6 +307,7 @@ BOOST_NOEXCEPT      ;
     class entity : public Base
     {
     public:
+      typedef Base base_type;
       /**
        * Default constructor
        */
@@ -330,11 +325,11 @@ BOOST_NOEXCEPT      ;
       /**
        * First role id associated to this entity slice.
        */
-      static const std::size_t first_role = Base::max_num_of_roles;
+      BOOST_STATIC_CONSTEXPR std::size_t first_role = Base::max_num_of_roles;
       /**
        * Last+1 role id associated to this entity slice.
        */
-      static const std::size_t max_num_of_roles = N+Base::max_num_of_roles;
+      BOOST_STATIC_CONSTEXPR std::size_t max_num_of_roles = N+Base::max_num_of_roles;
 
       /**
        * The implementation type
@@ -348,10 +343,15 @@ BOOST_NOEXCEPT      ;
       : Base(i)
         {}
 
+      using Base::has_role;
       bool has_role(id<Entity> id) const;
+      using Base::use_role;
       shared_ptr<role<Entity> > use_role(id<Entity>);
+      using Base::add_role;
       void add_role(shared_ptr<role<Entity> > r, id<Entity> id);
+      using Base::remove_role;
       void remove_role(id<Entity> id);
+      using Base::move_role;
       void move_role(Entity& e, id<Entity> to, id<Entity> from);
 
       template <typename Tag, typename Entity2>
@@ -371,35 +371,35 @@ BOOST_NOEXCEPT      ;
     bool
     entity<Entity,N,Base>::has_role(id<Entity> id) const
     {
-      return this->has_role2(first_role+id.get());
+      return has_role(first_role+id.get());
     }
 
     template <typename Entity, std::size_t N, typename Base>
     shared_ptr<role<Entity> >
     entity<Entity,N,Base>::use_role(id<Entity> id)
     {
-      return static_pointer_cast<role<Entity> >(this->use_role2(first_role+id.get()));
+      return static_pointer_cast<role<Entity> >(use_role(first_role+id.get()));
     }
 
     template <typename Entity, std::size_t N, typename Base>
     void
     entity<Entity,N,Base>::add_role(shared_ptr<role<Entity> > r, id<Entity> id)
     {
-      this->add_role2(static_pointer_cast<role_base>(r), first_role+id.get());
+      add_role(static_pointer_cast<role_base>(r), first_role+id.get());
     }
 
     template <typename Entity, std::size_t N, typename Base>
     void
     entity<Entity,N,Base>::remove_role(id<Entity> id)
     {
-      this->remove_role2(first_role+id.get());
+      remove_role(first_role+id.get());
     }
 
     template <typename Entity, std::size_t N, typename Base>
     void
     entity<Entity,N,Base>::move_role(Entity& target, id<Entity> to, id<Entity> from)
     {
-      this->move_role2(target, first_role+to.get(), first_role+from.get());
+      move_role(target, first_role+to.get(), first_role+from.get());
     }
 
     //////////////////
