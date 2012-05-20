@@ -14,6 +14,7 @@
 #include <iostream>
 
 using namespace boost;
+using namespace boost::association;
 
 class CBoy;
 class CGirl;
@@ -21,25 +22,25 @@ class CGirl;
 struct boy {};
 struct girl {};
 
-typedef association::bidir<
+typedef association::intrinsic<
     tagged<CBoy,    boy>,
-    tagged<CGirl,   girl> 
-> friends;
-    
+    tagged<CGirl,   girl>
+> Friends;
+
 class CBoy {
 public:
-    CBoy() {}
+    CBoy() : m_girlfriend(this) {}
     void GiveGirlfriendFlowers();
     void RecvSlap() {
         std::cout << "boy: ouch!" << '\n';
         m_girlfriend.disconnect();
     }
-    friends::end_point<girl>::type m_girlfriend;
+    Friends::end_point<girl>::type m_girlfriend;
 };
 
 class CGirl {
 public:
-    CGirl() {
+    CGirl() :  m_boyfriend(this) {
     }
     void RecvFlowers() {
         std::cout << "girl: thank you for the flowers!" << '\n';
@@ -55,19 +56,19 @@ public:
     void break_boyfriend() {
         std::cout << "girl: we broke up." << '\n';
     }
-    friends::end_point<boy>::type m_boyfriend;
+    Friends::end_point<boy>::type m_boyfriend;
 };
 
 void CBoy::GiveGirlfriendFlowers() {
     //~ if(m_girlfriend.get())
         //~ m_girlfriend->RecvFlowers();
-    
-    if (friends::get<girl>(*this)) 
-        friends::get<girl>(*this)->RecvFlowers();
+
+    if (Friends::get<girl>(*this))
+        Friends::get<girl>(*this)->RecvFlowers();
 
 }
 
-BOOST_ASSOCIATION_DCL(friends, m_boyfriend, m_girlfriend);
+BOOST_ASSOCIATION_DCL(Friends, m_boyfriend, m_girlfriend);
 
 
 int main()
@@ -76,14 +77,14 @@ int main()
     CGirl Sally;
 
     //~ Henry.m_girlfriend.connect(&Sally);
-    friends::connect(&Henry,&Sally);   
-    friends::disconnect<boy>(Henry);
-    friends::connect(&Henry,&Sally);
-    friends::disconnect<girl>(Sally);
-    friends::connect(&Henry,&Sally);
+    Friends::connect(Henry,Sally);
+    Friends::disconnect<boy>(Henry);
+    Friends::connect(Henry,Sally);
+    Friends::disconnect<girl>(Sally);
+    Friends::connect(Henry,Sally);
     Henry.GiveGirlfriendFlowers();
     //~ Sally.SlapBoyfriend();
-    friends::get<girl>(Henry)->SlapBoyfriend();
+    Friends::get<girl>(Henry)->SlapBoyfriend();
 
     return 0;
 }
