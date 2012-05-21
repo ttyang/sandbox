@@ -51,6 +51,8 @@
 #include "data/qsql/QSqlSelector.h"
 #include "data/concept/Selector.h"
 
+#include "gen/NameGenerator.h"
+
 Browser::Browser(QWidget *parent)
     : QWidget(parent)
 {
@@ -186,6 +188,20 @@ bool Browser::runScript()
     QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
 
     //JODO Testcode
+    gen::tString some;
+    gen::NameGenerator makeSome(2,5);
+
+    for(int i=0; i<10; i++)
+    {
+        some += makeSome();
+        some += "\n";
+    }
+
+    QMessageBox msgBox;
+    QString msg = some;
+    msgBox.setText(msg);
+    msgBox.exec();
+
     bool success = false;
     data::QSqlSelector selector;
     dag::db::TypeGraph tygra;
