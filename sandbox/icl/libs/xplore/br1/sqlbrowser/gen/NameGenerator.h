@@ -16,6 +16,8 @@ namespace gen
 
 typedef QString tString;
 typedef boost::random::uniform_int_distribution<> tUniform;
+typedef boost::random::mt19937                    tRandomGenerator;
+
 
 class NameGenerator
 {
@@ -25,16 +27,19 @@ public:
 
     tString operator()()const;
 
+
     static int syllablesBeginCount();
     static int syllablesMidCount();
     static int syllablesEndCount();
+
+    static int syllableIndexBegin();
+    static int syllableIndexMid();
+    static int syllableIndexEnd();
 
 private:
     int      m_iMinSyllables;
     int      m_iMaxSyllables;
     tString  m_aPrefix;
-
-    static boost::random::mt19937 s_aGen;
 
     tUniform m_aDist;
 

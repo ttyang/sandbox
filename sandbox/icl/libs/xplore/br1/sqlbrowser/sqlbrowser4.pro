@@ -26,14 +26,18 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     data/qsql/QSqlSelector.h \
     data/qsql/QSqlCreator.h \
     data/concept/GetCreator.h \
-    gen/NameGenerator.h
+    gen/NameGenerator.h \
+    gen/NumberGenerator.h \
+    gen/DbGenerator.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
     dagmodel.cpp \
     Dag/TypeGraph.cpp \
     Dag/TypeGraph.cpp \
-    gen/NameGenerator.cpp
+    gen/NameGenerator.cpp \
+    gen/NumberGenerator.cpp \
+    gen/DbGenerator.cpp
 
 FORMS           = browserwidget.ui qsqlconnectiondialog.ui
 build_all:!build_pass {

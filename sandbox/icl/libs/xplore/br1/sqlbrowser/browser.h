@@ -127,8 +127,11 @@ signals:
 
 private:
     void deselectFirstCell(int selectedRow);
-
     void insertNewVertex(DagModel* pDagModel, const QModelIndex& index);
+
+    bool execScript();
+    bool casualTests();
+    bool generateDb();
 };
 
 #endif

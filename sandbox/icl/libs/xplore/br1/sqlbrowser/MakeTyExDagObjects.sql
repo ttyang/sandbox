@@ -22,6 +22,11 @@ create table Attribute (key integer primary key, refObjectType integer, name var
 create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute));
 create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute));
 
+-- -----------------------------------------------------------------------------
+-- Utilities
+-- sqlite_master : Contains the DB Schema Tables, Views and Indices
+select * from sqlite_master
+
 
 -- The creation sequence and systematics for generating example entities:
 
@@ -105,3 +110,10 @@ create table VarCharObject (refObject integer, refAttribute integer, value varch
 --       = Edge(31,2,16,21,31)
 
 
+   _     _
+  / |   | | Musikhaus Thomann Cyberteam
+ /  |__ | |___  ___  ____  ___  ____   _ ___  _ ___  ________________
+/_   __||  __ \/   \|  _ \/_  \|__  \ | /   \| /   \ Tel: 09546-9223-0      
+  | |   | /  \/ :-) \ | \ / | | __| | |  /| ||  /| | Fax: 09546-6774
+  | |__ | |  |\     / | | | | |/ <> | | | | || | | | info@thomann.de
+   \___||_|  |_\___/|_| |_| |_|\_____\|_| |_||_| |_| www.thomann.de

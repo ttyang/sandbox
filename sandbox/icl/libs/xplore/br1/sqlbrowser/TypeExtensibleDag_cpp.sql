@@ -8,44 +8,49 @@ drop table Attribute;
 drop table VarCharObject;
 drop table IntObject;
 
-create table TypeTraits (key integer primary key, name varchar);
-create table ObjectType (key integer primary key, traits integer, name varchar);
-create table EdgeType (key integer primary key, refSourceType integer, refRelationType integer, refTargetType integer, name varchar);
-create table Vertex (key integer primary key, refObjectType integer, refObject integer);
-create table Edge (key integer primary key, refEdgeType integer, refSourceVertex integer, refTargetVertex integer, refObject integer);
-create table Object (key integer primary key);
-create table Attribute (key integer primary key, refObjectType integer, name varchar);
-
-create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute));
-create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute));
-
-
-
-
+exec("create table TypeTraits (key integer primary key, name varchar)");
+exec("create table ObjectType (key integer primary key, traits integer, name varchar)");
+exec("create table EdgeType (key integer primary key, refSourceType integer, refRelationType integer, refTargetType integer, name varchar)");
+exec("create table Vertex (key integer primary key, refObjectType integer, refObject integer)");
+exec("create table Edge (key integer primary key, refEdgeType integer, refSourceVertex integer, refTargetVertex integer, refObject integer)");
+exec("create table Object (key integer primary key)");
+exec("create table Attribute (key integer primary key, refObjectType integer, name varchar)");
+exec("create table VarCharObject (refObject integer, refAttribute integer, value varchar, primary key (refObject, refAttribute))");
+exec("create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute))");
 
 -- -----------------------------------------------------------------------------
-insert into TypeTraits values (0, 'atom obj');
-insert into TypeTraits values (1, 'comp obj');
-insert into TypeTraits values (2, 'atom rel');
+exec("insert into TypeTraits values (0, 'atom obj')");
+exec("insert into TypeTraits values (1, 'comp obj')");
+exec("insert into TypeTraits values (2, 'atom rel')");
 
-insert into ObjectType values (0, 0, 'Nil');
-insert into ObjectType values (1, 0, 'a:artist');
-insert into ObjectType values (2, 0, 'a:title');
-insert into ObjectType values (3, 0, 'a:recording');
-insert into ObjectType values (4, 0, 'c:artists');
-insert into ObjectType values (5, 1, 'c:genre');
-insert into ObjectType values (6, 2, 'r:composed');
-insert into ObjectType values (7, 2, 'r:performed');
-insert into ObjectType values (8, 2, 'r:recorded as');
-insert into ObjectType values (9, 2, 'r:located at');
-insert into ObjectType values (10, 0, 'c:album');
-insert into ObjectType values (11, 2, 'r:contains');
+-- -----------------------------------------------------------------------------
+exec("insert into ObjectType values (1, 0, 'a:text')");
+exec("insert into ObjectType values (2, 0, 'a:integer')");
+exec("insert into ObjectType values (3, 0, 'a:real')");
 
-insert into EdgeType values (1, 1, 6, 2, 'artist composed title'   );
-insert into EdgeType values (2, 1, 7, 3, 'artist performed record' );
-insert into EdgeType values (3, 2, 8, 3, 'title recorded as record');
-insert into EdgeType values (4, 3, 9, 4, 'record located at url'   );
-insert into EdgeType values (5, 10, 11, 3, 'album contains record' );
+exec("insert into ObjectType values (21, 0, 'a:artist')");
+exec("insert into ObjectType values (22, 0, 'a:title')");
+exec("insert into ObjectType values (23, 0, 'a:recording')");
+exec("insert into ObjectType values (24, 0, 'c:artists')");
+exec("insert into ObjectType values (25, 1, 'c:genre')");
+exec("insert into ObjectType values (26, 2, 'r:composed')");
+exec("insert into ObjectType values (27, 2, 'r:performed')");
+exec("insert into ObjectType values (28, 2, 'r:recorded as')");
+exec("insert into ObjectType values (29, 2, 'r:located at')");
+exec("insert into ObjectType values (30, 0, 'c:album')");
+exec("insert into ObjectType values (31, 2, 'r:contains')");
+
+exec("insert into EdgeType values (1, 21, 26, 22, 'artist composed title'   )");
+exec("insert into EdgeType values (2, 21, 27, 23, 'artist performed record' )");
+exec("insert into EdgeType values (3, 22, 28, 23, 'title recorded as record')");
+exec("insert into EdgeType values (4, 23, 29, 24, 'record located at url'   )");
+exec("insert into EdgeType values (5, 30, 31, 23, 'album contains record' )");
+
+exec("insert into Attribute values (1, 1, 'Name')"    );
+exec("insert into Attribute values (2, 1, 'Duration')");
+exec("insert into Attribute values (31, 2, 'Year')"   );
+exec("insert into Attribute values (32, 2, 'Pos')"    );
+
 
 insert into Object values (0);
 
@@ -113,14 +118,14 @@ insert into VarCharObject values (11, 1, "recoreded 1996");
 
 -- -----------------------------------------------------------------------------
 -- Check for EdgeTypes
-create view EdgeTypeCheck as 
-select
-  (select ObjectType.name from ObjectType where ObjectType.key = EdgeType.refSourceType)   as SrcT,
-  (select ObjectType.name from ObjectType where ObjectType.key = EdgeType.refRelationType) as RelT,
-  ObjectType.name as TrgT,
-  EdgeType.name
-from EdgeType
-  inner join ObjectType   on EdgeType.refTargetType   = ObjectType.key
+"create view EdgeTypeCheck as " 
+"select "
+"  (select ObjectType.name from ObjectType where ObjectType.key = EdgeType.refSourceType)   as SrcT, "
+"  (select ObjectType.name from ObjectType where ObjectType.key = EdgeType.refRelationType) as RelT, "
+"  ObjectType.name as TrgT, "
+"  EdgeType.name "
+"from EdgeType "
+"  inner join ObjectType   on EdgeType.refTargetType   = ObjectType.key"
   
 -- -----------------------------------------------------------------------------
 -- Named Objects

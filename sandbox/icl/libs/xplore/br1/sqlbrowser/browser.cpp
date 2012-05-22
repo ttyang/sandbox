@@ -51,7 +51,9 @@
 #include "data/qsql/QSqlSelector.h"
 #include "data/concept/Selector.h"
 
+#include "gen/NumberGenerator.h"
 #include "gen/NameGenerator.h"
+#include "gen/DbGenerator.h"
 
 Browser::Browser(QWidget *parent)
     : QWidget(parent)
@@ -165,8 +167,15 @@ void Browser::exec()
     updateActions();
 }
 
-/*JODO REV
 bool Browser::runScript()
+{
+    //return execScript(); // Execute a script containing of multiple sql-statements
+    //return casualTests();
+    return generateDb();
+}
+
+
+bool Browser::execScript()
 {
     QString   curSql   = sqlEdit->toPlainText();
     QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
@@ -180,9 +189,26 @@ bool Browser::runScript()
 
     return success;
 }
-*/
 
-bool Browser::runScript()
+
+//------------------------------------------------------------------------------
+//JODO CL. Make a better GUI for different funcitons.
+//Experimental space
+bool Browser::generateDb()
+{
+    using namespace gen;
+    DbGenerator aDbGentor = DbGenerator(connectionWidget->currentDatabase());
+    bool success = aDbGentor.generate();
+
+    if(success)
+        emit statusMessage(tr("Db generated successfully."));
+    else
+        emit statusMessage(tr("Error(s), in Db generation."));
+
+    return success;
+}
+
+bool Browser::casualTests()
 {
     QString   curSql   = "select * from EdgeType";
     QSqlQuery curQuery = QSqlQuery(connectionWidget->currentDatabase());
@@ -191,8 +217,10 @@ bool Browser::runScript()
     gen::tString some;
     gen::NameGenerator makeSome(2,5);
 
-    for(int i=0; i<10; i++)
+    int trials = gen::IntGenerator(2,10)();
+    for(int i=0; i<trials ; i++)
     {
+        double dbg_dbl = gen::DoubleGenerator(0.1, 0.9)();
         some += makeSome();
         some += "\n";
     }
@@ -356,6 +384,7 @@ void Browser::addConnection()
             ;//JODO REV rexec();
     }
 }
+
 
 void Browser::openFile()
 {
