@@ -49,7 +49,7 @@ exec("insert into EdgeType values (5, 30, 31, 23, 'album contains record' )");
 exec("insert into Attribute values (1, 1, 'Name')"    );
 exec("insert into Attribute values (2, 1, 'Duration')");
 exec("insert into Attribute values (31, 2, 'Year')"   );
-exec("insert into Attribute values (32, 2, 'Pos')"    );
+exec("insert into Attribute values (32, 2, 'Position')");
 
 
 insert into Object values (0);
