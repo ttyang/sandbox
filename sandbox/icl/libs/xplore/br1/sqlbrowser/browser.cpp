@@ -171,6 +171,7 @@ bool Browser::runScript()
 {
     //return execScript(); // Execute a script containing of multiple sql-statements
     //return casualTests();
+    emit statusMessage(tr("Generating DB ..."));
     return generateDb();
 }
 

@@ -26,6 +26,7 @@ public:
         : m_aPrefix(), m_aDist(min, max){}
 
     tString operator()()const;
+    tString operator()(const tString& prefix)const;
 
 
     static int syllablesBeginCount();

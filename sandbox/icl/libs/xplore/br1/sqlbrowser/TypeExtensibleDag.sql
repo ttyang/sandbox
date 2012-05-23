@@ -412,3 +412,13 @@ from Vertex
                                          and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
   left outer join Album on MotherAlbum.refSourceVertex = Album.Key 
 
+  
+-- -----------------------------------------------------------------------------
+-- Select from Edges
+select refTargetVertex, group_concat(ArtistName.value) as Artist, ArtistYear.value as YoB, TitleName.value as Title
+from Edge
+  inner join VarCharObject as ArtistName on ArtistName.refObject = Edge.refSourceVertex
+  left outer join IntObject as ArtistYear on ArtistYear.refObject = Edge.refSourceVertex
+  left outer join VarCharObject as TitleName on TitleName.refObject = Edge.refTargetVertex
+group by refTargetVertex
+order by Title

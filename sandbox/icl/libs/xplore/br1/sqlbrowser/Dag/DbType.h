@@ -23,7 +23,8 @@ typedef VertexAttributes* VertexAttributesPtr;
 namespace dag { namespace db
 {
 
-typedef unsigned int      tKey;
+//JODO typedef unsigned int      tKey;
+typedef int               tKey;
 typedef QVector<tKey>     tKeySequence;
 typedef QVector<QVariant> tVariVector;
 typedef QString           tString;

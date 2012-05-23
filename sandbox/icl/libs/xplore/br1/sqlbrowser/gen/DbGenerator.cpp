@@ -6,14 +6,28 @@
 #include <QtGui>
 #include <QString>
 #include <QMessageBox>
+#include "gen/NumberGenerator.h"
 #include "gen/DbGenerator.h"
 
 using namespace gen;
+using namespace boost::icl;
 
+
+void DbGenerator::configure()
+{
+    m_iArtists = 1000;
+    m_iTitles  = 10000;
+}
+
+void DbGenerator::clear()
+{
+    m_aFailingSql = tString();
+    m_aArtists.clear();
+    m_aTitles.clear();
+}
 
 bool DbGenerator::generate()
 {
-    m_aFailingSql = tString();
 
     if(!m_aDb.open())
     {
@@ -22,10 +36,12 @@ bool DbGenerator::generate()
     }
 
     //------------------------------------------
-    clean();
+    clearDb();
     generateTables();
-
     generateTypeData();
+
+    generateObjects();
+    generateRelationships();
     //------------------------------------------
 
     if(m_aFailingSql.isEmpty())
@@ -35,7 +51,7 @@ bool DbGenerator::generate()
 }
 
 
-bool DbGenerator::exec(const char* sql)
+bool DbGenerator::exec(const tString& sql)
 {
     if(!m_aQuery.exec(sql))
     {
@@ -59,7 +75,7 @@ void DbGenerator::generateTypeData()
 
 
 
-void DbGenerator::clean()
+void DbGenerator::clearDb()
 {
 
     exec("drop view Album"        );
@@ -150,12 +166,125 @@ void DbGenerator::generateTypeViews()
     );
 }
 
-
-void DbGenerator::generateArtist()
+void DbGenerator::generateObjects()
 {
-    tKey aKey = generateObject();
-    generateVertex(aKey, a_artist);
-    generateVarCharObject(aKey, A_Name, m_aSomeName());
-    generateIntObject(aKey, A_Year, gen::IntGenerator(1940, 1990)());
+    generateArtists(m_iArtists);
+    generateTitles(m_iTitles);
 }
+
+void DbGenerator::generateRelationships()
+{
+    generateArtistComposedTitle();
+}
+
+
+dag::db::tKey DbGenerator::insertObject()
+{
+    exec("insert into Object values (NULL)");
+    return m_aQuery.lastInsertId().toInt();
+}
+
+void DbGenerator::insertVertex(tKey aKey, tObjectType eType)
+{
+    exec(tString("insert into Vertex values (%1, %2)").arg(aKey).arg(eType));
+}
+
+void DbGenerator::insertEdge(tKey aEdgeKey, tKey aEdgeTypeKey, tKey aSrcKey, tKey aTrgKey)
+{
+    exec(tString("insert into Edge values (%1, %2, %3, %4)")
+         .arg(aEdgeKey).arg(aEdgeTypeKey).arg(aSrcKey).arg(aTrgKey));
+}
+
+void DbGenerator::insertVarCharObject(tKey aKey, tAttribute eAttr, const tString& value)
+{
+    exec(tString("insert into VarCharObject values (%1, %2, '%3')").arg(aKey).arg(eAttr).arg(value));
+}
+
+void DbGenerator::insertIntObject(tKey aKey, tAttribute eAttr, int value)
+{
+    exec(tString("insert into IntObject values (%1, %2, %3)").arg(aKey).arg(eAttr).arg(value));
+}
+
+dag::db::tKey DbGenerator::generateArtist()
+{
+    tKey aKey = insertObject();
+    insertVertex(aKey, a_artist);
+    insertVarCharObject(aKey, A_Name, m_aSomeName("A_"));
+    insertIntObject(aKey, A_Year, gen::IntGenerator(1940, 1990)());
+    return aKey;
+}
+
+
+dag::db::tKey DbGenerator::generateTitle()
+{
+    tKey aKey = insertObject();
+    insertVertex(aKey, a_title);
+    insertVarCharObject(aKey, A_Name, m_aSomeName("T_"));
+    insertIntObject(aKey, A_Year, gen::IntGenerator(1960, 2012)());
+    return aKey;
+}
+
+void DbGenerator::generateArtists(int count)
+{
+    for(int idx=0; idx<count; idx++)
+        m_aArtists.add(generateArtist());
+}
+
+void DbGenerator::generateTitles(int count)
+{
+    for(int idx=0; idx<count; idx++)
+        m_aTitles.add(generateTitle());
+}
+
+
+void DbGenerator::generateArtistComposedTitle()
+{
+    tKey aKey = insertObject();
+    makeComposersRange();
+
+    //Every title needs at least one composer.
+    for(  tKeySet::element_iterator it = elements_begin(m_aTitles)
+        ; it != elements_end(m_aTitles); ++it)
+    {
+        assignComposers(*it);
+    }
+
+}
+
+void DbGenerator::makeComposersRange()
+{
+    //Not all artists are composers
+    tInterval artistsRange = hull(m_aArtists);
+    tKey fst = first(artistsRange);
+    tKey lst = fst + size(artistsRange)/2;
+    m_aComposersRange = tInterval::closed(fst, lst);
+}
+
+void DbGenerator::assignComposers(tKey aTitle)
+{
+    gen::IntGenerator someArtist(m_aComposersRange);
+    tKey aArtist1 = someArtist();
+
+    tKey aEdgeKey1 = insertObject();
+    insertEdge(aEdgeKey1, R_artist_composed_title, aArtist1, aTitle);
+
+    if(IntGenerator(1,3)() == 3)
+    {
+        tKey aArtist2 = someArtist();
+        if(aArtist2 != aArtist1)
+        {
+            tKey aEdgeKey2 = insertObject();
+            insertEdge(aEdgeKey2, R_artist_composed_title, aArtist2, aTitle);
+            if(IntGenerator(1,3)() == 3)
+            {
+                tKey aEdgeKey3 = insertObject();
+                tKey aArtist3 = someArtist();
+                if(aArtist3 != aArtist1 && aArtist3 != aArtist2)
+                    insertEdge(aEdgeKey3, R_artist_composed_title, aArtist3, aTitle);
+            }
+
+        }
+    }
+}
+
 

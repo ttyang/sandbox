@@ -90,3 +90,7 @@ tString NameGenerator::operator()()const
     return someName;
 }
 
+tString NameGenerator::operator()(const tString& prefix)const
+{
+    return prefix + (*this)();
+}
