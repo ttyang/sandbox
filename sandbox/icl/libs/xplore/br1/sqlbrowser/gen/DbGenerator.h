@@ -21,6 +21,8 @@ class DbGenerator
 {
 public:
     typedef dag::db::tKey tKey;
+    typedef unsigned int  tObjectType;
+    typedef unsigned int  tAttribute;
 
     enum {
         a_text       =  1
@@ -46,8 +48,15 @@ public:
       , A_Position   =  32
     };
 
+    enum {
+        minSyllables = 2
+      , maxSyllables = 5
+    };
+
     DbGenerator(const QSqlDatabase& db):
-        m_aDb(db), m_aQuery("", m_aDb){}
+        m_aDb(db), m_aQuery("", m_aDb)
+      , m_aSomeName(minSyllables, maxSyllables)
+    {}
 
     bool generate();
     void clean();
@@ -66,11 +75,18 @@ private:
     void generateEdgeTypes();
     void generateAttributes();
 
+    tKey generateObject();
+    void generateVertex(tKey aKey, tObjectType eObjectType);
+    void generateVarCharObject(tKey aKey, );
+
+    void generateArtist();
+
 private:
-    QSqlDatabase m_aDb;
-    QSqlQuery    m_aQuery;
-    QSqlError    m_aLastError;
-    tString      m_aFailingSql;
+    QSqlDatabase  m_aDb;
+    QSqlQuery     m_aQuery;
+    QSqlError     m_aLastError;
+    tString       m_aFailingSql;
+    NameGenerator m_aSomeName;
 };
 
 } // namespace data

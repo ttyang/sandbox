@@ -150,12 +150,12 @@ void DbGenerator::generateTypeViews()
     );
 }
 
-/*
+
 void DbGenerator::generateArtist()
 {
     tKey aKey = generateObject();
     generateVertex(aKey, a_artist);
-    generateVarCharObject(aKey, )
-
+    generateVarCharObject(aKey, A_Name, m_aSomeName());
+    generateIntObject(aKey, A_Year, gen::IntGenerator(1940, 1990)());
 }
-*/
+
