@@ -6,6 +6,7 @@
 #pragma once
 
 
+#include <boost/icl/map.hpp>
 #include <boost/icl/interval_set.hpp>
 
 #include <QtSql>
@@ -24,8 +25,12 @@ public:
     typedef dag::db::tKey tKey;
     typedef unsigned int  tObjectType;
     typedef unsigned int  tAttribute;
-    typedef boost::icl::interval_set<tKey> tKeySet;
-    typedef tKeySet::interval_type tInterval;
+    typedef std::set<tKey>                 tKeySet;
+    typedef boost::icl::map<tKey, tKeySet> tKey2Keys;
+    typedef boost::icl::map<tKey, tString> tKey2Name;
+
+    typedef boost::icl::interval_set<tKey> tInterKeySet;
+    typedef tInterKeySet::interval_type    tInterval;
 
     enum {
         a_text       =  1
@@ -83,12 +88,19 @@ public:
 
     void generateArtists(int);
     void generateTitles(int);
+    void generateRecordings(int);
+    void generateAlbums(int);
 
     void generateArtistComposedTitle();
+    void generateTitleRecordedAsRecording();
+    void generateAlbumContainsRecording();
 
 private:
     void configure();
     bool exec(const tString& sql);
+
+    void prepareGeneration();
+
 
     //void generateTypeData();
     void generateTypeTraits();
@@ -104,13 +116,22 @@ private:
 
     tKey generateArtist();
     tKey generateTitle();
+    tKey generateRecording(tKey aAlbumKey, tKey aTitleKey);
+    tKey generateAlbum();
 
     void makeComposersRange();
     void assignComposers(tKey aTitle);
+    void addComposerToTitle(tKey aArtistKey, tKey aTitleKey);
+
+    void assignTitle(tKey aRecordingKey);
+    void assignAlbum(tKey aRecordingKey);
+    tString makeRecordingName(tKey aAlbumKey, tKey aTitleKey);
 
 private:
     int m_iArtists;
     int m_iTitles;
+    int m_iAlbums;
+    int m_iRecordings;
 
     QSqlDatabase  m_aDb;
     QSqlQuery     m_aQuery;
@@ -118,9 +139,18 @@ private:
     tString       m_aFailingSql;
     NameGenerator m_aSomeName;
 
-    tKeySet       m_aArtists;
+    tInterKeySet  m_aArtists;
+    tInterKeySet  m_aTitles;
+    tInterKeySet  m_aRecordings;
+    tInterKeySet  m_aAlbums;
+
     tInterval     m_aComposersRange;
-    tKeySet       m_aTitles;
+
+    tKey2Keys     m_aComposer2Titles;
+    tKey2Keys     m_aTitle2Composers;
+
+    tKey2Name     m_aTitleNames;
+    tKey2Name     m_aAlbumNames;
 };
 
 } // namespace data

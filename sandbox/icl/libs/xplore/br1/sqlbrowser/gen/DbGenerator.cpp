@@ -15,8 +15,10 @@ using namespace boost::icl;
 
 void DbGenerator::configure()
 {
-    m_iArtists = 1000;
-    m_iTitles  = 10000;
+    m_iArtists     =  10;
+    m_iTitles      = 100;
+    m_iAlbums      =  50;
+    m_iRecordings  = 200;
 }
 
 void DbGenerator::clear()
@@ -37,6 +39,8 @@ bool DbGenerator::generate()
 
     //------------------------------------------
     clearDb();
+
+    prepareGeneration();
     generateTables();
     generateTypeData();
 
@@ -63,6 +67,15 @@ bool DbGenerator::exec(const tString& sql)
 }
 
 
+void DbGenerator::prepareGeneration()
+{
+    //! \note Insert statements are very slowly because they are safe guarded
+    //! by a transaction each enshure data safety in case of havary (e.g. black out).
+    //! PRAGMA synchronous = OFF disables transactions. This greatly speeds up inserts.
+    exec("PRAGMA synchronous = OFF");
+}
+
+
 void DbGenerator::generateTypeData()
 {
     generateTypeTraits();
@@ -77,7 +90,6 @@ void DbGenerator::generateTypeData()
 
 void DbGenerator::clearDb()
 {
-
     exec("drop view Album"        );
     exec("drop view EdgesMinimal" );
     exec("drop view NamedObjects" );
@@ -166,12 +178,20 @@ void DbGenerator::generateTypeViews()
     );
 }
 
+//------------------------------------------------------------------------------
+//- Generate Objects
+//------------------------------------------------------------------------------
 void DbGenerator::generateObjects()
 {
     generateArtists(m_iArtists);
     generateTitles(m_iTitles);
+    generateAlbums(m_iAlbums);
+    generateRecordings(m_iRecordings);
 }
 
+//------------------------------------------------------------------------------
+//- Generate Relationships
+//------------------------------------------------------------------------------
 void DbGenerator::generateRelationships()
 {
     generateArtistComposedTitle();
@@ -214,16 +234,48 @@ dag::db::tKey DbGenerator::generateArtist()
     return aKey;
 }
 
-
 dag::db::tKey DbGenerator::generateTitle()
 {
     tKey aKey = insertObject();
     insertVertex(aKey, a_title);
-    insertVarCharObject(aKey, A_Name, m_aSomeName("T_"));
+    tString aName = m_aSomeName("T_");
+    m_aTitleNames.add(tKey2Name::value_type(aKey, aName));
+
+    insertVarCharObject(aKey, A_Name, aName);
     insertIntObject(aKey, A_Year, gen::IntGenerator(1960, 2012)());
     return aKey;
 }
 
+dag::db::tKey DbGenerator::generateRecording(tKey aAlbumKey, tKey aTitleKey)
+{
+    tKey aKey = insertObject();
+    insertVertex(aKey, a_recording);
+    //JODO make name from album & title
+    insertVarCharObject(aKey, A_Name, makeRecordingName(aAlbumKey, aTitleKey));
+    insertIntObject(aKey, A_Year, gen::IntGenerator(1960, 2012)());
+    return aKey;
+}
+
+tString DbGenerator::makeRecordingName(tKey aAlbumKey, tKey aTitleKey)
+{
+    return m_aAlbumNames(aAlbumKey) + "_" + m_aTitleNames(aTitleKey);
+}
+
+dag::db::tKey DbGenerator::generateAlbum()
+{
+    tKey aKey = insertObject();
+    insertVertex(aKey, c_album);
+    tString aName = m_aSomeName("Al_");
+    m_aAlbumNames.add(tKey2Name::value_type(aKey, aName));
+
+    insertVarCharObject(aKey, A_Name, aName);
+    insertIntObject(aKey, A_Year, gen::IntGenerator(1960, 2012)());
+    return aKey;
+}
+
+
+
+//------------------------------------------------------------------------------
 void DbGenerator::generateArtists(int count)
 {
     for(int idx=0; idx<count; idx++)
@@ -236,14 +288,50 @@ void DbGenerator::generateTitles(int count)
         m_aTitles.add(generateTitle());
 }
 
+void DbGenerator::generateRecordings(int count)
+{
+    int titleCount = m_aTitles.size();
+    int coverRate = count / titleCount;
+    int coverRest = count % titleCount;
 
+    int albumCount = m_aAlbums.size();
+    int albumRate = count / albumCount;
+    int albumRest = count % albumCount;
+
+    tKey aTitleKey = first(m_aTitles);
+    tKey aAlbumKey = first(m_aAlbums);
+
+    for(  int idx=1
+        ; idx <= count && contains(m_aTitles, aTitleKey)
+                       && contains(m_aAlbums, aAlbumKey)
+        ; idx++)
+    {
+        if(idx % coverRate == 0)
+            ++aTitleKey;
+        if(idx % albumRate == 0)
+            ++aAlbumKey;
+
+        m_aRecordings.add(generateRecording(aAlbumKey, aTitleKey));
+    }
+
+}
+
+void DbGenerator::generateAlbums(int count)
+{
+    for(int idx=0; idx<count; idx++)
+        m_aAlbums.add(generateAlbum());
+}
+
+
+//------------------------------------------------------------------------------
+//- Relationships (Edges)
+//------------------------------------------------------------------------------
 void DbGenerator::generateArtistComposedTitle()
 {
-    tKey aKey = insertObject();
     makeComposersRange();
 
     //Every title needs at least one composer.
-    for(  tKeySet::element_iterator it = elements_begin(m_aTitles)
+    for(  tInterKeySet::element_iterator it = elements_begin(m_aTitles)
         ; it != elements_end(m_aTitles); ++it)
     {
         assignComposers(*it);
@@ -265,26 +353,101 @@ void DbGenerator::assignComposers(tKey aTitle)
     gen::IntGenerator someArtist(m_aComposersRange);
     tKey aArtist1 = someArtist();
 
-    tKey aEdgeKey1 = insertObject();
-    insertEdge(aEdgeKey1, R_artist_composed_title, aArtist1, aTitle);
+    addComposerToTitle(aArtist1, aTitle);
 
     if(IntGenerator(1,3)() == 3)
     {
         tKey aArtist2 = someArtist();
         if(aArtist2 != aArtist1)
         {
-            tKey aEdgeKey2 = insertObject();
-            insertEdge(aEdgeKey2, R_artist_composed_title, aArtist2, aTitle);
+            addComposerToTitle(aArtist2, aTitle);
             if(IntGenerator(1,3)() == 3)
             {
-                tKey aEdgeKey3 = insertObject();
                 tKey aArtist3 = someArtist();
                 if(aArtist3 != aArtist1 && aArtist3 != aArtist2)
-                    insertEdge(aEdgeKey3, R_artist_composed_title, aArtist3, aTitle);
+                    addComposerToTitle(aArtist3, aTitle);
             }
 
         }
     }
 }
 
+void DbGenerator::addComposerToTitle(tKey aArtistKey, tKey aTitleKey)
+{
+    tKey aEdgeKey = insertObject();
+    insertEdge(aEdgeKey, R_artist_composed_title, aArtistKey, aTitleKey);
+    tKeySet aTitleKeySet;
+    aTitleKeySet.insert(aTitleKey);
+    tKeySet aArtistKeySet;
+    aArtistKeySet.insert(aArtistKey);
+    m_aComposer2Titles.add(std::make_pair(aArtistKey, aTitleKeySet));
+    m_aTitle2Composers.add(std::make_pair(aTitleKey, aArtistKeySet));
+}
+
+
+//------------------------------------------------------------------------------
+void DbGenerator::generateTitleRecordedAsRecording()
+{
+    //Every recording needs at least one title that it is a recording of
+    for(  tInterKeySet::element_iterator it = elements_begin(m_aRecordings)
+        ; it != elements_end(m_aRecordings); ++it)
+    {
+        assignTitle(*it);
+    }
+
+    /*
+    //Most recordings are part of an album
+    for(  tInterKeySet::element_iterator it = elements_begin(m_aRecordings)
+        ; it != elements_end(m_aRecordings); ++it)
+    {
+        assignAlbum(*it);
+    }
+
+    //Every recording needs at least one performing artist
+    for(  tInterKeySet::element_iterator it = elements_begin(m_aRecordings)
+        ; it != elements_end(m_aRecordings); ++it)
+    {
+        assignArtists(*it);
+    }
+    */
+}
+
+// composer -> { titles }
+// title    -> { composers }
+
+void DbGenerator::assignTitle(tKey aRecordingKey)
+{
+    gen::IntGenerator someTitle(hull(m_aTitles));
+    tKey aTitleKey = someTitle();
+
+    //JODO Make the construction of entities more realistic
+    //tKey aComposerKey = getComposer(aTitleKey);
+    //tKey aSomeAlbumKey = getSomeComposerAlbum();
+
+    tKey aEdgeKey = insertObject();
+    insertEdge(aEdgeKey, R_title_recorded_as_record, aTitleKey, aRecordingKey);
+}
+
+void DbGenerator::assignAlbum(tKey aRecordingKey)
+{
+    gen::IntGenerator someAlbum(hull(m_aAlbums));
+    tKey aAlbumKey = someAlbum();
+
+    tKey aEdgeKey = insertObject();
+    insertEdge(aEdgeKey, R_album_contains_record, aAlbumKey, aRecordingKey);
+}
+
+
+/*
+void DbGenerator::generateAlbumContainsRecording()
+{
+    //Every title needs at least one composer.
+    for(  tInterKeySet::element_iterator it = elements_begin(m_aTitles)
+        ; it != elements_end(m_aTitles); ++it)
+    {
+        assignComposers(*it);
+    }
+
+}
+*/
 
