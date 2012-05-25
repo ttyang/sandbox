@@ -15,17 +15,17 @@ using namespace boost::icl;
 
 void DbGenerator::configure()
 {
+    /*
     m_iArtists     =  10;
     m_iTitles      = 100;
     m_iAlbums      =  50;
     m_iRecordings  = 200;
+    */
 
-    /*
     m_iArtists     =   5000;
     m_iTitles      =  50000;
     m_iAlbums      =  25000;
     m_iRecordings  = 100000;
-    */
 }
 
 void DbGenerator::clear()
