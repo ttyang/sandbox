@@ -406,6 +406,8 @@ group by Vertex.key
 select Vertex.key as TrackId
 , TrackName.value as Name
 , MotherAlbum.key as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
+, MotherTitle.key as TitId, TitleName.value as Title, TitleYear.value as TitYr 
+, ArtComposedTit.refSourceVertex as CmpId
 from Vertex
   inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
                                            and TrackName.refAttribute = 1
@@ -414,6 +416,15 @@ from Vertex
                                          and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
   left outer join VarCharObject as AlbumName on AlbumName.refObject = MotherAlbum.refSourceVertex
   left outer join IntObject     as AlbumYear on AlbumYear.refObject = MotherAlbum.refSourceVertex
+  left outer join Edge as MotherTitle on     MotherTitle.refTargetVertex = Vertex.key  
+                                         and MotherTitle.refEdgeType = 3 -- 3: Title recoreded as Recording
+  left outer join VarCharObject as TitleName on TitleName.refObject = MotherTitle.refSourceVertex
+  left outer join IntObject     as TitleYear on TitleYear.refObject = MotherTitle.refSourceVertex
+  
+  
+-- -----------------------------------------------------------------------------
+  left outer join Edge as ArtComposedTit on     ArtComposedTit.refTargetVertex = MotherTitle.refTargetVertex  
+                                            and ArtComposedTit.refEdgeType = 1 -- 1: Artist compsed Title
   
   
 -- -----------------------------------------------------------------------------
