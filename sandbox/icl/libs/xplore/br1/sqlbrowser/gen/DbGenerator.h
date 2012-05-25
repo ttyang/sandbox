@@ -51,10 +51,22 @@ public:
     };
 
     enum {
-        A_Name       =  1
-      , A_Duration   =  2
-      , A_Year       =  31
-      , A_Position   =  32
+          A_Name       =   1
+        , A_Duration   =   2
+        , A_Genre      =   3
+        , A_Label      =   4
+        , A_Comment    =   5
+
+        , A_Remixer    =   6
+        , A_Producer   =   7
+        , A_Composer   =   8
+
+        , A_Year       =  31
+        , A_Position   =  32
+        , A_BPM        =  33
+        , A_Playcount  =  34
+        , A_Rating     =  35
+        , A_Added      =  36
     };
 
     enum {

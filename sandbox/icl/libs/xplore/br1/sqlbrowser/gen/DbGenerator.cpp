@@ -19,6 +19,13 @@ void DbGenerator::configure()
     m_iTitles      = 100;
     m_iAlbums      =  50;
     m_iRecordings  = 200;
+
+    /*
+    m_iArtists     =   5000;
+    m_iTitles      =  50000;
+    m_iAlbums      =  25000;
+    m_iRecordings  = 100000;
+    */
 }
 
 void DbGenerator::clear()
@@ -156,10 +163,23 @@ void DbGenerator::generateEdgeTypes()
 
 void DbGenerator::generateAttributes()
 {
+    //---- VarChar -------------------------------------------------------------
     exec("insert into Attribute values (1,  1, 'Name')"    );
     exec("insert into Attribute values (2,  1, 'Duration')");
+    exec("insert into Attribute values (3,  1, 'Genre')"   );
+    exec("insert into Attribute values (4,  1, 'Label')"   );
+    exec("insert into Attribute values (5,  1, 'Comment')" );
+
+    exec("insert into Attribute values (6,  1, 'Remixer')" );
+    exec("insert into Attribute values (7,  1, 'Producer')");
+    exec("insert into Attribute values (8,  1, 'Composer')");
+
+    //---- Integer -------------------------------------------------------------
     exec("insert into Attribute values (31, 2, 'Year')"    );
     exec("insert into Attribute values (32, 2, 'Pos')"     );
+    exec("insert into Attribute values (33, 2, 'BPM')"     );
+    exec("insert into Attribute values (34, 2, 'Playcount')");
+    exec("insert into Attribute values (35, 2, 'Rating')");
 
 }
 
@@ -256,6 +276,22 @@ dag::db::tKey DbGenerator::generateRecording(tKey aAlbumKey, tKey aTitleKey)
     //JODO make name from album & title
     insertVarCharObject(aKey, A_Name, makeRecordingName(aAlbumKey, aTitleKey));
     insertIntObject(aKey, A_Year, gen::IntGenerator(1960, 2012)());
+    //--------------------------------------------------------------------------
+    insertVarCharObject(aKey, A_Duration, "03:45");
+    insertVarCharObject(aKey, A_Genre,    m_aSomeName("G_"));
+    insertVarCharObject(aKey, A_Label,    m_aSomeName("L_"));
+    insertVarCharObject(aKey, A_Comment,  m_aSomeName("Comment_"));
+
+    insertVarCharObject(aKey, A_Remixer,  m_aSomeName("Remx_"));
+    insertVarCharObject(aKey, A_Producer, m_aSomeName("Prod_"));
+    insertVarCharObject(aKey, A_Composer, m_aSomeName("Comp_"));
+
+    insertIntObject(aKey, A_Position,  gen::IntGenerator(1,  10)());
+    insertIntObject(aKey, A_BPM,       gen::IntGenerator(50, 200)());
+    insertIntObject(aKey, A_Playcount, gen::IntGenerator(0,  200)());
+    insertIntObject(aKey, A_Rating,    gen::IntGenerator(1,  5)());
+    insertIntObject(aKey, A_Added,     gen::IntGenerator(100, 500)());
+    //--------------------------------------------------------------------------
     return aKey;
 }
 

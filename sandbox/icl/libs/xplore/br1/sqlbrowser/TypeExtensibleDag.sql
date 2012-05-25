@@ -397,21 +397,24 @@ from Vertex
   left outer join IntObject as YearOfCreation on YearOfCreation.refObject = Vertex.key
 group by Vertex.key  
 
+
+
+
 -- -----------------------------------------------------------------------------
 -- View Track
 -- create view Track as
-select  -- Edge.refSourceVertex as ArtistKey, 
-    Vertex.key as TrkKey, TrackName.value
-  , MotherAlbum.refSourceVertex as MAlbKey, Album.Key as AlbKey
-  , Album.Name as AlbumName, Album.Artists as AlbumArtists
+select Vertex.key as TrackId
+, TrackName.value as Name
+, MotherAlbum.key as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
 from Vertex
   inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
                                            and TrackName.refAttribute = 1
-                                           and Vertex.refObjectType = 3
+                                           and Vertex.refObjectType = 23 -- 23: Recording (aka. Track)
   left outer join Edge as MotherAlbum on     MotherAlbum.refTargetVertex = Vertex.key  
                                          and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
-  left outer join Album on MotherAlbum.refSourceVertex = Album.Key 
-
+  left outer join VarCharObject as AlbumName on AlbumName.refObject = MotherAlbum.refSourceVertex
+  left outer join IntObject     as AlbumYear on AlbumYear.refObject = MotherAlbum.refSourceVertex
+  
   
 -- -----------------------------------------------------------------------------
 -- Select from Edges
