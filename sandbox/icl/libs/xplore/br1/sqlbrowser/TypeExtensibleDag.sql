@@ -405,9 +405,10 @@ group by Vertex.key
 -- create view Track as
 select Vertex.key as TrackId
 , TrackName.value as Name
-, MotherAlbum.key as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
-, MotherTitle.key as TitId, TitleName.value as Title, TitleYear.value as TitYr 
-, ArtComposedTit.refSourceVertex as CmpId
+, MotherAlbum.refSourceVertex as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
+, MotherTitle.refSourceVertex as TitId, TitleName.value as Title, TitleYear.value as TitYr
+, Duration.value as Dur 
+, Genre.value as Genre 
 from Vertex
   inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
                                            and TrackName.refAttribute = 1
@@ -420,7 +421,8 @@ from Vertex
                                          and MotherTitle.refEdgeType = 3 -- 3: Title recoreded as Recording
   left outer join VarCharObject as TitleName on TitleName.refObject = MotherTitle.refSourceVertex
   left outer join IntObject     as TitleYear on TitleYear.refObject = MotherTitle.refSourceVertex
-  
+  left outer join VarCharObject as Duration  on Duration.refObject = Vertex.key and Duration.refAttribute = 2
+  left outer join VarCharObject as Genre     on Genre.refObject = Vertex.key and Genre.refAttribute = 3
   
 -- -----------------------------------------------------------------------------
   left outer join Edge as ArtComposedTit on     ArtComposedTit.refTargetVertex = MotherTitle.refTargetVertex  
