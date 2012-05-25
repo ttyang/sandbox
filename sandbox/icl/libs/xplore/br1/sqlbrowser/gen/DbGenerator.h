@@ -26,6 +26,7 @@ public:
     typedef unsigned int  tObjectType;
     typedef unsigned int  tAttribute;
     typedef std::set<tKey>                 tKeySet;
+    typedef boost::icl::map<tKey, tKey>    tKey2Key;
     typedef boost::icl::map<tKey, tKeySet> tKey2Keys;
     typedef boost::icl::map<tKey, tString> tKey2Name;
 
@@ -91,9 +92,11 @@ public:
     void generateRecordings(int);
     void generateAlbums(int);
 
-    void generateArtistComposedTitle();
-    void generateTitleRecordedAsRecording();
-    void generateAlbumContainsRecording();
+    void generateEdges_ArtistComposedTitle();
+    void generateEdges_TitleRecordedAsRecording();
+    void generateEdges_AlbumContainsRecording();
+    void generateEdges_ArtistPerformedOnRecording();
+
 
 private:
     void configure();
@@ -125,7 +128,12 @@ private:
 
     void assignTitle(tKey aRecordingKey);
     void assignAlbum(tKey aRecordingKey);
+    void assignPerformers(tKey aRecKey);
     tString makeRecordingName(tKey aAlbumKey, tKey aTitleKey);
+
+    void insertEdge_TitleRecoredAsRecording(tKey aTitleKey, tKey aRecKey);
+    void insertEdge_AlbumContainsRecording(tKey aAlbumKey, tKey aRecKey);
+    void insertEdge_ArtistPerformedOnRecording(tKey aArtistKey, tKey aRecKey);
 
 private:
     int m_iArtists;
@@ -148,6 +156,7 @@ private:
 
     tKey2Keys     m_aComposer2Titles;
     tKey2Keys     m_aTitle2Composers;
+    tKey2Key      m_aRecording2Title;
 
     tKey2Name     m_aTitleNames;
     tKey2Name     m_aAlbumNames;

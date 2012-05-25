@@ -194,7 +194,10 @@ void DbGenerator::generateObjects()
 //------------------------------------------------------------------------------
 void DbGenerator::generateRelationships()
 {
-    generateArtistComposedTitle();
+    generateEdges_ArtistComposedTitle();
+    generateEdges_TitleRecordedAsRecording();
+    generateEdges_AlbumContainsRecording();
+    generateEdges_ArtistPerformedOnRecording();
 }
 
 
@@ -311,7 +314,9 @@ void DbGenerator::generateRecordings(int count)
         if(idx % albumRate == 0)
             ++aAlbumKey;
 
-        m_aRecordings.add(generateRecording(aAlbumKey, aTitleKey));
+        tKey dbg_Recording = generateRecording(aAlbumKey, aTitleKey);
+        m_aRecordings.add(dbg_Recording);
+        //m_aRecordings.add(generateRecording(aAlbumKey, aTitleKey));
     }
 
 }
@@ -326,7 +331,7 @@ void DbGenerator::generateAlbums(int count)
 //------------------------------------------------------------------------------
 //- Relationships (Edges)
 //------------------------------------------------------------------------------
-void DbGenerator::generateArtistComposedTitle()
+void DbGenerator::generateEdges_ArtistComposedTitle()
 {
     makeComposersRange();
 
@@ -386,16 +391,51 @@ void DbGenerator::addComposerToTitle(tKey aArtistKey, tKey aTitleKey)
 
 
 //------------------------------------------------------------------------------
-void DbGenerator::generateTitleRecordedAsRecording()
+void DbGenerator::generateEdges_TitleRecordedAsRecording()
 {
-    //Every recording needs at least one title that it is a recording of
-    for(  tInterKeySet::element_iterator it = elements_begin(m_aRecordings)
-        ; it != elements_end(m_aRecordings); ++it)
-    {
-        assignTitle(*it);
-    }
+    int count = m_aRecordings.size();
 
-    /*
+    int titleCount = m_aTitles.size();
+    int coverRate  = count / titleCount;
+    int coverRest  = count % titleCount;
+    tKey aTitleKey = first(m_aTitles);
+    tKey aRecKey   = first(m_aRecordings);
+
+    for(  int idx=1
+        ; idx <= count && contains(m_aTitles, aTitleKey)
+                       && contains(m_aRecordings, aRecKey)
+        ; idx++, aRecKey++)
+    {
+        if(idx % coverRate == 0)
+            ++aTitleKey;
+
+        insertEdge_TitleRecoredAsRecording(aTitleKey, aRecKey);
+    }
+}
+
+void DbGenerator::generateEdges_AlbumContainsRecording()
+{
+    int count = m_aRecordings.size();
+
+    int albumCount = m_aAlbums.size();
+    int albumRate  = count / albumCount;
+    int albumRest  = count % albumCount;
+    tKey aAlbumKey = first(m_aAlbums);
+    tKey aRecKey   = first(m_aRecordings);
+
+    for(  int idx=1
+        ; idx <= count && contains(m_aAlbums, aAlbumKey)
+                       && contains(m_aRecordings, aRecKey)
+        ; idx++, aRecKey++)
+    {
+        if(idx % albumRate == 0)
+            ++aAlbumKey;
+
+        insertEdge_AlbumContainsRecording(aAlbumKey, aRecKey);
+    }
+}
+
+    /*TODO
     //Most recordings are part of an album
     for(  tInterKeySet::element_iterator it = elements_begin(m_aRecordings)
         ; it != elements_end(m_aRecordings); ++it)
@@ -410,44 +450,60 @@ void DbGenerator::generateTitleRecordedAsRecording()
         assignArtists(*it);
     }
     */
-}
+
 
 // composer -> { titles }
 // title    -> { composers }
 
-void DbGenerator::assignTitle(tKey aRecordingKey)
-{
-    gen::IntGenerator someTitle(hull(m_aTitles));
-    tKey aTitleKey = someTitle();
 
-    //JODO Make the construction of entities more realistic
-    //tKey aComposerKey = getComposer(aTitleKey);
-    //tKey aSomeAlbumKey = getSomeComposerAlbum();
-
-    tKey aEdgeKey = insertObject();
-    insertEdge(aEdgeKey, R_title_recorded_as_record, aTitleKey, aRecordingKey);
-}
-
-void DbGenerator::assignAlbum(tKey aRecordingKey)
-{
-    gen::IntGenerator someAlbum(hull(m_aAlbums));
-    tKey aAlbumKey = someAlbum();
-
-    tKey aEdgeKey = insertObject();
-    insertEdge(aEdgeKey, R_album_contains_record, aAlbumKey, aRecordingKey);
-}
-
-
-/*
-void DbGenerator::generateAlbumContainsRecording()
+void DbGenerator::generateEdges_ArtistPerformedOnRecording()
 {
     //Every title needs at least one composer.
-    for(  tInterKeySet::element_iterator it = elements_begin(m_aTitles)
-        ; it != elements_end(m_aTitles); ++it)
+    for(  tInterKeySet::element_iterator it = elements_begin(m_aRecordings)
+        ; it != elements_end(m_aRecordings); ++it)
     {
-        assignComposers(*it);
+        assignPerformers(*it);
     }
 
 }
-*/
+
+void DbGenerator::assignPerformers(tKey aRecording)
+{
+    tKey2Key::iterator title_ = m_aRecording2Title.find(aRecording);
+    if(title_ != m_aRecording2Title.end())
+    {
+        tKey aTitleKey = (*title_).second;
+        bool dbg_inTitleRange = contains(m_aTitles, aTitleKey);
+        tKey2Keys::iterator title2comps_ = m_aTitle2Composers.find(aTitleKey);
+        if(title2comps_ != m_aTitle2Composers.end())
+        {
+            tKeySet composers = (*title2comps_).second;
+            for(  tKeySet::iterator composer_ = composers.begin()
+                ; composer_ != composers.end(); ++composer_)
+                insertEdge_ArtistPerformedOnRecording(*composer_, aRecording);
+        }
+
+    }
+}
+
+//------------------------------------------------------------------------------
+void DbGenerator::insertEdge_TitleRecoredAsRecording(tKey aTitleKey, tKey aRecKey)
+{
+    tKey aEdgeKey = insertObject();
+    insertEdge(aEdgeKey, R_title_recorded_as_record, aTitleKey, aRecKey);
+    m_aRecording2Title.add(tKey2Key::value_type(aRecKey, aTitleKey));
+}
+
+void DbGenerator::insertEdge_AlbumContainsRecording(tKey aAlbumKey, tKey aRecKey)
+{
+    tKey aEdgeKey = insertObject();
+    insertEdge(aEdgeKey, R_album_contains_record, aAlbumKey, aRecKey);
+}
+
+void DbGenerator::insertEdge_ArtistPerformedOnRecording(tKey aArtistKey, tKey aRecKey)
+{
+    tKey aEdgeKey = insertObject();
+    insertEdge(aEdgeKey, R_artist_performed_record, aArtistKey, aRecKey);
+}
+
 
