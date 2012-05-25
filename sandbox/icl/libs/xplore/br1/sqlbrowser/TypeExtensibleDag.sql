@@ -438,3 +438,54 @@ from Edge
   left outer join VarCharObject as TitleName on TitleName.refObject = Edge.refTargetVertex
 group by refTargetVertex
 order by Title
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+-- View Track
+-- create view Track as
+select Vertex.key as TrackId
+, TrackName.value as Name
+, MotherAlbum.refSourceVertex as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
+, MotherTitle.refSourceVertex as TitId, TitleName.value as Title, TitleYear.value as TitYr
+, Duration.value as Dur 
+, Genre.value as Genre 
+from Vertex
+  inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
+                                           and TrackName.refAttribute = 1
+                                           and Vertex.refObjectType = 23 -- 23: Recording (aka. Track)
+  left outer join Edge as MotherAlbum on     MotherAlbum.refTargetVertex = Vertex.key  
+                                         and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
+  left outer join VarCharObject as AlbumName on AlbumName.refObject = MotherAlbum.refSourceVertex
+  left outer join IntObject     as AlbumYear on AlbumYear.refObject = MotherAlbum.refSourceVertex
+  left outer join Edge as MotherTitle on     MotherTitle.refTargetVertex = Vertex.key  
+                                         and MotherTitle.refEdgeType = 3 -- 3: Title recoreded as Recording
+  left outer join VarCharObject as TitleName on TitleName.refObject = MotherTitle.refSourceVertex
+  left outer join IntObject     as TitleYear on TitleYear.refObject = MotherTitle.refSourceVertex
+  
+  left outer join VarCharObject as Duration  on Duration.refObject = Vertex.key and Duration.refAttribute = 2
+  left outer join VarCharObject as Genre     on Genre.refObject = Vertex.key and Genre.refAttribute = 3
+  
+-- -----------------------------------------------------------------------------
+select Vertex.key as TrackId
+, TrackName.value as Name
+, Duration.value as Dur 
+, Genre.value as Genre 
+, BPM.value as BPM 
+, MotherAlbum.refSourceVertex as AlbumKey
+from Vertex
+  inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
+                                           and TrackName.refAttribute = 1
+                                           and Vertex.refObjectType = 23 -- 23: Recording (aka. Track)
+  left outer join VarCharObject as Duration  on Duration.refObject = Vertex.key and Duration.refAttribute = 2
+  left outer join VarCharObject as Genre     on Genre.refObject = Vertex.key and Genre.refAttribute = 3
+  left outer join IntObject     as BPM       on BPM.refObject = Vertex.key and BPM.refAttribute = 33
+  left outer join Edge as MotherAlbum on     MotherAlbum.refTargetVertex = Vertex.key  
+                                         and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
+  
+
+-- -----------------------------------------------------------------------------
+create index IdxSourceVertex on Edge (refSourceVertex)
+create index IdxTargetVertex on Edge (refTargetVertex)
+create index IdxEdgeType     on Edge (refEdgeType)
+
