@@ -34,20 +34,20 @@ public:
     typedef tInterKeySet::interval_type    tInterval;
 
     enum {
-        a_text       =  1
-      , a_integer    =  2
-      , a_real       =  3
-      , a_artist     = 21
-      , a_title      = 22
-      , a_recording  = 23
-      , c_artists    = 24
-      , c_genre      = 25
-      , r_composed   = 26
-      , r_performed  = 27
-      , r_recorded   = 28
-      , r_located_at = 29
-      , c_album      = 30
-      , r_contains   = 31
+          a_text       =  1
+        , a_integer    =  2
+        , a_real       =  3
+        , a_artist     = 21
+        , a_title      = 22
+        , a_recording  = 23
+        , c_artists    = 24
+        , c_genre      = 25
+        , r_composed   = 26
+        , r_performed  = 27
+        , r_recorded   = 28
+        , r_located_at = 29
+        , c_album      = 30
+        , r_contains   = 31
     };
 
     enum {
@@ -70,16 +70,16 @@ public:
     };
 
     enum {
-        R_artist_composed_title    = 1
-      , R_artist_performed_record  = 2
-      , R_title_recorded_as_record = 3
-      , R_record_located_at_url    = 4
-      , R_album_contains_record    = 5
+          R_artist_composed_title    = 1
+        , R_artist_performed_record  = 2
+        , R_title_recorded_as_record = 3
+        , R_record_located_at_url    = 4
+        , R_album_contains_record    = 5
     };
 
     enum {
-        minSyllables = 2
-      , maxSyllables = 5
+          minSyllables = 2
+        , maxSyllables = 5
     };
 
     DbGenerator(const QSqlDatabase& db):
@@ -93,6 +93,7 @@ public:
     void clearDb();
     bool generate();
     void generateTables();
+    void generateIndexes();
     void generateTypeData();
     void generateTypeViews();
 

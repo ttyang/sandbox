@@ -126,6 +126,15 @@ void DbGenerator::generateTables()
     exec("create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute))");
 }
 
+void DbGenerator::generateIndexes()
+{
+    // Sqlite generates indexes on primary key automatically.
+    // In addition we add
+    exec("create index IdxSourceVertex on Edge (refSourceVertex)");
+    exec("create index IdxTargetVertex on Edge (refTargetVertex)");
+    //MEMO create index IdxEdgeType on Edge (refEdgeType) makes things MORE SLOWLY!
+}
+
 void DbGenerator::generateTypeTraits()
 {
     exec("insert into TypeTraits values (0, 'atom obj')");
