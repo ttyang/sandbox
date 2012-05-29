@@ -487,7 +487,12 @@ from Vertex
 -- -----------------------------------------------------------------------------
 create index IdxSourceVertex on Edge (refSourceVertex)
 create index IdxTargetVertex on Edge (refTargetVertex)
-create index IdxEdgeType     on Edge (refEdgeType)
+--SLOWER: create index IdxEdgeType     on Edge (refEdgeType)
+--create index IdxVarCharValue on VarCharObject (value) : Bringt kaum was.
+drop index IdxVarCharValue
+drop index IdxVarChar_RefAndValue
+
+create index IdxVarChar_Obj_Att_Value on VarCharObject (refObject, refAttribute, value)
 
 
 
@@ -497,7 +502,8 @@ create index IdxEdgeType     on Edge (refEdgeType)
 -- create view Track as
 select 
   ConstTrackType.Name as TrackType, Vertex.key as TrackId, TrackName.value as Name
-, Duration.value as Dur, Genre.value as Genre, BPM.value as BPM, Label.value as Label, Comment.value as Comment  
+, Duration.value as Dur, Genre.value as Genre, BPM.value as BPM, Label.value as Label, Comment.value as Comment
+, Playcount.value as Plyd, Rating.value as Rtd   
 , ConstAlbumType.Name as AlbType, MotherAlbum.refSourceVertex as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
 , ConstTitleType.Name as TitType, MotherTitle.refSourceVertex as TitId, TitleName.value as Title, TitleYear.value as TitYr
 , ConstArtistType.Name as ArtstType, ComposerOfTitle.refSourceVertex as CompId, ComposerName.value as Composer, ComposerYoBirth.value as Birth
@@ -506,11 +512,13 @@ from Vertex
   inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
                                            and TrackName.refAttribute = 1
                                            and Vertex.refObjectType = 23 -- 23: Recording (aka. Track)
-  left outer join VarCharObject as Duration  on Duration.refObject = Vertex.key and Duration.refAttribute =  2
-  left outer join VarCharObject as Genre     on Genre.refObject    = Vertex.key and Genre.refAttribute    =  3
-  left outer join VarCharObject as Label     on Label.refObject    = Vertex.key and Label.refAttribute    =  4
-  left outer join VarCharObject as Comment   on Comment.refObject  = Vertex.key and Comment.refAttribute  =  5
-  left outer join IntObject     as BPM       on BPM.refObject      = Vertex.key and BPM.refAttribute      = 33
+  left outer join VarCharObject as Duration  on Duration.refObject  = Vertex.key and Duration.refAttribute  =  2
+  left outer join VarCharObject as Genre     on Genre.refObject     = Vertex.key and Genre.refAttribute     =  3
+  left outer join VarCharObject as Label     on Label.refObject     = Vertex.key and Label.refAttribute     =  4
+  left outer join VarCharObject as Comment   on Comment.refObject   = Vertex.key and Comment.refAttribute   =  5
+  left outer join IntObject     as BPM       on BPM.refObject       = Vertex.key and BPM.refAttribute       = 33
+  left outer join IntObject     as Playcount on Playcount.refObject = Vertex.key and Playcount.refAttribute = 34
+  left outer join IntObject     as Rating    on Rating.refObject    = Vertex.key and Rating.refAttribute    = 35
   -- ObjectType(Track)
   left outer join ObjectType as ConstTrackType on 23 = ConstTrackType.key
   -- Album ---------------------------------------------------------------------
