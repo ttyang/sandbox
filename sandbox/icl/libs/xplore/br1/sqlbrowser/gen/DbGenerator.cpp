@@ -15,17 +15,17 @@ using namespace boost::icl;
 
 void DbGenerator::configure()
 {
-    /*
     m_iArtists     =  10;
     m_iTitles      = 100;
     m_iAlbums      =  50;
     m_iRecordings  = 200;
-    */
 
+    /*
     m_iArtists     =   5000;
     m_iTitles      =  50000;
     m_iAlbums      =  25000;
     m_iRecordings  = 100000;
+    */
 }
 
 void DbGenerator::clear()
@@ -126,13 +126,20 @@ void DbGenerator::generateTables()
     exec("create table IntObject (refObject integer, refAttribute integer, value integer, primary key (refObject, refAttribute))");
 }
 
+/*JODO
+void DbGenerator::generateFixTables()
+{
+    exec("create table Recordings (key integer primary key)");
+}
+*/
+
 void DbGenerator::generateIndexes()
 {
     // Sqlite generates indexes on primary key automatically.
     // In addition we add
     exec("create index IdxSourceVertex on Edge (refSourceVertex)");
     exec("create index IdxTargetVertex on Edge (refTargetVertex)");
-    //MEMO create index IdxEdgeType on Edge (refEdgeType) makes things MORE SLOWLY!
+    //MEMO create index IdxEdgeType on Edge (refEdgeType); -- makes things MORE SLOWLY!
 }
 
 void DbGenerator::generateTypeTraits()

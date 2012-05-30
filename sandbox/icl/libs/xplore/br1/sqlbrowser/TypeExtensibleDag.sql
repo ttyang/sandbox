@@ -492,7 +492,8 @@ create index IdxTargetVertex on Edge (refTargetVertex)
 drop index IdxVarCharValue
 drop index IdxVarChar_RefAndValue
 
-create index IdxVarChar_Obj_Att_Value on VarCharObject (refObject, refAttribute, value)
+--NOT HELPFUL:
+--create index IdxVarChar_Obj_Att_Value on VarCharObject (refObject, refAttribute, value)
 
 
 
@@ -521,6 +522,113 @@ from Vertex
   left outer join IntObject     as Rating    on Rating.refObject    = Vertex.key and Rating.refAttribute    = 35
   -- ObjectType(Track)
   left outer join ObjectType as ConstTrackType on 23 = ConstTrackType.key
+  -- Album ---------------------------------------------------------------------
+  left outer join Edge as MotherAlbum on     MotherAlbum.refTargetVertex = Vertex.key  
+                                         and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
+  left outer join VarCharObject as AlbumName on     AlbumName.refObject = MotherAlbum.refSourceVertex
+  left outer join IntObject     as AlbumYear on     AlbumYear.refObject = MotherAlbum.refSourceVertex
+                                                and AlbumYear.refAttribute = 31
+  -- ObjectType(Album)
+  left outer join ObjectType as ConstAlbumType on 30 = ConstAlbumType.key
+  -- Title ---------------------------------------------------------------------
+  left outer join Edge as MotherTitle on     MotherTitle.refTargetVertex = Vertex.key  
+                                         and MotherTitle.refEdgeType = 3 -- 3: Title recorded as Recording
+  left outer join VarCharObject as TitleName on TitleName.refObject = MotherTitle.refSourceVertex
+  left outer join IntObject     as TitleYear on TitleYear.refObject = MotherTitle.refSourceVertex
+  -- ObjectType(Title)
+  left outer join ObjectType as ConstTitleType on 22 = ConstTitleType.key
+  -- Composer
+  left outer join Edge as ComposerOfTitle       on     ComposerOfTitle.refTargetVertex = MotherTitle.refSourceVertex
+  left outer join VarCharObject as ComposerName on     ComposerName.refObject    = ComposerOfTitle.refSourceVertex
+  left outer join IntObject as ComposerYoBirth  on     ComposerYoBirth.refObject = ComposerOfTitle.refSourceVertex 
+                                                   and ComposerYoBirth.refAttribute = 31 
+  -- ObjectType(Artist)
+  left outer join ObjectType as ConstArtistType on 21 = ConstArtistType.key
+  
+
+-- -----------------------------------------------------------------------------
+-- View Track
+-- create view Track as
+select 
+  Vertex.key as key, TrackName.value as Name
+, Duration.value as Duration, Genre.value as Genre, BPM.value as BPM, Label.value as Label, Comment.value as Comment
+, Playcount.value as Playcount, Rating.value as Rating   
+from Vertex
+  -- Track ---------------------------------------------------------------------
+  inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
+                                           and TrackName.refAttribute = 1
+                                           and Vertex.refObjectType = 23 -- 23: Recording (aka. Track)
+  left outer join VarCharObject as Duration  on Duration.refObject  = Vertex.key and Duration.refAttribute  =  2
+  left outer join VarCharObject as Genre     on Genre.refObject     = Vertex.key and Genre.refAttribute     =  3
+  left outer join VarCharObject as Label     on Label.refObject     = Vertex.key and Label.refAttribute     =  4
+  left outer join VarCharObject as Comment   on Comment.refObject   = Vertex.key and Comment.refAttribute   =  5
+  left outer join IntObject     as BPM       on BPM.refObject       = Vertex.key and BPM.refAttribute       = 33
+  left outer join IntObject     as Playcount on Playcount.refObject = Vertex.key and Playcount.refAttribute = 34
+  left outer join IntObject     as Rating    on Rating.refObject    = Vertex.key and Rating.refAttribute    = 35
+
+  
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+-- View Track
+-- create table Recording
+create table Recording as
+select 
+  Vertex.key as key, TrackName.value as Name
+, Duration.value as Duration, Genre.value as Genre, BPM.value as BPM, Label.value as Label, Comment.value as Comment
+, Playcount.value as Playcount, Rating.value as Rating   
+from Vertex
+  inner join VarCharObject as TrackName on     TrackName.refObject = Vertex.key 
+                                           and TrackName.refAttribute = 1
+                                           and Vertex.refObjectType = 23 -- 23: Recording (aka. Track)
+  left outer join VarCharObject as Duration  on Duration.refObject  = Vertex.key and Duration.refAttribute  =  2
+  left outer join VarCharObject as Genre     on Genre.refObject     = Vertex.key and Genre.refAttribute     =  3
+  left outer join VarCharObject as Label     on Label.refObject     = Vertex.key and Label.refAttribute     =  4
+  left outer join VarCharObject as Comment   on Comment.refObject   = Vertex.key and Comment.refAttribute   =  5
+  left outer join IntObject     as BPM       on BPM.refObject       = Vertex.key and BPM.refAttribute       = 33
+  left outer join IntObject     as Playcount on Playcount.refObject = Vertex.key and Playcount.refAttribute = 34
+  left outer join IntObject     as Rating    on Rating.refObject    = Vertex.key and Rating.refAttribute    = 35
+
+-- -----------------------------------------------------------------------------
+create unique index IdxRecordingKey on Recording (Key)
+create index IdxRecordingGenre on Recording (Genre)
+create index IdxRecordingLabel on Recording (Label)
+create index IdxRecording_Genre_Label on Recording (Genre, Label)
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+-- View Track
+-- create table Album
+create table Album as
+select 
+  Vertex.key as key, AlbumName.value as Name, AlbumYear.value as Year
+from Vertex
+  inner join VarCharObject as AlbumName on      AlbumName.refObject = Vertex.key 
+                                            and AlbumName.refAttribute = 1
+                                            and Vertex.refObjectType = 30 -- 30: Album
+  left outer join IntObject as AlbumYear on     AlbumYear.refObject = Vertex.key
+                                            and AlbumYear.refAttribute = 31
+										   
+
+-- -----------------------------------------------------------------------------
+create unique index IdxAlbumKey on Album (Key)
+create index IdxRecordingGenre on Recording (Genre)
+create index IdxRecordingLabel on Recording (Label)
+create index IdxRecording_Genre_Label on Recording (Genre, Label)
+
+
+-- -----------------------------------------------------------------------------
+-- View Track
+-- create view Track as
+select 
+  Recording.key as TrackId, Recording.Name
+, Recording.Duration, Recording.Genre, Recording.BPM, Recording.Label, Recording.Comment
+, Recording.Playcount, Recording.Rating   
+, ConstAlbumType.Name as AlbType, MotherAlbum.refSourceVertex as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
+, ConstTitleType.Name as TitType, MotherTitle.refSourceVertex as TitId, TitleName.value as Title, TitleYear.value as TitYr
+, ConstArtistType.Name as ArtstType, ComposerOfTitle.refSourceVertex as CompId, ComposerName.value as Composer, ComposerYoBirth.value as Birth
+from Vertex
+  -- Track ---------------------------------------------------------------------
+  inner join Recording                  on     Recording.key = Vertex.key 
   -- Album ---------------------------------------------------------------------
   left outer join Edge as MotherAlbum on     MotherAlbum.refTargetVertex = Vertex.key  
                                          and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
