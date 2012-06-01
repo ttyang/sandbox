@@ -652,3 +652,40 @@ from Vertex
   -- ObjectType(Artist)
   left outer join ObjectType as ConstArtistType on 21 = ConstArtistType.key
   
+
+-- -----------------------------------------------------------------------------
+-- View Track
+-- create view Track as
+select 
+  Recording.key as TrackId, Recording.Name
+, Recording.Duration, Recording.Genre, Recording.BPM, Recording.Label, Recording.Comment
+, Recording.Playcount, Recording.Rating   
+, ConstAlbumType.Name as AlbType, Album.key as AlbId, Album.Name as Album, Album.Year as AlbYr
+, ConstTitleType.Name as TitType, MotherTitle.refSourceVertex as TitId, TitleName.value as Title, TitleYear.value as TitYr
+, ConstArtistType.Name as ArtstType, ComposerOfTitle.refSourceVertex as CompId, ComposerName.value as Composer, ComposerYoBirth.value as Birth
+from Vertex
+  -- Track ---------------------------------------------------------------------
+  inner join Recording                  on     Recording.key = Vertex.key 
+  -- Album ---------------------------------------------------------------------
+  left outer join Edge as MotherAlbum on     MotherAlbum.refTargetVertex = Vertex.key  
+                                         and MotherAlbum.refEdgeType = 5 -- 5: Album contains Recording
+  left outer join Album on  Album.key = MotherAlbum.refSourceVertex
+  left outer join IntObject     as AlbumYear on     AlbumYear.refObject = MotherAlbum.refSourceVertex
+                                                and AlbumYear.refAttribute = 31
+  -- ObjectType(Album)
+  left outer join ObjectType as ConstAlbumType on 30 = ConstAlbumType.key
+  -- Title ---------------------------------------------------------------------
+  left outer join Edge as MotherTitle on     MotherTitle.refTargetVertex = Vertex.key  
+                                         and MotherTitle.refEdgeType = 3 -- 3: Title recorded as Recording
+  left outer join VarCharObject as TitleName on TitleName.refObject = MotherTitle.refSourceVertex
+  left outer join IntObject     as TitleYear on TitleYear.refObject = MotherTitle.refSourceVertex
+  -- ObjectType(Title)
+  left outer join ObjectType as ConstTitleType on 22 = ConstTitleType.key
+  -- Composer
+  left outer join Edge as ComposerOfTitle       on     ComposerOfTitle.refTargetVertex = MotherTitle.refSourceVertex
+  left outer join VarCharObject as ComposerName on     ComposerName.refObject    = ComposerOfTitle.refSourceVertex
+  left outer join IntObject as ComposerYoBirth  on     ComposerYoBirth.refObject = ComposerOfTitle.refSourceVertex 
+                                                   and ComposerYoBirth.refAttribute = 31 
+  -- ObjectType(Artist)
+  left outer join ObjectType as ConstArtistType on 21 = ConstArtistType.key
+  
