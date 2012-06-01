@@ -58,7 +58,7 @@ struct GetCreator<Object, QSqlSelector>
 
 
 //==============================================================================
-//= Concept: data::Creator Spec: QSqlCreator
+//= Concept: data::Creator Partial Specialisation: QSqlCreator
 //==============================================================================
 
 template<class Object, class Accessor>

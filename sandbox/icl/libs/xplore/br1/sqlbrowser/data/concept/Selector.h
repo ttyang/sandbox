@@ -18,7 +18,10 @@
 
 namespace data
 {
-// If it is an SqlAccessor, make the type-graph like so:
+
+//! Given the Accessor is a QuerySelector, it allows to retirieve resultsets
+//! from some Query objects, the function to make a typeGraph is generic for
+//! all those Accessors
 template<class Accessor>
 typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
 makeTypeGraph(Accessor& accessor, dag::db::TypeGraph& typeGraph)

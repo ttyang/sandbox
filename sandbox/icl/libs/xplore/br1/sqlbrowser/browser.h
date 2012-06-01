@@ -131,6 +131,7 @@ private:
 
     bool execScript();
     bool casualTests();
+    bool testSelector();
     bool generateDb();
 };
 

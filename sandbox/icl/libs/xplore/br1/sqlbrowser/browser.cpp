@@ -171,8 +171,9 @@ bool Browser::runScript()
 {
     //return execScript(); // Execute a script containing of multiple sql-statements
     //return casualTests();
-    emit statusMessage(tr("Generating DB ..."));
-    return generateDb();
+    return testSelector();
+    //emit statusMessage(tr("Generating DB ..."));
+    //return generateDb();
 }
 
 
@@ -205,6 +206,23 @@ bool Browser::generateDb()
         emit statusMessage(tr("Db generated successfully."));
     else
         emit statusMessage(tr("Error(s), in Db generation."));
+
+    return success;
+}
+
+bool Browser::testSelector()
+{
+    bool success = false;
+    data::QSqlSelector selector;
+    dag::db::TypeGraph tygra;
+
+    selector.setDatabase(connectionWidget->currentDatabase());
+    success = makeTypeGraph(selector, tygra);
+
+    if(success)
+        emit statusMessage(tr("Test executed successfully."));
+    else
+        emit statusMessage(tr("Error(s), Test aborted."));
 
     return success;
 }
