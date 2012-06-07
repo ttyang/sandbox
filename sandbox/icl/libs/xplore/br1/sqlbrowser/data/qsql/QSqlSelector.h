@@ -65,8 +65,7 @@ struct SelectorTraits<QSqlSelector>
 
     static const_iterator begin(const QSqlSelector& accessor){ return accessor.begin(); }
     static const_iterator end  (const QSqlSelector& accessor){ return accessor.end();   }
-    static size_type select(QSqlSelector& accessor, const tString& query)
-    { return accessor.select(query); }
+    static size_type select(QSqlSelector& accessor, const tString& query){ return accessor.select(query); }
 };
 
 } // namespace data

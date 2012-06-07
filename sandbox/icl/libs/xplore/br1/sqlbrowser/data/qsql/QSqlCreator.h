@@ -42,8 +42,12 @@ public:
 
     static tObject create(const_iterator it)
     {
-        return dag::db::EdgeType(it->field(eKey).value().toInt(),
-                                 it->field(eName).value().toString());
+        return dag::db::EdgeType( (*it).field(eKey).value().toInt()
+                                 ,(*it).field(eRefSourceType).value().toInt()
+                                 ,(*it).field(eRefRelationType).value().toInt()
+                                 ,(*it).field(eRefTargetType).value().toInt()
+                                 ,(*it).field(eName).value().toString()
+                                );
     }
 };
 

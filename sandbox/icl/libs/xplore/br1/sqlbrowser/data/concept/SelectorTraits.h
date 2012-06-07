@@ -25,7 +25,7 @@ struct SelectorTraits
 
     static const_iterator begin(const Accessor& accessor);
     static const_iterator end(const Accessor& accessor);
-    static size_type select(const tQuery&);
+    static size_type select(Accessor& accessor, const tQuery&);
 };
 
 } // namespace data

@@ -65,4 +65,11 @@ select Dag.Parent as ParentId, Dag.Child as ChildId, Types.Id as TypeId,
   inner join Types   on Objects.TypeOf = Types.id
 
 -- ----------------------------------------------------------------------------
+-- UTILITIES
 -- ----------------------------------------------------------------------------
+--select * from sqlite_master
+pragma index_list(VarCharObject)
+--pragma index_info(sqlite_autoindex_VarCharObject_1)
+
+--create index Idx_VarCharObject_value on VarCharObject(value)
+

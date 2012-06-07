@@ -25,6 +25,11 @@ public:
     //! The TypeGraph is a DecoratedGraph
     typedef DecoratedGraph<tTypeVertexDeco, tTypeEdgeDeco> tTypeGraph;
 
+    void add(const dag::db::EdgeType& aEdge)
+    {
+        boost::add_edge(aEdge.sourceType(), aEdge.targetType(), m_aGraph);
+    }
+
 private:
     //==========================================================================
     //= boost::graph

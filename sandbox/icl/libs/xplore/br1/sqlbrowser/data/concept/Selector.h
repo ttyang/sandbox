@@ -13,46 +13,36 @@
 //local
 #include "Dag/TypeGraph.h"
 
+#include "data/concept/Creator.h"
 #include "data/concept/IsQuerySelector.h"
 #include "data/qsql/QSqlCreator.h"
 
 namespace data
 {
 
-//! Given the Accessor is a QuerySelector, it allows to retirieve resultsets
-//! from some Query objects, the function to make a typeGraph is generic for
-//! all those Accessors
+//==============================================================================
+//= concept Selector
+//==============================================================================
 template<class Accessor>
-typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
-makeTypeGraph(Accessor& accessor, dag::db::TypeGraph& typeGraph)
+typename boost::enable_if< IsQuerySelector<Accessor>, typename Accessor::size_type>::type
+select(Accessor& accessor, const typename Accessor::tQuery& query)
 {
-    typedef typename GetCreator<dag::db::EdgeType,Accessor>::type tCreator;
-    typedef typename Accessor::const_iterator const_iterator;
-    typedef typename CreatorTraits<dag::db::EdgeType,tCreator> tCreatorInstance;
-
-    SelectorTraits<Accessor>::
-        select(accessor,
-               CreatorTraits<dag::db::EdgeType,tCreator>::createQuery());
-
-    QString check;
-    for(const_iterator it = accessor.begin(); it != accessor.end(); ++it)
-    {
-        //check += it->field(4).value().toString();
-        dag::db::EdgeType aEdge
-                = CreatorTraits<dag::db::EdgeType,tCreator>::create(it);
-        check += aEdge.toString();
-        check += "\n";
-    }
-
-
-    QMessageBox msgBox;
-    QString msg = "Edges:\n";
-    msg += check;
-    msgBox.setText(msg);
-    msgBox.exec();
-
-
-    return true;
+    return SelectorTraits<Accessor>::select(accessor, query);
 }
+
+template<class Accessor>
+typename boost::enable_if< IsQuerySelector<Accessor>, typename Accessor::const_iterator>::type
+begin(const Accessor& accessor)
+{
+    return SelectorTraits<Accessor>::begin(accessor);
+}
+
+template<class Accessor>
+typename boost::enable_if< IsQuerySelector<Accessor>, typename Accessor::const_iterator>::type
+end(const Accessor& accessor)
+{
+    return SelectorTraits<Accessor>::end(accessor);
+}
+
 
 } // namespace data

@@ -69,14 +69,14 @@ private:
 class TypedField
 {
 public:
-    TypedField(): m_uType(0), m_uField(0){}
-    TypedField(tKey type, tKey field): m_uType(type), m_uField(field){}
+    TypedField(): m_iType(0), m_iField(0){}
+    TypedField(tKey type, tKey field): m_iType(type), m_iField(field){}
 
-    tKey type()const { return m_uType;  }
-    tKey field()const{ return m_uField; }
+    tKey type()const { return m_iType;  }
+    tKey field()const{ return m_iField; }
 private:
-    tKey m_uType;
-    tKey m_uField;
+    tKey m_iType;
+    tKey m_iField;
 };
 
 typedef QVector<TypedField> tFieldSignature;
@@ -98,7 +98,7 @@ class ObjectType
 {
 public:
 private:
-    tKey            m_uKey;
+    tKey            m_iKey;
     tTypeTraits     m_aTraits;
     tString         m_aName;
     TypeSignature   m_aTypeSeq;
@@ -113,18 +113,25 @@ typedef const ObjectType*             tConstObjectTypeRawPtr;
 class EdgeType
 {
 public:
-    EdgeType(tKey uKey, const tString& aName)
-        : m_uKey(uKey), m_aName(aName) {}
+    EdgeType(tKey iKey, tKey iSrc, tKey iRel, tKey iTrg, const tString& aName)
+        : m_iKey(iKey)
+        , m_iRefSourceType(iSrc)
+        , m_iRefRelationType(iRel)
+        , m_iRefTargetType(iTrg)
+        , m_aName(aName) {}
 
     QString toString()const
-    { return QString("Edge: Key=%1, Name=%2").arg(m_uKey).arg(m_aName); }
+    { return QString("Edge: Key=%1, Name=%2").arg(m_iKey).arg(m_aName); }
+
+    tKey sourceType()const { return m_iRefSourceType; }
+    tKey targetType()const { return m_iRefSourceType; }
 
 private:
-    tKey                 m_uKey;
+    tKey                 m_iKey;
+    tKey                 m_iRefSourceType;
+    tKey                 m_iRefRelationType;
+    tKey                 m_iRefTargetType;
     tString              m_aName;
-    tObjectTypeSharedPtr m_pSourceType;
-    tObjectTypeSharedPtr m_pRelationType;
-    tObjectTypeSharedPtr m_pTargetType;
 };
 
 

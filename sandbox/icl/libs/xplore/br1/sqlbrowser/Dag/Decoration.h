@@ -50,8 +50,8 @@ private:
 
 template<class Object, class Synth>
 Decoration<Object,Synth>::Decoration(const Object& object, const Synth& synth)
-    : boost::make_shared<Object>(object)
-    , boost::make_shared<Synth>(synth)
+    : m_pObject(boost::make_shared<Object>(object))
+    , m_pSynth(boost::make_shared<Synth>(synth))
 {}
 
 } // dag

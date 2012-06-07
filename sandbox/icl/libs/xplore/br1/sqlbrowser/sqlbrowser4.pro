@@ -28,7 +28,9 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     data/concept/GetCreator.h \
     gen/NameGenerator.h \
     gen/NumberGenerator.h \
-    gen/DbGenerator.h
+    gen/DbGenerator.h \
+    data/concept/Creator.h \
+    data/concept/TypeGraphMaker.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \

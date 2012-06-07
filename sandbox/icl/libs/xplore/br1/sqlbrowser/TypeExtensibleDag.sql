@@ -495,15 +495,13 @@ drop index IdxVarChar_RefAndValue
 --NOT HELPFUL:
 --create index IdxVarChar_Obj_Att_Value on VarCharObject (refObject, refAttribute, value)
 
-
-
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 -- View Track
 -- create view Track as
 select 
   ConstTrackType.Name as TrackType, Vertex.key as TrackId, TrackName.value as Name
-, Duration.value as Dur, Genre.value as Genre, BPM.value as BPM, Label.value as Label, Comment.value as Comment
+, Duration.value as Dur, Genre.refAttribute as Att3, Genre.value as Genre, BPM.value as BPM, Label.value as Label, Comment.value as Comment
 , Playcount.value as Plyd, Rating.value as Rtd   
 , ConstAlbumType.Name as AlbType, MotherAlbum.refSourceVertex as AlbId, AlbumName.value as Album, AlbumYear.value as AlbYr
 , ConstTitleType.Name as TitType, MotherTitle.refSourceVertex as TitId, TitleName.value as Title, TitleYear.value as TitYr
@@ -544,8 +542,17 @@ from Vertex
                                                    and ComposerYoBirth.refAttribute = 31 
   -- ObjectType(Artist)
   left outer join ObjectType as ConstArtistType on 21 = ConstArtistType.key
-  
 
+  -- TRIALS on general INDEXING
+  order by Genre.refAttribute, Genre.value
+
+-- -----------------------------------------------------------------------------
+-- drop index IdxVarCharValue
+select * from sqlite_master
+create index Idx_Attr_Obj_val on VarCharObject (refAttribute, refObject, value)
+-- -----------------------------------------------------------------------------
+
+ 
 -- -----------------------------------------------------------------------------
 -- View Track
 -- create view Track as
