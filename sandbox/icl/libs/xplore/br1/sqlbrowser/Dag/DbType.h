@@ -97,12 +97,19 @@ private:
 class ObjectType
 {
 public:
+    ObjectType(){}
+
+    ObjectType(tKey key, const tString& name)
+        : m_iKey(key)
+        , m_aName(name)
+    {}
+
 private:
     tKey            m_iKey;
-    tTypeTraits     m_aTraits;
+    //tTypeTraits     m_aTraits;
     tString         m_aName;
-    TypeSignature   m_aTypeSeq;
-    FieldSignature  m_aFieldSeq;
+    //TypeSignature   m_aTypeSeq;
+    //FieldSignature  m_aFieldSeq;
 };
 
 typedef boost::shared_ptr<ObjectType> tObjectTypeSharedPtr;
@@ -118,7 +125,10 @@ public:
         , m_iRefSourceType(iSrc)
         , m_iRefRelationType(iRel)
         , m_iRefTargetType(iTrg)
-        , m_aName(aName) {}
+        , m_aName(aName)
+        //, m_pSourceType(boost::make_shared<ObjectType>(iSrc, "JODO"))
+        //, m_pTargetType(boost::make_shared<ObjectType>(iTrg, "JODO"))
+    {}
 
     QString toString()const
     { return QString("Edge: Key=%1, Name=%2").arg(m_iKey).arg(m_aName); }
@@ -132,6 +142,8 @@ private:
     tKey                 m_iRefRelationType;
     tKey                 m_iRefTargetType;
     tString              m_aName;
+    tObjectTypeSharedPtr m_pSourceType;
+    tObjectTypeSharedPtr m_pTargetType;
 };
 
 

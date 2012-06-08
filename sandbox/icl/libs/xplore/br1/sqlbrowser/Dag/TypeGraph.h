@@ -27,7 +27,11 @@ public:
 
     void add(const dag::db::EdgeType& aEdge)
     {
-        boost::add_edge(aEdge.sourceType(), aEdge.targetType(), m_aGraph);
+        tKey srcT = aEdge.sourceType(),
+             trgT = aEdge.targetType();
+        boost::add_edge(srcT, trgT, m_aGraph);
+        //m_aVertexDecoMap[srcT] = "JODO srcT name";
+        //m_aVertexDecoMap[trgT] = "JODO trgT name";
     }
 
 private:

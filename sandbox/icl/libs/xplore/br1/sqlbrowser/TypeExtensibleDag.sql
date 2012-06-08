@@ -696,3 +696,13 @@ from Vertex
   -- ObjectType(Artist)
   left outer join ObjectType as ConstArtistType on 21 = ConstArtistType.key
   
+-- -----------------------------------------------------------------------------
+-- TypeEdge and related ObjectTypes.
+select EdgeType.key, EdgeType.refSourceType as SrcKey, SrcT.name as SrcName,
+       EdgeType.refRelationType as RelKey, RelT.name as RelName,
+       EdgeType.refTargetType as TrgKey, TrgT.name as TrgName,
+       EdgeType.Name as Name
+from EdgeType
+inner join ObjectType as SrcT on EdgeType.refSourceType = SrcT.key
+left outer join ObjectType as RelT on EdgeType.refRelationType = RelT.key
+left outer join ObjectType as TrgT on EdgeType.refTargetType = TrgT.key

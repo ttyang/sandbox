@@ -49,7 +49,7 @@
 
 //---- First Accessor tests ----------------
 #include "data/qsql/QSqlSelector.h"
-#include "data/concept/TypeGraphMaker.h"
+#include "data/concept/TypeGraph.h"
 
 #include "gen/NumberGenerator.h"
 #include "gen/NameGenerator.h"
