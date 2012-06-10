@@ -42,7 +42,7 @@ namespace boost
       {
         if (!is_valid())
         {
-          throw bad_date("week day " + boost::chrono::to_string(v) + " is out of range");
+          throw bad_date("week day " + boost::chrono::to_string(int(v)) + " is out of range");
         }
       }
       /**
@@ -74,11 +74,11 @@ namespace boost
       {
         return value_;
       }
-      static BOOST_CONSTEXPR week min BOOST_PREVENT_MACRO_SUBSTITUTION ()
+      static BOOST_CONSTEXPR week min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
           return week(first_,no_check);
       }
-      static BOOST_CONSTEXPR week max BOOST_PREVENT_MACRO_SUBSTITUTION ()
+      static BOOST_CONSTEXPR week max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
           return week(last_,no_check);
       }
@@ -90,8 +90,8 @@ namespace boost
          w_01, w_02, w_03, w_04, w_05, w_06, w_07, w_08, w_09,
          w_10, w_11, w_12, w_13, w_14, w_15, w_16, w_17, w_18, w_19,
          w_20, w_21, w_22, w_23, w_24, w_25, w_26, w_27, w_28, w_29,
-         w_30, w_31, w_32, w_33, w_34, w_35, w_36, w_37, w_38, wv9,
-         w_40, w_41, w_42, w_43, w_44, w_45, wv6, w_47, w_48, w_49,
+         w_30, w_31, w_32, w_33, w_34, w_35, w_36, w_37, w_38, w_39,
+         w_40, w_41, w_42, w_43, w_44, w_45, w_46, w_47, w_48, w_49,
          w_50, w_51, w_52, w_53;
 
   } // chrono

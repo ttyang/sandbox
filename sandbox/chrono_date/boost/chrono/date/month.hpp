@@ -51,7 +51,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      BOOST_CONSTEXPR explicit month(rep m, no_check_t) :
+      BOOST_CONSTEXPR explicit month(rep m, no_check_t) BOOST_NOEXCEPT:
         value_(m)
       {
       }
@@ -82,23 +82,23 @@ namespace boost
       {
         return month(((value_-first_+1)%size)+first_,no_check);
       }
-      month prev()BOOST_NOEXCEPT
+      month prev() BOOST_NOEXCEPT
       {
         return month(((value_-first_+size-1)%size)+first_,no_check);
       }
-      static BOOST_CONSTEXPR month first()
+      static BOOST_CONSTEXPR month first() BOOST_NOEXCEPT
       {
         return month(first_,no_check);
       }
-      static BOOST_CONSTEXPR month last()
+      static BOOST_CONSTEXPR month last() BOOST_NOEXCEPT
       {
         return month(last_,no_check);
       }
-      static BOOST_CONSTEXPR month min BOOST_PREVENT_MACRO_SUBSTITUTION ()
+      static BOOST_CONSTEXPR month min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
         return month(first_,no_check);
       }
-      static BOOST_CONSTEXPR month max BOOST_PREVENT_MACRO_SUBSTITUTION ()
+      static BOOST_CONSTEXPR month max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
         return month(last_,no_check);
       }
@@ -137,7 +137,7 @@ namespace boost
       case 10: return "Oct";
       case 11: return "Nov";
       case 12: return "Dec";
-      default: throw bad_date("month " + boost::chrono::to_string(int(v)) + " is out of range");
+      default: throw bad_date("month " + boost::chrono::to_string(unsigned(v.value())) + " is out of range");
 
       }
     }

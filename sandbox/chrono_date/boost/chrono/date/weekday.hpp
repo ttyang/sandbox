@@ -44,7 +44,7 @@ namespace boost
       {
         if (!is_valid())
         {
-          throw bad_date("week day " + boost::chrono::to_string(v) + " is out of range");
+          throw bad_date("week day " + boost::chrono::to_string(int(v)) + " is out of range");
         }
       }
       /**
@@ -52,7 +52,7 @@ namespace boost
        * @Postconditions static_cast<rep>(*this) == v
        */
       BOOST_CONSTEXPR explicit weekday(rep wd, no_check_t) BOOST_NOEXCEPT
-      :value_(wd)
+      : value_(wd)
       {
       };
 
@@ -92,22 +92,22 @@ namespace boost
       /**
        * @Returns: the first day of the week.
        */
-      static BOOST_CONSTEXPR weekday first()
+      static BOOST_CONSTEXPR weekday first() BOOST_NOEXCEPT
       {
           return weekday(first_,no_check);
       }
       /**
        * @Returns: the last day of the week.
        */
-      static BOOST_CONSTEXPR weekday last()
+      static BOOST_CONSTEXPR weekday last() BOOST_NOEXCEPT
       {
           return weekday(last_,no_check);
       }
-      static BOOST_CONSTEXPR weekday min BOOST_PREVENT_MACRO_SUBSTITUTION ()
+      static BOOST_CONSTEXPR weekday min BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
           return weekday(first_,no_check);
       }
-      static BOOST_CONSTEXPR weekday max BOOST_PREVENT_MACRO_SUBSTITUTION ()
+      static BOOST_CONSTEXPR weekday max BOOST_PREVENT_MACRO_SUBSTITUTION () BOOST_NOEXCEPT
       {
           return weekday(last_,no_check);
       }
@@ -144,7 +144,7 @@ namespace boost
       case 4: return "Thu";
       case 5: return "Fri";
       case 6: return "Sat";
-      default: throw bad_date("week day " + boost::chrono::to_string(v) + " is out of range");
+      default: throw bad_date("week day " + boost::chrono::to_string(unsigned(v.value())) + " is out of range");
 
       }
     }

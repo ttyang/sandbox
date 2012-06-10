@@ -407,7 +407,8 @@ namespace boost
       wd_(wd)
       {
       }
-          year_week_weekday(year::rep y, week::rep w, weekday::rep wd, no_check_t)BOOST_NOEXCEPT
+
+      year_week_weekday(year::rep y, week::rep w, weekday::rep wd, no_check_t)BOOST_NOEXCEPT
       : y_(y, no_check),
       w_(w, no_check),
       wd_(wd, no_check)

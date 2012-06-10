@@ -22,7 +22,7 @@ namespace boost
   {
 
     /**
-     * The class nth_week is used to specify a small integral value that indicates the nth week of the year (example: last_week, 1st_week).
+     * The class nth_week is used to specify a small integral value that indicates the nth week of the month (example: last_week, 1st_week).
      */
     class nth_week
     {
@@ -54,6 +54,8 @@ namespace boost
       {
       }
       /**
+       * Implicit conversion to the representation.
+       *
        * @Return The nth week stored component.
        */
       operator rep() const BOOST_NOEXCEPT

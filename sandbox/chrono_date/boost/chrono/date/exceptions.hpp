@@ -22,12 +22,12 @@ namespace boost
 
     /**
      * The class @c bad_date is thrown when an exceptional condition is created
-     * within the chrono library.
+     * within the Chrono.Date library.
      */
     class bad_date: public std::runtime_error
     {
     public:
-      /*
+      /**
        * @Effects: Constructs an object of class @c bad_date.
        * @Postcondition: <c>what() == s</c>.
        */

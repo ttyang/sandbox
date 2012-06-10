@@ -116,6 +116,10 @@ namespace boost
     {
       return nth_weekday(nth_week(5,no_check), wd);
     }
+    inline nth_weekday operator*(unsigned n, weekday wd) BOOST_NOEXCEPT
+    {
+      return nth_weekday(nth_week(n), wd);
+    }
 
     extern const nth_weekday last_sun;
     extern const nth_weekday last_mon;

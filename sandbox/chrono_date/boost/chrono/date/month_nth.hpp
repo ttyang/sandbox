@@ -34,7 +34,7 @@ namespace boost
        * @Postconditions: get_month() == m && get_nth() == d && is_valid().
        * @Throws: if d is outside of the valid range of days of month @c m, throws an exception of type bad_date.
        */
-      month_nth(month m, nth d)BOOST_NOEXCEPT
+      month_nth(month m, nth d) BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {
@@ -49,7 +49,7 @@ namespace boost
        * @Note This function doesn't check the parameters validity.
        * It is up to the user to provide a valid ones.
        */
-      month_nth(month::rep m, nth::rep d, no_check_t)BOOST_NOEXCEPT
+      month_nth(month::rep m, nth::rep d, no_check_t) BOOST_NOEXCEPT
       : m_(m),
       d_(d)
       {
