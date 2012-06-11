@@ -30,8 +30,8 @@ struct DecoratedGraph
     typedef boost::property<edge_attr_tag,    EdgeDeco>   tEdgeAttrTag;
 
     typedef boost::adjacency_list
-    < boost::vecS
-    , boost::vecS
+    < boost::setS   //Edges:    Sequence or AssociativeContainer
+    , boost::listS  //Vertexes: Sequence or RandomAccessContainer
     , Directed
     , tVertexAttrTag
     , tEdgeAttrTag

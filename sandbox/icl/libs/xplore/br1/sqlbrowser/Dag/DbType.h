@@ -102,7 +102,9 @@ public:
     ObjectType(tKey key, const tString& name)
         : m_iKey(key)
         , m_aName(name)
-    {}
+    {
+        int dbg_ = 42;
+    }
 
 private:
     tKey            m_iKey;
@@ -120,6 +122,8 @@ typedef const ObjectType*             tConstObjectTypeRawPtr;
 class EdgeType
 {
 public:
+    EdgeType(){}
+
     EdgeType(tKey iKey, tKey iSrc, tKey iRel, tKey iTrg, const tString& aName)
         : m_iKey(iKey)
         , m_iRefSourceType(iSrc)
@@ -134,7 +138,7 @@ public:
     { return QString("Edge: Key=%1, Name=%2").arg(m_iKey).arg(m_aName); }
 
     tKey sourceType()const { return m_iRefSourceType; }
-    tKey targetType()const { return m_iRefSourceType; }
+    tKey targetType()const { return m_iRefTargetType; }
 
 private:
     tKey                 m_iKey;

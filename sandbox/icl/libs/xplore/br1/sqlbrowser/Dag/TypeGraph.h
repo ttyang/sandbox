@@ -19,19 +19,28 @@ namespace dag { namespace db
 class TypeGraph
 {
 public:
-    typedef boost::shared_ptr<db::ObjectType> tTypeVertexDeco;
-    typedef boost::shared_ptr<db::EdgeType>   tTypeEdgeDeco;
+    typedef db::ObjectType tTypeVertexDeco;
+    typedef db::EdgeType   tTypeEdgeDeco;
 
     //! The TypeGraph is a DecoratedGraph
     typedef DecoratedGraph<tTypeVertexDeco, tTypeEdgeDeco> tTypeGraph;
+    typedef tTypeGraph::vertex_descriptor vertex_descriptor;
+    typedef tTypeGraph::edge_descriptor   edge_descriptor;
 
     void add(const dag::db::EdgeType& aEdge)
     {
-        tKey srcT = aEdge.sourceType(),
-             trgT = aEdge.targetType();
-        boost::add_edge(srcT, trgT, m_aGraph);
-        //m_aVertexDecoMap[srcT] = "JODO srcT name";
-        //m_aVertexDecoMap[trgT] = "JODO trgT name";
+        tKey srcVertexKey = aEdge.sourceType();
+        tKey trgVertexKey = aEdge.targetType();
+
+        vertex_descriptor srcVertex = boost::add_vertex(m_aGraph);
+        vertex_descriptor trgVertex = boost::add_vertex(m_aGraph);
+
+        bool added;
+        edge_descriptor edge;
+        boost::tie(edge, added) = boost::add_edge(srcVertex, trgVertex, m_aGraph);
+
+        m_aVertexDecoMap[srcVertex] = tTypeVertexDeco(srcVertexKey, tString("JODO srcT name"));
+        m_aVertexDecoMap[trgVertex] = tTypeVertexDeco(trgVertexKey, tString("JODO trgT name"));
     }
 
 private:
