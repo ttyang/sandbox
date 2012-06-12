@@ -37,7 +37,8 @@ public:
 
     static tString createQuery()
     {
-        return "SELECT key, refSourceType, refRelationType, refTargetType, name FROM EdgeType ";
+        return
+            "select EdgeType.key, EdgeType.refSourceType, EdgeType.refRelationType, EdgeType.refTargetType from EdgeType ";
     }
 
     static tObject create(const_iterator it)
@@ -48,6 +49,35 @@ public:
                                  ,(*it).field(eRefTargetType).value().toInt()
                                  ,(*it).field(eName).value().toString()
                                 );
+    }
+};
+
+
+template<>
+class QSqlCreator<dag::db::ObjectType, QSqlSelector>
+{
+public:
+    enum { eKey=0, eTraits, eName };
+
+    typedef QSqlCreator         type;
+    typedef dag::db::ObjectType tObject;
+    typedef QSqlSelector        tAccessor;
+
+    typedef tAccessor::tResultSet     tResultSet;
+    typedef tAccessor::const_iterator const_iterator;
+
+    static tString createQuery()
+    {
+        return
+            "select ObjectType.key, ObjectType.Traits, ObjectType.Name from ObjectType where ObjectType.key = ? ";
+    }
+
+    static tObject create(const_iterator it)
+    {
+        return dag::db::ObjectType( (*it).field(eKey).value().toInt()
+                                   ,(*it).field(eTraits).value().toUInt()
+                                   ,(*it).field(eName).value().toString()
+                                  );
     }
 };
 

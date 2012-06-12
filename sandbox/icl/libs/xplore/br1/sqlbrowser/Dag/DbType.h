@@ -96,11 +96,12 @@ private:
 //==============================================================================
 class ObjectType
 {
-public:
+public:    
     ObjectType(){}
 
-    ObjectType(tKey key, const tString& name)
+    ObjectType(tKey key, tTypeTraits traits, const tString& name)
         : m_iKey(key)
+        , m_aTraits(traits)
         , m_aName(name)
     {
         int dbg_ = 42;
@@ -108,7 +109,7 @@ public:
 
 private:
     tKey            m_iKey;
-    //tTypeTraits     m_aTraits;
+    tTypeTraits     m_aTraits;
     tString         m_aName;
     //TypeSignature   m_aTypeSeq;
     //FieldSignature  m_aFieldSeq;
@@ -130,8 +131,6 @@ public:
         , m_iRefRelationType(iRel)
         , m_iRefTargetType(iTrg)
         , m_aName(aName)
-        //, m_pSourceType(boost::make_shared<ObjectType>(iSrc, "JODO"))
-        //, m_pTargetType(boost::make_shared<ObjectType>(iTrg, "JODO"))
     {}
 
     QString toString()const
@@ -146,9 +145,8 @@ private:
     tKey                 m_iRefRelationType;
     tKey                 m_iRefTargetType;
     tString              m_aName;
-    tObjectTypeSharedPtr m_pSourceType;
-    tObjectTypeSharedPtr m_pTargetType;
 };
+
 
 
 
