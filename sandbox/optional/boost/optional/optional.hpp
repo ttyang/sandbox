@@ -349,9 +349,6 @@ protected:
 
 template <class Derived              > struct destructor<Derived  , true   > {};
 template <class Derived, bool trivial> struct destructor<Derived &, trivial> {};
-
-struct optional_tag {};
-
 } // namespace optional_detail
 
 #ifdef BOOST_MSVC
@@ -363,8 +360,7 @@ template <typename T>
 class optional2
     :
     private optional_detail::placeholder<T, is_pod<T>::value>,
-    private optional_detail::destructor<optional2<T>, has_trivial_destructor<T>::value || is_reference<T>::value>,
-    public  optional_detail::optional_tag
+    private optional_detail::destructor<optional2<T>, has_trivial_destructor<T>::value || is_reference<T>::value>
 {
 public:
     typedef optional_detail::placeholder<T, is_pod<T>::value> placeholder_t;
@@ -879,72 +875,59 @@ inline
 bool operator >= ( none_t x, optional2<T> const& y )
 { return !( x < y ) ; }
 
-namespace optional_detail {
-
-template<bool use_default_constructor> struct swap_selector;
-
-template<>
-struct swap_selector<true>
+namespace optional_detail
 {
-    template <class T>
-    static void optional_swap ( optional2<T> & x, optional2<T> & y )
+template <class T>
+void optional_swap( optional2<T> & x, optional2<T> & y, mpl::true_ /*use default constructor?*/ )
+{
+    const bool hasX = !!x;
+    const bool hasY = !!y;
+
+    if ( !hasX && !hasY )
+        return;
+
+    if ( !hasX )
+        x = boost::in_place();
+    else if ( !hasY )
+        y = boost::in_place();
+
+    // Boost.Utility.Swap will take care of ADL and workarounds for broken compilers
+    boost::swap( *x, *y );
+
+    if ( !hasX )
+        y = boost::none;
+    else if ( !hasY )
+        x = boost::none;
+}
+
+template <class T>
+void optional_swap( optional2<T> & x, optional2<T> & y, mpl::false_ /*use default constructor?*/ )
+{
+    const bool hasX = !!x;
+    const bool hasY = !!y;
+
+    if ( !hasX && hasY )
     {
-        const bool hasX = !!x;
-        const bool hasY = !!y;
-
-        if ( !hasX && !hasY )
-            return;
-
-        if ( !hasX )
-            x = boost::in_place();
-        else if ( !hasY )
-            y = boost::in_place();
-
+        x = *y;
+        y = boost::none;
+    }
+    else if ( hasX && !hasY )
+    {
+        y = *x;
+        x = boost::none;
+    }
+    else if ( hasX && hasY )
+    {
         // Boost.Utility.Swap will take care of ADL and workarounds for broken compilers
         boost::swap( *x, *y );
-
-        if ( !hasX )
-            y = boost::none;
-        else if ( !hasY )
-            x = boost::none;
     }
-};
-
-template<>
-struct swap_selector<false>
-{
-    template <class T>
-    static void optional_swap ( optional2<T> & x, optional2<T> & y )
-    {
-        const bool hasX = !!x;
-        const bool hasY = !!y;
-
-        if ( !hasX && hasY )
-        {
-            x = *y;
-            y = boost::none;
-        }
-        else if ( hasX && !hasY )
-        {
-            y = *x;
-            x = boost::none;
-        }
-        else if ( hasX && hasY )
-        {
-            // Boost.Utility.Swap will take care of ADL and workarounds for broken compilers
-            boost::swap( *x, *y );
-        }
-    }
-};
-
+}
 } // namespace optional_detail
 
 template <class T>
-struct optional_swap_should_use_default_constructor : has_nothrow_default_constructor<T> {} ;
-
-template <class T> inline void swap ( optional2<T> & x, optional2<T> & y )
+void swap( optional2<T> & x, optional2<T> & y )
 {
-    optional_detail::swap_selector<optional_swap_should_use_default_constructor<T>::value>::optional_swap(x, y);
+    optional_detail::optional_swap( x, y, has_nothrow_default_constructor<T>() );
 }
 
 //------------------------------------------------------------------------------
