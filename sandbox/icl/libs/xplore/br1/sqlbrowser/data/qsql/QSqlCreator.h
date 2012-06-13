@@ -35,7 +35,7 @@ public:
     typedef tAccessor::tResultSet     tResultSet;
     typedef tAccessor::const_iterator const_iterator;
 
-    static tString createQuery()
+    static SqlQuery::tRepr createQuery()
     {
         return
             "select EdgeType.key, EdgeType.refSourceType, EdgeType.refRelationType, EdgeType.refTargetType from EdgeType ";
@@ -66,7 +66,7 @@ public:
     typedef tAccessor::tResultSet     tResultSet;
     typedef tAccessor::const_iterator const_iterator;
 
-    static tString createQuery()
+    static SqlQuery::tRepr createQuery()
     {
         return
             "select ObjectType.key, ObjectType.Traits, ObjectType.Name from ObjectType where ObjectType.key = ? ";
@@ -101,9 +101,26 @@ struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
     typedef QSqlCreator<Object,Accessor> tCreator;
     typedef typename Accessor::const_iterator const_iterator;
 
-    static tString createQuery(){ return tCreator::createQuery(); }
+    static SqlQuery::tRepr createQuery(){ return tCreator::createQuery(); }
     static Object create(const_iterator it){ return tCreator::create(it); }
 };
+
+
+template<class Object, class Accessor, class KeyIterator>
+struct KeyBinding_CreatorTraits<Object, KeyBinding_CreatorTraits<Object, Accessor, KeyIterator>, KeyIterator>
+{
+    typedef KeyBinding_CreatorTraits<Object,Accessor,KeyIterator> tCreator;
+    typedef typename Accessor::const_iterator         const_iterator;
+    typedef typename KeyBinding_SqlQuery<KeyIterator> tQuery;
+    typedef typename tQuery::tIteratorRange           tIteratorRange;
+
+    //! Creates a Query to access domain Objects for a range of Key iterators
+    static tQuery createQuery(const tIteratorRange& range){ return tCreator::createQuery(range); }
+
+    //! Creates a domain Object from an Accessor's const_iterator
+    static Object create(const_iterator it){ return tCreator::create(it); }
+};
+
 
 
 } // namespace data

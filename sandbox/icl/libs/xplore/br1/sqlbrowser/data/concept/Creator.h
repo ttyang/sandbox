@@ -8,6 +8,7 @@
 #include <boost/mpl/bool.hpp>
 #include <boost/utility/enable_if.hpp>
 
+#include "data/concept/QueryTraits.h"
 #include "data/concept/IsQuerySelector.h"
 
 namespace data
@@ -25,11 +26,21 @@ create(typename Accessor::const_iterator it)
 }
 
 template<class Accessor, class DomainObject>
-typename boost::enable_if< IsQuerySelector<Accessor>, tString>::type
+typename boost::enable_if< IsQuerySelector<Accessor>, SqlQuery::tRepr>::type
 createQuery()
 {
     typedef typename GetCreator<DomainObject,Accessor>::type tCreator;
     return CreatorTraits<DomainObject,tCreator>::createQuery();
+}
+
+
+template<class Accessor, class DomainObject, class KeyIterator>
+typename boost::enable_if< IsQuerySelector<Accessor>
+                         , KeyBinding_SqlQuery<KeyIterator> >::type
+createQuery(const boost::iterator_range<KeyIterator>& keyRange)
+{
+    typedef typename GetCreator<DomainObject,Accessor>::type tCreator;
+    return KeyBinding_CreatorTraits<DomainObject,tCreator,KeyIterator>::createQuery(keyRange);
 }
 
 

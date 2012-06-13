@@ -30,7 +30,8 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     gen/NumberGenerator.h \
     gen/DbGenerator.h \
     data/concept/Creator.h \
-    data/concept/TypeGraph.h
+    data/concept/TypeGraph.h \
+    data/concept/QueryTraits.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \

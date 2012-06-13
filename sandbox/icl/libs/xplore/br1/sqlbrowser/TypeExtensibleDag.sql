@@ -698,10 +698,8 @@ from Vertex
   
 -- -----------------------------------------------------------------------------
 -- TypeEdge and related ObjectTypes.
-select EdgeType.key, EdgeType.refSourceType as SrcKey, SrcT.name as SrcName,
-       EdgeType.refRelationType as RelKey, RelT.name as RelName,
-       EdgeType.refTargetType as TrgKey, TrgT.name as TrgName,
-       EdgeType.Name as Name
+select EdgeType.key, EdgeType.refSourceType, EdgeType.refRelationType, EdgeType.refTargetType as TrgKey, 
+       SrcT.name as SrcName, RelT.name as RelName, TrgT.name as TrgName, EdgeType.Name as EdgeName
 from EdgeType
 inner join ObjectType as SrcT on EdgeType.refSourceType = SrcT.key
 left outer join ObjectType as RelT on EdgeType.refRelationType = RelT.key

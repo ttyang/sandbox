@@ -45,21 +45,22 @@ public:
         return m_aResultSet.size();
     }
 
-    template<class KeyMap>
-    size_type selectForKeys(const tQuery& querySql, const KeyMap& keyset)
+    /*
+    size_type selectForKeys(const tQuery& querySql, const tKeySet& keyset)
     {
         QSqlQuery query(m_aDatabase);
         query.prepare(querySql);
 
         for(KeySet::const_iterator it = keys.begin(); it != keys.end(); ++it)
         {
-            query.bindValue(querySql, (*it).first);
+            query.bindValue(querySql, *it);
             query.exec();
             m_aResultSet.push_back(query.record());
         }
 
         return m_aResultSet.size();
     }
+    */
 
     void setDatabase(const QSqlDatabase& db){ m_aDatabase = db; }
 

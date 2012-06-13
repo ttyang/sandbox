@@ -51,8 +51,10 @@ makeTypeGraph(Accessor& accessor, dag::db::TypeGraph& typeGraph)
     msgBox.exec();
 
     //add vertex properties
-    Accessor::size_type vertexCount
-        = selectForKeys(accessor, createQuery<Accessor,dag::db::ObjectType>(), typeGraph.getKey2Vertex());
+    //Query qry = createQuery<Accessor,dag::db::ObjectType>();
+    //Accessor::size_type vertexCount
+    //    = selectForKeys(accessor, createQuery<Accessor,dag::db::ObjectType>(typeGraph.getKey2Vertex()));
+
     return true;
 }
 
