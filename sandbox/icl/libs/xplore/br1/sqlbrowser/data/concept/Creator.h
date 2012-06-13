@@ -39,7 +39,8 @@ typename boost::enable_if< IsQuerySelector<Accessor>
                          , KeyBinding_SqlQuery<KeyIterator> >::type
 createQuery(const boost::iterator_range<KeyIterator>& keyRange)
 {
-    typedef typename GetCreator<DomainObject,Accessor>::type tCreator;
+    //typedef typename Get_KeyBinding_Creator<DomainObject,Accessor>::type tCreator;
+    typedef typename KeyBinding_QSqlCreator<DomainObject,Accessor,KeyIterator>::type tCreator;
     return KeyBinding_CreatorTraits<DomainObject,tCreator,KeyIterator>::createQuery(keyRange);
 }
 

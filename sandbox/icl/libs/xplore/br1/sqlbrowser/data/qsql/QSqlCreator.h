@@ -53,23 +53,31 @@ public:
 };
 
 
-template<>
-class QSqlCreator<dag::db::ObjectType, QSqlSelector>
+template<class Object, class Accessor, class KeyIterator>
+class KeyBinding_QSqlCreator;
+
+template<class KeyIterator>
+class KeyBinding_QSqlCreator<dag::db::ObjectType, QSqlSelector, KeyIterator>
 {
 public:
     enum { eKey=0, eTraits, eName };
 
-    typedef QSqlCreator         type;
-    typedef dag::db::ObjectType tObject;
-    typedef QSqlSelector        tAccessor;
+    typedef KeyBinding_QSqlCreator type;
+    typedef KeyBinding_SqlQuery<KeyIterator> tQuery;
+    typedef dag::db::ObjectType    tObject;
+    typedef QSqlSelector           tAccessor;
 
     typedef tAccessor::tResultSet     tResultSet;
     typedef tAccessor::const_iterator const_iterator;
 
-    static SqlQuery::tRepr createQuery()
+    static tQuery createQuery()
     {
-        return
-            "select ObjectType.key, ObjectType.Traits, ObjectType.Name from ObjectType where ObjectType.key = ? ";
+        tQuery query(range);
+        query.setSqlStatement(
+            "select ObjectType.key, ObjectType.Traits, ObjectType.Name "
+            "from ObjectType where ObjectType.key = ? "
+            );
+        return query;
     }
 
     static tObject create(const_iterator it)
@@ -107,9 +115,9 @@ struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
 
 
 template<class Object, class Accessor, class KeyIterator>
-struct KeyBinding_CreatorTraits<Object, KeyBinding_CreatorTraits<Object, Accessor, KeyIterator>, KeyIterator>
+struct KeyBinding_CreatorTraits<Object, KeyBinding_QSqlCreator<Object, Accessor, KeyIterator>, KeyIterator>
 {
-    typedef KeyBinding_CreatorTraits<Object,Accessor,KeyIterator> tCreator;
+    typedef KeyBinding_QSqlCreator<Object,Accessor,KeyIterator> tCreator;
     typedef typename Accessor::const_iterator         const_iterator;
     typedef typename KeyBinding_SqlQuery<KeyIterator> tQuery;
     typedef typename tQuery::tIteratorRange           tIteratorRange;

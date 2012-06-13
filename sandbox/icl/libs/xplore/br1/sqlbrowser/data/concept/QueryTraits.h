@@ -44,7 +44,10 @@ public:
         : m_keyRange(keyRange)
     {}
 
+    void setSqlStatement(const tRepr& sql){ m_aSqlText = sql; }
+
 private:
+    tRepr          m_aSqlText;
     tIteratorRange m_keyRange;
 };
 
