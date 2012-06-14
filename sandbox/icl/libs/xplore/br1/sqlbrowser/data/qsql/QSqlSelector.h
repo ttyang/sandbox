@@ -45,22 +45,47 @@ public:
         return m_aResultSet.size();
     }
 
-    /*
-    size_type selectForKeys(const tQuery& querySql, const tKeySet& keyset)
+    void setDatabase(const QSqlDatabase& db){ m_aDatabase = db; }
+
+private:
+    tResultSet   m_aResultSet;
+    QSqlDatabase m_aDatabase;
+};
+
+
+template<class KeyIterator>
+class KeyBinding_QSqlSelector
+{
+public:
+    typedef QSqlSelector      type;
+    typedef KeyBinding_SqlQuery<KeyIterator> tQuery;
+    typedef typename tQuery::tIteratorRange  tIteratorRange;
+    typedef std::size_t       size_type;
+    typedef QSqlRecord        tRecord;
+    typedef QVector<tRecord>  tResultSet;
+    typedef tResultSet::const_iterator const_iterator;
+
+    const_iterator begin()const{ return m_aResultSet.begin(); }
+    const_iterator end()  const{ return m_aResultSet.end();   }
+
+    size_type select(const tQuery& querySql)
     {
         QSqlQuery query(m_aDatabase);
-        query.prepare(querySql);
+        tString sqlText = querySql.sqlStatement();
+        query.prepare(sqlText);
+        tIteratorRange keyRange = querySql.range();
 
-        for(KeySet::const_iterator it = keys.begin(); it != keys.end(); ++it)
+        for(  tIteratorRange::const_iterator it = boost::begin(keyRange)
+            ; it != boost::end(keyRange); ++it)
         {
-            query.bindValue(querySql, *it);
+            query.bindValue("?", (*it).first);
             query.exec();
+            query.next();
             m_aResultSet.push_back(query.record());
         }
 
         return m_aResultSet.size();
     }
-    */
 
     void setDatabase(const QSqlDatabase& db){ m_aDatabase = db; }
 
@@ -83,6 +108,21 @@ struct SelectorTraits<QSqlSelector>
     static const_iterator begin(const QSqlSelector& accessor){ return accessor.begin(); }
     static const_iterator end  (const QSqlSelector& accessor){ return accessor.end();   }
     static size_type select(QSqlSelector& accessor, const tString& query){ return accessor.select(query); }
+};
+
+//JODO could also be denoted
+// struct Selector_ModelledBy<KeyBinding_QSqlSelector<KeyIterator> >
+template<class KeyIterator>
+struct SelectorTraits<KeyBinding_QSqlSelector<KeyIterator> >
+{
+    typedef std::size_t size_type;
+    typedef typename KeyBinding_QSqlSelector<KeyIterator> tSelector;
+    typedef typename tSelector::const_iterator const_iterator;
+    typedef typename tSelector::tQuery tQuery;
+
+    static const_iterator begin(const tSelector& accessor){ return accessor.begin(); }
+    static const_iterator end  (const tSelector& accessor){ return accessor.end();   }
+    static size_type select(tSelector& accessor, const tQuery& query){ return accessor.select(query); }
 };
 
 } // namespace data

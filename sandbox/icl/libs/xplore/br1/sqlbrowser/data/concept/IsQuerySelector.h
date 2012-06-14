@@ -24,6 +24,13 @@ struct IsQuerySelector<QSqlSelector>
     static const bool value = true;
 };
 
+template<class KeyIterator>
+struct IsQuerySelector<KeyBinding_QSqlSelector<KeyIterator> >
+{
+    typedef IsQuerySelector<QSqlSelector> type;
+    static const bool value = true;
+};
+
 } // namespace data
 
 

@@ -50,10 +50,41 @@ makeTypeGraph(Accessor& accessor, dag::db::TypeGraph& typeGraph)
     msgBox.setText(msg);
     msgBox.exec();
 
-    //add vertex properties
-    //Query qry = createQuery<Accessor,dag::db::ObjectType>();
-    //Accessor::size_type vertexCount
-    //    = selectForKeys(accessor, createQuery<Accessor,dag::db::ObjectType>(typeGraph.getKey2Vertex()));
+    return true;
+}
+
+template<class Accessor>
+typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
+makeTypeGraph2(Accessor& accessor, dag::db::TypeGraph& typeGraph)
+{
+    typedef typename Accessor::const_iterator const_iterator;
+
+    //add vertex properties.
+    //boost::iterator_range<std::set<int>::iterator> dummyRange;
+    typedef dag::db::TypeGraph::tKey2Vertex_iterator tIterator;
+    typedef Accessor::tQuery tQuery;
+    //KeyBinding_SqlQuery<tIterator>
+    //    kbQuery = createQuery<Accessor,dag::db::ObjectType,tIterator>(typeGraph.keyVertexRange());
+
+    Accessor::size_type vertexCount
+            = select( accessor
+                    , createQuery<Accessor,dag::db::ObjectType,tIterator>(typeGraph.keyVertexRange()));
+
+    QString check;
+    for(const_iterator it = begin(accessor); it != end(accessor); ++it)
+    {
+        dag::db::ObjectType aObj = create<Accessor,dag::db::ObjectType,tIterator>(it);
+
+        check += aObj.toString();
+        check += "\n";
+    }
+
+    QMessageBox msgBox;
+    QString msg = "Objects:\n";
+    msg += check;
+
+    msgBox.setText(msg);
+    msgBox.exec();
 
     return true;
 }

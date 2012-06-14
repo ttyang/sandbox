@@ -104,8 +104,11 @@ public:
         , m_aTraits(traits)
         , m_aName(name)
     {
-        int dbg_ = 42;
+        int dbg_key = m_iKey;
     }
+
+    QString toString()const
+    { return QString("Object: Key=%1, Name=%2").arg(m_iKey).arg(m_aName); }
 
 private:
     tKey            m_iKey;

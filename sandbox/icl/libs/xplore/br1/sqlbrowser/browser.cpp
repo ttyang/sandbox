@@ -219,6 +219,12 @@ bool Browser::testSelector()
     selector.setDatabase(connectionWidget->currentDatabase());
     success = makeTypeGraph(selector, tygra);
 
+    typedef dag::db::TypeGraph::tKey2Vertex_iterator tKey2Vertex_iterator;
+
+    data::KeyBinding_QSqlSelector<tKey2Vertex_iterator> keyBindingSelector;
+    keyBindingSelector.setDatabase(connectionWidget->currentDatabase());
+    success = makeTypeGraph2(keyBindingSelector, tygra);
+
     if(success)
         emit statusMessage(tr("Test executed successfully."));
     else

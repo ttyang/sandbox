@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <boost/range.hpp>
+
 #include "Dag/Decoration.h"
 #include "Dag/DecoratedGraph.h"
 
@@ -29,6 +31,8 @@ public:
     typedef tTypeGraph::edge_descriptor   edge_descriptor;
 
     typedef std::map<tKey, vertex_descriptor> tKey2Vertex;
+    typedef tKey2Vertex::iterator tKey2Vertex_iterator;
+    typedef boost::iterator_range<tKey2Vertex_iterator> tKeyVertexRange;
 
     vertex_descriptor add_vertex(tKey key)
     {
@@ -63,11 +67,6 @@ public:
 
     }
 
-    void add(const dag::db::ObjectType& aVertex)
-    {
-
-    }
-
     tString edgesToString()
     {
         using namespace boost;
@@ -91,6 +90,8 @@ public:
     }
 
     const tKey2Vertex& getKey2Vertex()const { return m_aKey2Vertex; }
+
+    tKeyVertexRange keyVertexRange(){ return tKeyVertexRange(m_aKey2Vertex.begin(), m_aKey2Vertex.end()); }
 
 private:
     //==========================================================================

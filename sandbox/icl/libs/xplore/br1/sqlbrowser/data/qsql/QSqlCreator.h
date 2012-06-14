@@ -38,7 +38,7 @@ public:
     static SqlQuery::tRepr createQuery()
     {
         return
-            "select EdgeType.key, EdgeType.refSourceType, EdgeType.refRelationType, EdgeType.refTargetType from EdgeType ";
+            "select EdgeType.key, EdgeType.refSourceType, EdgeType.refRelationType, EdgeType.refTargetType, EdgeType.Name from EdgeType ";
     }
 
     static tObject create(const_iterator it)
@@ -57,20 +57,21 @@ template<class Object, class Accessor, class KeyIterator>
 class KeyBinding_QSqlCreator;
 
 template<class KeyIterator>
-class KeyBinding_QSqlCreator<dag::db::ObjectType, QSqlSelector, KeyIterator>
+class KeyBinding_QSqlCreator<dag::db::ObjectType, KeyBinding_QSqlSelector<KeyIterator>, KeyIterator>
 {
 public:
     enum { eKey=0, eTraits, eName };
 
     typedef KeyBinding_QSqlCreator type;
-    typedef KeyBinding_SqlQuery<KeyIterator> tQuery;
-    typedef dag::db::ObjectType    tObject;
-    typedef QSqlSelector           tAccessor;
+    typedef KeyBinding_SqlQuery<KeyIterator>   tQuery;
+    typedef boost::iterator_range<KeyIterator> tKeyRange;
+    typedef dag::db::ObjectType     tObject;
+    typedef KeyBinding_QSqlSelector<KeyIterator> tAccessor;
 
-    typedef tAccessor::tResultSet     tResultSet;
-    typedef tAccessor::const_iterator const_iterator;
+    typedef typename tAccessor::tResultSet     tResultSet;
+    typedef typename tAccessor::const_iterator const_iterator;
 
-    static tQuery createQuery()
+    static tQuery createQuery(const tKeyRange& range)
     {
         tQuery query(range);
         query.setSqlStatement(
@@ -94,6 +95,13 @@ template<class Object>
 struct GetCreator<Object, QSqlSelector>
 {
     typedef QSqlCreator<Object, QSqlSelector> type;
+};
+
+
+template<class Object, class Iter>
+struct GetCreator<Object, KeyBinding_QSqlSelector<Iter> >
+{
+    typedef KeyBinding_QSqlCreator<Object, KeyBinding_QSqlSelector<Iter>, Iter> type;
 };
 
 

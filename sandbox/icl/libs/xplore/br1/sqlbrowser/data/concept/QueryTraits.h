@@ -46,6 +46,9 @@ public:
 
     void setSqlStatement(const tRepr& sql){ m_aSqlText = sql; }
 
+    tIteratorRange range()const        { return m_keyRange; }
+    tRepr          sqlStatement()const { return m_aSqlText; }
+
 private:
     tRepr          m_aSqlText;
     tIteratorRange m_keyRange;
