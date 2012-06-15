@@ -75,7 +75,7 @@ public:
         query.prepare(sqlText);
         tIteratorRange keyRange = querySql.range();
 
-        for(  tIteratorRange::const_iterator it = boost::begin(keyRange)
+        for(  typename tIteratorRange::const_iterator it = boost::begin(keyRange)
             ; it != boost::end(keyRange); ++it)
         {
             query.bindValue("?", (*it).first);
@@ -116,7 +116,7 @@ template<class KeyIterator>
 struct SelectorTraits<KeyBinding_QSqlSelector<KeyIterator> >
 {
     typedef std::size_t size_type;
-    typedef typename KeyBinding_QSqlSelector<KeyIterator> tSelector;
+    typedef          KeyBinding_QSqlSelector<KeyIterator> tSelector;
     typedef typename tSelector::const_iterator const_iterator;
     typedef typename tSelector::tQuery tQuery;
 

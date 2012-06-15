@@ -35,7 +35,7 @@ template<class Object, class Accessor, class KeyIterator>
 struct KeyBinding_CreatorTraits
 {
     typedef typename Accessor::const_iterator         const_iterator;
-    typedef typename KeyBinding_SqlQuery<KeyIterator> tQuery;
+    typedef          KeyBinding_SqlQuery<KeyIterator> tQuery;
     typedef typename tQuery::tIteratorRange           tIteratorRange;
 
     //! Creates a Query to access domain Objects

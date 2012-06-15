@@ -26,7 +26,7 @@ typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
 makeTypeGraph(Accessor& accessor, dag::db::TypeGraph& typeGraph)
 {
     typedef typename Accessor::const_iterator const_iterator;
-    Accessor::size_type edgeCount
+    typename Accessor::size_type edgeCount
         = select(accessor, createQuery<Accessor,dag::db::EdgeType>());
 
     QString check;
@@ -62,11 +62,11 @@ makeTypeGraph2(Accessor& accessor, dag::db::TypeGraph& typeGraph)
     //add vertex properties.
     //boost::iterator_range<std::set<int>::iterator> dummyRange;
     typedef dag::db::TypeGraph::tKey2Vertex_iterator tIterator;
-    typedef Accessor::tQuery tQuery;
+    typedef typename Accessor::tQuery tQuery;
     //KeyBinding_SqlQuery<tIterator>
     //    kbQuery = createQuery<Accessor,dag::db::ObjectType,tIterator>(typeGraph.keyVertexRange());
 
-    Accessor::size_type vertexCount
+    typename Accessor::size_type vertexCount
             = select( accessor
                     , createQuery<Accessor,dag::db::ObjectType,tIterator>(typeGraph.keyVertexRange()));
 

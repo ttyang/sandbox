@@ -127,7 +127,7 @@ struct KeyBinding_CreatorTraits<Object, KeyBinding_QSqlCreator<Object, Accessor,
 {
     typedef KeyBinding_QSqlCreator<Object,Accessor,KeyIterator> tCreator;
     typedef typename Accessor::const_iterator         const_iterator;
-    typedef typename KeyBinding_SqlQuery<KeyIterator> tQuery;
+    typedef          KeyBinding_SqlQuery<KeyIterator> tQuery;
     typedef typename tQuery::tIteratorRange           tIteratorRange;
 
     //! Creates a Query to access domain Objects for a range of Key iterators
