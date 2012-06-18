@@ -24,7 +24,7 @@ typename boost::enable_if< IsQuerySelector<Accessor>, DomainObject>::type
 create(typename Accessor::const_iterator it)
 {
     typedef typename GetCreator<DomainObject,Accessor>::type tCreator;
-    return CreatorTraits<DomainObject,tCreator>::create(it);
+    return CreatorTraits<tCreator>::create(it);
 }
 
 template<class Accessor, class DomainObject>
@@ -32,7 +32,7 @@ typename boost::enable_if< IsQuerySelector<Accessor>, SqlQuery::tRepr>::type
 createQuery()
 {
     typedef typename GetCreator<DomainObject,Accessor>::type tCreator;
-    return CreatorTraits<DomainObject,tCreator>::createQuery();
+    return CreatorTraits<tCreator>::createQuery();
 }
 
 
@@ -43,7 +43,7 @@ create(typename Accessor::const_iterator it)
 {
     //typedef typename Get_KeyBinding_Creator<DomainObject,Accessor>::type tCreator;
     typedef typename KeyBinding_QSqlCreator<DomainObject,        Accessor,KeyIterator>::type tCreator;
-    return KeyBinding_CreatorTraits<DomainObject,tCreator,KeyIterator>::create(it);
+    return KeyBinding_CreatorTraits<tCreator>::create(it);
 }
 
 template<class Accessor, class DomainObject, class KeyIterator>
@@ -53,7 +53,7 @@ createQuery(const boost::iterator_range<KeyIterator>& keyRange)
 {
     //typedef typename Get_KeyBinding_Creator<DomainObject,Accessor>::type tCreator;
     typedef typename KeyBinding_QSqlCreator<DomainObject,Accessor,KeyIterator>::type tCreator;
-    return KeyBinding_CreatorTraits<DomainObject,tCreator,KeyIterator>::createQuery(keyRange);
+    return KeyBinding_CreatorTraits<tCreator>::createQuery(keyRange);
 }
 
 

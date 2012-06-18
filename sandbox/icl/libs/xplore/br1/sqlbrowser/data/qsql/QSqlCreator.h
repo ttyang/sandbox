@@ -112,7 +112,8 @@ struct GetCreator<Object, KeyBinding_QSqlSelector<Iter> >
 //==============================================================================
 
 template<class Object, class Accessor>
-struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
+//CL? struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
+struct CreatorTraits< QSqlCreator<Object, Accessor> >
 {
     typedef QSqlCreator<Object,Accessor> tCreator;
     typedef typename Accessor::const_iterator const_iterator;
@@ -123,7 +124,7 @@ struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
 
 
 template<class Object, class Accessor, class KeyIterator>
-struct KeyBinding_CreatorTraits<Object, KeyBinding_QSqlCreator<Object, Accessor, KeyIterator>, KeyIterator>
+struct KeyBinding_CreatorTraits< KeyBinding_QSqlCreator<Object, Accessor, KeyIterator> >
 {
     typedef KeyBinding_QSqlCreator<Object,Accessor,KeyIterator> tCreator;
     typedef typename Accessor::const_iterator         const_iterator;
