@@ -55,6 +55,8 @@
 #include "gen/NameGenerator.h"
 #include "gen/DbGenerator.h"
 
+#include "util/TestBoxes.h"
+
 Browser::Browser(QWidget *parent)
     : QWidget(parent)
 {
@@ -217,13 +219,12 @@ bool Browser::testSelector()
     dag::db::TypeGraph tygra;
 
     selector.setDatabase(connectionWidget->currentDatabase());
-    success = makeTypeGraph(selector, tygra);
 
-    typedef dag::db::TypeGraph::tKey2Vertex_iterator tKey2Vertex_iterator;
+    success = data::makeTypeGraph(tygra, connectionWidget->currentDatabase());
 
-    data::KeyBinding_QSqlSelector<tKey2Vertex_iterator> keyBindingSelector;
-    keyBindingSelector.setDatabase(connectionWidget->currentDatabase());
-    success = makeTypeGraph2(keyBindingSelector, tygra);
+    util::launchMsgBox(tygra.toString());
+    util::launchMsgBox(tygra.depthFirstString());
+                           //depthFirstString
 
     if(success)
         emit statusMessage(tr("Test executed successfully."));
@@ -250,17 +251,12 @@ bool Browser::casualTests()
         some += "\n";
     }
 
-    QMessageBox msgBox;
-    QString msg = some;
-    msgBox.setText(msg);
-    msgBox.exec();
-
     bool success = false;
     data::QSqlSelector selector;
     dag::db::TypeGraph tygra;
 
     selector.setDatabase(connectionWidget->currentDatabase());
-    success = makeTypeGraph(selector, tygra);
+    success = addEdgeData(selector, tygra);
 
     if(success)
         emit statusMessage(tr("Test executed successfully."));

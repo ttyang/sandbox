@@ -34,6 +34,9 @@ public:
     typedef tKey2Vertex::iterator tKey2Vertex_iterator;
     typedef boost::iterator_range<tKey2Vertex_iterator> tKeyVertexRange;
 
+    typedef tTypeGraph::tVertexDecoMap tVertexDecoMap;
+    typedef tTypeGraph::tEdgeDecoMap   tEdgeDecoMap;
+
     vertex_descriptor add_vertex(tKey key)
     {
         tKey2Vertex::iterator vertex_ = m_aKey2Vertex.find(key);
@@ -67,22 +70,12 @@ public:
 
     }
 
-    tString edgesToString()
+    void addVertexObject(const dag::db::ObjectType& objType)
     {
-        using namespace boost;
-        tString edgesRep = tString("+----- edges -----+\n");
-        typedef boost::graph_traits<tGraph>::edge_iterator edge_iter;
-        edge_iter edge_, edges_end;
-
-        for(tie(edge_, edges_end)=edges(m_aGraph); edge_!=edges_end; ++edge_)
-        {
-            edgesRep += m_aEdgeDecoMap[*edge_].toString();
-            edgesRep += "\n";
-        }
-
-        edgesRep += tString("+----- segde -----+\n");
-        return edgesRep;
+        Q_ASSERT( m_aKey2Vertex.find(objType.key()) != m_aKey2Vertex.end() );
+        m_aVertexDecoMap[m_aKey2Vertex[objType.key()]] = objType;
     }
+
 
     void resize(std::size_t edgeCount)
     {
@@ -93,14 +86,38 @@ public:
 
     tKeyVertexRange keyVertexRange(){ return tKeyVertexRange(m_aKey2Vertex.begin(), m_aKey2Vertex.end()); }
 
+    tString toString()const
+    {
+        using namespace boost;
+        tString edgesRep = tString("+----- TypeGraph -----+\n");
+        typedef boost::graph_traits<tGraph>::edge_iterator edge_iter;
+        edge_iter edge_, edges_end;
+
+        for(tie(edge_, edges_end)=edges(m_aGraph); edge_!=edges_end; ++edge_)
+        {
+            edge_descriptor   edge         = *edge_;
+            vertex_descriptor sourceVertex = source(edge, m_aGraph);
+            vertex_descriptor targetVertex = target(edge, m_aGraph);
+
+            edgesRep += (m_aEdgeDecoMap[*edge_].toString() + " "   );
+            edgesRep += (m_aVertexDecoMap[sourceVertex].toString()+ " ");
+            edgesRep += (m_aVertexDecoMap[targetVertex].toString());
+            edgesRep += "\n";
+        }
+
+        return edgesRep;
+    }
+
+    tString depthFirstString();
+
 private:
     //==========================================================================
     //= boost::graph
-    tTypeGraph::type           m_aGraph;
-    tTypeGraph::tVertexDecoMap m_aVertexDecoMap;
-    tTypeGraph::tEdgeDecoMap   m_aEdgeDecoMap;
+    tTypeGraph::type m_aGraph;
+    tVertexDecoMap   m_aVertexDecoMap;
+    tEdgeDecoMap     m_aEdgeDecoMap;
 
-    tKey2Vertex                m_aKey2Vertex;
+    tKey2Vertex      m_aKey2Vertex;
 };
 
 void getTypeGraph(TypeGraph& tygr, const QSqlQuery& query);

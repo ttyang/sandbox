@@ -103,17 +103,24 @@ public:
         : m_iKey(key)
         , m_aTraits(traits)
         , m_aName(name)
+        , m_depth(0)
     {
         int dbg_key = m_iKey;
     }
 
     QString toString()const
-    { return QString("Object: Key=%1, Name=%2").arg(m_iKey).arg(m_aName); }
+    { return QString("ObjectType(%1, %2)").arg(m_iKey).arg(m_aName); }
+
+    tKey key()const { return m_iKey; }
+
+    int depth()const { return m_depth; }
+    int setDepth(int depth) { m_depth = depth; }
 
 private:
     tKey            m_iKey;
     tTypeTraits     m_aTraits;
     tString         m_aName;
+    int             m_depth; //JODO TMP
     //TypeSignature   m_aTypeSeq;
     //FieldSignature  m_aFieldSeq;
 };
@@ -137,7 +144,8 @@ public:
     {}
 
     QString toString()const
-    { return QString("Edge: Key=%1, Name=%2").arg(m_iKey).arg(m_aName); }
+    { return QString("EdgeType(%1,..)").arg(m_iKey); }
+    //{ return QString("EdgeType(%1, %2)").arg(m_iKey).arg(m_aName); }
 
     tKey sourceType()const { return m_iRefSourceType; }
     tKey targetType()const { return m_iRefTargetType; }
