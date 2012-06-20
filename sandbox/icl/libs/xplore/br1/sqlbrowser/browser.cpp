@@ -224,7 +224,6 @@ bool Browser::testSelector()
 
     util::launchMsgBox(tygra.toString());
     util::launchMsgBox(tygra.depthFirstString());
-                           //depthFirstString
 
     if(success)
         emit statusMessage(tr("Test executed successfully."));

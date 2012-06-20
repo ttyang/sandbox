@@ -36,21 +36,6 @@ struct StringVisitor
             }
         }
 
-        //CL Example for iterating over edges.
-        template<class Vertex, class Graph>
-        int edge_count(Vertex node, Graph& dag)
-        {
-            typedef graph_traits<Graph> GraphTraits;
-            typename GraphTraits::out_edge_iterator out_i, out_end;
-            typename GraphTraits::edge_descriptor ed;
-
-            int edge_cnt = 0;
-            for(boost::tie(out_i, out_end) = boost::out_edges(node, dag); out_i != out_end; ++out_i)
-                ++edge_cnt;
-
-            return edge_cnt;
-        }
-
         QString*             p_result;
         Dag::tAttributesMap& r_attrs;
     };
@@ -106,28 +91,6 @@ struct StringVisitor
         Dag::tAttributesMap& r_attrs;
     };
 
-    /*CL
-    struct OnTreeEdge : public boost::base_visitor<OnTreeEdge>
-    {
-        OnTreeEdge(QString* result, Dag::tAttributesMap& names)
-            : p_result(result), r_attrs(names){}
-
-        typedef boost::on_tree_edge event_filter;
-
-        template<class Edge, class Graph>
-        void operator()(Edge edge, Graph& dag)
-        {
-            int source_depth = r_attrs[source(edge, dag)].depth();
-            int target_depth = source_depth + 1;
-            r_attrs[target(edge, dag)].setDepth(target_depth);
-
-            *p_result += ".";
-        }
-
-        QString*             p_result;
-        Dag::tAttributesMap& r_attrs;
-    };
-    */
 
 }; // StringVisitor
 

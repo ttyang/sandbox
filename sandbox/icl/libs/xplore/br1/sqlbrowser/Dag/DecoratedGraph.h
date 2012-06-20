@@ -18,6 +18,9 @@ namespace dag
 template<class VertexDeco, class EdgeDeco, class Directed = boost::directedS>
 struct DecoratedGraph
 {
+    typedef VertexDeco tVertexDeco;
+    typedef EdgeDeco   tEdgeDeco;
+
     // The kind of vertex_attr_tag is a vertex_property_tag
     struct vertex_attr_tag  { typedef boost::vertex_property_tag kind; };
 
@@ -30,19 +33,18 @@ struct DecoratedGraph
     typedef boost::property<edge_attr_tag,    EdgeDeco>   tEdgeAttrTag;
 
     typedef boost::adjacency_list
-    < boost::setS  //Edges:    Sequence or AssociativeContainer
-    , boost::listS //Vertexes: Sequence or RandomAccessContainer
+    < boost::vecS  //Edges:    Sequence or AssociativeContainer
+    , boost::vecS //Vertexes: Sequence or RandomAccessContainer
     , Directed
-    , tVertexAttrTag
-    , tEdgeAttrTag
+    , VertexDeco
+    , EdgeDeco
     > tGraph;
 
     typedef typename tGraph type;
     typedef typename tGraph::vertex_descriptor vertex_descriptor;
     typedef typename tGraph::edge_descriptor   edge_descriptor;
 
-    typedef typename boost::property_map<type, vertex_attr_tag>::type tVertexDecoMap;
-    typedef typename boost::property_map<type, edge_attr_tag>::type   tEdgeDecoMap;
+    typedef std::map<vertex_descriptor, int>   tVertex2Depth;
 
 };
 

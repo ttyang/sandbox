@@ -11,7 +11,7 @@
 #include <boost/graph/graph_utility.hpp>
 
 #include "dagitem.h"
-#include "Dag/DbType.h"
+#include "Dag.h"
 
 //JODO CL ..
 #include "Dag/Decoration.h" //CL

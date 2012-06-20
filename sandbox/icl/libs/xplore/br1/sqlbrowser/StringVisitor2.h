@@ -11,100 +11,119 @@
 #include <boost/graph/graph_utility.hpp>
 
 #include "Dag/TypeGraph.h"
+#include "Dag.h" //CL move indentation
 
 
 
 struct StringVisitor2
 {
-    typedef dag::db::TypeGraph::tVertexDecoMap tVertex2Attr;
+    typedef dag::db::TypeGraph::vertex_descriptor vertex_descriptor;
+    typedef dag::db::TypeGraph::tVertex2Depth tVertex2Depth;
 
     //--------------------------------------------------------------------------
     // Visitors
     struct OnDiscoverVertex : public boost::base_visitor<OnDiscoverVertex>
     {
-        OnDiscoverVertex(QString* result, tVertex2Attr& names)
-            : p_result(result), r_attrs(names){}
+        OnDiscoverVertex(QString* result, tVertex2Depth& vertexDepth)
+            : p_result(result), r_vertexDepth(vertexDepth){}
 
         typedef boost::on_discover_vertex event_filter;
 
         template<class Vertex, class Graph>
-        void operator()(Vertex node, Graph& dag)
+        void operator()(Vertex node, Graph& graph)
         {
-            if(boost::out_degree(node, dag) > 0)
+            if(boost::out_degree(node, graph) > 0)
             {
-                dag::db::TypeObject tob = r_attrs[node]; //CL
-
-                *p_result += indentation(r_attrs[node].depth()) + "(";
-                *p_result += r_attrs[node].name();
+                *p_result += indentation(depth(node)) + "(";
+                *p_result += graph[node].name();
                 *p_result += "\n";
             }
         }
 
-        //CL Example for iterating over edges.
-        template<class Vertex, class Graph>
-        int edge_count(Vertex node, Graph& dag)
+        template<class Vertex>
+        int depth(Vertex& node)
         {
-            typedef graph_traits<Graph> GraphTraits;
-            typename GraphTraits::out_edge_iterator out_i, out_end;
-            typename GraphTraits::edge_descriptor ed;
-
-            int edge_cnt = 0;
-            for(boost::tie(out_i, out_end) = boost::out_edges(node, dag); out_i != out_end; ++out_i)
-                ++edge_cnt;
-
-            return edge_cnt;
+            tVertex2Depth::iterator node_ = r_vertexDepth.find(node);
+            return node_ == r_vertexDepth.end() ? 0 : (*node_).second;
         }
 
-        QString*      p_result;
-        tVertex2Attr& r_attrs;
+
+        QString* p_result;
+        tVertex2Depth& r_vertexDepth;
     };
 
     struct OnExamineEdge : public boost::base_visitor<OnExamineEdge>
     {
-        OnExamineEdge(QString* result, tVertex2Attr& names)
-            : p_result(result), r_attrs(names){}
+        OnExamineEdge(QString* result, tVertex2Depth& vertexDepth)
+            : p_result(result), r_vertexDepth(vertexDepth){}
 
         typedef boost::on_examine_edge event_filter;
 
         template<class Edge, class Graph>
-        void operator()(Edge edge, Graph& dag)
+        void operator()(Edge edge, Graph& graph)
         {
-            int source_depth = r_attrs[source(edge, dag)].depth();
-            int target_depth = source_depth + 1;
-            r_attrs[target(edge, dag)].setDepth(target_depth);
+            //int source_depth = graph[source(edge, graph)].depth();
+            vertex_descriptor sourceVertex = source(edge, graph);
+            tVertex2Depth::iterator sourceVertex_ = r_vertexDepth.find(sourceVertex);
+            int source_depth = sourceVertex_ == r_vertexDepth.end() ? 0 : (*sourceVertex_).second ;
 
-            if(boost::out_degree(target(edge, dag), dag)==0)
+            //CL int source_depth = vertexDepth[source(edge, graph)];
+            int target_depth = source_depth + 1;
+
+            //CL graph[target(edge, graph)].setDepth(target_depth);
+            r_vertexDepth[target(edge, graph)] = target_depth;
+
+            if(boost::out_degree(target(edge, graph), graph)==0)
             {
-                *p_result += indentation(target_depth) + r_attrs[target(edge, dag)].name();
+                *p_result += indentation(target_depth) + graph[target(edge, graph)].name();
                 *p_result += "\n";
             }
         }
 
-        QString*      p_result;
-        tVertex2Attr& r_attrs;
+        template<class Vertex>
+        int depth(Vertex& node)
+        {
+            tVertex2Depth::iterator node_ = r_vertexDepth.find(node);
+            return node_ == r_vertexDepth.end() ? 0 : (*node_).second;
+        }
+
+        QString* p_result;
+        tVertex2Depth& r_vertexDepth;
     };
 
     struct OnFinishVertex : public boost::base_visitor<OnFinishVertex>
     {
-        OnFinishVertex(QString* result, tVertex2Attr& names)
-            : p_result(result), r_attrs(names){}
+        OnFinishVertex(QString* result, tVertex2Depth& vertexDepth)
+            : p_result(result), r_vertexDepth(vertexDepth){}
 
         typedef boost::on_finish_vertex event_filter;
 
         template<class Vertex, class Graph>
-        void operator()(Vertex node, Graph& dag)
+        void operator()(Vertex node, Graph& graph)
         {
-            if(boost::out_degree(node, dag) > 0)
+            if(boost::out_degree(node, graph) > 0)
             {
-                *p_result += indentation(r_attrs[node].depth()) + ")";
+                *p_result += indentation(depth(node)) + ")";
                 *p_result += "\n";
             }
         }
 
-        QString*             p_result;
-        tVertex2Attr& r_attrs;
+        template<class Vertex>
+        int depth(Vertex& node)
+        {
+            tVertex2Depth::iterator node_ = r_vertexDepth.find(node);
+            return node_ == r_vertexDepth.end() ? 0 : (*node_).second;
+        }
+
+        QString* p_result;
+        tVertex2Depth& r_vertexDepth;
     };
 
+    template<class Vertex, class Graph>
+    void initialize_vertex(Vertex& node, Graph& gra)
+    {
+
+    }
 
 }; // StringVisitor
 

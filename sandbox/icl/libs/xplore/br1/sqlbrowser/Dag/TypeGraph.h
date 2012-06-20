@@ -29,13 +29,11 @@ public:
     typedef DecoratedGraph<tTypeVertexDeco, tTypeEdgeDeco>::type tGraph;
     typedef tTypeGraph::vertex_descriptor vertex_descriptor;
     typedef tTypeGraph::edge_descriptor   edge_descriptor;
+    typedef tTypeGraph::tVertex2Depth     tVertex2Depth;
 
     typedef std::map<tKey, vertex_descriptor> tKey2Vertex;
     typedef tKey2Vertex::iterator tKey2Vertex_iterator;
     typedef boost::iterator_range<tKey2Vertex_iterator> tKeyVertexRange;
-
-    typedef tTypeGraph::tVertexDecoMap tVertexDecoMap;
-    typedef tTypeGraph::tEdgeDecoMap   tEdgeDecoMap;
 
     vertex_descriptor add_vertex(tKey key)
     {
@@ -63,23 +61,14 @@ public:
         boost::tie(edge, edge_added) = boost::add_edge(srcVertex, trgVertex, m_aGraph);
 
         if(edge_added)
-            m_aEdgeDecoMap[edge] = aEdge;
-
-        //CL m_aVertexDecoMap[srcVertex] = tTypeVertexDeco(srcVertexKey, tString("JODO srcT name"));
-        //CL m_aVertexDecoMap[trgVertex] = tTypeVertexDeco(trgVertexKey, tString("JODO trgT name"));
+            m_aGraph[edge] = aEdge;
 
     }
 
     void addVertexObject(const dag::db::ObjectType& objType)
     {
         Q_ASSERT( m_aKey2Vertex.find(objType.key()) != m_aKey2Vertex.end() );
-        m_aVertexDecoMap[m_aKey2Vertex[objType.key()]] = objType;
-    }
-
-
-    void resize(std::size_t edgeCount)
-    {
-        m_aGraph = tTypeGraph::type(edgeCount);
+        m_aGraph[m_aKey2Vertex[objType.key()]] = objType;
     }
 
     const tKey2Vertex& getKey2Vertex()const { return m_aKey2Vertex; }
@@ -99,9 +88,9 @@ public:
             vertex_descriptor sourceVertex = source(edge, m_aGraph);
             vertex_descriptor targetVertex = target(edge, m_aGraph);
 
-            edgesRep += (m_aEdgeDecoMap[*edge_].toString() + " "   );
-            edgesRep += (m_aVertexDecoMap[sourceVertex].toString()+ " ");
-            edgesRep += (m_aVertexDecoMap[targetVertex].toString());
+            edgesRep += (m_aGraph[*edge_].toString() + " "   );
+            edgesRep += (m_aGraph[sourceVertex].toString()+ " ");
+            edgesRep += (m_aGraph[targetVertex].toString());
             edgesRep += "\n";
         }
 
@@ -114,8 +103,6 @@ private:
     //==========================================================================
     //= boost::graph
     tTypeGraph::type m_aGraph;
-    tVertexDecoMap   m_aVertexDecoMap;
-    tEdgeDecoMap     m_aEdgeDecoMap;
 
     tKey2Vertex      m_aKey2Vertex;
 };

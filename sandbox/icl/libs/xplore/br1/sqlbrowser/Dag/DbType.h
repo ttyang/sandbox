@@ -112,9 +112,10 @@ public:
     { return QString("ObjectType(%1, %2)").arg(m_iKey).arg(m_aName); }
 
     tKey key()const { return m_iKey; }
+    tString name()const { return m_aName; }
 
     int depth()const { return m_depth; }
-    int setDepth(int depth) { m_depth = depth; }
+    void setDepth(int depth) { m_depth = depth; }
 
 private:
     tKey            m_iKey;
