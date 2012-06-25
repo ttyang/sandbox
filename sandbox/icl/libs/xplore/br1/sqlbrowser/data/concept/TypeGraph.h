@@ -32,7 +32,7 @@ addEdgeData(Accessor& accessor, dag::db::TypeGraph& typeGraph)
     for(const_iterator it = begin(accessor); it != end(accessor); ++it)
     {
         dag::db::EdgeType aEdge = create<Accessor,dag::db::EdgeType>(it);
-        typeGraph.addEdge(create<Accessor,dag::db::EdgeType>(it)); //Moveable!
+        typeGraph.addEdge(create<Accessor,dag::db::EdgeType>(it)); //JODO Moveable!
     }
 
     return true;

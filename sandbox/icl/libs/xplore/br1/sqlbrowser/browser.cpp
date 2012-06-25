@@ -173,7 +173,7 @@ bool Browser::runScript()
 {
     //return execScript(); // Execute a script containing of multiple sql-statements
     //return casualTests();
-    return testSelector();
+    return testTypeSelector();
     //emit statusMessage(tr("Generating DB ..."));
     //return generateDb();
 }
@@ -212,7 +212,7 @@ bool Browser::generateDb()
     return success;
 }
 
-bool Browser::testSelector()
+bool Browser::testTypeSelector()
 {
     bool success = false;
     data::QSqlSelector selector;
@@ -229,6 +229,27 @@ bool Browser::testSelector()
         emit statusMessage(tr("Test executed successfully."));
     else
         emit statusMessage(tr("Error(s), Test aborted."));
+
+    return success;
+}
+
+bool Browser::testObjectSelector()
+{
+    bool success = false;
+    data::QSqlSelector selector;
+    dag::db::TypeGraph tygra;
+
+//    selector.setDatabase(connectionWidget->currentDatabase());
+
+//    success = data::makeTypeGraph(tygra, connectionWidget->currentDatabase());
+
+//    util::launchMsgBox(tygra.toString());
+//    util::launchMsgBox(tygra.depthFirstString());
+
+//    if(success)
+//        emit statusMessage(tr("Test executed successfully."));
+//    else
+//        emit statusMessage(tr("Error(s), Test aborted."));
 
     return success;
 }

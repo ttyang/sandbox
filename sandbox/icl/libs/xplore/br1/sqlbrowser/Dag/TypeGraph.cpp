@@ -15,37 +15,45 @@ struct VertexProps { //CL...
   std::size_t discover_time;
 };
 
-template<class Key, class Val>
-struct proper
+
+typedef boost::property_map<dag::db::TypeGraph::tGraph, boost::vertex_index_t>::type IndexMap;
+
+template <class Iterator, class IDMap>
+class iterator_map
 {
-    typedef Key key_type;
-    typedef Val value_type;
-    typedef boost::lvalue_property_map_tag category;
+public:
+  typedef typename boost::property_traits<IDMap>::key_type key_type;
+  typedef typename std::iterator_traits<Iterator>::value_type value_type;
+  typedef boost::lvalue_property_map_tag category;
+
+  iterator_map(Iterator i = Iterator(),
+              const IDMap& id = IDMap())
+    : m_iter(i), m_id(id) { }
+  Iterator m_iter;
+  IDMap m_id;
 };
 
-namespace boost
+template <class Iter, class ID>
+typename std::iterator_traits<Iter>::value_type
+get(const iterator_map<Iter,ID>& i,
+    typename boost::property_traits<ID>::key_type key)
 {
-
-template<class Key, class Val>
-struct property_traits< proper<Key,Val> >
-{
-    typedef Key key_type;
-    typedef Val value_type;
-};
-
+  return i.m_iter[i.m_id[key]];
 }
-
-template<class Key, class Val>
-typename proper<Key,Val>::value_type get(const proper<Key,Val>& pro, typename proper<Key,Val>::key_type key)
+template <class Iter, class ID>
+void
+put(const iterator_map<Iter,ID>& i,
+    typename boost::property_traits<ID>::key_type key,
+    const typename std::iterator_traits<Iter>::value_type& value)
 {
-    typedef typename proper<Key,Val>::key_type KeyType;
-    return KeyType();
+  i.m_iter[i.m_id[key]] = value;
 }
-
-template<class Key, class Val>
-void put(const proper<Key,Val>& pro, typename proper<Key,Val>::key_type key, typename proper<Key,Val>::value_type val)
+template <class Iter, class ID>
+typename std::iterator_traits<Iter>::reference
+at(const iterator_map<Iter,ID>& i,
+    typename boost::property_traits<ID>::key_type key)
 {
-    ;
+  return i.m_iter[i.m_id[key]];
 }
 
 
@@ -57,16 +65,6 @@ dag::db::tString dag::db::TypeGraph::depthFirstString()
     tVertex2Depth vertexDepth;
     QString tygraAsString;
 
-    typedef  std::map<vertex_descriptor, boost::default_color_type> tColorMap;
-    std::map<vertex_descriptor, boost::default_color_type> colorMap0;
-    //boost::associative_property_map< tColorMap > colorMap( colorMap0 );
-
-    typedef  std::map<vertex_descriptor, int> tColorMapV;
-    std::vector<boost::default_color_type> colorMapV( boost::num_vertices(m_aGraph) );
-
-    //boost::property_map<dag::db::TypeGraph, boost::default_color_type>::type colorMap2 = get(&VertexProps::color, m_aGraph);
-    proper<vertex_descriptor, boost::default_color_type> colorMap;
-
     boost::depth_first_search(
         m_aGraph
       , boost::visitor(make_dfs_visitor(boost::make_list(
@@ -75,7 +73,6 @@ dag::db::tString dag::db::TypeGraph::depthFirstString()
                                             , StringVisitor2::OnFinishVertex  (&tygraAsString, vertexDepth)
                                             )
                       ))
-      , colorMap
     );
 
     return tygraAsString;
