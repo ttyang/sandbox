@@ -21,47 +21,66 @@ namespace data
 //! Given the Accessor is a QuerySelector, it allows to retirieve resultsets
 //! from some Query objects, the function to make a typeGraph is generic for
 //! all those Accessors
-template<class Accessor>
+template<class Accessor, class DbGraph>
 typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
-addEdgeData(Accessor& accessor, dag::db::TypeGraph& typeGraph)
+addEdgeData(Accessor& accessor, DbGraph& aGraph)
 {
     typedef typename Accessor::const_iterator const_iterator;
+    typedef typename DbGraph::tEdgeDeco tEdgeDeco;
     typename Accessor::size_type edgeCount
-        = select(accessor, createQuery<Accessor,dag::db::EdgeType>());
+        = select(accessor, createQuery<Accessor,tEdgeDeco>());
 
     for(const_iterator it = begin(accessor); it != end(accessor); ++it)
     {
-        dag::db::EdgeType aEdge = create<Accessor,dag::db::EdgeType>(it);
-        typeGraph.addEdge(create<Accessor,dag::db::EdgeType>(it)); //JODO Moveable!
+        tEdgeDeco aEdge = create<Accessor,tEdgeDeco>(it);
+        aGraph.addEdge(create<Accessor,tEdgeDeco>(it)); //JODO Moveable!
     }
 
     return true;
 }
 
-template<class Accessor>
+template<class Accessor, class DbGraph>
 typename boost::enable_if< IsQuerySelector<Accessor>, bool>::type
-addVertexData(Accessor& accessor, dag::db::TypeGraph& typeGraph)
+addVertexData(Accessor& accessor, DbGraph& aGraph)
 {
     typedef typename Accessor::const_iterator const_iterator;
+    typedef typename DbGraph::tVertexDeco tVertexDeco;
 
     //add vertex properties.
-    typedef dag::db::TypeGraph::tKey2Vertex_iterator tIterator;
+    typedef typename DbGraph::tKey2Vertex_iterator tIterator;
     typedef typename Accessor::tQuery tQuery;
 
     typename Accessor::size_type vertexCount
             = select( accessor
-                    , createQuery<Accessor,dag::db::ObjectType,tIterator>(typeGraph.keyVertexRange()));
+                    , createQuery<Accessor,dag::db::ObjectType,tIterator>(aGraph.keyVertexRange()));
 
     for(const_iterator it = begin(accessor); it != end(accessor); ++it)
     {
-        dag::db::ObjectType objType = create<Accessor,dag::db::ObjectType,tIterator>(it);
-        typeGraph.addVertexObject(objType);
+        tVertexDeco objType = create<Accessor,tVertexDeco,tIterator>(it);
+        aGraph.addVertexObject(objType);
     }
 
     return true;
 }
 
 
-bool makeTypeGraph(dag::db::TypeGraph& typeGraph, const QSqlDatabase& db);
+template<class DbGraph>
+bool makeDbGraph(DbGraph& aGraph, const QSqlDatabase& db)
+{
+    typedef typename DbGraph::tKey2Vertex_iterator tKey2Vertex_iterator;
+
+    data::QSqlSelector selector;
+    selector.setDatabase(db);
+    if(!addEdgeData(selector, aGraph))
+        return false;
+
+    data::KeyBinding_QSqlSelector<tKey2Vertex_iterator> keyBindingSelector;
+    keyBindingSelector.setDatabase(db);
+    if(!addVertexData(keyBindingSelector, aGraph))
+        return false;
+
+    return true;
+}
+
 
 } // namespace data

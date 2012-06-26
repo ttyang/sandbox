@@ -148,8 +148,8 @@ public:
     { return QString("EdgeType(%1,..)").arg(m_iKey); }
     //{ return QString("EdgeType(%1, %2)").arg(m_iKey).arg(m_aName); }
 
-    tKey sourceType()const { return m_iRefSourceType; }
-    tKey targetType()const { return m_iRefTargetType; }
+    tKey sourceKey()const { return m_iRefSourceType; }
+    tKey targetKey()const { return m_iRefTargetType; }
 
 private:
     tKey                 m_iKey;
@@ -167,32 +167,55 @@ private:
 //==============================================================================
 
 //! dag::db::Object is a fairly general and thus boring object.
-//! It has a db::Type which determines the flat type of data record m_aValue.
-template<class Type>
+//! Parameter 'ModelType' is either ObjectType or EdgeType
+//! Object<ObjectType> is associated to Vertixes of the graph
+//! Object<EdgeType> is associated to Edges of the graph
+template<class ModelType>
 class Object
 {
 public:
-    typedef Type tType;
-    Object(): m_aType(){};
-    explicit Object(Type aType): m_aType(aType){};
+    typedef dag::db::ObjectType tModelType;
+    Object(): m_Type(){};
+    explicit Object(tModelType aType): m_Type(aType){};
 
     bool isConsistent()const; //!< Checks for consistency between types and data
 
-    void setName(const QString& aName) { m_aName = aName; }
-    QString name()const { return m_aName; }
+    tKey key()const { m_Key; }
+    void setName(const QString& aName) { m_Name = aName; }
+    QString name()const { return m_Name; }
 
 private:
-    Type        m_aType;
-    tVariVector m_aValue;
-    QString     m_aName; //JODO for ease of testing only. Remove soon.
+    tKey        m_Key;
+    tModelType  m_Type;
+    tVariVector m_Value;
+    QString     m_Name; //JODO for ease of testing only. Remove soon.
 };
 
 typedef Object<ObjectType>         tObject;
-//typedef boost::scoped_ptr<tObject> tObjectUniPtr;
 typedef boost::shared_ptr<tObject> tObjectSharedPtr;
 typedef                   tObject* tObjectRawPtr;
 typedef             const tObject* tObjectConstRawPtr;
 
+
+class Edge
+{
+public:
+    Edge(): m_SourceKey(), m_TargetKey(){};
+
+    explicit Edge(tKey sourceKey, tKey targetKey)
+        : m_SourceKey(sourceKey), m_TargetKey(targetKey){};
+
+    tKey key()const { m_Key; }
+    tKey sourceKey()const { return m_SourceKey; }
+    tKey targetKey()const { return m_TargetKey; }
+
+private:
+    tKey m_Key;
+    tKey m_SourceKey;
+    tKey m_TargetKey;
+
+    Object<EdgeType> m_Object;
+};
 
 
 }} //namespace dag { namespace db

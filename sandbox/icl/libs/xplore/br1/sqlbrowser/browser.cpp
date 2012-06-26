@@ -50,6 +50,7 @@
 //---- First Accessor tests ----------------
 #include "data/qsql/QSqlSelector.h"
 #include "data/concept/TypeGraph.h"
+#include "Dag/ObjectGraph.h"
 
 #include "gen/NumberGenerator.h"
 #include "gen/NameGenerator.h"
@@ -220,7 +221,7 @@ bool Browser::testTypeSelector()
 
     selector.setDatabase(connectionWidget->currentDatabase());
 
-    success = data::makeTypeGraph(tygra, connectionWidget->currentDatabase());
+    success = data::makeDbGraph(tygra, connectionWidget->currentDatabase());
 
     util::launchMsgBox(tygra.toString());
     util::launchMsgBox(tygra.depthFirstString());
@@ -237,11 +238,11 @@ bool Browser::testObjectSelector()
 {
     bool success = false;
     data::QSqlSelector selector;
-    dag::db::TypeGraph tygra;
+    dag::db::ObjectGraph ogra;
 
-//    selector.setDatabase(connectionWidget->currentDatabase());
+    selector.setDatabase(connectionWidget->currentDatabase());
 
-//    success = data::makeTypeGraph(tygra, connectionWidget->currentDatabase());
+    success = data::makeDbGraph(ogra, connectionWidget->currentDatabase());
 
 //    util::launchMsgBox(tygra.toString());
 //    util::launchMsgBox(tygra.depthFirstString());

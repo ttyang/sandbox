@@ -14,11 +14,11 @@
 #include "Dag.h" //CL move indentation
 
 
-
+template<class DbGraph>
 struct StringVisitor2
 {
-    typedef dag::db::TypeGraph::vertex_descriptor vertex_descriptor;
-    typedef dag::db::TypeGraph::tVertex2Depth tVertex2Depth;
+    typedef typename DbGraph::vertex_descriptor vertex_descriptor;
+    typedef typename DbGraph::tVertex2Depth     tVertex2Depth;
 
     //--------------------------------------------------------------------------
     // Visitors

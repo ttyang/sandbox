@@ -3,6 +3,7 @@
 
 using namespace dag::db;
 
+/*
 bool data::makeTypeGraph(dag::db::TypeGraph& typeGraph, const QSqlDatabase& db)
 {
     typedef dag::db::TypeGraph::tKey2Vertex_iterator tKey2Vertex_iterator;
@@ -19,3 +20,4 @@ bool data::makeTypeGraph(dag::db::TypeGraph& typeGraph, const QSqlDatabase& db)
 
     return true;
 }
+*/
