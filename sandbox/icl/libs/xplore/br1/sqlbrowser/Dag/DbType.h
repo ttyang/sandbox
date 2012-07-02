@@ -173,15 +173,14 @@ private:
 class Object
 {
 public:
-    typedef dag::db::ObjectType tObjectType;
-
     Object(): m_refObjectType(){};
-    explicit Object(tKey refObjectType): m_refObjectType(refObjectType){};
+    explicit Object(tKey key, tKey refObjectType, const QString& name)
+        : m_key(key), m_refObjectType(refObjectType), m_name(name){};
 
     bool isConsistent()const; //!< Checks for consistency between types and data
 
-    tKey key()const { m_key; }
-    tKey refObjectType()const { m_refObjectType; }
+    tKey key()const { return m_key; }
+    tKey refObjectType()const { return m_refObjectType; }
     void setName(const QString& name) { m_name = name; }
     QString name()const { return m_name; }
 

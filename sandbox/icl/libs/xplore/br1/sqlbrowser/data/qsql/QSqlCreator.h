@@ -102,7 +102,7 @@ template<class KeyIterator>
 class KeyBinding_QSqlCreator<dag::db::Object, KeyBinding_QSqlSelector<KeyIterator>, KeyIterator>
 {
 public:
-    enum { eKey=0, e_refObjectType, eValue, eName };
+    enum { e_Key=0, e_refObjectType, e_Value, e_Name };
 
     typedef KeyBinding_QSqlCreator type;
     typedef KeyBinding_SqlQuery<KeyIterator>   tQuery;
@@ -125,11 +125,11 @@ public:
 
     static tObject create(const_iterator it)
     {
-        return dag::db::ObjectType(  (*it).field(eKey).value().toInt()
-                                    ,(*it).field(e_refObjectType).value().toInt()
-                                    ,(*it).field(eValue).value().toInt()
-                                    ,(*it).field(eName).value().toString()
-                                  );
+        return dag::db::Object(  (*it).field(e_Key).value().toInt()
+                                ,(*it).field(e_refObjectType).value().toInt()
+                                //JODO,(*it).field(e_Value).value().toInt()
+                                ,(*it).field(e_Name).value().toString()
+                              );
     }
 };
 
@@ -156,9 +156,9 @@ public:
     static tObject create(const_iterator it)
     {
         return dag::db::EdgeType( (*it).field(e_key).value().toInt()
-                                 ,(*it).field(e_refSourceType).value().toInt()
-                                 ,(*it).field(e_refRelationType).value().toInt()
-                                 ,(*it).field(e_refTargetType).value().toInt()
+                                 ,(*it).field(e_refEdgeType).value().toInt()
+                                 ,(*it).field(e_refSourceVertex).value().toInt()
+                                 ,(*it).field(e_refTargetVertex).value().toInt()
                                  ,(*it).field(e_name).value().toString()
                                 );
     }

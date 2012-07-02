@@ -12,8 +12,7 @@ class QSqlQuery;
 namespace dag { namespace db
 {
 
-template<class ObjectType, class EdgeType>
-class ObjectGraph : public DbBasedGraph<TypeGraph, db::Object<ObjectType>, db::Edge<EdgeType> >
+class ObjectGraph : public DbBasedGraph<TypeGraph, db::Object, db::Edge>
 {
 };
 

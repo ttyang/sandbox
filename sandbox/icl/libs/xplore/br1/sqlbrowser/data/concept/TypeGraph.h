@@ -74,13 +74,13 @@ bool makeDbGraph(DbGraph& aGraph, const QSqlDatabase& db)
 
     if(!addEdgeData(selector, aGraph))
         return false;
-/*
 
     data::KeyBinding_QSqlSelector<tKey2Vertex_iterator> keyBindingSelector;
     keyBindingSelector.setDatabase(db);
+
     if(!addVertexData(keyBindingSelector, aGraph))
         return false;
-*/
+
     return true;
 }
 

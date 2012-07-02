@@ -238,7 +238,7 @@ bool Browser::testObjectSelector()
 {
     bool success = false;
     data::QSqlSelector selector;
-    dag::db::ObjectGraph<dag::db::ObjectType, dag::db::EdgeType> ogra;
+    dag::db::ObjectGraph ogra;
 
     selector.setDatabase(connectionWidget->currentDatabase());
 
