@@ -29,13 +29,14 @@ addEdgeData(Accessor& accessor, DbGraph& aGraph)
     typedef typename DbGraph::tEdgeDeco tEdgeDeco;
     typename Accessor::size_type edgeCount
         = select(accessor, createQuery<Accessor,tEdgeDeco>());
+    /*JODO
 
     for(const_iterator it = begin(accessor); it != end(accessor); ++it)
     {
         tEdgeDeco aEdge = create<Accessor,tEdgeDeco>(it);
         aGraph.addEdge(create<Accessor,tEdgeDeco>(it)); //JODO Moveable!
     }
-
+    */
     return true;
 }
 
@@ -68,17 +69,18 @@ template<class DbGraph>
 bool makeDbGraph(DbGraph& aGraph, const QSqlDatabase& db)
 {
     typedef typename DbGraph::tKey2Vertex_iterator tKey2Vertex_iterator;
-
     data::QSqlSelector selector;
     selector.setDatabase(db);
+
     if(!addEdgeData(selector, aGraph))
         return false;
+/*
 
     data::KeyBinding_QSqlSelector<tKey2Vertex_iterator> keyBindingSelector;
     keyBindingSelector.setDatabase(db);
     if(!addVertexData(keyBindingSelector, aGraph))
         return false;
-
+*/
     return true;
 }
 

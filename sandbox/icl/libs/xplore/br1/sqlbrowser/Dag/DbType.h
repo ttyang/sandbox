@@ -170,28 +170,30 @@ private:
 //! Parameter 'ModelType' is either ObjectType or EdgeType
 //! Object<ObjectType> is associated to Vertixes of the graph
 //! Object<EdgeType> is associated to Edges of the graph
-template<class ModelType>
 class Object
 {
 public:
-    typedef dag::db::ObjectType tModelType;
-    Object(): m_Type(){};
-    explicit Object(tModelType aType): m_Type(aType){};
+    typedef dag::db::ObjectType tObjectType;
+
+    Object(): m_refObjectType(){};
+    explicit Object(tKey refObjectType): m_refObjectType(refObjectType){};
 
     bool isConsistent()const; //!< Checks for consistency between types and data
 
-    tKey key()const { m_Key; }
-    void setName(const QString& aName) { m_Name = aName; }
-    QString name()const { return m_Name; }
+    tKey key()const { m_key; }
+    tKey refObjectType()const { m_refObjectType; }
+    void setName(const QString& name) { m_name = name; }
+    QString name()const { return m_name; }
 
 private:
-    tKey        m_Key;
-    tModelType  m_Type;
-    tVariVector m_Value;
-    QString     m_Name; //JODO for ease of testing only. Remove soon.
+    tKey        m_key;
+    tKey        m_refObjectType;
+    tVariVector m_value;
+    QString     m_name; //JODO for ease of testing only. Remove soon.
 };
 
-typedef Object<ObjectType>         tObject;
+//CL?
+typedef Object                     tObject;
 typedef boost::shared_ptr<tObject> tObjectSharedPtr;
 typedef                   tObject* tObjectRawPtr;
 typedef             const tObject* tObjectConstRawPtr;
@@ -200,21 +202,25 @@ typedef             const tObject* tObjectConstRawPtr;
 class Edge
 {
 public:
-    Edge(): m_SourceKey(), m_TargetKey(){};
+    typedef dag::db::EdgeType tModelType;
 
-    explicit Edge(tKey sourceKey, tKey targetKey)
-        : m_SourceKey(sourceKey), m_TargetKey(targetKey){};
+    Edge(): m_key(), m_refEdgeType(), m_refSourceVertex(), m_refTargetVertex(){};
 
-    tKey key()const { m_Key; }
-    tKey sourceKey()const { return m_SourceKey; }
-    tKey targetKey()const { return m_TargetKey; }
+    explicit Edge(tKey key, tKey refEdgeType, tKey sourceKey, tKey targetKey)
+        : m_key(key), m_refEdgeType(refEdgeType)
+        , m_refSourceVertex(sourceKey), m_refTargetVertex(targetKey){};
+
+    tKey key()const { m_key; }
+    tKey refEdgeType()const { return m_refEdgeType; }
+    tKey refSourceVertex()const { return m_refSourceVertex; }
+    tKey refTargetVertex()const { return m_refTargetVertex; }
 
 private:
-    tKey m_Key;
-    tKey m_SourceKey;
-    tKey m_TargetKey;
-
-    Object<EdgeType> m_Object;
+    tKey m_key;
+    tKey m_refEdgeType;
+    tKey m_refSourceVertex;
+    tKey m_refTargetVertex;
+    tKey m_refObject;
 };
 
 

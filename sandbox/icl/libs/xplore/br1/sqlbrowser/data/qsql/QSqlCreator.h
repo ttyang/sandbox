@@ -22,6 +22,9 @@ typedef dag::db::tString tString;
 template<class Object, class Accessor>
 class QSqlCreator;
 
+//------------------------------------------------------------------------------
+// Specialisations for Types
+//------------------------------------------------------------------------------
 template<>
 class QSqlCreator<dag::db::EdgeType, QSqlSelector>
 {
@@ -91,6 +94,79 @@ public:
 };
 
 
+
+//------------------------------------------------------------------------------
+// Specialisations for Objects
+//------------------------------------------------------------------------------
+template<class KeyIterator>
+class KeyBinding_QSqlCreator<dag::db::Object, KeyBinding_QSqlSelector<KeyIterator>, KeyIterator>
+{
+public:
+    enum { eKey=0, e_refObjectType, eValue, eName };
+
+    typedef KeyBinding_QSqlCreator type;
+    typedef KeyBinding_SqlQuery<KeyIterator>   tQuery;
+    typedef boost::iterator_range<KeyIterator> tKeyRange;
+    typedef dag::db::Object                    tObject;
+    typedef KeyBinding_QSqlSelector<KeyIterator> tAccessor;
+
+    typedef typename tAccessor::tResultSet     tResultSet;
+    typedef typename tAccessor::const_iterator const_iterator;
+
+    static tQuery createQuery(const tKeyRange& range)
+    {
+        tQuery query(range);
+        query.setSqlStatement(
+            "select Object.key, Object.Type, Object.Value, Object.Name "
+            "from Object where Object.key = ? "
+            );
+        return query;
+    }
+
+    static tObject create(const_iterator it)
+    {
+        return dag::db::ObjectType(  (*it).field(eKey).value().toInt()
+                                    ,(*it).field(e_refObjectType).value().toInt()
+                                    ,(*it).field(eValue).value().toInt()
+                                    ,(*it).field(eName).value().toString()
+                                  );
+    }
+};
+
+
+template<>
+class QSqlCreator<dag::db::Edge, QSqlSelector>
+{
+public:
+    enum { e_key=0, e_refEdgeType, e_refSourceVertex, e_refTargetVertex, e_name };
+
+    typedef QSqlCreator       type;
+    typedef dag::db::EdgeType tObject;
+    typedef QSqlSelector      tAccessor;
+
+    typedef tAccessor::tResultSet     tResultSet;
+    typedef tAccessor::const_iterator const_iterator;
+
+    static SqlQuery::tRepr createQuery()
+    {
+        return
+            "select EdgeType.key, EdgeType.refSourceType, EdgeType.refRelationType, EdgeType.refTargetType, EdgeType.Name from EdgeType ";
+    }
+
+    static tObject create(const_iterator it)
+    {
+        return dag::db::EdgeType( (*it).field(e_key).value().toInt()
+                                 ,(*it).field(e_refSourceType).value().toInt()
+                                 ,(*it).field(e_refRelationType).value().toInt()
+                                 ,(*it).field(e_refTargetType).value().toInt()
+                                 ,(*it).field(e_name).value().toString()
+                                );
+    }
+};
+
+
+//------------------------------------------------------------------------------
+
 template<class Object>
 struct GetCreator<Object, QSqlSelector>
 {
@@ -112,7 +188,6 @@ struct GetCreator<Object, KeyBinding_QSqlSelector<Iter> >
 //==============================================================================
 
 template<class Object, class Accessor>
-//CL? struct CreatorTraits<Object, QSqlCreator<Object, Accessor> >
 struct CreatorTraits< QSqlCreator<Object, Accessor> >
 {
     typedef QSqlCreator<Object,Accessor> tCreator;
