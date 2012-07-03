@@ -40,6 +40,7 @@ public:
 
     vertex_descriptor addVertex(tKey key)
     {
+        Q_ASSERT(key > 0);
         tKey2Vertex::iterator vertex_ = m_aKey2Vertex.find(key);
         if(vertex_ != m_aKey2Vertex.end())
             return (*vertex_).second;

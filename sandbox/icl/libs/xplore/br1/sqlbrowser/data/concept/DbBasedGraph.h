@@ -2,17 +2,16 @@
 **
 **
 ****************************************************************************/
-//JODO REMOVE file
+
 #pragma once
 
-/*
 //std
 //boost
 #include <boost/mpl/bool.hpp>
 #include <boost/utility/enable_if.hpp>
 //qt
 //local
-#include "Dag/DbBasedGraph.h"
+#include "Dag/TypeGraph.h"
 
 #include "data/concept/Selector.h"
 
@@ -31,7 +30,6 @@ addEdgeData(Accessor& accessor, DbGraph& aGraph)
     typename Accessor::size_type edgeCount
         = select(accessor, createQuery<Accessor,tEdgeDeco>());
 
-    qDebug() << "edgeCount " << edgeCount;
     for(const_iterator it = begin(accessor); it != end(accessor); ++it)
     {
         tEdgeDeco aEdge = create<Accessor,tEdgeDeco>(it);
@@ -53,12 +51,12 @@ addVertexData(Accessor& accessor, DbGraph& aGraph)
 
     typename Accessor::size_type vertexCount
             = select( accessor
-                    , createQuery<Accessor,dag::db::ObjectType,tIterator>(aGraph.keyVertexRange()));
+                    , createQuery<Accessor,tVertexDeco,tIterator>(aGraph.keyVertexRange()));
 
     for(const_iterator it = begin(accessor); it != end(accessor); ++it)
     {
-        tVertexDeco objType = create<Accessor,tVertexDeco,tIterator>(it);
-        aGraph.addVertexObject(objType);
+        tVertexDeco dbg_CL_deco = create<Accessor,tVertexDeco,tIterator>(it);
+        aGraph.addVertexObject(create<Accessor,tVertexDeco,tIterator>(it));
     }
 
     return true;
@@ -84,8 +82,5 @@ bool makeDbGraph(DbGraph& aGraph, const QSqlDatabase& db)
     return true;
 }
 
+
 } // namespace data
-
-*/
-
-

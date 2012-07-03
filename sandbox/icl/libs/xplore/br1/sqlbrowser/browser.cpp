@@ -49,8 +49,9 @@
 
 //---- First Accessor tests ----------------
 #include "data/qsql/QSqlSelector.h"
-#include "data/concept/TypeGraph.h"
+#include "data/concept/DbBasedGraph.h"
 #include "Dag/ObjectGraph.h"
+#include "Dag/TypeGraph.h"
 
 #include "gen/NumberGenerator.h"
 #include "gen/NameGenerator.h"
@@ -174,7 +175,8 @@ bool Browser::runScript()
 {
     //return execScript(); // Execute a script containing of multiple sql-statements
     //return casualTests();
-    return testTypeSelector();
+    //return testTypeSelector();
+    return testObjectSelector();
     //emit statusMessage(tr("Generating DB ..."));
     //return generateDb();
 }
@@ -244,13 +246,13 @@ bool Browser::testObjectSelector()
 
     success = data::makeDbGraph(ogra, connectionWidget->currentDatabase());
 
-//    util::launchMsgBox(tygra.toString());
-//    util::launchMsgBox(tygra.depthFirstString());
+    util::launchMsgBox(ogra.toString());
+    util::launchMsgBox(ogra.depthFirstString());
 
-//    if(success)
-//        emit statusMessage(tr("Test executed successfully."));
-//    else
-//        emit statusMessage(tr("Error(s), Test aborted."));
+    if(success)
+        emit statusMessage(tr("Test executed successfully."));
+    else
+        emit statusMessage(tr("Error(s), Test aborted."));
 
     return success;
 }

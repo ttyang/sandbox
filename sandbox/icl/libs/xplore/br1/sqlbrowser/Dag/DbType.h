@@ -173,21 +173,28 @@ private:
 class Object
 {
 public:
-    Object(): m_refObjectType(){};
-    explicit Object(tKey key, tKey refObjectType, const QString& name)
-        : m_key(key), m_refObjectType(refObjectType), m_name(name){};
+    Object(): m_refAttribute(){};
+
+    explicit Object(tKey key)
+        : m_key(key){};
+
+    explicit Object(tKey key, tKey refAttribute, const QString& name)
+        : m_key(key), m_refAttribute(refAttribute), m_name(name){};
 
     bool isConsistent()const; //!< Checks for consistency between types and data
 
     tKey key()const { return m_key; }
-    tKey refObjectType()const { return m_refObjectType; }
+    tKey refAttribute()const { return m_refAttribute; }
     void setName(const QString& name) { m_name = name; }
     QString name()const { return m_name; }
 
+    QString toString()const
+    { return QString("Object(%1,%2,%3)").arg(m_key).arg(m_refAttribute).arg(m_name); }
+
 private:
     tKey        m_key;
-    tKey        m_refObjectType;
-    tVariVector m_value;
+    tKey        m_refAttribute;
+    //JODO tVariVector m_value;
     QString     m_name; //JODO for ease of testing only. Remove soon.
 };
 
@@ -214,12 +221,18 @@ public:
     tKey refSourceVertex()const { return m_refSourceVertex; }
     tKey refTargetVertex()const { return m_refTargetVertex; }
 
+    tKey sourceKey()const { return m_refSourceVertex; }
+    tKey targetKey()const { return m_refTargetVertex; }
+
+    QString toString()const
+    { return QString("Edge(%1,..)").arg(m_key); }
+
 private:
     tKey m_key;
     tKey m_refEdgeType;
     tKey m_refSourceVertex;
     tKey m_refTargetVertex;
-    tKey m_refObject;
+    //JODO Object m_object; //The object that is referec my m_key.
 };
 
 

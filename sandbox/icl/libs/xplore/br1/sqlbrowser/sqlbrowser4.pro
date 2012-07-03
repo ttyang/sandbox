@@ -35,7 +35,8 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     util/TestBoxes.h \
     StringVisitor2.h \
     Dag/ObjectGraph.h \
-    Dag/DbBasedGraph.h
+    Dag/DbBasedGraph.h \
+    data/concept/DbBasedGraph.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
