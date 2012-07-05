@@ -26,7 +26,6 @@ explicit valgrind_config_check ;
 test-suite pool :
     [ run test_simple_seg_storage.cpp ]
     [ run test_pool_alloc.cpp ]
-    [ run test_static_pool.cpp ]
     [ run pool_msvc_compiler_bug_test.cpp ]
     [ run test_msvc_mem_leak_detect.cpp ]
     [ run test_bug_1252.cpp ]
@@ -49,7 +48,6 @@ test-suite pool :
 #
     [ run test_simple_seg_storage.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no ] : test_simple_seg_storage_valgrind ]
     [ run test_pool_alloc.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no  ] : test_pool_alloc_valgrind ]
-    [ run test_static_pool.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no  ] : test_static_pool_valgrind ]
     [ run pool_msvc_compiler_bug_test.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1"  : <build>no ] : pool_msvc_compiler_bug_test_valgrind ]
     [ run test_msvc_mem_leak_detect.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no  ] : test_msvc_mem_leak_detect_valgrind ]
     [ run test_bug_1252.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no  ] : test_bug_1252_valgrind ]
