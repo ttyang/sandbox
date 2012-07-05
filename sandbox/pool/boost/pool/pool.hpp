@@ -433,7 +433,7 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
         const size_type nnext_size = 32,
         const size_type nmax_size = 0)
     :
-        list(0, 0), requested_size(nrequested_size), next_size(nnext_size), start_size(nnext_size), max_size(nmax_size)
+        list(0, 0), requested_size(nrequested_size), next_size(nnext_size), start_size(nnext_size), max_size(nmax_size), ordered(true)
     { //!   Constructs a new empty Pool that can be used to allocate chunks of size RequestedSize.
       //! \param nrequested_size  Requested chunk size
       //! \param  nnext_size parameter is of type size_type,
@@ -442,7 +442,6 @@ class pool: protected simple_segregated_storage < typename UserAllocator::size_t
       //!   The default is 32. This parameter may not be 0.
       //! \param nmax_size is the maximum number of chunks to allocate in one block.			
       set_max_size(nmax_size);	
-      ordered = true;
     }
 
     ~pool()
