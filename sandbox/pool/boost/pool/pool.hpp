@@ -251,7 +251,7 @@ The member function valid can be used to test for validity.
       if (!listA.valid()) return listB;
       if (!listB.valid()) return listA;
 
-      if (std::less<char *>()(listB.ptr, listA.ptr))
+      if (std::less<void *>()(listB.ptr, listA.ptr))
         std::swap(listA, listB);
 
       PODptr list = listA; listA = listA.next();
@@ -259,7 +259,7 @@ The member function valid can be used to test for validity.
 
       while (listA.valid())
       {
-        if (std::less<char *>()(listB.ptr, listA.ptr))
+        if (std::less<void *>()(listB.ptr, listA.ptr))
           std::swap(listA, listB);
 
         last.next(listA);
