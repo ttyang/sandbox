@@ -63,3 +63,6 @@ test-suite pool :
     [ run test_bug_6867.cpp  : : : [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no  ] : test_bug_6867_valgrind ]
     [ run test_threading.cpp  : : : <threading>multi <library>/boost/thread//boost_thread <toolset>gcc:<cxxflags>-Wno-attributes <toolset>gcc:<cxxflags>-Wno-missing-field-initializers [ check-target-builds valgrind_config_check : <testing.launcher>"valgrind --error-exitcode=1" : <build>no  ] : test_threading_valgrind ]
 
+    ;
+
+
