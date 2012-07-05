@@ -24,8 +24,6 @@
 
 #include <boost/pool/pool.hpp>
 #include <boost/pool/object_pool.hpp>
-#include <boost/pool/static_pool.hpp>
-#include <boost/pool/array_pool.hpp>
 #include <boost/pool/pool_alloc.hpp>
 #include <boost/pool/singleton_pool.hpp>
 
@@ -34,15 +32,6 @@ template class boost::object_pool<int, boost::default_user_allocator_malloc_free
 
 template class boost::pool<boost::default_user_allocator_new_delete>;
 template class boost::pool<boost::default_user_allocator_malloc_free>;
-
-template class boost::static_pool<boost::default_user_allocator_new_delete>;
-template class boost::static_pool<boost::default_user_allocator_malloc_free>;
-
-template class boost::static_object_pool<int, boost::default_user_allocator_new_delete>;
-template class boost::static_object_pool<int, boost::default_user_allocator_malloc_free>;
-
-template class boost::array_pool<1, 1>;
-template class boost::array_object_pool<int, 1>;
 
 template class boost::pool_allocator<int, boost::default_user_allocator_new_delete>;
 template class boost::pool_allocator<int, boost::default_user_allocator_malloc_free>;

@@ -8,7 +8,6 @@
 // Test of bug #6561 (https://svn.boost.org/trac/boost/ticket/6561)
 
 #include <boost/pool/pool.hpp>
-#include <boost/pool/static_pool.hpp>
 #include <boost/pool/object_pool.hpp>
 #include <boost/pool/singleton_pool.hpp>
 
@@ -24,12 +23,6 @@ int main()
   p.free(NULL, 4);
   p.ordered_free(NULL);
   p.ordered_free(NULL, 4);
-  
-  boost::static_pool<> sp(1, 1);
-  sp.free(NULL);
-  sp.free(NULL, 4);
-  sp.ordered_free(NULL);
-  sp.ordered_free(NULL, 4);
   
   boost::object_pool<dummy> op(1);
   op.destroy(NULL);

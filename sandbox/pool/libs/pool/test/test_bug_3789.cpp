@@ -7,6 +7,7 @@
 
 // Test of ticket #3789 (https://svn.boost.org/trac/boost/ticket/3789)
 
+#define BOOST_DISABLE_THREADS
 #include <boost/pool/object_pool.hpp>
 
 class object

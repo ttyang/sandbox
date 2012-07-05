@@ -9,7 +9,6 @@
 // Implementation of pool::get_size()
 
 #include <boost/pool/pool.hpp>
-#include <boost/pool/static_pool.hpp>
 #include <boost/pool/object_pool.hpp>
 
 int main()
@@ -33,10 +32,6 @@ int main()
     p.malloc();
     BOOST_ASSERT(p.get_size() == 4);
   }
-
-  // Test static_pool
-  boost::static_pool<> sp(sizeof(int), 48);
-  BOOST_ASSERT(sp.get_size() == 48);
 
   // Test object_pool
   boost::object_pool<int> op(32);
