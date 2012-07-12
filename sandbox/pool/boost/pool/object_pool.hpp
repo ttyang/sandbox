@@ -259,6 +259,7 @@ class object_pool: protected pool<UserAllocator>
 template <typename T, typename UserAllocator>
 bool object_pool<T, UserAllocator>::purge_memory()
 {
+#ifndef BOOST_POOL_VALGRIND
   // handle trivial case of invalid list.
   if (!this->list.valid())
     return false;
@@ -304,6 +305,13 @@ bool object_pool<T, UserAllocator>::purge_memory()
       iter = next;
     } while (iter.valid());
   }
+#else
+  // destruct all used elements:
+  for(std::set<void*>::iterator pos = this->used_list.begin(); pos != this->used_list.end(); ++pos)
+  {
+    static_cast<T*>(*pos)->~T();
+  }
+#endif  
 
   // Call inherited purge function
   return pool<UserAllocator>::purge_memory();

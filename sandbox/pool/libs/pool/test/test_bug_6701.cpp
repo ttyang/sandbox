@@ -12,6 +12,7 @@
 
 int main()
 {
+#ifndef BOOST_POOL_VALGRIND
   boost::pool<> p(1024, std::numeric_limits<size_t>::max() / 768);
 
   void *x = p.malloc();
@@ -19,6 +20,7 @@ int main()
   
   void *y = p.ordered_malloc(std::numeric_limits<size_t>::max() / 768);
   BOOST_ASSERT(!y);
+#endif
 
   return 0;
 }

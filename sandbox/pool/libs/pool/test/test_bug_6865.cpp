@@ -17,27 +17,53 @@ int main()
   for (int nSize = 1; nSize < 128; nSize = 2 * nSize + 1)
   {
     boost::pool<> p(nSize, 4);
-    p.malloc();
+    void *ptr = p.malloc();
 
+#ifndef BOOST_POOL_VALGRIND
     BOOST_ASSERT(p.get_size() == 4);
+#else
+    BOOST_ASSERT(p.get_size() == 1);
+#endif
 
     for (int k = 0; k < 4; k++)
       p.malloc();
 
+#ifndef BOOST_POOL_VALGRIND
     BOOST_ASSERT(p.get_size() == 4 + 8);
+#else
+    BOOST_ASSERT(p.get_size() == 1 + 4);
+#endif
+
+    p.free(ptr);
+
+#ifndef BOOST_POOL_VALGRIND
+    BOOST_ASSERT(p.get_size() == 4 + 8);
+#else
+    BOOST_ASSERT(p.get_size() == 1 + 4);
+#endif
 
     p.purge_memory();
     BOOST_ASSERT(p.get_size() == 0);
 
     p.malloc();
+    
+#ifndef BOOST_POOL_VALGRIND
     BOOST_ASSERT(p.get_size() == 4);
+#else
+    BOOST_ASSERT(p.get_size() == 1);
+#endif
   }
 
   // Test object_pool
   boost::object_pool<int> op(32);
   
   op.malloc();
+  
+#ifndef BOOST_POOL_VALGRIND
   BOOST_ASSERT(op.get_size() == 32);
+#else
+  BOOST_ASSERT(op.get_size() == 1);
+#endif
 
   return 0;
 }

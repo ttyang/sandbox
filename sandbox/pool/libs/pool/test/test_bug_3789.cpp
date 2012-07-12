@@ -29,7 +29,12 @@ int main()
 {
   object::instances = 0;
   {
+#ifndef BOOST_POOL_VALGRIND
     static const int size = 1000000;
+#else
+    static const int size = 100000;
+#endif
+
     boost::object_pool<object> pool(1);		
   
     object **objects = new object *[size];
