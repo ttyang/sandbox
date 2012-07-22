@@ -10,6 +10,7 @@ Copyright (c) 2010-2010: Joachim Faulhaber
 
 #include <limits>
 #include <complex>
+#include <functional>
 #include <boost/type_traits/is_floating_point.hpp>
 #include <boost/type_traits/ice.hpp>
 #include <boost/type_traits/is_integral.hpp>
@@ -54,20 +55,28 @@ struct is_numeric<std::complex<Type> >
 };
 
 //--------------------------------------------------------------------------
-template<class Type, bool Enable = false> struct numeric_minimum;
-
-template<class Type> 
-struct numeric_minimum<Type, false>
+template<class Type, class Compare, bool Enable = false>
+struct numeric_minimum
 {
     static bool is_less_than(Type){ return true; }
     static bool is_less_than_or(Type, bool){ return true; }
 };
 
 template<class Type> 
-struct numeric_minimum<Type, true>
+struct numeric_minimum<Type, std::less<Type>, true>
 {
     static bool is_less_than(Type value)
-    { return (std::numeric_limits<Type>::min)() < value; }
+    { return std::less<Type>()((std::numeric_limits<Type>::min)(), value); }
+
+    static bool is_less_than_or(Type value, bool cond)
+    { return cond || is_less_than(value); }
+};
+
+template<class Type> 
+struct numeric_minimum<Type, std::greater<Type>, true>
+{
+    static bool is_less_than(Type value)
+    { return std::greater<Type>()((std::numeric_limits<Type>::max)(), value); }
 
     static bool is_less_than_or(Type value, bool cond)
     { return cond || is_less_than(value); }
