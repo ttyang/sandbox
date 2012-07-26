@@ -5,8 +5,8 @@ Copyright (c) 2012-2012: Joachim Faulhaber
       (See accompanying file LICENCE.txt or copy at
            http://www.boost.org/LICENSE_1_0.txt)
 +-----------------------------------------------------------------------------*/
-#ifndef BOOST_ICL_CONCEPT__INTERVAL_ASSOCIATOR_HPP_JOFA_120724
-#define BOOST_ICL_CONCEPT__INTERVAL_ASSOCIATOR_HPP_JOFA_120724
+#ifndef BOOST_ICL_CONCEPT__INTERVAL_MAP_HPP_JOFA_120724
+#define BOOST_ICL_CONCEPT__INTERVAL_MAP_HPP_JOFA_120724
 
 #include <iterator>
 #include <map>
@@ -16,15 +16,18 @@ namespace boost{ namespace icl
 {
 
 template<class Model>
-struct interval_map_concept
+struct interval_map_traits
 {
-    typedef interval_map_concept                         type;
+    typedef interval_map_traits                          type;
+    typedef interval_map_traits                          concept_mapping;
     typedef Model                                        model_type;
     typedef typename model_type::key_type                domain_type;
     typedef typename model_type::value_type::second_type codomain_type;
     typedef typename model_type::key_compare             domain_compare; 
     typedef typename model_type::iterator                interpair_iterator; 
     typedef typename model_type::const_iterator          interpair_const_iterator; 
+
+    BOOST_STATIC_CONSTANT(bool, value = false);
 
     static       interpair_iterator interpairs_begin (model_type&);
     static       interpair_iterator interpairs_end   (model_type&);
@@ -33,9 +36,10 @@ struct interval_map_concept
 };
 
 template<class DomainT, class CodomainT>
-struct interval_map_concept/*modeled by*/< std::map<DomainT, CodomainT> >
+struct interval_map_traits< std::map<DomainT, CodomainT> >
 {
-    typedef interval_map_concept                         type;
+    typedef interval_map_traits                      type;
+    typedef interval_map_traits                      concept_mapping;
     typedef typename std::map<DomainT, CodomainT>        model_type;
 
     typedef typename model_type::key_type                domain_type;
@@ -45,6 +49,8 @@ struct interval_map_concept/*modeled by*/< std::map<DomainT, CodomainT> >
     typedef typename model_type::iterator                interpair_iterator; 
     typedef typename model_type::const_iterator          interpair_const_iterator; 
 
+    BOOST_STATIC_CONSTANT(bool, value = true);
+
     static       interpair_iterator interpairs_begin (model_type& model)      { return model.begin(); };
     static       interpair_iterator interpairs_end   (model_type& model)      { return model.end();   };
     static interpair_const_iterator interpairs_cbegin(const model_type& model){ return model.begin(); };
@@ -52,9 +58,10 @@ struct interval_map_concept/*modeled by*/< std::map<DomainT, CodomainT> >
 };
 
 template<class DomainT, class CodomainT>
-struct interval_map_concept/*modeled by*/< std::vector<std::pair<DomainT, CodomainT> > >
+struct interval_map_traits< std::vector<std::pair<DomainT, CodomainT> > >
 {
-    typedef interval_map_concept                                 type;
+    typedef interval_map_traits                      type;
+    typedef interval_map_traits                      concept_mapping;
     typedef typename std::vector<std::pair<DomainT, CodomainT> > model_type;
 
     typedef typename model_type::value_type::first_type  domain_type;
@@ -64,6 +71,8 @@ struct interval_map_concept/*modeled by*/< std::vector<std::pair<DomainT, Codoma
     typedef typename model_type::iterator                interpair_iterator; 
     typedef typename model_type::const_iterator          interpair_const_iterator; 
 
+    BOOST_STATIC_CONSTANT(bool, value = true);
+
     static       interpair_iterator interpairs_begin (model_type& model)      { return model.begin(); };
     static       interpair_iterator interpairs_end   (model_type& model)      { return model.end();   };
     static interpair_const_iterator interpairs_cbegin(const model_type& model){ return model.begin(); };
@@ -71,50 +80,50 @@ struct interval_map_concept/*modeled by*/< std::vector<std::pair<DomainT, Codoma
 };
 
 template<class Type> //JODO different interval_map-Types
-bool domain_less_( typename interval_map_concept<Type>::interpair_const_iterator left
-                 , typename interval_map_concept<Type>::interpair_const_iterator right )
+bool domain_less_( typename interval_map_traits<Type>::interpair_const_iterator left
+                 , typename interval_map_traits<Type>::interpair_const_iterator right )
 {
-    typedef typename interval_map_concept<Type>::type concept;
-    return concept::domain_compare()((*left).first, (*right).first);
+    typedef typename interval_map_traits<Type>::type Concept;
+    return Concept::domain_compare()((*left).first, (*right).first);
 }
 
 template<class Type> //JODO different interval_map-Types
-typename interval_map_concept<Type>::codomain_type
-co_combine( typename interval_map_concept<Type>::interpair_const_iterator left
-          , typename interval_map_concept<Type>::interpair_const_iterator right )
+typename interval_map_traits<Type>::codomain_type
+co_combine( typename interval_map_traits<Type>::interpair_const_iterator left
+          , typename interval_map_traits<Type>::interpair_const_iterator right )
 {
-    typedef typename interval_map_concept<Type>::type concept;
-    typename concept::codomain_type co_val = (*left).second;
-    concept::codomain_combine()(co_val, (*right).second);
+    typedef typename interval_map_traits<Type>::type Concept;
+    typename Concept::codomain_type co_val = (*left).second;
+    Concept::codomain_combine()(co_val, (*right).second);
     return co_val;
 }
 
 template<class Type> 
-typename interval_map_concept<Type>::codomain_type
-co_value( typename interval_map_concept<Type>::interpair_iterator iter )
+typename interval_map_traits<Type>::codomain_type
+co_value( typename interval_map_traits<Type>::interpair_iterator iter )
 {
     return (*iter).second;
 }
 
 template<class Type> 
-typename interval_map_concept<Type>::interpair_const_iterator
+typename interval_map_traits<Type>::interpair_const_iterator
 interpairs_cbegin( const Type& object )
 {
-    return interval_map_concept<Type>::interpairs_cbegin(object);
+    return interval_map_traits<Type>::interpairs_cbegin(object);
 }
 
 template<class Type> 
-typename interval_map_concept<Type>::interpair_const_iterator
+typename interval_map_traits<Type>::interpair_const_iterator
 interpairs_cend( const Type& object )
 {
-    return interval_map_concept<Type>::interpairs_cend(object);
+    return interval_map_traits<Type>::interpairs_cend(object);
 }
 
 template<class Type> 
-typename interval_map_concept<Type>::interpair_const_iterator
+typename interval_map_traits<Type>::interpair_const_iterator
 interpairs_end( Type& object )
 {
-    return interval_map_concept<Type>::interpairs_end(object);
+    return interval_map_traits<Type>::interpairs_end(object);
 }
 
 template<class Type>
@@ -122,11 +131,11 @@ template<class Type>
 Type
 new_add(const Type& map1, const Type& map2)
 {
-    typedef typename interval_map_concept<Type>::type  concept;
-    typedef typename concept::codomain_type            codomain_type;
-    typedef typename concept::domain_compare           domain_compare;
-    typedef typename concept::interpair_iterator       interpair_iterator;
-    typedef typename concept::interpair_const_iterator interpair_const_iterator;
+    typedef typename interval_map_traits<Type>::type  Concept;
+    typedef typename Concept::codomain_type            codomain_type;
+    typedef typename Concept::domain_compare           domain_compare;
+    typedef typename Concept::interpair_iterator       interpair_iterator;
+    typedef typename Concept::interpair_const_iterator interpair_const_iterator;
     typedef typename std::insert_iterator<Type>        insert_iterator;
 
     // A constructor that reserves space for vector result arguments
@@ -199,11 +208,11 @@ new_add(const Type& map1, const Type& map2)
 template<class Type>
 void new_show(const Type& object)
 {
-    typedef typename interval_map_concept<Type>::type  concept;
-    typedef typename concept::domain_type              domain_type;
-    typedef typename concept::codomain_type            codomain_type;
-    typedef typename concept::interpair_iterator       interpair_iterator;
-    typedef typename concept::interpair_const_iterator interpair_const_iterator;
+    typedef typename interval_map_traits<Type>::type  Concept;
+    typedef typename Concept::domain_type              domain_type;
+    typedef typename Concept::codomain_type            codomain_type;
+    typedef typename Concept::interpair_iterator       interpair_iterator;
+    typedef typename Concept::interpair_const_iterator interpair_const_iterator;
 
     interpair_const_iterator it_ = interpairs_cbegin(object), pred_;
 
@@ -220,11 +229,11 @@ void new_show(const Type& object)
 template<class Type>
 void raw_show(const Type& object)
 {
-    typedef typename interval_map_concept<Type>::type  concept;
-    typedef typename concept::domain_type              domain_type;
-    typedef typename concept::codomain_type            codomain_type;
-    typedef typename concept::interpair_iterator       interpair_iterator;
-    typedef typename concept::interpair_const_iterator interpair_const_iterator;
+    typedef typename interval_map_traits<Type>::type Concept;
+    typedef typename Concept::domain_type              domain_type;
+    typedef typename Concept::codomain_type            codomain_type;
+    typedef typename Concept::interpair_iterator       interpair_iterator;
+    typedef typename Concept::interpair_const_iterator interpair_const_iterator;
 
     interpair_const_iterator it_ = interpairs_cbegin(object);
 
@@ -239,6 +248,6 @@ void raw_show(const Type& object)
 
 }} // namespace boost icl
 
-#endif //BOOST_ICL_CONCEPT__INTERVAL_ASSOCIATOR_HPP_JOFA_120724
+#endif //BOOST_ICL_CONCEPT__INTERVAL_MAP_HPP_JOFA_120724
 
 
