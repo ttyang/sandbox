@@ -52,15 +52,16 @@ public:
     typedef typename impl_type::const_iterator    interpair_const_iterator;
     typedef typename impl_type::value_type        value_type;
     typedef typename DomainT                      element_type;
-    //JODO typedef typename impl_type::segment_type      segment_type;
     typedef typename DomainT                      domain_type;
-    typedef typename impl_type::value_type::second_type codomain_type;
+    typedef typename CodomainT                    codomain_type;
     //JODO typedef typename impl_type::domain_mapping_type domain_mapping_type;
     //JODO typedef typename impl_type::interval_mapping_type interval_mapping_type;
 
     //JODO typedef typename impl_type::size_type         size_type;
-    typedef typename Compare<DomainT>             domain_compare;
-    typedef typename Combine<CodomainT>           codomain_combine;
+    typedef typename Compare<DomainT>                   domain_compare;
+    typedef typename Combine<CodomainT>                 codomain_combine;
+    typedef ICL_INTERVAL_TYPE(Interval,DomainT,Compare) interval_type;
+    typedef std::pair<interval_type, codomain_type>     segment_type;
 
     enum { fineness = 1 };
 

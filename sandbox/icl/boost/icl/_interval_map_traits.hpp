@@ -22,13 +22,15 @@ struct interval_map_traits
     typedef interval_map_traits                          type;
     typedef interval_map_traits                          concept_mapping;
     typedef Model                                        model_type;
-    typedef typename model_type::key_type                domain_type;
-    typedef typename model_type::value_type::second_type codomain_type;
+    typedef typename model_type::domain_type             domain_type;
+    typedef typename model_type::codomain_type           codomain_type;
     typedef typename model_type::key_compare             domain_compare; 
     typedef typename model_type::codomain_combine        codomain_combine; 
     typedef typename model_type::interpair_type          interpair_type;
     typedef typename model_type::iterator                interpair_iterator; 
     typedef typename model_type::const_iterator          interpair_const_iterator; 
+    typedef typename model_type::interval_type           interval_type;
+    typedef typename model_type::segment_type            segment_type;
 
     BOOST_STATIC_CONSTANT(bool, value = false);
 
@@ -43,7 +45,6 @@ struct interval_map_traits
 
 }} // namespace boost icl
 
-//#define ICL_REFINED_TYPE(base, type_name) typedef typename base::type_name type_name ; 
 
 #define ICL_INTERVAL_MAP_TRAIT_TYPES(base_type)\
     typedef typename base_type::domain_type              domain_type;\
@@ -52,7 +53,9 @@ struct interval_map_traits
     typedef typename base_type::codomain_combine         codomain_combine;\
     typedef typename base_type::value_type               interpair_type;\
     typedef typename base_type::interpair_iterator       interpair_iterator;\
-    typedef typename base_type::interpair_const_iterator interpair_const_iterator;
+    typedef typename base_type::interpair_const_iterator interpair_const_iterator;\
+    typedef typename base_type::interval_type            interval_type;\
+    typedef typename base_type::segment_type             segment_type;
 
 #define ICL_INTERVAL_MAP_TRAIT_FUNCTIONS(model_type)\
     static       interpair_iterator interpairs_begin (model_type& model)      { return model.begin(); };\

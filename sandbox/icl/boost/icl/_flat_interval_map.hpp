@@ -45,7 +45,6 @@ public:
     typedef ICL_IMPL_SPACE::vector< std::pair<DomainT, CodomainT> > impl_type;
     typedef _interval_map<DomainT,CodomainT,Traits,Compare,Combine,Section,Interval,impl_type> base_type;
     typedef flat_interval_map<DomainT,CodomainT,Traits,Compare,Combine,Section,Interval> type;
-    typedef ICL_INTERVAL_TYPE(Interval,DomainT,Compare) interval_type;
 
     typedef typename base_type::interpair_iterator       interpair_iterator;
     typedef typename base_type::interpair_const_iterator interpair_const_iterator;
@@ -60,6 +59,8 @@ public:
     //JODO typedef typename base_type::size_type         size_type;
     typedef typename Compare<DomainT>             domain_compare;
     typedef typename Combine<CodomainT>           codomain_combine;
+    typedef ICL_INTERVAL_TYPE(Interval,DomainT,Compare) interval_type;
+    typedef std::pair<interval_type, interval_type>     segment_type;
 
     enum { fineness = 1 };
 

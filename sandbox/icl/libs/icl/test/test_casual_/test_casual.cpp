@@ -57,12 +57,17 @@ BOOST_AUTO_TEST_CASE(casual)
 
     IntervalMapT m1;
     m1.insert(make_pair(0, 1));
-    m1.insert(make_pair(6, 2));
+    m1.insert(make_pair(6, 0));
     IntervalMapT m2;
     m2.insert(make_pair(0, 1));
     m2.insert(make_pair(4, 3));
+    m2.insert(m2.end(), make_pair(6, 0));
 
     IntervalMapT m3 = joining_add(m1, m2);
+
+    //JODO if the interval starts with the minimum: failue, will not overwrite first
+    //add_interval( m3, make_pair(interval<int>::right_open(0,6), 1) );
+    add_interval( m3, make_pair(interval<int>::right_open(0,6), 1) );
 
     new_show(m3);
 
@@ -79,10 +84,11 @@ BOOST_AUTO_TEST_CASE(interval_map_via_vector)
 
     FlatIntervalMapT m1;
     m1.insert(m1.end(), make_pair(0, 1));
-    m1.insert(m1.end(), make_pair(6, 2));
+    m1.insert(m1.end(), make_pair(6, 0));
     FlatIntervalMapT m2;
     m2.insert(m2.end(), make_pair(0, 1));
     m2.insert(m2.end(), make_pair(4, 3));
+    m2.insert(m2.end(), make_pair(6, 0));
 
     FlatIntervalMapT m3 = joining_add(m1, m2);
 
@@ -97,10 +103,11 @@ BOOST_AUTO_TEST_CASE(interval_map_via_vector2)
 
     FlatIntervalMapT m1;
     m1.insert(m1.end(), make_pair(0, 1));
-    m1.insert(m1.end(), make_pair(6, 2));
+    m1.insert(m1.end(), make_pair(6, 0));
     FlatIntervalMapT m2;
     m2.insert(m2.end(), make_pair(0, 1));
     m2.insert(m2.end(), make_pair(4, 3));
+    m2.insert(m2.end(), make_pair(6, 0));
 
     FlatIntervalMapT m3 = joining_add(m1, m2);
 

@@ -27,7 +27,7 @@ bool domain_less_( typename interval_map_traits<Type>::interpair_const_iterator 
 }
 
 template<class Type> //JODO different interval_map-Types
-typename interval_map_traits<Type>::codomain_type
+typename interval_map_traits<Type>::codomain_type&
 co_combine( typename interval_map_traits<Type>::interpair_const_iterator left
           , typename interval_map_traits<Type>::interpair_const_iterator right )
 {
@@ -38,7 +38,7 @@ co_combine( typename interval_map_traits<Type>::interpair_const_iterator left
 }
 
 template<class Type> 
-typename interval_map_traits<Type>::codomain_type
+typename const interval_map_traits<Type>::codomain_type&
 co_value( typename interval_map_traits<Type>::interpair_iterator iter )
 {
     return (*iter).second;
@@ -83,14 +83,41 @@ insert( Type& object
     return interval_map_traits<Type>::insert(object, position, value);
 }
 
+template<class Type, int fineness> struct on_combining_style;
 
+template<class Type>
+struct on_combining_style<Type, 1>
+{
+    typedef typename interval_map_traits<Type>::type   Concept;
+    typedef typename Concept::codomain_type            codomain_type;
+    typedef typename Concept::interpair_iterator       interpair_iterator;
+    typedef typename Concept::interpair_const_iterator interpair_const_iterator;
+
+    static void insert_shifted( Type& sum
+                              , interpair_const_iterator it1_, interpair_const_iterator it2_
+                              , interpair_iterator& last_in_)
+    {
+        codomain_type co_val = co_combine<Type>(it1_, it2_);
+        if((*last_in_).second != co_val)
+            last_in_ = icl::insert(sum, interpairs_end(sum), make_pair((*it1_).first, co_val));
+    }
+
+    static void insert_even( Type& sum
+                           , interpair_const_iterator it1_, interpair_const_iterator it2_
+                           , interpair_iterator& last_in_)
+    {
+        codomain_type co_val = co_combine<Type>(it1_, it2_);
+        if((*last_in_).second != co_val)
+            last_in_ = icl::insert(sum, interpairs_end(sum), make_pair((*it1_).first, co_val));
+    }
+};
 
 
 template<class Type>
 typename enable_if<interval_map_traits<Type>, Type>::type
-joining_add(const Type& map1, const Type& map2, bool join=true)
+joining_add(const Type& map1, const Type& map2)
 {
-    typedef typename interval_map_traits<Type>::type  Concept;
+    typedef typename interval_map_traits<Type>::type   Concept;
     typedef typename Concept::codomain_type            codomain_type;
     typedef typename Concept::domain_compare           domain_compare;
     typedef typename Concept::interpair_iterator       interpair_iterator;
@@ -110,8 +137,10 @@ joining_add(const Type& map1, const Type& map2, bool join=true)
     interpair_iterator        last_in_ = interpairs_begin(sum);
 
     codomain_type co_val = co_combine<Type>(it1_, it2_);
-    last_in_ = insert(sum, interpairs_end(sum), make_pair((*it1_).first, co_val)); 
-    //JODO *sum_ = construct<interpair>(it1_, co_val);
+
+    last_in_ = icl::insert(sum, last_in_, make_pair((*it1_).first, co_val));
+
+    //JODO? *sum_ = construct<interpair>(it1_, co_val);
     pred1_ = it1_++;
     pred2_ = it2_++;
 
@@ -119,63 +148,50 @@ joining_add(const Type& map1, const Type& map2, bool join=true)
     {
         if( domain_less_<Type>(it1_,it2_) )
         {
-            codomain_type co_val = co_combine<Type>(it1_, pred2_);
-            if(!join || (*last_in_).second != co_val)
-                last_in_ = sum.insert(interpairs_end(sum), make_pair((*it1_).first, co_val));
-
+            on_combining_style<Type,1>::insert_shifted(sum, it1_, pred2_, last_in_);
             pred1_ = it1_++;
         }
         else if ( domain_less_<Type>(it2_,it1_) )
         {
-            codomain_type co_val = co_combine<Type>(it2_, pred1_);
-            if(!join || (*last_in_).second != co_val)
-                last_in_ = sum.insert(interpairs_end(sum), make_pair((*it2_).first, co_val));
-
+            on_combining_style<Type,1>::insert_shifted(sum, it2_, pred1_, last_in_);
             pred2_ = it2_++;
         }
         else //( domain_equal(it1_,it2_) )
         {
-            codomain_type co_val = co_combine<Type>(it1_, it2_);
-            if(!join || (*last_in_).second != co_val)
-                last_in_ = sum.insert(interpairs_end(sum), make_pair((*it1_).first, co_val));
-
-            pred1_ = it1_++;
-            pred2_ = it2_++;
+            on_combining_style<Type,1>::insert_even(sum, it1_, it2_, last_in_);
+            pred1_ = it1_++; pred2_ = it2_++;
         }
     }
 
     while(it1_ != interpairs_cend(map1))
     {
-        codomain_type co_val = co_combine<Type>(it1_, pred2_);
-        if(!join || (*last_in_).second != co_val)
-            last_in_ = sum.insert(interpairs_end(sum), make_pair((*it1_).first, co_val));
-
+        on_combining_style<Type,1>::insert_shifted(sum, it1_, pred2_, last_in_);
         pred1_ = it1_++;
     }
     while(it2_ != interpairs_cend(map2))
     {
-        codomain_type co_val = co_combine<Type>(it2_, pred1_);
-        if(!join || (*last_in_).second != co_val)
-            last_in_ = sum.insert(interpairs_end(sum), make_pair((*it2_).first, co_val));
-
+        on_combining_style<Type,1>::insert_shifted(sum, it2_, pred1_, last_in_);
         pred2_ = it2_++;
     }
 
     return sum;
 }
 
-/*CONTINUE
 template<class Type>
-typename enable_if<interval_map_traits<Type>, Type>::type
-add_interval( const Type& map1
-            , const typename Type::segment_type& segment
-            , bool join=true)
+typename enable_if<interval_map_traits<Type>, Type>::type&
+add_interval( Type& object, const typename Type::segment_type& segment)
 {
-    Type sum;
-    sum.insert(sum.end(), make_pair(0, 0));
-    sum.insert(sum.end(), make_pair(inter_val.lower(), 0));
+    typename Type::codomain_type co_val = segment.second;
+    Type addend;
+    if(0 < segment.first.lower()) //JODO GEN
+        addend.insert(addend.end(), make_pair(0, 0));
+
+    addend.insert(addend.end(), make_pair(segment.first.lower(), segment.second));
+    addend.insert(addend.end(), make_pair(segment.first.upper(), 0));
+    object = joining_add(object, addend);
+    return object;
 }
-*/
+
 
 template<class Type>
 void new_show(const Type& object)
