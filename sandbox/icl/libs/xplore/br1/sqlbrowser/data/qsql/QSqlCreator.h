@@ -103,7 +103,7 @@ template<>
 class QSqlCreator<dag::db::Edge, QSqlSelector>
 {
 public:
-    enum { e_key=0, e_refEdgeType, e_refSourceVertex, e_refTargetVertex };
+    enum { e_key=0, e_refEdgeType, e_refSourceVertex, e_refTargetVertex, e_edgeTypeName };
 
     typedef QSqlCreator       type;
     typedef dag::db::Edge     tObject;
@@ -115,7 +115,8 @@ public:
     static SqlQuery::tRepr createQuery()
     {
         return
-            "select Edge.key, Edge.refEdgeType, Edge.refSourceVertex, Edge.refTargetVertex from Edge ";
+            "select Edge.key, Edge.refEdgeType, Edge.refSourceVertex, Edge.refTargetVertex, EdgeType.name from Edge "
+            "    left outer join EdgeType on Edge.refEdgeType = EdgeType.key " ;
     }
 
     static tObject create(const_iterator it)
@@ -124,6 +125,7 @@ public:
                              ,(*it).field(e_refEdgeType).value().toInt()
                              ,(*it).field(e_refSourceVertex).value().toInt()
                              ,(*it).field(e_refTargetVertex).value().toInt()
+                             ,(*it).field(e_edgeTypeName).value().toString()
                             );
     }
 };

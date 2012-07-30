@@ -150,6 +150,7 @@ public:
 
     tKey sourceKey()const { return m_iRefSourceType; }
     tKey targetKey()const { return m_iRefTargetType; }
+    QString typeName()const { return m_aName; }
 
 private:
     tKey                 m_iKey;
@@ -212,26 +213,30 @@ public:
 
     Edge(): m_key(), m_refEdgeType(), m_refSourceVertex(), m_refTargetVertex(){};
 
-    explicit Edge(tKey key, tKey refEdgeType, tKey sourceKey, tKey targetKey)
+    explicit Edge(tKey key, tKey refEdgeType, tKey sourceKey, tKey targetKey, QString typeName)
         : m_key(key), m_refEdgeType(refEdgeType)
-        , m_refSourceVertex(sourceKey), m_refTargetVertex(targetKey){};
+        , m_refSourceVertex(sourceKey), m_refTargetVertex(targetKey)
+        , m_edgeTypeName(typeName)
+    {};
 
     tKey key()const { m_key; }
     tKey refEdgeType()const { return m_refEdgeType; }
     tKey refSourceVertex()const { return m_refSourceVertex; }
     tKey refTargetVertex()const { return m_refTargetVertex; }
+    QString typeName()const { return m_edgeTypeName; }
 
     tKey sourceKey()const { return m_refSourceVertex; }
     tKey targetKey()const { return m_refTargetVertex; }
 
     QString toString()const
-    { return QString("Edge(%1,..)").arg(m_key); }
+    { return QString("Edge(%1,%2..)").arg(m_key).arg(m_refEdgeType); }
 
 private:
     tKey m_key;
     tKey m_refEdgeType;
     tKey m_refSourceVertex;
     tKey m_refTargetVertex;
+    QString m_edgeTypeName;
     //JODO Object m_object; //The object that is referec my m_key.
 };
 

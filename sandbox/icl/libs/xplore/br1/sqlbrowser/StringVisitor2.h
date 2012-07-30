@@ -31,10 +31,11 @@ struct StringVisitor2
 
         template<class Vertex, class Graph>
         void operator()(Vertex node, Graph& graph)
-        {
-            if(boost::out_degree(node, graph) > 0)
-            {
-                *p_result += indentation(depth(node)) + "(";
+        {                                          //MEMO                  degree == node count
+            if(boost::out_degree(node, graph) > 0) //MEMO out_degree(node, graph) == outgoing node count
+            {                                      //MEMO  in_degree(node, graph) ==  ingoing node count | only for BiDiectionalGraph
+                *p_result += indentation(depth(node))
+                          + "(" + QString("%1 ").arg(boost::out_degree(node, graph));
                 *p_result += graph[node].name();
                 *p_result += "\n";
             }
@@ -75,7 +76,8 @@ struct StringVisitor2
 
             if(boost::out_degree(target(edge, graph), graph)==0)
             {
-                *p_result += indentation(target_depth) + graph[target(edge, graph)].name();
+                *p_result += indentation(target_depth) + "(0 " + graph[target(edge, graph)].name() + ")"
+                          + graph[edge].typeName();
                 *p_result += "\n";
             }
         }
