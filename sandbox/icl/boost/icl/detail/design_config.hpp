@@ -98,6 +98,9 @@ by setting defines in this file.
 #define ICL_ALLOC    template<class>class
 
 //------------------------------------------------------------------------------
+#define ICL_IMPL_TYPE class
+
+//------------------------------------------------------------------------------
 #define ICL_INTERVAL_DEFAULT boost::icl::interval_type_default
 
 #ifndef BOOST_ICL_USE_COMPARE_STD_GREATER
