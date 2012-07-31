@@ -108,9 +108,10 @@ public:
         boost::depth_first_search(
             m_aGraph
           , boost::visitor(make_dfs_visitor(boost::make_list(
-                                                  StringVisitor2<DbBasedGraph>::OnDiscoverVertex(&tygraAsString, vertexDepth)
-                                                , StringVisitor2<DbBasedGraph>::OnExamineEdge   (&tygraAsString, vertexDepth)
-                                                , StringVisitor2<DbBasedGraph>::OnFinishVertex  (&tygraAsString, vertexDepth)
+                                                  StringVisitor2<DbBasedGraph>::OnDiscoverVertex    (&tygraAsString, vertexDepth)
+                                                , StringVisitor2<DbBasedGraph>::OnExamineEdge       (&tygraAsString, vertexDepth)
+                                                , StringVisitor2<DbBasedGraph>::OnForwardOrCrossEdge(&tygraAsString, vertexDepth)
+                                                , StringVisitor2<DbBasedGraph>::OnFinishVertex      (&tygraAsString, vertexDepth)
                                                 )
                           ))
         );

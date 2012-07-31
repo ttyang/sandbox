@@ -35,7 +35,8 @@ struct StringVisitor2
             if(boost::out_degree(node, graph) > 0) //MEMO out_degree(node, graph) == outgoing node count
             {                                      //MEMO  in_degree(node, graph) ==  ingoing node count | only for BiDiectionalGraph
                 *p_result += indentation(depth(node))
-                          + "(" + QString("%1 ").arg(boost::out_degree(node, graph));
+                        + "(" + QString("*%1 ").arg(boost::out_degree(node, graph))
+                        + QString("%1 ").arg(graph[node].key());
                 *p_result += graph[node].name();
                 *p_result += "\n";
             }
@@ -76,9 +77,17 @@ struct StringVisitor2
 
             if(boost::out_degree(target(edge, graph), graph)==0)
             {
-                *p_result += indentation(target_depth) + "(0 " + graph[target(edge, graph)].name() + ")"
-                          + graph[edge].typeName();
+                *p_result += indentation(target_depth)
+                          + QString("<%1>").arg(graph[edge].typeName())
+                          + QString("(%1 %2)").arg(graph[target(edge, graph)].key())
+                                              .arg(graph[target(edge, graph)].name())
+                          ;
                 *p_result += "\n";
+            }
+            else
+            {
+                *p_result += indentation(target_depth)
+                          + "<" + graph[edge].typeName() + ">\n";
             }
         }
 
@@ -92,6 +101,45 @@ struct StringVisitor2
         QString* p_result;
         tVertex2Depth& r_vertexDepth;
     };
+
+    struct OnForwardOrCrossEdge : public boost::base_visitor<OnForwardOrCrossEdge>
+    {
+        OnForwardOrCrossEdge(QString* result, tVertex2Depth& vertexDepth)
+            : p_result(result), r_vertexDepth(vertexDepth){}
+
+        typedef boost::on_forward_or_cross_edge event_filter;
+
+        template<class Edge, class Graph>
+        void operator()(Edge edge, Graph& graph)
+        {
+            //int source_depth = graph[source(edge, graph)].depth();
+            vertex_descriptor sourceVertex = source(edge, graph);
+            vertex_descriptor targetVertex = target(edge, graph);
+            tVertex2Depth::iterator sourceVertex_ = r_vertexDepth.find(sourceVertex);
+            int source_depth = sourceVertex_ == r_vertexDepth.end() ? 0 : (*sourceVertex_).second ;
+
+            //CL int source_depth = vertexDepth[source(edge, graph)];
+            int target_depth = source_depth + 1;
+
+            *p_result += indentation(target_depth)
+                      + QString("[%1<%2>%3]\n").arg(graph[sourceVertex].key())
+                                               .arg(graph[edge].typeName())
+                                               .arg(graph[targetVertex].key());
+            // When contructing a QTreeModel I have to copy the node associated to
+            // graph[targetVertex] (e.g. graph[targetVertex].QtModel
+        }
+
+        template<class Vertex>
+        int depth(Vertex& node)
+        {
+            tVertex2Depth::iterator node_ = r_vertexDepth.find(node);
+            return node_ == r_vertexDepth.end() ? 0 : (*node_).second;
+        }
+
+        QString* p_result;
+        tVertex2Depth& r_vertexDepth;
+    };
+
 
     struct OnFinishVertex : public boost::base_visitor<OnFinishVertex>
     {
@@ -120,6 +168,7 @@ struct StringVisitor2
         QString* p_result;
         tVertex2Depth& r_vertexDepth;
     };
+
 
     template<class Vertex, class Graph>
     void initialize_vertex(Vertex& node, Graph& gra)

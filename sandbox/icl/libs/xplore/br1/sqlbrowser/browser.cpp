@@ -249,6 +249,12 @@ bool Browser::testObjectSelector()
     util::launchMsgBox(ogra.toString());
     util::launchMsgBox(ogra.depthFirstString());
 
+    //--------------------------------------------------------------------------
+    DagModel* dagmo = new DagModel(); // Dag-Model
+    //dagmo->setDag(ogra);     //Make the Model from a boost::graph internally
+    //dagmo->makeDagModel();
+    //--------------------------------------------------------------------------
+
     if(success)
         emit statusMessage(tr("Test executed successfully."));
     else
