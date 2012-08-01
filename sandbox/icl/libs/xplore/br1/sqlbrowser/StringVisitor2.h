@@ -10,8 +10,7 @@
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/graph_utility.hpp>
 
-#include "Dag/TypeGraph.h"
-#include "Dag.h" //CL move indentation
+#include "Dag/DbBasedGraph.h"
 
 
 template<class DbGraph>

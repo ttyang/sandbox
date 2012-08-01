@@ -36,7 +36,9 @@ HEADERS         = browser.h connectionwidget.h qsqlconnectiondialog.h \
     StringVisitor2.h \
     Dag/ObjectGraph.h \
     Dag/DbBasedGraph.h \
-    data/concept/DbBasedGraph.h
+    data/concept/DbBasedGraph.h \
+    dagmodel2.h \
+    CreatorVisitor2.h
 SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog.cpp \
     exttableview.cpp \
     dagitem.cpp \
@@ -47,7 +49,8 @@ SOURCES         = main.cpp browser.cpp connectionwidget.cpp qsqlconnectiondialog
     gen/NumberGenerator.cpp \
     gen/DbGenerator.cpp \
     util/TestBoxes.cpp \
-    data/concept/TypeGraphFunc.cpp
+    data/concept/TypeGraphFunc.cpp \
+    dagmodel2.cpp
 
 FORMS           = browserwidget.ui qsqlconnectiondialog.ui
 build_all:!build_pass {

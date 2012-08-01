@@ -49,20 +49,16 @@ public:
     typedef dag::db::tObjectSharedPtr  tObjectSharedPtr;
 
 public:
-    VertexAttributes(): m_aKey(), m_depth() {}
-
-    VertexAttributes(tKey key, const tObjectSharedPtr& pObject) //JODO REMOVE
-        : m_aKey(key), m_pObject(pObject), m_depth(), p_dagItem() {}
+    VertexAttributes():
+        m_aKey(0), m_depth(0), p_dagItem(0), p_parentItem(0), m_name(){}
 
     VertexAttributes(tKey key, const QString& aName)
-        : m_aKey(key), m_pObject(boost::make_shared<tObject>())
-        , m_depth(), p_dagItem()
+        : m_aKey(key), m_depth(), p_dagItem(0), p_parentItem(0), m_name()
     {
-        m_pObject->setName(aName);
     }
 
-    void setName(const QString& name) { m_pObject->setName(name); }
-    QString name()const { return m_pObject->name(); }
+    void setName(const QString& name) { m_name = name; }
+    QString name()const { return m_name; }
 
     void setDepth(int depth){ m_depth = depth; }
     int depth()const { return m_depth; }
@@ -82,13 +78,13 @@ private:
     tKey  m_aKey;
     int   m_depth;
 
-    //---- Db::Object associated to the Vertex ---------------------------------
-    dag::db::tObjectSharedPtr m_pObject;
-
     //---- DagModel ------------------------------------------------------------
     DagItem* p_dagItem;
     DagItem* p_parentItem;
+
+    QString m_name;
 };
+
 
 class EdgeAttributes
 {
@@ -106,6 +102,7 @@ private:
 };
 
 //JODO: m_depth/depth() may be removed. It's currently only needed for debugging.
+
 
 namespace dag
 {

@@ -5,6 +5,11 @@
 
 #pragma once
 
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/depth_first_search.hpp>
+#include <boost/graph/graph_utility.hpp>
+
 #include <boost/range.hpp>
 
 #include "Dag/Decoration.h"
@@ -12,8 +17,10 @@
 
 #include "Dag/DbType.h"
 #include "StringVisitor2.h"
+#include "CreatorVisitor2.h"
 
 class QSqlQuery;
+class DagModel2;
 
 namespace dag { namespace db
 {
@@ -30,13 +37,40 @@ public:
     //! The DbBasedGraph is a DecoratedGraph
     typedef DecoratedGraph<tVertexDeco, tEdgeDeco> tDbBasedGraph;
     typedef typename DecoratedGraph<tVertexDeco, tEdgeDeco>::type tGraph;
-    typedef typename tDbBasedGraph::vertex_descriptor vertex_descriptor;
-    typedef typename tDbBasedGraph::edge_descriptor   edge_descriptor;
-    typedef typename tDbBasedGraph::tVertex2Depth     tVertex2Depth;
+    typedef typename tDbBasedGraph::vertex_descriptor   vertex_descriptor;
+    typedef typename tDbBasedGraph::edge_descriptor     edge_descriptor;
+    typedef typename tDbBasedGraph::adjacency_iterator  adjacency_iterator;
+    typedef typename tDbBasedGraph::out_edge_iterator   out_edge_iterator;
+    typedef typename tDbBasedGraph::in_edge_iterator    in_edge_iterator;
+    typedef typename tDbBasedGraph::vertex_iterator     vertex_iterator;
+    typedef typename tDbBasedGraph::edge_iterator       edge_iterator;
+
+    typedef typename tDbBasedGraph::directed_category      directed_category;
+    typedef typename tDbBasedGraph::edge_parallel_category edge_parallel_category;
+    typedef typename tDbBasedGraph::traversal_category     traversal_category;
+
+    typedef typename tDbBasedGraph::vertices_size_type     vertices_size_type;
+    typedef typename tDbBasedGraph::edges_size_type        edges_size_type;
+    typedef typename tDbBasedGraph::degree_size_type       degree_size_type;
+
+    typedef typename tDbBasedGraph::tVertex2Depth       tVertex2Depth;
 
     typedef std::map<tKey, vertex_descriptor> tKey2Vertex;
     typedef typename tKey2Vertex::iterator tKey2Vertex_iterator;
     typedef boost::iterator_range<tKey2Vertex_iterator> tKeyVertexRange;
+
+    //--------------------------------------------------------------------------
+    typedef std::map<vertex_descriptor, VertexAttributes> Vertex2AttributesMap;
+
+    //--------------------------------------------------------------------------
+    // Functions progagated from DbBasedGraph.
+    edges_size_type num_edges()const { return boost::num_edges(m_aGraph); }
+
+    std::pair<edge_descriptor, bool> add_edge(vertex_descriptor source, vertex_descriptor target)
+    { return boost::add_edge(source, target, m_aGraph); }
+
+    void clear() { m_aGraph.clear(); }
+    //--------------------------------------------------------------------------
 
     vertex_descriptor addVertex(tKey key)
     {
@@ -102,21 +136,55 @@ public:
 
     tString depthFirstString()
     {
+        //Add an associative color map type.
+        typedef std::map<DbBasedGraph::vertex_descriptor, boost::default_color_type> color_map_t;
+        color_map_t color_map; //Declare a container
+
         tVertex2Depth vertexDepth;
         QString tygraAsString;
 
+        BGL_FORALL_VERTICES(vtx, m_aGraph, DbBasedGraph) {
+          color_map[vtx] = boost::white_color;
+        }
+
+        //Generate an assoc property map
+        boost::associative_property_map<color_map_t> pm_color(color_map);
+
         boost::depth_first_search(
             m_aGraph
-          , boost::visitor(make_dfs_visitor(boost::make_list(
+          , make_dfs_visitor(boost::make_list(
                                                   StringVisitor2<DbBasedGraph>::OnDiscoverVertex    (&tygraAsString, vertexDepth)
                                                 , StringVisitor2<DbBasedGraph>::OnExamineEdge       (&tygraAsString, vertexDepth)
                                                 , StringVisitor2<DbBasedGraph>::OnForwardOrCrossEdge(&tygraAsString, vertexDepth)
                                                 , StringVisitor2<DbBasedGraph>::OnFinishVertex      (&tygraAsString, vertexDepth)
                                                 )
-                          ))
+                          )
+          , pm_color
+          , 15
+
         );
 
         return tygraAsString;
+    }
+
+    tString makeDagModel(DagModel2* dagmo)
+    {
+        CreatorVisitor2<DbBasedGraph>::Vertex2AttributesMap vertex2AttrMap;
+        QString graphAsString;
+        DagItem* modelRoot = dagmo->rootItem();
+
+        boost::depth_first_search(
+            m_aGraph
+          , boost::visitor(make_dfs_visitor(boost::make_list(
+                                                  CreatorVisitor2<DbBasedGraph>::OnDiscoverVertex    (modelRoot, &graphAsString, vertex2AttrMap)
+                                                , CreatorVisitor2<DbBasedGraph>::OnExamineEdge       (modelRoot, &graphAsString, vertex2AttrMap)
+                                           //   , CreatorVisitor2<DbBasedGraph>::OnForwardOrCrossEdge(modelRoot, &graphAsString, vertex2AttrMap)
+                                                , CreatorVisitor2<DbBasedGraph>::OnFinishVertex      (modelRoot, &graphAsString, vertex2AttrMap)
+                                                )
+                          ))
+        );
+
+        return graphAsString;
     }
 
 protected:

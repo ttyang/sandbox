@@ -5,6 +5,7 @@
 
 #pragma once
 
+#include "Dag/DbType.h"
 #include "Dag/DbBasedGraph.h"
 
 class QSqlQuery;

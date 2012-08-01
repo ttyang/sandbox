@@ -41,10 +41,23 @@ struct DecoratedGraph
     > tGraph;
 
     typedef typename tGraph type;
-    typedef typename tGraph::vertex_descriptor vertex_descriptor;
-    typedef typename tGraph::edge_descriptor   edge_descriptor;
+    typedef typename tGraph::vertex_descriptor  vertex_descriptor;
+    typedef typename tGraph::edge_descriptor    edge_descriptor;
+    typedef typename tGraph::adjacency_iterator adjacency_iterator;
+    typedef typename tGraph::out_edge_iterator  out_edge_iterator;
+    typedef typename tGraph::in_edge_iterator   in_edge_iterator;
+    typedef typename tGraph::vertex_iterator    vertex_iterator;
+    typedef typename tGraph::edge_iterator      edge_iterator;
 
-    typedef std::map<vertex_descriptor, int>   tVertex2Depth;
+    typedef typename tGraph::directed_category      directed_category;
+    typedef typename tGraph::edge_parallel_category edge_parallel_category;
+    typedef typename tGraph::traversal_category     traversal_category;
+
+    typedef typename tGraph::vertices_size_type     vertices_size_type;
+    typedef typename tGraph::edges_size_type        edges_size_type;
+    typedef typename tGraph::degree_size_type       degree_size_type;
+
+    typedef std::map<vertex_descriptor, int>    tVertex2Depth;
 
 };
 
