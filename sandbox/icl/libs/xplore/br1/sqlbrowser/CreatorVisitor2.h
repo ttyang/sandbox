@@ -34,9 +34,6 @@ struct CreatorVisitor2
         OnDiscoverVertex(DagItem* curItem, QString* result, Vertex2AttributesMap& attrs)
             : p_curItem(curItem), p_result(result), r_attrs(attrs)
         {
-            //JODO redundant?
-            r_attrs[0].setDagItem(p_curItem); //Root node
-            r_attrs[0].setParentItem(0);      //Root node
         }
 
         typedef boost::on_discover_vertex event_filter;

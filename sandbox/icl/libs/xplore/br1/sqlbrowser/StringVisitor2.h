@@ -35,7 +35,7 @@ struct StringVisitor2
             {                                      //MEMO  in_degree(node, graph) ==  ingoing node count | only for BiDiectionalGraph
                 *p_result += indentation(depth(node))
                         + "(" + QString("*%1 ").arg(boost::out_degree(node, graph))
-                        + QString("%1 ").arg(graph[node].key());
+                        + QString("%1|%2 ").arg(node).arg(graph[node].key());
                 *p_result += graph[node].name();
                 *p_result += "\n";
             }

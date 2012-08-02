@@ -136,15 +136,19 @@ public:
 
     tString depthFirstString()
     {
+        typedef DbBasedGraph::vertex_descriptor vertex_descriptor;
         //Add an associative color map type.
-        typedef std::map<DbBasedGraph::vertex_descriptor, boost::default_color_type> color_map_t;
+        typedef std::map<vertex_descriptor, boost::default_color_type> color_map_t;
         color_map_t color_map; //Declare a container
 
         tVertex2Depth vertexDepth;
         QString tygraAsString;
+        vertex_descriptor start_vertex;
 
         BGL_FORALL_VERTICES(vtx, m_aGraph, DbBasedGraph) {
           color_map[vtx] = boost::white_color;
+          if(m_aGraph[vtx].key() == 32)
+              start_vertex = vtx;
         }
 
         //Generate an assoc property map
@@ -160,7 +164,7 @@ public:
                                                 )
                           )
           , pm_color
-          , 15
+          , start_vertex
 
         );
 
@@ -169,19 +173,44 @@ public:
 
     tString makeDagModel(DagModel2* dagmo)
     {
+        typedef DbBasedGraph::vertex_descriptor vertex_descriptor;
+        //Add an associative color map type.
+        typedef std::map<vertex_descriptor, boost::default_color_type> color_map_t;
+        color_map_t color_map; //Declare a container
+
         CreatorVisitor2<DbBasedGraph>::Vertex2AttributesMap vertex2AttrMap;
         QString graphAsString;
         DagItem* modelRoot = dagmo->rootItem();
 
+        vertex_descriptor start_vertex;
+
+        BGL_FORALL_VERTICES(vtx, m_aGraph, DbBasedGraph) {
+          color_map[vtx] = boost::white_color;
+          if(m_aGraph[vtx].key() == 32)
+              start_vertex = vtx;
+        }
+
+
+        modelRoot->setData(dag::node::posId,   QVariant(m_aGraph[start_vertex].key()));
+        modelRoot->setData(dag::node::posName, QVariant(m_aGraph[start_vertex].name()));
+
+        vertex2AttrMap[start_vertex].setDagItem(modelRoot);
+        vertex2AttrMap[start_vertex].setParentItem(0); //Root has no parent.
+
+        //Generate an assoc property map
+        boost::associative_property_map<color_map_t> pm_color(color_map);
+
         boost::depth_first_search(
             m_aGraph
-          , boost::visitor(make_dfs_visitor(boost::make_list(
+          , make_dfs_visitor(boost::make_list(
                                                   CreatorVisitor2<DbBasedGraph>::OnDiscoverVertex    (modelRoot, &graphAsString, vertex2AttrMap)
                                                 , CreatorVisitor2<DbBasedGraph>::OnExamineEdge       (modelRoot, &graphAsString, vertex2AttrMap)
                                            //   , CreatorVisitor2<DbBasedGraph>::OnForwardOrCrossEdge(modelRoot, &graphAsString, vertex2AttrMap)
                                                 , CreatorVisitor2<DbBasedGraph>::OnFinishVertex      (modelRoot, &graphAsString, vertex2AttrMap)
                                                 )
-                          ))
+                          )
+          , pm_color
+          , start_vertex
         );
 
         return graphAsString;

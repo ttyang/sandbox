@@ -21,8 +21,6 @@
 
 
 
-typedef std::map<int, int> daggy; //CL?
-
 class QSqlQuery;
 class DagItem;
 

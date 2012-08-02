@@ -252,8 +252,8 @@ bool Browser::testObjectSelector()
 
     //--------------------------------------------------------------------------
     DagModel2* dagmo = new DagModel2(); // Dag-Model
-    //QString dbg_dagString = ogra.makeDagModel(dagmo);
-    //util::launchMsgBox(dbg_dagString);
+    QString dbg_dagString = ogra.makeDagModel(dagmo);
+    util::launchMsgBox(dbg_dagString);
     //dagmo->setDag(ogra);     //Make the Model from a boost::graph internally
     //dagmo->makeDagModel();
     //--------------------------------------------------------------------------
