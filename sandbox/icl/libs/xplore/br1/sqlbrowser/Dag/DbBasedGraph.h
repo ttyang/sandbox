@@ -203,11 +203,11 @@ public:
         boost::depth_first_search(
             m_aGraph
           , make_dfs_visitor(boost::make_list(
-                                                  CreatorVisitor2<DbBasedGraph>::OnDiscoverVertex    (modelRoot, &graphAsString, vertex2AttrMap)
-                                                , CreatorVisitor2<DbBasedGraph>::OnExamineEdge       (modelRoot, &graphAsString, vertex2AttrMap)
-                                           //   , CreatorVisitor2<DbBasedGraph>::OnForwardOrCrossEdge(modelRoot, &graphAsString, vertex2AttrMap)
-                                                , CreatorVisitor2<DbBasedGraph>::OnFinishVertex      (modelRoot, &graphAsString, vertex2AttrMap)
-                                                )
+                                  CreatorVisitor2<DbBasedGraph>::OnDiscoverVertex    (modelRoot, &graphAsString, vertex2AttrMap)
+                                , CreatorVisitor2<DbBasedGraph>::OnExamineEdge       (modelRoot, &graphAsString, vertex2AttrMap)
+                                , CreatorVisitor2<DbBasedGraph>::OnForwardOrCrossEdge(modelRoot, &graphAsString, vertex2AttrMap)
+                                , CreatorVisitor2<DbBasedGraph>::OnFinishVertex      (modelRoot, &graphAsString, vertex2AttrMap)
+                                )
                           )
           , pm_color
           , start_vertex

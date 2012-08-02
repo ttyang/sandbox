@@ -81,10 +81,7 @@ struct CreatorVisitor2
     struct OnExamineEdge : public boost::base_visitor<OnExamineEdge>
     {
         OnExamineEdge(DagItem* curItem, QString* result, Vertex2AttributesMap& attrs)
-            : p_curItem(curItem), p_result(result), r_attrs(attrs)
-        {
-            //CL r_attrs[0].setDagItem(p_curItem); //Root node
-        }
+            : p_curItem(curItem), p_result(result), r_attrs(attrs){}
 
         typedef boost::on_examine_edge event_filter;
 
@@ -92,9 +89,9 @@ struct CreatorVisitor2
         void operator()(Edge edge, Graph& dag)
         {
             vertex_descriptor source_node = source(edge, dag);
-            dbg_str = QString("(%1)[%2] %3").arg(source_node).arg(dag[source_node].key()).arg(dag[source_node].name());
+            dbg_src = QString("(%1)[%2] %3").arg(source_node).arg(dag[source_node].key()).arg(dag[source_node].name());
             vertex_descriptor target_node = target(edge, dag);
-            dbg_str = QString("(%1)[%2] %3").arg(target_node).arg(dag[target_node].key()).arg(dag[target_node].name());
+            dbg_trg = QString("(%1)[%2] %3").arg(target_node).arg(dag[target_node].key()).arg(dag[target_node].name());
 
             int source_depth = r_attrs[source_node].depth();
             int target_depth = source_depth + 1;
@@ -134,8 +131,50 @@ struct CreatorVisitor2
         DagItem*             p_curItem;
         QString*             p_result;
         Vertex2AttributesMap& r_attrs;
-        QString              dbg_str;
+        QString              dbg_src;//CL
+        QString              dbg_trg;//CL
     };
+
+
+    struct OnForwardOrCrossEdge : public boost::base_visitor<OnForwardOrCrossEdge>
+    {
+        OnForwardOrCrossEdge(DagItem* curItem, QString* result, Vertex2AttributesMap& attrs)
+            : p_curItem(curItem), p_result(result), r_attrs(attrs){}
+
+        typedef boost::on_forward_or_cross_edge event_filter;
+
+        template<class Edge, class Graph>
+        void operator()(Edge edge, Graph& graph)
+        {
+            //int source_depth = graph[source(edge, graph)].depth();
+            vertex_descriptor sourceVertex = source(edge, graph);
+            vertex_descriptor targetVertex = target(edge, graph);
+            Vertex2AttributesMap::iterator sourceVertex_ = r_attrs.find(sourceVertex);
+
+            int sourceDepth = depth(sourceVertex);
+            int targetDepth = sourceDepth + 1;
+
+            *p_result += indentation(targetDepth)
+                      + QString("[%1<%2>%3]\n").arg(graph[sourceVertex].key())
+                                               .arg(graph[edge].typeName())
+                                               .arg(graph[targetVertex].key());
+            // When constructing a QTreeModel I have to copy the node associated to
+            // graph[targetVertex] (e.g. graph[targetVertex].QtModel
+        }
+
+        template<class Vertex>
+        int depth(Vertex& node)
+        {
+            Vertex2AttributesMap::iterator node_ = r_attrs.find(node);
+            return node_ == r_attrs.end() ? 0 : (*node_).second.depth();
+        }
+
+        DagItem*             p_curItem;
+        QString*             p_result;
+        Vertex2AttributesMap& r_attrs;
+        QString              dbg_str;//CL
+    };
+
 
     struct OnFinishVertex : public boost::base_visitor<OnFinishVertex>
     {
