@@ -36,6 +36,8 @@ public:
 
     void addChild(DagItem* child);
     bool isLeaf(int TypeId)const { return itemData[TypeId] == NodeType_Object; }
+    DagItem* clone(DagItem* parent);
+
 
     tVariVector data()const { return itemData; }
 

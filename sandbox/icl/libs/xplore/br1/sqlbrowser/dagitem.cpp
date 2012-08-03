@@ -169,3 +169,14 @@ QString DagItem::toString(int depth)
         return children;
     }
 }
+
+DagItem* DagItem::clone(DagItem* parent)
+{
+    DagItem* newDagItem = new DagItem(data(), parent);
+    if(childCount())
+        for(int idx=0; idx<childCount(); idx++)
+            newDagItem->addChild(child(idx)->clone(newDagItem));
+
+    return newDagItem;
+}
+

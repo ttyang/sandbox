@@ -106,7 +106,7 @@ struct CreatorVisitor2
                 p_curItem = sourceDagItem;
 
             if(targetDagItem)
-                sourceDagItem->addChild(targetDagItem);
+                ; //CL sourceDagItem->addChild(targetDagItem);
             else
             {
                 tVariVector itemData(dag::node::sizeOf_node);
@@ -151,8 +151,19 @@ struct CreatorVisitor2
             vertex_descriptor targetVertex = target(edge, graph);
             Vertex2AttributesMap::iterator sourceVertex_ = r_attrs.find(sourceVertex);
 
-            int sourceDepth = depth(sourceVertex);
+            int sourceDepth = r_attrs[sourceVertex].depth();
             int targetDepth = sourceDepth + 1;
+
+            r_attrs[targetVertex].setDepth(targetDepth);
+            DagItem* sourceDagItem = r_attrs[sourceVertex].dagItem();
+            DagItem* targetDagItem = r_attrs[targetVertex].dagItem();
+
+            Q_ASSERT(sourceDagItem);
+            Q_ASSERT(targetDagItem);
+
+            DagItem* newSubTree = targetDagItem->clone(sourceDagItem);
+            sourceDagItem->addChild(newSubTree);
+            *p_result += targetDagItem->toString();
 
             *p_result += indentation(targetDepth)
                       + QString("[%1<%2>%3]\n").arg(graph[sourceVertex].key())
@@ -162,17 +173,10 @@ struct CreatorVisitor2
             // graph[targetVertex] (e.g. graph[targetVertex].QtModel
         }
 
-        template<class Vertex>
-        int depth(Vertex& node)
-        {
-            Vertex2AttributesMap::iterator node_ = r_attrs.find(node);
-            return node_ == r_attrs.end() ? 0 : (*node_).second.depth();
-        }
-
-        DagItem*             p_curItem;
-        QString*             p_result;
+        DagItem*              p_curItem;
+        QString*              p_result;
         Vertex2AttributesMap& r_attrs;
-        QString              dbg_str;//CL
+        QString               dbg_str;//CL
     };
 
 

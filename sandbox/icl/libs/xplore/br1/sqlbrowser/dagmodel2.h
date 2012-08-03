@@ -55,7 +55,7 @@ public:
     bool removeRows(int position, int rows,
                     const QModelIndex &parent = QModelIndex());
 
-    //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------    
     //JOFA Populating a DAG from an Sql-query
     void getEdges(QSqlQuery& query);
     void fromSql(QSqlQuery& query);
