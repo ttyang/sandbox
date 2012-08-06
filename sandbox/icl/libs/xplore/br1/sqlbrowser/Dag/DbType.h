@@ -136,12 +136,13 @@ class EdgeType
 public:
     EdgeType(){}
 
-    EdgeType(tKey iKey, tKey iSrc, tKey iRel, tKey iTrg, const tString& aName)
+    EdgeType(tKey iKey, tKey iSrc, tKey iRel, tKey iTrg, const tString& aName, const tString& shortName)
         : m_iKey(iKey)
         , m_iRefSourceType(iSrc)
         , m_iRefRelationType(iRel)
         , m_iRefTargetType(iTrg)
         , m_aName(aName)
+        , m_shortName(shortName)
     {}
 
     QString toString()const
@@ -151,6 +152,7 @@ public:
     tKey sourceKey()const { return m_iRefSourceType; }
     tKey targetKey()const { return m_iRefTargetType; }
     QString typeName()const { return m_aName; }
+    QString typeShortName()const { return m_shortName; }
 
 private:
     tKey                 m_iKey;
@@ -158,6 +160,7 @@ private:
     tKey                 m_iRefRelationType;
     tKey                 m_iRefTargetType;
     tString              m_aName;
+    tString              m_shortName;
 };
 
 
@@ -213,10 +216,10 @@ public:
 
     Edge(): m_key(), m_refEdgeType(), m_refSourceVertex(), m_refTargetVertex(){};
 
-    explicit Edge(tKey key, tKey refEdgeType, tKey sourceKey, tKey targetKey, QString typeName)
+    explicit Edge(tKey key, tKey refEdgeType, tKey sourceKey, tKey targetKey, QString typeName, QString typeShortName)
         : m_key(key), m_refEdgeType(refEdgeType)
         , m_refSourceVertex(sourceKey), m_refTargetVertex(targetKey)
-        , m_edgeTypeName(typeName)
+        , m_edgeTypeName(typeName), m_edgeTypeShortName(typeShortName)
     {};
 
     tKey key()const { m_key; }
@@ -224,6 +227,7 @@ public:
     tKey refSourceVertex()const { return m_refSourceVertex; }
     tKey refTargetVertex()const { return m_refTargetVertex; }
     QString typeName()const { return m_edgeTypeName; }
+    QString typeShortName()const { return m_edgeTypeShortName; }
 
     tKey sourceKey()const { return m_refSourceVertex; }
     tKey targetKey()const { return m_refTargetVertex; }
@@ -237,6 +241,7 @@ private:
     tKey m_refSourceVertex;
     tKey m_refTargetVertex;
     QString m_edgeTypeName;
+    QString m_edgeTypeShortName;
     //JODO Object m_object; //The object that is referec my m_key.
 };
 

@@ -30,7 +30,7 @@ template<>
 class QSqlCreator<dag::db::EdgeType, QSqlSelector>
 {
 public:
-    enum { eKey=0, eRefSourceType, eRefRelationType, eRefTargetType, eName };
+    enum { eKey=0, eRefSourceType, eRefRelationType, eRefTargetType, eName, eShortName };
 
     typedef QSqlCreator       type;
     typedef dag::db::EdgeType tObject;
@@ -52,6 +52,7 @@ public:
                                  ,(*it).field(eRefRelationType).value().toInt()
                                  ,(*it).field(eRefTargetType).value().toInt()
                                  ,(*it).field(eName).value().toString()
+                                 ,(*it).field(eShortName).value().toString()
                                 );
     }
 };
@@ -103,7 +104,7 @@ template<>
 class QSqlCreator<dag::db::Edge, QSqlSelector>
 {
 public:
-    enum { e_key=0, e_refEdgeType, e_refSourceVertex, e_refTargetVertex, e_edgeTypeName };
+    enum { e_key=0, e_refEdgeType, e_refSourceVertex, e_refTargetVertex, e_edgeTypeName, e_edgeTypeShortName };
 
     typedef QSqlCreator       type;
     typedef dag::db::Edge     tObject;
@@ -115,7 +116,7 @@ public:
     static SqlQuery::tRepr createQuery()
     {
         return
-            "select Edge.key, Edge.refEdgeType, Edge.refSourceVertex, Edge.refTargetVertex, EdgeType.name from Edge "
+            "select Edge.key, Edge.refEdgeType, Edge.refSourceVertex, Edge.refTargetVertex, EdgeType.name, EdgeType.shortname from Edge "
             "    left outer join EdgeType on Edge.refEdgeType = EdgeType.key " ;
     }
 
@@ -126,6 +127,7 @@ public:
                              ,(*it).field(e_refSourceVertex).value().toInt()
                              ,(*it).field(e_refTargetVertex).value().toInt()
                              ,(*it).field(e_edgeTypeName).value().toString()
+                             ,(*it).field(e_edgeTypeShortName).value().toString()
                             );
     }
 };

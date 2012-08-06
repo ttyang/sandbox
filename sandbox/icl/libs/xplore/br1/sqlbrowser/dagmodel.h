@@ -8,17 +8,12 @@
 
 #include <map>
 
-#include <boost/graph/graph_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/depth_first_search.hpp>
-#include <boost/graph/graph_utility.hpp>
-
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
 
 #include "Dag.h"
-
+#include "Dag/ObjectGraph.h"
 
 
 class QSqlQuery;
@@ -65,7 +60,7 @@ public:
     void getEdges(QSqlQuery& query);
     void fromSql(QSqlQuery& query);
 
-    void makeDag();
+    //CL void makeDag();
 
     QString dagToString();
     QString setupDag();
@@ -79,8 +74,8 @@ public:
 
     DagItem* rootItem()const { return m_rootItem; } //CL DBG
 
+    int num_edges()const { return m_dag.num_edges(); }
     //--------------------------------------------------------------------------
-    int num_edges()const { return boost::num_edges(m_dag); }
 
 private:
     DagItem* item(const QModelIndex& index)const
@@ -126,9 +121,10 @@ private:
 
     //==========================================================================
     // Graph
-    Dag::type           m_dag;
-    Dag::tAttributesMap m_aVertexAttributes;
-    Dag::tParentMap     m_parentMap;
+    //CL Dag::type            m_dag;
+    dag::db::ObjectGraph m_dag;
+    Dag::tAttributesMap  m_aVertexAttributes;
+    Dag::tParentMap      m_parentMap;
 };
 
 #endif

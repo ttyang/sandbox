@@ -73,7 +73,7 @@ public:
 
 public slots:
     void exec();
-    void rexec();
+    //CL after refa: void rexec();
     bool runScript();
     bool execMulti(QSqlQuery& query, const QString& script);
     QSqlTableModel* showTable(const QString &table);

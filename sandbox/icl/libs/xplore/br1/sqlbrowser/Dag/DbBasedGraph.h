@@ -20,7 +20,7 @@
 #include "CreatorVisitor2.h"
 
 class QSqlQuery;
-class DagModel2;
+class DagModel;
 
 namespace dag { namespace db
 {
@@ -171,7 +171,7 @@ public:
         return tygraAsString;
     }
 
-    tString makeDagModel(DagModel2* dagmo)
+    tString makeDagModel(DagModel* dagmo)
     {
         typedef DbBasedGraph::vertex_descriptor vertex_descriptor;
         //Add an associative color map type.

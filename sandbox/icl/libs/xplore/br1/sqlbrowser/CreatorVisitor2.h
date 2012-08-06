@@ -41,25 +41,9 @@ struct CreatorVisitor2
         template<class Vertex, class Graph>
         void operator()(Vertex node, Graph& dag)
         {
-            // "Visitation by descent". All nodes are reached through this function on
-            // descend, which is always done first for "depth first search. Therefore
-            // we can create all nodes for the Qt DagModel in this functor:
-            //
-            // Create a DagItem. The node that has been visited last should be the parent.
-            // While we are descending, we build a chain going "down".
-
+            // "Visitation by descent". All nodes are reached through this function on descend.
             tVariVector itemData(dag::node::sizeOf_node); // ItemData node(id, name, ..)
-                             // will only by a part of the data from sql that represented
-                             // edges. Via r_attrs we only obtain associated node data
-                             // from the boost::graph
-            //JODO dag::copyBoostNode2DagItem(r_attrs[node], itemData);
-            //CL itemData[dag::node::posId]   = QVariant(dag[node].key());
-            //CL itemData[dag::node::posName] = QVariant(dag[node].name());
 
-            dbg_str = QString("(%1)[%2] %3").arg(node).arg(dag[node].key()).arg(dag[node].name());
-
-            // Discoverage is always on the way down. So we should maintain the invariant
-            // p_curItem should be initialized to the DagModel's DatItem* rootItem
             Q_ASSERT(r_attrs[node].dagItem() != 0);
 
             if(boost::out_degree(node, dag) > 0)
@@ -67,7 +51,7 @@ struct CreatorVisitor2
                 *p_result += indentation(r_attrs[node].depth()) + "(";
                 *p_result += dag[node].name();
                 *p_result += QString(" d:%1").arg(r_attrs[node].depth());
-                *p_result += " -> " + (p_curItem==0 ? QString("{}") : p_curItem->data()[dag::node::posName].toString());
+                *p_result += " -> " + (p_curItem==0 ? QString("{}") : (*(p_curItem->data()))[dag::node::posName].toString());
                 *p_result += "\n";
             }
         }
@@ -75,7 +59,6 @@ struct CreatorVisitor2
         DagItem*             p_curItem;
         QString*             p_result;
         Vertex2AttributesMap& r_attrs;
-        QString              dbg_str;
     };
 
     struct OnExamineEdge : public boost::base_visitor<OnExamineEdge>
@@ -105,16 +88,17 @@ struct CreatorVisitor2
             if(p_curItem != sourceDagItem)
                 p_curItem = sourceDagItem;
 
-            if(targetDagItem)
-                ; //CL sourceDagItem->addChild(targetDagItem);
-            else
+            if(targetDagItem == 0)
             {
                 tVariVector itemData(dag::node::sizeOf_node);
-                //JODO dag::copyBoostNode2DagItem(r_attrs[target_node], itemData);
-                itemData[dag::node::posId]   = QVariant(dag[target_node].key());
-                itemData[dag::node::posName] = QVariant(dag[target_node].name());
+                itemData[dag::node::posId]   = QVariant( QString("%1 %2").arg(dag[source_node].name()).arg(dag[edge].typeShortName()) );
+                itemData[dag::node::posName] = QVariant( dag[target_node].name());
+                //itemData[dag::node::posName] = QVariant(dag[target_node].name());
+                //JODO Dag::copyVertex2DagItem(r_attrs[target_node], itemData);
 
-                DagItem* newDagItem = new DagItem(itemData, p_curItem);
+                //CL 6 DagItem* newDagItem = new DagItem(itemData, p_curItem);
+                DagItem* newDagItem = new DagItem(makeShared<tVariVector>(itemData), p_curItem);
+
                 sourceDagItem->addChild(newDagItem);
                 r_attrs[target_node].setDagItem(newDagItem);
                 newDagItem->setData(dag::node::posParentId, newDagItem->parent()->data(dag::node::posId));

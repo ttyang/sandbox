@@ -6,12 +6,17 @@
 #ifndef DAGITEM_H
 #define DAGITEM_H
 
+#include <boost/shared_ptr.hpp>
 #include <QList>
 #include <QVariant>
 #include <QVector>
 
+#include "util/SharedPtr.h"
+
 
 typedef QVector<QVariant> tVariVector;
+typedef boost::shared_ptr<tVariVector> tSharedData;
+
 
 class DagItem
 {
@@ -19,7 +24,7 @@ public:
 
     static const int NodeType_Object = 2;
 
-    DagItem(const tVariVector &data, DagItem *parent = 0);
+    DagItem(const tSharedData& data, DagItem *parent = 0);
     ~DagItem();
 
     DagItem *child(int number);
@@ -35,11 +40,10 @@ public:
     bool setData(int column, const QVariant &value);
 
     void addChild(DagItem* child);
-    bool isLeaf(int TypeId)const { return itemData[TypeId] == NodeType_Object; }
+    bool isLeaf(int TypeId)const { return (*itemData)[TypeId] == NodeType_Object; }
     DagItem* clone(DagItem* parent);
 
-
-    tVariVector data()const { return itemData; }
+    tSharedData data()const { return itemData; }
 
     QString toString(); //DBG CL
 
@@ -49,7 +53,7 @@ private:
 
 private:
     QList<DagItem*> childItems;
-    tVariVector     itemData;
+    tSharedData     itemData;
     DagItem         *parentItem;
 };
 

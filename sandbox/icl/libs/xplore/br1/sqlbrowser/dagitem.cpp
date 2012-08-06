@@ -14,14 +14,13 @@
 #include "Dag.h"
 #include "dagitem.h"
 
-DagItem::DagItem(const QVector<QVariant> &data, DagItem *parent)
+DagItem::DagItem(const tSharedData& data, DagItem *parent)
+    : parentItem(parent), itemData(data)
 {
-    parentItem = parent;
-    itemData = data;
 }
 
 /*JODO First step: Treat the dag like a tree. Introduce multiple parents later.
-DagItem::DagItem(const QVector<QVariant> &data, QList<DagItem*>& parents, int parentIdx)
+DagItem::DagItem(const tVariVector &data, QList<DagItem*>& parents, int parentIdx)
 {
     Q_ASSERT(0 < parents.size())
     Q_ASSERT(0 <= parentIdx && parentIdx < parents.size());
@@ -60,13 +59,13 @@ int DagItem::childNumber() const
 
 int DagItem::columnCount() const
 {
-    return itemData.count();
+    return itemData->count();
 }
 
 
 QVariant DagItem::data(int column) const
 {
-    return itemData.value(column);
+    return itemData->value(column);
 }
 
 
@@ -76,8 +75,9 @@ bool DagItem::insertChildren(int position, int count, int columns)
         return false;
 
     for (int row = 0; row < count; ++row) {
-        QVector<QVariant> data(columns);
-        DagItem *item = new DagItem(data, this);
+        tVariVector data(columns);
+        //CL 2 DagItem *item = new DagItem(data, this);
+        DagItem *item = new DagItem(makeShared<tVariVector>(data), this);
         childItems.insert(position, item);
     }
 
@@ -92,11 +92,11 @@ void DagItem::addChild(DagItem* child)
 
 bool DagItem::insertColumns(int position, int columns)
 {
-    if (position < 0 || position > itemData.size())
+    if (position < 0 || position > itemData->size())
         return false;
 
     for (int column = 0; column < columns; ++column)
-        itemData.insert(position, QVariant());
+        itemData->insert(position, QVariant());
 
     foreach (DagItem *child, childItems)
         child->insertColumns(position, columns);
@@ -125,11 +125,11 @@ bool DagItem::removeChildren(int position, int count)
 
 bool DagItem::removeColumns(int position, int columns)
 {
-    if (position < 0 || position + columns > itemData.size())
+    if (position < 0 || position + columns > itemData->size())
         return false;
 
     for (int column = 0; column < columns; ++column)
-        itemData.remove(position);
+        itemData->remove(position);
 
     foreach (DagItem *child, childItems)
         child->removeColumns(position, columns);
@@ -140,10 +140,10 @@ bool DagItem::removeColumns(int position, int columns)
 
 bool DagItem::setData(int column, const QVariant &value)
 {
-    if (column < 0 || column >= itemData.size())
+    if (column < 0 || column >= itemData->size())
         return false;
 
-    itemData[column] = value;
+    (*itemData)[column] = value;
     return true;
 }
 
@@ -156,11 +156,11 @@ QString DagItem::toString()
 QString DagItem::toString(int depth)
 {
     if(childCount()==0)
-        return indentation(depth) + itemData[dag::node::posName].toString();
+        return indentation(depth) + (*itemData)[dag::node::posName].toString();
     else
     {
         QString children = indentation(depth) + "(";
-        children += itemData[dag::node::posName].toString() + "\n";
+        children += (*itemData)[dag::node::posName].toString() + "\n";
 
         for(int idx=0; idx < childCount(); idx++)
             children += child(idx)->toString(depth+1) + "\n";

@@ -43,7 +43,6 @@
 #include "browser.h"
 #include "qsqlconnectiondialog.h"
 #include "dagmodel.h"
-#include "dagmodel2.h"
 
 #include <QtGui>
 #include <QtSql>
@@ -251,10 +250,16 @@ bool Browser::testObjectSelector()
     util::launchMsgBox(ogra.depthFirstString());
 
     //--------------------------------------------------------------------------
-    DagModel2* dagmo = new DagModel2(); // Dag-Model
+    DagModel* dagmo = new DagModel(); // Dag-Model
     QString dbg_dagString = ogra.makeDagModel(dagmo);
     util::launchMsgBox(dbg_dagString);
+    dagmo->setHeaderData(0, Qt::Horizontal, "");
+    dagmo->setHeaderData(1, Qt::Horizontal, "Object");
+    dagmo->setHeaderData(2, Qt::Horizontal, "Type");
     ext_tree->setModel(dagmo);
+    ext_tree->resizeColumnToContents(0);
+    ext_tree->resizeColumnToContents(1);
+    ext_tree->resizeColumnToContents(2);
     //--------------------------------------------------------------------------
 
     if(success)
@@ -320,6 +325,7 @@ bool Browser::execMulti(QSqlQuery& query, const QString& script)
     return success;
 }
 
+/*CL after refa
 void Browser::rexec()
 {
     QSqlQueryModel *model = new QSqlQueryModel(ext_table);
@@ -373,6 +379,7 @@ void Browser::rexec()
 
     updateActions();
 }
+*/
 
 QSqlError Browser::addConnection(const QString &driver, const QString &dbName, const QString &host,
                             const QString &user, const QString &passwd, int port)

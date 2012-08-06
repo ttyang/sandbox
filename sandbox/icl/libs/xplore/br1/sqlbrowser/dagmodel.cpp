@@ -13,36 +13,14 @@
 
 using namespace boost;
 
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 DagModel::DagModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
     m_rootItem = createDagItem();
 }
-
-
-/* JODO
-DagModel::DagModel(const QStringList &headers, const QString &data,
-                     QObject *parent)
-    : QAbstractItemModel(parent)
-{
-    QVector<QVariant> rootData;
-    foreach (QString header, headers)
-        rootData << header;
-
-    m_rootItem = new DagItem(rootData);
-    setupModelData(data.split(QString("\n")), m_rootItem);
-}
-*/
-
-DagItem* DagModel::createDagItem()
-{
-    QVector<QVariant> rootData;
-    rootData.resize(dag::node::sizeOf_node);
-    rootData[dag::node::posId] = QVariant(0);
-    rootData[dag::node::posName] = QVariant("NIL");
-    return new DagItem(rootData);
-}
-
 
 
 DagModel::~DagModel()
@@ -56,6 +34,14 @@ int DagModel::columnCount(const QModelIndex & /* parent */) const
     return m_rootItem->columnCount();
 }
 
+DagItem* DagModel::createDagItem()
+{
+    tVariVector rootData;
+    rootData.resize(dag::node::sizeOf_node);
+    rootData[dag::node::posId] = QVariant(0);
+    rootData[dag::node::posName] = QVariant("NIL");
+    return new DagItem(makeShared<tVariVector>(rootData));
+}
 
 QVariant DagModel::data(const QModelIndex &index, int role) const
 {
@@ -125,7 +111,7 @@ bool DagModel::insertColumns(int position, int columns, const QModelIndex &paren
     return success;
 }
 
-void DagModel::insertVertex(QVector<QVariant>& edgeData, const QModelIndex& index)
+void DagModel::insertVertex(tVariVector& edgeData, const QModelIndex& index)
 {
     // Insert the vretex (via edge) into the Dag
     dagInsertVertex(edgeData, index);
@@ -133,21 +119,21 @@ void DagModel::insertVertex(QVector<QVariant>& edgeData, const QModelIndex& inde
     modelInsertVertex(edgeData, index);
 }
 
-void DagModel::dagInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& index)
+void DagModel::dagInsertVertex(tVariVector& edgeData, const QModelIndex& index)
 {
     int source = edgeData[m_parentId].toInt();
     int target = edgeData[m_childId].toInt();
     if(!(source==0 && target==0))
     {
         //JOFA MEMO: Build the graph: Add edges.
-        boost::add_edge(source, target, m_dag);
+        m_dag.add_edge(source, target);
         //JOFA MEMO: Fill the associated objects. Aka. decorate the graph.
         m_aVertexAttributes[source] = VertexAttributes(source, edgeData[m_parentName].toString());
         m_aVertexAttributes[target] = VertexAttributes(target, edgeData[m_childName].toString());
     }
 }
 
-void DagModel::modelInsertVertex(QVector<QVariant>& edgeData, const QModelIndex& index)
+void DagModel::modelInsertVertex(tVariVector& edgeData, const QModelIndex& index)
 {
     // Create a new vertex or DagItem and append it a the node inicated by 'index'
     // PRE: index is valid and points to the parent node of insertion.
@@ -163,7 +149,8 @@ void DagModel::modelInsertVertex(QVector<QVariant>& edgeData, const QModelIndex&
     childData[dag::node::posParentId]   = edgeData[dag::edge::posParentId];
     childData[dag::node::posName]       = edgeData[dag::edge::posChildName];
     childData[dag::node::posParentName] = edgeData[dag::edge::posParentName];
-    DagItem* childNode = new DagItem(childData, parentNode);
+    //CL 4 DagItem* childNode = new DagItem(childData, parentNode);
+    DagItem* childNode = new DagItem(makeShared<tVariVector>(childData), parentNode);
 
     parentNode->addChild(childNode);
 }
@@ -282,7 +269,7 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
         if (!lineData.isEmpty()) {
             // Read the column data from the rest of the line.
             QStringList columnStrings = lineData.split("\t", QString::SkipEmptyParts);
-            QVector<QVariant> columnData;
+            tVariVector columnData;
             for (int column = 0; column < columnStrings.count(); ++column)
                 columnData << columnStrings[column];
 
@@ -315,7 +302,7 @@ void DagModel::setupModelData(const QStringList &lines, DagItem *parent)
 QString DagModel::setupDag()
 {
     QString dagAsString; //JODO CL
-
+    /*
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
@@ -334,7 +321,7 @@ QString DagModel::setupDag()
 
     m_rootItem->setData(dag::node::posParentId, QVariant(0));
     m_rootItem->setData(dag::node::posParentName, QVariant("Parent"));
-
+    */
     return dagAsString;
 }
 
@@ -343,7 +330,7 @@ void DagModel::getEdges(QSqlQuery& query)
     while(query.next())
     {
         //create an edge
-        QVector<QVariant> data;
+        tVariVector data;
         //fill node
         fillData(data, query);
         m_edges.append(data);
@@ -365,6 +352,7 @@ void DagModel::fromSql(QSqlQuery& query)
     }
 }
 
+/*CL
 void DagModel::makeDag()
 {
     m_dag.clear();
@@ -383,11 +371,13 @@ void DagModel::makeDag()
         }
     }
 }
+*/
 
 QString DagModel::dagToString()
 {
     QString dagAsString;
-
+    m_dag.depthFirstString();
+/*
     boost::depth_first_search(
         m_dag
       , boost::visitor(make_dfs_visitor(boost::make_list(
@@ -398,7 +388,7 @@ QString DagModel::dagToString()
                                             )
                       ))
     );
-
+*/
     return dagAsString;
 }
 
@@ -418,12 +408,14 @@ DagItem* DagModel::fromSql(QSqlQuery& query, DagItem* parent, int depth)
     else
     {
         //create a node
-        QVector<QVariant> data;
+        tVariVector data;
         //fill node
         fillData(data, query);
 
-        DagItem* curNode = (depth==0) ? new DagItem(data, 0) //curNode==m_rootItem
-                                      : new DagItem(data, parent);
+        //DagItem* curNode = (depth==0) ? new DagItem(data, 0) //curNode==m_rootItem
+        //CL 5                          : new DagItem(data, parent);
+        DagItem* curNode = (depth==0) ? new DagItem(makeShared<tVariVector>(data), 0) //curNode==m_rootItem
+                                      : new DagItem(makeShared<tVariVector>(data), parent);
         if(depth == 0)
             m_rootItem = curNode;
 
@@ -470,7 +462,7 @@ QString DagModel::nodeToString(DagItem* node, int depth)const
 }
 
 
-void DagModel::fillData(QVector<QVariant>& data, QSqlQuery& query)
+void DagModel::fillData(tVariVector& data, QSqlQuery& query)
 {
     QSqlRecord rec = query.record();
     data.resize(rec.count());
@@ -490,7 +482,7 @@ void DagModel::fillData(QVector<QVariant>& data, QSqlQuery& query)
     data[m_childType]  = query.value(m_childType);
 }
 
-void DagModel::fillDummyData(QVector<QVariant>& data, int nodeId)
+void DagModel::fillDummyData(tVariVector& data, int nodeId)
 {
     data[m_parentId]   = QVariant(nodeId);
     data[m_childId]    = QVariant(num_edges());
