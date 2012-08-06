@@ -1,0 +1,55 @@
+;-----------------------------------------
+; BOOST_VISUALIZER_START boost::intrusive::list
+;
+; Copyright Boris [monade] 2010. Use, modification and distribution are subject
+; to the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt
+; or copy at http://www.boost.org/LICENSE_1_0.txt)
+;
+; @guid     CF808B30-3031-11DE-8C30-0800200C9B66
+; @platform msvc-8, msvc-9, msvc-10
+; @version  1.0
+; @author   Boris [monade]
+; @email    monade at gmail dot com
+;
+; Usage
+; =====
+;
+; Copy & paste the following into autoexp.dat.
+
+;------------------------------------------------------------------------------
+;  boost::intrusive::list
+;------------------------------------------------------------------------------
+boost::intrusive::list<*,*>{
+	children
+	(
+		#list
+		(
+			head: $c.data_.root_plus_size_.root_.next_,
+			size: $c.data_.root_plus_size_.size_,
+			next: next_
+		) : *(($T1 *) (&$e))
+	)
+	preview
+	(
+		#(
+			"[", $e.data_.root_plus_size_.size_, "](",
+			#list
+			(
+				head: $c.data_.root_plus_size_.root_.next_,
+				size: $c.data_.root_plus_size_.size_,
+				next: next_
+			) : *(($T1 *) (&$e))
+			")"
+		)
+	)
+}
+boost::intrusive::list_iterator<boost::intrusive::list_impl<boost::intrusive::listopt<boost::intrusive::detail::base_hook_traits<*,boost::intrusive::list_node_traits<void*>,*,boost::intrusive::default_tag,*>,unsigned int,*> >,*>{
+	preview ( #(*($T1*)($e.members_.nodeptr_)))
+	children ( #(ptr: *($T1*)($e.members_.nodeptr_)))
+}
+;------------------------------------------------------------------------------
+;  boost::intrusive::list
+;------------------------------------------------------------------------------
+
+; BOOST_VISUALIZER_END boost::intrusive::list
+;-----------------------------------------

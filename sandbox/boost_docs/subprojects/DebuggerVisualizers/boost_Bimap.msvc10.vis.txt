@@ -1,0 +1,52 @@
+;-----------------------------------------
+; BOOST_VISUALIZER_START boost::bimaps::bimap
+;
+; Copyright Zsolt Kovács 2011 - 2012. Use, modification and distribution are subject
+; to the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt
+; or copy at http://www.boost.org/LICENSE_1_0.txt)
+;
+; @guid     CG808B31-3031-11DE-8C35-0812300C9B66
+; @platform msvc-8, msvc-9, msvc-10
+; @version  1.0
+; @author   Zsolt Kovács
+; @email    kovacs dot zsolt at gmail dot com
+;
+; Usage
+; =====
+; Copy contents into [Visualizer] section of autoexp.dat along with visualizers of boost::multi_index_container found in boost__MI.msvc8.vis.txt.
+; Visualization must be enabled in the code for each type at global namespace:
+;
+;   VISUALIZE_MULTI_INDEX_CONTAINER(TypeName::core_type);
+;
+; The macro is defined in the accompanying header file mic_visualizer.hpp.
+;
+; Alternatively after defning the following macro:
+;   #define VISUALIZE_BIMAP(TypeName) VISUALIZE_MULTI_INDEX_CONTAINER(TypeName::core_type);
+;
+; The two expressions will be equivalent:
+;   VISUALIZE_MULTI_INDEX_CONTAINER(TypeName::core_type);
+;   VISUALIZE_BIMAP(TypeName);
+
+;---------------------------------------------------
+; boost::bimaps::bimap - Bimap
+boost::bimaps::bimap<*,*,*,*,*> {
+	preview (#($c.core.node_count, " items (Bimap)"))
+	children (
+		#( #(core: $c.core)
+		 , #(original_contents_without_visualizer: [$c,!])
+		)
+	)
+}
+
+boost::bimaps::relation::mutant_relation<*,*,*,*>{
+    preview(#("( ", $c.left, ", ", $c.right, " )"))
+    children(
+        #( #(left:  $c.left)
+         , #(right: $c.right)
+         , #(original_contents_without_visualizer: [$c,!])
+        )
+    )
+}
+
+; BOOST_VISUALIZER_END boost::bimaps::bimap
+;-----------------------------------------

@@ -1,4 +1,5 @@
-// Copyright Filip Konvièka 2007 - 2009. Use, modification and distribution are subject
+// Copyright Filip Konvièka 2007 - 2012, Zsolt Kovacs 2011 - 2012.
+// Use, modification and distribution are subject
 // to the Boost Software License, Version 1.0. (See accompanying file LICENSE_1_0.txt
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
@@ -162,6 +163,10 @@ struct multi_index_helper<__VISUALIZE_MIC_INDEX_DEF(Type)> {    \
 #endif
 
 #endif
+
+/* Bimap visualizer uses the MIC visualizer */
+#define VISUALIZE_BIMAP(TypeName) \
+    VISUALIZE_MULTI_INDEX_CONTAINER(TypeName:: <F4>core_type);
 
 #endif
 
