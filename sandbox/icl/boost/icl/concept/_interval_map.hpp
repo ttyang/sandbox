@@ -17,7 +17,6 @@ Copyright (c) 2012-2012: Joachim Faulhaber
 namespace boost{ namespace icl
 {
 
-
 template<class Type> //JODO different interval_map-Types
 bool domain_less_( typename interval_map_traits<Type>::interpair_const_iterator left
                  , typename interval_map_traits<Type>::interpair_const_iterator right )
@@ -27,7 +26,7 @@ bool domain_less_( typename interval_map_traits<Type>::interpair_const_iterator 
 }
 
 template<class Type> //JODO different interval_map-Types
-typename interval_map_traits<Type>::codomain_type&
+typename interval_map_traits<Type>::codomain_type
 co_combine( typename interval_map_traits<Type>::interpair_const_iterator left
           , typename interval_map_traits<Type>::interpair_const_iterator right )
 {
@@ -83,16 +82,29 @@ insert( Type& object
     return interval_map_traits<Type>::insert(object, position, value);
 }
 
-template<class Type, int fineness> struct on_combining_style;
+struct combining_style{
+    BOOST_STATIC_CONSTANT(int, atomic     = 0);
+    BOOST_STATIC_CONSTANT(int, joining    = 1);
+    BOOST_STATIC_CONSTANT(int, separating = 2);
+    BOOST_STATIC_CONSTANT(int, splitting  = 3);
+    BOOST_STATIC_CONSTANT(int, elemental  = 4);
+};
 
 template<class Type>
-struct on_combining_style<Type, 1>
+struct on_combining_style_types
 {
     typedef typename interval_map_traits<Type>::type   Concept;
     typedef typename Concept::codomain_type            codomain_type;
     typedef typename Concept::interpair_iterator       interpair_iterator;
     typedef typename Concept::interpair_const_iterator interpair_const_iterator;
+};
 
+template<class Type, int fineness> struct on_combining_style;
+
+template<class Type>
+struct on_combining_style<Type, combining_style::joining> //==1 
+    : public on_combining_style_types<Type>
+{
     static void insert_shifted( Type& sum
                               , interpair_const_iterator it1_, interpair_const_iterator it2_
                               , interpair_iterator& last_in_)
@@ -112,6 +124,49 @@ struct on_combining_style<Type, 1>
     }
 };
 
+template<class Type>
+struct on_combining_style<Type, combining_style::separating> //==2 
+    : public on_combining_style_types<Type>
+{
+    static void insert_shifted( Type& sum
+                              , interpair_const_iterator it1_, interpair_const_iterator it2_
+                              , interpair_iterator& last_in_)
+    {
+        codomain_type co_val = co_combine<Type>(it1_, it2_);
+        if((*last_in_).second != co_val)
+            last_in_ = icl::insert(sum, interpairs_end(sum), make_pair((*it1_).first, co_val));
+    }
+
+    static void insert_even( Type& sum
+                           , interpair_const_iterator it1_, interpair_const_iterator it2_
+                           , interpair_iterator& last_in_)
+    {
+        last_in_ = icl::insert( sum, interpairs_end(sum), make_pair((*it1_).first
+                              , co_combine<Type>(it1_, it2_)));
+    }
+};
+
+template<class Type>
+struct on_combining_style<Type, combining_style::splitting> //==3
+    : public on_combining_style_types<Type>
+{
+    static void insert_shifted( Type& sum
+                              , interpair_const_iterator it1_, interpair_const_iterator it2_
+                              , interpair_iterator& last_in_)
+    {
+        last_in_ = icl::insert( sum, interpairs_end(sum), make_pair((*it1_).first
+                              , co_combine<Type>(it1_, it2_)));
+    }
+
+    static void insert_even( Type& sum
+                           , interpair_const_iterator it1_, interpair_const_iterator it2_
+                           , interpair_iterator& last_in_)
+    {
+        last_in_ = icl::insert( sum, interpairs_end(sum), make_pair((*it1_).first
+                              , co_combine<Type>(it1_, it2_)));
+    }
+};
+
 
 template<class Type>
 typename enable_if<interval_map_traits<Type>, Type>::type
@@ -123,6 +178,9 @@ joining_add(const Type& map1, const Type& map2)
     typedef typename Concept::interpair_iterator       interpair_iterator;
     typedef typename Concept::interpair_const_iterator interpair_const_iterator;
     typedef typename std::insert_iterator<Type>        insert_iterator;
+
+    //JODO typedef typename on_combining_style<Type, segmental_fineness<Type> > combining_style_dependent;
+    typedef typename on_combining_style<Type, 1> combining_style_dependent;
 
     // A constructor that reserves space for vector result arguments
     //JODO Type sum = construct<Type>(map1,map2,init_for_addition);
@@ -148,29 +206,29 @@ joining_add(const Type& map1, const Type& map2)
     {
         if( domain_less_<Type>(it1_,it2_) )
         {
-            on_combining_style<Type,1>::insert_shifted(sum, it1_, pred2_, last_in_);
+            combining_style_dependent::insert_shifted(sum, it1_, pred2_, last_in_);
             pred1_ = it1_++;
         }
         else if ( domain_less_<Type>(it2_,it1_) )
         {
-            on_combining_style<Type,1>::insert_shifted(sum, it2_, pred1_, last_in_);
+            combining_style_dependent::insert_shifted(sum, it2_, pred1_, last_in_);
             pred2_ = it2_++;
         }
         else //( domain_equal(it1_,it2_) )
         {
-            on_combining_style<Type,1>::insert_even(sum, it1_, it2_, last_in_);
+            combining_style_dependent::insert_even(sum, it1_, it2_, last_in_);
             pred1_ = it1_++; pred2_ = it2_++;
         }
     }
 
     while(it1_ != interpairs_cend(map1))
     {
-        on_combining_style<Type,1>::insert_shifted(sum, it1_, pred2_, last_in_);
+        combining_style_dependent::insert_shifted(sum, it1_, pred2_, last_in_);
         pred1_ = it1_++;
     }
     while(it2_ != interpairs_cend(map2))
     {
-        on_combining_style<Type,1>::insert_shifted(sum, it2_, pred1_, last_in_);
+        combining_style_dependent::insert_shifted(sum, it2_, pred1_, last_in_);
         pred2_ = it2_++;
     }
 

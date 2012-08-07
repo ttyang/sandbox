@@ -114,5 +114,3 @@ BOOST_AUTO_TEST_CASE(interval_map_via_vector2)
     new_show(m3);
 }
 
-
-
