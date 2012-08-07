@@ -72,43 +72,43 @@ namespace angly {
   // types for transitions
   struct dfa_a_state : 
     dfa_transition<match_token<state<> >, 
-                             state_name, 
-                             // rebuild dfa data, pushing state onto both state seq and stmap
-                             mpl::pair<mpl::push_back<mpl::first<mpl::_1>, 
-                                                      mpl::pair<s_name<mpl::_2>,
-                                                                s_transitions<mpl::_2> > >,
-                                       mpl::push_back<mpl::copy<s_stmap<mpl::_2>,
-                                                                mpl::back_inserter<mpl::second<mpl::_1> > >, 
-                                                      mpl::pair<s_name<mpl::_2>,
-                                                                detail::apply_seq_q<dfa_state>
-                                                                ::apply<s_args<mpl::_2> > > > > > {}; 
+                   state_name, 
+                   // rebuild dfa data, pushing state onto both state seq and stmap
+                   mpl::pair<mpl::push_back<mpl::first<mpl::_1>, 
+                                            mpl::pair<s_name<mpl::_2>,
+                                                      s_transitions<mpl::_2> > >,
+                             mpl::push_back<mpl::copy<s_stmap<mpl::_2>,
+                                                      mpl::back_inserter<mpl::second<mpl::_1> > >, 
+                                            mpl::pair<s_name<mpl::_2>,
+                                                      detail::apply_seq_q<dfa_state>
+                                                      ::apply<s_args<mpl::_2> > > > > > {}; 
   struct state_name_trans : 
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::vector4<mpl::_2, mpl::vector<>, mpl::vector<>, mpl::vector<> > > {};
+                   void, 
+                   mpl::vector4<mpl::_2, mpl::vector<>, mpl::vector<>, mpl::vector<> > > {};
   struct state_finish_trans : 
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                               mpl::vector4<s_name<mpl::_1>, mpl::vector1<mpl::_2>, mpl::vector<>, mpl::vector<> > > {};
+                   void, 
+                   mpl::vector4<s_name<mpl::_1>, mpl::vector1<mpl::_2>, mpl::vector<>, mpl::vector<> > > {};
 
   struct state_data_trans : 
     dfa_transition<mpl::always<mpl::true_>, 
-                             void, 
-                             mpl::vector4<s_name<mpl::_1>,
-                                          mpl::push_back<s_args<mpl::_1>, mpl::_2>, 
-                                          mpl::vector<>, mpl::vector<> > > {};
+                   void, 
+                   mpl::vector4<s_name<mpl::_1>,
+                                mpl::push_back<s_args<mpl::_1>, mpl::_2>, 
+                                mpl::vector<>, mpl::vector<> > > {};
   struct state_transition : 
     dfa_transition<match_token<transition<> >, 
-                             transition_name, 
-                             // rebuild state data, pushing new transition onto transitions and stmap
-                             mpl::vector4<s_name<mpl::_1>, s_args<mpl::_1>,
-                                          mpl::push_back<s_transitions<mpl::_1>, 
-                                                         mpl::pair<t_name<mpl::_2>, t_target<mpl::_2> > >,
-                                          mpl::push_back<s_stmap<mpl::_1>,
-                                                         mpl::pair<t_name<mpl::_2>,
-                                                                   detail::apply_seq_q<dfa_transition>
-                                                                   ::apply<t_args<mpl::_2> > > > >
-                             > {};
+                   transition_name, 
+                   // rebuild state data, pushing new transition onto transitions and stmap
+                   mpl::vector4<s_name<mpl::_1>, s_args<mpl::_1>,
+                                mpl::push_back<s_transitions<mpl::_1>, 
+                                               mpl::pair<t_name<mpl::_2>, t_target<mpl::_2> > >,
+                                mpl::push_back<s_stmap<mpl::_1>,
+                                               mpl::pair<t_name<mpl::_2>,
+                                                         detail::apply_seq_q<dfa_transition>
+                                                         ::apply<t_args<mpl::_2> > > > >
+                   > {};
   struct state_name_transition : state_transition {};
   struct state_finish_transition : state_transition {};
   struct transition_name_trans : 

@@ -259,7 +259,7 @@ namespace boost {
           mpl::push_front<parent,
                           typename 
                           create_frame<typename mpl::apply<typename get_transition_pre_action<typename PropFn::template apply<Match>::type>::type,
-                                                  typename get_frame_data<frame>::type,
+                                                           typename get_frame_data<frame>::type,
                                                            typename get_state_start_data<typename PropFn::template apply<RecurseRule>::type>::type>::type,
                                        RecurseRule,
                                        typename mpl::begin<inner_seq>::type,
@@ -306,7 +306,8 @@ namespace boost {
                                                    CurrIter,
                                                    EndIter>::type,
                               typename //end-frame
-                              create_frame<void,utterly_done_state, void, void, mpl::_2>::type> type;
+                              create_frame<void,utterly_done_state, void, void, mpl::_2>::type
+                              > type;
         };
 
         template<typename Stack>
@@ -345,9 +346,9 @@ namespace boost {
         typedef detail::dfa_end end;
       };
 
-    template<typename DFA, typename StartState, typename Input, typename PropFn = mpl::_1>
-    struct run_dfa :
-      mpl::fold<dfa_sequence<DFA, StartState, Input, typename mpl::lambda<PropFn>::type>, 
+      template<typename DFA, typename StartState, typename Input, typename PropFn = mpl::_1>
+      struct run_dfa :
+        mpl::fold<dfa_sequence<DFA, StartState, Input, typename mpl::lambda<PropFn>::type>, 
                   void,
                   mpl::_2 > // not really a fold, just iterate until done and return final data
       {};
