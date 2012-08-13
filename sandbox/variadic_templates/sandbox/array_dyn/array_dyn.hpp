@@ -1,5 +1,13 @@
 #ifndef ARRAY_DYN_HPP_INCLUDED
 #define ARRAY_DYN_HPP_INCLUDED
+//  (C) Copyright Larry Evans 2012.
+//
+//  Permission to copy, use, modify, sell and distribute this software
+//  is granted provided this copyright notice appears in all copies.
+//  This software is provided "as is" without express or implied
+//  warranty, and with no claim as to its suitability for any purpose.
+//
+//====================================================================
 #include <iostream>
 #include <iomanip>
 
@@ -22,8 +30,8 @@ array_dyn
       box_domain<>
     super_t
     ;
-        typedef typename
-      super_t::index_t
+        using typename
+      super_t::
     index_t
     ;
       std::vector<T>
@@ -32,41 +40,79 @@ array_dyn
      *  data in the array.
      */
     ;
+
+  //[Template interface:
+  // This is more general than the
+  // Initializer_list interface below.
       template
-      < typename... Size
+      < typename Sizes
       >
-    array_dyn( dirs a_dir, Size... a_size)
-    : super_t( a_dir, a_size...)
+    array_dyn( dirs a_dir, Sizes const& a_sizes={})
+    : super_t( a_dir, a_sizes)
     , my_data( super_t::size())
     {
     }
     
       template
-      < typename... Size
+      < typename Sizes
       >
       void
-    reshape( Size... a_size)
+    reshape( Sizes const& a_sizes)
     {
-        my_data.resize(super_t::reshape(a_size...));
+        my_data.resize(super_t::reshape(a_sizes));
     }
     
       template
-      < typename... Index
+      < typename Indices
       >
       T&
-    operator()( Index... a_index)
+    operator()( Indices const& a_indices)
     {
-        return my_data[offset_at_indices(a_index...)];
+        return my_data[offset_at_indices(a_indices)];
     }
     
       template
-      < typename... Index
+      < typename Indices
       >
       T const&
-    operator()( Index... a_index)const
+    operator()( Indices const& a_indices)const
     {
-        return my_data[offset_at_indices(a_index...)];
+        return my_data[offset_at_indices(a_indices)];
     }
+
+  //]
+  //[Initializer_list interface:
+  // Similar to above Template interface, but using 
+  // init_list_t(see below) instead of templates.
+  // This makes interfaces slightly more user friendly.
+        using typename
+      super_t::
+    init_list_t
+    ;
+    array_dyn( dirs a_dir, init_list_t const& a_sizes={})
+    : super_t( a_dir, a_sizes)
+    , my_data( super_t::size())
+    {
+    }
+    
+      void
+    reshape( init_list_t const& a_sizes)
+    {
+        this->template reshape<init_list_t>(a_sizes);
+    }
+    
+      T&
+    operator()( init_list_t const& a_indices)
+    {
+        return this->template operator()<init_list_t>(a_indices);
+    }
+    
+      T const&
+    operator()( init_list_t const& a_indices)const
+    {
+        return this->template operator()<init_list_t>(a_indices);
+    }
+  //]
     
 };
 

@@ -9,7 +9,7 @@ int main(void)
     {
         std::cout<<"*************************\n";
         std::cout<<"dir_op="<<dir_op<<"\n";
-        array_dyn<int> ai(dirs(dir_op),2,3,4);
+        array_dyn<int> ai(dirs(dir_op),{2,3,4});
         unsigned const size=ai.my_data.size();
         std::cout<<"my_data.size()="<<size<<"\n";
         unsigned const value0=1000;
@@ -25,16 +25,18 @@ int main(void)
             std::cout<<"stride("<<i<<")="<<ai.stride(i)<<"\n";
             std::cout<<"  size("<<i<<")="<<ai.size(i)<<"\n";
         }
-        std::cout<<"ai.offset_at_indices(1,0,0)="<<ai.offset_at_indices(1,0,0)<<"\n";
-        std::cout<<"ai(1,0,0)="<<ai(1,0,0)<<"\n";
-        std::cout<<"ai.offset_at_indices(0,1,0)="<<ai.offset_at_indices(0,1,0)<<"\n";
-        std::cout<<"ai(0,1,0)="<<ai(0,1,0)<<"\n";
-        std::cout<<"ai.offset_at_indices(0,0,1)="<<ai.offset_at_indices(0,0,1)<<"\n";
-        std::cout<<"ai(0,0,1)="<<ai(0,0,1)<<"\n";
-        std::cout<<"ai.ok_indices(1,2,3)="<<ai.ok_indices(1,2,3)<<"\n";
-        std::cout<<"ai.ok_indices(1,2,4)="<<ai.ok_indices(1,2,4)<<"\n";
-        std::cout<<"ai.ok_indices(1,2,3,0)="<<ai.ok_indices(1,2,3,0)<<"\n";
-        unsigned offset=ai.offset_at_indices(1,2,3);
+        std::cout<<"ai.offset_at_indices(1,0,0)="<<ai.offset_at_indices({1,0,0})<<"\n";
+        std::cout<<"ai(1,0,0)="<<ai({1,0,0})<<"\n";
+        std::cout<<"ai.offset_at_indices(0,1,0)="<<ai.offset_at_indices({0,1,0})<<"\n";
+        std::cout<<"ai(0,1,0)="<<ai({0,1,0})<<"\n";
+        std::cout<<"ai.offset_at_indices(0,0,1)="<<ai.offset_at_indices({0,0,1})<<"\n";
+        std::cout<<"ai(0,0,1)="<<ai({0,0,1})<<"\n";
+        std::cout<<"ai.ok_indices(1,2,3)="<<ai.ok_indices({1,2,3})<<"\n";
+        typedef std::vector<unsigned> indices_t;
+        std::cout<<"ai.ok_indices(indices_t({0,0,0}))="<<ai.ok_indices(indices_t({0,0,0}))<<"\n";
+        std::cout<<"ai.ok_indices(1,2,4)="<<ai.ok_indices({1,2,4})<<"\n";
+        std::cout<<"ai.ok_indices(1,2,3,0)="<<ai.ok_indices({1,2,3,0})<<"\n";
+        unsigned offset=ai.offset_at_indices({1,2,3});
         std::cout<<"ai.offset_at_indices(1,2,3)="<<offset<<"\n";
         std::vector<unsigned> indices(ai.indices_at_offset(offset));
         std::cout<<"indices_at_offset("<<offset<<")=\n";

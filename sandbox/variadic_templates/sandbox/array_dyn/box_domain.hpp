@@ -1,8 +1,17 @@
 #ifndef BOX_DOMAIN_HPP_INCLUDED
 #define BOX_DOMAIN_HPP_INCLUDED
+//  (C) Copyright Larry Evans 2012.
+//
+//  Permission to copy, use, modify, sell and distribute this software
+//  is granted provided this copyright notice appears in all copies.
+//  This software is provided "as is" without express or implied
+//  warranty, and with no claim as to its suitability for any purpose.
+//
+//====================================================================
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <iterator>
 
 enum dirs //directions(used to flag order of processing an ordered sequence).
 { dir_fwd //forward direction.
@@ -79,15 +88,16 @@ box_domain
         ( sizes_beg
         , sizes_end
         , ++strides
-        , std::multiplies<typename InpIter::value_type>()
+        , std::multiplies<index_t>()
         );
     }
+    
       template
-      < typename... Sizes
+      < typename Sizes
       >
       index_t
     init_strides
-      ( Sizes... a_size
+      ( Sizes const& a_sizes
       )
       /**@brief
        *  Calculates strides of the array with shape, a_size...
@@ -97,39 +107,38 @@ box_domain
        *  product of a_size...
        */
     {
-        strides_t const sizes({a_size...});
         index_t result;
         if(my_dir==dir_fwd)
         {
               auto
             it_v=init_iter_strides
-              ( sizes.begin()
-              , sizes.end()
+              ( a_sizes.begin()
+              , a_sizes.end()
               , my_strides.begin()
               );
             result=*(--it_v);
         }
         else
         {
+                typedef typename
+              Sizes::const_iterator
+            fwd_iter;
+                typedef
+              std::reverse_iterator<fwd_iter>
+            rev_iter;
+              rev_iter
+            rbeg(a_sizes.end());
+              rev_iter
+            rend(a_sizes.begin());
               auto
             it_v=init_iter_strides
-              ( sizes.rbegin()
-              , sizes.rend()
+              ( rbeg
+              , rend
               , my_strides.rbegin()
               );
             result=*(--it_v);
         }
         return result;
-    }
-    
-      template
-      < typename... Size
-      >
-    box_domain( dirs a_dir, Size... a_size)
-    : my_strides( sizeof...(Size)+1)
-    , my_dir(a_dir)
-    {
-        init_strides( a_size...);
     }
     
       index_t
@@ -167,29 +176,6 @@ box_domain
           ;
     }
  
-      template
-      < typename... Index
-      >
-      index_t
-    offset_at_indices
-      ( Index... a_index
-      )const
-      /**@brief
-       *  The offset of element in an array
-       *  corresponding to indices, a_index...
-       */
-    {
-        strides_t const indices({a_index...});
-        index_t const offset
-          = std::inner_product
-            ( indices.begin()
-            , indices.end()
-            , my_strides.begin()+my_dir
-            , index_t(0)
-            );
-        return offset;
-    }
-    
       template
       < typename InpIter
       , typename OutIter
@@ -248,36 +234,109 @@ box_domain
         return indices;
     }
     
+  //[Template interface:
+  // This is more general than the
+  // Initializer_list interface shown farther below.
+  
       template
-      < typename... Size
+      < typename Sizes
       >
-      index_t
-    reshape( Size... a_size)
+    box_domain( dirs a_dir, Sizes const& a_sizes)
+    : my_strides( a_sizes.size()+1)
+    , my_dir(a_dir)
     {
-        index_t const rankp1=sizeof...(a_size)+1;
-        my_strides.resize(rankp1);
-        return init_strides( a_size...);
+        init_strides( a_sizes);
     }
     
       template
-      < typename... Index
+      < typename Indices
+      >
+      index_t
+    offset_at_indices
+      ( Indices const& a_indices
+      )const
+      /**@brief
+       *  The offset of element in an array
+       *  corresponding to indices, a_index...
+       */
+    {
+        index_t const offset
+          = std::inner_product
+            ( a_indices.begin()
+            , a_indices.end()
+            , my_strides.begin()+my_dir
+            , index_t(0)
+            );
+        return offset;
+    }
+    
+      template
+      < typename Indices
+      >
+      index_t
+    reshape( Indices const& a_sizes)
+    {
+        index_t const rankp1=a_sizes.size()+1;
+        my_strides.resize(rankp1);
+        return init_strides( a_sizes);
+    }
+    
+      template
+      < typename Indices
       >
       bool
-    ok_indices( Index... a_index)
+    ok_indices( Indices const& a_indices)
       /**@brief
        *  Is a_index... a valid argument to
        *  offset_at_indices?
        */
     {
-        std::vector<index_t> const indices({a_index...});
-        unsigned n=indices.size();
+        unsigned n=a_indices.size();
         bool result= n<=rank();
-        for( unsigned i=0; i<n && result; ++i)
+        auto index_iter=a_indices.begin();
+        for( unsigned i=0; i<n && result; ++i,++index_iter)
         {
-            result = 0<=indices[i] && indices[i]<size(i);
+            index_t index_i=*index_iter;
+            result = 0<=index_i && index_i<size(i);
         }
         return result;
     }
+    
+  //]Template interface:
+  //[Initializer_list interface:
+        typedef
+      std::initializer_list<index_t>
+    init_list_t
+    ;
+    
+    box_domain( dirs a_dir, init_list_t const& a_sizes)
+    : my_strides( a_sizes.size()+1)
+    , my_dir(a_dir)
+    {
+        init_strides( a_sizes);
+    }
+    
+      index_t
+    offset_at_indices
+      ( init_list_t const& a_indices
+      )const
+    {
+        return this->template offset_at_indices<init_list_t>(a_indices);
+    }
+    
+      index_t
+    reshape( init_list_t const& a_sizes)
+    {
+        return this->template reshape<init_list_t>( a_sizes);
+    }
+    
+      bool
+    ok_indices( init_list_t const& a_indices)
+    {
+        return this->template ok_indices<init_list_t>(a_indices);
+    }
+    
+  //]Initializer_list interface:
 };
 
 #endif
