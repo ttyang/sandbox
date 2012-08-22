@@ -114,6 +114,8 @@ namespace svg
       // should transform be here allow translate and rotate?
       /*! \details
         Classes inherited from svg_element add other references, 5.3.1, like color, fill, stroke, gradients...
+        */
+      /*
         \verbatim
           Example id: <g id="yMinorGrid" ></g>
           Example class: <g class="grid_style"></g>
@@ -259,9 +261,10 @@ namespace svg
     }
 
     void write(std::ostream& rhs)
-    { //! output line from (x1_, y1_) to (x2_, y2_)
-      //! \brief Write XML SVG command to draw a straight line.
-      //! \details \verbatim Example: <line x1="5" y1="185" x2="340" y2="185"/> \endverbatim
+    { /*! output line from (x1_, y1_) to (x2_, y2_) by
+       writeing XML SVG command to draw a straight line.
+       */
+      /* \verbatim Example: <line x1="5" y1="185" x2="340" y2="185"/> \endverbatim */
       rhs << "<line x1=\"" << x1_ << "\" y1=\"" << y1_
           << "\" x2=\"" << x2_ << "\" y2=\"" << y2_ << "\"/>";
     }

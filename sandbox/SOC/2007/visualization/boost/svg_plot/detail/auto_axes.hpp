@@ -28,6 +28,7 @@
 #endif
 
 #include <boost\svg_plot\detail\FP_compare.hpp> // is_small & is_close
+#include <boost/quan/meas.hpp> // for value_of.
 
 #include <boost\math\special_functions\fpclassify.hpp>
 // for template <class FPT> bool boost::math::isfinite(FPT t);
@@ -281,12 +282,14 @@ void scale_axis(
   double x_max;
   if (!check_limits)
   {
+    //std::pair<T::iterator, T::iterator> result = boost::minmax_element(container.begin(), container.end());
     std::pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
     // minmax_element is efficient because can use knowledge of being sorted,
     // BUT only if it can be assumed that no values are 'at limits',
     // infinity, NaN, max_value, min_value, denorm_min.
-     x_min = value_of(*(result.first));
-     x_max = value_of(*(result.second));
+
+    x_min = value_of(*(result.first));
+    x_max = value_of(*(result.second));
   }
   else
   { // It is necessary to inspect all values individually.
@@ -345,11 +348,11 @@ void scale_axis(
   { // BUT only if it can be assumed that no values are 'at limits',
     // infinity, NaN, max_value, min_value, denorm_min.
     // minmax_element is efficient for maps because it can use knowledge of all maps being sorted,
-    // And also sadly it doesn't work right - Y minimum is wrong!
-    // TODO
+    // And also sadly it doesn't work right - Y minimum is wrong!  // TODO ??
+
     std::pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
-    std::pair<const double, double> px = values_of(*result.first); // x min & y_min
-    std::pair<const double, double> py = values_of(*result.second); // y min & max
+    std::pair<double, double> px = values_of(*result.first); // X min & X max.
+    std::pair<double, double> py = values_of(*result.second); // Y min & Y max.
     x_min = px.first;
     x_max = py.first;
     // x are OK, but Y are only those corresponding to those X, not min and max.,
@@ -662,7 +665,7 @@ void scale_axis(double min_value, double max_value, // Scale axis from Input ran
 
 template <typename T> // T an STL container: array, vector ...
 size_t show(const T& container)
-{ //! Utility functios to display STL containers.
+{ //! Utility functions to display STL containers.
   cout << container.size() << " values in container: ";
   for (T::const_iterator it = container.begin(); it != container.end(); it++)
   {
@@ -710,7 +713,7 @@ std::pair<double, double> range(const T& container) //! Container Data series
   minmax.first = *result.first;
   minmax.second = *result.second;
   return minmax;
-} // template <class T> scale
+} // template <class T> range
 
 template <class T> // T an STL container: array, vector, set, map ...
 std::pair<double, double> range_all(const T& containers) // Container of STL containers of Data series.

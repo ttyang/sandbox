@@ -61,20 +61,22 @@
     has
     \htmlonly
       <a href="http://www.opera.com/docs/specs/svg/"> SVG support</a>
-    \endhtmlonly
-    but the quality of rendering is sometimes not as good as other browsers.
+    \endhtmlonly.
 
-  - Microsoft Internet Explorer, \b provided a suitable
+  - Microsoft Internet Explorer 9 and later, (or earlier versions \b provided a suitable
     \htmlonly
       <a href="http://www.adobe.com/svg/"> Adobe SVG Viewer plug-in for SVG files</a>
     \endhtmlonly
-    is installed.
+    is installed).  Sadly, rendering quality is so poor that IE9 cannot be recommended.
 
   - \htmlonly
       <a href="http://www.inkscape.org"> Inkscape</a>
     \endhtmlonly
     , a fine Open Source SVG editor with excellent rendering, full scaling and other editing features,
-    including conversion to wide variety of other graphics formats like Portable Network Graphics .png.
+    including conversion to wide variety of other graphics formats
+    like Portable Network Graphics .png.
+
+    Inkscape is the 'gold standard' for viewing SVG files.
 
     The Inkscape download also includes Inkview, a convenient <b>SVG viewer and slide show </b>.
 
@@ -113,13 +115,10 @@
 
   - Google www.google.com/chrome Chrome,
 
-
   - And by Many other graphics programs, for example
       \htmlonly
         <a href="http://svg.software.informer.com/software/"> Most popular SVG software</a>
       \endhtmlonly
-
-
 
   The goals of the project are:
 

@@ -20,7 +20,10 @@
 #define BOOST_SVG_NUMERIC_LIMITS_HANDLING_DETAIL_HPP
 
 #include <boost/math/special_functions/fpclassify.hpp>
-#include <boost/svg_plot/uncertain.hpp>
+
+#include <boost/quan/unc.hpp>
+#include <boost/quan/meas.hpp>
+
 // using boost::svg::unc;
 
 // TODO use the boost version instead to be more portable?
@@ -111,6 +114,22 @@ inline bool pair_is_limit(std::pair<const unc<correlated>, unc<correlated> > a)
     || limit_max(value_of(a.second)) || limit_min(value_of(a.second)) || limit_NaN(value_of(a.second));
 }
 
+template <bool correlated>
+inline bool pair_is_limit(std::pair<Meas, unc<correlated> > a) // const version
+{ //! Check on values of both x Meas and y unc data points.
+  // \return false if either or both are at limit.
+  return limit_max(value_of(a.first)) || limit_min(value_of(a.first)) || limit_NaN(value_of(a.first))
+    || limit_max(value_of(a.second)) || limit_min(value_of(a.second)) || limit_NaN(value_of(a.second));
+}
+
+template <bool correlated>
+inline bool pair_is_limit(std::pair<const Meas, unc<correlated> > a)
+{ //! Check on values of both x Meas and y unc data points.
+  // \return false if either or both are at limit.
+  return limit_max(value_of(a.first)) || limit_min(value_of(a.first)) || limit_NaN(value_of(a.first))
+    || limit_max(value_of(a.second)) || limit_min(value_of(a.second)) || limit_NaN(value_of(a.second));
+}
+
 } // namespace detail
 } // namespace svg
 } // namespace boost
@@ -124,6 +143,6 @@ bool boost::svg::detail::pair_is_limit(std::pair<double, double>); // x and/or y
 bool boost::svg::detail::pair_is_limit(std::pair<const double, double>); // x and/or y  not a proper data value.
 
 template <bool correlated>
-bool boost::svg::detail::pair_is_limit(std::pair<const unc<correlated>, unc<correlated> >); // x and/or y  not a proper data value.
+bool boost::svg::detail::pair_is_limit(std::pair<const unc<correlated>, unc<correlated> >); // x and/or y not a proper data value!
 
 #endif // BOOST_SVG_NUMERIC_LIMITS_HANDLING_DETAIL_HPP

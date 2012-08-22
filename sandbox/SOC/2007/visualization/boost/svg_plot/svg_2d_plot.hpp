@@ -9,7 +9,7 @@
  */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2007, 2008, 2009
+// Copyright Paul A. Bristow 2007, 2008, 2009, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -28,17 +28,23 @@
 #include <boost/iterator/transform_iterator.hpp>
 //  using boost::make_transform_iterator;
 
-#include "svg_style.hpp"
-#include "uncertain.hpp"
+#include <boost/quan/unc.hpp>
+#include <boost/quan/unc_init.hpp>
 // using boost.svg::unc;
-#include "detail/axis_plot_frame.hpp"
-#include "detail/numeric_limits_handling.hpp"
-#include "detail/functors.hpp"
-#include "detail/auto_axes.hpp"
-#include "detail/numeric_limits_handling.hpp"
+
+#include <boost/svg_plot/svg.hpp>
+#include <boost/svg_plot/svg_style.hpp>
+#include <boost/svg_plot/detail/axis_plot_frame.hpp> // Code shared with 2D.
+#include <boost/svg_plot/detail/functors.hpp>
+// using boost::svg::detail::unc_2d_convert;
+#include <boost/svg_plot/detail/numeric_limits_handling.hpp>
+#include <boost/svg_plot/detail/functors.hpp>
+#include <boost/svg_plot/detail/auto_axes.hpp>
 using boost::svg::detail::limit_NaN;
 
-#include "svg.hpp"
+#include <boost/quan/meas.hpp>
+
+#include <boost/svg_plot/svg.hpp>
 
 #include <map> // for map & multimap
 #include <string>
@@ -75,7 +81,8 @@ namespace boost
 
     public:
       // 2-D Data series points to plot.
-      std::multimap<unc<false>, unc<false>> series_; //!< Normal 'OK to plot' data values.
+      std::multimap<Meas, unc<false> > series_; //!< Normal 'OK to plot' data values.
+ //     std::multimap<unc<false>, unc<false>> series_; //!< Normal 'OK to plot' data values.
       std::multimap<double, double> series_limits_; //!< 'limit' values: too big or small, or NaN.
 
       std::string title_; //!< Title of data series (to show on legend using legend style).
@@ -140,8 +147,8 @@ namespace boost
     :
     title_(title), //!< Title of a series of data values.
     // plot_point_style(const svg_color& fill = blank, const svg_color& stroke = black,
-    // int size = 5, point_shape shape = round, const std::string& symbols = "X")
-    point_style_(black, white, 5, round), // Default point style (default fill white).
+    // int size = 5, point_shape shape = circlet, const std::string& symbols = "X")
+    point_style_(black, white, 5, circlet), // Default point style (default fill white).
     limit_point_style_(grey, blank, 10, cone), // Default limit (infinity or NaN) point style.
     line_style_(black, blank, 2, false, false), // Default line style, no fill, width 2, no line_on, no bezier.
     bar_style_(black, blank, 3, no_bar), // Default black, no fill, stick width 3, no bar.
@@ -150,8 +157,9 @@ namespace boost
   { // Constructor.
     for(T i = begin; i != end; ++i)
     { // Sort data points into normal and limited series.
-      std::pair<unc<false>, unc<false>> temp = *i;
-      unc<false> ux = temp.first;
+      std::pair<Meas, unc<false> > temp = *i;
+      //std::pair<unc<false>, unc<false>> temp = *i;
+      Meas ux = temp.first;
       unc<false> uy = temp.second;
       std::pair<double, double> xy = std::make_pair<double, double>(ux.value(), uy.value());
       if(detail::pair_is_limit(xy))
@@ -432,11 +440,20 @@ namespace boost
       int x_axis_position_; //!< Intersection with Y axis, or not.
       int y_axis_position_; //!< Intersection with X axis, or not.
 
+      // Parameters for calculating confidence intervals (for both X and Y values).
+      // These might be picked up from uncertain types.
+      double alpha_; // = 0.05; // oss.iword(confidenceIndex) / 1.e6; // Pick up alpha.
+      double epsilon_; // = 0.01; // = oss.iword(roundingLossIndex) / 1.e3; // Pick up rounding loss.
+      int uncSigDigits_; // = 2; // = oss.iword(setUncSigDigitsIndex);  // Pick up significant digits for uncertainty.
+      bool isNoisyDigit_; // = false; // Pick up?
+
       bool autoscale_check_limits_; //!< true if to check autoscale values for infinity, NaN, max, min.
       bool x_autoscale_; //!< true if to use any X-axis autoscale values.
-      double autoscale_plusminus_; //!< For uncertain values, allow for plusminus ellipses showing 67%, 95% and 99% confidence limits.\n
+      double autoscale_plusminus_; //!< For uncertain values, allow for text_plusminus ellipses showing 67%, 95% and 99% confidence limits.\n
       //!< For example, if a max value is 1.2 +or- 0.02, then 1.4 will be used for autoscaling the maximum.\n
       //!< Similarly, if a min value is 1.2 +or- 0.02, then 1.0 will be used for autoscaling the minimum.
+
+      double text_plusminus_; // Nominal factor of 1. (default) corresponds to 67% confidence limit.
 
       bool x_include_zero_; //!< true if autoscaled, to include zero.
       int  x_min_ticks_;  //!< If autoscaled, set a minimum number of X ticks.
@@ -461,7 +478,7 @@ namespace boost
       int y_auto_ticks_; //!< Number of ticks (calculated by Y autoscale).
 
       std::vector<svg_2d_plot_series> serieses_; //!< Store of several series of data points for transformation.
-      std::vector<text_element> notes_; //!< Store of text for annotation.
+      std::vector<text_element> notes_; //!< Store of text for annotation.  (Not used yet?)
 
       std::string plot_window_clip_; /*!< = "clip_plot_window" id for clippath
         http://www.w3.org/TR/SVG/masking.html#ClipPathElement 14.1 Introduction clipping paths,\n
@@ -541,6 +558,14 @@ my_plot.background_color(ghostwhite) // Whole image.
         xy_values_on_(false), // If X & Y values of data are shown as a pair.
         x_values_style_(horizontal, 3, std::ios::dec, true, value_style_, black, black, false, false),
         y_values_style_(downward, 3, std::ios::dec, true, value_style_, black, black, false, false),
+
+        text_plusminus_(1.),
+        // Confidence interval parameters.
+        // (Could provide functions for the user to control these).
+        alpha_(0.05), // oss.iword(confidenceIndex) / 1.e6; 95% confidence.
+        epsilon_(0.05), // = oss.iword(roundingLossIndex) / 1.e3; // = allow 5% rounding loss.
+        uncSigDigits_(2), // = oss.iword(setUncSigDigitsIndex); // ISO standard =2 by default.
+        isNoisyDigit_(false), // Add extra digit to display?
 
         // Autoscaling defaults.
         autoscale_check_limits_(true), // Do check all value for limits, infinity, max, min, NaN.
@@ -1620,13 +1645,15 @@ my_plot.background_color(ghostwhite) // Whole image.
         double prev_y;
         if(series.series_.size() > 1)
         { // Need at least two points for a line  ;-)
-          std::multimap<unc<false>, unc<false>>::const_iterator j = series.series_.begin();
+          std::multimap<Meas, unc<false> >::const_iterator j = series.series_.begin();
+          //std::multimap<unc<false>, unc<false> >::const_iterator j = series.series_.begin();
           // If required to fill the area under the plot,
           // we first have to move from the X-axis (y = 0) to the first point,
           // and again to the X-axis (y = 0) at the end after the last point.
 
           // std::multimap<double, double> was prev_x = (*j).first;
-          unc<false> prev_ux = (*j).first;
+          Meas prev_ux = (*j).first;
+          //unc<false> prev_ux = (*j).first;
           prev_x = prev_ux.value(); // 1st point X-value.
           prev_y = 0.; // y = 0, so on horizontal X-axis.
           transform_point(prev_x, prev_y);
@@ -1699,23 +1726,25 @@ my_plot.background_color(ghostwhite) // Whole image.
 
         if(series.series_.size() > 2)
         { // Need >= 3 points for a cubic curve (start point, 2 control points, and end point).
-          std::multimap<unc<false>, unc<false> >::const_iterator iter = series.series_.begin();
-          std::pair<unc<false>, unc<false> > un_minus_1 = *(iter++); // 1st unc X & Y data.
+          std::multimap<Meas, unc<false> >::const_iterator iter = series.series_.begin();
+ //         std::multimap<unc<false>, unc<false> >::const_iterator iter = series.series_.begin();
+          std::pair<Meas, unc<false> > un_minus_1 = *(iter++); // 1st unc X & Y data.
+//          std::pair<unc<false>, unc<false> > un_minus_1 = *(iter++); // 1st unc X & Y data.
           n_minus_1 = std::make_pair(un_minus_1.first.value(), un_minus_1.second.value()); // X and Y values.
           //n_minus_1 = *(iter++);  // begin()
           transform_pair(n_minus_1);
 
-          std::pair<unc<false>, unc<false> > un = *(iter++); // middle
+          std::pair<Meas, unc<false> > un = *(iter++); // middle
           n = std::make_pair(un.first.value(), un.second.value()); // X and Y values.
           transform_pair(n);
           path.M(n_minus_1.first, n_minus_1.second); // move m_minus_1, the 1st data point.
 
           double control = 0.1;
-          //0.2 is a scaling factor that Jake used to define the magnitude of the
-          //vector of the current control point to be placed. I was basically
-          //taking advantage of the auto-drawing of Bezier curves that exists in
-          //the SVG format, and this is my attempt to give the control point the
-          //proper length.
+          // 0.2 is a scaling factor that Jake used to define the magnitude of the
+          // vector of the current control point to be placed, basically
+          // taking advantage of the auto-drawing of Bezier curves that exists in
+          // the SVG format, and this is his attempt to give the control point the
+          // proper length.
 
           // Experiment suggests that 0.2 gives distorsions with exp curves.
           // 0.05 is just visually OK with 50 points, but 100 are better.
@@ -1724,7 +1753,7 @@ my_plot.background_color(ghostwhite) // Whole image.
           {
             n_minus_2 = n_minus_1;
             n_minus_1 = n;
-            std::pair<unc<false>, unc<false> > un = *iter; // middle
+            std::pair<Meas, unc<false> > un = *iter; // middle
             n = std::make_pair(un.first.value(), un.second.value()); // X and Y values.
             transform_pair(n);
 
@@ -1785,15 +1814,17 @@ my_plot.background_color(ghostwhite) // Whole image.
             .fill_color(serieses_[i].point_style_.fill_color_)
             .stroke_color(serieses_[i].point_style_.stroke_color_);
 
-          for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
+          for(std::multimap<Meas, unc<false> >::const_iterator j = serieses_[i].series_.begin();
+          //for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
             j != serieses_[i].series_.end(); ++j)
           {
-            unc<false> ux = j->first;
+            Meas ux = j->first;
+            //unc<false> ux = j->first;
             x = ux.value(); // Just the X value.
             //double vx = x; // Note the true X value.
             unc<false> uy = j->first;
             uy = j->second;
-            y = uy.value(); // Just the Y value
+            y = uy.value(); // Just the Y value.
             //double vy = y; // Note the true Y value.
             transform_point(x, y); // Note x and y are now SVG coordinates.
             if((x > plot_left_) && (x < plot_right_) && (y > plot_top_) && (y < plot_bottom_))
@@ -1813,7 +1844,7 @@ my_plot.background_color(ghostwhite) // Whole image.
                 draw_plot_point_value(x, y, g_ptr_vy, y_values_style_,serieses_[i].point_style_, uy);
               }
               if (xy_values_on_)
-              { // Show the values of the X & Y data as a pair.
+              { // Show the two values of the X & Y data as a pair.
                 draw_plot_point_values(x, y, g_ptr_vx, g_ptr_vy, x_values_style_, y_values_style_, ux, uy);
               }
             } // if in side window
@@ -1926,10 +1957,10 @@ my_plot.background_color(ghostwhite) // Whole image.
 
           double h_w = serieses_[i].bar_style_.width_; // For block bar chart.
           //double h_h = 0.;
-          for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
+          for(std::multimap<Meas, unc<false> >::const_iterator j = serieses_[i].series_.begin();
             j != serieses_[i].series_.end(); ++j)
           { // All the 'good' data points.
-            unc<false> ux = j->first;
+            Meas ux = j->first;
             x = ux.value();
             unc<false> uy = j->second;
             y = uy.value();
@@ -2017,26 +2048,26 @@ my_plot.background_color(ghostwhite) // Whole image.
             path.style().fill_color(blank);
           }
 
-          std::multimap<unc<false>, unc<false> >::const_iterator last = serieses_[i].series_.end();
+          std::multimap<Meas, unc<false> >::const_iterator last = serieses_[i].series_.end();
           last--; // Final pair with first the last bin end, and value zero or NaN.
-          unc<false> u = last->second;
+          Meas u = last->second;
           if (u.value() != 0)
           {
             std::cout << "Last bin end " << last->first << " should have zero value! but is "  << last->second << std::endl;
             // Or Throw? or skip this series?
           }
-          for(std::multimap<unc<false>, unc<false> >::const_iterator j = serieses_[i].series_.begin();
+          for(std::multimap<Meas, unc<false> >::const_iterator j = serieses_[i].series_.begin();
             j != last; ++j)
           { // All the 'good' 'real' data points.
-            unc<false> ux = j->first;
+            Meas ux = j->first;
             double x = ux.value();
             unc<false> uy =  j->second;
             double y = uy.value();
-            std::multimap<unc<false>, unc<false> >::const_iterator j_next = j;
+            std::multimap<Meas, unc<false> >::const_iterator j_next = j;
             j_next++;
             if (j != last)
             { // Draw a column (perhaps filled) to show bin.
-              unc<false> ux_next= j_next->first;
+              Meas ux_next= j_next->first;
               double x_next = ux_next.value();
               double w = x_next - x;
               double h = y / w;
@@ -2178,6 +2209,13 @@ my_plot.background_color(ghostwhite) // Whole image.
       svg_2d_plot& y_plusminus_on(bool b);
       svg_2d_plot& y_plusminus_color(const svg_color& col);
       const svg_color y_plusminus_color();
+
+      bool y_addlimits_on();
+      svg_2d_plot& y_addlimits_on(bool b);
+      svg_2d_plot& y_addlimits_color(const svg_color& col);
+      const svg_color y_addlimits_color();
+
+
       bool y_df_on();
       svg_2d_plot& y_df_on(bool b);
       svg_2d_plot& y_df_color(const svg_color& col);
@@ -2629,6 +2667,33 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
       { //! \return color of Y uncertainty of value.
         return y_values_style_.plusminus_color_;
       }
+
+
+
+      bool svg_2d_plot::y_addlimits_on()
+      {//! \return true if values of Y data points are to include confidence interval.
+        return y_values_style_.addlimits_on_;
+      }
+
+      svg_2d_plot& svg_2d_plot::y_addlimits_on(bool b)
+      { //! Set true if values of Y data points are to include confidence interval.
+        y_values_style_.addlimits_on_ = b;
+        return *this;
+      } //! \return reference to svg_2d_plot to make chainable.
+
+      svg_2d_plot& svg_2d_plot::y_addlimits_color(const svg_color& col)
+      {  //! Set color of Y confidence interval.
+        y_values_style_.addlimits_color_ = col;
+        return *this; //! \return reference to svg_2d_plot to make chainable.
+      }
+
+      const svg_color svg_2d_plot::y_addlimits_color()
+      { //! \return color of Y confidence interval.
+        return y_values_style_.addlimits_color_;
+      }
+
+
+
 
       bool svg_2d_plot::y_df_on()
       { //! \return true if values of Y data points are to include degrees of freedom estimates.
@@ -3151,19 +3216,19 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
         return *this; //! \return reference to svg_2d_plot to make chainable.
       } // write(file)
 
-  template <class T> //! \tparam T Type of data in series (must be convertible to unc double).
+  template <class T> //! \tparam T Type of data in series (must be convertible to Meas).
   svg_2d_plot_series& svg_2d_plot::plot(const T& container, const std::string& title)
   { /*! Add a container of a data series to the plot.
       This version assumes that  \b ALL the data values in the container are to be plotted.
       \code
 my_plot.plot(data1, "Sqrt(x)");
       \endcode
-      Version converting to double with \c pair_double_2d_convert.
+      Version converting to Meas using double with \c pair_double_2d_convert.
     */
     serieses_.push_back(
       svg_2d_plot_series(
-      boost::make_transform_iterator(container.begin(), detail::pair_unc_2d_convert<false>()),
-      boost::make_transform_iterator(container.end(), detail::pair_unc_2d_convert<false>()),
+      boost::make_transform_iterator(container.begin(), detail::pair_Meas_2d_convert<false>()),
+      boost::make_transform_iterator(container.end(), detail::pair_Meas_2d_convert<false>()),
       title)
     );
     return serieses_[serieses_.size()-1]; //! \return Reference to data series just added to make chainable.

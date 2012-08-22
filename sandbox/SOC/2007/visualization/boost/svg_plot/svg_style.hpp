@@ -539,7 +539,8 @@ text_style no_style; //!< Text style that uses all constructor defaults.
 
 class value_style
 { /*! \class boost::svg::value_style
-     \brief Data series point value label information, text, color, orientation, (uncertainty & df).
+     \brief Data series point value label information, text, color, orientation, (uncertainty & df),
+     name ID string, order in sequence, time and date.
      \details For example, to output: 5.123 +- 0.01 (19).
      Uncertainty and degrees of freedom estimate.
      Prefix, separator and suffix allow X and Y values to be together on one line, for example\n
@@ -547,8 +548,9 @@ class value_style
      Used in draw_plot_point_values (note plural - not used in singular draw_plot_point_value)
      where X value_style is used to provide the prefix and separator, and Y value_style to provide the suffix.
      Prefix, separator and suffix are ignored when X or Y are shown separately using draw_plot_point_value.
+     "4.5+- 0.01 (3) Second #2, 2012-Mar-13 13:01:00"
+
   */
-// private: // would require lots of set/get functions or lots of friend statements?
 public:
   rotate_style value_label_rotation_; //!< Direction point value labels written.
   int value_precision_; //!< Decimal digits of precision of value.
@@ -562,30 +564,48 @@ public:
      \details See http://en.wikipedia.org/wiki/Plus-minus_sign
     */
   svg_color plusminus_color_; //!< Color for uncertainty, for example: 0.02 in "1.23 +-0.02".
+  bool addlimits_on_; //!< If an confidence interval is to be added, for example <4.5, 4.8>.
+  svg_color addlimits_color_; //!< Color for confidence interval.
   bool df_on_; //!< If a degrees of freedom estimate is to be appended.
   svg_color df_color_; //!< Color for degrees for freedom, for example: 99 in "1.23 +-0.02 (99)".
+  bool id_on_;  //!< If an id or name string to be appended. default == false,
+  svg_color id_color_; //!< Color for id or name string".
+  bool datetime_on_; //!< If an time and/or date string to be appended. default == false,
+  svg_color datetime_color_; //!< Color for time and date string".
+  bool order_on_;  //!< If an order in sequence number # to be appended. default == false,
+  svg_color order_color_; //!< Color for sequence number #".
   std::string prefix_; //!< Prefix to data point value, default none, but typically "[".
   std::string separator_; //!< Separator between x and y values, if both on same line (none if only X or only Y, or Y below X).
   std::string suffix_; //!< Suffix to data point value, default none, but typically "]".
 
-  public:
-    value_style(); //!< Default style for a data point value label.
-    value_style( //!< Set style for a data point value label.
-      rotate_style r, //!< Label orientation, default horizontal.
-      int p, //!< Precision, reduced from default of 6 which is usually too long.
-      std::ios_base::fmtflags f, //!< Any std::ios::ioflags, for example, hex, fixed, scientific.
-      bool s, //!< If true, then unnecessary zeros will be stripped to reduce length.
-      text_style ts,  //!< Value text style, all defaults, black etc.
-      const svg_color& scol,  //!< stroke color == black.
-      const svg_color& fcol, //!< fill color== black.
-      bool pm, //!< If uncertainty estimate to be appended. == false,
-      const svg_color& plusminus_color,  //!< Default color for uncertainty of value.
-      bool df,  //!< If a degrees of freedom estimate to be appended. == false,
-      const svg_color& df_color,  //!< Default color for degrees of freedom.
-      std::string pre, //!< Prefix, for example: "[",
-      std::string sep, //!< separator, for example: ",&#x00A0;",
-      //!< (If just put ", " the trailing space seems to be ignored, so add Unicode explicit space).
-      std::string suf ); //!< suffix, for example: "]"
+  // Constructors declarations.
+  value_style(); //!< Default style for a data point value label.
+
+  value_style( //!< Set style for a data point value label.
+    rotate_style r, //!< Label orientation, default horizontal.
+    int p, //!< Precision, reduced from default of 6 which is usually too long.
+    std::ios_base::fmtflags f, //!< Any std::ios::ioflags, for example, hex, fixed, scientific.
+    bool s, //!< If true, then unnecessary zeros will be stripped to reduce length.
+    text_style ts,  //!< Value text style, all defaults, black etc.
+    const svg_color& scol,  //!< stroke color == black.
+    const svg_color& fcol, //!< fill color== black.
+    bool pm, //!< If uncertainty estimate to be appended. == false,
+    const svg_color& plusminus_color,  //!< Default color for uncertainty of value.
+    bool lim, //!< If uncertainty estimate to be appended. == false,
+    const svg_color& addlimits_color,  //!< Default color for uncertainty of value.
+    bool df,  //!< If a degrees of freedom estimate to be appended. == false,
+    const svg_color& df_color,  //!< Default color for degrees of freedom.
+    bool id,  //!< If an id or name string to be appended. default == false,
+    const svg_color& id_color,  //!< Default color for id or name of value.
+    bool dt,  //!< If an time and/or date string to be appended. default == false,
+    const svg_color& dt_color,  //!< Default color for date and time.
+    bool ordno,  //!< If an order in sequence number # to be appended. default == false,
+    const svg_color& ordno_color,  //!< Default color for degrees of freedom.
+    std::string pre, //!< Prefix, for example: "[",
+    std::string sep, //!< separator, for example: ",&#x00A0;",
+    //!< (If just put ", " the trailing space seems to be ignored, so add Unicode explicit space).
+    std::string suf //!< suffix, for example: "]"
+  );
 
 }; // class value_style
 
@@ -603,11 +623,23 @@ public:
     fill_color_(svg_color(0, 0, 0)), //!< no fill.
     plusminus_on_(false), //!< If uncertainty estimate to be appended.
     plusminus_color_(black), //!< Default color for uncertainty of value.
+    addlimits_on_(false), //!< If uncertainty estimate to be appended.
+    addlimits_color_(black), //!< Default color for uncertainty of value.
     df_on_(false), //!< If a degrees of freedom estimate to be appended.
-    df_color_(black) //!< Default color for degrees of freedom.
+    df_color_(black), //!< Default color for degrees of freedom is black.
+    id_on_(false), //!< If an id or name string to be appended.
+    id_color_(black), //!< Default color for an id or name string is black.
+    datetime_on_(false), //!< If a date and date to be appended.
+    datetime_color_(black), //!< Default color for date and date is black.
+    order_on_(false), //!< If a order #  to be appended.
+    order_color_(black), //!< Default color for order # is black.
+    prefix_(""),
+    separator_(","),
+    suffix_("")
     { //! Default constructor initialises all private data.
     }
 
+    //!< Constructor Data point value label style (provides default color and font).
     value_style::value_style(rotate_style r, //!< Label orientation, default horizontal.
       int p, //!< Reduced from default of 6 which is usually too long.
       std::ios_base::fmtflags f, //!< Any std::ios::ioflags, for example, hex, fixed, scientific.
@@ -617,8 +649,16 @@ public:
       const svg_color& fcol = black,  //!< no fill.
       bool pm = false, //!< If uncertainty estimate to be appended.
       const svg_color& plusminus_color = black, //!< Default color for uncertainty of value.
+      bool lim = false, //!< If confidence limits to be appended.
+      const svg_color& addlimits_color = black, //!< Default color for confidence limits.
       bool df = false,  //!< If a degrees of freedom estimate to be appended.
       const svg_color& df_color = black,//!< Default color for uncertainty of value.
+      bool id = false,  //!< If a degrees of freedom estimate to be appended.
+      const svg_color& id_color = black,//!< Default color for uncertainty of value.
+      bool dt = false,  //!< If a degrees of freedom estimate to be appended.
+      const svg_color& dt_color = black,//!< Default color for uncertainty of value.
+      bool ordno = false,  //!< If a degrees of freedom estimate to be appended.
+      const svg_color& order_color = black,//!< Default color for uncertainty of value.
       // Separators [,] provide, for example: [1.23+-0.01 (3), 4.56 +-0.2 (10)]
       std::string pre = "", //!< Prefix, for example: "[",
       std::string sep  = "", //!< separator, for example: ,\&\#x00A0;", // If put ", " the trailing space seems to be ignored, so add Unicode explicit space.
@@ -626,7 +666,12 @@ public:
     :
     value_label_rotation_(r), value_precision_(p), value_ioflags_(f), strip_e0s_(s),
     values_text_style_(ts), stroke_color_(scol), fill_color_(fcol),
-    plusminus_on_(pm), plusminus_color_(plusminus_color), df_on_(df), df_color_(df_color),
+    plusminus_on_(pm), plusminus_color_(plusminus_color),
+    addlimits_on_(lim), addlimits_color_(addlimits_color),
+    df_on_(df), df_color_(df_color),
+    id_on_(id), id_color_(id_color),
+    datetime_on_(dt), datetime_color_(dt_color),
+    order_on_(ordno), order_color_(order_color),
     prefix_(pre), separator_(sep), suffix_(suf)
     { //! Constructor setting parameters with some defaults.
     }
@@ -637,7 +682,10 @@ enum point_shape
 { //! \enum point_shape used for marking a data point.
   // Used in draw_plot_point in axis_plot_frame.hpp
   none = 0, //!< No marker for data point.
-  round, //!< Circle but name changed to round to avoid clash with function named circle.
+  circlet, /*!< Circle. Name was changed to round to avoid clash with function named circle,
+  but was then found to clash with C++ Standard numeric function round.
+  Full qualification `point_shape::round` requires C++11 support to compile, so then changed to circlet.
+  */
   square, //!< Square.
   point, //!< Small solid point.
   egg, //!< Ellipse.
@@ -705,7 +753,7 @@ public:
     const svg_color& stroke = black,  //!< Color of circumference of shape.
     const svg_color& fill = blank, //!< Fill color of the centre of the shape.
     int size = 5, //!< Diameter of circle, height of square, font_size  ...
-    point_shape shape = round, //!< shape: round, square, point...
+    point_shape shape = circlet, //!< shape: circlet, square, point...
     const std::string& symbols = "X"); //!< Unicode symbol(s) (letters, digits, squiggles etc).
 
   plot_point_style& size(int i);

@@ -241,8 +241,20 @@ void show_1d_plot_settings(svg_1d_plot& plot)
   outFmtFlags(plot.x_value_ioflags(), cout,  ".\n");
   cout << "x_plusminus_on " << plot.x_plusminus_on() << endl;
   cout << "x_plusminus_color " << plot.x_plusminus_color() << endl;
+  cout << "x_addlimits_on " << plot.x_addlimits_on() << endl;
+  cout << "x_addlimits_color " << plot.x_addlimits_color() << endl;
   cout << "x_df_on " << plot.x_df_on() << endl;
   cout << "x_df_color " << plot.x_df_color() << endl;
+
+  cout << "x_id_on " << plot.x_id_on() << endl;
+  cout << "x_id_color " << plot.x_id_color() << endl;
+
+  cout << "x_datetime_on " << plot.x_datetime_on() << endl;
+  cout << "x_datetime_color " << plot.x_datetime_color() << endl;
+
+  cout << "x_order_on " << plot.x_df_on() << endl;
+  cout << "x_order_color " << plot.x_df_color() << endl;
+
   cout << "x_prefix \"" << plot.x_prefix()  << '"' << endl;
   cout << "x_separator \"" << plot.x_separator()  << '"' << endl;
   cout << "x_suffix \"" << plot.x_suffix()  << '"' << endl;
@@ -296,6 +308,7 @@ void show_1d_plot_settings(svg_1d_plot& plot)
   cout << "x_axis_position " << plot.x_axis_position() << endl;
   cout << "x_autoscale " << plot.x_autoscale() << endl;
   cout << "x_autoscale_check_limits " << plot.autoscale_check_limits() << endl;
+  cout << "confidence alpha " << plot.confidence() << endl;
   cout << "data lines width " << plot.data_lines_width() << endl;
   cout.flags(iostate); // Restore.
 } // void show_plot_settings(svg_1d_plot& plot)

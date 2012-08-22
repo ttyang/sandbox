@@ -2,11 +2,11 @@
 
   \brief Shows settings and options for 2D Plot.
 
-    \see show_1d_settings.cpp for 1-D plot.
+   \see show_1d_settings.cpp for 1-D plot.
 */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2007, 2009
+// Copyright Paul A. Bristow 2007, 2009, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -15,6 +15,12 @@
 
 #ifndef BOOST_SVG_SHOW_2D_SETTINGS_HPP
 #define BOOST_SVG_SHOW_2D_SETTINGS_HPP
+
+#ifdef _MSC_VER
+#  pragma once
+#endif
+
+#include <boost/svg_plot/detail/pair.hpp>
 
 #include <iostream>
 
@@ -58,12 +64,17 @@ const char* fmtFlagWords[16] =
     */
 }; // const char* fmtFlagWords
 
+/*
+
+Now use the version in xiostream.ipp
+void outFmtFlags(std::ios_base::fmtflags fmtFlags = cout.flags(), std::ostream& os = std::cerr, const char* term = ".\n");
+
 void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char* term)
 { //! Output strings describing format flags of each bit in std::ios_base::fmtflags.
 
-  /*! Usage:  outFmtFlags(flags, cerr);
-    For example, logs to cerr "FormatFlags: skipws showbase right dec"
-  */
+  //! Usage:  outFmtFlags(flags, cerr);
+  //!  For example, logs to cerr "FormatFlags: skipws showbase right dec"
+
   //void outFmtFlags(std::ios_base::fmtflags fmtFlags = cout.flags(), ostream& os = cerr, const char* term = ".\n");
   const int up = 16; // Words across page.
   const int count = 16;  // cos using unsigned short int.
@@ -93,20 +104,21 @@ void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char*
   os << term; // eg "\n" or ". "
   os.flags(flags);  // Restore.
 }  // outFmtFlags
+  */
 
-  const std::string l_or_r(int i)
-  {
-   return ((i < 0) ? "left" : ((i == 0) ? "none" : "right"));
-  }
+const std::string l_or_r(int i)
+{
+  return ((i < 0) ? "left" : ((i == 0) ? "none" : "right"));
+}
 
-  const std::string t_or_b(int i)
-  {
-   return ((i < 0) ? "bottom" : ((i == 0) ? "none" : "top"));
-  }
+const std::string t_or_b(int i)
+{
+  return ((i < 0) ? "bottom" : ((i == 0) ? "none" : "top"));
+}
 
 void show_2d_plot_settings(svg_2d_plot& plot)
 { /*! Diagnostic display of all of a 2D plot's settings.
-    Outputs  a long list of about hundred of plot parameter settings to @c cout:
+    Outputs a long list of about 100 plot parameter settings to @c std::cout:
     invaluable if the plot does not look as expected.
    \warning This creates about 100 lines of output, so should be used sparingly!
   */
@@ -118,11 +130,11 @@ void show_2d_plot_settings(svg_2d_plot& plot)
   using std::boolalpha;
   using std::fixed;
 
-  using boost::svg::detail::operator<<;
-  // std::ostream& operator<< (std::ostream&, const std::pair<double, double>&);
-  // defined above.
+    using boost::svg::detail::operator<<;
 
-  int iostate = cout.flags(); // Save to restore one exit.
+  //std::ostream& operator<< (std::ostream& os, const std::pair<double, double>& p); //! Output pair of doubles to ostream.
+
+  int iostate = cout.flags(); // Save to restore on exit.
   cout << dec << std::boolalpha << endl;
   cout  << endl;
 
@@ -140,7 +152,7 @@ void show_2d_plot_settings(svg_2d_plot& plot)
   //cout << plot.draw_bezier_lines() << endl;
   cout << "x_size " << plot.x_size() << endl;
   cout << "image y_size " << plot.y_size() << endl;
-  cout << "image x_size " << plot.size() << endl;
+  //cout << "image x & y sizes " << plot.size() << endl;
   cout << "image_filename " << plot.image_.image_filename() << endl;
   cout << "legend_on " << plot.legend_on() << endl;
   std::pair<double, double> lt = plot.legend_top_left();
@@ -296,15 +308,19 @@ void show_2d_plot_settings(svg_2d_plot& plot)
   cout << "y_values_on "  << plot.y_values_on() << endl;
   cout << "y_plusminus_on " << plot.y_plusminus_on() << endl;
   cout << "y_plusminus_color " << plot.y_plusminus_color() << endl;
+  cout << "x_addlimits_on " << plot.x_addlimits_on() << endl;
+  cout << "x_addlimits_color " << plot.x_addlimits_color() << endl;
+
   cout << "y_df_on " << plot.y_df_on() << endl;
   cout << "y_df_color " << plot.y_df_color() << endl;
   cout << "y_prefix \"" << plot.y_prefix()  << '"' << endl;
   cout << "y_separator \"" << plot.y_separator()  << '"' << endl;
   cout << "y_suffix \"" << plot.y_suffix()  << '"' << endl;
+  cout << "confidence alpha " << plot.confidence() << endl;
 
   cout << "data lines width " << plot.data_lines_width() << endl;
 
- cout.flags(iostate); // Restore.
+  cout.flags(iostate); // Restore saved iostate.
 } // void show_plot_settings(svg_2d_plot& plot)
 
 } // svg

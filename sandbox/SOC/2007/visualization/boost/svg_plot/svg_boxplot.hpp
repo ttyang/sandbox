@@ -47,7 +47,9 @@
 #include  <boost/svg_plot/detail/axis_plot_frame.hpp>
 #include  <boost/svg_plot/detail/auto_axes.hpp>
 #include  <boost/svg_plot/quantile.hpp>
-#include  <boost/svg_plot/uncertain.hpp>
+
+#include <boost/quan/unc.hpp>
+
 
 #include <vector>
 #include <string>
@@ -60,9 +62,6 @@ namespace boost
 {
 namespace svg
 {
-  //static const double sin45 = 0.707; // Use if axis value labels are sloping.
-  //static svg_style not_a_svg_style; // Used as a test for not set.
-
   //// x_axis_position_ and y_axis_position_  use these.
   //enum x_axis_intersect {bottom = -1, x_intersects_y = 0, top = +1};
   //// bottom = X-axis free below bottom of end of Y-axis (case of all Y definitely < 0).
@@ -701,10 +700,14 @@ class svg_boxplot  : public detail::axis_plot_frame<svg_boxplot>
   int x_auto_ticks_; //!< Number of ticks calculated by scale_axis.
 
   bool y_autoscale_; //!< If true then to use any y_axis autoscale values.
-  double autoscale_plusminus_; //!< For uncertain values, allow for plusminus ellipses showing 67%, 95% and 99% confidence limits.\n
+  double autoscale_plusminus_; //!< For uncertain values, allow for text_plusminus ellipses showing 67%, 95% and 99% confidence limits.\n
   //!< For example, if a max value is 1.2 +or- 0.02, then 1.4 will be used for autoscaling the maximum.\n
   //!< Similarly, if a min value is 1.2 +or- 0.02, then 1.0 will be used for autoscaling the minimum.
 
+  double text_plusminus_; /*!< Number of standard deviations used for text_plusminus text display.\n
+    Nominal factor of 1. (default) corresponds to 67% confidence limit,
+    2 (strictly 1.96) corresponds to 95% confidence limit. */
+  
   bool y_include_zero_; //!< If autoscaled, include zero.
   int  y_min_ticks_;  //!< If autoscaled, set a minimum number of Y ticks.
   double y_tight_; //!< How much a point is allowed beyond the Y minimum or maximum before another tick is used.
@@ -724,7 +727,14 @@ class svg_boxplot  : public detail::axis_plot_frame<svg_boxplot>
   bool median_values_on_; //!< true if median of data is shown as well as a line marker.
   bool outlier_values_on_; //!< true if outlier values of data are shown.
   bool extreme_outlier_values_on_; //!< true if values of extreme outlier data are shown.
-
+ 
+  // Parameters for calculating confidence intervals (for both X and Y values).
+  // These might be picked up from uncertain types.
+  double alpha_; // = 0.05; // oss.iword(confidenceIndex) / 1.e6; // Pick up alpha.
+  double epsilon_; // = 0.01; // = oss.iword(roundingLossIndex) / 1.e3; // Pick up rounding loss.
+  int uncSigDigits_; // = 2; // = oss.iword(setUncSigDigitsIndex);  // Pick up significant digits for uncertainty.
+  bool isNoisyDigit_; // = false; // Pick up?
+  
   std::vector<svg_boxplot_series> series; //!< Storing the data points for sorting by value.
 
   // Defaults (see below) for the box'n'whiskers
@@ -813,7 +823,7 @@ public:
   axis_style_(black, blank, 1),
   min_whisker_style_(magenta, black, 1),
   max_whisker_style_(cyan, black, 1),
-  mild_outlier_(brown, blank, 5, round),
+  mild_outlier_(brown, blank, 5, circlet),
   ext_outlier_(red, blank, 5, cone)
   { //! Default constructor providing all the default colors, style etc,
     using std::cout;
@@ -1737,7 +1747,7 @@ public:
       { // Inside plot window so want to show.
         y = value;
         transform_y(y); // to SVG.
-        draw_plot_point(x, y, g_mild_ptr, const_cast<plot_point_style&>(mild_style), unc(0), unc(0)); // Kludge!
+        draw_plot_point(x, y, g_mild_ptr, const_cast<plot_point_style&>(mild_style), unc<false>(0), unc<false>(0)); // Kludge!
         if (outlier_values_on_)
         { // Show the value of the data point too.
           draw_plot_point_value(x, y, image_.g(boxplot::DATA_VALUE_LABELS).add_g_element(), const_cast<value_style&>(values_style), mild_outlier_, value);

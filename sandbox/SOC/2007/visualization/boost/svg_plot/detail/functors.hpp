@@ -11,7 +11,7 @@
 */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2009
+// Copyright Paul A. Bristow 2009, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -26,8 +26,9 @@
 #  pragma warning (disable : 4244)
 #endif
 
-#include <boost/svg_plot/uncertain.hpp>
-//using boost::svg::unc;
+//#include <boost/svg_plot/uncertain.hpp>
+#include <boost/quan/unc.hpp>
+#include <boost/quan/meas.hpp>
 
 namespace boost {
 namespace svg {
@@ -49,13 +50,69 @@ public:
     }
 }; // class double_1d_convert
 
+template <bool correlated>
+class unc_1d_convert
+{ /*! \class boost::svg::detail::unc_1d_convert
+      \brief This functor allows any 1D data convertible to unc (uncertain doubles) to be plotted.
+      \details Defaults provided by the unc class constructor ensure that
+        uncertainty, degrees of freedom information, and type are suitably set too.
+*/
+public:
+    typedef unc<correlated> result_type; //!< result type is an uncertain floating-point type.
+
+    //! \tparam T Any data type with a value convertible to double, for example: double, unc, Meas.
+    template <class T>
+    unc<correlated> operator()(T val) const
+    /*!< Convert to uncertain type,
+      providing defaults for uncertainty,  degrees of freedom information, and type (meaning undefined).
+    \return value including uncertainty information.
+    */
+    {
+      return (unc<correlated>)val;
+      /*! \return uncertain type (uncertainty, degrees of freedom information, and type meaning undefined).
+       warning C4244: 'argument' : conversion from 'long double' to 'double', possible loss of data.
+       because unc only holds values to double precision. 
+       Suppressed by pragma for MSVC above. Need similar for other compilers.
+      */
+    }
+}; // template <bool correlated> class default_1d_convert
+
+class meas_1d_convert
+{ /*! \class boost::svg::detail::meas_1d_convert
+      \brief This functor allows any 1D data convertible to measurements
+      (with uncertain doubles) to be plotted.
+      \details Defaults provided by the meas class constructor ensure that
+        uncertainty, degrees of freedom information, type, and order, timestamp and id are suitably set too.
+*/
+public:
+    typedef Meas result_type; //!< result type includes an uncertain floating-point type.
+
+    //! \tparam T Any data type with a value convertible to double, for example: double, unc, Meas.
+    template <class T>
+    Meas operator()(T val) const
+    /*!< Convert to Meas type,
+      providing defaults for uncertainty, degrees of freedom information, and type (meaning undefined).
+      \return value including uncertainty and other information.
+    */
+    {
+      return (Meas)val;
+      /*! \return uncertain type (uncertainty, degrees of freedom information, and type meaning undefined).
+       Warning C4244: 'argument' : conversion from 'long double' to 'double', possible loss of data.
+       because unc only holds values to double precision. 
+       Suppressed by pragma for MSVC above. Need similar for other compilers.
+      */
+    }
+}; // class default_1d_convert
+
 class pair_double_2d_convert
 { /*! \class boost::svg::detail::pair_double_2d_convert
       \brief This functor allows any 2 D data convertible to type std::pair<double, double> to be plotted.
 */
 public:
     typedef std::pair<double, double> result_type; //!< result type is a pair (X and Y) of doubles.
+
     double i; //!< Start value.
+
     void start(double i)
     { //! Set a start value.
       i = i;
@@ -84,8 +141,10 @@ class pair_unc_2d_convert
       \brief This functor allows any 2D data convertible to type std::pair<unc, unc> to be plotted.
 */
 public:
-    typedef std::pair<unc<correlated>, unc<correlated>> result_type; //!< result type is pair of uncertain values.
+    typedef std::pair<unc<correlated>, unc<correlated> > result_type; //!< result type is pair of uncertain values.
+
     unc<correlated> i; //!< Start uncertain value.
+
     void start(unc<correlated> i)
     { //!< Set a start value.
        i = i;
@@ -102,37 +161,39 @@ public:
     template <class T>    //!< \tparam T Any type convertible to double.
     std::pair<unc<correlated>, unc<correlated> > operator()(T a)
     {  //!< Convert a pair of X and Y uncertain type values to a pair of unc.
-        return std::pair<un<correlated>c, unc<correlated> >(i++, (unc<correlated>)a); //! \return pair of unc.
+        return std::pair<unc <correlated>, unc<correlated> >(i++, (unc<correlated>)a); //! \return pair of unc.
     }
 }; // class pair_unc_2d_convert
 
 template <bool correlated>
-class unc_1d_convert
-{ /*! \class boost::svg::detail::unc_1d_convert
-      \brief This functor allows any 1D data convertible to unc (uncertain doubles) to be plotted.
-      \details Defaults provided by the unc class constructor ensure that
-        uncertainty, degrees of freedom information, and type are suitably set too.
+class pair_Meas_2d_convert
+{ /*! \class boost::svg::detail::pair_unc_2d_convert
+      \brief This functor allows any 2D data convertible to type std::pair<Meas, unc> to be plotted.
 */
 public:
-    typedef unc<correlated> result_type; //!< result type is an uncertain floating-point type.
+    typedef std::pair<Meas, unc<correlated> > result_type; //!< result type is pair of uncertain values.
 
-    //! \tparam T Any data type with a value convertible to double, for example: double, unc, Meas.
-    template <class T>
-    unc<correlated> operator()(T val) const
-    /*!< Convert to uncertain type,
-      providing defaults for uncertainty,  degrees of freedom information, and type (meaning undefined).
-    \return value including uncertainty information.
-    */
-    {
-      return (unc<correlated>)val;
-      /*! \return uncertain type (uncertainty, degrees of freedom information, and type meaning undefined).
-       warning C4244: 'argument' : conversion from 'long double' to 'double', possible loss of data.
-       because unc only holds values to double precision. 
-       Suppressed by pragma for MSVC above. Need similar for other compilers.
-      */
+    Meas i; //!< Start Meas (uncun + daetime etc) value.
+
+    void start(Meas i)
+    { //!< Set a start value.
+       i = i;
     }
-}; // class default_1d_convert
 
+    //!< \tparam T type convertible to double.
+    template <class T, class U>
+    std::pair<Meas, unc<correlated> > operator()(const std::pair<T, U>& a) const
+    {  //!< Convert a pair of X and Y uncertain type values to a pair of doubles.
+       //! \return pair of Meas & uncs.
+       return std::pair<Meas, unc<correlated> >((Meas)(a.first), (unc<correlated>)(a.second));
+    }
+
+    template <class T>    //!< \tparam T Any type convertible to double.
+    std::pair<Meas, unc<correlated> > operator()(T a)
+    {  //!< Convert a pair of X and Y uncertain type values to a pair of Meas & unc.
+        return std::pair<Meas, unc<correlated> >(i++, (unc<correlated>)a); //! \return pair of Meas & unc.
+    }
+}; // class pair_unc_2d_convert
 
 } // namespace detail
 } // namespace svg
