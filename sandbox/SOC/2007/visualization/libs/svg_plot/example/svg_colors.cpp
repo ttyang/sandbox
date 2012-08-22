@@ -44,7 +44,6 @@ using namespace boost::svg;
   using std::endl;
   using std::boolalpha;
 
-
 int main()
 {
   svg my_svg;

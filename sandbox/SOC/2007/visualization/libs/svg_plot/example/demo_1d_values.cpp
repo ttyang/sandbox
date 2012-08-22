@@ -75,7 +75,7 @@ int main()
 /*`Add the one data series, `my_data` and a description, and how the data points are to marked,
 here a circle with a diameter of 5 pixels.
 */
-    my_1d_plot.plot(my_data, "1D Values").shape(round).size(5);
+    my_1d_plot.plot(my_data, "1D Values").shape(circlet).size(5);
 
 /*`To put a value label against each data point, switch on the option:
 */
@@ -134,7 +134,7 @@ but for 2-D plots all writing orientations can be useful).
 (All the myriad settings can be displayed with `show_1d_plot_settings(my_1d_plot)`.)
 */
     //show_1d_plot_settings(my_1d_plot);
-
+    using boost::svg::detail::operator<<;
     cout << "my_1d_plot.image_size() " << my_1d_plot.size() << endl;
     cout << "my_1d_plot.image x_size() " << my_1d_plot.x_size() << endl;
     cout << "my_1d_plot.image y_size() " << my_1d_plot.y_size() << endl;

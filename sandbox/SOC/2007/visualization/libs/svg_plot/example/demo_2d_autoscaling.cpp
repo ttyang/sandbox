@@ -76,7 +76,7 @@ it would make sense to use the reference 'as new' data to scale the plot for the
 The add the (one but could be more) data series, `my_data` and a description, and how the data points are to be marked,
 here a circle with a diameter of 5 pixels, without a line joining the points (also the default).
 */
-    my_2d_plot.plot(my_data, "2d Values").shape(round).size(6).line_on(false);
+    my_2d_plot.plot(my_data, "2d Values").shape(circlet).size(6).line_on(false);
 
 /*`To use all these settings, finally write the plot to file.
 */

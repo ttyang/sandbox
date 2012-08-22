@@ -31,6 +31,9 @@
 (and some others only needed for this example).
 */
 
+#include <boost/quan/meas.hpp>
+#include <boost/quan/unc.hpp>
+
 #include <boost/svg_plot/svg_boxplot.hpp>
   using boost::svg::svg_boxplot;
 
@@ -41,6 +44,12 @@
  using boost::minmax;
 #include <boost/algorithm/minmax_element.hpp>
  using boost::minmax_element;
+
+#include <boost/svg_plot/detail/auto_axes.hpp>
+  using boost::svg::show; // A single STL container.
+  using boost::svg::show_all; // Multiple STL containers.
+  using boost::svg::range; // Find min and max of a STL container.
+  using boost::svg::range_all;// Find min and max of multipler STL containers.
 
 #include <iostream> // for debugging.
   using std::cout;
@@ -57,12 +66,6 @@
 
 #include <utility>
   using std::pair;
-
-#include <boost/svg_plot/detail/auto_axes.hpp>
-  using boost::svg::show; // A single STL container.
-  using boost::svg::show_all; // Multiple STL containers.
-  using boost::svg::range; // Find min and max of a STL container.
-  using boost::svg::range_all;// Find min and max of multipler STL containers.
 
 //] [/auto_boxplot_1]
 

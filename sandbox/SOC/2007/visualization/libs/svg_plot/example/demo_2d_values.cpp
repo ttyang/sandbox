@@ -73,7 +73,7 @@ int main()
 /*`Add the one data series, `my_data` and a description, and how the data points are to be marked,
 here a circle with a diameter of 5 pixels.
 */
-    my_2d_plot.plot(my_data, "2d Values").shape(round).size(5).line_on(false);
+    my_2d_plot.plot(my_data, "2d Values").shape(circlet).size(5).line_on(false);
 
 /*`To put a value label against each data point, switch on the option:
 */

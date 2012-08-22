@@ -157,6 +157,7 @@ int main()
   my_1d_plot.write("demo_1d_autoscaling_2.svg"); // Write the plot to file.
 
   /*`If we want, we can check the autoscale range used, noting that zero *is* included because we demanded it.*/
+  using boost::svg::detail::operator<<;
   cout << "x_range() " << my_1d_plot.x_range() << endl; // x_range() 0, 8
   //show_1d_plot_settings(my_1d_plot); // If required.
   }

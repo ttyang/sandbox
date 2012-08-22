@@ -63,7 +63,7 @@ int main()
 /*`Add the one data series, `my_data` and a description, and how the data points are to marked,
 here a circle with a diameter of 5 pixels.
 */
-    my_1d_plot.plot(my_data, "1D limits").shape(round).size(5);
+    my_1d_plot.plot(my_data, "1D limits").shape(circlet).size(5);
 
 /*`To put a value label against each data point, switch on the option:
 */

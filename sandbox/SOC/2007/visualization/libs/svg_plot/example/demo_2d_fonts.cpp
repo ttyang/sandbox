@@ -152,7 +152,7 @@ int main()
          ;
 
       // Add a container of data to the plot, choosing a color.
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(3).bezier_on(true).line_color(pink);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(3).bezier_on(true).line_color(pink);
 
       my_plot.write("./demo_2d_fonts_1.svg"); // Write 1st plot to file.
       // Show some styling, for example for X ticks.
@@ -172,7 +172,7 @@ int main()
              //.x_label_font_size(10)
              //.y_label_font_size(10)
              ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_1.svg"); // Write another plot to file.
     }
     {
@@ -183,7 +183,7 @@ int main()
              .y_label("y (small X axis label font size 10)")
              .x_label_font_size(10)
              .y_label_font_size(10);
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_2.svg"); // Write another plot to file.
     }
     {
@@ -194,7 +194,7 @@ int main()
              .y_label("Y axis label 30")
             .x_label_font_size(30)
             .y_label_font_size(30);
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_3.svg"); // Write another plot to file.
     }
     {
@@ -209,7 +209,7 @@ int main()
             .y_ticks_values_font_size(20)
 
             ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_4.svg"); // Write another plot to file.
     }
 // Now alter the rotation of the axis labels.
@@ -224,7 +224,7 @@ int main()
              //.x_label_font_size(10)
              //.y_label_font_size(10)
              ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_5.svg"); // Write another plot to file.
     }
     {
@@ -239,7 +239,7 @@ int main()
              .y_major_label_rotation(uphill)
              ;
 
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_6.svg"); // Write another plot to file.
     }
 
@@ -254,7 +254,7 @@ int main()
              .x_major_label_rotation(uphill)
              .y_major_label_rotation(uphill)
              ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_7.svg"); // Write another plot to file.
     }
 
@@ -271,7 +271,7 @@ int main()
              .x_major_label_rotation(uphill)
              .y_major_label_rotation(uphill)
             ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_8.svg"); // Write another plot to file.
     }
     {
@@ -283,7 +283,7 @@ int main()
              .x_major_label_rotation(downward)
              .y_major_label_rotation(upward)
              ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_9.svg"); // Write another plot to file.
     }
     {
@@ -298,7 +298,7 @@ int main()
              .y_major_label_rotation(steepup)
              ;
 
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_10.svg"); // Write another plot to file.
     }
     {
@@ -312,7 +312,7 @@ int main()
              .x_major_label_rotation(downhill)
              .y_major_label_rotation(uphill)
              ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_11.svg"); // Write another plot to file.
     }
     {
@@ -328,7 +328,7 @@ int main()
              .x_major_label_rotation(slopedownhill)
              .y_major_label_rotation(slopeup)
             ;
-      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(10).line_on(false).line_color(green);
+      my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(10).line_on(false).line_color(green);
       my_plot.write("./demo_2d_fonts_12.svg"); // Write another plot to file.
     }
   }

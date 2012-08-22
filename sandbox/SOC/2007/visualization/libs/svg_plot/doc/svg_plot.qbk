@@ -79,20 +79,21 @@ You may wish to associate Firefox with SVG files (or perhaps Inkview - see below
 
 * [@http:/www.google.com/chrome Google Chrome browser]
 
-* [@www.opera.com Opera] has [@http://www.opera.com/docs/specs/svg/ svg support]
-but the quality of rendering is sometimes not as good as other browsers.
+* [@www.opera.com Opera] has [@http://www.opera.com/docs/specs/svg/ svg support].
 
-* Microsoft Internet Explorer, provided a suitable
+* Microsoft Internet Explorer IE9 and later,
+but the quality of rendering is poor compared to all other browsers and cannot be recommended.
+But earlier versions of Microsoft Internet Explorer can render SVG files provided a suitable
 [@http://www.adobe.com/svg/ Adobe SVG Viewer plug-in for SVG files] is installed.
-Shamefully, even IE8 Beta does not yet offer SVG rendering.
 (Adobe have stopped offering this for download (as they warned years ago)
 but the download software can still be obtained elsewhere, for example from
 [@http://adobe-svg-viewer.software.informer.com/download/ software.informer].
 Information about limitations of IE with Vista and the Adobe add-in are given on the
 [@http://www.adobe.com/svg/viewer/install/main.html Adobe End of Line FAQ]).
 
-* [@http://www.inkscape.org/ Inkscape], a fine Open Source SVG editor Inkscape and
-a viewer Inkview with excellent rendering, full scaling and other editing features.
+* [@http://www.inkscape.org/ Inkscape], a fine Open Source SVG editor Inkscape, and
+a viewer Inkview, with excellent rendering, full scaling and other editing features.
+Inkscape is the 'gold standard' for viewing SVG files.
 
 Inkview also allows window resizing, showing the scalability of SVG files without any loss of quality,
 unlike bit image files that eventually reveal pixels as you expand the view.

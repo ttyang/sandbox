@@ -86,7 +86,7 @@ and add optional (but very helpful) data series titles
 if we want them to show on the legend.
 */
 
-  my_plot.plot(dan_times, "Dan").shape(round).size(10).stroke_color(red).fill_color(green);
+  my_plot.plot(dan_times, "Dan").shape(circlet).size(10).stroke_color(red).fill_color(green);
   my_plot.plot(elaine_times, "Elaine").shape(vertical_line).stroke_color(blue);
 
 

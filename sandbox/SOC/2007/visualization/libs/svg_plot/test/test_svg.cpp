@@ -108,8 +108,8 @@ BOOST_AUTO_TEST_CASE(test_styles)
   // svg_style.hpp
   // Test the point and line style structures.
 
-  plot_point_style my_point(svg_color(black), svg_color(black), 10, round);
-  BOOST_CHECK_EQUAL(my_point.shape(), round);
+  plot_point_style my_point(svg_color(black), svg_color(black), 10, circlet);
+  BOOST_CHECK_EQUAL(my_point.shape(), circlet);
   BOOST_CHECK_EQUAL(my_point.stroke_color(), svg_color(black));
   BOOST_CHECK_EQUAL(my_point.fill_color(), svg_color(black));
   BOOST_CHECK_EQUAL(my_point.size(), 10);

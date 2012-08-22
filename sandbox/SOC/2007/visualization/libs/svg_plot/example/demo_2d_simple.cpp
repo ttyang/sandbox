@@ -10,8 +10,10 @@
     \author Jacob Voytko and Paul A. Bristow 
 */
 
+// demo_2d_simple.cpp
+
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2007, 2008
+// Copyright Paul A. Bristow 2007, 2008, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -23,6 +25,8 @@
 
 #include <boost/svg_plot/show_2d_settings.hpp>
 // Only needed for showing which settings in use.
+
+#include <boost/quan/unc_init.hpp>
 
 #include <iostream>
   using std::cout;
@@ -63,6 +67,7 @@ double h(double x)
 
 int main()
 {
+
   try
   {
     // Some containers for (sorted) sample data.
@@ -79,6 +84,7 @@ int main()
       // cout << i << ' '<< data1[i] << ' ' << data2[i] << ' '<< data3[i] << endl;
     }
 
+    setUncDefaults(std::cout);
     svg_2d_plot my_plot;
     // Uses most defaults, but scale settings are usually sensible.
 

@@ -161,7 +161,7 @@ This is only to show their use and is intended to be visible, if totally tastele
      .outlier_size(10)
      .extreme_outlier_color(red)
      .extreme_outlier_fill(green)
-     .extreme_outlier_shape(round)
+     .extreme_outlier_shape(circlet)
      .extreme_outlier_size(10)
      //.extreme_outlier_values_on(true) not implemented.
 ;

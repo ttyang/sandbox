@@ -97,7 +97,7 @@ int main()
 Add the one data series, `my_data` and a description, and how the data points are to be marked,
 here a circle with a diameter of 5 pixels.
 */
-    svg_2d_plot_series& my_series = my_2d_plot.plot(my_data, "2D limits").shape(round).size(5);
+    svg_2d_plot_series& my_series = my_2d_plot.plot(my_data, "2D limits").shape(circlet).size(5);
 
 /*`
 We can also keep note of the plot series and use this to interrogate how many normal and how many 'at limit' values.

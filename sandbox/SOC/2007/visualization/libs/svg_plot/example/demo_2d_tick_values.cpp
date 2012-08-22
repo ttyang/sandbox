@@ -124,7 +124,7 @@ The 4 hex digit value needs to be wrapped with prefix &#x and suffix ; like &#xD
     my_plot.x_label("x abcd1234(&#x221A;)").y_label("sqrt(x) "); // Note chaining.
 
     // Add a container of data to the plot, choosing a color.
-    my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(round).size(3).bezier_on(true).line_color(pink);
+    my_plot.plot(data1, "Function (&#x221A;)").stroke_color(red).shape(circlet).size(3).bezier_on(true).line_color(pink);
 
     my_plot.write("./demo_2d_tick_values.svg"); // Write the plot to another file.
 

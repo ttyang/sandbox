@@ -140,6 +140,7 @@ int main()
   my_1d_plot.write("auto_1d_containers.svg"); // Write the plot to file.
 
   /*`If we want, we can check the autoscale range used.*/
+  using boost::svg::detail::operator<<; // To avoid ambiguity.
   cout << "x_range() " << my_1d_plot.x_range() << endl; // x_range() 0, 15
   /*`And even all the (hundreds of) plot settings (useful for diagnosis why your plot doesn't meet your expectations).*/
   //show_1d_plot_settings(my_1d_plot);
@@ -164,6 +165,23 @@ Autorun "j:\Cpp\SVG\debug\auto_1d_containers.exe"
 Data range: 0.2, 14.9
 x_range() 0, 15
 Build Time 0:03
+
+
+with unc class
+
+  Description: Autorun "J:\Cpp\SVG\Debug\auto_1d_containers.exe"
+  6 values in container: 0.2 1.1 4.2 3.3 5.4 6.5 
+  2 containers.
+  6 values in container: 0.2 1.1 4.2 3.3 5.4 6.5 
+  6 values in container: 0.46 2.53 9.66 7.59 12.42 14.95 
+  Data range: <0.2, 14.95>
+  x_range() 0, 15
+
+
+
+
+
+
 //] [/auto_1d_containers_output]
 
 */

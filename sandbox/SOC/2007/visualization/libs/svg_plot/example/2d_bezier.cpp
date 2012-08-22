@@ -86,14 +86,14 @@ int main()
   my_plot.legend_title_font_size(15);
 
   my_plot.plot(data1, "Sin(x)").line_on(true)
-    .shape(round).size(5).fill_color(yellow);
+    .shape(circlet).size(5).fill_color(yellow);
 
   my_plot.plot(data2, "Cos(x)")
     .line_color(blue)
     .bezier_on(true)
     .shape(square).size(5).fill_color(red);
 
-  // Note the slightly smoother curve for the bezier_on comapred to the line_on options.
+  // Note the slightly smoother curve for the bezier_on compared to the line_on options.
 
   my_plot.write("./2d_bezier.svg");
 

@@ -73,7 +73,7 @@ int main()
 /*`Add the one data series, `my_data` and a description,
 and how the data points are to be marked, a circle with a diameter of 7 pixels.
 */
-    my_1d_plot.plot(my_data, "1D Values").shape(round).size(7);
+    my_1d_plot.plot(my_data, "1D Values").shape(circlet).size(7);
 
 /*`If the default size and color are not to your taste, set more options, like:
 */
@@ -123,7 +123,7 @@ If, perversely, the full 1.123456e+012 format is required, the stripping can be 
 (All the myriad settings can be displayed with `show_1d_plot_settings(my_1d_plot)`.)
 */
     //show_1d_plot_settings(my_1d_plot);
-
+    using boost::svg::detail::operator<<;
     cout << "my_1d_plot.size() " << my_1d_plot.size() << endl;
     cout << "my_1d_plot.x_size() " << my_1d_plot.x_size() << endl;
     cout << "my_1d_plot.y_size() " << my_1d_plot.y_size() << endl;
