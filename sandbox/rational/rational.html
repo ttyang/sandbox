@@ -72,7 +72,9 @@ namespace boost {
 class bad_rational;
 class rational_overflow;
 
-template&lt;typename I, bool CheckForOverflow=false&gt; class rational {
+enum RationalChecktype {RationalNoChecking, RationalCheckforOverflow};
+
+template&lt;typename I, RationalChecktype CheckingMode=RationalNoChecking&gt; class rational {
     typedef <em>implementation-defined</em> bool_type;
 
 public:
@@ -131,15 +133,15 @@ public:
 };
 
 // Unary operators
-template &lt;typename I, bool Ck&gt; rational&lt;I, Ck&gt; operator+ (const rational&lt;I, Ck&gt;&amp; r);
-template &lt;typename I, bool Ck&gt; rational&lt;I, Ck&gt; operator- (const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, RationalChecktype Ck&gt; rational&lt;I, Ck&gt; operator+ (const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, RationalChecktype Ck&gt; rational&lt;I, Ck&gt; operator- (const rational&lt;I, Ck&gt;&amp; r);
 
 // Absolute value
-template &lt;typename I, bool Ck&gt; rational&lt;I, Ck&gt; abs (const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, RationalChecktype Ck&gt; rational&lt;I, Ck&gt; abs (const rational&lt;I, Ck&gt;&amp; r);
 
 // Input and output
-template &lt;typename I, bool Ck&gt; std::istream&amp; operator&gt;&gt; (std::istream&amp; is, rational&lt;I, Ck&gt;&amp; r);
-template &lt;typename I, bool Ck&gt; std::ostream&amp; operator&lt;&lt; (std::ostream&amp; os, const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, RationalChecktype Ck&gt; std::istream&amp; operator&gt;&gt; (std::istream&amp; is, rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, RationalChecktype Ck&gt; std::ostream&amp; operator&lt;&lt; (std::ostream&amp; os, const rational&lt;I, Ck&gt;&amp; r);
 
 // Type conversion
 template &lt;typename T, typename I&gt; T rational_cast (const rational&lt;I, Ck&gt;&amp; r);
@@ -693,7 +695,7 @@ on the boost list in January 2001.
 be used in the same Boolean contexts as the built-in numeric types, in December
 2005.
 
-<p>Revised November 5, 2006</p>
+<p>Revised August 26, 2012</p>
 
 <p>© Copyright Paul Moore 1999-2001; &copy; Daryle Walker 2005. Permission to
 copy, use, modify, sell and distribute this document is granted provided this
