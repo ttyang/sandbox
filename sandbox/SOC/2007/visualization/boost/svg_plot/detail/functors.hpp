@@ -121,13 +121,13 @@ public:
      //! Convert a pair of X and Y (whose types can be converted to double values) to a pair of doubles.
      //! \tparam T type whose value can be converted to double.
      //! \tparam U type whose value can be converted to double.
-    template <class T, class U>
+    template <typename T, typename U>
     std::pair<double, double> operator()(const std::pair<T, U>& a) const
     { //! Assumes that a conversion from double yields just the value component of the uncertain value.
         return std::pair<double, double>((double)(a.first), (double)(a.second));
     }
 
-    template <class T>
+    template <typename T>
     std::pair<double, double> operator()(T a)
     {  //! Convert a pair of X and Y values to a pair of doubles.
        //! \return pair of doubles.
@@ -155,10 +155,12 @@ public:
     std::pair<unc<correlated>, unc<correlated> > operator()(const std::pair<T, U>& a) const
     {  //!< Convert a pair of X and Y uncertain type values to a pair of doubles.
        //! \return pair of uncs.
-       return std::pair<unc<correlated>, unc<correlated> >((unc<correlated>)(a.first), (unc<correlated>)(a.second));
+       return std::pair<unc<correlated>, unc<correlated> >(
+         (unc<correlated>)(a.first), (unc<correlated>)(a.second)
+         );
     }
 
-    template <class T>    //!< \tparam T Any type convertible to double.
+    template <typename T>    //!< \tparam T Any type convertible to double.
     std::pair<unc<correlated>, unc<correlated> > operator()(T a)
     {  //!< Convert a pair of X and Y uncertain type values to a pair of unc.
         return std::pair<unc <correlated>, unc<correlated> >(i++, (unc<correlated>)a); //! \return pair of unc.
@@ -171,7 +173,8 @@ class pair_Meas_2d_convert
       \brief This functor allows any 2D data convertible to type std::pair<Meas, unc> to be plotted.
 */
 public:
-    typedef std::pair<Meas, unc<correlated> > result_type; //!< result type is pair of uncertain values.
+    typedef std::pair<Meas, unc<correlated> > result_type;
+    //!< result type is pair of uncertain values.
 
     Meas i; //!< Start Meas (uncun + daetime etc) value.
 
@@ -181,17 +184,18 @@ public:
     }
 
     //!< \tparam T type convertible to double.
-    template <class T, class U>
+    template <typename T, typename U>
     std::pair<Meas, unc<correlated> > operator()(const std::pair<T, U>& a) const
     {  //!< Convert a pair of X and Y uncertain type values to a pair of doubles.
        //! \return pair of Meas & uncs.
        return std::pair<Meas, unc<correlated> >((Meas)(a.first), (unc<correlated>)(a.second));
     }
 
-    template <class T>    //!< \tparam T Any type convertible to double.
+    template <typename T>    //!< \tparam T Any type convertible to double.
     std::pair<Meas, unc<correlated> > operator()(T a)
     {  //!< Convert a pair of X and Y uncertain type values to a pair of Meas & unc.
-        return std::pair<Meas, unc<correlated> >(i++, (unc<correlated>)a); //! \return pair of Meas & unc.
+        return std::pair<Meas, unc<correlated> >(i++, (unc<correlated>)a);
+        //! \return pair of Meas & unc.
     }
 }; // class pair_unc_2d_convert
 

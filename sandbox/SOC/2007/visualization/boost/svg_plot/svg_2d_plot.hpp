@@ -29,8 +29,8 @@
 //  using boost::make_transform_iterator;
 
 #include <boost/quan/unc.hpp>
-#include <boost/quan/unc_init.hpp>
 // using boost.svg::unc;
+#include <boost/quan/meas.hpp>
 
 #include <boost/svg_plot/svg.hpp>
 #include <boost/svg_plot/svg_style.hpp>
@@ -42,10 +42,6 @@
 #include <boost/svg_plot/detail/auto_axes.hpp>
 using boost::svg::detail::limit_NaN;
 
-#include <boost/quan/meas.hpp>
-
-#include <boost/svg_plot/svg.hpp>
-
 #include <map> // for map & multimap
 #include <string>
 #include <sstream>
@@ -54,8 +50,8 @@ using boost::svg::detail::limit_NaN;
 #include <iterator>
 #include <exception>
 #include <iostream> // for debug.
-using std::cout;
-using std::endl;
+//using std::cout;
+//using std::endl;
 
 namespace boost
 {
@@ -93,7 +89,7 @@ namespace boost
       histogram_style histogram_style_; //!< Style of histogram.
 
       //! Constructor for a data series to plot.
-      template <class T>  //! \tparam T an STL container: for example: multimap.
+      template <typename T>  //! \tparam T an STL container: for example: multimap.
       svg_2d_plot_series(
         T begin, //!< starting iterator into container of data series begin() to start at the beginning.
         T end, //!< ending iterator into container of data series, end() to finish with the last item.
@@ -138,7 +134,7 @@ namespace boost
 
    // svg_2d_plot_series constructor.
 
-  template <class T>  // \tparam T an STL container: for example: multimap.
+  template <typename T>  // \tparam T an STL container: for example: multimap.
   svg_2d_plot_series::svg_2d_plot_series(
       T begin, //!< \param begin of data series.
       T end, //!< \param end of data series.
@@ -722,13 +718,13 @@ my_plot.background_color(ghostwhite) // Whole image.
         x_axis_label_style_ = x_label_info_.textstyle();
         if (x_label_info_.textstyle() != x_axis_label_style_ )
         {
-          cout << "x_label_info_.textstyle() != x_axis_label_style_" << endl;
+          std::cout << "x_label_info_.textstyle() != x_axis_label_style_" << std::endl;
         }
 
         y_axis_label_style_ = y_label_info_.textstyle();
         if (y_label_info_.textstyle() != y_axis_label_style_ )
         {
-          cout << "y_label_info_.textstyle() != y_axis_label_style_!" << endl;
+          std::cout << "y_label_info_.textstyle() != y_axis_label_style_!" << std::endl;
         }
 
         // Assume that X-axis labels are always at bottom.
@@ -736,8 +732,8 @@ my_plot.background_color(ghostwhite) // Whole image.
         { // Leave space at bottom for X-axis label.
           if (x_label_info_.textstyle().font_size() != x_axis_label_style_.font_size())
           { // Temporary check.
-            cout << "x_label_info_.textstyle().font_size() "<< x_label_info_.textstyle().font_size() << endl;
-            cout << "x_axis_label_style_.font_size() " << x_axis_label_style_.font_size() << endl;
+            std::cout << "x_label_info_.textstyle().font_size() "<< x_label_info_.textstyle().font_size() << std::endl;
+            std::cout << "x_axis_label_style_.font_size() " << x_axis_label_style_.font_size() << std::endl;
           }
 
           plot_bottom_ -= x_axis_label_style_.font_size() * text_margin_;
@@ -748,8 +744,8 @@ my_plot.background_color(ghostwhite) // Whole image.
         { // Leave space at left for Y-axis label.
           if (y_label_info_.textstyle().font_size() != y_axis_label_style_.font_size())
           { // Temporary check.
-            cout << "y_label_info_.textstyle().font_size() "<< y_label_info_.textstyle().font_size() << endl;
-            cout << "y_axis_label_style_.font_size() " << y_axis_label_style_.font_size() << endl;
+            std::cout << "y_label_info_.textstyle().font_size() "<< y_label_info_.textstyle().font_size() << std::endl;
+            std::cout << "y_axis_label_style_.font_size() " << y_axis_label_style_.font_size() << std::endl;
           }
           plot_left_ += y_axis_label_style_.font_size() * text_margin_;
         }
@@ -1232,7 +1228,7 @@ my_plot.background_color(ghostwhite) // Whole image.
             }
             else
             {
-              cout << " Rotation of Y label rotation" << y_ticks_.label_rotation_ << "not yet implemented" << endl;
+              std::cout << " Rotation of Y label rotation" << y_ticks_.label_rotation_ << "not yet implemented" << std::endl;
             }
           }
           else if (y_ticks_.major_value_labels_side_ > 0)
@@ -2226,11 +2222,11 @@ my_plot.background_color(ghostwhite) // Whole image.
       const std::string y_separator();
       svg_2d_plot& y_autoscale(double first, double second);
       svg_2d_plot& y_autoscale(std::pair<double, double> p);
-      template <class T> // T an STL container: array, vector ...
+      template <typename T> // T an STL container: array, vector ...
       svg_2d_plot& y_autoscale(const T& begin, const T& end); // Data series using iterators to
-      template <class T> // T an STL container: array, vector ...
+      template <typename T> // T an STL container: array, vector ...
       svg_2d_plot& y_autoscale(const T& container); // Whole data series.
-      template <class T> // T a 2D STL container: array, vector ...
+      template <typename T> // T a 2D STL container: array, vector ...
       svg_2d_plot& xy_autoscale(const T& container); // Whole data series,
       bool xy_autoscale();
       double y_major_tick_length();
@@ -2298,13 +2294,13 @@ my_plot.background_color(ghostwhite) // Whole image.
       std::ios_base::fmtflags y_values_ioflags();
 
       // Versions of plot functions to add data series from a container, all or part.
-      template <class T>
+      template <typename T>
       svg_2d_plot_series& plot(const T& container, const std::string& title = "");
-      template <class T, class U>
+      template <typename T, typename U>
       svg_2d_plot_series& plot(const T& container, const std::string& title = "", U functor = pair_double_2d_convert);
-      template <class T>
+      template <typename T>
       svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "");
-      template <class T, class U>
+      template <typename T, typename U>
       svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "", U functor = pair_double_2d_convert);
 
  }; // class svg_2d_plot : public detail::axis_plot_frame<svg_2d_plot>
@@ -2765,7 +2761,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
         return *this; //! \return reference to svg_2d_plot to make chainable.
       } // autoscale(pair<double, double> p)
 
-      template <class T> //! \tparam T an STL container: array, vector ...
+      template <typename T> //! \tparam T an STL container: array, vector ...
       svg_2d_plot& svg_2d_plot::y_autoscale(const T& begin, const T& end)
       { //! Data series using iterator's range to use to calculate autoscaled values.
         scale_axis(begin, end,
@@ -2776,7 +2772,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
         return *this; //! \return reference to svg_2d_plot to make chainable.
       }
 
-      template <class T> // T an STL container: array, vector ...
+      template <typename T> // T an STL container: array, vector ...
       svg_2d_plot& svg_2d_plot::y_autoscale(const T& container)
       { //! Whole data series to use to calculate autoscaled values.
         scale_axis(container.begin(), container.end(), // All the container.
@@ -2787,7 +2783,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
         return *this;
       }
 
-      template <class T> // T a 2D STL container: array, vector ...
+      template <typename T> // T a 2D STL container: array, vector ...
       svg_2d_plot& svg_2d_plot::xy_autoscale(const T& container)
       { //! Whole data series to use to calculate autoscaled values for \b both X and Y axes.
         scale_axis(container, // All the container.
@@ -3216,7 +3212,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
         return *this; //! \return reference to svg_2d_plot to make chainable.
       } // write(file)
 
-  template <class T> //! \tparam T Type of data in series (must be convertible to Meas).
+  template <typename T> //! \tparam T Type of data in series (must be convertible to Meas).
   svg_2d_plot_series& svg_2d_plot::plot(const T& container, const std::string& title)
   { /*! Add a container of a data series to the plot.
       This version assumes that  \b ALL the data values in the container are to be plotted.
@@ -3234,7 +3230,7 @@ my_plot.plot(data1, "Sqrt(x)");
     return serieses_[serieses_.size()-1]; //! \return Reference to data series just added to make chainable.
   }
 
-  template <class T, class U>
+  template <typename T, typename U>
   svg_2d_plot_series& svg_2d_plot::plot(const T& container, const std::string& title /* = "" */, U functor /* = pair_double_2d_convert*/)
   { /*! This version permits a custom functor (rather than default conversion to double).\n
        Note that this version assumes that \b ALL the data values in the container is used.
@@ -3248,7 +3244,7 @@ my_plot.plot(data1, "Sqrt(x)");
     return serieses_[series_.size()-1]; //! \return Reference to data series just added to make chainable.
   }
 
-  template <class T>
+  template <typename T>
   svg_2d_plot_series& svg_2d_plot::plot(const T& begin, const T& end, const std::string& title)
   { /*! Add a data series to the plot (by default, converting automatically to unc doubles).\n
       This version permits part of the container to be used, a partial range, using iterators begin to end.\n
@@ -3269,7 +3265,7 @@ my_2d_plot.plot(&my_data[1], &my_data[], "my_data 1 to 3"); // Add part of data 
     return serieses_[series_.size() - 1]; //! \return Reference to data series just added to make chainable.
   } // plot(const T& begin, const T& end, const std::string& title = "")
 
-  template <class T, class U>
+  template <typename T, typename U>
   svg_2d_plot_series& svg_2d_plot::plot(const T& begin, const T& end, const std::string& title, U functor)
   { /* Add (part of) a container of a data series to the plot.
       This version permits part of the container to be used, a partial range, using iterators begin to end.\n

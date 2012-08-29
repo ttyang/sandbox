@@ -27,10 +27,10 @@
 #  pragma warning (disable: 4100) // 'check_limits' and autoscale_plusminus: unreferenced formal parameters
 #endif
 
-#include <boost\svg_plot\detail\FP_compare.hpp> // is_small & is_close
+#include <boost/svg_plot/detail/FP_compare.hpp> // is_small & is_close
 #include <boost/quan/meas.hpp> // for value_of.
 
-#include <boost\math\special_functions\fpclassify.hpp>
+#include <boost/math/special_functions/fpclassify.hpp>
 // for template <class FPT> bool boost::math::isfinite(FPT t);
 #include <boost/algorithm/minmax_element.hpp>
  using boost::minmax_element;
