@@ -38,7 +38,7 @@
 
 #include <cmath> // using std::fabs, std::pow, std::ceil, std::log10
 #include <limits> // using std::numeric_limits;
-#include <stdexcept> // using std::domain_error;
+#include <stdexcept> // using std::domain_error; sdtd::runtime_error;
 #include <iterator> // using std::iterator_traits;
 #include <utility> // using std::pair; using std::make_pair;
 
@@ -303,7 +303,6 @@ void scale_axis(
     }
     // cout << "x_min " << x_min << ", x_max " << x_max << endl; //
   }
-
   scale_axis(x_min, x_max,
     axis_min_value, axis_max_value, axis_tick_increment, auto_ticks, // All 4 updated.
     origin, tight, min_ticks, steps); // Display range.
@@ -330,7 +329,7 @@ void scale_axis(
   //! allowing values just 1 pixel over the tick to be shown.
   int x_min_ticks = 6, //!< Minimum number of major ticks.
   int x_steps = 0, //!< 0,  or 2 for 2, 4, 6, 8, 10, 5 for 1, 5, 10, or 10 (2, 5, 10).
-  bool y_origin = false, //!< do not include the origin unless the range min_value <= 0 <= max_value.
+  bool y_origin = false, //!< do not include the origin un../sandbox/SOC/2007/visualization/boost/svg_plot/detail/auto_axes.hpp:398:5: error: need ‘typename’ before ‘T:: const_iterator’ because ‘T’ is a dependent scopeless the range min_value <= 0 <= max_value.
   double y_tight = 0., //!< tightest - fraction of 'overrun' allowed before another tick used.
   // for visual effect up to about 0.001 might suit a 1000 pixel wide image,
   // allowing values just 1 pixel over the tick to be shown.
@@ -359,7 +358,7 @@ void scale_axis(
     // so still need to iterate through the Y to find y min and y max.
     //y_min = px.second;
     //y_max = py.second;
-    T::const_iterator pos = container.begin();
+    typename T::const_iterator pos = container.begin();
     if (pos == container.end())
     {
       throw std::runtime_error("Autoscale could not find any values to scale axes!");
@@ -395,7 +394,7 @@ void scale_axis(
     using boost::svg::detail::pair_is_limit; // Either x and/or y is not a proper data value.
     int goods = 0; // Count of values where both X and Y are normal (within limits).
     int limits = 0;// Count of values where both X and Y are at limits (not normal).
-    T::const_iterator pos = container.begin();
+    typename T::const_iterator pos = container.begin();
     while(pos != container.end() && pair_is_limit(*pos))
     { // Count any limits before the first good.
       limits++;
@@ -667,7 +666,7 @@ template <typename T> // T an STL container: array, vector ...
 size_t show(const T& container)
 { //! Utility functions to display STL containers.
   cout << container.size() << " values in container: ";
-  for (T::const_iterator it = container.begin(); it != container.end(); it++)
+  for (typename T::const_iterator it = container.begin(); it != container.end(); it++)
   {
     cout << *it << ' ';
   }
@@ -696,7 +695,7 @@ template <typename T>
 size_t show_all(const T& containers)
 { //! Show all the containers values.
   // \tparam T an STL container: container of containers.
-  for (T::const_iterator it = containers.begin(); it != containers.end(); it++)
+  for (typename T::const_iterator it = containers.begin(); it != containers.end(); it++)
   {
     show(*it);
   }
@@ -708,22 +707,25 @@ std::pair<double, double> range(const T& container) //! Container Data series
 { /*! \return minimum and maximum of an STL container.
       \tparam  T an STL container: array, vector, set, map ...
   */
-  pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
-  pair<double, double> minmax;
+  std::pair<typename T::const_iterator, typename T::const_iterator> result
+    = boost::minmax_element(container.begin(), container.end());
+  std::pair<double, double> minmax;
   minmax.first = *result.first;
   minmax.second = *result.second;
   return minmax;
 } // template <class T> range
 
-template <class T> // T an STL container: array, vector, set, map ...
+template <typename T> // T an STL container: array, vector, set, map ...
 std::pair<double, double> range_all(const T& containers) // Container of STL containers of Data series.
 { /*! \return minimum and maximum of a container containing STL containers.
       \tparam T an STL container: array, vector, set, map ...
   */
-  std::pair<double, double> minmax((numeric_limits<double>::max)(), (numeric_limits<double>::min)());
-  for (T::const_iterator it = containers.begin(); it != containers.end(); it++)
+  std::pair<double, double> minmax(
+    (std::numeric_limits<double>::max)(), (std::numeric_limits<double>::min)()
+  );
+  for (typename T::const_iterator it = containers.begin(); it != containers.end(); it++)
   {
-    pair<double, double> mm = range(*it); // Scale of this container.
+    std::pair<double, double> mm = range(*it); // Scale of this container.
     minmax.first = (std::min)(mm.first, minmax.first); //
     minmax.second = (std::max)(mm.second, minmax.second);
   }

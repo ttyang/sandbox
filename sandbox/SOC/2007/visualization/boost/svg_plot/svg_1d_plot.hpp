@@ -285,10 +285,12 @@ public:
   svg_1d_plot_series& plot(const T& container, const std::string& title = "");
   template <typename T>
   svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "");
+  /*
   template <typename T, typename U>
-  svg_1d_plot_series& plot(const T& container, const std::string& title = "", U functor = double_1d_convert);
+  svg_1d_plot_series& plot(const T& container, const std::string& title = "", U functor = detail::double_1d_convert);
   template <typename T, typename U>
-  svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "", U functor = double_1d_convert);
+  svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "", U functor = detail::double_1d_convert);
+   */
 }; // class svg_1d_plot
 
 

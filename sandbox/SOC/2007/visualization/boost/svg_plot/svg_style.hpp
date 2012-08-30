@@ -159,7 +159,7 @@ public:
   stroke_(svg_color(0, 0, 0)), //! Stroke default is black.
   fill_(blank), //! No fill color.
   width_(0), //! No width specified.
-  fill_on_(false), stroke_on_(false), width_on_(false) //! All switches off.
+  stroke_on_(false), fill_on_(false), width_on_(false) //! All switches off.
   { // Default constructor initialises all private data.
   }
 
@@ -304,7 +304,7 @@ class text_style
   friend bool operator== (const text_style&, const text_style&);
   friend bool operator!= (const text_style&, const text_style&);
 
-  public: //temporary for experimental gil
+  public: // temporary for experimental gil
 
 //private:
   int font_size_; //!< Font size (SVG units, default pixels).
@@ -318,8 +318,8 @@ public:
   text_style( //!
     int size = 12, //!< Default font size (12 pixels).
     const std::string& font = "", //!< Examples: "Arial", "Times New Roman", "Verdana", "Lucida Sans Unicode"
-    const std::string& style = "", //!< font-style: normal | bold | italic | oblique
     const std::string& weight = "", //!< Examples: "bold", "normal"
+    const std::string& style = "", //!< font-style: normal | bold | italic | oblique
     const std::string& stretch = "", //!< font-stretch: normal | wider | narrower ...
     const std::string& decoration = ""); //!< Examples: "underline" | "overline" | "line-through"
 
@@ -330,7 +330,6 @@ public:
   text_style& font_stretch(const std::string& s);
   text_style& font_decoration(const std::string& s);
   // text_style& font_variant(const std::string& s); // Not implemented,
-
 
   int font_size() const;
   const std::string& font_family() const;
@@ -558,8 +557,8 @@ public:
   bool strip_e0s_; //!< If true, then unnecessary zeros and + sign will be stripped to reduce length.
   text_style values_text_style_; //!< Font etc used for data point value marking.
   // svg_style
-  svg_color fill_color_; //!< Fill color for value.
   svg_color stroke_color_; //!< Stroke color for value.
+  svg_color fill_color_; //!< Fill color for value.
   bool plusminus_on_; /*!< If an uncertainty estimate is to be appended (as + or - value).
      \details See http://en.wikipedia.org/wiki/Plus-minus_sign
     */

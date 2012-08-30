@@ -34,7 +34,7 @@ limit_point_style_(lightgrey, red, 10, cone), // Default limit (inf or NaN) poin
 line_style_(black, blank, 2, false, false) // Default line style, black, no fill, width, line_on, bezier_on false
 {
   /*
-    cout << "typeid(C).name() = " << typeid(C).name() << endl;
+    std::cout << "typeid(C).name() = " << typeid(C).name() << std::endl;
     typeid(C).name() =
     class boost::transform_iterator
     <
@@ -58,9 +58,10 @@ line_style_(black, blank, 2, false, false) // Default line style, black, no fill
     //boost::svg::unc temp = *i; // Assumes unc type.
     // So use auto to automatically make temp the right type.
 
-    auto temp = *i; // Should provide double, unc, meas ... type.
-
-    //cout << "typeid(temp).name() = " << typeid(temp).name() << endl;
+    unc<false> temp = *i; // Should provide double, unc, meas ... type.
+// TODO will
+    //auto temp = *i; // Should provide double, unc, meas ... type.
+    //std::cout << "typeid(temp).name() = " << typeid(temp).name() << std::endl;
     //   typeid(temp).name() = class Meas
     //   typeid(temp).name() = class boost::svg::unc
     if(detail::is_limit(temp.value()))
@@ -739,12 +740,13 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
 } // plot
 
 
-template <typename T, typename U> /*!
+//template <typename T, typename U>
+/*!
     \tparam T floating-point type of the data (which must be convertable to double).
     \tparam U functor floating-point type (default is @c double_1d_convert).
   */
-svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& title /* = "" */, U functor/*= double_1d_convert*/)
-{ //! Add a data series to the plot, with optional title.
+//svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& title /* = "" */, U functor/*= double_1d_convert*/)
+//{ //! Add a data series to the plot, with optional title.
 /*!
   This version of plot includes a functor, allowing other than just convert data values to double(the default).
   \param container Container for data (for example vector) that contains the data to be added to the plot.
@@ -754,22 +756,25 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& tit
 
   \return a reference to data series just added (to make chainable).
 */
-  serieses_.push_back(
-    svg_1d_plot_series(
-    boost::make_transform_iterator(container.begin(), functor),
-    boost::make_transform_iterator(container.end(),   functor),
-    title)
-  );
-  return serieses_[serieses_.size() - 1]; // Reference to data series just added.
-} // plot
+//  serieses_.push_back(
+//    svg_1d_plot_series(
+//    boost::make_transform_iterator(container.begin(), functor),
+//    boost::make_transform_iterator(container.end(),   functor),
+//    title)
+//  );
+//  return serieses_[serieses_.size() - 1]; // Reference to data series just added.
+//} // plot
 
 
-template <typename T, typename U> /*!
+//template <typename T, typename U>
+   /*!
       \tparam T floating-point type of the data (which must be convertable to double).
       \tparam U functor floating-point type (default is double_1d_convert).
     */
-svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::string& title /* = ""*/, U functor /* = double_1d_convert */)
-{ /*! Add a data series to the plot, with optional title. (Version with custom functor, rather than to double).
+//svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::string& title /* = ""*/,
+//   U functor /* = double_1d_convert */)
+//{
+  /*! Add a data series to the plot, with optional title. (Version with custom functor, rather than to double).
     \note This version permits a @b partial range, begin to end, of the container to be used.
 
     \param begin Iterator to 1st data item in container.
@@ -778,15 +783,14 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
     \param functor Custom functor.
     \return a reference to data series just added (to make chainable).
   */
-
-  serieses_.push_back(
-    svg_1d_plot_series(
-      boost::make_transform_iterator(begin, functor),
-      boost::make_transform_iterator(end,   functor),
-      title)
-  );
-  return serieses_[serieses_.size() - 1]; //!< \return Reference to data series just added.
-} // plot
+//  serieses_.push_back(
+//    svg_1d_plot_series(
+//      boost::make_transform_iterator(begin, functor),
+//      boost::make_transform_iterator(end,   functor),
+//      title)
+//  );
+//  return serieses_[serieses_.size() - 1]; //!< \return Reference to data series just added.
+//} // plot
 
 // End Definitions of svg_plot_series Public Member Functions.
 } // namespace svg

@@ -4150,4 +4150,4 @@ namespace boost
     } // svg
   } // boost
 
-#endif BOOST_SVG_AXIS_PLOT_FRAME_IPP
+#endif // BOOST_SVG_AXIS_PLOT_FRAME_IPP

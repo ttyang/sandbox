@@ -109,8 +109,8 @@ class close_to
 public:
 
   // One  only.
-  template<typename FPT>
-  explicit close_to(FPT tolerance,
+  template<typename T>
+  explicit close_to(T tolerance,
     floating_point_comparison_type fpc_type = FPC_STRONG)
   :
     fraction_tolerance_(tolerance),
@@ -118,7 +118,7 @@ public:
   { //! Constructor for fraction tolerance and strength of comparison.
     //! Checks that tolerance isn't negative - which does not make sense,
     //! and can be assumed to be a programmer error?
-    BOOST_ASSERT(tolerance >= static_cast<FPT>(0));
+    BOOST_ASSERT(tolerance >= static_cast<T>(0));
   }
 
   close_to()
@@ -184,8 +184,8 @@ class smallest
     find that x = 0 without any apparent change to x!
 */
 public:
-  template<typename FPT>
-  explicit smallest(FPT s)
+  template<typename T>
+  explicit smallest(T s)
   :
   smallest_(s)
   { // Constructor.
@@ -204,11 +204,11 @@ public:
     */
   }
 
-  template<typename FPT>
-  bool operator()(FPT fp_value, FPT s)
+  template<typename T>
+  bool operator()(T fp_value, T s)
   { //!< \return true if smaller than the given small value.
-    if (fpt_abs(fp_value) == static_cast<FPT>(0))
-    { // Test for zero first in case FPT is actually an integer type zero,
+    if (fpt_abs(fp_value) == static_cast<T>(0))
+    { // Test for zero first in case T is actually an integer type zero,
       // when the comparison < below would fail because
       // smallest_ could become zero when min_value converts to integer.
       return true;
@@ -216,8 +216,8 @@ public:
     return fpt_abs(fp_value) < fpt_abs(s);
   } // bool operator()
 
-  template<typename FPT>
-  bool operator()(FPT fp_value)
+  template<typename T>
+  bool operator()(T fp_value)
   { //!< \return true if smaller than the defined smallest effectively-zero value.
     if (fpt_abs(fp_value) == static_cast<FPT>(0))
     { // Test for zero first in case FPT is actually an integer type,

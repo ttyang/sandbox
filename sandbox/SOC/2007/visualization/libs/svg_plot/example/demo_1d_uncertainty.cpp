@@ -2,7 +2,7 @@
     \brief Simple plot of uncertainty of 1D data.
     \details An example to demonstrate simple 1D plot using two vectors,
      including showing values with uncertainty information as
-     'plus minus' and degrees of freedom estimates.
+     "plus minus" and degrees of freedom estimates.
     \author Paul A. Bristow
     \date Mar 2009
 */
@@ -31,7 +31,7 @@
 //  using boost::svg::detail::unc_1d_convert;
 #include <boost/svg_plot/svg_1d_plot.hpp>
   using namespace boost::svg;
-  
+
 #include <boost/svg_plot/show_1d_settings.hpp>
  void boost::svg::show_1d_plot_settings(svg_1d_plot&);
 
@@ -96,7 +96,7 @@ the order of data values is not important.
 */
   my_plot.autoscale_check_limits(false); // Default is true.
   my_plot.autoscale_plusminus(2); // default is 3.
-  my_plot.confidence(0.01);  // Change alpha from default 0.05 == 95% to 0.01 == 99%. 
+  my_plot.confidence(0.01);  // Change alpha from default 0.05 == 95% to 0.01 == 99%.
 
   my_plot
     .plot_window_on(true)
@@ -139,7 +139,7 @@ and uncertainty and degrees of freedom if known.
 Finally, we can write the SVG to a file of our choice.
 */
 
-  std::string svg_file =  (my_plot.legend_on() == true) ? 
+  std::string svg_file =  (my_plot.legend_on() == true) ?
     "./demo_1d_uncertainty_legend.svg" : "./demo_1d_uncertainty.svg";
 
   my_plot.write(svg_file);
@@ -160,8 +160,8 @@ demo_1d_uncertainty.cpp
 Linking...
 Embedding manifest...
 Autorun j:\Cpp\SVG\debug\demo_1d_uncertainty.exe
-3.1±0.02 (8)  4.2±0.01 (14)
-2.1±0.001 (30)  7.8±0.0025 (21)  3.4±0.03 6.9
+3.1ï¿½0.02 (8)  4.2ï¿½0.01 (14)
+2.1ï¿½0.001 (30)  7.8ï¿½0.0025 (21)  3.4ï¿½0.03 6.9
 Build Time 0:03
 //] [/demo_1d_uncertainty_output]
 */

@@ -19,7 +19,7 @@
 #define BOOST_SVG_SHOW_1D_SETTINGS_HPP
 
 #include <boost/svg_plot/detail/pair.hpp>
-  using boost::svg::detail::operator<<;
+//  using boost::svg::detail::operator<<;
 
 #include <iostream>
 
