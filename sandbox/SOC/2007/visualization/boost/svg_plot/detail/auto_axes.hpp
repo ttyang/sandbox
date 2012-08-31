@@ -148,7 +148,7 @@ int mnmx(
     double x = value_of(*pos);
     *max = x;
     *min = x;
-    //cout << "Initial min & max " << x << endl;
+    //std::cout << "Initial min & max " << x << std::endl;
     pos++;
     goods++;
     while(pos != end)
@@ -165,17 +165,17 @@ int mnmx(
           *min = x;
         }
         goods++;
-        //cout << goods << " goods, " << x << endl;
+        //std::cout << goods << " goods, " << x << std::endl;
      } // if finite
       else
       { // If x not finite, then the y value won't be plotted.
-        cout << "limit value: " << *pos  << endl;
+        std::cout << "limit value: " << *pos  << std::endl;
         limits++;
       }
       ++pos;
     } // while
-    //cout << "min " << *min << ", max " << *max << endl; //
-    //cout << "limits " << limits << endl;
+    //std::cout << "min " << *min << ", max " << *max << std::endl; //
+    //std::cout << "limits " << limits << std::endl;
   }
   if (goods < 2)
   {
@@ -293,7 +293,7 @@ void scale_axis(
   }
   else
   { // It is necessary to inspect all values individually.
-    // cout << container.size() << " values." << endl;
+    // std::cout << container.size() << " values." << std::endl;
     // Work out min and max, ignoring non-finite, +-infinity, max & min, & NaN).
     // If can't find a max and a min, then will throw exception.
     int good = mnmx(container.begin(), container.end(), &x_min, &x_max);
@@ -301,7 +301,7 @@ void scale_axis(
     {
       throw std::runtime_error("Autoscale could not find useful min & max values to scale the X axis!");
     }
-    // cout << "x_min " << x_min << ", x_max " << x_max << endl; //
+    // std::cout << "x_min " << x_min << ", x_max " << x_max << std::endl; //
   }
   scale_axis(x_min, x_max,
     axis_min_value, axis_max_value, axis_tick_increment, auto_ticks, // All 4 updated.
@@ -381,7 +381,10 @@ void scale_axis(
       }
       pos++;
     }
-    cout << "No limits checks: x_min = " << x_min << ", x_max = " << x_max << ", y_min = " << y_min << ", y_max = " << y_max << endl;
+    std::cout << "No limits checks: x_min = " << x_min
+            << ", x_max = " << x_max
+            << ", y_min = " << y_min
+            << ", y_max = " << y_max << std::endl;
   }
   else
   { // Otherwise it is necessary to inspect all values individually.
@@ -402,7 +405,7 @@ void scale_axis(
     }
     if (pos == container.end())
     { // ALL values are at limit!
-      //cout << "all values at limit" << endl;
+      //std::cout << "all values at limit" << std::endl;
       throw std::runtime_error("Autoscale could not find any useful values to scale axes!");
     }
     else
@@ -415,7 +418,7 @@ void scale_axis(
       double yu = unc_of(pos->second) * autoscale_plusminus;
       y_max = y + yu;
       y_min = y - yu;
-      //cout << "Initial min & max " << x << "+-" << xu << " = " << x_min << " to " << x_max << ", " << y << "+-" << yu << "=" <<y_min << " to " << y_max << endl;
+      //std::cout << "Initial min & max " << x << "+-" << xu << " = " << x_min << " to " << x_max << ", " << y << "+-" << yu << "=" <<y_min << " to " << y_max << std::endl;
       pos++;
       goods++;
       while(pos != container.end())
@@ -442,20 +445,20 @@ void scale_axis(
           {
             y_min = y - yu;
           }
-          //cout << "min & max " << x << "+-" << xu << " = " << x_min << " to " << x_max << ", " << y << "+-" << yu << "=" <<y_min << " to " << y_max << endl;
+          //std::cout << "min & max " << x << "+-" << xu << " = " << x_min << " to " << x_max << ", " << y << "+-" << yu << "=" <<y_min << " to " << y_max << std::endl;
           goods++;
-          // cout << goods << " goods, " << x << ' ' << y << endl;
+          // std::cout << goods << " goods, " << x << ' ' << y << std::endl;
        } // if finite
         else
         { // If either are not finite, then neither useful for autoscaling.
           // If x not finite, then the y value won't be plotted.
           // If y value not finite, then it will be 'off limits'.
-          // cout << "limit value: " << pos->first << ' ' << pos->second  << endl;
+          // std::cout << "limit value: " << pos->first << ' ' << pos->second  << std::endl;
           limits++;
         }
         ++pos;
       } // while
-      cout << "Checked: x_min " << x_min << ", x_max " << x_max << ", y_min " << y_min << ", y_max " << y_max << ", " << goods << " 'good' values, " << limits << " values at limits."<< endl;
+      std::cout << "Checked: x_min " << x_min << ", x_max " << x_max << ", y_min " << y_min << ", y_max " << y_max << ", " << goods << " 'good' values, " << limits << " values at limits."<< std::endl;
     }
   }
   scale_axis(x_min, x_max,
@@ -665,12 +668,12 @@ void scale_axis(double min_value, double max_value, // Scale axis from Input ran
 template <typename T> // T an STL container: array, vector ...
 size_t show(const T& container)
 { //! Utility functions to display STL containers.
-  cout << container.size() << " values in container: ";
+  std::cout << container.size() << " values in container: ";
   for (typename T::const_iterator it = container.begin(); it != container.end(); it++)
   {
-    cout << *it << ' ';
+    std::cout << *it << ' ';
   }
-  cout << endl;
+  std::cout << std::endl;
   return container.size();
 }// Container Data series to plot.
 
@@ -683,11 +686,11 @@ size_t show(iter begin, iter end) // Iterators
   while (begin != end)
   {
     count++;
-    cout << *begin << ' ';
+    std::cout << *begin << ' ';
     ++begin;
   }
-  cout << ": " << count << " values used.";
-  cout << endl;
+  std::cout << ": " << count << " values used.";
+  std::cout << std::endl;
   return count;
 }// Container Data series to plot.
 

@@ -45,6 +45,8 @@ namespace boost
             clear_grids();
           }
 
+          std::string sv(double v, const value_style& sty, bool);
+          
           template <class Derived>
           void axis_plot_frame<Derived>::clear_background()
           { //! Clear the whole image background layer of the SVG plot.
@@ -1241,7 +1243,8 @@ namespace boost
              Unecessary e, +, \& leading exponent zeros may optionally be stripped,
              and the position and rotation controlled.
              std_dev estimate, typically standard deviation
-             (half conventional 95% confidence 'plus or minus') may be optionally be appended.
+             (approximately half conventional 95% confidence "plus or minus")
+             may be optionally be appended.
              Degrees of freedom estimate (number of replicates) may optionally be appended.
              ID or name of point, order in sequence, and datetime may also be added.
              For example: "3.45 +-0.1(10)"\n
@@ -1458,8 +1461,8 @@ namespace boost
 
 
           std::string sv(double v, const value_style& sty, bool precise = false)
-          { //! Strip from double value any unecessary e, +, & leading exponent zeros, reducing "1.200000" to "1.2" or "3.4e1"...
-            // TODO rename fo strip_value?
+          { //! Strip from double value any unnecessary e, +, & leading exponent zeros, reducing "1.200000" to "1.2" or "3.4e1"...
+            // TODO rename for strip_value?
             std::stringstream label;
             // Precision of std_dev is usually less than precision of value,
             // label.precision((unc) ? ((sty.value_precision_ > 3) ?  sty.value_precision_-2 : 1) : sty.value_precision_);
@@ -1468,7 +1471,7 @@ namespace boost
             label.flags(sty.value_ioflags_);
             label << v; // "1.2" or "3.4e+001"...
             return  (sty.strip_e0s_) ?
-              // Default is to strip unecessary e, +, & leading exponent zeros.
+              // Default is to strip unnecessary e, +, & leading exponent zeros.
               strip_e0s(label.str())  // reduce to "1.2" or "3.4e1"...
               :
               label.str();  // Leave unstripped.

@@ -245,7 +245,7 @@ void svg_1d_plot::update_image()
           // TODO Might separate X and Y colors?
         }
         else
-        { // Don't plot anything?  Might leave a marker to show an 'off the scale' value?
+        { // Don't plot anything?  Might leave a marker to show an "off the scale" value?
         }
       } // if in window
     } // for j
