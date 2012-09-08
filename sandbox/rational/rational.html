@@ -72,9 +72,9 @@ namespace boost {
 class bad_rational;
 class rational_overflow;
 
-enum RationalChecktype {RationalNoChecking, RationalCheckforOverflow};
+enum rational_checktype {rational_no_checking, rational_check_for_overflow};
 
-template&lt;typename I, RationalChecktype CheckingMode=RationalNoChecking&gt; class rational {
+template&lt;typename I, rational_checktype CheckingMode=rational_no_checking&gt; class rational {
     typedef <em>implementation-defined</em> bool_type;
 
 public:
@@ -133,15 +133,15 @@ public:
 };
 
 // Unary operators
-template &lt;typename I, RationalChecktype Ck&gt; rational&lt;I, Ck&gt; operator+ (const rational&lt;I, Ck&gt;&amp; r);
-template &lt;typename I, RationalChecktype Ck&gt; rational&lt;I, Ck&gt; operator- (const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, rational_checktype Ck&gt; rational&lt;I, Ck&gt; operator+ (const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, rational_checktype Ck&gt; rational&lt;I, Ck&gt; operator- (const rational&lt;I, Ck&gt;&amp; r);
 
 // Absolute value
-template &lt;typename I, RationalChecktype Ck&gt; rational&lt;I, Ck&gt; abs (const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, rational_checktype Ck&gt; rational&lt;I, Ck&gt; abs (const rational&lt;I, Ck&gt;&amp; r);
 
 // Input and output
-template &lt;typename I, RationalChecktype Ck&gt; std::istream&amp; operator&gt;&gt; (std::istream&amp; is, rational&lt;I, Ck&gt;&amp; r);
-template &lt;typename I, RationalChecktype Ck&gt; std::ostream&amp; operator&lt;&lt; (std::ostream&amp; os, const rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, rational_checktype Ck&gt; std::istream&amp; operator&gt;&gt; (std::istream&amp; is, rational&lt;I, Ck&gt;&amp; r);
+template &lt;typename I, rational_checktype Ck&gt; std::ostream&amp; operator&lt;&lt; (std::ostream&amp; os, const rational&lt;I, Ck&gt;&amp; r);
 
 // Type conversion
 template &lt;typename T, typename I&gt; T rational_cast (const rational&lt;I, Ck&gt;&amp; r);
@@ -694,6 +694,8 @@ on the boost list in January 2001.
 <p>Daryle Walker provided a Boolean conversion operator, so that a rational can
 be used in the same Boolean contexts as the built-in numeric types, in December
 2005.
+
+<p>See rational.hpp for additional change hsitory.
 
 <p>Revised August 26, 2012</p>
 
