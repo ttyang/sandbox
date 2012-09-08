@@ -34,7 +34,11 @@ array_dyn
       super_t::
     index_t
     ;
+        typedef
       std::vector<T>
+    data_t
+    ;
+      data_t
     my_data
     /**@brief
      *  data in the array.

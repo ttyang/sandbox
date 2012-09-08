@@ -54,20 +54,33 @@ box_domain
       std::vector<index_t>
     strides_t
     ;
+        typedef
+      std::vector<index_t>
+    indices_t
+    ;
+        typedef
+      std::vector<index_t>
+    shape_t
+    ;
       strides_t
     my_strides
     /**@brief
      *  The strides for each axis in a multidimensional array.
      */
     ;
-      int const
+      dirs const
     my_dir
     /**@brief
-     *  Either 0 or 1.
-     *    If 1, then my_strides[i]/my_strides[i+1] > 0
+     *  Either dir_fwd or dir_rev.
+     *    If dir_rev, then my_strides[i]/my_strides[i+1] > 0
      *    Otherwise,  my_strides[i+1]/my_strides[i] > 0
      */
     ;
+    
+    ~box_domain()
+    {
+        //std::cout<<__FILE__<<":"<<__LINE__<<"~box_domain"<<":this="<<(void*)this<<"\n";
+    }
       template
       < typename InpIter
       , typename OutIter
@@ -82,6 +95,7 @@ box_domain
        *  Helper function for init_strides( Sizes...)
        */
     {
+        //std::cout<<__FILE__<<":"<<__LINE__<<"box_domain:init_iter_strides"<<":this="<<(void*)this<<"\n";
         *strides=1;
         return
         std::partial_sum
@@ -141,6 +155,11 @@ box_domain
         return result;
     }
     
+      dirs
+    dir()const
+    {
+        return dirs(my_dir);
+    }
       index_t
     rank()const
     {
@@ -150,7 +169,7 @@ box_domain
       index_t
     stride(index_t Index)const
       /**@brief
-       *  size of Index-th axis.
+       *  stride of Index-th axis.
        */
     {
         return my_strides[Index+my_dir];
@@ -158,6 +177,9 @@ box_domain
     
       index_t
     size(index_t Index)const
+      /**@brief
+       *  size of Index-th axis
+       */
     {
         index_t const greater=(my_dir+1)%2;
         return my_strides[Index+greater]/my_strides[Index+my_dir];
@@ -204,7 +226,7 @@ box_domain
           );
     }
     
-      std::vector<index_t>
+      indices_t
     indices_at_offset
       ( index_t offset
       )const
@@ -212,14 +234,14 @@ box_domain
        *  Inverse of offset_at_indices
        */
     {
-        std::vector<index_t> indices(rank());
+        indices_t indices_v(rank());
         if(my_dir==dir_fwd)
         {
             indices_at_offset
             ( offset
             , my_strides.rbegin()+1
             , my_strides.rend()
-            , indices.rbegin()
+            , indices_v.rbegin()
             );
         }
         else
@@ -228,10 +250,65 @@ box_domain
             ( offset
             , my_strides.begin()+1
             , my_strides.end()
-            , indices.begin()
+            , indices_v.begin()
             );
         }
-        return indices;
+        return indices_v;
+    }
+
+      template
+      < typename StrideIter
+      , typename ShapeIter
+      >
+        static
+      void
+    iter_shape
+      ( StrideIter beg_stride
+      , StrideIter end_stride
+      , ShapeIter beg_shape
+      )
+    {
+        for(; beg_stride!=end_stride; ++beg_stride,++beg_shape)
+        {
+            *beg_shape=(*(beg_stride+1))/(*beg_stride);
+        }
+    }
+      shape_t
+    shape
+      (
+      )const
+      /**@brief
+       *  Returns shape(i.e. lengths of axes).
+       */
+    {
+        shape_t shape_v(rank());
+        if(my_dir==dir_fwd)
+        {
+            iter_shape
+            ( my_strides.begin()
+            , my_strides.end()
+            , shape_v.begin()
+            );
+        }
+        else
+        {   
+                typedef typename
+              strides_t::const_iterator
+            fwd_iter;
+                typedef
+              std::reverse_iterator<fwd_iter>
+            rev_iter;
+              rev_iter
+            rbeg(my_strides.end());
+              rev_iter
+            rend(my_strides.begin());
+            iter_shape
+              ( rbeg
+              , rend
+              , shape_v.rbegin()
+              );
+        }
+        return shape_v;
     }
     
   //[Template interface:
@@ -246,6 +323,25 @@ box_domain
     , my_dir(a_dir)
     {
         init_strides( a_sizes);
+      #if 0
+        std::cout<<__FILE__<<":"<<__LINE__
+          <<":a_sizes="<<a_sizes
+          <<":my_strides="<<my_strides
+          <<"\n";
+      #endif
+    }
+    
+    box_domain( box_domain const& a_self)
+    : my_strides( a_self.my_strides)
+    , my_dir(a_self.my_dir)
+    {
+      #if 0
+        std::cout<<__FILE__<<":"<<__LINE__
+          <<":my_strides="<<my_strides
+          <<":my_dir="<<my_strides
+          <<":this="<<(void*)this
+          <<"\n";
+      #endif
     }
     
       template
