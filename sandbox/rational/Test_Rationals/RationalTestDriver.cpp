@@ -14,20 +14,20 @@
 #endif
 
 
-typedef boost::rational<signed char,boost::RationalCheckforOverflow>   RatS8wCK;
-typedef boost::rational<signed char,boost::RationalNoChecking>         RatS8ref;
+typedef boost::rational<signed char,boost::rational_check_for_overflow>  RatS8wCK;
+typedef boost::rational<signed char,boost::rational_no_checking>         RatS8ref;
 
-typedef boost::rational<short,boost::RationalCheckforOverflow>         RatS16wCK;
-typedef boost::rational<short,boost::RationalNoChecking>               RatRefS16;
+typedef boost::rational<short,boost::rational_check_for_overflow>        RatS16wCK;
+typedef boost::rational<short,boost::rational_no_checking>               RatRefS16;
 
-typedef boost::rational<int,boost::RationalCheckforOverflow>           RatS32wCK;
-typedef boost::rational<int,boost::RationalNoChecking>                 RatS32ref;
+typedef boost::rational<int,boost::rational_check_for_overflow>          RatS32wCK;
+typedef boost::rational<int,boost::rational_no_checking>                 RatS32ref;
 
-typedef boost::rational<long long,boost::RationalCheckforOverflow>     RatSLLwCK;
-typedef boost::rational<long long,boost::RationalNoChecking>           RatSLLref;
+typedef boost::rational<long long,boost::rational_check_for_overflow>    RatSLLwCK;
+typedef boost::rational<long long,boost::rational_no_checking>           RatSLLref;
 
-typedef boost::rational<unsigned int,boost::RationalCheckforOverflow>  RatU32wCK;
-typedef boost::rational<unsigned int,boost::RationalNoChecking>        RatU32ref;
+typedef boost::rational<unsigned int,boost::rational_check_for_overflow> RatU32wCK;
+typedef boost::rational<unsigned int,boost::rational_no_checking>        RatU32ref;
 
 
 // std:: namespace helpers
@@ -598,7 +598,7 @@ void testRationalS64selected(void)  // Uses 128 bit reference 'int'
 {
     unsigned long long FailCount(0);
     COUT << ENDL << "Starting 64 bit selected values rational operator tests" << ENDL; 
-    typedef boost::rational<Int128,boost::RationalNoChecking>    RatInt128;
+    typedef boost::rational<Int128,boost::rational_no_checking>    RatInt128;
     std::set<RatSLLwCK> valSet;
 
     std::set<long long> valCompSet;
