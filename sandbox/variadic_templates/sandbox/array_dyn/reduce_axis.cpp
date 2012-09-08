@@ -98,6 +98,21 @@ struct reduce_var_one
 };
 struct reducer_variance
 {
+      unsigned const
+    my_bessel_correction
+      /**@brief
+       *  == 0 or 1, indicating whether to use
+       *  Bessel's correction:
+       *    http://en.wikipedia.org/wiki/Bessel%27s_correction
+       *  if == 0, don't correct.
+       *  if == 1, then do correct.
+       */
+      ;
+    reducer_variance
+      ( bool a_bessel_correction=false
+      )
+      : my_bessel_correction(a_bessel_correction?1:0)
+      {}
       template
       < typename Iter
       >
@@ -110,6 +125,9 @@ struct reducer_variance
        *  return value == variance of data in sample, *beg ... *(end-1).
        */
       {
+            auto
+          sample_size=beg.distance(end);
+          assert(sample_size > my_bessel_correction);
               typedef
             typename Iter::value_type
           val_t
@@ -125,9 +143,7 @@ struct reducer_variance
             , end
             , reduce_add_v
             );
-            auto
-          d=beg.distance(end);
-          mean_v=mean_v/d
+          mean_v=mean_v/sample_size
             //mean_v = mean of data in *beg ... *(end-1)
             ;
             val_t
@@ -140,7 +156,7 @@ struct reducer_variance
             , end
             , reduce_var_v
             );
-          var_v=var_v/d
+          var_v=var_v/(sample_size-my_bessel_correction)
             //var_v = variance of data in *beg ... *(end-1)
             ;
           return var_v;
