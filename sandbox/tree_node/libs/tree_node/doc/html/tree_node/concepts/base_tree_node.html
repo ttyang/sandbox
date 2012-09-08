@@ -1,0 +1,635 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Base Tree Node</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.4">
+<link rel="up" href="../concepts.html" title="Concepts">
+<link rel="prev" href="tree_node.html" title="Tree Node">
+<link rel="next" href="associative_tree_node.html" title="Associative Tree Node">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="associative_tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.concepts.base_tree_node"></a><a class="link" href="base_tree_node.html" title="Base Tree Node">Base Tree Node</a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.base_tree_node.description"></a><a class="link" href="base_tree_node.html#tree_node.concepts.base_tree_node.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Models of this concept allow the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> adaptor types to parameterically
+          inherit their functionality for greater reuse.
+        </p>
+<p>
+          In practice, each <span class="bold"><strong>Base Tree Node</strong></span> model
+          must do the following:
+        </p>
+<pre class="programlisting"><span class="special">*</span> <span class="identifier">Inherit</span> <span class="identifier">from</span> <span class="identifier">either</span> <a class="link" href="../reference/tree_node_base.html" title="tree_node_base&lt;Derived&gt;"><code class="computeroutput"><span class="identifier">tree_node_base</span></code></a> <span class="keyword">or</span> <span class="identifier">the</span> <span class="keyword">return</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="identifier">a</span>
+  <a class="link" href="type_generator.html" title="Type Generator"><span class="bold"><strong>Type Generator</strong></span></a><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Take</span> <span class="identifier">in</span> <span class="identifier">the</span> <span class="identifier">derived</span> <span class="identifier">type</span> <span class="keyword">and</span> <span class="identifier">the</span> <span class="identifier">data</span> <span class="identifier">type</span> <span class="identifier">as</span> <span class="keyword">template</span> <span class="identifier">parameters</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Also</span> <span class="identifier">take</span> <span class="identifier">in</span> <span class="identifier">the</span> <span class="identifier">key</span> <span class="identifier">type</span> <span class="keyword">if</span> <span class="identifier">the</span> <span class="identifier">derived</span> <span class="identifier">type</span> <span class="identifier">is</span> <span class="special">(</span><span class="identifier">possibly</span><span class="special">)</span> <span class="identifier">an</span>
+  <a class="link" href="associative_tree_node.html" title="Associative Tree Node"><span class="bold"><strong>Associative Tree Node</strong></span></a> <span class="identifier">model</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Declare</span> <span class="identifier">a</span> <span class="keyword">template</span> <span class="identifier">instantiation</span> <span class="identifier">of</span> <a class="link" href="../reference/tree_node_base.html" title="tree_node_base&lt;Derived&gt;"><code class="computeroutput"><span class="identifier">tree_node_base</span></code></a> <span class="identifier">with</span> <span class="identifier">the</span> <span class="identifier">derived</span>
+  <span class="identifier">type</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="error">`</span><span class="keyword">friend</span> <span class="keyword">struct</span><span class="error">`</span> <span class="keyword">if</span> <span class="identifier">it</span> <span class="identifier">overrides</span> <span class="identifier">any</span> <span class="identifier">of</span> <a class="link" href="../reference/tree_node_base.html" title="tree_node_base&lt;Derived&gt;"><code class="computeroutput"><span class="identifier">tree_node_base</span></code></a>
+  <span class="identifier">implementation</span> <span class="identifier">methods</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.base_tree_node.refinement_of"></a><a class="link" href="base_tree_node.html#tree_node.concepts.base_tree_node.refinement_of" title="Refinement of">Refinement
+        of</a>
+</h4></div></div></div>
+<p>
+          <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+          Node</strong></span></a>
+        </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl class="variablelist">
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Base</span></code></span></dt>
+<dd><p>
+              A type that models the <span class="bold"><strong>Base Tree Node</strong></span>
+              concept.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">base</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Base</span><span class="special">*</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">const_base</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Base</span> <span class="keyword">const</span><span class="special">*</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Node</span></code></span></dt>
+<dd><p>
+              A <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+              Node</strong></span></a> model that inherits from <code class="computeroutput"><span class="identifier">Base</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">copy</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span> <span class="keyword">const</span><span class="special">&amp;</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">source</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">&amp;&amp;</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">itr</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">BIC</span></code></span></dt>
+<dd><p>
+              A type that models the <a href="http://www.boost.org/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><span class="bold"><strong>Boolean Integral Constant</strong></span></a> concept.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">bic</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">BIC</span></code>.
+            </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.base_tree_node.types"></a><a class="link" href="base_tree_node.html#tree_node.concepts.base_tree_node.types" title="Associated Types">Associated
+        Types</a>
+</h4></div></div></div>
+<p>
+          No additional types beyond those defined in the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.base_tree_node.expressions"></a><a class="link" href="base_tree_node.html#tree_node.concepts.base_tree_node.expressions" title="Valid Expressions and Semantics">Valid
+        Expressions and Semantics</a>
+</h4></div></div></div>
+<p>
+          In addition to the expressions defined in the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept, the following expressions
+          must be valid.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return Type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                    Complexity</a>
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Derived access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">get_derived</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns a pointer to the same <code class="computeroutput"><span class="identifier">Node</span></code>
+                    object.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constant
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Derived access
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_base</span><span class="special">-&gt;</span><span class="identifier">get_derived</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns a pointer to the same immutable <code class="computeroutput"><span class="identifier">Node</span></code>
+                    object.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Constant
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          Also, the following expressions must be valid (unless the <code class="computeroutput"><span class="identifier">Node</span></code> type does <span class="emphasis"><em>not</em></span>
+          define the operation within which the expression can be invoked).
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return Type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Must be valid within
+                  </p>
+                </th>
+<th>
+                  <p>
+                    <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                    Complexity</a>
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Derived copy constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Base</span><span class="special">(</span><span class="identifier">copy</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Constructs a deep copy of the specified node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The initializer list of the <code class="computeroutput"><span class="identifier">Node</span></code>
+                    copy constructor.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of descendants.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Derived move constructor
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Base</span><span class="special">(</span><span class="identifier">source</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    Transfers the contents of the specified node to this one.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The initializer list of the <code class="computeroutput"><span class="identifier">Node</span></code>
+                    move constructor.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Base copy assignment
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">copy_assign</span><span class="special">(</span><span class="identifier">copy</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Structurally modifies the invoking node so that it is a deep
+                    copy of the specified node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of the <code class="computeroutput"><span class="identifier">Node</span></code>
+                    copy assignment operator.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children plus the number
+                    of ancestors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Base move assignment
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">move_assign</span><span class="special">(</span><span class="identifier">source</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Structurally modifies the invoking node so that it stores the
+                    contents of the specified node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of the <code class="computeroutput"><span class="identifier">Node</span></code>
+                    move assignment operator.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children plus the number
+                    of ancestors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Copy or move notification
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">on_post_copy_or_move</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Upholds any <code class="computeroutput"><span class="identifier">Node</span></code>-specific
+                    invariants not upheld by either the <code class="computeroutput"><span class="identifier">Node</span></code>
+                    copy or move constructor's initializer lists or by the base copy
+                    or move assignment method. For example, if the <code class="computeroutput"><span class="identifier">Base</span></code> type defines <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code> member variables referring
+                    to a parent and a number of child nodes, then this method and
+                    not the derived copy or move constructors must link the children
+                    to their parent via derived access because <code class="computeroutput"><span class="identifier">Node</span></code>
+                    will be an incomplete type during initialization.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of the<code class="computeroutput"><span class="identifier">Node</span></code>
+                    copy or move constructor or assignment operator.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children plus the number
+                    of ancestors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Insertion notification
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">on_post_inserted</span><span class="special">(</span><span class="identifier">itr</span><span class="special">,</span>
+                    <span class="identifier">bic</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Updates any <code class="computeroutput"><span class="identifier">Node</span></code>-specific
+                    information invalidated by operations that insert or emplace
+                    the invoking node. The specified iterator points to this node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of any <code class="computeroutput"><span class="identifier">Node</span></code>
+                    insertion or emplacement member function.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Amortized constant if <code class="computeroutput"><span class="identifier">BIC</span><span class="special">::</span><span class="identifier">value</span>
+                    <span class="special">==</span> <span class="keyword">true</span></code>,
+                    linear with respect to the number of siblings otherwise.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Erasure notification
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">on_post_erase</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Updates any <code class="computeroutput"><span class="identifier">Node</span></code>-specific
+                    information invalidated by operations that remove the specified
+                    children and their descendants from a node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of any <code class="computeroutput"><span class="identifier">Node</span></code>
+                    erasure member function.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children plus the number
+                    of ancestors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Clear notification
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">on_post_clear</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Updates any <code class="computeroutput"><span class="identifier">Node</span></code>-specific
+                    information invalidated by operations that remove all descendants
+                    from a node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of the <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">clear</span><span class="special">()</span></code> member function.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children removed plus the
+                    number of ancestors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Left rotation notification
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">on_post_rotate_left</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Updates any <code class="computeroutput"><span class="identifier">Node</span></code>-specific
+                    information invalidated by operations that rotate a node to the
+                    left.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of the <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">rotate_left</span><span class="special">()</span></code> member function.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of ancestors.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Right rotation notification
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">base</span><span class="special">-&gt;</span><span class="identifier">on_post_rotate_right</span><span class="special">()</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="keyword">void</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Updates any <code class="computeroutput"><span class="identifier">Node</span></code>-specific
+                    information invalidated by operations that rotate a node to the
+                    right.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The body of the <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">rotate_right</span><span class="special">()</span></code> member function.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of ancestors.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.base_tree_node.models"></a><a class="link" href="base_tree_node.html#tree_node.concepts.base_tree_node.models" title="Models">Models</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/binary_node_base.html" title="binary_node_base&lt;Derived,T&gt;"><code class="computeroutput"><span class="identifier">binary_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/nary_node_base.html" title="nary_node_base&lt;Derived,T,Selector&gt;"><code class="computeroutput"><span class="identifier">nary_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/associative_node_base.html" title="associative_node_base&lt;Derived,Key,Data,Selector&gt;"><code class="computeroutput"><span class="identifier">associative_node_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_count_base.html" title="with_count_base&lt;Derived,BaseGenerator,T1,T2,Count&gt;"><code class="computeroutput"><span class="identifier">with_count_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_height_base.html" title="with_height_base&lt;Derived,BaseGenerator,T1,T2,Height&gt;"><code class="computeroutput"><span class="identifier">with_height_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_position_base.html" title="with_position_base&lt;Derived,BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_position_base</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/with_rb_flag_base.html" title="with_red_black_flag_base&lt;Derived,BaseGenerator,T1,T2&gt;"><code class="computeroutput"><span class="identifier">with_red_black_flag_base</span></code></a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011, 2012 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="associative_tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

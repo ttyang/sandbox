@@ -1,0 +1,40 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:copyable_and_movable `BOOST_TREE_NODE_COPYABLE_AND_MOVABLE`]
+
+[section Synopsis]
+[reference__macro__copyable_and_movable]
+[endsect]
+
+[section Description]
+Meant to be used in the `public` scope of a __Tree_Node__ model that inherits
+from a __Base_Tree_Node__, this macro defines the copy and move constructors
+and the copy and move assignment operators necessary for the `Derived` class
+to model the __Copy_Constructible__, __Assignable__, and __Movable__ concepts.  
+[endsect]
+
+[section Usage]
+``
+BOOST_TREE_NODE_COPYABLE_AND_MOVABLE(Derived, Base)
+``
+[endsect]
+
+[section Arguments]
+  * /Derived/ -- The name of the enclosing type.
+  * /Base/ -- The name of the type from which `Derived` inherits.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_preprocessor_hpp__>
+``
+[endsect]
+
+[endsect] [/ BOOST_TREE_NODE_COPYABLE_AND_MOVABLE]
+

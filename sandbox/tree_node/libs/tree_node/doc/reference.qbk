@@ -1,0 +1,117 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Reference]
+
+[include ref_binary_node.qbk]
+[include ref_binary_node_base.qbk]
+[include ref_binary_node_gen.qbk]
+[include ref_nary_node.qbk]
+[include ref_nary_node_base.qbk]
+[include ref_nary_node_gen.qbk]
+[include ref_associative_node.qbk]
+[include ref_associative_node_base.qbk]
+[include ref_associative_node_gen.qbk]
+[include ref_with_count.qbk]
+[include ref_with_count_base.qbk]
+[include ref_with_count_gen.qbk]
+[include ref_with_height.qbk]
+[include ref_with_height_base.qbk]
+[include ref_with_height_gen.qbk]
+[include ref_with_position.qbk]
+[include ref_with_position_base.qbk]
+[include ref_with_position_gen.qbk]
+[include ref_with_rb_flag.qbk]
+[include ref_with_rb_flag_base.qbk]
+[include ref_with_rb_flag_gen.qbk]
+[include ref_tree_node_base.qbk]
+[include ref_breadth_first_iterator.qbk]
+[include ref_breadth_first_desc_iter.qbk]
+[include ref_pre_order_iterator.qbk]
+[include ref_pre_order_desc_iter.qbk]
+[include ref_post_order_iterator.qbk]
+[include ref_post_order_desc_iter.qbk]
+[include ref_in_order_iterator.qbk]
+[include ref_depth_first_iterator.qbk]
+[include ref_depth_first_desc_iter.qbk]
+[include ref_traversal_state.qbk]
+[include ref_dereference_iterator.qbk]
+[include ref_copy_constructible.qbk]
+[include ref_copyable_and_movable.qbk]
+[include ref_emplace_ctor_header.qbk]
+[include ref_emplace_ctor_fwd_decl.qbk]
+[include ref_emplace_ctor_base_fwd.qbk]
+[include ref_emplace_ctor_inline_hdr.qbk]
+[include ref_emplace_ctor_inline_def.qbk]
+
+[heading Data Structures]
+
+  * __binary_node__
+  * __nary_node__
+  * __associative_node__
+
+[heading Adaptor Types]
+
+  * __tree_node_with_count__
+  * __tree_node_with_height__
+  * __tree_node_with_position__
+  * __tree_node_with_red_black_flag__
+
+[heading Base Types]
+
+  * __tree_node_base__
+  * __binary_node_base__
+  * __nary_node_base__
+  * __associative_node_base__
+  * __tree_node_with_count_base__
+  * __tree_node_with_height_base__
+  * __tree_node_with_position_base__
+  * __tree_node_with_red_black_flag_base__
+
+[heading Type Generators]
+
+  * __binary_node_gen__
+  * __nary_node_gen__
+  * __associative_node_gen__
+  * __tree_node_with_count_gen__
+  * __tree_node_with_height_gen__
+  * __tree_node_with_position_gen__
+  * __tree_node_with_red_black_flag_gen__
+
+[heading Iterator Types]
+
+  * __breadth_first_iterator__
+  * __breadth_first_descendant_iterator__
+  * __pre_order_iterator__
+  * __pre_order_descendant_iterator__
+  * __post_order_iterator__
+  * __post_order_descendant_iterator__
+  * __in_order_iterator__
+  * __depth_first_iterator__
+  * __depth_first_descendant_iterator__
+
+[heading Enum Types]
+
+  * __traversal_state__
+
+[heading Functions]
+
+  * __dereference_iterator__
+
+[heading Macros]
+
+  * __TREE_NODE_COPY_CONSTRUCTIBLE__
+  * __TREE_NODE_COPYABLE_AND_MOVABLE__
+  * __TREE_NODE_EMPLACEMENT_CTOR_HEADER__
+  * __TREE_NODE_EMPLACEMENT_CTOR_FWD_DECL__
+  * __TREE_NODE_EMPLACEMENT_CTOR_BASE_FWD__
+  * __TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER__
+  * __TREE_NODE_EMPLACEMENT_CTOR_INLINE_DEF__
+
+[endsect] [/ Reference]
+

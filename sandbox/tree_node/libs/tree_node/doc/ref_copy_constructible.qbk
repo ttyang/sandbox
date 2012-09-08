@@ -1,0 +1,30 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:copy_constructible `BOOST_TREE_NODE_COPY_CONSTRUCTIBLE`]
+
+[section Synopsis]
+[reference__macro__copy_constructible]
+[endsect]
+
+[section Description]
+Meant to be used in the `public` scope of a __Tree_Node__ model that is not a
+__Base_Tree_Node__, this macro defines the copy constructors necessary for the
+`Derived` class to model the __Copy_Constructible__ concept.  These copy
+constructors forward their arguments to the derived copy constructor of the
+`Base` class.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_preprocessor_hpp__>
+``
+[endsect]
+
+[endsect] [/ BOOST_TREE_NODE_COPY_CONSTRUCTIBLE]
+

@@ -1,0 +1,121 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Selectors]
+
+[section Synopsis]
+This library provides several selector templates, one for each
+__STL_Container__ model, __Boost_Container__, __Boost_Unordered__ container,
+and __Boost_Pointer_Container__ to which it corresponds.
+
+[reference__container_selector_templates]
+
+In turn, the default arguments of these selector templates are themselves
+selector types.
+
+[reference__template_argument_selectors]
+
+This library also retains the old selector types and, for completeness,
+provides type definitions of the selector templates with default arguments.
+
+[reference__container_selector_typedefs]
+[endsect]
+
+[section Description]
+Selector templates determine the return type of the __container_gen__
+metafunction.  Since the container models are not templatized on just their
+value types, the selector templates must take in analogous arguments in order
+to provide maximum flexibility.  The following example demonstrates how a
+__std_list__ with a custom allocator type can become the `OutEdgeList` of a
+__graph_adjacency_list__.
+
+[example__container_gen__list_with_custom_allocator_selector]
+
+Selector templates evaluate each parameter the same way, so the following table
+will suffice in documenting the parameters:
+
+[table
+    [[Parameter][Description]]
+    [
+        [`ConstantSize`]
+        [
+            An __Integral_Constant__ that determines the size of the __array__
+            or __tr1_array__ type to be returned by __container_gen__.
+        ]
+    ]
+    [
+        [`IsBoost`]
+        [
+            A __Boolean_Integral_Constant__ that determines whether
+            __container_gen__ will return the appropriate __Boost_Container__
+            type or the corresponding C++ standard container.
+        ]
+    ]
+    [
+        [`IsTR1`]
+        [
+            A __Boolean_Integral_Constant__ that determines whether
+            __container_gen__ will return the appropriate __Boost_TR1__
+            container or the corresponding Boost container.
+        ]
+    ]
+    [
+        [`AllocatorSelector`]
+        [
+            A __Unary_Metafunction_Class__ that takes in the value type and
+            returns an allocator model.  The return type will become the
+            container template's `Allocator` argument.
+        ]
+    ]
+    [
+        [`CompareSelector`]
+        [
+            If the selector template causes __container_gen__ to return a
+            __Sorted_Associative_Container__, then a
+            __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Strict_Weak_Ordering__ model.  If the selector template
+            causes __container_gen__ to return a
+            __Hashed_Associative_Container__, then a
+            __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Binary_Predicate__ model.  The return type will become
+            the container template's `Compare` or `Pred` argument.
+        ]
+    ]
+    [
+        [`HashSelector`]
+        [
+            A __Unary_Metafunction_Class__ that takes in the value type and
+            returns a __Hash_Function__ model.  The return type will become the
+            container template's `Hash` argument.
+        ]
+    ]
+    [
+        [`CloneAllocator`]
+        [
+            A __Clone_Allocator__ model that will become the container
+            template's corresponding argument.
+        ]
+    ]
+    [
+        [`Allocator`]
+        [
+            An allocator model that will become the container template's
+            corresponding argument.
+        ]
+    ]
+]
+[endsect] [/ Description]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_selectors_hpp__>
+``
+[endsect]
+
+[endsect] [/ Selectors]
+

@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>BOOST_TREE_NODE_COPYABLE_AND_MOVABLE</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.4">
+<link rel="up" href="../reference.html" title="Reference">
+<link rel="prev" href="copy_constructible.html" title="BOOST_TREE_NODE_COPY_CONSTRUCTIBLE">
+<link rel="next" href="emplace_ctor_header.html" title="BOOST_TREE_NODE_EMPLACEMENT_CTOR_HEADER">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="copy_constructible.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="emplace_ctor_header.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.reference.copyable_and_movable"></a><a class="link" href="copyable_and_movable.html" title="BOOST_TREE_NODE_COPYABLE_AND_MOVABLE"><code class="computeroutput"><span class="identifier">BOOST_TREE_NODE_COPYABLE_AND_MOVABLE</span></code></a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.copyable_and_movable.synopsis"></a><a class="link" href="copyable_and_movable.html#tree_node.reference.copyable_and_movable.synopsis" title="Synopsis">Synopsis</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#define</span> <span class="identifier">BOOST_TREE_NODE_COPYABLE_AND_MOVABLE</span><span class="special">(</span><span class="identifier">Derived</span><span class="special">,</span> <span class="identifier">Base</span><span class="special">)</span>                  <span class="special">\</span>
+        <span class="identifier">BOOST_TREE_NODE_COPY_CONSTRUCTIBLE</span><span class="special">(</span><span class="identifier">Derived</span><span class="special">,</span> <span class="identifier">Base</span><span class="special">)</span>                    <span class="special">\</span>
+        <span class="keyword">inline</span> <span class="identifier">Derived</span><span class="special">(</span><span class="identifier">Derived</span><span class="special">&amp;&amp;</span> <span class="identifier">source</span><span class="special">)</span>                                     <span class="special">\</span>
+          <span class="special">:</span> <span class="identifier">Base</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&amp;&amp;&gt;(</span><span class="identifier">source</span><span class="special">))</span>                             <span class="special">\</span>
+        <span class="special">{</span>                                                                    <span class="special">\</span>
+            <span class="identifier">Base</span><span class="special">::</span><span class="identifier">on_post_copy_or_move</span><span class="special">();</span>                                    <span class="special">\</span>
+        <span class="special">}</span>                                                                    <span class="special">\</span>
+        <span class="keyword">inline</span> <span class="identifier">Derived</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">Derived</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">)</span>                       <span class="special">\</span>
+        <span class="special">{</span>                                                                    <span class="special">\</span>
+            <span class="keyword">if</span> <span class="special">(</span><span class="keyword">this</span> <span class="special">!=</span> <span class="special">&amp;</span><span class="identifier">copy</span><span class="special">)</span>                                               <span class="special">\</span>
+            <span class="special">{</span>                                                                <span class="special">\</span>
+                <span class="identifier">Base</span><span class="special">::</span><span class="identifier">copy_assign</span><span class="special">(</span><span class="identifier">copy</span><span class="special">);</span>                                     <span class="special">\</span>
+                <span class="identifier">Base</span><span class="special">::</span><span class="identifier">on_post_copy_or_move</span><span class="special">();</span>                                <span class="special">\</span>
+            <span class="special">}</span>                                                                <span class="special">\</span>
+            <span class="keyword">return</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>                                                    <span class="special">\</span>
+        <span class="special">}</span>                                                                    <span class="special">\</span>
+        <span class="keyword">inline</span> <span class="identifier">Derived</span><span class="special">&amp;</span> <span class="keyword">operator</span><span class="special">=(</span><span class="identifier">Derived</span><span class="special">&amp;&amp;</span> <span class="identifier">source</span><span class="special">)</span>                          <span class="special">\</span>
+        <span class="special">{</span>                                                                    <span class="special">\</span>
+            <span class="keyword">if</span> <span class="special">(</span><span class="keyword">this</span> <span class="special">!=</span> <span class="special">&amp;</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&amp;&gt;(</span><span class="identifier">source</span><span class="special">))</span>                      <span class="special">\</span>
+            <span class="special">{</span>                                                                <span class="special">\</span>
+                <span class="identifier">Base</span><span class="special">::</span><span class="identifier">move_assign</span><span class="special">(</span><span class="keyword">static_cast</span><span class="special">&lt;</span><span class="identifier">Derived</span><span class="special">&amp;&amp;&gt;(</span><span class="identifier">source</span><span class="special">));</span>           <span class="special">\</span>
+                <span class="identifier">Base</span><span class="special">::</span><span class="identifier">on_post_copy_or_move</span><span class="special">();</span>                                <span class="special">\</span>
+            <span class="special">}</span>                                                                <span class="special">\</span>
+            <span class="keyword">return</span> <span class="special">*</span><span class="keyword">this</span><span class="special">;</span>                                                    <span class="special">\</span>
+        <span class="special">}</span>                                                                    <span class="special">\</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.copyable_and_movable.description"></a><a class="link" href="copyable_and_movable.html#tree_node.reference.copyable_and_movable.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Meant to be used in the <code class="computeroutput"><span class="keyword">public</span></code>
+          scope of a <a class="link" href="../concepts/tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+          Node</strong></span></a> model that inherits from a <a class="link" href="../concepts/base_tree_node.html" title="Base Tree Node"><span class="bold"><strong>Base Tree Node</strong></span></a>, this macro defines the copy
+          and move constructors and the copy and move assignment operators necessary
+          for the <code class="computeroutput"><span class="identifier">Derived</span></code> class to
+          model the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>, <a href="http://www.boost.org/libs/utility/Assignable.html" target="_top"><span class="bold"><strong>Assignable</strong></span></a>, and <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a> concepts.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.copyable_and_movable.usage"></a><a class="link" href="copyable_and_movable.html#tree_node.reference.copyable_and_movable.usage" title="Usage">Usage</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="identifier">BOOST_TREE_NODE_COPYABLE_AND_MOVABLE</span><span class="special">(</span><span class="identifier">Derived</span><span class="special">,</span> <span class="identifier">Base</span><span class="special">)</span>
+</pre>
+<p>
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.copyable_and_movable.arguments"></a><a class="link" href="copyable_and_movable.html#tree_node.reference.copyable_and_movable.arguments" title="Arguments">Arguments</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="special">/</span><span class="identifier">Derived</span><span class="special">/</span> <span class="special">--</span> <span class="identifier">The</span> <span class="identifier">name</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">enclosing</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="special">/</span><span class="identifier">Base</span><span class="special">/</span> <span class="special">--</span> <span class="identifier">The</span> <span class="identifier">name</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">type</span> <span class="identifier">from</span> <span class="identifier">which</span> <span class="error">`</span><span class="identifier">Derived</span><span class="error">`</span> <span class="identifier">inherits</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.reference.copyable_and_movable.definition"></a><a class="link" href="copyable_and_movable.html#tree_node.reference.copyable_and_movable.definition" title="Where defined">Where
+        defined</a>
+</h4></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../../../../boost/tree_node/preprocessor.hpp" target="_top">boost/tree_node/preprocessor.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+        </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011, 2012 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="copy_constructible.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../reference.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="emplace_ctor_header.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

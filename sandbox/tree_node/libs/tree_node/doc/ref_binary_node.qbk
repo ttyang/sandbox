@@ -1,0 +1,242 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:binary_node `binary_node<T>`]
+
+[section Description]
+This class template is suitable for classes or algorithms that require a
+binary tree node data structure.  Objects of this type can be stored by value.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_binary_node_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`T`]
+        [The type of the object to be stored in a `binary_node`.]
+        []
+        []
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Binary_Tree_Node__
+  * __Default_Constructible__ if `T` is __Default_Constructible__
+  * __Copy_Constructible__ if `T` is __Copy_Constructible__
+  * __Assignable__ if `T` is __Copy_Constructible__ and __Movable__
+  * __Movable__ if `T` is __Movable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__binary_node__bases]
+[endsect]
+
+[section:members Public Members]
+Given:
+[reference__binary_node__super_t]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [Data type]
+        [[reference__binary_node__traits]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer type]
+        [[reference__binary_node__pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__binary_node__const_pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Iterator type]
+        [[reference__binary_node__iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__binary_node__const_iterator]]
+        [__Non_Associative_Tree_Node__]
+    ]
+    [
+        [Copy constructor]
+        [``
+            binary_node(binary_node const&);
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Move constructor]
+        [``
+            binary_node(binary_node&&);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Emplacement constructor]
+        [[reference__binary_node__emplacement_ctor]]
+        [__Tree_Node__]
+    ]
+    [
+        [Copy assignment operator]
+        [``
+            binary_node& operator=(binary_node const&);
+        ``]
+        [__Assignable__]
+    ]
+    [
+        [Move assignment operator]
+        [``
+            binary_node& operator=(binary_node&&);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Data access]
+        [[reference__binary_node_base__get_data__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Data access]
+        [[reference__binary_node_base__get_data]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__binary_node_base__get_parent_ptr__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__binary_node_base__get_parent_ptr]]
+        [__Tree_Node__]
+    ]
+    [
+        [Left child creation]
+        [[reference__binary_node_base__emplace_left]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Left child copy creation]
+        [``
+            iterator insert_left(binary_node const& child);
+        ``]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Right child creation]
+        [[reference__binary_node_base__emplace_right]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Right child copy creation]
+        [``
+            iterator insert_right(binary_node const& child);
+        ``]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Left child access]
+        [[reference__binary_node_base__get_left_child_ptr__const]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Left child access]
+        [[reference__binary_node_base__get_left_child_ptr]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Right child access]
+        [[reference__binary_node_base__get_right_child_ptr__const]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Right child access]
+        [[reference__binary_node_base__get_right_child_ptr]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__binary_node_base__begin__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__binary_node_base__begin]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__binary_node_base__end__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__binary_node_base__end]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range size query]
+        [[reference__binary_node_base__size]]
+        [__Tree_Node__]
+    ]
+    [
+        [Rotate left]
+        [[reference__binary_node_base__rotate_left]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Rotate right]
+        [[reference__binary_node_base__rotate_right]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Remove left child]
+        [[reference__binary_node_base__erase_left]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Remove right child]
+        [[reference__binary_node_base__erase_right]]
+        [__Binary_Tree_Node__]
+    ]
+    [
+        [Leaf node query]
+        [[reference__binary_node_base__empty]]
+        [__Tree_Node__]
+    ]
+    [
+        [Remove all children]
+        [[reference__binary_node_base__clear]]
+        [__Tree_Node__]
+    ]
+]
+[endsect] [/ Members]
+
+[section Example]
+<__example_binary_node_cpp__>
+[endsect]
+
+[section Test]
+<__test_binary_node_cpp__>
+[endsect]
+
+[endsect] [/ binary_node]
+

@@ -1,0 +1,46 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:binary_node_gen `binary_node_gen`]
+
+[section Synopsis]
+[reference__binary_node_gen]
+[endsect]
+
+[section Description]
+TODO.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_binary_node_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+__Type_Generator__
+[endsect]
+
+[section:expressions Expression Semantics]
+Let `Derived` be the type that will inherit from __binary_node_base__.
+Let `T` be the data type.
+
+``
+    typedef _mpl_apply_wrap2_<binary_node_gen,Derived,T>::type r;
+``
+
+[*Return type:] [^_binary_node_base_<Derived,T>]
+
+[endsect]
+
+[section Complexity]
+Compile time.
+[endsect]
+
+[endsect] [/ binary_node_gen]
+

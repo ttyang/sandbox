@@ -1,0 +1,232 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:base_tree_node Base Tree Node]
+
+[section Description]
+Models of this concept allow the __Tree_Node__ adaptor types to parameterically
+inherit their functionality for greater reuse.
+
+In practice, each [*Base Tree Node] model must do the following:
+
+  * Inherit from either __tree_node_base__ or the return type of a
+    __Type_Generator__.
+  * Take in the derived type and the data type as template parameters.
+  * Also take in the key type if the derived type is (possibly) an
+    __Associative_Tree_Node__ model.
+  * Declare a template instantiation of __tree_node_base__ with the derived
+    type as a `friend struct` if it overrides any of __tree_node_base__
+    implementation methods.
+
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+
+[endsect]
+
+[variablelist Notation
+    [[`Base`][A type that models the [*Base Tree Node] concept.]]
+    [[`base`][An object of type `Base*`.]]
+    [[`const_base`][An object of type `Base const*`.]]
+    [[`Node`][A __Tree_Node__ model that inherits from `Base`.]]
+    [[`copy`][An object of type `Node const&`.]]
+    [[`source`][An object of type `Node&&`.]]
+    [[`itr`][An object of type `Node::iterator`.]]
+    [[`BIC`][A type that models the __Boolean_Integral_Constant__ concept.]]
+    [[`bic`][An object of type `BIC`.]]
+]
+
+[section:types Associated Types]
+No additional types beyond those defined in the __Tree_Node__ concept.
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Tree_Node__ concept, the
+following expressions must be valid.
+
+[table
+    [[Name][Expression][Return Type][Semantics][__Runtime_Complexity__]]
+    [
+        [Derived access]
+        [`base->get_derived()`]
+        [`Node::pointer`]
+        [Returns a pointer to the same `Node` object.]
+        [Constant]
+    ]
+    [
+        [Derived access]
+        [`const_base->get_derived()`]
+        [`Node::const_pointer`]
+        [Returns a pointer to the same immutable `Node` object.]
+        [Constant]
+    ]
+]
+
+Also, the following expressions must be valid (unless the `Node` type does
+/not/ define the operation within which the expression can be invoked).
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Return Type]
+        [Semantics]
+        [Must be valid within]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Derived copy constructor]
+        [`Base(copy)`]
+        []
+        [Constructs a deep copy of the specified node.]
+        [The initializer list of the `Node` copy constructor.]
+        [Linear with respect to the number of descendants.]
+    ]
+    [
+        [Derived move constructor]
+        [`Base(source)`]
+        []
+        [Transfers the contents of the specified node to this one.]
+        [The initializer list of the `Node` move constructor.]
+        [Linear with respect to the number of children.]
+    ]
+    [
+        [Base copy assignment]
+        [`base->copy_assign(copy)`]
+        [`void`]
+        [
+            Structurally modifies the invoking node so that it is a deep copy
+            of the specified node.
+        ]
+        [The body of the `Node` copy assignment operator.]
+        [
+            Linear with respect to the number of children plus the number of
+            ancestors.
+        ]
+    ]
+    [
+        [Base move assignment]
+        [`base->move_assign(source)`]
+        [`void`]
+        [
+            Structurally modifies the invoking node so that it stores the
+            contents of the specified node.
+        ]
+        [The body of the `Node` move assignment operator.]
+        [
+            Linear with respect to the number of children plus the number of
+            ancestors.
+        ]
+    ]
+    [
+        [Copy or move notification]
+        [`base->on_post_copy_or_move()`]
+        [`void`]
+        [
+            Upholds any `Node`-specific invariants not upheld by either the
+            `Node` copy or move constructor's initializer lists or by the
+            base copy or move assignment method.  For example, if the `Base`
+            type defines `Node::pointer` member variables referring to a
+            parent and a number of child nodes, then this method and not the
+            derived copy or move constructors must link the children to their
+            parent via derived access because `Node` will be an incomplete type
+            during initialization.
+        ]
+        [
+            The body of the`Node` copy or move constructor or assignment
+            operator.
+        ]
+        [
+            Linear with respect to the number of children plus the number of
+            ancestors.
+        ]
+    ]
+    [
+        [Insertion notification]
+        [`base->on_post_inserted(itr, bic)`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that insert or emplace the invoking node.  The specified iterator
+            points to this node.
+        ]
+        [The body of any `Node` insertion or emplacement member function.]
+        [
+            Amortized constant if `BIC::value == true`, linear with respect to
+            the number of siblings otherwise.
+        ]
+    ]
+    [
+        [Erasure notification]
+        [`base->on_post_erase()`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that remove the specified children and their descendants from a
+            node.
+        ]
+        [The body of any `Node` erasure member function.]
+        [
+            Linear with respect to the number of children plus the number of
+            ancestors.
+        ]
+    ]
+    [
+        [Clear notification]
+        [`base->on_post_clear()`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that remove all descendants from a node.
+        ]
+        [The body of the `Node::clear()` member function.]
+        [
+            Linear with respect to the number of children removed plus the
+            number of ancestors.
+        ]
+    ]
+    [
+        [Left rotation notification]
+        [`base->on_post_rotate_left()`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that rotate a node to the left.
+        ]
+        [The body of the `Node::rotate_left()` member function.]
+        [Linear with respect to the number of ancestors.]
+    ]
+    [
+        [Right rotation notification]
+        [`base->on_post_rotate_right()`]
+        [`void`]
+        [
+            Updates any `Node`-specific information invalidated by operations
+            that rotate a node to the right.
+        ]
+        [The body of the `Node::rotate_right()` member function.]
+        [Linear with respect to the number of ancestors.]
+    ]
+]
+[endsect] [/ Valid Expressions and Semantics]
+
+[section Models]
+
+  * __binary_node_base__
+  * __nary_node_base__
+  * __associative_node_base__
+  * __tree_node_with_count_base__
+  * __tree_node_with_height_base__
+  * __tree_node_with_position_base__
+  * __tree_node_with_red_black_flag_base__
+
+[endsect]
+
+[endsect] [/ Base Tree Node]
+

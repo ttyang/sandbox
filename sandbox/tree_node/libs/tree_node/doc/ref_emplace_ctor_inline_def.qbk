@@ -1,0 +1,48 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:emplace_ctor_inline_def `BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_DEF`]
+
+[section Synopsis]
+[reference__macro__emplacement_ctor_inline_def]
+[endsect]
+
+[section Description]
+Defined only if the compiler does not support perfect forwarding, and meant to
+be used in the `public` scope of a __Tree_Node__ model that inherits from a
+__Base_Tree_Node__ and defines no additional members, this macro expands to the
+inline definition of a constructor that will emulate it.  Uses
+__TREE_NODE_EMPLACEMENT_CTOR_INLINE_HEADER__.
+[endsect]
+
+[section Usage]
+``
+_PP_REPEAT_(
+    BOOST_CONTAINER_MAX_CONSTRUCTOR_PARAMETERS
+  , BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_DEF
+  , (Derived, Base)
+)
+``
+[endsect]
+
+[section Arguments]
+  * /z/ -- The next available __PP_REPEAT__ dimension.
+  * /n/ -- The number of arguments that the current iteration's constructor
+    will accept.
+  * /Derived/ -- The name of the enclosing type.
+  * /Base/ -- The name of the type from which `Derived` inherits.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_preprocessor_hpp__>
+``
+[endsect]
+
+[endsect] [/ BOOST_TREE_NODE_EMPLACEMENT_CTOR_INLINE_DEF]
+

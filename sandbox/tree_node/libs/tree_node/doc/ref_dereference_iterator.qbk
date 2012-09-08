@@ -1,0 +1,31 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:dereference_iterator `dereference_iterator()`]
+
+[section Synopsis]
+[reference__dereference_iterator]
+[endsect]
+
+[section Description]
+This function takes in a __Tree_Node_Iterator__ and returns the __Tree_Node__
+to which it currently points.  In terms of genericity, this function is
+necessary not only because it handles both __Full_Tree_Node_Iterator__ and
+__Tree_Node_Descendant_Iterator__ models, but because the iterator interface of
+associative __Boost_Pointer_Container__ types is different from that of their
+standard library counterparts.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_algorithm_dereference_iterator_hpp__>
+``
+[endsect]
+
+[endsect] [/ dereference_iterator]
+

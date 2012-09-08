@@ -1,0 +1,29 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:is_tr1_selector `is_tr1_selector`]
+
+[section Synopsis]
+[reference__is_tr1_selector]
+[endsect]
+
+[section Description]
+Returns __mpl_true__ if the type to be returned by __container_gen__ is a
+__tr1_array__, a __tr1_unordered_set__, a __tr1_unordered_multiset__, a
+__tr1_unordered_map__, or a __tr1_unordered_multimap__; __mpl_false__
+otherwise.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_is_tr1_selector_hpp__>
+``
+[endsect]
+
+[endsect] [/ is_tr1_selector]
+

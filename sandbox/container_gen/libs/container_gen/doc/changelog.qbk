@@ -1,0 +1,40 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section Changelog]
+
+[heading From 0.2 to 0.3]
+
+  * Moved from __Boost_Utility__ to top level.
+  * Removed `ptr_container_gen` metafunction and `associative_container_gen`
+    and `ptr_associative_container_gen` metafunction classes.
+  * Added selector templates.  See __Selectors__.
+  * Added __emplace_function_gen__ and __emplace_associative_function_gen__
+    type-generating metafunctions.
+  * Added __is_flat_associative_selector__, __is_ptr_selector__,
+    __is_recursive_selector__, __is_tr1_selector__, and
+    __has_emplace_member_function_selector__ introspection metafunctions.
+  * Renamed `is_unordered_selector` to __is_hashed_associative_selector__.
+  * Removed `boost_vecS`, `boost_dequeS`, `boost_listS`, `boost_slistS`,
+    `boost_setS`, `boost_mapS`, `boost_multisetS`, and `boost_multimapS`
+    selector type definitions.
+  * Modified __graph_adjacency_list__ so that it also recognizes new selector
+    types (except when __is_ptr_selector__ returns __mpl_true__).
+
+[heading From 0.1 to 0.2]
+
+  * Added `boost_vecS`, `stable_vecS`, `boost_dequeS`, `boost_listS`,
+    `boost_slistS`, `boost_setS`, `boost_mapS`, `boost_multisetS`,
+    `boost_multimapS`, `flat_setS`, `flat_mapS`, `flat_multisetS`, and
+    `flat_multimapS` selector types.
+  * Added __is_associative_selector__, __is_multiple_associative_selector__,
+    `is_unordered_selector`, and __has_stable_iterators_selector__
+    introspection metafunctions.
+
+[endsect] [/ Changelog]
+

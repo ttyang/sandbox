@@ -1,0 +1,185 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:tree_node_base `tree_node_base<Derived>`]
+
+[section Description]
+All models of the __Base_Tree_Node__ concept that this library provides either
+inherit from this type or declare it as a `friend struct` if they override any
+of its implementation methods.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_base_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Derived`]
+        [The most descendant type that will inherit from this one.]
+        []
+        []
+    ]
+]
+[endsect]
+
+[section:public_bases Public Base Classes]
+None.
+[endsect]
+
+[section Members]
+[table
+    [[Name][Definition][Scope][Description]]
+    [
+        [Pointer type]
+        [``
+            typedef Derived* pointer;
+        ``]
+        [`public`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Pointer-to-const type]
+        [``
+            typedef Derived const* const_pointer;
+        ``]
+        [`public`]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Derived access]
+        [``
+            const_pointer get_derived() const;
+        ``]
+        [`public`]
+        [Returns `this` as the derived type.]
+    ]
+    [
+        [Derived access]
+        [``
+            pointer get_derived();
+        ``]
+        [`public`]
+        [Returns `this` as the derived type.]
+    ]
+    [
+        [Insertion notification implementation]
+        [[reference__tree_node_base__on_post_inserted_impl__true]]
+        [`protected`]
+        [
+            Subclass types should override this method if they store iterators
+            that will remain valid even if any of the siblings of the pointees
+            are removed.  The overriding implementation should simply store the
+            specified position.  Does nothing by default.
+        ]
+    ]
+    [
+        [Insertion notification implementation]
+        [[reference__tree_node_base__on_post_inserted_impl__false]]
+        [`protected`]
+        [
+            Subclass types should override this method if they store iterators
+            that may become invalidated if any of the siblings of the pointees
+            are removed.  The overriding implementation should validate the
+            positions of the siblings as well as its own.  Does nothing by
+            default.
+        ]
+    ]
+    [
+        [Insertion notification]
+        [[reference__tree_node_base__on_post_inserted]]
+        [`protected`]
+        [
+            Subclass types should invoke this method on their child nodes after
+            they are stored, or on the siblings of those child nodes after they
+            are removed.  Calls the corresponding implementation method.
+        ]
+    ]
+    [
+        [Erasure notification implementation]
+        [[reference__tree_node_base__on_post_erase_impl]]
+        [`protected`]
+        [
+            Subclass types should override this method after one or more of
+            the tree node's children are removed.  Does nothing by default.
+        ]
+    ]
+    [
+        [Erasure notification]
+        [[reference__tree_node_base__on_post_erase]]
+        [`protected`]
+        [
+            Subclass types should invoke this method after one or more of
+            the tree node's children are removed.  Calls the corresponding
+            implementation method.
+        ]
+    ]
+    [
+        [Clear notification implementation]
+        [[reference__tree_node_base__on_post_clear_impl]]
+        [`protected`]
+        [
+            Subclass types should override this method after all of the
+            tree node's children are removed.  Does nothing by default.
+        ]
+    ]
+    [
+        [Clear notification]
+        [[reference__tree_node_base__on_post_clear]]
+        [`protected`]
+        [
+            Subclass types should invoke this method after all of the
+            tree node's children are removed.  Calls the corresponding
+            implementation method.
+        ]
+    ]
+    [
+        [Left rotation notification implementation]
+        [[reference__tree_node_base__on_post_rotate_left_impl]]
+        [`protected`]
+        [
+            Subclass types should override this method after the tree node is
+            rotate left.  Does nothing by default.
+        ]
+    ]
+    [
+        [Left rotation notification]
+        [[reference__tree_node_base__on_post_rotate_left]]
+        [`protected`]
+        [
+            Subclass types should invoke this method after the tree node is
+            rotated left.  Calls the corresponding implementation method.
+        ]
+    ]
+    [
+        [Right rotation notification implementation]
+        [[reference__tree_node_base__on_post_rotate_right_impl]]
+        [`protected`]
+        [
+            Subclass types should override this method after the tree node is
+            rotate right.  Does nothing by default.
+        ]
+    ]
+    [
+        [Right rotation notification]
+        [[reference__tree_node_base__on_post_rotate_right]]
+        [`protected`]
+        [
+            Subclass types should invoke this method after the tree node is
+            rotated right.  Calls the corresponding implementation method.
+        ]
+    ]
+]
+[endsect] [/ Members]
+
+[endsect] [/ tree_node_base]
+

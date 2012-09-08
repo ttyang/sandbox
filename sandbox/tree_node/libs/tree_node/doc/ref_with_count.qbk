@@ -1,0 +1,122 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_count `with_count<BaseGenerator,T1,T2,Count>`]
+
+[section Description]
+The [*count] of a tree node can be defined as the number of itself plus its
+descendants.  In addition to the operations it inherits from the return type
+of `BaseGenerator`, this __Tree_Node__ adaptor provides constant-time access
+to the count of the node by updating this information after structural
+modifications have been performed.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_with_count_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`BaseGenerator`]
+        [
+            The __Metafunction_Class__ from whose return type `with_count` will
+            ultimately inherit.
+        ]
+        [It must model the __Type_Generator__ concept.]
+        []
+    ]
+    [
+        [`T1`]
+        [The key type if `T2` is not `void`; the data type otherwise.]
+        []
+        []
+    ]
+    [
+        [`T2`]
+        [The data type if not `void`; ignored otherwise.]
+        []
+        [`void`]
+    ]
+    [
+        [`Count`]
+        [The count type.]
+        []
+        [`std::size_t`]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Associative_Tree_Node__ if `T2` is not `void`;
+    __Non_Associative_Tree_Node__ otherwise
+  * any other concept that the return type of `BaseGenerator` models
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__with_count__bases]
+[endsect]
+
+[section:members Public Members]
+In addition to those inherited from the return type of `BaseGenerator`, the
+following members are defined:
+
+[table
+    [[Name][Definition][Description]]
+    [
+        [Copy constructor]
+        [``
+            with_count(with_count const&);
+        ``]
+        [Defined by the __Copy_Constructible__ concept.]
+    ]
+    [
+        [Move constructor]
+        [``
+            with_count(with_count&&);
+        ``]
+        [Defined by the __Movable__ concept.]
+    ]
+    [
+        [Emplacement constructor]
+        [[reference__with_count__emplacement_ctor]]
+        [Defined by the __Tree_Node__ concept.]
+    ]
+    [
+        [Copy assignment operator]
+        [``
+            with_count& operator=(with_count const&);
+        ``]
+        [Defined by the __Assignable__ concept.]
+    ]
+    [
+        [Move assignment operator]
+        [``
+            with_count& operator=(with_count&&);
+        ``]
+        [Defined by the __Movable__ concept.]
+    ]
+    [
+        [Count access]
+        [[reference__with_count_base__get_count]]
+        [Returns the count of this tree node.]
+    ]
+]
+[endsect]
+
+[section:non_members Non-members]
+None beyond those inherited from the return type of `BaseGenerator`.
+[endsect]
+
+[endsect] [/ with_count]
+

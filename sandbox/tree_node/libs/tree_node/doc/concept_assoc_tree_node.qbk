@@ -1,0 +1,197 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:associative_tree_node Associative Tree Node]
+
+[section Description]
+Models of this concept provide key-based access to their child nodes.
+[endsect]
+
+[section Refinement of]
+__Tree_Node__
+[endsect]
+
+[variablelist Notation
+    [[`Node`][A type that models the [*Associative Tree Node] concept.]]
+    [[`node`][An object of type `Node::pointer`.]]
+    [[`const_node`][An object of type `Node::const_pointer`.]]
+    [[`key`][An object of type `Node::traits::key_type const&`.]]
+    [
+        [`args...`]
+        [
+            Arguments to be forwarded to the appropriate
+            `Node::traits::data_type` constructor.
+        ]
+    ]
+]
+
+[section:types Associated Types]
+Three new types are introduced.
+
+[table
+    [[Name][Expression][Description][Requirements]]
+    [
+        [Key type]
+        [`Node::traits::key_type`]
+        [The type of a key that a tree node will associate with a child node.]
+        []
+    ]
+    [
+        [Iterator range type]
+        [`Node::traits::iterator_range`]
+        [The type of a range of child nodes and their associated keys.]
+        [It must model a __Boost_Range__ concept.]
+    ]
+    [
+        [Immutable iterator range type]
+        [`Node::traits::const_iterator_range`]
+        [
+            The type of an immutable view of a range of child nodes and their
+            associated keys.
+        ]
+        [It must model a __Boost_Range__ concept.]
+    ]
+]
+
+In addition, the requirements for the iterator types are strengthened:
+
+  * The value type of `Node::iterator` must define a `first_type` type.
+  * The value type of `Node::iterator` must define a `first` member variable of
+    type `first_type`.
+  * Given an object `itr` of type `Node::iterator`, `itr->first` must be
+    convertible to `Node::traits::key_type const&`.
+  * The value type of `Node::iterator` must define a `second_type` type.
+  * The value type of `Node::iterator` must define a `second` member variable
+    of type `second_type`.
+  * Given an object `itr` of type `Node::iterator`,
+    [^_dereference_iterator_(itr)] must be convertible to `Node&`.
+  * The value type of `Node::const_iterator` must define a `first_type` type.
+  * The value type of `Node::const_iterator` must define a `first` member
+    variable of type `first_type`.
+  * Given an object `itr` of type `Node::const_iterator`, `itr->first` must be
+    convertible to `Node::traits::key_type const&`.
+  * The value type of `Node::const_iterator` must define a `second_type` type.
+  * The value type of `Node::const_iterator` must define a `second` member
+    variable of type `second_type`.
+  * Given an object `itr` of type `Node::const_iterator`,
+    [^_dereference_iterator_(itr)] must be convertible to `Node const&`.
+
+[endsect]
+
+[section:expressions Valid Expressions and Semantics]
+In addition to the expressions defined in the __Tree_Node__ concept, the
+following expressions must be valid.
+
+[table
+    [
+        [Name]
+        [Expression]
+        [Type requirements]
+        [Return Type]
+        [Semantics]
+        [__Runtime_Complexity__]
+    ]
+    [
+        [Child creation]
+        [`node->emplace(key, args...);`]
+        []
+        [`Node::iterator`]
+        [
+            Creates and returns a tree node to be associated with the specified
+            key in the range of children of the invoking node.  The node
+            returned will initialize its data with the specified arguments.
+        ]
+        [Amortized constant]
+    ]
+    [
+        [Child copy creation]
+        [`node->insert(key, const_node)`]
+        [
+            The data type must model the __Copy_Constructible__ and __Movable__
+            concepts.
+        ]
+        [`Node::iterator`]
+        [
+            Creates and returns a deep copy of `const_node` to be associated
+            with the specified key in the range of children of the invoking
+            node.
+        ]
+        [Linear with respect to the number of descendants of `const_node`]
+    ]
+    [
+        [Child search]
+        [`const_node->find(key)`]
+        []
+        [`Node::const_iterator`]
+        [
+            Returns an iterator pointing to a child node associated with the
+            specified key, or `const_node->end()` if no such child exists.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child search]
+        [`node->find(key)`]
+        []
+        [`Node::iterator`]
+        [
+            Returns an iterator pointing to a child node associated with the
+            specified key, or `node->end()` if no such child exists.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child search range]
+        [`const_node->equal_range(key)`]
+        []
+        [`Node::traits::const_iterator_range`]
+        [
+            Returns a __Boost_Range__ of all child nodes associated with the
+            specified key.  The child nodes in the range returned cannot be
+            modified.  If no such children exist, then the range will be empty.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Child search range]
+        [`node->equal_range(key)`]
+        []
+        [`Node::traits::iterator_range`]
+        [
+            Returns a __Boost_Range__ of all child nodes associated with the
+            specified key.  The child nodes in the range returned can be
+            modified.  If no such children exist, then the range will be empty.
+        ]
+        [Logarithmic]
+    ]
+    [
+        [Remove children]
+        [`node->erase(key)`]
+        []
+        [`Node::size_type`]
+        [
+            Removes all child nodes associated with the specified key from the
+            tree node.  Returns the number of children removed.
+        ]
+        [
+            Linear with respect to the number of children and their descendants
+            in the range to be removed, plus logarithmic
+        ]
+    ]
+]
+[endsect]
+
+[section Models]
+
+  * __associative_node__
+  * __associative_node_base__
+
+[endsect]
+
+[endsect] [/ Associative Tree Node]
+

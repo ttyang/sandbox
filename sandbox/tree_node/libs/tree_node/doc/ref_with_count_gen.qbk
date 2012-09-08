@@ -1,0 +1,88 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:with_count_gen `with_count_gen<BaseGenerator>`]
+
+[section Synopsis]
+[reference__with_count_gen]
+[endsect]
+
+[section Description]
+TODO.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_with_count_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+__Type_Generator__
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`BaseGenerator`]
+        [
+            The __Metafunction_Class__ from whose return type
+            __tree_node_with_count_base__ will inherit.
+        ]
+        [It must model the __Type_Generator__ concept.]
+        []
+    ]
+    [
+        [`Count`]
+        [The count type.]
+        []
+        [`std::size_t`]
+    ]
+]
+[endsect]
+
+[section:expressions Expression Semantics]
+Let `Derived` be the type that will inherit from
+__tree_node_with_count_base__.
+Let `Key` be the key type.
+Let `Data` be the data type.
+Let `BaseGenerator` be a valid first template argument for `with_count_gen`.
+Let `Count` be the count type.
+
+``
+    typedef _mpl_apply_wrap3_<
+        with_count_gen<BaseGenerator,Count>
+      , Derived
+      , Key
+      , Data
+    >::type r;
+``
+
+[*Return type:]
+[^_tree_node_with_count_base_<Derived,BaseGenerator,Key,Data,Count>]
+
+``
+    typedef _mpl_apply_wrap2_<
+        with_count_gen<BaseGenerator,Count>
+      , Derived
+      , Data
+    >::type r;
+``
+
+[*Return type:]
+[^_tree_node_with_count_base_<Derived,BaseGenerator,Data,void,Count>]
+
+[endsect]
+
+[section Complexity]
+Compile time.
+[endsect]
+
+[endsect] [/ with_count_gen]
+

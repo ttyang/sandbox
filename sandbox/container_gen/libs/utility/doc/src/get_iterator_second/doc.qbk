@@ -1,0 +1,68 @@
+[article get_iterator_second
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+
+[def __Iterator__ [@http://www.sgi.com/tech/stl/Iterator.html [*Iterator]]]
+[def __Associative_Container__ [@http://www.sgi.com/tech/stl/AssociativeContainer.html [*Associative Container]]]
+[def __Boost_Ptr_Container__ [@boost:libs/ptr_container/doc/index.html [*Boost.PtrContainer]]]
+[def __boost_utility_get_iterator_second_hpp__ [@../../../../boost/utility/get_iterator_second.hpp boost/utility/get_iterator_second.hpp]]
+
+[import ../../../../../boost/utility/get_iterator_second.hpp]
+
+
+[/======================================]
+[section:func_synopsis Function Synopsis]
+[/======================================]
+
+[reference__get_iterator_second]
+
+[endsect]
+
+
+[/=====================================]
+[section:func_desc Function Description]
+[/=====================================]
+
+Takes in an __Iterator__ that points to a valid key-value pair in an
+__Associative_Container__ or an associative __Boost_Ptr_Container__;
+returns a reference to the mapped value.
+
+[endsect]
+
+
+[/======================================================]
+[section:rtmf_synopsis Return Type Metafunction Synopsis]
+[/======================================================]
+
+[reference__get_iterator_second_result]
+
+[endsect]
+
+
+[/=====================================================]
+[section:rtmf_desc Return Type Metafunction Description]
+[/=====================================================]
+
+Takes in the iterator type of an __Associative_Container__ or an associative
+__Boost_Ptr_Container__; returns the mapped type.
+
+[endsect]
+
+
+[/===============================]
+[section:definition Where defined]
+[/===============================]
+
+``
+#include <__boost_utility_get_iterator_second_hpp__>
+``
+
+[endsect]
+

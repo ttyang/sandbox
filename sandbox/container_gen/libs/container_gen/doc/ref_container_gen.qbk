@@ -1,0 +1,75 @@
+[/=============================================================================
+    Copyright (C) 2000-2001 Jeremy G. Siek
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:container_gen `container_gen`]
+
+[section Synopsis]
+[reference__container_gen]
+[endsect]
+
+[section Description]
+The __graph_adjacency_list__ class template uses this metafunction to map the
+`OutEdgeList` and `VertexList` selectors to the actual container types used
+for the graph storage.  You can also use this metafunction to determine the
+appropriate associative container type given the specified selector.  The
+example routine below uses the `container_gen` return type to associate each
+distinct string character with the number of times it appears in the string.
+
+[example__output_char_tallies__definition]
+
+This library provides specializations of this metafunction class for each
+selector it provides whose resulting storage type models the __STL_Container__
+concept.  Here, two such selectors are passed in calls to the example routine.
+
+[example__output_char_tallies__calls]
+
+The `container_gen` specialization for the `multimap_selector` template is
+shown here.
+
+[reference__container_gen__multimap_specialization]
+
+You can use `container_gen` to easily select an appropriate
+__Boost_Pointer_Container__ type.  Pointer containers are ideal for storing
+heterogeneous items with a common base type, e.g. shapes:
+
+[example__output_shape_stats__type_definitions]
+
+Algorithms that work on the standard containers also work on pointer containers
+out of the box.
+
+[example__output_shape_stats__functions]
+
+The `container_gen` metafunction allows you to programmatically swap out
+different pointer container types using type selectors.
+
+[example__output_shape_stats__usage]
+
+It is possible to nest associative containers via `container_gen`, e.g.:
+
+``
+typedef container_gen<
+            mapS
+          , container_gen<setS,char>::type
+          , _std_string_
+        >::type
+        MapOfCharSets2Strings;
+``
+
+Finally, to use some other container of your choice, define a selector
+class and then specialize this metafunction for your selector.
+[endsect] [/ Description]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_container_gen_hpp__>
+``
+[endsect]
+
+[endsect] [/ container_gen]
+

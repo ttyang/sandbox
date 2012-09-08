@@ -1,0 +1,499 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Associative Tree Node</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;tree_node 0.4">
+<link rel="up" href="../concepts.html" title="Concepts">
+<link rel="prev" href="base_tree_node.html" title="Base Tree Node">
+<link rel="next" href="non_assoc_tree_node.html" title="Non-Associative Tree Node">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="base_tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="non_assoc_tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="tree_node.concepts.associative_tree_node"></a><a class="link" href="associative_tree_node.html" title="Associative Tree Node">Associative
+      Tree Node</a>
+</h3></div></div></div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.associative_tree_node.description"></a><a class="link" href="associative_tree_node.html#tree_node.concepts.associative_tree_node.description" title="Description">Description</a>
+</h4></div></div></div>
+<p>
+          Models of this concept provide key-based access to their child nodes.
+        </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.associative_tree_node.refinement_of"></a><a class="link" href="associative_tree_node.html#tree_node.concepts.associative_tree_node.refinement_of" title="Refinement of">Refinement
+        of</a>
+</h4></div></div></div>
+<p>
+          <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree
+          Node</strong></span></a>
+        </p>
+</div>
+<div class="variablelist">
+<p class="title"><b>Notation</b></p>
+<dl class="variablelist">
+<dt><span class="term"><code class="computeroutput"><span class="identifier">Node</span></code></span></dt>
+<dd><p>
+              A type that models the <span class="bold"><strong>Associative Tree Node</strong></span>
+              concept.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">node</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">pointer</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">const_node</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_pointer</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">key</span></code></span></dt>
+<dd><p>
+              An object of type <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">key_type</span>
+              <span class="keyword">const</span><span class="special">&amp;</span></code>.
+            </p></dd>
+<dt><span class="term"><code class="computeroutput"><span class="identifier">args</span><span class="special">...</span></code></span></dt>
+<dd><p>
+              Arguments to be forwarded to the appropriate <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">data_type</span></code>
+              constructor.
+            </p></dd>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.associative_tree_node.types"></a><a class="link" href="associative_tree_node.html#tree_node.concepts.associative_tree_node.types" title="Associated Types">Associated
+        Types</a>
+</h4></div></div></div>
+<p>
+          Three new types are introduced.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Description
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Requirements
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Key type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">key_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of a key that a tree node will associate with a child
+                    node.
+                  </p>
+                </td>
+<td>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Iterator range type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">iterator_range</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of a range of child nodes and their associated keys.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    It must model a <a href="http://www.boost.org/libs/range/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Range</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Immutable iterator range type
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">const_iterator_range</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The type of an immutable view of a range of child nodes and their
+                    associated keys.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    It must model a <a href="http://www.boost.org/libs/range/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Range</strong></span></a> concept.
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+          In addition, the requirements for the iterator types are strengthened:
+        </p>
+<pre class="programlisting"><span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">first_type</span><span class="error">`</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">first</span><span class="error">`</span> <span class="identifier">member</span> <span class="identifier">variable</span> <span class="identifier">of</span>
+  <span class="identifier">type</span> <span class="error">`</span><span class="identifier">first_type</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Given</span> <span class="identifier">an</span> <span class="identifier">object</span> <span class="error">`</span><span class="identifier">itr</span><span class="error">`</span> <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span><span class="special">,</span> <span class="error">`</span><span class="identifier">itr</span><span class="special">-&gt;</span><span class="identifier">first</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span>
+  <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">second_type</span><span class="error">`</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">second</span><span class="error">`</span> <span class="identifier">member</span> <span class="identifier">variable</span>
+  <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">second_type</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Given</span> <span class="identifier">an</span> <span class="identifier">object</span> <span class="error">`</span><span class="identifier">itr</span><span class="error">`</span> <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span><span class="error">`</span><span class="special">,</span>
+  <span class="special">[^</span><a class="link" href="../reference/dereference_iterator.html" title="dereference_iterator()">dereference_iterator</a><span class="special">(</span><span class="identifier">itr</span><span class="special">)]</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">&amp;</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">first_type</span><span class="error">`</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">first</span><span class="error">`</span> <span class="identifier">member</span>
+  <span class="identifier">variable</span> <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">first_type</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Given</span> <span class="identifier">an</span> <span class="identifier">object</span> <span class="error">`</span><span class="identifier">itr</span><span class="error">`</span> <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span><span class="special">,</span> <span class="error">`</span><span class="identifier">itr</span><span class="special">-&gt;</span><span class="identifier">first</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span>
+  <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">key_type</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">second_type</span><span class="error">`</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">define</span> <span class="identifier">a</span> <span class="error">`</span><span class="identifier">second</span><span class="error">`</span> <span class="identifier">member</span>
+  <span class="identifier">variable</span> <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">second_type</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">Given</span> <span class="identifier">an</span> <span class="identifier">object</span> <span class="error">`</span><span class="identifier">itr</span><span class="error">`</span> <span class="identifier">of</span> <span class="identifier">type</span> <span class="error">`</span><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span><span class="error">`</span><span class="special">,</span>
+  <span class="special">[^</span><a class="link" href="../reference/dereference_iterator.html" title="dereference_iterator()">dereference_iterator</a><span class="special">(</span><span class="identifier">itr</span><span class="special">)]</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">convertible</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">Node</span> <span class="keyword">const</span><span class="special">&amp;</span><span class="error">`</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.associative_tree_node.expressions"></a><a class="link" href="associative_tree_node.html#tree_node.concepts.associative_tree_node.expressions" title="Valid Expressions and Semantics">Valid
+        Expressions and Semantics</a>
+</h4></div></div></div>
+<p>
+          In addition to the expressions defined in the <a class="link" href="tree_node.html" title="Tree Node"><span class="bold"><strong>Tree Node</strong></span></a> concept, the following expressions
+          must be valid.
+        </p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Name
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Expression
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Type requirements
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Return Type
+                  </p>
+                </th>
+<th>
+                  <p>
+                    Semantics
+                  </p>
+                </th>
+<th>
+                  <p>
+                    <a href="http://en.wikipedia.org/wiki/Amortized_analysis" target="_top">Runtime
+                    Complexity</a>
+                  </p>
+                </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+                  <p>
+                    Child creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">emplace</span><span class="special">(</span><span class="identifier">key</span><span class="special">,</span>
+                    <span class="identifier">args</span><span class="special">...);</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Creates and returns a tree node to be associated with the specified
+                    key in the range of children of the invoking node. The node returned
+                    will initialize its data with the specified arguments.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Amortized constant
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child copy creation
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">insert</span><span class="special">(</span><span class="identifier">key</span><span class="special">,</span>
+                    <span class="identifier">const_node</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    The data type must model the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> and <a href="http://www.boost.org/doc/html/move.html" target="_top"><span class="bold"><strong>Movable</strong></span></a>
+                    concepts.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Creates and returns a deep copy of <code class="computeroutput"><span class="identifier">const_node</span></code>
+                    to be associated with the specified key in the range of children
+                    of the invoking node.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of descendants of <code class="computeroutput"><span class="identifier">const_node</span></code>
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">const_iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns an iterator pointing to a child node associated with
+                    the specified key, or <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">()</span></code> if no such child exists.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Logarithmic
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">find</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">iterator</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns an iterator pointing to a child node associated with
+                    the specified key, or <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">end</span><span class="special">()</span></code> if no such child exists.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Logarithmic
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">const_node</span><span class="special">-&gt;</span><span class="identifier">equal_range</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">const_iterator_range</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns a <a href="http://www.boost.org/libs/range/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Range</strong></span></a> of all child nodes
+                    associated with the specified key. The child nodes in the range
+                    returned cannot be modified. If no such children exist, then
+                    the range will be empty.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Logarithmic
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Child search range
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">equal_range</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">traits</span><span class="special">::</span><span class="identifier">iterator_range</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Returns a <a href="http://www.boost.org/libs/range/doc/html/index.html" target="_top"><span class="bold"><strong>Boost.Range</strong></span></a> of all child nodes
+                    associated with the specified key. The child nodes in the range
+                    returned can be modified. If no such children exist, then the
+                    range will be empty.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Logarithmic
+                  </p>
+                </td>
+</tr>
+<tr>
+<td>
+                  <p>
+                    Remove children
+                  </p>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">node</span><span class="special">-&gt;</span><span class="identifier">erase</span><span class="special">(</span><span class="identifier">key</span><span class="special">)</span></code>
+                  </p>
+                </td>
+<td>
+                </td>
+<td>
+                  <p>
+                    <code class="computeroutput"><span class="identifier">Node</span><span class="special">::</span><span class="identifier">size_type</span></code>
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Removes all child nodes associated with the specified key from
+                    the tree node. Returns the number of children removed.
+                  </p>
+                </td>
+<td>
+                  <p>
+                    Linear with respect to the number of children and their descendants
+                    in the range to be removed, plus logarithmic
+                  </p>
+                </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="tree_node.concepts.associative_tree_node.models"></a><a class="link" href="associative_tree_node.html#tree_node.concepts.associative_tree_node.models" title="Models">Models</a>
+</h4></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a class="link" href="../reference/associative_node.html" title="associative_node&lt;Key,Data,Selector&gt;"><code class="computeroutput"><span class="identifier">associative_node</span></code></a>
+<span class="special">*</span> <a class="link" href="../reference/associative_node_base.html" title="associative_node_base&lt;Derived,Key,Data,Selector&gt;"><code class="computeroutput"><span class="identifier">associative_node_base</span></code></a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2011, 2012 Cromwell D. Enage<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="base_tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="non_assoc_tree_node.html"><img src="http://www.boost.org/doc/libs/release/doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+[/=============================================================================
+    Copyright (C) 2011-2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:associative_node `associative_node<Key,Data,Selector>`]
+
+[section Description]
+This class template is suitable for classes or algorithms that need to map keys
+to child nodes in a tree node data structure.  Objects of this type can be
+stored by value, and their children can be accessed by their associated keys
+for fast lookup.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_tree_node_associative_node_hpp__>
+``
+[endsect]
+
+[section:tpl_param Template Parameters]
+[table
+    [[Parameter][Description][Requirements][Default]]
+    [
+        [`Key`]
+        [
+            The type of a key object to be associated with a child of a
+            `associative_node`.
+        ]
+        []
+        []
+    ]
+    [
+        [`Data`]
+        [The type of the object to be stored in a `associative_node`.]
+        []
+        []
+    ]
+    [
+        [`Selector`]
+        [The type that determines the child container type.]
+        [
+          * [^_is_recursive_selector_<Selector>] must return __mpl_true__.
+          * [^_is_associative_selector_<Selector>] must return __mpl_true__.
+        ]
+        [__ptr_mapS__]
+    ]
+]
+[endsect]
+
+[section:model_of Model of]
+
+  * __Associative_Tree_Node__
+  * __Default_Constructible__ if `Data` is __Default_Constructible__
+  * __Copy_Constructible__ if `Data` is __Copy_Constructible__
+  * __Assignable__ if `Data` is __Copy_Constructible__ and __Movable__
+  * __Movable__ if `Data` is __Movable__
+
+[endsect]
+
+[section:public_bases Public Base Classes]
+[reference__associative_node__bases]
+[endsect]
+
+[section:members Public Members]
+Given:
+[reference__associative_node__super_t]
+[table
+    [[Name][Definition][Where defined]]
+    [
+        [
+            Key type, data type, iterator range type,
+            immutable iterator range type
+        ]
+        [[reference__associative_node__traits]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Pointer type]
+        [[reference__associative_node__pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Pointer-to-const type]
+        [[reference__associative_node__const_pointer]]
+        [__Tree_Node__]
+    ]
+    [
+        [Iterator type]
+        [[reference__associative_node__iterator]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Immutable iterator type]
+        [[reference__associative_node__const_iterator]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Copy constructor]
+        [``
+            associative_node(associative_node const&);
+        ``]
+        [__Copy_Constructible__]
+    ]
+    [
+        [Move constructor]
+        [``
+            associative_node(associative_node&&);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Emplacement constructor]
+        [[reference__associative_node__emplacement_ctor]]
+        [__Tree_Node__]
+    ]
+    [
+        [Copy assignment operator]
+        [``
+            associative_node& operator=(associative_node const&);
+        ``]
+        [__Assignable__]
+    ]
+    [
+        [Move assignment operator]
+        [``
+            associative_node& operator=(associative_node&&);
+        ``]
+        [__Movable__]
+    ]
+    [
+        [Data access]
+        [[reference__associative_node_base__get_data__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Data access]
+        [[reference__associative_node_base__get_data]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__associative_node_base__get_parent_ptr__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Parent access]
+        [[reference__associative_node_base__get_parent_ptr]]
+        [__Tree_Node__]
+    ]
+    [
+        [Child creation]
+        [[reference__associative_node_base__emplace]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Child copy creation]
+        [``
+            iterator
+                insert(
+                    typename traits::key_type const& key
+                  , associative_node const& child
+                );
+        ``]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__associative_node_base__begin__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range begin access]
+        [[reference__associative_node_base__begin]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__associative_node_base__end__const]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range past-the-end access]
+        [[reference__associative_node_base__end]]
+        [__Tree_Node__]
+    ]
+    [
+        [Children range size query]
+        [[reference__associative_node_base__size]]
+        [__Tree_Node__]
+    ]
+    [
+        [Child search]
+        [[reference__associative_node_base__find__const]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Child search]
+        [[reference__associative_node_base__find]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Child search range]
+        [[reference__associative_node_base__equal_range__const]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Child search range]
+        [[reference__associative_node_base__equal_range]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Remove children]
+        [[reference__associative_node_base__erase]]
+        [__Associative_Tree_Node__]
+    ]
+    [
+        [Leaf node query]
+        [[reference__associative_node_base__empty]]
+        [__Tree_Node__]
+    ]
+    [
+        [Remove all children]
+        [[reference__associative_node_base__clear]]
+        [__Tree_Node__]
+    ]
+]
+[endsect] [/ Members]
+
+[section Example]
+<__example_associative_node_cpp__>
+[endsect]
+
+[section Test]
+<__test_associative_node_cpp__>
+[endsect]
+
+[endsect] [/ associative_node]
+

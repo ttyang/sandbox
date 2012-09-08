@@ -1,0 +1,71 @@
+[/=============================================================================
+    Copyright (C) 2012 Cromwell D. Enage
+
+    Distributed under the Boost Software License, Version 1.0.
+    (See accompanying file LICENSE_1_0.txt or copy at
+    [@http://www.boost.org/LICENSE_1_0.txt])
+=============================================================================/]
+
+[section:emplace_function_gen `emplace_function_gen`]
+
+[section Synopsis]
+[reference__emplace_function_gen]
+[endsect]
+
+[section Description]
+Returns a __Default_Constructible__ n-ary function object type whose first
+argument type is a reference to a container.  In practice, the type of this
+container must be produced by __container_gen__ when given the same selector
+template argument.  The rest of the function object's arguments, if any,
+will be forwarded either to the container's emplacement method (if
+__has_emplace_member_function_selector__ returns __mpl_true__ for the given
+selector) or to the value type's matching constructor.  The return value is a
+__std_pair__ whose second element evaluates to `true` upon successful insertion
+and whose first element is an iterator pointing to the element inserted.
+
+The return type also defines an indexing operator that accepts a reference to a
+container and returns a proxy object that allows emplacement function calls to
+be chained together, much like __Boost_Assign__.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_container_gen_emplace_function_gen_hpp__>
+``
+[endsect]
+
+[section Example]
+``
+template <typename Selector>
+void example()
+{
+    typename _container_gen_<Selector,_std_string_>::type c1, c2, c3;
+    typename _emplace_function_gen_<Selector>::type emplacer;
+
+    _AUTO_TPL_(result1, emplacer(c1, "Hello,"));
+    _AUTO_TPL_(result2, emplacer(c2, "Hello,"));
+    _ASSERT_(result1 == result2);
+
+    result1 = emplacer(c1, "world!");
+    result2 = emplacer(c2, "world!");
+    _ASSERT_(result1 == result2);
+    _ASSERT_(_range_equal_(c1, c2));
+
+    emplacer[c3]("Hello,")("world!");
+    _ASSERT_(_range_equal_(c1, c3));
+}
+
+int main()
+{
+    example<_vector_selector_<_mpl_true_> >();
+    return 0;
+}
+``
+[endsect]
+
+[section Test]
+[@../../test/emplace_function_gen.cpp `<test/emplace_function_gen.cpp>`]
+[endsect]
+
+[endsect] [/ emplace_function_gen]
+
