@@ -1,0 +1,158 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>weak_components</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="weak_components.html" title="weak_components">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="weak_components"></a>weak_components</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="weak_components.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="weak_components.html#weak_components.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="weak_components.html#weak_components.description">Description</a></span></dt>
+<dt><span class="section"><a href="weak_components.html#weak_components.definition">Where defined</a></span></dt>
+<dt><span class="section"><a href="weak_components.html#weak_components.type_requirements">Type Requirements</a></span></dt>
+<dt><span class="section"><a href="weak_components.html#weak_components.parameters">Parameters</a></span></dt>
+<dt><span class="section"><a href="weak_components.html#weak_components.complexity">Complexity</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="weak_components.synopsis"></a><a class="link" href="weak_components.html#weak_components.synopsis" title="Synopsis">Synopsis</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">InputGraph</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">ComponentMap</span><span class="special">&gt;</span>
+    <span class="keyword">typename</span> <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_traits</span><span class="special">&lt;</span><span class="identifier">ComponentMap</span><span class="special">&gt;::</span><span class="identifier">value_type</span>
+        <span class="identifier">weak_components</span><span class="special">(</span><span class="identifier">InputGraph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">graph</span><span class="special">,</span> <span class="identifier">ComponentMap</span> <span class="identifier">component_map</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="weak_components.description"></a><a class="link" href="weak_components.html#weak_components.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      This algorithm computes the weakly connected components of a directed graph
+      by computing the connected components of an isomorphic undirected graph. Returns
+      the total number of components it computes.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="weak_components.definition"></a><a class="link" href="weak_components.html#weak_components.definition" title="Where defined">Where defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/weak_components.hpp" target="_top">boost/graph/weak_components.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="weak_components.type_requirements"></a><a class="link" href="weak_components.html#weak_components.type_requirements" title="Type Requirements">Type Requirements</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/IndicenceGraph.html" target="_top"><span class="bold"><strong>Incidence Graph</strong></span></a> <span class="keyword">and</span> <a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top"><span class="bold"><strong>Vertex List Graph</strong></span></a>
+  <span class="identifier">concepts</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">traversal category type</a> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">inherit</span> <span class="identifier">from</span>
+  <span class="error">`</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">directed_category_tag</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">ComponentMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/property_map/doc/ReadWritePropertyMap.html" target="_top"><span class="bold"><strong>Read/Write Property Map</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">key</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">ComponentMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">the</span> <span class="identifier">same</span> <span class="identifier">as</span> <span class="identifier">the</span>
+  <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">vertex descriptor type</a> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <span class="identifier">value</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">ComponentMap</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">be</span> <span class="identifier">an</span> <span class="keyword">unsigned</span> <span class="identifier">integral</span> <span class="identifier">type</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="weak_components.parameters"></a><a class="link" href="weak_components.html#weak_components.parameters" title="Parameters">Parameters</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Parameter
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">input_graph</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                A directed graph.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">component_map</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                A property map that stores the output of the algorithm. Each vertex
+                will be associated with an integer label. All vertices with the same
+                integer label belong to the same weak component.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="weak_components.complexity"></a><a class="link" href="weak_components.html#weak_components.complexity" title="Complexity">Complexity</a>
+</h2></div></div></div>
+<p>
+      The time complexity is <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="identifier">V</span> <span class="special">+</span> <span class="identifier">E</span><span class="special">)</span></code>.
+    </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: September 09, 2012 at 18:17:58 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>simple_edge_writer</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="simple_edge_writer.html" title="simple_edge_writer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="simple_edge_writer"></a>simple_edge_writer</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="simple_edge_writer.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.description">Description</a></span></dt>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.definition">Where defined</a></span></dt>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.model_of">Model of</a></span></dt>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.tpl_param">Template Parameters</a></span></dt>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.members">Members</a></span></dt>
+<dt><span class="section"><a href="simple_edge_writer.html#simple_edge_writer.non_members">Non-members</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.synopsis"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.synopsis" title="Synopsis">Synopsis</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">VertexPropertyMap</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">OutputStream</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CharT</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Filter</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">class</span> <span class="identifier">simple_edge_writer</span>
+    <span class="special">{</span>
+
+     <span class="keyword">public</span><span class="special">:</span>
+        <span class="keyword">typedef</span> <span class="identifier">Filter</span> <span class="identifier">event_filter</span><span class="special">;</span>
+
+        <span class="identifier">simple_edge_writer</span><span class="special">(</span>
+            <span class="identifier">VertexPropertyMap</span> <span class="identifier">property_map</span>
+          <span class="special">,</span> <span class="identifier">OutputStream</span><span class="special">&amp;</span> <span class="identifier">os</span>
+          <span class="special">,</span> <span class="identifier">CharT</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">suffix</span>
+        <span class="special">);</span>
+
+        <span class="identifier">simple_edge_writer</span><span class="special">(</span><span class="identifier">simple_edge_writer</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">copy</span><span class="special">);</span>
+
+        <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+        <span class="keyword">void</span>
+            <span class="keyword">operator</span><span class="special">()(</span>
+                <span class="keyword">typename</span> <span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span> <span class="identifier">e</span>
+              <span class="special">,</span> <span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span>
+            <span class="special">);</span>
+    <span class="special">};</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.description"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      This <a href="http://www.boost.org/libs/graph/doc/EventVisitor.html" target="_top"><span class="bold"><strong>Event
+      Visitor</strong></span></a> uses the property map values of the source and target
+      vertices of edges that an algorithm visits at some event point.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.definition"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.definition" title="Where defined">Where defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/simple_edge_writer.hpp" target="_top">boost/graph/simple_edge_writer.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.model_of"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.model_of" title="Model of">Model of</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <a href="http://www.boost.org/libs/graph/doc/EventVisitor.html" target="_top"><span class="bold"><strong>Event Visitor</strong></span></a>
+<span class="special">*</span> <a href="http://www.sgi.com/tech/stl/BinaryFunction.html" target="_top"><span class="bold"><strong>Binary Function</strong></span></a>
+<span class="special">*</span> <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.tpl_param"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.tpl_param" title="Template Parameters">Template Parameters</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Parameter
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                VertexPropertyMap
+              </p>
+            </td>
+<td>
+              <p>
+                A <a href="http://www.boost.org/libs/property_map/doc/ReadablePropertyMap.html" target="_top"><span class="bold"><strong>Readable Property Map</strong></span></a> whose key type
+                is the vertex descriptor of the graph.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                OutputStream
+              </p>
+            </td>
+<td>
+              <p>
+                The type of stream to which the values of <code class="computeroutput"><span class="identifier">VertexPropertyMap</span></code>
+                will be output.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                CharT
+              </p>
+            </td>
+<td>
+              <p>
+                The character type of the suffix string that will be output after
+                each edge connection on which this event visitor is invoked.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Filter
+              </p>
+            </td>
+<td>
+              <p>
+                The tag to specify when the <code class="computeroutput"><span class="identifier">simple_edge_writer</span></code>
+                should be invoked by the graph algorithm.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.members"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.members" title="Members">Members</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Event filter type
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">event_filter</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Same as <code class="computeroutput"><span class="identifier">Filter</span></code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Constructor
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="identifier">simple_edge_writer</span><span class="special">(</span>
+    <span class="identifier">VertexPropertyMap</span> <span class="identifier">property_map</span>
+  <span class="special">,</span> <span class="identifier">OutputStream</span><span class="special">&amp;</span> <span class="identifier">os</span>
+  <span class="special">,</span> <span class="identifier">CharT</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">suffix</span>
+<span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Constructs a <code class="computeroutput"><span class="identifier">simple_edge_writer</span></code>
+                object that will use the property map to output the source and target
+                vertices of the visited edges to the specified stream, followed by
+                the specified suffix.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Copy constructor
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">simple_edge_writer</span><span class="special">(</span><span class="identifier">simple_edge_writer</span>
+                <span class="keyword">const</span><span class="special">&amp;</span>
+                <span class="identifier">copy</span><span class="special">);</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                Defined by the <a href="http://www.boost.org/libs/utility/CopyConstructible.html" target="_top"><span class="bold"><strong>Copy Constructible</strong></span></a> concept.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Function call operator
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+<span class="keyword">void</span>
+    <span class="keyword">operator</span><span class="special">()(</span>
+        <span class="keyword">typename</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">graph_traits</a><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span> <span class="identifier">e</span>
+      <span class="special">,</span> <span class="identifier">Graph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">g</span>
+    <span class="special">);</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Writes the property values of the source and target vertices of
+                <code class="computeroutput"><span class="identifier">e</span></code> to the output stream,
+                along with the suffix string.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="simple_edge_writer.non_members"></a><a class="link" href="simple_edge_writer.html#simple_edge_writer.non_members" title="Non-members">Non-members</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Name
+              </p>
+            </th>
+<th>
+              <p>
+                Expression
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                Simple edge writer creation
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">VertexPropertyMap</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">OutputStream</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CharT</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Filter</span>
+    <span class="special">&gt;</span>
+    <span class="identifier">simple_edge_writer</span><span class="special">&lt;</span><span class="identifier">VertexPropertyMap</span><span class="special">,</span><span class="identifier">OutputStream</span><span class="special">,</span><span class="identifier">CharT</span><span class="special">,</span><span class="identifier">Filter</span><span class="special">&gt;</span>
+        <span class="identifier">make_simple_edge_writer</span><span class="special">(</span>
+            <span class="identifier">VertexPropertyMap</span> <span class="identifier">property_map</span>
+          <span class="special">,</span> <span class="identifier">OutputStream</span><span class="special">&amp;</span> <span class="identifier">os</span>
+          <span class="special">,</span> <span class="identifier">CharT</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">suffix</span>
+          <span class="special">,</span> <span class="identifier">Filter</span>
+        <span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Requires a <code class="computeroutput"><span class="identifier">Filter</span></code>
+                object to be explicitly passed in as the second argument. Creates
+                and returns a <code class="computeroutput"><span class="identifier">simple_edge_writer</span></code>
+                object that will be invoked when the algorithm reaches the appropriate
+                event point.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                Simple edge writer creation with filter
+              </p>
+            </td>
+<td>
+              <p>
+</p>
+<pre xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="table-programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">Filter</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">VertexPropertyMap</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">OutputStream</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">CharT</span>
+    <span class="special">&gt;</span>
+    <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span>
+        <span class="identifier">Filter</span>
+      <span class="special">,</span> <span class="identifier">simple_edge_writer</span><span class="special">&lt;</span><span class="identifier">VertexPropertyMap</span><span class="special">,</span><span class="identifier">OutputStream</span><span class="special">,</span><span class="identifier">CharT</span><span class="special">,</span><span class="identifier">Filter</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+        <span class="identifier">fuse_simple_edge_writer</span><span class="special">(</span>
+            <span class="identifier">VertexPropertyMap</span> <span class="identifier">property_map</span>
+          <span class="special">,</span> <span class="identifier">OutputStream</span><span class="special">&amp;</span> <span class="identifier">os</span>
+          <span class="special">,</span> <span class="identifier">CharT</span> <span class="keyword">const</span><span class="special">*</span> <span class="identifier">suffix</span>
+        <span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+              </p>
+            </td>
+<td>
+              <p>
+                Requires the <code class="computeroutput"><span class="identifier">Filter</span></code>
+                type to be explicitly passed in as a template parameter. Creates
+                and returns a <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">pair</span></code></a> that matches the filter
+                type with a <code class="computeroutput"><span class="identifier">simple_edge_writer</span></code>
+                object that will be invoked when the algorithm reaches the appropriate
+                event point.
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: September 09, 2012 at 18:15:51 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+[article weak_components
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Read_Write_Property_Map__ [@boost:/libs/property_map/doc/ReadWritePropertyMap.html [*Read/Write Property Map]]]
+[def __Incidence_Graph__ [@boost:libs/graph/doc/IndicenceGraph.html [*Incidence Graph]]]
+[def __Vertex_List_Graph__ [@boost:libs/graph/doc/VertexListGraph.html [*Vertex List Graph]]]
+[def __vertex_descriptor_type__ [@boost:libs/graph/doc/graph_traits.html vertex descriptor type]]
+[def __traversal_category_type__ [@boost:libs/graph/doc/graph_traits.html traversal category type]]
+[def __boost_graph_weak_components_hpp__ [@../../../boost/graph/weak_components.hpp boost/graph/weak_components.hpp]]
+
+[import ../../../../../boost/graph/weak_components.hpp]
+
+[section Synopsis]
+[reference__weak_components]
+[endsect]
+
+[section Description]
+This algorithm computes the weakly connected components of a directed graph by
+computing the connected components of an isomorphic undirected graph.  Returns
+the total number of components it computes.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_weak_components_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `InputGraph` must model the __Incidence_Graph__ and __Vertex_List_Graph__
+    concepts.
+  * The __traversal_category_type__ of `InputGraph` must inherit from
+    `boost::directed_category_tag`.
+  * `ComponentMap` must model the __Read_Write_Property_Map__ concept.
+  * The key type of `ComponentMap` must be the same as the
+    __vertex_descriptor_type__ of `InputGraph`.
+  * The value type of `ComponentMap` must be an unsigned integral type.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description]]
+    [
+        [`input_graph`]
+        [A directed graph.]
+    ]
+    [
+        [`component_map`]
+        [
+            A property map that stores the output of the algorithm.  Each
+            vertex will be associated with an integer label.  All vertices with
+            the same integer label belong to the same weak component.
+        ]
+    ]
+]
+[endsect]
+
+[section Complexity]
+The time complexity is `O(V + E)`.
+[endsect]
+

@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>fuse_property_writer</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="fuse_property_writer.html" title="fuse_property_writer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="fuse_property_writer"></a>fuse_property_writer</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="fuse_property_writer.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="fuse_property_writer.html#fuse_property_writer.synopsis">Synopsis</a></span></dt>
+<dt><span class="section"><a href="fuse_property_writer.html#fuse_property_writer.description">Description</a></span></dt>
+<dt><span class="section"><a href="fuse_property_writer.html#fuse_property_writer.definition">Where defined</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="fuse_property_writer.synopsis"></a><a class="link" href="fuse_property_writer.html#fuse_property_writer.synopsis" title="Synopsis">Synopsis</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Filter</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">PropertyMap</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">OutputIterator</span><span class="special">&gt;</span>
+    <span class="special">::</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span>
+        <span class="identifier">Filter</span>
+      <span class="special">,</span> <span class="identifier">property_writer</span><span class="special">&lt;</span><span class="identifier">PropertyMap</span><span class="special">,</span><span class="identifier">OutputIterator</span><span class="special">,</span><span class="identifier">Filter</span><span class="special">&gt;</span>
+    <span class="special">&gt;</span>
+        <span class="identifier">fuse_property_writer</span><span class="special">(</span><span class="identifier">PropertyMap</span> <span class="identifier">property_map</span><span class="special">,</span> <span class="identifier">OutputIterator</span> <span class="identifier">out_itr</span><span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="fuse_property_writer.description"></a><a class="link" href="fuse_property_writer.html#fuse_property_writer.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      Requires the <code class="computeroutput"><span class="identifier">Filter</span></code> type to
+      be explicitly passed in as a template parameter. Creates and returns a <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">pair</span></code></a>
+      that matches the filter type with a <a href="http://www.boost.org/libs/graph/doc/property_writer.html" target="_top"><code class="computeroutput"><span class="identifier">property_writer</span></code></a> object that will
+      be invoked when the algorithm reaches the appropriate event point.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="fuse_property_writer.definition"></a><a class="link" href="fuse_property_writer.html#fuse_property_writer.definition" title="Where defined">Where defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/fuse_property_writer.hpp" target="_top">boost/graph/fuse_property_writer.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: September 09, 2012 at 18:14:21 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

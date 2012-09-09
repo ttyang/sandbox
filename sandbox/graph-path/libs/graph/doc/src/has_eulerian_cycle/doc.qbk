@@ -1,0 +1,32 @@
+[article has_eulerian_cycle
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __boost_graph_has_eulerian_cycle_hpp__ [@../../../boost/graph/has_eulerian_cycle.hpp boost/graph/has_eulerian_cycle.hpp]]
+
+[import ../../../../../boost/graph/has_eulerian_cycle.hpp]
+
+[section Synopsis]
+[reference__has_eulerian_cycle]
+[endsect]
+
+[section Description]
+For an undirected graph, returns `true` if every vertex has an even out-degree
+and if all of its vertices belong to a single connected component; for a
+directed graph, returns `true` if the in-degree of every vertex is equal to its
+out-degree and if all of its vertices belong to a single strongly connected
+component; returns `false` otherwise.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_has_eulerian_cycle_hpp__>
+``
+[endsect]
+

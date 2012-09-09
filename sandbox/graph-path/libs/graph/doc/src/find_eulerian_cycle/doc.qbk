@@ -1,0 +1,220 @@
+[article find_eulerian_cycle
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Carl_Hierholzer__ [@http://en.wikipedia.org/wiki/Carl_Hierholzer Carl Hierholzer]]
+[def __Output_Iterator__ [@http://www.sgi.com/tech/stl/OutputIterator.html [*Output Iterator]]]
+[def __Binary_Function__ [@http://www.sgi.com/tech/stl/BinaryFunction.html [*Binary Function]]]
+[def __std_multiset__ [@http://www.sgi.com/tech/stl/multiset.html `std::multiset`]]
+[def __Boost_Parameter__ [@boost:libs/parameter/doc/html/index.html Boost.Parameter]]
+[def __BGL__ [@boost:libs/graph/doc/index.html BGL]]
+[def __Fusion_Forward_Sequence__ [@boost:libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html [*Fusion Forward Sequence]]]
+[def __half_runtime_pair__ [@boost:libs/fusion/doc/html/fusion/support/pair.html half-runtime pair]]
+[def __Event_Visitor__ [@boost:/libs/graph/doc/EventVisitor.html [*Event Visitor]]]
+[def __Event_Visitor_List__ [@boost:/libs/graph/doc/EventVisitorList.html [*Event Visitor List]]]
+[def __Incidence_Graph__ [@boost:libs/graph/doc/IndicenceGraph.html [*Incidence Graph]]]
+[def __Vertex_List_Graph__ [@boost:libs/graph/doc/VertexListGraph.html [*Vertex List Graph]]]
+[def __named_parameter__ [@boost:libs/parameter/doc/html/index.html named parameter]]
+[def __old_style_named_parameters__ [@boost:libs/graph/doc/bgl_named_params.html old-style named parameters]]
+[def __vertex_descriptor_type__ [@boost:libs/graph/doc/graph_traits.html vertex descriptor type]]
+[def __vertex_iterator__ [@boost:libs/graph/doc/graph_traits.html vertex iterator]]
+[def __edge_descriptor_type__ [@boost:libs/graph/doc/graph_traits.html edge descriptor type]]
+[def __fusion_make_list__ [@boost:libs/fusion/doc/html/fusion/container/generation/functions/make_list.html `boost::fusion::make_list`]]
+[def __fusion_make_pair__ [@boost:libs/fusion/doc/html/fusion/support/pair.html `boost::fusion::make_pair`]]
+[def _vertices_ [@boost:libs/graph/doc/VertexListGraph.html vertices]]
+[def __boost_graph_find_eulerian_cycle_hpp__ [@../../../boost/graph/find_eulerian_cycle.hpp boost/graph/find_eulerian_cycle.hpp]]
+[def __example_find_eulerian_cycle_hpp__ [@../example/find_eulerian_cycle.hpp example/find_eulerian_cycle.hpp]]
+[def __example_find_eulerian_cycle_cpp__ [@../example/find_eulerian_cycle.cpp example/find_eulerian_cycle.cpp]]
+[def _has_eulerian_cycle_ [@has_eulerian_cycle.html has_eulerian_cycle]]
+[def __find_eulerian_cycle_parameters__ [@find_eulerian_cycle.html#find_eulerian_cycle.parameters parameters]]
+[def __fuse_property_writer__ [@fuse_property_writer.html `fuse_property_writer()`]]
+[def __fuse_simple_edge_writer__ [@simple_edge_writer.html#simple_edge_writer.non_members `fuse_simple_edge_writer()`]]
+
+[import ../../../../../boost/graph/find_eulerian_cycle.hpp]
+[import ../../../example/find_eulerian_cycle.hpp]
+[import ../../../example/find_eulerian_cycle.cpp]
+
+[section Prototypes]
+The function prototype that takes in __old_style_named_parameters__ is always
+defined.
+
+[reference__find_eulerian_cycle]
+
+The following function prototype is defined if you /don't/ set
+`BOOST_PARAMETER_MAX_ARITY` lower than 4.
+
+``
+namespace boost {
+
+    template <
+        typename InputGraph
+      , typename Result
+      , typename Visitor
+    >
+    bool
+        find_eulerian_cycle(
+            InputGraph const& input_graph
+          , Result result
+          , typename graph_traits<Graph>::vertex_descriptor root_vertex
+          , Visitor visitor
+        );
+}  // namespace boost
+``
+[endsect]
+
+[section Description]
+The algorithm first examines a trail of edges from `root_vertex` and adds each
+edge to the tour until it returns to `root_vertex` and has visited all
+out-edges from it.  As long as there exists a vertex `v` that belongs to the
+current tour but has unexamined out-edges, the algorithm will examine another
+trail from `v` until it cycles back to `v`, joining the tour formed in this way
+to the previous tour.  The outline is described in "Ueber die Moglichkeit,
+einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren" by
+__Carl_Hierholzer__ (1873).
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_find_eulerian_cycle_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `InputGraph` must model the __Incidence_Graph__ and __Vertex_List_Graph__
+    concepts.
+  * `Result` must model the __Output_Iterator__ concept.
+  * The __edge_descriptor_type__ of `InputGraph` must belong to the set of
+    value types of `Result`.
+  * `Visitor` must model either the __Fusion_Forward_Sequence__ concept or
+    the __Event_Visitor_List__ concept.
+  * If `Visitor` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `Visitor` whose first type is
+    `on_initialize_vertex`, `on_start_vertex`, or `on_finish_vertex` must model
+    the __Binary_Function__ concept.  Furthermore, the function call operator
+    of the second type must accept the __vertex_descriptor_type__ of
+    `InputGraph` as a valid first argument type and a reference to
+    `InputGraph const` as a valid second argument type.
+  * If `Visitor` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `Visitor` whose first type is
+    `on_examine_edge` must model the __Binary_Function__ concept.  Furthermore,
+    the function call operator of the second type must accept the
+    __edge_descriptor_type__ of `InputGraph` as a valid first argument type and
+    a reference to `InputGraph const` as a valid second argument type.
+  * If `Visitor` models the __Event_Visitor_List__ concept, then the
+    __Event_Visitor__ element type whose event filter type is
+    `on_initialize_vertex`, `on_start_vertex`, or `on_finish_vertex`--if one
+    exists--must accept the __vertex_descriptor_type__ of `InputGraph` as a
+    valid first argument type to its apply member function.
+  * If `Visitor` models the __Event_Visitor_List__ concept, then the
+    __Event_Visitor__ element type whose event filter type is
+    `on_examine_edge`--if one exists--must accept the __edge_descriptor_type__
+    of `InputGraph` as a valid first argument type to its apply member
+    function.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Deduced?][Runtime requirements][Default]]
+    [
+        [`input_graph`]
+        [The input graph.]
+        [No]
+        [[^_has_eulerian_cycle_(input_graph)] must return `true`.]
+        [None; always required.]
+    ]
+    [
+        [`result`]
+        [
+            An __Output_Iterator__ into which every edge in the graph will be
+            stored exactly once and in tour order.
+        ]
+        [No]
+        []
+        [None; always required.]
+    ]
+    [
+        [`root_vertex`]
+        [The start of the cycle.]
+        [Yes]
+        [
+            If this parameter is specified, then the argument must be a valid
+            dereferenced value for some __vertex_iterator__ in the range
+            returned by [^_vertices_(input_graph)].
+        ]
+        [[^*_vertices_(input_graph).first]]
+    ]
+    [
+        [`visitor`]
+        [
+            A heterogeneous container of event visitors.  The algorithm will
+            fire the `on_initialize_vertex` event on each vertex before it
+            begins its actual work; it will fire the `on_start_vertex` event on
+            each vertex from which it starts a tour; it will fire the
+            `on_finish_vertex` event on each vertex at which it ends a tour;
+            and it will fire the `on_examine_edge` event on each edge that it
+            adds to the current tour.
+        ]
+        [Yes]
+        []
+        [`null_visitor()`]
+    ]
+]
+
+Parameters that can be *deduced* do not have to be explicitly named as long as
+the arguments to which they are bound fulfill the corresponding type
+requirements.  However, if any of the non-deduced parameters are explicitly
+named out of their formal positions, then all succeeding parameters must be
+either explicitly named or in their formal positions.
+
+[caution
+    As of version 10.0, Microsoft Visual C++ ships with its own implementation
+    of TR1, which does not play nice with __Boost_Parameter__.  Therefore,
+    parameter deduction has been disabled for users of this compiler.
+]
+[endsect]
+
+[section Complexity]
+The time complexity is `O(V + E log E)` for undirected graphs and `O(V + E)`
+for directed graphs.  The reason for the difference is that for undirected
+graphs, the algorithm uses a __std_multiset__ to group opposite out-edges
+together.
+[endsect]
+
+[section Example]
+The following routine displays the output of an Eulerian cycle by passing an
+__Event_Visitor_List__ to the algorithm.  The `visitor` parameter has been
+deduced in this case.  However, code that assembles an __Event_Visitor_List__
+object composed of many event visitors can become tedious to write or maintain.
+
+[find_eulerian_cycle_example_with_visitor_list]
+
+The __fusion_make_list__ and __fusion_make_pair__ functions allow user code to
+associate the appropriate event filter types with their visitor objects in a
+manner that is much more straightforward.  (For writing vertex property values
+and edge connections to an output stream, the __fuse_property_writer__ and
+__fuse_simple_edge_writer__ functions provide added convenience.)
+
+The following routine displays the same output by passing a
+__Fusion_Forward_Sequence__ to the algorithm by __named_parameter__.  The
+algorithm recognizes its __find_eulerian_cycle_parameters__ this way by
+prepending the name of each parameter with a single underscore.  The __BGL__
+defines all such __Boost_Parameter__ objects in the `boost::graph::keywords`
+namespace.
+
+[find_eulerian_cycle_example_with_fusion_visitor_list]
+
+The complete example program can be compiled from these files:
+
+  * __example_find_eulerian_cycle_hpp__
+  * __example_find_eulerian_cycle_cpp__
+
+[endsect]
+

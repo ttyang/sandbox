@@ -1,0 +1,35 @@
+[article has_eulerian_trail
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __boost_graph_has_eulerian_trail_hpp__ [@../../../boost/graph/has_eulerian_trail.hpp boost/graph/has_eulerian_trail.hpp]]
+
+[import ../../../../../boost/graph/has_eulerian_trail.hpp]
+
+[section Synopsis]
+[reference__has_eulerian_trail]
+[endsect]
+
+[section Description]
+For an undirected graph, returns `true` if either zero or two vertices have odd
+out-degrees and if all of its vertices belong to a single connected component;
+for a directed graph, returns `true` if the out-degree of exactly one vertex is
+one more than its in-degree, the in-degree of exactly one other vertex is one
+more than its out-degree, and all of its vertices belong to a weakly connected
+component, or if the in-degree of every vertex is equal to its out-degree and
+all of its vertices belong to a strongly connected component; returns `false`
+otherwise.
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_has_eulerian_trail_hpp__>
+``
+[endsect]
+

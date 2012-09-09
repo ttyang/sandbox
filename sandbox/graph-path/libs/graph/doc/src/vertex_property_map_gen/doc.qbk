@@ -1,0 +1,164 @@
+[article vertex_property_map_gen
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __std_deque__ [@http://www.sgi.com/tech/stl/Deque.html `std::deque`]]
+[def __std_map__ [@http://www.sgi.com/tech/stl/Map.html `std::map`]]
+[def __BGL__ [@boost:libs/graph/doc/index.html BGL]]
+[def __Copy_Constructible__ [@boost:libs/utility/CopyConstructible.html [*Copy Constructible]]]
+[def __Assignable__ [@boost:libs/utility/Assignable.html [*Assignable]]]
+[def __Lvalue_Property_Map__ [@boost:/libs/property_map/doc/LvaluePropertyMap.html [*Lvalue Property Map]]]
+[def __Vertex_List_Graph__ [@boost:libs/graph/doc/VertexListGraph.html [*Vertex List Graph]]]
+[def __iterator_property_map__ [@boost:/libs/property_map/doc/iterator_property_map.html `iterator_property_map`]]
+[def __associative_property_map__ [@boost:/libs/property_map/doc/associative_property_map.html `associative_property_map`]]
+[def __vertex_index__ [@boost:libs/graph/doc/PropertyTag.html `vertex_index`]]
+[def _graph_traits_ [@boost:libs/graph/doc/graph_traits.html graph_traits]]
+[def __boost_graph_vertex_property_map_gen_hpp__ [@../../../boost/graph/vertex_property_map_gen.hpp boost/graph/vertex_property_map_gen.hpp]]
+[def __weak_components__ [@weak_components.html `weak_components()`]]
+[def __loop_erased_random_tree__ [@loop_erased_random_tree.html `loop_erased_random_tree()`]]
+[def __vertex_property_map_gen__ [@vertex_property_map_gen.html `vertex_property_map_gen`]]
+[def _make_vertex_property_map_ [@vertex_property_map_gen.html#vertex_property_map_gen.non_members make_vertex_property_map]]
+
+[import ../../../../../boost/graph/vertex_property_map_gen.hpp]
+
+[section Synopsis]
+[reference__vertex_property_map_gen]
+[endsect]
+
+[section Description]
+This metafunction returns a type that models the __Lvalue_Property_Map__
+concept.  If the `Graph` type models the __Vertex_List_Graph__ concept and
+possesses an internal __vertex_index__ property map whose value type is an
+integer type, then the return type will wrap an __iterator_property_map__
+around a __std_deque__ of `Value` elements; otherwise, the return type will
+wrap an __associative_property_map__ around a __std_map__ that associates
+vertices with `Value` objects.  This latter quality frees __BGL__ algorithms
+such as __weak_components__ from requiring a __vertex_index__ property
+map (either as an input argument or stored internally by the input graph) if
+some other utility property map is not specified.
+
+Also, unlike __iterator_property_map__ and __associative_property_map__
+instances, a `vertex_property_map_gen::type` object can stand alone in a
+persistent setting, e.g.:
+
+``
+template <typename Graph>
+void foo(Graph const& g)
+{
+    using namespace boost;
+    typename vertex_property_map_gen<Graph,default_color_type>::type color_map;
+
+    // Do something with color_map.
+}
+``
+[endsect]
+
+[section:definition Where defined]
+``
+#include <__boost_graph_vertex_property_map_gen_hpp__>
+``
+[endsect]
+
+[section:model_of Model of]
+
+  * __Lvalue_Property_Map__
+  * __Copy_Constructible__
+  * __Assignable__
+
+[endsect]
+
+[section:members Return Type Members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Key type]
+        [`vertex_property_map_gen::type::key_type`]
+        [Same as [^_graph_traits_<Graph>::vertex_descriptor]]
+    ]
+    [
+        [Value type]
+        [`vertex_property_map_gen::type::value_type`]
+        [Same as `Value`]
+    ]
+    [
+        [Reference type]
+        [`vertex_property_map_gen::type::reference`]
+        [Same as `Value&`]
+    ]
+    [
+        [Category type]
+        [`vertex_property_map_gen::type::category`]
+        [Same as `lvalue_property_map_tag`]
+    ]
+    [
+        [Constructor]
+        [`vertex_property_map_gen::type(Graph const&);`]
+        [
+            Constructs a `vertex_property_map_gen::type` object that will
+            associate vertices of the specified graph with `Value` objects;
+            initially, each vertex is associated with a default-constructed
+            `Value` object (or with itself if this object will be used as a
+            predecessor map).
+        ]
+    ]
+    [
+        [Copy constructor]
+        [`vertex_property_map_gen::type(type const&);`]
+        [Defined by the __Copy_Constructible__ concept.]
+    ]
+    [
+        [Assignment operator]
+        [`vertex_property_map_gen::type& operator=(type const&);`]
+        [Defined by the __Assignable__ concept.]
+    ]
+    [
+        [Property access]
+        [
+            `vertex_property_map_gen::type::reference
+            operator[](key_type const&) const;`
+        ]
+        [Accesses the property value of the specified vertex.]
+    ]
+]
+[endsect]
+
+[section:non_members Return Type Non-members]
+[table
+    [[Name][Expression][Description]]
+    [
+        [Vertex property map creation]
+        [[reference__make_vertex_property_map]]
+        [
+            Requires the `Value` type to be explicitly passed in as a template
+            parameter.  Creates and returns a `vertex_property_map_gen::type`
+            object that will associate vertices of the specified graph with
+            `Value` objects.
+        ]
+    ]
+    [
+        [Vertex property map creation with value]
+        [[reference__make_vertex_property_map__with_value]]
+        [
+            Requires a `Value` object to be explicitly passed in as the second
+            argument.  Creates and returns a `vertex_property_map_gen::type`
+            object that will associate vertices of the specified graph with
+            `Value` objects.
+        ]
+    ]
+    [
+        [Vertex predecessor map creation]
+        [[reference__make_vertex_predecessor_map]]
+        [
+            Creates and returns a `vertex_property_map_gen::type` object that
+            will associate vertices of the specified graph with each other.
+        ]
+    ]
+]
+[endsect]
+

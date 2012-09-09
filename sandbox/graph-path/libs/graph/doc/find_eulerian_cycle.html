@@ -1,0 +1,550 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>find_eulerian_cycle</title>
+<link rel="stylesheet" href="http://www.boost.org/doc/libs/release/doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="find_eulerian_cycle.html" title="find_eulerian_cycle">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr><td valign="top"><img alt="C++ Boost" width="277" height="86" src="../../../boost.png"></td></tr></table>
+<hr>
+<div class="spirit-nav"></div>
+<div class="article">
+<div class="titlepage">
+<div>
+<div><h2 class="title">
+<a name="find_eulerian_cycle"></a>find_eulerian_cycle</h2></div>
+<div><p class="copyright">Copyright &#169; 2012 Cromwell Enage</p></div>
+<div><div class="legalnotice">
+<a name="find_eulerian_cycle.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div>
+<hr>
+</div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.prototypes">Prototypes</a></span></dt>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.description">Description</a></span></dt>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.definition">Where Defined</a></span></dt>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.type_requirements">Type Requirements</a></span></dt>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.parameters">Parameters</a></span></dt>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.complexity">Complexity</a></span></dt>
+<dt><span class="section"><a href="find_eulerian_cycle.html#find_eulerian_cycle.example">Example</a></span></dt>
+</dl>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.prototypes"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.prototypes" title="Prototypes">Prototypes</a>
+</h2></div></div></div>
+<p>
+      The function prototype that takes in <a href="http://www.boost.org/libs/graph/doc/bgl_named_params.html" target="_top">old-style
+      named parameters</a> is always defined.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">InputGraph</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">OutputIterator</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">P</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">R</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">bool</span>
+        <span class="identifier">find_eulerian_cycle</span><span class="special">(</span>
+            <span class="identifier">InputGraph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">input_graph</span>
+          <span class="special">,</span> <span class="identifier">OutputIterator</span> <span class="identifier">result</span>
+          <span class="special">,</span> <span class="identifier">bgl_named_params</span><span class="special">&lt;</span><span class="identifier">P</span><span class="special">,</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">R</span><span class="special">&gt;</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">params</span>
+        <span class="special">);</span>
+
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+<p>
+      The following function prototype is defined if you <span class="emphasis"><em>don't</em></span>
+      set <code class="computeroutput"><span class="identifier">BOOST_PARAMETER_MAX_ARITY</span></code>
+      lower than 4.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">namespace</span> <span class="identifier">boost</span> <span class="special">{</span>
+
+    <span class="keyword">template</span> <span class="special">&lt;</span>
+        <span class="keyword">typename</span> <span class="identifier">InputGraph</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Result</span>
+      <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">Visitor</span>
+    <span class="special">&gt;</span>
+    <span class="keyword">bool</span>
+        <span class="identifier">find_eulerian_cycle</span><span class="special">(</span>
+            <span class="identifier">InputGraph</span> <span class="keyword">const</span><span class="special">&amp;</span> <span class="identifier">input_graph</span>
+          <span class="special">,</span> <span class="identifier">Result</span> <span class="identifier">result</span>
+          <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">vertex_descriptor</span> <span class="identifier">root_vertex</span>
+          <span class="special">,</span> <span class="identifier">Visitor</span> <span class="identifier">visitor</span>
+        <span class="special">);</span>
+<span class="special">}</span>  <span class="comment">// namespace boost</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.description"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.description" title="Description">Description</a>
+</h2></div></div></div>
+<p>
+      The algorithm first examines a trail of edges from <code class="computeroutput"><span class="identifier">root_vertex</span></code>
+      and adds each edge to the tour until it returns to <code class="computeroutput"><span class="identifier">root_vertex</span></code>
+      and has visited all out-edges from it. As long as there exists a vertex <code class="computeroutput"><span class="identifier">v</span></code> that belongs to the current tour but has
+      unexamined out-edges, the algorithm will examine another trail from <code class="computeroutput"><span class="identifier">v</span></code> until it cycles back to <code class="computeroutput"><span class="identifier">v</span></code>,
+      joining the tour formed in this way to the previous tour. The outline is described
+      in "Ueber die Moglichkeit, einen Linienzug ohne Wiederholung und ohne
+      Unterbrechung zu umfahren" by <a href="http://en.wikipedia.org/wiki/Carl_Hierholzer" target="_top">Carl
+      Hierholzer</a> (1873).
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.definition"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.definition" title="Where Defined">Where Defined</a>
+</h2></div></div></div>
+<p>
+</p>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><a href="../../../boost/graph/find_eulerian_cycle.hpp" target="_top">boost/graph/find_eulerian_cycle.hpp</a><span class="special">&gt;</span>
+</pre>
+<p>
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.type_requirements"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.type_requirements" title="Type Requirements">Type Requirements</a>
+</h2></div></div></div>
+<pre class="programlisting"><span class="special">*</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/IndicenceGraph.html" target="_top"><span class="bold"><strong>Incidence Graph</strong></span></a> <span class="keyword">and</span> <a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top"><span class="bold"><strong>Vertex List Graph</strong></span></a>
+  <span class="identifier">concepts</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Result</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/OutputIterator.html" target="_top"><span class="bold"><strong>Output Iterator</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">The</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">edge descriptor type</a> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">belong</span> <span class="identifier">to</span> <span class="identifier">the</span> <span class="identifier">set</span> <span class="identifier">of</span>
+  <span class="identifier">value</span> <span class="identifier">types</span> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">Result</span><span class="error">`</span><span class="special">.</span>
+<span class="special">*</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">either</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html" target="_top"><span class="bold"><strong>Fusion Forward Sequence</strong></span></a> <span class="identifier">concept</span> <span class="keyword">or</span>
+  <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event Visitor List</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">models</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html" target="_top"><span class="bold"><strong>Fusion Forward Sequence</strong></span></a> <span class="identifier">concept</span><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span>
+  <span class="identifier">second</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="identifier">each</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top">half-runtime pair</a> <span class="identifier">in</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">whose</span> <span class="identifier">first</span> <span class="identifier">type</span> <span class="identifier">is</span>
+  <span class="error">`</span><span class="identifier">on_initialize_vertex</span><span class="error">`</span><span class="special">,</span> <span class="error">`</span><span class="identifier">on_start_vertex</span><span class="error">`</span><span class="special">,</span> <span class="keyword">or</span> <span class="error">`</span><span class="identifier">on_finish_vertex</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span>
+  <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/BinaryFunction.html" target="_top"><span class="bold"><strong>Binary Function</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>  <span class="identifier">Furthermore</span><span class="special">,</span> <span class="identifier">the</span> <span class="identifier">function</span> <span class="identifier">call</span> <span class="keyword">operator</span>
+  <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">second</span> <span class="identifier">type</span> <span class="identifier">must</span> <span class="identifier">accept</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">vertex descriptor type</a> <span class="identifier">of</span>
+  <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">first</span> <span class="identifier">argument</span> <span class="identifier">type</span> <span class="keyword">and</span> <span class="identifier">a</span> <span class="identifier">reference</span> <span class="identifier">to</span>
+  <span class="error">`</span><span class="identifier">InputGraph</span> <span class="keyword">const</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">second</span> <span class="identifier">argument</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">models</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html" target="_top"><span class="bold"><strong>Fusion Forward Sequence</strong></span></a> <span class="identifier">concept</span><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span>
+  <span class="identifier">second</span> <span class="identifier">type</span> <span class="identifier">of</span> <span class="identifier">each</span> <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top">half-runtime pair</a> <span class="identifier">in</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">whose</span> <span class="identifier">first</span> <span class="identifier">type</span> <span class="identifier">is</span>
+  <span class="error">`</span><span class="identifier">on_examine_edge</span><span class="error">`</span> <span class="identifier">must</span> <span class="identifier">model</span> <span class="identifier">the</span> <a href="http://www.sgi.com/tech/stl/BinaryFunction.html" target="_top"><span class="bold"><strong>Binary Function</strong></span></a> <span class="identifier">concept</span><span class="special">.</span>  <span class="identifier">Furthermore</span><span class="special">,</span>
+  <span class="identifier">the</span> <span class="identifier">function</span> <span class="identifier">call</span> <span class="keyword">operator</span> <span class="identifier">of</span> <span class="identifier">the</span> <span class="identifier">second</span> <span class="identifier">type</span> <span class="identifier">must</span> <span class="identifier">accept</span> <span class="identifier">the</span>
+  <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">edge descriptor type</a> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">first</span> <span class="identifier">argument</span> <span class="identifier">type</span> <span class="keyword">and</span>
+  <span class="identifier">a</span> <span class="identifier">reference</span> <span class="identifier">to</span> <span class="error">`</span><span class="identifier">InputGraph</span> <span class="keyword">const</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">second</span> <span class="identifier">argument</span> <span class="identifier">type</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">models</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event Visitor List</strong></span></a> <span class="identifier">concept</span><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span>
+  <a href="http://www.boost.org/libs/graph/doc/EventVisitor.html" target="_top"><span class="bold"><strong>Event Visitor</strong></span></a> <span class="identifier">element</span> <span class="identifier">type</span> <span class="identifier">whose</span> <span class="identifier">event</span> <span class="identifier">filter</span> <span class="identifier">type</span> <span class="identifier">is</span>
+  <span class="error">`</span><span class="identifier">on_initialize_vertex</span><span class="error">`</span><span class="special">,</span> <span class="error">`</span><span class="identifier">on_start_vertex</span><span class="error">`</span><span class="special">,</span> <span class="keyword">or</span> <span class="error">`</span><span class="identifier">on_finish_vertex</span><span class="error">`</span><span class="special">--</span><span class="keyword">if</span> <span class="identifier">one</span>
+  <span class="identifier">exists</span><span class="special">--</span><span class="identifier">must</span> <span class="identifier">accept</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">vertex descriptor type</a> <span class="identifier">of</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span>
+  <span class="identifier">valid</span> <span class="identifier">first</span> <span class="identifier">argument</span> <span class="identifier">type</span> <span class="identifier">to</span> <span class="identifier">its</span> <span class="identifier">apply</span> <span class="identifier">member</span> <span class="identifier">function</span><span class="special">.</span>
+<span class="special">*</span> <span class="identifier">If</span> <span class="error">`</span><span class="identifier">Visitor</span><span class="error">`</span> <span class="identifier">models</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event Visitor List</strong></span></a> <span class="identifier">concept</span><span class="special">,</span> <span class="identifier">then</span> <span class="identifier">the</span>
+  <a href="http://www.boost.org/libs/graph/doc/EventVisitor.html" target="_top"><span class="bold"><strong>Event Visitor</strong></span></a> <span class="identifier">element</span> <span class="identifier">type</span> <span class="identifier">whose</span> <span class="identifier">event</span> <span class="identifier">filter</span> <span class="identifier">type</span> <span class="identifier">is</span>
+  <span class="error">`</span><span class="identifier">on_examine_edge</span><span class="error">`</span><span class="special">--</span><span class="keyword">if</span> <span class="identifier">one</span> <span class="identifier">exists</span><span class="special">--</span><span class="identifier">must</span> <span class="identifier">accept</span> <span class="identifier">the</span> <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">edge descriptor type</a>
+  <span class="identifier">of</span> <span class="error">`</span><span class="identifier">InputGraph</span><span class="error">`</span> <span class="identifier">as</span> <span class="identifier">a</span> <span class="identifier">valid</span> <span class="identifier">first</span> <span class="identifier">argument</span> <span class="identifier">type</span> <span class="identifier">to</span> <span class="identifier">its</span> <span class="identifier">apply</span> <span class="identifier">member</span>
+  <span class="identifier">function</span><span class="special">.</span>
+</pre>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.parameters"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.parameters" title="Parameters">Parameters</a>
+</h2></div></div></div>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+              <p>
+                Parameter
+              </p>
+            </th>
+<th>
+              <p>
+                Description
+              </p>
+            </th>
+<th>
+              <p>
+                Deduced?
+              </p>
+            </th>
+<th>
+              <p>
+                Runtime requirements
+              </p>
+            </th>
+<th>
+              <p>
+                Default
+              </p>
+            </th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">input_graph</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The input graph.
+              </p>
+            </td>
+<td>
+              <p>
+                No
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal"><a href="has_eulerian_cycle.html" target="_top">has_eulerian_cycle</a>(input_graph)</code>
+                must return <code class="computeroutput"><span class="keyword">true</span></code>.
+              </p>
+            </td>
+<td>
+              <p>
+                None; always required.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">result</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                An <a href="http://www.sgi.com/tech/stl/OutputIterator.html" target="_top"><span class="bold"><strong>Output Iterator</strong></span></a> into which every edge
+                in the graph will be stored exactly once and in tour order.
+              </p>
+            </td>
+<td>
+              <p>
+                No
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+              <p>
+                None; always required.
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">root_vertex</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                The start of the cycle.
+              </p>
+            </td>
+<td>
+              <p>
+                Yes
+              </p>
+            </td>
+<td>
+              <p>
+                If this parameter is specified, then the argument must be a valid
+                dereferenced value for some <a href="http://www.boost.org/libs/graph/doc/graph_traits.html" target="_top">vertex
+                iterator</a> in the range returned by <code class="literal"><a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top">vertices</a>(input_graph)</code>.
+              </p>
+            </td>
+<td>
+              <p>
+                <code class="literal">*<a href="http://www.boost.org/libs/graph/doc/VertexListGraph.html" target="_top">vertices</a>(input_graph).first</code>
+              </p>
+            </td>
+</tr>
+<tr>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">visitor</span></code>
+              </p>
+            </td>
+<td>
+              <p>
+                A heterogeneous container of event visitors. The algorithm will fire
+                the <code class="computeroutput"><span class="identifier">on_initialize_vertex</span></code>
+                event on each vertex before it begins its actual work; it will fire
+                the <code class="computeroutput"><span class="identifier">on_start_vertex</span></code>
+                event on each vertex from which it starts a tour; it will fire the
+                <code class="computeroutput"><span class="identifier">on_finish_vertex</span></code>
+                event on each vertex at which it ends a tour; and it will fire the
+                <code class="computeroutput"><span class="identifier">on_examine_edge</span></code> event
+                on each edge that it adds to the current tour.
+              </p>
+            </td>
+<td>
+              <p>
+                Yes
+              </p>
+            </td>
+<td>
+            </td>
+<td>
+              <p>
+                <code class="computeroutput"><span class="identifier">null_visitor</span><span class="special">()</span></code>
+              </p>
+            </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+      Parameters that can be <span class="bold"><strong>deduced</strong></span> do not have
+      to be explicitly named as long as the arguments to which they are bound fulfill
+      the corresponding type requirements. However, if any of the non-deduced parameters
+      are explicitly named out of their formal positions, then all succeeding parameters
+      must be either explicitly named or in their formal positions.
+    </p>
+<div class="caution"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="http://www.boost.org/doc/libs/release/doc/src/images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        As of version 10.0, Microsoft Visual C++ ships with its own implementation
+        of TR1, which does not play nice with <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>.
+        Therefore, parameter deduction has been disabled for users of this compiler.
+      </p></td></tr>
+</table></div>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.complexity"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.complexity" title="Complexity">Complexity</a>
+</h2></div></div></div>
+<p>
+      The time complexity is <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="identifier">V</span> <span class="special">+</span> <span class="identifier">E</span>
+      <span class="identifier">log</span> <span class="identifier">E</span><span class="special">)</span></code> for undirected graphs and <code class="computeroutput"><span class="identifier">O</span><span class="special">(</span><span class="identifier">V</span> <span class="special">+</span>
+      <span class="identifier">E</span><span class="special">)</span></code>
+      for directed graphs. The reason for the difference is that for undirected graphs,
+      the algorithm uses a <a href="http://www.sgi.com/tech/stl/multiset.html" target="_top"><code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">multiset</span></code></a>
+      to group opposite out-edges together.
+    </p>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="find_eulerian_cycle.example"></a><a class="link" href="find_eulerian_cycle.html#find_eulerian_cycle.example" title="Example">Example</a>
+</h2></div></div></div>
+<p>
+      The following routine displays the output of an Eulerian cycle by passing an
+      <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event
+      Visitor List</strong></span></a> to the algorithm. The <code class="computeroutput"><span class="identifier">visitor</span></code>
+      parameter has been deduced in this case. However, code that assembles an <a href="http://www.boost.org/libs/graph/doc/EventVisitorList.html" target="_top"><span class="bold"><strong>Event
+      Visitor List</strong></span></a> object composed of many event visitors can
+      become tedious to write or maintain.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+<span class="keyword">void</span> <span class="identifier">find_eulerian_cycle_example_with_visitor_list</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">vertex_count</span><span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_map</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">,</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_index_t</span><span class="special">&gt;::</span><span class="identifier">type</span>
+            <span class="identifier">VertexIndexMap</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_traits</span><span class="special">&lt;</span><span class="identifier">VertexIndexMap</span><span class="special">&gt;::</span><span class="identifier">value_type</span>
+            <span class="identifier">VertexIndex</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span><span class="special">&gt;</span>
+            <span class="identifier">EdgeList</span><span class="special">;</span>
+
+    <span class="identifier">Graph</span>          <span class="identifier">g</span><span class="special">(</span><span class="identifier">vertex_count</span><span class="special">);</span>
+    <span class="identifier">VertexIndexMap</span> <span class="identifier">i_map</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_index</span><span class="special">,</span> <span class="identifier">g</span><span class="special">);</span>
+
+    <span class="identifier">initialize_complete_graph</span><span class="special">(</span><span class="identifier">g</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Graph:"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">print_graph</span><span class="special">(</span><span class="identifier">g</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_eulerian_cycle</span><span class="special">(</span><span class="identifier">g</span><span class="special">))</span>
+    <span class="special">{</span>
+        <span class="identifier">EdgeList</span> <span class="identifier">path</span><span class="special">;</span>
+
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">find_eulerian_cycle</span><span class="special">(</span>
+            <span class="identifier">g</span>
+          <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">back_inserter</span><span class="special">(</span><span class="identifier">path</span><span class="special">)</span>
+          <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">make_pair</span><span class="special">(</span>
+                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">write_property</span><span class="special">(</span>
+                    <span class="identifier">i_map</span>
+                  <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream_iterator</span><span class="special">&lt;</span>
+                        <span class="identifier">VertexIndex</span>
+                    <span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">" initialized...\t"</span><span class="special">)</span>
+                  <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_initialize_vertex</span><span class="special">()</span>
+                <span class="special">)</span>
+              <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">make_pair</span><span class="special">(</span>
+                    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">write_property</span><span class="special">(</span>
+                        <span class="identifier">i_map</span>
+                      <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream_iterator</span><span class="special">&lt;</span>
+                            <span class="identifier">VertexIndex</span>
+                        <span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">" started...\t"</span><span class="special">)</span>
+                      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_start_vertex</span><span class="special">()</span>
+                    <span class="special">)</span>
+                  <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">make_pair</span><span class="special">(</span>
+                        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">write_property</span><span class="special">(</span>
+                            <span class="identifier">i_map</span>
+                          <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream_iterator</span><span class="special">&lt;</span>
+                                <span class="identifier">VertexIndex</span>
+                            <span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">" finished.\t"</span><span class="special">)</span>
+                          <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_finish_vertex</span><span class="special">()</span>
+                        <span class="special">)</span>
+                      <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">make_simple_edge_writer</span><span class="special">(</span>
+                            <span class="identifier">i_map</span>
+                          <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
+                          <span class="special">,</span> <span class="string">" examined...\t"</span>
+                          <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_examine_edge</span><span class="special">()</span>
+                        <span class="special">)</span>
+                    <span class="special">)</span>
+                <span class="special">)</span>
+            <span class="special">)</span>
+        <span class="special">);</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+        <span class="keyword">for</span> <span class="special">(</span>
+            <span class="keyword">typename</span> <span class="identifier">EdgeList</span><span class="special">::</span><span class="identifier">const_iterator</span> <span class="identifier">itr</span> <span class="special">=</span> <span class="identifier">path</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span>
+            <span class="identifier">itr</span> <span class="special">!=</span> <span class="identifier">path</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span>
+            <span class="special">++</span><span class="identifier">itr</span>
+        <span class="special">)</span>
+        <span class="special">{</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="char">'\t'</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">i_map</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">source</span><span class="special">(*</span><span class="identifier">itr</span><span class="special">,</span> <span class="identifier">g</span><span class="special">));</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">" --&gt; "</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">i_map</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">target</span><span class="special">(*</span><span class="identifier">itr</span><span class="special">,</span> <span class="identifier">g</span><span class="special">));</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">else</span>
+    <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"...has no Eulerian cycle."</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<p>
+      The <a href="http://www.boost.org/libs/fusion/doc/html/fusion/container/generation/functions/make_list.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">make_list</span></code></a>
+      and <a href="http://www.boost.org/libs/fusion/doc/html/fusion/support/pair.html" target="_top"><code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">make_pair</span></code></a>
+      functions allow user code to associate the appropriate event filter types with
+      their visitor objects in a manner that is much more straightforward. (For writing
+      vertex property values and edge connections to an output stream, the <a href="fuse_property_writer.html" target="_top"><code class="computeroutput"><span class="identifier">fuse_property_writer</span><span class="special">()</span></code></a> and <a href="simple_edge_writer.html#simple_edge_writer.non_members" target="_top"><code class="computeroutput"><span class="identifier">fuse_simple_edge_writer</span><span class="special">()</span></code></a>
+      functions provide added convenience.)
+    </p>
+<p>
+      The following routine displays the same output by passing a <a href="http://www.boost.org/libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html" target="_top"><span class="bold"><strong>Fusion Forward Sequence</strong></span></a> to the algorithm by
+      <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">named parameter</a>.
+      The algorithm recognizes its <a href="find_eulerian_cycle.html#find_eulerian_cycle.parameters" target="_top">parameters</a>
+      this way by prepending the name of each parameter with a single underscore.
+      The <a href="http://www.boost.org/libs/graph/doc/index.html" target="_top">BGL</a> defines all such
+      <a href="http://www.boost.org/libs/parameter/doc/html/index.html" target="_top">Boost.Parameter</a>
+      objects in the <code class="computeroutput"><span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span></code>
+      namespace.
+    </p>
+<p>
+</p>
+<pre class="programlisting"><span class="keyword">template</span> <span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">Graph</span><span class="special">&gt;</span>
+<span class="keyword">void</span>
+    <span class="identifier">find_eulerian_cycle_example_with_fusion_visitor_list</span><span class="special">(</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="identifier">vertex_count</span>
+    <span class="special">)</span>
+<span class="special">{</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_map</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">,</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_index_t</span><span class="special">&gt;::</span><span class="identifier">type</span>
+            <span class="identifier">VertexIndexMap</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">property_traits</span><span class="special">&lt;</span><span class="identifier">VertexIndexMap</span><span class="special">&gt;::</span><span class="identifier">value_type</span>
+            <span class="identifier">VertexIndex</span><span class="special">;</span>
+    <span class="keyword">typedef</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">list</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph_traits</span><span class="special">&lt;</span><span class="identifier">Graph</span><span class="special">&gt;::</span><span class="identifier">edge_descriptor</span><span class="special">&gt;</span>
+            <span class="identifier">EdgeList</span><span class="special">;</span>
+
+    <span class="identifier">Graph</span>          <span class="identifier">g</span><span class="special">(</span><span class="identifier">vertex_count</span><span class="special">);</span>
+    <span class="identifier">VertexIndexMap</span> <span class="identifier">i_map</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">vertex_index</span><span class="special">,</span> <span class="identifier">g</span><span class="special">);</span>
+
+    <span class="identifier">initialize_complete_graph</span><span class="special">(</span><span class="identifier">g</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"Graph:"</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="identifier">boost</span><span class="special">::</span><span class="identifier">print_graph</span><span class="special">(</span><span class="identifier">g</span><span class="special">);</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">has_eulerian_cycle</span><span class="special">(</span><span class="identifier">g</span><span class="special">))</span>
+    <span class="special">{</span>
+        <span class="identifier">EdgeList</span> <span class="identifier">path</span><span class="special">;</span>
+
+        <span class="identifier">boost</span><span class="special">::</span><span class="identifier">find_eulerian_cycle</span><span class="special">(</span>
+            <span class="identifier">g</span>
+          <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">::</span><span class="identifier">_visitor</span> <span class="special">=</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fusion</span><span class="special">::</span><span class="identifier">make_list</span><span class="special">(</span>
+                <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fuse_property_writer</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_initialize_vertex</span><span class="special">&gt;(</span>
+                    <span class="identifier">i_map</span>
+                  <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream_iterator</span><span class="special">&lt;</span>
+                        <span class="identifier">VertexIndex</span>
+                    <span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">" initialized...\t"</span><span class="special">)</span>
+                <span class="special">)</span>
+              <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fuse_property_writer</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_start_vertex</span><span class="special">&gt;(</span>
+                    <span class="identifier">i_map</span>
+                  <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream_iterator</span><span class="special">&lt;</span>
+                        <span class="identifier">VertexIndex</span>
+                    <span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">" started...\t"</span><span class="special">)</span>
+                <span class="special">)</span>
+              <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fuse_property_writer</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_finish_vertex</span><span class="special">&gt;(</span>
+                    <span class="identifier">i_map</span>
+                  <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">ostream_iterator</span><span class="special">&lt;</span>
+                        <span class="identifier">VertexIndex</span>
+                    <span class="special">&gt;(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span><span class="special">,</span> <span class="string">" finished.\t"</span><span class="special">)</span>
+                <span class="special">)</span>
+              <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">fuse_simple_edge_writer</span><span class="special">&lt;</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">on_examine_edge</span><span class="special">&gt;(</span>
+                    <span class="identifier">i_map</span>
+                  <span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span>
+                  <span class="special">,</span> <span class="string">" examined...\t"</span>
+                <span class="special">)</span>
+            <span class="special">)</span>
+          <span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">graph</span><span class="special">::</span><span class="identifier">keywords</span><span class="special">::</span><span class="identifier">_result</span> <span class="special">=</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">back_inserter</span><span class="special">(</span><span class="identifier">path</span><span class="special">)</span>
+        <span class="special">);</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+
+        <span class="keyword">for</span> <span class="special">(</span>
+            <span class="keyword">typename</span> <span class="identifier">EdgeList</span><span class="special">::</span><span class="identifier">const_iterator</span> <span class="identifier">itr</span> <span class="special">=</span> <span class="identifier">path</span><span class="special">.</span><span class="identifier">begin</span><span class="special">();</span>
+            <span class="identifier">itr</span> <span class="special">!=</span> <span class="identifier">path</span><span class="special">.</span><span class="identifier">end</span><span class="special">();</span>
+            <span class="special">++</span><span class="identifier">itr</span>
+        <span class="special">)</span>
+        <span class="special">{</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="char">'\t'</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">i_map</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">source</span><span class="special">(*</span><span class="identifier">itr</span><span class="special">,</span> <span class="identifier">g</span><span class="special">));</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">" --&gt; "</span> <span class="special">&lt;&lt;</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">get</span><span class="special">(</span><span class="identifier">i_map</span><span class="special">,</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">target</span><span class="special">(*</span><span class="identifier">itr</span><span class="special">,</span> <span class="identifier">g</span><span class="special">));</span>
+            <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+        <span class="special">}</span>
+    <span class="special">}</span>
+    <span class="keyword">else</span>
+    <span class="special">{</span>
+        <span class="identifier">std</span><span class="special">::</span><span class="identifier">cout</span> <span class="special">&lt;&lt;</span> <span class="string">"...has no Eulerian cycle."</span> <span class="special">&lt;&lt;</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">endl</span><span class="special">;</span>
+    <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+<p>
+    </p>
+<p>
+      The complete example program can be compiled from these files:
+    </p>
+<pre class="programlisting"><span class="special">*</span> <a href="../example/find_eulerian_cycle.hpp" target="_top">example/find_eulerian_cycle.hpp</a>
+<span class="special">*</span> <a href="../example/find_eulerian_cycle.cpp" target="_top">example/find_eulerian_cycle.cpp</a>
+</pre>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: September 09, 2012 at 18:01:42 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"></div>
+</body>
+</html>

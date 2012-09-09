@@ -1,0 +1,169 @@
+[article find_eulerian_trail
+    [quickbook 1.5]
+    [copyright 2012 Cromwell Enage]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[def __Output_Iterator__ [@http://www.sgi.com/tech/stl/OutputIterator.html [*Output Iterator]]]
+[def __Binary_Function__ [@http://www.sgi.com/tech/stl/BinaryFunction.html [*Binary Function]]]
+[def __std_multiset__ [@http://www.sgi.com/tech/stl/multiset.html `std::multiset`]]
+[def __Fusion_Forward_Sequence__ [@boost:libs/fusion/doc/html/fusion/sequence/concepts/forward_sequence.html [*Fusion Forward Sequence]]]
+[def __half_runtime_pair__ [@boost:libs/fusion/doc/html/fusion/support/pair.html half-runtime pair]]
+[def __Event_Visitor__ [@boost:/libs/graph/doc/EventVisitor.html [*Event Visitor]]]
+[def __Event_Visitor_List__ [@boost:/libs/graph/doc/EventVisitorList.html [*Event Visitor List]]]
+[def __Incidence_Graph__ [@boost:libs/graph/doc/IndicenceGraph.html [*Incidence Graph]]]
+[def __Vertex_List_Graph__ [@boost:libs/graph/doc/VertexListGraph.html [*Vertex List Graph]]]
+[def __vertex_descriptor_type__ [@boost:libs/graph/doc/graph_traits.html vertex descriptor type]]
+[def __vertex_iterator__ [@boost:libs/graph/doc/graph_traits.html vertex iterator]]
+[def __edge_descriptor_type__ [@boost:libs/graph/doc/graph_traits.html edge descriptor type]]
+[def __fusion_make_list__ [@boost:libs/fusion/doc/html/fusion/container/generation/functions/make_list.html `boost::fusion::make_list`]]
+[def __fusion_make_pair__ [@boost:libs/fusion/doc/html/fusion/support/pair.html `boost::fusion::make_pair`]]
+[def _vertices_ [@boost:libs/graph/doc/VertexListGraph.html vertices]]
+[def __boost_graph_find_eulerian_trail_hpp__ [@../../../boost/graph/find_eulerian_trail.hpp boost/graph/find_eulerian_trail.hpp]]
+[def __example_find_eulerian_trail_hpp__ [@../example/find_eulerian_trail.hpp example/find_eulerian_trail.hpp]]
+[def __example_find_eulerian_trail_cpp__ [@../example/find_eulerian_trail.cpp example/find_eulerian_trail.cpp]]
+[def _has_eulerian_trail_ [@has_eulerian_trail.html has_eulerian_trail]]
+[def _find_eulerian_cycle_ [@find_eulerian_cycle.html find_eulerian_cycle]]
+[def __fuse_property_writer__ [@fuse_property_writer.html `fuse_property_writer()`]]
+[def __fuse_simple_edge_writer__ [@simple_edge_writer.html#simple_edge_writer.non_members `fuse_simple_edge_writer()`]]
+
+[import ../../../../../boost/graph/find_eulerian_trail.hpp]
+[import ../../../example/find_eulerian_trail.hpp]
+[import ../../../example/find_eulerian_trail.cpp]
+
+[section Prototypes]
+[reference__find_eulerian_trail]
+[endsect]
+
+[section Description]
+For undirected graphs without an Eulerian cycle, the algorithm finds the first
+vertex with an odd out-degree and examines a trail of edges from this vertex,
+adding each edge to the tour until it finds the other vertex with an odd
+out-degree and has visited all out-edges from it.  For directed graphs without
+an Eulerian cycle, the algorithm first finds the vertex whose out-degree is one
+greater than its in-degree and examines a trail of edges from this vertex,
+adding each edge to the tour until it finds the vertex whose in-degree is one
+greater than its out-degree.  Thereafter, as long as there exists a vertex `v`
+that belongs to the current tour but has unexamined out-edges, the algorithm
+will examine another trail from `v` until it cycles back to `v`, joining the
+tour formed in this way to the previous tour.
+
+If the input graph contains an Eulerian cycle, then the algorithm is equivalent
+to [^_find_eulerian_cycle_(input_graph, result, *_vertices_(input_graph).first,
+visitor)].
+[endsect]
+
+[section:definition Where Defined]
+``
+#include <__boost_graph_find_eulerian_trail_hpp__>
+``
+[endsect]
+
+[section Type Requirements]
+
+  * `InputGraph` must model the __Incidence_Graph__ and __Vertex_List_Graph__
+    concepts.
+  * `Result` must model the __Output_Iterator__ concept.
+  * The __edge_descriptor_type__ of `InputGraph` must belong to the set of
+    value types of `Result`.
+  * `Visitor` must model either the __Fusion_Forward_Sequence__ concept or
+    the __Event_Visitor_List__ concept.
+  * If `Visitor` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `Visitor` whose first type is
+    `on_initialize_vertex`, `on_start_vertex`, or `on_finish_vertex` must model
+    the __Binary_Function__ concept.  Furthermore, the function call operator
+    of the second type must accept the __vertex_descriptor_type__ of
+    `InputGraph` as a valid first argument type and a reference to
+    `InputGraph const` as a valid second argument type.
+  * If `Visitor` models the __Fusion_Forward_Sequence__ concept, then the
+    second type of each __half_runtime_pair__ in `Visitor` whose first type is
+    `on_examine_edge` must model the __Binary_Function__ concept.  Furthermore,
+    the function call operator of the second type must accept the
+    __edge_descriptor_type__ of `InputGraph` as a valid first argument type and
+    a reference to `InputGraph const` as a valid second argument type.
+  * If `Visitor` models the __Event_Visitor_List__ concept, then the
+    __Event_Visitor__ element type whose event filter type is
+    `on_initialize_vertex`, `on_start_vertex`, or `on_finish_vertex`--if one
+    exists--must accept the __vertex_descriptor_type__ of `InputGraph` as a
+    valid first argument type to its apply member function.
+  * If `Visitor` models the __Event_Visitor_List__ concept, then the
+    __Event_Visitor__ element type whose event filter type is
+    `on_examine_edge`--if one exists--must accept the __edge_descriptor_type__
+    of `InputGraph` as a valid first argument type to its apply member
+    function.
+
+[endsect]
+
+[section Parameters]
+[table
+    [[Parameter][Description][Runtime requirements][Default]]
+    [
+        [`input_graph`]
+        [The input graph.]
+        [[^_has_eulerian_trail_(input_graph)] must return `true`.]
+        [None; always required.]
+    ]
+    [
+        [`result`]
+        [
+            An __Output_Iterator__ into which every edge in the graph will be
+            stored exactly once and in tour order.
+        ]
+        []
+        [None; always required.]
+    ]
+    [
+        [`visitor`]
+        [
+            A heterogeneous container of event visitors.  The algorithm will
+            fire the `on_initialize_vertex` event on each vertex before it
+            begins its actual work; it will fire the `on_start_vertex` event on
+            each vertex from which it starts a trail; it will fire the
+            `on_finish_vertex` event on each vertex at which it ends a trail;
+            and it will fire the `on_examine_edge` event on each edge that it
+            adds to the current trail.
+        ]
+        []
+        [`null_visitor()`]
+    ]
+]
+[endsect]
+
+[section Complexity]
+The time complexity is `O(V + E log E)` for undirected graphs, `O(V + E)` for
+bidirectional graphs, and `O(V * E)` for directed graphs.  The reason for the
+difference is that for undirected graphs, the algorithm uses a __std_multiset__
+to group opposite out-edges together, while for non-bidirectional directed
+graphs, the algorithm must perform its own tally of in-edges in order to find
+the correct starting vertex.
+[endsect]
+
+[section Example]
+The following routine displays the output of an Eulerian trail by passing an
+__Event_Visitor_List__ to the algorithm.  However, code that assembles an
+__Event_Visitor_List__ object composed of many event visitors can become
+tedious to write or maintain.
+
+[find_eulerian_trail_example_with_visitor_list]
+
+The __fusion_make_list__ and __fusion_make_pair__ functions allow user code to
+associate the appropriate event filter types with their visitor objects in a
+manner that is much more straightforward.  (For writing vertex property values
+and edge connections to an output stream, the __fuse_property_writer__ and
+__fuse_simple_edge_writer__ functions provide added convenience.)  The
+following routine displays the same output by passing a
+__Fusion_Forward_Sequence__ to the algorithm.
+
+[find_eulerian_trail_example_with_fusion_visitor_list]
+
+The complete example program can be compiled from these files:
+
+  * __example_find_eulerian_trail_hpp__
+  * __example_find_eulerian_trail_cpp__
+
+[endsect]
+
