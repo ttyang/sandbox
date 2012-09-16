@@ -1,0 +1,63 @@
+project
+    : requirements
+        # Path for links to Boost:
+        # <xsl:param>boost.root=../../..
+        <xsl:param>boost.root=http://www.boost.org
+
+        # Some general style settings:
+        <xsl:param>table.footnote.number.format=1
+        <xsl:param>footnote.number.format=1
+
+        # HTML options first:
+        # Use graphics not text for navigation:
+        <xsl:param>navig.graphics=1
+        # PDF Options:
+        # TOC Generation: this is needed for FOP-0.9 and later:
+        <xsl:param>fop1.extensions=0
+        <xsl:param>xep.extensions=1
+        # TOC generation: this is needed for FOP 0.2, but must not be set to zero for FOP-0.9!
+        <xsl:param>fop.extensions=0
+        # No indent on body text:
+        <xsl:param>body.start.indent=0pt
+        # Margin size:
+        <xsl:param>page.margin.inner=0.5in
+        # Margin size:
+        <xsl:param>page.margin.outer=0.5in
+        # Paper type = A4
+        <xsl:param>paper.type=A4
+        # Yes, we want graphics for admonishments:
+        <xsl:param>admon.graphics=1
+        # Set this one for PDF generation *only*:
+        # default pnd graphics are awful in PDF form,
+        # better use SVG's instead:
+        <format>pdf:<xsl:param>admon.graphics.extension=".svg"
+        <format>pdf:<xsl:param>admon.graphics.path=http://www.boost.org/doc/src/images/
+        <format>pdf:<xsl:param>boost.url.prefix=http://www.boost.org/doc/libs/release/libs/graph/doc
+    ;
+
+import boostbook : boostbook ;
+using quickbook ;
+
+xml count_upsilon_tessel_verts : doc.qbk ;
+boostbook standalone
+    :
+        count_upsilon_tessel_verts
+    :
+        <xsl:param>base.dir=../../..
+        <xsl:param>root.filename=count_upsilon_tessel_verts
+        <xsl:param>admon.graphics.path=http://www.boost.org/doc/libs/release/doc/src/images/
+        <xsl:param>navig.graphics.path=http://www.boost.org/doc/libs/release/doc/src/images/
+        <xsl:param>boost.libraries=http://www.boost.org/libs/libraries.htm
+        <xsl:param>boost.image.src=../../../boost.png
+        <xsl:param>boost.image.alt="C++ Boost"
+        <xsl:param>boost.image.w=277
+        <xsl:param>boost.image.h=86
+        <xsl:param>html.stylesheet=http://www.boost.org/doc/libs/release/doc/src/boostbook.css
+        <xsl:param>nav.layout=none
+        <xsl:param>chunk.section.depth=0
+        <xsl:param>chunk.first.sections=0
+        <xsl:param>toc.section.depth=1
+        <xsl:param>toc.max.depth=1
+        <xsl:param>generate.section.toc.level=1
+    ;
+
