@@ -1,0 +1,13 @@
+INCS:-I../slim/include -I/home/evansl/prog_dev/boost-svn/ro/boost_1_49_0
+gcc4_8n:
+  * version=g++ (GCC) 4.8.0 20120624 (experimental)
+Copyright (C) 2012 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+  * command=/home/evansl/download/gcc/4.8-20120624/install/bin/g++ -c -Wall -Wstrict-overflow -ftemplate-depth-300 -ftemplate-backtrace-limit=0 -std=gnu++11
+clangxx:
+  * version=clang version 3.1 (trunk 150294)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+  * command=/home/evansl/download/llvm/svn/build/Debug+Asserts/bin/clang -c -cxx-isystem /home/evansl/download/llvm/svn/llvm/projects/libcxx/include -std=c++11

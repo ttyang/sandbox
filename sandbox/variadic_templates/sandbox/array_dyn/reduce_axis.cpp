@@ -212,7 +212,7 @@ int main(void)
                     , oper_axis
                     )
                   );
-                std::cout<<"arr_reduce=\n";
+                std::cout<<":arr_reduce=\n";
                 std::cout<<arr_reduce<<".\n";
             }
         }//exit for(mean_axis...)
