@@ -17,10 +17,10 @@
     //  and date:
     //    01/12/2009
     //  )
-  #define TUPLE_SIZE 16
+  #define TUPLE_SIZE 4
     //^size of the tuple used.
     //Also, the number of at_test calls in test_row<I,J>::exec.
-  #define LAST_LESS 16
+  #define LAST_LESS 2
     //^determines number of instantiations of test_col and test_row.
   #define VALU_AT
     //^Decides whether value of tuple elements is retrieved
@@ -203,5 +203,10 @@ int main()
 	//  test_row<I>::exec()
 	//for I=0...LAST_COL
 	std::cout<<"value="<<value<<"\n";
+      #if defined(BOOST_NO_VARIADIC_TEMPLATES)
+        std::cout<<"BOOST_NOT_VARIADIC_TEMPLATES\n";
+      #else
+        std::cout<<"BOOST_YES_VARIADIC_TEMPLATES\n";
+      #endif
 	return value==0;
 }
