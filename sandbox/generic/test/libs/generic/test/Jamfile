@@ -1,0 +1,237 @@
+#===============================================================================
+#    Copyright (c) 2010 Matt Calabrese
+#
+#   Use, modification and distribution is subject to the Boost Software
+#   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#   http://www.boost.org/LICENSE_1_0.txt)
+#===============================================================================
+
+import testing ;
+
+project boost_generic_test
+    : requirements
+        <include>$(boost-generic-include)
+		<include>$(boost-vmd-include)
+        <include>$(boost-root)
+    ;
+
+{
+    test-suite generic :
+
+    [ compile-fail detail/global_scope_fail.cpp :  :  :  : ]
+    [ compile detail/args_to_sequence.cpp :  :  :  : ]
+    [ compile detail/concept_and_params_details.cpp :  :  :  : ]
+    [ compile detail/concept_sig_dets.cpp :  :  :  : ]
+    [ compile detail/function_decl_details.cpp :  :  :  : ]
+    [ compile detail/global_scope_pass.cpp :  :  :  : ]
+    [ compile detail/is_seq_nil.cpp :  :  :  : ]
+    [ compile detail/map_name_param_dets.cpp :  :  :  : ]
+    [ compile detail/mutable_state.cpp :  :  :  : ]
+    [ compile detail/namespace.cpp :  :  :  : ]
+    [ compile detail/num_args.cpp :  :  :  : ]
+    [ compile detail/ordered_iif.cpp :  :  :  : ]
+    [ compile detail/param_list.cpp :  :  :  : ]
+    [ compile detail/public_dets.cpp :  :  :  : ]
+    [ compile detail/seq_details.cpp :  :  :  : ]
+    [ compile detail/template_decl_details.cpp :  :  :  : ]
+    [ compile detail/typename_details.cpp :  :  :  : ]
+
+#    [ compile detail/auto_concept_map/arg_details.cpp :  :  :  : ]
+
+    [ compile detail/concept/arg_dets.cpp :  :  :  : ]
+    [ compile detail/concept/req_dets.cpp :  :  :  : ]
+
+    [ compile basic_concept_mapping.cpp :  :  :  : ]
+    [ compile concept.cpp :  :  :  : ]
+
+# [concept.transform]
+    [ compile std_concept/concepts/identity_of.cpp :  :  :  : ]
+    [ compile std_concept/concepts/rvalue_of.cpp :  :  :  : ]
+
+# [concept.true]
+    [ compile std_concept/concepts/true.cpp :  :  :  : ]
+
+# [concept.classify]
+    [ compile std_concept/concepts/lvalue_reference.cpp :  :  :  : ]
+    [ compile std_concept/concepts/rvalue_reference.cpp :  :  :  : ]
+
+# [concept.operator]
+    [ compile std_concept/concepts/has_plus.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_minus.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_multiply.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_divide.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_modulus.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_unary_plus.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_negate.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_less.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_greater.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_less_equal.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_greater_equal.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_equal_to.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_not_equal_to.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_logical_and.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_logical_or.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_logical_not.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_bit_and.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_bit_or.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_bit_xor.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_complement.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_left_shift.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_right_shift.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_dereference.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_address_of.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_subscript.cpp :  :  :  : ]
+    [ compile std_concept/concepts/callable.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_plus_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_minus_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_multiply_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_divide_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_modulus_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_bit_and_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_bit_or_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_bit_xor_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_left_shift_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_right_shift_assign.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_preincrement.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_postincrement.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_predecrement.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_postdecrement.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_comma.cpp :  :  :  : ]
+
+# [concept.predicate]
+    [ compile std_concept/concepts/predicate.cpp :  :  :  : ]
+
+# [concept.comparison]
+    [ compile std_concept/concepts/less_than_comparable.cpp :  :  :  : ]
+    [ compile std_concept/concepts/equality_comparable.cpp :  :  :  : ]
+    [ compile std_concept/concepts/strict_weak_order.cpp :  :  :  : ]
+    [ compile std_concept/concepts/equivalence_relation.cpp :  :  :  : ]
+
+# [concept.construct]
+    [ compile std_concept/concepts/has_constructor.cpp :  :  :  : ]
+    [ compile std_concept/concepts/constructible.cpp :  :  :  : ]
+    [ compile std_concept/concepts/default_constructible.cpp :  :  :  : ]
+    [ compile std_concept/concepts/trivially_default_constructible.cpp :  :  :  : ]
+
+# [concept.destruct]
+    [ compile std_concept/concepts/has_destructor.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_virtual_destructor.cpp :  :  :  : ]
+    [ compile std_concept/concepts/nothrow_destructible.cpp :  :  :  : ]
+    [ compile std_concept/concepts/trivially_destructible.cpp :  :  :  : ]
+
+# [concept.copymove]
+    [ compile std_concept/concepts/move_constructible.cpp :  :  :  : ]
+    [ compile std_concept/concepts/copy_constructible.cpp :  :  :  : ]
+#    [ compile std_concept/concepts/trivially_copy_constructible.cpp :  :  :  : ]
+    [ compile std_concept/concepts/move_assignable.cpp :  :  :  : ]
+    [ compile std_concept/concepts/copy_assignable.cpp :  :  :  : ]
+    [ compile std_concept/concepts/trivially_copy_assignable.cpp :  :  :  : ]
+    [ compile std_concept/concepts/has_swap.cpp :  :  :  : ]
+    [ compile std_concept/concepts/swappable.cpp :  :  :  : ]
+
+# [concept.memory]
+    [ compile std_concept/concepts/free_store_allocatable.cpp :  :  :  : ]
+
+# [concept.regular]
+    [ compile std_concept/concepts/semiregular.cpp :  :  :  : ]
+    [ compile std_concept/concepts/regular.cpp :  :  :  : ]
+
+# [concept.convertible]
+    [ compile std_concept/concepts/explicitly_convertible.cpp :  :  :  : ]
+    [ compile std_concept/concepts/convertible.cpp :  :  :  : ]
+
+# [concept.arithmetic]
+    [ compile std_concept/concepts/arithmetic_like.cpp :  :  :  : ]
+    [ compile std_concept/concepts/integral_like.cpp :  :  :  : ]
+    [ compile std_concept/concepts/signed_integral_like.cpp :  :  :  : ]
+    [ compile std_concept/concepts/unsigned_integral_like.cpp :  :  :  : ]
+    [ compile std_concept/concepts/floating_point_like.cpp :  :  :  : ]
+
+# [container.concepts.free]
+    [ compile std_concept/container_concepts/back_emplacement_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/back_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/emplacement_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/front_emplacement_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/front_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/queue_like_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/range_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/stack_like_container.cpp :  :  :  : ]
+
+# [container.concepts.member]
+    [ compile std_concept/container_concepts/member_back_emplacement_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_back_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_emplacement_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_front_emplacement_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_front_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_queue_like_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_range_insertion_container.cpp :  :  :  : ]
+    [ compile std_concept/container_concepts/member_stack_like_container.cpp :  :  :  : ]
+
+# [bidirectional.iterators]
+#    [ compile std_concept/iterator_concepts/bidirectional_iterator.cpp :  :  :  : ]
+
+# [forward.iterators]
+#    [ compile std_concept/iterator_concepts/forward_iterator.cpp :  :  :  : ]
+
+# [input.iterators]
+#    [ compile std_concept/iterator_concepts/input_iterator.cpp :  :  :  : ]
+
+# [iterator.iterators]
+#    [ compile std_concept/iterator_concepts/iterator.cpp :  :  :  : ]
+
+# [output.iterators]
+#    [ compile std_concept/iterator_concepts/output_iterator.cpp :  :  :  : ]
+
+# [random.access.iterators]
+#    [ compile std_concept/iterator_concepts/random_access_iterator.cpp :  :  :  : ]
+
+# [iterator.concepts.range]
+#    [ compile std_concept/iterator_concepts/range.cpp :  :  :  : ]
+
+# [shuffle.iterators]
+#    [ compile std_concept/iterator_concepts/shuffle_iterator.cpp :  :  :  : ]
+
+# [concept.support]
+    [ compile std_concept/support_concepts/arithmetic_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/class.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/class_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/derived_from.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/enumeration_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/floating_point_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/integral_constant_expression_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/integral_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/literal_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/member_pointee_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/non_type_template_parameter_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/object_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/pointee_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/polymorphic_class.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/referent_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/returnable.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/same_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/scalar_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/standard_layout_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/trivial_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/union.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/value_type.cpp :  :  :  : ]
+    [ compile std_concept/support_concepts/variable_type.cpp :  :  :  : ]
+
+# [allocator.element.concepts]
+#    [ compile std_concept/memory_concepts/allocatable_element.cpp :  :  :  : ]
+#    [ compile std_concept/memory_concepts/constructible_with_allocator.cpp :  :  :  : ]
+#    [ compile std_concept/memory_concepts/has_allocator.cpp :  :  :  : ]
+#    [ compile std_concept/memory_concepts/uses_allocator.cpp :  :  :  : ]
+
+# [allocator.concepts]
+#    [ compile std_concept/memory_concepts/allocator.cpp :  :  :  : ]
+
+# [allocator.concepts.legacy]
+#    [ compile std_concept/memory_concepts/legacy_allocator.cpp :  :  :  : ]
+
+    ;
+}
