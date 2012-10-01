@@ -215,8 +215,10 @@ class pool
 		 * \param policy
 		 *        Pool growth policy. See documentation of pools::policy for details
 		 *        on how the policy controls the pool growth.
+		 * \param allocator
+		 *        Custom allocator instance.
 		 * ---------------------------------------------------------------------- */
-		pool(size_t initialPoolSize, size_t bufferSize = 1, pools::policy policy = pools::policy_no_growth);
+		pool(size_t initialPoolSize, size_t bufferSize = 1, pools::policy policy = pools::policy_no_growth, const Allocator& allocator = Allocator());
 
 		/** ------------------------------------------------------------------------
 		 * Destroys a pool.
@@ -355,8 +357,8 @@ class pool
 /* -------------------------------------------------------------------------- */
 
 template<typename T, bool ThreadSafe, class Allocator>
-pool<T, ThreadSafe, Allocator>::pool(size_t initialPoolSize, size_t bufferSize, pools::policy policy)
-	: _policy(policy), _allocated(0), _requested(0), _size(bufferSize)
+pool<T, ThreadSafe, Allocator>::pool(size_t initialPoolSize, size_t bufferSize, pools::policy policy, const Allocator& allocator)
+	: _allocator(allocator), _policy(policy), _allocated(0), _requested(0), _size(bufferSize)
 {
 	grow(initialPoolSize);
 }
