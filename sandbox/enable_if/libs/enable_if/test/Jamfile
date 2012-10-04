@@ -1,0 +1,41 @@
+#===============================================================================
+#    Copyright (c) 2010 Matt Calabrese
+#
+#   Use, modification and distribution is subject to the Boost Software
+#   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#   http://www.boost.org/LICENSE_1_0.txt)
+#===============================================================================
+
+import testing ;
+
+project boost_generic_test
+    : requirements
+        <include>$(boost-enable_if-include)
+		<include>$(boost-vmd-include)
+        <include>$(boost-root)
+    ;
+
+{
+    test-suite enable_if_macros :
+
+    [ compile disable_if.cpp :  :  :  : ]
+    [ compile disable_if_c.cpp :  :  :  : ]
+    [ compile enable_if.cpp :  :  :  : ]
+    [ compile enable_if_c.cpp :  :  :  : ]
+    [ compile enable_if_expr.cpp :  :  :  : ]
+    [ compile enable_if_expr_seq.cpp :  :  :  : ]
+    [ compile lazy_disable_if.cpp :  :  :  : ]
+    [ compile lazy_disable_if_c.cpp :  :  :  : ]
+    [ compile lazy_enable_if.cpp :  :  :  : ]
+    [ compile lazy_enable_if_c.cpp :  :  :  : ]
+    [ compile lazy_enable_if_expr.cpp :  :  :  : ]
+    [ compile lazy_enable_if_expr_seq.cpp :  :  :  : ]
+    [ compile type_disable_if.cpp :  :  :  : ]
+    [ compile type_disable_if_c.cpp :  :  :  : ]
+    [ compile type_enable_if.cpp :  :  :  : ]
+    [ compile type_enable_if_c.cpp :  :  :  : ]
+    [ compile type_enable_if_expr.cpp :  :  :  : ]
+    [ compile type_enable_if_expr_seq.cpp :  :  :  : ]
+
+    ;
+}
