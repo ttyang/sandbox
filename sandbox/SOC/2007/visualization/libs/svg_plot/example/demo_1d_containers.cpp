@@ -5,7 +5,7 @@
 */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A Bristow 2008
+// Copyright Paul A Bristow 2008, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -23,15 +23,15 @@
 /*`First a few includes to use Boost.Plot and various STL containers:
 */
 #include <boost/svg_plot/svg_1d_plot.hpp>
-  using namespace boost::svg;
+  // using namespace boost::svg;
 #include <boost/array.hpp>
   using boost::array;
 #include <vector>
   using std::vector;
 #include <set>
   using std::set; // Automatically sorted - though this is not useful to the plot process.
-  using std::multiset; // At present using multiset, allowing duplicates, plot does not indicate duplicates.
-  // With 2_D data in multimap, duplicate values are usefully displayed.
+  using std::multiset; // At present using std::multiset, allowing duplicates, plot does not indicate duplicates.
+  // With 2_D data in std::multimap, duplicate values are usefully displayed.
 #include <list>
   using std::list;
 #include <deque>
@@ -48,7 +48,7 @@ int main()
 and fictional values are inserted using push_back.
 Since this is a 1-D plot the order of data values is not important.
 */
-  vector<float> values;
+  std::vector<float> values;
   values.push_back(3.1f);
   values.push_back(-5.5f);
   values.push_back(8.7f);
@@ -56,11 +56,13 @@ Since this is a 1-D plot the order of data values is not important.
 
 /*`The constructor initializes a new 1D plot, called `my_plot`, and also sets all the many default values.
 */
-  svg_1d_plot my_plot;
+  
+  using namespace boost::svg;
+  boost::svg::svg_1d_plot my_plot;
 
 /*`Setting (member) functions are fairly self-explanatory:
 Title provides a title at the top for the whole plot,
-and plot adds a (unamed) data series (naming isn't very useful if there is only one data series).
+and plot adds a (unnamed) data series (naming isn't very useful if there is only one data series).
 */
   my_plot.title("vector&lt;float&gt; example");
 /*`
@@ -77,9 +79,9 @@ and plot adds a (unamed) data series (naming isn't very useful if there is only 
   {
 //[demo_1d_containers_3
 /*`If the container is a static array, then it must be filled by assignment:*/
-  array<long double, 4> values = {3.1L,-5.5L, 8.7L, 0.5L};
+  boost::array<long double, 4> values = {3.1L,-5.5L, 8.7L, 0.5L};
 
-  svg_1d_plot my_plot;
+  boost::svg::svg_1d_plot my_plot;
   my_plot.title("array&lt;long double&gt; example");
   my_plot.plot(values);
   my_plot.write("./demo_1d_array_long_double.svg");
@@ -89,14 +91,14 @@ and plot adds a (unamed) data series (naming isn't very useful if there is only 
   {
 //[demo_1d_containers_4
 /*`If the container type is a set, then it can be filled with insert:*/
-  set<double> values;
+  std::set<double> values;
   values.insert(-8.4);
   values.insert(-2.3);
   values.insert(0.1);
   values.insert(5.6);
   values.insert(7.8);
 
-  svg_1d_plot my_plot;
+  boost::svg::svg_1d_plot my_plot;
   my_plot.title("set&lt;double&gt; example");
   my_plot.plot(values);
   my_plot.write("./demo_1d_set_double.svg");
@@ -106,13 +108,13 @@ and plot adds a (unamed) data series (naming isn't very useful if there is only 
   {
 //[demo_1d_containers_5
 /*`If the container type is a list, then it can be filled with push_back or push_front:*/
-  list<double> values;
+  std::list<double> values;
   values.push_back(-8.4);
   values.push_back(-2.3);
   values.push_back(0.1);
   values.push_back(5.6);
   values.push_back(7.8);
-  svg_1d_plot my_plot;
+  boost::svg::svg_1d_plot my_plot;
   my_plot.title("list&lt;double&gt; example");
   my_plot.plot(values);
   my_plot.write("./demo_1d_list_double.svg");
@@ -122,14 +124,14 @@ and plot adds a (unamed) data series (naming isn't very useful if there is only 
   {
 //[demo_1d_containers_6
 /*`If the container type is a deque, then it can be filled with push_back or push_front:*/
-  deque<double> values;
+  std::deque<double> values;
   values.push_front(-8.4);
   values.push_front(-2.3);
   values.push_front(0.1);
   values.push_front(5.6);
   values.push_front(7.8);
 
-  svg_1d_plot my_plot;
+  boost::svg::svg_1d_plot my_plot;
   my_plot.title("deque&lt;double&gt; example");
   my_plot.plot(values);
   my_plot.x_label("X values as doubles");
@@ -137,7 +139,6 @@ and plot adds a (unamed) data series (naming isn't very useful if there is only 
   my_plot.write("./demo_1d_deque_double.svg");
 //] [/demo_1d_containers_6]
   }
-
   return 0;
 } // int main()
 
@@ -148,7 +149,7 @@ Output:
 
 Compiling...
 demo_1d_containers.cpp
-Linking...
+Linking... 
 Embedding manifest...
 Autorun "j:\Cpp\SVG\debug\demo_1d_containers.exe"
 Build Time 0:03

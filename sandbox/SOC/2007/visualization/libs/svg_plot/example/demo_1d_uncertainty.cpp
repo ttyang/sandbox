@@ -57,13 +57,13 @@ the order of data values is not important.
   setUncDefaults(std::cout);
   typedef unc<false> uncun; // Uncertain Uncorrelated (the normal case).
   float NaN = std::numeric_limits<float>::quiet_NaN();
-    vector<uncun> A_times;
+    std::vector<uncun> A_times;
   A_times.push_back(unc<false>(3.1, 0.02F, 8));
   A_times.push_back(uncun(4.2, 0.01F, 14, 0U));
 
   short unsigned int t = UNC_KNOWN | UNC_EXPLICIT| DEG_FREE_EXACT | DEG_FREE_KNOWN;
 
-  vector<unc<false> > B_times;
+  std::vector<unc<false> > B_times;
   B_times.push_back(uncun(2.1, 0.001F, 30, t)); // Value, uncertainty, degrees of freedom and type known.
   // (But use of type is not yet implemented.)
   B_times.push_back(unc<>(5.1, 0.025F, 20, 0U)); // Value, uncertainty, and degrees of freedom known - the usual case.
@@ -74,7 +74,7 @@ the order of data values is not important.
   // So in both cases show all possibly significant digits (usually 15).
   // This is  ugly on a graph, so best to be explicit about uncertainty.
 
-  vector<unc<false> > C_times;
+  std::vector<unc<false> > C_times;
   C_times.push_back(uncun(2.6, 0.1F, 5, 0U));
   C_times.push_back(uncun(5.4, 0.2F, 11, 0U));
 
@@ -87,18 +87,20 @@ the order of data values is not important.
  and also sets all the very many defaults for axes, width, colors, etc.
 */
   svg_1d_plot my_plot;
-/*`A few (member) functions that are set should be fairly self-explanatory:
+/*`A few (member) functions that are set (using concatenation or chaining) should be fairly self-explanatory:
 
-* title provides a title at the top for the whole plot,
-* `legend_on(true)` will mean that titles of data series and markers will display in the legend box.
-* `x_range(-1, 11)` sets the axis limits from -1 to +11 (instead of the default -10 to +10).
-* `background_border_color(blue)` sets just one of the very many other options.
+* .title() provides a title at the top for the whole plot,
+* .`legend_on(true)` will mean that titles of data series and markers will display in the legend box.
+* .`x_range(-1, 11)` sets the axis limits from -1 to +11 (instead of the default -10 to +10).
+* .`background_border_color(blue)` sets just one of the very many other options.
 */
   my_plot.autoscale_check_limits(false); // Default is true.
   my_plot.autoscale_plusminus(2); // default is 3.
   my_plot.confidence(0.01);  // Change alpha from default 0.05 == 95% to 0.01 == 99%.
 
   my_plot
+    .image_x_size(600)
+    .image_y_size(300)
     .plot_window_on(true)
     .background_border_color(blue)
     .plot_border_color(yellow)
@@ -138,7 +140,6 @@ and uncertainty and degrees of freedom if known.
 /*`
 Finally, we can write the SVG to a file of our choice.
 */
-
   std::string svg_file =  (my_plot.legend_on() == true) ?
     "./demo_1d_uncertainty_legend.svg" : "./demo_1d_uncertainty.svg";
 

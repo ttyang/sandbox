@@ -116,6 +116,7 @@ rather than pixels or other arbitrary units.
 the standard.
 * Compliance with the
 [@http://www.w3.org/TR/SVG11/ W3C Scalable Vector Graph standard].
+* Validation using [@http://validator.w3.org/#validate_by_upload W3C Markup Validation Service].
 
 [endsect] [/section:preface Preface]
 

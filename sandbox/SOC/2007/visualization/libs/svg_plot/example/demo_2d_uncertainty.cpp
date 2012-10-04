@@ -30,7 +30,9 @@
 //[demo_2d_uncertainty_1
 
 /*`First we need some includes to use Boost.Plot and C++ Standard Library:
-*/#include <boost/svg_plot/svg_2d_plot.hpp>
+*/
+
+#include <boost/svg_plot/svg_2d_plot.hpp>
 using namespace boost::svg;
 
 #include <boost/svg_plot/show_2d_settings.hpp> // Only needed for showing which settings in use.
@@ -90,11 +92,6 @@ int main()
 
   using boost::svg::detail::operator<<;
 
-  // Check pair for double.
-  pair<double, double> double_pair; // pair of double X and Y.
-  double_pair = make_pair(double(-2.234), double(-8.76));
-  cout << "make_pair(double(-2.234), double(-8.76)) = " << double_pair << endl;
-
   setUncDefaults(std::cout);
 
   try
@@ -107,22 +104,22 @@ and pairs of values and their uncertainty information
 are inserted using push_back. Since this is a 2-D plot
 the order of data values is important.
 */
+  typedef unc<false> uncun; // Uncertain Uncorrelated (the normal case).
+
   using boost::svg::detail::operator<<;
 
   // Check pair for double.
   pair<double, double> double_pair; // double X and Y
   double_pair = make_pair(double(-2.234), double(-8.76));
-  cout << " make_pair(double(-2.234), double(-8.76)) = " << double_pair << endl;
-
-  typedef unc<false> uncun; // Uncertain Uncorrelated (the normal case).
-
+  cout << "make_pair(double(-2.234), double(-8.76)) = " << double_pair << endl;
+  
   uncun u1(1.23, 0.56F, 7); // For an X value.
   cout << "u1 = " << u1 << endl; // u1 = 1.23+-0.056 (7)
   uncun u2(3.45, 0.67F, 9); // For a Y value.
   pair<uncun, uncun > mp1 = make_pair(u1, u2); // XY pair of values.
   cout << mp1 << endl; // 1.23+-0.056 (7), 2.345+-0.067 (9)
 
-  map<uncun , uncun > data1; // Container for XY points.
+  map<uncun, uncun > data1; // Container for XY pair of points.
   data1.insert(mp1); // u1, u2 = 1.23+-0.056 (7), 2.345+-0.067 (9)
   data1.insert(make_pair(uncun(4.1, 0.4F, 7), uncun(3.1, 0.3F, 18))); //
   data1.insert(make_pair(uncun(-2.234, 0.03F, 7), uncun(-8.76, 0.9F, 9)));
@@ -137,7 +134,7 @@ and the other parts of uncun will be undefined!
 Echo the values input:
   */
   cout << data1.size() << " XY data pairs:" << endl;
-  copy(data1.begin(), data1.end(), ostream_iterator<pair<uncun, uncun > >(cout, "\n"));
+  std::copy(data1.begin(), data1.end(), ostream_iterator<pair<uncun, uncun > >(cout, "\n"));
   cout << endl;
 
   svg_2d_plot my_plot;

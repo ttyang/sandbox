@@ -4,10 +4,10 @@
       See auto_1d_containers.cpp for an example autoscaling with multiple data series.
       See also demo_1d_plot.cpp for a wider range of use.
     \author Paul A Bristow
-    \date Feb 2009
+    \date Feb 2009, 2012
 */
 // Copyright Jacob Voytko 2007
-// Copyright Paul A Bristow 2008, 2009
+// Copyright Paul A Bristow 2008, 2009, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -57,13 +57,13 @@
   using std::pair;
 
 #include <boost/svg_plot/detail/auto_axes.hpp>
-  using boost::svg::show; // A single STL container.
-  using boost::svg::show_all; // Multiple STL containers.
-  using boost::svg::range; // Find min and max of a STL container.
-  using boost::svg::range_all;// Find min and max of multipler STL containers.
+  using boost::svg::show; //! A single STL container.
+  using boost::svg::show_all; //! Multiple STL containers.
+  using boost::svg::range_mx; //! Find min and max of a single STL container.
+  using boost::svg::range_all;  //! Find min and max of multiple STL containers.
 //] [/demo_1d_autoscaling_1]
 
-double tol100eps = 1000 * numeric_limits<double>::epsilon(); // suitable tight value.
+double tol100eps = 1000 * numeric_limits<double>::epsilon(); // A suitable value for tight.
 
 int main()
 {
@@ -73,7 +73,7 @@ int main()
   First we create a container and fill with some fictional data, and display the values.
   */
 
-  vector<double> my_data;
+  std::vector<double> my_data;
   // Initialize my_data with some entirely fictional data.
   my_data.push_back(0.2);
   my_data.push_back(1.1); // [1]
@@ -104,7 +104,7 @@ int main()
 //[demo_1d_autoscaling_3
   /*`In a second example, we use a different type of container, a set,
   and use autoscale in a more advanced way.*/
-  multiset<double> my_set;
+  std::multiset<double> my_set;
   // Initialize my_set with some entirely fictional data.
   my_set.insert(1.2);
   my_set.insert(2.3);
@@ -190,4 +190,3 @@ Build Time 0:04
 //] [/demo_1d_autoscaling_output]
 
 */
-

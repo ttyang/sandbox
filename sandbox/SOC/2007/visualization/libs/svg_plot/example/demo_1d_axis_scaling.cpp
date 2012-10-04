@@ -136,7 +136,7 @@ int main()
 //[demo_1d_axis_scaling_4
 
   /*`Is is possible to find the minimum and maximum values in a container using the STL functions min & max
-  or more conveiniently and efficiently with boost::minmax_element:
+  or more conveniently and efficiently with boost::minmax_element:
   */
 
   typedef vector<double>::const_iterator vector_iterator;
@@ -155,7 +155,7 @@ int main()
   double axis_max_value;
   double axis_tick_increment;
   int axis_ticks;
-
+  
   scale_axis(min_value, max_value,
     &axis_min_value, &axis_max_value, &axis_tick_increment, &axis_ticks,
     false, tol100eps, 6); // Display range.
