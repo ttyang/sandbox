@@ -25,6 +25,7 @@
 // template <class T>bool isfinite (T);
 // template <class T>bool isinf (T);
 // template <class T> bool isnan (T);
+#include <boost/svg_plot/detail/auto_axes.hpp>
 #include <boost/quan/unc.hpp>
 // using boost::svg::unc;
 #include <boost/quan/meas.hpp>

@@ -6,7 +6,7 @@
 
 // svg_1d_plot.ipp
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2008, 2009, 2011
+// Copyright Paul A. Bristow 2008, 2009, 2011, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -691,9 +691,9 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& tit
 { /*! Add a data series to the plot (by default, converting to unc doubles), with optional title.
     \code
 std::vector<float> my_data; // my container.
-my_data.pushback(2.f); // Fill container with some data.
-my_data.pushback(3.f);
-my_data.pushback(4.f);
+my_data.push_back(2.f); // Fill container with some data.
+my_data.push_back(3.f);
+my_data.push_back(4.f);
 my_1d_plot.plot(my_data, "All data in my container"); // Plot all data in container.
     \endcode
 
@@ -715,7 +715,7 @@ my_1d_plot.plot(my_data, "All data in my container"); // Plot all data in contai
   return serieses_[serieses_.size() - 1];
 } // plot(const T& container, const std::string& title)
 
-template <class T>  //!  \tparam T floating-point type of the data (T must be convertable to double).
+template <class T>  //!  \tparam T floating-point type of the data (T must be convertible to double).
 svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::string& title)
 { /*! Add a data series to the plot (by default, converting to unc doubles), with optional title.
     \note This version permits a partial range of the container, from begin to end, to be used.
@@ -739,14 +739,14 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
   return serieses_[serieses_.size() - 1]; // Reference to data series just added.
 } // plot
 
-
-//template <typename T, typename U>
+#ifdef _MSC_VER
+template <typename T, typename U>
 /*!
-    \tparam T floating-point type of the data (which must be convertable to double).
+    \tparam T floating-point type of the data (which must be convertible to double).
     \tparam U functor floating-point type (default is @c double_1d_convert).
   */
-//svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& title /* = "" */, U functor/*= double_1d_convert*/)
-//{ //! Add a data series to the plot, with optional title.
+svg_1d_plot_series& svg_1d_plot::plot(const T& container, const std::string& title /* = "" */, U functor/*= double_1d_convert*/)
+{ //! Add a data series to the plot, with optional title.
 /*!
   This version of plot includes a functor, allowing other than just convert data values to double(the default).
   \param container Container for data (for example vector) that contains the data to be added to the plot.
@@ -755,25 +755,26 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
 
 
   \return a reference to data series just added (to make chainable).
-*/
-//  serieses_.push_back(
-//    svg_1d_plot_series(
-//    boost::make_transform_iterator(container.begin(), functor),
-//    boost::make_transform_iterator(container.end(),   functor),
-//    title)
-//  );
-//  return serieses_[serieses_.size() - 1]; // Reference to data series just added.
-//} // plot
+ */
+  serieses_.push_back(
+    svg_1d_plot_series(
+    boost::make_transform_iterator(container.begin(), functor),
+    boost::make_transform_iterator(container.end(),   functor),
+    title)
+  );
+  return serieses_[serieses_.size() - 1]; // Reference to data series just added.
+} // plot
+#endif // _MSC_VER
 
-
-//template <typename T, typename U>
+#ifdef _MSC_VER
+template <typename T, typename U>
    /*!
-      \tparam T floating-point type of the data (which must be convertable to double).
+      \tparam T floating-point type of the data (which must be convertible to double).
       \tparam U functor floating-point type (default is double_1d_convert).
     */
-//svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::string& title /* = ""*/,
-//   U functor /* = double_1d_convert */)
-//{
+svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::string& title /* = ""*/,
+   U functor /* = double_1d_convert */)
+{
   /*! Add a data series to the plot, with optional title. (Version with custom functor, rather than to double).
     \note This version permits a @b partial range, begin to end, of the container to be used.
 
@@ -783,14 +784,15 @@ svg_1d_plot_series& svg_1d_plot::plot(const T& begin, const T& end, const std::s
     \param functor Custom functor.
     \return a reference to data series just added (to make chainable).
   */
-//  serieses_.push_back(
-//    svg_1d_plot_series(
-//      boost::make_transform_iterator(begin, functor),
-//      boost::make_transform_iterator(end,   functor),
-//      title)
-//  );
-//  return serieses_[serieses_.size() - 1]; //!< \return Reference to data series just added.
-//} // plot
+  serieses_.push_back(
+    svg_1d_plot_series(
+      boost::make_transform_iterator(begin, functor),
+      boost::make_transform_iterator(end,   functor),
+      title)
+  );
+  return serieses_[serieses_.size() - 1]; //!< \return Reference to data series just added.
+} // plot
+#endif // _MSC_VER
 
 // End Definitions of svg_plot_series Public Member Functions.
 } // namespace svg

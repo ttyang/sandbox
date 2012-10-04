@@ -58,7 +58,7 @@ namespace boost
   namespace svg
   {
     // Forward declarations.
-    const std::string strip_e0s(std::string s); // Strip unncessary zeros and e and sign.
+    const std::string strip_e0s(std::string s); // Strip unnecessary zeros and e and sign.
     class svg_2d_plot; //! Plot framework.
     class svg_2d_plot_series; //! One series of data to plot.
 
@@ -67,12 +67,11 @@ namespace boost
         \brief Holds a series of 2D data values (points) to be plotted.
         \details Data values are sorted into normal and 'at limits':
           NaN, infinity or too small or too large.\n\n
-          multimap is used rather than vector of pairs because
-          multimap sorts and ensures that lines joining data points
+          std::multimap is used rather than vector of pairs because
+          std::multimap sorts and ensures that lines joining data points
           are unaffected by the order in which data is presented.
          (For 1-D a vector of doubles can be used).
    */
-    friend svg_2d_plot_series;
     friend void draw_straight_lines(const svg_2d_plot_series&);
 
     public:
@@ -95,7 +94,7 @@ namespace boost
         T end, //!< ending iterator into container of data series, end() to finish with the last item.
         std::string title = "" //!< Title of data series.
       );
-      // Function declarations only - definitions may be in .ipp file).
+      // Function declarations only - definitions are in .ipp file).
       // Set functions for the plot series.
       svg_2d_plot_series& fill_color(const svg_color& col_);
       svg_2d_plot_series& stroke_color(const svg_color& col_);
@@ -345,12 +344,12 @@ namespace boost
        See also svg_1d_plot.hpp for 1-D version.
     */
      friend void show_2d_plot_settings(svg_2d_plot&);
-     friend svg_2d_plot_series;
+     friend class svg_2d_plot_series;
      friend class detail::axis_plot_frame<svg_2d_plot>;
      // axis_plot_frame.hpp contains functions common to 1 and 2-D.
 
    // private:
-  public: //temporary for experimental gil
+  public: 
       // Member data names conventionally end with _,
       // for example: border_margin_,
       // and set & get accessor functions are named without _ suffix,
@@ -2293,15 +2292,21 @@ my_plot.background_color(ghostwhite) // Whole image.
       svg_2d_plot& y_values_ioflags(std::ios_base::fmtflags f);
       std::ios_base::fmtflags y_values_ioflags();
 
-      // Versions of plot functions to add data series from a container, all or part.
+      // Versions of plot functions to add data series from a container, all or part,
+      // declarations including defaults for parameters (except containers, of course).
       template <typename T>
       svg_2d_plot_series& plot(const T& container, const std::string& title = "");
+      
       template <typename T, typename U>
-      svg_2d_plot_series& plot(const T& container, const std::string& title = "", U functor = pair_double_2d_convert);
+      svg_2d_plot_series& plot(const T& container, const std::string& title = "",
+        U functor = boost::svg::detail::pair_double_2d_convert() );
+      
       template <typename T>
       svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "");
+      
       template <typename T, typename U>
-      svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "", U functor = pair_double_2d_convert);
+      svg_2d_plot_series& plot(const T& begin, const T& end, const std::string& title = "",
+        U functor = boost::svg::detail::pair_double_2d_convert() );
 
  }; // class svg_2d_plot : public detail::axis_plot_frame<svg_2d_plot>
 
@@ -2766,7 +2771,7 @@ my_plot.x_value_ioflags(ios::dec | ios::scientific).x_value_precision(2);
       { //! Data series using iterator's range to use to calculate autoscaled values.
         scale_axis(begin, end,
         &y_auto_min_value_, &y_auto_max_value_, &y_auto_tick_interval_, &y_auto_ticks_,
-        autoscale_check_limits_, autoscale_plusminus_
+        autoscale_check_limits_, autoscale_plusminus_,
         y_include_zero_, y_tight_, y_min_ticks_, y_steps_);
         y_autoscale_ = true; // Default to use calculated values.
         return *this; //! \return reference to svg_2d_plot to make chainable.
@@ -3223,8 +3228,8 @@ my_plot.plot(data1, "Sqrt(x)");
     */
     serieses_.push_back(
       svg_2d_plot_series(
-      boost::make_transform_iterator(container.begin(), detail::pair_Meas_2d_convert<false>()),
-      boost::make_transform_iterator(container.end(), detail::pair_Meas_2d_convert<false>()),
+      boost::make_transform_iterator(container.begin(), boost::svg::detail::pair_Meas_2d_convert<false>()),
+      boost::make_transform_iterator(container.end(), boost::svg::detail::pair_Meas_2d_convert<false>()),
       title)
     );
     return serieses_[serieses_.size()-1]; //! \return Reference to data series just added to make chainable.
@@ -3241,7 +3246,7 @@ my_plot.plot(data1, "Sqrt(x)");
       boost::make_transform_iterator(container.end(),   functor),
       title)
     );
-    return serieses_[series_.size()-1]; //! \return Reference to data series just added to make chainable.
+    return serieses_[serieses_.size()-1]; //! \return Reference to data series just added to make chainable.
   }
 
   template <typename T>
@@ -3256,13 +3261,19 @@ my_2d_plot.plot(my_data.begin(), my_data.end(), "My container");
 my_2d_plot.plot(&my_data[1], &my_data[], "my_data 1 to 3"); // Add part of data series.
       \endcode
    */
-    serieses_.push_back(
+
+#ifdef _MSC_VER
+    serieses_.push_back
+    (
       svg_2d_plot_series(
-      boost::make_transform_iterator(begin, detail::unc_1d_convert()),
-      boost::make_transform_iterator(end, detail::unc_1d_convert()),
+      boost::make_transform_iterator(begin, boost::svg::detail::unc_1d_convert() ), // Xs
+      boost::make_transform_iterator(end, boost::svg::detail::unc_1d_convert() ), // Ys
       title)
     );
-    return serieses_[series_.size() - 1]; //! \return Reference to data series just added to make chainable.
+     
+#endif // _MSC_VER
+    
+    return serieses_[serieses_.size() - 1]; //! \return Reference to data series just added to make chainable.
   } // plot(const T& begin, const T& end, const std::string& title = "")
 
   template <typename T, typename U>
@@ -3273,17 +3284,17 @@ my_2d_plot.plot(&my_data[1], &my_data[], "my_data 1 to 3"); // Add part of data 
     */
     serieses_.push_back(
       svg_2d_plot_series(
-      boost::make_transform_iterator(container.begin(), functor),
-      boost::make_transform_iterator(container.end(),   functor),
+      boost::make_transform_iterator(begin, functor),
+      boost::make_transform_iterator(end,   functor),
       title)
     );
-    return serieses_[series_.size() - 1]; //! \return Reference to data series just added to make chainable.
+    return serieses_[serieses_.size() - 1]; //! \return Reference to data series just added to make chainable.
   }
 
    svg_2d_plot& svg_2d_plot::write(std::ostream& s_out)
-   { //! Write the SVG image to an ostream.
+   { //! Write the SVG image to an std::ostream.
      update_image();
-     image_.write(s_out); // Use the ostream version of write.
+     image_.write(s_out); // Use the std::ostream version of write.
      return *this; //! \return reference to svg_2d_plot to make chainable.
    }
 

@@ -176,7 +176,7 @@ public:
     typedef std::pair<Meas, unc<correlated> > result_type;
     //!< result type is pair of uncertain values.
 
-    Meas i; //!< Start Meas (uncun + daetime etc) value.
+    Meas i; //!< Start Meas (uncun + datetime etc) value.
 
     void start(Meas i)
     { //!< Set a start value.

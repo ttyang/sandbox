@@ -8,7 +8,7 @@
  */
 
 // Copyright Jacob Voytko 2007
-// Copyright Paul A. Bristow 2008, 2009, 2011
+// Copyright Paul A. Bristow 2008, 2009, 2011, 2012
 
 // Use, modification and distribution are subject to the
 // Boost Software License, Version 1.0.
@@ -141,7 +141,8 @@ class svg_1d_plot : public detail::axis_plot_frame<svg_1d_plot>
   //friend void show_2d_plot_settings(svg_1d_plot&); // Surely not needed?
   friend class detail::axis_plot_frame<svg_1d_plot>;
 
- //protected: // but seems little benefit?
+public:
+  //protected: // but seems little benefit?
   // Member data names conventionally end with _, for example: border_margin_,
   // and set & get accessor functions are named *without* _ suffix,
   // for example: border_margin() & border_margin(int).
@@ -285,12 +286,12 @@ public:
   svg_1d_plot_series& plot(const T& container, const std::string& title = "");
   template <typename T>
   svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "");
-  /*
+ 
   template <typename T, typename U>
-  svg_1d_plot_series& plot(const T& container, const std::string& title = "", U functor = detail::double_1d_convert);
+  svg_1d_plot_series& plot(const T& container, const std::string& title = "", U functor = boost::svg::detail::double_1d_convert());
   template <typename T, typename U>
-  svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "", U functor = detail::double_1d_convert);
-   */
+  svg_1d_plot_series& plot(const T& begin, const T& end, const std::string& title = "", U functor = boost::svg::detail::double_1d_convert());
+  // GCC seems to need functor to have trailing (), but MSVC does not.
 }; // class svg_1d_plot
 
 
