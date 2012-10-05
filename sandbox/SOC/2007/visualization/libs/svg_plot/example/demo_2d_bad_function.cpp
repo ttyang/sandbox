@@ -48,7 +48,7 @@ int main()
   for(double i = 0.; i <= x_max; i += inter)
   { // 
     data_tan[i] = my_tan(i);
-    cout << i << ' '<< data_tan[i] << endl;
+    std::cout << i << ' '<< data_tan[i] << std::endl;
   } // for
 
   svg_2d_plot my_plot;

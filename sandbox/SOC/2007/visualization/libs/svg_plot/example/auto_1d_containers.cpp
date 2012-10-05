@@ -29,7 +29,7 @@
 #include <boost/svg_plot/detail/auto_axes.hpp>
   using boost::svg::show; // A single STL container.
   using boost::svg::show_all; // Multiple STL containers.
-  using boost::svg::range; // Find min and max of a single STL container.
+  //using boost::svg::range; // Find min and max of a single STL container.
   using boost::svg::range_all;// Find min and max of multiple STL containers.
   // Note neither of these check for 'limits' (infinite, NaN) values.
 

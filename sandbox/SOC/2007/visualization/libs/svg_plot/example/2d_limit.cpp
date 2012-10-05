@@ -73,8 +73,8 @@ int main()
 
   my_plot.write("./2d_limit.svg");
 
-  cout << "" << my_plot.limit_color() << endl;
-  cout << "" << my_plot.limit_fill_color() << endl;
+  std::cout << "" << my_plot.limit_color() << std::endl;
+  std::cout << "" << my_plot.limit_fill_color() << std::endl;
 
   return 0;
 } // int main()

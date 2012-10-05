@@ -58,7 +58,7 @@ int main()
     data_cos[i] = my_cos(i);
     data_tan[i] = my_tan(i);
 
-    cout << i << ' '<< data_tan[i] << endl;
+    std::cout << i << ' '<< data_tan[i] << std::endl;
 
   } // for
 
