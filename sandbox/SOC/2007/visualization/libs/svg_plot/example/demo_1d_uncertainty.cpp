@@ -36,14 +36,14 @@
  void boost::svg::show_1d_plot_settings(svg_1d_plot&);
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+ // using std::cout;
+ // using std::endl;
 #include <vector>
-  using std::vector;
+//  using std::vector;
 #include <iterator>
-  using std::ostream_iterator;
+//  using std::ostream_iterator;
 #include <algorithm>
-  using std::copy;
+//  using std::copy;
 //] [/demo_1d_uncertainty_1]
 
 int main()
@@ -79,10 +79,10 @@ the order of data values is not important.
   C_times.push_back(uncun(5.4, 0.2F, 11, 0U));
 
   /*`Echo the values input: */
-  copy(A_times.begin(), A_times.end(), ostream_iterator<uncun>(std::cout, " "));
-  cout << endl;
-  copy(B_times.begin(), B_times.end(), ostream_iterator<uncun>(std::cout, " "));
-  cout << endl;
+  std::copy(A_times.begin(), A_times.end(), std::ostream_iterator<uncun>(std::cout, " "));
+  std::cout << std::endl;
+  std::copy(B_times.begin(), B_times.end(), std::ostream_iterator<uncun>(std::cout, " "));
+  std::cout << std::endl;
  /*`The constructor initializes a new 1D plot, called `my_plot`,
  and also sets all the very many defaults for axes, width, colors, etc.
 */
@@ -145,7 +145,7 @@ Finally, we can write the SVG to a file of our choice.
 
   my_plot.write(svg_file);
 
-  cout <<"Plot written to file " << svg_file << endl;
+  std::cout <<"Plot written to file " << svg_file << std::endl;
   show_1d_plot_settings(my_plot);
 
 //] [/demo_1d_uncertainty_2]
