@@ -7,8 +7,8 @@
   \date 2007
 */
 
-#include "svg_1d_plot.hpp"
-#include "svg_boxplot.hpp"
+#include <boost/svg_plot/svg_1d_plot.hpp>
+#include <boost/svg_plot/svg_boxplot.hpp>
 
 #include <vector>
 #include <cmath>

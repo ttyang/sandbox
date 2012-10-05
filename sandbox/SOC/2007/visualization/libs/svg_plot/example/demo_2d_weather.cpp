@@ -32,7 +32,7 @@ See the source code for various includes to use Boost.Plot, and STL 1D container
 
 This data is read and parsed into STL container(s) with some messy code to deal with missing values,
 indicated by the string "---" in the .csv file, which are replaced by quiet_NaN because the svg_plot
-program assumes that these are used for 'missing' values. 
+program assumes that these are used for 'missing' values.
 
 Missing values are not used for autoscaling, and are shown by a different symbol at the edges of the plot.
 
@@ -42,7 +42,7 @@ Missing values are not used for autoscaling, and are shown by a different symbol
 #include <boost/svg_plot/svg_2d_plot.hpp>
 using namespace boost::svg;
 #include <boost/svg_plot/detail/pair.hpp>
-  using boost::svg::detail::operator<<; // Output pair as, for example: 1.23, 4.56
+//  using boost::svg::detail::operator<<; // Output pair as, for example: 1.23, 4.56
 
 #include <iostream>
  using std::cout;
@@ -142,7 +142,7 @@ int main()
   { // Get all the lines of weather data records.
     getline(fin, line);
     // cout << line << endl; // Show a sample line of weather readings.
-    // no   time          int   in_h   
+    // no   time          int   in_h
     // 1, 28-12-2008 14:10, 30, 57, 17, 68, 4.8, 1025.9, 3.4, 4.8, N, 1006.1, -0.6, 0.2, 0, 2.1, 2.1, 2.1, 2.1, 3, 3
 
     if (line.size() == 0)
@@ -182,7 +182,7 @@ int main()
     int gusty;
 
     istringstream is(line); // Single comma separated line of data, terminated by newline.
-    is >> noskipws; // Noskipws to allow test of space as separator.   
+    is >> noskipws; // Noskipws to allow test of space as separator.
     is >> j;
     if (is.fail() == true)
     {
@@ -300,7 +300,7 @@ int main()
     gusty = getintvalue(s); // Gust Level(Beaufort scale 0 - 12)
 
     // line ends with newline, but this is consumed by getline, so no separator.
-   
+
     //if (diag == true)
     if (is.fail() == true)
     {
@@ -330,7 +330,7 @@ int main()
       cout << "Beaufort scale " << beaufort << endl;
       cout << "gustiness " << gusty << endl;
       is.clear();
-    } 
+    }
 
     if ((j % 1) == 0)
     { // Only chose a sub-set of readings (to avoid too many points merging).
@@ -355,13 +355,13 @@ int main()
 /*` The code below shows plotting just the inside and outside temperatures,
 selecting the range of the axis by a user choice or automatically.
 */
- 
+
 /*` SVG_plot range_all is another mechanism for handling multiple containers
  providing a more convenient way to find the minimum of minimums and maximum of maximums.
 It is especially convenient when there are many containers (of the same type),
 and there may be 'missing' data items.
 */
-    { 
+    {
       svg_2d_plot my_plot; // Construct a 2D plot.
 
       my_plot.x_size(2000)
@@ -389,7 +389,7 @@ and there may be 'missing' data items.
              ;
 
       my_plot.x_label("time (hr)").y_label("temp (&#x00B0;C)"); // Note chaining.
-           
+
       // Add a container of data to the plot, choosing a color.
       my_plot.plot(in_temps, "Inside (&#x00B0;C)").stroke_color(red).shape(none).size(1).bezier_on(true).line_color(red);
       //my_plot.plot(out_temps, "Outside (&#x00B0;C)"); // default is black circle, 5 pixel size, with no fill.

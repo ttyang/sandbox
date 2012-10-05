@@ -32,8 +32,12 @@
 int main()
 {
   cout << "Demo FP compare";
+
 #if defined(__FILE__) && defined(__TIMESTAMP__)
-  cout << "  " << __FILE__ << ' ' << __TIMESTAMP__ << ' '<< _MSC_FULL_VER;
+  cout << "  " << __FILE__ << ' ' << __TIMESTAMP__ ;
+#  ifdef _MSC_FULL_VER
+  cout << ' '<< _MSC_FULL_VER;
+#  endif
 #endif
   cout << boolalpha << endl;
 
