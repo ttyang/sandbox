@@ -6,6 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
 
+//[type_enable_if_example
 #include <boost/utility/enable_if_macros.hpp>
 
 #include <boost/mpl/bool.hpp>
@@ -33,3 +34,4 @@ static_assert( is_arithmetic< double >::value
 static_assert( !is_arithmetic< not_arithmetic_t >::value
              , "not_arithmetic_t incorrectly detected as begin arithmetic."
              );
+//]

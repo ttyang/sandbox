@@ -1,0 +1,22 @@
+#==============================================================================
+#    Copyright (c) 2012 Matt Calabrese
+#
+#   Use, modification and distribution is subject to the Boost Software
+#   License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+#   http://www.boost.org/LICENSE_1_0.txt)
+#==============================================================================
+project boost/enable_if/libs/doc ;
+import boostbook : boostbook ;
+using quickbook ;
+
+path-constant images_location : html ;
+
+boostbook standalone
+    :
+        enable_if.qbk
+    :
+        <xsl:param>toc.section.depth=5
+        <xsl:param>toc.max.depth=5
+        <xsl:param>generate.section.toc.level=5
+    ;
+

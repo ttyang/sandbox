@@ -6,6 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
 
+//[enable_if_expr_example
 #include <boost/utility/enable_if_macros.hpp>
 
 #include <boost/mpl/bool.hpp>
@@ -50,3 +51,4 @@ static_assert
 ( decltype( has_plus_and_minus( has_plus_and_minus_t() ) )::value
 , "has_plus_and_minus_t incorrectly detected as not having plus and minus"
 );
+//]

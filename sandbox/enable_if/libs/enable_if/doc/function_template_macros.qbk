@@ -1,0 +1,135 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Function Template Macros]
+
+[section BOOST_ENABLE_IF]
+
+[heading Synopsis]
+
+ #define BOOST_ENABLE_IF_C( ... )  /* unspecified */
+ #define BOOST_ENABLE_IF( ... )    /* unspecified */
+
+ #define BOOST_DISABLE_IF_C( ... ) /* unspecified */
+ #define BOOST_DISABLE_IF( ... )   /* unspecified */
+
+[heading Usage]
+
+The `BOOST_ENABLE_IF` family of macros are function-style macros that are
+intended to be used inside of a function template argument list as a means to
+enable or disable that template based on a compile-time condition. When using
+`BOOST_ENABLE_IF`, the condition must be a compliant [mpl_integral_constant] and
+when using `BOOST_ENABLE_IF_C` the condition must be a compile-time boolean
+constant expression. `BOOST_DISABLE_IF_C` and `BOOST_DISABLE_IF` behave
+similarly only they disable the template when the condition evaluates to `true`.
+
+[note The condition provided to these macros does not need to be dependent on a
+template argument.]
+
+[heading Example]
+
+[import ../test/enable_if.cpp]
+
+[enable_if_example]
+
+[heading Advanced Example]
+
+One benefit of these macros over [boost_enable_if] are that they are easy to use
+in places that are normally difficult to exploit, such as variadic constructors
+and conversion operators.
+
+[import ../test/constructor_example.cpp]
+
+[enable_if_constructor_example]
+
+[endsect]
+
+[section BOOST_LAZY_ENABLE_IF]
+
+[heading Synopsis]
+
+ #define BOOST_LAZY_ENABLE_IF_C( condition, ... )  /* unspecified */
+ #define BOOST_LAZY_ENABLE_IF( condition, ... )    /* unspecified */
+
+ #define BOOST_LAZY_DISABLE_IF_C( condition, ... ) /* unspecified */
+ #define BOOST_LAZY_DISABLE_IF( condition, ... )   /* unspecified */
+
+[heading Usage]
+
+The `BOOST_LAZY_ENABLE_IF` family of macros are functionally similar to the
+corresponding [BOOST_ENABLE_IF] macros, only they also allow the user to
+introduce one or more named types that are evaluate if and only if the template
+is enabled. This is important when the function's return type, parameters, or
+exception specification need to refer to a type that may produce a compile-time
+error if the condition is not satisfied, or if the process of evaluating the
+type would negatively impact compile-times (in which case, the evaluation should
+be avoided when a different overload is picked). The syntax for specifying
+lazily evaluated types is `( name, definition)`. It is analogous to
+[boost_lazy_enable_if].
+
+[heading Example]
+
+[import ../test/lazy_enable_if.cpp]
+
+[lazy_enable_if_example]
+
+[endsect]
+
+[section BOOST_ENABLE_IF_EXPR]
+
+[heading Synopsis]
+
+ #define BOOST_ENABLE_IF_EXPR( ... ) /* unspecified */
+
+The `BOOST_ENABLE_IF_EXPR` macro is a function-style macro that is intended to
+be used inside of a function template argument list as a means to enable or
+disable that template based on the validity of an expression. When
+using `BOOST_ENABLE_IF_EXPR` you may pass one or more expressions. If you pass a
+single expression, it may be passed as-is. If you pass multiple expressions,
+they need to be represented as a variadic preprocessor sequence (each expression
+must be specified in their own set of parentheses with no comma in between
+them).
+
+[warning If you wish to pass in a single expression that starts with a
+parenthesized subexpression, you need to wrap that entire expression in
+parentheses, otherwise the macro will detect the argument as a variadic sequence
+and treat it as multiple expressions.]
+
+[heading Example]
+
+[import ../test/enable_if_expr_seq.cpp]
+
+[enable_if_expr_example]
+
+[endsect]
+
+[section BOOST_LAZY_ENABLE_IF_EXPR]
+
+[heading Synopsis]
+
+ #define BOOST_LAZY_ENABLE_IF_EXPR( expressions, ... ) /* unspecified */
+
+The `BOOST_LAZY_ENABLE_IF_EXPR` macro is functionally similar to the
+corresponding [BOOST_ENABLE_IF_EXPR] macro, only it also allows the user to
+introduce one or more named types that are evaluate if and only if the template
+is enabled. This is important when the function's return type, parameters, or
+exception specification need to refer to a type that may produce a compile-time
+error if the expression is not valid, or if the process of evaluating the
+type would negatively impact compile-times (in which case, the evaluation should
+be avoided when a different overload is picked). The syntax for specifying
+lazily evaluated types is `( name, definition)`.
+
+[heading Example]
+
+[import ../test/lazy_enable_if_expr_seq.cpp]
+
+[lazy_enable_if_expr_example]
+
+[endsect]
+
+[endsect]

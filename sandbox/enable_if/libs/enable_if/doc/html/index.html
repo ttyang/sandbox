@@ -1,0 +1,112 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Chapter&#160;1.&#160;Enable_If Macros</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Enable_If Macros">
+<link rel="next" href="enable_if_macros/function_template_macros.html" title="Function Template Macros">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav"><a accesskey="n" href="enable_if_macros/function_template_macros.html"><img src="images/next.png" alt="Next"></a></div>
+<div class="chapter">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="enable_if_macros"></a>Chapter&#160;1.&#160;Enable_If Macros</h2></div>
+<div><div class="author"><h3 class="author">
+<span class="firstname">Matt</span> <span class="surname">Calabrese</span>
+</h3></div></div>
+<div><p class="copyright">Copyright &#169; 2012 Matt Calabrese</p></div>
+<div><div class="legalnotice">
+<a name="enable_if_macros.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="index.html#enable_if_macros.preface">Preface</a></span></dt>
+<dt><span class="section"><a href="enable_if_macros/function_template_macros.html">Function Template
+    Macros</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="enable_if_macros/function_template_macros.html#enable_if_macros.function_template_macros.boost_enable_if">BOOST_ENABLE_IF</a></span></dt>
+<dt><span class="section"><a href="enable_if_macros/function_template_macros.html#enable_if_macros.function_template_macros.boost_lazy_enable_if">BOOST_LAZY_ENABLE_IF</a></span></dt>
+<dt><span class="section"><a href="enable_if_macros/function_template_macros.html#enable_if_macros.function_template_macros.boost_enable_if_expr">BOOST_ENABLE_IF_EXPR</a></span></dt>
+<dt><span class="section"><a href="enable_if_macros/function_template_macros.html#enable_if_macros.function_template_macros.boost_lazy_enable_if_expr">BOOST_LAZY_ENABLE_IF_EXPR</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="enable_if_macros/type_template_macros.html">Type Template Macros</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="enable_if_macros/type_template_macros.html#enable_if_macros.type_template_macros.boost_type_enable_if">BOOST_TYPE_ENABLE_IF</a></span></dt>
+<dt><span class="section"><a href="enable_if_macros/type_template_macros.html#enable_if_macros.type_template_macros.boost_type_enable_if_expr">BOOST_TYPE_ENABLE_IF_EXPR</a></span></dt>
+</dl></dd>
+</dl>
+</div>
+<div class="section enable_if_macros_preface">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="enable_if_macros.preface"></a><a class="link" href="index.html#enable_if_macros.preface" title="Preface">Preface</a>
+</h2></div></div></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+        <span class="bold"><strong><span class="emphasis"><em><span class="quote">&#8220;<span class="quote">You managed to cram so many non-C++03
+        things in that macro it's impressive... I think that for those reasons, it's
+        pretty much unusable in real code.</span>&#8221;</span></em></span></strong></span>
+      </p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+        --Mathias Gaunard, Boost Developers Mailing List
+      </p></blockquote></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+        This library is not officially a part of Boost. In order to use it, you
+        <span class="emphasis"><em>must</em></span> have the latest <code class="literal">Boost.Preprocessor</code>
+        implementation from trunk and you must also have the <code class="literal">variadic_macro_data
+        library</code> from the Boost Sandbox.
+      </p></td></tr>
+</table></div>
+<h4>
+<a name="enable_if_macros.preface.h0"></a>
+      <span class="phrase"><a name="enable_if_macros.preface.description"></a></span><a class="link" href="index.html#enable_if_macros.preface.description">Description</a>
+    </h4>
+<p>
+      The <code class="literal">Enable_If Macros</code> library is a collection of preprocessor
+      macros aimed toward enabling and disabling function templates and type template
+      specialization in C++11 through the use of SFINAE. Advantages over <code class="computeroutput"><span class="identifier">std</span><span class="special">::</span><span class="identifier">enable_if</span></code>
+      and <a href="http://www.boost.org/doc/libs/release/libs/utility/enable_if.html" target="_top"><code class="literal">Boost.Enable_If</code></a>
+      are explained throughout the documentation.
+    </p>
+<h4>
+<a name="enable_if_macros.preface.h1"></a>
+      <span class="phrase"><a name="enable_if_macros.preface.advantages_in_brief"></a></span><a class="link" href="index.html#enable_if_macros.preface.advantages_in_brief">Advantages
+      in Brief</a>
+    </h4>
+<div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
+<li class="listitem">
+          Direct support for expression validation.
+        </li>
+<li class="listitem">
+          [Easily] usable in a function template argument list (I.E. for conversion
+          operators).
+        </li>
+<li class="listitem">
+          Work in the expected manner when a provided conditions doesn't depend on
+          a template argument.
+        </li>
+<li class="listitem">
+          Has improved "lazy" forms that allow for the introduction of
+          multiple, named lazy types.
+        </li>
+</ul></div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"><p><small>Last revised: October 04, 2012 at 23:00:05 GMT</small></p></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="enable_if_macros/function_template_macros.html"><img src="images/next.png" alt="Next"></a></div>
+</body>
+</html>

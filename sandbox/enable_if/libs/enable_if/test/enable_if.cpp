@@ -6,6 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
 
+//[enable_if_example
 #include <boost/utility/enable_if_macros.hpp>
 
 #include <boost/mpl/bool.hpp>
@@ -15,8 +16,7 @@
 boost::mpl::false_ is_arithmetic( ... );
 
 template< class T
-        , BOOST_ENABLE_IF
-          ( boost::is_arithmetic< T > )
+        , BOOST_ENABLE_IF( boost::is_arithmetic< T > )
         >
 boost::mpl::true_ is_arithmetic( T );
 
@@ -33,3 +33,4 @@ static_assert( decltype( is_arithmetic( 1. ) )::value
 static_assert( !decltype( is_arithmetic( not_arithmetic_t() ) )::value
              , "not_arithmetic_t incorrectly detected as begin arithmetic."
              );
+//]

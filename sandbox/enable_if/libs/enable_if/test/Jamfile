@@ -18,6 +18,7 @@ project boost_generic_test
 {
     test-suite enable_if_macros :
 
+    [ compile constructor_example.cpp :  :  :  : ]
     [ compile disable_if.cpp :  :  :  : ]
     [ compile disable_if_c.cpp :  :  :  : ]
     [ compile enable_if.cpp :  :  :  : ]

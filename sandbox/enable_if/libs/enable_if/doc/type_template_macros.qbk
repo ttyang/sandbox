@@ -1,0 +1,68 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Type Template Macros]
+
+[section BOOST_TYPE_ENABLE_IF]
+
+[heading Synopsis]
+
+ #define BOOST_TYPE_ENABLE_IF_C( ... )  /* unspecified */
+ #define BOOST_TYPE_ENABLE_IF( ... )    /* unspecified */
+
+ #define BOOST_TYPE_DISABLE_IF_C( ... ) /* unspecified */
+ #define BOOST_TYPE_DISABLE_IF( ... )   /* unspecified */
+
+[heading Usage]
+
+The `BOOST_TYPE_ENABLE_IF` family of macros are function-style macros that are
+intended to be used inside of a type template specialization pattern list as a
+means to enable or disable that template based on a compile-time condition. When
+using `BOOST_TYPE_ENABLE_IF`, the condition must be a compliant
+[mpl_integral_constant] and when using `BOOST_TYPE_ENABLE_IF_C` the condition
+must be a compile-time boolean constant expression. `BOOST_TYPE_DISABLE_IF_C`
+and `BOOST_TYPE_DISABLE_IF` behave similarly only they disable the template
+specialization when the condition evaluates to `true`.
+
+[heading Example]
+
+[import ../test/type_enable_if.cpp]
+
+[type_enable_if_example]
+
+[endsect]
+
+[section BOOST_TYPE_ENABLE_IF_EXPR]
+
+[heading Synopsis]
+
+ #define BOOST_TYPE_ENABLE_IF_EXPR( ... ) /* unspecified */
+
+The `BOOST_TYPE_ENABLE_IF_EXPR` macro is a function-style macro that is
+intended to be used inside of a type template specialization pattern list as a
+means to enable or disable that specialization based on the validity of an
+expression. When using `BOOST_TYPE_ENABLE_IF_EXPR` you may pass one or more
+expressions. If you pass a single expression, it may be passed as-is. If you
+pass multiple expressions, they need to be represented as a variadic
+preprocessor sequence (each expression must be specified in their own set of
+parentheses with no comma in between them).
+
+[warning If you wish to pass in a single expression that starts with a
+parenthesized subexpression, you need to wrap that entire expression in
+parentheses, otherwise the macro will detect the argument as a variadic sequence
+and treat it as multiple expressions.]
+
+[heading Example]
+
+[import ../test/type_enable_if_expr_seq.cpp]
+
+[type_enable_if_expr_example]
+
+[endsect]
+
+[endsect]

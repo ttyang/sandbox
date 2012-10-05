@@ -1,0 +1,35 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Preface]
+
+[:[*['["You managed to cram so many non-C++03 things in that macro it's
+impressive... I think that for those reasons, it's pretty much unusable in real
+code.]]]]
+[:--Mathias Gaunard, Boost Developers Mailing List]
+
+[note This library is not officially a part of Boost. In order to use it, you
+/must/ have the latest =Boost.Preprocessor= implementation from trunk and you
+must also have the =variadic_macro_data library= from the Boost Sandbox.]
+
+[heading Description]
+
+The =Enable_If Macros= library is a collection of preprocessor macros aimed
+toward enabling and disabling function templates and type template
+specialization in C++11 through the use of SFINAE. Advantages over
+`std::enable_if` and [boost_enable_if] are explained throughout the
+documentation.
+
+[heading Advantages in Brief]
+
+* Direct support for expression validation.
+* [Easily] usable in a function template argument list (I.E. for conversion operators).
+* Work in the expected manner when a provided conditions doesn't depend on a template argument.
+* Has improved "lazy" forms that allow for the introduction of multiple, named lazy types.
+
+[endsect]

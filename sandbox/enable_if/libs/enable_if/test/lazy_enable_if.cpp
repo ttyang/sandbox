@@ -6,6 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
 
+//[lazy_enable_if_example
 #include <boost/utility/enable_if_macros.hpp>
 
 #include <boost/mpl/bool.hpp>
@@ -47,3 +48,4 @@ static_assert( decltype( is_arithmetic( 1. ) )::value
 static_assert( !decltype( is_arithmetic( not_arithmetic_t() ) )::value
              , "not_arithmetic_t incorrectly detected as begin arithmetic."
              );
+//]
