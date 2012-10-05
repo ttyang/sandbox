@@ -35,25 +35,25 @@
 #include <limits>
   using std::numeric_limits;
 
-#include <boost\math\special_functions\fpclassify.hpp>
+#include <boost/math/special_functions.hpp>
   using boost::math::isfinite;
 
   // Getting the max and min of x and y data points.
-template <class T> // T an STL container: array, vector ...
-void s(const T& container, // Container Data series to plot - entire container.
+template <typename T> // T an STL container: array, vector ...
+void s(T& container, // Container Data series to plot - entire container.
                // (not necessarily ordered, so will find min and max).
                double* x_min,  double* x_max,
                double* y_min,  double* y_max
                )
 {
-  typedef T::const_iterator iter;
+  typedef typename T::const_iterator iter;
   std::pair<iter, iter> result = boost::minmax_element(container.begin(), container.end());
   // minmax_element is efficient for maps because can use knowledge of being sorted,
   // BUT only if it can be assumed that no values are 'at limits',
   // infinity, NaN, max_value, min_value, denorm_min.
   // Otherwise it is necessary to inspect all values individually.
-  pair<const double, double> px = *result.first;
-  pair<const double, double> py = *result.second;
+  std::pair<const double, double> px = *result.first;
+  std::pair<const double, double> py = *result.second;
   *x_min = px.first;
   *x_max = py.first;
   *y_min = px.second;
@@ -70,7 +70,7 @@ int main()
   /*`This example uses a single map to demonstrate autoscaling.
   We create a map to hold our data series.
   */
-  map<const double, double> my_map;
+  std::map<const double, double> my_map;
   /*`
   Inserting some fictional values also sorts the data.
   The index value in [] is the x value.
@@ -81,9 +81,9 @@ int main()
 
 /*`Also include some 'at limits' values that might confuse autoscaling.
 */
-  my_map[99.99] = numeric_limits<double>::quiet_NaN();
-  my_map[999.9] = numeric_limits<double>::infinity();
-  my_map[999.] = +numeric_limits<double>::infinity();
+  my_map[99.99] = std::numeric_limits<double>::quiet_NaN();
+  my_map[999.9] = std::numeric_limits<double>::infinity();
+  my_map[999.] = +std::numeric_limits<double>::infinity();
 
   /*`Next a 2D plot is created using defaults for the very many possible settings.
   */
