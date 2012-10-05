@@ -20,7 +20,7 @@
 
 [heading Usage]
 
-The `BOOST_ENABLE_IF` family of macros are function-style macros that are
+The `BOOST_ENABLE_IF` family of macros is function-style macros that are
 intended to be used inside of a function template argument list as a means to
 enable or disable that template based on a compile-time condition. When using
 `BOOST_ENABLE_IF`, the condition must be a compliant [mpl_integral_constant] and
@@ -39,7 +39,7 @@ template argument.]
 
 [heading Advanced Example]
 
-One benefit of these macros over [boost_enable_if] are that they are easy to use
+One benefit of these macros over [boost_enable_if] is that they are easy to use
 in places that are normally difficult to exploit, such as variadic constructors
 and conversion operators.
 
@@ -61,7 +61,7 @@ and conversion operators.
 
 [heading Usage]
 
-The `BOOST_LAZY_ENABLE_IF` family of macros are functionally similar to the
+The `BOOST_LAZY_ENABLE_IF` family of macros is functionally similar to the
 corresponding [BOOST_ENABLE_IF] macros, only they also allow the user to
 introduce one or more named types that are evaluate if and only if the template
 is enabled. This is important when the function's return type, parameters, or

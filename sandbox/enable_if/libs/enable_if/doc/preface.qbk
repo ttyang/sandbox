@@ -21,7 +21,7 @@ must also have the =variadic_macro_data library= from the Boost Sandbox.]
 
 The =Enable_If Macros= library is a collection of preprocessor macros aimed
 toward enabling and disabling function templates and type template
-specialization in C++11 through the use of SFINAE.
+specializations in C++11 through the use of SFINAE.
 
 [heading Advantages Over std::enable_if and Boost.Enable_If in Brief]
 
