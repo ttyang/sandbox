@@ -20,13 +20,13 @@
 
 [heading Usage]
 
-The `BOOST_ENABLE_IF` family of macros is function-style macros that are
-intended to be used inside of a function template argument list as a means to
-enable or disable that template based on a compile-time condition. When using
-`BOOST_ENABLE_IF`, the condition must be a compliant [mpl_integral_constant] and
-when using `BOOST_ENABLE_IF_C` the condition must be a compile-time boolean
-constant expression. `BOOST_DISABLE_IF_C` and `BOOST_DISABLE_IF` behave
-similarly only they disable the template when the condition evaluates to `true`.
+The `BOOST_ENABLE_IF` macros are function-style macros that are intended to be
+used inside of a function template argument list as a means to enable or disable
+that template based on a compile-time condition. When using `BOOST_ENABLE_IF`,
+the condition must be a compliant [mpl_integral_constant] and when using
+`BOOST_ENABLE_IF_C` the condition must be a compile-time boolean constant
+expression. `BOOST_DISABLE_IF_C` and `BOOST_DISABLE_IF` behave similarly only
+they disable the template when the condition evaluates to `true`.
 
 [note The condition provided to these macros does not need to be dependent on a
 template argument.]
@@ -61,16 +61,15 @@ and conversion operators.
 
 [heading Usage]
 
-The `BOOST_LAZY_ENABLE_IF` family of macros is functionally similar to the
-corresponding [BOOST_ENABLE_IF] macros, only they also allow the user to
-introduce one or more named types that are evaluate if and only if the template
-is enabled. This is important when the function's return type, parameters, or
-exception specification need to refer to a type that may produce a compile-time
-error if the condition is not satisfied, or if the process of evaluating the
-type would negatively impact compile-times (in which case, the evaluation should
-be avoided when a different overload is picked). The syntax for specifying
-lazily evaluated types is `( name, definition)`. It is analogous to
-[boost_lazy_enable_if].
+The `BOOST_LAZY_ENABLE_IF` macros are functionally similar to the corresponding
+[BOOST_ENABLE_IF] macros, only they also allow the user to introduce one or more
+named types that are evaluate if and only if the template is enabled. This is
+important when the function's return type, parameters, or exception
+specification need to refer to a type that may produce a compile-time error if
+the condition is not satisfied, or if the process of evaluating the type would
+negatively impact compile-times (in which case, the evaluation should be avoided
+when a different overload is picked). The syntax for specifying lazily evaluated
+types is `( name, definition)`. It is analogous to [boost_lazy_enable_if].
 
 [heading Example]
 

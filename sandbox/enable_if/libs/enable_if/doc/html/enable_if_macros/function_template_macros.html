@@ -43,10 +43,10 @@
         <span class="phrase"><a name="enable_if_macros.function_template_macros.boost_enable_if.usage"></a></span><a class="link" href="function_template_macros.html#enable_if_macros.function_template_macros.boost_enable_if.usage">Usage</a>
       </h5>
 <p>
-        The <code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF</span></code> family
-        of macros is function-style macros that are intended to be used inside of
-        a function template argument list as a means to enable or disable that template
-        based on a compile-time condition. When using <code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF</span></code>,
+        The <code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF</span></code> macros
+        are function-style macros that are intended to be used inside of a function
+        template argument list as a means to enable or disable that template based
+        on a compile-time condition. When using <code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF</span></code>,
         the condition must be a compliant <a href="http://www.boost.org/doc/libs/release/libs/mpl/doc/refmanual/integral-constant.html" target="_top"><code class="literal">Boost.MPL</code>
         Integral Constant</a> and when using <code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF_C</span></code>
         the condition must be a compile-time boolean constant expression. <code class="computeroutput"><span class="identifier">BOOST_DISABLE_IF_C</span></code> and <code class="computeroutput"><span class="identifier">BOOST_DISABLE_IF</span></code>
@@ -136,7 +136,7 @@
       </h5>
 <p>
         The <code class="computeroutput"><span class="identifier">BOOST_LAZY_ENABLE_IF</span></code>
-        family of macros is functionally similar to the corresponding <a class="link" href="function_template_macros.html#enable_if_macros.function_template_macros.boost_enable_if" title="BOOST_ENABLE_IF"><code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF</span></code></a> macros, only they
+        macros are functionally similar to the corresponding <a class="link" href="function_template_macros.html#enable_if_macros.function_template_macros.boost_enable_if" title="BOOST_ENABLE_IF"><code class="computeroutput"><span class="identifier">BOOST_ENABLE_IF</span></code></a> macros, only they
         also allow the user to introduce one or more named types that are evaluate
         if and only if the template is enabled. This is important when the function's
         return type, parameters, or exception specification need to refer to a type
