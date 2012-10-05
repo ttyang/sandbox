@@ -80,7 +80,7 @@ to provide a wide range of greek and math symbols.
 #include <boost/svg_plot/svg_2d_plot.hpp>
 using namespace boost::svg;
 #include <boost/svg_plot/detail/pair.hpp>
-  using boost::svg::detail::operator<<; // Output pair as, for example: 1.23, 4.56
+//  using boost::svg::detail::operator<<; // Output pair as, for example: 1.23, 4.56
 
 #include <iostream>
  using std::cout;
