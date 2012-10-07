@@ -12,7 +12,7 @@
 #include <boost/type_traits/is_arithmetic.hpp>
 #include <utility>
 
-template< class T, class = void >
+template< class T, BOOST_DECLARE_ENABLE_IF_PARAM() >
 struct is_arithmetic : boost::mpl::false_ {};
 
 template< class T >
@@ -31,5 +31,5 @@ static_assert( is_arithmetic< double >::value
              );
 
 static_assert( !is_arithmetic< not_arithmetic_t >::value
-             , "not_arithmetic_t incorrectly detected as begin arithmetic."
+             , "not_arithmetic_t incorrectly detected as beingarithmetic."
              );

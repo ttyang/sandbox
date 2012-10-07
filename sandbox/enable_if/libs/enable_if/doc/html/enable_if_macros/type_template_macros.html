@@ -59,7 +59,7 @@
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">type_traits</span><span class="special">/</span><span class="identifier">is_arithmetic</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">utility</span><span class="special">&gt;</span>
 
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">=</span> <span class="keyword">void</span> <span class="special">&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">BOOST_DECLARE_ENABLE_IF_PARAM</span><span class="special">()</span> <span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">is_arithmetic</span> <span class="special">:</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span> <span class="special">{};</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">&gt;</span>
@@ -78,7 +78,7 @@
              <span class="special">);</span>
 
 <span class="keyword">static_assert</span><span class="special">(</span> <span class="special">!</span><span class="identifier">is_arithmetic</span><span class="special">&lt;</span> <span class="identifier">not_arithmetic_t</span> <span class="special">&gt;::</span><span class="identifier">value</span>
-             <span class="special">,</span> <span class="string">"not_arithmetic_t incorrectly detected as begin arithmetic."</span>
+             <span class="special">,</span> <span class="string">"not_arithmetic_t incorrectly detected as beingarithmetic."</span>
              <span class="special">);</span>
 </pre>
 </div>
@@ -123,7 +123,7 @@
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">mpl</span><span class="special">/</span><span class="keyword">bool</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
 <span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">utility</span><span class="special">&gt;</span>
 
-<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">class</span> <span class="special">=</span> <span class="keyword">void</span> <span class="special">&gt;</span>
+<span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">BOOST_DECLARE_ENABLE_IF_PARAM</span><span class="special">()</span> <span class="special">&gt;</span>
 <span class="keyword">struct</span> <span class="identifier">has_plus_and_minus</span> <span class="special">:</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">mpl</span><span class="special">::</span><span class="identifier">false_</span> <span class="special">{};</span>
 
 <span class="keyword">template</span><span class="special">&lt;</span> <span class="keyword">class</span> <span class="identifier">T</span> <span class="special">&gt;</span>

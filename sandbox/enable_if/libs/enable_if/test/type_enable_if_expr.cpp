@@ -11,7 +11,7 @@
 #include <boost/mpl/bool.hpp>
 #include <utility>
 
-template< class T, class = void >
+template< class T, BOOST_DECLARE_ENABLE_IF_PARAM() >
 struct has_plus : boost::mpl::false_ {};
 
 template< class T >

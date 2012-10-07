@@ -53,11 +53,13 @@
 
 namespace boost { namespace enable_if_detail {
 
-template< class Dummy, bool C >
-struct enable_if_c_impl : boost::enable_if_c< C, int > {};
+enum enabler_type { enabler_type_enabler };
 
 template< class Dummy, bool C >
-struct disable_if_c_impl : boost::enable_if_c< !C, int > {};
+struct enable_if_c_impl : boost::enable_if_c< C, enabler_type > {};
+
+template< class Dummy, bool C >
+struct disable_if_c_impl : boost::enable_if_c< !C, enabler_type > {};
 
 template< class Dummy, bool C, class LazyType >
 struct lazy_enable_if_c_impl : boost::enable_if_c< C, LazyType > {};
@@ -66,10 +68,10 @@ template< class Dummy, bool C, class LazyType >
 struct lazy_disable_if_c_impl : boost::enable_if_c< !C, LazyType > {};
 
 template< class Dummy, class C >
-struct enable_if_impl : boost::enable_if_c< C::value, int > {};
+struct enable_if_impl : boost::enable_if_c< C::value, enabler_type > {};
 
 template< class Dummy, class C >
-struct disable_if_impl : boost::enable_if_c< !C::value, int > {};
+struct disable_if_impl : boost::enable_if_c< !C::value, enabler_type > {};
 
 template< class Dummy, class C, class LazyType >
 struct lazy_enable_if_impl : boost::enable_if_c< C::value, LazyType > {};
@@ -77,13 +79,18 @@ struct lazy_enable_if_impl : boost::enable_if_c< C::value, LazyType > {};
 template< class Dummy, class C, class LazyType >
 struct lazy_disable_if_impl : boost::enable_if_c< !C::value, LazyType > {};
 
-template< class... T > struct always_int { typedef int type; };
+template< class... T >
+struct always_enabler_type { typedef enabler_type type; };
 
 template< class... T > struct always_true { static bool const value = true; };
 
 template< class... T > struct always_void { typedef void type; };
 
 } }
+
+#define BOOST_DECLARE_ENABLE_IF_PARAM_NO_DEFAULT() class
+
+#define BOOST_DECLARE_ENABLE_IF_PARAM() class = void
 
 #define BOOST_TYPE_ENABLE_IF( ... )                                            \
 typename ::boost::enable_if_c< __VA_ARGS__::value >::type
@@ -98,7 +105,8 @@ typename ::boost::enable_if_c< !__VA_ARGS__::value >::type
 typename ::boost::enable_if_c< !__VA_ARGS__ >::type
 
 #define BOOST_ENABLE_IF_C( ... )                                               \
-BOOST_ENABLE_IF_DEFINITION_C( __VA_ARGS__ ) = 0
+BOOST_ENABLE_IF_DEFINITION_C( __VA_ARGS__ )                                    \
+= ::boost::enable_if_detail::enabler_type_enabler
 
 #define BOOST_ENABLE_IF_DEFINITION_C( ... )                                    \
 class BoostDetailEnableIfDependentType = void,                                 \
@@ -108,7 +116,8 @@ typename ::boost::enable_if_detail::enable_if_c_impl                           \
 >::type
 
 #define BOOST_DISABLE_IF_C( ... )                                              \
-BOOST_DISABLE_IF_DEFINITION_C( __VA_ARGS__ ) = 0
+BOOST_DISABLE_IF_DEFINITION_C( __VA_ARGS__ )                                   \
+= ::boost::enable_if_detail::enabler_type_enabler
 
 #define BOOST_DISABLE_IF_DEFINITION_C( ... )                                   \
 class BoostDetailDisableIfDependentType = void,                                \
@@ -122,14 +131,14 @@ class BoostDetailEnableIfDependentType = void,                                 \
 typename ::boost::enable_if_detail::enable_if_impl                             \
 < BoostDetailEnableIfDependentType                                             \
 , __VA_ARGS__                                                                  \
->::type = 0
+>::type = ::boost::enable_if_detail::enabler_type_enabler
 
 #define BOOST_DISABLE_IF( ... )                                                \
 class BoostDetailDisableIfDependentType = void,                                \
 typename ::boost::enable_if_detail::disable_if_impl                            \
 < BoostDetailDisableIfDependentType                                            \
 , __VA_ARGS__                                                                  \
->::type = 0
+>::type = ::boost::enable_if_detail::enabler_type_enabler
 
 #define BOOST_DISABLE() BOOST_DISABLE_IF_C( true )
 
@@ -144,15 +153,16 @@ BOOST_PP_IIF( BOOST_VMD_IS_BEGIN_PARENS( __VA_ARGS__ )                         \
             )( __VA_ARGS__ )
 
 #define BOOST_ENABLE_IF_EXPR_IMPL_NO_PAREN( ... )                              \
-typename ::boost::enable_if_detail::always_int                                 \
-< decltype( __VA_ARGS__ ) >::type = 0
+typename ::boost::enable_if_detail::always_enabler_type                        \
+< decltype( __VA_ARGS__ ) >::type                                              \
+= ::boost::enable_if_detail::enabler_type_enabler
 
 #define BOOST_ENABLE_IF_EXPR_IMPL_WITH_PAREN( ... )                            \
-typename ::boost::enable_if_detail::always_int                                 \
+typename ::boost::enable_if_detail::always_enabler_type                        \
 < void BOOST_PP_SEQ_FOR_EACH( BOOST_ENABLE_IF_EXPR_SEQ_MACRO, ~                \
                             , BOOST_PP_VARIADIC_SEQ_TO_SEQ( __VA_ARGS__ )      \
                             )                                                  \
->::type = 0
+>::type = ::boost::enable_if_detail::enabler_type_enabler
 
 #define BOOST_ENABLE_IF_EXPR_SEQ_MACRO( r, data, elem ) , decltype elem
 
@@ -163,8 +173,9 @@ BOOST_PP_IIF( BOOST_VMD_IS_BEGIN_PARENS( expressions )                         \
             )( expressions, __VA_ARGS__ )
 
 #define BOOST_LAZY_ENABLE_IF_EXPR_IMPL_NO_PAREN( expression, ... )             \
-typename ::boost::enable_if_detail::always_int                                 \
-< decltype( expression ) >::type = 0                                           \
+typename ::boost::enable_if_detail::always_enabler_type                        \
+< decltype( expression ) >::type                                               \
+= ::boost::enable_if_detail::enabler_type_enabler                              \
 BOOST_PP_SEQ_FOR_EACH                                                          \
 ( BOOST_LAZY_ENABLE_IF_EXPR_DETAIL_MACRO                                       \
 , ::boost::enable_if_detail::always_true< decltype( expression ) >::value      \
@@ -172,11 +183,11 @@ BOOST_PP_SEQ_FOR_EACH                                                          \
 )
 
 #define BOOST_LAZY_ENABLE_IF_EXPR_IMPL_WITH_PAREN( expressions, ... )          \
-typename ::boost::enable_if_detail::always_int                                 \
+typename ::boost::enable_if_detail::always_enabler_type                        \
 < void BOOST_PP_SEQ_FOR_EACH( BOOST_ENABLE_IF_EXPR_SEQ_MACRO, ~                \
                             , BOOST_PP_VARIADIC_SEQ_TO_SEQ( expressions )      \
                             )                                                  \
->::type = 0                                                                    \
+>::type = ::boost::enable_if_detail::enabler_type_enabler                      \
 BOOST_PP_SEQ_FOR_EACH                                                          \
 ( BOOST_LAZY_ENABLE_IF_EXPR_DETAIL_MACRO                                       \
 , ( ::boost::enable_if_detail::always_true                                     \
@@ -208,7 +219,7 @@ class BoostDetailEnableIfDependentType = void,                                 \
 typename ::boost::enable_if_detail::enable_if_c_impl                           \
 < BoostDetailEnableIfDependentType                                             \
 , ( condition )                                                                \
->::type = 0                                                                    \
+>::type = ::boost::enable_if_detail::enabler_type_enabler                      \
 BOOST_PP_SEQ_FOR_EACH                                                          \
 ( BOOST_LAZY_ENABLE_IF_C_DETAIL_MACRO, ( condition )                           \
 , BOOST_PP_VARIADIC_TO_SEQ( __VA_ARGS__ )                                      \
@@ -227,7 +238,7 @@ class BoostDetailEnableIfDependentType = void,                                 \
 typename ::boost::enable_if_detail::enable_if_impl                             \
 < BoostDetailEnableIfDependentType                                             \
 , BOOST_DETAIL_REMOVE_PARENTHESES_IF_WRAPPED( meta_value_in_parentheses )      \
->::type = 0                                                                    \
+>::type = ::boost::enable_if_detail::enabler_type_enabler                      \
 BOOST_PP_SEQ_FOR_EACH                                                          \
 ( BOOST_LAZY_ENABLE_IF_DETAIL_MACRO, meta_value_in_parentheses                 \
 , BOOST_PP_VARIADIC_TO_SEQ( __VA_ARGS__ )                                      \
@@ -246,7 +257,7 @@ class BoostDetailEnableIfDependentType = void,                                 \
 typename ::boost::enable_if_detail::disable_if_c_impl                          \
 < BoostDetailEnableIfDependentType                                             \
 , ( condition )                                                                \
->::type = 0                                                                    \
+>::type = ::boost::enable_if_detail::enabler_type_enabler                      \
 BOOST_PP_SEQ_FOR_EACH                                                          \
 ( BOOST_LAZY_DISABLE_IF_C_DETAIL_MACRO, ( condition )                          \
 , BOOST_PP_VARIADIC_TO_SEQ( __VA_ARGS__ )                                      \
@@ -265,7 +276,7 @@ class BoostDetailEnableIfDependentType = void,                                 \
 typename ::boost::enable_if_detail::disable_if_impl                            \
 < BoostDetailEnableIfDependentType                                             \
 , BOOST_DETAIL_REMOVE_PARENTHESES_IF_WRAPPED( meta_value_in_parentheses )      \
->::type = 0                                                                    \
+>::type = ::boost::enable_if_detail::enabler_type_enabler                      \
 BOOST_PP_SEQ_FOR_EACH                                                          \
 ( BOOST_LAZY_DISABLE_IF_DETAIL_MACRO, meta_value_in_parentheses                \
 , BOOST_PP_VARIADIC_TO_SEQ( __VA_ARGS__ )                                      \
