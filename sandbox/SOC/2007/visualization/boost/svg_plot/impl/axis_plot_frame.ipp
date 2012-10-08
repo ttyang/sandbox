@@ -46,7 +46,7 @@ namespace boost
           }
 
           std::string sv(double v, const value_style& sty, bool);
-          
+
           template <class Derived>
           void axis_plot_frame<Derived>::clear_background()
           { //! Clear the whole image background layer of the SVG plot.
@@ -1131,7 +1131,7 @@ namespace boost
                   xu +=  ux.std_dev();
                 }
                 transform_x(xu); // To SVG coordinates.
-                double x_radius = abs(xu - x);
+                double x_radius = std::abs<double>(xu - x);
                 if (x_radius <= 0.)
                 { // Make sure something is visible.
                   x_radius = 1.; // Or size?
@@ -1144,7 +1144,7 @@ namespace boost
                 }
 
                 transform_y(yu);
-                double y_radius = abs(yu - y);
+                double y_radius = std::abs<double>(yu - y);
                 if (y_radius <= 0.)
                 { // Make sure something is visible.
                   y_radius = 1.;
@@ -2122,7 +2122,7 @@ namespace boost
           }
 
           template <class Derived>
-          Derived& axis_plot_frame<Derived>::x_value_ioflags(int flags)
+          Derived& axis_plot_frame<Derived>::x_value_ioflags(std::ios_base::fmtflags flags)
           { /*! Set iostream std::ios::fmtflags for X value label (default decimal == 0X201).
               Mainly useful for changing to scientific, fixed or hexadecimal format.
               For example: .x_value_ioflags(std::ios::dec | std::ios::scientific)
@@ -2132,7 +2132,7 @@ namespace boost
           }
 
           template <class Derived>
-          int axis_plot_frame<Derived>::x_value_ioflags()
+          std::ios_base::fmtflags axis_plot_frame<Derived>::x_value_ioflags()
           { //! \return  stream ioflags for control of format of X value labels.
             return derived().x_ticks_.value_ioflags_;
           }
@@ -2162,7 +2162,7 @@ namespace boost
               Unicode symbols are at http://unicode.org/charts/symbols.html .
             */
             // Plot title.  TODO
-            // new text parent code pushback
+            // new text parent code push_back
             // effectively concatenates with any existing title.
             // So clear the existing string first but doesn't work,
             // so need to clear the whole g_element.
@@ -3755,8 +3755,8 @@ namespace boost
               throw std::runtime_error(message.str());
               //throw std::runtime_error("X range: max <= min!");
             }
-            if( (abs(max_x - min_x) < std::numeric_limits<double>::epsilon() * 1000 * abs(max_x))
-              || (abs(max_x - min_x) < std::numeric_limits<double>::epsilon() * 1000 * abs(min_x))
+            if( (std::abs<double>(max_x - min_x) < std::numeric_limits<double>::epsilon() * 1000 * std::abs<double>(max_x))
+              || (std::abs<double>(max_x - min_x) < std::numeric_limits<double>::epsilon() * 1000 * std::abs<double>(min_x))
               )
             { // Range too small to display.
               throw std::runtime_error("X range too small!" );

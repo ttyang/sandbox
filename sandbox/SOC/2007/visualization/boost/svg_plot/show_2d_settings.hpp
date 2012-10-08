@@ -323,7 +323,7 @@ void show_2d_plot_settings(svg_2d_plot& plot)
 
   std::cout << "data lines width " << plot.data_lines_width() << std::endl;
 
-  std::cout.flags(iostate); // Restore saved iostate.
+  std::cout.flags(iostate); // Restore saved format flags.
 } // void show_plot_settings(svg_2d_plot& plot)
 
 } // svg

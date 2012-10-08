@@ -212,14 +212,14 @@ namespace boost
               If the range of labels is very small, then more digits will be essential.
             */
           int x_value_precision(); //!< \return  precision of X tick label values in decimal digits
-          Derived& x_value_ioflags(int flags); /*!< Set iostream std::ios::fmtflags for X value label (default decimal == 0X201).
+          Derived& x_value_ioflags(std::ios_base::fmtflags flags); /*!< Set iostream std::ios::fmtflags for X value label (default decimal == 0X201).
               Mainly useful for changing to scientific, fixed or hexadecimal format.
               For example:
               \code
                  myplot.x_value_ioflags(std::ios::dec | std::ios::scientific)
               \endcode
             */
-          int x_value_ioflags(); //!< \return  stream std::ios::fmtflags for control of format of X value labels.
+          std::ios_base::fmtflags x_value_ioflags(); //!< \return  stream std::ios::fmtflags for control of format of X value labels.
           Derived& x_labels_strip_e0s(bool cmd); //!< Set if to strip redundant zeros, signs and exponents, for example, reducing "1.2e+000" to "1.2"
             //! This markedly reduces visual clutter, and is the default.
           bool y_labels_strip_e0s(); //!< \return  if to strip redundant zeros, signs and exponents, for example, reducing "1.2e+000" to "1.2"
@@ -609,7 +609,7 @@ namespace boost
 
         // class axis_plot_frame Member function Definitions (for .ipp file):
 
-        
+
           template <class Derived>/*! \tparam Derived plot class, svg_1d_plot or svg_2d_plot or svg_boxplot. */
           template <class T> /*! \tparam T an STL container: array, vector, list, map ...  */
           Derived& axis_plot_frame<Derived>::x_autoscale(const T& begin, const T& end);
@@ -661,7 +661,7 @@ namespace boost
           double axis_plot_frame<Derived>::background_border_width();
           template <class Derived>
           Derived& axis_plot_frame<Derived>::description(const std::string d);
- 
+
           template <class Derived>
           const std::string& axis_plot_frame<Derived>::description();
           template <class Derived>
@@ -710,10 +710,9 @@ namespace boost
           int axis_plot_frame<Derived>::x_value_precision();
 
           template <class Derived>
-          Derived& axis_plot_frame<Derived>::x_value_ioflags(int flags);
-
+          Derived& axis_plot_frame<Derived>::x_value_ioflags(std::ios_base::fmtflags flags);
           template <class Derived>
-          int axis_plot_frame<Derived>::x_value_ioflags();
+          std::ios_base::fmtflags axis_plot_frame<Derived>::x_value_ioflags();
 
           template <class Derived>
           Derived& axis_plot_frame<Derived>::x_labels_strip_e0s(bool cmd);
@@ -1061,7 +1060,7 @@ namespace boost
           bool axis_plot_frame<Derived>::x_values_on();
           template <class Derived>
           Derived& axis_plot_frame<Derived>::x_values_font_size(unsigned int i);
-      
+
           template <class Derived>
           Derived& axis_plot_frame<Derived>::x_values_font_family(const std::string& family);
           template <class Derived>

@@ -189,7 +189,7 @@ void scale_axis(
   //! allowing values just 1 pixel over the tick to be shown.
   int x_min_ticks = 6, //!< Minimum number of major ticks.
   int x_steps = 0, //!< 0,  or 2 for 2, 4, 6, 8, 10, 5 for 1, 5, 10, or 10 (2, 5, 10).
-  bool y_origin = false, //!< do not include the origin un../sandbox/SOC/2007/visualization/boost/svg_plot/detail/auto_axes.hpp:398:5: error: need ‘typename’ before ‘T:: const_iterator’ because ‘T’ is a dependent scopeless the range min_value <= 0 <= max_value.
+  bool y_origin = false, //!< do not include the origin un../sandbox/SOC/2007/visualization/boost/svg_plot/detail/auto_axes.hpp:398:5: error: need â€˜typenameâ€™ before â€˜T:: const_iteratorâ€™ because â€˜Tâ€™ is a dependent scopeless the range min_value <= 0 <= max_value.
   double y_tight = 0., //!< tightest - fraction of 'overrun' allowed before another tick used.
   // for visual effect up to about 0.001 might suit a 1000 pixel wide image,
   // allowing values just 1 pixel over the tick to be shown.
@@ -309,7 +309,7 @@ void scale_axis(
   detail::scale_axis_impl(min_value, max_value,
     axis_min_value, axis_max_value, axis_tick_increment, auto_ticks, // All 4 updated.
     origin, tight, min_ticks, steps); // Display range.
-} // 
+} //
 
 //! Scale axis function to define axis marker ticks based on min & max parameters values.
 void scale_axis(
@@ -410,7 +410,7 @@ void scale_axis(
   if (!check_limits)
   {
     //std::pair<T::iterator, T::iterator> result = boost::minmax_element(container.begin(), container.end());
-    std::pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
+    std::pair<typename T::const_iterator, typename T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
     // minmax_element is efficient because can use knowledge of being sorted,
     // BUT only if it can be assumed that no values are 'at limits',
     // infinity, NaN, max_value, min_value, denorm_min.
@@ -438,7 +438,7 @@ void scale_axis(
 } // template <class T> int scale_axis  T an STL container: array, vector ...
 
 
- 
+
 //! Scale X and Y axis using T a 2D STL container: array of pairs, vector of pairs, ...
 //! \tparam T STL container of 2D pairs of X and Y.
 template <class T>
@@ -460,7 +460,7 @@ void scale_axis(
   //! allowing values just 1 pixel over the tick to be shown.
   int x_min_ticks, // = 6, //!< Minimum number of major ticks.
   int x_steps, // = 0, //!< 0,  or 2 for 2, 4, 6, 8, 10, 5 for 1, 5, 10, or 10 (2, 5, 10).
-  bool y_origin, // = false, //!< do not include the origin un../sandbox/SOC/2007/visualization/boost/svg_plot/detail/auto_axes.hpp:398:5: error: need ‘typename’ before ‘T:: const_iterator’ because ‘T’ is a dependent scopeless the range min_value <= 0 <= max_value.
+  bool y_origin, // = false, //!< do not include the origin unless the range min_value <= 0 <= max_value.
   double y_tight, // = 0., //!< tightest - fraction of 'overrun' allowed before another tick used.
   // for visual effect up to about 0.001 might suit a 1000 pixel wide image,
   // allowing values just 1 pixel over the tick to be shown.
@@ -480,7 +480,8 @@ void scale_axis(
     // minmax_element is efficient for maps because it can use knowledge of all maps being sorted,
     // And also sadly it doesn't work right - Y minimum is wrong!  // TODO ??
 
-    std::pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
+    std::pair<typename T::const_iterator, typename T::const_iterator> result
+      = boost::minmax_element(container.begin(), container.end());
     std::pair<double, double> px = values_of(*result.first); // X min & X max.
     std::pair<double, double> py = values_of(*result.second); // Y min & Y max.
     x_min = px.first;
@@ -599,7 +600,7 @@ void scale_axis(
   detail::scale_axis_impl(y_min, y_max,
     y_axis_min_value, y_axis_max_value, y_axis_tick_increment, y_auto_ticks,
     y_origin, y_tight, y_min_ticks, y_steps);
-  
+
 } // template <class T> int scale_axis  T an STL container: array, vector ...
 
 // Above versions all use the scale_axis_impl implementation below that does the real scaling work.
@@ -706,7 +707,7 @@ void scale_axis_impl(double min_value, double max_value, // Scale axis from Inpu
   else
   { // Range is reasonably large, so
     // compute candidate for increment - must be smaller than range, so divide by 10.
-    test_increment = std::pow(10., ceil(log10(abs(range)/10.)));
+    test_increment = std::pow(10., ceil(log10(std::abs<double>(range)/10.)));
     // Must be a decimal multiple or decimal fraction,
     // but is not necessarily exactly representable in floating-point format.
     // Establish maximum axis scale value, using this increment.
@@ -732,7 +733,7 @@ void scale_axis_impl(double min_value, double max_value, // Scale axis from Inpu
     // then the calculated scale is 1.0408E17 TO 0.05 BY 0.01,
     // rather than 0, 0.05, 0.01.
     // I suspect 1.e-10 is bigger than necessary?  related to std::numeric_limits<>::epsilon?
-    if(abs(test_min) < 1.E-14)
+    if(std::abs(test_min) < 1.E-14)
     { // test_min is very near zero,
       test_min = 0.; // so treat as exact zero to avoid risk of a switch to e format.
     }
@@ -742,7 +743,7 @@ void scale_axis_impl(double min_value, double max_value, // Scale axis from Inpu
       // (divide by two should not cause trouble by being inexact).
       ticks = static_cast<int>((test_max - test_min) / test_increment) +1;
       if (steps == 0)
-      { // Remove any superflous ticks above max and below min.
+      { // Remove any superfluous ticks above max and below min.
         while((test_min + test_increment) <= min_value)
         { // min_value is > 2nd from bottom tick,
           test_min += test_increment;
@@ -876,7 +877,7 @@ double roundup10(double value)
     return 0.; // Just return zero.
   }
   bool is_neg = (value >= 0) ? false : true;
-  value = abs(value);
+  value = std::abs(value);
 
   int order = int(floor(log10(value))); // 0 to 9.999, gives 0, 10 to 99.9 gives 2 ...
   double scaled = value * pow(10., -order); // 0 to 9.99 is unchanged, 10 to 9.99 scaled down to 1. to 9.99
@@ -907,7 +908,7 @@ double rounddown10(double value)
     return 0.; // Just return zero.
   }
   bool is_neg = (value >= 0) ? false : true;
-  value = abs(value);
+  value = std::abs(value);
   int order = int(floor(log10(value))); // 0 to 9.999, gives 0, 10 to 99.9 gives 2 ...
   double scaled = value * pow(10., -order); // 0 to 9.99 is unchanged, 10 to 9.99 scaled down to 1. to 9.99
   double pow10order = is_neg ? -pow(10., order) : pow(10., order); //  power of ten, signed.
@@ -938,7 +939,7 @@ double roundup5(double value)
     return 0.; // Just return zero.
   }
   bool is_neg = (value >= 0) ? false : true;
-  value = abs(value);
+  value = std::abs(value);
   int order = int(floor(log10(value))); // 0 to 9.999, gives 0, 10 to 99.9 gives 2 ...
   double scaled = value * pow(10., -order); // 0 to 9.99 is unchanged, 10 to 9.99 scaled down to 1. to 9.99
   double pow10order = is_neg ? -pow(10., order) : pow(10., order); //  power of ten, signed.
@@ -965,7 +966,7 @@ double rounddown5(double value)
     return 0.; // Just return zero.
   }
   bool is_neg = (value >= 0) ? false : true;
-  value = abs(value);
+  value = std::abs(value);
   // Decimal scaling, so value is 0.1, 0.5, 1., 5. or 10., 10.,  100. ...
   int order = int(floor(log10(value))); // 0 to 9.999, gives 0, 10 to 99.9 gives 2 ...
   double scaled = value * pow(10., -order); // 0 to 9.99 is unchanged, 10 to 9.99 scaled down to 1. to 9.99
@@ -993,7 +994,7 @@ double roundup2(double value)
     return 0.; // Just return zero.
   }
   bool is_neg = (value >= 0) ? false : true;
-  value = abs(value);
+  value = std::abs(value);
   int order = int(floor(log10(value))); // 0 to 9.999, gives 0, 10 to 99.9 gives 2 ...
   double scaled = value * pow(10., -order); // 0 to 9.99 is unchanged, 10 to 9.99 scaled down to 1. to 9.99
   double pow10order = is_neg ? -pow(10., order) : pow(10., order); //  power of ten, signed.
@@ -1028,7 +1029,7 @@ double rounddown2(double value)
     return 0.; // Just return zero.
   }
   bool is_neg = (value >= 0) ? false : true;
-  value = abs(value);
+  value = std::abs(value);
   int order = int(floor(log10(value))); // 0 to 9.999, gives 0, 10 to 99.9 gives 2 ...
   double scaled = value * pow(10., -order); // 0 to 9.99 is unchanged, 10 to 9.99 scaled down to 1. to 9.99
   double pow10order = is_neg ? -pow(10., order) : pow(10., order); //  power of ten, signed.

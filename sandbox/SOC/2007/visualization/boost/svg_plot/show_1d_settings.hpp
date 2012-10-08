@@ -71,9 +71,9 @@ void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char*
      Default parameter values are: @c void outFmtFlags(fmtflags fmtFlags = cout.flags(), ostream& os = cerr, const char* term = ".\n");
    */
   const int up = 16; // Words across page.
-  const int count = 16;  // because using unsigned short int.
-  int const flags = os.flags(); // save to restore.
-  fmtFlags &= 0x7FFF;  // _Fmtmask // clear un-used bits.
+  const int count = 16;  // 16 because using unsigned short int (must be at least 16 bits).
+  std::ios_base::fmtflags flags = os.flags(); // Save to restore.
+  fmtFlags &= static_cast<std::ios_base::fmtflags>(0x7FFF);  // _Fmtmask // clear un-used bits.
   os << "IOS format flags (" << std::showbase << std::hex << fmtFlags << std::dec << ")" ; // hex value.
   if (fmtFlags != 0)
   {
@@ -96,7 +96,7 @@ void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char*
     }
   }
   os << term; // eg "\n" or ". "
-  os.flags(flags);  // Restore.
+  os.setf(flags);  // Restore.
 }  // outFmtFlags
 
 //namespace detail
@@ -169,7 +169,7 @@ void show_1d_plot_settings(svg_1d_plot& plot)
   // std::ostream& operator<< (std::ostream&, const std::pair<double, double>&);
   // defined above.
 
-  int iostate = cout.flags(); // Save to restore one exit.
+  std::ios_base::fmtflags flags = cout.flags(); // Save format flags to restore on exit.
   cout << dec << std::boolalpha << endl;
   cout << endl;
 
@@ -212,7 +212,7 @@ void show_1d_plot_settings(svg_1d_plot& plot)
   cout << "license_reproduction " << plot.license_reproduction() << endl;
   cout << "license_distribution " << plot.license_distribution() << endl;
   cout << "license_attribution " << plot.license_attribution() << endl;
-  cout << "license_commercialuse " << plot.license_commercialuse() << endl;
+  cout << "license_commercial_use " << plot.license_commercialuse() << endl;
   cout << "plot_background_color " << plot.plot_background_color() << endl;
   cout << "plot_border_color " << plot.plot_border_color() << endl;
   cout << "plot_border_width " << plot.plot_border_width() << endl;
@@ -310,7 +310,7 @@ void show_1d_plot_settings(svg_1d_plot& plot)
   cout << "x_autoscale_check_limits " << plot.autoscale_check_limits() << endl;
   cout << "confidence alpha " << plot.confidence() << endl;
   cout << "data lines width " << plot.data_lines_width() << endl;
-  cout.flags(iostate); // Restore.
+  cout.flags(flags); // Restore.
 } // void show_plot_settings(svg_1d_plot& plot)
 
 } // namespace svg
