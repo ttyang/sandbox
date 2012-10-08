@@ -34,7 +34,7 @@
   // Note neither of these check for 'limits' (infinite, NaN) values.
 
 #include <boost/svg_plot/detail/pair.hpp>
-  using boost::svg::detail::operator<<; // Output pair as, for example: 1.23, 4.56
+//  using boost::svg::detail::operator<<; // Output pair as, for example: 1.23, 4.56
 
 //#include <boost/svg_plot/show_1d_settings.hpp>
 // Only needed for showing which settings in use.
@@ -170,10 +170,10 @@ Build Time 0:03
 with unc class
 
   Description: Autorun "J:\Cpp\SVG\Debug\auto_1d_containers.exe"
-  6 values in container: 0.2 1.1 4.2 3.3 5.4 6.5 
+  6 values in container: 0.2 1.1 4.2 3.3 5.4 6.5
   2 containers.
-  6 values in container: 0.2 1.1 4.2 3.3 5.4 6.5 
-  6 values in container: 0.46 2.53 9.66 7.59 12.42 14.95 
+  6 values in container: 0.2 1.1 4.2 3.3 5.4 6.5
+  6 values in container: 0.46 2.53 9.66 7.59 12.42 14.95
   Data range: <0.2, 14.95>
   x_range() 0, 15
 

@@ -1,7 +1,7 @@
 /*! \file demo_rounds.cpp
   \brief Demonstration of rounding algorithm used for autoscaling.
-  \details 
-  \author Paul A Bristow 
+  \details
+  \author Paul A Bristow
 */// demo_rounds.cpp
 
 // Copyright Paul A. Bristow 2006.
@@ -29,13 +29,15 @@ namespace boost
 
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+//  using std::cout;
+// using std::endl;
 
 int main()
 {
 
  using namespace boost::svg;
+  using std::cout;
+  using std::endl;
 
  double r = roundup10(0.99);
 
@@ -69,14 +71,14 @@ int main()
    cout << roundup2(0.9e-3) << endl; // 0.001
    cout << roundup2(2.1e-3) << endl; // 0.004
    cout << roundup2(3.1e-3) << endl; //  0.004
-   cout << roundup2(4.1e-3) << endl; // 
-   cout << roundup2(7.1e-3) << endl; // 
+   cout << roundup2(4.1e-3) << endl; //
+   cout << roundup2(7.1e-3) << endl; //
    cout << roundup2(1.1e+3) << endl; // 2000
-   cout << roundup2(0.9e+3) << endl; // 
-   cout << roundup2(2.1e+3) << endl; // 
-   cout << roundup2(3.1e+3) << endl; // 
-   cout << roundup2(4.1e+3) << endl; // 
-   cout << roundup2(7.1e+3) << endl; // 
+   cout << roundup2(0.9e+3) << endl; //
+   cout << roundup2(2.1e+3) << endl; //
+   cout << roundup2(3.1e+3) << endl; //
+   cout << roundup2(4.1e+3) << endl; //
+   cout << roundup2(7.1e+3) << endl; //
    cout << rounddown2(2.1) << endl; // 2
    cout << rounddown2(4.1) << endl; // 2
 
@@ -88,11 +90,11 @@ int main()
    cout << roundup5(4.1) << endl; // 5
    cout << roundup5(5.1) << endl; // 10
    cout << roundup5(7.1) << endl; // 10
-   cout << roundup5(1.1e-3) << endl; // 
-   cout << roundup5(0.9e-3) << endl; // 
-   cout << roundup5(2.1e-3) << endl; // 
-   cout << roundup5(3.1e-3) << endl; // 
-   cout << roundup5(4.1e-3) << endl; // 
+   cout << roundup5(1.1e-3) << endl; //
+   cout << roundup5(0.9e-3) << endl; //
+   cout << roundup5(2.1e-3) << endl; //
+   cout << roundup5(3.1e-3) << endl; //
+   cout << roundup5(4.1e-3) << endl; //
    cout << roundup5(7.1e-3) << endl; // 0.01
    cout << roundup5(1.1e+3) << endl; // 5000
    cout << roundup5(0.9e+3) << endl; // 1000
@@ -124,7 +126,7 @@ decimal roundup10
 100
 200
 5
-binary roundup10 
+binary roundup10
 2
 1
 4

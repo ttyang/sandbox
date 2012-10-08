@@ -89,7 +89,7 @@
 template <typename T> // T an STL container: array, vector ...
 size_t show(const T& container)
 { // Show all the containers values.
-  for (T::const_iterator it = container.begin(); it != container.end(); it++)
+  for (typename T::const_iterator it = container.begin(); it != container.end(); it++)
   {
     cout << *it << ' ';
   }
@@ -111,7 +111,7 @@ size_t show(const T& container)
 template <typename T> // T an STL container: container of containers.
 size_t show_all(const T& containers)
 { // Show all the containers values.
-  for (T::const_iterator it = containers.begin(); it != containers.end(); it++)
+  for (typename T::const_iterator it = containers.begin(); it != containers.end(); it++)
   {
     show(*it);
   }
@@ -157,12 +157,12 @@ pair<double, double> s(iter begin, iter end) // Data series to plot.
 {
   iter it = min_element(begin, end);
   cout << "min_element " << *it << endl;
-  pair<iter, iter> result = boost::minmax_element(begin, end);
+  std::pair<iter, iter> result = boost::minmax_element(begin, end);
   //pair<const T::const_iterator, const T::const_iterator > result = boost::minmax_element(begin, end);
   // error C2825: 'T': must be a class or namespace when followed by '::'
   cout << "minmax_elements " << *result.first << ' ' << *result.second << endl;
 
-  pair<double, double > minmax;
+  std::pair<double, double > minmax;
   minmax.first = *result.first;
   minmax.second = *result.second;
   return minmax; // pair<double, double>
@@ -171,18 +171,18 @@ pair<double, double> s(iter begin, iter end) // Data series to plot.
 template <class T> // T an STL container: for example: array<float>, vector<double> ...
 pair<double, double> s(const T& container) // Data series to plot.
 {
-  pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
+  pair<T::const_iterator, typename T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
   cout << "minmax_elements " << *result.first << ' ' << *result.second << endl;
-  pair<double, double > minmax; // Convert type of container T to double.
+  std::pair<double, double > minmax; // Convert type of container T to double.
   minmax.first = *result.first;
   minmax.second = *result.second;
   return minmax; // pair<double, double>
 } // template <class T> int s  T an STL container: array, vector ...
 
 template <class T> // T an STL container: array, vector ...
-pair<double, double> scale(const T& container) // Container Data series
+std::pair<double, double> scale(const T& container) // Container Data series
 {
-  //typedef <const T& >::const_iterator container_iterator;
+  //typedef typename <const T& >::const_iterator container_iterator;
   //pair< T, T > result = boost::minmax_element(container.begin(), container.end());
   //pair< vector_iterator, vector_iterator > result = boost::minmax_element(container.begin(), container.end());
   //cout << "Autoscale min is " << *(result.first) << endl;
@@ -198,7 +198,7 @@ pair<double, double> scale(const T& container) // Container Data series
   //mm.second= *(minmax_element(container.begin(), container.end()).second);
   // But this calls minmax_element twice.
 
-  pair<T::const_iterator, T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
+  pair<typename T::const_iterator, typename T::const_iterator> result = boost::minmax_element(container.begin(), container.end());
 
   pair<double, double> minmax;
   minmax.first = *result.first;
@@ -207,12 +207,12 @@ pair<double, double> scale(const T& container) // Container Data series
 } // template <class T> int scale_axis,  T an STL container: array, vector  set, map ...
 
 template <class T> // T an STL container: array, vector, set, map ...
-pair<double, double> s_all(const T& containers) // Container of containers of Data series.
+std::pair<double, double> s_all(const T& containers) // Container of containers of Data series.
 {
-  pair<double, double> minmax(numeric_limits<double>::max(), numeric_limits<double>::min());
-  for (T::const_iterator it = containers.begin(); it != containers.end(); it++)
+  std::pair<double, double> minmax(std::numeric_limits<double>::max(), std::numeric_limits<double>::min());
+  for (typename T::const_iterator it = containers.begin(); it != containers.end(); it++)
   {
-    pair<double, double> mm = s(*it); // Scale of this container.
+    std::pair<double, double> mm = s(*it); // Scale of this container.
     minmax.first = (std::min)(mm.first, minmax.first); //
     minmax.second = (std::max)(mm.second, minmax.second);
   }
@@ -221,7 +221,7 @@ pair<double, double> s_all(const T& containers) // Container of containers of Da
 
 int main()
 {
-  vector<double> my_data;
+  std::vector<double> my_data;
   // Initialize my_data with some entirely fictional data.
   my_data.push_back(0.2);
   my_data.push_back(1.1); // [1]
@@ -230,13 +230,13 @@ int main()
   my_data.push_back(5.4); // [4]
   my_data.push_back(6.5); // [5]
 
-  vector<double> my_data_2;
+  std::vector<double> my_data_2;
   // transform(my_data.begin(), my_data.end(), data2.begin(), bind1st(multiplies<double>(), 2.3));
-  copy(my_data.begin(), my_data.end(), back_inserter(my_data_2));
-  copy(my_data.begin(), my_data.end(), ostream_iterator<double>(cout, " "));
+  copy(my_data.begin(), my_data.end(), std::back_inserter(my_data_2));
+  copy(my_data.begin(), my_data.end(), std::ostream_iterator<double>(cout, " "));
   cout << endl << my_data.size() << " values in my_data. " << endl;
-  copy(my_data_2.begin(), my_data_2.end(), ostream_iterator<double>(cout, " "));
-  transform(my_data_2.begin(), my_data_2.end(), my_data_2.begin(), bind1st(multiplies<double>(), 2.3));
+  copy(my_data_2.begin(), my_data_2.end(), std::ostream_iterator<double>(cout, " "));
+  std::transform(my_data_2.begin(), my_data_2.end(), my_data_2.begin(), std::bind1st(multiplies<double>(), 2.3));
   copy(my_data_2.begin(), my_data_2.end(), ostream_iterator<double>(cout, " "));
 
   cout << endl << my_data.size() << " values in my_data. " << endl;
@@ -246,34 +246,33 @@ int main()
   my_containers.push_back(my_data);
   my_containers.push_back(my_data_2);
 
-  cout << my_containers.size() << " containers." << endl;
+  std::cout << my_containers.size() << " containers." << std::endl;
 
   show_all(my_containers);
 
-  cout << s_all(my_containers) << endl;
+  std::cout << s_all(my_containers) << std::endl;
 
-
-
-  typedef vector<double>::const_iterator vector_iterator;
-  pair< vector_iterator, vector_iterator > result = boost::minmax_element(my_data.begin(), my_data.end());
-  cout << "The smallest element is " << *(result.first) << endl; // 0.2
-  cout << "The largest element is  " << *(result.second) << endl; // 6.5
+  typedef std::vector<double>::const_iterator vector_iterator;
+  std::pair< vector_iterator, vector_iterator > result
+          = boost::minmax_element(my_data.begin(), my_data.end());
+  std::cout << "The smallest element is " << *(result.first) << std::endl; // 0.2
+  std::cout << "The largest element is  " << *(result.second) << std::endl; // 6.5
 
   // Autoscaling using two double min and max values.
   double first_value = *(my_data.begin());
   double last_value = *(--my_data.end());
-  cout << "First value " << first_value << ", last = " << last_value << endl;
+  std::cout << "First value " << first_value << ", last = " << last_value << std::endl;
 
   // Using first and last in container,
   // assuming the data are ordered in ascending value,
-  // either because they have been sorted, for vector or array,
-  // or by being sorted as inserted, for example, map, multimap.
+  // either because they have been sorted, for std::vector or array,
+  // or by being sorted as inserted, for example, std::map, std::multimap.
   //s(*my_data.begin(),*(--my_data.end()));
 
   // Using two begin & end iterators into STL container,
-  pair<double, double> mm = s(my_data.begin(), my_data.end() );
-  cout << mm << endl;
-  cout << mm.first << ' ' << mm.second << endl;
+  std::pair<double, double> mm = s(my_data.begin(), my_data.end() );
+  std::cout << mm << std::endl;
+  std::cout << mm.first << ' ' << mm.second << std::endl;
 
   // Using two begin & end pointer into STL container,
   // scale_axis does finding min and max.
@@ -283,7 +282,7 @@ int main()
   // scale_axis does finding min and max.
   mm = s(my_data); // Display range.
 
-  multiset<double> my_set;
+  std::multiset<double> my_set;
   // Initialize my_set with some entirely fictional data.
   my_set.insert(2.3);
   my_set.insert(7.8);
@@ -294,17 +293,17 @@ int main()
   my_set.insert(6.7);
   my_set.insert(8.9);
   // Show the set.
-  multiset<double>::const_iterator si;
+  std::multiset<double>::const_iterator si;
   for (si = my_set.begin(); si != my_set.end(); si++)
   {
     cout << *si << ' ';
   }
-  cout << endl;
-  cout << my_set.size() << " values in my_set. " << endl; // 8 values in my_set.
+  std::cout << endl;
+  std::cout << my_set.size() << " values in my_set. " << std::endl; // 8 values in my_set.
 
   mm = s(my_set); // Display range.
-  cout << mm << endl; //  1.2, 8.9
-  cout <<"first " << *my_set.begin()  << ", last " << *(--my_set.end()) << endl;
+  std::cout << mm << std::endl; //  1.2, 8.9
+  std::cout <<"first " << *my_set.begin()  << ", last " << *(--my_set.end()) << std::endl;
 
 
 

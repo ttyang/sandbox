@@ -42,6 +42,8 @@
 #include <boost/svg_plot/detail/auto_axes.hpp>
 using boost::svg::detail::limit_NaN;
 
+
+
 #include <map> // for map & multimap
 #include <string>
 #include <sstream>

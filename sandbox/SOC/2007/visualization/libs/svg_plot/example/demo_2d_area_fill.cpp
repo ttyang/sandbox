@@ -18,7 +18,7 @@
   using namespace boost::svg; // Needed to get svg colors and others.
   using boost::svg::svg_2d_plot;
 
-#include <map> 
+#include <map>
   using std::map; // STL container for data.
 #include <cmath>
   using std::sin;
@@ -45,7 +45,7 @@ int main()
   map<double, double> data_sin; // Containers for some trig data.
   map<double, double> data_cos;
   map<double, double> data_tan;
-  
+
   double inter = 3.14159265358979 / 8.; // 16 points per cycle of 2 pi.
   // Problem here if pi is more accurate (adding 3 at end) = 3.141592653589793
   // tan line - going to infinity and back does not show.
@@ -53,7 +53,7 @@ int main()
   // tan is very badly behaved and floating-point is evil!
 
   for(double i = 0; i <= 10.; i += inter)
-  { // 
+  { //
     data_sin[i] = my_sin(i);
     data_cos[i] = my_cos(i);
     data_tan[i] = my_tan(i);
@@ -82,7 +82,7 @@ int main()
          .x_major_grid_color(cyan)
          .y_major_grid_color(cyan)
          ;
-    
+
   // Color settings.
   my_plot.background_color(whitesmoke)
          .legend_background_color(lightyellow)
@@ -96,11 +96,11 @@ int main()
          .x_minor_tick_length(7)
          .x_minor_tick_width(1)
          .x_num_minor_ticks(3)
-  
+
   // Y axis settings.
          .y_major_interval(25)
          .y_num_minor_ticks(4); // 4 minor ticks between 0 to 25, so mark major 0, minor 5, 10, 15, 20, major 25 ...
-  
+
   svg_2d_plot_series& s_sin = my_plot.plot(data_sin, "sin(x)").line_on(true).area_fill(red);
   std::cout << "s_sin.area_fill() " << s_sin.area_fill() << std::endl; // s_sin.area_fill() RGB(255,0,0)
 

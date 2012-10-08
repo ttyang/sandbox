@@ -31,7 +31,7 @@
 #include <boost/svg_plot/svg_style.hpp>
 #include <boost/svg_plot/detail/axis_plot_frame.hpp> // Code shared with 2D.
 #include <boost/svg_plot/detail/functors.hpp>
-using boost::svg::detail::unc_1d_convert;
+//using boost::svg::detail::unc_1d_convert;
 #include <boost/svg_plot/detail/numeric_limits_handling.hpp>
 //#include <boost/quan/unc.hpp>
 //#include <boost/quan/unc_init.hpp>
@@ -40,14 +40,18 @@ using boost::svg::detail::unc_1d_convert;
 
 using boost::svg::detail::limit_NaN;
 
-#include <boost/svg_plot/detail/auto_axes.hpp> /*! provides:
-void scale_axis(double min_value, double max_value, // Input range
+#include <boost/svg_plot/detail/auto_axes.hpp>
+/*! provides:
+void boost::svg::scale_axis(double min_value, double max_value, // Input range
                double* axis_min_value,  double* axis_max_value, double* axis_tick_increment, int* auto_ticks, // All 4 updated.
                bool origin, // If true, ensures that zero is a tick value.
                double tight, // Allows user to avoid a small fraction over a tick using another tick.
                int min_ticks, // Minimum number of ticks.
                int steps); // Round up and down to 2, 4, 6, 8, 10, or 5, 10 or 2, 5, 10 systems.
-*/
+
+template<typename T>
+void boost::svg::scale_axis(const T&, double*, double*, double*, int*, double*, double*, double*, int*, bool, double, bool, double, int, int, bool, double, int, int);
+ */
 
 #include <vector>
 #include <ostream>

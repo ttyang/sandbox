@@ -27,6 +27,7 @@
 #  pragma warning (disable: 4100) // 'check_limits' and autoscale_plusminus: unreferenced formal parameters
 #endif
 
+#include <boost/svg_plot/detail/numeric_limits_handling.hpp>
 #include <boost/svg_plot/detail/FP_compare.hpp> // is_small & is_close
 #include <boost/quan/meas.hpp> // for value_of.
 
@@ -355,12 +356,12 @@ void scale_axis(
    int steps) // = 0) //!< 0,  or 2 for 2, 4, 6, 8, 10, 5 for 1, 5, 10, or 10 (2, 5, 10).
 { //! Scale axis from data series (usually to plot), perhaps only part of container.
   // \tparam iter iterator into an STL container: array, vector, set ...
-   void detail::scale_axis_impl(double min_value, double max_value, // Input range.
-               double* axis_min_value,  double* axis_max_value, double* axis_tick_increment, int* auto_ticks, // All 4 updated.
-               bool origin, // If true, ensures that zero is a tick value.
-               double tight, // Allows user to avoid a small fraction over a tick using another tick.
-               int min_ticks, // Minimum number of ticks.
-               int steps); // Round up and down to 2, 4, 6, 8, 10, or 5, 10 or 2, 5, 10 systems.
+//   void detail::scale_axis_impl(double min_value, double max_value, // Input range.
+//               double* axis_min_value,  double* axis_max_value, double* axis_tick_increment, int* auto_ticks, // All 4 updated.
+//               bool origin, // If true, ensures that zero is a tick value.
+//               double tight, // Allows user to avoid a small fraction over a tick using another tick.
+//               int min_ticks, // Minimum number of ticks.
+//               int steps); // Round up and down to 2, 4, 6, 8, 10, or 5, 10 or 2, 5, 10 systems.
   double x_min;
   double x_max;
   if (!check_limits)

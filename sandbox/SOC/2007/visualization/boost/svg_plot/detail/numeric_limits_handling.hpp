@@ -126,6 +126,7 @@ template <bool correlated>
 inline bool pair_is_limit(std::pair<const Meas, unc<correlated> > a)
 { //! Check on values of both x Meas and y unc data points.
   // \return false if either or both are at limit.
+    double rounddown2(double value); // 2, 4,
   return limit_max(value_of(a.first)) || limit_min(value_of(a.first)) || limit_NaN(value_of(a.first))
     || limit_max(value_of(a.second)) || limit_min(value_of(a.second)) || limit_NaN(value_of(a.second));
 }
