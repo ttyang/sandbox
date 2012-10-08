@@ -44,8 +44,7 @@ const char bell = '\a';
 // spaces & stars done with simple way, NOT using template,
 // See S Teale p 181-3, said to be longer but faster.
 
-// TODO these should be declared here, and *defined* elsewhere?
-
+// Declarations.
 class spaces;
 class tabs;
 class stars;
@@ -113,8 +112,8 @@ std::ostream& showiostate(std::ostream& os);  // Show IO stream state in words f
 // Usage: cout << showiostate ...
 
 std::ostream& showformat(std::ostream& os); // Show IO stream format flags in words for this stream.
-// Usage:	cout << showformat ...
+// Usage: cout << showformat ...
 
-#include <boost/quan/impl/xiostream.ipp>
+#include <boost/quan/impl/xiostream.ipp> // Definitions.
 
 #endif // XIOSTREAM_HPP

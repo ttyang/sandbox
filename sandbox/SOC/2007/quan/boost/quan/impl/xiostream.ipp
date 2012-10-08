@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file
   \brief Extra iostream manipulators.
   \details Definitions of declarations in xiostream.hpp.
 
@@ -15,7 +15,7 @@
 // or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //#include <boost/quan/xiostream.hpp> // Declarations of items defined below.
-// included from this file.
+// Now included from this file.
 
 #ifndef XIOSTREAM_IPP
 #define XIOSTREAM_IPP
@@ -23,7 +23,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 std::ios_base& lowercase(std::ios_base& _I)
-{	// lowercase is the inverse of std::ios_base::uppercase.
+{ // lowercase is the inverse of std::ios_base::uppercase.
   _I.unsetf(std::ios_base::uppercase); // Default is lowercase.
   return _I;
 } // lowercase
@@ -50,7 +50,7 @@ public:
   {
   }
 private:
-  std::ostream&(*func)(std::ostream&, T);  // Function like setw
+  std::ostream&(*func)(std::ostream&, T);  // Function like setw.
   T val;  // Parameter like width.
 }; // class omanip
 // Could also provide an istream version for operator >>
@@ -173,10 +173,13 @@ setupperbase::setupperbase(int b) : base(b)
 
 std::ostream& operator<< (std::ostream& os, const setupperbase& s)
 {
-  os.setf(std::ios_base::showbase | std::ios_base::uppercase |
+  os.setf(static_cast<std::ios_base::fmtflags>
+  (
+     std::ios_base::showbase | std::ios_base::uppercase |
     ( 16 == s.base ? 1 :  // std::ios_base::hex :std::ios_base::oct;
        8 == s.base ? std::ios_base::oct : std::ios_base::dec) ,  // default dec if not 8 or 16
-    std::ios_base::basefield | std::ios_base::showbase | std::ios_base::uppercase );  // mask
+    std::ios_base::basefield | std::ios_base::showbase | std::ios_base::uppercase )  // mask
+    );
   return os;
 } // std::ostream& operator<< (std::ostream& os, const setupperbase& s)
 
@@ -191,7 +194,7 @@ void outIOstates(std::ios_base::iostate rdState, std::ostream& os, const char* t
   std::ios_base::fmtflags const savedflags = os.flags();  // Save to restore.
   // Clear any unused and invalid bits in rdState.
   rdState &= std::ios_base::goodbit | std::ios_base::eofbit | std::ios_base::failbit | std::ios_base::goodbit;
-  // enum _Iostate {goodbit = 0x0, eofbit = 0x1,	failbit = 0x2, badbit = 0x4, _Statmask = 0x7};
+  // enum _Iostate {goodbit = 0x0, eofbit = 0x1,  failbit = 0x2, badbit = 0x4, _Statmask = 0x7};
   // but use std::ios_base::goodbit; for portability.
   // MSVC /Dinkumware defines _Statmask 0x17, _Hardfail also added recently.
   os << "rdState ("<< std::showbase << std::hex << rdState << ") " << std::dec ;
@@ -251,7 +254,7 @@ const char* fmtFlagWords[16] =
 }; // const char* fmtFlagWords
 
 void outFmtFlags(std::ios_base::fmtflags fmtFlags, std::ostream& os, const char* term)
-{// Usage: 	outFmtFlags(flags, cerr);
+{// Usage:  outFmtFlags(flags, cerr);
   // For example, logs to cerr "FormatFlags: skipws showbase right dec"
   // Defaults in xiostream.hpp:
   // void outFmtFlags(fmtflags fmtFlags = cout.flags(), std::ostream& os = cerr, const char* term = ".\n");
@@ -284,7 +287,7 @@ std::ostream& showiostate(std::ostream& os)
 
 std::ostream& showformat(std::ostream& os)
 { // Show IO stream format flags in words for this stream.
-  // Usage:	cout << showformat ...
+  // Usage: cout << showformat ...
   outFmtFlags(static_cast<std::ios_base::fmtflags>(os.flags()), os, ". ");
   return os;
 }
@@ -308,7 +311,7 @@ void outFpClass(double value, std::ostream& os);
 
 std::ostream& FPclass(std::ostream& os, double value)
 { // Show Floating point type or value.
-  // Usage:	cout << FPclass(NaN) ...
+  // Usage: cout << FPclass(NaN) ...
   outFpClass(value, os);
   return os;
 } // std::ostream& FPclass(std::ostream& os, double value)
@@ -316,7 +319,7 @@ std::ostream& FPclass(std::ostream& os, double value)
 void outFpClass(double value, std::ostream& os = std::cerr)
 // Usage: outFpClass(x, std::cerr);
 {  // Custom outputs for NaN, inf ... (rather than default 1#IND ...)
-  
+
   if (boost::math::isfinite(value))
   {
     os << value;
