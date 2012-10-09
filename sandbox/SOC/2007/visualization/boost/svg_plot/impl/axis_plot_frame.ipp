@@ -1844,7 +1844,7 @@ namespace boost
             return derived();
           } // x_autoscale(const T& begin, const T& end)
 
-                    template <class Derived>
+          template <class Derived>
           template <class T> // T an STL container: array, vector...
           Derived& axis_plot_frame<Derived>::x_autoscale(const T& container) // Use whole 1D data series.
           { //! Data series (all values) to use to calculate autoscaled X-axis values.

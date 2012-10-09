@@ -610,8 +610,8 @@ namespace boost
         // class axis_plot_frame Member function Definitions (for .ipp file):
 
 
-          template <class Derived>/*! \tparam Derived plot class, svg_1d_plot or svg_2d_plot or svg_boxplot. */
-          template <class T> /*! \tparam T an STL container: array, vector, list, map ...  */
+          template <typename Derived>/*! \tparam Derived plot class, svg_1d_plot or svg_2d_plot or svg_boxplot. */
+          template <typename T> /*! \tparam T an STL container: array, vector, list, map ...  */
           Derived& axis_plot_frame<Derived>::x_autoscale(const T& begin, const T& end);
 
           template <class Derived>
@@ -621,7 +621,7 @@ namespace boost
           template <class Derived>
           Derived& axis_plot_frame<Derived>::size(unsigned int x, unsigned int y);
 
-                    template <class Derived>
+          template <class Derived>
           std::pair<double, double> axis_plot_frame<Derived>::size();
           template <class Derived>
           unsigned int axis_plot_frame<Derived>::image_x_size(); //!< Obselete - deprecated.
