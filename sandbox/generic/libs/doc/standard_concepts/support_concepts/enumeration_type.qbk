@@ -1,0 +1,43 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section EnumerationType]
+
+[heading Description]
+Describes enumeration types.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/enumeration_type.hpp]
+
+[table EnumerationType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[EnumerationType]]
+[``
+concept EnumerationType<typename T> : IntegralConstantExpressionType<T> {
+  IntegralType underlying_type;
+}
+
+// Requires: underlying_type is the underlying type of the enumeration type.
+//
+// Requires: for every type T that is an enumeration type, a concept map
+// EnumerationType<T> is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/enumeration_type.hpp>
+
+[section_in_n2914_heading `EnumerationType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

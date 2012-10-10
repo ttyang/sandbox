@@ -1,0 +1,41 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section True]
+
+[heading Description]
+Used to express the requirement that a particular integral constant expression
+evaluate true.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/concepts/true.hpp]
+
+[table True Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[True]]
+[``
+concept True<bool> { }
+concept_map True<true> { }
+
+// Requires: a program shall not provide a concept map for the True concept.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/concepts/true.hpp>
+
+[section_in_n2914_heading `True`..[['concept.true]]]
+
+[heading Differences From N2914]
+
+[boost_generic] does not currently disallow creating concept maps for `True`,
+whereas [n2914] does.
+
+[endsect]

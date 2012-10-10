@@ -1,0 +1,40 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section NonTypeTemplateParameterType]
+
+[heading Description]
+Describes type that can be used as the type of a non-type template parameter.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/non_type_template_parameter_type.hpp]
+
+[table NonTypeTemplateParameterType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[NonTypeTemplateParameterType]]
+[``
+concept NonTypeTemplateParameterType<typename T> : VariableType<T> { }
+
+// Requires: for every type T that can be the type of a non-type
+// template-parameter, a concept map NonTypeTemplateParameterType<T> is
+// implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/non_type_template_parameter_type.hpp>
+
+[section_in_n2914_heading `NonTypeTemplateParameterType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

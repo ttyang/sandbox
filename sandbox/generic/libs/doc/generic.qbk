@@ -1,0 +1,56 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[chapter Generic
+    [quickbook 1.6]
+    [authors [Calabrese, Matt]]
+    [copyright 2010, 2011, 2012 Matt Calabrese]
+    [license
+        Distributed under the Boost Software License, Version 1.0.
+        (See accompanying file LICENSE_1_0.txt or copy at
+        [@http://www.boost.org/LICENSE_1_0.txt])
+    ]
+]
+
+[template bgl[] [@http://www.boost.org/doc/libs/release/libs/graph/ BGL]]
+[template boost_build[] [@http://www.boost.org/ Boost.Build]]
+[template boost_generic[] =Boost.Generic=]
+[template bsl[] [@http://opensource.org/licenses/BSL-1.0 Boost Software License]]
+[template clang[] [@http://clang.llvm.org/ Clang]]
+[template concepts[] [@http://www.generic-programming.org/about/glossary.php?term=concept concepts]]
+[template cpp11[] [@http://en.wikipedia.org/wiki/C%2B%2B11 C++11]]
+[template gcc[] [@http://gcc.gnu.org/ GCC]]
+[template gcc_cl_define[] [@http://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html#index-D-929 GCC's -D]]
+[template generic_programming[] [@http://lcsd05.cs.tamu.edu/papers/dos_reis_et_al.pdf Generic Programming]]
+[template quickbook[] [@http://www.boost.org/tools/quickbook/index.html Quickbook]]
+[template n2914[] [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf N2914]]
+[template n3351[] [@http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3351.pdf N3351]]
+[template tag_dispatch[] [@http://www.boost.org/community/generic_programming.html#tag_dispatching tag dispatch]]
+[template sandbox[] [@http://svn.boost.org/svn/boost/sandbox/ sandbox]]
+[template true_concept[] [link generic.standard_concepts.concepts.true `True`]]
+[template trunk[] [@http://svn.boost.org/svn/boost/trunk trunk]]
+
+[template section_in_n2914_heading[name section_id]
+
+[heading Section in N2914]
+
+The corresponding definition of [name] may be found in the [n2914] section
+[section_id].
+]
+
+[template intrinsic_concept_differences[]
+In [n2914] this concept is `explicit` with concept maps implicitly defined for
+the implementation's arithmetic types. In [boost_generic], this concept is
+`auto` and is defined via the standard's `type_traits` facilities and [true_concept].
+]
+
+[include preface.qbk]
+[include getting_started.qbk]
+[include standard_concepts.qbk]
+[include future_direction.qbk]
+[include acknowledgments.qbk]

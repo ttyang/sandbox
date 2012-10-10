@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section LiteralType]
+
+[heading Description]
+Describes literal types.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/literal_type.hpp]
+
+[table LiteralType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[LiteralType]]
+[``
+concept LiteralType<typename T> : ValueType<T> { }
+
+// Requires: for every type T that is a literal type, a concept map
+// LiteralType<T> is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/literal_type.hpp>
+
+[section_in_n2914_heading `LiteralType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

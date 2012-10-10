@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Union]
+
+[heading Description]
+Describes union types.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/union.hpp]
+
+[table Union Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[Union]]
+[``
+concept Union<typename T> : ClassType<T>, ValueType<T> { }
+
+// Requires: for every type T that is a union, a concept map Union<T> is
+// implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/union.hpp>
+
+[section_in_n2914_heading `Union`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

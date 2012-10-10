@@ -1,0 +1,47 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section SameType]
+
+[heading Description]
+Describes a same-type requirement.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/same_type.hpp]
+
+[table SameType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[SameType]]
+[``
+concept SameType<typename T, typename U> { }
+
+// Note: A same-type requirement is satisfied when its two template arguments
+// refer to the same type (including the same cv qualifiers).
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/same_type.hpp>
+
+[section_in_n2914_heading `SameType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+In [n2914], a concept requirement that refers to the `std::SameType` concept is
+a same-type requirement. In a constrained template, a same-type requirement
+`std::SameType<T1, T2>` makes the types `T1` and `T2` equivalent, aliasing
+archetypes. This type of behavior is not implemented in [boost_generic].
+
+Also, [boost_generic] defines a concept map template as a means to identify
+models of `SameType`. In [n2914], the standard concept does not explicitly
+specify a concept map template for `std::SameType`, but rather, it leaves the
+method of mapping the concept up to the implementation.
+
+[endsect]

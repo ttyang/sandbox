@@ -1,0 +1,41 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section ValueType]
+
+[heading Description]
+Describes value types, for which objects, variables, references, pointers, and
+pointers-to-members can be created.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/value_type.hpp]
+
+[table ValueType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[ValueType]]
+[``
+concept ValueType<typename T> : ObjectType<T>, VariableType<T>, MemberPointeeType<T> { }
+
+// Requires: for every type T that is an object type but not an abstract class,
+// a concept map ValueType<T> is implicitly defined in namespace std.
+``]]
+]
+
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/value_type.hpp>
+
+[section_in_n2914_heading `ValueType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

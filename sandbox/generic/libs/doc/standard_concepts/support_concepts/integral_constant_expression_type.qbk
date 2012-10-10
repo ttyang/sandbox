@@ -1,0 +1,41 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section IntegralConstantExpressionType]
+
+[heading Description]
+Describes types that can be the type of an integral constant expression.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/integral_constant_expression_type.hpp]
+
+[table IntegralConstantExpressionType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[IntegralConstantExpressionType]]
+[``
+concept IntegralConstantExpressionType<typename T>
+  : ScalarType<T>, NonTypeTemplateParameterType<T> { }
+
+// Requires: for every type T that is an integral type or enumeration type, a
+// concept map IntegralConstantExpressionType<T> is implicitly defined in
+// namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/integral_constant_expression_type.hpp>
+
+[section_in_n2914_heading `IntegralConstantExpressionType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

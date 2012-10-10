@@ -1,0 +1,42 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[h1 Preface]
+
+[:[*['["Being abstract is something profoundly different from being vague... The
+purpose of abstraction is not to be vague, but to create a new semantic level in
+which one can be absolutely precise.]]]]
+[:--Edsger Dijkstra]
+
+[note This library is not officially a part of Boost.]
+
+[h2 Description]
+
+[boost_generic] is a library that allows for the representation of [concepts] in
+standard C++, including many of the constructs and semantics of [n2914] along
+with the set of standard concepts that accompanied it. In order to accomplish
+this task in standard C++, [boost_generic] implements an
+Embedded Domain-Specific Language (EDSL) through the use of preprocessor
+metaprogramming.
+
+[h2 Example]
+
+TODO insert simple, but practical, example
+
+[h2 Motivation]
+
+Before the first C++ standard was even ratified, the STL made heavy use of
+generic programming. It defines and uses concepts, and defines algorithm
+requirements in terms of these concepts, however, most of the ideas are
+presented entirely in documentation without direct language support. Because of
+this, development of such libraries is fairly difficult and requires the
+introduction of hacks such as `iterator_traits` and [tag_dispatch]. For years,
+the C++ standards committee has been attempting to bring generic programming
+facilities directly into the language, and this library attempts to emulate one
+of the proposed approaches as a means for developers to work with its features
+in a portable manner prior to standardization.

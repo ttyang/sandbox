@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section ArithmeticType]
+
+[heading Description]
+Describes arithmetic types.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/arithmetic_type.hpp]
+
+[table ArithmeticType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[ArithmeticType]]
+[``
+concept ArithmeticType<typename T> : ScalarType<T> { }
+
+// Requires: for every type T that is an arithmetic type, a concept map
+// ArithmeticType<T> is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/arithmetic_type.hpp>
+
+[section_in_n2914_heading `ArithmeticType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

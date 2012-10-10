@@ -1,0 +1,36 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section HasSubscript]
+
+[heading Description]
+Describes arithmetic types.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/concepts/has_subscript.hpp]
+
+[table HasSubscript Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[HasSubscript]]
+[``
+
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/concepts/has_subscript.hpp>
+
+[section_in_n2914_heading `HasSubscript`..[['concept.operator]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

@@ -1,0 +1,40 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section VariableType]
+
+[heading Description]
+Describes types that can be used to declare a variable.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/variable_type.hpp]
+
+[table VariableType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[VariableType]]
+[``
+concept VariableType<typename T> : ReferentType<T> { }
+
+// Requires: for every type T that is an object type or reference type, but not
+// an abstract class, a concept map VariableType<T> is implicitly defined in
+// namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/variable_type.hpp>
+
+[section_in_n2914_heading `VariableType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

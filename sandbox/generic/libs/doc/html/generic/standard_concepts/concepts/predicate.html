@@ -1,0 +1,103 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Predicate</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="up" href="../concepts.html" title="Concepts">
+<link rel="prev" href="nothrowdestructible.html" title="NothrowDestructible">
+<link rel="next" href="regular.html" title="Regular">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav">
+<a accesskey="p" href="nothrowdestructible.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="regular.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="section generic_standard_concepts_concepts_predicate">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="generic.standard_concepts.concepts.predicate"></a><a class="link" href="predicate.html" title="Predicate">Predicate</a>
+</h4></div></div></div>
+<h6>
+<a name="generic.standard_concepts.concepts.predicate.h0"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.predicate.description"></a></span><a class="link" href="predicate.html#generic.standard_concepts.concepts.predicate.description">Description</a>
+        </h6>
+<p>
+          Describes arithmetic types.
+        </p>
+<h6>
+<a name="generic.standard_concepts.concepts.predicate.h1"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.predicate.definition"></a></span><a class="link" href="predicate.html#generic.standard_concepts.concepts.predicate.definition">Definition</a>
+        </h6>
+<div class="table">
+<a name="generic.standard_concepts.concepts.predicate.predicate_definition"></a><p class="title"><b>Table&#160;1.88.&#160;Predicate Definition</b></p>
+<div class="table-contents"><table class="table" summary="Predicate Definition">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Boost.Generic Definition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    N2914 Definition
+                  </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+<pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
+<span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><span class="identifier">Predicate</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">F</span><span class="special">,</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">,,,)</span> <span class="identifier">Args</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">public</span> <span class="identifier">Callable</span><span class="special">&lt;</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Args</span><span class="special">&amp;...</span> <span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span> <span class="keyword">typename</span> <span class="identifier">Callable</span><span class="special">&lt;</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Args</span><span class="special">&amp;...</span> <span class="special">&gt;::</span><span class="identifier">result_type</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">)</span>
+</pre>
+                </td>
+<td>
+                </td>
+</tr></tbody>
+</table></div>
+</div>
+<br class="table-break"><h6>
+<a name="generic.standard_concepts.concepts.predicate.h2"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.predicate.header"></a></span><a class="link" href="predicate.html#generic.standard_concepts.concepts.predicate.header">Header</a>
+        </h6>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">predicate</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<h6>
+<a name="generic.standard_concepts.concepts.predicate.h3"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.predicate.section_in_n2914"></a></span><a class="link" href="predicate.html#generic.standard_concepts.concepts.predicate.section_in_n2914">Section
+          in N2914</a>
+        </h6>
+<p>
+          The corresponding definition of <code class="computeroutput"><span class="identifier">Predicate</span></code>
+          may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+          section [<span class="emphasis"><em>concept.predicate</em></span>].
+        </p>
+<h6>
+<a name="generic.standard_concepts.concepts.predicate.h4"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.predicate.differences_from_n2914"></a></span><a class="link" href="predicate.html#generic.standard_concepts.concepts.predicate.differences_from_n2914">Differences
+          From N2914</a>
+        </h6>
+<p>
+          TODO: Fill this in
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2012 Matt Calabrese<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="nothrowdestructible.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="regular.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section FloatingPointType]
+
+[heading Description]
+Describes floating point types
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/floating_point_type.hpp]
+
+[table FloatingPointType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[FloatingPointType]]
+[``
+concept FloatingPointType<typename T> : ArithmeticType<T> { }
+
+// Requires: for every type T that is a floating point type, a concept map
+// FloatingPointType<T> is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/floating_point_type.hpp>
+
+[section_in_n2914_heading `FloatingPointType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

@@ -1,0 +1,111 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Getting Started</title>
+<link rel="stylesheet" href="../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="up" href="../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="prev" href="../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="next" href="standard_concepts.html" title="Standard Concepts">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="standard_concepts.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+<div class="section generic_getting_started">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="generic.getting_started"></a><a class="link" href="getting_started.html" title="Getting Started">Getting Started</a>
+</h2></div></div></div>
+<h4>
+<a name="generic.getting_started.h0"></a>
+      <span class="phrase"><a name="generic.getting_started.supported_compilers"></a></span><a class="link" href="getting_started.html#generic.getting_started.supported_compilers">Supported
+      Compilers</a>
+    </h4>
+<p>
+      <code class="literal">Boost.Generic</code> is written in standard C++, however, few compilers
+      are currently compliant enough to be able to handle the library. The currently
+      tested libraries that are able to handle <code class="literal">Boost.Generic</code> nearly
+      completely are <a href="http://clang.llvm.org/" target="_top">Clang</a> 3.1 and <a href="http://gcc.gnu.org/" target="_top">GCC</a> 4.7 (newer versions will likely work
+      as well). In particular, Microsoft's Visual C++ compiler is not capable of
+      handling <code class="literal">Boost.Generic</code>, due to its non-compliant preprocessor
+      implementation and lack of many standard C++11 features. Between GCC and Clang,
+      Clang compiles the <code class="literal">Boost.Generic</code> tests much more quickly.
+    </p>
+<h4>
+<a name="generic.getting_started.h1"></a>
+      <span class="phrase"><a name="generic.getting_started.dependencies"></a></span><a class="link" href="getting_started.html#generic.getting_started.dependencies">Dependencies</a>
+    </h4>
+<p>
+      Before using <code class="literal">Boost.Generic</code> you will need the latest <code class="literal">Boost</code>
+      from <a href="http://svn.boost.org/svn/boost/trunk" target="_top">trunk</a>, along
+      with the <code class="literal">variadic_macro_data</code> library from the <a href="http://svn.boost.org/svn/boost/sandbox/" target="_top">sandbox</a>
+      (the "variadic_macro_data" directory), and of course, <code class="literal">Boost.Generic</code>
+      from the <a href="http://svn.boost.org/svn/boost/sandbox/" target="_top">sandbox</a>
+      (the "generic" directory). Both libraries are header-only and so
+      they do not need to be built, although you may wish to build the included tests.
+      Simply adding the corresponding include paths when building an application
+      that uses <code class="literal">Boost.Generic</code> should be enough.
+    </p>
+<h4>
+<a name="generic.getting_started.h2"></a>
+      <span class="phrase"><a name="generic.getting_started.implementation_basis"></a></span><a class="link" href="getting_started.html#generic.getting_started.implementation_basis">Implementation
+      Basis</a>
+    </h4>
+<p>
+      This library is intended to implement the generic programming features and
+      concepts of <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+      (the last working paper of C++11 that had concepts before them being postponed
+      to a later standard). Note that this is very different from the approach that
+      is presented in <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3351.pdf" target="_top">N3351</a>.
+    </p>
+<h4>
+<a name="generic.getting_started.h3"></a>
+      <span class="phrase"><a name="generic.getting_started.standard_concept_implementations"></a></span><a class="link" href="getting_started.html#generic.getting_started.standard_concept_implementations">Standard
+      Concept Implementations</a>
+    </h4>
+<p>
+      By default, <code class="literal">Boost.Generic</code> standard concepts are preprocessed
+      in each translation unit that they are included. Due to the heavy usage of
+      preprocessor metaprogramming involved in the specification of concepts, this
+      can have a negative impact on compile times and cause complicated error messages
+      if your compiler provides "from macro expansion..." notes when it
+      encounters errors. Because of this, <code class="literal">Boost.Generic</code> also provides
+      preprocessed forms of all of the standard concepts that when used, can greatly
+      increase compilation speed and improve error messages considerably. Compilation
+      time of the <code class="literal">Boost.Generic</code> tests goes down by more than half
+      in both Clang and GCC when using the preprocessed headers.
+    </p>
+<h4>
+<a name="generic.getting_started.h4"></a>
+      <span class="phrase"><a name="generic.getting_started.enabling_use_of_preprocessed_con"></a></span><a class="link" href="getting_started.html#generic.getting_started.enabling_use_of_preprocessed_con">Enabling
+      Use of Preprocessed Concept Headers</a>
+    </h4>
+<p>
+      In order to use the preprocessed concept headers, two macros need to be defined.
+      This is most conveniently done using your compiler's command line option for
+      defining macros, such as <a href="http://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html#index-D-929" target="_top">GCC's
+      -D</a> (the same command-line option works in Clang as well). A synopsis
+      of what should be defined is as follows (replace "your_generic_path"
+      with the complete, global path to your <code class="literal">Boost.Generic</code> installation):
+    </p>
+<pre class="programlisting"><span class="comment">// NOTE: Do not use quotes around the path.</span>
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_GENERIC_PREPROCESSED_ROOT</span> <span class="identifier">your_generic_path</span><span class="special">/</span><span class="identifier">include</span><span class="special">/</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">gen</span>
+
+<span class="preprocessor">#define</span> <span class="identifier">BOOST_GENERIC_USE_PREPROCESSED_HEADERS</span>
+</pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2012 Matt Calabrese<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../index.html"><img src="../images/prev.png" alt="Prev"></a><a accesskey="u" href="../index.html"><img src="../images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../images/home.png" alt="Home"></a><a accesskey="n" href="standard_concepts.html"><img src="../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

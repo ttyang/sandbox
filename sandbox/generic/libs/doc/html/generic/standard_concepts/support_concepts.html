@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Support Concepts</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="up" href="../standard_concepts.html" title="Standard Concepts">
+<link rel="prev" href="../standard_concepts.html" title="Standard Concepts">
+<link rel="next" href="support_concepts/arithmetictype.html" title="ArithmeticType">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav">
+<a accesskey="p" href="../standard_concepts.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../standard_concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="support_concepts/arithmetictype.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section generic_standard_concepts_support_concepts">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generic.standard_concepts.support_concepts"></a><a class="link" href="support_concepts.html" title="Support Concepts">Support Concepts</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="support_concepts/arithmetictype.html">ArithmeticType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/enumerationtype.html">EnumerationType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/class.html">Class</a></span></dt>
+<dt><span class="section"><a href="support_concepts/classtype.html">ClassType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/derivedfrom.html">DerivedFrom</a></span></dt>
+<dt><span class="section"><a href="support_concepts/floatingpointtype.html">FloatingPointType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/integralconstantexpressiontype.html">IntegralConstantExpressionType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/integraltype.html">IntegralType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/literaltype.html">LiteralType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/memberpointeetype.html">MemberPointeeType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/nontypetemplateparametertype.html">NonTypeTemplateParameterType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/objecttype.html">ObjectType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/pointeetype.html">PointeeType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/polymorphicclass.html">PolymorphicClass</a></span></dt>
+<dt><span class="section"><a href="support_concepts/referenttype.html">ReferentType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/returnable.html">Returnable</a></span></dt>
+<dt><span class="section"><a href="support_concepts/sametype.html">SameType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/scalartype.html">ScalarType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/standardlayouttype.html">StandardLayoutType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/trivialtype.html">TrivialType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/union.html">Union</a></span></dt>
+<dt><span class="section"><a href="support_concepts/valuetype.html">ValueType</a></span></dt>
+<dt><span class="section"><a href="support_concepts/variabletype.html">VariableType</a></span></dt>
+</dl></div>
+<h5>
+<a name="generic.standard_concepts.support_concepts.h0"></a>
+        <span class="phrase"><a name="generic.standard_concepts.support_concepts.overview"></a></span><a class="link" href="support_concepts.html#generic.standard_concepts.support_concepts.overview">Overview</a>
+      </h5>
+<p>
+        The concepts described in this section correspond to the "support concepts"
+        of <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+        that are specified to be automatically defined in each translation unit.
+        Because this is not possible in a library-level implementation, these concepts
+        are instead contained in header files that must be explicitly included. This
+        may be done in one of two ways:
+      </p>
+<pre class="programlisting"><span class="comment">// Include all of the support concepts</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">support_concepts</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// -or-</span>
+
+<span class="comment">// Include the support concepts on a case-by-case basis</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">support_concepts</span><span class="special">/</span><span class="identifier">arithmetic_type</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">support_concepts</span><span class="special">/</span><span class="keyword">class</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="comment">// etc.</span>
+</pre>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+          These concepts as described in N2914 are generally [explicit_concepts],
+          but they are implemented in <code class="literal">Boost.Generic</code> as [auto_concepts]
+          with an internal [concept_requires_clause] that depends on the C++ standard
+          library type traits. This difference should generally not be noticeable
+          in practice when using the library, but it deserves mention.
+        </p></td></tr>
+</table></div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2012 Matt Calabrese<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../standard_concepts.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../standard_concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="support_concepts/arithmetictype.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

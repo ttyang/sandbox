@@ -1,0 +1,145 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Concepts</title>
+<link rel="stylesheet" href="../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="up" href="../standard_concepts.html" title="Standard Concepts">
+<link rel="prev" href="support_concepts/variabletype.html" title="VariableType">
+<link rel="next" href="concepts/arithmeticlike.html" title="ArithmeticLike">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav">
+<a accesskey="p" href="support_concepts/variabletype.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../standard_concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="concepts/arithmeticlike.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+<div class="section generic_standard_concepts_concepts">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="generic.standard_concepts.concepts"></a><a class="link" href="concepts.html" title="Concepts">Concepts</a>
+</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="concepts/arithmeticlike.html">ArithmeticLike</a></span></dt>
+<dt><span class="section"><a href="concepts/callable.html">Callable</a></span></dt>
+<dt><span class="section"><a href="concepts/constructible.html">Constructible</a></span></dt>
+<dt><span class="section"><a href="concepts/convertible.html">Convertible</a></span></dt>
+<dt><span class="section"><a href="concepts/copyassignable.html">CopyAssignable</a></span></dt>
+<dt><span class="section"><a href="concepts/copyconstructible.html">CopyConstructible</a></span></dt>
+<dt><span class="section"><a href="concepts/defaultconstructible.html">DefaultConstructible</a></span></dt>
+<dt><span class="section"><a href="concepts/equalitycomparable.html">EqualityComparable</a></span></dt>
+<dt><span class="section"><a href="concepts/equivalencerelation.html">EquivalenceRelation</a></span></dt>
+<dt><span class="section"><a href="concepts/explicitlyconvertible.html">ExplicitlyConvertible</a></span></dt>
+<dt><span class="section"><a href="concepts/floatingpointlike.html">FloatingPointLike</a></span></dt>
+<dt><span class="section"><a href="concepts/freestoreallocatable.html">FreeStoreAllocatable</a></span></dt>
+<dt><span class="section"><a href="concepts/hasaddressof.html">HasAddressOf</a></span></dt>
+<dt><span class="section"><a href="concepts/hasassign.html">HasAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasbitand.html">HasBitAnd</a></span></dt>
+<dt><span class="section"><a href="concepts/hasbitandassign.html">HasBitAndAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasbitor.html">HasBitOr</a></span></dt>
+<dt><span class="section"><a href="concepts/hasbitorassign.html">HasBitOrAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasbitxor.html">HasBitXor</a></span></dt>
+<dt><span class="section"><a href="concepts/hasbitxorassign.html">HasBitXorAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hascomma.html">HasComma</a></span></dt>
+<dt><span class="section"><a href="concepts/hascomplement.html">HasComplement</a></span></dt>
+<dt><span class="section"><a href="concepts/hasconstructor.html">HasConstructor</a></span></dt>
+<dt><span class="section"><a href="concepts/hasdereference.html">HasDereference</a></span></dt>
+<dt><span class="section"><a href="concepts/hasdestructor.html">HasDestructor</a></span></dt>
+<dt><span class="section"><a href="concepts/hasdivide.html">HasDivide</a></span></dt>
+<dt><span class="section"><a href="concepts/hasdivideassign.html">HasDivideAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasequalto.html">HasEqualTo</a></span></dt>
+<dt><span class="section"><a href="concepts/hasgreater.html">HasGreater</a></span></dt>
+<dt><span class="section"><a href="concepts/hasgreaterequal.html">HasGreaterEqual</a></span></dt>
+<dt><span class="section"><a href="concepts/hasleftshift.html">HasLeftShift</a></span></dt>
+<dt><span class="section"><a href="concepts/hasleftshiftassign.html">HasLeftShiftAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasless.html">HasLess</a></span></dt>
+<dt><span class="section"><a href="concepts/haslessequal.html">HasLessEqual</a></span></dt>
+<dt><span class="section"><a href="concepts/haslogicaland.html">HasLogicalAnd</a></span></dt>
+<dt><span class="section"><a href="concepts/haslogicalnot.html">HasLogicalNot</a></span></dt>
+<dt><span class="section"><a href="concepts/haslogicalor.html">HasLogicalOr</a></span></dt>
+<dt><span class="section"><a href="concepts/hasminus.html">HasMinus</a></span></dt>
+<dt><span class="section"><a href="concepts/hasminusassign.html">HasMinusAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasmodulus.html">HasModulus</a></span></dt>
+<dt><span class="section"><a href="concepts/hasmodulusassign.html">HasModulusAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasmultiply.html">HasMultiply</a></span></dt>
+<dt><span class="section"><a href="concepts/hasmultiplyassign.html">HasMultiplyAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hasnegate.html">HasNegate</a></span></dt>
+<dt><span class="section"><a href="concepts/hasnotequalto.html">HasNotEqualTo</a></span></dt>
+<dt><span class="section"><a href="concepts/hasplus.html">HasPlus</a></span></dt>
+<dt><span class="section"><a href="concepts/hasplusassign.html">HasPlusAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/haspostincrement.html">HasPostincrement</a></span></dt>
+<dt><span class="section"><a href="concepts/haspostdecrement.html">HasPostdecrement</a></span></dt>
+<dt><span class="section"><a href="concepts/haspredecrement.html">HasPredecrement</a></span></dt>
+<dt><span class="section"><a href="concepts/haspreincrement.html">HasPreincrement</a></span></dt>
+<dt><span class="section"><a href="concepts/hasrightshift.html">HasRightShift</a></span></dt>
+<dt><span class="section"><a href="concepts/hasrightshiftassign.html">HasRightShiftAssign</a></span></dt>
+<dt><span class="section"><a href="concepts/hassubscript.html">HasSubscript</a></span></dt>
+<dt><span class="section"><a href="concepts/hasswap.html">HasSwap</a></span></dt>
+<dt><span class="section"><a href="concepts/hasunaryplus.html">HasUnaryPlus</a></span></dt>
+<dt><span class="section"><a href="concepts/hasvirtualdestructor.html">HasVirtualDestructor</a></span></dt>
+<dt><span class="section"><a href="concepts/identityof.html">IdentityOf</a></span></dt>
+<dt><span class="section"><a href="concepts/integrallike.html">IntegralLike</a></span></dt>
+<dt><span class="section"><a href="concepts/lessthancomparable.html">LessThanComparable</a></span></dt>
+<dt><span class="section"><a href="concepts/lvaluereference.html">LvalueReference</a></span></dt>
+<dt><span class="section"><a href="concepts/moveassignable.html">MoveAssignable</a></span></dt>
+<dt><span class="section"><a href="concepts/moveconstructible.html">MoveConstructible</a></span></dt>
+<dt><span class="section"><a href="concepts/nothrowdestructible.html">NothrowDestructible</a></span></dt>
+<dt><span class="section"><a href="concepts/predicate.html">Predicate</a></span></dt>
+<dt><span class="section"><a href="concepts/regular.html">Regular</a></span></dt>
+<dt><span class="section"><a href="concepts/rvalueof.html">RvalueOf</a></span></dt>
+<dt><span class="section"><a href="concepts/rvaluereference.html">RvalueReference</a></span></dt>
+<dt><span class="section"><a href="concepts/semiregular.html">Semiregular</a></span></dt>
+<dt><span class="section"><a href="concepts/signedintegrallike.html">SignedIntegralLike</a></span></dt>
+<dt><span class="section"><a href="concepts/strictweakorder.html">StrictWeakOrder</a></span></dt>
+<dt><span class="section"><a href="concepts/swappable.html">Swappable</a></span></dt>
+<dt><span class="section"><a href="concepts/triviallycopyassignable.html">TriviallyCopyAssignable</a></span></dt>
+<dt><span class="section"><a href="concepts/triviallycopyconstructible.html">TriviallyCopyConstructible</a></span></dt>
+<dt><span class="section"><a href="concepts/triviallydefaultconstructible.html">TriviallyDefaultConstructible</a></span></dt>
+<dt><span class="section"><a href="concepts/triviallydestructible.html">TriviallyDestructible</a></span></dt>
+<dt><span class="section"><a href="concepts/true.html">True</a></span></dt>
+<dt><span class="section"><a href="concepts/unsignedintegrallike.html">UnsignedIntegralLike</a></span></dt>
+</dl></div>
+<h5>
+<a name="generic.standard_concepts.concepts.h0"></a>
+        <span class="phrase"><a name="generic.standard_concepts.concepts.overview"></a></span><a class="link" href="concepts.html#generic.standard_concepts.concepts.overview">Overview</a>
+      </h5>
+<p>
+        The concepts described in this section correspond to those in the <code class="computeroutput"><span class="special">&lt;</span><span class="identifier">concepts</span><span class="special">&gt;</span></code> header of <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+        as specified in [<span class="emphasis"><em>utility.concepts</em></span>]. These concepts provide
+        requirements on template arguments used throughout the C++ Standard Library.
+        Concepts whose name is prefixed with <code class="computeroutput"><span class="identifier">Has</span></code>
+        provide detection of a specific syntax (e.g., <code class="computeroutput"><span class="identifier">HasConstructor</span></code>),
+        but do not imply the semantics of the corresponding operation. Concepts whose
+        name has the <code class="computeroutput"><span class="identifier">able</span></code> or <code class="computeroutput"><span class="identifier">ible</span></code> suffix (e.g., <code class="computeroutput"><span class="identifier">Constructible</span></code>)
+        require both a specific syntax and semantics of the associated operations.
+        These semantic concepts refine the corresponding syntax-detection concepts,
+        for example, the <code class="computeroutput"><span class="identifier">Constructible</span></code>
+        concept refines the <code class="computeroutput"><span class="identifier">HasConstructor</span></code>
+        concept.
+      </p>
+<p>
+        Inclusion of the concepts of this section may be done in one of two ways:
+      </p>
+<pre class="programlisting"><span class="comment">// Include all of the support concepts</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+
+<span class="comment">// -or-</span>
+
+<span class="comment">// Include the support concepts on a case-by-case basis</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">arithmetic_like</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">callable</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+<span class="comment">// etc.</span>
+</pre>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2012 Matt Calabrese<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="support_concepts/variabletype.html"><img src="../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../standard_concepts.html"><img src="../../images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../images/home.png" alt="Home"></a><a accesskey="n" href="concepts/arithmeticlike.html"><img src="../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

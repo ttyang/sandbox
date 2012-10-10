@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section ClassType]
+
+[heading Description]
+Describes class types (i.e., unions, classes, and structs).
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/class_type.hpp]
+
+[table ClassType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[ClassType]]
+[``
+concept ClassType<typename T> : ObjectType<T> { }
+
+// Requires: for every type T that is a class type, a concept map ClassType<T>
+// is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/class_type.hpp>
+
+[section_in_n2914_heading `ClassType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

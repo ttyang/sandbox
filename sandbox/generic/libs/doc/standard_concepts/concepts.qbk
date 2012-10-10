@@ -1,0 +1,115 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Concepts]
+
+[heading Overview]
+
+The concepts described in this section correspond to those in the `<concepts>`
+header of [n2914] as specified in [['utility.concepts]]. These concepts provide
+requirements on template arguments used throughout the C++ Standard Library.
+Concepts whose name is prefixed with `Has` provide detection of a specific
+syntax (e.g., `HasConstructor`), but do not imply the semantics of the
+corresponding operation. Concepts whose name has the `able` or `ible` suffix
+(e.g., `Constructible`) require both a specific syntax and semantics of the
+associated operations. These semantic concepts refine the corresponding
+syntax-detection concepts, for example, the `Constructible` concept refines the
+`HasConstructor` concept.
+
+Inclusion of the concepts of this section may be done in one of two ways:
+
+ // Include all of the support concepts
+ #include <boost/generic/std_concept/concepts.hpp>
+
+ // -or-
+
+ // Include the support concepts on a case-by-case basis
+ #include <boost/generic/std_concept/concepts/arithmetic_like.hpp>
+ #include <boost/generic/std_concept/concepts/callable.hpp>
+ // etc.
+
+[include concepts/arithmetic_like.qbk]
+[include concepts/callable.qbk]
+[include concepts/constructible.qbk]
+[include concepts/convertible.qbk]
+[include concepts/copy_assignable.qbk]
+[include concepts/copy_constructible.qbk]
+[include concepts/default_constructible.qbk]
+[include concepts/equality_comparable.qbk]
+[include concepts/equivalence_relation.qbk]
+[include concepts/explicitly_convertible.qbk]
+[include concepts/floating_point_like.qbk]
+[include concepts/free_store_allocatable.qbk]
+[include concepts/has_address_of.qbk]
+[include concepts/has_assign.qbk]
+[include concepts/has_bit_and.qbk]
+[include concepts/has_bit_and_assign.qbk]
+[include concepts/has_bit_or.qbk]
+[include concepts/has_bit_or_assign.qbk]
+[include concepts/has_bit_xor.qbk]
+[include concepts/has_bit_xor_assign.qbk]
+[include concepts/has_comma.qbk]
+[include concepts/has_complement.qbk]
+[include concepts/has_constructor.qbk]
+[include concepts/has_dereference.qbk]
+[include concepts/has_destructor.qbk]
+[include concepts/has_divide.qbk]
+[include concepts/has_divide_assign.qbk]
+[include concepts/has_equal_to.qbk]
+[include concepts/has_greater.qbk]
+[include concepts/has_greater_equal.qbk]
+[include concepts/has_left_shift.qbk]
+[include concepts/has_left_shift_assign.qbk]
+[include concepts/has_less.qbk]
+[include concepts/has_less_equal.qbk]
+[include concepts/has_logical_and.qbk]
+[include concepts/has_logical_not.qbk]
+[include concepts/has_logical_or.qbk]
+[include concepts/has_minus.qbk]
+[include concepts/has_minus_assign.qbk]
+[include concepts/has_modulus.qbk]
+[include concepts/has_modulus_assign.qbk]
+[include concepts/has_multiply.qbk]
+[include concepts/has_multiply_assign.qbk]
+[include concepts/has_negate.qbk]
+[include concepts/has_not_equal_to.qbk]
+[include concepts/has_plus.qbk]
+[include concepts/has_plus_assign.qbk]
+[include concepts/has_postincrement.qbk]
+[include concepts/has_postdecrement.qbk]
+[include concepts/has_predecrement.qbk]
+[include concepts/has_preincrement.qbk]
+[include concepts/has_right_shift.qbk]
+[include concepts/has_right_shift_assign.qbk]
+[include concepts/has_subscript.qbk]
+[include concepts/has_swap.qbk]
+[include concepts/has_unary_plus.qbk]
+[include concepts/has_virtual_destructor.qbk]
+[include concepts/identity_of.qbk]
+[include concepts/integral_like.qbk]
+[include concepts/less_than_comparable.qbk]
+[include concepts/lvalue_reference.qbk]
+[include concepts/move_assignable.qbk]
+[include concepts/move_constructible.qbk]
+[include concepts/nothrow_destructible.qbk]
+[include concepts/predicate.qbk]
+[include concepts/regular.qbk]
+[include concepts/rvalue_of.qbk]
+[include concepts/rvalue_reference.qbk]
+[include concepts/semiregular.qbk]
+[include concepts/signed_integral_like.qbk]
+[include concepts/strict_weak_order.qbk]
+[include concepts/swappable.qbk]
+[include concepts/trivially_copy_assignable.qbk]
+[include concepts/trivially_copy_constructible.qbk]
+[include concepts/trivially_default_constructible.qbk]
+[include concepts/trivially_destructible.qbk]
+[include concepts/true.qbk]
+[include concepts/unsigned_integral_like.qbk]
+
+[endsect]

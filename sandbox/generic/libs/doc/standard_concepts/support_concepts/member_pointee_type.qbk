@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberPointeeType]
+
+[heading Description]
+Describes types to which a pointer-to-member can be created.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/member_pointee_type.hpp]
+
+[table MemberPointeeType Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberPointeeType]]
+[``
+concept MemberPointeeType<typename T> { }
+
+// Requires: for every type T that is an object type or function type, a concept
+// map MemberPointeeType<T> is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/member_pointee_type.hpp>
+
+[section_in_n2914_heading `MemberPointeeType`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Chapter&#160;1.&#160;Generic</title>
+<link rel="stylesheet" href="boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="next" href="generic/getting_started.html" title="Getting Started">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav"><a accesskey="n" href="generic/getting_started.html"><img src="images/next.png" alt="Next"></a></div>
+<div class="chapter">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="generic"></a>Chapter&#160;1.&#160;Generic</h2></div>
+<div><div class="authorgroup"><div class="author"><h3 class="author">
+<span class="firstname">Matt</span> <span class="surname">Calabrese</span>
+</h3></div></div></div>
+<div><p class="copyright">Copyright &#169; 2010-2012 Matt Calabrese</p></div>
+<div><div class="legalnotice">
+<a name="generic.legal"></a><p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></div>
+</div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section"><a href="generic/getting_started.html">Getting Started</a></span></dt>
+<dt><span class="section"><a href="generic/standard_concepts.html">Standard Concepts</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="generic/standard_concepts/support_concepts.html">Support Concepts</a></span></dt>
+<dt><span class="section"><a href="generic/standard_concepts/concepts.html">Concepts</a></span></dt>
+<dt><span class="section"><a href="generic/standard_concepts/iterator_concepts.html">Iterator
+      Concepts</a></span></dt>
+<dt><span class="section"><a href="generic/standard_concepts/memory_concepts.html">Memory Concepts</a></span></dt>
+<dt><span class="section"><a href="generic/standard_concepts/container_concepts.html">Container
+      Concepts</a></span></dt>
+</dl></dd>
+<dt><span class="section"><a href="generic/future_direction.html">Future Direction</a></span></dt>
+<dt><span class="section"><a href="generic/acknowledgments.html">Acknowledgments</a></span></dt>
+</dl>
+</div>
+<h2>
+<a name="generic.h0"></a>
+    <span class="phrase"><a name="generic.preface"></a></span><a class="link" href="index.html#generic.preface">Preface</a>
+  </h2>
+<div class="blockquote"><blockquote class="blockquote"><p>
+      <span class="bold"><strong><span class="emphasis"><em><span class="quote">&#8220;<span class="quote">Being abstract is something profoundly
+      different from being vague... The purpose of abstraction is not to be vague,
+      but to create a new semantic level in which one can be absolutely precise.</span>&#8221;</span></em></span></strong></span>
+    </p></blockquote></div>
+<div class="blockquote"><blockquote class="blockquote"><p>
+      --Edsger Dijkstra
+    </p></blockquote></div>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>
+      This library is not officially a part of Boost.
+    </p></td></tr>
+</table></div>
+<h3>
+<a name="generic.h1"></a>
+    <span class="phrase"><a name="generic.description"></a></span><a class="link" href="index.html#generic.description">Description</a>
+  </h3>
+<p>
+    <code class="literal">Boost.Generic</code> is a library that allows for the representation
+    of <a href="http://www.generic-programming.org/about/glossary.php?term=concept" target="_top">concepts</a>
+    in standard C++, including many of the constructs and semantics of <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+    along with the set of standard concepts that accompanied it. In order to accomplish
+    this task in standard C++, <code class="literal">Boost.Generic</code> implements an Embedded
+    Domain-Specific Language (EDSL) through the use of preprocessor metaprogramming.
+  </p>
+<h3>
+<a name="generic.h2"></a>
+    <span class="phrase"><a name="generic.example"></a></span><a class="link" href="index.html#generic.example">Example</a>
+  </h3>
+<p>
+    TODO insert simple, but practical, example
+  </p>
+<h3>
+<a name="generic.h3"></a>
+    <span class="phrase"><a name="generic.motivation"></a></span><a class="link" href="index.html#generic.motivation">Motivation</a>
+  </h3>
+<p>
+    Before the first C++ standard was even ratified, the STL made heavy use of generic
+    programming. It defines and uses concepts, and defines algorithm requirements
+    in terms of these concepts, however, most of the ideas are presented entirely
+    in documentation without direct language support. Because of this, development
+    of such libraries is fairly difficult and requires the introduction of hacks
+    such as <code class="computeroutput"><span class="identifier">iterator_traits</span></code> and
+    <a href="http://www.boost.org/community/generic_programming.html#tag_dispatching" target="_top">tag
+    dispatch</a>. For years, the C++ standards committee has been attempting
+    to bring generic programming facilities directly into the language, and this
+    library attempts to emulate one of the proposed approaches as a means for developers
+    to work with its features in a portable manner prior to standardization.
+  </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer"></div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav"><a accesskey="n" href="generic/getting_started.html"><img src="images/next.png" alt="Next"></a></div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Returnable]
+
+[heading Description]
+Describes types that can be used as the return type of a function.
+
+[note A move-only type that can be constructed from an rvalue reference can be
+`Returnable` without being `CopyConstructible`.]
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/returnable.hpp]
+
+[table Returnable Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[Returnable]]
+[``
+concept Returnable<typename T> { }
+
+// Requires: for every non-array type T that is cv void or that provides a copy
+// operation suitable for use in a return statement (6.6.3) and is not an
+// abstract class, the concept map Returnable<T> is implicitly defined in
+// namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/returnable.hpp>
+
+[section_in_n2914_heading `Returnable`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

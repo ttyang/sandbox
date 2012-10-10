@@ -1,0 +1,25 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[heading Introduction]
+
+The concepts presented in this section correspond to the concepts contained in
+[n2914] as closely as is feasible without direct language support, and with
+minor updates corresponding to features of C++11 that were not in the working
+paper at the time that concepts were postponed (such as `noexcept`). For
+convenience and additional documentation, each concept presented in this section
+includes the actual in-code definition as well as the corresponding section in
+[n2914] that contains the concept specification, explaining any differences
+between a given library implementation and its working paper definition.
+
+[tip It is highly recommended that before using the standard concepts of
+[boost_generic] you enable the library's internal use of preprocessed headers as
+described [link generic.getting_started.enabling_use_of_preprocessed_con here].
+Doing so can dramatically decrease compilation time for code that uses
+[boost_generic] standard concepts and also simplifies any error messages
+produced by the library.]

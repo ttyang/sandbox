@@ -1,0 +1,60 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section ArithmeticLike]
+
+[heading Description]
+Describes types that provide all of the operations available on arithmetic types
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/concepts/arithmetic_like.hpp]
+
+[table ArithmeticLike Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[ArithmeticLike]]
+[``
+concept ArithmeticLike<typename T>
+  : Regular<T>, LessThanComparable<T>, HasUnaryPlus<T>, HasNegate<T>,
+    HasPlus<T, T>, HasMinus<T, T>, HasMultiply<T, T>, HasDivide<T, T>,
+    HasPreincrement<T>, HasPostincrement<T>, HasPredecrement<T>, HasPostdecrement<T>,
+    HasPlusAssign<T, const T&>, HasMinusAssign<T, const T&>,
+    HasMultiplyAssign<T, const T&>, HasDivideAssign<T, const T&> {
+explicit T::T(intmax_t);
+explicit T::T(uintmax_t);
+explicit T::T(long double);
+
+requires Convertible<HasUnaryPlus<T>::result_type, T>
+      && Convertible<HasNegate<T>::result_type, T>
+      && Convertible<HasPlus<T, T>::result_type, T>
+      && Convertible<HasMinus<T, T>::result_type, T>
+      && Convertible<HasMultiply<T, T>::result_type, T>
+      && Convertible<HasDivide<T, T>::result_type, T>
+      && SameType<HasPreincrement<T>::result_type, T&>
+      && SameType<HasPostincrement<T>::result_type, T>
+      && SameType<HasPredecrement<T>::result_type, T&>
+      && SameType<HasPostdecrement<T>::result_type, T>
+      && SameType<HasPlusAssign<T, const T&>::result_type, T&>
+      && SameType<HasMinusAssign<T, const T&>::result_type, T&>
+      && SameType<HasMultiplyAssign<T, const T&>::result_type, T&>
+      && SameType<HasDivideAssign<T, const T&>::result_type, T&>;
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/concepts/arithmetic_like.hpp>
+
+[section_in_n2914_heading `ArithmeticLike`..[['concept.arithmetic]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

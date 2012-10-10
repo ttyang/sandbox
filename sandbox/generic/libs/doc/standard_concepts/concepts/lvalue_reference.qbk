@@ -1,0 +1,36 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section LvalueReference]
+
+[heading Description]
+Describes arithmetic types.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/concepts/lvalue_reference.hpp]
+
+[table LvalueReference Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[LvalueReference]]
+[``
+
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/concepts/lvalue_reference.hpp>
+
+[section_in_n2914_heading `LvalueReference`..[['concept.classify]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

@@ -1,0 +1,66 @@
+[/==============================================================================
+    Copyright (C) 2011-2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Getting Started]
+
+[heading Supported Compilers]
+
+[boost_generic] is written in standard C++, however, few compilers are currently
+compliant enough to be able to handle the library. The currently tested
+libraries that are able to handle [boost_generic] nearly completely are [clang]
+3.1 and [gcc] 4.7 (newer versions will likely work as well). In particular,
+Microsoft's Visual C++ compiler is not capable of handling [boost_generic], due
+to its non-compliant preprocessor implementation and lack of many standard C++11
+features. Between GCC and Clang, Clang compiles the [boost_generic] tests much
+more quickly.
+
+[heading Dependencies]
+
+Before using [boost_generic] you will need the latest =Boost= from [trunk],
+along with the =variadic_macro_data= library from the [sandbox] (the
+"variadic_macro_data" directory), and of course, [boost_generic] from the
+[sandbox] (the "generic" directory). Both libraries are header-only and so they
+do not need to be built, although you may wish to build the included tests.
+Simply adding the corresponding include paths when building an application that
+uses [boost_generic] should be enough.
+
+[heading Implementation Basis]
+
+This library is intended to implement the generic programming features and
+concepts of [n2914] (the last working paper of C++11 that had concepts before
+them being postponed to a later standard). Note that this is very different from
+the approach that is presented in [n3351].
+
+[heading Standard Concept Implementations]
+
+By default, [boost_generic] standard concepts are preprocessed in each
+translation unit that they are included. Due to the heavy usage of preprocessor
+metaprogramming involved in the specification of concepts, this can have a
+negative impact on compile times and cause complicated error messages if your
+compiler provides "from macro expansion..." notes when it encounters errors.
+Because of this, [boost_generic] also provides preprocessed forms of all of the
+standard concepts that when used, can greatly increase compilation speed and
+improve error messages considerably. Compilation time of the [boost_generic]
+tests goes down by more than half in both Clang and GCC when using the
+preprocessed headers.
+
+[heading Enabling Use of Preprocessed Concept Headers]
+
+In order to use the preprocessed concept headers, two macros need to be defined.
+This is most conveniently done using your compiler's command line option for
+defining macros, such as [gcc_cl_define] (the same command-line option works in
+Clang as well). A synopsis of what should be defined is as follows (replace
+"your_generic_path" with the complete, global path to your [boost_generic]
+installation):
+
+ // NOTE: Do not use quotes around the path.
+ #define BOOST_GENERIC_PREPROCESSED_ROOT your_generic_path/include/boost/gen
+
+ #define BOOST_GENERIC_USE_PREPROCESSED_HEADERS
+
+[endsect]

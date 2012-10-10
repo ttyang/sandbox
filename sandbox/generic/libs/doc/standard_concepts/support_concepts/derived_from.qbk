@@ -1,0 +1,41 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section DerivedFrom]
+
+[heading Description]
+Describes types that are the same or that are unambiguously related by public
+inheritance.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/support_concepts/derived_from.hpp]
+
+[table DerivedFrom Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[DerivedFrom]]
+[``
+concept DerivedFrom<typename Derived, typename Base> { }
+
+// Requires: for every pair of class types (T, U), such that T is either the
+// same as or publicly and unambiguously derived from U, a concept map
+// DerivedFrom<T, U> is implicitly defined in namespace std.
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/support_concepts/derived_from.hpp>
+
+[section_in_n2914_heading `DerivedFrom`..[['concept.support]]]
+
+[heading Differences From N2914]
+
+[intrinsic_concept_differences]
+
+[endsect]

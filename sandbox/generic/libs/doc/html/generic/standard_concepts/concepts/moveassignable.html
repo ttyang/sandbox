@@ -1,0 +1,104 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>MoveAssignable</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="up" href="../concepts.html" title="Concepts">
+<link rel="prev" href="lvaluereference.html" title="LvalueReference">
+<link rel="next" href="moveconstructible.html" title="MoveConstructible">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav">
+<a accesskey="p" href="lvaluereference.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="moveconstructible.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="section generic_standard_concepts_concepts_moveassignable">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="generic.standard_concepts.concepts.moveassignable"></a><a class="link" href="moveassignable.html" title="MoveAssignable">MoveAssignable</a>
+</h4></div></div></div>
+<h6>
+<a name="generic.standard_concepts.concepts.moveassignable.h0"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.moveassignable.description"></a></span><a class="link" href="moveassignable.html#generic.standard_concepts.concepts.moveassignable.description">Description</a>
+        </h6>
+<p>
+          Describes arithmetic types.
+        </p>
+<h6>
+<a name="generic.standard_concepts.concepts.moveassignable.h1"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.moveassignable.definition"></a></span><a class="link" href="moveassignable.html#generic.standard_concepts.concepts.moveassignable.definition">Definition</a>
+        </h6>
+<div class="table">
+<a name="generic.standard_concepts.concepts.moveassignable.moveassignable_definition"></a><p class="title"><b>Table&#160;1.85.&#160;MoveAssignable Definition</b></p>
+<div class="table-contents"><table class="table" summary="MoveAssignable Definition">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Boost.Generic Definition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    N2914 Definition
+                  </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+<pre class="programlisting"><span class="identifier">BOOST_GENERIC_AUTO_CONCEPT</span>
+<span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><span class="identifier">MoveAssignable</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">public</span> <span class="identifier">HasAssign</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span><span class="identifier">T</span><span class="special">&amp;&amp;&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">RvalueOf</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">HasAssign</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">RvalueOf</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span> <span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">)</span>
+</pre>
+                </td>
+<td>
+                </td>
+</tr></tbody>
+</table></div>
+</div>
+<br class="table-break"><h6>
+<a name="generic.standard_concepts.concepts.moveassignable.h2"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.moveassignable.header"></a></span><a class="link" href="moveassignable.html#generic.standard_concepts.concepts.moveassignable.header">Header</a>
+        </h6>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">concepts</span><span class="special">/</span><span class="identifier">move_assignable</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<h6>
+<a name="generic.standard_concepts.concepts.moveassignable.h3"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.moveassignable.section_in_n2914"></a></span><a class="link" href="moveassignable.html#generic.standard_concepts.concepts.moveassignable.section_in_n2914">Section
+          in N2914</a>
+        </h6>
+<p>
+          The corresponding definition of <code class="computeroutput"><span class="identifier">MoveAssignable</span></code>
+          may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+          section [<span class="emphasis"><em>concept.copymove</em></span>].
+        </p>
+<h6>
+<a name="generic.standard_concepts.concepts.moveassignable.h4"></a>
+          <span class="phrase"><a name="generic.standard_concepts.concepts.moveassignable.differences_from_n2914"></a></span><a class="link" href="moveassignable.html#generic.standard_concepts.concepts.moveassignable.differences_from_n2914">Differences
+          From N2914</a>
+        </h6>
+<p>
+          TODO: Fill this in
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2012 Matt Calabrese<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="lvaluereference.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../concepts.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="moveconstructible.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>
