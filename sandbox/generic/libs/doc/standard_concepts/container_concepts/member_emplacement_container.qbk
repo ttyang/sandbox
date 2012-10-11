@@ -1,0 +1,49 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberEmplacementContainer]
+
+[heading Description]
+Describes a container, in terms of member functions, that can be modified by
+constructing elements at any position within the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/member_emplacement_container.hpp]
+
+[table MemberEmplacementContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberEmplacementContainer]]
+[``
+auto concept MemberEmplacementContainer<typename C, typename... Args> : MemberInsertionContainer<C> {
+  void C::emplace(const_iterator position, Args&&... args);
+
+  requires Constructible<value_type, Args...>
+    axiom MemberEmplacement(C c, const_iterator position, Args... args) {
+      value_type(args...) == *c.emplace(position, args...);
+  }
+
+  requires MemberInsertionContainer<C> && Constructible<value_type, Args...>
+    axiom MemberEmplacementPushEquivalence(C c, const_iterator position, Args... args) {
+      *c.emplace(position, args...) == *c.insert(position, value_type(args...));
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/member_emplacement_container.hpp>
+
+[section_in_n2914_heading `MemberEmplacementContainer`..[['container.concepts.member]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

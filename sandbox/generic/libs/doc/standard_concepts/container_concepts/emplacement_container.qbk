@@ -1,0 +1,49 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section EmplacementContainer]
+
+[heading Description]
+Describes a container that can be modified by constructing elements at any
+position within the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/emplacement_container.hpp]
+
+[table EmplacementContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[EmplacementContainer]]
+[``
+concept EmplacementContainer<typename C, typename... Args> : Container<C> {
+  iterator emplace(C& c, const_iterator position, Args&&... args);
+
+  requires Constructible<value_type, Args...>
+    axiom Emplacement(C c, const_iterator position, Args... args) {
+      value_type(args...) == *emplace(c, position, args...);
+  }
+
+  requires InsertionContainer<C> && Constructible<value_type, Args...>
+    axiom EmplacementPushEquivalence(C c, const_iterator position, Args... args) {
+      *emplace(c, position, args...) == *insert(c, position, value_type(args...));
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/emplacement_container.hpp>
+
+[section_in_n2914_heading `EmplacementContainer`..[['container.concepts.free]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

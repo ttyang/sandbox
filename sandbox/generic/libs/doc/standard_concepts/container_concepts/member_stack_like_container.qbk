@@ -1,0 +1,54 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberStackLikeContainer]
+
+[heading Description]
+Describes a container, in terms of member functions, that can be modified by
+adding or removing elements from the back of the container.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/member_stack_like_container.hpp]
+
+[table MemberStackLikeContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberStackLikeContainer]]
+[``
+auto concept MemberStackLikeContainer<typename C> : MemberBackInsertionContainer<C> {
+  reference C::back();
+  const_reference C::back() const;
+
+  void C::pop_back();
+
+  requires BidirectionalIterator<iterator> axiom MemberAccessBack(C c) {
+    if (c.begin() != c.end()) c.back() == *(--c.end());
+  }
+
+  axiom MemberBackInsertion(C c, value_type x) {
+    x == (c.push_back(x), c.back());
+  }
+
+  axiom MemberBackRemoval(C c, value_type x) {
+    c == (c.push_back(x), c.pop_back(), c);
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/member_stack_like_container.hpp>
+
+[section_in_n2914_heading `MemberStackLikeContainer`..[['container.concepts.member]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

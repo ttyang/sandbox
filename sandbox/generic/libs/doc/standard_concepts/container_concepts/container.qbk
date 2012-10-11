@@ -1,0 +1,83 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section Container]
+
+[heading Description]
+Describes a container which provides iteration through a sequence of elements
+stored in the container.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/container.hpp]
+
+[table Container Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[Container]]
+[``
+concept Container<typename C> {
+  ObjectType value_type = typename C::value_type;
+  typename reference = typename C::reference;
+  typename const_reference = typename C::const_reference;
+  UnsignedIntegralLike size_type = typename C::size_type;
+
+  ForwardIterator iterator;
+  ForwardIterator const_iterator;
+
+  requires Convertible<reference, const_reference>
+        && Convertible<reference, const value_type&>
+        && Convertible<const_reference, const value_type&>;
+        && Convertible<iterator, const_iterator>
+        && SameType<ForwardIterator<iterator>::value_type, value_type>
+        && SameType<ForwardIterator<const_iterator>::value_type, value_type>
+        && Convertible<ForwardIterator<iterator>::reference, reference>
+        && Convertible<ForwardIterator<const_iterator>::reference, const_reference>
+        && SameType<ForwardIterator<iterator>::difference_type,
+                    ForwardIterator<const_iterator>::difference_type>
+        && IntegralType<size_type>
+        && Convertible<ForwardIterator<iterator>::difference_type, size_type>;
+
+  bool empty(const C& c) { return begin(c) == end(c); }
+  size_type size(const C& c) { return distance(begin(c), end(c)); }
+
+  iterator begin(C&);
+  const_iterator begin(const C&);
+  iterator end(C&);
+  const_iterator end(const C&);
+  const_iterator cbegin(const C& c) { return begin(c); }
+  const_iterator cend(const C& c) { return end(c); }
+  reference front(C& c) { return *begin(c); }
+  const_reference front(const C& c) { return *begin(c); }
+
+  axiom AccessFront(C c) {
+    if (begin(c) != end(c)) front(c) == *begin(c);
+  }
+
+  axiom ContainerSize(C c) {
+    (begin(c) == end(c)) == empty(c);
+    (begin(c) != end(c)) == (size(c) > 0);
+  }
+}
+``]]
+]
+
+[heading Additional Requirements]
+For a (possibly `const`-qualified) container `c`, `[begin(c), end(c))` is a
+valid range.
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/container.hpp>
+
+[section_in_n2914_heading `Container`..[['container.concepts.free]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

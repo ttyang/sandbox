@@ -1,0 +1,40 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberQueueLikeContainer]
+
+[heading Description]
+Describes a container, in terms of member functions, that can be modified by
+adding elements to the back or removing elements from the front of the
+container.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/member_queue_like_container.hpp]
+
+[table MemberQueueLikeContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberQueueLikeContainer]]
+[``
+auto concept MemberQueueLikeContainer<typename C> : MemberBackInsertionContainer<C> {
+  void C::pop_front();
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/member_queue_like_container.hpp>
+
+[section_in_n2914_heading `MemberQueueLikeContainer`..[['container.concepts.member]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

@@ -1,0 +1,43 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberFrontInsertionContainer]
+
+[heading Description]
+Describes a container, in terms of member functions, that can be modified by
+adding elements to the front of the container
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/member_front_insertion_container.hpp]
+
+[table MemberFrontInsertionContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberFrontInsertionContainer]]
+[``
+auto concept MemberFrontInsertionContainer<typename C> : MemberContainer<C> {
+  void C::push_front(value_type&&);
+
+  axiom MemberFrontInsertion(C c, value_type x) {
+    x == (c.push_front(x), c.front());
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/member_front_insertion_container.hpp>
+
+[section_in_n2914_heading `MemberFrontInsertionContainer`..[['container.concepts.member]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

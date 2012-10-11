@@ -1,0 +1,49 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberFrontEmplacementContainer]
+
+[heading Description]
+Describes a container, in terms of member functions, that can be modified by
+placing a newlyconstructed object at the front of the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/member_front_emplacement_container.hpp]
+
+[table MemberFrontEmplacementContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberFrontEmplacementContainer]]
+[``
+auto concept MemberFrontEmplacementContainer<typename C, typename... Args> : MemberContainer<C> {
+  void C::emplace_front(Args&&... args);
+
+  requires Constructible<value_type, Args...>
+    axiom MemberFrontEmplacement(C c, Args... args) {
+      value_type(args...) == (c.emplace_front(args...), c.front());
+    }
+
+  requires MemberFrontInsertionContainer<C> && Constructible<value_type, Args...>
+    axiom MemberFrontEmplacementPushEquivalence(C c, Args... args) {
+      (c.emplace_front(args...), c.front()) == (c.push_front(value_type(args...)), c.front());
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/member_front_emplacement_container.hpp>
+
+[section_in_n2914_heading `MemberFrontEmplacementContainer`..[['container.concepts.member]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

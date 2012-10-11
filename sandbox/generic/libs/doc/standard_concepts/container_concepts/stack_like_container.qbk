@@ -1,0 +1,54 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section StackLikeContainer]
+
+[heading Description]
+Describes a container that can be modified by adding or removing elements from
+the back of the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/stack_like_container.hpp]
+
+[table StackLikeContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[StackLikeContainer]]
+[``
+concept StackLikeContainer<typename C> : BackInsertionContainer<C> {
+  reference back(C&);
+  const_reference back(const C&);
+
+  void pop_back(C&);
+
+  requires BidirectionalIterator<iterator> axiom AccessBack(C c) {
+    if (begin(c) != end(c)) back(c) == *(--end(c));
+  }
+
+  axiom BackInsertion(C c, value_type x) {
+    x == (push_back(c, x), back(c));
+  }
+
+  axiom BackRemoval(C c, value_type x) {
+    c == (push_back(c, x), pop_back(c), c);
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/stack_like_container.hpp>
+
+[section_in_n2914_heading `StackLikeContainer`..[['container.concepts.free]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

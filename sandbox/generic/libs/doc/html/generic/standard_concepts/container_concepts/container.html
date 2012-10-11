@@ -1,0 +1,197 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Container</title>
+<link rel="stylesheet" href="../../../boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
+<link rel="home" href="../../../index.html" title="Chapter&#160;1.&#160;Generic">
+<link rel="up" href="../container_concepts.html" title="Container Concepts">
+<link rel="prev" href="backinsertioncontainer.html" title="BackInsertionContainer">
+<link rel="next" href="emplacementcontainer.html" title="EmplacementContainer">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<div class="spirit-nav">
+<a accesskey="p" href="backinsertioncontainer.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../container_concepts.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="emplacementcontainer.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+<div class="section generic_standard_concepts_container_concepts_container">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="generic.standard_concepts.container_concepts.container"></a><a class="link" href="container.html" title="Container">Container</a>
+</h4></div></div></div>
+<h6>
+<a name="generic.standard_concepts.container_concepts.container.h0"></a>
+          <span class="phrase"><a name="generic.standard_concepts.container_concepts.container.description"></a></span><a class="link" href="container.html#generic.standard_concepts.container_concepts.container.description">Description</a>
+        </h6>
+<p>
+          Describes a container which provides iteration through a sequence of elements
+          stored in the container.
+        </p>
+<h6>
+<a name="generic.standard_concepts.container_concepts.container.h1"></a>
+          <span class="phrase"><a name="generic.standard_concepts.container_concepts.container.definition"></a></span><a class="link" href="container.html#generic.standard_concepts.container_concepts.container.definition">Definition</a>
+        </h6>
+<div class="table">
+<a name="generic.standard_concepts.container_concepts.container.container_definition"></a><p class="title"><b>Table&#160;1.104.&#160;Container Definition</b></p>
+<div class="table-contents"><table class="table" summary="Container Definition">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th>
+                  <p>
+                    Boost.Generic Definition
+                  </p>
+                </th>
+<th>
+                  <p>
+                    N2914 Definition
+                  </p>
+                </th>
+</tr></thead>
+<tbody><tr>
+<td>
+<pre class="programlisting"><span class="identifier">BOOST_GENERIC_CONCEPT</span>
+<span class="special">(</span> <span class="special">(</span> <span class="keyword">namespace</span> <span class="identifier">boost</span><span class="special">,</span> <span class="identifier">generic</span><span class="special">,</span> <span class="identifier">std_concept</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><span class="identifier">Container</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">C</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">ObjectType</span><span class="special">)</span> <span class="identifier">value_type</span>         <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">value_type</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">reference</span>              <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">reference</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">typename</span> <span class="identifier">const_reference</span>        <span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">const_reference</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">UnsignedIntegralLike</span><span class="special">)</span> <span class="identifier">size_type</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">size_type</span> <span class="special">)</span>
+
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">ForwardIterator</span><span class="special">)</span> <span class="identifier">iterator</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">ForwardIterator</span><span class="special">)</span> <span class="identifier">const_iterator</span> <span class="special">)</span>
+
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">reference</span><span class="special">,</span> <span class="identifier">const_reference</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">reference</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">&amp;&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">reference</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">&amp;&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">const_reference</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">&amp;&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">reference</span><span class="special">,</span> <span class="identifier">reference</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">&gt;::</span><span class="identifier">reference</span><span class="special">,</span> <span class="identifier">const_reference</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">,</span>
+                      <span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">IntegralType</span><span class="special">&lt;</span><span class="identifier">size_type</span><span class="special">&gt;</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">&gt;</span> <span class="special">)</span>
+
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">iterator</span><span class="special">)(</span><span class="identifier">begin</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">C</span><span class="special">&amp;)</span> <span class="special">)</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)(</span><span class="identifier">begin</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;))</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">iterator</span><span class="special">)(</span><span class="identifier">end</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">C</span><span class="special">&amp;)</span> <span class="special">)</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)(</span><span class="identifier">end</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;)</span> <span class="special">)</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)(</span><span class="identifier">cbegin</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;)</span> <span class="identifier">c</span> <span class="special">),</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">const_iterator</span><span class="special">)(</span><span class="identifier">cend</span><span class="special">)(</span> <span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;)</span> <span class="identifier">c</span> <span class="special">),</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="special">(</span><span class="identifier">reference</span><span class="special">)(</span><span class="identifier">front</span><span class="special">)(</span> <span class="special">(</span><span class="identifier">C</span><span class="special">&amp;)</span> <span class="identifier">c</span> <span class="special">),</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">*</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span> <span class="special">)</span>
+
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">axiom</span> <span class="identifier">AccessFront</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span>
+      <span class="keyword">if</span> <span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="identifier">front</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span>
+    <span class="special">}</span>
+  <span class="special">)</span>
+
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">axiom</span> <span class="identifier">ContainerSize</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span>
+      <span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="special">==</span> <span class="identifier">empty</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span>
+      <span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">size</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">&gt;</span> <span class="number">0</span><span class="special">);</span>
+    <span class="special">}</span>
+  <span class="special">)</span>
+<span class="special">)</span>
+</pre>
+                </td>
+<td>
+<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">Container</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">C</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="identifier">ObjectType</span> <span class="identifier">value_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">value_type</span><span class="special">;</span>
+  <span class="keyword">typename</span> <span class="identifier">reference</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">reference</span><span class="special">;</span>
+  <span class="keyword">typename</span> <span class="identifier">const_reference</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">const_reference</span><span class="special">;</span>
+  <span class="identifier">UnsignedIntegralLike</span> <span class="identifier">size_type</span> <span class="special">=</span> <span class="keyword">typename</span> <span class="identifier">C</span><span class="special">::</span><span class="identifier">size_type</span><span class="special">;</span>
+
+  <span class="identifier">ForwardIterator</span> <span class="identifier">iterator</span><span class="special">;</span>
+  <span class="identifier">ForwardIterator</span> <span class="identifier">const_iterator</span><span class="special">;</span>
+
+  <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">reference</span><span class="special">,</span> <span class="identifier">const_reference</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">reference</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">&amp;&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">const_reference</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">value_type</span><span class="special">&amp;&gt;;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">,</span> <span class="identifier">const_iterator</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">&gt;::</span><span class="identifier">value_type</span><span class="special">,</span> <span class="identifier">value_type</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">reference</span><span class="special">,</span> <span class="identifier">reference</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">&gt;::</span><span class="identifier">reference</span><span class="special">,</span> <span class="identifier">const_reference</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">,</span>
+                    <span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">const_iterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">IntegralType</span><span class="special">&lt;</span><span class="identifier">size_type</span><span class="special">&gt;</span>
+        <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">ForwardIterator</span><span class="special">&lt;</span><span class="identifier">iterator</span><span class="special">&gt;::</span><span class="identifier">difference_type</span><span class="special">,</span> <span class="identifier">size_type</span><span class="special">&gt;;</span>
+
+  <span class="keyword">bool</span> <span class="identifier">empty</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span>
+  <span class="identifier">size_type</span> <span class="identifier">size</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">distance</span><span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">),</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">));</span> <span class="special">}</span>
+
+  <span class="identifier">iterator</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">C</span><span class="special">&amp;);</span>
+  <span class="identifier">const_iterator</span> <span class="identifier">begin</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;);</span>
+  <span class="identifier">iterator</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">C</span><span class="special">&amp;);</span>
+  <span class="identifier">const_iterator</span> <span class="identifier">end</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;);</span>
+  <span class="identifier">const_iterator</span> <span class="identifier">cbegin</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span>
+  <span class="identifier">const_iterator</span> <span class="identifier">cend</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span>
+  <span class="identifier">reference</span> <span class="identifier">front</span><span class="special">(</span><span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">*</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span>
+  <span class="identifier">const_reference</span> <span class="identifier">front</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">C</span><span class="special">&amp;</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span> <span class="keyword">return</span> <span class="special">*</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span> <span class="special">}</span>
+
+  <span class="keyword">axiom</span> <span class="identifier">AccessFront</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="identifier">front</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">==</span> <span class="special">*</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span>
+  <span class="special">}</span>
+
+  <span class="keyword">axiom</span> <span class="identifier">ContainerSize</span><span class="special">(</span><span class="identifier">C</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span>
+    <span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="special">==</span> <span class="identifier">empty</span><span class="special">(</span><span class="identifier">c</span><span class="special">);</span>
+    <span class="special">(</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">!=</span> <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span> <span class="special">==</span> <span class="special">(</span><span class="identifier">size</span><span class="special">(</span><span class="identifier">c</span><span class="special">)</span> <span class="special">&gt;</span> <span class="number">0</span><span class="special">);</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
+                </td>
+</tr></tbody>
+</table></div>
+</div>
+<br class="table-break"><h6>
+<a name="generic.standard_concepts.container_concepts.container.h2"></a>
+          <span class="phrase"><a name="generic.standard_concepts.container_concepts.container.additional_requirements"></a></span><a class="link" href="container.html#generic.standard_concepts.container_concepts.container.additional_requirements">Additional
+          Requirements</a>
+        </h6>
+<p>
+          For a (possibly <code class="computeroutput"><span class="keyword">const</span></code>-qualified)
+          container <code class="computeroutput"><span class="identifier">c</span></code>, <code class="computeroutput"><span class="special">[</span><span class="identifier">begin</span><span class="special">(</span><span class="identifier">c</span><span class="special">),</span>
+          <span class="identifier">end</span><span class="special">(</span><span class="identifier">c</span><span class="special">))</span></code> is
+          a valid range.
+        </p>
+<h6>
+<a name="generic.standard_concepts.container_concepts.container.h3"></a>
+          <span class="phrase"><a name="generic.standard_concepts.container_concepts.container.header"></a></span><a class="link" href="container.html#generic.standard_concepts.container_concepts.container.header">Header</a>
+        </h6>
+<pre class="programlisting"><span class="preprocessor">#include</span> <span class="special">&lt;</span><span class="identifier">boost</span><span class="special">/</span><span class="identifier">generic</span><span class="special">/</span><span class="identifier">std_concept</span><span class="special">/</span><span class="identifier">container_concepts</span><span class="special">/</span><span class="identifier">container</span><span class="special">.</span><span class="identifier">hpp</span><span class="special">&gt;</span>
+</pre>
+<h6>
+<a name="generic.standard_concepts.container_concepts.container.h4"></a>
+          <span class="phrase"><a name="generic.standard_concepts.container_concepts.container.section_in_n2914"></a></span><a class="link" href="container.html#generic.standard_concepts.container_concepts.container.section_in_n2914">Section
+          in N2914</a>
+        </h6>
+<p>
+          The corresponding definition of <code class="computeroutput"><span class="identifier">Container</span></code>
+          may be found in the <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+          section [<span class="emphasis"><em>container.concepts.free</em></span>].
+        </p>
+<h6>
+<a name="generic.standard_concepts.container_concepts.container.h5"></a>
+          <span class="phrase"><a name="generic.standard_concepts.container_concepts.container.differences_from_n2914"></a></span><a class="link" href="container.html#generic.standard_concepts.container_concepts.container.differences_from_n2914">Differences
+          From N2914</a>
+        </h6>
+<p>
+          TODO: Fill this in
+        </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2010-2012 Matt Calabrese<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="backinsertioncontainer.html"><img src="../../../images/prev.png" alt="Prev"></a><a accesskey="u" href="../container_concepts.html"><img src="../../../images/up.png" alt="Up"></a><a accesskey="h" href="../../../index.html"><img src="../../../images/home.png" alt="Home"></a><a accesskey="n" href="emplacementcontainer.html"><img src="../../../images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section FrontEmplacementContainer]
+
+[heading Description]
+Describes a container that can be modified by constructing elements at the front
+of the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/front_emplacement_container.hpp]
+
+[table FrontEmplacementContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[FrontEmplacementContainer]]
+[``
+concept FrontEmplacementContainer<typename C, typename... Args> : Container<C> {
+  void emplace_front(C& c, Args&&... args);
+
+  requires Constructible<value_type, Args...>
+    axiom FrontEmplacement(C c, Args... args) {
+      value_type(args...) == (emplace_front(c, args...), front(c));
+  }
+
+  requires FrontInsertionContainer<C> && Constructible<value_type, Args...>
+    axiom FrontEmplacementPushEquivalence(C c, Args... args) {
+      (emplace_front(c, args...), front(c)) == (push_front(c, value_type(args...)), front(c));
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/front_emplacement_container.hpp>
+
+[section_in_n2914_heading `FrontEmplacementContainer`..[['container.concepts.free]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

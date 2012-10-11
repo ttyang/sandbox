@@ -1,0 +1,39 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section BackInsertionContainer]
+
+[heading Description]
+Describes a container that can be modified by adding to the back of the
+sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/back_insertion_container.hpp]
+
+[table BackInsertionContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[BackInsertionContainer]]
+[``
+concept BackInsertionContainer<typename C> : Container<C> {
+  void push_back(C&, value_type&&);
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/back_insertion_container.hpp>
+
+[section_in_n2914_heading `BackInsertionContainer`..[['container.concepts.free]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

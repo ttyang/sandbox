@@ -1,0 +1,49 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section BackEmplacementContainer]
+
+[heading Description]
+Describes a container that can be modified by constructing elements at the back
+of the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/back_emplacement_container.hpp]
+
+[table BackEmplacementContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[BackEmplacementContainer]]
+[``
+concept BackEmplacementContainer<typename C, typename... Args> : Container<C> {
+  void emplace_back(C& c, Args&&... args);
+
+  requires StackLikeContainer<C> && Constructible<value_type, Args...>
+    axiom BackEmplacement(C c, Args... args) {
+      value_type(args...) == (emplace_back(c, args...), back(c));
+  }
+
+  requires StackLikeContainer<C> && Constructible<value_type, Args...>
+    axiom BackEmplacementPushEquivalence(C c, Args... args) {
+      (emplace_back(c, args...), back(c)) == (push_back(c, value_type(args...)), back(c));
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/back_emplacement_container.hpp>
+
+[section_in_n2914_heading `BackEmplacementContainer`..[['container.concepts.free]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]

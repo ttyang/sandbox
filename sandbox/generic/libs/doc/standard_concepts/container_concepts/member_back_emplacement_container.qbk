@@ -1,0 +1,49 @@
+[/==============================================================================
+    Copyright (C) 2012 Matt Calabrese
+
+    Use, modification and distribution is subject to the Boost Software
+    License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+    http://www.boost.org/LICENSE_1_0.txt)
+==============================================================================/]
+
+[section MemberBackEmplacementContainer]
+
+[heading Description]
+Describes a container, in terms of member functions, that can be modified by
+constructing elements at the back of the sequence.
+
+[heading Definition]
+
+[import ../../../../include/boost/generic/std_concept/container_concepts/member_back_emplacement_container.hpp]
+
+[table MemberBackEmplacementContainer Definition
+    [[Boost.Generic Definition] [N2914 Definition]]
+    [[[MemberBackEmplacementContainer]]
+[``
+auto concept MemberBackEmplacementContainer<typename C, typename... Args> : MemberBackInsertionContainer<C> {
+  void C::emplace_back(Args&&... args);
+
+  requires MemberStackLikeContainer<C> && Constructible<value_type, Args...>
+    axiom MemberBackEmplacement(C c, Args... args) {
+    value_type(args...) == (c.emplace_back(args...), c.back());
+  }
+
+  requires MemberStackLikeContainer<C> && Constructible<value_type, Args...>
+    axiom MemberBackEmplacementPushEquivalence(C c, Args... args) {
+      (c.emplace_back(args...), c.back()) == (c.push_back(value_type(args...)), c.back());
+  }
+}
+``]]
+]
+
+[heading Header]
+
+ #include <boost/generic/std_concept/container_concepts/member_back_emplacement_container.hpp>
+
+[section_in_n2914_heading `MemberBackEmplacementContainer`..[['container.concepts.member]]]
+
+[heading Differences From N2914]
+
+TODO: Fill this in
+
+[endsect]
