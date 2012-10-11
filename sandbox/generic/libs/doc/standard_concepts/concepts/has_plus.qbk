@@ -9,7 +9,7 @@
 [section HasPlus]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a binary `operator+`.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasPlus]]
 [``
-
+auto concept HasPlus<typename T, typename U> {
+  typename result_type;
+  result_type operator+(const T&, const U&);
+}
 ``]]
 ]
 

@@ -9,7 +9,7 @@
 [section HasAddressOf]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with an address-of `operator&`.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasAddressOf]]
 [``
-
+auto concept HasAddressOf<typename T> {
+  typename result_type;
+  result_type operator&(T&);
+}
 ``]]
 ]
 

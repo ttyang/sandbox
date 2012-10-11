@@ -9,7 +9,8 @@
 [section Regular]
 
 [heading Description]
-Describes arithmetic types.
+Describes semi-regular types that are default constructible and have equality
+comparison operators.
 
 [heading Definition]
 
@@ -19,7 +20,8 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[Regular]]
 [``
-
+auto concept Regular<typename T>
+  : Semiregular<T>, DefaultConstructible<T>, EqualityComparable<T> { }
 ``]]
 ]
 

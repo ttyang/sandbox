@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.semiregular.description"></a></span><a class="link" href="semiregular.html#generic.standard_concepts.concepts.semiregular.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Collects several common requirements supported by most types.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.semiregular.h1"></a>
@@ -60,6 +60,11 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">Semiregular</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+  <span class="special">:</span> <span class="identifier">CopyConstructible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">CopyAssignable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">FreeStoreAllocatable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="keyword">requires</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="identifier">CopyAssignable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">result_type</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&amp;&gt;;</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

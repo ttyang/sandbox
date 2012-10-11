@@ -9,7 +9,7 @@
 [section HasPreincrement]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a pre-increment operator.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasPreincrement]]
 [``
-
+auto concept HasPreincrement<typename T> {
+  typename result_type;
+  result_type operator++(T&);
+}
 ``]]
 ]
 

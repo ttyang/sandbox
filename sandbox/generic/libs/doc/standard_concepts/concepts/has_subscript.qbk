@@ -9,7 +9,7 @@
 [section HasSubscript]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a subscript `operator[]`.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasSubscript]]
 [``
-
+auto concept HasSubscript<typename T, typename U> {
+  typename result_type;
+  result_type operator[](T&, const U&);
+  result_type operator[](T&&, const U&);
+}
 ``]]
 ]
 

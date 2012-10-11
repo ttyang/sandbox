@@ -22,7 +22,8 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.hasdestructor.description"></a></span><a class="link" href="hasdestructor.html#generic.standard_concepts.concepts.hasdestructor.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types that can be destroyed. These are scalar types, references,
+          and class types with a public non-deleted destructor.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.hasdestructor.h1"></a>
@@ -57,6 +58,10 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">HasDestructor</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="identifier">T</span><span class="special">::~</span><span class="identifier">T</span><span class="special">();</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

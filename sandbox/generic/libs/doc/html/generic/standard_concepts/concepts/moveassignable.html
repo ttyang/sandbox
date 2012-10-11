@@ -22,7 +22,8 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.moveassignable.description"></a></span><a class="link" href="moveassignable.html#generic.standard_concepts.concepts.moveassignable.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types with the ability to assign to an object from an rvalue,
+          potentially altering the rvalue.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.moveassignable.h1"></a>
@@ -59,6 +60,10 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">MoveAssignable</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">HasAssign</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&amp;&amp;&gt;</span> <span class="special">{</span>
+  <span class="keyword">requires</span> <span class="identifier">RvalueOf</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">HasAssign</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="identifier">RvalueOf</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;::</span><span class="identifier">type</span><span class="special">&gt;;</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

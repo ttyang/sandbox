@@ -9,7 +9,7 @@
 [section EquivalenceRelation]
 
 [heading Description]
-Describes arithmetic types.
+Describes an equivalence relation, `F`, on a type `T`.
 
 [heading Definition]
 
@@ -19,7 +19,19 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[EquivalenceRelation]]
 [``
+auto concept EquivalenceRelation<typename F, typename T> : Predicate<F, T, T> {
+  axiom Reflexivity(F f, T a) { f(a, a) == true; }
 
+  axiom Symmetry(F f, T a, T b) {
+    if (f(a, b))
+      f(b, a) == true;
+  }
+
+  axiom Transitivity(F f, T a, T b, T c) {
+    if (f(a, b) && f(b, c))
+      f(a, c) == true;
+  }
+}
 ``]]
 ]
 

@@ -9,7 +9,7 @@
 [section HasMinusAssign]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with an `operator-=`.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasMinusAssign]]
 [``
-
+auto concept HasMinusAssign<typename T, typename U> {
+  typename result_type;
+  result_type operator-=(T&, U);
+}
 ``]]
 ]
 

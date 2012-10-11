@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.copyconstructible.description"></a></span><a class="link" href="copyconstructible.html#generic.standard_concepts.concepts.copyconstructible.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types with a public copy constructor.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.copyconstructible.h1"></a>
@@ -61,6 +61,12 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">CopyConstructible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">MoveConstructible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">Constructible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;&gt;</span> <span class="special">{</span>
+  <span class="keyword">axiom</span> <span class="identifier">CopyPreservation</span><span class="special">(</span><span class="identifier">T</span> <span class="identifier">x</span><span class="special">)</span> <span class="special">{</span>
+    <span class="identifier">T</span><span class="special">(</span><span class="identifier">x</span><span class="special">)</span> <span class="special">==</span> <span class="identifier">x</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

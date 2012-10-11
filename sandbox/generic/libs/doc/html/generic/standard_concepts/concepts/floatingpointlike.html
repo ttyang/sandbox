@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.floatingpointlike.description"></a></span><a class="link" href="floatingpointlike.html#generic.standard_concepts.concepts.floatingpointlike.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes floating-point types.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.floatingpointlike.h1"></a>
@@ -57,6 +57,11 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">FloatingPointLike</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">ArithmeticLike</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">}</span>
+
+<span class="comment">// Requires: for every floating point type T, an empty concept map</span>
+<span class="comment">// FloatingPointLike&lt;T&gt; shall be defined in namespace std.</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

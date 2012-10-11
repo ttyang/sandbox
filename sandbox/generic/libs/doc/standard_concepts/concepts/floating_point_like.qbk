@@ -9,7 +9,7 @@
 [section FloatingPointLike]
 
 [heading Description]
-Describes arithmetic types.
+Describes floating-point types.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[FloatingPointLike]]
 [``
+concept FloatingPointLike<typename T> : ArithmeticLike<T> { }
 
+// Requires: for every floating point type T, an empty concept map
+// FloatingPointLike<T> shall be defined in namespace std.
 ``]]
 ]
 

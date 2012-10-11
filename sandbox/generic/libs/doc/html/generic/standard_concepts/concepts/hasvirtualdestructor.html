@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.hasvirtualdestructor.description"></a></span><a class="link" href="hasvirtualdestructor.html#generic.standard_concepts.concepts.hasvirtualdestructor.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types with a virtual destructor.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.hasvirtualdestructor.h1"></a>
@@ -58,6 +58,11 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">HasVirtualDestructor</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">HasDestructor</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">PolymorphicClass</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">}</span>
+
+<span class="comment">// Requires: for every class type T that has a virtual destructor, a concept map</span>
+<span class="comment">// HasVirtualDestructor&lt;T&gt; shall be implicitly defined in namespace std.</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

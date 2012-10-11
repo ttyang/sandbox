@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.triviallydefaultconstructible.description"></a></span><a class="link" href="triviallydefaultconstructible.html#generic.standard_concepts.concepts.triviallydefaultconstructible.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types whose default constructor is trivial.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.triviallydefaultconstructible.h1"></a>
@@ -59,6 +59,12 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">TriviallyDefaultConstructible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">DefaultConstructible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">}</span>
+
+<span class="comment">// Requires: for every type T that is a trivial type or a class type with a</span>
+<span class="comment">// trivial default constructor, a concept map TriviallyDefaultConstructible&lt;T&gt;</span>
+<span class="comment">// shall be implicitly defined in namespace std.</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

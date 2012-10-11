@@ -22,7 +22,9 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.nothrowdestructible.description"></a></span><a class="link" href="nothrowdestructible.html#generic.standard_concepts.concepts.nothrowdestructible.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types that can be destroyed and where destruction will not propagate
+          an exception. These are scalar types, references, and class types with
+          a public non-deleted destructor that is implictly or explicitly <code class="computeroutput"><span class="keyword">noexcept</span></code>.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.nothrowdestructible.h1"></a>
@@ -57,6 +59,10 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">NothrowDestructible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">HasDestructor</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">}</span>
+
+<span class="comment">// Requires: no exception is propagated.</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

@@ -9,7 +9,7 @@
 [section ExplicitlyConvertible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a conversion (explicit or implicit) from `T` to `U`.
 
 [heading Definition]
 
@@ -19,7 +19,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[ExplicitlyConvertible]]
 [``
-
+auto concept ExplicitlyConvertible<typename T, typename U> {
+  explicit operator U(const T&);
+}
 ``]]
 ]
 

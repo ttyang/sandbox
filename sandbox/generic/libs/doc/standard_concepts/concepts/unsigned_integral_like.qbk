@@ -9,7 +9,8 @@
 [section UnsignedIntegralLike]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that provide all of the operations available on unsigned
+integral types.
 
 [heading Definition]
 
@@ -19,7 +20,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[UnsignedIntegralLike]]
 [``
+concept UnsignedIntegralLike<typename T> : IntegralLike<T> { }
 
+// Requires: for every unsigned integral type T, including unsigned extended
+// integral types, an empty concept map UnsignedIntegralLike<T> shall be defined
+// in namespace std.
 ``]]
 ]
 

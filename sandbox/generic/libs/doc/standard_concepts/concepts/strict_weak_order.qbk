@@ -9,7 +9,7 @@
 [section StrictWeakOrder]
 
 [heading Description]
-Describes arithmetic types.
+Describes a strict weak ordering relation, `F`, on a type `T`.
 
 [heading Definition]
 
@@ -19,7 +19,25 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[StrictWeakOrder]]
 [``
+auto concept StrictWeakOrder<typename F, typename T> : Predicate<F, T, T> {
 
+  axiom Irreflexivity(F f, T a) { f(a, a) == false; }
+
+  axiom Antisymmetry(F f, T a, T b) {
+    if (f(a, b))
+      f(b, a) == false;
+  }
+
+  axiom Transitivity(F f, T a, T b, T c) {
+    if (f(a, b) && f(b, c))
+      f(a, c) == true;
+  }
+
+  axiom TransitivityOfEquivalence(F f, T a, T b, T c) {
+    if (!f(a, b) && !f(b, a) && !f(b, c) && !f(c, b))
+      (!f(a, c) && !f(c, a)) == true;
+  }
+}
 ``]]
 ]
 

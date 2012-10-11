@@ -9,7 +9,7 @@
 [section Swappable]
 
 [heading Description]
-Describes arithmetic types.
+Describes types for which two values of that type can be swapped.
 
 [heading Definition]
 
@@ -19,7 +19,7 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[Swappable]]
 [``
-
+auto concept Swappable<typename T> : HasSwap<T&, T&> { }
 ``]]
 ]
 

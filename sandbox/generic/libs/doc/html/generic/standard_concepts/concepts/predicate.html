@@ -22,7 +22,11 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.predicate.description"></a></span><a class="link" href="predicate.html#generic.standard_concepts.concepts.predicate.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes function objects callable with some set of arguments, the result
+          of which can be used in a context that requires a <code class="computeroutput"><span class="keyword">bool</span></code>.
+          In addition to the specified syntactic requirements, predicate function
+          objects shall not apply any non-constant function through the predicate
+          arguments.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.predicate.h1"></a>
@@ -58,6 +62,10 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">Predicate</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">typename</span><span class="special">...</span> <span class="identifier">Args</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">Callable</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">Args</span><span class="special">&amp;...&gt;</span> <span class="special">{</span>
+  <span class="keyword">requires</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">result_type</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">&gt;;</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

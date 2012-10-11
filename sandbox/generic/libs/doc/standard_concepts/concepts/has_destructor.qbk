@@ -9,7 +9,8 @@
 [section HasDestructor]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that can be destroyed. These are scalar types, references, and
+class types with a public non-deleted destructor.
 
 [heading Definition]
 
@@ -19,7 +20,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasDestructor]]
 [``
-
+auto concept HasDestructor<typename T> {
+  T::~T();
+}
 ``]]
 ]
 

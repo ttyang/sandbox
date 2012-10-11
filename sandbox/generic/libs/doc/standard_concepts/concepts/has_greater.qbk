@@ -9,7 +9,7 @@
 [section HasGreater]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with an `operator>`.
 
 [heading Definition]
 
@@ -19,7 +19,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasGreater]]
 [``
-
+auto concept HasGreater<typename T, typename U> {
+  bool operator>(const T& a, const U& b);
+}
 ``]]
 ]
 

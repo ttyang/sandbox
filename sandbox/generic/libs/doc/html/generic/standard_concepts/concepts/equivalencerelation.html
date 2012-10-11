@@ -22,7 +22,8 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.equivalencerelation.description"></a></span><a class="link" href="equivalencerelation.html#generic.standard_concepts.concepts.equivalencerelation.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes an equivalence relation, <code class="computeroutput"><span class="identifier">F</span></code>,
+          on a type <code class="computeroutput"><span class="identifier">T</span></code>.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.equivalencerelation.h1"></a>
@@ -71,6 +72,20 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">EquivalenceRelation</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">F</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">Predicate</span><span class="special">&lt;</span><span class="identifier">F</span><span class="special">,</span> <span class="identifier">T</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="keyword">axiom</span> <span class="identifier">Reflexivity</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">a</span><span class="special">)</span> <span class="special">{</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">a</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">;</span> <span class="special">}</span>
+
+  <span class="keyword">axiom</span> <span class="identifier">Symmetry</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">f</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span><span class="special">))</span>
+      <span class="identifier">f</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">a</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">;</span>
+  <span class="special">}</span>
+
+  <span class="keyword">axiom</span> <span class="identifier">Transitivity</span><span class="special">(</span><span class="identifier">F</span> <span class="identifier">f</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">a</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">b</span><span class="special">,</span> <span class="identifier">T</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">if</span> <span class="special">(</span><span class="identifier">f</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">b</span><span class="special">)</span> <span class="special">&amp;&amp;</span> <span class="identifier">f</span><span class="special">(</span><span class="identifier">b</span><span class="special">,</span> <span class="identifier">c</span><span class="special">))</span>
+      <span class="identifier">f</span><span class="special">(</span><span class="identifier">a</span><span class="special">,</span> <span class="identifier">c</span><span class="special">)</span> <span class="special">==</span> <span class="keyword">true</span><span class="special">;</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

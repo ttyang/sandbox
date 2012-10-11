@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.triviallycopyconstructible.description"></a></span><a class="link" href="triviallycopyconstructible.html#generic.standard_concepts.concepts.triviallycopyconstructible.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types whose copy constructor is equivalent to <code class="computeroutput"><span class="identifier">memcpy</span></code>.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.triviallycopyconstructible.h1"></a>
@@ -59,6 +59,12 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">concept</span> <span class="identifier">TriviallyCopyConstructible</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">:</span> <span class="identifier">CopyConstructible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">}</span>
+
+<span class="comment">// Requires: for every type T that is a trivial type, a reference, or a class</span>
+<span class="comment">// type with a trivial copy constructor, a concept map</span>
+<span class="comment">// TriviallyCopyConstructible&lt;T&gt; shall be implicitly defined in namespace std.</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

@@ -9,7 +9,7 @@
 [section RvalueReference]
 
 [heading Description]
-Describes arithmetic types.
+Determines whether a given type is an rvalue reference type.
 
 [heading Definition]
 
@@ -19,7 +19,8 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[RvalueReference]]
 [``
-
+concept RvalueReference<typename T> { }
+template <typename T> concept_map RvalueReference<T&&> { }
 ``]]
 ]
 

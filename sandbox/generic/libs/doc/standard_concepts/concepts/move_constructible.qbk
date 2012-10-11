@@ -9,7 +9,8 @@
 [section MoveConstructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that can move-construct an object from a value of the same type,
+possibly altering that value.
 
 [heading Definition]
 
@@ -19,7 +20,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[MoveConstructible]]
 [``
-
+auto concept MoveConstructible<typename T> : Constructible<T, T&&> {
+  requires RvalueOf<T> && Constructible<T, RvalueOf<T>::type>;
+}
 ``]]
 ]
 

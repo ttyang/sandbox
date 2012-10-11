@@ -9,7 +9,7 @@
 [section IntegralLike]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that provide all of the operations available on integral types.
 
 [heading Definition]
 
@@ -19,7 +19,26 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[IntegralLike]]
 [``
-
+concept IntegralLike<typename T>
+  : ArithmeticLike<T>,
+    HasComplement<T>, HasModulus<T, T>, HasBitAnd<T, T>, HasBitXor<T, T>, HasBitOr<T, T>,
+    HasLeftShift<T, T>, HasRightShift<T, T>,
+    HasModulusAssign<T, const T&>, HasLeftShiftAssign<T, const T&>, HasRightShiftAssign<T, const T&>,
+    HasBitAndAssign<T, const T&>, HasBitXorAssign<T, const T&>, HasBitOrAssign<T, const T&> {
+requires Convertible<HasComplement<T>::result_type, T>
+      && Convertible<HasModulus<T, T>::result_type, T>
+      && Convertible<HasBitAnd<T, T>::result_type, T>
+      && Convertible<HasBitXor<T, T>::result_type, T>
+      && Convertible<HasBitOr<T, T>::result_type, T>
+      && Convertible<HasLeftShift<T, T>::result_type, T>
+      && Convertible<HasRightShift<T, T>::result_type, T>
+      && SameType<HasModulusAssign<T, const T&>::result_type, T&>
+      && SameType<HasLeftShiftAssign<T, const T&>::result_type, T&>
+      && SameType<HasRightShiftAssign<T, const T&>::result_type, T&>
+      && SameType<HasBitAndAssign<T, const T&>::result_type, T&>
+      && SameType<HasBitXorAssign<T, const T&>::result_type, T&>
+      && SameType<HasBitOrAssign<T, const T&>::result_type, T&>;
+}
 ``]]
 ]
 

@@ -9,7 +9,7 @@
 [section HasDereference]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a dereferencing `operator*`.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasDereference]]
 [``
-
+auto concept HasDereference<typename T> {
+  typename result_type;
+  result_type operator*(T&);
+  result_type operator*(T&&);
+}
 ``]]
 ]
 

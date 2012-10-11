@@ -22,7 +22,8 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.regular.description"></a></span><a class="link" href="regular.html#generic.standard_concepts.concepts.regular.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes semi-regular types that are default constructible and have equality
+          comparison operators.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.regular.h1"></a>
@@ -57,6 +58,9 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">Regular</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span>
+  <span class="special">:</span> <span class="identifier">Semiregular</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">DefaultConstructible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;,</span> <span class="identifier">EqualityComparable</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span> <span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

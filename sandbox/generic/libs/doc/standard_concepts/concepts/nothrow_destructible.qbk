@@ -9,7 +9,9 @@
 [section NothrowDestructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that can be destroyed and where destruction will not propagate
+an exception. These are scalar types, references, and class types with a public
+non-deleted destructor that is implictly or explicitly `noexcept`.
 
 [heading Definition]
 
@@ -19,7 +21,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[NothrowDestructible]]
 [``
+auto concept NothrowDestructible<typename T> : HasDestructor<T> { }
 
+// Requires: no exception is propagated.
 ``]]
 ]
 

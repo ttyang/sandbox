@@ -9,7 +9,7 @@
 [section TriviallyCopyAssignable]
 
 [heading Description]
-Describes arithmetic types.
+Describes types whose copy-assignment operator is equivalent to `memcpy`.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[TriviallyCopyAssignable]]
 [``
+concept TriviallyCopyAssignable<typename T> : CopyAssignable<T> { }
 
+// Requires: for every type T that is a trivial type (ref) or a class type with
+// a trivial copy assignment operator, a concept map TriviallyCopyAssignable<T>
+// shall be implicitly defined in namespace std.
 ``]]
 ]
 

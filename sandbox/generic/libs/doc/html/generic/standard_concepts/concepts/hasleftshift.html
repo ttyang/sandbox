@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.hasleftshift.description"></a></span><a class="link" href="hasleftshift.html#generic.standard_concepts.concepts.hasleftshift.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types with an <code class="computeroutput"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></code>.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.hasleftshift.h1"></a>
@@ -58,6 +58,11 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">HasLeftShift</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">U</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="keyword">typename</span> <span class="identifier">result_type</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <span class="keyword">operator</span><span class="special">&lt;&lt;(</span><span class="keyword">const</span> <span class="identifier">T</span><span class="special">&amp;,</span> <span class="keyword">const</span> <span class="identifier">U</span><span class="special">&amp;);</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

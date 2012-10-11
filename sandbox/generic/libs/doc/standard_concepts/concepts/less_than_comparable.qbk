@@ -9,7 +9,8 @@
 [section LessThanComparable]
 
 [heading Description]
-Describes arithmetic types.
+Describes types whose values can be ordered, where `operator<` is a strict weak
+ordering relation.
 
 [heading Definition]
 
@@ -19,7 +20,34 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[LessThanComparable]]
 [``
+auto concept LessThanComparable<typename T> : HasLess<T, T> {
+  bool operator>(const T& a, const T& b) { return b < a; }
+  bool operator<=(const T& a, const T& b) { return !(b < a); }
+  bool operator>=(const T& a, const T& b) { return !(a < b); }
 
+  axiom Consistency(T a, T b) {
+    (a > b) == (b < a);
+    (a <= b) == !(b < a);
+    (a >= b) == !(a < b);
+  }
+
+  axiom Irreflexivity(T a) { (a < a) == false; }
+
+  axiom Antisymmetry(T a, T b) {
+    if (a < b)
+      (b < a) == false;
+  }
+
+  axiom Transitivity(T a, T b, T c) {
+    if (a < b && b < c)
+      (a < c) == true;
+  }
+
+  axiom TransitivityOfEquivalence(T a, T b, T c) {
+    if (!(a < b) && !(b < a) && !(b < c) && !(c < b))
+      (!(a < c) && !(c < a)) == true;
+  }
+}
 ``]]
 ]
 

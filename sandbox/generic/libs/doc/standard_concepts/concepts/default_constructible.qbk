@@ -9,7 +9,8 @@
 [section DefaultConstructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types for which an object can be constructed without initializing the
+object to any particular value.
 
 [heading Definition]
 
@@ -19,7 +20,7 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[DefaultConstructible]]
 [``
-
+auto concept DefaultConstructible<typename T> : Constructible<T> { }
 ``]]
 ]
 

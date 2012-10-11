@@ -9,7 +9,7 @@
 [section HasVirtualDestructor]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a virtual destructor.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasVirtualDestructor]]
 [``
+concept HasVirtualDestructor<typename T> : HasDestructor<T>, PolymorphicClass<T> { }
 
+// Requires: for every class type T that has a virtual destructor, a concept map
+// HasVirtualDestructor<T> shall be implicitly defined in namespace std.
 ``]]
 ]
 

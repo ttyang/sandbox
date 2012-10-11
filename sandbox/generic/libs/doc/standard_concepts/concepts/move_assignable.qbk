@@ -9,7 +9,8 @@
 [section MoveAssignable]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with the ability to assign to an object from an rvalue,
+potentially altering the rvalue.
 
 [heading Definition]
 
@@ -19,7 +20,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[MoveAssignable]]
 [``
-
+auto concept MoveAssignable<typename T> : HasAssign<T, T&&> {
+  requires RvalueOf<T> && HasAssign<T, RvalueOf<T>::type>;
+}
 ``]]
 ]
 

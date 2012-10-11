@@ -9,7 +9,7 @@
 [section CopyAssignable]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with the ability to assign to an object.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[CopyAssignable]]
 [``
-
+auto concept CopyAssignable<typename T> : HasAssign<T, const T&>, MoveAssignable<T> {
+  axiom CopyPreservation(T& x, T y) {
+    (x = y, x) == y;
+  }
+}
 ``]]
 ]
 

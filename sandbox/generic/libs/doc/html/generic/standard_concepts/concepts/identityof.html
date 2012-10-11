@@ -22,7 +22,9 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.identityof.description"></a></span><a class="link" href="identityof.html#generic.standard_concepts.concepts.identityof.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Concept form of the <code class="computeroutput"><span class="identifier">identity</span></code>
+          type metafunction ( <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2914.pdf" target="_top">N2914</a>
+          [<span class="emphasis"><em>identity.operation</em></span>]).
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.identityof.h1"></a>
@@ -58,6 +60,11 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">IdentityOf</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="keyword">typename</span> <span class="identifier">type</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">;</span>
+  <span class="keyword">requires</span> <span class="identifier">SameType</span><span class="special">&lt;</span><span class="identifier">type</span><span class="special">,</span> <span class="identifier">T</span><span class="special">&gt;;</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

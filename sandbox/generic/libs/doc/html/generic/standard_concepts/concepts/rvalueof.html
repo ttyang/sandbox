@@ -22,7 +22,7 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.rvalueof.description"></a></span><a class="link" href="rvalueof.html#generic.standard_concepts.concepts.rvalueof.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes the rvalue reference type for an arbitrary type <code class="computeroutput"><span class="identifier">T</span></code>.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.rvalueof.h1"></a>
@@ -57,9 +57,24 @@
 <span class="comment">//, ( requires Convertible&lt;T&amp;&amp;, type&gt; ) // NOTE: This is commented out because it implies implicit conversion from T&amp; to T&amp;&amp;, which correctly fails. Standard error??const T&amp;</span>
 <span class="special">,</span> <span class="special">(</span> <span class="keyword">requires</span> <span class="identifier">ExplicitlyConvertible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&amp;&amp;,</span> <span class="identifier">type</span><span class="special">&gt;</span> <span class="special">)</span> <span class="comment">// NOTE: This is not in the standard and replaces the above line.</span>
 <span class="special">)</span>
+
+<span class="identifier">BOOST_GENERIC_CONCEPT_MAP</span>
+<span class="special">(</span> <span class="special">(</span> <span class="keyword">template</span> <span class="special">(</span> <span class="special">(</span><span class="keyword">typename</span><span class="special">)</span> <span class="identifier">T</span> <span class="special">)</span> <span class="special">)</span>
+<span class="special">,</span> <span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">generic</span><span class="special">::</span><span class="identifier">std_concept</span><span class="special">::</span><span class="identifier">RvalueOf</span><span class="special">)(</span><span class="identifier">T</span><span class="special">&amp;)</span>
+<span class="special">,</span> <span class="special">(</span> <span class="keyword">typedef</span> <span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">type</span> <span class="special">)</span>
+<span class="special">)</span>
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">RvalueOf</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="keyword">typename</span> <span class="identifier">type</span> <span class="special">=</span> <span class="identifier">T</span><span class="special">&amp;&amp;;</span>
+  <span class="keyword">requires</span> <span class="identifier">ExplicitlyConvertible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&amp;,</span> <span class="identifier">type</span><span class="special">&gt;</span> <span class="special">&amp;&amp;</span> <span class="identifier">Convertible</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&amp;&amp;,</span> <span class="identifier">type</span><span class="special">&gt;;</span>
+<span class="special">}</span>
+
+<span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="keyword">concept_map</span> <span class="identifier">RvalueOf</span><span class="special">&lt;</span><span class="identifier">T</span><span class="special">&amp;&gt;</span> <span class="special">{</span>
+  <span class="keyword">typedef</span> <span class="identifier">T</span><span class="special">&amp;&amp;</span> <span class="identifier">type</span><span class="special">;</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

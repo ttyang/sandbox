@@ -9,7 +9,7 @@
 [section HasConstructor]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that can be constructed from a given set of arguments.
 
 [heading Definition]
 
@@ -19,7 +19,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasConstructor]]
 [``
-
+auto concept HasConstructor<typename T, typename... Args> {
+  T::T(Args...);
+}
 ``]]
 ]
 

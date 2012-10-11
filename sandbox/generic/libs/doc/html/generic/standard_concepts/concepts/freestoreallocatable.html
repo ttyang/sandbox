@@ -22,7 +22,9 @@
           <span class="phrase"><a name="generic.standard_concepts.concepts.freestoreallocatable.description"></a></span><a class="link" href="freestoreallocatable.html#generic.standard_concepts.concepts.freestoreallocatable.description">Description</a>
         </h6>
 <p>
-          Describes arithmetic types.
+          Describes types for which objects and arrays of objects can be allocated
+          on or freed from the free store with <code class="computeroutput"><span class="keyword">new</span></code>
+          and <code class="computeroutput"><span class="keyword">delete</span></code>.
         </p>
 <h6>
 <a name="generic.standard_concepts.concepts.freestoreallocatable.h1"></a>
@@ -90,6 +92,43 @@
 </pre>
                 </td>
 <td>
+<pre class="programlisting"><span class="keyword">auto</span> <span class="keyword">concept</span> <span class="identifier">FreeStoreAllocatable</span><span class="special">&lt;</span><span class="keyword">typename</span> <span class="identifier">T</span><span class="special">&gt;</span> <span class="special">{</span>
+  <span class="keyword">void</span><span class="special">*</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">);</span>
+  <span class="keyword">void</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">(</span><span class="keyword">void</span><span class="special">*);</span>
+
+  <span class="keyword">void</span><span class="special">*</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">[](</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">)</span> <span class="special">{</span>
+    <span class="keyword">return</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">(</span><span class="identifier">size</span><span class="special">);</span>
+  <span class="special">}</span>
+
+  <span class="keyword">void</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">[](</span><span class="keyword">void</span><span class="special">*</span> <span class="identifier">ptr</span><span class="special">)</span> <span class="special">{</span>
+    <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">(</span><span class="identifier">ptr</span><span class="special">);</span>
+  <span class="special">}</span>
+
+  <span class="keyword">void</span><span class="special">*</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">(</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">nothrow_t</span><span class="special">&amp;)</span> <span class="special">{</span>
+    <span class="keyword">try</span> <span class="special">{</span>
+      <span class="keyword">return</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">(</span><span class="identifier">size</span><span class="special">);</span>
+    <span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">{</span>
+      <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+
+  <span class="keyword">void</span><span class="special">*</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">[](</span><span class="identifier">size_t</span> <span class="identifier">size</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">nothrow_t</span><span class="special">&amp;)</span> <span class="special">{</span>
+    <span class="keyword">try</span> <span class="special">{</span>
+      <span class="keyword">return</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">new</span><span class="special">[](</span><span class="identifier">size</span><span class="special">);</span>
+    <span class="special">}</span> <span class="keyword">catch</span><span class="special">(...)</span> <span class="special">{</span>
+      <span class="keyword">return</span> <span class="number">0</span><span class="special">;</span>
+    <span class="special">}</span>
+  <span class="special">}</span>
+
+  <span class="keyword">void</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">(</span><span class="keyword">void</span><span class="special">*</span> <span class="identifier">ptr</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">nothrow_t</span><span class="special">&amp;)</span> <span class="special">{</span>
+    <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">(</span><span class="identifier">ptr</span><span class="special">);</span>
+  <span class="special">}</span>
+
+  <span class="keyword">void</span> <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">[](</span><span class="keyword">void</span><span class="special">*</span> <span class="identifier">ptr</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">nothrow_t</span><span class="special">&amp;)</span> <span class="special">{</span>
+    <span class="identifier">T</span><span class="special">::</span><span class="keyword">operator</span> <span class="keyword">delete</span><span class="special">[](</span><span class="identifier">ptr</span><span class="special">);</span>
+  <span class="special">}</span>
+<span class="special">}</span>
+</pre>
                 </td>
 </tr></tbody>
 </table></div>

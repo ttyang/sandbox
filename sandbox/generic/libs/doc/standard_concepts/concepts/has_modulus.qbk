@@ -9,7 +9,7 @@
 [section HasModulus]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with an `operator%`.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasModulus]]
 [``
-
+auto concept HasModulus<typename T, typename U> {
+  typename result_type;
+  result_type operator%(const T&, const U&);
+}
 ``]]
 ]
 

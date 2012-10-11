@@ -9,7 +9,7 @@
 [section RvalueOf]
 
 [heading Description]
-Describes arithmetic types.
+Describes the rvalue reference type for an arbitrary type `T`.
 
 [heading Definition]
 
@@ -19,7 +19,14 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[RvalueOf]]
 [``
+auto concept RvalueOf<typename T> {
+  typename type = T&&;
+  requires ExplicitlyConvertible<T&, type> && Convertible<T&&, type>;
+}
 
+template<typename T> concept_map RvalueOf<T&> {
+  typedef T&& type;
+}
 ``]]
 ]
 

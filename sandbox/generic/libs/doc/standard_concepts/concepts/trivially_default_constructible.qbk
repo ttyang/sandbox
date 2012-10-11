@@ -9,7 +9,7 @@
 [section TriviallyDefaultConstructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types whose default constructor is trivial.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[TriviallyDefaultConstructible]]
 [``
+concept TriviallyDefaultConstructible<typename T> : DefaultConstructible<T> { }
 
+// Requires: for every type T that is a trivial type or a class type with a
+// trivial default constructor, a concept map TriviallyDefaultConstructible<T>
+// shall be implicitly defined in namespace std.
 ``]]
 ]
 

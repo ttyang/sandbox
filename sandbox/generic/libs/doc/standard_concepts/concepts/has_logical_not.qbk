@@ -9,7 +9,7 @@
 [section HasLogicalNot]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a logical negation operator.
 
 [heading Definition]
 
@@ -19,7 +19,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasLogicalNot]]
 [``
-
+auto concept HasLogicalNot<typename T> {
+  bool operator!(const T&);
+}
 ``]]
 ]
 

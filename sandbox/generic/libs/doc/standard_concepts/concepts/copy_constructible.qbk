@@ -9,7 +9,7 @@
 [section CopyConstructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a public copy constructor.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[CopyConstructible]]
 [``
-
+auto concept CopyConstructible<typename T> : MoveConstructible<T>, Constructible<T, const T&> {
+  axiom CopyPreservation(T x) {
+    T(x) == x;
+  }
+}
 ``]]
 ]
 

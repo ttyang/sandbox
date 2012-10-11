@@ -9,7 +9,7 @@
 [section Semiregular]
 
 [heading Description]
-Describes arithmetic types.
+Collects several common requirements supported by most types.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[Semiregular]]
 [``
-
+auto concept Semiregular<typename T>
+  : CopyConstructible<T>, CopyAssignable<T>, FreeStoreAllocatable<T> {
+  requires SameType<CopyAssignable<T>::result_type, T&>;
+}
 ``]]
 ]
 

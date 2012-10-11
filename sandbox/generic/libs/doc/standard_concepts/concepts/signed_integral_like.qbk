@@ -9,7 +9,8 @@
 [section SignedIntegralLike]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that provide all of the operations available on signed integral
+types.
 
 [heading Definition]
 
@@ -19,7 +20,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[SignedIntegralLike]]
 [``
+concept SignedIntegralLike<typename T> : IntegralLike<T> { }
 
+// Requires: for every signed integral type T, including signed extended
+// integral types, an empty concept map SignedIntegralLike<T> shall be defined
+// in namespace std.
 ``]]
 ]
 

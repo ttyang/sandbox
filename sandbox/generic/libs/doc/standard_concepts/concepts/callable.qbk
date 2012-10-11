@@ -9,7 +9,7 @@
 [section Callable]
 
 [heading Description]
-Describes arithmetic types.
+Describes function object types callable given arguments of types `Args...`.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[Callable]]
 [``
-
+auto concept Callable<typename F, typename... Args> {
+  typename result_type;
+  result_type operator()(F&, Args...);
+  result_type operator()(F&&, Args...);
+}
 ``]]
 ]
 

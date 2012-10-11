@@ -9,7 +9,7 @@
 [section LvalueReference]
 
 [heading Description]
-Describes arithmetic types.
+Determines whether a given type is an lvalue reference type.
 
 [heading Definition]
 
@@ -19,7 +19,8 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[LvalueReference]]
 [``
-
+concept LvalueReference<typename T> { }
+template <typename T> concept_map LvalueReference<T&> { }
 ``]]
 ]
 

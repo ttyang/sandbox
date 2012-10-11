@@ -9,7 +9,7 @@
 [section HasPostdecrement]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a post-decrement operator.
 
 [heading Definition]
 
@@ -19,8 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasPostdecrement]]
 [``
-
-``]]
+auto concept HasPostdecrement<typename T> {
+  typename result_type;
+  result_type operator--(T&, int);
+}``]]
 ]
 
 [heading Header]

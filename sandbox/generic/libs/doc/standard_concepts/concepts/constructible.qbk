@@ -9,7 +9,8 @@
 [section Constructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types that can be constructed from a given set of arguments that also
+have a no-throw destructor.
 
 [heading Definition]
 
@@ -19,7 +20,8 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[Constructible]]
 [``
-
+auto concept Constructible<typename T, typename... Args>
+  : HasConstructor<T, Args...>, NothrowDestructible<T> { }
 ``]]
 ]
 

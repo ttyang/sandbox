@@ -9,7 +9,10 @@
 [section Predicate]
 
 [heading Description]
-Describes arithmetic types.
+Describes function objects callable with some set of arguments, the result of
+which can be used in a context that requires a `bool`. In addition to the
+specified syntactic requirements, predicate function objects shall not apply any
+non-constant function through the predicate arguments.
 
 [heading Definition]
 
@@ -19,7 +22,9 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[Predicate]]
 [``
-
+auto concept Predicate<typename F, typename... Args> : Callable<F, const Args&...> {
+  requires Convertible<result_type, bool>;
+}
 ``]]
 ]
 

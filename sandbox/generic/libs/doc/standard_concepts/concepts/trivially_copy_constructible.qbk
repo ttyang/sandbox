@@ -9,7 +9,7 @@
 [section TriviallyCopyConstructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types whose copy constructor is equivalent to `memcpy`.
 
 [heading Definition]
 
@@ -19,7 +19,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[TriviallyCopyConstructible]]
 [``
+concept TriviallyCopyConstructible<typename T> : CopyConstructible<T> { }
 
+// Requires: for every type T that is a trivial type, a reference, or a class
+// type with a trivial copy constructor, a concept map
+// TriviallyCopyConstructible<T> shall be implicitly defined in namespace std.
 ``]]
 ]
 

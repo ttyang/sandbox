@@ -9,7 +9,8 @@
 [section FreeStoreAllocatable]
 
 [heading Description]
-Describes arithmetic types.
+Describes types for which objects and arrays of objects can be allocated on or
+freed from the free store with `new` and `delete`.
 
 [heading Definition]
 
@@ -19,7 +20,42 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[FreeStoreAllocatable]]
 [``
+auto concept FreeStoreAllocatable<typename T> {
+  void* T::operator new(size_t size);
+  void T::operator delete(void*);
 
+  void* T::operator new[](size_t size) {
+    return T::operator new(size);
+  }
+
+  void T::operator delete[](void* ptr) {
+    T::operator delete(ptr);
+  }
+
+  void* T::operator new(size_t size, const nothrow_t&) {
+    try {
+      return T::operator new(size);
+    } catch(...) {
+      return 0;
+    }
+  }
+
+  void* T::operator new[](size_t size, const nothrow_t&) {
+    try {
+      return T::operator new[](size);
+    } catch(...) {
+      return 0;
+    }
+  }
+
+  void T::operator delete(void* ptr, const nothrow_t&) {
+    T::operator delete(ptr);
+  }
+
+  void T::operator delete[](void* ptr, const nothrow_t&) {
+    T::operator delete[](ptr);
+  }
+}
 ``]]
 ]
 

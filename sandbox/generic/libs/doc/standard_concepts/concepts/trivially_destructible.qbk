@@ -9,7 +9,8 @@
 [section TriviallyDestructible]
 
 [heading Description]
-Describes arithmetic types.
+Describes types whose destructors do not need to be executed when the object is
+destroyed.
 
 [heading Definition]
 
@@ -19,7 +20,11 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[TriviallyDestructible]]
 [``
+concept TriviallyDestructible<typename T> : NothrowDestructible<T> { }
 
+// Requires: for every type T that is a trivial type, reference, or class type
+// with a trivial destructor, a concept map TriviallyDestructible<T> shall be
+// implicitly defined in namespace std.
 ``]]
 ]
 

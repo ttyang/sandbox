@@ -9,7 +9,8 @@
 [section IdentityOf]
 
 [heading Description]
-Describes arithmetic types.
+Concept form of the `identity` type metafunction ([n2914]
+[['identity.operation]]).
 
 [heading Definition]
 
@@ -19,7 +20,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[IdentityOf]]
 [``
-
+auto concept IdentityOf<typename T> {
+  typename type = T;
+  requires SameType<type, T>;
+}
 ``]]
 ]
 

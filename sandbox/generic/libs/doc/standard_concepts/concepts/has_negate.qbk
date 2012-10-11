@@ -9,7 +9,7 @@
 [section HasNegate]
 
 [heading Description]
-Describes arithmetic types.
+Describes types with a unary `operator-`.
 
 [heading Definition]
 
@@ -19,7 +19,10 @@ Describes arithmetic types.
     [[Boost.Generic Definition] [N2914 Definition]]
     [[[HasNegate]]
 [``
-
+auto concept HasNegate<typename T> {
+  typename result_type;
+  result_type operator-(const T&);
+}
 ``]]
 ]
 
